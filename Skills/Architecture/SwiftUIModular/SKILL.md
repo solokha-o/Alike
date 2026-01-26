@@ -1,0 +1,159 @@
+---
+name: swiftui-modular-architecture
+description: Modular SwiftUI architecture with Swift Packages by domain, MVVM, small composable views, and a thin app target.
+---
+
+# Modular SwiftUI Architecture (iOS)
+
+Use this skill when the user wants a modular SwiftUI iOS architecture with Swift Packages and MVVM.
+
+## Core principles
+
+- Split the app into **Swift Packages by domain/feature** to keep the codebase organized and maintainable.
+- Use **straightforward MVVM** (no Redux) for most parts.
+- Keep the app target focused on wiring and composition; push feature code into packages.
+- Each package should focus on a specific aspect (UI, networking, data models, etc.).
+- Prefer clear dependency boundaries so features can be developed, tested, and replaced independently.
+
+## Project layout (recommended)
+
+- Main app target: app entry point + wiring
+- `Packages/` (feature modules), examples:
+  - `Status`
+  - `Timeline`
+  - `Explore`
+  - `Conversations`
+  - `Account`
+  - `Notifications`
+- `Packages/` (shared/core), examples:
+  - `Core` (models, utilities)
+  - `Networking`
+  - `Storage`
+  - `DesignSystem`
+
+## Example module structure (with protocols)
+
+Example layout for a `Places` feature:
+
+```
+Packages/
+  Core/
+    Sources/Core/
+      Models/Place.swift
+      Protocols/PlaceRepository.swift
+  Networking/
+    Sources/Networking/
+      HTTPClient.swift
+  Storage/
+    Sources/Storage/
+      PlaceCache.swift
+      SQLiteStore.swift
+  Places/
+    Sources/Places/
+      PlacesView.swift
+      PlacesViewModel.swift
+      PlacesService.swift
+      PlacesRepositoryImpl.swift
+      PlaceRow.swift
+```
+
+Protocol examples (simplified):
+
+```swift
+// Core/Protocols/PlaceRepository.swift
+public protocol PlaceRepository {
+    func list() async throws -> [Place]
+    func refresh() async throws -> [Place]
+}
+
+// Storage/PlaceCache.swift
+public protocol PlaceCache {
+    func load() async throws -> [Place]
+    func save(_ places: [Place]) async throws
+    func invalidate() async
+}
+```
+
+Composition root (app target or AppWiring package):
+
+```swift
+let http = HTTPClient()
+let cache = SQLitePlaceCache()
+let repo = PlacesRepositoryImpl(http: http, cache: cache)
+let viewModel = PlacesViewModel(repository: repo)
+```
+
+## View model pattern (team convention)
+
+- One main view + one view model per screen/flow.
+- The main view owns the view model via `@StateObject` (or `@State` for `@Observable` types).
+- Pass the view model to subviews via `@ObservedObject`/`@Bindable` or plain `let`.
+- Compose the UI from small, targeted subviews.
+
+## Data layer & dependencies
+
+- Use a `Repository` or `Client` protocol per domain to isolate data access.
+- Keep networking in a shared `Networking` package; prefer `URLSession` + `async/await`.
+- Cache policies (memory/disk) live behind repositories; keep UI unaware of cache details.
+- Use DTOs at the network boundary and map to domain models in the data layer.
+- Prefer immutable domain models; store mutability in caches/repositories.
+
+## Offline-first & caching guidelines
+
+- Treat cache as the primary read source; network is for refresh.
+- Flow: `load cache → show UI → refresh in background → update cache → UI updates`.
+- Expose cache age or freshness so UI can show "last updated".
+- Use write-through: on successful network fetch, update cache immediately.
+- Support a manual refresh path even when cache is available.
+- Choose cache policy per feature (stale-while-revalidate, time-based expiry, or size-based eviction).
+- If offline, return cached data with an explicit "stale" marker; avoid empty screens.
+
+## Dependency injection
+
+- Depend on protocols in features; provide concrete implementations in a `CompositionRoot` (app target or a dedicated `AppWiring` package).
+- Use constructor injection for view models and services; avoid global singletons.
+- Provide test doubles in each package’s test target.
+
+## How to add a new feature
+
+1) Create a new Swift Package under `Packages/<Feature>`.
+2) Add feature views + view models + service protocols.
+3) Wire it in the app target (routing/navigation).
+4) Add tests inside the package.
+
+## Guardrails
+
+- Keep cross‑package dependencies minimal.
+- Avoid putting heavy logic in the app target.
+- Prefer shared UI helpers in a dedicated shared package rather than cross‑importing features.
+- Features may depend on shared/core packages, but not on other features.
+- Keep navigation/routing in the app target or a dedicated routing package.
+- Avoid static global state unless it is explicitly isolated (actor or MainActor).
+
+## Dependency rules
+
+- `Feature` → `Core/Networking/Storage/DesignSystem`
+- `Core` should not depend on `Feature` packages
+
+## Navigation
+
+- Keep navigation state centralized in the app target.
+- If navigation grows complex, extract a `Router`/`Coordinator` package.
+
+## Testing
+
+- Unit tests live inside each package.
+- UI tests live in the app target.
+- Prefer testable view models and repositories with protocol-based dependencies.
+- Add integration tests for data flows that span multiple packages where practical.
+
+## Error handling & resiliency
+
+- Model domain errors explicitly; avoid pinpointing UI to raw network errors.
+- Handle transient failures with retry/backoff at the data layer.
+- Provide user-friendly error states at the view level (empty, loading, error).
+
+## Observability (non-CI)
+
+- Add lightweight logging in data/repository layers for request/response failures.
+- Use analytics/telemetry behind a protocol so it can be mocked in tests.
