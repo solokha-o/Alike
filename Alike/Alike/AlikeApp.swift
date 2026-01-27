@@ -6,12 +6,75 @@
 //
 
 import SwiftUI
+import Launch
+import Welcome
+import Scanner
+import Settings
+import Details
+import Core
 
 @main
 struct AlikeApp: App {
+    @State private var launchCompleted = false
+    @State private var welcomeCompleted = false
+    @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
+    @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+    @State private var needsRescan = false
+    @State private var showRescanAlert = false
+    
+    private var sensitivity: Binding<SensitivityLevel> {
+        Binding(
+            get: { SensitivityLevel(rawValue: sensitivityRaw) ?? .medium },
+            set: { sensitivityRaw = $0.rawValue }
+        )
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                if !launchCompleted {
+                    LaunchView(isCompleted: $launchCompleted)
+                } else if !welcomeCompleted {
+                    WelcomeView(isCompleted: $welcomeCompleted)
+                } else {
+                    mainTabView
+                }
+            }
+            .animation(.smooth, value: launchCompleted)
+            .animation(.smooth, value: welcomeCompleted)
+        }
+    }
+    
+    private var mainTabView: some View {
+        TabView {
+            ScannerView(
+                gridColumns: $gridColumns,
+                sensitivity: sensitivity
+            )
+            .tabItem {
+                Label("Scanner", systemImage: "photo.stack")
+            }
+            
+            SettingsView(
+                gridColumns: $gridColumns,
+                sensitivity: sensitivity,
+                needsRescan: $needsRescan
+            )
+            .tabItem {
+                Label("Settings", systemImage: "gear")
+            }
+        }
+        .tint(.accent)
+        .alert("Rescan Required", isPresented: $needsRescan) {
+            Button("Later", role: .cancel) {
+                needsRescan = false
+            }
+            Button("Rescan Now") {
+                needsRescan = false
+                // Switch to Scanner tab and trigger rescan
+            }
+        } message: {
+            Text("Changing sensitivity requires a new scan to take effect")
         }
     }
 }

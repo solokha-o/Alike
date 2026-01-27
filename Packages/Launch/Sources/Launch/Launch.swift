@@ -1,2 +1,2 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+// Launch - App launch screen with animation
+@_exported import DesignSystem
