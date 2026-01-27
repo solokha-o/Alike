@@ -16,12 +16,13 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../Storage"),
         .package(path: "../PhotoAnalysis"),
-        .package(path: "../DesignSystem")
+        .package(path: "../DesignSystem"),
+        .package(path: "../Details")
     ],
     targets: [
         .target(
             name: "Scanner",
-            dependencies: ["Core", "Storage", "PhotoAnalysis", "DesignSystem"],
+            dependencies: ["Core", "Storage", "PhotoAnalysis", "DesignSystem", "Details"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]

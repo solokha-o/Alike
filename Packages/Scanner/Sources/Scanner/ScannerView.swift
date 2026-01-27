@@ -1,6 +1,7 @@
 import SwiftUI
 import Core
 import DesignSystem
+import Details
 import Photos
 
 /// Scanner screen with analysis and results
@@ -168,7 +169,7 @@ struct ClusterCard: View {
     
     var body: some View {
         NavigationLink {
-            Text("Cluster Details") // Will be Details screen
+            ClusterDetailsView(cluster: cluster)
         } label: {
             ZStack(alignment: .bottomTrailing) {
                 if let image = thumbnailImage {
