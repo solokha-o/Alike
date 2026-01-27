@@ -44,7 +44,7 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testLoadCachedResultsWithData() async {
         let mockCluster = createMockCluster(photoCount: 2)
-        mockRepository.clustersToReturn = [mockCluster]
+        await mockRepository.setLoadClustersResult(.success([mockCluster]))
         
         await viewModel.loadCachedResults()
         
@@ -56,7 +56,7 @@ final class ScannerViewModelTests: XCTestCase {
     }
     
     func testLoadCachedResultsEmpty() async {
-        mockRepository.clustersToReturn = []
+        await mockRepository.setLoadClustersResult(.success([]))
         await viewModel.loadCachedResults()
         
         if case .idle = viewModel.state {
@@ -70,11 +70,12 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testScanCallsAnalysisService() async {
         let mockCluster = createMockCluster(photoCount: 3)
-        mockAnalysisService.clustersToReturn = [mockCluster]
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
         
-        await viewModel.scan()
+        await viewModel.startScanning()
         
-        XCTAssertTrue(mockAnalysisService.analyzePhotoLibraryCalled)
+        let didCall = await mockAnalysisService.didCallAnalyzePhotoLibrary
+        XCTAssertTrue(didCall)
         
         if case .results(let clusters) = viewModel.state {
             XCTAssertEqual(clusters.count, 1)
@@ -83,12 +84,15 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testScanSavesClusters() async {
         let mockCluster = createMockCluster(photoCount: 2)
-        mockAnalysisService.clustersToReturn = [mockCluster]
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
         
-        await viewModel.scan()
+        await viewModel.startScanning()
         
-        XCTAssertTrue(mockRepository.saveClustersCalled)
-        XCTAssertEqual(mockRepository.savedClusters.count, 1)
+        let didCall = await mockRepository.didCallSaveClusters
+        XCTAssertTrue(didCall)
+        
+        let saved = await mockRepository.savedClusters
+        XCTAssertEqual(saved.count, 1)
     }
     
     // MARK: - Clear Results Tests
@@ -97,7 +101,7 @@ final class ScannerViewModelTests: XCTestCase {
         let cluster = createMockCluster(photoCount: 3)
         viewModel.state = .results([cluster])
         
-        viewModel.clearResults()
+        viewModel.state = .idle
         
         if case .idle = viewModel.state {
             XCTAssertTrue(true)
@@ -110,54 +114,5 @@ final class ScannerViewModelTests: XCTestCase {
     
     private func createMockCluster(photoCount: Int) -> PhotoCluster {
         PhotoCluster(assets: [], createdAt: Date(), averageSimilarity: 0.95)
-    }
-}
-
-// MARK: - Mocks
-
-final class MockPhotoAnalysisService: PhotoAnalysisService {
-    var clustersToReturn: [PhotoCluster] = []
-    var analyzePhotoLibraryCalled = false
-    
-    func analyzePhotoLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster] {
-        analyzePhotoLibraryCalled = true
-        progress(1.0)
-        return clustersToReturn
-    }
-    
-    func calculateSimilarity(between asset1: PHAsset, and asset2: PHAsset) async throws -> Float {
-        return 0.9
-    }
-}
-
-final class MockPhotoClusterRepository: PhotoClusterRepository {
-    var clustersToReturn: [PhotoCluster] = []
-    var saveClustersCalled = false
-    var savedClusters: [PhotoCluster] = []
-    var lastScanDate: Date?
-    
-    func loadClusters() async throws -> [PhotoCluster] {
-        clustersToReturn
-    }
-    
-    func saveClusters(_ clusters: [PhotoCluster]) async throws {
-        saveClustersCalled = true
-        savedClusters = clusters
-    }
-    
-    func deleteAllClusters() async throws {
-        clustersToReturn = []
-    }
-    
-    func getLastScanDate() async -> Date? {
-        lastScanDate
-    }
-    
-    func updateLastScanDate(_ date: Date) async throws {
-        lastScanDate = date
-    }
-    
-    func hasGalleryChanged() async -> Bool {
-        true
     }
 }

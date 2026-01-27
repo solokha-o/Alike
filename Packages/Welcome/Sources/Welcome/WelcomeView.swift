@@ -99,6 +99,19 @@ public struct WelcomeView: View {
 }
 
 #Preview("Denied") {
-    let viewModel = WelcomeViewModel()
-    return WelcomeView(isCompleted: .constant(false))
+    @Previewable @State var isCompleted = false
+    let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
+    let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
+    
+    return WelcomeView(isCompleted: $isCompleted)
+        .environment(viewModel)
+}
+
+#Preview("Authorized") {
+    @Previewable @State var isCompleted = false
+    let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
+    let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
+    
+    return WelcomeView(isCompleted: $isCompleted)
+        .environment(viewModel)
 }

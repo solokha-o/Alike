@@ -6,6 +6,8 @@ import UIKit
 /// Service that processes photo feature prints using Vision framework
 public struct VisionFeaturePrintService: Sendable {
     
+    public init() {}
+    
     /// Generate feature print for a single asset
     public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
         // Load full resolution image data

@@ -208,9 +208,58 @@ struct ClusterCard: View {
 }
 
 // MARK: - Preview
-#Preview {
-    ScannerView(
-        gridColumns: .constant(3),
-        sensitivity: .constant(.medium)
+#Preview("Idle") {
+    @Previewable @State var gridColumns = 3
+    @Previewable @State var sensitivity = SensitivityLevel.medium
+    
+    let mockAnalysisService = MockPhotoAnalysisService()
+    let mockRepository = MockPhotoClusterRepository()
+    let viewModel = ScannerViewModel(
+        analysisService: mockAnalysisService,
+        repository: mockRepository
     )
+    
+    return ScannerView(
+        gridColumns: $gridColumns,
+        sensitivity: $sensitivity
+    )
+    .environment(viewModel)
+}
+
+#Preview("Scanning") {
+    @Previewable @State var gridColumns = 3
+    @Previewable @State var sensitivity = SensitivityLevel.medium
+    
+    let mockAnalysisService = MockPhotoAnalysisService()
+    let mockRepository = MockPhotoClusterRepository()
+    let viewModel = ScannerViewModel(
+        analysisService: mockAnalysisService,
+        repository: mockRepository
+    )
+    viewModel.state = .scanning(progress: 0.6)
+    
+    return ScannerView(
+        gridColumns: $gridColumns,
+        sensitivity: $sensitivity
+    )
+    .environment(viewModel)
+}
+
+#Preview("Results") {
+    @Previewable @State var gridColumns = 3
+    @Previewable @State var sensitivity = SensitivityLevel.medium
+    
+    let mockAnalysisService = MockPhotoAnalysisService()
+    let mockRepository = MockPhotoClusterRepository()
+    let viewModel = ScannerViewModel(
+        analysisService: mockAnalysisService,
+        repository: mockRepository
+    )
+    viewModel.state = .results([.mock, .mock, .mock])
+    
+    return ScannerView(
+        gridColumns: $gridColumns,
+        sensitivity: $sensitivity
+    )
+    .environment(viewModel)
 }
