@@ -4,11 +4,16 @@ import DesignSystem
 
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
-    @State private var viewModel = WelcomeViewModel()
+    @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     
-    public init(isCompleted: Binding<Bool>) {
+    public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
         self._isCompleted = isCompleted
+        if let viewModel {
+            self._viewModel = State(initialValue: viewModel)
+        } else {
+            self._viewModel = State(initialValue: WelcomeViewModel())
+        }
     }
     
     public var body: some View {
@@ -103,8 +108,7 @@ public struct WelcomeView: View {
     let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
     let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
     
-    return WelcomeView(isCompleted: $isCompleted)
-        .environment(viewModel)
+    return WelcomeView(isCompleted: $isCompleted, viewModel: viewModel)
 }
 
 #Preview("Authorized") {
@@ -112,6 +116,5 @@ public struct WelcomeView: View {
     let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
     let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
     
-    return WelcomeView(isCompleted: $isCompleted)
-        .environment(viewModel)
+    return WelcomeView(isCompleted: $isCompleted, viewModel: viewModel)
 }
