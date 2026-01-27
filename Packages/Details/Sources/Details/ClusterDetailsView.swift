@@ -56,7 +56,9 @@ struct PhotoThumbnail: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 120)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
                     .clipped()
+                    .aspectRatio(16/9, contentMode: .fit)
             } else {
                 Rectangle()
                     .fill(Color.secondary.opacity(0.2))

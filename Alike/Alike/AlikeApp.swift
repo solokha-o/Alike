@@ -14,6 +14,8 @@ import Scanner
 import Settings
 import Details
 import Core
+import PhotoAnalysis
+import Photos
 
 @main
 struct AlikeApp: App {
@@ -23,6 +25,8 @@ struct AlikeApp: App {
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
     @State private var needsRescan = false
     @State private var showRescanAlert = false
+    
+    private let permissionManager = PhotoPermissionManagerImpl()
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -44,6 +48,24 @@ struct AlikeApp: App {
             }
             .animation(.smooth, value: launchCompleted)
             .animation(.smooth, value: welcomeCompleted)
+            .task {
+                // Перевіряємо дозвіл одразу при старті
+                await checkInitialPermissions()
+            }
+        }
+    }
+    
+    private func checkInitialPermissions() async {
+        // Чекаємо завершення прелоадера
+        while !launchCompleted {
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+        
+        // Якщо доступ вже є - пропускаємо Welcome екран
+        if permissionManager.isAuthorized {
+            await MainActor.run {
+                welcomeCompleted = true
+            }
         }
     }
     
