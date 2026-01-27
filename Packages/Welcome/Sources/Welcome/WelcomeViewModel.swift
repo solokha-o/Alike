@@ -6,14 +6,14 @@ import DesignSystem
 @MainActor
 @Observable
 public final class WelcomeViewModel {
-    private let permissionManager: PhotoPermissionManagerImpl
+    private let permissionManager: PhotoPermissionManager
     
     public var authorizationStatus: PHAuthorizationStatus
     public var isAuthorized: Bool {
         authorizationStatus == .authorized || authorizationStatus == .limited
     }
     
-    public init(permissionManager: PhotoPermissionManagerImpl = PhotoPermissionManagerImpl()) {
+    public init(permissionManager: PhotoPermissionManager = PhotoPermissionManagerImpl()) {
         self.permissionManager = permissionManager
         self.authorizationStatus = permissionManager.authorizationStatus
     }

@@ -3,11 +3,17 @@ import Vision
 import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
-public actor PhotoAnalysisServiceImpl {
-    private let visionService = VisionFeaturePrintService()
-    private let clusteringService = PhotoClusteringService()
+public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
+    private let visionService: VisionFeaturePrintService
+    private let clusteringService: PhotoClusteringService
     
-    public init() {}
+    public init(
+        visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
+        clusteringService: PhotoClusteringService = PhotoClusteringService()
+    ) {
+        self.visionService = visionService
+        self.clusteringService = clusteringService
+    }
     
     /// Analyze entire photo library and return clusters
     public func analyzePhotoLibrary(

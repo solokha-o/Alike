@@ -16,15 +16,15 @@ public final class ScannerViewModel {
     public var state: State = .idle
     public var gridColumns: Int
     
-    private let analysisService: PhotoAnalysisServiceImpl
-    private let repository: CoreDataPhotoClusterRepository
+    private let analysisService: PhotoAnalysisService
+    private let repository: PhotoClusterRepository
     private let sensitivity: SensitivityLevel
     
     public init(
         gridColumns: Int = 3,
         sensitivity: SensitivityLevel = .medium,
-        analysisService: PhotoAnalysisServiceImpl = PhotoAnalysisServiceImpl(),
-        repository: CoreDataPhotoClusterRepository = CoreDataPhotoClusterRepository()
+        analysisService: PhotoAnalysisService = PhotoAnalysisServiceImpl(),
+        repository: PhotoClusterRepository = CoreDataPhotoClusterRepository()
     ) {
         self.gridColumns = gridColumns
         self.sensitivity = sensitivity
