@@ -13,6 +13,9 @@
 		531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6392F2929E900DAB1E2 /* Scanner */; };
 		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
 		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
+		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
+		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
+		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,8 +37,11 @@
 			files = (
 				531BB6372F29299500DAB1E2 /* Settings in Frameworks */,
 				531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */,
+				53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */,
+				53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */,
 				531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */,
 				531BB6312F29293A00DAB1E2 /* Core in Frameworks */,
+				53458A5B2F29457F00D1CCCC /* Storage in Frameworks */,
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
 			);
@@ -86,6 +92,9 @@
 				531BB6392F2929E900DAB1E2 /* Scanner */,
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
+				53458A542F29455F00D1CCCC /* DesignSystem */,
+				53458A572F29457200D1CCCC /* PhotoAnalysis */,
+				53458A5A2F29457F00D1CCCC /* Storage */,
 			);
 			productName = Alike;
 			productReference = 531BB61D2F29132C00DAB1E2 /* Alike.app */;
@@ -122,6 +131,9 @@
 				531BB6382F2929E900DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Scanner" */,
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
+				53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */,
+				53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */,
+				53458A592F29457F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/Storage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 531BB61E2F29132C00DAB1E2 /* Products */;
@@ -393,6 +405,18 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Launch;
 		};
+		53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/DesignSystem;
+		};
+		53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/PhotoAnalysis;
+		};
+		53458A592F29457F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/Storage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Storage;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -419,6 +443,18 @@
 		531BB63F2F292A8100DAB1E2 /* Launch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Launch;
+		};
+		53458A542F29455F00D1CCCC /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		53458A572F29457200D1CCCC /* PhotoAnalysis */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PhotoAnalysis;
+		};
+		53458A5A2F29457F00D1CCCC /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Storage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
