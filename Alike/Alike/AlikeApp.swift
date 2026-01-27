@@ -24,7 +24,8 @@ struct AlikeApp: App {
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
     @State private var needsRescan = false
-    @State private var showRescanAlert = false
+    @State private var selectedTab = 0
+    @State private var shouldStartScan = false
     
     private let permissionManager = PhotoPermissionManagerImpl()
     
@@ -70,14 +71,16 @@ struct AlikeApp: App {
     }
     
     private var mainTabView: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             ScannerView(
                 gridColumns: $gridColumns,
-                sensitivity: sensitivity
+                sensitivity: sensitivity,
+                shouldStartScan: $shouldStartScan
             )
             .tabItem {
                 Label("Scanner", systemImage: "photo.stack")
             }
+            .tag(0)
             
             SettingsView(
                 gridColumns: $gridColumns,
@@ -87,6 +90,7 @@ struct AlikeApp: App {
             .tabItem {
                 Label("Settings", systemImage: "gear")
             }
+            .tag(1)
         }
         .tint(.accent)
         .alert("Rescan Required", isPresented: $needsRescan) {
@@ -95,6 +99,8 @@ struct AlikeApp: App {
             }
             Button("Rescan Now") {
                 needsRescan = false
+                selectedTab = 0 // Перейти на Scanner таб
+                shouldStartScan = true // Запустити сканування
             }
         } message: {
             Text("Changing sensitivity requires a new scan to take effect")

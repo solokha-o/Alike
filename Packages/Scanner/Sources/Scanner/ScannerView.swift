@@ -9,14 +9,17 @@ public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
+    @Binding var shouldStartScan: Bool
     
     public init(
         gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
+        shouldStartScan: Binding<Bool> = .constant(false),
         viewModel: ScannerViewModel? = nil
     ) {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
+        self._shouldStartScan = shouldStartScan
         if let viewModel {
             self._viewModel = State(initialValue: viewModel)
         } else {
@@ -54,6 +57,14 @@ public struct ScannerView: View {
         }
         .onChange(of: gridColumns) { _, newValue in
             viewModel.gridColumns = newValue
+        }
+        .onChange(of: shouldStartScan) { _, newValue in
+            if newValue {
+                Task {
+                    await viewModel.startScanning()
+                    shouldStartScan = false
+                }
+            }
         }
     }
     
