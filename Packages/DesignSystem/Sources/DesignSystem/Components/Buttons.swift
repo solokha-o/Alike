@@ -6,6 +6,8 @@ public struct PrimaryButton: View {
     let icon: String?
     let action: () -> Void
     
+    @State private var feedbackTrigger = 0
+    
     public init(
         _ title: LocalizedStringKey,
         icon: String? = nil,
@@ -17,14 +19,17 @@ public struct PrimaryButton: View {
     }
     
     public var body: some View {
-        Button(action: action) {
+        Button {
+            feedbackTrigger += 1
+            action()
+        } label: {
             HStack(spacing: Spacing.small) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.headline)
+                        .font(.appHeadline)
                 }
                 Text(title)
-                    .font(.headline)
+                    .font(.appHeadline)
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -33,7 +38,7 @@ public struct PrimaryButton: View {
             .cornerRadius(CornerRadius.medium)
         }
         .scaleOnPress()
-        .sensoryFeedback(.impact(flexibility: .soft), trigger: action)
+        .sensoryFeedback(.impact(flexibility: .soft), trigger: feedbackTrigger)
     }
 }
 
@@ -58,10 +63,10 @@ public struct SecondaryButton: View {
             HStack(spacing: Spacing.small) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.headline)
+                        .font(.appHeadline)
                 }
                 Text(title)
-                    .font(.headline)
+                    .font(.appHeadline)
             }
             .frame(maxWidth: .infinity)
             .padding()

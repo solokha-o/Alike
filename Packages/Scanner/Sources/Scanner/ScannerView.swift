@@ -62,11 +62,11 @@ public struct ScannerView: View {
                 .foregroundColor(.accent)
             
             Text("Ready to Scan")
-                .font(.title)
+                .font(.appTitle)
                 .foregroundColor(.primary)
             
             Text("Tap the button below to analyze your photo library")
-                .font(.body)
+                .font(.appBody)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
@@ -98,7 +98,7 @@ public struct ScannerView: View {
                     .stroke(Color.accent, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                     .frame(width: 120, height: 120)
                     .rotationEffect(.degrees(-90))
-                    .animation(.smooth, value: progress)
+                    .animation(.appSmooth, value: progress)
                 
                 Text("\(Int(progress * 100))%")
                     .font(.title.bold())
@@ -106,11 +106,11 @@ public struct ScannerView: View {
             }
             
             Text("Analyzing Photos...")
-                .font(.title2)
+                .font(.appTitle2)
                 .foregroundColor(.primary)
             
             Text("Finding visually similar images")
-                .font(.body)
+                .font(.appBody)
                 .foregroundColor(.secondary)
             
             Spacer()

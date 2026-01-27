@@ -3,7 +3,7 @@ import Vision
 import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
-public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
+public actor PhotoAnalysisServiceImpl {
     private let visionService = VisionFeaturePrintService()
     private let clusteringService = PhotoClusteringService()
     
@@ -48,7 +48,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             return 0.0
         }
         
-        let distance = try visionService.computeDistance(
+        let distance = try await visionService.computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )

@@ -2,8 +2,7 @@ import Foundation
 import Photos
 
 /// Represents a cluster of visually similar photos
-@MainActor
-public struct PhotoCluster: Identifiable, Sendable {
+public struct PhotoCluster: Identifiable, @unchecked Sendable {
     public let id: UUID
     public let assets: [PHAsset]
     public let createdAt: Date

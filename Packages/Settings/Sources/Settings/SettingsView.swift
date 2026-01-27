@@ -9,6 +9,7 @@ public struct SettingsView: View {
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @Environment(\.requestReview) private var requestReview
+    @State private var reviewTrigger = 0
     
     private let gridConfig = GridConfiguration.current
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
@@ -82,11 +83,12 @@ public struct SettingsView: View {
             }
             
             Button {
+                reviewTrigger += 1
                 requestReview()
             } label: {
                 Label("Rate on App Store", systemImage: "star")
             }
-            .sensoryFeedback(.selection, trigger: requestReview)
+            .sensoryFeedback(.selection, trigger: reviewTrigger)
             
             Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
                 Label("Contact Developer", systemImage: "envelope")
@@ -166,16 +168,16 @@ struct UserGuideView: View {
                     .frame(width: 50, height: 50)
                 
                 Text("\(number)")
-                    .font(.headline)
+                    .font(.appHeadline)
                     .foregroundColor(.accent)
             }
             
             VStack(alignment: .leading, spacing: Spacing.xSmall) {
                 Label(title, systemImage: icon)
-                    .font(.headline)
+                    .font(.appHeadline)
                 
                 Text(description)
-                    .font(.body)
+                    .font(.appBody)
                     .foregroundColor(.secondary)
             }
         }

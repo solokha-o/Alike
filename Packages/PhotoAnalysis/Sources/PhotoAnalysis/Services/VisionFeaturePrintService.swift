@@ -3,8 +3,8 @@ import CoreImage
 import Photos
 import UIKit
 
-/// Actor that processes photo feature prints using Vision framework
-public actor VisionFeaturePrintService: Sendable {
+/// Service that processes photo feature prints using Vision framework
+public struct VisionFeaturePrintService: Sendable {
     
     /// Generate feature print for a single asset
     public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {

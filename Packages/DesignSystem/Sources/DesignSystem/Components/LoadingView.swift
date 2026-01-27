@@ -18,7 +18,7 @@ public struct LoadingView: View {
             if let progress {
                 ProgressView(value: progress) {
                     Text(message)
-                        .font(.headline)
+                        .font(.appHeadline)
                         .foregroundColor(.secondary)
                 }
                 .progressViewStyle(.linear)
@@ -29,7 +29,7 @@ public struct LoadingView: View {
                     .tint(.accent)
                 
                 Text(message)
-                    .font(.headline)
+                    .font(.appHeadline)
                     .foregroundColor(.secondary)
             }
         }

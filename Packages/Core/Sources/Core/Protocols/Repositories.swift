@@ -2,7 +2,6 @@ import Foundation
 import Photos
 
 /// Repository for managing photo clusters
-@MainActor
 public protocol PhotoClusterRepository: Sendable {
     /// Load all saved clusters
     func loadClusters() async throws -> [PhotoCluster]
@@ -26,7 +25,7 @@ public protocol PhotoClusterRepository: Sendable {
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
-    func analyzePho toLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster]
+    func analyzePhotoLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster]
     
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float

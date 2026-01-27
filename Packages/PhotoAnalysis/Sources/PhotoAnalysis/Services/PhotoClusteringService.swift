@@ -63,35 +63,33 @@ public actor PhotoClusteringService: Sendable {
         }
         
         // Convert index clusters to PhotoCluster models
-        return await MainActor.run {
-            clusters.map { indices in
-                let assets = indices.map { validPhotos[$0].0 }
-                
-                // Calculate average similarity (lower distance = higher similarity)
-                var totalDistance: Float = 0.0
-                var comparisonCount = 0
-                
-                for i in 0..<indices.count {
-                    for j in (i+1)..<indices.count {
-                        if let distance = try? visionService.computeDistance(
-                            between: validPhotos[indices[i]].1,
-                            and: validPhotos[indices[j]].1
-                        ) {
-                            totalDistance += distance
-                            comparisonCount += 1
-                        }
+        return clusters.map { indices in
+            let assets = indices.map { validPhotos[$0].0 }
+            
+            // Calculate average similarity (lower distance = higher similarity)
+            var totalDistance: Float = 0.0
+            var comparisonCount = 0
+            
+            for i in 0..<indices.count {
+                for j in (i+1)..<indices.count {
+                    if let distance = try? visionService.computeDistance(
+                        between: validPhotos[indices[i]].1,
+                        and: validPhotos[indices[j]].1
+                    ) {
+                        totalDistance += distance
+                        comparisonCount += 1
                     }
                 }
-                
-                let averageSimilarity = comparisonCount > 0
-                    ? 1.0 - (totalDistance / Float(comparisonCount) / 100.0) // Normalize to 0-1
-                    : 0.0
-                
-                return PhotoCluster(
-                    assets: assets,
-                    averageSimilarity: max(0.0, min(1.0, averageSimilarity))
-                )
             }
+            
+            let averageSimilarity = comparisonCount > 0
+                ? 1.0 - (totalDistance / Float(comparisonCount) / 100.0) // Normalize to 0-1
+                : 0.0
+            
+            return PhotoCluster(
+                assets: assets,
+                averageSimilarity: max(0.0, min(1.0, averageSimilarity))
+            )
         }
     }
 }

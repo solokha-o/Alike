@@ -38,11 +38,11 @@ public struct WelcomeView: View {
                 .font(.system(size: 80))
             
             Text("Alike")
-                .font(.largeTitle)
+                .font(.appLargeTitle)
                 .foregroundColor(.accent)
             
             Text("Find visually similar photos in your library")
-                .font(.title3)
+                .font(.appTitle3)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
@@ -81,7 +81,7 @@ public struct WelcomeView: View {
                 .font(.system(size: 80))
             
             Text("Access Granted")
-                .font(.title)
+                .font(.appTitle)
                 .foregroundColor(.accent)
         }
         .task {

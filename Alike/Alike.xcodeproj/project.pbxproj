@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		531BB6312F29293A00DAB1E2 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6302F29293A00DAB1E2 /* Core */; };
+		531BB6342F29294A00DAB1E2 /* Details in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6332F29294A00DAB1E2 /* Details */; };
+		531BB6372F29299500DAB1E2 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6362F29299500DAB1E2 /* Settings */; };
+		531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6392F2929E900DAB1E2 /* Scanner */; };
+		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
+		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		531BB61D2F29132C00DAB1E2 /* Alike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +32,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				531BB6372F29299500DAB1E2 /* Settings in Frameworks */,
+				531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */,
+				531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */,
+				531BB6312F29293A00DAB1E2 /* Core in Frameworks */,
+				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
+				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +80,12 @@
 			);
 			name = Alike;
 			packageProductDependencies = (
+				531BB6302F29293A00DAB1E2 /* Core */,
+				531BB6332F29294A00DAB1E2 /* Details */,
+				531BB6362F29299500DAB1E2 /* Settings */,
+				531BB6392F2929E900DAB1E2 /* Scanner */,
+				531BB63C2F292A3B00DAB1E2 /* Welcome */,
+				531BB63F2F292A8100DAB1E2 /* Launch */,
 			);
 			productName = Alike;
 			productReference = 531BB61D2F29132C00DAB1E2 /* Alike.app */;
@@ -94,6 +115,14 @@
 			);
 			mainGroup = 531BB6142F29132C00DAB1E2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				531BB62F2F29293A00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Core" */,
+				531BB6322F29294A00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Details" */,
+				531BB6352F29299500DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Settings" */,
+				531BB6382F2929E900DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Scanner" */,
+				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
+				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 531BB61E2F29132C00DAB1E2 /* Products */;
 			projectDirPath = "";
@@ -253,6 +282,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Alike analyzes your photo library to find visually similar images.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -266,6 +296,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SolokhaO.Alike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -284,6 +318,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Alike analyzes your photo library to find visually similar images.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -297,6 +332,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SolokhaO.Alike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -328,6 +367,60 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		531BB62F2F29293A00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Core;
+		};
+		531BB6322F29294A00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Details" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Details;
+		};
+		531BB6352F29299500DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Settings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Settings;
+		};
+		531BB6382F2929E900DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Scanner" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Scanner;
+		};
+		531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Welcome;
+		};
+		531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Launch;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		531BB6302F29293A00DAB1E2 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		531BB6332F29294A00DAB1E2 /* Details */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Details;
+		};
+		531BB6362F29299500DAB1E2 /* Settings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Settings;
+		};
+		531BB6392F2929E900DAB1E2 /* Scanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Scanner;
+		};
+		531BB63C2F292A3B00DAB1E2 /* Welcome */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Welcome;
+		};
+		531BB63F2F292A8100DAB1E2 /* Launch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Launch;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 531BB6152F29132C00DAB1E2 /* Project object */;
 }

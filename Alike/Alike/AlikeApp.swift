@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Temporary simple version for initial build
-// TODO: Uncomment when Swift Packages are added in Xcode
-
-@main
-struct AlikeApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
-
-/* Full version with packages - uncomment after adding packages in Xcode:
-
 import SwiftUI
 import Launch
 import Welcome
@@ -93,4 +79,3 @@ struct AlikeApp: App {
         }
     }
 }
-*/

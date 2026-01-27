@@ -4,7 +4,6 @@ import Foundation
 import Photos
 
 /// CoreData implementation of PhotoClusterRepository
-@MainActor
 public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     private let persistence: PersistenceController
     
@@ -43,7 +42,27 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         }
     }
     
+    @MainActor
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {
+        // Capture cluster data before background task to avoid Main Actor issues
+        let clusterData = clusters.map { cluster in
+            (
+                id: cluster.id,
+                createdAt: cluster.createdAt,
+                averageSimilarity: cluster.averageSimilarity,
+                assetData: cluster.assets.map { asset in
+                    (
+                        localIdentifier: asset.localIdentifier,
+                        creationDate: asset.creationDate,
+                        modificationDate: asset.modificationDate,
+                        pixelWidth: asset.pixelWidth,
+                        pixelHeight: asset.pixelHeight,
+                        isFavorite: asset.isFavorite
+                    )
+                }
+            )
+        }
+        
         try await persistence.performBackgroundTask { context in
             // Delete existing clusters
             let deleteRequest = NSBatchDeleteRequest(
@@ -52,20 +71,20 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             try context.execute(deleteRequest)
             
             // Save new clusters
-            for cluster in clusters {
+            for data in clusterData {
                 let entity = ClusterEntity(context: context)
-                entity.id = cluster.id
-                entity.createdAt = cluster.createdAt
-                entity.averageSimilarity = cluster.averageSimilarity
+                entity.id = data.id
+                entity.createdAt = data.createdAt
+                entity.averageSimilarity = data.averageSimilarity
                 
-                for asset in cluster.assets {
+                for assetData in data.assetData {
                     let photoEntity = PhotoEntity(context: context)
-                    photoEntity.localIdentifier = asset.localIdentifier
-                    photoEntity.creationDate = asset.creationDate
-                    photoEntity.modificationDate = asset.modificationDate
-                    photoEntity.pixelWidth = Int32(asset.pixelWidth)
-                    photoEntity.pixelHeight = Int32(asset.pixelHeight)
-                    photoEntity.isFavorite = asset.isFavorite
+                    photoEntity.localIdentifier = assetData.localIdentifier
+                    photoEntity.creationDate = assetData.creationDate
+                    photoEntity.modificationDate = assetData.modificationDate
+                    photoEntity.pixelWidth = Int32(assetData.pixelWidth)
+                    photoEntity.pixelHeight = Int32(assetData.pixelHeight)
+                    photoEntity.isFavorite = assetData.isFavorite
                     
                     entity.addToPhotos(photoEntity)
                 }

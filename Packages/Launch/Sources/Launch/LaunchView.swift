@@ -30,7 +30,7 @@ public struct LaunchView: View {
         }
         .task {
             // Animate in
-            withAnimation(.bouncy.delay(0.1)) {
+            withAnimation(.appBouncy.delay(0.1)) {
                 scale = 1.0
                 opacity = 1.0
             }
@@ -39,7 +39,7 @@ public struct LaunchView: View {
             try? await Task.sleep(for: .seconds(3))
             
             // Animate out
-            withAnimation(.smooth) {
+            withAnimation(.appSmooth) {
                 scale = 1.2
                 opacity = 0.0
             }

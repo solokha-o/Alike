@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 /// Sensitivity level for photo similarity detection
 public enum SensitivityLevel: String, CaseIterable, Sendable {
