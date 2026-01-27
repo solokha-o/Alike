@@ -12,14 +12,19 @@ public struct ScannerView: View {
     
     public init(
         gridColumns: Binding<Int>,
-        sensitivity: Binding<SensitivityLevel>
+        sensitivity: Binding<SensitivityLevel>,
+        viewModel: ScannerViewModel? = nil
     ) {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
-        self._viewModel = State(initialValue: ScannerViewModel(
-            gridColumns: gridColumns.wrappedValue,
-            sensitivity: sensitivity.wrappedValue
-        ))
+        if let viewModel {
+            self._viewModel = State(initialValue: viewModel)
+        } else {
+            self._viewModel = State(initialValue: ScannerViewModel(
+                gridColumns: gridColumns.wrappedValue,
+                sensitivity: sensitivity.wrappedValue
+            ))
+        }
     }
     
     public var body: some View {
@@ -221,9 +226,9 @@ struct ClusterCard: View {
     
     return ScannerView(
         gridColumns: $gridColumns,
-        sensitivity: $sensitivity
+        sensitivity: $sensitivity,
+        viewModel: viewModel
     )
-    .environment(viewModel)
 }
 
 #Preview("Scanning") {
@@ -240,9 +245,9 @@ struct ClusterCard: View {
     
     return ScannerView(
         gridColumns: $gridColumns,
-        sensitivity: $sensitivity
+        sensitivity: $sensitivity,
+        viewModel: viewModel
     )
-    .environment(viewModel)
 }
 
 #Preview("Results") {
@@ -259,7 +264,7 @@ struct ClusterCard: View {
     
     return ScannerView(
         gridColumns: $gridColumns,
-        sensitivity: $sensitivity
+        sensitivity: $sensitivity,
+        viewModel: viewModel
     )
-    .environment(viewModel)
 }
