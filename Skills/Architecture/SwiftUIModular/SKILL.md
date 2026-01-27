@@ -177,3 +177,14 @@ Follow structured documentation standards for public APIs and inline comments. S
 - Inline comment (`//`) best practices
 - Special markers (`TODO`, `FIXME`, `WARNING`)
 - Complete examples for classes, protocols, and functions
+
+### Build configurations and schemes
+
+Organize Xcode schemes and build configurations for multiple deployment targets. See `references/xcode-schemes-configurations.md` for:
+- Setting up Debug/Staging/Release configurations
+- Creating schemes per environment (Production, Staging, Testing)
+- Conditional compilation (`#if DEBUG`, `#if STAGING`)
+- Testing with test data (launch arguments, environment variables, mock injection)
+- Bundle identifier strategies for side-by-side installs
+- CI/CD integration (GitHub Actions, Fastlane)
+- Debug menu and feature flags patterns

@@ -107,3 +107,8 @@ Use this skill when the user wants branch strategy, release process, or versioni
 
 - If release cadence is very high, consider shortening release branch lifetime.
 - If team is small, allow direct merge from feature to `main` only for hotfixes.
+
+## Related resources
+
+- For Xcode scheme and build configuration setup (Debug/Staging/Release), see `../Architecture/SwiftUIModular/references/xcode-schemes-configurations.md`
+- For versioning automation and CI/CD integration, consult the scheme configuration reference
