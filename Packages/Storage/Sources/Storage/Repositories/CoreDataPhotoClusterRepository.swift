@@ -1,0 +1,157 @@
+import CoreData
+import Core
+import Foundation
+import Photos
+
+/// CoreData implementation of PhotoClusterRepository
+public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
+    private let persistence: PersistenceController
+    
+    public init(persistence: PersistenceController = .shared) {
+        self.persistence = persistence
+    }
+    
+    public func loadClusters() async throws -> [PhotoCluster] {
+        let context = persistence.viewContext
+        
+        return try await context.perform {
+            let request = ClusterEntity.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
+            
+            let entities = try context.fetch(request)
+            
+            return entities.compactMap { entity -> PhotoCluster? in
+                let localIdentifiers = entity.photosArray.map { $0.localIdentifier }
+                
+                // Fetch PHAssets from local identifiers
+                let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
+                var assets: [PHAsset] = []
+                fetchResult.enumerateObjects { asset, _, _ in
+                    assets.append(asset)
+                }
+                
+                guard !assets.isEmpty else { return nil }
+                
+                return PhotoCluster(
+                    id: entity.id,
+                    assets: assets,
+                    createdAt: entity.createdAt,
+                    averageSimilarity: entity.averageSimilarity
+                )
+            }
+        }
+    }
+    
+    @MainActor
+    public func saveClusters(_ clusters: [PhotoCluster]) async throws {
+        // Capture cluster data before background task to avoid Main Actor issues
+        let clusterData = clusters.map { cluster in
+            (
+                id: cluster.id,
+                createdAt: cluster.createdAt,
+                averageSimilarity: cluster.averageSimilarity,
+                assetData: cluster.assets.map { asset in
+                    (
+                        localIdentifier: asset.localIdentifier,
+                        creationDate: asset.creationDate,
+                        modificationDate: asset.modificationDate,
+                        pixelWidth: asset.pixelWidth,
+                        pixelHeight: asset.pixelHeight,
+                        isFavorite: asset.isFavorite
+                    )
+                }
+            )
+        }
+        
+        try await persistence.performBackgroundTask { context in
+            // Delete existing clusters
+            let deleteRequest = NSBatchDeleteRequest(
+                fetchRequest: ClusterEntity.fetchRequest()
+            )
+            try context.execute(deleteRequest)
+            
+            // Save new clusters
+            for data in clusterData {
+                let entity = ClusterEntity(context: context)
+                entity.id = data.id
+                entity.createdAt = data.createdAt
+                entity.averageSimilarity = data.averageSimilarity
+                
+                for assetData in data.assetData {
+                    let photoEntity = PhotoEntity(context: context)
+                    photoEntity.localIdentifier = assetData.localIdentifier
+                    photoEntity.creationDate = assetData.creationDate
+                    photoEntity.modificationDate = assetData.modificationDate
+                    photoEntity.pixelWidth = Int32(assetData.pixelWidth)
+                    photoEntity.pixelHeight = Int32(assetData.pixelHeight)
+                    photoEntity.isFavorite = assetData.isFavorite
+                    
+                    entity.addToPhotos(photoEntity)
+                }
+            }
+            
+            try context.save()
+        }
+    }
+    
+    public func deleteAllClusters() async throws {
+        try await persistence.performBackgroundTask { context in
+            let deleteRequest = NSBatchDeleteRequest(
+                fetchRequest: ClusterEntity.fetchRequest()
+            )
+            try context.execute(deleteRequest)
+            try context.save()
+        }
+    }
+    
+    public func getLastScanDate() async -> Date? {
+        let context = persistence.viewContext
+        
+        return await context.perform {
+            let request = ScanMetadataEntity.fetchRequest()
+            request.fetchLimit = 1
+            
+            guard let metadata = try? context.fetch(request).first else {
+                return nil
+            }
+            
+            return metadata.lastScanDate
+        }
+    }
+    
+    public func updateLastScanDate(_ date: Date) async throws {
+        try await persistence.performBackgroundTask { context in
+            let request = ScanMetadataEntity.fetchRequest()
+            let metadata: ScanMetadataEntity
+            
+            if let existing = try context.fetch(request).first {
+                metadata = existing
+            } else {
+                metadata = ScanMetadataEntity(context: context)
+            }
+            
+            metadata.lastScanDate = date
+            try context.save()
+        }
+    }
+    
+    public func hasGalleryChanged() async -> Bool {
+        guard let lastScanDate = await getLastScanDate() else {
+            return true // No previous scan
+        }
+        
+        let context = persistence.viewContext
+        
+        return await context.perform {
+            // Get count of photos modified after last scan
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(
+                format: "modificationDate > %@",
+                lastScanDate as NSDate
+            )
+            
+            let modifiedPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+            return modifiedPhotos.count > 0
+        }
+    }
+}
