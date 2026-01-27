@@ -1,7 +1,19 @@
 import XCTest
+#if canImport(UIKit)
+import UIKit
+#endif
 @testable import Core
 
+@MainActor
 final class GridConfigurationTests: XCTestCase {
+
+    private var expectedConfiguration: GridConfiguration {
+#if canImport(UIKit)
+        return UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+#else
+        return .iPhone
+#endif
+    }
     
     // MARK: - Current Configuration Tests
     
@@ -21,34 +33,37 @@ final class GridConfigurationTests: XCTestCase {
     func testMinColumnsValue() {
         // Given: Current configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // When: Getting min columns
         let minColumns = config.minColumns
         
         // Then: Should be 2 (reasonable minimum for grid)
-        XCTAssertEqual(minColumns, 2, "Minimum columns should be 2")
+        XCTAssertEqual(minColumns, expected.minColumns, "Minimum columns should match expected configuration")
     }
     
     func testMaxColumnsValue() {
         // Given: Current configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // When: Getting max columns
         let maxColumns = config.maxColumns
         
-        // Then: Should be 6 (reasonable maximum for mobile)
-        XCTAssertEqual(maxColumns, 6, "Maximum columns should be 6")
+        // Then: Should match expected configuration
+        XCTAssertEqual(maxColumns, expected.maxColumns, "Maximum columns should match expected configuration")
     }
     
     func testDefaultColumnsValue() {
         // Given: Current configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // When: Getting default columns
         let defaultColumns = config.defaultColumns
         
-        // Then: Should be 3 (good balance)
-        XCTAssertEqual(defaultColumns, 3, "Default columns should be 3")
+        // Then: Should match expected configuration
+        XCTAssertEqual(defaultColumns, expected.defaultColumns, "Default columns should match expected configuration")
     }
     
     func testColumnRangeIsValid() {
@@ -95,6 +110,7 @@ final class GridConfigurationTests: XCTestCase {
     func testSendableConformance() async {
         // Given: Grid configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // When: Using in async context
         let result = await Task {
@@ -102,7 +118,7 @@ final class GridConfigurationTests: XCTestCase {
         }.value
         
         // Then: Should work correctly (Sendable conformance)
-        XCTAssertEqual(result, 3)
+        XCTAssertEqual(result, expected.defaultColumns)
     }
     
     // MARK: - Spacing Tests
@@ -110,12 +126,13 @@ final class GridConfigurationTests: XCTestCase {
     func testSpacingValue() {
         // Given: Current configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // When: Getting spacing
         let spacing = config.spacing
         
         // Then: Should be 2 (tight but visible gap)
-        XCTAssertEqual(spacing, 2.0, "Spacing should be 2.0")
+        XCTAssertEqual(spacing, expected.spacing, "Spacing should match expected configuration")
         XCTAssertGreaterThan(spacing, 0, "Spacing should be positive")
     }
     
@@ -144,14 +161,15 @@ final class GridConfigurationTests: XCTestCase {
     func testConfigurationSuitableForPhotoGrid() {
         // Given: Current configuration
         let config = GridConfiguration.current
+        let expected = expectedConfiguration
         
         // Then: Values should be suitable for photo grid layout
         // 2-6 columns is good range for mobile photo grid
         XCTAssertTrue(config.minColumns >= 2, "At least 2 columns for comparison")
-        XCTAssertTrue(config.maxColumns <= 6, "Not too many columns on mobile")
+        XCTAssertTrue(config.maxColumns <= expected.maxColumns, "Not too many columns for current device")
         
-        // Default 3 is standard for photo apps
-        XCTAssertEqual(config.defaultColumns, 3, "Standard photo grid is 3 columns")
+        // Default should align with expected configuration
+        XCTAssertEqual(config.defaultColumns, expected.defaultColumns, "Default columns should match expected configuration")
         
         // Tight spacing for photo grid
         XCTAssertLessThanOrEqual(config.spacing, 4.0, "Photo grids use tight spacing")

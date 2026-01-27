@@ -11,7 +11,7 @@ public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
     @State private var reviewTrigger = 0
     
-    private let gridConfig = GridConfiguration.current
+    private var gridConfig: GridConfiguration { GridConfiguration.current }
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     
     public init(

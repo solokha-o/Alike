@@ -12,9 +12,9 @@ public enum SensitivityLevel: String, CaseIterable, Sendable {
     /// Vision distance threshold (lower = stricter matching)
     public var threshold: Float {
         switch self {
-        case .low: return 20.0
-        case .medium: return 15.0
-        case .high: return 10.0
+        case .low: return 0.8
+        case .medium: return 0.9
+        case .high: return 0.95
         }
     }
     
@@ -32,19 +32,23 @@ public struct GridConfiguration: Sendable {
     public let minColumns: Int
     public let maxColumns: Int
     public let defaultColumns: Int
+    public let spacing: Double
     
     public static let iPhone = GridConfiguration(
         minColumns: 2,
         maxColumns: 4,
-        defaultColumns: 3
+        defaultColumns: 3,
+        spacing: 2.0
     )
     
     public static let iPad = GridConfiguration(
         minColumns: 4,
         maxColumns: 8,
-        defaultColumns: 6
+        defaultColumns: 6,
+        spacing: 2.0
     )
     
+    @MainActor
     public static var current: GridConfiguration {
         #if targetEnvironment(macCatalyst) || os(macOS)
         return .iPad
