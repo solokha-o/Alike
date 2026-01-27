@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ClusterEntity" representedClassName="ClusterEntity" syncable="YES">
+        <attribute name="averageSimilarity" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PhotoEntity" inverseName="cluster" inverseEntity="PhotoEntity"/>
+    </entity>
+    <entity name="PhotoEntity" representedClassName="PhotoEntity" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="featurePrintData" optional="YES" attributeType="Binary"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="localIdentifier" attributeType="String"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="pixelHeight" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pixelWidth" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="cluster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ClusterEntity" inverseName="photos" inverseEntity="ClusterEntity"/>
+    </entity>
+    <entity name="ScanMetadataEntity" representedClassName="ScanMetadataEntity" syncable="YES">
+        <attribute name="lastScanDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="photoLibraryChangeToken" optional="YES" attributeType="String"/>
+        <attribute name="totalPhotosScanned" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+</model>
