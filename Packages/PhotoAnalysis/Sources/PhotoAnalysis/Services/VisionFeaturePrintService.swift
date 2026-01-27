@@ -26,7 +26,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Generate feature print from CGImage
-    private func generateFeaturePrint(from cgImage: CGImage) async throws -> VNFeaturePrintObservation? {
+    func generateFeaturePrint(from cgImage: CGImage) async throws -> VNFeaturePrintObservation? {
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let request = VNGenerateImageFeaturePrintRequest()
         

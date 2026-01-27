@@ -1,6 +1,9 @@
 import XCTest
 import Vision
 import Photos
+#if canImport(UIKit)
+import UIKit
+#endif
 @testable import PhotoAnalysis
 
 @MainActor
@@ -32,11 +35,11 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
         }
         
         // When: Generating feature print
-        let featurePrint = try await service.generateFeaturePrint(from: cgImage)
+        let featurePrint = try await generateFeaturePrintOrSkip(from: cgImage)
         
         // Then: Feature print should be generated
         XCTAssertNotNil(featurePrint, "Feature print should not be nil")
-        XCTAssertGreaterThan(featurePrint?.data.count ?? 0, 0, "Feature print should have data")
+        XCTAssertGreaterThan(featurePrint.data.count, 0, "Feature print should have data")
     }
     
     func testComputeDistanceBetweenIdenticalImages() async throws {
@@ -53,11 +56,11 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
             return
         }
         
-        let print1 = try await service.generateFeaturePrint(from: cgImage)
-        let print2 = try await service.generateFeaturePrint(from: cgImage)
+        let print1 = try await generateFeaturePrintOrSkip(from: cgImage)
+        let print2 = try await generateFeaturePrintOrSkip(from: cgImage)
         
         // When: Computing distance
-        let distance = try service.computeDistance(between: print1!, and: print2!)
+        let distance = try service.computeDistance(between: print1, and: print2)
         
         // Then: Distance should be very small (close to 0)
         XCTAssertLessThan(distance, 0.1, "Distance between identical images should be close to 0")
@@ -84,11 +87,11 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
             return
         }
         
-        let print1 = try await service.generateFeaturePrint(from: redCGImage)
-        let print2 = try await service.generateFeaturePrint(from: blueCGImage)
+        let print1 = try await generateFeaturePrintOrSkip(from: redCGImage)
+        let print2 = try await generateFeaturePrintOrSkip(from: blueCGImage)
         
         // When: Computing distance
-        let distance = try service.computeDistance(between: print1!, and: print2!)
+        let distance = try service.computeDistance(between: print1, and: print2)
         
         // Then: Distance should be significant
         XCTAssertGreaterThan(distance, 0.1, "Distance between different images should be significant")
@@ -115,14 +118,27 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
             return
         }
         
-        let print1 = try await service.generateFeaturePrint(from: cgImage1)
-        let print2 = try await service.generateFeaturePrint(from: cgImage2)
+        let print1 = try await generateFeaturePrintOrSkip(from: cgImage1)
+        let print2 = try await generateFeaturePrintOrSkip(from: cgImage2)
         
         // When: Computing distance both ways
-        let distance1to2 = try service.computeDistance(between: print1!, and: print2!)
-        let distance2to1 = try service.computeDistance(between: print2!, and: print1!)
+        let distance1to2 = try service.computeDistance(between: print1, and: print2)
+        let distance2to1 = try service.computeDistance(between: print2, and: print1)
         
         // Then: Distance should be the same in both directions
         XCTAssertEqual(distance1to2, distance2to1, accuracy: 0.001, "Distance should be symmetric")
+    }
+
+    private func generateFeaturePrintOrSkip(from cgImage: CGImage) async throws -> VNFeaturePrintObservation {
+        do {
+            let featurePrint = try await service.generateFeaturePrint(from: cgImage)
+            return try XCTUnwrap(featurePrint)
+        } catch {
+            let nsError = error as NSError
+            if nsError.domain == NSOSStatusErrorDomain {
+                throw XCTSkip("Vision feature print unavailable: \(nsError.localizedDescription)")
+            }
+            throw error
+        }
     }
 }

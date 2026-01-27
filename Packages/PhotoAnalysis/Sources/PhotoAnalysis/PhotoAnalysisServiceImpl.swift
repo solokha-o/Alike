@@ -21,7 +21,9 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [PhotoCluster] {
         // Fetch all photo assets
-        let assets = await fetchAllPhotoAssets()
+        let assets = await MainActor.run {
+            fetchAllPhotoAssets()
+        }
         
         guard !assets.isEmpty else {
             return []
@@ -54,7 +56,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             return 0.0
         }
         
-        let distance = try await visionService.computeDistance(
+        let distance = try visionService.computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )
