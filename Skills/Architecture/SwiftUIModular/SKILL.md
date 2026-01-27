@@ -157,3 +157,23 @@ let viewModel = PlacesViewModel(repository: repo)
 
 - Add lightweight logging in data/repository layers for request/response failures.
 - Use analytics/telemetry behind a protocol so it can be mocked in tests.
+
+## Code style and documentation
+
+### Style guide
+
+Follow Google Swift Style Guide conventions for formatting, naming, and code organization. See `references/swift-code-style.md` for:
+- File organization and imports
+- Formatting rules (100 char limit, braces, whitespace)
+- Line wrapping strategies
+- Naming conventions (types, properties, functions)
+- Programming practices (optionals, guards, error handling)
+- Code organization with `// MARK:`
+
+### Documentation
+
+Follow structured documentation standards for public APIs and inline comments. See `references/code-documentation.md` for:
+- When and how to use `///` doc comments with markup
+- Inline comment (`//`) best practices
+- Special markers (`TODO`, `FIXME`, `WARNING`)
+- Complete examples for classes, protocols, and functions
