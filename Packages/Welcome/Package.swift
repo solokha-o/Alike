@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "Welcome",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v17),
+        .macOS(.v14)
     ],
     products: [
         .library(
@@ -27,7 +28,7 @@ let package = Package(
         ),
         .testTarget(
             name: "WelcomeTests",
-            dependencies: ["Welcome"]
+            dependencies: ["Welcome", "Core"]
         ),
     ]
 )

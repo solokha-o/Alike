@@ -1,7 +1,9 @@
 import Vision
 import CoreImage
 import Photos
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// Service that processes photo feature prints using Vision framework
 public struct VisionFeaturePrintService: Sendable {

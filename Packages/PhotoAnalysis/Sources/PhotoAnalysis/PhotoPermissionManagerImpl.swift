@@ -1,5 +1,7 @@
 import Photos
+#if canImport(UIKit)
 import UIKit
+#endif
 import Core
 
 /// Permission manager for photo library access
@@ -38,6 +40,7 @@ public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
     }
     
     public func openSettings() {
+        #if os(iOS)
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
@@ -45,5 +48,6 @@ public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
         if UIApplication.shared.canOpenURL(settingsURL) {
             UIApplication.shared.open(settingsURL)
         }
+        #endif
     }
 }

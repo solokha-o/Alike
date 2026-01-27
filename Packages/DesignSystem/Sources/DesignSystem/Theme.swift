@@ -9,10 +9,18 @@ extension Color {
     public static let secondaryAccent = Color(red: 0.58, green: 0.4, blue: 0.95) // Purple
     
     /// Card background
+    #if os(iOS)
     public static let cardBackground = Color(.systemBackground)
+    #else
+    public static let cardBackground = Color(white: 1.0)
+    #endif
     
     /// Secondary background
+    #if os(iOS)
     public static let secondaryBackground = Color(.secondarySystemBackground)
+    #else
+    public static let secondaryBackground = Color(white: 0.95)
+    #endif
 }
 
 // MARK: - Typography

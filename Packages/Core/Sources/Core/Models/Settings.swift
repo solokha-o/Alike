@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// Sensitivity level for photo similarity detection
 public enum SensitivityLevel: String, CaseIterable, Sendable {
@@ -44,10 +46,12 @@ public struct GridConfiguration: Sendable {
     )
     
     public static var current: GridConfiguration {
-        #if targetEnvironment(macCatalyst)
+        #if targetEnvironment(macCatalyst) || os(macOS)
         return .iPad
-        #else
+        #elseif canImport(UIKit)
         return UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+        #else
+        return .iPhone
         #endif
     }
 }

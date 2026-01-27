@@ -1,4 +1,5 @@
 import Photos
+#if canImport(UIKit)
 import UIKit
 
 extension PHAsset {
@@ -83,3 +84,5 @@ public struct AssetMetadata: Sendable {
         return formatter.string(from: date)
     }
 }
+
+#endif

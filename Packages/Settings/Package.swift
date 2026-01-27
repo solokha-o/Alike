@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "Settings",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v17),
+        .macOS(.v14)
     ],
     products: [
         .library(

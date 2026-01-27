@@ -1,0 +1,13 @@
+{
+  "configurations" : [
+    {
+      "id" : "Debug",
+      "name" : "Debug",
+      "options" : { }
+    }
+  ],
+  "defaultOptions" : { },
+  "testTargets" : [
+  ],
+  "version" : 1
+}
