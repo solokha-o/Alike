@@ -10,10 +10,15 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
+            Image(systemName: "photo.stack")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Alike - Photo Similarity Finder")
+                .font(.headline)
+            Text("📦 Please add Swift Packages in Xcode")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding()
         }
         .padding()
     }

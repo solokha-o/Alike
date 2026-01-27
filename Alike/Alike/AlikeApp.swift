@@ -6,6 +6,22 @@
 //
 
 import SwiftUI
+
+// MARK: - Temporary simple version for initial build
+// TODO: Uncomment when Swift Packages are added in Xcode
+
+@main
+struct AlikeApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+
+/* Full version with packages - uncomment after adding packages in Xcode:
+
+import SwiftUI
 import Launch
 import Welcome
 import Scanner
@@ -71,10 +87,10 @@ struct AlikeApp: App {
             }
             Button("Rescan Now") {
                 needsRescan = false
-                // Switch to Scanner tab and trigger rescan
             }
         } message: {
             Text("Changing sensitivity requires a new scan to take effect")
         }
     }
 }
+*/
