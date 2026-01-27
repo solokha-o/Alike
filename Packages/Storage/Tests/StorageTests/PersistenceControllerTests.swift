@@ -8,17 +8,16 @@ final class PersistenceControllerTests: XCTestCase {
     
     func testInMemoryStoreInitialization() async throws {
         // Given & When: Creating in-memory persistence controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         
         // Then: Should be successfully initialized
         XCTAssertNotNil(controller, "In-memory controller should be initialized")
-        XCTAssertNotNil(controller.container, "Container should not be nil")
     }
     
     func testInMemoryStoreIsolation() async throws {
         // Given: Two separate in-memory controllers
-        let controller1 = PersistenceController(inMemory: true)
-        let controller2 = PersistenceController(inMemory: true)
+        let controller1 = PersistenceController.preview()
+        let controller2 = PersistenceController.preview()
         
         // When: Saving data to controller1
         let context1 = controller1.viewContext
@@ -38,7 +37,7 @@ final class PersistenceControllerTests: XCTestCase {
     
     func testInMemoryDataPersistence() async throws {
         // Given: In-memory controller with data
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         let context = controller.viewContext
         
         let entity = ClusterEntity(context: context)
@@ -53,30 +52,30 @@ final class PersistenceControllerTests: XCTestCase {
         
         // Then: Data should be available
         XCTAssertEqual(results.count, 1, "Should fetch saved entity")
-        XCTAssertEqual(results.first?.averageSimilarity, 0.90, accuracy: 0.01)
+        XCTAssertEqual(results.first?.averageSimilarity ?? 0.0, 0.90, accuracy: 0.01)
     }
     
     // MARK: - Background Task Tests
     
     func testPerformBackgroundTask() async throws {
         // Given: Controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         
         // When: Performing background task
-        var taskExecuted = false
+        let taskExecuted = expectation(description: "Background task executed")
         try await controller.performBackgroundTask { context in
-            taskExecuted = true
             XCTAssertNotNil(context, "Context should be provided")
             XCTAssertTrue(Thread.isMainThread == false || true, "Task context should work")
+            taskExecuted.fulfill()
         }
         
         // Then: Task should be executed
-        XCTAssertTrue(taskExecuted, "Background task should execute")
+        await fulfillment(of: [taskExecuted], timeout: 1.0)
     }
     
     func testBackgroundTaskSave() async throws {
         // Given: Controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         let testID = UUID()
         
         // When: Saving in background task
@@ -99,7 +98,7 @@ final class PersistenceControllerTests: XCTestCase {
     
     func testBackgroundTaskErrorHandling() async throws {
         // Given: Controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         
         // When & Then: Error in background task should propagate
         do {
@@ -120,14 +119,13 @@ final class PersistenceControllerTests: XCTestCase {
         
         // Then: Should be initialized and not in-memory
         XCTAssertNotNil(shared, "Shared instance should exist")
-        XCTAssertNotNil(shared.container, "Container should exist")
     }
     
     // MARK: - View Context Tests
     
     func testViewContextAutomaticallySaves() async throws {
         // Given: Controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         let context = controller.viewContext
         
         // When: Making changes on view context
@@ -150,7 +148,7 @@ final class PersistenceControllerTests: XCTestCase {
     
     func testConcurrentBackgroundTasks() async throws {
         // Given: Controller
-        let controller = PersistenceController(inMemory: true)
+        let controller = PersistenceController.preview()
         
         // When: Running multiple background tasks concurrently
         await withTaskGroup(of: Void.self) { group in

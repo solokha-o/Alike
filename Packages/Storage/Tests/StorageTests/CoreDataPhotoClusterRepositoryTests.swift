@@ -1,5 +1,6 @@
 import XCTest
 import CoreData
+import Photos
 import Core
 @testable import Storage
 
@@ -10,7 +11,7 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     
     override func setUp() async throws {
         // Create in-memory store for testing
-        inMemoryController = PersistenceController(inMemory: true)
+        inMemoryController = PersistenceController.preview()
         repository = CoreDataPhotoClusterRepository(persistence: inMemoryController)
     }
     
@@ -23,8 +24,8 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     
     func testSaveAndLoadClusters() async throws {
         // Given: Sample clusters
-        let cluster1 = createMockPhotoCluster(photoCount: 3)
-        let cluster2 = createMockPhotoCluster(photoCount: 5)
+        let cluster1 = try createMockPhotoCluster(photoCount: 3)
+        let cluster2 = try createMockPhotoCluster(photoCount: 5)
         let clusters = [cluster1, cluster2]
         
         // When: Saving clusters
@@ -40,11 +41,11 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     
     func testSaveOverwritesExistingClusters() async throws {
         // Given: Initial clusters
-        let initialCluster = createMockPhotoCluster(photoCount: 2)
+        let initialCluster = try createMockPhotoCluster(photoCount: 2)
         try await repository.saveClusters([initialCluster])
         
         // When: Saving new clusters (should overwrite)
-        let newCluster = createMockPhotoCluster(photoCount: 4)
+        let newCluster = try createMockPhotoCluster(photoCount: 4)
         try await repository.saveClusters([newCluster])
         
         // Then: Should only have new cluster
@@ -68,7 +69,7 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     
     func testDeleteAllClusters() async throws {
         // Given: Saved clusters
-        let cluster = createMockPhotoCluster(photoCount: 3)
+        let cluster = try createMockPhotoCluster(photoCount: 3)
         try await repository.saveClusters([cluster])
         
         // Verify clusters exist
@@ -164,7 +165,7 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     
     func testClusterAverageSimilarity() async throws {
         // Given: Cluster with specific average similarity
-        let cluster = createMockPhotoCluster(
+        let cluster = try createMockPhotoCluster(
             photoCount: 3,
             averageSimilarity: 0.92
         )
@@ -175,9 +176,9 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         
         // Then: Average similarity should be preserved
         XCTAssertEqual(
-            loadedClusters.first?.averageSimilarity,
-            0.92,
-            accuracy: 0.01,
+            loadedClusters.first?.averageSimilarity ?? 0,
+            0.92 as Float,
+            accuracy: 0.01 as Float,
             "Average similarity should be preserved"
         )
     }
@@ -185,7 +186,7 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
     func testClusterCreatedDate() async throws {
         // Given: Cluster with specific creation date
         let createdDate = Date()
-        let cluster = createMockPhotoCluster(
+        let cluster = try createMockPhotoCluster(
             photoCount: 2,
             createdAt: createdDate
         )
@@ -209,7 +210,7 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         photoCount: Int,
         averageSimilarity: Float = 0.95,
         createdAt: Date = Date()
-    ) -> PhotoCluster {
+    ) throws -> PhotoCluster {
         // Fetch real PHAssets for testing
         let fetchOptions = PHFetchOptions()
         fetchOptions.fetchLimit = photoCount
@@ -219,15 +220,8 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         fetchResult.enumerateObjects { asset, _, _ in
             assets.append(asset)
         }
-        
-        // If not enough photos, pad with duplicates
-        while assets.count < photoCount {
-            if let first = assets.first {
-                assets.append(first)
-            } else {
-                // No photos available - create minimal cluster
-                break
-            }
+        guard assets.count == photoCount else {
+            throw XCTSkip("Test requires at least \(photoCount) photos in the library; found \(assets.count).")
         }
         
         return PhotoCluster(
