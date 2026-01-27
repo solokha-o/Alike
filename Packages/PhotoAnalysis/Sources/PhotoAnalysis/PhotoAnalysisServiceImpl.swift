@@ -26,7 +26,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         }
         
         guard !assets.isEmpty else {
-            return []
+            throw PhotoAnalysisError.noPhotosFound
         }
         
         // Generate feature prints (0-80% of progress)
