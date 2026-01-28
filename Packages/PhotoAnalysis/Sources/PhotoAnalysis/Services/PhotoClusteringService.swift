@@ -5,8 +5,23 @@ import CoreLocation
 
 /// Service that performs clustering of photos based on similarity
 public struct PhotoClusteringService: Sendable {
+    struct FeaturePrint: @unchecked Sendable {
+        let id: UUID
+        let observation: VNFeaturePrintObservation?
+
+        init(observation: VNFeaturePrintObservation) {
+            self.id = UUID()
+            self.observation = observation
+        }
+
+        init(id: UUID = UUID()) {
+            self.id = id
+            self.observation = nil
+        }
+    }
+
     struct Candidate {
-        let featurePrint: VNFeaturePrintObservation
+        let featurePrint: FeaturePrint
         let creationDate: Date?
         let location: CLLocation?
     }
@@ -16,23 +31,27 @@ public struct PhotoClusteringService: Sendable {
         let averageSimilarity: Float
     }
     
-    private let distanceProvider: @Sendable (VNFeaturePrintObservation, VNFeaturePrintObservation) throws -> Float
+    private let distanceProvider: @Sendable (FeaturePrint, FeaturePrint) throws -> Float
     private let maxTimeInterval: TimeInterval
     private let maxLocationDistance: CLLocationDistance
     private let isPreFilterEnabled: Bool
     
     public init(enablePreFilter: Bool = true) {
         let visionService = VisionFeaturePrintService()
-        self.distanceProvider = { observation1, observation2 in
-            try visionService.computeDistance(between: observation1, and: observation2)
+        self.distanceProvider = { featurePrint1, featurePrint2 in
+            guard let observation1 = featurePrint1.observation,
+                  let observation2 = featurePrint2.observation else {
+                throw PhotoAnalysisError.visionProcessingFailed
+            }
+            return try visionService.computeDistance(between: observation1, and: observation2)
         }
         self.maxTimeInterval = 24 * 60 * 60
         self.maxLocationDistance = 1_000
         self.isPreFilterEnabled = enablePreFilter
     }
-    
+
     init(
-        distanceProvider: @escaping @Sendable (VNFeaturePrintObservation, VNFeaturePrintObservation) throws -> Float,
+        distanceProvider: @escaping @Sendable (FeaturePrint, FeaturePrint) throws -> Float,
         maxTimeInterval: TimeInterval = 24 * 60 * 60,
         maxLocationDistance: CLLocationDistance = 1_000,
         enablePreFilter: Bool = true
@@ -53,7 +72,7 @@ public struct PhotoClusteringService: Sendable {
             return (
                 item.asset,
                 Candidate(
-                    featurePrint: featurePrint,
+                    featurePrint: FeaturePrint(observation: featurePrint),
                     creationDate: item.asset.creationDate,
                     location: item.asset.location
                 )

@@ -1,18 +1,31 @@
 import Photos
-import Vision
 import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
 public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
-    private let visionService: VisionFeaturePrintService
-    private let clusteringService: PhotoClusteringService
+    private let visionService: any VisionFeaturePrintServicing
+    private let clusteringService: any PhotoClusteringServicing
+    private let assetsProvider: @MainActor @Sendable () -> [PHAsset]
     
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
         clusteringService: PhotoClusteringService = PhotoClusteringService()
     ) {
+        self.init(
+            visionService: visionService,
+            clusteringService: clusteringService,
+            assetsProvider: PhotoAnalysisServiceImpl.fetchAllPhotoAssets
+        )
+    }
+
+    init(
+        visionService: any VisionFeaturePrintServicing,
+        clusteringService: any PhotoClusteringServicing,
+        assetsProvider: @escaping @MainActor @Sendable () -> [PHAsset]
+    ) {
         self.visionService = visionService
         self.clusteringService = clusteringService
+        self.assetsProvider = assetsProvider
     }
     
     /// Analyze entire photo library and return clusters
@@ -22,7 +35,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     ) async throws -> [PhotoCluster] {
         // Fetch all photo assets
         let assets = await MainActor.run {
-            fetchAllPhotoAssets()
+            assetsProvider()
         }
         
         guard !assets.isEmpty else {
@@ -68,7 +81,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     // MARK: - Private Helpers
     
     @MainActor
-    private func fetchAllPhotoAssets() -> [PHAsset] {
+    private static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)

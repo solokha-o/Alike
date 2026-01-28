@@ -5,6 +5,22 @@ import Photos
 
 /// CoreData implementation of PhotoClusterRepository
 public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
+    struct ClusterData: Sendable {
+        let id: UUID
+        let createdAt: Date
+        let averageSimilarity: Float
+        let assets: [AssetData]
+    }
+
+    struct AssetData: Sendable {
+        let localIdentifier: String
+        let creationDate: Date?
+        let modificationDate: Date?
+        let pixelWidth: Int
+        let pixelHeight: Int
+        let isFavorite: Bool
+    }
+
     private let persistence: PersistenceController
     
     public init(persistence: PersistenceController = .shared) {
@@ -44,63 +60,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     
     @MainActor
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {
-        // Capture cluster data before background task to avoid Main Actor issues
-        let viewContext = persistence.viewContext
-        let clusterData = clusters.map { cluster in
-            (
-                id: cluster.id,
-                createdAt: cluster.createdAt,
-                averageSimilarity: cluster.averageSimilarity,
-                assetData: cluster.assets.map { asset in
-                    (
-                        localIdentifier: asset.localIdentifier,
-                        creationDate: asset.creationDate,
-                        modificationDate: asset.modificationDate,
-                        pixelWidth: asset.pixelWidth,
-                        pixelHeight: asset.pixelHeight,
-                        isFavorite: asset.isFavorite
-                    )
-                }
-            )
-        }
-        
-        try await persistence.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            // Delete existing clusters
-            let deleteRequest = NSBatchDeleteRequest(
-                fetchRequest: ClusterEntity.fetchRequest()
-            )
-            deleteRequest.resultType = .resultTypeObjectIDs
-            let deleteResult = try context.execute(deleteRequest) as? NSBatchDeleteResult
-            if let objectIDs = deleteResult?.result as? [NSManagedObjectID], !objectIDs.isEmpty {
-                NSManagedObjectContext.mergeChanges(
-                    fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs],
-                    into: [viewContext]
-                )
-            }
-            
-            // Save new clusters
-            for data in clusterData {
-                let entity = ClusterEntity(context: context)
-                entity.id = data.id
-                entity.createdAt = data.createdAt
-                entity.averageSimilarity = data.averageSimilarity
-                
-                for assetData in data.assetData {
-                    let photoEntity = PhotoEntity(context: context)
-                    photoEntity.localIdentifier = assetData.localIdentifier
-                    photoEntity.creationDate = assetData.creationDate
-                    photoEntity.modificationDate = assetData.modificationDate
-                    photoEntity.pixelWidth = Int32(assetData.pixelWidth)
-                    photoEntity.pixelHeight = Int32(assetData.pixelHeight)
-                    photoEntity.isFavorite = assetData.isFavorite
-                    
-                    entity.addToPhotos(photoEntity)
-                }
-            }
-            
-            try context.save()
-        }
+        try await saveClusterData(makeClusterData(from: clusters))
     }
     
     public func deleteAllClusters() async throws {
@@ -161,6 +121,96 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             
             let modifiedPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
             return modifiedPhotos.count > 0
+        }
+    }
+
+    @MainActor
+    func saveClusterData(_ clusterData: [ClusterData]) async throws {
+        let viewContext = persistence.viewContext
+
+        try await persistence.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            let deleteRequest = NSBatchDeleteRequest(
+                fetchRequest: ClusterEntity.fetchRequest()
+            )
+            deleteRequest.resultType = .resultTypeObjectIDs
+            let deleteResult = try context.execute(deleteRequest) as? NSBatchDeleteResult
+            if let objectIDs = deleteResult?.result as? [NSManagedObjectID], !objectIDs.isEmpty {
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs],
+                    into: [viewContext]
+                )
+            }
+
+            for data in clusterData {
+                let entity = ClusterEntity(context: context)
+                entity.id = data.id
+                entity.createdAt = data.createdAt
+                entity.averageSimilarity = data.averageSimilarity
+
+                for assetData in data.assets {
+                    let photoEntity = PhotoEntity(context: context)
+                    photoEntity.localIdentifier = assetData.localIdentifier
+                    photoEntity.creationDate = assetData.creationDate
+                    photoEntity.modificationDate = assetData.modificationDate
+                    photoEntity.pixelWidth = Int32(assetData.pixelWidth)
+                    photoEntity.pixelHeight = Int32(assetData.pixelHeight)
+                    photoEntity.isFavorite = assetData.isFavorite
+
+                    entity.addToPhotos(photoEntity)
+                }
+            }
+
+            try context.save()
+        }
+    }
+
+    func loadClusterData() async throws -> [ClusterData] {
+        let context = persistence.viewContext
+
+        return try await context.perform {
+            let request = ClusterEntity.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
+
+            let entities = try context.fetch(request)
+            return entities.map { entity in
+                ClusterData(
+                    id: entity.id,
+                    createdAt: entity.createdAt,
+                    averageSimilarity: entity.averageSimilarity,
+                    assets: entity.photosArray.map { photo in
+                        AssetData(
+                            localIdentifier: photo.localIdentifier,
+                            creationDate: photo.creationDate,
+                            modificationDate: photo.modificationDate,
+                            pixelWidth: Int(photo.pixelWidth),
+                            pixelHeight: Int(photo.pixelHeight),
+                            isFavorite: photo.isFavorite
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    @MainActor
+    private func makeClusterData(from clusters: [PhotoCluster]) -> [ClusterData] {
+        clusters.map { cluster in
+            ClusterData(
+                id: cluster.id,
+                createdAt: cluster.createdAt,
+                averageSimilarity: cluster.averageSimilarity,
+                assets: cluster.assets.map { asset in
+                    AssetData(
+                        localIdentifier: asset.localIdentifier,
+                        creationDate: asset.creationDate,
+                        modificationDate: asset.modificationDate,
+                        pixelWidth: asset.pixelWidth,
+                        pixelHeight: asset.pixelHeight,
+                        isFavorite: asset.isFavorite
+                    )
+                }
+            )
         }
     }
 }

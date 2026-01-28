@@ -18,6 +18,10 @@ public final class SettingsViewModel {
     }
     
     public func handleRateTapped(requestReview: RequestReviewAction) {
+        handleRateTapped(requestReview: { requestReview() })
+    }
+
+    func handleRateTapped(requestReview: () -> Void) {
         reviewTrigger += 1
         requestReview()
     }

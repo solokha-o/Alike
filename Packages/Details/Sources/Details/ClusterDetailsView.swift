@@ -235,12 +235,7 @@ private struct ZoomablePhotoView: View {
     }
 
     private func clampedOffset(_ proposed: CGSize, in size: CGSize) -> CGSize {
-        let maxX = (size.width * (scale - 1)) / 2
-        let maxY = (size.height * (scale - 1)) / 2
-        return CGSize(
-            width: min(max(proposed.width, -maxX), maxX),
-            height: min(max(proposed.height, -maxY), maxY)
-        )
+        ZoomingHelpers.clampedOffset(proposed, in: size, scale: scale)
     }
 }
 
