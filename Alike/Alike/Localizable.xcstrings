@@ -697,6 +697,40 @@
         }
       }
     },
+    "Open Photo Details": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Photo Details"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити деталі фото"
+          }
+        }
+      }
+    },
+    "Long-press a photo and choose 'Open Original' to view it full-screen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long-press a photo and choose 'Open Original' to view it full-screen"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Натисніть і утримуйте фото та оберіть 'Відкрити оригінал', щоб переглянути його на весь екран"
+          }
+        }
+      }
+    },
     "Details": {
       "extractionState": "manual",
       "localizations": {

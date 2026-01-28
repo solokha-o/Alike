@@ -193,13 +193,20 @@ struct UserGuideView: View {
                 
                 guideStep(
                     number: 4,
+                    icon: "photo",
+                    title: appLocalized("Open Photo Details"),
+                    description: appLocalized("Long-press a photo and choose 'Open Original' to view it full-screen")
+                )
+                
+                guideStep(
+                    number: 5,
                     icon: "slider.horizontal.3",
                     title: appLocalized("Adjust Settings"),
                     description: appLocalized("Fine-tune sensitivity and grid columns for your preference")
                 )
                 
                 guideStep(
-                    number: 5,
+                    number: 6,
                     icon: "arrow.clockwise",
                     title: appLocalized("Rescan Anytime"),
                     description: appLocalized("Tap the refresh button to rescan after adding new photos")
