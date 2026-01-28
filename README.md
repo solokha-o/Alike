@@ -107,7 +107,7 @@ Languages via `Localizable.xcstrings`:
 - Email: oleksandr.solokha@gmail.com
 - App Store: (coming soon)
 
-## 📄 Ліцензія
+## 📄 License
 
 MIT
 
