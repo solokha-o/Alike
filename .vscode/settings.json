@@ -1,8 +1,0 @@
-{
-    "chat.tools.terminal.autoApprove": {
-        "/^cd /Users/oleksandrs/Alike/Packages && swift package init --type library --name Core$/": {
-            "approve": true,
-            "matchCommandLine": true
-        }
-    }
-}
