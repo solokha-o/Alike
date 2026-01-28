@@ -6,6 +6,7 @@ public struct LaunchView: View {
     @Binding var isCompleted: Bool
     @State private var scale: CGFloat = 0.5
     @State private var opacity: Double = 0.0
+    @State private var isSymbolAnimating = false
     
     public init(isCompleted: Binding<Bool>) {
         self._isCompleted = isCompleted
@@ -17,8 +18,11 @@ public struct LaunchView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: Spacing.large) {
-                Text("📸")
-                    .font(.system(size: 100))
+                Image(systemName: "camera.viewfinder")
+                    .font(.system(size: 96, weight: .bold))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, .yellow, .orange)
+                    .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
                     .scaleEffect(scale)
                     .opacity(opacity)
                 
@@ -29,6 +33,8 @@ public struct LaunchView: View {
             }
         }
         .task {
+            isSymbolAnimating = true
+
             // Animate in
             withAnimation(.appBouncy.delay(0.1)) {
                 scale = 1.0

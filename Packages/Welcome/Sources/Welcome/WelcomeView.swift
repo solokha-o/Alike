@@ -6,6 +6,7 @@ import DesignSystem
 public struct WelcomeView: View {
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
+    @State private var isSymbolAnimating = false
     
     public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
         self._isCompleted = isCompleted
@@ -31,6 +32,7 @@ public struct WelcomeView: View {
         }
         .onAppear {
             viewModel.checkStatus()
+            isSymbolAnimating = true
         }
     }
     
@@ -39,8 +41,11 @@ public struct WelcomeView: View {
         VStack(spacing: Spacing.xLarge) {
             Spacer()
             
-            Text("📸")
-                .font(.system(size: 80))
+            Image(systemName: "camera.viewfinder")
+                .font(.system(size: 80, weight: .bold))
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(Color.accentColor, .yellow, .orange)
+                .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
             
             Text("Alike")
                 .font(.appLargeTitle)
@@ -82,8 +87,11 @@ public struct WelcomeView: View {
     // MARK: - Authorized State
     private var authorizedState: some View {
         VStack {
-            Text("✅")
-                .font(.system(size: 80))
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 80, weight: .bold))
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.green, .mint, .white)
+                .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
             
             Text("Access Granted")
                 .font(.appTitle)
