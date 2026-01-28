@@ -45,6 +45,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     @MainActor
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {
         // Capture cluster data before background task to avoid Main Actor issues
+        let viewContext = persistence.viewContext
         let clusterData = clusters.map { cluster in
             (
                 id: cluster.id,
@@ -64,11 +65,19 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         }
         
         try await persistence.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             // Delete existing clusters
             let deleteRequest = NSBatchDeleteRequest(
                 fetchRequest: ClusterEntity.fetchRequest()
             )
-            try context.execute(deleteRequest)
+            deleteRequest.resultType = .resultTypeObjectIDs
+            let deleteResult = try context.execute(deleteRequest) as? NSBatchDeleteResult
+            if let objectIDs = deleteResult?.result as? [NSManagedObjectID], !objectIDs.isEmpty {
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs],
+                    into: [viewContext]
+                )
+            }
             
             // Save new clusters
             for data in clusterData {

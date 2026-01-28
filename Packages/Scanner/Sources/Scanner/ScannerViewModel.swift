@@ -18,7 +18,7 @@ public final class ScannerViewModel {
     
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
-    private let sensitivity: SensitivityLevel
+    public var sensitivity: SensitivityLevel
     
     public init(
         gridColumns: Int = 3,

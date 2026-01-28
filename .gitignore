@@ -84,3 +84,4 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 *.cache
 *test-logs
+*.vscode

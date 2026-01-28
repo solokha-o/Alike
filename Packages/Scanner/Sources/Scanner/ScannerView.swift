@@ -58,6 +58,9 @@ public struct ScannerView: View {
         .onChange(of: gridColumns) { _, newValue in
             viewModel.gridColumns = newValue
         }
+        .onChange(of: sensitivity) { _, newValue in
+            viewModel.sensitivity = newValue
+        }
         .onChange(of: shouldStartScan) { _, newValue in
             if newValue {
                 Task {
