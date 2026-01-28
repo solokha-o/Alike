@@ -5,14 +5,11 @@ import DesignSystem
 
 /// Settings screen
 public struct SettingsView: View {
+    @Environment(\.requestReview) private var requestReview
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
-    @Environment(\.requestReview) private var requestReview
-    @State private var reviewTrigger = 0
-    
-    private var gridConfig: GridConfiguration { GridConfiguration.current }
-    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    @State private var viewModel: SettingsViewModel
     
     public init(
         gridColumns: Binding<Int>,
@@ -22,6 +19,7 @@ public struct SettingsView: View {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
+        self._viewModel = State(initialValue: SettingsViewModel())
     }
     
     public var body: some View {
@@ -40,7 +38,7 @@ public struct SettingsView: View {
     // MARK: - Appearance Section
     private var appearanceSection: some View {
         Section("Appearance") {
-            Stepper(value: $gridColumns, in: gridConfig.minColumns...gridConfig.maxColumns) {
+            Stepper(value: $gridColumns, in: viewModel.gridConfig.minColumns...viewModel.gridConfig.maxColumns) {
                 HStack {
                     Label("Grid Columns", systemImage: "square.grid.3x3")
                     Spacer()
@@ -60,7 +58,7 @@ public struct SettingsView: View {
                 }
             }
             .onChange(of: sensitivity) { _, _ in
-                showRescanAlert()
+                needsRescan = viewModel.rescanRequiredAfterSensitivityChange()
             }
         } header: {
             Text("Analysis")
@@ -83,12 +81,11 @@ public struct SettingsView: View {
             }
             
             Button {
-                reviewTrigger += 1
-                requestReview()
+                viewModel.handleRateTapped(requestReview: requestReview)
             } label: {
                 Label("Rate on App Store", systemImage: "star")
             }
-            .sensoryFeedback(.selection, trigger: reviewTrigger)
+            .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
             Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
                 Label("Contact Developer", systemImage: "envelope")
@@ -102,15 +99,10 @@ public struct SettingsView: View {
             HStack {
                 Text("Version")
                 Spacer()
-                Text(appVersion)
+                Text(viewModel.appVersion)
                     .foregroundColor(.secondary)
             }
         }
-    }
-    
-    // MARK: - Helper Methods
-    private func showRescanAlert() {
-        needsRescan = true
     }
 }
 
