@@ -118,7 +118,7 @@ Required в Info.plist:
 
 ## 📄 Ліцензія
 
-Proprietary - All rights reserved
+MIT
 
 ---
 
