@@ -36,7 +36,11 @@ public final class ScannerViewModel {
         do {
             let clusters = try await repository.loadClusters()
             if !clusters.isEmpty {
-                state = .results(clusters)
+                let sorted = sortedClusters(from: clusters)
+                if case .results(let existing) = state, existing == sorted {
+                    return
+                }
+                state = .results(sorted)
             }
         } catch {
             print("Failed to load cached results: \(error)")
@@ -59,7 +63,11 @@ public final class ScannerViewModel {
             try await repository.saveClusters(clusters)
             try await repository.updateLastScanDate(Date())
             
-            state = .results(clusters)
+            let sorted = sortedClusters(from: clusters)
+            if case .results(let existing) = state, existing == sorted {
+                return
+            }
+            state = .results(sorted)
         } catch {
             state = .error(error.localizedDescription)
         }
@@ -67,5 +75,20 @@ public final class ScannerViewModel {
     
     public func checkForGalleryChanges() async -> Bool {
         await repository.hasGalleryChanged()
+    }
+
+    public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
+        clusters.sorted {
+            if $0.createdAt != $1.createdAt {
+                return $0.createdAt > $1.createdAt
+            }
+            if $0.count != $1.count {
+                return $0.count > $1.count
+            }
+            if $0.averageSimilarity != $1.averageSimilarity {
+                return $0.averageSimilarity > $1.averageSimilarity
+            }
+            return $0.id.uuidString < $1.id.uuidString
+        }
     }
 }

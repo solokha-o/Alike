@@ -140,8 +140,10 @@ public struct ScannerView: View {
     
     // MARK: - Results View
     private func resultsView(clusters: [PhotoCluster]) -> some View {
-        ScrollView {
-            if clusters.isEmpty {
+        let sortedClusters = viewModel.sortedClusters(from: clusters)
+
+        return ScrollView {
+            if sortedClusters.isEmpty {
                 ContentUnavailableView {
                     Label {
                         Text(appLocalized("No Similar Photos Found"))
@@ -154,7 +156,7 @@ public struct ScannerView: View {
                 .padding(.top, 100)
             } else {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
-                    ForEach(clusters) { cluster in
+                    ForEach(sortedClusters) { cluster in
                         ClusterCard(cluster: cluster)
                     }
                 }
@@ -175,6 +177,7 @@ public struct ScannerView: View {
         }
         .sensoryFeedback(.success, trigger: clusters.count)
     }
+
     
     // MARK: - Error View
     private func errorView(message: String) -> some View {
