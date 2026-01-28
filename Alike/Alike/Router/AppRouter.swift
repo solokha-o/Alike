@@ -31,7 +31,6 @@ final class AppRouter {
     
     // MARK: - Navigation
     func completeLaunch() async {
-        // Якщо доступ вже є - пропускаємо Welcome
         if permissionManager.isAuthorized {
             currentRoute = .main
         } else {
