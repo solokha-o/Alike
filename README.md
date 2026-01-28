@@ -58,11 +58,7 @@ cd Alike
 open Alike/Alike.xcodeproj
 ```
 
-3. **Додати Swift Packages** (див. SETUP.sh)
-   - File → Add Package Dependencies → Add Local...
-   - Додати всі пакети з `Packages/` папки
-
-4. **Build & Run** (⌘R)
+3. **Build & Run** (⌘R)
 
 ## 📱 User Flow
 
@@ -100,16 +96,6 @@ swift test --package-path Packages/Storage
 Підтримка мов через `Localizable.xcstrings`:
 - 🇬🇧 English (базова)
 - 🇺🇦 Українська
-
-## 🔐 Permissions
-
-Required в Info.plist:
-- `NSPhotoLibraryUsageDescription`
-- `NSPhotoLibraryAddUsageDescription`
-
-## 📦 Bundle ID
-
-`com.solokhao.alike`
 
 ## 👨‍💻 Контакт
 
