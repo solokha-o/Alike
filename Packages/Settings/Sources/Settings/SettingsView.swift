@@ -2,6 +2,9 @@ import SwiftUI
 import StoreKit
 import Core
 import DesignSystem
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Settings screen
 public struct SettingsView: View {
@@ -26,70 +29,97 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 appearanceSection
+                languageSection
                 analysisSection
                 supportSection
                 aboutSection
             }
-            .navigationTitle("Settings")
+            .navigationTitle(Text(appLocalized("Settings")))
             .navigationBarTitleDisplayMode(.large)
         }
     }
     
     // MARK: - Appearance Section
     private var appearanceSection: some View {
-        Section("Appearance") {
+        Section {
             Stepper(value: $gridColumns, in: viewModel.gridConfig.minColumns...viewModel.gridConfig.maxColumns) {
                 HStack {
-                    Label("Grid Columns", systemImage: "square.grid.3x3")
+                    Label {
+                        Text(appLocalized("Grid Columns"))
+                    } icon: {
+                        Image(systemName: "square.grid.3x3")
+                    }
                     Spacer()
                     Text("\(gridColumns)")
                         .foregroundColor(.secondary)
                 }
             }
+        } header: {
+            Text(appLocalized("Appearance"))
         }
     }
     
     // MARK: - Analysis Section
     private var analysisSection: some View {
         Section {
-            Picker("Sensitivity", selection: $sensitivity) {
+            Picker(selection: $sensitivity) {
                 ForEach(SensitivityLevel.allCases, id: \.self) { level in
                     Text(level.displayName).tag(level)
                 }
+            } label: {
+                Text(appLocalized("Sensitivity"))
             }
             .onChange(of: sensitivity) { _, _ in
                 needsRescan = viewModel.rescanRequiredAfterSensitivityChange()
             }
         } header: {
-            Text("Analysis")
+            Text(appLocalized("Analysis"))
         } footer: {
-            Text("Higher sensitivity finds more similar photos but may include less alike images")
+            Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images"))
         }
     }
     
     // MARK: - Support Section
     private var supportSection: some View {
-        Section("Support") {
+        Section {
             NavigationLink {
                 UserGuideView()
             } label: {
-                Label("How to Use", systemImage: "book")
+                Label {
+                    Text(appLocalized("How to Use"))
+                } icon: {
+                    Image(systemName: "book")
+                }
             }
             
             ShareLink(item: URL(string: "https://apps.apple.com/app/idXXXXXXXX")!) {
-                Label("Share App", systemImage: "square.and.arrow.up")
+                Label {
+                    Text(appLocalized("Share App"))
+                } icon: {
+                    Image(systemName: "square.and.arrow.up")
+                }
             }
             
             Button {
                 viewModel.handleRateTapped(requestReview: requestReview)
             } label: {
-                Label("Rate on App Store", systemImage: "star")
+                Label {
+                    Text(appLocalized("Rate on App Store"))
+                } icon: {
+                    Image(systemName: "star")
+                }
             }
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
             Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
-                Label("Contact Developer", systemImage: "envelope")
+                Label {
+                    Text(appLocalized("Contact Developer"))
+                } icon: {
+                    Image(systemName: "envelope")
+                }
             }
+        } header: {
+            Text(appLocalized("Support"))
         }
     }
     
@@ -97,12 +127,41 @@ public struct SettingsView: View {
     private var aboutSection: some View {
         Section {
             HStack {
-                Text("Version")
+                Text(appLocalized("Version"))
                 Spacer()
                 Text(viewModel.appVersion)
                     .foregroundColor(.secondary)
             }
         }
+    }
+
+    // MARK: - Language Section
+    private var languageSection: some View {
+        Section {
+            Button {
+                openLanguageSettings()
+            } label: {
+                Label {
+                    Text(appLocalized("Change Language"))
+                } icon: {
+                    Image(systemName: "globe")
+                }
+            }
+        } header: {
+            Text(appLocalized("Language"))
+        }
+    }
+
+    private func openLanguageSettings() {
+        #if os(iOS)
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsURL) {
+            UIApplication.shared.open(settingsURL)
+        }
+        #endif
     }
 }
 
@@ -114,41 +173,41 @@ struct UserGuideView: View {
                 guideStep(
                     number: 1,
                     icon: "photo.on.rectangle",
-                    title: "Grant Access",
-                    description: "Allow Alike to access your photo library"
+                    title: appLocalized("Grant Access"),
+                    description: appLocalized("Allow Alike to access your photo library")
                 )
                 
                 guideStep(
                     number: 2,
                     icon: "sparkles",
-                    title: "Start Scanning",
-                    description: "Tap 'Start Scanning' to analyze your photos using advanced computer vision"
+                    title: appLocalized("Start Scanning"),
+                    description: appLocalized("Tap 'Start Scanning' to analyze your photos using advanced computer vision")
                 )
                 
                 guideStep(
                     number: 3,
                     icon: "square.grid.3x3",
-                    title: "View Results",
-                    description: "Browse groups of similar photos in a grid layout"
+                    title: appLocalized("View Results"),
+                    description: appLocalized("Browse groups of similar photos in a grid layout")
                 )
                 
                 guideStep(
                     number: 4,
                     icon: "slider.horizontal.3",
-                    title: "Adjust Settings",
-                    description: "Fine-tune sensitivity and grid columns for your preference"
+                    title: appLocalized("Adjust Settings"),
+                    description: appLocalized("Fine-tune sensitivity and grid columns for your preference")
                 )
                 
                 guideStep(
                     number: 5,
                     icon: "arrow.clockwise",
-                    title: "Rescan Anytime",
-                    description: "Tap the refresh button to rescan after adding new photos"
+                    title: appLocalized("Rescan Anytime"),
+                    description: appLocalized("Tap the refresh button to rescan after adding new photos")
                 )
             }
             .padding(Spacing.large)
         }
-        .navigationTitle("How to Use")
+        .navigationTitle(Text(appLocalized("How to Use")))
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -165,8 +224,12 @@ struct UserGuideView: View {
             }
             
             VStack(alignment: .leading, spacing: Spacing.xSmall) {
-                Label(title, systemImage: icon)
-                    .font(.appHeadline)
+                Label {
+                    Text(title)
+                } icon: {
+                    Image(systemName: icon)
+                }
+                .font(.appHeadline)
                 
                 Text(description)
                     .font(.appBody)

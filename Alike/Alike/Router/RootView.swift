@@ -60,7 +60,7 @@ struct MainTabView: View {
             ForEach(tabs, id: \.self) { tab in
                 tabView(for: tab)
                     .tabItem {
-                        Label(tab.title, systemImage: tab.icon)
+                        Label(tab.titleKey, systemImage: tab.icon)
                     }
                     .tag(tab)
             }

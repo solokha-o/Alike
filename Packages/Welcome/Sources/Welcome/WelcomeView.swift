@@ -47,11 +47,11 @@ public struct WelcomeView: View {
                 .foregroundStyle(Color.accentColor, .yellow, .orange)
                 .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
             
-            Text("Alike")
+            Text(appLocalized("Alike"))
                 .font(.appLargeTitle)
                 .foregroundColor(.accent)
             
-            Text("Find visually similar photos in your library")
+            Text(appLocalized("Find visually similar photos in your library"))
                 .font(.appTitle3)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -59,7 +59,7 @@ public struct WelcomeView: View {
             
             Spacer()
             
-            PrimaryButton("Grant Access", icon: "photo.on.rectangle") {
+            PrimaryButton(appLocalized("Grant Access"), icon: "photo.on.rectangle") {
                 Task {
                     await viewModel.requestPermission()
                 }
@@ -73,11 +73,15 @@ public struct WelcomeView: View {
     // MARK: - Denied State
     private var deniedState: some View {
         ContentUnavailableView {
-            Label("Photo Access Required", systemImage: "photo.on.rectangle.slash")
+            Label {
+                Text(appLocalized("Photo Access Required"))
+            } icon: {
+                Image(systemName: "photo.on.rectangle.slash")
+            }
         } description: {
-            Text("Alike needs access to your photo library to find similar photos. Please enable access in Settings.")
+            Text(appLocalized("Alike needs access to your photo library to find similar photos. Please enable access in Settings."))
         } actions: {
-            PrimaryButton("Open Settings", icon: "gear") {
+            PrimaryButton(appLocalized("Open Settings"), icon: "gear") {
                 viewModel.openSettings()
             }
             .padding(.horizontal, Spacing.large)
@@ -93,7 +97,7 @@ public struct WelcomeView: View {
                 .foregroundStyle(.green, .mint, .white)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
             
-            Text("Access Granted")
+            Text(appLocalized("Access Granted"))
                 .font(.appTitle)
                 .foregroundColor(.accent)
         }

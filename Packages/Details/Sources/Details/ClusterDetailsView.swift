@@ -25,15 +25,17 @@ public struct ClusterDetailsView: View {
             }
             .padding(Spacing.medium)
         }
-        .navigationTitle("Similar Photos")
+        .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Picker("Columns", selection: $gridColumns) {
+                    Picker(selection: $gridColumns) {
                         ForEach(2...4, id: \.self) { count in
                             Text("\(count)").tag(count)
                         }
+                    } label: {
+                        Text(appLocalized("Columns"))
                     }
                 } label: {
                     Image(systemName: "square.grid.3x2")
@@ -73,7 +75,11 @@ struct PhotoThumbnail: View {
             Button {
                 showingMetadata = true
             } label: {
-                Label("Show Info", systemImage: "info.circle")
+                Label {
+                    Text(appLocalized("Show Info"))
+                } icon: {
+                    Image(systemName: "info.circle")
+                }
             }
             
             Button {
@@ -82,7 +88,11 @@ struct PhotoThumbnail: View {
                     UIApplication.shared.open(url)
                 }
             } label: {
-                Label("Open Original", systemImage: "arrow.up.right.square")
+                Label {
+                    Text(appLocalized("Open Original"))
+                } icon: {
+                    Image(systemName: "arrow.up.right.square")
+                }
             }
         }
         .sheet(isPresented: $showingMetadata) {
@@ -103,18 +113,36 @@ struct MetadataView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Details") {
-                    LabeledContent("Resolution", value: metadata.resolution)
-                    LabeledContent("Created", value: metadata.formattedCreationDate)
-                    LabeledContent("Favorite", value: metadata.isFavorite ? "Yes" : "No")
+                Section {
+                    LabeledContent {
+                        Text(metadata.resolution)
+                    } label: {
+                        Text(appLocalized("Resolution"))
+                    }
+                    
+                    LabeledContent {
+                        Text(metadata.formattedCreationDate)
+                    } label: {
+                        Text(appLocalized("Created"))
+                    }
+                    
+                    LabeledContent {
+                        Text(metadata.isFavorite ? appLocalized("Yes") : appLocalized("No"))
+                    } label: {
+                        Text(appLocalized("Favorite"))
+                    }
+                } header: {
+                    Text(appLocalized("Details"))
                 }
             }
-            .navigationTitle("Photo Info")
+            .navigationTitle(Text(appLocalized("Photo Info")))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text(appLocalized("Done"))
                     }
                 }
             }

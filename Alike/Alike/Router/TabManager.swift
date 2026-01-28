@@ -16,7 +16,7 @@ final class TabManager {
         case scanner
         case settings
         
-        var title: String {
+        var titleKey: LocalizedStringKey {
             switch self {
             case .scanner: return "Scanner"
             case .settings: return "Settings"

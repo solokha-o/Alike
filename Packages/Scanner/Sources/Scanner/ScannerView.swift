@@ -44,7 +44,7 @@ public struct ScannerView: View {
                     errorView(message: message)
                 }
             }
-            .navigationTitle("Scanner")
+            .navigationTitle(Text(appLocalized("Scanner")))
             .navigationBarTitleDisplayMode(.large)
         }
         .task {
@@ -77,11 +77,11 @@ public struct ScannerView: View {
                 .font(.system(size: 80))
                 .foregroundColor(.accent)
             
-            Text("Ready to Scan")
+            Text(appLocalized("Ready to Scan"))
                 .font(.appTitle)
                 .foregroundColor(.primary)
             
-            Text("Tap the button below to analyze your photo library")
+            Text(appLocalized("Tap the button below to analyze your photo library"))
                 .font(.appBody)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -89,7 +89,7 @@ public struct ScannerView: View {
             
             Spacer()
             
-            PrimaryButton("Start Scanning", icon: "sparkles") {
+            PrimaryButton(appLocalized("Start Scanning"), icon: "sparkles") {
                 Task {
                     await viewModel.startScanning()
                 }
@@ -122,11 +122,11 @@ public struct ScannerView: View {
                     .monospacedDigit()
             }
             
-            Text("Analyzing Photos...")
+            Text(appLocalized("Analyzing Photos..."))
                 .font(.appTitle2)
                 .foregroundColor(.primary)
             
-            Text("Finding visually similar images")
+            Text(appLocalized("Finding visually similar images"))
                 .font(.appBody)
                 .foregroundColor(.secondary)
             
@@ -139,11 +139,15 @@ public struct ScannerView: View {
     private func resultsView(clusters: [PhotoCluster]) -> some View {
         ScrollView {
             if clusters.isEmpty {
-                ContentUnavailableView(
-                    "No Similar Photos Found",
-                    systemImage: "photo.stack",
-                    description: Text("Try adjusting sensitivity in Settings")
-                )
+                ContentUnavailableView {
+                    Label {
+                        Text(appLocalized("No Similar Photos Found"))
+                    } icon: {
+                        Image(systemName: "photo.stack")
+                    }
+                } description: {
+                    Text(appLocalized("Try adjusting sensitivity in Settings"))
+                }
                 .padding(.top, 100)
             } else {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
@@ -171,11 +175,15 @@ public struct ScannerView: View {
     
     // MARK: - Error View
     private func errorView(message: String) -> some View {
-        ContentUnavailableView(
-            "Scan Failed",
-            systemImage: "exclamationmark.triangle",
-            description: Text(message)
-        )
+        ContentUnavailableView {
+            Label {
+                Text(appLocalized("Scan Failed"))
+            } icon: {
+                Image(systemName: "exclamationmark.triangle")
+            }
+        } description: {
+            Text(message)
+        }
     }
 }
 

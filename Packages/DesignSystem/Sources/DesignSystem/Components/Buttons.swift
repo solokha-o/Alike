@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Primary button component
 public struct PrimaryButton: View {
-    let title: LocalizedStringKey
+    private let title: Text
     let icon: String?
     let action: () -> Void
     
@@ -13,7 +13,17 @@ public struct PrimaryButton: View {
         icon: String? = nil,
         action: @escaping () -> Void
     ) {
-        self.title = title
+        self.title = Text(title)
+        self.icon = icon
+        self.action = action
+    }
+    
+    public init(
+        _ title: String,
+        icon: String? = nil,
+        action: @escaping () -> Void
+    ) {
+        self.title = Text(verbatim: title)
         self.icon = icon
         self.action = action
     }
@@ -28,7 +38,7 @@ public struct PrimaryButton: View {
                     Image(systemName: icon)
                         .font(.appHeadline)
                 }
-                Text(title)
+                title
                     .font(.appHeadline)
             }
             .frame(maxWidth: .infinity)
@@ -44,7 +54,7 @@ public struct PrimaryButton: View {
 
 /// Secondary button component
 public struct SecondaryButton: View {
-    let title: LocalizedStringKey
+    private let title: Text
     let icon: String?
     let action: () -> Void
     
@@ -53,7 +63,17 @@ public struct SecondaryButton: View {
         icon: String? = nil,
         action: @escaping () -> Void
     ) {
-        self.title = title
+        self.title = Text(title)
+        self.icon = icon
+        self.action = action
+    }
+    
+    public init(
+        _ title: String,
+        icon: String? = nil,
+        action: @escaping () -> Void
+    ) {
+        self.title = Text(verbatim: title)
         self.icon = icon
         self.action = action
     }
@@ -65,7 +85,7 @@ public struct SecondaryButton: View {
                     Image(systemName: icon)
                         .font(.appHeadline)
                 }
-                Text(title)
+                title
                     .font(.appHeadline)
             }
             .frame(maxWidth: .infinity)
