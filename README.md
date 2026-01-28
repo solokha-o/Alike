@@ -2,22 +2,31 @@
 
 **Find visually similar photos in your library**
 
-Alike - iOS додаток для пошуку та групування візуально схожих фотографій за допомогою технології Computer Vision (Apple Vision framework).
+Alike is an iOS app that finds and groups visually similar photos using Computer Vision (Apple Vision framework).
 
-## ✨ Особливості
+## ✨ Features
 
-- 🔍 **Vision-based аналіз** - використання VNFeaturePrintObservation для точного порівняння
-- 🎯 **Налаштована чутливість** - 3 рівні точності пошуку (Low/Medium/High)
-- 📊 **Адаптивна сітка** - від 2 до 8 стовпців (залежно від пристрою)
-- 💾 **CoreData кешування** - збереження результатів сканування
-- 🎨 **Індиго дизайн** - сучасний UI з анімаціями та haptic feedback
-- 🌍 **Дві мови** - Українська та Англійська
-- 🌓 **Темна тема** - повна підтримка Dark Mode
-- 📱 **iPad підтримка** - оптимізований для планшетів
+- 🔍 **Vision-based analysis** — uses `VNFeaturePrintObservation` for accurate comparisons
+- 🎯 **Sensitivity levels** — 3 accuracy modes (Low/Medium/High)
+- 📊 **Adaptive grid** — 2 to 8 columns depending on device
+- 💾 **CoreData caching** — stores scan results
+- 🎨 **Indigo design** — modern UI with animations and haptic feedback
+- 🌍 **Two languages** — Ukrainian and English
+- 🌓 **Dark Mode** — full support
+- 📱 **iPad support** — optimized for tablets
 
-## 🏗️ Архітектура
+## 🧠 Similarity algorithm (no code)
 
-Модульна SwiftUI архітектура з Swift Packages:
+1. **Image fingerprint**: each photo gets a Vision feature print.
+2. **Pre-filter**: only photos close in capture time and location are compared; screenshots are excluded.
+3. **Similarity metric**: compute distance between two feature prints; **smaller distance = more similar**.
+4. **Sensitivity threshold**: Low/Medium/High define the maximum distance for similarity.
+5. **Clustering** (complete‑link): a photo joins a group only if it is similar to **all** photos in that group.
+6. **Result**: clusters are shown as tiles with the first photo as a preview.
+
+## 🏗️ Architecture
+
+Modular SwiftUI architecture with Swift Packages:
 
 ```
 Alike/
@@ -32,72 +41,68 @@ Alike/
 └── Details/                 # Cluster details
 ```
 
-## 🛠 Технології
+## 🛠 Tech stack
 
 - **Platform**: iOS 17+, iPadOS 17+
 - **Language**: Swift 6.0 (Strict Concurrency)
 - **UI**: SwiftUI
-- **Frameworks**: 
-  - Vision (аналіз)
+- **Frameworks**:
+  - Vision (analysis)
   - Photos (PhotoKit)
-  - CoreData (кешування)
-  - StoreKit (відгуки)
+  - CoreData (caching)
+  - StoreKit (reviews)
 - **Architecture**: MVVM + Swift Packages
 - **Async**: async/await, Actors
 
-## 🚀 Встановлення
+## 🚀 Installation
 
-1. **Клонувати репозиторій**
+1. **Clone the repository**
 ```bash
 git clone <repository-url>
 cd Alike
 ```
 
-2. **Відкрити в Xcode**
+2. **Open in Xcode**
 ```bash
 open Alike/Alike.xcodeproj
 ```
 
 3. **Build & Run** (⌘R)
 
-## 📱 User Flow
+## 📱 User flow
 
-1. **Launch Screen** (3 sec) → 📸 анімація
-2. **Welcome Screen** → запит дозволу на фото
+1. **Launch Screen** (3 sec) → 📸 animation
+2. **Welcome Screen** → photo permission request
 3. **Main TabView**:
-   - **Scanner Tab**: сканування → результати → деталі
-   - **Settings Tab**: налаштування + підтримка
+   - **Scanner Tab**: scan → results → details
+   - **Settings Tab**: configuration + support
 
-## 🎨 Дизайн
+## 🎨 Design
 
-- **Accent Color**: Індиго (#5C66F2)
+- **Accent Color**: Indigo (#5C66F2)
 - **Typography**: SF Rounded
 - **Spacing**: 8pt grid system
 - **Animations**: Spring-based
 - **Haptics**: Sensory Feedback API
 
-## 🧪 Тестування
+## 🧪 Testing
 
-Previews для всіх екранів:
+Previews for all screens:
 ```swift
 #Preview("Scanner") { ScannerView(...) }
 #Preview("Settings") { SettingsView(...) }
 #Preview("Dark Mode") { ... }
 ```
 
-Unit tests в кожному package:
-```bash
-swift test --package-path Packages/Core
-swift test --package-path Packages/Storage
-```
+Unit tests run within each package.
 
-## 📝 Локалізація
+## 📝 Localization
 
-Підтримка мов через `Localizable.xcstrings`:
-- 🇬🇧 English (базова)
-- 🇺🇦 Українська
+Languages via `Localizable.xcstrings`:
+- 🇬🇧 English (base)
+- 🇺🇦 Ukrainian
 
-## 👨‍💻 Контакт
+## 👨‍💻 Contact
 
 - Email: oleksandr.solokha@gmail.com
 - App Store: (coming soon)
