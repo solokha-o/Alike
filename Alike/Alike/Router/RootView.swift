@@ -43,6 +43,7 @@ struct RootView: View {
 
 // MARK: - Main Tab View
 struct MainTabView: View {
+    private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
@@ -56,25 +57,13 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: Bindable(tabManager).selectedTab) {
-            ScannerView(
-                gridColumns: $gridColumns,
-                sensitivity: sensitivity,
-                shouldStartScan: Bindable(tabManager).shouldStartScan
-            )
-            .tabItem {
-                Label(TabManager.Tab.scanner.title, systemImage: TabManager.Tab.scanner.icon)
+            ForEach(tabs, id: \.self) { tab in
+                tabView(for: tab)
+                    .tabItem {
+                        Label(tab.title, systemImage: tab.icon)
+                    }
+                    .tag(tab)
             }
-            .tag(TabManager.Tab.scanner)
-            
-            SettingsView(
-                gridColumns: $gridColumns,
-                sensitivity: sensitivity,
-                needsRescan: Bindable(tabManager).needsRescan
-            )
-            .tabItem {
-                Label(TabManager.Tab.settings.title, systemImage: TabManager.Tab.settings.icon)
-            }
-            .tag(TabManager.Tab.settings)
         }
         .tint(.accent)
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
@@ -86,6 +75,24 @@ struct MainTabView: View {
             }
         } message: {
             Text("Changing sensitivity requires a new scan to take effect")
+        }
+    }
+    
+    @ViewBuilder
+    private func tabView(for tab: TabManager.Tab) -> some View {
+        switch tab {
+        case .scanner:
+            ScannerView(
+                gridColumns: $gridColumns,
+                sensitivity: sensitivity,
+                shouldStartScan: Bindable(tabManager).shouldStartScan
+            )
+        case .settings:
+            SettingsView(
+                gridColumns: $gridColumns,
+                sensitivity: sensitivity,
+                needsRescan: Bindable(tabManager).needsRescan
+            )
         }
     }
 }

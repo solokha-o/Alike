@@ -12,7 +12,7 @@ import SwiftUI
 @Observable
 final class TabManager {
     // MARK: - Tab Definition
-    enum Tab: Hashable {
+    enum Tab: String, CaseIterable, Hashable {
         case scanner
         case settings
         
