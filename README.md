@@ -15,7 +15,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌓 **Dark Mode** — full support
 - 📱 **iPad support** — optimized for tablets
 
-## 🧠 Similarity algorithm (no code)
+## 🧠 Similarity algorithm
 
 1. **Image fingerprint**: each photo gets a Vision feature print.
 2. **Pre-filter**: only photos close in capture time and location are compared; screenshots are excluded.
