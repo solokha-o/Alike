@@ -1,21 +1,16 @@
 import XCTest
 @preconcurrency import Vision
-@preconcurrency import Photos
-import Core
 #if canImport(UIKit)
 import UIKit
 #endif
 @testable import PhotoAnalysis
-
-extension PHAsset: @unchecked Sendable {}
-extension VNFeaturePrintObservation: @unchecked @retroactive Sendable {}
 
 @MainActor
 final class PhotoClusteringServiceTests: XCTestCase {
     var service: PhotoClusteringService!
     
     override func setUp() async throws {
-        service = PhotoClusteringService()
+        service = PhotoClusteringService(enablePreFilter: false)
     }
     
     override func tearDown() async throws {
@@ -26,10 +21,10 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     func testClusterEmptyArray() async throws {
         // Given: Empty array
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = []
+        let candidates: [PhotoClusteringService.Candidate] = []
         
         // When: Clustering
-        let clusters = try await service.clusterPhotos(photos, threshold: 0.9)
+        let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
         
         // Then: Should return empty array
         XCTAssertTrue(clusters.isEmpty, "Clustering empty array should return empty result")
@@ -37,14 +32,13 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     func testClusterSinglePhoto() async throws {
         // Given: Single photo with mock PHAsset
-        let mockAsset = try createMockPHAsset()
         let featurePrint = try await makeFeaturePrint(color: .red)
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: mockAsset, featurePrint: featurePrint)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint, creationDate: nil, location: nil)
         ]
         
         // When: Clustering
-        let clusters = try await service.clusterPhotos(photos, threshold: 0.9)
+        let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
         
         // Then: Single photo should not form a cluster (clusters require > 1 photo)
         XCTAssertTrue(clusters.isEmpty, "Single photo should not create a cluster")
@@ -52,45 +46,41 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     func testClusterTwoSimilarPhotos() async throws {
         // Given: Two photos with high similarity
-        let asset1 = try createMockPHAsset()
-        let asset2 = try createMockPHAsset()
         let featurePrint1 = try await makeFeaturePrint(color: .blue)
         let featurePrint2 = try await makeFeaturePrint(color: .blue)
         let distance = try VisionFeaturePrintService().computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: asset1, featurePrint: featurePrint1),
-            (asset: asset2, featurePrint: featurePrint2)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint1, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint2, creationDate: nil, location: nil)
         ]
         
         // When: Clustering with medium threshold
-        let clusters = try await service.clusterPhotos(photos, threshold: distance + 0.01)
+        let clusters = try service.clusterCandidates(candidates, threshold: distance + 0.01)
         
         // Then: Should create one cluster
         XCTAssertEqual(clusters.count, 1, "Similar photos should be in same cluster")
-        XCTAssertEqual(clusters.first?.assets.count, 2, "Cluster should contain both photos")
+        XCTAssertEqual(clusters.first?.indices.count, 2, "Cluster should contain both photos")
     }
     
     func testClusterTwoDifferentPhotos() async throws {
         // Given: Two photos with low similarity
-        let asset1 = try createMockPHAsset()
-        let asset2 = try createMockPHAsset()
         let featurePrint1 = try await makeFeaturePrint(color: .red)
         let featurePrint2 = try await makeFeaturePrint(color: .green)
         let distance = try VisionFeaturePrintService().computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: asset1, featurePrint: featurePrint1),
-            (asset: asset2, featurePrint: featurePrint2)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint1, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint2, creationDate: nil, location: nil)
         ]
         
         // When: Clustering with strict threshold
-        let clusters = try await service.clusterPhotos(
-            photos,
+        let clusters = try service.clusterCandidates(
+            candidates,
             threshold: max(0.0, distance - 0.01)
         )
         
@@ -98,11 +88,49 @@ final class PhotoClusteringServiceTests: XCTestCase {
         XCTAssertTrue(clusters.isEmpty, "Different photos should not be clustered")
     }
     
-    func testHighThresholdCreatesMoreClusters() async throws {
+    func testCompleteLinkAvoidsChainMerging() async throws {
+        // Given: A~B and B~C, but A not similar to C directly
+        let featurePrint1 = try await makeFeaturePrint(color: .red)
+        let featurePrint2 = try await makeFeaturePrint(color: .green)
+        let featurePrint3 = try await makeFeaturePrint(color: .blue)
+        
+        let observations = [featurePrint1, featurePrint2, featurePrint3]
+        let idMap = Dictionary(uniqueKeysWithValues: observations.enumerated().map {
+            (ObjectIdentifier($0.element), $0.offset)
+        })
+        let distances: [[Float]] = [
+            [0.0, 0.1, 0.9],
+            [0.1, 0.0, 0.1],
+            [0.9, 0.1, 0.0]
+        ]
+        
+        let service = PhotoClusteringService(
+            distanceProvider: { obs1, obs2 in
+            guard let i = idMap[ObjectIdentifier(obs1)],
+                  let j = idMap[ObjectIdentifier(obs2)] else {
+                return 999.0
+            }
+            return distances[i][j]
+        },
+            enablePreFilter: false
+        )
+        
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint1, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint2, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint3, creationDate: nil, location: nil)
+        ]
+        
+        // When: Clustering with threshold that connects A~B and B~C
+        let clusters = try service.clusterCandidates(candidates, threshold: 0.2)
+        
+        // Then: Cluster should not merge via chain similarity
+        XCTAssertEqual(clusters.count, 1, "Chain similarity should not merge all three")
+        XCTAssertEqual(clusters.first?.indices.count, 2, "Cluster should contain only the directly similar pair")
+    }
+    
+    func testHighThresholdCreatesFewerClusters() async throws {
         // Given: Three photos with varying similarities
-        let asset1 = try createMockPHAsset()
-        let asset2 = try createMockPHAsset()
-        let asset3 = try createMockPHAsset()
         let similarPrint1 = try await makeFeaturePrint(color: .purple)
         let similarPrint2 = try await makeFeaturePrint(color: .purple)
         let differentPrint = try await makeFeaturePrint(color: .orange)
@@ -114,21 +142,21 @@ final class PhotoClusteringServiceTests: XCTestCase {
             between: similarPrint1,
             and: differentPrint
         )
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: asset1, featurePrint: similarPrint1),
-            (asset: asset2, featurePrint: similarPrint2),
-            (asset: asset3, featurePrint: differentPrint)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: similarPrint1, creationDate: nil, location: nil),
+            .init(featurePrint: similarPrint2, creationDate: nil, location: nil),
+            .init(featurePrint: differentPrint, creationDate: nil, location: nil)
         ]
         
         // When: Clustering with low threshold (stricter)
-        let strictClusters = try await service.clusterPhotos(
-            photos,
+        let strictClusters = try service.clusterCandidates(
+            candidates,
             threshold: min(similarDistance + 0.01, max(0.0, differentDistance - 0.01))
         )
         
         // When: Clustering with high threshold (more lenient)
-        let lenientClusters = try await service.clusterPhotos(
-            photos,
+        let lenientClusters = try service.clusterCandidates(
+            candidates,
             threshold: max(similarDistance + 0.01, differentDistance + 0.01)
         )
         
@@ -142,9 +170,6 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     func testClusterAverageSimilarity() async throws {
         // Given: Cluster of similar photos
-        let asset1 = try createMockPHAsset()
-        let asset2 = try createMockPHAsset()
-        let asset3 = try createMockPHAsset()
         let featurePrint1 = try await makeFeaturePrint(color: .yellow)
         let featurePrint2 = try await makeFeaturePrint(color: .yellow)
         let featurePrint3 = try await makeFeaturePrint(color: .yellow)
@@ -152,14 +177,14 @@ final class PhotoClusteringServiceTests: XCTestCase {
             between: featurePrint1,
             and: featurePrint2
         )
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: asset1, featurePrint: featurePrint1),
-            (asset: asset2, featurePrint: featurePrint2),
-            (asset: asset3, featurePrint: featurePrint3)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint1, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint2, creationDate: nil, location: nil),
+            .init(featurePrint: featurePrint3, creationDate: nil, location: nil)
         ]
         
         // When: Clustering
-        let clusters = try await service.clusterPhotos(photos, threshold: distance + 0.01)
+        let clusters = try service.clusterCandidates(candidates, threshold: distance + 0.01)
         
         // Then: Average similarity should be calculated
         XCTAssertEqual(clusters.count, 1)
@@ -170,14 +195,13 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     func testMinimumClusterSize() async throws {
         // Given: Photos that would create very small clusters
-        let asset1 = try createMockPHAsset()
         let featurePrint = try await makeFeaturePrint(color: .cyan)
-        let photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = [
-            (asset: asset1, featurePrint: featurePrint)
+        let candidates: [PhotoClusteringService.Candidate] = [
+            .init(featurePrint: featurePrint, creationDate: nil, location: nil)
         ]
         
         // When: Clustering
-        let clusters = try await service.clusterPhotos(photos, threshold: 0.9)
+        let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
         
         // Then: Clusters should have at least minClusterSize (2)
         XCTAssertTrue(clusters.isEmpty, "Single photo should not form a cluster")
@@ -185,21 +209,6 @@ final class PhotoClusteringServiceTests: XCTestCase {
     
     // MARK: - Helper Methods
     
-    private func createMockPHAsset() throws -> PHAsset {
-        // Create a mock PHAsset for testing
-        // Note: In real tests, you might want to use actual test photos
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.fetchLimit = 1
-        let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        
-        // Return first asset or create a placeholder
-        if let asset = fetchResult.firstObject {
-            return asset
-        }
-
-        throw XCTSkip("No test photos available. Add photos to simulator/device for testing.")
-    }
-
     private func makeFeaturePrint(color: UIColor) async throws -> VNFeaturePrintObservation {
         let size = CGSize(width: 100, height: 100)
         let renderer = UIGraphicsImageRenderer(size: size)
@@ -214,7 +223,15 @@ final class PhotoClusteringServiceTests: XCTestCase {
             ])
         }
 
-        let featurePrint = try await VisionFeaturePrintService().generateFeaturePrint(from: cgImage)
-        return try XCTUnwrap(featurePrint)
+        do {
+            let featurePrint = try await VisionFeaturePrintService().generateFeaturePrint(from: cgImage)
+            return try XCTUnwrap(featurePrint)
+        } catch {
+            let nsError = error as NSError
+            if nsError.domain == NSOSStatusErrorDomain {
+                throw XCTSkip("Vision feature print unavailable: \(nsError.localizedDescription)")
+            }
+            throw error
+        }
     }
 }

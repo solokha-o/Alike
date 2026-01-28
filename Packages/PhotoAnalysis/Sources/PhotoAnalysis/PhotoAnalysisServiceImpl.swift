@@ -39,7 +39,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         
         // Perform clustering (80-100% of progress)
         progress(0.8)
-        let clusters = try await clusteringService.clusterPhotos(
+        let clusters = try clusteringService.clusterPhotos(
             photosWithFeaturePrints,
             threshold: sensitivity
         )
@@ -74,6 +74,11 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
         
+        fetchOptions.predicate = NSPredicate(
+            format: "(mediaSubtype & %d) == 0",
+            PHAssetMediaSubtype.photoScreenshot.rawValue
+        )
+        
         // Only fetch images (not videos)
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         
@@ -84,4 +89,5 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         
         return assets
     }
+    
 }
