@@ -119,6 +119,7 @@ public struct ScannerView: View {
                 Text("\(Int(progress * 100))%")
                     .font(.title.bold())
                     .foregroundColor(.accent)
+                    .monospacedDigit()
             }
             
             Text("Analyzing Photos...")

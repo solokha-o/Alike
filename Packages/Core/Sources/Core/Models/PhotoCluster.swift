@@ -2,7 +2,7 @@ import Foundation
 import Photos
 
 /// Represents a cluster of visually similar photos
-public struct PhotoCluster: Identifiable, @unchecked Sendable {
+public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendable {
     public let id: UUID
     public let assets: [PHAsset]
     public let createdAt: Date
@@ -28,6 +28,20 @@ public struct PhotoCluster: Identifiable, @unchecked Sendable {
     /// Returns the first asset to use as a thumbnail
     public var thumbnail: PHAsset? {
         assets.first
+    }
+}
+
+// MARK: - Manual Equatable & Hashable
+// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
+public extension PhotoCluster {
+    static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+public extension PhotoCluster {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 

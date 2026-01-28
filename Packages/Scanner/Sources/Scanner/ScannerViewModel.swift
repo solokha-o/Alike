@@ -6,7 +6,7 @@ import PhotoAnalysis
 @MainActor
 @Observable
 public final class ScannerViewModel {
-    public enum State {
+    public enum State: Equatable {
         case idle
         case scanning(progress: Double)
         case results([PhotoCluster])
