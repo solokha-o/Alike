@@ -23,13 +23,20 @@ public final class ScannerViewModel {
     public init(
         gridColumns: Int = 3,
         sensitivity: SensitivityLevel = .medium,
-        analysisService: PhotoAnalysisService = PhotoAnalysisServiceImpl(),
+        analysisService: PhotoAnalysisService? = nil,
         repository: PhotoClusterRepository = CoreDataPhotoClusterRepository()
     ) {
         self.gridColumns = gridColumns
         self.sensitivity = sensitivity
-        self.analysisService = analysisService
         self.repository = repository
+        
+        if let analysisService {
+            self.analysisService = analysisService
+        } else if let featurePrintRepository = repository as? PhotoFeaturePrintRepository {
+            self.analysisService = PhotoAnalysisServiceImpl(featurePrintRepository: featurePrintRepository)
+        } else {
+            self.analysisService = PhotoAnalysisServiceImpl()
+        }
     }
     
     public func loadCachedResults() async {

@@ -18,10 +18,12 @@ public actor PersistenceController: Sendable {
         }
         
         container = NSPersistentContainer(name: "AlikeModel", managedObjectModel: model)
-        
+
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
+        container.persistentStoreDescriptions.first?.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions.first?.shouldInferMappingModelAutomatically = true
         
         container.loadPersistentStores { description, error in
             if let error = error {

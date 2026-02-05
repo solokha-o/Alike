@@ -85,3 +85,4 @@ fastlane/test_output
 *.cache
 *test-logs
 *.vscode
+.sandbox-home/
