@@ -23,13 +23,20 @@ public final class ScannerViewModel {
     public init(
         gridColumns: Int = 3,
         sensitivity: SensitivityLevel = .medium,
-        analysisService: PhotoAnalysisService = PhotoAnalysisServiceImpl(),
+        analysisService: PhotoAnalysisService? = nil,
         repository: PhotoClusterRepository = CoreDataPhotoClusterRepository()
     ) {
         self.gridColumns = gridColumns
         self.sensitivity = sensitivity
-        self.analysisService = analysisService
         self.repository = repository
+        
+        if let analysisService {
+            self.analysisService = analysisService
+        } else if let featurePrintRepository = repository as? PhotoFeaturePrintRepository {
+            self.analysisService = PhotoAnalysisServiceImpl(featurePrintRepository: featurePrintRepository)
+        } else {
+            self.analysisService = PhotoAnalysisServiceImpl()
+        }
     }
     
     public func loadCachedResults() async {
@@ -40,14 +47,16 @@ public final class ScannerViewModel {
                 if case .results(let existing) = state, existing == sorted {
                     return
                 }
+                AppLog.ui.debug("\(AppLog.tag(.cache, "Loaded cached clusters: \(sorted.count)"))")
                 state = .results(sorted)
             }
         } catch {
-            print("Failed to load cached results: \(error)")
+            AppLog.ui.error("\(AppLog.tag(.error, "Failed to load cached results: \(error.localizedDescription)"))")
         }
     }
     
     public func startScanning() async {
+        AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
         state = .scanning(progress: 0.0)
         
         do {
@@ -67,8 +76,10 @@ public final class ScannerViewModel {
             if case .results(let existing) = state, existing == sorted {
                 return
             }
+            AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
             state = .results(sorted)
         } catch {
+            AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
             state = .error(error.localizedDescription)
         }
     }
