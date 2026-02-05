@@ -41,6 +41,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [PhotoCluster] {
         try Task.checkCancellation()
+        let startTime = ContinuousClock().now
 
         // Fetch all photo assets
         let assets = await MainActor.run {
@@ -59,6 +60,9 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let cachedFeaturePrints = await loadCachedFeaturePrints(for: assets)
         let assetsNeedingComputation = assets.filter { cachedFeaturePrints[$0.localIdentifier] == nil }
         let cachedCount = cachedFeaturePrints.count
+        AppLog.scan.debug(
+            "\(AppLog.tag(.cache, "Assets: \(assets.count), cached: \(cachedCount), toCompute: \(assetsNeedingComputation.count)"))"
+        )
 
         if cachedCount > 0 {
             progress((Double(cachedCount) / Double(assets.count)) * 0.8)
@@ -72,6 +76,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             let overallProgress = (completed / Double(assets.count)) * 0.8
             progress(overallProgress)
         }
+        AppLog.scan.debug("\(AppLog.tag(.vision, "Computed feature prints: \(computed.count)"))")
 
         await saveFeaturePrintCache(for: computed)
 
@@ -94,6 +99,8 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             photosWithFeaturePrints,
             threshold: sensitivity
         )
+        let duration = startTime.duration(to: ContinuousClock().now)
+        AppLog.scan.info("\(AppLog.tag(.finish, "Clustering done. clusters=\(clusters.count) duration=\(duration)"))")
         
         progress(1.0)
         

@@ -85,6 +85,9 @@ public struct PhotoClusteringService: Sendable {
             candidates.map { $0.candidate },
             threshold: threshold
         )
+        AppLog.clustering.debug(
+            "\(AppLog.tag(.clustering, "Clustered candidates: \(candidates.count) clusters: \(results.count)"))"
+        )
         
         return results.map { result in
             let assets = result.indices.map { candidates[$0].asset }

@@ -35,10 +35,12 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         let context = persistence.viewContext
         
         return try await context.perform {
+            let start = ContinuousClock().now
             let request = ClusterEntity.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
             
             let entities = try context.fetch(request)
+            AppLog.storage.debug("\(AppLog.tag(.storage, "Load clusters count=\(entities.count) duration=\(start.duration(to: ContinuousClock().now))"))")
             
             return entities.compactMap { entity -> PhotoCluster? in
                 let localIdentifiers = entity.photosArray.map { $0.localIdentifier }
@@ -136,6 +138,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     @MainActor
     func saveClusterData(_ clusterData: [ClusterData]) async throws {
         try await persistence.performBackgroundTask { context in
+            let start = ContinuousClock().now
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
             let existingClusters = try context.fetch(ClusterEntity.fetchRequest())
@@ -187,6 +190,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             }
 
             try context.save()
+            AppLog.storage.debug("\(AppLog.tag(.storage, "Save clusters count=\(clusterData.count) duration=\(start.duration(to: ContinuousClock().now))"))")
         }
     }
 
@@ -248,6 +252,7 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
         
         let context = persistence.viewContext
         return try await context.perform {
+            let start = ContinuousClock().now
             let identifiers = Array(Set(localIdentifiers))
             var result: [String: PhotoFeaturePrintCacheEntry] = [:]
             
@@ -268,7 +273,9 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
                     )
                 }
             }
-            
+            AppLog.storage.debug(
+                "\(AppLog.tag(.storage, "Load feature prints requested=\(identifiers.count) hit=\(result.count) duration=\(start.duration(to: ContinuousClock().now))"))"
+            )
             return result
         }
     }
@@ -278,6 +285,7 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
         
         let identifiers = Array(Set(entries.map(\.localIdentifier)))
         try await persistence.performBackgroundTask { context in
+            let start = ContinuousClock().now
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
             var entitiesByIdentifier: [String: PhotoEntity] = [:]
@@ -303,6 +311,9 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
             }
             
             try context.save()
+            AppLog.storage.debug(
+                "\(AppLog.tag(.storage, "Upsert feature prints count=\(entries.count) duration=\(start.duration(to: ContinuousClock().now))"))"
+            )
         }
     }
 }

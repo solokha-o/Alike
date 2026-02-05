@@ -1,5 +1,6 @@
 import Foundation
 import ImageIO
+import Core
 import os
 @preconcurrency import Photos
 @preconcurrency import Vision
@@ -75,6 +76,7 @@ public struct VisionFeaturePrintService: Sendable {
 
         let total = assets.count
         let taskLimit = min(Self.maxConcurrentTasks, total)
+        AppLog.vision.debug("\(AppLog.tag(.vision, "FeaturePrint batch start. total=\(total) concurrency=\(taskLimit)"))")
 
         return try await withThrowingTaskGroup(of: FeaturePrintTaskResult.self) { group in
             var results: [FeaturePrintTaskResult] = []
@@ -82,6 +84,7 @@ public struct VisionFeaturePrintService: Sendable {
 
             var nextIndex = 0
             var completed = 0
+            var nilCount = 0
             var lastReportedProgress = 0.0
             let clock = ContinuousClock()
             var lastReportedTime = clock.now
@@ -107,6 +110,9 @@ public struct VisionFeaturePrintService: Sendable {
             while let taskResult = try await group.next() {
                 results.append(taskResult)
                 completed += 1
+                if taskResult.featurePrint == nil {
+                    nilCount += 1
+                }
 
                 let currentProgress = Double(completed) / Double(total)
                 let now = clock.now
@@ -124,6 +130,10 @@ public struct VisionFeaturePrintService: Sendable {
                     nextIndex += 1
                 }
             }
+
+            AppLog.vision.debug(
+                "\(AppLog.tag(.vision, "FeaturePrint batch done. completed=\(completed) nil=\(nilCount)"))"
+            )
 
             return results
                 .sorted { $0.index < $1.index }
@@ -187,6 +197,7 @@ private extension VisionFeaturePrintService {
                     options: options
                 ) { data, _, orientation, info in
                     if let error = info?[PHImageErrorKey] as? Error {
+                        AppLog.photoKit.error("\(AppLog.tag(.error, "Image data request error: \(error.localizedDescription)"))")
                         resumeOnce { continuation.resume(throwing: error) }
                         return
                     }
