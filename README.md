@@ -69,6 +69,13 @@ open Alike/Alike.xcodeproj
 
 3. **Build & Run** (⌘R)
 
+## 🧾 Logging
+
+There are two shared schemes:
+
+- `Alike` — normal logging (info/errors only).
+- `Alike-VerboseLogs` — enables verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
+
 ## 📱 User flow
 
 1. **Launch Screen** (3 sec) → 📸 animation
