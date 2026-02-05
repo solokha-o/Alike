@@ -1,18 +1,38 @@
-import Photos
-import Vision
+import Foundation
+@preconcurrency import Photos
+@preconcurrency import Vision
 import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
 public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
-    private let visionService: VisionFeaturePrintService
-    private let clusteringService: PhotoClusteringService
+    private let visionService: any VisionFeaturePrintServicing
+    private let clusteringService: any PhotoClusteringServicing
+    private let featurePrintRepository: (any PhotoFeaturePrintRepository)?
+    private let assetsProvider: @MainActor @Sendable () -> [PHAsset]
     
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
-        clusteringService: PhotoClusteringService = PhotoClusteringService()
+        clusteringService: PhotoClusteringService = PhotoClusteringService(),
+        featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil
+    ) {
+        self.init(
+            visionService: visionService,
+            clusteringService: clusteringService,
+            featurePrintRepository: featurePrintRepository,
+            assetsProvider: PhotoAnalysisServiceImpl.fetchAllPhotoAssets
+        )
+    }
+
+    init(
+        visionService: any VisionFeaturePrintServicing,
+        clusteringService: any PhotoClusteringServicing,
+        featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil,
+        assetsProvider: @escaping @MainActor @Sendable () -> [PHAsset]
     ) {
         self.visionService = visionService
         self.clusteringService = clusteringService
+        self.featurePrintRepository = featurePrintRepository
+        self.assetsProvider = assetsProvider
     }
     
     /// Analyze entire photo library and return clusters
@@ -20,29 +40,67 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         sensitivity: Float,
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [PhotoCluster] {
+        try Task.checkCancellation()
+        let startTime = ContinuousClock().now
+
         // Fetch all photo assets
         let assets = await MainActor.run {
-            fetchAllPhotoAssets()
+            assetsProvider()
         }
         
         guard !assets.isEmpty else {
             throw PhotoAnalysisError.noPhotosFound
         }
-        
-        // Generate feature prints (0-80% of progress)
-        let photosWithFeaturePrints = try await visionService.generateFeaturePrints(
-            for: assets
-        ) { featurePrintProgress in
-            let overallProgress = featurePrintProgress * 0.8
+
+        progress(0.01)
+        await Task.yield()
+
+        try Task.checkCancellation()
+
+        let cachedFeaturePrints = await loadCachedFeaturePrints(for: assets)
+        let assetsNeedingComputation = assets.filter { cachedFeaturePrints[$0.localIdentifier] == nil }
+        let cachedCount = cachedFeaturePrints.count
+        AppLog.scan.debug(
+            "\(AppLog.tag(.cache, "Assets: \(assets.count), cached: \(cachedCount), toCompute: \(assetsNeedingComputation.count)"))"
+        )
+
+        if cachedCount > 0 {
+            progress((Double(cachedCount) / Double(assets.count)) * 0.8)
+        }
+
+        // Generate missing feature prints (0-80% of progress)
+        let computed = try await visionService.generateFeaturePrints(
+            for: assetsNeedingComputation
+        ) { computedProgress in
+            let completed = Double(cachedCount) + (computedProgress * Double(assetsNeedingComputation.count))
+            let overallProgress = (completed / Double(assets.count)) * 0.8
             progress(overallProgress)
         }
-        
+        AppLog.scan.debug("\(AppLog.tag(.vision, "Computed feature prints: \(computed.count)"))")
+
+        await saveFeaturePrintCache(for: computed)
+
+        let computedByIdentifier = Dictionary(
+            uniqueKeysWithValues: computed.compactMap { result -> (String, VNFeaturePrintObservation)? in
+                guard let featurePrint = result.featurePrint else { return nil }
+                return (result.asset.localIdentifier, featurePrint)
+            }
+        )
+
+        let photosWithFeaturePrints: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = assets.map { asset in
+            let featurePrint = cachedFeaturePrints[asset.localIdentifier] ?? computedByIdentifier[asset.localIdentifier]
+            return (asset: asset, featurePrint: featurePrint)
+        }
+
         // Perform clustering (80-100% of progress)
         progress(0.8)
+        try Task.checkCancellation()
         let clusters = try clusteringService.clusterPhotos(
             photosWithFeaturePrints,
             threshold: sensitivity
         )
+        let duration = startTime.duration(to: ContinuousClock().now)
+        AppLog.scan.info("\(AppLog.tag(.finish, "Clustering done. clusters=\(clusters.count) duration=\(duration)"))")
         
         progress(1.0)
         
@@ -68,7 +126,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     // MARK: - Private Helpers
     
     @MainActor
-    private func fetchAllPhotoAssets() -> [PHAsset] {
+    private static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
@@ -90,4 +148,87 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         return assets
     }
     
+}
+
+private extension PhotoAnalysisServiceImpl {
+    func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
+        guard let featurePrintRepository else { return [:] }
+
+        let identifiers = assets.map(\.localIdentifier)
+        guard let cachedEntries = try? await featurePrintRepository.loadFeaturePrints(for: identifiers) else {
+            return [:]
+        }
+
+        var cachedFeaturePrints: [String: VNFeaturePrintObservation] = [:]
+        cachedFeaturePrints.reserveCapacity(cachedEntries.count)
+
+        for asset in assets {
+            guard let entry = cachedEntries[asset.localIdentifier] else { continue }
+            guard Self.isCacheValid(
+                cachedModificationDate: entry.modificationDate,
+                assetModificationDate: asset.modificationDate
+            ) else { continue }
+
+            guard let featurePrint = decodeFeaturePrint(from: entry.featurePrintData) else { continue }
+            cachedFeaturePrints[asset.localIdentifier] = featurePrint
+        }
+
+        return cachedFeaturePrints
+    }
+
+    func saveFeaturePrintCache(for results: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)]) async {
+        guard let featurePrintRepository else { return }
+
+        let entries: [PhotoFeaturePrintCacheEntry] = results.compactMap { item in
+            guard let featurePrint = item.featurePrint,
+                  let data = encodeFeaturePrint(featurePrint) else {
+                return nil
+            }
+
+            return PhotoFeaturePrintCacheEntry(
+                localIdentifier: item.asset.localIdentifier,
+                modificationDate: item.asset.modificationDate,
+                featurePrintData: data
+            )
+        }
+
+        guard !entries.isEmpty else { return }
+        try? await featurePrintRepository.upsertFeaturePrints(entries)
+    }
+
+    nonisolated static func isCacheValid(
+        cachedModificationDate: Date?,
+        assetModificationDate: Date?
+    ) -> Bool {
+        switch (cachedModificationDate, assetModificationDate) {
+        case (nil, nil):
+            return true
+        case (let cached?, let asset?):
+            return abs(cached.timeIntervalSince1970 - asset.timeIntervalSince1970) < 1
+        default:
+            return false
+        }
+    }
+
+    func decodeFeaturePrint(from data: Data) -> VNFeaturePrintObservation? {
+        do {
+            return try NSKeyedUnarchiver.unarchivedObject(
+                ofClass: VNFeaturePrintObservation.self,
+                from: data
+            )
+        } catch {
+            return nil
+        }
+    }
+
+    func encodeFeaturePrint(_ observation: VNFeaturePrintObservation) -> Data? {
+        do {
+            return try NSKeyedArchiver.archivedData(
+                withRootObject: observation,
+                requiringSecureCoding: true
+            )
+        } catch {
+            return nil
+        }
+    }
 }
