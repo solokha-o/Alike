@@ -76,4 +76,27 @@ final class MockServicesTests: XCTestCase {
         XCTAssertEqual(clusters.count, 0)
         await fulfillment(of: [progressHalf, progressFull], timeout: 1.0)
     }
+
+    func testMockClusterReviewStateRepositoryStoresAndDeletesState() async throws {
+        let repository = MockClusterReviewStateRepository()
+        let clusterID = UUID()
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["other"],
+            status: .inReview,
+            estimatedSavingsBytes: 1024
+        )
+
+        try await repository.saveReviewState(state)
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+        let allStates = try await repository.loadAllReviewStates()
+
+        XCTAssertEqual(loaded, state)
+        XCTAssertEqual(allStates[clusterID], state)
+
+        try await repository.deleteReviewState(clusterID: clusterID)
+        let deleted = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertNil(deleted)
+    }
 }

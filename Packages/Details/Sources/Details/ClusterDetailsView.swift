@@ -3,32 +3,80 @@ import Photos
 import Core
 import DesignSystem
 
+#if os(iOS)
+
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
+    @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
-    @Environment(\.dismiss) private var dismiss
-    
+
     public init(cluster: PhotoCluster) {
         self.cluster = cluster
+        self._viewModel = State(initialValue: ClusterDetailsViewModel(cluster: cluster))
+    }
+
+    init(
+        cluster: PhotoCluster,
+        viewModel: ClusterDetailsViewModel
+    ) {
+        self.cluster = cluster
+        self._viewModel = State(initialValue: viewModel)
     }
     
     public var body: some View {
         ScrollView {
-            LazyVGrid(
-                columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
-                spacing: Spacing.small
-            ) {
-                ForEach(cluster.assets, id: \.localIdentifier) { asset in
-                    PhotoThumbnail(asset: asset) {
-                        if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
-                            selectedAsset = SelectedAsset(asset: asset, index: index)
-                        }
+            if cluster.assets.isEmpty {
+                ContentUnavailableView {
+                    Label(appLocalized("No Photos Available"), systemImage: "photo")
+                }
+                .padding(.top, 80)
+            } else {
+                LazyVGrid(
+                    columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
+                    spacing: Spacing.small
+                ) {
+                    ForEach(cluster.assets, id: \.localIdentifier) { asset in
+                        SelectablePhotoThumbnail(
+                            asset: asset,
+                            isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                            isSelected: viewModel.isSelected(asset.localIdentifier),
+                            onToggleSelection: {
+                                viewModel.toggleSelection(for: asset.localIdentifier)
+                            },
+                            onOpenOriginal: {
+                                if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
+                                    selectedAsset = SelectedAsset(asset: asset, index: index)
+                                }
+                            }
+                        )
                     }
                 }
+                .padding(.horizontal, Spacing.medium)
+                .padding(.bottom, Spacing.medium)
             }
-            .padding(Spacing.medium)
+        }
+        .safeAreaInset(edge: .top) {
+            VStack(spacing: Spacing.small) {
+                ClusterReviewSummaryCard(
+                    bestShotLabel: viewModel.bestShotLabel,
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavingsText: viewModel.estimatedSavingsText,
+                    reviewStatus: viewModel.reviewStatus
+                )
+
+                if viewModel.isActionBarVisible {
+                    ClusterReviewActionBar(
+                        onSelectAllExceptBest: viewModel.selectAllExceptBest,
+                        onClearSelection: viewModel.clearSelection
+                    )
+                }
+            }
+            .padding(.horizontal, Spacing.medium)
+            .padding(.top, Spacing.small)
+            .padding(.bottom, Spacing.medium)
+            .background(.regularMaterial)
         }
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
@@ -50,6 +98,9 @@ public struct ClusterDetailsView: View {
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
         }
+        .task {
+            await viewModel.load()
+        }
     }
 }
 
@@ -59,32 +110,71 @@ private struct SelectedAsset: Identifiable {
     var id: String { asset.localIdentifier }
 }
 
-// MARK: - Photo Thumbnail
-struct PhotoThumbnail: View {
+struct SelectablePhotoThumbnail: View {
     let asset: PHAsset
+    let isBestShot: Bool
+    let isSelected: Bool
+    let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
+
     @State private var image: UIImage?
     @State private var showingMetadata = false
-    
+
     var body: some View {
-        Group {
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 120)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
-                    .clipped()
-                    .aspectRatio(16/9, contentMode: .fit)
-            } else {
-                Rectangle()
-                    .fill(Color.secondary.opacity(0.2))
-                    .frame(height: 120)
-                    .overlay {
-                        ProgressView()
-                    }
+        Button(action: onToggleSelection) {
+            ZStack {
+                Color.clear
+
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 120)
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
+                        .clipped()
+                        .aspectRatio(16/9, contentMode: .fit)
+                } else {
+                    Rectangle()
+                        .fill(Color.secondary.opacity(0.2))
+                        .frame(height: 120)
+                        .overlay {
+                            ProgressView()
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .overlay(alignment: .topLeading) {
+                if isBestShot {
+                    Label(appLocalized("Best Shot"), systemImage: "star.fill")
+                        .font(.caption.bold())
+                        .padding(.horizontal, Spacing.xSmall)
+                        .padding(.vertical, Spacing.xxSmall)
+                        .background(.regularMaterial, in: Capsule())
+                        .padding(Spacing.xSmall)
+                }
+            }
+            .overlay(alignment: .topTrailing) {
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.white, Color.accent)
+                        .padding(Spacing.xSmall)
+                }
+            }
+            .overlay {
+                if isSelected {
+                    RoundedRectangle(cornerRadius: CornerRadius.small)
+                        .fill(Color.accent.opacity(0.18))
+                }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: CornerRadius.small)
+                    .stroke(borderColor, lineWidth: borderLineWidth)
             }
         }
+        .buttonStyle(.plain)
+        .contentShape(Rectangle())
         .cornerRadius(CornerRadius.small)
         .contextMenu {
             Button {
@@ -114,6 +204,32 @@ struct PhotoThumbnail: View {
         .task {
             image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
         }
+        .accessibilityLabel(Text(accessibilityLabel))
+        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+    }
+
+    private var borderColor: Color {
+        if isBestShot {
+            return .yellow.opacity(0.9)
+        }
+        if isSelected {
+            return .accent
+        }
+        return .clear
+    }
+
+    private var borderLineWidth: CGFloat {
+        (isBestShot || isSelected) ? 2 : 0
+    }
+
+    private var accessibilityLabel: String {
+        if isBestShot {
+            return appLocalized("Best Shot")
+        }
+        if isSelected {
+            return appLocalized("Selected for cleanup review")
+        }
+        return appLocalized("Not selected")
     }
 }
 
@@ -283,6 +399,32 @@ struct MetadataView: View {
         }
     }
 }
+
+#else
+
+public struct ClusterDetailsView: View {
+    let cluster: PhotoCluster
+
+    public init(cluster: PhotoCluster) {
+        self.cluster = cluster
+    }
+
+    public var body: some View {
+        ContentUnavailableView {
+            Label(appLocalized("Similar Photos"), systemImage: "photo.stack")
+        } description: {
+            Text(appLocalized("Cluster details are available on iOS."))
+        }
+    }
+}
+
+struct MetadataView: View {
+    var body: some View {
+        EmptyView()
+    }
+}
+
+#endif
 
 // MARK: - Preview
 #Preview {

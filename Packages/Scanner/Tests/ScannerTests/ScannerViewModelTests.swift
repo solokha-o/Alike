@@ -8,15 +8,18 @@ final class ScannerViewModelTests: XCTestCase {
     var viewModel: ScannerViewModel!
     var mockAnalysisService: MockPhotoAnalysisService!
     var mockRepository: MockPhotoClusterRepository!
+    var mockReviewRepository: MockClusterReviewStateRepository!
     
     override func setUp() async throws {
         mockAnalysisService = MockPhotoAnalysisService()
         mockRepository = MockPhotoClusterRepository()
+        mockReviewRepository = MockClusterReviewStateRepository()
         viewModel = ScannerViewModel(
             gridColumns: 3,
             sensitivity: .medium,
             analysisService: mockAnalysisService,
-            repository: mockRepository
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository
         )
     }
     
@@ -24,6 +27,7 @@ final class ScannerViewModelTests: XCTestCase {
         viewModel = nil
         mockAnalysisService = nil
         mockRepository = nil
+        mockReviewRepository = nil
     }
     
     // MARK: - Initialization Tests
@@ -142,6 +146,28 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(sorted.first?.id, id3, "Newest cluster should come first")
         XCTAssertEqual(sorted[1].id, id2, "Higher similarity should come before lower similarity")
         XCTAssertEqual(sorted[2].id, id1, "Lower similarity should come last")
+    }
+
+    func testReviewStatusReturnsStoredStatus() async throws {
+        let clusterID = UUID()
+        await mockReviewRepository.setStoredStates([
+            clusterID: ClusterReviewState(
+                clusterID: clusterID,
+                bestShotLocalIdentifier: "best",
+                selectedLocalIdentifiers: ["candidate"],
+                status: .inReview,
+                estimatedSavingsBytes: 100
+            )
+        ])
+
+        await viewModel.loadReviewStates()
+
+        XCTAssertEqual(viewModel.reviewStatus(for: clusterID), .inReview)
+    }
+
+    func testUnknownReviewStatusDefaultsToNotReviewed() async {
+        await viewModel.loadReviewStates()
+        XCTAssertEqual(viewModel.reviewStatus(for: UUID()), .notReviewed)
     }
     
     // MARK: - Clear Results Tests

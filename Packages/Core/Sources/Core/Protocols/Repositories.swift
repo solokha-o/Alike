@@ -22,6 +22,24 @@ public protocol PhotoClusterRepository: Sendable {
     func hasGalleryChanged() async -> Bool
 }
 
+/// Repository for cleanup review state per photo cluster.
+public protocol ClusterReviewStateRepository: Sendable {
+    /// Load review state for a cluster.
+    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState?
+
+    /// Load all review states keyed by cluster id.
+    func loadAllReviewStates() async throws -> [UUID: ClusterReviewState]
+
+    /// Save or overwrite review state.
+    func saveReviewState(_ state: ClusterReviewState) async throws
+
+    /// Delete one review state.
+    func deleteReviewState(clusterID: UUID) async throws
+
+    /// Delete all stored review states.
+    func deleteAllReviewStates() async throws
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters

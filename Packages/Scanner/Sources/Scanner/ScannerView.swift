@@ -45,7 +45,9 @@ public struct ScannerView: View {
                 }
             }
             .navigationTitle(Text(appLocalized("Scanner")))
+#if os(iOS)
             .navigationBarTitleDisplayMode(.large)
+#endif
         }
         .task {
             await viewModel.loadCachedResults()
@@ -157,13 +159,22 @@ public struct ScannerView: View {
             } else {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
                     ForEach(sortedClusters) { cluster in
-                        ClusterCard(cluster: cluster)
+                        ClusterCard(
+                            cluster: cluster,
+                            reviewStatus: viewModel.reviewStatus(for: cluster.id)
+                        )
                     }
                 }
                 .padding(Spacing.medium)
             }
         }
+        .onAppear {
+            Task {
+                await viewModel.loadReviewStates()
+            }
+        }
         .toolbar {
+#if os(iOS)
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
@@ -174,6 +185,18 @@ public struct ScannerView: View {
                 }
                 .scaleOnPress()
             }
+#else
+            ToolbarItem {
+                Button {
+                    Task {
+                        await viewModel.startScanning()
+                    }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .scaleOnPress()
+            }
+#endif
         }
         .sensoryFeedback(.success, trigger: clusters.count)
     }
@@ -196,13 +219,17 @@ public struct ScannerView: View {
 // MARK: - Cluster Card
 struct ClusterCard: View {
     let cluster: PhotoCluster
+    let reviewStatus: ClusterReviewStatus
+#if os(iOS)
     @State private var thumbnailImage: UIImage?
+#endif
     
     var body: some View {
         NavigationLink {
             ClusterDetailsView(cluster: cluster)
         } label: {
             ZStack(alignment: .bottomTrailing) {
+#if os(iOS)
                 if let image = thumbnailImage {
                     Image(uiImage: image)
                         .resizable()
@@ -219,6 +246,15 @@ struct ClusterCard: View {
                             ProgressView()
                         }
                 }
+#else
+                Rectangle()
+                    .fill(Color.secondary.opacity(0.2))
+                    .frame(height: 150)
+                    .overlay {
+                        Image(systemName: "photo")
+                            .foregroundStyle(.secondary)
+                    }
+#endif
                 
                 // Count badge
                 Text("\(cluster.count)")
@@ -229,13 +265,65 @@ struct ClusterCard: View {
                     .background(.ultraThinMaterial, in: Capsule())
                     .padding(Spacing.xSmall)
             }
+            .overlay(alignment: .topLeading) {
+                ClusterReviewBadge(status: reviewStatus)
+                    .padding(Spacing.xSmall)
+            }
             .cornerRadius(CornerRadius.medium)
             .subtleShadow()
         }
+#if os(iOS)
         .task {
             if let asset = cluster.thumbnail {
                 thumbnailImage = try? await asset.loadImage()
             }
+        }
+#endif
+    }
+}
+
+private struct ClusterReviewBadge: View {
+    let status: ClusterReviewStatus
+
+    var body: some View {
+        Label(statusTitle, systemImage: iconName)
+            .font(.caption2.bold())
+            .foregroundStyle(foregroundColor)
+            .padding(.horizontal, Spacing.xSmall)
+            .padding(.vertical, Spacing.xxSmall)
+            .background(.regularMaterial, in: Capsule())
+    }
+
+    private var statusTitle: String {
+        switch status {
+        case .notReviewed:
+            appLocalized("Not reviewed")
+        case .inReview:
+            appLocalized("In review")
+        case .reviewed:
+            appLocalized("Reviewed")
+        }
+    }
+
+    private var iconName: String {
+        switch status {
+        case .notReviewed:
+            "circle"
+        case .inReview:
+            "clock.arrow.circlepath"
+        case .reviewed:
+            "checkmark.seal.fill"
+        }
+    }
+
+    private var foregroundColor: Color {
+        switch status {
+        case .notReviewed:
+            .secondary
+        case .inReview:
+            .accent
+        case .reviewed:
+            .green
         }
     }
 }
