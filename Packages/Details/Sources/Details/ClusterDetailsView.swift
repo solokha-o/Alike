@@ -26,6 +26,8 @@ public struct ClusterDetailsView: View {
     }
     
     public var body: some View {
+        let displayedAssets = viewModel.displayedAssets(from: cluster.assets)
+
         ScrollView {
             if cluster.assets.isEmpty {
                 ContentUnavailableView {
@@ -37,7 +39,7 @@ public struct ClusterDetailsView: View {
                     columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
                     spacing: Spacing.small
                 ) {
-                    ForEach(cluster.assets, id: \.localIdentifier) { asset in
+                    ForEach(displayedAssets, id: \.localIdentifier) { asset in
                         SelectablePhotoThumbnail(
                             asset: asset,
                             isBestShot: viewModel.isBestShot(asset.localIdentifier),
@@ -51,12 +53,21 @@ public struct ClusterDetailsView: View {
                                 }
                             }
                         )
+                        .transition(
+                            .asymmetric(
+                                insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                removal: .scale(scale: 0.94).combined(with: .opacity)
+                            )
+                        )
                     }
                 }
                 .padding(.horizontal, Spacing.medium)
                 .padding(.bottom, Spacing.medium)
             }
         }
+        .animation(.snappy(duration: 0.26, extraBounce: 0.04), value: displayedAssets.map(\.localIdentifier))
+        .animation(.snappy(duration: 0.22, extraBounce: 0.04), value: viewModel.selectedAssetIDs)
+        .animation(.snappy(duration: 0.22, extraBounce: 0.04), value: viewModel.reviewStatus)
         .safeAreaInset(edge: .top) {
             VStack(spacing: Spacing.small) {
                 ClusterReviewSummaryCard(
@@ -68,6 +79,7 @@ public struct ClusterDetailsView: View {
 
                 if viewModel.isActionBarVisible {
                     ClusterReviewActionBar(
+                        onKeepBestOnly: viewModel.keepBestOnly,
                         onSelectAllExceptBest: viewModel.selectAllExceptBest,
                         onClearSelection: viewModel.clearSelection
                     )
@@ -152,6 +164,7 @@ struct SelectablePhotoThumbnail: View {
                         .padding(.vertical, Spacing.xxSmall)
                         .background(.regularMaterial, in: Capsule())
                         .padding(Spacing.xSmall)
+                        .transition(.scale(scale: 0.92).combined(with: .opacity))
                 }
             }
             .overlay(alignment: .topTrailing) {
@@ -160,18 +173,22 @@ struct SelectablePhotoThumbnail: View {
                         .font(.title3)
                         .foregroundStyle(.white, Color.accent)
                         .padding(Spacing.xSmall)
+                        .transition(.scale(scale: 0.7).combined(with: .opacity))
                 }
             }
             .overlay {
                 if isSelected {
                     RoundedRectangle(cornerRadius: CornerRadius.small)
                         .fill(Color.accent.opacity(0.18))
+                        .transition(.opacity)
                 }
             }
             .overlay {
                 RoundedRectangle(cornerRadius: CornerRadius.small)
                     .stroke(borderColor, lineWidth: borderLineWidth)
             }
+            .animation(.snappy(duration: 0.18, extraBounce: 0.08), value: isSelected)
+            .animation(.snappy(duration: 0.18, extraBounce: 0.04), value: isBestShot)
         }
         .buttonStyle(.plain)
         .contentShape(Rectangle())

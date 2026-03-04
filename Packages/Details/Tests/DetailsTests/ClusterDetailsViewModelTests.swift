@@ -35,6 +35,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: ["candidate"],
+            mode: .selection,
             status: .inReview,
             estimatedSavingsBytes: 1_024
         )
@@ -121,6 +122,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             clusterID: clusterID,
             bestShotLocalIdentifier: "missing",
             selectedLocalIdentifiers: ["candidate"],
+            mode: .selection,
             status: .inReview,
             estimatedSavingsBytes: 10
         )
@@ -167,6 +169,63 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotAssetID, "a")
     }
 
+    func testBestShotPrefersNewerModificationDateWhenOtherSignalsMatch() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(
+                    id: "older",
+                    isFavorite: false,
+                    area: 100,
+                    createdAt: Date(timeIntervalSince1970: 10),
+                    modifiedAt: Date(timeIntervalSince1970: 20)
+                ),
+                snapshot(
+                    id: "newer",
+                    isFavorite: false,
+                    area: 100,
+                    createdAt: Date(timeIntervalSince1970: 10),
+                    modifiedAt: Date(timeIntervalSince1970: 30)
+                )
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "newer")
+    }
+
+    func testKeepBestOnlyShowsOnlyBestShotInGridMode() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.keepBestOnly()
+
+        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best"])
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
+    }
+
+    func testSelectAllExceptBestKeepsAllAssetsVisible() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "one", "two"])
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
+    }
+
     private func makeViewModel(snapshots: [ReviewAssetSnapshot]) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
@@ -179,14 +238,16 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         id: String,
         isFavorite: Bool,
         area: Int,
-        createdAt: Date?
+        createdAt: Date?,
+        modifiedAt: Date? = nil
     ) -> ReviewAssetSnapshot {
         ReviewAssetSnapshot(
             localIdentifier: id,
             isFavorite: isFavorite,
             pixelWidth: area,
             pixelHeight: 1,
-            creationDate: createdAt
+            creationDate: createdAt,
+            modificationDate: modifiedAt
         )
     }
 }

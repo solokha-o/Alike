@@ -1,5 +1,6 @@
 import Foundation
 import Photos
+import SwiftUI
 import DesignSystem
 import Storage
 
@@ -13,6 +14,7 @@ final class ClusterDetailsViewModel {
 
     private(set) var bestShotAssetID: String
     var selectedAssetIDs: Set<String>
+    private(set) var reviewMode: ClusterReviewMode
     private(set) var reviewStatus: ClusterReviewStatus
     private(set) var estimatedSavingsBytes: Int64
 
@@ -27,6 +29,7 @@ final class ClusterDetailsViewModel {
         self.assetSnapshots = resolvedSnapshots
         self.bestShotAssetID = Self.bestShotLocalIdentifier(from: resolvedSnapshots) ?? ""
         self.selectedAssetIDs = []
+        self.reviewMode = .selection
         self.reviewStatus = .notReviewed
         self.estimatedSavingsBytes = 0
     }
@@ -47,10 +50,20 @@ final class ClusterDetailsViewModel {
         assetSnapshots.count > 1 && !bestShotAssetID.isEmpty
     }
 
+    var displayedAssetIdentifiers: [String] {
+        switch reviewMode {
+        case .selection:
+            assetSnapshots.map(\.localIdentifier)
+        case .keepBestOnly:
+            bestShotAssetID.isEmpty ? [] : [bestShotAssetID]
+        }
+    }
+
     func load() async {
         guard !assetSnapshots.isEmpty else {
             bestShotAssetID = ""
             selectedAssetIDs = []
+            reviewMode = .selection
             reviewStatus = .notReviewed
             estimatedSavingsBytes = 0
             return
@@ -60,7 +73,11 @@ final class ClusterDetailsViewModel {
 
         do {
             guard let savedState = try await reviewRepository.loadReviewState(clusterID: cluster.id) else {
-                applyState(bestShotAssetID: fallbackBestShotID, selectedAssetIDs: [])
+                applyState(
+                    bestShotAssetID: fallbackBestShotID,
+                    selectedAssetIDs: [],
+                    reviewMode: .selection
+                )
                 return
             }
 
@@ -72,10 +89,18 @@ final class ClusterDetailsViewModel {
                 .intersection(validIDs)
                 .subtracting([persistedBestShotID])
 
-            applyState(bestShotAssetID: persistedBestShotID, selectedAssetIDs: filteredSelection)
+            applyState(
+                bestShotAssetID: persistedBestShotID,
+                selectedAssetIDs: filteredSelection,
+                reviewMode: savedState.mode
+            )
         } catch {
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to load review state: \(error.localizedDescription)"))")
-            applyState(bestShotAssetID: fallbackBestShotID, selectedAssetIDs: [])
+            applyState(
+                bestShotAssetID: fallbackBestShotID,
+                selectedAssetIDs: [],
+                reviewMode: .selection
+            )
         }
     }
 
@@ -89,25 +114,52 @@ final class ClusterDetailsViewModel {
             selectedAssetIDs.insert(localIdentifier)
         }
 
-        refreshDerivedState()
-        persistCurrentState()
+        withAnimation(.snappy(duration: 0.22, extraBounce: 0.08)) {
+            reviewMode = .selection
+            refreshDerivedState()
+        }
+        Task {
+            await save()
+        }
     }
 
     func selectAllExceptBest() {
         guard !bestShotAssetID.isEmpty else { return }
-        selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
-        refreshDerivedState()
-        persistCurrentState()
+        withAnimation(.snappy(duration: 0.24, extraBounce: 0.06)) {
+            selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
+            reviewMode = .selection
+            refreshDerivedState()
+        }
+        Task {
+            await save()
+        }
     }
 
     func keepBestOnly() {
-        selectAllExceptBest()
+        guard !bestShotAssetID.isEmpty else { return }
+        withAnimation(.snappy(duration: 0.28, extraBounce: 0.04)) {
+            selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
+            reviewMode = .keepBestOnly
+            refreshDerivedState()
+        }
+        Task {
+            await save()
+        }
     }
 
     func clearSelection() {
-        selectedAssetIDs.removeAll()
-        refreshDerivedState()
-        persistCurrentState()
+        withAnimation(.snappy(duration: 0.22, extraBounce: 0.04)) {
+            selectedAssetIDs.removeAll()
+            reviewMode = .selection
+            refreshDerivedState()
+        }
+        Task {
+            await save()
+        }
+    }
+
+    func save() async {
+        await persistCurrentState()
     }
 }
 
@@ -119,12 +171,22 @@ extension ClusterDetailsViewModel {
     func isSelected(_ localIdentifier: String) -> Bool {
         selectedAssetIDs.contains(localIdentifier)
     }
+
+    func displayedAssets(from assets: [PHAsset]) -> [PHAsset] {
+        let displayedIDs = Set(displayedAssetIdentifiers)
+        return assets.filter { displayedIDs.contains($0.localIdentifier) }
+    }
 }
 
 private extension ClusterDetailsViewModel {
-    func applyState(bestShotAssetID: String, selectedAssetIDs: Set<String>) {
+    func applyState(
+        bestShotAssetID: String,
+        selectedAssetIDs: Set<String>,
+        reviewMode: ClusterReviewMode
+    ) {
         self.bestShotAssetID = bestShotAssetID
         self.selectedAssetIDs = selectedAssetIDs
+        self.reviewMode = reviewMode
         refreshDerivedState()
     }
 
@@ -141,22 +203,21 @@ private extension ClusterDetailsViewModel {
         )
     }
 
-    func persistCurrentState() {
+    func persistCurrentState() async {
         guard !bestShotAssetID.isEmpty else { return }
         let state = ClusterReviewState(
             clusterID: cluster.id,
             bestShotLocalIdentifier: bestShotAssetID,
             selectedLocalIdentifiers: selectedAssetIDs,
+            mode: reviewMode,
             status: reviewStatus,
             estimatedSavingsBytes: estimatedSavingsBytes
         )
 
-        Task {
-            do {
-                try await reviewRepository.saveReviewState(state)
-            } catch {
-                AppLog.storage.error("\(AppLog.tag(.error, "Failed to save review state: \(error.localizedDescription)"))")
-            }
+        do {
+            try await reviewRepository.saveReviewState(state)
+        } catch {
+            AppLog.storage.error("\(AppLog.tag(.error, "Failed to save review state: \(error.localizedDescription)"))")
         }
     }
 
@@ -185,8 +246,14 @@ private extension ClusterDetailsViewModel {
             return lhs.pixelArea < rhs.pixelArea
         }
 
-        let lhsTimestamp = lhs.creationDate?.timeIntervalSince1970 ?? 0
-        let rhsTimestamp = rhs.creationDate?.timeIntervalSince1970 ?? 0
+        let lhsTimestamp = max(
+            lhs.creationDate?.timeIntervalSince1970 ?? 0,
+            lhs.modificationDate?.timeIntervalSince1970 ?? 0
+        )
+        let rhsTimestamp = max(
+            rhs.creationDate?.timeIntervalSince1970 ?? 0,
+            rhs.modificationDate?.timeIntervalSince1970 ?? 0
+        )
         if lhsTimestamp != rhsTimestamp {
             return lhsTimestamp < rhsTimestamp
         }
@@ -201,6 +268,7 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
     let pixelWidth: Int
     let pixelHeight: Int
     let creationDate: Date?
+    let modificationDate: Date?
 
     init(asset: PHAsset) {
         self.localIdentifier = asset.localIdentifier
@@ -208,6 +276,7 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
         self.pixelWidth = asset.pixelWidth
         self.pixelHeight = asset.pixelHeight
         self.creationDate = asset.creationDate
+        self.modificationDate = asset.modificationDate
     }
 
     init(
@@ -215,13 +284,15 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
         isFavorite: Bool,
         pixelWidth: Int,
         pixelHeight: Int,
-        creationDate: Date?
+        creationDate: Date?,
+        modificationDate: Date? = nil
     ) {
         self.localIdentifier = localIdentifier
         self.isFavorite = isFavorite
         self.pixelWidth = pixelWidth
         self.pixelHeight = pixelHeight
         self.creationDate = creationDate
+        self.modificationDate = modificationDate
     }
 
     var pixelArea: Int64 {

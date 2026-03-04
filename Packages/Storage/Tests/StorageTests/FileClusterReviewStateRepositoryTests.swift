@@ -28,6 +28,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: ["candidate-1", "candidate-2"],
+            mode: .keepBestOnly,
             status: .reviewed,
             estimatedSavingsBytes: 2_048
         )
@@ -43,6 +44,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: UUID(),
             bestShotLocalIdentifier: "a",
             selectedLocalIdentifiers: [],
+            mode: .selection,
             status: .notReviewed,
             estimatedSavingsBytes: 0
         )
@@ -50,6 +52,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: UUID(),
             bestShotLocalIdentifier: "b",
             selectedLocalIdentifiers: ["c"],
+            mode: .keepBestOnly,
             status: .inReview,
             estimatedSavingsBytes: 512
         )
@@ -68,6 +71,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: [],
+            mode: .selection,
             status: .notReviewed,
             estimatedSavingsBytes: 0
         )
@@ -75,6 +79,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: ["candidate"],
+            mode: .keepBestOnly,
             status: .inReview,
             estimatedSavingsBytes: 1_024
         )
@@ -91,6 +96,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: UUID(),
             bestShotLocalIdentifier: "a",
             selectedLocalIdentifiers: [],
+            mode: .selection,
             status: .notReviewed,
             estimatedSavingsBytes: 0
         )
@@ -98,6 +104,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
             clusterID: UUID(),
             bestShotLocalIdentifier: "b",
             selectedLocalIdentifiers: ["c"],
+            mode: .keepBestOnly,
             status: .reviewed,
             estimatedSavingsBytes: 256
         )

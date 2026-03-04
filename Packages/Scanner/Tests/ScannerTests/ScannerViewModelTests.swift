@@ -155,6 +155,7 @@ final class ScannerViewModelTests: XCTestCase {
                 clusterID: clusterID,
                 bestShotLocalIdentifier: "best",
                 selectedLocalIdentifiers: ["candidate"],
+                mode: .selection,
                 status: .inReview,
                 estimatedSavingsBytes: 100
             )
