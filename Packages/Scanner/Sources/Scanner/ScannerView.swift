@@ -143,6 +143,7 @@ public struct ScannerView: View {
     // MARK: - Results View
     private func resultsView(clusters: [PhotoCluster]) -> some View {
         let sortedClusters = viewModel.sortedClusters(from: clusters)
+        let sessionProgress = viewModel.sessionProgress(for: sortedClusters)
 
         return ScrollView {
             if sortedClusters.isEmpty {
@@ -157,12 +158,21 @@ public struct ScannerView: View {
                 }
                 .padding(.top, 100)
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
-                    ForEach(sortedClusters) { cluster in
-                        ClusterCard(
-                            cluster: cluster,
-                            reviewStatus: viewModel.reviewStatus(for: cluster.id)
-                        )
+                VStack(spacing: Spacing.medium) {
+                    CleanupSessionProgressCard(progress: sessionProgress)
+
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
+                        ForEach(sortedClusters) { cluster in
+                            ClusterCard(
+                                cluster: cluster,
+                                reviewStatus: viewModel.reviewStatus(for: cluster.id),
+                                onReviewStateChanged: {
+                                    Task {
+                                        await viewModel.loadReviewStates()
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
                 .padding(Spacing.medium)
@@ -220,13 +230,17 @@ public struct ScannerView: View {
 struct ClusterCard: View {
     let cluster: PhotoCluster
     let reviewStatus: ClusterReviewStatus
+    let onReviewStateChanged: (() -> Void)?
 #if os(iOS)
     @State private var thumbnailImage: UIImage?
 #endif
     
     var body: some View {
         NavigationLink {
-            ClusterDetailsView(cluster: cluster)
+            ClusterDetailsView(
+                cluster: cluster,
+                onReviewStateChanged: onReviewStateChanged
+            )
         } label: {
             ZStack(alignment: .bottomTrailing) {
 #if os(iOS)
@@ -279,6 +293,62 @@ struct ClusterCard: View {
             }
         }
 #endif
+    }
+}
+
+private struct CleanupSessionProgressCard: View {
+    let progress: CleanupSessionProgress
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup Session Progress"))
+                .font(.appHeadline)
+
+            HStack(spacing: Spacing.small) {
+                statusItem(title: appLocalized("Reviewed"), value: progress.reviewedCount, color: .green)
+                statusItem(title: appLocalized("In review"), value: progress.inReviewCount, color: .accent)
+                statusItem(title: appLocalized("Not reviewed"), value: progress.notReviewedCount, color: .secondary)
+            }
+
+            Divider()
+
+            HStack {
+                Text(appLocalized("Reviewed Clusters: \(progress.reviewedCount) of \(progress.totalClusters)"))
+                    .font(.appFootnote)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text("\(progress.reviewedPercent)%")
+                    .font(.appHeadline)
+                    .monospacedDigit()
+            }
+
+            HStack {
+                Text(appLocalized("Estimated Savings Reviewed So Far"))
+                    .font(.appFootnote)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file))
+                    .font(.appBody.bold())
+                    .monospacedDigit()
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+
+    private func statusItem(title: String, value: Int, color: Color) -> some View {
+        VStack(spacing: Spacing.xxSmall) {
+            Text("\(value)")
+                .font(.title3.bold())
+                .monospacedDigit()
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.xSmall)
+        .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: CornerRadius.small))
     }
 }
 

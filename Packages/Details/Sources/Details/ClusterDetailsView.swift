@@ -8,20 +8,24 @@ import DesignSystem
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
+    private let onReviewStateChanged: (() -> Void)?
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
 
-    public init(cluster: PhotoCluster) {
+    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
         self.cluster = cluster
+        self.onReviewStateChanged = onReviewStateChanged
         self._viewModel = State(initialValue: ClusterDetailsViewModel(cluster: cluster))
     }
 
     init(
         cluster: PhotoCluster,
-        viewModel: ClusterDetailsViewModel
+        viewModel: ClusterDetailsViewModel,
+        onReviewStateChanged: (() -> Void)? = nil
     ) {
         self.cluster = cluster
+        self.onReviewStateChanged = onReviewStateChanged
         self._viewModel = State(initialValue: viewModel)
     }
     
@@ -112,6 +116,9 @@ public struct ClusterDetailsView: View {
         }
         .task {
             await viewModel.load()
+        }
+        .onDisappear {
+            onReviewStateChanged?()
         }
     }
 }
@@ -422,7 +429,7 @@ struct MetadataView: View {
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
 
-    public init(cluster: PhotoCluster) {
+    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
         self.cluster = cluster
     }
 

@@ -111,6 +111,37 @@ public final class ScannerViewModel {
         reviewStates[clusterID]?.status ?? .notReviewed
     }
 
+    public func sessionProgress(for clusters: [PhotoCluster]) -> CleanupSessionProgress {
+        var reviewedCount = 0
+        var inReviewCount = 0
+        var notReviewedCount = 0
+        var reviewedSavingsBytes: Int64 = 0
+
+        for cluster in clusters {
+            let state = reviewStates[cluster.id]
+            let status = state?.status ?? .notReviewed
+
+            switch status {
+            case .reviewed:
+                reviewedCount += 1
+                reviewedSavingsBytes += state?.estimatedSavingsBytes ?? 0
+            case .inReview:
+                inReviewCount += 1
+                reviewedSavingsBytes += state?.estimatedSavingsBytes ?? 0
+            case .notReviewed:
+                notReviewedCount += 1
+            }
+        }
+
+        return CleanupSessionProgress(
+            totalClusters: clusters.count,
+            reviewedCount: reviewedCount,
+            inReviewCount: inReviewCount,
+            notReviewedCount: notReviewedCount,
+            reviewedSavingsBytes: reviewedSavingsBytes
+        )
+    }
+
     public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
         clusters.sorted {
             if $0.createdAt != $1.createdAt {
@@ -124,5 +155,22 @@ public final class ScannerViewModel {
             }
             return $0.id.uuidString < $1.id.uuidString
         }
+    }
+}
+
+public struct CleanupSessionProgress: Equatable, Sendable {
+    public let totalClusters: Int
+    public let reviewedCount: Int
+    public let inReviewCount: Int
+    public let notReviewedCount: Int
+    public let reviewedSavingsBytes: Int64
+
+    public var reviewedRatio: Double {
+        guard totalClusters > 0 else { return 0 }
+        return Double(reviewedCount) / Double(totalClusters)
+    }
+
+    public var reviewedPercent: Int {
+        Int((reviewedRatio * 100).rounded())
     }
 }
