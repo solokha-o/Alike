@@ -9,17 +9,20 @@ final class ScannerViewModelTests: XCTestCase {
     var mockAnalysisService: MockPhotoAnalysisService!
     var mockRepository: MockPhotoClusterRepository!
     var mockReviewRepository: MockClusterReviewStateRepository!
+    var mockCleanupSessionRepository: MockCleanupSessionRepository!
     
     override func setUp() async throws {
         mockAnalysisService = MockPhotoAnalysisService()
         mockRepository = MockPhotoClusterRepository()
         mockReviewRepository = MockClusterReviewStateRepository()
+        mockCleanupSessionRepository = MockCleanupSessionRepository()
         viewModel = ScannerViewModel(
             gridColumns: 3,
             sensitivity: .medium,
             analysisService: mockAnalysisService,
             repository: mockRepository,
-            reviewRepository: mockReviewRepository
+            reviewRepository: mockReviewRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository
         )
     }
     
@@ -28,6 +31,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockAnalysisService = nil
         mockRepository = nil
         mockReviewRepository = nil
+        mockCleanupSessionRepository = nil
     }
     
     // MARK: - Initialization Tests
@@ -108,6 +112,19 @@ final class ScannerViewModelTests: XCTestCase {
         
         let saved = await mockRepository.savedClusters
         XCTAssertEqual(saved.count, 1)
+    }
+
+    func testStartScanningCreatesNewCleanupSession() async {
+        let mockCluster = createMockCluster(photoCount: 2)
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
+
+        await viewModel.startScanning()
+
+        let session = await mockCleanupSessionRepository.storedSession
+        XCTAssertNotNil(session)
+        XCTAssertEqual(session?.totalClusters, 1)
+        XCTAssertEqual(session?.reviewedClusters, 0)
+        XCTAssertEqual(session?.estimatedSavingsBytes, 0)
     }
 
     func testScanFailureSetsErrorState() async {
@@ -301,6 +318,111 @@ final class ScannerViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected results state")
         }
+    }
+
+    func testLoadCachedResultsRestoresExistingCleanupSession() async {
+        let cluster = createMockCluster(photoCount: 2)
+        let existingSession = CleanupSession(
+            totalClusters: 1,
+            reviewedClusters: 0,
+            estimatedSavingsBytes: 0
+        )
+        await mockRepository.setLoadClustersResult(.success([cluster]))
+        await mockCleanupSessionRepository.setStoredSession(existingSession)
+
+        await viewModel.loadCachedResults()
+
+        XCTAssertEqual(viewModel.activeCleanupSession?.id, existingSession.id)
+        XCTAssertEqual(viewModel.activeCleanupSession?.totalClusters, 1)
+    }
+
+    func testLoadReviewStatesUpdatesCleanupSessionAggregates() async {
+        let reviewedID = UUID()
+        let inReviewID = UUID()
+        let clusters = [
+            createMockCluster(id: reviewedID, photoCount: 2),
+            createMockCluster(id: inReviewID, photoCount: 2)
+        ]
+        let existingSession = CleanupSession(
+            totalClusters: 2,
+            reviewedClusters: 0,
+            estimatedSavingsBytes: 0
+        )
+        await mockCleanupSessionRepository.setStoredSession(existingSession)
+        await mockReviewRepository.setStoredStates([
+            reviewedID: ClusterReviewState(
+                clusterID: reviewedID,
+                bestShotLocalIdentifier: "best-1",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 1_000
+            ),
+            inReviewID: ClusterReviewState(
+                clusterID: inReviewID,
+                bestShotLocalIdentifier: "best-2",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .inReview,
+                estimatedSavingsBytes: 2_000
+            )
+        ])
+
+        viewModel.state = .results(clusters)
+        await viewModel.loadReviewStates()
+
+        let session = viewModel.activeCleanupSession
+        XCTAssertEqual(session?.id, existingSession.id)
+        XCTAssertEqual(session?.reviewedClusters, 1)
+        XCTAssertEqual(session?.estimatedSavingsBytes, 3_000)
+    }
+
+    func testSessionUpdateIgnoresOrphanReviewStates() async {
+        let clusterID = UUID()
+        let orphanID = UUID()
+        let clusters = [createMockCluster(id: clusterID, photoCount: 2)]
+        await mockReviewRepository.setStoredStates([
+            clusterID: ClusterReviewState(
+                clusterID: clusterID,
+                bestShotLocalIdentifier: "best",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 111
+            ),
+            orphanID: ClusterReviewState(
+                clusterID: orphanID,
+                bestShotLocalIdentifier: "orphan",
+                selectedLocalIdentifiers: ["b"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 9_999
+            )
+        ])
+
+        viewModel.state = .results(clusters)
+        await viewModel.loadReviewStates()
+
+        let session = viewModel.activeCleanupSession
+        XCTAssertEqual(session?.totalClusters, 1)
+        XCTAssertEqual(session?.reviewedClusters, 1)
+        XCTAssertEqual(session?.estimatedSavingsBytes, 111)
+    }
+
+    func testLoadCachedResultsEmptyClearsCleanupSession() async {
+        let existingSession = CleanupSession(
+            totalClusters: 2,
+            reviewedClusters: 1,
+            estimatedSavingsBytes: 123
+        )
+        await mockRepository.setLoadClustersResult(.success([]))
+        await mockCleanupSessionRepository.setStoredSession(existingSession)
+
+        await viewModel.loadCachedResults()
+
+        XCTAssertNil(viewModel.activeCleanupSession)
+        let stored = await mockCleanupSessionRepository.storedSession
+        XCTAssertNil(stored)
     }
     
     // MARK: - Clear Results Tests

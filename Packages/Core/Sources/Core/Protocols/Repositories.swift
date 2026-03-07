@@ -40,6 +40,18 @@ public protocol ClusterReviewStateRepository: Sendable {
     func deleteAllReviewStates() async throws
 }
 
+/// Repository for the active cleanup session aggregate state.
+public protocol CleanupSessionRepository: Sendable {
+    /// Load currently active cleanup session.
+    func loadActiveSession() async throws -> CleanupSession?
+
+    /// Save or overwrite currently active cleanup session.
+    func saveActiveSession(_ session: CleanupSession) async throws
+
+    /// Delete currently active cleanup session.
+    func deleteActiveSession() async throws
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters

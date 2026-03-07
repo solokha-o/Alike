@@ -143,7 +143,7 @@ public struct ScannerView: View {
     // MARK: - Results View
     private func resultsView(clusters: [PhotoCluster]) -> some View {
         let sortedClusters = viewModel.sortedClusters(from: clusters)
-        let sessionProgress = viewModel.sessionProgress(for: sortedClusters)
+        let sessionProgress = viewModel.displayedSessionProgress(for: sortedClusters)
 
         return ScrollView {
             if sortedClusters.isEmpty {

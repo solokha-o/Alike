@@ -99,4 +99,21 @@ final class MockServicesTests: XCTestCase {
         let deleted = try await repository.loadReviewState(clusterID: clusterID)
         XCTAssertNil(deleted)
     }
+
+    func testMockCleanupSessionRepositoryStoresAndDeletesSession() async throws {
+        let repository = MockCleanupSessionRepository()
+        let session = CleanupSession(
+            totalClusters: 8,
+            reviewedClusters: 3,
+            estimatedSavingsBytes: 2_048
+        )
+
+        try await repository.saveActiveSession(session)
+        let loaded = try await repository.loadActiveSession()
+        XCTAssertEqual(loaded, session)
+
+        try await repository.deleteActiveSession()
+        let deleted = try await repository.loadActiveSession()
+        XCTAssertNil(deleted)
+    }
 }
