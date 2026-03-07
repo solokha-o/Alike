@@ -235,6 +235,8 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(progress.inReviewCount, 1)
         XCTAssertEqual(progress.notReviewedCount, 1)
         XCTAssertEqual(progress.reviewedSavingsBytes, 3_000)
+        XCTAssertEqual(progress.totalSelectedItems, 3)
+        XCTAssertEqual(progress.remainingClusters, 2)
     }
 
     func testSessionProgressPercentZeroForNoClusters() {
@@ -290,6 +292,7 @@ final class ScannerViewModelTests: XCTestCase {
         let full = viewModel.sessionProgress(for: clusters)
         XCTAssertEqual(full.reviewedCount, 2)
         XCTAssertEqual(full.reviewedPercent, 100)
+        XCTAssertEqual(full.remainingClusters, 0)
     }
 
     func testLoadCachedResultsIncludesPersistedStatesForSessionProgress() async {
@@ -407,6 +410,9 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(session?.totalClusters, 1)
         XCTAssertEqual(session?.reviewedClusters, 1)
         XCTAssertEqual(session?.estimatedSavingsBytes, 111)
+
+        let progress = viewModel.sessionProgress(for: clusters)
+        XCTAssertEqual(progress.totalSelectedItems, 1)
     }
 
     func testLoadCachedResultsEmptyClearsCleanupSession() async {
@@ -423,6 +429,47 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.activeCleanupSession)
         let stored = await mockCleanupSessionRepository.storedSession
         XCTAssertNil(stored)
+    }
+
+    func testCleanupEntryClusterPrefersNotReviewedThenInReviewThenFirst() async {
+        let notReviewedID = UUID()
+        let inReviewID = UUID()
+        let reviewedID = UUID()
+
+        let notReviewed = createMockCluster(id: notReviewedID, photoCount: 2)
+        let inReview = createMockCluster(id: inReviewID, photoCount: 2)
+        let reviewed = createMockCluster(id: reviewedID, photoCount: 2)
+
+        await mockReviewRepository.setStoredStates([
+            inReviewID: ClusterReviewState(
+                clusterID: inReviewID,
+                bestShotLocalIdentifier: "best-1",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .inReview,
+                estimatedSavingsBytes: 10
+            ),
+            reviewedID: ClusterReviewState(
+                clusterID: reviewedID,
+                bestShotLocalIdentifier: "best-2",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 20
+            )
+        ])
+        await viewModel.loadReviewStates()
+
+        let clusters = [reviewed, inReview, notReviewed]
+        XCTAssertEqual(viewModel.cleanupEntryCluster(from: clusters)?.id, notReviewedID)
+
+        let noNotReviewed = [reviewed, inReview]
+        XCTAssertEqual(viewModel.cleanupEntryCluster(from: noNotReviewed)?.id, inReviewID)
+
+        await mockReviewRepository.setStoredStates([:])
+        await viewModel.loadReviewStates()
+        let fallback = [reviewed]
+        XCTAssertEqual(viewModel.cleanupEntryCluster(from: fallback)?.id, reviewedID)
     }
     
     // MARK: - Clear Results Tests

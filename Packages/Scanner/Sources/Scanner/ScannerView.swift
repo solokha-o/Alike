@@ -7,6 +7,7 @@ import Photos
 /// Scanner screen with analysis and results
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
+    @State private var summaryEntryCluster: PhotoCluster?
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
@@ -70,6 +71,16 @@ public struct ScannerView: View {
                     shouldStartScan = false
                 }
             }
+        }
+        .navigationDestination(item: $summaryEntryCluster) { cluster in
+            ClusterDetailsView(
+                cluster: cluster,
+                onReviewStateChanged: {
+                    Task {
+                        await viewModel.loadReviewStates()
+                    }
+                }
+            )
         }
     }
     
@@ -159,7 +170,12 @@ public struct ScannerView: View {
                 .padding(.top, 100)
             } else {
                 VStack(spacing: Spacing.medium) {
-                    CleanupSessionProgressCard(progress: sessionProgress)
+                    CleanupSessionProgressCard(
+                        progress: sessionProgress,
+                        onTap: {
+                            summaryEntryCluster = viewModel.cleanupEntryCluster(from: sortedClusters)
+                        }
+                    )
 
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
                         ForEach(sortedClusters) { cluster in
@@ -298,47 +314,43 @@ struct ClusterCard: View {
 
 private struct CleanupSessionProgressCard: View {
     let progress: CleanupSessionProgress
+    let onTap: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.small) {
-            Text(appLocalized("Cleanup Session Progress"))
-                .font(.appHeadline)
+        Button(action: onTap) {
+            VStack(alignment: .leading, spacing: Spacing.small) {
+                HStack {
+                    Text(appLocalized("Cleanup Session Progress"))
+                        .font(.appHeadline)
+                    Spacer()
+                    Label(appLocalized("Continue Cleanup"), systemImage: "arrow.right.circle.fill")
+                        .font(.caption.bold())
+                }
 
-            HStack(spacing: Spacing.small) {
-                statusItem(title: appLocalized("Reviewed"), value: progress.reviewedCount, color: .green)
-                statusItem(title: appLocalized("In review"), value: progress.inReviewCount, color: .accent)
-                statusItem(title: appLocalized("Not reviewed"), value: progress.notReviewedCount, color: .secondary)
+                HStack(spacing: Spacing.small) {
+                    metricItem(title: appLocalized("Total Clusters"), value: "\(progress.totalClusters)", color: .secondary)
+                    metricItem(title: appLocalized("Reviewed"), value: "\(progress.reviewedCount)", color: .green)
+                    metricItem(title: appLocalized("Left to Review"), value: "\(progress.remainingClusters)", color: .orange)
+                }
+
+                HStack(spacing: Spacing.small) {
+                    metricItem(title: appLocalized("Total Selected Items"), value: "\(progress.totalSelectedItems)", color: .accent)
+                    metricItem(
+                        title: appLocalized("Estimated Savings"),
+                        value: ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file),
+                        color: .mint
+                    )
+                }
             }
-
-            Divider()
-
-            HStack {
-                Text(appLocalized("Reviewed Clusters: \(progress.reviewedCount) of \(progress.totalClusters)"))
-                    .font(.appFootnote)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text("\(progress.reviewedPercent)%")
-                    .font(.appHeadline)
-                    .monospacedDigit()
-            }
-
-            HStack {
-                Text(appLocalized("Estimated Savings Reviewed So Far"))
-                    .font(.appFootnote)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file))
-                    .font(.appBody.bold())
-                    .monospacedDigit()
-            }
+            .padding(Spacing.medium)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
         }
-        .padding(Spacing.medium)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .buttonStyle(.plain)
     }
 
-    private func statusItem(title: String, value: Int, color: Color) -> some View {
+    private func metricItem(title: String, value: String, color: Color) -> some View {
         VStack(spacing: Spacing.xxSmall) {
-            Text("\(value)")
+            Text(value)
                 .font(.title3.bold())
                 .monospacedDigit()
             Text(title)

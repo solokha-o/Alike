@@ -130,10 +130,12 @@ public final class ScannerViewModel {
         var inReviewCount = 0
         var notReviewedCount = 0
         var reviewedSavingsBytes: Int64 = 0
+        var totalSelectedItems = 0
 
         for cluster in clusters {
             let state = reviewStates[cluster.id]
             let status = state?.status ?? .notReviewed
+            totalSelectedItems += state?.selectedLocalIdentifiers.count ?? 0
 
             switch status {
             case .reviewed:
@@ -152,7 +154,8 @@ public final class ScannerViewModel {
             reviewedCount: reviewedCount,
             inReviewCount: inReviewCount,
             notReviewedCount: notReviewedCount,
-            reviewedSavingsBytes: reviewedSavingsBytes
+            reviewedSavingsBytes: reviewedSavingsBytes,
+            totalSelectedItems: totalSelectedItems
         )
     }
 
@@ -164,10 +167,17 @@ public final class ScannerViewModel {
                 reviewedCount: activeCleanupSession.reviewedClusters,
                 inReviewCount: computed.inReviewCount,
                 notReviewedCount: computed.notReviewedCount,
-                reviewedSavingsBytes: activeCleanupSession.estimatedSavingsBytes
+                reviewedSavingsBytes: activeCleanupSession.estimatedSavingsBytes,
+                totalSelectedItems: computed.totalSelectedItems
             )
         }
         return computed
+    }
+
+    public func cleanupEntryCluster(from clusters: [PhotoCluster]) -> PhotoCluster? {
+        clusters.first(where: { reviewStatus(for: $0.id) == .notReviewed })
+            ?? clusters.first(where: { reviewStatus(for: $0.id) == .inReview })
+            ?? clusters.first
     }
 
     public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
@@ -291,6 +301,11 @@ public struct CleanupSessionProgress: Equatable, Sendable {
     public let inReviewCount: Int
     public let notReviewedCount: Int
     public let reviewedSavingsBytes: Int64
+    public let totalSelectedItems: Int
+
+    public var remainingClusters: Int {
+        max(totalClusters - reviewedCount, 0)
+    }
 
     public var reviewedRatio: Double {
         guard totalClusters > 0 else { return 0 }
