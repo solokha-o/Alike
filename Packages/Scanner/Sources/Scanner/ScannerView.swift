@@ -3,6 +3,7 @@ import Core
 import DesignSystem
 import Details
 import Photos
+import Cleanup
 
 /// Scanner screen with analysis and results
 public struct ScannerView: View {
