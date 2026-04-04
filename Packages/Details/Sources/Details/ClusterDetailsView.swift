@@ -69,9 +69,11 @@ public struct ClusterDetailsView: View {
                 .padding(.bottom, Spacing.medium)
             }
         }
-        .animation(.snappy(duration: 0.26, extraBounce: 0.04), value: displayedAssets.map(\.localIdentifier))
-        .animation(.snappy(duration: 0.22, extraBounce: 0.04), value: viewModel.selectedAssetIDs)
-        .animation(.snappy(duration: 0.22, extraBounce: 0.04), value: viewModel.reviewStatus)
+        .animation(.appSmooth, value: displayedAssets.map(\.localIdentifier))
+        .animation(.appInteractive, value: viewModel.selectedAssetIDs)
+        .animation(.appInteractive, value: viewModel.reviewStatus)
+        .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
+        .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .safeAreaInset(edge: .top) {
             VStack(spacing: Spacing.small) {
                 ClusterReviewSummaryCard(
@@ -109,6 +111,8 @@ public struct ClusterDetailsView: View {
                 } label: {
                     Image(systemName: "square.grid.3x2")
                 }
+                .accessibilityLabel(Text(appLocalized("Grid Columns")))
+                .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in
@@ -154,7 +158,7 @@ struct SelectablePhotoThumbnail: View {
                         .aspectRatio(16/9, contentMode: .fit)
                 } else {
                     Rectangle()
-                        .fill(Color.secondary.opacity(0.2))
+                        .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
                         .frame(height: 120)
                         .overlay {
                             ProgressView()
@@ -186,7 +190,7 @@ struct SelectablePhotoThumbnail: View {
             .overlay {
                 if isSelected {
                     RoundedRectangle(cornerRadius: CornerRadius.small)
-                        .fill(Color.accent.opacity(0.18))
+                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
                         .transition(.opacity)
                 }
             }
@@ -194,8 +198,8 @@ struct SelectablePhotoThumbnail: View {
                 RoundedRectangle(cornerRadius: CornerRadius.small)
                     .stroke(borderColor, lineWidth: borderLineWidth)
             }
-            .animation(.snappy(duration: 0.18, extraBounce: 0.08), value: isSelected)
-            .animation(.snappy(duration: 0.18, extraBounce: 0.04), value: isBestShot)
+            .animation(.appInteractiveFast, value: isSelected)
+            .animation(.appInteractiveFast, value: isBestShot)
         }
         .buttonStyle(.plain)
         .contentShape(Rectangle())
@@ -229,12 +233,14 @@ struct SelectablePhotoThumbnail: View {
             image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
         }
         .accessibilityLabel(Text(accessibilityLabel))
+        .accessibilityValue(Text(accessibilityValue))
+        .accessibilityHint(Text(accessibilityHint))
         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 
     private var borderColor: Color {
         if isBestShot {
-            return .yellow.opacity(0.9)
+            return .heroGold.opacity(0.9)
         }
         if isSelected {
             return .accent
@@ -254,6 +260,19 @@ struct SelectablePhotoThumbnail: View {
             return appLocalized("Selected for cleanup review")
         }
         return appLocalized("Not selected")
+    }
+
+    private var accessibilityValue: String {
+        isSelected ? appLocalized("Selected") : appLocalized("Not selected")
+    }
+
+    private var accessibilityHint: String {
+        if isBestShot {
+            return appLocalized("This photo is marked as the best shot and cannot be selected")
+        }
+        return isSelected
+            ? appLocalized("Double tap to remove this photo from cleanup selection")
+            : appLocalized("Double tap to select this photo for cleanup")
     }
 }
 
