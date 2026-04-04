@@ -21,6 +21,7 @@ public protocol CleanupSessionManaging: Sendable {
 public struct CleanupSessionProgress: Equatable, Sendable {
     public let totalClusters: Int
     public let reviewedCount: Int
+    public let needsReReviewCount: Int
     public let inReviewCount: Int
     public let notReviewedCount: Int
     public let reviewedSavingsBytes: Int64
@@ -134,6 +135,7 @@ public actor CleanupSessionManager: CleanupSessionManaging {
             return CleanupSessionProgress(
                 totalClusters: activeSession.totalClusters,
                 reviewedCount: activeSession.reviewedClusters,
+                needsReReviewCount: computed.needsReReviewCount,
                 inReviewCount: computed.inReviewCount,
                 notReviewedCount: computed.notReviewedCount,
                 reviewedSavingsBytes: activeSession.estimatedSavingsBytes,
@@ -147,7 +149,8 @@ public actor CleanupSessionManager: CleanupSessionManaging {
         from clusters: [PhotoCluster],
         reviewStates: [UUID: ClusterReviewState]
     ) -> PhotoCluster? {
-        clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .notReviewed })
+        clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .needsReReview })
+            ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .notReviewed })
             ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .inReview })
             ?? clusters.first
     }
@@ -166,6 +169,7 @@ private extension CleanupSessionManager {
         reviewStates: [UUID: ClusterReviewState]
     ) -> CleanupSessionProgress {
         var reviewedCount = 0
+        var needsReReviewCount = 0
         var inReviewCount = 0
         var notReviewedCount = 0
         var reviewedSavingsBytes: Int64 = 0
@@ -174,14 +178,17 @@ private extension CleanupSessionManager {
         for cluster in clusters {
             let state = reviewStates[cluster.id]
             let status = state?.status ?? .notReviewed
-            totalSelectedItems += state?.selectedLocalIdentifiers.count ?? 0
 
             switch status {
             case .reviewed:
                 reviewedCount += 1
+                totalSelectedItems += state?.selectedLocalIdentifiers.count ?? 0
                 reviewedSavingsBytes += state?.estimatedSavingsBytes ?? 0
+            case .needsReReview:
+                needsReReviewCount += 1
             case .inReview:
                 inReviewCount += 1
+                totalSelectedItems += state?.selectedLocalIdentifiers.count ?? 0
                 reviewedSavingsBytes += state?.estimatedSavingsBytes ?? 0
             case .notReviewed:
                 notReviewedCount += 1
@@ -191,6 +198,7 @@ private extension CleanupSessionManager {
         return CleanupSessionProgress(
             totalClusters: clusters.count,
             reviewedCount: reviewedCount,
+            needsReReviewCount: needsReReviewCount,
             inReviewCount: inReviewCount,
             notReviewedCount: notReviewedCount,
             reviewedSavingsBytes: reviewedSavingsBytes,

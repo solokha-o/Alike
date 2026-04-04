@@ -3,6 +3,7 @@ import Foundation
 /// Review progress for a photo similarity cluster.
 public enum ClusterReviewStatus: String, Sendable, Codable {
     case notReviewed
+    case needsReReview
     case inReview
     case reviewed
 }
@@ -22,6 +23,7 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
     public let status: ClusterReviewStatus
     public let estimatedSavingsBytes: Int64
     public let updatedAt: Date
+    public let resurfacingState: ClusterResurfacingState?
 
     public var id: UUID { clusterID }
 
@@ -32,7 +34,8 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         mode: ClusterReviewMode = .selection,
         status: ClusterReviewStatus,
         estimatedSavingsBytes: Int64,
-        updatedAt: Date = Date()
+        updatedAt: Date = Date(),
+        resurfacingState: ClusterResurfacingState? = nil
     ) {
         self.clusterID = clusterID
         self.bestShotLocalIdentifier = bestShotLocalIdentifier
@@ -41,5 +44,30 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         self.status = status
         self.estimatedSavingsBytes = estimatedSavingsBytes
         self.updatedAt = updatedAt
+        self.resurfacingState = resurfacingState
+    }
+}
+
+public extension ClusterReviewState {
+    func remapped(
+        clusterID: UUID,
+        bestShotLocalIdentifier: String? = nil,
+        selectedLocalIdentifiers: Set<String>? = nil,
+        mode: ClusterReviewMode? = nil,
+        status: ClusterReviewStatus? = nil,
+        estimatedSavingsBytes: Int64? = nil,
+        updatedAt: Date = Date(),
+        resurfacingState: ClusterResurfacingState? = nil
+    ) -> ClusterReviewState {
+        ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: bestShotLocalIdentifier ?? self.bestShotLocalIdentifier,
+            selectedLocalIdentifiers: selectedLocalIdentifiers ?? self.selectedLocalIdentifiers,
+            mode: mode ?? self.mode,
+            status: status ?? self.status,
+            estimatedSavingsBytes: estimatedSavingsBytes ?? self.estimatedSavingsBytes,
+            updatedAt: updatedAt,
+            resurfacingState: resurfacingState
+        )
     }
 }

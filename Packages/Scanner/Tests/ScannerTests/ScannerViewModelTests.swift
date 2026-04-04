@@ -140,11 +140,23 @@ final class ScannerViewModelTests: XCTestCase {
     }
 
     func testCheckForGalleryChangesUsesRepository() async {
+        let cluster = createMockCluster(photoCount: 2)
+        viewModel.state = .results([cluster])
         await mockRepository.setHasGalleryChangedResult(true)
         let hasChanged = await viewModel.checkForGalleryChanges()
         let didCall = await mockRepository.didCallHasGalleryChanged
         XCTAssertTrue(hasChanged)
         XCTAssertTrue(didCall)
+        XCTAssertTrue(viewModel.shouldShowRescanPrompt)
+    }
+
+    func testCheckForGalleryChangesDoesNotShowPromptWithoutResults() async {
+        await mockRepository.setHasGalleryChangedResult(true)
+
+        let hasChanged = await viewModel.checkForGalleryChanges()
+
+        XCTAssertFalse(hasChanged)
+        XCTAssertFalse(viewModel.shouldShowRescanPrompt)
     }
 
     func testSortedClustersOrdersByDateSimilarityAndId() {
@@ -190,12 +202,14 @@ final class ScannerViewModelTests: XCTestCase {
 
     func testSessionProgressAggregatesMixedStatuses() async {
         let reviewedID = UUID()
+        let needsReviewID = UUID()
         let inReviewID = UUID()
         let notReviewedID = UUID()
         let unknownStateID = UUID()
 
         let clusters = [
             createMockCluster(id: reviewedID, photoCount: 3),
+            createMockCluster(id: needsReviewID, photoCount: 3),
             createMockCluster(id: inReviewID, photoCount: 3),
             createMockCluster(id: notReviewedID, photoCount: 3)
         ]
@@ -208,6 +222,15 @@ final class ScannerViewModelTests: XCTestCase {
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 1_000
+            ),
+            needsReviewID: ClusterReviewState(
+                clusterID: needsReviewID,
+                bestShotLocalIdentifier: "best-0",
+                selectedLocalIdentifiers: ["stale"],
+                mode: .selection,
+                status: .needsReReview,
+                estimatedSavingsBytes: 10_000,
+                resurfacingState: .changed
             ),
             inReviewID: ClusterReviewState(
                 clusterID: inReviewID,
@@ -230,13 +253,14 @@ final class ScannerViewModelTests: XCTestCase {
         await viewModel.loadReviewStates()
         let progress = viewModel.sessionProgress(for: clusters)
 
-        XCTAssertEqual(progress.totalClusters, 3)
+        XCTAssertEqual(progress.totalClusters, 4)
         XCTAssertEqual(progress.reviewedCount, 1)
+        XCTAssertEqual(progress.needsReReviewCount, 1)
         XCTAssertEqual(progress.inReviewCount, 1)
         XCTAssertEqual(progress.notReviewedCount, 1)
         XCTAssertEqual(progress.reviewedSavingsBytes, 3_000)
         XCTAssertEqual(progress.totalSelectedItems, 3)
-        XCTAssertEqual(progress.remainingClusters, 2)
+        XCTAssertEqual(progress.remainingClusters, 3)
     }
 
     func testSessionProgressPercentZeroForNoClusters() {
@@ -341,13 +365,15 @@ final class ScannerViewModelTests: XCTestCase {
 
     func testLoadReviewStatesUpdatesCleanupSessionAggregates() async {
         let reviewedID = UUID()
+        let needsReviewID = UUID()
         let inReviewID = UUID()
         let clusters = [
             createMockCluster(id: reviewedID, photoCount: 2),
+            createMockCluster(id: needsReviewID, photoCount: 2),
             createMockCluster(id: inReviewID, photoCount: 2)
         ]
         let existingSession = CleanupSession(
-            totalClusters: 2,
+            totalClusters: 3,
             reviewedClusters: 0,
             estimatedSavingsBytes: 0
         )
@@ -360,6 +386,15 @@ final class ScannerViewModelTests: XCTestCase {
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 1_000
+            ),
+            needsReviewID: ClusterReviewState(
+                clusterID: needsReviewID,
+                bestShotLocalIdentifier: "best-0",
+                selectedLocalIdentifiers: [],
+                mode: .selection,
+                status: .needsReReview,
+                estimatedSavingsBytes: 0,
+                resurfacingState: .new
             ),
             inReviewID: ClusterReviewState(
                 clusterID: inReviewID,
@@ -378,6 +413,143 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(session?.id, existingSession.id)
         XCTAssertEqual(session?.reviewedClusters, 1)
         XCTAssertEqual(session?.estimatedSavingsBytes, 3_000)
+    }
+
+    func testLoadReviewStatesSeparatesNeedsReviewClustersFromRemainingClusters() async {
+        let needsReviewID = UUID()
+        let reviewedID = UUID()
+        let clusters = [
+            createMockCluster(id: needsReviewID, photoCount: 2),
+            createMockCluster(id: reviewedID, photoCount: 2)
+        ]
+        await mockReviewRepository.setStoredStates([
+            needsReviewID: ClusterReviewState(
+                clusterID: needsReviewID,
+                bestShotLocalIdentifier: "best-0",
+                selectedLocalIdentifiers: [],
+                mode: .selection,
+                status: .needsReReview,
+                estimatedSavingsBytes: 0,
+                resurfacingState: .changed
+            ),
+            reviewedID: ClusterReviewState(
+                clusterID: reviewedID,
+                bestShotLocalIdentifier: "best-1",
+                selectedLocalIdentifiers: ["a"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 100
+            )
+        ])
+
+        viewModel.state = .results(clusters)
+        await viewModel.loadReviewStates()
+
+        XCTAssertEqual(viewModel.needsReviewClusters(from: clusters).map(\.id), [needsReviewID])
+        XCTAssertEqual(viewModel.remainingClusters(from: clusters).map(\.id), [reviewedID])
+        XCTAssertEqual(viewModel.resurfacingState(for: needsReviewID), .changed)
+    }
+
+    func testStartScanningClearsRescanPromptAfterSuccessfulScan() async {
+        let cluster = createMockCluster(photoCount: 2)
+        viewModel.state = .results([cluster])
+        await mockRepository.setHasGalleryChangedResult(true)
+        _ = await viewModel.checkForGalleryChanges()
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+
+        await viewModel.startScanning()
+
+        XCTAssertFalse(viewModel.shouldShowRescanPrompt)
+    }
+
+    func testResurfacerPreservesExactMatchState() {
+        let oldID = UUID()
+        let newID = UUID()
+        let oldSnapshot = makeSnapshot(id: oldID, assets: ["a", "b"], favoriteIDs: ["a"])
+        let newSnapshot = makeSnapshot(id: newID, assets: ["a", "b"], favoriteIDs: ["a"])
+        let oldState = ClusterReviewState(
+            clusterID: oldID,
+            bestShotLocalIdentifier: "a",
+            selectedLocalIdentifiers: ["b"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 100
+        )
+
+        let result = ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: [oldSnapshot],
+            newSnapshots: [newSnapshot],
+            existingReviewStates: [oldID: oldState]
+        )
+
+        XCTAssertEqual(result.resurfacingStates[newID], .unchanged)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.status, .reviewed)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.selectedLocalIdentifiers, ["b"])
+    }
+
+    func testResurfacerMarksAddedAssetClusterAsChanged() {
+        let oldID = UUID()
+        let newID = UUID()
+        let oldSnapshot = makeSnapshot(id: oldID, assets: ["a", "b"], favoriteIDs: ["a"])
+        let newSnapshot = makeSnapshot(id: newID, assets: ["a", "b", "c"], favoriteIDs: ["a"])
+
+        let result = ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: [oldSnapshot],
+            newSnapshots: [newSnapshot],
+            existingReviewStates: [:]
+        )
+
+        XCTAssertEqual(result.resurfacingStates[newID], .changed)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.status, .needsReReview)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.resurfacingState, .changed)
+    }
+
+    func testResurfacerMarksDeletedAssetClusterAsChanged() {
+        let oldID = UUID()
+        let newID = UUID()
+        let oldSnapshot = makeSnapshot(id: oldID, assets: ["a", "b", "c"], favoriteIDs: ["a"])
+        let newSnapshot = makeSnapshot(id: newID, assets: ["a", "b"], favoriteIDs: ["a"])
+
+        let result = ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: [oldSnapshot],
+            newSnapshots: [newSnapshot],
+            existingReviewStates: [:]
+        )
+
+        XCTAssertEqual(result.resurfacingStates[newID], .changed)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.status, .needsReReview)
+    }
+
+    func testResurfacerMarksBestShotChangeAsChanged() {
+        let oldID = UUID()
+        let newID = UUID()
+        let oldSnapshot = makeSnapshot(id: oldID, assets: ["a", "b"], favoriteIDs: ["a"])
+        let newSnapshot = makeSnapshot(id: newID, assets: ["a", "b"], favoriteIDs: ["b"])
+
+        let result = ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: [oldSnapshot],
+            newSnapshots: [newSnapshot],
+            existingReviewStates: [:]
+        )
+
+        XCTAssertEqual(result.resurfacingStates[newID], .changed)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.bestShotLocalIdentifier, "b")
+    }
+
+    func testResurfacerMarksBrandNewClusterAsNew() {
+        let oldSnapshot = makeSnapshot(id: UUID(), assets: ["a", "b"], favoriteIDs: ["a"])
+        let newID = UUID()
+        let newSnapshot = makeSnapshot(id: newID, assets: ["x", "y"], favoriteIDs: ["x"])
+
+        let result = ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: [oldSnapshot],
+            newSnapshots: [newSnapshot],
+            existingReviewStates: [:]
+        )
+
+        XCTAssertEqual(result.resurfacingStates[newID], .new)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.status, .needsReReview)
+        XCTAssertEqual(result.migratedReviewStates[newID]?.resurfacingState, .new)
     }
 
     func testSessionUpdateIgnoresOrphanReviewStates() async {
@@ -491,6 +663,28 @@ final class ScannerViewModelTests: XCTestCase {
     
     private func createMockCluster(id: UUID = UUID(), photoCount: Int) -> PhotoCluster {
         PhotoCluster(id: id, assets: [], createdAt: Date(), averageSimilarity: 0.95)
+    }
+
+    private func makeSnapshot(
+        id: UUID = UUID(),
+        assets: [String],
+        favoriteIDs: Set<String> = []
+    ) -> PhotoClusterSnapshot {
+        PhotoClusterSnapshot(
+            id: id,
+            createdAt: Date(),
+            averageSimilarity: 0.95,
+            assets: assets.map { assetID in
+                PhotoClusterAssetSnapshot(
+                    localIdentifier: assetID,
+                    creationDate: Date(timeIntervalSince1970: 100),
+                    modificationDate: Date(timeIntervalSince1970: 100),
+                    pixelWidth: favoriteIDs.contains(assetID) ? 1_200 : 800,
+                    pixelHeight: favoriteIDs.contains(assetID) ? 1_200 : 800,
+                    isFavorite: favoriteIDs.contains(assetID)
+                )
+            }
+        )
     }
 }
 

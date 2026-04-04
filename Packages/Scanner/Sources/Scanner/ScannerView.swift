@@ -53,11 +53,7 @@ public struct ScannerView: View {
         }
         .task {
             await viewModel.loadCachedResults()
-            
-            // Check if gallery changed
-            if await viewModel.checkForGalleryChanges() {
-                // Show rescan suggestion (simplified for MVP)
-            }
+            _ = await viewModel.checkForGalleryChanges()
         }
         .onChange(of: gridColumns) { _, newValue in
             viewModel.gridColumns = newValue
@@ -155,6 +151,8 @@ public struct ScannerView: View {
     // MARK: - Results View
     private func resultsView(clusters: [PhotoCluster]) -> some View {
         let sortedClusters = viewModel.sortedClusters(from: clusters)
+        let needsReviewClusters = viewModel.needsReviewClusters(from: sortedClusters)
+        let remainingClusters = viewModel.remainingClusters(from: sortedClusters)
         let sessionProgress = viewModel.displayedSessionProgress(for: sortedClusters)
 
         return ScrollView {
@@ -171,6 +169,31 @@ public struct ScannerView: View {
                 .padding(.top, 100)
             } else {
                 VStack(spacing: Spacing.medium) {
+                    if viewModel.shouldShowRescanPrompt {
+                        RescanPromptCard {
+                            Task {
+                                await viewModel.startScanning()
+                            }
+                        }
+                    }
+
+                    if !needsReviewClusters.isEmpty {
+                        ClusterSectionCard(
+                            title: appLocalized("Needs review"),
+                            subtitle: appLocalized("New and changed clusters after your latest rescan"),
+                            badgeText: "\(needsReviewClusters.count)",
+                            clusters: needsReviewClusters,
+                            gridColumns: gridColumns,
+                            reviewStatus: viewModel.reviewStatus(for:),
+                            resurfacingState: viewModel.resurfacingState(for:),
+                            onReviewStateChanged: {
+                                Task {
+                                    await viewModel.loadReviewStates()
+                                }
+                            }
+                        )
+                    }
+
                     CleanupSessionProgressCard(
                         progress: sessionProgress,
                         onTap: {
@@ -178,18 +201,21 @@ public struct ScannerView: View {
                         }
                     )
 
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns), spacing: Spacing.small) {
-                        ForEach(sortedClusters) { cluster in
-                            ClusterCard(
-                                cluster: cluster,
-                                reviewStatus: viewModel.reviewStatus(for: cluster.id),
-                                onReviewStateChanged: {
-                                    Task {
-                                        await viewModel.loadReviewStates()
-                                    }
+                    if !remainingClusters.isEmpty {
+                        ClusterSectionCard(
+                            title: appLocalized("All clusters"),
+                            subtitle: appLocalized("Everything else that is still available in your cleanup queue"),
+                            badgeText: "\(remainingClusters.count)",
+                            clusters: remainingClusters,
+                            gridColumns: gridColumns,
+                            reviewStatus: viewModel.reviewStatus(for:),
+                            resurfacingState: viewModel.resurfacingState(for:),
+                            onReviewStateChanged: {
+                                Task {
+                                    await viewModel.loadReviewStates()
                                 }
-                            )
-                        }
+                            }
+                        )
                     }
                 }
                 .padding(Spacing.medium)
@@ -246,7 +272,9 @@ public struct ScannerView: View {
 // MARK: - Cluster Card
 struct ClusterCard: View {
     let cluster: PhotoCluster
+    let gridColumns: Int
     let reviewStatus: ClusterReviewStatus
+    let resurfacingState: ClusterResurfacingState?
     let onReviewStateChanged: (() -> Void)?
 #if os(iOS)
     @State private var thumbnailImage: UIImage?
@@ -265,14 +293,13 @@ struct ClusterCard: View {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(height: 150)
+                        .frame(height: cardHeight)
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
                         .clipped()
-                        .aspectRatio(16/9, contentMode: .fit)
                 } else {
                     Rectangle()
                         .fill(Color.secondary.opacity(0.2))
-                        .frame(height: 150)
+                        .frame(height: cardHeight)
                         .overlay {
                             ProgressView()
                         }
@@ -280,7 +307,7 @@ struct ClusterCard: View {
 #else
                 Rectangle()
                     .fill(Color.secondary.opacity(0.2))
-                    .frame(height: 150)
+                    .frame(height: cardHeight)
                     .overlay {
                         Image(systemName: "photo")
                             .foregroundStyle(.secondary)
@@ -300,9 +327,17 @@ struct ClusterCard: View {
                 ClusterReviewBadge(status: reviewStatus)
                     .padding(Spacing.xSmall)
             }
+            .overlay(alignment: .topTrailing) {
+                if let resurfacingState {
+                    ClusterResurfacingBadge(state: resurfacingState)
+                        .padding(Spacing.xSmall)
+                }
+            }
             .cornerRadius(CornerRadius.medium)
             .subtleShadow()
+            .frame(maxWidth: .infinity)
         }
+        .buttonStyle(.plain)
 #if os(iOS)
         .task {
             if let asset = cluster.thumbnail {
@@ -310,6 +345,10 @@ struct ClusterCard: View {
             }
         }
 #endif
+    }
+
+    private var cardHeight: CGFloat {
+        gridColumns == 1 ? 260 : 150
     }
 }
 
@@ -330,8 +369,14 @@ private struct CleanupSessionProgressCard: View {
 
                 HStack(spacing: Spacing.small) {
                     metricItem(title: appLocalized("Total Clusters"), value: "\(progress.totalClusters)", color: .secondary)
+                    metricItem(title: appLocalized("Needs review"), value: "\(progress.needsReReviewCount)", color: .orange)
                     metricItem(title: appLocalized("Reviewed"), value: "\(progress.reviewedCount)", color: .green)
-                    metricItem(title: appLocalized("Left to Review"), value: "\(progress.remainingClusters)", color: .orange)
+                }
+
+                HStack(spacing: Spacing.small) {
+                    metricItem(title: appLocalized("Left to Review"), value: "\(progress.remainingClusters)", color: .accent)
+                    metricItem(title: appLocalized("In review"), value: "\(progress.inReviewCount)", color: .blue)
+                    metricItem(title: appLocalized("Not reviewed"), value: "\(progress.notReviewedCount)", color: .secondary)
                 }
 
                 HStack(spacing: Spacing.small) {
@@ -381,6 +426,8 @@ private struct ClusterReviewBadge: View {
         switch status {
         case .notReviewed:
             appLocalized("Not reviewed")
+        case .needsReReview:
+            appLocalized("Needs review")
         case .inReview:
             appLocalized("In review")
         case .reviewed:
@@ -392,6 +439,8 @@ private struct ClusterReviewBadge: View {
         switch status {
         case .notReviewed:
             "circle"
+        case .needsReReview:
+            "arrow.triangle.2.circlepath.circle.fill"
         case .inReview:
             "clock.arrow.circlepath"
         case .reviewed:
@@ -403,6 +452,8 @@ private struct ClusterReviewBadge: View {
         switch status {
         case .notReviewed:
             .secondary
+        case .needsReReview:
+            .orange
         case .inReview:
             .accent
         case .reviewed:
@@ -411,9 +462,118 @@ private struct ClusterReviewBadge: View {
     }
 }
 
+private struct RescanPromptCard: View {
+    let onRescan: () -> Void
+
+    var body: some View {
+        HStack(alignment: .center, spacing: Spacing.medium) {
+            Image(systemName: "arrow.clockwise.circle.fill")
+                .font(.title2)
+                .foregroundStyle(.orange)
+
+            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                Text(appLocalized("Gallery changed since your last scan"))
+                    .font(.appHeadline)
+                Text(appLocalized("Run a rescan to refresh clusters and review the latest changes"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: Spacing.small)
+
+            Button(appLocalized("Rescan"), action: onRescan)
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+}
+
+private struct ClusterSectionCard: View {
+    let title: String
+    let subtitle: String
+    let badgeText: String
+    let clusters: [PhotoCluster]
+    let gridColumns: Int
+    let reviewStatus: (UUID) -> ClusterReviewStatus
+    let resurfacingState: (UUID) -> ClusterResurfacingState?
+    let onReviewStateChanged: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.medium) {
+            HStack(alignment: .firstTextBaseline, spacing: Spacing.small) {
+                Text(title)
+                    .font(.appHeadline)
+                Text(badgeText)
+                    .font(.caption.bold())
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, Spacing.xSmall)
+                    .padding(.vertical, Spacing.xxSmall)
+                    .background(Color.secondary.opacity(0.12), in: Capsule())
+                Spacer()
+            }
+
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            LazyVGrid(
+                columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
+                spacing: Spacing.small
+            ) {
+                ForEach(clusters) { cluster in
+                    ClusterCard(
+                        cluster: cluster,
+                        gridColumns: gridColumns,
+                        reviewStatus: reviewStatus(cluster.id),
+                        resurfacingState: resurfacingState(cluster.id),
+                        onReviewStateChanged: onReviewStateChanged
+                    )
+                }
+            }
+        }
+    }
+}
+
+private struct ClusterResurfacingBadge: View {
+    let state: ClusterResurfacingState
+
+    var body: some View {
+        Text(title)
+            .font(.caption2.bold())
+            .foregroundStyle(color)
+            .padding(.horizontal, Spacing.xSmall)
+            .padding(.vertical, Spacing.xxSmall)
+            .background(.regularMaterial, in: Capsule())
+    }
+
+    private var title: String {
+        switch state {
+        case .unchanged:
+            appLocalized("Unchanged")
+        case .new:
+            appLocalized("New")
+        case .changed:
+            appLocalized("Changed")
+        }
+    }
+
+    private var color: Color {
+        switch state {
+        case .unchanged:
+            .secondary
+        case .new:
+            .mint
+        case .changed:
+            .orange
+        }
+    }
+}
+
 // MARK: - Preview
 #Preview("Idle") {
-    @Previewable @State var gridColumns = 3
+    @Previewable @State var gridColumns = 2
     @Previewable @State var sensitivity = SensitivityLevel.medium
     
     let mockAnalysisService = MockPhotoAnalysisService()
@@ -431,7 +591,7 @@ private struct ClusterReviewBadge: View {
 }
 
 #Preview("Scanning") {
-    @Previewable @State var gridColumns = 3
+    @Previewable @State var gridColumns = 2
     @Previewable @State var sensitivity = SensitivityLevel.medium
     
     let mockAnalysisService = MockPhotoAnalysisService()
@@ -450,7 +610,7 @@ private struct ClusterReviewBadge: View {
 }
 
 #Preview("Results") {
-    @Previewable @State var gridColumns = 3
+    @Previewable @State var gridColumns = 2
     @Previewable @State var sensitivity = SensitivityLevel.medium
     
     let mockAnalysisService = MockPhotoAnalysisService()

@@ -39,6 +39,24 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         XCTAssertEqual(loaded, state)
     }
 
+    func testSaveAndLoadNeedsReReviewStateRoundTrip() async throws {
+        let clusterID = UUID()
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: [],
+            mode: .selection,
+            status: .needsReReview,
+            estimatedSavingsBytes: 0,
+            resurfacingState: .new
+        )
+
+        try await repository.saveReviewState(state)
+
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertEqual(loaded, state)
+    }
+
     func testLoadAllReturnsMultipleStates() async throws {
         let first = ClusterReviewState(
             clusterID: UUID(),

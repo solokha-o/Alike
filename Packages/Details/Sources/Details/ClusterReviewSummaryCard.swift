@@ -77,6 +77,8 @@ struct ClusterReviewSummaryCard: View {
         switch reviewStatus {
         case .notReviewed:
             appLocalized("Not reviewed")
+        case .needsReReview:
+            appLocalized("Needs review")
         case .inReview:
             appLocalized("In review")
         case .reviewed:
@@ -88,6 +90,8 @@ struct ClusterReviewSummaryCard: View {
         switch reviewStatus {
         case .notReviewed:
             "circle"
+        case .needsReReview:
+            "arrow.triangle.2.circlepath.circle.fill"
         case .inReview:
             "clock.arrow.circlepath"
         case .reviewed:
@@ -99,6 +103,8 @@ struct ClusterReviewSummaryCard: View {
         switch reviewStatus {
         case .notReviewed:
             .secondary
+        case .needsReReview:
+            .orange
         case .inReview:
             .accent
         case .reviewed:

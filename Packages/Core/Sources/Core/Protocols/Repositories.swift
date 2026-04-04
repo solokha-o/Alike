@@ -5,6 +5,9 @@ import Photos
 public protocol PhotoClusterRepository: Sendable {
     /// Load all saved clusters
     func loadClusters() async throws -> [PhotoCluster]
+
+    /// Load persisted cluster snapshots without resolving live PHAssets.
+    func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot]
     
     /// Save clusters to persistent storage
     func saveClusters(_ clusters: [PhotoCluster]) async throws

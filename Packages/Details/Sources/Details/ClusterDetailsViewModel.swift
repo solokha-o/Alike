@@ -76,7 +76,8 @@ final class ClusterDetailsViewModel {
                 applyState(
                     bestShotAssetID: fallbackBestShotID,
                     selectedAssetIDs: [],
-                    reviewMode: .selection
+                    reviewMode: .selection,
+                    persistedStatus: nil
                 )
                 return
             }
@@ -92,14 +93,16 @@ final class ClusterDetailsViewModel {
             applyState(
                 bestShotAssetID: persistedBestShotID,
                 selectedAssetIDs: filteredSelection,
-                reviewMode: savedState.mode
+                reviewMode: savedState.mode,
+                persistedStatus: savedState.status
             )
         } catch {
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to load review state: \(error.localizedDescription)"))")
             applyState(
                 bestShotAssetID: fallbackBestShotID,
                 selectedAssetIDs: [],
-                reviewMode: .selection
+                reviewMode: .selection,
+                persistedStatus: nil
             )
         }
     }
@@ -182,12 +185,17 @@ private extension ClusterDetailsViewModel {
     func applyState(
         bestShotAssetID: String,
         selectedAssetIDs: Set<String>,
-        reviewMode: ClusterReviewMode
+        reviewMode: ClusterReviewMode,
+        persistedStatus: ClusterReviewStatus?
     ) {
         self.bestShotAssetID = bestShotAssetID
         self.selectedAssetIDs = selectedAssetIDs
         self.reviewMode = reviewMode
         refreshDerivedState()
+        if persistedStatus == .needsReReview {
+            reviewStatus = .needsReReview
+            estimatedSavingsBytes = 0
+        }
     }
 
     func refreshDerivedState() {
@@ -211,7 +219,8 @@ private extension ClusterDetailsViewModel {
             selectedLocalIdentifiers: selectedAssetIDs,
             mode: reviewMode,
             status: reviewStatus,
-            estimatedSavingsBytes: estimatedSavingsBytes
+            estimatedSavingsBytes: estimatedSavingsBytes,
+            resurfacingState: reviewStatus == .needsReReview ? .changed : nil
         )
 
         do {
@@ -234,31 +243,7 @@ private extension ClusterDetailsViewModel {
     }
 
     static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
-        snapshots.max(by: isPreferredAsset)?.localIdentifier
-    }
-
-    static func isPreferredAsset(_ lhs: ReviewAssetSnapshot, _ rhs: ReviewAssetSnapshot) -> Bool {
-        if lhs.isFavorite != rhs.isFavorite {
-            return !lhs.isFavorite && rhs.isFavorite
-        }
-
-        if lhs.pixelArea != rhs.pixelArea {
-            return lhs.pixelArea < rhs.pixelArea
-        }
-
-        let lhsTimestamp = max(
-            lhs.creationDate?.timeIntervalSince1970 ?? 0,
-            lhs.modificationDate?.timeIntervalSince1970 ?? 0
-        )
-        let rhsTimestamp = max(
-            rhs.creationDate?.timeIntervalSince1970 ?? 0,
-            rhs.modificationDate?.timeIntervalSince1970 ?? 0
-        )
-        if lhsTimestamp != rhsTimestamp {
-            return lhsTimestamp < rhsTimestamp
-        }
-
-        return lhs.localIdentifier > rhs.localIdentifier
+        PhotoClusterBestShot.bestShotLocalIdentifier(from: snapshots.map(\.photoClusterAssetSnapshot))
     }
 }
 
@@ -311,5 +296,16 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
             return formatter.string(from: creationDate)
         }
         return appLocalized("Best Shot")
+    }
+
+    var photoClusterAssetSnapshot: PhotoClusterAssetSnapshot {
+        PhotoClusterAssetSnapshot(
+            localIdentifier: localIdentifier,
+            creationDate: creationDate,
+            modificationDate: modificationDate,
+            pixelWidth: pixelWidth,
+            pixelHeight: pixelHeight,
+            isFavorite: isFavorite
+        )
     }
 }

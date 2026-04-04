@@ -140,6 +140,31 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
     }
 
+    func testLoadPreservesNeedsReReviewStatusForResurfacedCluster() async {
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: [],
+            mode: .selection,
+            status: .needsReReview,
+            estimatedSavingsBytes: 0,
+            resurfacingState: .changed
+        )
+        await repository.setStoredStates([clusterID: state])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 200, createdAt: nil),
+                snapshot(id: "candidate", isFavorite: false, area: 100, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.reviewStatus, .needsReReview)
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+    }
+
     func testEstimatedSavingsUsesSelectedAssetsOnly() async {
         let viewModel = makeViewModel(
             snapshots: [
