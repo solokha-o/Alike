@@ -51,7 +51,7 @@ struct ClusterReviewSummaryCard: View {
         .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: CornerRadius.large))
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.large)
-                .stroke(statusColor.opacity(0.18), lineWidth: 1)
+                .stroke(statusColor.opacity(ColorOpacity.cardBorder), lineWidth: 1)
         )
         .subtleShadow()
     }
@@ -70,7 +70,7 @@ struct ClusterReviewSummaryCard: View {
         .padding(.horizontal, Spacing.xSmall)
         .padding(.vertical, 6)
         .frame(minWidth: 110, minHeight: 28, alignment: .center)
-        .background(statusColor.opacity(0.12), in: Capsule())
+        .background(statusColor.opacity(ColorOpacity.statusBackground), in: Capsule())
     }
 
     private var statusTitle: String {
@@ -104,11 +104,11 @@ struct ClusterReviewSummaryCard: View {
         case .notReviewed:
             .secondary
         case .needsReReview:
-            .orange
+            .statusNeedsReview
         case .inReview:
-            .accent
+            .statusInReview
         case .reviewed:
-            .green
+            .statusReviewed
         }
     }
 

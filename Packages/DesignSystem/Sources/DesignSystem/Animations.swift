@@ -37,6 +37,12 @@ extension Animation {
     
     /// Quick spring animation
     public static let appQuick = Animation.spring(response: 0.3, dampingFraction: 0.75, blendDuration: 0)
+
+    /// Standard interaction animation for selection and small state changes.
+    public static let appInteractive = Animation.snappy(duration: 0.22, extraBounce: 0.06)
+
+    /// Fast interaction animation for lightweight control updates.
+    public static let appInteractiveFast = Animation.snappy(duration: 0.18, extraBounce: 0.04)
 }
 
 // MARK: - Button Scale Effect

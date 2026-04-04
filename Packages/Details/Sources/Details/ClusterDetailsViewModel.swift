@@ -117,7 +117,7 @@ final class ClusterDetailsViewModel {
             selectedAssetIDs.insert(localIdentifier)
         }
 
-        withAnimation(.snappy(duration: 0.22, extraBounce: 0.08)) {
+        withAnimation(.appInteractive) {
             reviewMode = .selection
             refreshDerivedState()
         }
@@ -128,7 +128,7 @@ final class ClusterDetailsViewModel {
 
     func selectAllExceptBest() {
         guard !bestShotAssetID.isEmpty else { return }
-        withAnimation(.snappy(duration: 0.24, extraBounce: 0.06)) {
+        withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             reviewMode = .selection
             refreshDerivedState()
@@ -140,7 +140,7 @@ final class ClusterDetailsViewModel {
 
     func keepBestOnly() {
         guard !bestShotAssetID.isEmpty else { return }
-        withAnimation(.snappy(duration: 0.28, extraBounce: 0.04)) {
+        withAnimation(.appSmooth) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             reviewMode = .keepBestOnly
             refreshDerivedState()
@@ -151,7 +151,7 @@ final class ClusterDetailsViewModel {
     }
 
     func clearSelection() {
-        withAnimation(.snappy(duration: 0.22, extraBounce: 0.04)) {
+        withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
             reviewMode = .selection
             refreshDerivedState()

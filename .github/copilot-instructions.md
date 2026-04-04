@@ -69,3 +69,11 @@ This repository contains specialized skills and reference materials for iOS/macO
 - Prioritize Swift concurrency safety (Swift 6.2+)
 - Optimize for SwiftUI performance and best practices
 - Keep code modular and well-architected
+
+## Completion Gate
+
+- For any code modification, do not finish the task until a full app compile has been executed.
+- Preferred full compile command:
+  `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=66E5E039-9C66-4878-B211-923932320166' build`
+- If that simulator ID is unavailable, choose an available iOS Simulator destination and run the same full compile.
+- Only mark the task done after `BUILD SUCCEEDED`; otherwise continue fixing errors or report a concrete blocker.

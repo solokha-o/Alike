@@ -21,7 +21,7 @@ public struct LaunchView: View {
                 Image(systemName: "camera.viewfinder")
                     .font(.system(size: 96, weight: .bold))
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, .yellow, .orange)
+                    .foregroundStyle(.white, Color.heroGold, Color.heroCoral)
                     .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
                     .scaleEffect(scale)
                     .opacity(opacity)

@@ -44,7 +44,7 @@ public struct WelcomeView: View {
             Image(systemName: "camera.viewfinder")
                 .font(.system(size: 80, weight: .bold))
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(Color.accentColor, .yellow, .orange)
+                .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
                 .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
             
             Text(appLocalized("Alike"))
@@ -94,7 +94,7 @@ public struct WelcomeView: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 80, weight: .bold))
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(.green, .mint, .white)
+                .foregroundStyle(Color.statusReviewed, Color.statusSavings, .white)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
             
             Text(appLocalized("Access Granted"))

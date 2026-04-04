@@ -23,5 +23,16 @@ struct ClusterReviewActionBar: View {
 
             SecondaryButton(appLocalized("Clear Selection"), icon: "circle", action: onClearSelection)
         }
+        .padding(Spacing.small)
+        .background {
+            if #available(iOS 26.0, *) {
+                RoundedRectangle(cornerRadius: CornerRadius.medium)
+                    .fill(.clear)
+                    .glassEffect(.regular.interactive(), in: .rect(cornerRadius: CornerRadius.medium))
+            } else {
+                RoundedRectangle(cornerRadius: CornerRadius.medium)
+                    .fill(.regularMaterial)
+            }
+        }
     }
 }
