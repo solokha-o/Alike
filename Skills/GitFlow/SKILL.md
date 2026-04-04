@@ -51,6 +51,8 @@ Use this skill when the user wants branch strategy, release process, or versioni
 - Reference ticket IDs when available (e.g., `ABC-123`).
 - Avoid large "dump" commits; split into logical steps.
 - Ensure the message clearly describes what changed and where (feature/area), not just the intent.
+- Use English only for commit titles and commit bodies.
+- If a commit message is written in another language, rewrite it to English before committing.
 
 **Suggested format**
 

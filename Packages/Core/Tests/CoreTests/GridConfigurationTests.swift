@@ -93,8 +93,8 @@ final class GridConfigurationTests: XCTestCase {
         // Given: Minimum columns
         let minColumns = GridConfiguration.current.minColumns
         
-        // Then: Should allow at least 2 columns (for comparison)
-        XCTAssertGreaterThanOrEqual(minColumns, 2, "Should allow at least 2 columns for grid layout")
+        // Then: Single-column mode should now be available.
+        XCTAssertEqual(minColumns, 1, "Should allow a single-column grid layout")
     }
     
     func testMaximumColumnCountIsReasonable() {
@@ -152,7 +152,7 @@ final class GridConfigurationTests: XCTestCase {
         
         // Then: All values should be consistent with each other
         XCTAssertTrue(config.minColumns > 0, "Min columns positive")
-        XCTAssertTrue(config.maxColumns > config.minColumns, "Max > Min")
+        XCTAssertTrue(config.maxColumns >= config.minColumns, "Max >= Min")
         XCTAssertTrue(config.defaultColumns >= config.minColumns, "Default >= Min")
         XCTAssertTrue(config.defaultColumns <= config.maxColumns, "Default <= Max")
         XCTAssertTrue(config.spacing >= 0, "Spacing non-negative")
@@ -164,9 +164,9 @@ final class GridConfigurationTests: XCTestCase {
         let expected = expectedConfiguration
         
         // Then: Values should be suitable for photo grid layout
-        // 2-6 columns is good range for mobile photo grid
-        XCTAssertTrue(config.minColumns >= 2, "At least 2 columns for comparison")
-        XCTAssertTrue(config.maxColumns <= expected.maxColumns, "Not too many columns for current device")
+        // The product now intentionally narrows the layout choice to 1-2 columns.
+        XCTAssertEqual(config.minColumns, 1, "Single-column mode should be available")
+        XCTAssertEqual(config.maxColumns, 2, "Maximum grid width should be capped at two columns")
         
         // Default should align with expected configuration
         XCTAssertEqual(config.defaultColumns, expected.defaultColumns, "Default columns should match expected configuration")

@@ -177,6 +177,8 @@ Follow structured documentation standards for public APIs and inline comments. S
 - Inline comment (`//`) best practices
 - Special markers (`TODO`, `FIXME`, `WARNING`)
 - Complete examples for classes, protocols, and functions
+- Use English only for code documentation and comments (`///`, `//`, `// MARK:`).
+- If existing comments are non-English, convert them to English when touching the file.
 
 ### Build configurations and schemes
 

@@ -2,7 +2,7 @@ import Photos
 
 #if DEBUG
 
-/// Mock реалізація PhotoPermissionManager для SwiftUI previews та Unit tests
+/// Mock implementation of PhotoPermissionManager for SwiftUI previews and unit tests.
 @MainActor
 public final class MockPhotoPermissionManager: PhotoPermissionManager {
     public var authorizationStatus: PHAuthorizationStatus
