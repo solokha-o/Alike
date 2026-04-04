@@ -50,6 +50,16 @@ public struct ScannerView: View {
 #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
 #endif
+            .navigationDestination(item: $summaryEntryCluster) { cluster in
+                ClusterDetailsView(
+                    cluster: cluster,
+                    onReviewStateChanged: {
+                        Task {
+                            await viewModel.loadReviewStates()
+                        }
+                    }
+                )
+            }
         }
         .task {
             await viewModel.loadCachedResults()
@@ -68,16 +78,6 @@ public struct ScannerView: View {
                     shouldStartScan = false
                 }
             }
-        }
-        .navigationDestination(item: $summaryEntryCluster) { cluster in
-            ClusterDetailsView(
-                cluster: cluster,
-                onReviewStateChanged: {
-                    Task {
-                        await viewModel.loadReviewStates()
-                    }
-                }
-            )
         }
     }
     
