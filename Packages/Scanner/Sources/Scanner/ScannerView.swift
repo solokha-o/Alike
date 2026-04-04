@@ -119,7 +119,7 @@ public struct ScannerView: View {
             
             ZStack {
                 Circle()
-                    .stroke(Color.accent.opacity(0.2), lineWidth: 8)
+                    .stroke(Color.accent.opacity(ColorOpacity.progressTrack), lineWidth: 8)
                     .frame(width: 120, height: 120)
                 
                 Circle()
@@ -134,6 +134,9 @@ public struct ScannerView: View {
                     .foregroundColor(.accent)
                     .monospacedDigit()
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(appLocalized("Scanning progress")))
+            .accessibilityValue(Text("\(Int(progress * 100))%"))
             
             Text(appLocalized("Analyzing Photos..."))
                 .font(.appTitle2)
@@ -237,6 +240,8 @@ public struct ScannerView: View {
                     Image(systemName: "arrow.clockwise")
                 }
                 .scaleOnPress()
+                .accessibilityLabel(Text(appLocalized("Rescan Photos")))
+                .accessibilityHint(Text(appLocalized("Starts scanning your photo library again")))
             }
 #else
             ToolbarItem {
@@ -248,6 +253,8 @@ public struct ScannerView: View {
                     Image(systemName: "arrow.clockwise")
                 }
                 .scaleOnPress()
+                .accessibilityLabel(Text(appLocalized("Rescan Photos")))
+                .accessibilityHint(Text(appLocalized("Starts scanning your photo library again")))
             }
 #endif
         }
@@ -298,7 +305,7 @@ struct ClusterCard: View {
                         .clipped()
                 } else {
                     Rectangle()
-                        .fill(Color.secondary.opacity(0.2))
+                        .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
                         .frame(height: cardHeight)
                         .overlay {
                             ProgressView()
@@ -306,7 +313,7 @@ struct ClusterCard: View {
                 }
 #else
                 Rectangle()
-                    .fill(Color.secondary.opacity(0.2))
+                    .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
                     .frame(height: cardHeight)
                     .overlay {
                         Image(systemName: "photo")
@@ -338,6 +345,10 @@ struct ClusterCard: View {
             .frame(maxWidth: .infinity)
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("\(cluster.count) \(appLocalized("photos"))"))
+        .accessibilityValue(Text(reviewStatusTitle))
+        .accessibilityHint(Text(appLocalized("Open cluster details to review and select photos")))
 #if os(iOS)
         .task {
             if let asset = cluster.thumbnail {
@@ -350,9 +361,24 @@ struct ClusterCard: View {
     private var cardHeight: CGFloat {
         gridColumns == 1 ? 260 : 150
     }
+
+    private var reviewStatusTitle: String {
+        switch reviewStatus {
+        case .notReviewed:
+            appLocalized("Not reviewed")
+        case .needsReReview:
+            appLocalized("Needs review")
+        case .inReview:
+            appLocalized("In review")
+        case .reviewed:
+            appLocalized("Reviewed")
+        }
+    }
 }
 
 private struct CleanupSessionProgressCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let progress: CleanupSessionProgress
     let onTap: () -> Void
 
@@ -369,13 +395,13 @@ private struct CleanupSessionProgressCard: View {
 
                 HStack(spacing: Spacing.small) {
                     metricItem(title: appLocalized("Total Clusters"), value: "\(progress.totalClusters)", color: .secondary)
-                    metricItem(title: appLocalized("Needs review"), value: "\(progress.needsReReviewCount)", color: .orange)
-                    metricItem(title: appLocalized("Reviewed"), value: "\(progress.reviewedCount)", color: .green)
+                    metricItem(title: appLocalized("Needs review"), value: "\(progress.needsReReviewCount)", color: .statusNeedsReview)
+                    metricItem(title: appLocalized("Reviewed"), value: "\(progress.reviewedCount)", color: .statusReviewed)
                 }
 
                 HStack(spacing: Spacing.small) {
                     metricItem(title: appLocalized("Left to Review"), value: "\(progress.remainingClusters)", color: .accent)
-                    metricItem(title: appLocalized("In review"), value: "\(progress.inReviewCount)", color: .blue)
+                    metricItem(title: appLocalized("In review"), value: "\(progress.inReviewCount)", color: .statusInReview)
                     metricItem(title: appLocalized("Not reviewed"), value: "\(progress.notReviewedCount)", color: .secondary)
                 }
 
@@ -384,7 +410,7 @@ private struct CleanupSessionProgressCard: View {
                     metricItem(
                         title: appLocalized("Estimated Savings"),
                         value: ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file),
-                        color: .mint
+                        color: .statusSavings
                     )
                 }
             }
@@ -392,6 +418,10 @@ private struct CleanupSessionProgressCard: View {
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(appLocalized("Cleanup Session Progress")))
+        .accessibilityValue(Text("\(progress.reviewedCount) \(appLocalized("reviewed")), \(progress.remainingClusters) \(appLocalized("left to review"))"))
+        .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
     }
 
     private func metricItem(title: String, value: String, color: Color) -> some View {
@@ -406,11 +436,20 @@ private struct CleanupSessionProgressCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Spacing.xSmall)
-        .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        .background(color.opacity(metricBackgroundOpacity), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(title))
+        .accessibilityValue(Text(value))
+    }
+
+    private var metricBackgroundOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
     }
 }
 
 private struct ClusterReviewBadge: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let status: ClusterReviewStatus
 
     var body: some View {
@@ -419,7 +458,9 @@ private struct ClusterReviewBadge: View {
             .foregroundStyle(foregroundColor)
             .padding(.horizontal, Spacing.xSmall)
             .padding(.vertical, Spacing.xxSmall)
-            .background(.regularMaterial, in: Capsule())
+            .background(badgeMaterial, in: Capsule())
+            .accessibilityLabel(Text(statusTitle))
+            .accessibilityHint(Text(appLocalized("Cluster review status")))
     }
 
     private var statusTitle: String {
@@ -451,14 +492,18 @@ private struct ClusterReviewBadge: View {
     private var foregroundColor: Color {
         switch status {
         case .notReviewed:
-            .secondary
+            colorScheme == .dark ? .primary.opacity(0.85) : .secondary
         case .needsReReview:
-            .orange
+            .statusNeedsReview
         case .inReview:
-            .accent
+            .statusInReview
         case .reviewed:
-            .green
+            .statusReviewed
         }
+    }
+
+    private var badgeMaterial: Material {
+        colorScheme == .dark ? .thickMaterial : .regularMaterial
     }
 }
 
@@ -469,7 +514,7 @@ private struct RescanPromptCard: View {
         HStack(alignment: .center, spacing: Spacing.medium) {
             Image(systemName: "arrow.clockwise.circle.fill")
                 .font(.title2)
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color.statusNeedsReview)
 
             VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                 Text(appLocalized("Gallery changed since your last scan"))
@@ -483,7 +528,7 @@ private struct RescanPromptCard: View {
 
             Button(appLocalized("Rescan"), action: onRescan)
                 .buttonStyle(.borderedProminent)
-                .tint(.orange)
+                .tint(Color.statusNeedsReview)
         }
         .padding(Spacing.medium)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
@@ -491,6 +536,8 @@ private struct RescanPromptCard: View {
 }
 
 private struct ClusterSectionCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let title: String
     let subtitle: String
     let badgeText: String
@@ -507,10 +554,10 @@ private struct ClusterSectionCard: View {
                     .font(.appHeadline)
                 Text(badgeText)
                     .font(.caption.bold())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(colorScheme == .dark ? .primary : .secondary)
                     .padding(.horizontal, Spacing.xSmall)
                     .padding(.vertical, Spacing.xxSmall)
-                    .background(Color.secondary.opacity(0.12), in: Capsule())
+                    .background(Color.secondary.opacity(sectionBadgeOpacity), in: Capsule())
                 Spacer()
             }
 
@@ -534,9 +581,15 @@ private struct ClusterSectionCard: View {
             }
         }
     }
+
+    private var sectionBadgeOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
 }
 
 private struct ClusterResurfacingBadge: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let state: ClusterResurfacingState
 
     var body: some View {
@@ -545,7 +598,9 @@ private struct ClusterResurfacingBadge: View {
             .foregroundStyle(color)
             .padding(.horizontal, Spacing.xSmall)
             .padding(.vertical, Spacing.xxSmall)
-            .background(.regularMaterial, in: Capsule())
+            .background(colorScheme == .dark ? .thickMaterial : .regularMaterial, in: Capsule())
+            .accessibilityLabel(Text(title))
+            .accessibilityHint(Text(accessibilityHint))
     }
 
     private var title: String {
@@ -562,11 +617,22 @@ private struct ClusterResurfacingBadge: View {
     private var color: Color {
         switch state {
         case .unchanged:
-            .secondary
+            colorScheme == .dark ? .primary.opacity(0.85) : .secondary
         case .new:
-            .mint
+            .statusNew
         case .changed:
-            .orange
+            .statusNeedsReview
+        }
+    }
+
+    private var accessibilityHint: String {
+        switch state {
+        case .unchanged:
+            appLocalized("Previously reviewed cluster with no significant changes")
+        case .new:
+            appLocalized("New cluster found after the latest rescan")
+        case .changed:
+            appLocalized("Previously reviewed cluster changed and needs your review again")
         }
     }
 }

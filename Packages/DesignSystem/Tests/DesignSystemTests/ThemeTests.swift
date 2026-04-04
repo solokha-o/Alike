@@ -10,7 +10,7 @@ final class ThemeTests: XCTestCase {
         // Given & When: Accent color
         let accent = Color.accent
         
-        // Then: Should be indigo (#5C66F2)
+        // Then: Should exist in the design palette
         XCTAssertNotNil(accent, "Accent color should exist")
     }
     
