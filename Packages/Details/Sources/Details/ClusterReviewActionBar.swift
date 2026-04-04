@@ -14,14 +14,17 @@ struct ClusterReviewActionBar: View {
                     icon: "star.fill",
                     action: onKeepBestOnly
                 )
+                .accessibilityHint(Text(appLocalized("Keep the best shot and select the rest for cleanup")))
                 SecondaryButton(
                     appLocalized("Select All Except Best"),
                     icon: "checkmark.circle.fill",
                     action: onSelectAllExceptBest
                 )
+                .accessibilityHint(Text(appLocalized("Select every photo except the best shot")))
             }
 
             SecondaryButton(appLocalized("Clear Selection"), icon: "circle", action: onClearSelection)
+                .accessibilityHint(Text(appLocalized("Remove all currently selected photos")))
         }
         .padding(Spacing.small)
         .background {

@@ -111,6 +111,8 @@ public struct ClusterDetailsView: View {
                 } label: {
                     Image(systemName: "square.grid.3x2")
                 }
+                .accessibilityLabel(Text(appLocalized("Grid Columns")))
+                .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in
@@ -231,6 +233,8 @@ struct SelectablePhotoThumbnail: View {
             image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
         }
         .accessibilityLabel(Text(accessibilityLabel))
+        .accessibilityValue(Text(accessibilityValue))
+        .accessibilityHint(Text(accessibilityHint))
         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 
@@ -256,6 +260,19 @@ struct SelectablePhotoThumbnail: View {
             return appLocalized("Selected for cleanup review")
         }
         return appLocalized("Not selected")
+    }
+
+    private var accessibilityValue: String {
+        isSelected ? appLocalized("Selected") : appLocalized("Not selected")
+    }
+
+    private var accessibilityHint: String {
+        if isBestShot {
+            return appLocalized("This photo is marked as the best shot and cannot be selected")
+        }
+        return isSelected
+            ? appLocalized("Double tap to remove this photo from cleanup selection")
+            : appLocalized("Double tap to select this photo for cleanup")
     }
 }
 

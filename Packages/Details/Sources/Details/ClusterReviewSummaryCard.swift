@@ -2,6 +2,8 @@ import SwiftUI
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let bestShotLabel: String
     let selectedCount: Int
     let estimatedSavingsText: String
@@ -51,7 +53,7 @@ struct ClusterReviewSummaryCard: View {
         .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: CornerRadius.large))
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.large)
-                .stroke(statusColor.opacity(ColorOpacity.cardBorder), lineWidth: 1)
+                .stroke(statusColor.opacity(borderOpacity), lineWidth: 1)
         )
         .subtleShadow()
     }
@@ -70,7 +72,10 @@ struct ClusterReviewSummaryCard: View {
         .padding(.horizontal, Spacing.xSmall)
         .padding(.vertical, 6)
         .frame(minWidth: 110, minHeight: 28, alignment: .center)
-        .background(statusColor.opacity(ColorOpacity.statusBackground), in: Capsule())
+        .background(statusColor.opacity(chipOpacity), in: Capsule())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(statusTitle))
+        .accessibilityHint(Text(appLocalized("Current cleanup review status")))
     }
 
     private var statusTitle: String {
@@ -102,7 +107,7 @@ struct ClusterReviewSummaryCard: View {
     private var statusColor: Color {
         switch reviewStatus {
         case .notReviewed:
-            .secondary
+            colorScheme == .dark ? .primary.opacity(0.85) : .secondary
         case .needsReReview:
             .statusNeedsReview
         case .inReview:
@@ -110,6 +115,14 @@ struct ClusterReviewSummaryCard: View {
         case .reviewed:
             .statusReviewed
         }
+    }
+
+    private var chipOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
+
+    private var borderOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.cardBorderDark : ColorOpacity.cardBorder
     }
 
     private func summaryMetric(

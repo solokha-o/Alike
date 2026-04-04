@@ -39,10 +39,13 @@ public enum ColorOpacity {
     public static let progressTrack: Double = 0.2
     public static let placeholderFill: Double = 0.2
     public static let statusBackground: Double = 0.12
+    public static let statusBackgroundDark: Double = 0.22
     public static let cardBorder: Double = 0.18
+    public static let cardBorderDark: Double = 0.3
     public static let selectionOverlay: Double = 0.18
     public static let elevatedShadow: Double = 0.1
     public static let subtleShadow: Double = 0.05
+    public static let guideStepBackground: Double = 0.1
 }
 
 // MARK: - Typography

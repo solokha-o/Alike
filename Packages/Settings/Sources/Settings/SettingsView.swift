@@ -56,6 +56,9 @@ public struct SettingsView: View {
                         .foregroundColor(.secondary)
                 }
             }
+            .accessibilityLabel(Text(appLocalized("Grid Columns")))
+            .accessibilityValue(Text("\(gridColumns)"))
+            .accessibilityHint(Text(appLocalized("Adjust how many columns are used in photo grids")))
         } header: {
             Text(appLocalized("Appearance"))
         }
@@ -71,6 +74,7 @@ public struct SettingsView: View {
             } label: {
                 Text(appLocalized("Sensitivity"))
             }
+            .accessibilityHint(Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images")))
             .onChange(of: sensitivity) { _, _ in
                 needsRescan = viewModel.rescanRequiredAfterSensitivityChange()
             }
@@ -93,6 +97,7 @@ public struct SettingsView: View {
                     Image(systemName: "book")
                 }
             }
+            .accessibilityHint(Text(appLocalized("Open usage instructions and cleanup workflow tips")))
             
             ShareLink(item: URL(string: "https://apps.apple.com/app/idXXXXXXXX")!) {
                 Label {
@@ -101,6 +106,7 @@ public struct SettingsView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
+            .accessibilityHint(Text(appLocalized("Share the app using available sharing options")))
             
             Button {
                 viewModel.handleRateTapped(requestReview: requestReview)
@@ -111,6 +117,7 @@ public struct SettingsView: View {
                     Image(systemName: "star")
                 }
             }
+            .accessibilityHint(Text(appLocalized("Request the App Store rating prompt")))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
             Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
@@ -120,6 +127,7 @@ public struct SettingsView: View {
                     Image(systemName: "envelope")
                 }
             }
+            .accessibilityHint(Text(appLocalized("Open email composer to contact the developer")))
         } header: {
             Text(appLocalized("Support"))
         }
@@ -149,6 +157,7 @@ public struct SettingsView: View {
                     Image(systemName: "globe")
                 }
             }
+            .accessibilityHint(Text(appLocalized("Open system settings to change app language")))
         } header: {
             Text(appLocalized("Language"))
         }
@@ -233,7 +242,7 @@ struct UserGuideView: View {
         HStack(alignment: .top, spacing: Spacing.medium) {
             ZStack {
                 Circle()
-                    .fill(Color.accent.opacity(0.1))
+                    .fill(Color.accent.opacity(ColorOpacity.guideStepBackground))
                     .frame(width: 50, height: 50)
                 
                 Text("\(number)")
