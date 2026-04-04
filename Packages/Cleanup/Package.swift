@@ -2,33 +2,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "Details",
+    name: "Cleanup",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
     ],
     products: [
         .library(
-            name: "Details",
-            targets: ["Details"]
+            name: "Cleanup",
+            targets: ["Cleanup"]
         ),
     ],
     dependencies: [
-        .package(path: "../Core"),
-        .package(path: "../DesignSystem"),
-        .package(path: "../Storage")
+        .package(path: "../Core")
     ],
     targets: [
         .target(
-            name: "Details",
-            dependencies: ["Core", "DesignSystem", "Storage"],
+            name: "Cleanup",
+            dependencies: ["Core"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
-            name: "DetailsTests",
-            dependencies: ["Details"]
+            name: "CleanupTests",
+            dependencies: ["Cleanup", "Core"]
         ),
     ]
 )

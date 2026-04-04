@@ -2,10 +2,11 @@ import Foundation
 
 #if DEBUG
 
-/// Mock реалізація PhotoClusterRepository для SwiftUI previews та Unit tests
+/// Mock implementation of PhotoClusterRepository for SwiftUI previews and unit tests.
 public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public var savedClusters: [PhotoCluster] = []
     public var loadClustersResult: Result<[PhotoCluster], Error> = .success([])
+    public var loadClusterSnapshotsResult: Result<[PhotoClusterSnapshot], Error> = .success([])
     public var saveClustersResult: Result<Void, Error> = .success(())
     public var deleteAllClustersResult: Result<Void, Error> = .success(())
     public var getLastScanDateResult: Date?
@@ -14,6 +15,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     
     public var didCallSaveClusters = false
     public var didCallLoadClusters = false
+    public var didCallLoadClusterSnapshots = false
     public var didCallDeleteAllClusters = false
     public var didCallGetLastScanDate = false
     public var didCallUpdateLastScanDate = false
@@ -29,6 +31,10 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public func setSaveClustersResult(_ result: Result<Void, Error>) {
         saveClustersResult = result
     }
+
+    public func setLoadClusterSnapshotsResult(_ result: Result<[PhotoClusterSnapshot], Error>) {
+        loadClusterSnapshotsResult = result
+    }
     
     public func setGetLastScanDateResult(_ date: Date?) {
         getLastScanDateResult = date
@@ -43,6 +49,16 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
         switch loadClustersResult {
         case .success(let clusters):
             return clusters
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    public func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot] {
+        didCallLoadClusterSnapshots = true
+        switch loadClusterSnapshotsResult {
+        case .success(let snapshots):
+            return snapshots
         case .failure(let error):
             throw error
         }

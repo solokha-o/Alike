@@ -3,7 +3,7 @@ import Photos
 
 #if DEBUG
 
-/// Mock реалізація PhotoAnalysisService для SwiftUI previews та Unit tests
+/// Mock implementation of PhotoAnalysisService for SwiftUI previews and unit tests.
 public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var analyzePhotoLibraryResult: Result<[PhotoCluster], Error> = .success([])
     public var calculateSimilarityResult: Result<Float, Error> = .success(0.95)

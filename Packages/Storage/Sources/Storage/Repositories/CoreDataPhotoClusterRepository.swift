@@ -63,6 +63,26 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             }
         }
     }
+
+    public func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot] {
+        try await loadClusterData().map { clusterData in
+            PhotoClusterSnapshot(
+                id: clusterData.id,
+                createdAt: clusterData.createdAt,
+                averageSimilarity: clusterData.averageSimilarity,
+                assets: clusterData.assets.map { assetData in
+                    PhotoClusterAssetSnapshot(
+                        localIdentifier: assetData.localIdentifier,
+                        creationDate: assetData.creationDate,
+                        modificationDate: assetData.modificationDate,
+                        pixelWidth: assetData.pixelWidth,
+                        pixelHeight: assetData.pixelHeight,
+                        isFavorite: assetData.isFavorite
+                    )
+                }
+            )
+        }
+    }
     
     @MainActor
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {

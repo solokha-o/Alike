@@ -5,6 +5,9 @@ import Photos
 public protocol PhotoClusterRepository: Sendable {
     /// Load all saved clusters
     func loadClusters() async throws -> [PhotoCluster]
+
+    /// Load persisted cluster snapshots without resolving live PHAssets.
+    func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot]
     
     /// Save clusters to persistent storage
     func saveClusters(_ clusters: [PhotoCluster]) async throws
@@ -20,6 +23,36 @@ public protocol PhotoClusterRepository: Sendable {
     
     /// Check if gallery has changed since last scan
     func hasGalleryChanged() async -> Bool
+}
+
+/// Repository for cleanup review state per photo cluster.
+public protocol ClusterReviewStateRepository: Sendable {
+    /// Load review state for a cluster.
+    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState?
+
+    /// Load all review states keyed by cluster id.
+    func loadAllReviewStates() async throws -> [UUID: ClusterReviewState]
+
+    /// Save or overwrite review state.
+    func saveReviewState(_ state: ClusterReviewState) async throws
+
+    /// Delete one review state.
+    func deleteReviewState(clusterID: UUID) async throws
+
+    /// Delete all stored review states.
+    func deleteAllReviewStates() async throws
+}
+
+/// Repository for the active cleanup session aggregate state.
+public protocol CleanupSessionRepository: Sendable {
+    /// Load currently active cleanup session.
+    func loadActiveSession() async throws -> CleanupSession?
+
+    /// Save or overwrite currently active cleanup session.
+    func saveActiveSession(_ session: CleanupSession) async throws
+
+    /// Delete currently active cleanup session.
+    func deleteActiveSession() async throws
 }
 
 /// Service for analyzing photos using Vision framework

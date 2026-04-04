@@ -77,4 +77,41 @@ final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
         XCTAssertEqual(loaded.count, 1)
         XCTAssertEqual(loaded.first?.averageSimilarity ?? 0, 0.7, accuracy: 0.001)
     }
+
+    func testLoadClusterSnapshotsPreservesAssetMetadataForDiffing() async throws {
+        let clusterID = UUID()
+        let createdAt = Date(timeIntervalSince1970: 100)
+        let modifiedAt = Date(timeIntervalSince1970: 200)
+        let cluster = CoreDataPhotoClusterRepository.ClusterData(
+            id: clusterID,
+            createdAt: createdAt,
+            averageSimilarity: 0.95,
+            assets: [
+                .init(
+                    localIdentifier: "asset-a",
+                    creationDate: createdAt,
+                    modificationDate: modifiedAt,
+                    pixelWidth: 1200,
+                    pixelHeight: 800,
+                    isFavorite: true
+                ),
+                .init(
+                    localIdentifier: "asset-b",
+                    creationDate: nil,
+                    modificationDate: nil,
+                    pixelWidth: 600,
+                    pixelHeight: 400,
+                    isFavorite: false
+                )
+            ]
+        )
+
+        try await repository.saveClusterData([cluster])
+        let snapshots = try await repository.loadClusterSnapshots()
+
+        XCTAssertEqual(snapshots.count, 1)
+        XCTAssertEqual(snapshots.first?.id, clusterID)
+        XCTAssertEqual(snapshots.first?.assetIdentifiers, ["asset-a", "asset-b"])
+        XCTAssertEqual(snapshots.first?.bestShotLocalIdentifier, "asset-a")
+    }
 }

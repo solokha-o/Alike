@@ -47,6 +47,7 @@ struct MainTabView: View {
     @State private var tabManager = TabManager()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+    private let gridConfiguration = GridConfiguration.current
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -66,6 +67,12 @@ struct MainTabView: View {
             }
         }
         .tint(.accent)
+        .task {
+            let clamped = gridConfiguration.clampedColumns(gridColumns)
+            if clamped != gridColumns {
+                gridColumns = clamped
+            }
+        }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
                 tabManager.dismissRescan()
@@ -83,13 +90,19 @@ struct MainTabView: View {
         switch tab {
         case .scanner:
             ScannerView(
-                gridColumns: $gridColumns,
+                gridColumns: Binding(
+                    get: { gridConfiguration.clampedColumns(gridColumns) },
+                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
+                ),
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan
             )
         case .settings:
             SettingsView(
-                gridColumns: $gridColumns,
+                gridColumns: Binding(
+                    get: { gridConfiguration.clampedColumns(gridColumns) },
+                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
+                ),
                 sensitivity: sensitivity,
                 needsRescan: Bindable(tabManager).needsRescan
             )

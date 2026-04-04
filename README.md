@@ -8,12 +8,27 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 
 - 🔍 **Vision-based analysis** — uses `VNFeaturePrintObservation` for accurate comparisons
 - 🎯 **Sensitivity levels** — 3 accuracy modes (Low/Medium/High)
-- 📊 **Adaptive grid** — 2 to 8 columns depending on device
+- 🧭 **Guided cleanup review** — review each cluster with clear, step-by-step actions
+- ⭐ **Best Shot detection** — deterministic pick of the strongest photo in each cluster
+- ✅ **Quick cleanup actions** — Keep Best Only, Select All Except Best, and Clear Selection
+- 🏷️ **Review badges and states** — Not reviewed, In review, Reviewed, and Needs review after rescans
+- 📈 **Cleanup session progress** — track reviewed clusters, selected items, and estimated savings
+- 💾 **Persistent review state** — selection and review progress are saved locally between app launches
+- 📊 **Adaptive grid** — 1 to 2 columns optimized for phone and tablet layouts
 - 💾 **CoreData caching** — stores scan results
 - 🎨 **Indigo design** — modern UI with animations and haptic feedback
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
 - 📱 **iPad support** — optimized for tablets
+
+## 🆕 What's New in v1.1.1
+
+- Added Guided Cleanup Review flow in cluster details with Best Shot and selection-first UX.
+- Added quick bulk actions: Keep Best Only, Select All Except Best, and Clear Selection.
+- Added persistent cluster review states so progress is restored after relaunch.
+- Added cleanup session progress summary with selected count and estimated storage savings.
+- Added scanner badges and "Needs review" resurfacing flow after library changes and rescans.
+- Improved scanner-to-details navigation reliability during cleanup entry.
 
 ## 🧠 Similarity algorithm
 
@@ -37,6 +52,7 @@ Alike/
 ├── Launch/                  # Splash screen
 ├── Welcome/                 # Onboarding & permissions
 ├── Scanner/                 # Analysis & results
+├── Cleanup/                 # Cleanup session orchestration and progress
 ├── Settings/                # Configuration
 └── Details/                 # Cluster details
 ```
@@ -81,7 +97,7 @@ There are two shared schemes:
 1. **Launch Screen** (3 sec) → 📸 animation
 2. **Welcome Screen** → photo permission request
 3. **Main TabView**:
-   - **Scanner Tab**: scan → results → details
+  - **Scanner Tab**: scan → results → guided cleanup review
    - **Settings Tab**: configuration + support
 
 ## 🎨 Design
@@ -108,6 +124,38 @@ Unit tests run within each package.
 Languages via `Localizable.xcstrings`:
 - 🇬🇧 English (base)
 - 🇺🇦 Ukrainian
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+### Ways to contribute
+
+- Open a **GitHub Issue** for:
+  - bug reports
+  - feature requests
+  - UX or product proposals
+- Submit a **Pull Request** with code, tests, or documentation improvements.
+- Share cleanup-flow ideas and edge cases (for example, tricky photo-library scenarios) through Issues.
+
+### Before opening an issue
+
+- Search existing issues to avoid duplicates.
+- Use a clear title and include context.
+- For bugs, include:
+  - expected behavior
+  - actual behavior
+  - steps to reproduce
+  - device + iOS version
+
+### Pull request guidelines
+
+- Base feature work on `develop` and keep PRs focused.
+- Use clear, English commit messages.
+- Add or update tests when behavior changes.
+- Update docs/README if user-facing behavior changes.
+
+If GitHub Discussions are enabled later, product ideas and broader proposals can also be posted there. Until then, please use Issues.
 
 ## 👨‍💻 Contact
 

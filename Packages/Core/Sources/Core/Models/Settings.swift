@@ -35,16 +35,16 @@ public struct GridConfiguration: Sendable {
     public let spacing: Double
     
     public static let iPhone = GridConfiguration(
-        minColumns: 2,
-        maxColumns: 4,
-        defaultColumns: 3,
+        minColumns: 1,
+        maxColumns: 2,
+        defaultColumns: 2,
         spacing: 2.0
     )
     
     public static let iPad = GridConfiguration(
-        minColumns: 4,
-        maxColumns: 8,
-        defaultColumns: 6,
+        minColumns: 1,
+        maxColumns: 2,
+        defaultColumns: 2,
         spacing: 2.0
     )
     
@@ -57,5 +57,9 @@ public struct GridConfiguration: Sendable {
         #else
         return .iPhone
         #endif
+    }
+
+    public func clampedColumns(_ value: Int) -> Int {
+        min(max(value, minColumns), maxColumns)
     }
 }
