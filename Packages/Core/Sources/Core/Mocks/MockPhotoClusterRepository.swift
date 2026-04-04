@@ -2,7 +2,7 @@ import Foundation
 
 #if DEBUG
 
-/// Mock реалізація PhotoClusterRepository для SwiftUI previews та Unit tests
+/// Mock implementation of PhotoClusterRepository for SwiftUI previews and unit tests.
 public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public var savedClusters: [PhotoCluster] = []
     public var loadClustersResult: Result<[PhotoCluster], Error> = .success([])
