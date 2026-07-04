@@ -35,12 +35,17 @@ When no failure analysis or repo mutation is needed, the user can directly run:
 
 ## Build-Completion Gate
 
-1. For any code change, do not mark the task as finished until a full app
-   compile is executed.
-2. Full compile command:
+1. Run a full app compile before marking the task finished only when the
+   changes affect compilable app or package source, build settings, package
+   manifests, generated code, or any other area where compile validation is
+   needed to know the repo still builds correctly.
+2. Do not require a full app compile for documentation, skill files, comments,
+   copy-only edits, or other non-compilable changes unless there is specific
+   reason to doubt the change or the user asks for validation anyway.
+3. Full compile command:
    `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=66E5E039-9C66-4878-B211-923932320166' build`.
-3. If the fixed simulator ID is unavailable, first select an available iOS
+4. If the fixed simulator ID is unavailable, first select an available iOS
    Simulator destination and then run the same full compile.
-4. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
+5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
 </INSTRUCTIONS>
