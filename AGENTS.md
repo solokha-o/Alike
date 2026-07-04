@@ -1,6 +1,6 @@
 <INSTRUCTIONS>
 In this project, the agent must use local skills from
-`/Users/oleksandrs/Alike/Skills` for every request whenever possible.
+`/Users/oleksandrsolokha/Projects/Alike/Skills` for every request whenever possible.
 
 ## Priority Workflow
 
@@ -19,7 +19,7 @@ boundaries, validation commands, architectural conventions, and commit rules.
 ## Skill Rules
 
 - Derive the available local skill list from `SKILL.md` files inside
-  `/Users/oleksandrs/Alike/Skills` subfolders, not from global paths.
+  `/Users/oleksandrsolokha/Projects/Alike/Skills` subfolders, not from global paths.
 - If multiple local skills could apply, choose the narrowest one first.
 - Do not bulk-read `Skills/External/**` for routine implementation, review, or
   test work.
