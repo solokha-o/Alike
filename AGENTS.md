@@ -1,6 +1,6 @@
 <INSTRUCTIONS>
 In this project, the agent must use local skills from
-`/Users/oleksandrs/Alike/Skills` for every request whenever possible.
+`/Users/oleksandrsolokha/Projects/Alike/Skills` for every request whenever possible.
 
 If a request matches the description of at least one skill in this folder, the agent must:
 1) Open the relevant `SKILL.md` and follow its instructions.
@@ -9,7 +9,7 @@ If a request matches the description of at least one skill in this folder, the a
 3) If no skill applies, briefly explain why and proceed without a skill.
 
 The list of available skills must be derived from `SKILL.md` files inside
-`/Users/oleksandrs/Alike/Skills` subfolders (not from global paths).
+`/Users/oleksandrsolokha/Projects/Alike/Skills` subfolders (not from global paths).
 
 Build-completion gate:
 1) For any code change, do not mark the task as finished until a full app compile is executed.
