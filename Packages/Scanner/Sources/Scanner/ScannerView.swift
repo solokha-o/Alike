@@ -4,11 +4,15 @@ import DesignSystem
 import Details
 import Photos
 import Cleanup
+import NavigationKit
+
+private enum ScannerRoute: Hashable {
+    case clusterDetails(PhotoCluster)
+}
 
 /// Scanner screen with analysis and results
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
-    @State private var summaryEntryCluster: PhotoCluster?
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
@@ -33,33 +37,10 @@ public struct ScannerView: View {
     }
     
     public var body: some View {
-        NavigationStack {
-            Group {
-                switch viewModel.state {
-                case .idle:
-                    idleView
-                case .scanning(let progress):
-                    scanningView(progress: progress)
-                case .results(let clusters):
-                    resultsView(clusters: clusters)
-                case .error(let message):
-                    errorView(message: message)
-                }
-            }
-            .navigationTitle(Text(appLocalized("Scanner")))
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.large)
-#endif
-            .navigationDestination(item: $summaryEntryCluster) { cluster in
-                ClusterDetailsView(
-                    cluster: cluster,
-                    onReviewStateChanged: {
-                        Task {
-                            await viewModel.loadReviewStates()
-                        }
-                    }
-                )
-            }
+        RoutedNavigationStack { router in
+            content(router: router)
+        } destination: { route, _ in
+            destination(for: route)
         }
         .task {
             await viewModel.loadCachedResults()
@@ -78,6 +59,41 @@ public struct ScannerView: View {
                     shouldStartScan = false
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func content(router: StackRouter<ScannerRoute>) -> some View {
+        Group {
+            switch viewModel.state {
+            case .idle:
+                idleView
+            case .scanning(let progress):
+                scanningView(progress: progress)
+            case .results(let clusters):
+                resultsView(clusters: clusters, router: router)
+            case .error(let message):
+                errorView(message: message)
+            }
+        }
+        .navigationTitle(Text(appLocalized("Scanner")))
+#if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+#endif
+        }
+    
+    @ViewBuilder
+    private func destination(for route: ScannerRoute) -> some View {
+        switch route {
+        case .clusterDetails(let cluster):
+            ClusterDetailsView(
+                cluster: cluster,
+                onReviewStateChanged: {
+                    Task {
+                        await viewModel.loadReviewStates()
+                    }
+                }
+            )
         }
     }
     
@@ -152,7 +168,10 @@ public struct ScannerView: View {
     }
     
     // MARK: - Results View
-    private func resultsView(clusters: [PhotoCluster]) -> some View {
+    private func resultsView(
+        clusters: [PhotoCluster],
+        router: StackRouter<ScannerRoute>
+    ) -> some View {
         let sortedClusters = viewModel.sortedClusters(from: clusters)
         let needsReviewClusters = viewModel.needsReviewClusters(from: sortedClusters)
         let remainingClusters = viewModel.remainingClusters(from: sortedClusters)
@@ -189,10 +208,8 @@ public struct ScannerView: View {
                             gridColumns: gridColumns,
                             reviewStatus: viewModel.reviewStatus(for:),
                             resurfacingState: viewModel.resurfacingState(for:),
-                            onReviewStateChanged: {
-                                Task {
-                                    await viewModel.loadReviewStates()
-                                }
+                            onOpenCluster: { cluster in
+                                router.push(.clusterDetails(cluster))
                             }
                         )
                     }
@@ -200,7 +217,10 @@ public struct ScannerView: View {
                     CleanupSessionProgressCard(
                         progress: sessionProgress,
                         onTap: {
-                            summaryEntryCluster = viewModel.cleanupEntryCluster(from: sortedClusters)
+                            guard let cluster = viewModel.cleanupEntryCluster(from: sortedClusters) else {
+                                return
+                            }
+                            router.push(.clusterDetails(cluster))
                         }
                     )
 
@@ -213,10 +233,8 @@ public struct ScannerView: View {
                             gridColumns: gridColumns,
                             reviewStatus: viewModel.reviewStatus(for:),
                             resurfacingState: viewModel.resurfacingState(for:),
-                            onReviewStateChanged: {
-                                Task {
-                                    await viewModel.loadReviewStates()
-                                }
+                            onOpenCluster: { cluster in
+                                router.push(.clusterDetails(cluster))
                             }
                         )
                     }
@@ -282,18 +300,13 @@ struct ClusterCard: View {
     let gridColumns: Int
     let reviewStatus: ClusterReviewStatus
     let resurfacingState: ClusterResurfacingState?
-    let onReviewStateChanged: (() -> Void)?
+    let onOpen: () -> Void
 #if os(iOS)
     @State private var thumbnailImage: UIImage?
 #endif
     
     var body: some View {
-        NavigationLink {
-            ClusterDetailsView(
-                cluster: cluster,
-                onReviewStateChanged: onReviewStateChanged
-            )
-        } label: {
+        Button(action: onOpen) {
             ZStack(alignment: .bottomTrailing) {
 #if os(iOS)
                 if let image = thumbnailImage {
@@ -545,7 +558,7 @@ private struct ClusterSectionCard: View {
     let gridColumns: Int
     let reviewStatus: (UUID) -> ClusterReviewStatus
     let resurfacingState: (UUID) -> ClusterResurfacingState?
-    let onReviewStateChanged: () -> Void
+    let onOpenCluster: (PhotoCluster) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
@@ -575,7 +588,9 @@ private struct ClusterSectionCard: View {
                         gridColumns: gridColumns,
                         reviewStatus: reviewStatus(cluster.id),
                         resurfacingState: resurfacingState(cluster.id),
-                        onReviewStateChanged: onReviewStateChanged
+                        onOpen: {
+                            onOpenCluster(cluster)
+                        }
                     )
                 }
             }
