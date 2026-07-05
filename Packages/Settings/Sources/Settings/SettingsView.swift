@@ -2,9 +2,14 @@ import SwiftUI
 import StoreKit
 import Core
 import DesignSystem
+import NavigationKit
 #if canImport(UIKit)
 import UIKit
 #endif
+
+private enum SettingsRoute: Hashable {
+    case userGuide
+}
 
 /// Settings screen
 public struct SettingsView: View {
@@ -26,18 +31,32 @@ public struct SettingsView: View {
     }
     
     public var body: some View {
-        NavigationStack {
-            Form {
-                appearanceSection
-                languageSection
-                analysisSection
-                supportSection
-                aboutSection
-            }
-            .navigationTitle(Text(appLocalized("Settings")))
+        RoutedNavigationStack { router in
+            formContent(router: router)
+        } destination: { route, _ in
+            destination(for: route)
+        }
+    }
+
+    private func formContent(router: StackRouter<SettingsRoute>) -> some View {
+        Form {
+            appearanceSection
+            languageSection
+            analysisSection
+            supportSection(router: router)
+            aboutSection
+        }
+        .navigationTitle(Text(appLocalized("Settings")))
 #if os(iOS)
-            .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.large)
 #endif
+    }
+
+    @ViewBuilder
+    private func destination(for route: SettingsRoute) -> some View {
+        switch route {
+        case .userGuide:
+            UserGuideView()
         }
     }
     
@@ -86,10 +105,10 @@ public struct SettingsView: View {
     }
     
     // MARK: - Support Section
-    private var supportSection: some View {
+    private func supportSection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
-            NavigationLink {
-                UserGuideView()
+            Button {
+                router.push(.userGuide)
             } label: {
                 Label {
                     Text(appLocalized("How to Use"))
