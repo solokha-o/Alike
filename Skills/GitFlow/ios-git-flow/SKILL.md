@@ -99,6 +99,7 @@ Use this skill when the user wants branch strategy, release process, version/bui
 - Use merge commit for release/hotfix to preserve context.
 - Keep PR title meaningful; it becomes the squash commit title.
 - If multiple commits are useful (e.g., refactor + feature), ensure each is complete and buildable.
+- For full PR preparation, self-review, PR body authoring, or review-comment response, use `Skills/GitFlow/pr-agent-flow/SKILL.md`.
 
 ## PR template (short)
 
