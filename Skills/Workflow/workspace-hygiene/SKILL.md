@@ -72,6 +72,12 @@ Before finishing:
 4. Check for leftover build output such as local `build/` directories or task-scoped DerivedData.
 5. In the final response, mention any intentionally retained new files or build artifacts.
 
+## Pre-Commit Rule
+
+- Before presenting work as ready to commit, remove transient files and folders that are not part of the deliverable.
+- This includes task-created folders such as `.build-cache/`, repo-local `.build/`, temporary result bundles, scratch exports, and other verification-only artifacts.
+- If a validation command creates temporary repo files, clean them up before the final response unless the user explicitly asked to keep them.
+
 ## If Cleanup Is Risky
 
 - Never delete pre-existing user files just because they look temporary.

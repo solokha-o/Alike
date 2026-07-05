@@ -19,12 +19,13 @@ let package = Package(
         .package(path: "../PhotoAnalysis"),
         .package(path: "../DesignSystem"),
         .package(path: "../Details"),
-        .package(path: "../Cleanup")
+        .package(path: "../Cleanup"),
+        .package(path: "../NavigationKit")
     ],
     targets: [
         .target(
             name: "Scanner",
-            dependencies: ["Core", "Storage", "PhotoAnalysis", "DesignSystem", "Details", "Cleanup"],
+            dependencies: ["Core", "Storage", "PhotoAnalysis", "DesignSystem", "Details", "Cleanup", "NavigationKit"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
