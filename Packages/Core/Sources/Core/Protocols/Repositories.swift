@@ -55,6 +55,25 @@ public protocol CleanupSessionRepository: Sendable {
     func deleteActiveSession() async throws
 }
 
+/// Service for deleting photos from the device photo library.
+public protocol PhotoCleanupService: Sendable {
+    /// Delete the assets identified by the provided local identifiers.
+    func deleteAssets(
+        localIdentifiers: Set<String>,
+        sourceClusterID: UUID,
+        estimatedSavingsBytes: Int64
+    ) async throws -> CleanupCompletionRecord
+}
+
+/// Repository for persisted cleanup completion history.
+public protocol CleanupHistoryRepository: Sendable {
+    /// Load all persisted cleanup completion entries.
+    func loadEntries() async throws -> [CleanupCompletionRecord]
+
+    /// Persist one cleanup completion entry.
+    func append(_ entry: CleanupCompletionRecord) async throws
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters

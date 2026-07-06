@@ -5,6 +5,9 @@ struct ClusterReviewActionBar: View {
     let onKeepBestOnly: () -> Void
     let onSelectAllExceptBest: () -> Void
     let onClearSelection: () -> Void
+    let onDeleteSelected: (() -> Void)?
+    let isDeleteActionVisible: Bool
+    let isDeleting: Bool
 
     var body: some View {
         VStack(spacing: Spacing.small) {
@@ -25,10 +28,34 @@ struct ClusterReviewActionBar: View {
 
             SecondaryButton(appLocalized("Clear Selection"), icon: "circle", action: onClearSelection)
                 .accessibilityHint(Text(appLocalized("Remove all currently selected photos")))
+
+            if isDeleteActionVisible, let onDeleteSelected {
+                Button(action: onDeleteSelected) {
+                    HStack(spacing: Spacing.small) {
+                        if isDeleting {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            Image(systemName: "trash.fill")
+                                .font(.appHeadline)
+                        }
+                        Text(isDeleting ? appLocalized("Deleting...") : appLocalized("Delete Selected"))
+                            .font(.appHeadline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.red, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+                    .foregroundColor(.white)
+                }
+                .buttonStyle(.plain)
+                .disabled(isDeleting)
+                .opacity(isDeleting ? 0.8 : 1)
+                .accessibilityHint(Text(appLocalized("Permanently delete the currently selected photos")))
+            }
         }
         .padding(Spacing.small)
         .background {
-            if #available(iOS 26.0, *) {
+            if #available(iOS 26.0, macOS 26.0, *) {
                 RoundedRectangle(cornerRadius: CornerRadius.medium)
                     .fill(.clear)
                     .glassEffect(.regular.interactive(), in: .rect(cornerRadius: CornerRadius.medium))

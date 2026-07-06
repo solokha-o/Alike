@@ -2,6 +2,7 @@ import SwiftUI
 import Photos
 import Core
 import DesignSystem
+import Storage
 
 #if os(iOS)
 
@@ -9,23 +10,41 @@ import DesignSystem
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
     private let onReviewStateChanged: (() -> Void)?
+    private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
+    @State private var didCompleteCleanup = false
+    @Environment(\.dismiss) private var dismiss
 
-    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
+    public init(
+        cluster: PhotoCluster,
+        cleanupService: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+    ) {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
-        self._viewModel = State(initialValue: ClusterDetailsViewModel(cluster: cluster))
+        self.onCleanupCompleted = onCleanupCompleted
+        self._viewModel = State(initialValue: ClusterDetailsViewModel(
+            cluster: cluster,
+            cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            openSettingsAction: openSettingsAction
+        ))
     }
 
     init(
         cluster: PhotoCluster,
         viewModel: ClusterDetailsViewModel,
-        onReviewStateChanged: (() -> Void)? = nil
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
+        self.onCleanupCompleted = onCleanupCompleted
         self._viewModel = State(initialValue: viewModel)
     }
     
@@ -65,6 +84,7 @@ public struct ClusterDetailsView: View {
                         )
                     }
                 }
+                .allowsHitTesting(!viewModel.isDeleting)
                 .padding(.horizontal, Spacing.medium)
                 .padding(.bottom, Spacing.medium)
             }
@@ -87,8 +107,12 @@ public struct ClusterDetailsView: View {
                     ClusterReviewActionBar(
                         onKeepBestOnly: viewModel.keepBestOnly,
                         onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                        onClearSelection: viewModel.clearSelection
+                        onClearSelection: viewModel.clearSelection,
+                        onDeleteSelected: viewModel.requestDeleteConfirmation,
+                        isDeleteActionVisible: viewModel.isDeleteActionVisible,
+                        isDeleting: viewModel.isDeleting
                     )
+                    .disabled(viewModel.isDeleting)
                 }
             }
             .padding(.horizontal, Spacing.medium)
@@ -118,10 +142,59 @@ public struct ClusterDetailsView: View {
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
         }
+        .alert(
+            viewModel.selectedCount == 1
+                ? appLocalized("Delete 1 Selected Photo?")
+                : "Delete \(viewModel.selectedCount) Selected Photos?",
+            isPresented: Bindable(viewModel).isDeleteConfirmationPresented
+        ) {
+            Button(appLocalized("Cancel"), role: .cancel) {}
+            Button(appLocalized("Delete"), role: .destructive) {
+                Task {
+                    await viewModel.confirmDelete()
+                }
+            }
+        } message: {
+            Text(
+                viewModel.selectedCount == 1
+                    ? "This will permanently delete the selected photo from your library and free about \(viewModel.estimatedSavingsText)."
+                    : "This will permanently delete the selected photos from your library and free about \(viewModel.estimatedSavingsText)."
+            )
+        }
+        .alert(
+            appLocalized("Cleanup Unavailable"),
+            isPresented: Binding(
+                get: { viewModel.deleteErrorMessage != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        viewModel.clearDeleteError()
+                    }
+                }
+            )
+        ) {
+            if viewModel.shouldOfferOpenSettings {
+                Button(appLocalized("Open Settings")) {
+                    viewModel.openSettings()
+                    viewModel.clearDeleteError()
+                }
+            }
+            Button(appLocalized("OK"), role: .cancel) {
+                viewModel.clearDeleteError()
+            }
+        } message: {
+            Text(viewModel.deleteErrorMessage ?? "")
+        }
         .task {
             await viewModel.load()
         }
+        .onChange(of: viewModel.pendingCompletionRecord) { _, record in
+            guard let record else { return }
+            didCompleteCleanup = true
+            onCleanupCompleted?(record)
+            dismiss()
+        }
         .onDisappear {
+            guard !didCompleteCleanup else { return }
             onReviewStateChanged?()
         }
     }
@@ -448,7 +521,14 @@ struct MetadataView: View {
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
 
-    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
+    public init(
+        cluster: PhotoCluster,
+        cleanupService: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+    ) {
         self.cluster = cluster
     }
 

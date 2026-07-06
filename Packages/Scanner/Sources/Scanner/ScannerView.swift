@@ -64,16 +64,32 @@ public struct ScannerView: View {
 
     @ViewBuilder
     private func content(router: StackRouter<ScannerRoute>) -> some View {
-        Group {
-            switch viewModel.state {
-            case .idle:
-                idleView
-            case .scanning(let progress):
-                scanningView(progress: progress)
-            case .results(let clusters):
-                resultsView(clusters: clusters, router: router)
-            case .error(let message):
-                errorView(message: message)
+        VStack(spacing: Spacing.medium) {
+            if let cleanupRefreshState = viewModel.cleanupRefreshState {
+                CleanupRefreshBanner(
+                    state: cleanupRefreshState,
+                    onRetry: {
+                        Task {
+                            await viewModel.retryCleanupRefresh()
+                        }
+                    },
+                    onDismiss: viewModel.dismissCleanupRefreshState
+                )
+                .padding(.horizontal, Spacing.medium)
+                .padding(.top, Spacing.small)
+            }
+
+            Group {
+                switch viewModel.state {
+                case .idle:
+                    idleView
+                case .scanning(let progress):
+                    scanningView(progress: progress)
+                case .results(let clusters):
+                    resultsView(clusters: clusters, router: router)
+                case .error(let message):
+                    errorView(message: message)
+                }
             }
         }
         .navigationTitle(Text(appLocalized("Scanner")))
@@ -88,9 +104,19 @@ public struct ScannerView: View {
         case .clusterDetails(let cluster):
             ClusterDetailsView(
                 cluster: cluster,
+                cleanupService: viewModel.cleanupService,
+                cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                openSettingsAction: {
+                    PhotoPermissionManagerImpl().openSettings()
+                },
                 onReviewStateChanged: {
                     Task {
                         await viewModel.loadReviewStates()
+                    }
+                },
+                onCleanupCompleted: { record in
+                    Task {
+                        await viewModel.handleCleanupCompleted(record)
                     }
                 }
             )
@@ -290,6 +316,103 @@ public struct ScannerView: View {
             }
         } description: {
             Text(message)
+        }
+    }
+}
+
+private struct CleanupRefreshBanner: View {
+    let state: ScannerViewModel.CleanupRefreshState
+    let onRetry: () -> Void
+    let onDismiss: () -> Void
+
+    var body: some View {
+        HStack(alignment: .top, spacing: Spacing.small) {
+            icon
+
+            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                Text(title)
+                    .font(.appHeadline)
+                Text(message)
+                    .font(.appBody)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: Spacing.small)
+
+            actionArea
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .subtleShadow()
+    }
+
+    @ViewBuilder
+    private var icon: some View {
+        switch state {
+        case .refreshing:
+            ProgressView()
+                .tint(.accent)
+        case .success:
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundStyle(Color.statusReviewed)
+                .font(.title3)
+        case .failed:
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(Color.statusNeedsReview)
+                .font(.title3)
+        }
+    }
+
+    private var title: String {
+        switch state {
+        case .refreshing(let record):
+            "Deleted \(record.deletedCount) photos."
+        case .success(let record):
+            "Deleted \(record.deletedCount) photos."
+        case .failed:
+            appLocalized("Refresh Required")
+        }
+    }
+
+    private var message: String {
+        switch state {
+        case .refreshing:
+            appLocalized("Refreshing results from your photo library...")
+        case .success:
+            appLocalized("Your cleanup results are up to date.")
+        case .failed(_, let message):
+            message
+        }
+    }
+
+    @ViewBuilder
+    private var actionArea: some View {
+        switch state {
+        case .refreshing:
+            EmptyView()
+        case .success:
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.headline)
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text(appLocalized("Dismiss")))
+        case .failed:
+            HStack(spacing: Spacing.small) {
+                Button(appLocalized("Retry")) {
+                    onRetry()
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.headline)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .accessibilityLabel(Text(appLocalized("Dismiss")))
+            }
         }
     }
 }

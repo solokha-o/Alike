@@ -3,6 +3,7 @@ import Core
 import Storage
 import PhotoAnalysis
 import Cleanup
+import DesignSystem
 
 @MainActor
 @Observable
@@ -13,6 +14,12 @@ public final class ScannerViewModel {
         case results([PhotoCluster])
         case error(String)
     }
+
+    public enum CleanupRefreshState: Equatable {
+        case refreshing(CleanupCompletionRecord)
+        case success(CleanupCompletionRecord)
+        case failed(CleanupCompletionRecord, message: String)
+    }
     
     public var state: State = .idle
     public var gridColumns: Int
@@ -20,11 +27,15 @@ public final class ScannerViewModel {
     public private(set) var reviewStates: [UUID: ClusterReviewState] = [:]
     public private(set) var resurfacingStates: [UUID: ClusterResurfacingState] = [:]
     public private(set) var activeCleanupSession: CleanupSession?
+    public private(set) var cleanupRefreshState: CleanupRefreshState?
     
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
     private let reviewRepository: ClusterReviewStateRepository
+    private let cleanupSessionRepository: CleanupSessionRepository
     private let cleanupManager: any CleanupSessionManaging
+    let cleanupService: any PhotoCleanupService
+    let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
     
     public init(
@@ -34,12 +45,17 @@ public final class ScannerViewModel {
         repository: PhotoClusterRepository = CoreDataPhotoClusterRepository(),
         reviewRepository: ClusterReviewStateRepository = FileClusterReviewStateRepository(),
         cleanupSessionRepository: CleanupSessionRepository = FileCleanupSessionRepository(),
+        cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         cleanupManager: (any CleanupSessionManaging)? = nil
     ) {
         self.gridColumns = gridColumns
         self.sensitivity = sensitivity
         self.repository = repository
         self.reviewRepository = reviewRepository
+        self.cleanupSessionRepository = cleanupSessionRepository
+        self.cleanupService = cleanupService
+        self.cleanupHistoryRepository = cleanupHistoryRepository
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         
         if let analysisService {
@@ -74,64 +90,41 @@ public final class ScannerViewModel {
     }
     
     public func startScanning() async {
-        AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
-        state = .scanning(progress: 0.0)
-        
         do {
-            let previousSnapshots = try await repository.loadClusterSnapshots()
-            let previousReviewStates = (try? await loadAllReviewStates()) ?? [:]
-            let clusters = try await analysisService.analyzePhotoLibrary(
-                sensitivity: sensitivity.threshold
-            ) { progress in
-                Task { @MainActor in
-                    self.state = .scanning(progress: progress)
-                }
-            }
-            
-            // Save results
-            try await repository.saveClusters(clusters)
-            try await repository.updateLastScanDate(Date())
-            
-            let sorted = sortedClusters(from: clusters)
-            if case .results(let existing) = state, existing == sorted {
-                return
-            }
-
-            if previousSnapshots.isEmpty {
-                reviewStates = [:]
-                resurfacingStates = Dictionary(uniqueKeysWithValues: sorted.map { ($0.id, .unchanged) })
-                do {
-                    try await persistReviewStates([:])
-                } catch {
-                    AppLog.storage.error(
-                        "\(AppLog.tag(.error, "Failed to clear stale review states: \(error.localizedDescription)"))"
-                    )
-                }
-            } else {
-                let resurfacing = ClusterReviewStateResurfacer.resurface(
-                    previousSnapshots: previousSnapshots,
-                    newClusters: sorted,
-                    existingReviewStates: previousReviewStates
-                )
-                reviewStates = resurfacing.migratedReviewStates
-                resurfacingStates = resurfacing.resurfacingStates
-                do {
-                    try await persistReviewStates(reviewStates)
-                } catch {
-                    AppLog.storage.error(
-                        "\(AppLog.tag(.error, "Failed to persist migrated review states: \(error.localizedDescription)"))"
-                    )
-                }
-            }
-
-            activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
-            AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
-            shouldShowRescanPrompt = false
-            state = .results(sorted)
+            cleanupRefreshState = nil
+            try await runScan(showProgress: true)
         } catch {
             AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
             state = .error(error.localizedDescription)
         }
+    }
+
+    public func handleCleanupCompleted(_ record: CleanupCompletionRecord) async {
+        cleanupRefreshState = .refreshing(record)
+
+        do {
+            try await invalidateCachedArtifacts()
+            try await runScan(showProgress: false)
+            cleanupRefreshState = .success(record)
+        } catch {
+            AppLog.scan.error(
+                "\(AppLog.tag(.error, "Cleanup refresh failed: \(error.localizedDescription)"))"
+            )
+            cleanupRefreshState = .failed(
+                record,
+                message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.")
+            )
+            state = .idle
+        }
+    }
+
+    public func retryCleanupRefresh() async {
+        guard case .failed(let record, _) = cleanupRefreshState else { return }
+        await handleCleanupCompleted(record)
+    }
+
+    public func dismissCleanupRefreshState() {
+        cleanupRefreshState = nil
     }
     
     public func checkForGalleryChanges() async -> Bool {
@@ -217,6 +210,67 @@ public final class ScannerViewModel {
 }
 
 private extension ScannerViewModel {
+    func runScan(showProgress: Bool) async throws {
+        AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
+        if showProgress {
+            state = .scanning(progress: 0.0)
+        }
+
+        let previousSnapshots = try await repository.loadClusterSnapshots()
+        let previousReviewStates = (try? await loadAllReviewStates()) ?? [:]
+        let clusters = try await analysisService.analyzePhotoLibrary(
+            sensitivity: sensitivity.threshold
+        ) { progress in
+            guard showProgress else { return }
+            Task { @MainActor in
+                self.state = .scanning(progress: progress)
+            }
+        }
+
+        try await repository.saveClusters(clusters)
+        try await repository.updateLastScanDate(Date())
+
+        let sorted = sortedClusters(from: clusters)
+
+        if previousSnapshots.isEmpty {
+            reviewStates = [:]
+            resurfacingStates = Dictionary(uniqueKeysWithValues: sorted.map { ($0.id, .unchanged) })
+            do {
+                try await persistReviewStates([:])
+            } catch {
+                AppLog.storage.error(
+                    "\(AppLog.tag(.error, "Failed to clear stale review states: \(error.localizedDescription)"))"
+                )
+            }
+        } else {
+            let resurfacing = ClusterReviewStateResurfacer.resurface(
+                previousSnapshots: previousSnapshots,
+                newClusters: sorted,
+                existingReviewStates: previousReviewStates
+            )
+            reviewStates = resurfacing.migratedReviewStates
+            resurfacingStates = resurfacing.resurfacingStates
+            do {
+                try await persistReviewStates(reviewStates)
+            } catch {
+                AppLog.storage.error(
+                    "\(AppLog.tag(.error, "Failed to persist migrated review states: \(error.localizedDescription)"))"
+                )
+            }
+        }
+
+        activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
+        AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
+        shouldShowRescanPrompt = false
+        state = .results(sorted)
+    }
+
+    func invalidateCachedArtifacts() async throws {
+        try await repository.deleteAllClusters()
+        try await reviewRepository.deleteAllReviewStates()
+        try await cleanupSessionRepository.deleteActiveSession()
+    }
+
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
         try await reviewRepository.loadAllReviewStates()
     }

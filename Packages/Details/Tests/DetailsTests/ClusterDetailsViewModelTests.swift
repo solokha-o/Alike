@@ -5,14 +5,20 @@ import Core
 @MainActor
 final class ClusterDetailsViewModelTests: XCTestCase {
     private var repository: MockClusterReviewStateRepository!
+    private var cleanupService: MockPhotoCleanupService!
+    private var cleanupHistoryRepository: MockCleanupHistoryRepository!
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000010")!
 
     override func setUp() async throws {
         repository = MockClusterReviewStateRepository()
+        cleanupService = MockPhotoCleanupService()
+        cleanupHistoryRepository = MockCleanupHistoryRepository()
     }
 
     override func tearDown() async throws {
         repository = nil
+        cleanupService = nil
+        cleanupHistoryRepository = nil
     }
 
     func testLoadWithoutPersistedStateComputesBestShot() async {
@@ -251,10 +257,90 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
     }
 
+    func testConfirmDeleteCallsCleanupServiceAndPersistsHistory() async throws {
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: clusterID,
+            deletedCount: 2,
+            estimatedSavingsBytes: 300
+        )
+        await cleanupService.setDeleteAssetsResult(.success(completionRecord))
+        let existingState = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["one", "two"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 300
+        )
+        await repository.setStoredStates([clusterID: existingState])
+
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        viewModel.requestDeleteConfirmation()
+        await viewModel.confirmDelete()
+
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+        let lastSelection = await cleanupService.lastLocalIdentifiers
+        let storedEntries = await cleanupHistoryRepository.entries
+        let remainingState = try await repository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertTrue(cleanupDidRun)
+        XCTAssertEqual(lastSelection, Set(["one", "two"]))
+        XCTAssertEqual(storedEntries, [completionRecord])
+        XCTAssertNil(remainingState)
+        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    func testConfirmDeleteFailurePreservesSelectionAndShowsMessage() async {
+        await cleanupService.setDeleteAssetsResult(.failure(PhotoCleanupError.deleteFailed))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        await viewModel.confirmDelete()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    func testConfirmDeleteDoesNotRunWithoutSelection() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        await viewModel.confirmDelete()
+
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+        XCTAssertFalse(cleanupDidRun)
+        XCTAssertEqual(viewModel.deleteErrorMessage, "Select at least one photo before deleting.")
+    }
+
     private func makeViewModel(snapshots: [ReviewAssetSnapshot]) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
             reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
             assetSnapshots: snapshots
         )
     }
