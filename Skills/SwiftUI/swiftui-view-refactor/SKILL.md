@@ -134,3 +134,9 @@ init(dependency: Dependency) {
 ## Large-view handling
 
 - When a SwiftUI view file exceeds ~300 lines, split it using extensions to group related helpers. Move async functions and helper functions into dedicated `private` extensions, separated with `// MARK: -` comments that describe their purpose (e.g., `// MARK: - Actions`, `// MARK: - Subviews`, `// MARK: - Helpers`). Keep the main `struct` focused on stored properties, init, and `body`, with view-building computed vars also grouped via marks when the file is long.
+- For new feature work, do not land a single file that combines all of these at once: screen view, `@Observable` view model, reusable section components, and fullscreen/media helpers. Split by responsibility up front:
+  - `<Feature>View.swift` for the screen entry and local orchestration
+  - `<Feature>ViewModel.swift` only when a view model is truly needed
+  - `<Feature>Components.swift` for small feature-specific subviews
+  - `<Feature>FullscreenView.swift` or similar when media viewers/zoom logic would otherwise bloat the main screen
+- If a feature introduces both a new screen and a new view model, default to separate files even if the first implementation still fits in one file. This prevents “fast first pass” files from becoming the long-term structure.

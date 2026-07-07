@@ -6,10 +6,15 @@ import Photos
 /// Mock implementation of PhotoAnalysisService for SwiftUI previews and unit tests.
 public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var analyzePhotoLibraryResult: Result<[PhotoCluster], Error> = .success([])
+    public var summarizeCleanupCategoriesResult: Result<[CleanupCategorySummary], Error> = .success([])
+    public var loadAssetsResult: Result<[PHAsset], Error> = .success([])
     public var calculateSimilarityResult: Result<Float, Error> = .success(0.95)
     public var didCallAnalyzePhotoLibrary = false
+    public var didCallSummarizeCleanupCategories = false
+    public var didCallLoadAssets = false
     public var didCallCalculateSimilarity = false
     public var lastSensitivity: Float?
+    public var lastLoadedCategory: CleanupCategoryKind?
     public var lastProgressCallback: ((Double) -> Void)?
     
     public init() {}
@@ -21,6 +26,14 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     
     public func setCalculateSimilarityResult(_ result: Result<Float, Error>) {
         calculateSimilarityResult = result
+    }
+
+    public func setSummarizeCleanupCategoriesResult(_ result: Result<[CleanupCategorySummary], Error>) {
+        summarizeCleanupCategoriesResult = result
+    }
+
+    public func setLoadAssetsResult(_ result: Result<[PHAsset], Error>) {
+        loadAssetsResult = result
     }
     
     public func analyzePhotoLibrary(
@@ -53,6 +66,29 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         switch calculateSimilarityResult {
         case .success(let similarity):
             return similarity
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    public func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] {
+        didCallSummarizeCleanupCategories = true
+
+        switch summarizeCleanupCategoriesResult {
+        case .success(let summaries):
+            return summaries
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
+        didCallLoadAssets = true
+        lastLoadedCategory = category
+
+        switch loadAssetsResult {
+        case .success(let assets):
+            return assets
         case .failure(let error):
             throw error
         }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Photos
 import Core
 import Storage
 import PhotoAnalysis
@@ -28,12 +29,14 @@ public final class ScannerViewModel {
     public private(set) var resurfacingStates: [UUID: ClusterResurfacingState] = [:]
     public private(set) var activeCleanupSession: CleanupSession?
     public private(set) var cleanupRefreshState: CleanupRefreshState?
+    public private(set) var cleanupCategories: [CleanupCategorySummary] = []
     
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
     private let reviewRepository: ClusterReviewStateRepository
     private let cleanupSessionRepository: CleanupSessionRepository
     private let cleanupManager: any CleanupSessionManaging
+    private let premiumAccess: any PremiumAccessControlling
     let cleanupService: any PhotoCleanupService
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
@@ -47,6 +50,7 @@ public final class ScannerViewModel {
         cleanupSessionRepository: CleanupSessionRepository = FileCleanupSessionRepository(),
         cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         cleanupManager: (any CleanupSessionManaging)? = nil
     ) {
         self.gridColumns = gridColumns
@@ -56,6 +60,7 @@ public final class ScannerViewModel {
         self.cleanupSessionRepository = cleanupSessionRepository
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
+        self.premiumAccess = premiumAccess
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         
         if let analysisService {
@@ -70,6 +75,7 @@ public final class ScannerViewModel {
     public func loadCachedResults() async {
         do {
             let clusters = try await repository.loadClusters()
+            await loadCleanupCategories()
             if !clusters.isEmpty {
                 let sorted = sortedClusters(from: clusters)
                 if case .results(let existing) = state, existing == sorted {
@@ -156,6 +162,14 @@ public final class ScannerViewModel {
         reviewStates[clusterID]
     }
 
+    public func isCategoryLocked(_ kind: CleanupCategoryKind) -> Bool {
+        !premiumAccess.hasAccess(to: kind.premiumFeature)
+    }
+
+    public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
+        try await analysisService.loadAssets(for: category)
+    }
+
     public func reviewStatus(for clusterID: UUID) -> ClusterReviewStatus {
         reviewStates[clusterID]?.status ?? .notReviewed
     }
@@ -210,6 +224,17 @@ public final class ScannerViewModel {
 }
 
 private extension ScannerViewModel {
+    func loadCleanupCategories() async {
+        do {
+            cleanupCategories = try await analysisService.summarizeCleanupCategories()
+        } catch {
+            AppLog.photoKit.error(
+                "\(AppLog.tag(.error, "Failed to load cleanup categories: \(error.localizedDescription)"))"
+            )
+            cleanupCategories = []
+        }
+    }
+
     func runScan(showProgress: Bool) async throws {
         AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
         if showProgress {
@@ -262,6 +287,7 @@ private extension ScannerViewModel {
         activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
         AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
         shouldShowRescanPrompt = false
+        await loadCleanupCategories()
         state = .results(sorted)
     }
 

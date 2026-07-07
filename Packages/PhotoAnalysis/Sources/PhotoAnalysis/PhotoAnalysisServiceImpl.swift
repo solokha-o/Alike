@@ -44,12 +44,17 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let startTime = ContinuousClock().now
 
         // Fetch all photo assets
-        let assets = await MainActor.run {
-            assetsProvider()
-        }
+        let assets = await MainActor.run { assetsProvider() }
         
         guard !assets.isEmpty else {
             throw PhotoAnalysisError.noPhotosFound
+        }
+
+        let assetsToCluster = assets.filter { !$0.mediaSubtypes.contains(.photoScreenshot) }
+
+        guard !assetsToCluster.isEmpty else {
+            progress(1.0)
+            return []
         }
 
         progress(0.01)
@@ -57,15 +62,15 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 
         try Task.checkCancellation()
 
-        let cachedFeaturePrints = await loadCachedFeaturePrints(for: assets)
-        let assetsNeedingComputation = assets.filter { cachedFeaturePrints[$0.localIdentifier] == nil }
+        let cachedFeaturePrints = await loadCachedFeaturePrints(for: assetsToCluster)
+        let assetsNeedingComputation = assetsToCluster.filter { cachedFeaturePrints[$0.localIdentifier] == nil }
         let cachedCount = cachedFeaturePrints.count
         AppLog.scan.debug(
-            "\(AppLog.tag(.cache, "Assets: \(assets.count), cached: \(cachedCount), toCompute: \(assetsNeedingComputation.count)"))"
+            "\(AppLog.tag(.cache, "Assets: \(assetsToCluster.count), cached: \(cachedCount), toCompute: \(assetsNeedingComputation.count)"))"
         )
 
         if cachedCount > 0 {
-            progress((Double(cachedCount) / Double(assets.count)) * 0.8)
+            progress((Double(cachedCount) / Double(assetsToCluster.count)) * 0.8)
         }
 
         // Generate missing feature prints (0-80% of progress)
@@ -73,7 +78,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             for: assetsNeedingComputation
         ) { computedProgress in
             let completed = Double(cachedCount) + (computedProgress * Double(assetsNeedingComputation.count))
-            let overallProgress = (completed / Double(assets.count)) * 0.8
+            let overallProgress = (completed / Double(assetsToCluster.count)) * 0.8
             progress(overallProgress)
         }
         AppLog.scan.debug("\(AppLog.tag(.vision, "Computed feature prints: \(computed.count)"))")
@@ -87,7 +92,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             }
         )
 
-        let photosWithFeaturePrints: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = assets.map { asset in
+        let photosWithFeaturePrints: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] = assetsToCluster.map { asset in
             let featurePrint = cachedFeaturePrints[asset.localIdentifier] ?? computedByIdentifier[asset.localIdentifier]
             return (asset: asset, featurePrint: featurePrint)
         }
@@ -105,6 +110,21 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         progress(1.0)
         
         return clusters
+    }
+
+    public func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] {
+        let assets = await MainActor.run { assetsProvider() }
+        let snapshots = assets.map(CleanupCategoryAssetSnapshot.init)
+        return CleanupCategorySummaryBuilder.summaries(from: snapshots)
+    }
+
+    public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
+        let assets = await MainActor.run { assetsProvider() }
+
+        switch category {
+        case .screenshots:
+            return assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+        }
     }
     
     /// Calculate similarity between two specific assets
@@ -131,12 +151,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
-        
-        fetchOptions.predicate = NSPredicate(
-            format: "(mediaSubtype & %d) == 0",
-            PHAssetMediaSubtype.photoScreenshot.rawValue
-        )
-        
+
         // Only fetch images (not videos)
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         

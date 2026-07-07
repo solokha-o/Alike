@@ -61,6 +61,10 @@ extension PHAsset {
             mediaType: mediaType
         )
     }
+
+    public var estimatedCleanupBytes: Int64 {
+        displayMetadata.estimatedCleanupBytes
+    }
 }
 
 /// Metadata extracted from PHAsset
@@ -75,7 +79,12 @@ public struct AssetMetadata: Sendable {
     public var resolution: String {
         "\(pixelWidth) × \(pixelHeight)"
     }
-    
+
+    public var estimatedCleanupBytes: Int64 {
+        let pixelArea = Int64(pixelWidth) * Int64(pixelHeight)
+        return max(1, pixelArea / 2)
+    }
+
     public var formattedCreationDate: String {
         guard let date = creationDate else { return "Unknown" }
         let formatter = DateFormatter()

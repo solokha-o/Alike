@@ -12,6 +12,7 @@ final class ScannerViewModelTests: XCTestCase {
     var mockCleanupSessionRepository: MockCleanupSessionRepository!
     var mockCleanupService: MockPhotoCleanupService!
     var mockCleanupHistoryRepository: MockCleanupHistoryRepository!
+    var premiumAccess: MockPremiumAccessController!
     
     override func setUp() async throws {
         mockAnalysisService = MockPhotoAnalysisService()
@@ -20,6 +21,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupSessionRepository = MockCleanupSessionRepository()
         mockCleanupService = MockPhotoCleanupService()
         mockCleanupHistoryRepository = MockCleanupHistoryRepository()
+        premiumAccess = MockPremiumAccessController()
         viewModel = ScannerViewModel(
             gridColumns: 3,
             sensitivity: .medium,
@@ -28,7 +30,8 @@ final class ScannerViewModelTests: XCTestCase {
             reviewRepository: mockReviewRepository,
             cleanupSessionRepository: mockCleanupSessionRepository,
             cleanupService: mockCleanupService,
-            cleanupHistoryRepository: mockCleanupHistoryRepository
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess
         )
     }
     
@@ -40,6 +43,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupSessionRepository = nil
         mockCleanupService = nil
         mockCleanupHistoryRepository = nil
+        premiumAccess = nil
     }
     
     // MARK: - Initialization Tests
@@ -61,6 +65,9 @@ final class ScannerViewModelTests: XCTestCase {
     func testLoadCachedResultsWithData() async {
         let mockCluster = createMockCluster(photoCount: 2)
         await mockRepository.setLoadClustersResult(.success([mockCluster]))
+        await mockAnalysisService.setSummarizeCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .screenshots, assetCount: 5, estimatedSavingsBytes: 500)
+        ]))
         
         await viewModel.loadCachedResults()
         
@@ -69,6 +76,7 @@ final class ScannerViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected results state")
         }
+        XCTAssertEqual(viewModel.cleanupCategories.count, 1)
     }
     
     func testLoadCachedResultsEmpty() async {
@@ -660,6 +668,9 @@ final class ScannerViewModelTests: XCTestCase {
             estimatedSavingsBytes: 1_024
         )
         await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setSummarizeCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .screenshots, assetCount: 3, estimatedSavingsBytes: 300)
+        ]))
 
         await viewModel.handleCleanupCompleted(completionRecord)
 
@@ -678,6 +689,25 @@ final class ScannerViewModelTests: XCTestCase {
         }
 
         XCTAssertEqual(viewModel.cleanupRefreshState, .success(completionRecord))
+        XCTAssertEqual(viewModel.cleanupCategories.first?.assetCount, 3)
+    }
+
+    func testIsCategoryLockedUsesPremiumAccess() {
+        XCTAssertTrue(viewModel.isCategoryLocked(.screenshots))
+
+        let unlockedViewModel = ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.screenshotCleanup])
+        )
+
+        XCTAssertFalse(unlockedViewModel.isCategoryLocked(.screenshots))
     }
 
     func testHandleCleanupCompletedFailureClearsStaleResultsAndShowsRetryState() async {

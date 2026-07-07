@@ -10,9 +10,19 @@ private enum ScannerRoute: Hashable {
     case clusterDetails(PhotoCluster)
 }
 
+private struct PresentedCleanupCategory: Identifiable {
+    let kind: CleanupCategoryKind
+    let assets: [PHAsset]
+
+    var id: CleanupCategoryKind { kind }
+}
+
 /// Scanner screen with analysis and results
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
+    @State private var presentedCleanupCategory: PresentedCleanupCategory?
+    @State private var presentedPaywallFeature: PremiumFeature?
+    @State private var cleanupCategoryErrorMessage: String?
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
@@ -59,6 +69,44 @@ public struct ScannerView: View {
                     shouldStartScan = false
                 }
             }
+        }
+        .sheet(item: $presentedCleanupCategory) { presented in
+            NavigationStack {
+                ScreenshotCleanupView(
+                    assets: presented.assets,
+                    cleanupService: viewModel.cleanupService,
+                    cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                    openSettingsAction: {
+                        PhotoPermissionManagerImpl().openSettings()
+                    },
+                    onCleanupCompleted: { record in
+                        Task {
+                            await viewModel.handleCleanupCompleted(record)
+                        }
+                    }
+                )
+            }
+            .interactiveDismissDisabled()
+        }
+        .sheet(item: $presentedPaywallFeature) { feature in
+            PremiumPaywallSheet(feature: feature)
+        }
+        .alert(
+            appLocalized("Couldn't Open Cleanup Category"),
+            isPresented: Binding(
+                get: { cleanupCategoryErrorMessage != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        cleanupCategoryErrorMessage = nil
+                    }
+                }
+            )
+        ) {
+            Button(appLocalized("OK"), role: .cancel) {
+                cleanupCategoryErrorMessage = nil
+            }
+        } message: {
+            Text(cleanupCategoryErrorMessage ?? "")
         }
     }
 
@@ -204,19 +252,31 @@ public struct ScannerView: View {
         let sessionProgress = viewModel.displayedSessionProgress(for: sortedClusters)
 
         return ScrollView {
-            if sortedClusters.isEmpty {
-                ContentUnavailableView {
-                    Label {
-                        Text(appLocalized("No Similar Photos Found"))
-                    } icon: {
-                        Image(systemName: "photo.stack")
-                    }
-                } description: {
-                    Text(appLocalized("Try adjusting sensitivity in Settings"))
+            VStack(spacing: Spacing.medium) {
+                if !viewModel.cleanupCategories.isEmpty {
+                    CleanupCategoriesCard(
+                        categories: viewModel.cleanupCategories,
+                        isLocked: viewModel.isCategoryLocked(_:),
+                        onTapCategory: { category in
+                            Task {
+                                await openCleanupCategory(category)
+                            }
+                        }
+                    )
                 }
-                .padding(.top, 100)
-            } else {
-                VStack(spacing: Spacing.medium) {
+
+                if sortedClusters.isEmpty {
+                    ContentUnavailableView {
+                        Label {
+                            Text(appLocalized("No Similar Photos Found"))
+                        } icon: {
+                            Image(systemName: "photo.stack")
+                        }
+                    } description: {
+                        Text(appLocalized("Try adjusting sensitivity in Settings"))
+                    }
+                    .padding(.top, viewModel.cleanupCategories.isEmpty ? 100 : Spacing.large)
+                } else {
                     if viewModel.shouldShowRescanPrompt {
                         RescanPromptCard {
                             Task {
@@ -265,8 +325,8 @@ public struct ScannerView: View {
                         )
                     }
                 }
-                .padding(Spacing.medium)
             }
+            .padding(Spacing.medium)
         }
         .onAppear {
             Task {
@@ -303,6 +363,20 @@ public struct ScannerView: View {
 #endif
         }
         .sensoryFeedback(.success, trigger: clusters.count)
+    }
+
+    private func openCleanupCategory(_ category: CleanupCategorySummary) async {
+        if viewModel.isCategoryLocked(category.kind) {
+            presentedPaywallFeature = category.kind.premiumFeature
+            return
+        }
+
+        do {
+            let assets = try await viewModel.loadAssets(for: category.kind)
+            presentedCleanupCategory = PresentedCleanupCategory(kind: category.kind, assets: assets)
+        } catch {
+            cleanupCategoryErrorMessage = error.localizedDescription
+        }
     }
 
     
@@ -580,6 +654,133 @@ private struct CleanupSessionProgressCard: View {
 
     private var metricBackgroundOpacity: Double {
         colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
+}
+
+private struct CleanupCategoriesCard: View {
+    let categories: [CleanupCategorySummary]
+    let isLocked: (CleanupCategoryKind) -> Bool
+    let onTapCategory: (CleanupCategorySummary) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup Categories"))
+                .font(.appHeadline)
+
+            VStack(spacing: Spacing.small) {
+                ForEach(categories) { category in
+                    CleanupCategoryRow(
+                        summary: category,
+                        isLocked: isLocked(category.kind),
+                        onTap: { onTapCategory(category) }
+                    )
+                }
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+}
+
+private struct CleanupCategoryRow: View {
+    let summary: CleanupCategorySummary
+    let isLocked: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: Spacing.small) {
+                Image(systemName: "camera.viewfinder")
+                    .font(.title3)
+                    .foregroundStyle(Color.accent)
+
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Text(appLocalized("Screenshots"))
+                        .font(.appHeadline)
+                    Text("\(summary.assetCount) items • \(ByteCountFormatter.string(fromByteCount: summary.estimatedSavingsBytes, countStyle: .file))")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(Spacing.small)
+            .background(Color.secondary.opacity(ColorOpacity.statusBackground), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(appLocalized("Screenshots")))
+        .accessibilityValue(Text("\(summary.assetCount)"))
+        .accessibilityHint(
+            Text(
+                isLocked
+                    ? appLocalized("Opens the premium paywall for screenshot cleanup")
+                    : appLocalized("Open screenshot cleanup")
+            )
+        )
+    }
+}
+
+private struct PremiumPaywallSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let feature: PremiumFeature
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: Spacing.large) {
+                Image(systemName: "lock.shield.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Color.accent)
+
+                VStack(spacing: Spacing.small) {
+                    Text(title)
+                        .font(.appTitle2)
+                        .multilineTextAlignment(.center)
+                    Text(message)
+                        .font(.appBody)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") {
+                    dismiss()
+                }
+
+                Spacer()
+            }
+            .padding(Spacing.large)
+            .navigationTitle(Text(appLocalized("Premium")))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(appLocalized("Close")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    private var title: String {
+        switch feature {
+        case .screenshotCleanup:
+            appLocalized("Screenshot cleanup is a premium feature")
+        }
+    }
+
+    private var message: String {
+        switch feature {
+        case .screenshotCleanup:
+            appLocalized("Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow.")
+        }
     }
 }
 

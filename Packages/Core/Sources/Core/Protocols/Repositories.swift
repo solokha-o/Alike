@@ -78,6 +78,12 @@ public protocol CleanupHistoryRepository: Sendable {
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
     func analyzePhotoLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster]
+
+    /// Summarize live cleanup categories derived from the photo library.
+    func summarizeCleanupCategories() async throws -> [CleanupCategorySummary]
+
+    /// Load live assets for the requested cleanup category.
+    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset]
     
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float
