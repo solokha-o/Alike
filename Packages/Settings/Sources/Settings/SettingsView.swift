@@ -18,6 +18,10 @@ public struct SettingsView: View {
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
+#if DEBUG
+    @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockScreenshotCleanup = false
+#endif
     
     public init(
         gridColumns: Binding<Int>,
@@ -43,6 +47,9 @@ public struct SettingsView: View {
             appearanceSection
             languageSection
             analysisSection
+#if DEBUG
+            debugSection
+#endif
             supportSection(router: router)
             aboutSection
         }
@@ -103,6 +110,22 @@ public struct SettingsView: View {
             Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images"))
         }
     }
+
+#if DEBUG
+    private var debugSection: some View {
+        Section {
+            Toggle(
+                appLocalized("Unlock Screenshot Cleanup Premium Feature"),
+                isOn: $debugUnlockScreenshotCleanup
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium screenshot cleanup access in debug builds")))
+        } header: {
+            Text(appLocalized("Debug"))
+        } footer: {
+            Text(appLocalized("This override is available only in debug builds and affects local premium gating."))
+        }
+    }
+#endif
     
     // MARK: - Support Section
     private func supportSection(router: StackRouter<SettingsRoute>) -> some View {

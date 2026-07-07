@@ -47,6 +47,10 @@ struct MainTabView: View {
     @State private var tabManager = TabManager()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+#if DEBUG
+    @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockScreenshotCleanup = false
+#endif
     private let gridConfiguration = GridConfiguration.current
     
     private var sensitivity: Binding<SensitivityLevel> {
@@ -54,6 +58,17 @@ struct MainTabView: View {
             get: { SensitivityLevel(rawValue: sensitivityRaw) ?? .medium },
             set: { sensitivityRaw = $0.rawValue }
         )
+    }
+
+    private var premiumAccess: any PremiumAccessControlling {
+#if DEBUG
+        let unlockedFeatures: Set<PremiumFeature> = debugUnlockScreenshotCleanup
+            ? [.screenshotCleanup]
+            : []
+        return PremiumAccessController(unlockedFeatures: unlockedFeatures)
+#else
+        return PremiumAccessController()
+#endif
     }
     
     var body: some View {
@@ -95,8 +110,16 @@ struct MainTabView: View {
                     set: { gridColumns = gridConfiguration.clampedColumns($0) }
                 ),
                 sensitivity: sensitivity,
-                shouldStartScan: Bindable(tabManager).shouldStartScan
+                shouldStartScan: Bindable(tabManager).shouldStartScan,
+                viewModel: ScannerViewModel(
+                    gridColumns: gridConfiguration.clampedColumns(gridColumns),
+                    sensitivity: sensitivity.wrappedValue,
+                    premiumAccess: premiumAccess
+                )
             )
+#if DEBUG
+            .id(debugUnlockScreenshotCleanup)
+#endif
         case .settings:
             SettingsView(
                 gridColumns: Binding(

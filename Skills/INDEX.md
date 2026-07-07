@@ -20,7 +20,7 @@ request needs that extra depth.
 | `project-skill-audit` | Audit project-local skills, suggest updates/new skills, reduce skill duplication | Pair with `Meta/skill-authoring-governance` for implementation | No |
 | `SwiftConcurrency/app-store-changelog` | App Store “What’s New”, release notes from git history/tags | No | No |
 | `SwiftConcurrency/gh-issue-fix-flow` | Fix a GitHub issue end-to-end with `gh`, validation, commit, push | Pair with GitHub plugin/CLI only when issue access is needed | No |
-| `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state | Pair with Build iOS tools when available | No |
+| `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state, or add debug-only app access such as premium overrides and feature flags | Pair with Build iOS tools when available | No |
 | `SwiftConcurrency/macos-spm-app-packaging` | SwiftPM macOS app scaffold/build/package/sign/notarize | Pair with Build macOS tools only for packaging/signing depth | No |
 | `SwiftConcurrency/swift-concurrency-expert` | Local Swift concurrency review/fixes, actors, `@MainActor`, Sendable | Use external concurrency only for deeper migration/diagnostic depth | No |
 | `SwiftConcurrency/swiftui-liquid-glass` | iOS 26+ SwiftUI Liquid Glass implementation/review | Pair with SwiftUI external only for latest API uncertainty | No |
