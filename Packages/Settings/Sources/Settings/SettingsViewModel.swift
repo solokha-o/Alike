@@ -11,7 +11,7 @@ public final class SettingsViewModel {
     
     public init(
         gridConfig: GridConfiguration = GridConfiguration.current,
-        appVersion: String = SettingsViewModel.defaultAppVersion()
+        appVersion: String = SettingsViewModel.fullAppVersion()
     ) {
         self.gridConfig = gridConfig
         self.appVersion = appVersion
@@ -30,7 +30,15 @@ public final class SettingsViewModel {
         true
     }
     
-    public static func defaultAppVersion() -> String {
+    public static func fullAppVersion() -> String {
+        "\(defaultAppVersion) (\(defaultAppBuild))"
+    }
+    
+    private static func defaultAppVersion() -> String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    }
+    
+    private static func defaultAppBuild() -> String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
     }
 }
