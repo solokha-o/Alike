@@ -7,10 +7,12 @@ import Photos
 public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var analyzePhotoLibraryResult: Result<[PhotoCluster], Error> = .success([])
     public var summarizeCleanupCategoriesResult: Result<[CleanupCategorySummary], Error> = .success([])
+    public var refreshCleanupCategoriesResult: Result<[CleanupCategorySummary], Error> = .success([])
     public var loadAssetsResult: Result<[PHAsset], Error> = .success([])
     public var calculateSimilarityResult: Result<Float, Error> = .success(0.95)
     public var didCallAnalyzePhotoLibrary = false
     public var didCallSummarizeCleanupCategories = false
+    public var didCallRefreshCleanupCategories = false
     public var didCallLoadAssets = false
     public var didCallCalculateSimilarity = false
     public var lastSensitivity: Float?
@@ -34,6 +36,10 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
 
     public func setLoadAssetsResult(_ result: Result<[PHAsset], Error>) {
         loadAssetsResult = result
+    }
+
+    public func setRefreshCleanupCategoriesResult(_ result: Result<[CleanupCategorySummary], Error>) {
+        refreshCleanupCategoriesResult = result
     }
     
     public func analyzePhotoLibrary(
@@ -75,6 +81,17 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         didCallSummarizeCleanupCategories = true
 
         switch summarizeCleanupCategoriesResult {
+        case .success(let summaries):
+            return summaries
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    public func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
+        didCallRefreshCleanupCategories = true
+
+        switch refreshCleanupCategoriesResult {
         case .success(let summaries):
             return summaries
         case .failure(let error):

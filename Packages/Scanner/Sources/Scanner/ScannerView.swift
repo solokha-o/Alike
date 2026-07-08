@@ -74,6 +74,7 @@ public struct ScannerView: View {
             NavigationStack {
                 ScreenshotCleanupView(
                     assets: presented.assets,
+                    sourceCategory: presented.kind,
                     cleanupService: viewModel.cleanupService,
                     cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
                     openSettingsAction: {
@@ -690,12 +691,12 @@ private struct CleanupCategoryRow: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: Spacing.small) {
-                Image(systemName: "camera.viewfinder")
+                Image(systemName: summary.kind.presentation.systemImageName)
                     .font(.title3)
                     .foregroundStyle(Color.accent)
 
                 VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                    Text(appLocalized("Screenshots"))
+                    Text(summary.kind.presentation.title)
                         .font(.appHeadline)
                     Text("\(summary.assetCount) items • \(ByteCountFormatter.string(fromByteCount: summary.estimatedSavingsBytes, countStyle: .file))")
                         .font(.caption)
@@ -716,13 +717,13 @@ private struct CleanupCategoryRow: View {
             .background(Color.secondary.opacity(ColorOpacity.statusBackground), in: RoundedRectangle(cornerRadius: CornerRadius.small))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(Text(appLocalized("Screenshots")))
+        .accessibilityLabel(Text(summary.kind.presentation.title))
         .accessibilityValue(Text("\(summary.assetCount)"))
         .accessibilityHint(
             Text(
                 isLocked
-                    ? appLocalized("Opens the premium paywall for screenshot cleanup")
-                    : appLocalized("Open screenshot cleanup")
+                    ? summary.kind.presentation.lockedHint
+                    : summary.kind.presentation.openHint
             )
         )
     }
@@ -770,17 +771,11 @@ private struct PremiumPaywallSheet: View {
     }
 
     private var title: String {
-        switch feature {
-        case .screenshotCleanup:
-            appLocalized("Screenshot cleanup is a premium feature")
-        }
+        feature.categoryKind.presentation.paywallTitle
     }
 
     private var message: String {
-        switch feature {
-        case .screenshotCleanup:
-            appLocalized("Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow.")
-        }
+        feature.categoryKind.presentation.paywallMessage
     }
 }
 

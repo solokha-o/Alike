@@ -8,17 +8,22 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private let visionService: any VisionFeaturePrintServicing
     private let clusteringService: any PhotoClusteringServicing
     private let featurePrintRepository: (any PhotoFeaturePrintRepository)?
+    private let cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)?
+    private let blurAnalysisService: BlurAnalysisService
     private let assetsProvider: @MainActor @Sendable () -> [PHAsset]
     
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
         clusteringService: PhotoClusteringService = PhotoClusteringService(),
-        featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil
+        featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil,
+        cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)? = nil
     ) {
         self.init(
             visionService: visionService,
             clusteringService: clusteringService,
             featurePrintRepository: featurePrintRepository,
+            cleanupCategoryRepository: cleanupCategoryRepository,
+            blurAnalysisService: BlurAnalysisService(),
             assetsProvider: PhotoAnalysisServiceImpl.fetchAllPhotoAssets
         )
     }
@@ -27,11 +32,15 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         visionService: any VisionFeaturePrintServicing,
         clusteringService: any PhotoClusteringServicing,
         featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil,
+        cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)? = nil,
+        blurAnalysisService: BlurAnalysisService = BlurAnalysisService(),
         assetsProvider: @escaping @MainActor @Sendable () -> [PHAsset]
     ) {
         self.visionService = visionService
         self.clusteringService = clusteringService
         self.featurePrintRepository = featurePrintRepository
+        self.cleanupCategoryRepository = cleanupCategoryRepository
+        self.blurAnalysisService = blurAnalysisService
         self.assetsProvider = assetsProvider
     }
     
@@ -113,17 +122,44 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     }
 
     public func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] {
+        guard let cleanupCategoryRepository else { return [] }
+        let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
+        return CleanupCategorySummaryBuilder.summaries(
+            from: CleanupCategoryKind.allCases.compactMap { snapshots[$0] }
+        )
+    }
+
+    public func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
         let assets = await MainActor.run { assetsProvider() }
-        let snapshots = assets.map(CleanupCategoryAssetSnapshot.init)
+        let snapshots = try await buildCleanupCategorySnapshots(from: assets)
+
+        if let cleanupCategoryRepository {
+            try await cleanupCategoryRepository.deleteAllSnapshots()
+            for snapshot in snapshots {
+                try await cleanupCategoryRepository.saveSnapshot(snapshot)
+            }
+        }
+
         return CleanupCategorySummaryBuilder.summaries(from: snapshots)
     }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
         let assets = await MainActor.run { assetsProvider() }
+        let byIdentifier = Dictionary(uniqueKeysWithValues: assets.map { ($0.localIdentifier, $0) })
+
+        if let cleanupCategoryRepository,
+           let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category) {
+            let resolved = snapshot.localIdentifiers.compactMap { byIdentifier[$0] }
+            if !resolved.isEmpty {
+                return resolved
+            }
+        }
 
         switch category {
         case .screenshots:
             return assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+        case .blurredPhotos:
+            return []
         }
     }
     
@@ -166,6 +202,21 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 }
 
 private extension PhotoAnalysisServiceImpl {
+    func buildCleanupCategorySnapshots(from assets: [PHAsset]) async throws -> [CleanupCategorySnapshot] {
+        let assetSnapshots = assets.map(CleanupCategoryAssetSnapshot.init)
+        var snapshots: [CleanupCategorySnapshot] = []
+
+        if let screenshotSnapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: assetSnapshots) {
+            snapshots.append(screenshotSnapshot)
+        }
+
+        if let blurSnapshot = try await blurAnalysisService.makeSnapshot(from: assets) {
+            snapshots.append(blurSnapshot)
+        }
+
+        return snapshots
+    }
+
     func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
         guard let featurePrintRepository else { return [:] }
 

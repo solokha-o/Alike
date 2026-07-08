@@ -197,8 +197,18 @@ private extension VisionFeaturePrintService {
                     options: options
                 ) { data, _, orientation, info in
                     if let error = info?[PHImageErrorKey] as? Error {
-                        AppLog.photoKit.error("\(AppLog.tag(.error, "Image data request error: \(error.localizedDescription)"))")
-                        resumeOnce { continuation.resume(throwing: error) }
+                        let nsError = error as NSError
+                        if Self.shouldSkipImageDataRequest(for: nsError) {
+                            AppLog.photoKit.debug(
+                                "\(AppLog.tag(.photokit, "Skipping asset thumbnail request. domain=\(nsError.domain) code=\(nsError.code)"))"
+                            )
+                            resumeOnce { continuation.resume(returning: nil) }
+                        } else {
+                            AppLog.photoKit.error(
+                                "\(AppLog.tag(.error, "Image data request error: \(error.localizedDescription)"))"
+                            )
+                            resumeOnce { continuation.resume(throwing: error) }
+                        }
                         return
                     }
 
@@ -254,6 +264,20 @@ private extension VisionFeaturePrintService {
                 resumeOnce { continuation.resume(returning: nil) }
             }
         }
+    }
+}
+
+extension VisionFeaturePrintService {
+    static func shouldSkipImageDataRequest(for error: NSError) -> Bool {
+        if error.domain == PHPhotosErrorDomain || error.domain == "com.apple.accounts" {
+            return true
+        }
+
+        if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
+            return shouldSkipImageDataRequest(for: underlyingError)
+        }
+
+        return false
     }
 }
 

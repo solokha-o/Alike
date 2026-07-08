@@ -3,23 +3,43 @@ import Core
 @testable import PhotoAnalysis
 
 final class CleanupCategorySummaryBuilderTests: XCTestCase {
-    func testSummariesIncludesScreenshotsOnly() {
-        let summaries = CleanupCategorySummaryBuilder.summaries(from: [
+    func testScreenshotSnapshotIncludesScreenshotsOnly() {
+        let snapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: [
             CleanupCategoryAssetSnapshot(localIdentifier: "shot-1", isScreenshot: true, estimatedCleanupBytes: 100),
             CleanupCategoryAssetSnapshot(localIdentifier: "shot-2", isScreenshot: true, estimatedCleanupBytes: 50),
             CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 500)
         ])
 
-        XCTAssertEqual(summaries, [
-            CleanupCategorySummary(kind: .screenshots, assetCount: 2, estimatedSavingsBytes: 150)
-        ])
+        XCTAssertEqual(snapshot?.kind, .screenshots)
+        XCTAssertEqual(snapshot?.localIdentifiers, ["shot-1", "shot-2"])
+        XCTAssertEqual(snapshot?.assetCount, 2)
+        XCTAssertEqual(snapshot?.estimatedSavingsBytes, 150)
     }
 
-    func testSummariesReturnsEmptyWhenNoScreenshotsExist() {
-        let summaries = CleanupCategorySummaryBuilder.summaries(from: [
+    func testScreenshotSnapshotReturnsNilWhenNoScreenshotsExist() {
+        let snapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: [
             CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 100)
         ])
 
-        XCTAssertTrue(summaries.isEmpty)
+        XCTAssertNil(snapshot)
+    }
+
+    func testSummariesPreserveCategoryOrder() {
+        let summaries = CleanupCategorySummaryBuilder.summaries(from: [
+            CleanupCategorySnapshot(
+                kind: .blurredPhotos,
+                localIdentifiers: ["blur-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 200
+            ),
+            CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["shot-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            )
+        ])
+
+        XCTAssertEqual(summaries.map(\.kind), [.screenshots, .blurredPhotos])
     }
 }

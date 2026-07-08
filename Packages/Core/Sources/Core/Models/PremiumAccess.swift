@@ -2,6 +2,7 @@ import Foundation
 
 public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
     case screenshotCleanup
+    case blurredPhotoCleanup
 
     public var id: String { rawValue }
 
@@ -10,6 +11,8 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
         switch self {
         case .screenshotCleanup:
             "debug.premium.screenshotCleanup"
+        case .blurredPhotoCleanup:
+            "debug.premium.blurredPhotoCleanup"
         }
     }
 #endif
@@ -17,6 +20,17 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
 
 public protocol PremiumAccessControlling: Sendable {
     func hasAccess(to feature: PremiumFeature) -> Bool
+}
+
+public extension PremiumFeature {
+    var categoryKind: CleanupCategoryKind {
+        switch self {
+        case .screenshotCleanup:
+            .screenshots
+        case .blurredPhotoCleanup:
+            .blurredPhotos
+        }
+    }
 }
 
 public struct PremiumAccessController: PremiumAccessControlling {

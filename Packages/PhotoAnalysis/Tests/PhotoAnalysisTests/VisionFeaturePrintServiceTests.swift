@@ -136,6 +136,35 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
         XCTAssertEqual(distance1to2, distance2to1, accuracy: 0.001, "Distance should be symmetric")
     }
 
+    func testShouldSkipImageDataRequestForPhotosError() {
+        let error = NSError(domain: PHPhotosErrorDomain, code: 3164)
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldSkipImageDataRequestForAccountsError() {
+        let error = NSError(domain: "com.apple.accounts", code: 7)
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldNotSkipUnrelatedError() {
+        let error = NSError(domain: NSCocoaErrorDomain, code: 4)
+
+        XCTAssertFalse(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldSkipUnderlyingPhotosError() {
+        let underlying = NSError(domain: PHPhotosErrorDomain, code: 3164)
+        let wrapped = NSError(
+            domain: NSCocoaErrorDomain,
+            code: 0,
+            userInfo: [NSUnderlyingErrorKey: underlying]
+        )
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: wrapped))
+    }
+
     private func generateFeaturePrintOrSkip(from cgImage: CGImage) async throws -> VNFeaturePrintObservation {
         do {
             let featurePrint = try await service.generateFeaturePrint(from: cgImage)

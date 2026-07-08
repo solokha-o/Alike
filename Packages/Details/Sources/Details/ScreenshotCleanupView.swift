@@ -18,6 +18,7 @@ public struct ScreenshotCleanupView: View {
 
     public init(
         assets: [PHAsset],
+        sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
@@ -27,6 +28,7 @@ public struct ScreenshotCleanupView: View {
         self.onCleanupCompleted = onCleanupCompleted
         self._viewModel = State(initialValue: ScreenshotCleanupViewModel(
             assets: assets,
+            sourceCategory: sourceCategory,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
             openSettingsAction: openSettingsAction
@@ -46,7 +48,7 @@ public struct ScreenshotCleanupView: View {
         .safeAreaInset(edge: .top) {
             header
         }
-        .navigationTitle(Text(appLocalized("Screenshots")))
+        .navigationTitle(Text(viewModel.presentation.navigationTitle))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -113,9 +115,12 @@ public struct ScreenshotCleanupView: View {
 private extension ScreenshotCleanupView {
     var emptyState: some View {
         ContentUnavailableView {
-            Label(appLocalized("No Screenshots Found"), systemImage: "camera.viewfinder")
+            Label(
+                viewModel.presentation.emptyTitle,
+                systemImage: viewModel.presentation.systemImageName
+            )
         } description: {
-            Text(appLocalized("Try rescanning after your library updates."))
+            Text(viewModel.presentation.emptyDescription)
         }
         .padding(.top, 80)
     }
@@ -147,7 +152,8 @@ private extension ScreenshotCleanupView {
     var header: some View {
         VStack(spacing: Spacing.small) {
             ScreenshotCleanupSummaryCard(
-                screenshotCount: viewModel.assetCount,
+                category: viewModel.sourceCategory,
+                assetCount: viewModel.assetCount,
                 selectedCount: viewModel.selectedCount,
                 estimatedSavingsText: viewModel.estimatedSavingsText
             )
@@ -183,14 +189,23 @@ private extension ScreenshotCleanupView {
 
     var deleteConfirmationTitle: String {
         viewModel.selectedCount == 1
-            ? appLocalized("Delete 1 Selected Screenshot?")
-            : "Delete \(viewModel.selectedCount) Selected Screenshots?"
+            ? viewModel.presentation.alertSingularTitleFormat
+            : String(
+                format: viewModel.presentation.alertPluralTitleFormat,
+                viewModel.selectedCount
+            )
     }
 
     var deleteConfirmationMessage: String {
         viewModel.selectedCount == 1
-            ? "This will permanently delete the selected screenshot from your library and free about \(viewModel.estimatedSavingsText)."
-            : "This will permanently delete the selected screenshots from your library and free about \(viewModel.estimatedSavingsText)."
+            ? String(
+                format: viewModel.presentation.alertSingularMessageFormat,
+                viewModel.estimatedSavingsText
+            )
+            : String(
+                format: viewModel.presentation.alertPluralMessageFormat,
+                viewModel.estimatedSavingsText
+            )
     }
 
     func openOriginal(for asset: PHAsset) {
@@ -206,6 +221,7 @@ private extension ScreenshotCleanupView {
 public struct ScreenshotCleanupView: View {
     public init(
         assets: [PHAsset],
+        sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,

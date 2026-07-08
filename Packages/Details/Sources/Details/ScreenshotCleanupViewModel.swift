@@ -12,7 +12,7 @@ final class ScreenshotCleanupViewModel {
     private let cleanupHistoryRepository: CleanupHistoryRepository
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
-    private let sourceCategory: CleanupCategoryKind
+    let sourceCategory: CleanupCategoryKind
 
     var selectedAssetIDs: Set<String>
     private(set) var estimatedSavingsBytes: Int64
@@ -41,6 +41,10 @@ final class ScreenshotCleanupViewModel {
 
     var assetCount: Int {
         assetSnapshots.count
+    }
+
+    var presentation: CleanupCategoryPresentation {
+        sourceCategory.presentation
     }
 
     var selectedCount: Int {

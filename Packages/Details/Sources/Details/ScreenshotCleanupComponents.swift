@@ -4,18 +4,25 @@ import Core
 import DesignSystem
 
 struct ScreenshotCleanupSummaryCard: View {
-    let screenshotCount: Int
+    let category: CleanupCategoryKind
+    let assetCount: Int
     let selectedCount: Int
     let estimatedSavingsText: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-            Text(appLocalized("Screenshot Cleanup"))
+            Text(category.presentation.reviewTitle)
                 .font(.headline)
 
             Text(summaryText)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+
+            if let helperText = category.presentation.helperText {
+                Text(helperText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
 
             if selectedCount > 0 {
                 Text(savingsText)
@@ -29,17 +36,21 @@ struct ScreenshotCleanupSummaryCard: View {
     }
 
     private var summaryText: String {
-        if screenshotCount == 1 {
-            return appLocalized("1 screenshot available for review.")
+        if assetCount == 1 {
+            return category.presentation.summarySingular
         }
-        return "\(screenshotCount) screenshots available for review."
+        return String(format: category.presentation.summaryPluralFormat, assetCount)
     }
 
     private var savingsText: String {
         if selectedCount == 1 {
-            return "1 selected, about \(estimatedSavingsText) to free."
+            return String(format: category.presentation.selectionSingularFormat, estimatedSavingsText)
         }
-        return "\(selectedCount) selected, about \(estimatedSavingsText) to free."
+        return String(
+            format: category.presentation.selectionPluralFormat,
+            selectedCount,
+            estimatedSavingsText
+        )
     }
 }
 

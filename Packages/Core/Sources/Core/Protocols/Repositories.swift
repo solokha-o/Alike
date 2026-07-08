@@ -43,6 +43,21 @@ public protocol ClusterReviewStateRepository: Sendable {
     func deleteAllReviewStates() async throws
 }
 
+/// Repository for persisted cleanup category candidate snapshots.
+public protocol CleanupCategorySnapshotRepository: Sendable {
+    /// Load a stored snapshot for one cleanup category.
+    func loadSnapshot(for kind: CleanupCategoryKind) async throws -> CleanupCategorySnapshot?
+
+    /// Load all stored snapshots keyed by category kind.
+    func loadAllSnapshots() async throws -> [CleanupCategoryKind: CleanupCategorySnapshot]
+
+    /// Save or overwrite a category snapshot.
+    func saveSnapshot(_ snapshot: CleanupCategorySnapshot) async throws
+
+    /// Delete all stored category snapshots.
+    func deleteAllSnapshots() async throws
+}
+
 /// Repository for the active cleanup session aggregate state.
 public protocol CleanupSessionRepository: Sendable {
     /// Load currently active cleanup session.
@@ -79,8 +94,11 @@ public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
     func analyzePhotoLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster]
 
-    /// Summarize live cleanup categories derived from the photo library.
+    /// Load cached cleanup category summaries derived from the photo library.
     func summarizeCleanupCategories() async throws -> [CleanupCategorySummary]
+
+    /// Recompute cleanup categories and persist the refreshed snapshots.
+    func refreshCleanupCategories() async throws -> [CleanupCategorySummary]
 
     /// Load live assets for the requested cleanup category.
     func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset]

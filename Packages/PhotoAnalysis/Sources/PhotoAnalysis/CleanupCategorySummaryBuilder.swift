@@ -23,20 +23,25 @@ struct CleanupCategoryAssetSnapshot: Equatable, Sendable {
 }
 
 enum CleanupCategorySummaryBuilder {
-    static func summaries(from snapshots: [CleanupCategoryAssetSnapshot]) -> [CleanupCategorySummary] {
+    static func screenshotSnapshot(from snapshots: [CleanupCategoryAssetSnapshot]) -> CleanupCategorySnapshot? {
         let screenshotSnapshots = snapshots.filter(\.isScreenshot)
-        guard !screenshotSnapshots.isEmpty else { return [] }
+        guard !screenshotSnapshots.isEmpty else { return nil }
 
         let totalEstimatedSavings = screenshotSnapshots.reduce(into: Int64(0)) { partialResult, snapshot in
             partialResult += snapshot.estimatedCleanupBytes
         }
 
-        return [
-            CleanupCategorySummary(
-                kind: .screenshots,
-                assetCount: screenshotSnapshots.count,
-                estimatedSavingsBytes: totalEstimatedSavings
-            )
-        ]
+        return CleanupCategorySnapshot(
+            kind: .screenshots,
+            localIdentifiers: screenshotSnapshots.map(\.localIdentifier),
+            assetCount: screenshotSnapshots.count,
+            estimatedSavingsBytes: totalEstimatedSavings
+        )
+    }
+
+    static func summaries(from snapshots: [CleanupCategorySnapshot]) -> [CleanupCategorySummary] {
+        CleanupCategoryKind.allCases.compactMap { kind in
+            snapshots.first(where: { $0.kind == kind })?.summary
+        }
     }
 }

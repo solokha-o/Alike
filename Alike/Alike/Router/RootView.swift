@@ -50,6 +50,8 @@ struct MainTabView: View {
 #if DEBUG
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
+    @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBlurredPhotoCleanup = false
 #endif
     private let gridConfiguration = GridConfiguration.current
     
@@ -62,9 +64,13 @@ struct MainTabView: View {
 
     private var premiumAccess: any PremiumAccessControlling {
 #if DEBUG
-        let unlockedFeatures: Set<PremiumFeature> = debugUnlockScreenshotCleanup
-            ? [.screenshotCleanup]
-            : []
+        var unlockedFeatures: Set<PremiumFeature> = []
+        if debugUnlockScreenshotCleanup {
+            unlockedFeatures.insert(.screenshotCleanup)
+        }
+        if debugUnlockBlurredPhotoCleanup {
+            unlockedFeatures.insert(.blurredPhotoCleanup)
+        }
         return PremiumAccessController(unlockedFeatures: unlockedFeatures)
 #else
         return PremiumAccessController()
@@ -118,7 +124,7 @@ struct MainTabView: View {
                 )
             )
 #if DEBUG
-            .id(debugUnlockScreenshotCleanup)
+            .id("\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)")
 #endif
         case .settings:
             SettingsView(

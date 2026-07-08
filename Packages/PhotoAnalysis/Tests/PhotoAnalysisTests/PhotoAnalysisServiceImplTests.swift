@@ -1,6 +1,7 @@
 import XCTest
 import Photos
 import Vision
+import Core
 @testable import PhotoAnalysis
 
 @MainActor
@@ -31,6 +32,34 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
         }
 
         XCTAssertTrue(didCallAssetsProvider, "Assets provider should be invoked")
+    }
+
+    func testSummarizeCleanupCategoriesLoadsCachedSnapshots() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        await repository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["shot-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            ),
+            .blurredPhotos: CleanupCategorySnapshot(
+                kind: .blurredPhotos,
+                localIdentifiers: ["blur-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 200
+            )
+        ])
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        let summaries = try await service.summarizeCleanupCategories()
+
+        XCTAssertEqual(summaries.map(\.kind), [.screenshots, .blurredPhotos])
     }
 }
 

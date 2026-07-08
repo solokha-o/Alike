@@ -21,6 +21,8 @@ public struct SettingsView: View {
 #if DEBUG
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
+    @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBlurredPhotoCleanup = false
 #endif
     
     public init(
@@ -119,6 +121,12 @@ public struct SettingsView: View {
                 isOn: $debugUnlockScreenshotCleanup
             )
             .accessibilityHint(Text(appLocalized("Enable premium screenshot cleanup access in debug builds")))
+
+            Toggle(
+                appLocalized("Unlock Blurred Photo Cleanup Premium Feature"),
+                isOn: $debugUnlockBlurredPhotoCleanup
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
         } header: {
             Text(appLocalized("Debug"))
         } footer: {

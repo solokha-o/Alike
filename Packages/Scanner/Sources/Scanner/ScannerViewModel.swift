@@ -34,6 +34,7 @@ public final class ScannerViewModel {
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
     private let reviewRepository: ClusterReviewStateRepository
+    private let cleanupCategoryRepository: CleanupCategorySnapshotRepository
     private let cleanupSessionRepository: CleanupSessionRepository
     private let cleanupManager: any CleanupSessionManaging
     private let premiumAccess: any PremiumAccessControlling
@@ -47,6 +48,7 @@ public final class ScannerViewModel {
         analysisService: PhotoAnalysisService? = nil,
         repository: PhotoClusterRepository = CoreDataPhotoClusterRepository(),
         reviewRepository: ClusterReviewStateRepository = FileClusterReviewStateRepository(),
+        cleanupCategoryRepository: CleanupCategorySnapshotRepository = FileCleanupCategorySnapshotRepository(),
         cleanupSessionRepository: CleanupSessionRepository = FileCleanupSessionRepository(),
         cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
@@ -57,6 +59,7 @@ public final class ScannerViewModel {
         self.sensitivity = sensitivity
         self.repository = repository
         self.reviewRepository = reviewRepository
+        self.cleanupCategoryRepository = cleanupCategoryRepository
         self.cleanupSessionRepository = cleanupSessionRepository
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
@@ -66,9 +69,14 @@ public final class ScannerViewModel {
         if let analysisService {
             self.analysisService = analysisService
         } else if let featurePrintRepository = repository as? PhotoFeaturePrintRepository {
-            self.analysisService = PhotoAnalysisServiceImpl(featurePrintRepository: featurePrintRepository)
+            self.analysisService = PhotoAnalysisServiceImpl(
+                featurePrintRepository: featurePrintRepository,
+                cleanupCategoryRepository: cleanupCategoryRepository
+            )
         } else {
-            self.analysisService = PhotoAnalysisServiceImpl()
+            self.analysisService = PhotoAnalysisServiceImpl(
+                cleanupCategoryRepository: cleanupCategoryRepository
+            )
         }
     }
     
@@ -226,7 +234,8 @@ public final class ScannerViewModel {
 private extension ScannerViewModel {
     func loadCleanupCategories() async {
         do {
-            cleanupCategories = try await analysisService.summarizeCleanupCategories()
+            let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
+            cleanupCategories = CleanupCategoryKind.allCases.compactMap { snapshots[$0]?.summary }
         } catch {
             AppLog.photoKit.error(
                 "\(AppLog.tag(.error, "Failed to load cleanup categories: \(error.localizedDescription)"))"
@@ -287,13 +296,21 @@ private extension ScannerViewModel {
         activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
         AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
         shouldShowRescanPrompt = false
-        await loadCleanupCategories()
+        do {
+            cleanupCategories = try await analysisService.refreshCleanupCategories()
+        } catch {
+            AppLog.photoKit.error(
+                "\(AppLog.tag(.error, "Failed to refresh cleanup categories: \(error.localizedDescription)"))"
+            )
+            cleanupCategories = []
+        }
         state = .results(sorted)
     }
 
     func invalidateCachedArtifacts() async throws {
         try await repository.deleteAllClusters()
         try await reviewRepository.deleteAllReviewStates()
+        try await cleanupCategoryRepository.deleteAllSnapshots()
         try await cleanupSessionRepository.deleteActiveSession()
     }
 
