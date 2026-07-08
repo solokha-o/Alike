@@ -137,8 +137,9 @@ let viewModel = PlacesViewModel(repository: repo)
 
 ## Navigation
 
-- Keep navigation state centralized in the app target.
-- If navigation grows complex, extract a `Router`/`Coordinator` package.
+- Keep navigation state centralized at the feature or app composition root.
+- In this repo, prefer `NavigationKit` and `RoutedNavigationStack` for project-owned navigation rather than new raw `NavigationStack` wrappers.
+- If navigation grows complex beyond the current package, extract or expand a dedicated routing package instead of recreating ad hoc routers across features.
 
 ## Testing
 

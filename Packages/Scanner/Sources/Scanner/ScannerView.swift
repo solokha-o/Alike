@@ -71,7 +71,7 @@ public struct ScannerView: View {
             }
         }
         .sheet(item: $presentedCleanupCategory) { presented in
-            NavigationStack {
+            RoutedNavigationStack {
                 ScreenshotCleanupView(
                     assets: presented.assets,
                     sourceCategory: presented.kind,
@@ -736,7 +736,7 @@ private struct PremiumPaywallSheet: View {
     let feature: PremiumFeature
 
     var body: some View {
-        NavigationStack {
+        RoutedNavigationStack {
             VStack(spacing: Spacing.large) {
                 Image(systemName: "lock.shield.fill")
                     .font(.system(size: 56))

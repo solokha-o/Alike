@@ -3,6 +3,7 @@ import Photos
 import Core
 import DesignSystem
 import Storage
+import NavigationKit
 
 #if os(iOS)
 
@@ -477,7 +478,7 @@ struct MetadataView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationStack {
+        RoutedNavigationStack {
             List {
                 Section {
                     LabeledContent {
@@ -551,7 +552,7 @@ struct MetadataView: View {
 
 // MARK: - Preview
 #Preview {
-    NavigationStack {
+    RoutedNavigationStack {
         ClusterDetailsView(cluster: .mock)
     }
 }

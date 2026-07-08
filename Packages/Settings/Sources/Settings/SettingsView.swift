@@ -326,7 +326,7 @@ struct UserGuideView: View {
 }
 
 #Preview("User Guide") {
-    NavigationStack {
+    RoutedNavigationStack {
         UserGuideView()
     }
 }

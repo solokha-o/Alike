@@ -16,12 +16,13 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../DesignSystem"),
-        .package(path: "../Storage")
+        .package(path: "../Storage"),
+        .package(path: "../NavigationKit")
     ],
     targets: [
         .target(
             name: "Details",
-            dependencies: ["Core", "DesignSystem", "Storage"],
+            dependencies: ["Core", "DesignSystem", "Storage", "NavigationKit"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
