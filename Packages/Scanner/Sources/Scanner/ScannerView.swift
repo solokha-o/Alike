@@ -91,6 +91,7 @@ public struct ScannerView: View {
         }
         .sheet(item: $presentedPaywallFeature) { feature in
             PremiumPaywallSheet(feature: feature)
+                .interactiveDismissDisabled()
         }
         .alert(
             appLocalized("Couldn't Open Cleanup Category"),
@@ -761,10 +762,13 @@ private struct PremiumPaywallSheet: View {
             .navigationTitle(Text(appLocalized("Premium")))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(appLocalized("Close")) {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
+                    .accessibilityLabel(Text(appLocalized("Close")))
                 }
             }
         }

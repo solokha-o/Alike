@@ -32,6 +32,7 @@ Choose a track based on your goal:
 - Maintain existing legacy patterns only when editing legacy files.
 - Follow the project's formatter and style guide.
 - **Sheets**: Prefer `.sheet(item:)` over `.sheet(isPresented:)` when state represents a selected model. Avoid `if let` inside a sheet body. Sheets should own their actions and call `dismiss()` internally instead of forwarding `onCancel`/`onConfirm` closures.
+- **Modals**: Disable interactive swipe-to-dismiss when accidental dismissal would undermine the current flow. When the surrounding modal chrome uses the repo dismiss pattern, prefer an icon-only close button with an explicit accessibility label.
 
 ## Workflow for a new SwiftUI view
 
