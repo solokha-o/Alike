@@ -2,8 +2,8 @@
 name: swiftui-code-review
 description: >
   Review SwiftUI views for correct view graph, structure, initialization, lifecycle, rendering,
-  and unnecessary update elimination. Use when asked to review, audit, or verify a SwiftUI view file
-  against best practices.
+  unnecessary update elimination, and responsibility boundaries. Use when asked to review, audit, or
+  verify a SwiftUI view file against best practices.
 ---
 
 # SwiftUI Code Review
@@ -14,14 +14,16 @@ description: >
 - A view has unexplained re-renders, jank, or update churn
 - A new view is being added to the codebase and needs a quality gate
 - A pull request touches SwiftUI view files
+- The request mentions duplicate logic, service extraction, or "one file, one responsibility"
 
 ## Workflow
 
 1. Read the target view file(s).
-2. Work through the **Review Checklist** below, section by section.
-3. Report each finding with: file path, line range, category tag, and a concrete fix.
-4. Apply fixes when requested — keep behavior intact.
-5. Run a build to confirm no regressions.
+2. Map repeated logic and mixed responsibilities before proposing fixes.
+3. Work through the **Review Checklist** below, section by section.
+4. Report each finding with: file path, line range, category tag, and a concrete fix.
+5. Apply fixes when requested — keep behavior intact.
+6. Run a build to confirm no regressions.
 
 ## Review Checklist
 
@@ -67,6 +69,14 @@ description: >
 - [ ] `EquatableView` / `drawingGroup()` applied only where profiling shows benefit
 → Details: `references/update-minimization.md`
 
+### 🧩 Responsibility Boundaries & Reuse
+- [ ] Repeated business workflows across views/view models are extracted into one shared service/coordinator
+- [ ] Shared error mapping, persistence flow, or request-building logic is not copy-pasted between screens
+- [ ] A file owns one primary responsibility; unrelated support types move to a dedicated file
+- [ ] View files stay focused on rendering/orchestration; services/repositories own reusable business logic
+- [ ] New extraction targets are chosen by responsibility, not by convenience naming
+→ Details: `references/responsibility-boundaries.md`
+
 ## Decision Tree
 
 1. Reviewing a net-new view?
@@ -84,11 +94,15 @@ description: >
 5. Lifecycle task leaks or double-fetch?
    → Open `references/lifecycle-and-rendering.md`.
 
+6. Duplicate logic or mixed file responsibilities?
+   → Open `references/responsibility-boundaries.md` first, then `Skills/SwiftUI/swiftui-view-refactor/SKILL.md`.
+
 ## Guardrails
 
 - Do not change business logic or layout during a review-only pass.
 - Do not introduce a view model unless one already exists or is explicitly requested.
 - Do not use `AnyView` to "fix" type errors — restructure the view graph instead.
+- Do not create a new helper type when moving a few lines to a `private` helper or existing service is enough.
 - Do not add `print` or ad hoc logging inside `body`; use `AppLog` from `Packages/Core/Sources/Core/Logging/AppLog.swift` only in non-view layers when diagnostics are needed.
 - Preserve all existing accessibility labels and traits.
 
@@ -97,5 +111,6 @@ description: >
 - `Skills/SwiftUI/swiftui-view-refactor/SKILL.md` — structural cleanup and reordering
 - `Skills/SwiftUI/swiftui-performance-audit/SKILL.md` — profiling-backed perf fixes
 - `Skills/SwiftUI/swiftui-magic-numbers/SKILL.md` — extracting inline constants
+- `Skills/Architecture/SwiftUIModular/SKILL.md` — package and service boundaries
 - `Skills/SwiftConcurrency/swift-concurrency-expert/SKILL.md` — actor isolation, Sendable
 - `Skills/Meta/skill-authoring-governance/SKILL.md` — skill structure rules
