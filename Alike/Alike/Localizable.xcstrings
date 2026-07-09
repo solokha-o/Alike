@@ -2022,6 +2022,193 @@
           }
         }
       }
+    },
+    "Reminder schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder schedule"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розклад нагадування"
+          }
+        }
+      }
+    },
+    "Customize day & time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Customize day & time"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налаштувати день і час"
+          }
+        }
+      }
+    },
+    "Open premium details for custom cleanup reminder scheduling": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open premium details for custom cleanup reminder scheduling"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити преміум-деталі для власного розкладу нагадувань про очищення"
+          }
+        }
+      }
+    },
+    "Reminder day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder day"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "День нагадування"
+          }
+        }
+      }
+    },
+    "Reminder time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder time"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Час нагадування"
+          }
+        }
+      }
+    },
+    "Premium lets you choose a custom weekly reminder schedule.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium lets you choose a custom weekly reminder schedule."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Преміум дає змогу вибрати власний щотижневий розклад нагадувань."
+          }
+        }
+      }
+    },
+    "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Безплатні нагадування використовують неділю о 18:00. Розблокуйте преміум, щоб обрати власний день і час."
+          }
+        }
+      }
+    },
+    "Unlock Custom Reminder Schedule Premium Feature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Custom Reminder Schedule Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію власного розкладу нагадувань"
+          }
+        }
+      }
+    },
+    "Enable premium reminder schedule customization in debug builds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable premium reminder schedule customization in debug builds"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкнути преміум-налаштування розкладу нагадувань у debug-збірках"
+          }
+        }
+      }
+    },
+    "Custom reminder schedule is a premium feature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom reminder schedule is a premium feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Власний розклад нагадувань — це преміум-функція"
+          }
+        }
+      }
+    },
+    "Unlock custom reminder timing to choose the day and time that fits your cleanup routine.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock custom reminder timing to choose the day and time that fits your cleanup routine."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте власний час нагадувань, щоб обрати день і час, які пасують вашій рутині очищення."
+          }
+        }
+      }
     }
   },
   "version": "1.1"

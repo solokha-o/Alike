@@ -5,9 +5,6 @@ import UserNotifications
 public actor CleanupReminderManager: CleanupReminderManaging {
     private enum ReminderSchedule {
         static let identifier = "cleanup.weekly.reminder"
-        static let weekday = 1
-        static let hour = 18
-        static let minute = 0
     }
 
     private let preferenceRepository: CleanupReminderPreferenceRepository
@@ -28,60 +25,73 @@ public actor CleanupReminderManager: CleanupReminderManaging {
 
     public func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
+        let storedSchedule = await preferenceRepository.loadReminderSchedule()
         let authorizationStatus = await authorizationStatus()
 
         return CleanupReminderState(
             isEnabled: effectiveEnabled(
                 storedPreference: isReminderEnabled,
-                authorizationStatus: authorizationStatus,
-                isPremiumUnlocked: isPremiumUnlocked
+                authorizationStatus: authorizationStatus
             ),
             authorizationStatus: authorizationStatus,
-            isLocked: !isPremiumUnlocked
+            schedule: effectiveSchedule(
+                storedSchedule: storedSchedule,
+                isPremiumUnlocked: isPremiumUnlocked
+            ),
+            isScheduleCustomizationLocked: !isPremiumUnlocked
         )
     }
 
     public func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState {
-        guard isPremiumUnlocked else {
-            await removeScheduledReminder()
-            return await loadState(isPremiumUnlocked: false)
-        }
-
         guard isEnabled else {
             await preferenceRepository.saveReminderEnabled(false)
             await removeScheduledReminder()
-            return await loadState(isPremiumUnlocked: true)
+            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
         }
 
+        let schedule = await resolvedSchedule(isPremiumUnlocked: isPremiumUnlocked)
         switch await authorizationStatus() {
         case .authorized:
             await preferenceRepository.saveReminderEnabled(true)
-            await scheduleReminderIfPossible()
-            return await loadState(isPremiumUnlocked: true)
+            await scheduleReminderIfPossible(schedule: schedule)
+            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
         case .notDetermined:
             let granted = await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
             if granted {
                 await preferenceRepository.saveReminderEnabled(true)
-                await scheduleReminderIfPossible()
+                await scheduleReminderIfPossible(schedule: schedule)
             } else {
                 await preferenceRepository.saveReminderEnabled(false)
                 await removeScheduledReminder()
             }
-            return await loadState(isPremiumUnlocked: true)
+            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
         case .denied:
             await preferenceRepository.saveReminderEnabled(false)
             await removeScheduledReminder()
-            return await loadState(isPremiumUnlocked: true)
+            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
         }
+    }
+
+    public func setSchedule(
+        _ schedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) async -> CleanupReminderState {
+        guard isPremiumUnlocked else {
+            return await loadState(isPremiumUnlocked: false)
+        }
+
+        await preferenceRepository.saveReminderSchedule(schedule)
+
+        let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
+        if isReminderEnabled, await authorizationStatus() == .authorized {
+            await scheduleReminderIfPossible(schedule: schedule)
+        }
+
+        return await loadState(isPremiumUnlocked: true)
     }
 
     public func resync(isPremiumUnlocked: Bool) async {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
-
-        guard isPremiumUnlocked else {
-            await removeScheduledReminder()
-            return
-        }
 
         let authorizationStatus = await authorizationStatus()
         guard isReminderEnabled, authorizationStatus == .authorized else {
@@ -89,7 +99,8 @@ public actor CleanupReminderManager: CleanupReminderManaging {
             return
         }
 
-        await scheduleReminderIfPossible()
+        let schedule = await resolvedSchedule(isPremiumUnlocked: isPremiumUnlocked)
+        await scheduleReminderIfPossible(schedule: schedule)
     }
 }
 
@@ -109,13 +120,27 @@ private extension CleanupReminderManager {
 
     func effectiveEnabled(
         storedPreference: Bool,
-        authorizationStatus: CleanupReminderAuthorizationStatus,
-        isPremiumUnlocked: Bool
+        authorizationStatus: CleanupReminderAuthorizationStatus
     ) -> Bool {
-        storedPreference && authorizationStatus == .authorized && isPremiumUnlocked
+        storedPreference && authorizationStatus == .authorized
     }
 
-    func scheduleReminderIfPossible() async {
+    func effectiveSchedule(
+        storedSchedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) -> CleanupReminderSchedule {
+        isPremiumUnlocked ? storedSchedule : .defaultWeekly
+    }
+
+    func resolvedSchedule(isPremiumUnlocked: Bool) async -> CleanupReminderSchedule {
+        let storedSchedule = await preferenceRepository.loadReminderSchedule()
+        return effectiveSchedule(
+            storedSchedule: storedSchedule,
+            isPremiumUnlocked: isPremiumUnlocked
+        )
+    }
+
+    func scheduleReminderIfPossible(schedule: CleanupReminderSchedule) async {
         await removeScheduledReminder()
 
         let content = UNMutableNotificationContent()
@@ -127,9 +152,9 @@ private extension CleanupReminderManager {
         content.sound = .default
 
         var components = DateComponents()
-        components.weekday = ReminderSchedule.weekday
-        components.hour = ReminderSchedule.hour
-        components.minute = ReminderSchedule.minute
+        components.weekday = schedule.weekday
+        components.hour = schedule.hour
+        components.minute = schedule.minute
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(

@@ -14,7 +14,8 @@ public final class SettingsViewModel {
     public private(set) var cleanupReminderState = CleanupReminderState(
         isEnabled: false,
         authorizationStatus: .notDetermined,
-        isLocked: false
+        schedule: .defaultWeekly,
+        isScheduleCustomizationLocked: true
     )
     public private(set) var isUpdatingCleanupReminder = false
 
@@ -73,6 +74,18 @@ public final class SettingsViewModel {
         isUpdatingCleanupReminder = true
         cleanupReminderState = await cleanupReminderManager.setEnabled(
             isEnabled,
+            isPremiumUnlocked: isPremiumUnlocked
+        )
+        isUpdatingCleanupReminder = false
+    }
+
+    public func setCleanupReminderSchedule(
+        _ schedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) async {
+        isUpdatingCleanupReminder = true
+        cleanupReminderState = await cleanupReminderManager.setSchedule(
+            schedule,
             isPremiumUnlocked: isPremiumUnlocked
         )
         isUpdatingCleanupReminder = false

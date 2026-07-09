@@ -139,59 +139,127 @@ public struct SettingsView: View {
 
     private var cleanupReminderSection: some View {
         Section {
-            if viewModel.cleanupReminderState.isLocked {
+            Toggle(
+                isOn: Binding(
+                    get: { viewModel.cleanupReminderState.isEnabled },
+                    set: { isEnabled in
+                        Task {
+                            await viewModel.setCleanupReminderEnabled(
+                                isEnabled,
+                                isPremiumUnlocked: hasCleanupReminderAccess
+                            )
+                        }
+                    }
+                )
+            ) {
+                Label {
+                    Text(appLocalized("Weekly cleanup reminder"))
+                } icon: {
+                    Image(systemName: "bell.badge")
+                }
+            }
+            .disabled(viewModel.isUpdatingCleanupReminder)
+            .accessibilityHint(Text(appLocalized("Enable a weekly reminder to come back and continue cleanup")))
+
+            if viewModel.cleanupReminderState.authorizationStatus == .denied {
+                Text(appLocalized("Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."))
+                    .foregroundColor(.secondary)
+
+#if canImport(UIKit)
+                Button(appLocalized("Open Settings")) {
+                    openAppSettings()
+                }
+#endif
+            }
+
+            if viewModel.cleanupReminderState.isScheduleCustomizationLocked {
+                HStack {
+                    Label {
+                        Text(appLocalized("Reminder schedule"))
+                    } icon: {
+                        Image(systemName: "calendar.badge.clock")
+                    }
+                    Spacer()
+                    Text(scheduleDescription(viewModel.cleanupReminderState.schedule))
+                        .foregroundStyle(.secondary)
+                }
+
                 Button {
                     presentedPremiumFeature = .cleanupReminders
                 } label: {
                     HStack(spacing: Spacing.small) {
-                        Image(systemName: "bell.badge")
+                        Image(systemName: "lock.badge.clock")
                             .foregroundStyle(Color.accent)
-                        Text(appLocalized("Weekly cleanup reminder"))
+                        Text(appLocalized("Customize day & time"))
                         Spacer()
                         Image(systemName: "lock.fill")
                             .foregroundStyle(.secondary)
                     }
                 }
                 .buttonStyle(.plain)
-                .accessibilityHint(Text(appLocalized("Open premium details for weekly cleanup reminders")))
+                .accessibilityHint(Text(appLocalized("Open premium details for custom cleanup reminder scheduling")))
             } else {
-                Toggle(
-                    isOn: Binding(
-                        get: { viewModel.cleanupReminderState.isEnabled },
-                        set: { isEnabled in
+                HStack {
+                    Label {
+                        Text(appLocalized("Reminder schedule"))
+                    } icon: {
+                        Image(systemName: "calendar.badge.clock")
+                    }
+                    Spacer()
+                    Text(scheduleDescription(viewModel.cleanupReminderState.schedule))
+                        .foregroundStyle(.secondary)
+                }
+
+                Picker(
+                    appLocalized("Reminder day"),
+                    selection: Binding(
+                        get: { viewModel.cleanupReminderState.schedule.weekday },
+                        set: { weekday in
                             Task {
-                                await viewModel.setCleanupReminderEnabled(
-                                    isEnabled,
+                                await viewModel.setCleanupReminderSchedule(
+                                    CleanupReminderSchedule(
+                                        weekday: weekday,
+                                        hour: viewModel.cleanupReminderState.schedule.hour,
+                                        minute: viewModel.cleanupReminderState.schedule.minute
+                                    ),
                                     isPremiumUnlocked: hasCleanupReminderAccess
                                 )
                             }
                         }
                     )
                 ) {
-                    Label {
-                        Text(appLocalized("Weekly cleanup reminder"))
-                    } icon: {
-                        Image(systemName: "bell.badge")
+                    ForEach(weekdayOptions, id: \.value) { option in
+                        Text(option.title).tag(option.value)
                     }
                 }
                 .disabled(viewModel.isUpdatingCleanupReminder)
-                .accessibilityHint(Text(appLocalized("Enable a weekly reminder to come back and continue cleanup")))
 
-                if viewModel.cleanupReminderState.authorizationStatus == .denied {
-                    Text(appLocalized("Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."))
-                        .foregroundColor(.secondary)
-
-#if canImport(UIKit)
-                    Button(appLocalized("Open Settings")) {
-                        openAppSettings()
-                    }
-#endif
-                }
+                DatePicker(
+                    appLocalized("Reminder time"),
+                    selection: Binding(
+                        get: { reminderTimeDate(for: viewModel.cleanupReminderState.schedule) },
+                        set: { date in
+                            let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+                            Task {
+                                await viewModel.setCleanupReminderSchedule(
+                                    CleanupReminderSchedule(
+                                        weekday: viewModel.cleanupReminderState.schedule.weekday,
+                                        hour: components.hour ?? viewModel.cleanupReminderState.schedule.hour,
+                                        minute: components.minute ?? viewModel.cleanupReminderState.schedule.minute
+                                    ),
+                                    isPremiumUnlocked: hasCleanupReminderAccess
+                                )
+                            }
+                        }
+                    ),
+                    displayedComponents: [.hourAndMinute]
+                )
+                .disabled(viewModel.isUpdatingCleanupReminder)
             }
         } header: {
             Text(appLocalized("Cleanup Reminder"))
         } footer: {
-            Text(appLocalized("A weekly reminder appears every Sunday at 6:00 PM in your local time."))
+            Text(cleanupReminderFooterText)
         }
     }
     
@@ -255,10 +323,10 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
 
             Toggle(
-                appLocalized("Unlock Cleanup Reminder Premium Feature"),
+                appLocalized("Unlock Custom Reminder Schedule Premium Feature"),
                 isOn: $debugUnlockCleanupReminders
             )
-            .accessibilityHint(Text(appLocalized("Enable premium cleanup reminder access in debug builds")))
+            .accessibilityHint(Text(appLocalized("Enable premium reminder schedule customization in debug builds")))
         } header: {
             Text(appLocalized("Debug"))
         } footer: {
@@ -376,6 +444,50 @@ public struct SettingsView: View {
         premiumAccess.hasAccess(to: .cleanupReminders)
     }
 
+    private var weekdayOptions: [(value: Int, title: String)] {
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
+        let firstWeekdayIndex = max(1, min(calendar.firstWeekday, weekdaySymbols.count)) - 1
+
+        return (0..<weekdaySymbols.count).map { offset in
+            let index = (firstWeekdayIndex + offset) % weekdaySymbols.count
+            return (value: index + 1, title: weekdaySymbols[index])
+        }
+    }
+
+    private var cleanupReminderFooterText: String {
+        if hasCleanupReminderAccess {
+            return appLocalized("Premium lets you choose a custom weekly reminder schedule.")
+        }
+
+        return appLocalized(
+            "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
+        )
+    }
+
+    private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        components.hour = schedule.hour
+        components.minute = schedule.minute
+        return Calendar.current.date(from: components) ?? Date()
+    }
+
+    private func scheduleDescription(_ schedule: CleanupReminderSchedule) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
+        let weekdayIndex = max(1, min(schedule.weekday, weekdaySymbols.count)) - 1
+        let weekday = weekdaySymbols.isEmpty ? "" : weekdaySymbols[weekdayIndex]
+        let timeDate = reminderTimeDate(for: schedule)
+
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+
+        return "\(weekday) at \(formatter.string(from: timeDate))"
+    }
+
     #if canImport(UIKit)
     private func openAppSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
@@ -400,10 +512,10 @@ private struct ReminderPremiumSheet: View {
                     .foregroundStyle(Color.accent)
 
                 VStack(spacing: Spacing.small) {
-                    Text(appLocalized("Cleanup reminders are a premium feature"))
+                    Text(appLocalized("Custom reminder schedule is a premium feature"))
                         .font(.appTitle2)
                         .multilineTextAlignment(.center)
-                    Text(appLocalized("Unlock weekly cleanup reminders to come back to Alike, clear clutter, and keep saving storage over time."))
+                    Text(appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine."))
                         .font(.appBody)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)

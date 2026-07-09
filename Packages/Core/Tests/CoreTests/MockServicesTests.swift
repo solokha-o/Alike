@@ -133,23 +133,46 @@ final class MockServicesTests: XCTestCase {
         XCTAssertTrue(didCallSave)
     }
 
+    func testMockCleanupReminderPreferenceRepositoryStoresSchedule() async {
+        let repository = MockCleanupReminderPreferenceRepository()
+        let customSchedule = CleanupReminderSchedule(weekday: 3, hour: 9, minute: 30)
+
+        let initialSchedule = await repository.loadReminderSchedule()
+        XCTAssertEqual(initialSchedule, .defaultWeekly)
+
+        await repository.saveReminderSchedule(customSchedule)
+
+        let updatedSchedule = await repository.loadReminderSchedule()
+        let didCallLoad = await repository.didCallLoadReminderSchedule
+        let didCallSave = await repository.didCallSaveReminderSchedule
+        XCTAssertEqual(updatedSchedule, customSchedule)
+        XCTAssertTrue(didCallLoad)
+        XCTAssertTrue(didCallSave)
+    }
+
     func testMockCleanupReminderManagerTracksCalls() async {
         let manager = MockCleanupReminderManager()
+        let customSchedule = CleanupReminderSchedule(weekday: 5, hour: 20, minute: 15)
 
         _ = await manager.loadState(isPremiumUnlocked: true)
         _ = await manager.setEnabled(true, isPremiumUnlocked: true)
+        _ = await manager.setSchedule(customSchedule, isPremiumUnlocked: true)
         await manager.resync(isPremiumUnlocked: false)
 
         let didCallLoad = await manager.didCallLoadState
         let didCallSetEnabled = await manager.didCallSetEnabled
+        let didCallSetSchedule = await manager.didCallSetSchedule
         let didCallResync = await manager.didCallResync
         let lastSetEnabledValue = await manager.lastSetEnabledValue
+        let lastSetScheduleValue = await manager.lastSetScheduleValue
         let lastResyncIsPremiumUnlocked = await manager.lastResyncIsPremiumUnlocked
 
         XCTAssertTrue(didCallLoad)
         XCTAssertTrue(didCallSetEnabled)
+        XCTAssertTrue(didCallSetSchedule)
         XCTAssertTrue(didCallResync)
         XCTAssertEqual(lastSetEnabledValue, true)
+        XCTAssertEqual(lastSetScheduleValue, customSchedule)
         XCTAssertEqual(lastResyncIsPremiumUnlocked, false)
     }
 }

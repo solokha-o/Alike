@@ -96,15 +96,27 @@ public protocol CleanupReminderPreferenceRepository: Sendable {
 
     /// Persist whether the user enabled weekly cleanup reminders.
     func saveReminderEnabled(_ isEnabled: Bool) async
+
+    /// Load the stored weekly cleanup reminder schedule.
+    func loadReminderSchedule() async -> CleanupReminderSchedule
+
+    /// Persist the weekly cleanup reminder schedule.
+    func saveReminderSchedule(_ schedule: CleanupReminderSchedule) async
 }
 
-/// Service for managing cleanup reminder scheduling and entitlement gating.
+/// Service for managing cleanup reminder scheduling and premium customization gating.
 public protocol CleanupReminderManaging: Sendable {
     /// Load the current reminder state for the supplied premium access state.
     func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState
 
     /// Enable or disable the weekly reminder for the supplied premium access state.
     func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState
+
+    /// Update the stored weekly reminder schedule when premium customization is available.
+    func setSchedule(
+        _ schedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) async -> CleanupReminderState
 
     /// Reconcile stored preference and scheduled notification at app launch.
     func resync(isPremiumUnlocked: Bool) async

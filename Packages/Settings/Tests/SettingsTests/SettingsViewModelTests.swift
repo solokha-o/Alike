@@ -82,7 +82,8 @@ final class SettingsViewModelTests: XCTestCase {
             state: CleanupReminderState(
                 isEnabled: false,
                 authorizationStatus: .denied,
-                isLocked: false
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -98,7 +99,8 @@ final class SettingsViewModelTests: XCTestCase {
             CleanupReminderState(
                 isEnabled: false,
                 authorizationStatus: .denied,
-                isLocked: false
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
     }
@@ -109,14 +111,16 @@ final class SettingsViewModelTests: XCTestCase {
             CleanupReminderState(
                 isEnabled: false,
                 authorizationStatus: .authorized,
-                isLocked: false
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
             isEnabled: true,
             authorizationStatus: .authorized,
-            isLocked: false
+            schedule: .defaultWeekly,
+            isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -136,14 +140,16 @@ final class SettingsViewModelTests: XCTestCase {
             state: CleanupReminderState(
                 isEnabled: false,
                 authorizationStatus: .denied,
-                isLocked: false
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
             isEnabled: false,
             authorizationStatus: .denied,
-            isLocked: false
+            schedule: .defaultWeekly,
+            isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -163,14 +169,16 @@ final class SettingsViewModelTests: XCTestCase {
             state: CleanupReminderState(
                 isEnabled: true,
                 authorizationStatus: .authorized,
-                isLocked: false
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
             isEnabled: false,
             authorizationStatus: .authorized,
-            isLocked: false
+            schedule: .defaultWeekly,
+            isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -183,5 +191,35 @@ final class SettingsViewModelTests: XCTestCase {
 
         XCTAssertFalse(viewModel.cleanupReminderState.isEnabled)
         XCTAssertEqual(viewModel.cleanupReminderState.authorizationStatus, .authorized)
+    }
+
+    func testSetCleanupReminderScheduleUpdatesState() async {
+        let customSchedule = CleanupReminderSchedule(weekday: 4, hour: 7, minute: 20)
+        let reminderManager = MockCleanupReminderManager(
+            state: CleanupReminderState(
+                isEnabled: true,
+                authorizationStatus: .authorized,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
+            )
+        )
+        await reminderManager.setSetScheduleResultState(
+            CleanupReminderState(
+                isEnabled: true,
+                authorizationStatus: .authorized,
+                schedule: customSchedule,
+                isScheduleCustomizationLocked: false
+            )
+        )
+        let viewModel = SettingsViewModel(
+            gridConfig: .iPhone,
+            appVersion: "1.2.3",
+            cleanupReminderManager: reminderManager
+        )
+
+        await viewModel.setCleanupReminderSchedule(customSchedule, isPremiumUnlocked: true)
+
+        XCTAssertEqual(viewModel.cleanupReminderState.schedule, customSchedule)
+        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
     }
 }

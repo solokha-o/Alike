@@ -87,7 +87,7 @@ struct MainTabView: View {
 #endif
     }
 
-    private var hasCleanupReminderAccess: Bool {
+    private var hasCleanupReminderCustomizationAccess: Bool {
         premiumAccess.hasAccess(to: .cleanupReminders)
     }
     
@@ -108,9 +108,9 @@ struct MainTabView: View {
                 gridColumns = clamped
             }
         }
-        .task(id: hasCleanupReminderAccess) {
+        .task(id: hasCleanupReminderCustomizationAccess) {
             await cleanupReminderManager.resync(
-                isPremiumUnlocked: hasCleanupReminderAccess
+                isPremiumUnlocked: hasCleanupReminderCustomizationAccess
             )
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
