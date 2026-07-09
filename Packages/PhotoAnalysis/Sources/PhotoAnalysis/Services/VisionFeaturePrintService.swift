@@ -132,7 +132,7 @@ public struct VisionFeaturePrintService: Sendable {
             }
 
             AppLog.vision.debug(
-                "\(AppLog.tag(.vision, "FeaturePrint batch done. completed=\(completed) nil=\(nilCount)"))"
+                "\(AppLog.tag(.vision, "FeaturePrint batch done. completed=\(completed) success=\(completed - nilCount) nil=\(nilCount)"))"
             )
 
             return results
@@ -199,9 +199,6 @@ private extension VisionFeaturePrintService {
                     if let error = info?[PHImageErrorKey] as? Error {
                         let nsError = error as NSError
                         if Self.shouldSkipImageDataRequest(for: nsError) {
-                            AppLog.photoKit.debug(
-                                "\(AppLog.tag(.photokit, "Skipping asset thumbnail request. domain=\(nsError.domain) code=\(nsError.code)"))"
-                            )
                             resumeOnce { continuation.resume(returning: nil) }
                         } else {
                             AppLog.photoKit.error(

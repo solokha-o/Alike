@@ -90,7 +90,15 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             let overallProgress = (completed / Double(assetsToCluster.count)) * 0.8
             progress(overallProgress)
         }
-        AppLog.scan.debug("\(AppLog.tag(.vision, "Computed feature prints: \(computed.count)"))")
+        let computedSuccessCount = computed.reduce(into: 0) { partialResult, result in
+            if result.featurePrint != nil {
+                partialResult += 1
+            }
+        }
+        let skippedCount = computed.count - computedSuccessCount
+        AppLog.scan.debug(
+            "\(AppLog.tag(.vision, "Computed feature prints success=\(computedSuccessCount) attempted=\(computed.count) skipped=\(skippedCount)"))"
+        )
 
         await saveFeaturePrintCache(for: computed)
 
