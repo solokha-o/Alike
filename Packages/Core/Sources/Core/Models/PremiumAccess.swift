@@ -3,6 +3,7 @@ import Foundation
 public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
     case screenshotCleanup
     case blurredPhotoCleanup
+    case cleanupReminders
 
     public var id: String { rawValue }
 
@@ -13,6 +14,8 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
             "debug.premium.screenshotCleanup"
         case .blurredPhotoCleanup:
             "debug.premium.blurredPhotoCleanup"
+        case .cleanupReminders:
+            "debug.premium.cleanupReminders"
         }
     }
 #endif
@@ -23,12 +26,14 @@ public protocol PremiumAccessControlling: Sendable {
 }
 
 public extension PremiumFeature {
-    var categoryKind: CleanupCategoryKind {
+    var categoryKind: CleanupCategoryKind? {
         switch self {
         case .screenshotCleanup:
             .screenshots
         case .blurredPhotoCleanup:
             .blurredPhotos
+        case .cleanupReminders:
+            nil
         }
     }
 }

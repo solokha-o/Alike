@@ -76,4 +76,112 @@ final class SettingsViewModelTests: XCTestCase {
         let version = SettingsViewModel.defaultAppVersion()
         XCTAssertFalse(version.isEmpty)
     }
+
+    func testLoadCleanupReminderStateReflectsDeniedStatus() async {
+        let reminderManager = MockCleanupReminderManager(
+            state: CleanupReminderState(
+                isEnabled: false,
+                authorizationStatus: .denied,
+                isLocked: false
+            )
+        )
+        let viewModel = SettingsViewModel(
+            gridConfig: .iPhone,
+            appVersion: "1.2.3",
+            cleanupReminderManager: reminderManager
+        )
+
+        await viewModel.loadCleanupReminderState(isPremiumUnlocked: true)
+
+        XCTAssertEqual(
+            viewModel.cleanupReminderState,
+            CleanupReminderState(
+                isEnabled: false,
+                authorizationStatus: .denied,
+                isLocked: false
+            )
+        )
+    }
+
+    func testSetCleanupReminderEnabledTurnsReminderOn() async {
+        let reminderManager = MockCleanupReminderManager()
+        await reminderManager.setState(
+            CleanupReminderState(
+                isEnabled: false,
+                authorizationStatus: .authorized,
+                isLocked: false
+            )
+        )
+        await reminderManager.setSetEnabledResultState(
+            CleanupReminderState(
+            isEnabled: true,
+            authorizationStatus: .authorized,
+            isLocked: false
+            )
+        )
+        let viewModel = SettingsViewModel(
+            gridConfig: .iPhone,
+            appVersion: "1.2.3",
+            cleanupReminderManager: reminderManager
+        )
+
+        await viewModel.setCleanupReminderEnabled(true, isPremiumUnlocked: true)
+
+        XCTAssertTrue(viewModel.cleanupReminderState.isEnabled)
+        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+    }
+
+    func testSetCleanupReminderEnabledKeepsReminderOffWhenDenied() async {
+        let reminderManager = MockCleanupReminderManager(
+            state: CleanupReminderState(
+                isEnabled: false,
+                authorizationStatus: .denied,
+                isLocked: false
+            )
+        )
+        await reminderManager.setSetEnabledResultState(
+            CleanupReminderState(
+            isEnabled: false,
+            authorizationStatus: .denied,
+            isLocked: false
+            )
+        )
+        let viewModel = SettingsViewModel(
+            gridConfig: .iPhone,
+            appVersion: "1.2.3",
+            cleanupReminderManager: reminderManager
+        )
+
+        await viewModel.setCleanupReminderEnabled(true, isPremiumUnlocked: true)
+
+        XCTAssertFalse(viewModel.cleanupReminderState.isEnabled)
+        XCTAssertEqual(viewModel.cleanupReminderState.authorizationStatus, .denied)
+    }
+
+    func testSetCleanupReminderEnabledTurnsReminderOff() async {
+        let reminderManager = MockCleanupReminderManager(
+            state: CleanupReminderState(
+                isEnabled: true,
+                authorizationStatus: .authorized,
+                isLocked: false
+            )
+        )
+        await reminderManager.setSetEnabledResultState(
+            CleanupReminderState(
+            isEnabled: false,
+            authorizationStatus: .authorized,
+            isLocked: false
+            )
+        )
+        let viewModel = SettingsViewModel(
+            gridConfig: .iPhone,
+            appVersion: "1.2.3",
+            cleanupReminderManager: reminderManager
+        )
+
+        await viewModel.setCleanupReminderEnabled(false, isPremiumUnlocked: true)
+
+        XCTAssertFalse(viewModel.cleanupReminderState.isEnabled)
+        XCTAssertEqual(viewModel.cleanupReminderState.authorizationStatus, .authorized)
+    }
 }

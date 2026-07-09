@@ -116,4 +116,40 @@ final class MockServicesTests: XCTestCase {
         let deleted = try await repository.loadActiveSession()
         XCTAssertNil(deleted)
     }
+
+    func testMockCleanupReminderPreferenceRepositoryStoresValue() async {
+        let repository = MockCleanupReminderPreferenceRepository()
+
+        let initialValue = await repository.loadReminderEnabled()
+        XCTAssertFalse(initialValue)
+
+        await repository.saveReminderEnabled(true)
+
+        let updatedValue = await repository.loadReminderEnabled()
+        let didCallLoad = await repository.didCallLoadReminderEnabled
+        let didCallSave = await repository.didCallSaveReminderEnabled
+        XCTAssertTrue(updatedValue)
+        XCTAssertTrue(didCallLoad)
+        XCTAssertTrue(didCallSave)
+    }
+
+    func testMockCleanupReminderManagerTracksCalls() async {
+        let manager = MockCleanupReminderManager()
+
+        _ = await manager.loadState(isPremiumUnlocked: true)
+        _ = await manager.setEnabled(true, isPremiumUnlocked: true)
+        await manager.resync(isPremiumUnlocked: false)
+
+        let didCallLoad = await manager.didCallLoadState
+        let didCallSetEnabled = await manager.didCallSetEnabled
+        let didCallResync = await manager.didCallResync
+        let lastSetEnabledValue = await manager.lastSetEnabledValue
+        let lastResyncIsPremiumUnlocked = await manager.lastResyncIsPremiumUnlocked
+
+        XCTAssertTrue(didCallLoad)
+        XCTAssertTrue(didCallSetEnabled)
+        XCTAssertTrue(didCallResync)
+        XCTAssertEqual(lastSetEnabledValue, true)
+        XCTAssertEqual(lastResyncIsPremiumUnlocked, false)
+    }
 }

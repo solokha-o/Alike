@@ -11,17 +11,29 @@ public final class SettingsViewModel {
     public let appVersion: String
     public var reviewTrigger: Int = 0
     public private(set) var cleanupInsights: CleanupInsights = .empty
+    public private(set) var cleanupReminderState = CleanupReminderState(
+        isEnabled: false,
+        authorizationStatus: .notDetermined,
+        isLocked: false
+    )
+    public private(set) var isUpdatingCleanupReminder = false
 
     private let cleanupInsightsProvider: any CleanupInsightsProviding
+    private let cleanupReminderManager: any CleanupReminderManaging
     
     public init(
         gridConfig: GridConfiguration = GridConfiguration.current,
         appVersion: String = SettingsViewModel.fullAppVersion(),
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository()
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        cleanupReminderManager: (any CleanupReminderManaging)? = nil
     ) {
         self.gridConfig = gridConfig
         self.appVersion = appVersion
         self.cleanupInsightsProvider = CleanupInsightsService(repository: cleanupHistoryRepository)
+        self.cleanupReminderManager = cleanupReminderManager
+            ?? CleanupReminderManager(
+                preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
+            )
     }
     
     public func handleRateTapped(requestReview: RequestReviewAction) {
@@ -46,6 +58,24 @@ public final class SettingsViewModel {
             )
             cleanupInsights = .empty
         }
+    }
+
+    public func loadCleanupReminderState(isPremiumUnlocked: Bool) async {
+        cleanupReminderState = await cleanupReminderManager.loadState(
+            isPremiumUnlocked: isPremiumUnlocked
+        )
+    }
+
+    public func setCleanupReminderEnabled(
+        _ isEnabled: Bool,
+        isPremiumUnlocked: Bool
+    ) async {
+        isUpdatingCleanupReminder = true
+        cleanupReminderState = await cleanupReminderManager.setEnabled(
+            isEnabled,
+            isPremiumUnlocked: isPremiumUnlocked
+        )
+        isUpdatingCleanupReminder = false
     }
     
     public static func fullAppVersion() -> String {

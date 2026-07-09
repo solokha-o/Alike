@@ -18,22 +18,29 @@ public struct SettingsView: View {
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
+    @State private var presentedPremiumFeature: PremiumFeature?
+    private let premiumAccess: any PremiumAccessControlling
 #if DEBUG
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
     @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBlurredPhotoCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminders.debugOverrideDefaultsKey)
+    private var debugUnlockCleanupReminders = false
 #endif
     
     public init(
         gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
-        needsRescan: Binding<Bool>
+        needsRescan: Binding<Bool>,
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        viewModel: SettingsViewModel = SettingsViewModel()
     ) {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
-        self._viewModel = State(initialValue: SettingsViewModel())
+        self.premiumAccess = premiumAccess
+        self._viewModel = State(initialValue: viewModel)
     }
     
     public var body: some View {
@@ -45,6 +52,14 @@ public struct SettingsView: View {
         .task {
             await viewModel.loadCleanupInsights()
         }
+        .task(id: hasCleanupReminderAccess) {
+            await viewModel.loadCleanupReminderState(
+                isPremiumUnlocked: hasCleanupReminderAccess
+            )
+        }
+        .sheet(item: $presentedPremiumFeature) { feature in
+            premiumFeatureSheet(for: feature)
+        }
     }
 
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
@@ -53,6 +68,7 @@ public struct SettingsView: View {
             languageSection
             analysisSection
             cleanupHistorySection
+            cleanupReminderSection
 #if DEBUG
             debugSection
 #endif
@@ -70,6 +86,14 @@ public struct SettingsView: View {
         switch route {
         case .userGuide:
             UserGuideView()
+        }
+    }
+
+    @ViewBuilder
+    private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
+        switch feature {
+        case .cleanupReminders, .screenshotCleanup, .blurredPhotoCleanup:
+            ReminderPremiumSheet()
         }
     }
 
@@ -110,6 +134,64 @@ public struct SettingsView: View {
             }
         } header: {
             Text(appLocalized("Cleanup History"))
+        }
+    }
+
+    private var cleanupReminderSection: some View {
+        Section {
+            if viewModel.cleanupReminderState.isLocked {
+                Button {
+                    presentedPremiumFeature = .cleanupReminders
+                } label: {
+                    HStack(spacing: Spacing.small) {
+                        Image(systemName: "bell.badge")
+                            .foregroundStyle(Color.accent)
+                        Text(appLocalized("Weekly cleanup reminder"))
+                        Spacer()
+                        Image(systemName: "lock.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint(Text(appLocalized("Open premium details for weekly cleanup reminders")))
+            } else {
+                Toggle(
+                    isOn: Binding(
+                        get: { viewModel.cleanupReminderState.isEnabled },
+                        set: { isEnabled in
+                            Task {
+                                await viewModel.setCleanupReminderEnabled(
+                                    isEnabled,
+                                    isPremiumUnlocked: hasCleanupReminderAccess
+                                )
+                            }
+                        }
+                    )
+                ) {
+                    Label {
+                        Text(appLocalized("Weekly cleanup reminder"))
+                    } icon: {
+                        Image(systemName: "bell.badge")
+                    }
+                }
+                .disabled(viewModel.isUpdatingCleanupReminder)
+                .accessibilityHint(Text(appLocalized("Enable a weekly reminder to come back and continue cleanup")))
+
+                if viewModel.cleanupReminderState.authorizationStatus == .denied {
+                    Text(appLocalized("Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."))
+                        .foregroundColor(.secondary)
+
+#if canImport(UIKit)
+                    Button(appLocalized("Open Settings")) {
+                        openAppSettings()
+                    }
+#endif
+                }
+            }
+        } header: {
+            Text(appLocalized("Cleanup Reminder"))
+        } footer: {
+            Text(appLocalized("A weekly reminder appears every Sunday at 6:00 PM in your local time."))
         }
     }
     
@@ -171,6 +253,12 @@ public struct SettingsView: View {
                 isOn: $debugUnlockBlurredPhotoCleanup
             )
             .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
+
+            Toggle(
+                appLocalized("Unlock Cleanup Reminder Premium Feature"),
+                isOn: $debugUnlockCleanupReminders
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium cleanup reminder access in debug builds")))
         } header: {
             Text(appLocalized("Debug"))
         } footer: {
@@ -259,13 +347,7 @@ public struct SettingsView: View {
 
     private func openLanguageSettings() {
         #if os(iOS)
-        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsURL) {
-            UIApplication.shared.open(settingsURL)
-        }
+        openAppSettings()
         #endif
     }
 
@@ -288,6 +370,65 @@ public struct SettingsView: View {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
         return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private var hasCleanupReminderAccess: Bool {
+        premiumAccess.hasAccess(to: .cleanupReminders)
+    }
+
+    #if canImport(UIKit)
+    private func openAppSettings() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsURL) {
+            UIApplication.shared.open(settingsURL)
+        }
+    }
+    #endif
+}
+
+private struct ReminderPremiumSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        RoutedNavigationStack {
+            VStack(spacing: Spacing.large) {
+                Image(systemName: "bell.badge.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Color.accent)
+
+                VStack(spacing: Spacing.small) {
+                    Text(appLocalized("Cleanup reminders are a premium feature"))
+                        .font(.appTitle2)
+                        .multilineTextAlignment(.center)
+                    Text(appLocalized("Unlock weekly cleanup reminders to come back to Alike, clear clutter, and keep saving storage over time."))
+                        .font(.appBody)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") {
+                    dismiss()
+                }
+
+                Spacer()
+            }
+            .padding(Spacing.large)
+            .navigationTitle(Text(appLocalized("Premium")))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel(Text(appLocalized("Close")))
+                }
+            }
+        }
     }
 }
 

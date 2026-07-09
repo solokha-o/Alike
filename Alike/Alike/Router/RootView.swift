@@ -11,6 +11,8 @@ import Welcome
 import Scanner
 import Settings
 import Core
+import Cleanup
+import Storage
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -52,8 +54,13 @@ struct MainTabView: View {
     private var debugUnlockScreenshotCleanup = false
     @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBlurredPhotoCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminders.debugOverrideDefaultsKey)
+    private var debugUnlockCleanupReminders = false
 #endif
     private let gridConfiguration = GridConfiguration.current
+    private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
+        preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
+    )
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -71,10 +78,17 @@ struct MainTabView: View {
         if debugUnlockBlurredPhotoCleanup {
             unlockedFeatures.insert(.blurredPhotoCleanup)
         }
+        if debugUnlockCleanupReminders {
+            unlockedFeatures.insert(.cleanupReminders)
+        }
         return PremiumAccessController(unlockedFeatures: unlockedFeatures)
 #else
         return PremiumAccessController()
 #endif
+    }
+
+    private var hasCleanupReminderAccess: Bool {
+        premiumAccess.hasAccess(to: .cleanupReminders)
     }
     
     var body: some View {
@@ -93,6 +107,11 @@ struct MainTabView: View {
             if clamped != gridColumns {
                 gridColumns = clamped
             }
+        }
+        .task(id: hasCleanupReminderAccess) {
+            await cleanupReminderManager.resync(
+                isPremiumUnlocked: hasCleanupReminderAccess
+            )
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
@@ -133,7 +152,8 @@ struct MainTabView: View {
                     set: { gridColumns = gridConfiguration.clampedColumns($0) }
                 ),
                 sensitivity: sensitivity,
-                needsRescan: Bindable(tabManager).needsRescan
+                needsRescan: Bindable(tabManager).needsRescan,
+                premiumAccess: premiumAccess
             )
         }
     }

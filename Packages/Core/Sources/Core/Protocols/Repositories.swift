@@ -89,6 +89,27 @@ public protocol CleanupHistoryRepository: Sendable {
     func append(_ entry: CleanupCompletionRecord) async throws
 }
 
+/// Repository for persisted cleanup reminder preference.
+public protocol CleanupReminderPreferenceRepository: Sendable {
+    /// Load whether the user enabled weekly cleanup reminders.
+    func loadReminderEnabled() async -> Bool
+
+    /// Persist whether the user enabled weekly cleanup reminders.
+    func saveReminderEnabled(_ isEnabled: Bool) async
+}
+
+/// Service for managing cleanup reminder scheduling and entitlement gating.
+public protocol CleanupReminderManaging: Sendable {
+    /// Load the current reminder state for the supplied premium access state.
+    func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState
+
+    /// Enable or disable the weekly reminder for the supplied premium access state.
+    func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState
+
+    /// Reconcile stored preference and scheduled notification at app launch.
+    func resync(isPremiumUnlocked: Bool) async
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters

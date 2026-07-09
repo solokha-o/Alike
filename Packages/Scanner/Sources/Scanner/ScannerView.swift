@@ -876,11 +876,21 @@ private struct PremiumPaywallSheet: View {
     }
 
     private var title: String {
-        feature.categoryKind.presentation.paywallTitle
+        switch feature {
+        case .cleanupReminders:
+            appLocalized("Cleanup reminders are a premium feature")
+        case .screenshotCleanup, .blurredPhotoCleanup:
+            feature.categoryKind?.presentation.paywallTitle ?? ""
+        }
     }
 
     private var message: String {
-        feature.categoryKind.presentation.paywallMessage
+        switch feature {
+        case .cleanupReminders:
+            appLocalized("Unlock weekly cleanup reminders to come back to Alike, clear clutter, and keep saving storage over time.")
+        case .screenshotCleanup, .blurredPhotoCleanup:
+            feature.categoryKind?.presentation.paywallMessage ?? ""
+        }
     }
 }
 

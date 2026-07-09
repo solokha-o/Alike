@@ -1818,6 +1818,210 @@
           }
         }
       }
+    },
+    "Cleanup Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Reminder"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нагадування про очищення"
+          }
+        }
+      }
+    },
+    "Weekly cleanup reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly cleanup reminder"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щотижневе нагадування про очищення"
+          }
+        }
+      }
+    },
+    "A weekly reminder appears every Sunday at 6:00 PM in your local time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A weekly reminder appears every Sunday at 6:00 PM in your local time."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щотижневе нагадування з’являється щонеділі о 18:00 за вашим місцевим часом."
+          }
+        }
+      }
+    },
+    "Open premium details for weekly cleanup reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open premium details for weekly cleanup reminders"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити преміум-деталі для щотижневих нагадувань про очищення"
+          }
+        }
+      }
+    },
+    "Enable a weekly reminder to come back and continue cleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable a weekly reminder to come back and continue cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкніть щотижневе нагадування, щоб повернутися й продовжити очищення"
+          }
+        }
+      }
+    },
+    "Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для Alike вимкнено сповіщення. Увімкніть їх у Налаштуваннях, щоб отримувати щотижневе нагадування про очищення."
+          }
+        }
+      }
+    },
+    "Unlock Cleanup Reminder Premium Feature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Cleanup Reminder Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію нагадування про очищення"
+          }
+        }
+      }
+    },
+    "Enable premium cleanup reminder access in debug builds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable premium cleanup reminder access in debug builds"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкнути преміум-доступ до нагадувань про очищення в debug-збірках"
+          }
+        }
+      }
+    },
+    "Cleanup reminders are a premium feature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup reminders are a premium feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нагадування про очищення — це преміум-функція"
+          }
+        }
+      }
+    },
+    "Unlock weekly cleanup reminders to come back to Alike, clear clutter, and keep saving storage over time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock weekly cleanup reminders to come back to Alike, clear clutter, and keep saving storage over time."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте щотижневі нагадування про очищення, щоб повертатися в Alike, прибирати безлад і продовжувати заощаджувати місце."
+          }
+        }
+      }
+    },
+    "Ready for another cleanup?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready for another cleanup?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готові до ще одного очищення?"
+          }
+        }
+      }
+    },
+    "Open Alike this week to clear clutter and keep saving storage.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Alike this week to clear clutter and keep saving storage."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрийте Alike цього тижня, щоб прибрати безлад і продовжити заощаджувати місце."
+          }
+        }
+      }
     }
   },
   "version": "1.1"
