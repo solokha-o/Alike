@@ -10,6 +10,7 @@ or file ownership drift rather than purely SwiftUI rendering issues.
 - The same repository save/delete/load sequence appears in multiple features.
 - A single file mixes a screen, a reusable helper type, and domain/service logic.
 - A view or view model owns persistence/networking/cleanup logic that another screen already owns too.
+- A feature package now contains code that serves a broader or clearly different responsibility than that feature.
 
 ## Extraction Heuristics
 
@@ -55,6 +56,30 @@ Prefer a plain helper or extension when:
   - feature package for feature-only services
   - shared package only when multiple features genuinely depend on it
 
+## Package Extraction Signals
+
+Consider recommending a new package when:
+
+- The code has a different reason to change than the surrounding feature.
+- Multiple features would depend on it, even if only one feature uses it today.
+- The code owns infrastructure concerns such as storage, navigation, networking, or analysis rather than screen-specific behavior.
+- The dependency direction is awkward because feature code is starting to feel like shared platform code.
+- Tests for the code would make more sense as a standalone package test target.
+
+Keep the code in the current package when:
+
+- It is tightly coupled to one feature's screen flow or domain language.
+- The reuse is speculative rather than real.
+- Splitting it would create a package with only thin wrappers and no stable boundary.
+
+## Review Output Language For Package Moves
+
+When package extraction is justified, report it explicitly:
+
+- "This service has infrastructure responsibility and should move from the feature package into a new shared package."
+- "These types are no longer screen-specific; extract them into a dedicated package with a clearer dependency boundary."
+- "The current package mixes UI and storage concerns; split storage logic into its own package."
+
 ## Review Output Language
 
 When reporting findings, use concrete wording:
@@ -76,5 +101,6 @@ When reporting findings, use concrete wording:
 - One shared implementation now owns the repeated workflow.
 - Views and view models remain responsible for UI state only.
 - New file names match the logic they contain.
+- Package boundaries match responsibility and dependency direction.
 - Service/system layers use `AppLog` rather than `print` when logging is needed.
 - Tests cover the extracted business workflow at the service/coordinator layer when practical.

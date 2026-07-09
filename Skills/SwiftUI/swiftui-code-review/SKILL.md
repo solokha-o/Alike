@@ -15,6 +15,7 @@ description: >
 - A new view is being added to the codebase and needs a quality gate
 - A pull request touches SwiftUI view files
 - The request mentions duplicate logic, service extraction, or "one file, one responsibility"
+- The request asks whether code should move into a separate package/module
 
 ## Workflow
 
@@ -75,6 +76,7 @@ description: >
 - [ ] A file owns one primary responsibility; unrelated support types move to a dedicated file
 - [ ] View files stay focused on rendering/orchestration; services/repositories own reusable business logic
 - [ ] New extraction targets are chosen by responsibility, not by convenience naming
+- [ ] Code with a distinct ownership boundary or dependency direction is flagged as a package-extraction candidate
 → Details: `references/responsibility-boundaries.md`
 
 ## Decision Tree
@@ -96,6 +98,9 @@ description: >
 
 6. Duplicate logic or mixed file responsibilities?
    → Open `references/responsibility-boundaries.md` first, then `Skills/SwiftUI/swiftui-view-refactor/SKILL.md`.
+
+7. Unsure whether code should stay in the feature or move to a package?
+   → Open `references/responsibility-boundaries.md`, then `Skills/Architecture/SwiftUIModular/SKILL.md`.
 
 ## Guardrails
 
