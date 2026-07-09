@@ -30,6 +30,7 @@ public final class ScannerViewModel {
     public private(set) var activeCleanupSession: CleanupSession?
     public private(set) var cleanupRefreshState: CleanupRefreshState?
     public private(set) var cleanupCategories: [CleanupCategorySummary] = []
+    public private(set) var cleanupInsights: CleanupInsights = .empty
     
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
@@ -37,7 +38,10 @@ public final class ScannerViewModel {
     private let cleanupCategoryRepository: CleanupCategorySnapshotRepository
     private let cleanupSessionRepository: CleanupSessionRepository
     private let cleanupManager: any CleanupSessionManaging
+    private let cleanupInsightsProvider: any CleanupInsightsProviding
     private let premiumAccess: any PremiumAccessControlling
+    private let cleanupRefreshAutoDismissDelay: Duration
+    private var cleanupRefreshDismissTask: Task<Void, Never>?
     let cleanupService: any PhotoCleanupService
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
@@ -53,7 +57,9 @@ public final class ScannerViewModel {
         cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        cleanupManager: (any CleanupSessionManaging)? = nil
+        cleanupManager: (any CleanupSessionManaging)? = nil,
+        cleanupInsightsProvider: (any CleanupInsightsProviding)? = nil,
+        cleanupRefreshAutoDismissDelay: Duration = .seconds(5)
     ) {
         self.gridColumns = gridColumns
         self.sensitivity = sensitivity
@@ -65,6 +71,9 @@ public final class ScannerViewModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
+        self.cleanupInsightsProvider = cleanupInsightsProvider
+            ?? CleanupInsightsService(repository: cleanupHistoryRepository)
+        self.cleanupRefreshAutoDismissDelay = cleanupRefreshAutoDismissDelay
         
         if let analysisService {
             self.analysisService = analysisService
@@ -81,6 +90,7 @@ public final class ScannerViewModel {
     }
     
     public func loadCachedResults() async {
+        await loadCleanupInsights()
         do {
             let clusters = try await repository.loadClusters()
             await loadCleanupCategories()
@@ -105,7 +115,7 @@ public final class ScannerViewModel {
     
     public func startScanning() async {
         do {
-            cleanupRefreshState = nil
+            setCleanupRefreshState(nil)
             try await runScan(showProgress: true)
         } catch {
             AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
@@ -114,20 +124,22 @@ public final class ScannerViewModel {
     }
 
     public func handleCleanupCompleted(_ record: CleanupCompletionRecord) async {
-        cleanupRefreshState = .refreshing(record)
+        setCleanupRefreshState(.refreshing(record))
 
         do {
             try await invalidateCachedArtifacts()
             try await runScan(showProgress: false)
-            cleanupRefreshState = .success(record)
+            await loadCleanupInsights()
+            setCleanupRefreshState(.success(record))
         } catch {
             AppLog.scan.error(
                 "\(AppLog.tag(.error, "Cleanup refresh failed: \(error.localizedDescription)"))"
             )
-            cleanupRefreshState = .failed(
+            await loadCleanupInsights()
+            setCleanupRefreshState(.failed(
                 record,
                 message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.")
-            )
+            ))
             state = .idle
         }
     }
@@ -138,7 +150,7 @@ public final class ScannerViewModel {
     }
 
     public func dismissCleanupRefreshState() {
-        cleanupRefreshState = nil
+        setCleanupRefreshState(nil)
     }
     
     public func checkForGalleryChanges() async -> Bool {
@@ -232,6 +244,45 @@ public final class ScannerViewModel {
 }
 
 private extension ScannerViewModel {
+    func setCleanupRefreshState(_ newState: CleanupRefreshState?) {
+        cleanupRefreshDismissTask?.cancel()
+        cleanupRefreshDismissTask = nil
+        cleanupRefreshState = newState
+
+        guard case .success(let record)? = newState else {
+            return
+        }
+
+        let delay = cleanupRefreshAutoDismissDelay
+        cleanupRefreshDismissTask = Task { [weak self] in
+            do {
+                try await Task.sleep(for: delay)
+            } catch {
+                return
+            }
+            await self?.dismissCleanupRefreshStateIfMatching(record)
+        }
+    }
+
+    func dismissCleanupRefreshStateIfMatching(_ record: CleanupCompletionRecord) {
+        guard cleanupRefreshState == .success(record) else {
+            return
+        }
+        cleanupRefreshState = nil
+        cleanupRefreshDismissTask = nil
+    }
+
+    func loadCleanupInsights() async {
+        do {
+            cleanupInsights = try await cleanupInsightsProvider.loadInsights()
+        } catch {
+            AppLog.storage.error(
+                "\(AppLog.tag(.error, "Failed to load cleanup insights: \(error.localizedDescription)"))"
+            )
+            cleanupInsights = .empty
+        }
+    }
+
     func loadCleanupCategories() async {
         do {
             let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()

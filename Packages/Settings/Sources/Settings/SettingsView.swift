@@ -42,6 +42,9 @@ public struct SettingsView: View {
         } destination: { route, _ in
             destination(for: route)
         }
+        .task {
+            await viewModel.loadCleanupInsights()
+        }
     }
 
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
@@ -49,6 +52,7 @@ public struct SettingsView: View {
             appearanceSection
             languageSection
             analysisSection
+            cleanupHistorySection
 #if DEBUG
             debugSection
 #endif
@@ -66,6 +70,46 @@ public struct SettingsView: View {
         switch route {
         case .userGuide:
             UserGuideView()
+        }
+    }
+
+    private var cleanupHistorySection: some View {
+        Section {
+            if viewModel.cleanupInsights.hasHistory {
+                historyMetricRow(
+                    title: appLocalized("Saved So Far"),
+                    value: ByteCountFormatter.string(
+                        fromByteCount: viewModel.cleanupInsights.totalSavedBytes,
+                        countStyle: .file
+                    )
+                )
+                historyMetricRow(
+                    title: appLocalized("Photos Deleted"),
+                    value: "\(viewModel.cleanupInsights.totalDeletedItems)"
+                )
+                historyMetricRow(
+                    title: appLocalized("Cleanup Sessions"),
+                    value: "\(viewModel.cleanupInsights.cleanupSessionCount)"
+                )
+
+                if let latestCleanup = viewModel.cleanupInsights.latestCleanup {
+                    VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                        Text(appLocalized("Latest Cleanup"))
+                            .font(.appSubheadline)
+                        Text(latestCleanupSummary(for: latestCleanup))
+                            .font(.appBody)
+                        Text(relativeDateText(for: latestCleanup.completedAt))
+                            .font(.appCaption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, Spacing.xxxSmall)
+                }
+            } else {
+                Text(appLocalized("No cleanup history yet. Your completed cleanups will appear here."))
+                    .foregroundColor(.secondary)
+            }
+        } header: {
+            Text(appLocalized("Cleanup History"))
         }
     }
     
@@ -223,6 +267,27 @@ public struct SettingsView: View {
             UIApplication.shared.open(settingsURL)
         }
         #endif
+    }
+
+    private func historyMetricRow(title: String, value: String) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(value)
+                .foregroundColor(.secondary)
+                .monospacedDigit()
+        }
+    }
+
+    private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
+        let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
+        return "\(record.deletedCount) \(appLocalized("photos deleted")) • \(savingsText) \(appLocalized("saved"))"
+    }
+
+    private func relativeDateText(for date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 

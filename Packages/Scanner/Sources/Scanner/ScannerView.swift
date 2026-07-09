@@ -127,6 +127,13 @@ public struct ScannerView: View {
                 )
                 .padding(.horizontal, Spacing.medium)
                 .padding(.top, Spacing.small)
+                .transition(
+                    .asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .move(edge: .top).combined(with: .opacity)
+                    )
+                )
+                .zIndex(1)
             }
 
             Group {
@@ -143,6 +150,8 @@ public struct ScannerView: View {
             }
         }
         .navigationTitle(Text(appLocalized("Scanner")))
+        .animation(.appSmooth, value: viewModel.cleanupRefreshState != nil)
+        .animation(.appSmooth, value: viewModel.cleanupRefreshState)
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -191,6 +200,11 @@ public struct ScannerView: View {
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
+
+            if viewModel.cleanupInsights.hasHistory {
+                CleanupInsightsCard(insights: viewModel.cleanupInsights)
+                    .padding(.horizontal, Spacing.medium)
+            }
             
             Spacer()
             
@@ -255,6 +269,10 @@ public struct ScannerView: View {
 
         return ScrollView {
             VStack(spacing: Spacing.medium) {
+                if viewModel.cleanupInsights.hasHistory {
+                    CleanupInsightsCard(insights: viewModel.cleanupInsights)
+                }
+
                 if !viewModel.cleanupCategories.isEmpty {
                     CleanupCategoriesCard(
                         categories: viewModel.cleanupCategories,
@@ -393,6 +411,89 @@ public struct ScannerView: View {
         } description: {
             Text(message)
         }
+    }
+}
+
+private struct CleanupInsightsCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
+    let insights: CleanupInsights
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup History"))
+                .font(.appHeadline)
+
+            HStack(spacing: Spacing.small) {
+                metricItem(
+                    title: appLocalized("Saved So Far"),
+                    value: ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file),
+                    color: .statusSavings
+                )
+                metricItem(
+                    title: appLocalized("Photos Deleted"),
+                    value: "\(insights.totalDeletedItems)",
+                    color: .accent
+                )
+            }
+
+            if let latestCleanup = insights.latestCleanup {
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Text(appLocalized("Latest cleanup"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(latestCleanupSummary(for: latestCleanup))
+                        .font(.appSubheadline)
+                    Text(relativeDateText(for: latestCleanup.completedAt))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.top, Spacing.xxSmall)
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(appLocalized("Cleanup History")))
+        .accessibilityValue(Text(accessibilitySummary))
+    }
+
+    private func metricItem(title: String, value: String, color: Color) -> some View {
+        VStack(spacing: Spacing.xxSmall) {
+            Text(value)
+                .font(.title3.bold())
+                .monospacedDigit()
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.xSmall)
+        .background(color.opacity(metricBackgroundOpacity), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(title))
+        .accessibilityValue(Text(value))
+    }
+
+    private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
+        let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
+        return "\(record.deletedCount) \(appLocalized("photos deleted")) • \(savingsText) \(appLocalized("saved"))"
+    }
+
+    private func relativeDateText(for date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private var accessibilitySummary: String {
+        let savedText = ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file)
+        return "\(savedText) \(appLocalized("saved so far")), \(insights.totalDeletedItems) \(appLocalized("photos deleted"))"
+    }
+
+    private var metricBackgroundOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
     }
 }
 

@@ -68,6 +68,11 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testLoadCachedResultsWithData() async {
         let mockCluster = createMockCluster(photoCount: 2)
+        let cleanupRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 2_048
+        )
         await mockRepository.setLoadClustersResult(.success([mockCluster]))
         await mockCleanupCategoryRepository.setStoredSnapshots([
             .screenshots: CleanupCategorySnapshot(
@@ -77,6 +82,7 @@ final class ScannerViewModelTests: XCTestCase {
                 estimatedSavingsBytes: 500
             )
         ])
+        await mockCleanupHistoryRepository.setEntries([cleanupRecord])
         
         await viewModel.loadCachedResults()
         
@@ -86,6 +92,8 @@ final class ScannerViewModelTests: XCTestCase {
             XCTFail("Expected results state")
         }
         XCTAssertEqual(viewModel.cleanupCategories.count, 1)
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 2)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 2_048)
     }
     
     func testLoadCachedResultsEmpty() async {
@@ -683,6 +691,7 @@ final class ScannerViewModelTests: XCTestCase {
         await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([
             CleanupCategorySummary(kind: .screenshots, assetCount: 3, estimatedSavingsBytes: 300)
         ]))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
 
         await viewModel.handleCleanupCompleted(completionRecord)
 
@@ -702,6 +711,8 @@ final class ScannerViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.cleanupRefreshState, .success(completionRecord))
         XCTAssertEqual(viewModel.cleanupCategories.first?.assetCount, 3)
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 2)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 1_024)
     }
 
     func testIsCategoryLockedUsesPremiumAccess() {
@@ -757,6 +768,7 @@ final class ScannerViewModelTests: XCTestCase {
         )
         viewModel.state = .results([oldCluster])
         await mockAnalysisService.setAnalyzePhotoLibraryResult(.failure(TestError()))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
 
         await viewModel.handleCleanupCompleted(completionRecord)
 
@@ -773,6 +785,39 @@ final class ScannerViewModelTests: XCTestCase {
         default:
             XCTFail("Expected failed cleanup refresh state")
         }
+
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 1)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 512)
+    }
+
+    func testHandleCleanupCompletedSuccessAutoDismissesBannerAfterDelay() async {
+        let cluster = createMockCluster(photoCount: 2)
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 1_024
+        )
+        let fastViewModel = ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            cleanupRefreshAutoDismissDelay: .zero
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
+
+        await fastViewModel.handleCleanupCompleted(completionRecord)
+        await Task.yield()
+
+        XCTAssertNil(fastViewModel.cleanupRefreshState)
     }
     
     // MARK: - Clear Results Tests
