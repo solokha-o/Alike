@@ -1,5 +1,5 @@
 # name	repo	upstream_path	branch	pinned_sha
-swiftui-expert-skill	solokha-o/SwiftUI-Agent-Skill	swiftui-expert-skill	main	a5f130a0be5f3fe9da564e33a3b94739be6e18a6
+swiftui-expert-skill	solokha-o/SwiftUI-Agent-Skill	swiftui-expert-skill	main	f06d1437a3fbec7df6cdce93f77004e5409b31ee
 swift-concurrency	AvdLee/Swift-Concurrency-Agent-Skill	swift-concurrency	main	0d472de78225d2875283c35eaca1c060c493bdb3
 core-data-expert	AvdLee/Core-Data-Agent-Skill	core-data-expert	main	855ca7d0df50e82b00c12881dd9cd23c19ef5f49
 swift-testing-expert	AvdLee/Swift-Testing-Agent-Skill	swift-testing-expert	main	798e9b1a2bcac164d4f0c781908199e754f0bab6

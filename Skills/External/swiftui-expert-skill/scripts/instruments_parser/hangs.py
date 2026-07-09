@@ -19,6 +19,7 @@ def analyze(
     toc_schemas: frozenset[str],
     top_n: int = 10,
     window: tuple[int, int] | None = None,
+    run: int = 1,
 ) -> dict[str, Any]:
     schema = _pick_schema(toc_schemas)
     if schema is None:
@@ -28,7 +29,7 @@ def analyze(
             "notes": ["Hangs data not present in trace."],
         }
 
-    xml_bytes = xctrace.export_schema(trace_path, schema)
+    xml_bytes = xctrace.export_schema(trace_path, schema, run=run)
     stream = xml_utils.RowStream(xml_bytes)
 
     hangs: list[dict] = []

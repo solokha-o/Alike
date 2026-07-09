@@ -45,6 +45,11 @@ python3 "${SKILL_DIR}/scripts/analyze_trace.py" \
 - `--output <path>` writes `<path>.json` and `<path>.md` instead of stdout.
 - `--window START_MS:END_MS` (optional) restricts every lane and every
   correlation to that time slice.
+- `--run N` selects a specific run when the trace contains more than one
+  recording session. Single-run traces don't need it; multi-run traces
+  require it and will error with the available run numbers if omitted.
+  Use `--list-runs` to dump per-run metadata (template, duration,
+  start/end dates, schemas) before analyzing.
 
 ### 2. `--list-logs` — find os_log timestamps
 

@@ -40,6 +40,7 @@ def analyze(
     top_n: int = 10,
     top_k_per_node: int = 5,
     window: tuple[int, int] | None = None,
+    run: int = 1,
 ) -> dict[str, Any]:
     if SCHEMA not in toc_schemas:
         return {
@@ -50,7 +51,7 @@ def analyze(
             ],
         }
 
-    xml_bytes = xctrace.export_schema(trace_path, SCHEMA)
+    xml_bytes = xctrace.export_schema(trace_path, SCHEMA, run=run)
     stream = xml_utils.RowStream(xml_bytes)
 
     source_edges: Counter[str] = Counter()
@@ -61,7 +62,7 @@ def analyze(
     total_edges = 0
 
     for row in stream:
-        time_el = row.get("timestamp") or row.get("time")
+        time_el = xml_utils.first_present(row, "timestamp", "time")
         if time_el is not None:
             t_ns = xml_utils.int_text(stream.resolve(time_el))
             if t_ns is not None and not xml_utils.in_window(t_ns, window):
@@ -129,6 +130,7 @@ def fanin_for(
     destination_contains: str,
     top_k: int = 10,
     window: tuple[int, int] | None = None,
+    run: int = 1,
 ) -> dict[str, Any]:
     """Return the top source nodes feeding any destination whose fmt string
     contains `destination_contains` (case-insensitive substring).
@@ -141,14 +143,14 @@ def fanin_for(
         return {"available": False, "matches": []}
 
     needle = destination_contains.lower()
-    xml_bytes = xctrace.export_schema(trace_path, SCHEMA)
+    xml_bytes = xctrace.export_schema(trace_path, SCHEMA, run=run)
     stream = xml_utils.RowStream(xml_bytes)
 
     matches: dict[str, Counter[str]] = defaultdict(Counter)
     totals: Counter[str] = Counter()
 
     for row in stream:
-        time_el = row.get("timestamp") or row.get("time")
+        time_el = xml_utils.first_present(row, "timestamp", "time")
         if time_el is not None:
             t_ns = xml_utils.int_text(stream.resolve(time_el))
             if t_ns is not None and not xml_utils.in_window(t_ns, window):

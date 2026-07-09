@@ -53,6 +53,16 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Restrict analysis to a time slice, e.g. --window 10400:11700 (ms).",
     )
+    parser.add_argument(
+        "--run",
+        type=int,
+        default=None,
+        help="Which run to analyze (1-based). Required for traces with >1 run.",
+    )
+    parser.add_argument(
+        "--list-runs", action="store_true",
+        help="Emit per-run metadata as JSON (use this to discover available runs).",
+    )
 
     # Mode flags (mutually exclusive with full analysis)
     mode_group = parser.add_argument_group("Discovery modes")
@@ -96,15 +106,20 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
 
-    # The three discovery modes aren't in a mutually_exclusive_group because
-    # they live alongside their sub-filters in the same argparse group; enforce
-    # the constraint by hand so an agent gets a clear error instead of silent
+    # The discovery modes aren't in a mutually_exclusive_group because they
+    # live alongside their sub-filters in the same argparse group; enforce the
+    # constraint by hand so an agent gets a clear error instead of silent
     # precedence.
-    active_modes = sum([args.list_logs, args.list_signposts, bool(args.fanin_for)])
+    active_modes = sum([
+        args.list_runs,
+        args.list_logs,
+        args.list_signposts,
+        bool(args.fanin_for),
+    ])
     if active_modes > 1:
         parser.error(
-            "--list-logs, --list-signposts, and --fanin-for are mutually "
-            "exclusive; pick one per invocation."
+            "--list-runs, --list-logs, --list-signposts, and --fanin-for are "
+            "mutually exclusive; pick one per invocation."
         )
 
     trace = args.trace
@@ -115,15 +130,39 @@ def main(argv: list[str] | None = None) -> int:
     info = xctrace.toc(trace)
     window_ns = _parse_window(args.window)
 
+    if args.list_runs:
+        sys.stdout.write(json.dumps({
+            "xctrace_version": info.xctrace_version,
+            "runs": [
+                {
+                    "number": r.number,
+                    "template": r.template_name,
+                    "duration_s": r.duration_s,
+                    "start_date": r.start_date,
+                    "end_date": r.end_date,
+                    "schemas": sorted(r.schemas),
+                }
+                for r in info.runs
+            ],
+        }, indent=2))
+        sys.stdout.write("\n")
+        return 0
+
+    run_info = _resolve_run(info, args.run)
+    if run_info is None:
+        return 2
+    run_number = run_info.number
+
     if args.list_logs:
         out = events.list_logs(
-            trace, info.schemas,
+            trace, run_info.schemas,
             subsystem=args.log_subsystem,
             category=args.log_category,
             message_contains=args.log_message_contains,
             message_type=args.log_type,
             limit=args.log_limit,
             window_ns=window_ns,
+            run=run_number,
         )
         sys.stdout.write(json.dumps({"logs": out, "count": len(out)}, indent=2))
         sys.stdout.write("\n")
@@ -131,11 +170,12 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.list_signposts:
         sp = events.list_signposts(
-            trace, info.schemas,
+            trace, run_info.schemas,
             name_contains=args.signpost_name_contains,
             subsystem=args.signpost_subsystem,
             category=args.signpost_category,
             window_ns=window_ns,
+            run=run_number,
         )
         sys.stdout.write(json.dumps(sp, indent=2))
         sys.stdout.write("\n")
@@ -143,22 +183,24 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.fanin_for:
         fanin = causes.fanin_for(
-            trace, info.schemas,
+            trace, run_info.schemas,
             destination_contains=args.fanin_for,
             top_k=args.top,
             window=window_ns,
+            run=run_number,
         )
         sys.stdout.write(json.dumps(fanin, indent=2))
         sys.stdout.write("\n")
         return 0
 
     # Full five-lane analysis
+    schemas = run_info.schemas
     lanes_out = {
-        "time-profiler":  time_profiler.analyze(trace, info.schemas, top_n=args.top, window=window_ns),
-        "hangs":          hangs.analyze(trace, info.schemas, top_n=args.top, window=window_ns),
-        "hitches":        hitches.analyze(trace, info.schemas, top_n=args.top, window=window_ns),
-        "swiftui":        swiftui.analyze(trace, info.schemas, top_n=args.top, window=window_ns),
-        "swiftui-causes": causes.analyze(trace, info.schemas, top_n=args.top, window=window_ns),
+        "time-profiler":  time_profiler.analyze(trace, schemas, top_n=args.top, window=window_ns, run=run_number),
+        "hangs":          hangs.analyze(trace, schemas, top_n=args.top, window=window_ns, run=run_number),
+        "hitches":        hitches.analyze(trace, schemas, top_n=args.top, window=window_ns, run=run_number),
+        "swiftui":        swiftui.analyze(trace, schemas, top_n=args.top, window=window_ns, run=run_number),
+        "swiftui-causes": causes.analyze(trace, schemas, top_n=args.top, window=window_ns, run=run_number),
     }
     correlations = correlate.build(
         lanes_out, top_hitches=args.top_hitches, top_symbols=5
@@ -168,11 +210,13 @@ def main(argv: list[str] | None = None) -> int:
     result: dict = {
         "trace": str(trace),
         "xctrace_version": info.xctrace_version,
-        "template": info.template_name,
-        "duration_s": info.duration_s,
-        "start_date": info.start_date,
-        "end_date": info.end_date,
-        "schemas_available": sorted(info.schemas),
+        "run": run_number,
+        "runs_available": [r.number for r in info.runs],
+        "template": run_info.template_name,
+        "duration_s": run_info.duration_s,
+        "start_date": run_info.start_date,
+        "end_date": run_info.end_date,
+        "schemas_available": sorted(run_info.schemas),
         "lanes": public_lanes,
         "correlations": correlations,
     }
@@ -203,6 +247,34 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write("\n---\n")
         sys.stdout.write(md)
     return 0
+
+
+def _resolve_run(info, requested: int | None):
+    """Pick a run from the trace.
+
+    If `requested` is given, return that run or None on miss (with a friendly
+    error). If unset and the trace has exactly one run, default to it. If
+    unset and there are multiple runs, error out so the agent picks
+    explicitly — silently picking run 1 lost data for the user.
+    """
+    if not info.runs:
+        print("error: trace has no runs", file=sys.stderr)
+        return None
+    if requested is not None:
+        try:
+            return info.get_run(requested)
+        except KeyError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return None
+    if len(info.runs) == 1:
+        return info.runs[0]
+    available = ", ".join(str(r.number) for r in info.runs)
+    print(
+        f"error: trace has {len(info.runs)} runs ({available}); pass --run N. "
+        f"Use --list-runs to see per-run metadata.",
+        file=sys.stderr,
+    )
+    return None
 
 
 def _parse_window(spec: str | None) -> tuple[int, int] | None:
