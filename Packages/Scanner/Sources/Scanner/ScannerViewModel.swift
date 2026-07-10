@@ -98,6 +98,10 @@ public final class ScannerViewModel {
     public private(set) var cleanupRefreshState: CleanupRefreshState?
     public private(set) var cleanupCategories: [CleanupCategorySummary] = []
     public private(set) var cleanupInsights: CleanupInsights = .empty
+
+    public var isCleanupRefreshInProgress: Bool {
+        isCleanupRefreshInFlight
+    }
     
     private let analysisService: PhotoAnalysisService
     private let repository: PhotoClusterRepository
@@ -109,6 +113,9 @@ public final class ScannerViewModel {
     private let premiumAccess: any PremiumAccessControlling
     private let cleanupRefreshAutoDismissDelay: Duration
     private var cleanupRefreshDismissTask: Task<Void, Never>?
+    private var isCleanupRefreshInFlight = false
+    private var activeCleanupRefreshRecord: CleanupCompletionRecord?
+    private var queuedCleanupRefreshRecord: CleanupCompletionRecord?
     let cleanupService: any PhotoCleanupService
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
@@ -163,7 +170,7 @@ public final class ScannerViewModel {
             let clusters = try await repository.loadClusters()
             await loadCleanupCategories()
             if !clusters.isEmpty {
-                let sorted = sortedClusters(from: clusters)
+                let sorted = canonicalSortedClusters(from: clusters)
                 if case .results(let existing) = state, existing == sorted {
                     return
                 }
@@ -192,10 +199,31 @@ public final class ScannerViewModel {
     }
 
     public func handleCleanupCompleted(_ record: CleanupCompletionRecord) async {
+        guard !isCleanupRefreshInFlight else {
+            if record != activeCleanupRefreshRecord {
+                queuedCleanupRefreshRecord = record
+            }
+            return
+        }
+
+        isCleanupRefreshInFlight = true
+        var nextRecord: CleanupCompletionRecord? = record
+
+        while let currentRecord = nextRecord {
+            activeCleanupRefreshRecord = currentRecord
+            queuedCleanupRefreshRecord = nil
+            await performCleanupRefresh(for: currentRecord)
+            nextRecord = queuedCleanupRefreshRecord
+        }
+
+        activeCleanupRefreshRecord = nil
+        isCleanupRefreshInFlight = false
+    }
+
+    private func performCleanupRefresh(for record: CleanupCompletionRecord) async {
         setCleanupRefreshState(.refreshing(record))
 
         do {
-            try await invalidateCachedArtifacts()
             try await runScan(showProgress: false)
             await loadCleanupInsights()
             setCleanupRefreshState(.success(record))
@@ -208,7 +236,6 @@ public final class ScannerViewModel {
                 record,
                 message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.")
             ))
-            state = .idle
         }
     }
 
@@ -299,6 +326,10 @@ public final class ScannerViewModel {
         filteredAndSortedClusters(from: clusters, controls: clusterControls)
     }
 
+    func canonicalSortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
+        clusters.sorted(by: defaultClusterSort)
+    }
+
     public func filteredAndSortedClusters(
         from clusters: [PhotoCluster],
         controls: ScannerClusterControls
@@ -375,13 +406,17 @@ private extension ScannerViewModel {
         }
 
         let delay = cleanupRefreshAutoDismissDelay
+        guard delay > .zero else {
+            cleanupRefreshState = nil
+            return
+        }
         cleanupRefreshDismissTask = Task { [weak self] in
             do {
                 try await Task.sleep(for: delay)
             } catch {
                 return
             }
-            await self?.dismissCleanupRefreshStateIfMatching(record)
+            self?.dismissCleanupRefreshStateIfMatching(record)
         }
     }
 
@@ -423,7 +458,7 @@ private extension ScannerViewModel {
         }
 
         let previousSnapshots = try await repository.loadClusterSnapshots()
-        let previousReviewStates = (try? await loadAllReviewStates()) ?? [:]
+        let previousReviewStates = try await loadAllReviewStates()
         let clusters = try await analysisService.analyzePhotoLibrary(
             sensitivity: sensitivity.threshold
         ) { progress in
@@ -436,7 +471,7 @@ private extension ScannerViewModel {
         try await repository.saveClusters(clusters)
         try await repository.updateLastScanDate(Date())
 
-        let sorted = sortedClusters(from: clusters)
+        let sorted = canonicalSortedClusters(from: clusters)
 
         if previousSnapshots.isEmpty {
             reviewStates = [:]
@@ -477,13 +512,6 @@ private extension ScannerViewModel {
             cleanupCategories = []
         }
         state = .results(sorted)
-    }
-
-    func invalidateCachedArtifacts() async throws {
-        try await repository.deleteAllClusters()
-        try await reviewRepository.deleteAllReviewStates()
-        try await cleanupCategoryRepository.deleteAllSnapshots()
-        try await cleanupSessionRepository.deleteActiveSession()
     }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {

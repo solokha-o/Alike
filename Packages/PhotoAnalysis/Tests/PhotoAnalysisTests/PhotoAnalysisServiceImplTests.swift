@@ -61,6 +61,70 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
 
         XCTAssertEqual(summaries.map(\.kind), [.screenshots, .blurredPhotos])
     }
+
+    func testRefreshCleanupCategoriesReplacesCachedSnapshotsOnce() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        await repository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["stale"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            )
+        ])
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        let summaries = try await service.refreshCleanupCategories()
+
+        let storedSnapshots = await repository.storedSnapshots
+        let replaceCallCount = await repository.replaceAllSnapshotsCallCount
+        let didCallDelete = await repository.didCallDeleteAllSnapshots
+        let didCallSave = await repository.didCallSaveSnapshot
+        XCTAssertTrue(summaries.isEmpty)
+        XCTAssertTrue(storedSnapshots.isEmpty)
+        XCTAssertEqual(replaceCallCount, 1)
+        XCTAssertFalse(didCallDelete)
+        XCTAssertFalse(didCallSave)
+    }
+
+    func testRefreshCleanupCategoriesPreservesCachedSnapshotsWhenReplacementFails() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        let existingSnapshot = CleanupCategorySnapshot(
+            kind: .screenshots,
+            localIdentifiers: ["existing"],
+            assetCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        await repository.setStoredSnapshots([.screenshots: existingSnapshot])
+        await repository.setReplaceAllSnapshotsError(TestError.replacementFailed)
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        do {
+            _ = try await service.refreshCleanupCategories()
+            XCTFail("Expected replacement failure")
+        } catch {
+            XCTAssertEqual(error as? TestError, .replacementFailed)
+        }
+
+        let storedSnapshots = await repository.storedSnapshots
+        let replaceCallCount = await repository.replaceAllSnapshotsCallCount
+        XCTAssertEqual(storedSnapshots, [.screenshots: existingSnapshot])
+        XCTAssertEqual(replaceCallCount, 1)
+    }
+}
+
+private enum TestError: Error, Equatable {
+    case replacementFailed
 }
 
 private struct MockVisionService: VisionFeaturePrintServicing {

@@ -142,5 +142,8 @@ final class CleanupSessionManagerTests: XCTestCase {
 
         let third = await manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
         XCTAssertEqual(third?.id, inReviewID)
+
+        let completed = await manager.nextClusterToReview(from: [reviewed], reviewStates: states)
+        XCTAssertNil(completed)
     }
 }

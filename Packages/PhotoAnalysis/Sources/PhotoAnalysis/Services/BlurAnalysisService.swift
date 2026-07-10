@@ -1,6 +1,7 @@
 import Core
 import CoreGraphics
 import Foundation
+import os
 @preconcurrency import Photos
 #if canImport(UIKit)
 import UIKit
@@ -17,6 +18,66 @@ struct BlurAnalysisCandidate: Equatable, Sendable {
     let localIdentifier: String
     let sharpnessScore: Double
     let estimatedCleanupBytes: Int64
+}
+
+private struct IndexedBlurAnalysisResult<Output: Sendable>: Sendable {
+    let index: Int
+    let value: Output?
+}
+
+enum BlurAnalysisTaskPool {
+    static func compactMap<Input: Sendable, Output: Sendable>(
+        _ inputs: [Input],
+        maxConcurrentTasks: Int,
+        operation: @escaping @Sendable (Input) async throws -> Output?
+    ) async throws -> [Output] {
+        guard !inputs.isEmpty else { return [] }
+
+        let taskLimit = min(max(maxConcurrentTasks, 1), inputs.count)
+        return try await withThrowingTaskGroup(
+            of: IndexedBlurAnalysisResult<Output>.self
+        ) { group in
+            var results: [IndexedBlurAnalysisResult<Output>] = []
+            results.reserveCapacity(inputs.count)
+            var nextIndex = 0
+
+            func addTask(at index: Int) {
+                let input = inputs[index]
+                group.addTask {
+                    do {
+                        try Task.checkCancellation()
+                        let value = try await operation(input)
+                        try Task.checkCancellation()
+                        return IndexedBlurAnalysisResult(index: index, value: value)
+                    } catch is CancellationError {
+                        throw CancellationError()
+                    } catch {
+                        AppLog.photoKit.debug(
+                            "\(AppLog.tag(.error, "Skipping blur candidate after thumbnail failure: \(error.localizedDescription)"))"
+                        )
+                        return IndexedBlurAnalysisResult(index: index, value: nil)
+                    }
+                }
+            }
+
+            while nextIndex < taskLimit {
+                addTask(at: nextIndex)
+                nextIndex += 1
+            }
+
+            while let result = try await group.next() {
+                results.append(result)
+                if nextIndex < inputs.count {
+                    addTask(at: nextIndex)
+                    nextIndex += 1
+                }
+            }
+
+            return results
+                .sorted { $0.index < $1.index }
+                .compactMap(\.value)
+        }
+    }
 }
 
 enum BlurCandidateSelector {
@@ -40,8 +101,7 @@ enum BlurCandidateSelector {
 
         let medianSharpness = medianScore(from: sorted)
         let adaptiveFloor = min(absoluteSharpnessFloor, medianSharpness * relativeToMedianMultiplier)
-        let worstCount = Int(floor(Double(sorted.count) * maxWorstPercentile))
-        guard worstCount > 0 else { return [] }
+        let worstCount = max(1, Int(floor(Double(sorted.count) * maxWorstPercentile)))
 
         return Array(sorted.prefix(worstCount)).filter { $0.sharpnessScore <= adaptiveFloor }
     }
@@ -112,6 +172,7 @@ struct BlurSharpnessScorer {
 
 struct BlurAnalysisService: Sendable {
     private static let thumbnailTargetSize = CGSize(width: 128, height: 128)
+    private static let maxConcurrentTasks = 4
 
     private let scorer: BlurSharpnessScorer
     private let imageProvider: @MainActor @Sendable (PHAsset, CGSize) async throws -> CGImage?
@@ -125,27 +186,34 @@ struct BlurAnalysisService: Sendable {
     }
 
     func makeSnapshot(from assets: [PHAsset]) async throws -> CleanupCategorySnapshot? {
-        var candidates: [BlurAnalysisCandidate] = []
-
-        for asset in assets {
-            try Task.checkCancellation()
+        let workItems = assets.compactMap { asset -> BlurAnalysisWorkItem? in
             guard !asset.mediaSubtypes.contains(.photoScreenshot), !asset.isFavorite else {
-                continue
+                return nil
             }
+            return BlurAnalysisWorkItem(
+                asset: asset,
+                localIdentifier: asset.localIdentifier,
+                estimatedCleanupBytes: asset.estimatedCleanupBytes
+            )
+        }
 
-            guard let image = try await imageProvider(asset, Self.thumbnailTargetSize) else {
-                continue
+        let imageProvider = self.imageProvider
+        let scorer = self.scorer
+        let candidates: [BlurAnalysisCandidate] = try await BlurAnalysisTaskPool.compactMap(
+            workItems,
+            maxConcurrentTasks: Self.maxConcurrentTasks
+        ) { workItem in
+            guard let image = try await imageProvider(workItem.asset, Self.thumbnailTargetSize) else {
+                return nil
             }
 
             let sharpness = scorer.score(image: image)
-            guard sharpness.isFinite else { continue }
+            guard sharpness.isFinite else { return nil }
 
-            candidates.append(
-                BlurAnalysisCandidate(
-                    localIdentifier: asset.localIdentifier,
-                    sharpnessScore: sharpness,
-                    estimatedCleanupBytes: asset.estimatedCleanupBytes
-                )
+            return BlurAnalysisCandidate(
+                localIdentifier: workItem.localIdentifier,
+                sharpnessScore: sharpness,
+                estimatedCleanupBytes: workItem.estimatedCleanupBytes
             )
         }
 
@@ -159,6 +227,12 @@ struct BlurAnalysisService: Sendable {
             estimatedSavingsBytes: selected.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
         )
     }
+}
+
+private struct BlurAnalysisWorkItem: @unchecked Sendable {
+    let asset: PHAsset
+    let localIdentifier: String
+    let estimatedCleanupBytes: Int64
 }
 
 private struct GrayscalePixels: Sendable {
@@ -175,9 +249,111 @@ private extension BlurAnalysisService {
     @MainActor
     static func defaultImageProvider(asset: PHAsset, targetSize: CGSize) async throws -> CGImage? {
         #if canImport(UIKit)
-        return try await asset.loadImage(targetSize: targetSize)?.cgImage
+        let requestState = BlurThumbnailRequestState()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { continuation in
+                guard requestState.install(continuation) else { return }
+
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .fastFormat
+                options.resizeMode = .fast
+                options.isNetworkAccessAllowed = false
+                options.isSynchronous = false
+
+                let requestID = PHImageManager.default().requestImage(
+                    for: asset,
+                    targetSize: targetSize,
+                    contentMode: .aspectFit,
+                    options: options
+                ) { image, info in
+                    if let error = info?[PHImageErrorKey] as? Error {
+                        requestState.finish(.failure(error))
+                        return
+                    }
+
+                    if (info?[PHImageCancelledKey] as? Bool) == true {
+                        requestState.finish(.failure(CancellationError()))
+                        return
+                    }
+
+                    requestState.finish(.success(image?.cgImage))
+                }
+                requestState.setRequestID(requestID)
+            }
+        } onCancel: {
+            requestState.cancel()
+        }
         #else
         return nil
         #endif
     }
 }
+
+#if canImport(UIKit)
+private final class BlurThumbnailRequestState: @unchecked Sendable {
+    private struct State {
+        var requestID = PHInvalidImageRequestID
+        var continuation: CheckedContinuation<CGImage?, Error>?
+        var isCancelled = false
+        var isFinished = false
+    }
+
+    private let state = OSAllocatedUnfairLock(initialState: State())
+
+    func install(_ continuation: CheckedContinuation<CGImage?, Error>) -> Bool {
+        let shouldStart = state.withLock { state in
+            guard !state.isCancelled else {
+                state.isFinished = true
+                return false
+            }
+            state.continuation = continuation
+            return true
+        }
+
+        if !shouldStart {
+            continuation.resume(throwing: CancellationError())
+        }
+        return shouldStart
+    }
+
+    func setRequestID(_ requestID: PHImageRequestID) {
+        let shouldCancel = state.withLock { state in
+            state.requestID = requestID
+            return state.isCancelled
+        }
+        if shouldCancel {
+            PHImageManager.default().cancelImageRequest(requestID)
+        }
+    }
+
+    func finish(_ result: Result<CGImage?, Error>) {
+        let continuation = state.withLock { state -> CheckedContinuation<CGImage?, Error>? in
+            guard !state.isFinished else { return nil }
+            state.isFinished = true
+            defer { state.continuation = nil }
+            return state.continuation
+        }
+        continuation?.resume(with: result)
+    }
+
+    func cancel() {
+        let cancellation = state.withLock { state -> (
+            PHImageRequestID,
+            CheckedContinuation<CGImage?, Error>?
+        ) in
+            state.isCancelled = true
+            guard !state.isFinished else {
+                return (state.requestID, nil)
+            }
+            state.isFinished = true
+            defer { state.continuation = nil }
+            return (state.requestID, state.continuation)
+        }
+
+        if cancellation.0 != PHInvalidImageRequestID {
+            PHImageManager.default().cancelImageRequest(cancellation.0)
+        }
+        cancellation.1?.resume(throwing: CancellationError())
+    }
+}
+#endif

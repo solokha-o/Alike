@@ -152,7 +152,6 @@ public actor CleanupSessionManager: CleanupSessionManaging {
         clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .needsReReview })
             ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .notReviewed })
             ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .inReview })
-            ?? clusters.first
     }
 }
 

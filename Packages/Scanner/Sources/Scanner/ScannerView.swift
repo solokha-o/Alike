@@ -152,6 +152,7 @@ public struct ScannerView: View {
                     errorView(message: message)
                 }
             }
+            .disabled(viewModel.isCleanupRefreshInProgress)
         }
         .navigationTitle(Text(appLocalized("Scanner")))
         .animation(.appSmooth, value: viewModel.cleanupRefreshState != nil)
@@ -266,10 +267,12 @@ public struct ScannerView: View {
         clusters: [PhotoCluster],
         router: StackRouter<ScannerRoute>
     ) -> some View {
-        let sortedClusters = viewModel.sortedClusters(from: clusters)
-        let needsReviewClusters = viewModel.needsReviewClusters(from: sortedClusters)
-        let remainingClusters = viewModel.remainingClusters(from: sortedClusters)
-        let sessionProgress = viewModel.displayedSessionProgress(for: sortedClusters)
+        let canonicalClusters = viewModel.canonicalSortedClusters(from: clusters)
+        let visibleClusters = viewModel.sortedClusters(from: canonicalClusters)
+        let needsReviewClusters = viewModel.needsReviewClusters(from: visibleClusters)
+        let remainingClusters = viewModel.remainingClusters(from: visibleClusters)
+        let sessionProgress = viewModel.displayedSessionProgress(for: canonicalClusters)
+        let cleanupEntryCluster = viewModel.cleanupEntryCluster(from: canonicalClusters)
 
         return ScrollView {
             VStack(spacing: Spacing.medium) {
@@ -289,19 +292,15 @@ public struct ScannerView: View {
                     )
                 }
 
-                if sortedClusters.isEmpty {
+                if canonicalClusters.isEmpty {
                     ContentUnavailableView {
                         Label {
-                            Text(viewModel.clusterControls.isDefault
-                                 ? appLocalized("No Similar Photos Found")
-                                 : appLocalized("No Clusters Match These Controls"))
+                            Text(appLocalized("No Similar Photos Found"))
                         } icon: {
                             Image(systemName: "photo.stack")
                         }
                     } description: {
-                        Text(viewModel.clusterControls.isDefault
-                             ? appLocalized("Try adjusting sensitivity in Settings")
-                             : appLocalized("Try changing the filters or reset the controls"))
+                        Text(appLocalized("Try adjusting sensitivity in Settings"))
                     }
                     .padding(.top, viewModel.cleanupCategories.isEmpty ? 100 : Spacing.large)
                 } else {
@@ -328,17 +327,27 @@ public struct ScannerView: View {
                         )
                     }
 
-                    CleanupSessionProgressCard(
-                        progress: sessionProgress,
-                        onTap: {
-                            guard let cluster = viewModel.cleanupEntryCluster(from: sortedClusters) else {
-                                return
+                    if let cleanupEntryCluster {
+                        CleanupSessionProgressCard(
+                            progress: sessionProgress,
+                            onTap: {
+                                router.push(.clusterDetails(cleanupEntryCluster))
                             }
-                            router.push(.clusterDetails(cluster))
-                        }
-                    )
+                        )
+                    }
 
-                    if !remainingClusters.isEmpty {
+                    if visibleClusters.isEmpty {
+                        ContentUnavailableView {
+                            Label {
+                                Text(appLocalized("No Clusters Match These Controls"))
+                            } icon: {
+                                Image(systemName: "line.3.horizontal.decrease.circle")
+                            }
+                        } description: {
+                            Text(appLocalized("Try changing the filters or reset the controls"))
+                        }
+                        .padding(.top, Spacing.large)
+                    } else if !remainingClusters.isEmpty {
                         ClusterSectionCard(
                             title: appLocalized("All clusters"),
                             subtitle: appLocalized("Everything else that is still available in your cleanup queue"),
@@ -467,12 +476,12 @@ private struct CleanupInsightsCard: View {
 
             HStack(spacing: Spacing.small) {
                 metricItem(
-                    title: appLocalized("Saved So Far"),
+                    title: appLocalized("Estimated Reclaimable"),
                     value: ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file),
                     color: .statusSavings
                 )
                 metricItem(
-                    title: appLocalized("Photos Deleted"),
+                    title: appLocalized("Photos Moved to Recently Deleted"),
                     value: "\(insights.totalDeletedItems)",
                     color: .accent
                 )
@@ -480,7 +489,7 @@ private struct CleanupInsightsCard: View {
 
             if let latestCleanup = insights.latestCleanup {
                 VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                    Text(appLocalized("Latest cleanup"))
+                    Text(appLocalized("Latest Cleanup"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Text(latestCleanupSummary(for: latestCleanup))
@@ -519,7 +528,11 @@ private struct CleanupInsightsCard: View {
 
     private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
         let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
-        return "\(record.deletedCount) \(appLocalized("photos deleted")) • \(savingsText) \(appLocalized("saved"))"
+        return String(
+            format: appLocalized("%d photos moved • %@ estimated reclaimable"),
+            record.deletedCount,
+            savingsText
+        )
     }
 
     private func relativeDateText(for date: Date) -> String {
@@ -529,8 +542,15 @@ private struct CleanupInsightsCard: View {
     }
 
     private var accessibilitySummary: String {
-        let savedText = ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file)
-        return "\(savedText) \(appLocalized("saved so far")), \(insights.totalDeletedItems) \(appLocalized("photos deleted"))"
+        let reclaimableText = ByteCountFormatter.string(
+            fromByteCount: insights.totalSavedBytes,
+            countStyle: .file
+        )
+        return String(
+            format: appLocalized("%@ estimated reclaimable, %d photos moved to Recently Deleted"),
+            reclaimableText,
+            insights.totalDeletedItems
+        )
     }
 
     private var metricBackgroundOpacity: Double {
@@ -631,9 +651,15 @@ private struct CleanupRefreshBanner: View {
     private var title: String {
         switch state {
         case .refreshing(let record):
-            "Deleted \(record.deletedCount) photos."
+            String(
+                format: appLocalized("%d photos moved to Recently Deleted."),
+                record.deletedCount
+            )
         case .success(let record):
-            "Deleted \(record.deletedCount) photos."
+            String(
+                format: appLocalized("%d photos moved to Recently Deleted."),
+                record.deletedCount
+            )
         case .failed:
             appLocalized("Refresh Required")
         }
@@ -821,7 +847,7 @@ private struct CleanupSessionProgressCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(appLocalized("Cleanup Session Progress")))
-        .accessibilityValue(Text("\(progress.reviewedCount) \(appLocalized("reviewed")), \(progress.remainingClusters) \(appLocalized("left to review"))"))
+        .accessibilityValue(Text("\(progress.reviewedCount) \(appLocalized("Reviewed")), \(progress.remainingClusters) \(appLocalized("Left to Review"))"))
         .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
     }
 
@@ -888,7 +914,7 @@ private struct CleanupCategoryRow: View {
                 VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                     Text(summary.kind.presentation.title)
                         .font(.appHeadline)
-                    Text("\(summary.assetCount) items • \(ByteCountFormatter.string(fromByteCount: summary.estimatedSavingsBytes, countStyle: .file))")
+                    Text(categorySummaryText)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -915,6 +941,24 @@ private struct CleanupCategoryRow: View {
                     ? summary.kind.presentation.lockedHint
                     : summary.kind.presentation.openHint
             )
+        )
+    }
+
+    private var categorySummaryText: String {
+        let estimatedSavings = ByteCountFormatter.string(
+            fromByteCount: summary.estimatedSavingsBytes,
+            countStyle: .file
+        )
+        if summary.assetCount == 1 {
+            return String(
+                format: appLocalized("1 item • %@ estimated reclaimable"),
+                estimatedSavings
+            )
+        }
+        return String(
+            format: appLocalized("%d items • %@ estimated reclaimable"),
+            summary.assetCount,
+            estimatedSavings
         )
     }
 }
@@ -949,8 +993,11 @@ private struct PremiumPaywallSheet: View {
             }
             .padding(Spacing.large)
             .navigationTitle(Text(appLocalized("Premium")))
+#if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+#endif
             .toolbar {
+#if os(iOS)
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss()
@@ -959,6 +1006,16 @@ private struct PremiumPaywallSheet: View {
                     }
                     .accessibilityLabel(Text(appLocalized("Close")))
                 }
+#else
+                ToolbarItem {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel(Text(appLocalized("Close")))
+                }
+#endif
             }
         }
     }

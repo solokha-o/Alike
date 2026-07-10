@@ -5,6 +5,7 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
+import os
 import SwiftUI
 import Launch
 import Welcome
@@ -45,6 +46,7 @@ struct RootView: View {
 
 // MARK: - Main Tab View
 struct MainTabView: View {
+    @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
@@ -90,6 +92,13 @@ struct MainTabView: View {
     private var hasCleanupReminderCustomizationAccess: Bool {
         premiumAccess.hasAccess(to: .cleanupReminders)
     }
+
+    private var cleanupReminderTaskID: CleanupReminderTaskID {
+        CleanupReminderTaskID(
+            scenePhase: scenePhase,
+            isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+        )
+    }
     
     var body: some View {
         TabView(selection: Bindable(tabManager).selectedTab) {
@@ -108,10 +117,9 @@ struct MainTabView: View {
                 gridColumns = clamped
             }
         }
-        .task(id: hasCleanupReminderCustomizationAccess) {
-            await cleanupReminderManager.resync(
-                isPremiumUnlocked: hasCleanupReminderCustomizationAccess
-            )
+        .task(id: cleanupReminderTaskID) {
+            guard scenePhase == .active else { return }
+            await resyncCleanupReminder()
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
@@ -153,8 +161,28 @@ struct MainTabView: View {
                 ),
                 sensitivity: sensitivity,
                 needsRescan: Bindable(tabManager).needsRescan,
-                premiumAccess: premiumAccess
+                premiumAccess: premiumAccess,
+                viewModel: SettingsViewModel(
+                    cleanupReminderManager: cleanupReminderManager
+                )
             )
         }
     }
+
+    private func resyncCleanupReminder() async {
+        do {
+            try await cleanupReminderManager.resync(
+                isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+            )
+        } catch {
+            AppLog.storage.error(
+                "\(AppLog.tag(.error, "Failed to resync cleanup reminder: \(error.localizedDescription)"))"
+            )
+        }
+    }
+}
+
+private struct CleanupReminderTaskID: Equatable {
+    let scenePhase: ScenePhase
+    let isPremiumUnlocked: Bool
 }

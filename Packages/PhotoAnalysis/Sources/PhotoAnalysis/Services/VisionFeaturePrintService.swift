@@ -264,20 +264,6 @@ private extension VisionFeaturePrintService {
     }
 }
 
-extension VisionFeaturePrintService {
-    static func shouldSkipImageDataRequest(for error: NSError) -> Bool {
-        if error.domain == PHPhotosErrorDomain || error.domain == "com.apple.accounts" {
-            return true
-        }
-
-        if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
-            return shouldSkipImageDataRequest(for: underlyingError)
-        }
-
-        return false
-    }
-}
-
 private extension CGImagePropertyOrientation {
     init(_ orientation: UIImage.Orientation) {
         switch orientation {
@@ -295,3 +281,17 @@ private extension CGImagePropertyOrientation {
 }
 
 #endif
+
+extension VisionFeaturePrintService {
+    static func shouldSkipImageDataRequest(for error: NSError) -> Bool {
+        if error.domain == PHPhotosErrorDomain || error.domain == "com.apple.accounts" {
+            return true
+        }
+
+        if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
+            return shouldSkipImageDataRequest(for: underlyingError)
+        }
+
+        return false
+    }
+}

@@ -105,18 +105,15 @@ private extension PhotoKitCleanupService {
         let resolvedCount = fetchAssetsCount(for: identifiers)
 
         return ResolvedPhotoCleanupRequest(resolvedCount: resolvedCount) {
-            let currentResolvedCount = await MainActor.run {
-                fetchAssetsCount(for: identifiers)
-            }
-            guard currentResolvedCount == identifiers.count else {
-                throw PhotoCleanupError.selectedAssetsUnavailable(
-                    missingCount: max(identifiers.count - currentResolvedCount, 0)
-                )
-            }
-
             let assets = await MainActor.run {
                 fetchAssets(for: identifiers)
             }
+            guard assets.count == identifiers.count else {
+                throw PhotoCleanupError.selectedAssetsUnavailable(
+                    missingCount: max(identifiers.count - assets.count, 0)
+                )
+            }
+
             try await performDeletion(of: assets)
         }
     }

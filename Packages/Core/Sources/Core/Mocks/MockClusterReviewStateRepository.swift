@@ -23,6 +23,10 @@ public actor MockClusterReviewStateRepository: ClusterReviewStateRepository {
         storedStates = states
     }
 
+    public func setLoadAllReviewStatesError(_ error: Error?) {
+        loadAllReviewStatesError = error
+    }
+
     public func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? {
         didCallLoadReviewState = true
         if let loadReviewStateError {

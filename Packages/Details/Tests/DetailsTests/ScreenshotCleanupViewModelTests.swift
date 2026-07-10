@@ -60,11 +60,39 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
     }
 
-    private func makeViewModel() -> ScreenshotCleanupViewModel {
+    func testConfirmDeletePublishesCompletionAfterHistoryAppendFinishes() async {
+        let expectedRecord = CleanupCompletionRecord(
+            sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
+            deletedCount: 2,
+            estimatedSavingsBytes: 150
+        )
+        let suspendedHistoryRepository = SuspendedScreenshotCleanupHistoryRepository()
+        await cleanupService.setDeleteAssetsResult(.success(expectedRecord))
+        let viewModel = makeViewModel(cleanupHistoryRepository: suspendedHistoryRepository)
+        viewModel.selectAll()
+
+        let deleteTask = Task { await viewModel.confirmDelete() }
+        await suspendedHistoryRepository.waitUntilAppendStarts()
+
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertTrue(viewModel.isDeleting)
+
+        await suspendedHistoryRepository.finishAppend()
+        await deleteTask.value
+
+        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+        let entries = await suspendedHistoryRepository.storedEntries()
+        XCTAssertEqual(entries, [expectedRecord])
+    }
+
+    private func makeViewModel(
+        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil
+    ) -> ScreenshotCleanupViewModel {
         ScreenshotCleanupViewModel(
             assets: [],
             cleanupService: cleanupService,
-            cleanupHistoryRepository: cleanupHistoryRepository,
+            cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             assetSnapshots: [
                 snapshot(id: "one", area: 200),
                 snapshot(id: "two", area: 100)
@@ -80,5 +108,38 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
             pixelHeight: 1,
             creationDate: nil
         )
+    }
+}
+
+private actor SuspendedScreenshotCleanupHistoryRepository: CleanupHistoryRepository {
+    private var entries: [CleanupCompletionRecord] = []
+    private var appendContinuation: CheckedContinuation<Void, Never>?
+    private var appendStarted = false
+
+    func loadEntries() async throws -> [CleanupCompletionRecord] {
+        entries
+    }
+
+    func append(_ entry: CleanupCompletionRecord) async throws {
+        appendStarted = true
+        await withCheckedContinuation { continuation in
+            appendContinuation = continuation
+        }
+        entries.append(entry)
+    }
+
+    func waitUntilAppendStarts() async {
+        while !appendStarted {
+            await Task.yield()
+        }
+    }
+
+    func finishAppend() {
+        appendContinuation?.resume()
+        appendContinuation = nil
+    }
+
+    func storedEntries() -> [CleanupCompletionRecord] {
+        entries
     }
 }

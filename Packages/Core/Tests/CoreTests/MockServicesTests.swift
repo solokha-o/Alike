@@ -117,6 +117,32 @@ final class MockServicesTests: XCTestCase {
         XCTAssertNil(deleted)
     }
 
+    func testMockCleanupCategorySnapshotRepositoryReplacesAllSnapshots() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        let staleSnapshot = CleanupCategorySnapshot(
+            kind: .screenshots,
+            localIdentifiers: ["stale"],
+            assetCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        let replacement = CleanupCategorySnapshot(
+            kind: .blurredPhotos,
+            localIdentifiers: ["replacement"],
+            assetCount: 1,
+            estimatedSavingsBytes: 200
+        )
+        await repository.setStoredSnapshots([.screenshots: staleSnapshot])
+
+        try await repository.replaceAllSnapshots([replacement])
+
+        let storedSnapshots = await repository.storedSnapshots
+        let didCallReplaceAllSnapshots = await repository.didCallReplaceAllSnapshots
+        let replaceAllSnapshotsCallCount = await repository.replaceAllSnapshotsCallCount
+        XCTAssertEqual(storedSnapshots, [.blurredPhotos: replacement])
+        XCTAssertTrue(didCallReplaceAllSnapshots)
+        XCTAssertEqual(replaceAllSnapshotsCallCount, 1)
+    }
+
     func testMockCleanupReminderPreferenceRepositoryStoresValue() async {
         let repository = MockCleanupReminderPreferenceRepository()
 
@@ -150,14 +176,14 @@ final class MockServicesTests: XCTestCase {
         XCTAssertTrue(didCallSave)
     }
 
-    func testMockCleanupReminderManagerTracksCalls() async {
+    func testMockCleanupReminderManagerTracksCalls() async throws {
         let manager = MockCleanupReminderManager()
         let customSchedule = CleanupReminderSchedule(weekday: 5, hour: 20, minute: 15)
 
         _ = await manager.loadState(isPremiumUnlocked: true)
-        _ = await manager.setEnabled(true, isPremiumUnlocked: true)
-        _ = await manager.setSchedule(customSchedule, isPremiumUnlocked: true)
-        await manager.resync(isPremiumUnlocked: false)
+        _ = try await manager.setEnabled(true, isPremiumUnlocked: true)
+        _ = try await manager.setSchedule(customSchedule, isPremiumUnlocked: true)
+        try await manager.resync(isPremiumUnlocked: false)
 
         let didCallLoad = await manager.didCallLoadState
         let didCallSetEnabled = await manager.didCallSetEnabled

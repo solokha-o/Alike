@@ -58,6 +58,7 @@ public struct ScreenshotCleanupView: View {
                     Image(systemName: "xmark")
                 }
                 .accessibilityLabel(Text(appLocalized("Close")))
+                .disabled(viewModel.isDeleting)
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -72,7 +73,7 @@ public struct ScreenshotCleanupView: View {
             isPresented: Bindable(viewModel).isDeleteConfirmationPresented
         ) {
             Button(appLocalized("Cancel"), role: .cancel) {}
-            Button(appLocalized("Delete"), role: .destructive) {
+            Button(appLocalized("Move"), role: .destructive) {
                 Task {
                     await viewModel.confirmDelete()
                 }
@@ -109,6 +110,7 @@ public struct ScreenshotCleanupView: View {
             onCleanupCompleted?(record)
             dismiss()
         }
+        .interactiveDismissDisabled(viewModel.isDeleting)
     }
 }
 

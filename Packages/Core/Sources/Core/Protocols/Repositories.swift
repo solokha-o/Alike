@@ -54,6 +54,9 @@ public protocol CleanupCategorySnapshotRepository: Sendable {
     /// Save or overwrite a category snapshot.
     func saveSnapshot(_ snapshot: CleanupCategorySnapshot) async throws
 
+    /// Atomically replace every stored category snapshot.
+    func replaceAllSnapshots(_ snapshots: [CleanupCategorySnapshot]) async throws
+
     /// Delete all stored category snapshots.
     func deleteAllSnapshots() async throws
 }
@@ -110,16 +113,16 @@ public protocol CleanupReminderManaging: Sendable {
     func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState
 
     /// Enable or disable the weekly reminder for the supplied premium access state.
-    func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState
+    func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async throws -> CleanupReminderState
 
     /// Update the stored weekly reminder schedule when premium customization is available.
     func setSchedule(
         _ schedule: CleanupReminderSchedule,
         isPremiumUnlocked: Bool
-    ) async -> CleanupReminderState
+    ) async throws -> CleanupReminderState
 
     /// Reconcile stored preference and scheduled notification at app launch.
-    func resync(isPremiumUnlocked: Bool) async
+    func resync(isPremiumUnlocked: Bool) async throws
 }
 
 /// Service for analyzing photos using Vision framework

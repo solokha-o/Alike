@@ -42,4 +42,17 @@ final class AssetMetadataTests: XCTestCase {
         XCTAssertFalse(metadata.formattedCreationDate.isEmpty)
         XCTAssertNotEqual(metadata.formattedCreationDate, "Unknown")
     }
+
+    func testEstimatedCleanupBytesIsAvailableWithoutUIKit() {
+        let metadata = AssetMetadata(
+            creationDate: nil,
+            modificationDate: nil,
+            pixelWidth: 400,
+            pixelHeight: 300,
+            isFavorite: false,
+            mediaType: .image
+        )
+
+        XCTAssertEqual(metadata.estimatedCleanupBytes, 60_000)
+    }
 }

@@ -60,6 +60,16 @@ public struct SettingsView: View {
         .sheet(item: $presentedPremiumFeature) { feature in
             premiumFeatureSheet(for: feature)
         }
+        .alert(
+            appLocalized("Couldn't Update Reminder"),
+            isPresented: isCleanupReminderErrorPresented
+        ) {
+            Button(appLocalized("OK"), role: .cancel) {
+                viewModel.dismissCleanupReminderError()
+            }
+        } message: {
+            Text(viewModel.cleanupReminderErrorMessage ?? "")
+        }
     }
 
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
@@ -101,14 +111,14 @@ public struct SettingsView: View {
         Section {
             if viewModel.cleanupInsights.hasHistory {
                 historyMetricRow(
-                    title: appLocalized("Saved So Far"),
+                    title: appLocalized("Estimated Reclaimable"),
                     value: ByteCountFormatter.string(
                         fromByteCount: viewModel.cleanupInsights.totalSavedBytes,
                         countStyle: .file
                     )
                 )
                 historyMetricRow(
-                    title: appLocalized("Photos Deleted"),
+                    title: appLocalized("Photos Moved to Recently Deleted"),
                     value: "\(viewModel.cleanupInsights.totalDeletedItems)"
                 )
                 historyMetricRow(
@@ -143,12 +153,10 @@ public struct SettingsView: View {
                 isOn: Binding(
                     get: { viewModel.cleanupReminderState.isEnabled },
                     set: { isEnabled in
-                        Task {
-                            await viewModel.setCleanupReminderEnabled(
-                                isEnabled,
-                                isPremiumUnlocked: hasCleanupReminderAccess
-                            )
-                        }
+                        viewModel.setCleanupReminderEnabled(
+                            isEnabled,
+                            isPremiumUnlocked: hasCleanupReminderAccess
+                        )
                     }
                 )
             ) {
@@ -215,16 +223,14 @@ public struct SettingsView: View {
                     selection: Binding(
                         get: { viewModel.cleanupReminderState.schedule.weekday },
                         set: { weekday in
-                            Task {
-                                await viewModel.setCleanupReminderSchedule(
-                                    CleanupReminderSchedule(
-                                        weekday: weekday,
-                                        hour: viewModel.cleanupReminderState.schedule.hour,
-                                        minute: viewModel.cleanupReminderState.schedule.minute
-                                    ),
-                                    isPremiumUnlocked: hasCleanupReminderAccess
-                                )
-                            }
+                            viewModel.setCleanupReminderSchedule(
+                                CleanupReminderSchedule(
+                                    weekday: weekday,
+                                    hour: viewModel.cleanupReminderState.schedule.hour,
+                                    minute: viewModel.cleanupReminderState.schedule.minute
+                                ),
+                                isPremiumUnlocked: hasCleanupReminderAccess
+                            )
                         }
                     )
                 ) {
@@ -240,16 +246,14 @@ public struct SettingsView: View {
                         get: { reminderTimeDate(for: viewModel.cleanupReminderState.schedule) },
                         set: { date in
                             let components = Calendar.current.dateComponents([.hour, .minute], from: date)
-                            Task {
-                                await viewModel.setCleanupReminderSchedule(
-                                    CleanupReminderSchedule(
-                                        weekday: viewModel.cleanupReminderState.schedule.weekday,
-                                        hour: components.hour ?? viewModel.cleanupReminderState.schedule.hour,
-                                        minute: components.minute ?? viewModel.cleanupReminderState.schedule.minute
-                                    ),
-                                    isPremiumUnlocked: hasCleanupReminderAccess
-                                )
-                            }
+                            viewModel.setCleanupReminderSchedule(
+                                CleanupReminderSchedule(
+                                    weekday: viewModel.cleanupReminderState.schedule.weekday,
+                                    hour: components.hour ?? viewModel.cleanupReminderState.schedule.hour,
+                                    minute: components.minute ?? viewModel.cleanupReminderState.schedule.minute
+                                ),
+                                isPremiumUnlocked: hasCleanupReminderAccess
+                            )
                         }
                     ),
                     displayedComponents: [.hourAndMinute]
@@ -431,7 +435,11 @@ public struct SettingsView: View {
 
     private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
         let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
-        return "\(record.deletedCount) \(appLocalized("photos deleted")) • \(savingsText) \(appLocalized("saved"))"
+        return String(
+            format: appLocalized("%d photos moved • %@ estimated reclaimable"),
+            record.deletedCount,
+            savingsText
+        )
     }
 
     private func relativeDateText(for date: Date) -> String {
@@ -442,6 +450,17 @@ public struct SettingsView: View {
 
     private var hasCleanupReminderAccess: Bool {
         premiumAccess.hasAccess(to: .cleanupReminders)
+    }
+
+    private var isCleanupReminderErrorPresented: Binding<Bool> {
+        Binding(
+            get: { viewModel.cleanupReminderErrorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    viewModel.dismissCleanupReminderError()
+                }
+            }
+        )
     }
 
     private var weekdayOptions: [(value: Int, title: String)] {
@@ -529,9 +548,11 @@ private struct ReminderPremiumSheet: View {
             }
             .padding(Spacing.large)
             .navigationTitle(Text(appLocalized("Premium")))
+#if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+#endif
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button {
                         dismiss()
                     } label: {

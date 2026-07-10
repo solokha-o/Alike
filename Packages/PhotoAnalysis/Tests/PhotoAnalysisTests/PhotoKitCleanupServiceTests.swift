@@ -131,4 +131,28 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    func testDeleteAssetsPropagatesAvailabilityChangeImmediatelyBeforeDeletion() async {
+        let service = PhotoKitCleanupService(
+            authorizationStatusProvider: { .authorized },
+            cleanupRequestBuilder: { identifiers in
+                ResolvedPhotoCleanupRequest(resolvedCount: identifiers.count) {
+                    throw PhotoCleanupError.selectedAssetsUnavailable(missingCount: 1)
+                }
+            }
+        )
+
+        do {
+            _ = try await service.deleteAssets(
+                localIdentifiers: ["a", "b"],
+                sourceClusterID: UUID(),
+                estimatedSavingsBytes: 2_048
+            )
+            XCTFail("Expected selectedAssetsUnavailable error")
+        } catch let error as PhotoCleanupError {
+            XCTAssertEqual(error, .selectedAssetsUnavailable(missingCount: 1))
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
 }

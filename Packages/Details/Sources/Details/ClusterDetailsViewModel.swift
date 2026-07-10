@@ -207,7 +207,6 @@ final class ClusterDetailsViewModel {
                 sourceClusterID: cluster.id,
                 estimatedSavingsBytes: estimatedSavingsBytes
             )
-            pendingCompletionRecord = record
 
             do {
                 try await cleanupHistoryRepository.append(record)

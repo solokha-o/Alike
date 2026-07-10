@@ -56,10 +56,54 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
         XCTAssertEqual(loaded, [first, second])
     }
 
-    func testCorruptedJSONReturnsEmptyEntries() async throws {
-        try Data("not-json".utf8).write(to: fileURL)
+    func testCorruptedJSONThrowsAndAppendDoesNotOverwriteFile() async throws {
+        let corruptedData = Data("not-json".utf8)
+        try corruptedData.write(to: fileURL)
 
-        let loaded = try await repository.loadEntries()
-        XCTAssertTrue(loaded.isEmpty)
+        do {
+            _ = try await repository.loadEntries()
+            XCTFail("Expected corrupted history to throw")
+        } catch {
+            XCTAssertFalse(error is CancellationError)
+        }
+
+        do {
+            try await repository.append(
+                CleanupCompletionRecord(
+                    sourceClusterID: UUID(),
+                    deletedCount: 1,
+                    estimatedSavingsBytes: 100
+                )
+            )
+            XCTFail("Expected append to preserve and reject corrupted history")
+        } catch {
+            XCTAssertEqual(try Data(contentsOf: fileURL), corruptedData)
+        }
+    }
+
+    func testConcurrentAppendsAcrossRepositoryInstancesPreserveEveryEntry() async throws {
+        let firstRepository = try XCTUnwrap(repository)
+        let secondRepository = FileCleanupHistoryRepository(fileURL: fileURL)
+        let records = (0..<40).map { index in
+            CleanupCompletionRecord(
+                sourceClusterID: UUID(),
+                deletedCount: index + 1,
+                estimatedSavingsBytes: Int64(index + 1),
+                completedAt: Date(timeIntervalSince1970: TimeInterval(index))
+            )
+        }
+
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for (index, record) in records.enumerated() {
+                let target = index.isMultiple(of: 2) ? firstRepository : secondRepository
+                group.addTask {
+                    try await target.append(record)
+                }
+            }
+            try await group.waitForAll()
+        }
+
+        let loaded = try await firstRepository.loadEntries()
+        XCTAssertEqual(Set(loaded.map(\.id)), Set(records.map(\.id)))
     }
 }

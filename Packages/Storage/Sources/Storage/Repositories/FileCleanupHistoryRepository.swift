@@ -6,8 +6,8 @@ public final class FileCleanupHistoryRepository: CleanupHistoryRepository, Senda
     private let store: CleanupHistoryStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupHistoryStore(
-            fileURL: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
+        self.store = CleanupFileStoreRegistry.shared.historyStore(
+            for: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }
 
@@ -16,9 +16,7 @@ public final class FileCleanupHistoryRepository: CleanupHistoryRepository, Senda
     }
 
     public func append(_ entry: CleanupCompletionRecord) async throws {
-        var entries = try await store.loadEntries()
-        entries.append(entry)
-        try await store.saveEntries(entries)
+        try await store.append(entry)
     }
 }
 
@@ -58,8 +56,14 @@ actor CleanupHistoryStore {
             AppLog.storage.error(
                 "\(AppLog.tag(.error, "Failed to load cleanup history: \(error.localizedDescription)"))"
             )
-            return []
+            throw error
         }
+    }
+
+    func append(_ entry: CleanupCompletionRecord) throws {
+        var entries = try loadEntries()
+        entries.append(entry)
+        try saveEntries(entries)
     }
 
     func saveEntries(_ entries: [CleanupCompletionRecord]) throws {

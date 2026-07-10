@@ -2,19 +2,15 @@ import XCTest
 @testable import Storage
 
 final class UserDefaultsCleanupReminderPreferenceRepositoryTests: XCTestCase {
-    private var userDefaults: UserDefaults!
     private var repository: UserDefaultsCleanupReminderPreferenceRepository!
-    private let suiteName = "UserDefaultsCleanupReminderPreferenceRepositoryTests"
     private let reminderEnabledKey = "cleanup.reminder.test.isEnabled"
     private let reminderWeekdayKey = "cleanup.reminder.test.weekday"
     private let reminderHourKey = "cleanup.reminder.test.hour"
     private let reminderMinuteKey = "cleanup.reminder.test.minute"
 
     override func setUpWithError() throws {
-        userDefaults = UserDefaults(suiteName: suiteName)
-        userDefaults.removePersistentDomain(forName: suiteName)
+        clearTestValues()
         repository = UserDefaultsCleanupReminderPreferenceRepository(
-            userDefaults: userDefaults,
             reminderEnabledKey: reminderEnabledKey,
             reminderWeekdayKey: reminderWeekdayKey,
             reminderHourKey: reminderHourKey,
@@ -23,9 +19,8 @@ final class UserDefaultsCleanupReminderPreferenceRepositoryTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        userDefaults.removePersistentDomain(forName: suiteName)
         repository = nil
-        userDefaults = nil
+        clearTestValues()
     }
 
     func testLoadReminderEnabledDefaultsToFalse() async {
@@ -61,5 +56,13 @@ final class UserDefaultsCleanupReminderPreferenceRepositoryTests: XCTestCase {
 
         let persistedSchedule = await repository.loadReminderSchedule()
         XCTAssertEqual(persistedSchedule, schedule)
+    }
+
+    private func clearTestValues() {
+        let userDefaults = UserDefaults.standard
+        userDefaults.removeObject(forKey: reminderEnabledKey)
+        userDefaults.removeObject(forKey: reminderWeekdayKey)
+        userDefaults.removeObject(forKey: reminderHourKey)
+        userDefaults.removeObject(forKey: reminderMinuteKey)
     }
 }

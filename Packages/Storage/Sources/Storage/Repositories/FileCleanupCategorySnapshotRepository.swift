@@ -6,8 +6,8 @@ public final class FileCleanupCategorySnapshotRepository: CleanupCategorySnapsho
     private let store: CleanupCategorySnapshotStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupCategorySnapshotStore(
-            fileURL: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
+        self.store = CleanupFileStoreRegistry.shared.categorySnapshotStore(
+            for: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }
 
@@ -20,13 +20,15 @@ public final class FileCleanupCategorySnapshotRepository: CleanupCategorySnapsho
     }
 
     public func saveSnapshot(_ snapshot: CleanupCategorySnapshot) async throws {
-        var snapshots = try await store.loadAllSnapshots()
-        snapshots[snapshot.kind] = snapshot
-        try await store.saveAllSnapshots(snapshots)
+        try await store.saveSnapshot(snapshot)
+    }
+
+    public func replaceAllSnapshots(_ snapshots: [CleanupCategorySnapshot]) async throws {
+        try await store.replaceAllSnapshots(snapshots)
     }
 
     public func deleteAllSnapshots() async throws {
-        try await store.saveAllSnapshots([:])
+        try await store.replaceAllSnapshots([])
     }
 }
 
@@ -92,6 +94,19 @@ actor CleanupCategorySnapshotStore {
         } else {
             try fileManager.moveItem(at: temporaryURL, to: fileURL)
         }
+    }
+
+    func saveSnapshot(_ snapshot: CleanupCategorySnapshot) throws {
+        var snapshots = try loadAllSnapshots()
+        snapshots[snapshot.kind] = snapshot
+        try saveAllSnapshots(snapshots)
+    }
+
+    func replaceAllSnapshots(_ snapshots: [CleanupCategorySnapshot]) throws {
+        let snapshotsByKind = snapshots.reduce(into: [:]) { result, snapshot in
+            result[snapshot.kind] = snapshot
+        }
+        try saveAllSnapshots(snapshotsByKind)
     }
 }
 

@@ -50,7 +50,7 @@ struct ClusterReviewActionBar: View {
                 .buttonStyle(.plain)
                 .disabled(isDeleting)
                 .opacity(isDeleting ? 0.8 : 1)
-                .accessibilityHint(Text(appLocalized("Permanently delete the currently selected photos")))
+                .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
             }
         }
         .padding(Spacing.small)

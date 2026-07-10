@@ -3,6 +3,70 @@ import XCTest
 @testable import PhotoAnalysis
 
 final class BlurAnalysisServiceTests: XCTestCase {
+    func testTaskPoolLimitsConcurrencyToFourAndPreservesOrder() async throws {
+        let tracker = ConcurrencyTracker()
+
+        let results: [Int] = try await BlurAnalysisTaskPool.compactMap(
+            Array(0..<20),
+            maxConcurrentTasks: 4
+        ) { value in
+            await tracker.start()
+            do {
+                try await Task.sleep(for: .milliseconds(20))
+                await tracker.finish()
+                return value
+            } catch {
+                await tracker.finish()
+                throw error
+            }
+        }
+
+        XCTAssertEqual(results, Array(0..<20))
+        let maximumConcurrentCount = await tracker.maximumConcurrentCount
+        XCTAssertLessThanOrEqual(maximumConcurrentCount, 4)
+    }
+
+    func testTaskPoolIsolatesOneRecoverableFailure() async throws {
+        enum ThumbnailError: Error {
+            case unavailable
+        }
+
+        let results: [Int] = try await BlurAnalysisTaskPool.compactMap(
+            [1, 2, 3],
+            maxConcurrentTasks: 2
+        ) { value in
+            if value == 2 {
+                throw ThumbnailError.unavailable
+            }
+            return value
+        }
+
+        XCTAssertEqual(results, [1, 3])
+    }
+
+    func testTaskPoolPropagatesCancellation() async {
+        let task = Task {
+            try await BlurAnalysisTaskPool.compactMap(
+                Array(0..<8),
+                maxConcurrentTasks: 4
+            ) { value in
+                try await Task.sleep(for: .seconds(5))
+                return value
+            } as [Int]
+        }
+
+        task.cancel()
+
+        do {
+            _ = try await task.value
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
     func testBlurCandidateSelectorExcludesSharpItemsAndSortsResults() {
         let selected = BlurCandidateSelector.selectCandidates(from: [
             BlurAnalysisCandidate(localIdentifier: "sharp", sharpnessScore: 45, estimatedCleanupBytes: 100),
@@ -110,5 +174,19 @@ final class BlurAnalysisServiceTests: XCTestCase {
             shouldInterpolate: false,
             intent: .defaultIntent
         )
+    }
+}
+
+private actor ConcurrencyTracker {
+    private var currentConcurrentCount = 0
+    private(set) var maximumConcurrentCount = 0
+
+    func start() {
+        currentConcurrentCount += 1
+        maximumConcurrentCount = max(maximumConcurrentCount, currentConcurrentCount)
+    }
+
+    func finish() {
+        currentConcurrentCount -= 1
     }
 }

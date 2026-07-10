@@ -2,10 +2,19 @@ import Foundation
 
 #if DEBUG
 
+public enum MockCleanupReminderManagerError: Error, Sendable {
+    case setEnabled
+    case setSchedule
+    case resync
+}
+
 public actor MockCleanupReminderManager: CleanupReminderManaging {
     public var state: CleanupReminderState
     public var setEnabledResultState: CleanupReminderState?
     public var setScheduleResultState: CleanupReminderState?
+    public var shouldFailSetEnabled = false
+    public var shouldFailSetSchedule = false
+    public var shouldFailResync = false
 
     public var didCallLoadState = false
     public var didCallSetEnabled = false
@@ -42,6 +51,18 @@ public actor MockCleanupReminderManager: CleanupReminderManaging {
         setScheduleResultState = state
     }
 
+    public func setShouldFailSetEnabled(_ shouldFail: Bool) {
+        shouldFailSetEnabled = shouldFail
+    }
+
+    public func setShouldFailSetSchedule(_ shouldFail: Bool) {
+        shouldFailSetSchedule = shouldFail
+    }
+
+    public func setShouldFailResync(_ shouldFail: Bool) {
+        shouldFailResync = shouldFail
+    }
+
     public func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState {
         didCallLoadState = true
         lastLoadIsPremiumUnlocked = isPremiumUnlocked
@@ -55,10 +76,17 @@ public actor MockCleanupReminderManager: CleanupReminderManaging {
         return loadedState
     }
 
-    public func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState {
+    public func setEnabled(
+        _ isEnabled: Bool,
+        isPremiumUnlocked: Bool
+    ) async throws -> CleanupReminderState {
         didCallSetEnabled = true
         lastSetEnabledValue = isEnabled
         lastSetEnabledIsPremiumUnlocked = isPremiumUnlocked
+
+        if shouldFailSetEnabled {
+            throw MockCleanupReminderManagerError.setEnabled
+        }
 
         if let setEnabledResultState {
             state = setEnabledResultState
@@ -78,10 +106,14 @@ public actor MockCleanupReminderManager: CleanupReminderManaging {
     public func setSchedule(
         _ schedule: CleanupReminderSchedule,
         isPremiumUnlocked: Bool
-    ) async -> CleanupReminderState {
+    ) async throws -> CleanupReminderState {
         didCallSetSchedule = true
         lastSetScheduleValue = schedule
         lastSetScheduleIsPremiumUnlocked = isPremiumUnlocked
+
+        if shouldFailSetSchedule {
+            throw MockCleanupReminderManagerError.setSchedule
+        }
 
         if let setScheduleResultState {
             state = setScheduleResultState
@@ -98,9 +130,13 @@ public actor MockCleanupReminderManager: CleanupReminderManaging {
         return updatedState
     }
 
-    public func resync(isPremiumUnlocked: Bool) async {
+    public func resync(isPremiumUnlocked: Bool) async throws {
         didCallResync = true
         lastResyncIsPremiumUnlocked = isPremiumUnlocked
+
+        if shouldFailResync {
+            throw MockCleanupReminderManagerError.resync
+        }
     }
 }
 

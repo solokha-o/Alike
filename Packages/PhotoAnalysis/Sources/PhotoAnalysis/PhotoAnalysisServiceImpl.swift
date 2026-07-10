@@ -142,10 +142,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let snapshots = try await buildCleanupCategorySnapshots(from: assets)
 
         if let cleanupCategoryRepository {
-            try await cleanupCategoryRepository.deleteAllSnapshots()
-            for snapshot in snapshots {
-                try await cleanupCategoryRepository.saveSnapshot(snapshot)
-            }
+            try await cleanupCategoryRepository.replaceAllSnapshots(snapshots)
         }
 
         return CleanupCategorySummaryBuilder.summaries(from: snapshots)

@@ -28,50 +28,54 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
         switch self {
         case .screenshots:
             CleanupCategoryPresentation(
-                title: "Screenshots",
-                reviewTitle: "Screenshot Cleanup",
-                navigationTitle: "Screenshots",
-                summarySingular: "1 screenshot available for review.",
-                summaryPluralFormat: "%d screenshots available for review.",
-                selectionSingularFormat: "1 selected, about %@ to free.",
-                selectionPluralFormat: "%d selected, about %@ to free.",
+                title: cleanupLocalized("Screenshots"),
+                reviewTitle: cleanupLocalized("Screenshot Cleanup"),
+                navigationTitle: cleanupLocalized("Screenshots"),
+                summarySingular: cleanupLocalized("1 screenshot available for review."),
+                summaryPluralFormat: cleanupLocalized("%d screenshots available for review."),
+                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
+                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
                 helperText: nil,
-                emptyTitle: "No Screenshots Found",
-                emptyDescription: "Try rescanning after your library updates.",
-                alertSingularTitleFormat: "Delete 1 Selected Screenshot?",
-                alertPluralTitleFormat: "Delete %d Selected Screenshots?",
-                alertSingularMessageFormat: "This will permanently delete the selected screenshot from your library and free about %@.",
-                alertPluralMessageFormat: "This will permanently delete the selected screenshots from your library and free about %@.",
-                paywallTitle: "Screenshot cleanup is a premium feature",
-                paywallMessage: "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow.",
-                openHint: "Open screenshot cleanup",
-                lockedHint: "Opens the premium paywall for screenshot cleanup",
+                emptyTitle: cleanupLocalized("No Screenshots Found"),
+                emptyDescription: cleanupLocalized("Try rescanning after your library updates."),
+                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Screenshot to Recently Deleted?"),
+                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Screenshots to Recently Deleted?"),
+                alertSingularMessageFormat: cleanupLocalized("The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
+                alertPluralMessageFormat: cleanupLocalized("The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
+                paywallTitle: cleanupLocalized("Screenshot cleanup is a premium feature"),
+                paywallMessage: cleanupLocalized("Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."),
+                openHint: cleanupLocalized("Open screenshot cleanup"),
+                lockedHint: cleanupLocalized("Opens the premium paywall for screenshot cleanup"),
                 systemImageName: "camera.viewfinder"
             )
         case .blurredPhotos:
             CleanupCategoryPresentation(
-                title: "Blurred Photos",
-                reviewTitle: "Blurred Photo Cleanup",
-                navigationTitle: "Blurred Photos",
-                summarySingular: "1 likely blurred photo available for review.",
-                summaryPluralFormat: "%d likely blurred photos available for review.",
-                selectionSingularFormat: "1 selected, about %@ to free.",
-                selectionPluralFormat: "%d selected, about %@ to free.",
-                helperText: "Likely low-quality photos based on on-device analysis. Review before deleting.",
-                emptyTitle: "No Blurred Photos Found",
-                emptyDescription: "Run a new scan after your library changes or if more photos need review.",
-                alertSingularTitleFormat: "Delete 1 Selected Blurred Photo?",
-                alertPluralTitleFormat: "Delete %d Selected Blurred Photos?",
-                alertSingularMessageFormat: "This will permanently delete the selected photo from your library and free about %@.",
-                alertPluralMessageFormat: "This will permanently delete the selected photos from your library and free about %@.",
-                paywallTitle: "Blurred photo cleanup is a premium feature",
-                paywallMessage: "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow.",
-                openHint: "Open blurred photo cleanup",
-                lockedHint: "Opens the premium paywall for blurred photo cleanup",
+                title: cleanupLocalized("Blurred Photos"),
+                reviewTitle: cleanupLocalized("Blurred Photo Cleanup"),
+                navigationTitle: cleanupLocalized("Blurred Photos"),
+                summarySingular: cleanupLocalized("1 likely blurred photo available for review."),
+                summaryPluralFormat: cleanupLocalized("%d likely blurred photos available for review."),
+                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
+                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
+                helperText: cleanupLocalized("Likely low-quality photos based on on-device analysis. Review before deleting."),
+                emptyTitle: cleanupLocalized("No Blurred Photos Found"),
+                emptyDescription: cleanupLocalized("Run a new scan after your library changes or if more photos need review."),
+                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Blurred Photo to Recently Deleted?"),
+                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Blurred Photos to Recently Deleted?"),
+                alertSingularMessageFormat: cleanupLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
+                alertPluralMessageFormat: cleanupLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
+                paywallTitle: cleanupLocalized("Blurred photo cleanup is a premium feature"),
+                paywallMessage: cleanupLocalized("Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."),
+                openHint: cleanupLocalized("Open blurred photo cleanup"),
+                lockedHint: cleanupLocalized("Opens the premium paywall for blurred photo cleanup"),
                 systemImageName: "drop.triangle"
             )
         }
     }
+}
+
+private func cleanupLocalized(_ key: String.LocalizationValue) -> String {
+    String(localized: key, bundle: .main)
 }
 
 public struct CleanupCategorySummary: Identifiable, Equatable, Sendable, Codable {

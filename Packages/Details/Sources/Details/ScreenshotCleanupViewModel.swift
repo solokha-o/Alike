@@ -111,7 +111,6 @@ final class ScreenshotCleanupViewModel {
                 sourceClusterID: sourceCategory.sourceClusterID,
                 estimatedSavingsBytes: estimatedSavingsBytes
             )
-            pendingCompletionRecord = record
 
             do {
                 try await cleanupHistoryRepository.append(record)

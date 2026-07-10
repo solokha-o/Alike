@@ -123,6 +123,7 @@ public struct ClusterDetailsView: View {
         }
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(viewModel.isDeleting)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -144,23 +145,17 @@ public struct ClusterDetailsView: View {
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
         }
         .alert(
-            viewModel.selectedCount == 1
-                ? appLocalized("Delete 1 Selected Photo?")
-                : "Delete \(viewModel.selectedCount) Selected Photos?",
+            deleteConfirmationTitle,
             isPresented: Bindable(viewModel).isDeleteConfirmationPresented
         ) {
             Button(appLocalized("Cancel"), role: .cancel) {}
-            Button(appLocalized("Delete"), role: .destructive) {
+            Button(appLocalized("Move"), role: .destructive) {
                 Task {
                     await viewModel.confirmDelete()
                 }
             }
         } message: {
-            Text(
-                viewModel.selectedCount == 1
-                    ? "This will permanently delete the selected photo from your library and free about \(viewModel.estimatedSavingsText)."
-                    : "This will permanently delete the selected photos from your library and free about \(viewModel.estimatedSavingsText)."
-            )
+            Text(deleteConfirmationMessage)
         }
         .alert(
             appLocalized("Cleanup Unavailable"),
@@ -198,6 +193,26 @@ public struct ClusterDetailsView: View {
             guard !didCompleteCleanup else { return }
             onReviewStateChanged?()
         }
+        .interactiveDismissDisabled(viewModel.isDeleting)
+    }
+}
+
+private extension ClusterDetailsView {
+    var deleteConfirmationTitle: String {
+        if viewModel.selectedCount == 1 {
+            return appLocalized("Move 1 Selected Photo to Recently Deleted?")
+        }
+        return String(
+            format: appLocalized("Move %d Selected Photos to Recently Deleted?"),
+            viewModel.selectedCount
+        )
+    }
+
+    var deleteConfirmationMessage: String {
+        let format = viewModel.selectedCount == 1
+            ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
+            : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
+        return String(format: format, viewModel.estimatedSavingsText)
     }
 }
 

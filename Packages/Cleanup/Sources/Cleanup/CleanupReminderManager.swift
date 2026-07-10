@@ -9,6 +9,7 @@ public actor CleanupReminderManager: CleanupReminderManaging {
 
     private let preferenceRepository: CleanupReminderPreferenceRepository
     private let notificationCenter: any UserNotificationCenterControlling
+    private let transactionGate = CleanupReminderTransactionGate()
 
     public init(preferenceRepository: CleanupReminderPreferenceRepository) {
         self.preferenceRepository = preferenceRepository
@@ -24,6 +25,65 @@ public actor CleanupReminderManager: CleanupReminderManaging {
     }
 
     public func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState {
+        await transactionGate.acquire()
+        let state = await loadStateWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
+        await transactionGate.release()
+        return state
+    }
+
+    public func setEnabled(
+        _ isEnabled: Bool,
+        isPremiumUnlocked: Bool
+    ) async throws -> CleanupReminderState {
+        await transactionGate.acquire()
+
+        do {
+            let state = try await setEnabledWithinTransaction(
+                isEnabled,
+                isPremiumUnlocked: isPremiumUnlocked
+            )
+            await transactionGate.release()
+            return state
+        } catch {
+            await transactionGate.release()
+            throw error
+        }
+    }
+
+    public func setSchedule(
+        _ schedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) async throws -> CleanupReminderState {
+        await transactionGate.acquire()
+
+        do {
+            let state = try await setScheduleWithinTransaction(
+                schedule,
+                isPremiumUnlocked: isPremiumUnlocked
+            )
+            await transactionGate.release()
+            return state
+        } catch {
+            await transactionGate.release()
+            throw error
+        }
+    }
+
+    public func resync(isPremiumUnlocked: Bool) async throws {
+        await transactionGate.acquire()
+
+        do {
+            try await resyncWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
+            await transactionGate.release()
+        } catch {
+            await transactionGate.release()
+            throw error
+        }
+    }
+}
+
+private extension CleanupReminderManager {
+    func loadStateWithinTransaction(isPremiumUnlocked: Bool) async -> CleanupReminderState {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
         let storedSchedule = await preferenceRepository.loadReminderSchedule()
         let authorizationStatus = await authorizationStatus()
@@ -42,55 +102,57 @@ public actor CleanupReminderManager: CleanupReminderManaging {
         )
     }
 
-    public func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async -> CleanupReminderState {
+    func setEnabledWithinTransaction(
+        _ isEnabled: Bool,
+        isPremiumUnlocked: Bool
+    ) async throws -> CleanupReminderState {
         guard isEnabled else {
             await preferenceRepository.saveReminderEnabled(false)
             await removeScheduledReminder()
-            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
+            return await loadStateWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
         }
 
         let schedule = await resolvedSchedule(isPremiumUnlocked: isPremiumUnlocked)
         switch await authorizationStatus() {
         case .authorized:
+            try await scheduleReminder(schedule: schedule)
             await preferenceRepository.saveReminderEnabled(true)
-            await scheduleReminderIfPossible(schedule: schedule)
-            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
+            return await loadStateWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
         case .notDetermined:
             let granted = await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
             if granted {
+                try await scheduleReminder(schedule: schedule)
                 await preferenceRepository.saveReminderEnabled(true)
-                await scheduleReminderIfPossible(schedule: schedule)
             } else {
                 await preferenceRepository.saveReminderEnabled(false)
                 await removeScheduledReminder()
             }
-            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
+            return await loadStateWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
         case .denied:
             await preferenceRepository.saveReminderEnabled(false)
             await removeScheduledReminder()
-            return await loadState(isPremiumUnlocked: isPremiumUnlocked)
+            return await loadStateWithinTransaction(isPremiumUnlocked: isPremiumUnlocked)
         }
     }
 
-    public func setSchedule(
+    func setScheduleWithinTransaction(
         _ schedule: CleanupReminderSchedule,
         isPremiumUnlocked: Bool
-    ) async -> CleanupReminderState {
+    ) async throws -> CleanupReminderState {
         guard isPremiumUnlocked else {
-            return await loadState(isPremiumUnlocked: false)
+            return await loadStateWithinTransaction(isPremiumUnlocked: false)
         }
-
-        await preferenceRepository.saveReminderSchedule(schedule)
 
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
         if isReminderEnabled, await authorizationStatus() == .authorized {
-            await scheduleReminderIfPossible(schedule: schedule)
+            try await scheduleReminder(schedule: schedule)
         }
 
-        return await loadState(isPremiumUnlocked: true)
+        await preferenceRepository.saveReminderSchedule(schedule)
+        return await loadStateWithinTransaction(isPremiumUnlocked: true)
     }
 
-    public func resync(isPremiumUnlocked: Bool) async {
+    func resyncWithinTransaction(isPremiumUnlocked: Bool) async throws {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
 
         let authorizationStatus = await authorizationStatus()
@@ -100,11 +162,9 @@ public actor CleanupReminderManager: CleanupReminderManaging {
         }
 
         let schedule = await resolvedSchedule(isPremiumUnlocked: isPremiumUnlocked)
-        await scheduleReminderIfPossible(schedule: schedule)
+        try await scheduleReminder(schedule: schedule)
     }
-}
 
-private extension CleanupReminderManager {
     func authorizationStatus() async -> CleanupReminderAuthorizationStatus {
         switch await notificationCenter.authorizationStatus() {
         case .authorized, .provisional, .ephemeral:
@@ -140,36 +200,18 @@ private extension CleanupReminderManager {
         )
     }
 
-    func scheduleReminderIfPossible(schedule: CleanupReminderSchedule) async {
-        await removeScheduledReminder()
-
-        let content = UNMutableNotificationContent()
-        content.title = String(localized: "Ready for another cleanup?", bundle: .main)
-        content.body = String(
-            localized: "Open Alike this week to clear clutter and keep saving storage.",
-            bundle: .main
-        )
-        content.sound = .default
-
-        var components = DateComponents()
-        components.weekday = schedule.weekday
-        components.hour = schedule.hour
-        components.minute = schedule.minute
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-        let request = UNNotificationRequest(
+    func scheduleReminder(schedule: CleanupReminderSchedule) async throws {
+        let request = CleanupReminderNotificationRequest(
             identifier: ReminderSchedule.identifier,
-            content: content,
-            trigger: trigger
+            title: String(localized: "Ready for another cleanup?", bundle: .main),
+            body: String(
+                localized: "Open Alike this week to clear clutter and keep saving storage.",
+                bundle: .main
+            ),
+            schedule: schedule,
+            repeats: true
         )
-
-        do {
-            try await notificationCenter.add(request)
-        } catch {
-            AppLog.storage.error(
-                "\(AppLog.tag(.error, "Failed to schedule cleanup reminder: \(error.localizedDescription)"))"
-            )
-        }
+        try await notificationCenter.add(request)
     }
 
     func removeScheduledReminder() async {
@@ -179,15 +221,50 @@ private extension CleanupReminderManager {
     }
 }
 
+private actor CleanupReminderTransactionGate {
+    private var isAcquired = false
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+
+    func acquire() async {
+        guard isAcquired else {
+            isAcquired = true
+            return
+        }
+
+        await withCheckedContinuation { continuation in
+            waiters.append(continuation)
+        }
+    }
+
+    func release() {
+        guard !waiters.isEmpty else {
+            isAcquired = false
+            return
+        }
+
+        waiters.removeFirst().resume()
+    }
+}
+
+struct CleanupReminderNotificationRequest: Equatable, Sendable {
+    let identifier: String
+    let title: String
+    let body: String
+    let schedule: CleanupReminderSchedule
+    let repeats: Bool
+}
+
 protocol UserNotificationCenterControlling: Sendable {
     func authorizationStatus() async -> UNAuthorizationStatus
     func requestAuthorization(options: UNAuthorizationOptions) async -> Bool
-    func add(_ request: UNNotificationRequest) async throws
+    func add(_ request: CleanupReminderNotificationRequest) async throws
     func removePendingNotificationRequests(withIdentifiers identifiers: [String]) async
 }
 
 private final class LiveUserNotificationCenter: @unchecked Sendable, UserNotificationCenterControlling {
-    private let center = UNUserNotificationCenter.current()
+    private var center: UNUserNotificationCenter {
+        UNUserNotificationCenter.current()
+    }
 
     func authorizationStatus() async -> UNAuthorizationStatus {
         await withCheckedContinuation { continuation in
@@ -205,9 +282,29 @@ private final class LiveUserNotificationCenter: @unchecked Sendable, UserNotific
         }
     }
 
-    func add(_ request: UNNotificationRequest) async throws {
+    func add(_ request: CleanupReminderNotificationRequest) async throws {
+        let content = UNMutableNotificationContent()
+        content.title = request.title
+        content.body = request.body
+        content.sound = .default
+
+        var components = DateComponents()
+        components.weekday = request.schedule.weekday
+        components.hour = request.schedule.hour
+        components.minute = request.schedule.minute
+
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: components,
+            repeats: request.repeats
+        )
+        let notificationRequest = UNNotificationRequest(
+            identifier: request.identifier,
+            content: content,
+            trigger: trigger
+        )
+
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            center.add(request) { error in
+            center.add(notificationRequest) { error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
