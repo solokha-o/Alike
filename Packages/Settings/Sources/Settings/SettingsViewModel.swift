@@ -21,7 +21,7 @@ public final class SettingsViewModel {
 
     private let cleanupInsightsProvider: any CleanupInsightsProviding
     private let cleanupReminderManager: any CleanupReminderManaging
-    
+
     public init(
         gridConfig: GridConfiguration = GridConfiguration.current,
         appVersion: String = SettingsViewModel.fullAppVersion(),
@@ -36,7 +36,7 @@ public final class SettingsViewModel {
                 preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
             )
     }
-    
+
     public func handleRateTapped(requestReview: RequestReviewAction) {
         handleRateTapped(requestReview: { requestReview() })
     }
@@ -90,11 +90,11 @@ public final class SettingsViewModel {
         )
         isUpdatingCleanupReminder = false
     }
-    
+
     public static func fullAppVersion() -> String {
         "\(defaultAppVersion) (\(defaultAppBuild))"
     }
-    
+
     private static func defaultAppVersion() -> String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     }
