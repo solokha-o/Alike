@@ -6,7 +6,7 @@ Use `Form` for structured settings, grouped inputs, and action rows. This patter
 
 ## Core patterns
 
-- Wrap the form in a `NavigationStack` only when it is presented in a sheet or standalone view without an existing navigation context.
+- Wrap the form in `RoutedNavigationStack` only when it is presented in a sheet or standalone view without an existing navigation context.
 - Group related controls into `Section` blocks.
 - Use `.scrollContentBackground(.hidden)` plus a custom background color when you need design-system colors.
 - Apply `.formStyle(.grouped)` for grouped styling when appropriate.
@@ -15,12 +15,14 @@ Use `Form` for structured settings, grouped inputs, and action rows. This patter
 ## Example: settings-style form
 
 ```swift
+import NavigationKit
+
 @MainActor
 struct SettingsView: View {
   @Environment(Theme.self) private var theme
 
   var body: some View {
-    NavigationStack {
+    RoutedNavigationStack {
       Form {
         Section("General") {
           NavigationLink("Display") { DisplaySettingsView() }
@@ -45,6 +47,8 @@ struct SettingsView: View {
 ## Example: modal form with validation
 
 ```swift
+import NavigationKit
+
 @MainActor
 struct AddRemoteServerView: View {
   @Environment(\.dismiss) private var dismiss
@@ -55,7 +59,7 @@ struct AddRemoteServerView: View {
   @FocusState private var isServerFieldFocused: Bool
 
   var body: some View {
-    NavigationStack {
+    RoutedNavigationStack {
       Form {
         TextField("Server URL", text: $server)
           .keyboardType(.URL)

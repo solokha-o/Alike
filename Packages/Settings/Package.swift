@@ -16,19 +16,21 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../DesignSystem"),
-        .package(path: "../NavigationKit")
+        .package(path: "../NavigationKit"),
+        .package(path: "../Cleanup"),
+        .package(path: "../Storage")
     ],
     targets: [
         .target(
             name: "Settings",
-            dependencies: ["Core", "DesignSystem", "NavigationKit"],
+            dependencies: ["Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "SettingsTests",
-            dependencies: ["Settings"]
+            dependencies: ["Settings", "Core"]
         ),
     ]
 )

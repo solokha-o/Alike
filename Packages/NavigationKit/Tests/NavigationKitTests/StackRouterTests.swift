@@ -1,56 +1,66 @@
-import Testing
+import SwiftUI
+import XCTest
 @testable import NavigationKit
 
-@Suite("StackRouter")
 @MainActor
-struct StackRouterTests {
-    @Test("Push appends route to path")
-    func pushAppendsRoute() {
+final class StackRouterTests: XCTestCase {
+    func testPushAppendsRoute() {
         let router = StackRouter<Int>()
 
         router.push(1)
         router.push(2)
 
-        #expect(router.path == [1, 2])
-        #expect(router.currentRoute == 2)
+        XCTAssertEqual(router.path, [1, 2])
+        XCTAssertEqual(router.currentRoute, 2)
     }
 
-    @Test("Pop removes last route when present")
-    func popRemovesLastRoute() {
+    func testPopRemovesLastRouteWhenPresent() {
         let router = StackRouter(path: [1, 2, 3])
 
         router.pop()
 
-        #expect(router.path == [1, 2])
-        #expect(router.currentRoute == 2)
+        XCTAssertEqual(router.path, [1, 2])
+        XCTAssertEqual(router.currentRoute, 2)
     }
 
-    @Test("Pop on empty path is no-op")
-    func popOnEmptyPathIsNoOp() {
+    func testPopOnEmptyPathIsNoOp() {
         let router = StackRouter<String>()
 
         router.pop()
 
-        #expect(router.path.isEmpty)
+        XCTAssertTrue(router.path.isEmpty)
     }
 
-    @Test("Replace path swaps navigation state")
-    func replaceSwapsPath() {
+    func testReplacePathSwapsNavigationState() {
         let router = StackRouter(path: ["auth"])
 
         router.replace(path: ["auth", "channels"])
 
-        #expect(router.path == ["auth", "channels"])
-        #expect(router.currentRoute == "channels")
+        XCTAssertEqual(router.path, ["auth", "channels"])
+        XCTAssertEqual(router.currentRoute, "channels")
     }
 
-    @Test("Pop to root clears all routes")
-    func popToRootClearsPath() {
+    func testPopToRootClearsPath() {
         let router = StackRouter(path: [1, 2, 3])
 
         router.popToRoot()
 
-        #expect(router.path.isEmpty)
-        #expect(router.currentRoute == nil)
+        XCTAssertTrue(router.path.isEmpty)
+        XCTAssertNil(router.currentRoute)
+    }
+
+    func testRouteLessStackInitializerBuildsRootContent() {
+        var didBuildRoot = false
+
+        func makeRoot() -> Text {
+            didBuildRoot = true
+            return Text("Modal")
+        }
+
+        let stack = RoutedNavigationStack(root: makeRoot)
+
+        _ = stack.body
+
+        XCTAssertTrue(didBuildRoot)
     }
 }

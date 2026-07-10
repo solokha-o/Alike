@@ -1,13 +1,14 @@
 ---
 name: swiftui-expert-skill
-description: Write, review, or improve SwiftUI code following best practices for state management, view composition, performance, macOS-specific APIs, and iOS 26+ Liquid Glass adoption. Use when building new SwiftUI features, refactoring existing views, reviewing code quality, or adopting modern SwiftUI patterns. Also triggers whenever an Xcode Instruments `.trace` file is referenced (to analyse it) or the user asks to **record** a new trace — attach to a running app, launch one fresh, or capture a manually-stopped session with the bundled `record_trace.py`. A target SwiftUI source file is optional; if provided it grounds recommendations in specific lines, but a trace alone is enough to diagnose hangs, hitches, CPU hotspots, and high-severity SwiftUI updates.
+description: Use when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, including state management and `@Observable` data flow, view composition and invalidation/performance, lists and `ForEach` identity, environment usage, localization, animations, Liquid Glass adoption, migrating soft-deprecated APIs, or Instruments `.trace` capture/analysis for hangs, hitches, CPU hotspots, or
+  excessive view updates.
 ---
 
 # SwiftUI Expert Skill
 
 ## Operating Rules
 
-- Consult `references/latest-apis.md` only when the task asks about deprecated/current SwiftUI APIs or uses version-specific API uncertainty
+- Consult `references/latest-apis.md` at the start of every task to avoid deprecated APIs
 - Prefer native SwiftUI APIs over UIKit/AppKit bridging unless bridging is necessary
 - Focus on correctness and performance; do not enforce specific architectures (MVVM, VIPER, etc.)
 - Encourage separating business logic from views for testability without mandating how
@@ -113,7 +114,10 @@ Consult the reference file for each topic relevant to the current task:
 | macOS window styling | `references/macos-window-styling.md` |
 | macOS views | `references/macos-views.md` |
 | Text patterns | `references/text-patterns.md` |
+| Localization | `references/localization.md` |
 | Deprecated API lookup | `references/latest-apis.md` |
+| Handling soft-deprecated APIs | `references/soft-deprecation.md` |
+| Previews | `references/previews.md` |
 | Instruments trace analysis | `references/trace-analysis.md` |
 | Instruments trace recording | `references/trace-recording.md` |
 
@@ -126,17 +130,20 @@ These are hard rules -- violations are always bugs:
 - [ ] Passed values never declared as `@State` or `@StateObject` (they ignore updates)
 - [ ] `@StateObject` for view-owned objects; `@ObservedObject` for injected
 - [ ] iOS 17+: `@State` with `@Observable`; `@Bindable` for injected observables needing bindings
-- [ ] `ForEach` uses stable identity (never `.indices` for dynamic content)
-- [ ] Constant number of views per `ForEach` element
+- [ ] `ForEach` uses stable identity (never `.indices`/`\.offset`; id outlives the view and isn't derived from mutable content)
+- [ ] Constant number of views per `ForEach` element; `List` rows are unary
+- [ ] No closures stored in custom `@Environment`/`@FocusedValue` keys
+- [ ] Custom `@Entry` default values are stable (no `Model()`/`Date()`/`UUID()` expressions)
 - [ ] `.animation(_:value:)` always includes the `value` parameter
 - [ ] `@FocusState` properties are `private`
 - [ ] No redundant `@FocusState` writes inside tap gesture handlers on `.focusable()` views
 - [ ] iOS 26+ APIs gated with `#available` and fallback provided
 - [ ] `import Charts` present in files using chart types
+- [ ] Previews use self-contained mock data; no dependency on live services or network
 
 ## References
 
-- `references/latest-apis.md` -- Deprecated-to-modern API transitions (iOS 15+ through iOS 26+); read only for API currency/deprecation questions
+- `references/latest-apis.md` -- **Read first for every task.** Deprecated-to-modern API transitions (iOS 15+ through iOS 26+)
 - `references/state-management.md` -- Property wrappers, data flow, `@Observable` migration
 - `references/view-structure.md` -- View extraction, container patterns, `@ViewBuilder`
 - `references/performance-patterns.md` -- Hot-path optimization, update control, `_logChanges()`
@@ -156,6 +163,9 @@ These are hard rules -- violations are always bugs:
 - `references/macos-scenes.md` -- Settings, MenuBarExtra, WindowGroup, multi-window
 - `references/macos-window-styling.md` -- Toolbar styles, window sizing, Commands
 - `references/macos-views.md` -- HSplitView, Table, PasteButton, AppKit interop
+- `references/previews.md` -- `#Preview` macro, `@Previewable` (iOS 18+), preview traits, mock data patterns for self-contained previews
 - `references/text-patterns.md` -- Text initializer selection, verbatim vs localized
+- `references/localization.md` -- String Catalogs, `#bundle` for packages, `LocalizedStringResource`, locale-aware formatting, RTL layout, translator comments
+- `references/soft-deprecation.md` -- How to behave with soft-deprecated APIs (when to migrate, scoping rule, don't migrate during unrelated edits)
 - `references/trace-analysis.md` -- Parse Instruments `.trace` files via `scripts/analyze_trace.py`; interpret main-thread coverage, high-severity SwiftUI updates, hitch narratives, and map findings back to source files
 - `references/trace-recording.md` -- Record a new trace via `scripts/record_trace.py`: attach to a running app, launch one fresh, or capture a manually-stopped session; supports stop-file for agent-driven flows

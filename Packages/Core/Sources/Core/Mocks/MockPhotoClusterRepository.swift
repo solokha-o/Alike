@@ -35,9 +35,17 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public func setLoadClusterSnapshotsResult(_ result: Result<[PhotoClusterSnapshot], Error>) {
         loadClusterSnapshotsResult = result
     }
+
+    public func setDeleteAllClustersResult(_ result: Result<Void, Error>) {
+        deleteAllClustersResult = result
+    }
     
     public func setGetLastScanDateResult(_ date: Date?) {
         getLastScanDateResult = date
+    }
+
+    public func setUpdateLastScanDateResult(_ result: Result<Void, Error>) {
+        updateLastScanDateResult = result
     }
     
     public func setHasGalleryChangedResult(_ changed: Bool) {

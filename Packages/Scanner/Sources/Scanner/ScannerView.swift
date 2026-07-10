@@ -10,9 +10,20 @@ private enum ScannerRoute: Hashable {
     case clusterDetails(PhotoCluster)
 }
 
+private struct PresentedCleanupCategory: Identifiable {
+    let kind: CleanupCategoryKind
+    let assets: [PHAsset]
+
+    var id: CleanupCategoryKind { kind }
+}
+
 /// Scanner screen with analysis and results
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
+    @State private var presentedCleanupCategory: PresentedCleanupCategory?
+    @State private var presentedPaywallFeature: PremiumFeature?
+    @State private var cleanupCategoryErrorMessage: String?
+    @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
@@ -60,23 +71,92 @@ public struct ScannerView: View {
                 }
             }
         }
+        .sheet(item: $presentedCleanupCategory) { presented in
+            RoutedNavigationStack {
+                ScreenshotCleanupView(
+                    assets: presented.assets,
+                    sourceCategory: presented.kind,
+                    cleanupService: viewModel.cleanupService,
+                    cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                    openSettingsAction: {
+                        PhotoPermissionManagerImpl().openSettings()
+                    },
+                    onCleanupCompleted: { record in
+                        Task {
+                            await viewModel.handleCleanupCompleted(record)
+                        }
+                    }
+                )
+            }
+            .interactiveDismissDisabled()
+        }
+        .sheet(item: $presentedPaywallFeature) { feature in
+            PremiumPaywallSheet(feature: feature)
+                .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $isClusterControlsPresented) {
+            ScannerClusterControlsSheet(controls: $viewModel.clusterControls)
+        }
+        .alert(
+            appLocalized("Couldn't Open Cleanup Category"),
+            isPresented: Binding(
+                get: { cleanupCategoryErrorMessage != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        cleanupCategoryErrorMessage = nil
+                    }
+                }
+            )
+        ) {
+            Button(appLocalized("OK"), role: .cancel) {
+                cleanupCategoryErrorMessage = nil
+            }
+        } message: {
+            Text(cleanupCategoryErrorMessage ?? "")
+        }
     }
 
     @ViewBuilder
     private func content(router: StackRouter<ScannerRoute>) -> some View {
-        Group {
-            switch viewModel.state {
-            case .idle:
-                idleView
-            case .scanning(let progress):
-                scanningView(progress: progress)
-            case .results(let clusters):
-                resultsView(clusters: clusters, router: router)
-            case .error(let message):
-                errorView(message: message)
+        VStack(spacing: Spacing.medium) {
+            if let cleanupRefreshState = viewModel.cleanupRefreshState {
+                CleanupRefreshBanner(
+                    state: cleanupRefreshState,
+                    onRetry: {
+                        Task {
+                            await viewModel.retryCleanupRefresh()
+                        }
+                    },
+                    onDismiss: viewModel.dismissCleanupRefreshState
+                )
+                .padding(.horizontal, Spacing.medium)
+                .padding(.top, Spacing.small)
+                .transition(
+                    .asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .move(edge: .top).combined(with: .opacity)
+                    )
+                )
+                .zIndex(1)
             }
+
+            Group {
+                switch viewModel.state {
+                case .idle:
+                    idleView
+                case .scanning(let progress):
+                    scanningView(progress: progress)
+                case .results(let clusters):
+                    resultsView(clusters: clusters, router: router)
+                case .error(let message):
+                    errorView(message: message)
+                }
+            }
+            .disabled(viewModel.isCleanupRefreshInProgress)
         }
         .navigationTitle(Text(appLocalized("Scanner")))
+        .animation(.appSmooth, value: viewModel.cleanupRefreshState != nil)
+        .animation(.appSmooth, value: viewModel.cleanupRefreshState)
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -88,9 +168,19 @@ public struct ScannerView: View {
         case .clusterDetails(let cluster):
             ClusterDetailsView(
                 cluster: cluster,
+                cleanupService: viewModel.cleanupService,
+                cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                openSettingsAction: {
+                    PhotoPermissionManagerImpl().openSettings()
+                },
                 onReviewStateChanged: {
                     Task {
                         await viewModel.loadReviewStates()
+                    }
+                },
+                onCleanupCompleted: { record in
+                    Task {
+                        await viewModel.handleCleanupCompleted(record)
                     }
                 }
             )
@@ -115,6 +205,11 @@ public struct ScannerView: View {
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
+
+            if viewModel.cleanupInsights.hasHistory {
+                CleanupInsightsCard(insights: viewModel.cleanupInsights)
+                    .padding(.horizontal, Spacing.medium)
+            }
             
             Spacer()
             
@@ -172,25 +267,43 @@ public struct ScannerView: View {
         clusters: [PhotoCluster],
         router: StackRouter<ScannerRoute>
     ) -> some View {
-        let sortedClusters = viewModel.sortedClusters(from: clusters)
-        let needsReviewClusters = viewModel.needsReviewClusters(from: sortedClusters)
-        let remainingClusters = viewModel.remainingClusters(from: sortedClusters)
-        let sessionProgress = viewModel.displayedSessionProgress(for: sortedClusters)
+        let canonicalClusters = viewModel.canonicalSortedClusters(from: clusters)
+        let visibleClusters = viewModel.sortedClusters(from: canonicalClusters)
+        let needsReviewClusters = viewModel.needsReviewClusters(from: visibleClusters)
+        let remainingClusters = viewModel.remainingClusters(from: visibleClusters)
+        let sessionProgress = viewModel.displayedSessionProgress(for: canonicalClusters)
+        let cleanupEntryCluster = viewModel.cleanupEntryCluster(from: canonicalClusters)
 
         return ScrollView {
-            if sortedClusters.isEmpty {
-                ContentUnavailableView {
-                    Label {
-                        Text(appLocalized("No Similar Photos Found"))
-                    } icon: {
-                        Image(systemName: "photo.stack")
-                    }
-                } description: {
-                    Text(appLocalized("Try adjusting sensitivity in Settings"))
+            VStack(spacing: Spacing.medium) {
+                if viewModel.cleanupInsights.hasHistory {
+                    CleanupInsightsCard(insights: viewModel.cleanupInsights)
                 }
-                .padding(.top, 100)
-            } else {
-                VStack(spacing: Spacing.medium) {
+
+                if !viewModel.cleanupCategories.isEmpty {
+                    CleanupCategoriesCard(
+                        categories: viewModel.cleanupCategories,
+                        isLocked: viewModel.isCategoryLocked(_:),
+                        onTapCategory: { category in
+                            Task {
+                                await openCleanupCategory(category)
+                            }
+                        }
+                    )
+                }
+
+                if canonicalClusters.isEmpty {
+                    ContentUnavailableView {
+                        Label {
+                            Text(appLocalized("No Similar Photos Found"))
+                        } icon: {
+                            Image(systemName: "photo.stack")
+                        }
+                    } description: {
+                        Text(appLocalized("Try adjusting sensitivity in Settings"))
+                    }
+                    .padding(.top, viewModel.cleanupCategories.isEmpty ? 100 : Spacing.large)
+                } else {
                     if viewModel.shouldShowRescanPrompt {
                         RescanPromptCard {
                             Task {
@@ -214,17 +327,27 @@ public struct ScannerView: View {
                         )
                     }
 
-                    CleanupSessionProgressCard(
-                        progress: sessionProgress,
-                        onTap: {
-                            guard let cluster = viewModel.cleanupEntryCluster(from: sortedClusters) else {
-                                return
+                    if let cleanupEntryCluster {
+                        CleanupSessionProgressCard(
+                            progress: sessionProgress,
+                            onTap: {
+                                router.push(.clusterDetails(cleanupEntryCluster))
                             }
-                            router.push(.clusterDetails(cluster))
-                        }
-                    )
+                        )
+                    }
 
-                    if !remainingClusters.isEmpty {
+                    if visibleClusters.isEmpty {
+                        ContentUnavailableView {
+                            Label {
+                                Text(appLocalized("No Clusters Match These Controls"))
+                            } icon: {
+                                Image(systemName: "line.3.horizontal.decrease.circle")
+                            }
+                        } description: {
+                            Text(appLocalized("Try changing the filters or reset the controls"))
+                        }
+                        .padding(.top, Spacing.large)
+                    } else if !remainingClusters.isEmpty {
                         ClusterSectionCard(
                             title: appLocalized("All clusters"),
                             subtitle: appLocalized("Everything else that is still available in your cleanup queue"),
@@ -239,8 +362,8 @@ public struct ScannerView: View {
                         )
                     }
                 }
-                .padding(Spacing.medium)
             }
+            .padding(Spacing.medium)
         }
         .onAppear {
             Task {
@@ -249,6 +372,15 @@ public struct ScannerView: View {
         }
         .toolbar {
 #if os(iOS)
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isClusterControlsPresented = true
+                } label: {
+                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                }
+                .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+                .accessibilityValue(Text(activeControlsSummary))
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
@@ -262,6 +394,15 @@ public struct ScannerView: View {
                 .accessibilityHint(Text(appLocalized("Starts scanning your photo library again")))
             }
 #else
+            ToolbarItem {
+                Button {
+                    isClusterControlsPresented = true
+                } label: {
+                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                }
+                .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+                .accessibilityValue(Text(activeControlsSummary))
+            }
             ToolbarItem {
                 Button {
                     Task {
@@ -279,6 +420,35 @@ public struct ScannerView: View {
         .sensoryFeedback(.success, trigger: clusters.count)
     }
 
+    private var activeControlsSummary: String {
+        guard !viewModel.clusterControls.isDefault else { return appLocalized("No active controls") }
+        var values = [viewModel.clusterControls.sort.title]
+        if viewModel.clusterControls.reviewFilter != .all {
+            values.append(viewModel.clusterControls.reviewFilter.title)
+        }
+        if viewModel.clusterControls.minimumClusterSize != .any {
+            values.append(viewModel.clusterControls.minimumClusterSize.title)
+        }
+        if viewModel.clusterControls.favoritesOnly {
+            values.append(appLocalized("Favorites only"))
+        }
+        return values.joined(separator: ", ")
+    }
+
+    private func openCleanupCategory(_ category: CleanupCategorySummary) async {
+        if viewModel.isCategoryLocked(category.kind) {
+            presentedPaywallFeature = category.kind.premiumFeature
+            return
+        }
+
+        do {
+            let assets = try await viewModel.loadAssets(for: category.kind)
+            presentedCleanupCategory = PresentedCleanupCategory(kind: category.kind, assets: assets)
+        } catch {
+            cleanupCategoryErrorMessage = error.localizedDescription
+        }
+    }
+
     
     // MARK: - Error View
     private func errorView(message: String) -> some View {
@@ -290,6 +460,250 @@ public struct ScannerView: View {
             }
         } description: {
             Text(message)
+        }
+    }
+}
+
+private struct CleanupInsightsCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
+    let insights: CleanupInsights
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup History"))
+                .font(.appHeadline)
+
+            HStack(spacing: Spacing.small) {
+                metricItem(
+                    title: appLocalized("Estimated Reclaimable"),
+                    value: ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file),
+                    color: .statusSavings
+                )
+                metricItem(
+                    title: appLocalized("Photos Moved to Recently Deleted"),
+                    value: "\(insights.totalDeletedItems)",
+                    color: .accent
+                )
+            }
+
+            if let latestCleanup = insights.latestCleanup {
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Text(appLocalized("Latest Cleanup"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(latestCleanupSummary(for: latestCleanup))
+                        .font(.appSubheadline)
+                    Text(relativeDateText(for: latestCleanup.completedAt))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.top, Spacing.xxSmall)
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(appLocalized("Cleanup History")))
+        .accessibilityValue(Text(accessibilitySummary))
+    }
+
+    private func metricItem(title: String, value: String, color: Color) -> some View {
+        VStack(spacing: Spacing.xxSmall) {
+            Text(value)
+                .font(.title3.bold())
+                .monospacedDigit()
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.xSmall)
+        .background(color.opacity(metricBackgroundOpacity), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(title))
+        .accessibilityValue(Text(value))
+    }
+
+    private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
+        let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
+        return String(
+            format: appLocalized("%d photos moved • %@ estimated reclaimable"),
+            record.deletedCount,
+            savingsText
+        )
+    }
+
+    private func relativeDateText(for date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private var accessibilitySummary: String {
+        let reclaimableText = ByteCountFormatter.string(
+            fromByteCount: insights.totalSavedBytes,
+            countStyle: .file
+        )
+        return String(
+            format: appLocalized("%@ estimated reclaimable, %d photos moved to Recently Deleted"),
+            reclaimableText,
+            insights.totalDeletedItems
+        )
+    }
+
+    private var metricBackgroundOpacity: Double {
+        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
+}
+
+private struct ScannerClusterControlsSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var controls: ScannerClusterControls
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(appLocalized("Sort by")) {
+                    Picker(appLocalized("Sort order"), selection: $controls.sort) {
+                        ForEach(ScannerClusterSort.allCases, id: \.self) { sort in
+                            Text(sort.title).tag(sort)
+                        }
+                    }
+                }
+
+                Section(appLocalized("Filter by")) {
+                    Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                        ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
+                            Text(filter.title).tag(filter)
+                        }
+                    }
+                    Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                        ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
+                            Text(size.title).tag(size)
+                        }
+                    }
+                    Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
+                }
+
+                Section {
+                    Button(appLocalized("Reset controls"), role: .destructive) {
+                        controls = ScannerClusterControls()
+                    }
+                    .disabled(controls.isDefault)
+                }
+            }
+            .navigationTitle(Text(appLocalized("Filter and Sort")))
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(appLocalized("Done")) { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+    }
+}
+
+private struct CleanupRefreshBanner: View {
+    let state: ScannerViewModel.CleanupRefreshState
+    let onRetry: () -> Void
+    let onDismiss: () -> Void
+
+    var body: some View {
+        HStack(alignment: .top, spacing: Spacing.small) {
+            icon
+
+            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                Text(title)
+                    .font(.appHeadline)
+                Text(message)
+                    .font(.appBody)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: Spacing.small)
+
+            actionArea
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .subtleShadow()
+    }
+
+    @ViewBuilder
+    private var icon: some View {
+        switch state {
+        case .refreshing:
+            ProgressView()
+                .tint(.accent)
+        case .success:
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundStyle(Color.statusReviewed)
+                .font(.title3)
+        case .failed:
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(Color.statusNeedsReview)
+                .font(.title3)
+        }
+    }
+
+    private var title: String {
+        switch state {
+        case .refreshing(let record):
+            String(
+                format: appLocalized("%d photos moved to Recently Deleted."),
+                record.deletedCount
+            )
+        case .success(let record):
+            String(
+                format: appLocalized("%d photos moved to Recently Deleted."),
+                record.deletedCount
+            )
+        case .failed:
+            appLocalized("Refresh Required")
+        }
+    }
+
+    private var message: String {
+        switch state {
+        case .refreshing:
+            appLocalized("Refreshing results from your photo library...")
+        case .success:
+            appLocalized("Your cleanup results are up to date.")
+        case .failed(_, let message):
+            message
+        }
+    }
+
+    @ViewBuilder
+    private var actionArea: some View {
+        switch state {
+        case .refreshing:
+            EmptyView()
+        case .success:
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.headline)
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text(appLocalized("Dismiss")))
+        case .failed:
+            HStack(spacing: Spacing.small) {
+                Button(appLocalized("Retry")) {
+                    onRetry()
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.headline)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .accessibilityLabel(Text(appLocalized("Dismiss")))
+            }
         }
     }
 }
@@ -433,7 +847,7 @@ private struct CleanupSessionProgressCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(appLocalized("Cleanup Session Progress")))
-        .accessibilityValue(Text("\(progress.reviewedCount) \(appLocalized("reviewed")), \(progress.remainingClusters) \(appLocalized("left to review"))"))
+        .accessibilityValue(Text("\(progress.reviewedCount) \(appLocalized("Reviewed")), \(progress.remainingClusters) \(appLocalized("Left to Review"))"))
         .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
     }
 
@@ -457,6 +871,171 @@ private struct CleanupSessionProgressCard: View {
 
     private var metricBackgroundOpacity: Double {
         colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
+}
+
+private struct CleanupCategoriesCard: View {
+    let categories: [CleanupCategorySummary]
+    let isLocked: (CleanupCategoryKind) -> Bool
+    let onTapCategory: (CleanupCategorySummary) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup Categories"))
+                .font(.appHeadline)
+
+            VStack(spacing: Spacing.small) {
+                ForEach(categories) { category in
+                    CleanupCategoryRow(
+                        summary: category,
+                        isLocked: isLocked(category.kind),
+                        onTap: { onTapCategory(category) }
+                    )
+                }
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+}
+
+private struct CleanupCategoryRow: View {
+    let summary: CleanupCategorySummary
+    let isLocked: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: Spacing.small) {
+                Image(systemName: summary.kind.presentation.systemImageName)
+                    .font(.title3)
+                    .foregroundStyle(Color.accent)
+
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Text(summary.kind.presentation.title)
+                        .font(.appHeadline)
+                    Text(categorySummaryText)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(Spacing.small)
+            .background(Color.secondary.opacity(ColorOpacity.statusBackground), in: RoundedRectangle(cornerRadius: CornerRadius.small))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(summary.kind.presentation.title))
+        .accessibilityValue(Text("\(summary.assetCount)"))
+        .accessibilityHint(
+            Text(
+                isLocked
+                    ? summary.kind.presentation.lockedHint
+                    : summary.kind.presentation.openHint
+            )
+        )
+    }
+
+    private var categorySummaryText: String {
+        let estimatedSavings = ByteCountFormatter.string(
+            fromByteCount: summary.estimatedSavingsBytes,
+            countStyle: .file
+        )
+        if summary.assetCount == 1 {
+            return String(
+                format: appLocalized("1 item • %@ estimated reclaimable"),
+                estimatedSavings
+            )
+        }
+        return String(
+            format: appLocalized("%d items • %@ estimated reclaimable"),
+            summary.assetCount,
+            estimatedSavings
+        )
+    }
+}
+
+private struct PremiumPaywallSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let feature: PremiumFeature
+
+    var body: some View {
+        RoutedNavigationStack {
+            VStack(spacing: Spacing.large) {
+                Image(systemName: "lock.shield.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Color.accent)
+
+                VStack(spacing: Spacing.small) {
+                    Text(title)
+                        .font(.appTitle2)
+                        .multilineTextAlignment(.center)
+                    Text(message)
+                        .font(.appBody)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") {
+                    dismiss()
+                }
+
+                Spacer()
+            }
+            .padding(Spacing.large)
+            .navigationTitle(Text(appLocalized("Premium")))
+#if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+#endif
+            .toolbar {
+#if os(iOS)
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel(Text(appLocalized("Close")))
+                }
+#else
+                ToolbarItem {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel(Text(appLocalized("Close")))
+                }
+#endif
+            }
+        }
+    }
+
+    private var title: String {
+        switch feature {
+        case .cleanupReminders:
+            appLocalized("Custom reminder schedule is a premium feature")
+        case .screenshotCleanup, .blurredPhotoCleanup:
+            feature.categoryKind?.presentation.paywallTitle ?? ""
+        }
+    }
+
+    private var message: String {
+        switch feature {
+        case .cleanupReminders:
+            appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine.")
+        case .screenshotCleanup, .blurredPhotoCleanup:
+            feature.categoryKind?.presentation.paywallMessage ?? ""
+        }
     }
 }
 

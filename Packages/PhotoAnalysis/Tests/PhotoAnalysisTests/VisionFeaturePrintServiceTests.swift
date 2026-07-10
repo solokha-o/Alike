@@ -21,18 +21,7 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
     // MARK: - Feature Print Generation Tests
     
     func testGenerateFeaturePrintFromCGImage() async throws {
-        // Given: A simple test image
-        let size = CGSize(width: 100, height: 100)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        let image = renderer.image { context in
-            UIColor.red.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        guard let cgImage = image.cgImage else {
-            XCTFail("Failed to create CGImage")
-            return
-        }
+        let cgImage = try XCTUnwrap(makeSolidImage(red: 255, green: 0, blue: 0))
         
         // When: Generating feature print
         let featurePrint = try await generateFeaturePrintOrSkip(from: cgImage)
@@ -43,18 +32,7 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
     }
     
     func testComputeDistanceBetweenIdenticalImages() async throws {
-        // Given: Two identical feature prints from the same image
-        let size = CGSize(width: 100, height: 100)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        let image = renderer.image { context in
-            UIColor.blue.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        guard let cgImage = image.cgImage else {
-            XCTFail("Failed to create CGImage")
-            return
-        }
+        let cgImage = try XCTUnwrap(makeSolidImage(red: 0, green: 0, blue: 255))
         
         let print1 = try await generateFeaturePrintOrSkip(from: cgImage)
         let print2 = try await generateFeaturePrintOrSkip(from: cgImage)
@@ -67,25 +45,8 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
     }
     
     func testComputeDistanceBetweenDifferentImages() async throws {
-        // Given: Two different images
-        let size = CGSize(width: 100, height: 100)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        
-        let redImage = renderer.image { context in
-            UIColor.red.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        let blueImage = renderer.image { context in
-            UIColor.blue.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        guard let redCGImage = redImage.cgImage,
-              let blueCGImage = blueImage.cgImage else {
-            XCTFail("Failed to create CGImages")
-            return
-        }
+        let redCGImage = try XCTUnwrap(makeSolidImage(red: 255, green: 0, blue: 0))
+        let blueCGImage = try XCTUnwrap(makeSolidImage(red: 0, green: 0, blue: 255))
         
         let print1 = try await generateFeaturePrintOrSkip(from: redCGImage)
         let print2 = try await generateFeaturePrintOrSkip(from: blueCGImage)
@@ -105,25 +66,8 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
     }
     
     func testDistanceIsSymmetric() async throws {
-        // Given: Two images
-        let size = CGSize(width: 100, height: 100)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        
-        let image1 = renderer.image { context in
-            UIColor.red.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        let image2 = renderer.image { context in
-            UIColor.green.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        guard let cgImage1 = image1.cgImage,
-              let cgImage2 = image2.cgImage else {
-            XCTFail("Failed to create CGImages")
-            return
-        }
+        let cgImage1 = try XCTUnwrap(makeSolidImage(red: 255, green: 0, blue: 0))
+        let cgImage2 = try XCTUnwrap(makeSolidImage(red: 0, green: 255, blue: 0))
         
         let print1 = try await generateFeaturePrintOrSkip(from: cgImage1)
         let print2 = try await generateFeaturePrintOrSkip(from: cgImage2)
@@ -134,6 +78,35 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
         
         // Then: Distance should be the same in both directions
         XCTAssertEqual(distance1to2, distance2to1, accuracy: 0.001, "Distance should be symmetric")
+    }
+
+    func testShouldSkipImageDataRequestForPhotosError() {
+        let error = NSError(domain: PHPhotosErrorDomain, code: 3164)
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldSkipImageDataRequestForAccountsError() {
+        let error = NSError(domain: "com.apple.accounts", code: 7)
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldNotSkipUnrelatedError() {
+        let error = NSError(domain: NSCocoaErrorDomain, code: 4)
+
+        XCTAssertFalse(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
+    }
+
+    func testShouldSkipUnderlyingPhotosError() {
+        let underlying = NSError(domain: PHPhotosErrorDomain, code: 3164)
+        let wrapped = NSError(
+            domain: NSCocoaErrorDomain,
+            code: 0,
+            userInfo: [NSUnderlyingErrorKey: underlying]
+        )
+
+        XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: wrapped))
     }
 
     private func generateFeaturePrintOrSkip(from cgImage: CGImage) async throws -> VNFeaturePrintObservation {
@@ -147,5 +120,36 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
             }
             throw error
         }
+    }
+
+    private func makeSolidImage(red: UInt8, green: UInt8, blue: UInt8) -> CGImage? {
+        let width = 100
+        let height = 100
+        let bytesPerPixel = 4
+        let bytesPerRow = width * bytesPerPixel
+        var data = [UInt8](repeating: 255, count: width * height * bytesPerPixel)
+
+        for offset in stride(from: 0, to: data.count, by: bytesPerPixel) {
+            data[offset] = red
+            data[offset + 1] = green
+            data[offset + 2] = blue
+        }
+
+        guard let provider = CGDataProvider(data: Data(data) as CFData) else {
+            return nil
+        }
+        return CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bitsPerPixel: 32,
+            bytesPerRow: bytesPerRow,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+            provider: provider,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
+        )
     }
 }

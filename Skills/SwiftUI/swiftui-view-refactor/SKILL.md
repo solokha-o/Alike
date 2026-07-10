@@ -25,6 +25,7 @@ Apply a consistent structure and dependency pattern to SwiftUI views, with a foc
 - Favor `@State`, `@Environment`, `@Query`, and `task`/`onChange` for orchestration.
 - Inject services and shared models via `@Environment`; keep views small and composable.
 - Split large views into subviews rather than introducing a view model.
+- If two screens/view models repeat the same business flow, extract that flow into a feature service or coordinator instead of copying it forward.
 
 ### 3) Split large bodies and view properties
 - If `body` grows beyond a screen or has multiple logical sections, split it into smaller subviews.
@@ -117,13 +118,20 @@ init(dependency: Dependency) {
 - For `@Observable` reference types, store them as `@State` in the root view.
 - Pass observables down explicitly as needed; avoid optional state unless required.
 
+### 6) Responsibility-first file splitting
+- One file should have one primary responsibility.
+- Keep screen rendering, reusable components, support models, and service logic in separate files once each becomes non-trivial.
+- If a view model file starts carrying helper types, fallback services, or reusable workflow logic, move those types into dedicated files named after their responsibility.
+- Do not create `Utils` buckets for domain logic; prefer explicit names such as `DeletionCoordinator`, `ReviewStateMapper`, or `SelectionSummaryBuilder`.
+
 ## Workflow
 
 1) Reorder the view to match the ordering rules.
 2) Favor MV: move lightweight orchestration into the view using `@State`, `@Environment`, `@Query`, `task`, and `onChange`.
-3) If a view model exists, replace optional view models with a non-optional `@State` view model initialized in `init` by passing dependencies from the view.
-4) Confirm Observation usage: `@State` for root `@Observable` view models, no redundant wrappers.
-5) Keep behavior intact: do not change layout or business logic unless requested.
+3) If duplicate workflow logic exists across files, extract it into one service/coordinator before doing local cleanup in each caller.
+4) If a view model exists, replace optional view models with a non-optional `@State` view model initialized in `init` by passing dependencies from the view.
+5) Confirm Observation usage: `@State` for root `@Observable` view models, no redundant wrappers.
+6) Keep behavior intact: do not change layout or business logic unless requested.
 
 ## Notes
 
@@ -134,3 +142,10 @@ init(dependency: Dependency) {
 ## Large-view handling
 
 - When a SwiftUI view file exceeds ~300 lines, split it using extensions to group related helpers. Move async functions and helper functions into dedicated `private` extensions, separated with `// MARK: -` comments that describe their purpose (e.g., `// MARK: - Actions`, `// MARK: - Subviews`, `// MARK: - Helpers`). Keep the main `struct` focused on stored properties, init, and `body`, with view-building computed vars also grouped via marks when the file is long.
+- For new feature work, do not land a single file that combines all of these at once: screen view, `@Observable` view model, reusable section components, and fullscreen/media helpers. Split by responsibility up front:
+  - `<Feature>View.swift` for the screen entry and local orchestration
+  - `<Feature>ViewModel.swift` only when a view model is truly needed
+  - `<Feature>Components.swift` for small feature-specific subviews
+  - `<Feature>FullscreenView.swift` or similar when media viewers/zoom logic would otherwise bloat the main screen
+- If the feature also needs shared business workflow logic, add a dedicated file such as `<Feature>Service.swift` or `<Feature>Coordinator.swift` rather than burying that logic in the view model file.
+- If a feature introduces both a new screen and a new view model, default to separate files even if the first implementation still fits in one file. This prevents “fast first pass” files from becoming the long-term structure.

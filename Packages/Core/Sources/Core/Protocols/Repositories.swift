@@ -43,6 +43,24 @@ public protocol ClusterReviewStateRepository: Sendable {
     func deleteAllReviewStates() async throws
 }
 
+/// Repository for persisted cleanup category candidate snapshots.
+public protocol CleanupCategorySnapshotRepository: Sendable {
+    /// Load a stored snapshot for one cleanup category.
+    func loadSnapshot(for kind: CleanupCategoryKind) async throws -> CleanupCategorySnapshot?
+
+    /// Load all stored snapshots keyed by category kind.
+    func loadAllSnapshots() async throws -> [CleanupCategoryKind: CleanupCategorySnapshot]
+
+    /// Save or overwrite a category snapshot.
+    func saveSnapshot(_ snapshot: CleanupCategorySnapshot) async throws
+
+    /// Atomically replace every stored category snapshot.
+    func replaceAllSnapshots(_ snapshots: [CleanupCategorySnapshot]) async throws
+
+    /// Delete all stored category snapshots.
+    func deleteAllSnapshots() async throws
+}
+
 /// Repository for the active cleanup session aggregate state.
 public protocol CleanupSessionRepository: Sendable {
     /// Load currently active cleanup session.
@@ -55,10 +73,71 @@ public protocol CleanupSessionRepository: Sendable {
     func deleteActiveSession() async throws
 }
 
+/// Service for deleting photos from the device photo library.
+public protocol PhotoCleanupService: Sendable {
+    /// Delete the assets identified by the provided local identifiers.
+    func deleteAssets(
+        localIdentifiers: Set<String>,
+        sourceClusterID: UUID,
+        estimatedSavingsBytes: Int64
+    ) async throws -> CleanupCompletionRecord
+}
+
+/// Repository for persisted cleanup completion history.
+public protocol CleanupHistoryRepository: Sendable {
+    /// Load all persisted cleanup completion entries.
+    func loadEntries() async throws -> [CleanupCompletionRecord]
+
+    /// Persist one cleanup completion entry.
+    func append(_ entry: CleanupCompletionRecord) async throws
+}
+
+/// Repository for persisted cleanup reminder preference.
+public protocol CleanupReminderPreferenceRepository: Sendable {
+    /// Load whether the user enabled weekly cleanup reminders.
+    func loadReminderEnabled() async -> Bool
+
+    /// Persist whether the user enabled weekly cleanup reminders.
+    func saveReminderEnabled(_ isEnabled: Bool) async
+
+    /// Load the stored weekly cleanup reminder schedule.
+    func loadReminderSchedule() async -> CleanupReminderSchedule
+
+    /// Persist the weekly cleanup reminder schedule.
+    func saveReminderSchedule(_ schedule: CleanupReminderSchedule) async
+}
+
+/// Service for managing cleanup reminder scheduling and premium customization gating.
+public protocol CleanupReminderManaging: Sendable {
+    /// Load the current reminder state for the supplied premium access state.
+    func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState
+
+    /// Enable or disable the weekly reminder for the supplied premium access state.
+    func setEnabled(_ isEnabled: Bool, isPremiumUnlocked: Bool) async throws -> CleanupReminderState
+
+    /// Update the stored weekly reminder schedule when premium customization is available.
+    func setSchedule(
+        _ schedule: CleanupReminderSchedule,
+        isPremiumUnlocked: Bool
+    ) async throws -> CleanupReminderState
+
+    /// Reconcile stored preference and scheduled notification at app launch.
+    func resync(isPremiumUnlocked: Bool) async throws
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
     func analyzePhotoLibrary(sensitivity: Float, progress: @Sendable @escaping (Double) -> Void) async throws -> [PhotoCluster]
+
+    /// Load cached cleanup category summaries derived from the photo library.
+    func summarizeCleanupCategories() async throws -> [CleanupCategorySummary]
+
+    /// Recompute cleanup categories and persist the refreshed snapshots.
+    func refreshCleanupCategories() async throws -> [CleanupCategorySummary]
+
+    /// Load live assets for the requested cleanup category.
+    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset]
     
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float

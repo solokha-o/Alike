@@ -10,6 +10,7 @@ Use a centralized sheet routing pattern so any view can present modals without p
 - Store the current sheet in a router object (`presentedSheet: SheetDestination?`).
 - Create a view modifier like `withSheetDestinations(...)` that maps the enum to concrete sheet views.
 - Inject the router into the environment so child views can set `presentedSheet` directly.
+- When the presented sheet needs navigation title, toolbar, or push support, wrap it with the route-less `RoutedNavigationStack` from `NavigationKit`.
 
 ## Example: SheetDestination enum
 
@@ -84,14 +85,16 @@ This makes the child assignment to `router.presentedSheet` drive presentation at
 
 ## Example: sheets that need their own navigation
 
-Wrap sheet content in a `NavigationStack` so it can push within the modal.
+Wrap sheet content in the route-less `RoutedNavigationStack` so it can own navigation chrome without introducing a raw `NavigationStack`.
 
 ```swift
+import NavigationKit
+
 struct NavigationSheet<Content: View>: View {
   var content: () -> Content
 
   var body: some View {
-    NavigationStack {
+    RoutedNavigationStack {
       content()
         .toolbar { CloseToolbarItem() }
     }

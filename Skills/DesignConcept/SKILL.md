@@ -24,7 +24,7 @@ This skill helps create iOS app design concepts that follow Apple Human Interfac
 ## Workflow
 
 1. Clarify the screen goal and primary user action.
-2. Define the structure: navigation (NavigationStack), tabs (TabView), modals (sheet), lists (List).
+2. Define the structure: navigation (`RoutedNavigationStack` via `NavigationKit`), tabs (TabView), modals (sheet), lists (List).
 3. Choose native components for each element (Form, List, Section, Button, Toggle, Picker, etc.).
 4. Specify exact SF Symbols names for icons.
 5. Describe visual hierarchy and states (empty, loading, error) within native components.

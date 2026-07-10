@@ -2,6 +2,8 @@ import SwiftUI
 import Photos
 import Core
 import DesignSystem
+import Storage
+import NavigationKit
 
 #if os(iOS)
 
@@ -9,23 +11,41 @@ import DesignSystem
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
     private let onReviewStateChanged: (() -> Void)?
+    private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
+    @State private var didCompleteCleanup = false
+    @Environment(\.dismiss) private var dismiss
 
-    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
+    public init(
+        cluster: PhotoCluster,
+        cleanupService: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+    ) {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
-        self._viewModel = State(initialValue: ClusterDetailsViewModel(cluster: cluster))
+        self.onCleanupCompleted = onCleanupCompleted
+        self._viewModel = State(initialValue: ClusterDetailsViewModel(
+            cluster: cluster,
+            cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            openSettingsAction: openSettingsAction
+        ))
     }
 
     init(
         cluster: PhotoCluster,
         viewModel: ClusterDetailsViewModel,
-        onReviewStateChanged: (() -> Void)? = nil
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
+        self.onCleanupCompleted = onCleanupCompleted
         self._viewModel = State(initialValue: viewModel)
     }
     
@@ -65,6 +85,7 @@ public struct ClusterDetailsView: View {
                         )
                     }
                 }
+                .allowsHitTesting(!viewModel.isDeleting)
                 .padding(.horizontal, Spacing.medium)
                 .padding(.bottom, Spacing.medium)
             }
@@ -87,8 +108,12 @@ public struct ClusterDetailsView: View {
                     ClusterReviewActionBar(
                         onKeepBestOnly: viewModel.keepBestOnly,
                         onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                        onClearSelection: viewModel.clearSelection
+                        onClearSelection: viewModel.clearSelection,
+                        onDeleteSelected: viewModel.requestDeleteConfirmation,
+                        isDeleteActionVisible: viewModel.isDeleteActionVisible,
+                        isDeleting: viewModel.isDeleting
                     )
+                    .disabled(viewModel.isDeleting)
                 }
             }
             .padding(.horizontal, Spacing.medium)
@@ -98,6 +123,7 @@ public struct ClusterDetailsView: View {
         }
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(viewModel.isDeleting)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -118,12 +144,75 @@ public struct ClusterDetailsView: View {
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
         }
+        .alert(
+            deleteConfirmationTitle,
+            isPresented: Bindable(viewModel).isDeleteConfirmationPresented
+        ) {
+            Button(appLocalized("Cancel"), role: .cancel) {}
+            Button(appLocalized("Move"), role: .destructive) {
+                Task {
+                    await viewModel.confirmDelete()
+                }
+            }
+        } message: {
+            Text(deleteConfirmationMessage)
+        }
+        .alert(
+            appLocalized("Cleanup Unavailable"),
+            isPresented: Binding(
+                get: { viewModel.deleteErrorMessage != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        viewModel.clearDeleteError()
+                    }
+                }
+            )
+        ) {
+            if viewModel.shouldOfferOpenSettings {
+                Button(appLocalized("Open Settings")) {
+                    viewModel.openSettings()
+                    viewModel.clearDeleteError()
+                }
+            }
+            Button(appLocalized("OK"), role: .cancel) {
+                viewModel.clearDeleteError()
+            }
+        } message: {
+            Text(viewModel.deleteErrorMessage ?? "")
+        }
         .task {
             await viewModel.load()
         }
+        .onChange(of: viewModel.pendingCompletionRecord) { _, record in
+            guard let record else { return }
+            didCompleteCleanup = true
+            onCleanupCompleted?(record)
+            dismiss()
+        }
         .onDisappear {
+            guard !didCompleteCleanup else { return }
             onReviewStateChanged?()
         }
+        .interactiveDismissDisabled(viewModel.isDeleting)
+    }
+}
+
+private extension ClusterDetailsView {
+    var deleteConfirmationTitle: String {
+        if viewModel.selectedCount == 1 {
+            return appLocalized("Move 1 Selected Photo to Recently Deleted?")
+        }
+        return String(
+            format: appLocalized("Move %d Selected Photos to Recently Deleted?"),
+            viewModel.selectedCount
+        )
+    }
+
+    var deleteConfirmationMessage: String {
+        let format = viewModel.selectedCount == 1
+            ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
+            : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
+        return String(format: format, viewModel.estimatedSavingsText)
     }
 }
 
@@ -404,7 +493,7 @@ struct MetadataView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationStack {
+        RoutedNavigationStack {
             List {
                 Section {
                     LabeledContent {
@@ -448,7 +537,14 @@ struct MetadataView: View {
 public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
 
-    public init(cluster: PhotoCluster, onReviewStateChanged: (() -> Void)? = nil) {
+    public init(
+        cluster: PhotoCluster,
+        cleanupService: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+    ) {
         self.cluster = cluster
     }
 
@@ -471,7 +567,7 @@ struct MetadataView: View {
 
 // MARK: - Preview
 #Preview {
-    NavigationStack {
+    RoutedNavigationStack {
         ClusterDetailsView(cluster: .mock)
     }
 }

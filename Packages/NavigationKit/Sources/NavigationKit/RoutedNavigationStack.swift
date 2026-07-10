@@ -32,3 +32,21 @@ public struct RoutedNavigationStack<Route: Hashable, Root: View, Destination: Vi
         }
     }
 }
+
+public extension RoutedNavigationStack where Route == Never, Destination == EmptyView {
+    init(
+        initialPath: [Never] = [],
+        onPathChange: @escaping ([Never]) -> Void = { _ in },
+        @ViewBuilder root: @escaping () -> Root
+    ) {
+        self.init(
+            initialPath: initialPath,
+            onPathChange: onPathChange,
+            root: { _ in root() },
+            destination: { _, _ in
+                assertionFailure("RoutedNavigationStack with Route == Never cannot produce a destination")
+                return EmptyView()
+            }
+        )
+    }
+}

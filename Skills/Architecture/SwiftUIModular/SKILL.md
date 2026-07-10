@@ -14,6 +14,7 @@ Use this skill when the user wants a modular SwiftUI iOS architecture with Swift
 - Keep the app target focused on wiring and composition; push feature code into packages.
 - Each package should focus on a specific aspect (UI, networking, data models, etc.).
 - Prefer clear dependency boundaries so features can be developed, tested, and replaced independently.
+- Treat "different responsibility" as the main signal for a new package, not file size alone.
 
 ## Project layout (recommended)
 
@@ -114,6 +115,21 @@ let viewModel = PlacesViewModel(repository: repo)
 - Use constructor injection for view models and services; avoid global singletons.
 - Provide test doubles in each package’s test target.
 
+## When to create a new package
+
+Create or recommend a new package when:
+
+- The code serves a separate domain or infrastructure responsibility.
+- The package would clarify dependency direction and reduce cross-feature leakage.
+- The extracted code can own its own protocols, tests, and implementation without leaning on feature UI types.
+- More than one feature is likely to depend on the code, or the code is clearly broader than the current feature.
+
+Do not create a new package when:
+
+- The boundary is speculative and the code is still feature-specific.
+- A dedicated file or service inside the current package solves the issue cleanly.
+- The extracted package would become a vague grab bag instead of a coherent module.
+
 ## How to add a new feature
 
 1) Create a new Swift Package under `Packages/<Feature>`.
@@ -137,8 +153,9 @@ let viewModel = PlacesViewModel(repository: repo)
 
 ## Navigation
 
-- Keep navigation state centralized in the app target.
-- If navigation grows complex, extract a `Router`/`Coordinator` package.
+- Keep navigation state centralized at the feature or app composition root.
+- In this repo, prefer `NavigationKit` and `RoutedNavigationStack` for project-owned navigation rather than new raw `NavigationStack` wrappers.
+- If navigation grows complex beyond the current package, extract or expand a dedicated routing package instead of recreating ad hoc routers across features.
 
 ## Testing
 

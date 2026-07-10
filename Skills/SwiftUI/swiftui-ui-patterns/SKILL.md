@@ -19,9 +19,9 @@ Choose a track based on your goal:
 
 ### New project scaffolding
 
-- Start with `references/app-scaffolding-wiring.md` to wire TabView + NavigationStack + sheets.
-- Add a minimal `AppTab` and `RouterPath` based on the provided skeletons.
-- Choose the next component reference based on the UI you need first (TabView, NavigationStack, Sheets).
+- Start with `references/app-scaffolding-wiring.md` to wire TabView + `RoutedNavigationStack` + sheets.
+- Add a minimal `AppTab` and route enum based on the provided skeletons.
+- Choose the next component reference based on the UI you need first (TabView, routed navigation, Sheets).
 - Expand the route and sheet enums as new screens are added.
 
 ## General rules to follow
@@ -31,7 +31,9 @@ Choose a track based on your goal:
 - Use async/await with `.task` and explicit loading/error states.
 - Maintain existing legacy patterns only when editing legacy files.
 - Follow the project's formatter and style guide.
+- **Navigation**: In this repo, prefer `NavigationKit` and `RoutedNavigationStack` for project-owned navigation instead of introducing new raw `NavigationStack` wrappers in app/package code.
 - **Sheets**: Prefer `.sheet(item:)` over `.sheet(isPresented:)` when state represents a selected model. Avoid `if let` inside a sheet body. Sheets should own their actions and call `dismiss()` internally instead of forwarding `onCancel`/`onConfirm` closures.
+- **Modals**: Disable interactive swipe-to-dismiss when accidental dismissal would undermine the current flow. When the surrounding modal chrome uses the repo dismiss pattern, prefer an icon-only close button with an explicit accessibility label.
 
 ## Workflow for a new SwiftUI view
 

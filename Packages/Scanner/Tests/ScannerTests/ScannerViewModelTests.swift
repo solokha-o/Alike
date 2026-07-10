@@ -9,20 +9,32 @@ final class ScannerViewModelTests: XCTestCase {
     var mockAnalysisService: MockPhotoAnalysisService!
     var mockRepository: MockPhotoClusterRepository!
     var mockReviewRepository: MockClusterReviewStateRepository!
+    var mockCleanupCategoryRepository: MockCleanupCategorySnapshotRepository!
     var mockCleanupSessionRepository: MockCleanupSessionRepository!
+    var mockCleanupService: MockPhotoCleanupService!
+    var mockCleanupHistoryRepository: MockCleanupHistoryRepository!
+    var premiumAccess: MockPremiumAccessController!
     
     override func setUp() async throws {
         mockAnalysisService = MockPhotoAnalysisService()
         mockRepository = MockPhotoClusterRepository()
         mockReviewRepository = MockClusterReviewStateRepository()
+        mockCleanupCategoryRepository = MockCleanupCategorySnapshotRepository()
         mockCleanupSessionRepository = MockCleanupSessionRepository()
+        mockCleanupService = MockPhotoCleanupService()
+        mockCleanupHistoryRepository = MockCleanupHistoryRepository()
+        premiumAccess = MockPremiumAccessController()
         viewModel = ScannerViewModel(
             gridColumns: 3,
             sensitivity: .medium,
             analysisService: mockAnalysisService,
             repository: mockRepository,
             reviewRepository: mockReviewRepository,
-            cleanupSessionRepository: mockCleanupSessionRepository
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess
         )
     }
     
@@ -31,7 +43,11 @@ final class ScannerViewModelTests: XCTestCase {
         mockAnalysisService = nil
         mockRepository = nil
         mockReviewRepository = nil
+        mockCleanupCategoryRepository = nil
         mockCleanupSessionRepository = nil
+        mockCleanupService = nil
+        mockCleanupHistoryRepository = nil
+        premiumAccess = nil
     }
     
     // MARK: - Initialization Tests
@@ -52,7 +68,21 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testLoadCachedResultsWithData() async {
         let mockCluster = createMockCluster(photoCount: 2)
+        let cleanupRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 2_048
+        )
         await mockRepository.setLoadClustersResult(.success([mockCluster]))
+        await mockCleanupCategoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["s1", "s2", "s3", "s4", "s5"],
+                assetCount: 5,
+                estimatedSavingsBytes: 500
+            )
+        ])
+        await mockCleanupHistoryRepository.setEntries([cleanupRecord])
         
         await viewModel.loadCachedResults()
         
@@ -61,6 +91,9 @@ final class ScannerViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected results state")
         }
+        XCTAssertEqual(viewModel.cleanupCategories.count, 1)
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 2)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 2_048)
     }
     
     func testLoadCachedResultsEmpty() async {
@@ -84,12 +117,31 @@ final class ScannerViewModelTests: XCTestCase {
             XCTFail("Expected idle state after error")
         }
     }
+
+    func testLoadCachedResultsKeepsCanonicalClustersWhenFiltersAreActive() async {
+        let reviewed = createMockCluster(photoCount: 2)
+        let notReviewed = createMockCluster(photoCount: 2)
+        viewModel.clusterControls.reviewFilter = .reviewed
+        await mockRepository.setLoadClustersResult(.success([reviewed, notReviewed]))
+
+        await viewModel.loadCachedResults()
+
+        guard case .results(let clusters) = viewModel.state else {
+            return XCTFail("Expected cached results state")
+        }
+        XCTAssertEqual(Set(clusters.map(\.id)), Set([reviewed.id, notReviewed.id]))
+        XCTAssertTrue(viewModel.sortedClusters(from: clusters).isEmpty)
+
+        viewModel.resetClusterControls()
+        XCTAssertEqual(viewModel.sortedClusters(from: clusters).count, 2)
+    }
     
     // MARK: - Scan Tests
     
     func testScanCallsAnalysisService() async {
         let mockCluster = createMockCluster(photoCount: 3)
         await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
         
         await viewModel.startScanning()
         
@@ -104,6 +156,7 @@ final class ScannerViewModelTests: XCTestCase {
     func testScanSavesClusters() async {
         let mockCluster = createMockCluster(photoCount: 2)
         await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
         
         await viewModel.startScanning()
         
@@ -117,6 +170,7 @@ final class ScannerViewModelTests: XCTestCase {
     func testStartScanningCreatesNewCleanupSession() async {
         let mockCluster = createMockCluster(photoCount: 2)
         await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([mockCluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
 
         await viewModel.startScanning()
 
@@ -137,6 +191,73 @@ final class ScannerViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected error state")
         }
+    }
+
+    func testRescanKeepsCanonicalClustersWhenFiltersAreActive() async {
+        let reviewed = createMockCluster(photoCount: 2)
+        let notReviewed = createMockCluster(photoCount: 2)
+        viewModel.clusterControls.reviewFilter = .reviewed
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([reviewed, notReviewed]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        await viewModel.startScanning()
+
+        guard case .results(let clusters) = viewModel.state else {
+            return XCTFail("Expected scan results state")
+        }
+        XCTAssertEqual(Set(clusters.map(\.id)), Set([reviewed.id, notReviewed.id]))
+        XCTAssertTrue(viewModel.sortedClusters(from: clusters).isEmpty)
+
+        viewModel.resetClusterControls()
+        XCTAssertEqual(viewModel.sortedClusters(from: clusters).count, 2)
+    }
+
+    func testRescanWithActiveFilterPreservesHiddenReviewStates() async {
+        let now = Date()
+        let reviewedID = UUID()
+        let inReviewID = UUID()
+        let reviewed = PhotoCluster(id: reviewedID, assets: [], createdAt: now.addingTimeInterval(1))
+        let inReview = PhotoCluster(id: inReviewID, assets: [], createdAt: now)
+        let reviewedState = ClusterReviewState(
+            clusterID: reviewedID,
+            bestShotLocalIdentifier: "best-reviewed",
+            selectedLocalIdentifiers: ["candidate-reviewed"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 200
+        )
+        let inReviewState = ClusterReviewState(
+            clusterID: inReviewID,
+            bestShotLocalIdentifier: "best-in-review",
+            selectedLocalIdentifiers: ["candidate-in-review"],
+            mode: .selection,
+            status: .inReview,
+            estimatedSavingsBytes: 100
+        )
+        viewModel.state = .results([reviewed, inReview])
+        await mockRepository.setLoadClusterSnapshotsResult(.success([
+            makeSnapshot(id: reviewedID, assets: []),
+            makeSnapshot(id: inReviewID, assets: [])
+        ]))
+        await mockReviewRepository.setStoredStates([
+            reviewedID: reviewedState,
+            inReviewID: inReviewState
+        ])
+        await viewModel.loadReviewStates()
+        viewModel.clusterControls.reviewFilter = .reviewed
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([reviewed, inReview]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        await viewModel.startScanning()
+
+        guard case .results(let clusters) = viewModel.state else {
+            return XCTFail("Expected scan results state")
+        }
+        let storedStates = await mockReviewRepository.storedStates
+        XCTAssertEqual(Set(clusters.map(\.id)), Set([reviewedID, inReviewID]))
+        XCTAssertEqual(storedStates[reviewedID]?.status, .reviewed)
+        XCTAssertEqual(storedStates[inReviewID]?.status, .inReview)
+        XCTAssertEqual(storedStates[inReviewID]?.selectedLocalIdentifiers, ["candidate-in-review"])
     }
 
     func testCheckForGalleryChangesUsesRepository() async {
@@ -261,6 +382,37 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(progress.reviewedSavingsBytes, 3_000)
         XCTAssertEqual(progress.totalSelectedItems, 3)
         XCTAssertEqual(progress.remainingClusters, 3)
+    }
+
+    func testGlobalSessionProgressAndContinueCandidateIgnoreVisibleFilters() async {
+        let reviewedID = UUID()
+        let notReviewedID = UUID()
+        let reviewed = createMockCluster(id: reviewedID, photoCount: 2)
+        let notReviewed = createMockCluster(id: notReviewedID, photoCount: 2)
+        let clusters = [reviewed, notReviewed]
+        await mockReviewRepository.setStoredStates([
+            reviewedID: ClusterReviewState(
+                clusterID: reviewedID,
+                bestShotLocalIdentifier: "best",
+                selectedLocalIdentifiers: ["candidate"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 100
+            )
+        ])
+        viewModel.state = .results(clusters)
+        await viewModel.loadReviewStates()
+        viewModel.clusterControls.reviewFilter = .reviewed
+
+        let canonical = viewModel.canonicalSortedClusters(from: clusters)
+        let visible = viewModel.sortedClusters(from: canonical)
+        let progress = viewModel.displayedSessionProgress(for: canonical)
+
+        XCTAssertEqual(visible.map(\.id), [reviewedID])
+        XCTAssertEqual(progress.totalClusters, 2)
+        XCTAssertEqual(progress.reviewedCount, 1)
+        XCTAssertEqual(progress.remainingClusters, 1)
+        XCTAssertEqual(viewModel.cleanupEntryCluster(from: canonical)?.id, notReviewedID)
     }
 
     func testSessionProgressPercentZeroForNoClusters() {
@@ -603,7 +755,7 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertNil(stored)
     }
 
-    func testCleanupEntryClusterPrefersNotReviewedThenInReviewThenFirst() async {
+    func testCleanupEntryClusterPrefersNotReviewedThenInReviewAndStopsWhenReviewed() async {
         let notReviewedID = UUID()
         let inReviewID = UUID()
         let reviewedID = UUID()
@@ -638,10 +790,282 @@ final class ScannerViewModelTests: XCTestCase {
         let noNotReviewed = [reviewed, inReview]
         XCTAssertEqual(viewModel.cleanupEntryCluster(from: noNotReviewed)?.id, inReviewID)
 
-        await mockReviewRepository.setStoredStates([:])
+        XCTAssertNil(viewModel.cleanupEntryCluster(from: [reviewed]))
+    }
+
+    func testHandleCleanupCompletedReviewStateLoadFailureDoesNotMutatePersistedState() async throws {
+        let oldCluster = createMockCluster(photoCount: 2)
+        let unrelatedClusterID = UUID()
+        let unrelatedState = ClusterReviewState(
+            clusterID: unrelatedClusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["candidate"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 400
+        )
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 1,
+            estimatedSavingsBytes: 512
+        )
+        viewModel.state = .results([oldCluster])
+        await mockRepository.setLoadClusterSnapshotsResult(.success([
+            makeSnapshot(id: oldCluster.id, assets: [])
+        ]))
+        await mockReviewRepository.setStoredStates([unrelatedClusterID: unrelatedState])
+        await mockReviewRepository.setLoadAllReviewStatesError(TestError())
+
+        await viewModel.handleCleanupCompleted(completionRecord)
+
+        let persistedState = try await mockReviewRepository.loadReviewState(
+            clusterID: unrelatedClusterID
+        )
+        let didDeleteReviewStates = await mockReviewRepository.didCallDeleteAllReviewStates
+        let didSaveClusters = await mockRepository.didCallSaveClusters
+        XCTAssertEqual(persistedState, unrelatedState)
+        XCTAssertFalse(didDeleteReviewStates)
+        XCTAssertFalse(didSaveClusters)
+        XCTAssertEqual(viewModel.state, .results([oldCluster]))
+        guard case .failed(let record, _) = viewModel.cleanupRefreshState else {
+            return XCTFail("Expected failed cleanup refresh state")
+        }
+        XCTAssertEqual(record, completionRecord)
+    }
+
+    func testHandleCleanupCompletedSerializesAndCoalescesRefreshes() async {
+        let analysisService = SuspendedPhotoAnalysisService()
+        let serializedViewModel = ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: analysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess
+        )
+        let firstCluster = createMockCluster(photoCount: 2)
+        let secondCluster = createMockCluster(photoCount: 2)
+        let firstRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        let secondRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 200
+        )
+
+        let firstTask = Task {
+            await serializedViewModel.handleCleanupCompleted(firstRecord)
+        }
+        await analysisService.waitUntilAnalyzeCallCount(1)
+        XCTAssertTrue(serializedViewModel.isCleanupRefreshInProgress)
+
+        let duplicateTask = Task {
+            await serializedViewModel.handleCleanupCompleted(firstRecord)
+        }
+        let secondTask = Task {
+            await serializedViewModel.handleCleanupCompleted(secondRecord)
+        }
+        await duplicateTask.value
+        await secondTask.value
+        var analyzeCallCount = await analysisService.currentAnalyzeCallCount()
+        var maximumConcurrentCount = await analysisService.maximumConcurrentAnalyzeCount()
+        XCTAssertEqual(analyzeCallCount, 1)
+        XCTAssertEqual(maximumConcurrentCount, 1)
+
+        await analysisService.resumeNext(returning: [firstCluster])
+        await analysisService.waitUntilAnalyzeCallCount(2)
+        maximumConcurrentCount = await analysisService.maximumConcurrentAnalyzeCount()
+        XCTAssertEqual(maximumConcurrentCount, 1)
+        await analysisService.resumeNext(returning: [secondCluster])
+        await firstTask.value
+
+        analyzeCallCount = await analysisService.currentAnalyzeCallCount()
+        maximumConcurrentCount = await analysisService.maximumConcurrentAnalyzeCount()
+        XCTAssertEqual(analyzeCallCount, 2)
+        XCTAssertEqual(maximumConcurrentCount, 1)
+        XCTAssertFalse(serializedViewModel.isCleanupRefreshInProgress)
+        XCTAssertEqual(serializedViewModel.state, .results([secondCluster]))
+        XCTAssertEqual(serializedViewModel.cleanupRefreshState, .success(secondRecord))
+    }
+
+    func testHandleCleanupCompletedPreservesUnrelatedReviewStateAndRefreshesResults() async throws {
+        let clusterID = UUID()
+        let cluster = createMockCluster(id: clusterID, photoCount: 2)
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 1_024
+        )
+        let existingReviewState = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["candidate"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 400
+        )
+        viewModel.state = .results([cluster])
+        await mockRepository.setLoadClusterSnapshotsResult(.success([
+            makeSnapshot(id: clusterID, assets: [])
+        ]))
+        await mockReviewRepository.setStoredStates([clusterID: existingReviewState])
         await viewModel.loadReviewStates()
-        let fallback = [reviewed]
-        XCTAssertEqual(viewModel.cleanupEntryCluster(from: fallback)?.id, reviewedID)
+        let existingSessionID = viewModel.activeCleanupSession?.id
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .screenshots, assetCount: 3, estimatedSavingsBytes: 300)
+        ]))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
+
+        await viewModel.handleCleanupCompleted(completionRecord)
+
+        let didDeleteClusters = await mockRepository.didCallDeleteAllClusters
+        let didDeleteSession = await mockCleanupSessionRepository.didCallDeleteActiveSession
+        let preservedReviewState = try await mockReviewRepository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertFalse(didDeleteClusters)
+        XCTAssertFalse(didDeleteSession)
+        XCTAssertEqual(preservedReviewState?.status, .reviewed)
+        XCTAssertEqual(preservedReviewState?.selectedLocalIdentifiers, ["candidate"])
+        XCTAssertEqual(viewModel.activeCleanupSession?.id, existingSessionID)
+        XCTAssertEqual(viewModel.activeCleanupSession?.reviewedClusters, 1)
+
+        if case .results(let clusters) = viewModel.state {
+            XCTAssertEqual(clusters.count, 1)
+        } else {
+            XCTFail("Expected refreshed results state")
+        }
+
+        XCTAssertEqual(viewModel.cleanupRefreshState, .success(completionRecord))
+        XCTAssertEqual(viewModel.cleanupCategories.first?.assetCount, 3)
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 2)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 1_024)
+    }
+
+    func testIsCategoryLockedUsesPremiumAccess() {
+        XCTAssertTrue(viewModel.isCategoryLocked(.screenshots))
+        XCTAssertTrue(viewModel.isCategoryLocked(.blurredPhotos))
+
+        let unlockedViewModel = ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.screenshotCleanup, .blurredPhotoCleanup])
+        )
+
+        XCTAssertFalse(unlockedViewModel.isCategoryLocked(.screenshots))
+        XCTAssertFalse(unlockedViewModel.isCategoryLocked(.blurredPhotos))
+    }
+
+    func testLoadCachedResultsKeepsCategoryOrderingStable() async {
+        let mockCluster = createMockCluster(photoCount: 2)
+        await mockRepository.setLoadClustersResult(.success([mockCluster]))
+        await mockCleanupCategoryRepository.setStoredSnapshots([
+            .blurredPhotos: CleanupCategorySnapshot(
+                kind: .blurredPhotos,
+                localIdentifiers: ["b1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 200
+            ),
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["s1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            )
+        ])
+
+        await viewModel.loadCachedResults()
+
+        XCTAssertEqual(viewModel.cleanupCategories.map(\.kind), [.screenshots, .blurredPhotos])
+    }
+
+    func testHandleCleanupCompletedFailureKeepsSafeResultsAndCanRetry() async {
+        let oldCluster = createMockCluster(photoCount: 2)
+        let refreshedCluster = createMockCluster(photoCount: 2)
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 1,
+            estimatedSavingsBytes: 512
+        )
+        viewModel.state = .results([oldCluster])
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.failure(TestError()))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
+
+        await viewModel.handleCleanupCompleted(completionRecord)
+
+        if case .results(let clusters) = viewModel.state {
+            XCTAssertEqual(clusters.map(\.id), [oldCluster.id])
+        } else {
+            XCTFail("Expected previous results after failed cleanup refresh")
+        }
+
+        switch viewModel.cleanupRefreshState {
+        case .failed(let record, let message):
+            XCTAssertEqual(record, completionRecord)
+            XCTAssertFalse(message.isEmpty)
+        default:
+            XCTFail("Expected failed cleanup refresh state")
+        }
+
+        let didDeleteClusters = await mockRepository.didCallDeleteAllClusters
+        XCTAssertFalse(didDeleteClusters)
+        XCTAssertEqual(viewModel.cleanupInsights.totalDeletedItems, 1)
+        XCTAssertEqual(viewModel.cleanupInsights.totalSavedBytes, 512)
+
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([refreshedCluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await viewModel.retryCleanupRefresh()
+
+        if case .results(let clusters) = viewModel.state {
+            XCTAssertEqual(clusters.map(\.id), [refreshedCluster.id])
+        } else {
+            XCTFail("Expected refreshed results after retry")
+        }
+        XCTAssertEqual(viewModel.cleanupRefreshState, .success(completionRecord))
+    }
+
+    func testHandleCleanupCompletedSuccessAutoDismissesBannerAfterDelay() async {
+        let cluster = createMockCluster(photoCount: 2)
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 2,
+            estimatedSavingsBytes: 1_024
+        )
+        let fastViewModel = ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            cleanupRefreshAutoDismissDelay: .zero
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await mockCleanupHistoryRepository.setEntries([completionRecord])
+
+        await fastViewModel.handleCleanupCompleted(completionRecord)
+        await Task.yield()
+
+        XCTAssertNil(fastViewModel.cleanupRefreshState)
     }
     
     // MARK: - Clear Results Tests
@@ -690,4 +1114,47 @@ final class ScannerViewModelTests: XCTestCase {
 
 private struct TestError: LocalizedError {
     var errorDescription: String? { "Test error" }
+}
+
+private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
+    private var continuations: [CheckedContinuation<[PhotoCluster], Error>] = []
+    private var analyzeCallCount = 0
+    private var concurrentAnalyzeCount = 0
+    private var maximumConcurrentCount = 0
+
+    func analyzePhotoLibrary(
+        sensitivity: Float,
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [PhotoCluster] {
+        analyzeCallCount += 1
+        concurrentAnalyzeCount += 1
+        maximumConcurrentCount = max(maximumConcurrentCount, concurrentAnalyzeCount)
+        defer { concurrentAnalyzeCount -= 1 }
+        return try await withCheckedThrowingContinuation { continuation in
+            continuations.append(continuation)
+        }
+    }
+
+    func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
+    func refreshCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
+    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
+    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 0 }
+
+    func waitUntilAnalyzeCallCount(_ expectedCount: Int) async {
+        while analyzeCallCount < expectedCount {
+            await Task.yield()
+        }
+    }
+
+    func resumeNext(returning clusters: [PhotoCluster]) {
+        continuations.removeFirst().resume(returning: clusters)
+    }
+
+    func currentAnalyzeCallCount() -> Int {
+        analyzeCallCount
+    }
+
+    func maximumConcurrentAnalyzeCount() -> Int {
+        maximumConcurrentCount
+    }
 }

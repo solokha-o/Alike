@@ -1,4 +1,6 @@
+import Foundation
 import Photos
+
 #if canImport(UIKit)
 import UIKit
 
@@ -27,7 +29,11 @@ extension PHAsset {
         }
     }
     
-    /// Get full resolution image data for Vision processing
+}
+#endif
+
+extension PHAsset {
+    /// Get full resolution image data for Vision processing.
     @MainActor
     public func loadFullResolutionImageData() async throws -> Data? {
         let options = PHImageRequestOptions()
@@ -35,7 +41,7 @@ extension PHAsset {
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         options.isSynchronous = false
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             PHImageManager.default().requestImageDataAndOrientation(
                 for: self,
@@ -49,8 +55,8 @@ extension PHAsset {
             }
         }
     }
-    
-    /// Metadata for display
+
+    /// Platform-neutral metadata for display and cleanup estimates.
     public var displayMetadata: AssetMetadata {
         AssetMetadata(
             creationDate: creationDate,
@@ -60,6 +66,10 @@ extension PHAsset {
             isFavorite: isFavorite,
             mediaType: mediaType
         )
+    }
+
+    public var estimatedCleanupBytes: Int64 {
+        displayMetadata.estimatedCleanupBytes
     }
 }
 
@@ -75,7 +85,12 @@ public struct AssetMetadata: Sendable {
     public var resolution: String {
         "\(pixelWidth) × \(pixelHeight)"
     }
-    
+
+    public var estimatedCleanupBytes: Int64 {
+        let pixelArea = Int64(pixelWidth) * Int64(pixelHeight)
+        return max(1, pixelArea / 2)
+    }
+
     public var formattedCreationDate: String {
         guard let date = creationDate else { return "Unknown" }
         let formatter = DateFormatter()
@@ -84,5 +99,3 @@ public struct AssetMetadata: Sendable {
         return formatter.string(from: date)
     }
 }
-
-#endif

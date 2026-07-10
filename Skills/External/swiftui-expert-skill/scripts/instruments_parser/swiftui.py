@@ -39,6 +39,7 @@ def analyze(
     toc_schemas: frozenset[str],
     top_n: int = 10,
     window: tuple[int, int] | None = None,
+    run: int = 1,
 ) -> dict[str, Any]:
     schemas = sorted(
         s for s in toc_schemas
@@ -59,7 +60,7 @@ def analyze(
     category_counts: Counter[str] = Counter()
 
     for schema in schemas:
-        xml_bytes = xctrace.export_schema(trace_path, schema)
+        xml_bytes = xctrace.export_schema(trace_path, schema, run=run)
         stream = xml_utils.RowStream(xml_bytes)
         for row in stream:
             start_ns = _first_int(row, stream, START_KEYS)

@@ -5,14 +5,20 @@ import Core
 @MainActor
 final class ClusterDetailsViewModelTests: XCTestCase {
     private var repository: MockClusterReviewStateRepository!
+    private var cleanupService: MockPhotoCleanupService!
+    private var cleanupHistoryRepository: MockCleanupHistoryRepository!
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000010")!
 
     override func setUp() async throws {
         repository = MockClusterReviewStateRepository()
+        cleanupService = MockPhotoCleanupService()
+        cleanupHistoryRepository = MockCleanupHistoryRepository()
     }
 
     override func tearDown() async throws {
         repository = nil
+        cleanupService = nil
+        cleanupHistoryRepository = nil
     }
 
     func testLoadWithoutPersistedStateComputesBestShot() async {
@@ -251,10 +257,135 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
     }
 
-    private func makeViewModel(snapshots: [ReviewAssetSnapshot]) -> ClusterDetailsViewModel {
+    func testConfirmDeleteCallsCleanupServiceAndPersistsHistory() async throws {
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: clusterID,
+            deletedCount: 2,
+            estimatedSavingsBytes: 300
+        )
+        await cleanupService.setDeleteAssetsResult(.success(completionRecord))
+        let existingState = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["one", "two"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 300
+        )
+        await repository.setStoredStates([clusterID: existingState])
+
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        viewModel.requestDeleteConfirmation()
+        await viewModel.confirmDelete()
+
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+        let lastSelection = await cleanupService.lastLocalIdentifiers
+        let storedEntries = await cleanupHistoryRepository.entries
+        let remainingState = try await repository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertTrue(cleanupDidRun)
+        XCTAssertEqual(lastSelection, Set(["one", "two"]))
+        XCTAssertEqual(storedEntries, [completionRecord])
+        XCTAssertNil(remainingState)
+        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    func testConfirmDeletePublishesCompletionAfterReviewStateRemovalFinishes() async {
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: clusterID,
+            deletedCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        let reviewState = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["candidate"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 100
+        )
+        let suspendedRepository = SuspendedClusterReviewStateRepository(state: reviewState)
+        await cleanupService.setDeleteAssetsResult(.success(completionRecord))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+            ],
+            reviewRepository: suspendedRepository
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        let deleteTask = Task { await viewModel.confirmDelete() }
+        await suspendedRepository.waitUntilDeleteStarts()
+
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertTrue(viewModel.isDeleting)
+        let storedEntries = await cleanupHistoryRepository.entries
+        XCTAssertEqual(storedEntries, [completionRecord])
+
+        await suspendedRepository.finishDelete()
+        await deleteTask.value
+
+        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    func testConfirmDeleteFailurePreservesSelectionAndShowsMessage() async {
+        await cleanupService.setDeleteAssetsResult(.failure(PhotoCleanupError.deleteFailed))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        await viewModel.confirmDelete()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    func testConfirmDeleteDoesNotRunWithoutSelection() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        await viewModel.confirmDelete()
+
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+        XCTAssertFalse(cleanupDidRun)
+        XCTAssertEqual(viewModel.deleteErrorMessage, "Select at least one photo before deleting.")
+    }
+
+    private func makeViewModel(
+        snapshots: [ReviewAssetSnapshot],
+        reviewRepository: (any ClusterReviewStateRepository)? = nil,
+        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil
+    ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
-            reviewRepository: repository,
+            reviewRepository: reviewRepository ?? repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             assetSnapshots: snapshots
         )
     }
@@ -274,5 +405,50 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             creationDate: createdAt,
             modificationDate: modifiedAt
         )
+    }
+}
+
+private actor SuspendedClusterReviewStateRepository: ClusterReviewStateRepository {
+    private var states: [UUID: ClusterReviewState]
+    private var deleteContinuation: CheckedContinuation<Void, Never>?
+    private var deleteStarted = false
+
+    init(state: ClusterReviewState) {
+        self.states = [state.clusterID: state]
+    }
+
+    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? {
+        states[clusterID]
+    }
+
+    func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
+        states
+    }
+
+    func saveReviewState(_ state: ClusterReviewState) async throws {
+        states[state.clusterID] = state
+    }
+
+    func deleteReviewState(clusterID: UUID) async throws {
+        deleteStarted = true
+        await withCheckedContinuation { continuation in
+            deleteContinuation = continuation
+        }
+        states.removeValue(forKey: clusterID)
+    }
+
+    func deleteAllReviewStates() async throws {
+        states.removeAll()
+    }
+
+    func waitUntilDeleteStarts() async {
+        while !deleteStarted {
+            await Task.yield()
+        }
+    }
+
+    func finishDelete() {
+        deleteContinuation?.resume()
+        deleteContinuation = nil
     }
 }

@@ -190,6 +190,20 @@ def top_symbol(frames: list[dict]) -> str:
     return first.get("name") or first.get("addr") or "<unknown>"
 
 
+def first_present(row: dict, *keys: str) -> ET.Element | None:
+    """Return the first row column whose key exists.
+
+    `row[key] or row[other_key]` is unsafe here: Element is falsy when it has
+    no children (a common case for leaf <event-time>, <start-time>, etc.), so
+    `or` short-circuits past valid leaf elements. This walks keys explicitly.
+    """
+    for key in keys:
+        el = row.get(key)
+        if el is not None:
+            return el
+    return None
+
+
 def in_window(time_ns: int | None, window: tuple[int, int] | None) -> bool:
     """Return True if time_ns is inside [start, end] (inclusive), or window is None."""
     if window is None:

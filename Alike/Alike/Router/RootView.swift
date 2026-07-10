@@ -5,12 +5,15 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
+import os
 import SwiftUI
 import Launch
 import Welcome
 import Scanner
 import Settings
 import Core
+import Cleanup
+import Storage
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -43,16 +46,57 @@ struct RootView: View {
 
 // MARK: - Main Tab View
 struct MainTabView: View {
+    @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+#if DEBUG
+    @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockScreenshotCleanup = false
+    @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBlurredPhotoCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminders.debugOverrideDefaultsKey)
+    private var debugUnlockCleanupReminders = false
+#endif
     private let gridConfiguration = GridConfiguration.current
+    private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
+        preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
+    )
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
             get: { SensitivityLevel(rawValue: sensitivityRaw) ?? .medium },
             set: { sensitivityRaw = $0.rawValue }
+        )
+    }
+
+    private var premiumAccess: any PremiumAccessControlling {
+#if DEBUG
+        var unlockedFeatures: Set<PremiumFeature> = []
+        if debugUnlockScreenshotCleanup {
+            unlockedFeatures.insert(.screenshotCleanup)
+        }
+        if debugUnlockBlurredPhotoCleanup {
+            unlockedFeatures.insert(.blurredPhotoCleanup)
+        }
+        if debugUnlockCleanupReminders {
+            unlockedFeatures.insert(.cleanupReminders)
+        }
+        return PremiumAccessController(unlockedFeatures: unlockedFeatures)
+#else
+        return PremiumAccessController()
+#endif
+    }
+
+    private var hasCleanupReminderCustomizationAccess: Bool {
+        premiumAccess.hasAccess(to: .cleanupReminders)
+    }
+
+    private var cleanupReminderTaskID: CleanupReminderTaskID {
+        CleanupReminderTaskID(
+            scenePhase: scenePhase,
+            isPremiumUnlocked: hasCleanupReminderCustomizationAccess
         )
     }
     
@@ -72,6 +116,10 @@ struct MainTabView: View {
             if clamped != gridColumns {
                 gridColumns = clamped
             }
+        }
+        .task(id: cleanupReminderTaskID) {
+            guard scenePhase == .active else { return }
+            await resyncCleanupReminder()
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
@@ -95,8 +143,16 @@ struct MainTabView: View {
                     set: { gridColumns = gridConfiguration.clampedColumns($0) }
                 ),
                 sensitivity: sensitivity,
-                shouldStartScan: Bindable(tabManager).shouldStartScan
+                shouldStartScan: Bindable(tabManager).shouldStartScan,
+                viewModel: ScannerViewModel(
+                    gridColumns: gridConfiguration.clampedColumns(gridColumns),
+                    sensitivity: sensitivity.wrappedValue,
+                    premiumAccess: premiumAccess
+                )
             )
+#if DEBUG
+            .id("\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)")
+#endif
         case .settings:
             SettingsView(
                 gridColumns: Binding(
@@ -104,8 +160,29 @@ struct MainTabView: View {
                     set: { gridColumns = gridConfiguration.clampedColumns($0) }
                 ),
                 sensitivity: sensitivity,
-                needsRescan: Bindable(tabManager).needsRescan
+                needsRescan: Bindable(tabManager).needsRescan,
+                premiumAccess: premiumAccess,
+                viewModel: SettingsViewModel(
+                    cleanupReminderManager: cleanupReminderManager
+                )
             )
         }
     }
+
+    private func resyncCleanupReminder() async {
+        do {
+            try await cleanupReminderManager.resync(
+                isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+            )
+        } catch {
+            AppLog.storage.error(
+                "\(AppLog.tag(.error, "Failed to resync cleanup reminder: \(error.localizedDescription)"))"
+            )
+        }
+    }
+}
+
+private struct CleanupReminderTaskID: Equatable {
+    let scenePhase: ScenePhase
+    let isPremiumUnlocked: Bool
 }
