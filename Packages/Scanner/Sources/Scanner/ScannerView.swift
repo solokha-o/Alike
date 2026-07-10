@@ -23,6 +23,7 @@ public struct ScannerView: View {
     @State private var presentedCleanupCategory: PresentedCleanupCategory?
     @State private var presentedPaywallFeature: PremiumFeature?
     @State private var cleanupCategoryErrorMessage: String?
+    @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
@@ -92,6 +93,9 @@ public struct ScannerView: View {
         .sheet(item: $presentedPaywallFeature) { feature in
             PremiumPaywallSheet(feature: feature)
                 .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $isClusterControlsPresented) {
+            ScannerClusterControlsSheet(controls: $viewModel.clusterControls)
         }
         .alert(
             appLocalized("Couldn't Open Cleanup Category"),
@@ -288,12 +292,16 @@ public struct ScannerView: View {
                 if sortedClusters.isEmpty {
                     ContentUnavailableView {
                         Label {
-                            Text(appLocalized("No Similar Photos Found"))
+                            Text(viewModel.clusterControls.isDefault
+                                 ? appLocalized("No Similar Photos Found")
+                                 : appLocalized("No Clusters Match These Controls"))
                         } icon: {
                             Image(systemName: "photo.stack")
                         }
                     } description: {
-                        Text(appLocalized("Try adjusting sensitivity in Settings"))
+                        Text(viewModel.clusterControls.isDefault
+                             ? appLocalized("Try adjusting sensitivity in Settings")
+                             : appLocalized("Try changing the filters or reset the controls"))
                     }
                     .padding(.top, viewModel.cleanupCategories.isEmpty ? 100 : Spacing.large)
                 } else {
@@ -357,6 +365,15 @@ public struct ScannerView: View {
 #if os(iOS)
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    isClusterControlsPresented = true
+                } label: {
+                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                }
+                .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+                .accessibilityValue(Text(activeControlsSummary))
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
                     Task {
                         await viewModel.startScanning()
                     }
@@ -368,6 +385,15 @@ public struct ScannerView: View {
                 .accessibilityHint(Text(appLocalized("Starts scanning your photo library again")))
             }
 #else
+            ToolbarItem {
+                Button {
+                    isClusterControlsPresented = true
+                } label: {
+                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                }
+                .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+                .accessibilityValue(Text(activeControlsSummary))
+            }
             ToolbarItem {
                 Button {
                     Task {
@@ -383,6 +409,21 @@ public struct ScannerView: View {
 #endif
         }
         .sensoryFeedback(.success, trigger: clusters.count)
+    }
+
+    private var activeControlsSummary: String {
+        guard !viewModel.clusterControls.isDefault else { return appLocalized("No active controls") }
+        var values = [viewModel.clusterControls.sort.title]
+        if viewModel.clusterControls.reviewFilter != .all {
+            values.append(viewModel.clusterControls.reviewFilter.title)
+        }
+        if viewModel.clusterControls.minimumClusterSize != .any {
+            values.append(viewModel.clusterControls.minimumClusterSize.title)
+        }
+        if viewModel.clusterControls.favoritesOnly {
+            values.append(appLocalized("Favorites only"))
+        }
+        return values.joined(separator: ", ")
     }
 
     private func openCleanupCategory(_ category: CleanupCategorySummary) async {
@@ -494,6 +535,53 @@ private struct CleanupInsightsCard: View {
 
     private var metricBackgroundOpacity: Double {
         colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
+    }
+}
+
+private struct ScannerClusterControlsSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var controls: ScannerClusterControls
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(appLocalized("Sort by")) {
+                    Picker(appLocalized("Sort order"), selection: $controls.sort) {
+                        ForEach(ScannerClusterSort.allCases, id: \.self) { sort in
+                            Text(sort.title).tag(sort)
+                        }
+                    }
+                }
+
+                Section(appLocalized("Filter by")) {
+                    Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                        ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
+                            Text(filter.title).tag(filter)
+                        }
+                    }
+                    Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                        ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
+                            Text(size.title).tag(size)
+                        }
+                    }
+                    Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
+                }
+
+                Section {
+                    Button(appLocalized("Reset controls"), role: .destructive) {
+                        controls = ScannerClusterControls()
+                    }
+                    .disabled(controls.isDefault)
+                }
+            }
+            .navigationTitle(Text(appLocalized("Filter and Sort")))
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(appLocalized("Done")) { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }
 

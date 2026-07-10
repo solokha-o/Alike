@@ -6,6 +6,73 @@ import PhotoAnalysis
 import Cleanup
 import DesignSystem
 
+public enum ScannerClusterSort: String, CaseIterable, Sendable {
+    case newest
+    case largestCleanupOpportunity
+    case largestCluster
+    case similarity
+    case reviewStatus
+
+    public var title: String {
+        switch self {
+        case .newest: appLocalized("Newest")
+        case .largestCleanupOpportunity: appLocalized("Most space to save")
+        case .largestCluster: appLocalized("Largest cluster")
+        case .similarity: appLocalized("Highest similarity")
+        case .reviewStatus: appLocalized("Review status")
+        }
+    }
+}
+
+public enum ScannerReviewFilter: String, CaseIterable, Sendable {
+    case all
+    case needsReview
+    case inReview
+    case reviewed
+
+    public var title: String {
+        switch self {
+        case .all: appLocalized("All review states")
+        case .needsReview: appLocalized("Needs review")
+        case .inReview: appLocalized("In review")
+        case .reviewed: appLocalized("Reviewed")
+        }
+    }
+}
+
+public enum ScannerMinimumClusterSize: Int, CaseIterable, Sendable {
+    case any = 0
+    case two = 2
+    case three = 3
+    case five = 5
+    case ten = 10
+    case twenty = 20
+
+    public var title: String {
+        switch self {
+        case .any: appLocalized("Any size")
+        case .two: appLocalized("2+ photos")
+        case .three: appLocalized("3+ photos")
+        case .five: appLocalized("5+ photos")
+        case .ten: appLocalized("10+ photos")
+        case .twenty: appLocalized("20+ photos")
+        }
+    }
+}
+
+public struct ScannerClusterControls: Equatable, Sendable {
+    public var sort: ScannerClusterSort = .newest
+    public var reviewFilter: ScannerReviewFilter = .all
+    public var minimumClusterSize: ScannerMinimumClusterSize = .any
+    public var favoritesOnly = false
+
+    public var isDefault: Bool {
+        self == Self()
+    }
+
+    public init() {}
+}
+
 @MainActor
 @Observable
 public final class ScannerViewModel {
@@ -45,6 +112,7 @@ public final class ScannerViewModel {
     let cleanupService: any PhotoCleanupService
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
+    public var clusterControls = ScannerClusterControls()
     
     public init(
         gridColumns: Int = 3,
@@ -228,22 +296,75 @@ public final class ScannerViewModel {
     }
 
     public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.sorted {
-            if $0.createdAt != $1.createdAt {
-                return $0.createdAt > $1.createdAt
+        filteredAndSortedClusters(from: clusters, controls: clusterControls)
+    }
+
+    public func filteredAndSortedClusters(
+        from clusters: [PhotoCluster],
+        controls: ScannerClusterControls
+    ) -> [PhotoCluster] {
+        let filtered = clusters.filter { cluster in
+            guard cluster.count >= controls.minimumClusterSize.rawValue else { return false }
+            if controls.favoritesOnly && !cluster.assets.contains(where: { $0.isFavorite }) { return false }
+            switch controls.reviewFilter {
+            case .all: return true
+            case .needsReview: return reviewStatus(for: cluster.id) == .needsReReview
+            case .inReview: return reviewStatus(for: cluster.id) == .inReview
+            case .reviewed: return reviewStatus(for: cluster.id) == .reviewed
             }
-            if $0.count != $1.count {
-                return $0.count > $1.count
-            }
-            if $0.averageSimilarity != $1.averageSimilarity {
-                return $0.averageSimilarity > $1.averageSimilarity
-            }
-            return $0.id.uuidString < $1.id.uuidString
         }
+
+        return filtered.sorted { lhs, rhs in
+            let primary: ComparisonResult
+            switch controls.sort {
+            case .newest:
+                primary = compare(lhs.createdAt, rhs.createdAt, descending: true)
+            case .largestCleanupOpportunity:
+                primary = compare(cleanupBytes(for: lhs), cleanupBytes(for: rhs), descending: true)
+            case .largestCluster:
+                primary = compare(lhs.count, rhs.count, descending: true)
+            case .similarity:
+                primary = compare(lhs.averageSimilarity, rhs.averageSimilarity, descending: true)
+            case .reviewStatus:
+                primary = compare(reviewRank(for: lhs), reviewRank(for: rhs), descending: true)
+            }
+            guard primary == .orderedSame else { return primary == .orderedAscending }
+            return defaultClusterSort(lhs, rhs)
+        }
+    }
+
+    public func resetClusterControls() {
+        clusterControls = ScannerClusterControls()
     }
 }
 
 private extension ScannerViewModel {
+    func cleanupBytes(for cluster: PhotoCluster) -> Int64 {
+        cluster.assets.reduce(0) { $0 + $1.estimatedCleanupBytes }
+    }
+
+    func reviewRank(for cluster: PhotoCluster) -> Int {
+        switch reviewStatus(for: cluster.id) {
+        case .needsReReview: 3
+        case .inReview: 2
+        case .notReviewed: 1
+        case .reviewed: 0
+        }
+    }
+
+    func defaultClusterSort(_ lhs: PhotoCluster, _ rhs: PhotoCluster) -> Bool {
+        if lhs.createdAt != rhs.createdAt { return lhs.createdAt > rhs.createdAt }
+        if lhs.count != rhs.count { return lhs.count > rhs.count }
+        if lhs.averageSimilarity != rhs.averageSimilarity { return lhs.averageSimilarity > rhs.averageSimilarity }
+        return lhs.id.uuidString < rhs.id.uuidString
+    }
+
+    func compare<T: Comparable>(_ lhs: T, _ rhs: T, descending: Bool) -> ComparisonResult {
+        if lhs == rhs { return .orderedSame }
+        let lhsBefore = descending ? lhs > rhs : lhs < rhs
+        return lhsBefore ? .orderedAscending : .orderedDescending
+    }
+
     func setCleanupRefreshState(_ newState: CleanupRefreshState?) {
         cleanupRefreshDismissTask?.cancel()
         cleanupRefreshDismissTask = nil
