@@ -16,6 +16,7 @@
 		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
 		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
+		7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00022F30000100DAB1E2 /* Purchases */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 				531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */,
 				531BB6312F29293A00DAB1E2 /* Core in Frameworks */,
 				53458A5B2F29457F00D1CCCC /* Storage in Frameworks */,
+				7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */,
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
 			);
@@ -95,6 +97,7 @@
 				53458A542F29455F00D1CCCC /* DesignSystem */,
 				53458A572F29457200D1CCCC /* PhotoAnalysis */,
 				53458A5A2F29457F00D1CCCC /* Storage */,
+				7A1B00022F30000100DAB1E2 /* Purchases */,
 			);
 			productName = Alike;
 			productReference = 531BB61D2F29132C00DAB1E2 /* Alike.app */;
@@ -135,6 +138,7 @@
 				53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */,
 				53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */,
 				53458A592F29457F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/Storage" */,
+				7A1B00032F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Purchases" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 531BB61E2F29132C00DAB1E2 /* Products */;
@@ -422,6 +426,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Storage;
 		};
+		7A1B00032F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Purchases" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Purchases;
+		};
 		5A19A10232B8A5D2008C44A1 /* XCLocalSwiftPackageReference "../Packages/NavigationKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/NavigationKit;
@@ -464,6 +472,10 @@
 		53458A5A2F29457F00D1CCCC /* Storage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Storage;
+		};
+		7A1B00022F30000100DAB1E2 /* Purchases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Purchases;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
