@@ -86,7 +86,7 @@ final class SubscriptionStoreTests: XCTestCase {
         XCTAssertTrue(store.entitlementState.isPremium)
         XCTAssertEqual(store.entitlementState.source, .verified)
         XCTAssertTrue(store.hasAccess(to: .screenshotCleanup))
-        XCTAssertTrue(store.hasAccess(to: .cleanupReminders))
+        XCTAssertTrue(store.hasAccess(to: .cleanupReminderCustomization))
     }
 
     func testRefreshRejectsExpiredRevokedAndUnverifiedEntitlements() async {

@@ -21,11 +21,17 @@ public struct SettingsView: View {
     @State private var presentedPremiumFeature: PremiumFeature?
     private let premiumAccess: any PremiumAccessControlling
 #if DEBUG
+    @AppStorage(PremiumFeature.unlimitedRescans.debugOverrideDefaultsKey)
+    private var debugUnlockUnlimitedRescans = false
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
     @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBlurredPhotoCleanup = false
-    @AppStorage(PremiumFeature.cleanupReminders.debugOverrideDefaultsKey)
+    @AppStorage(PremiumFeature.advancedFilters.debugOverrideDefaultsKey)
+    private var debugUnlockAdvancedFilters = false
+    @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBatchCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
     
@@ -102,7 +108,8 @@ public struct SettingsView: View {
     @ViewBuilder
     private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
         switch feature {
-        case .cleanupReminders, .screenshotCleanup, .blurredPhotoCleanup:
+        case .cleanupReminderCustomization, .screenshotCleanup, .blurredPhotoCleanup,
+             .unlimitedRescans, .advancedFilters, .batchCleanup:
             ReminderPremiumSheet()
         }
     }
@@ -150,6 +157,11 @@ public struct SettingsView: View {
     private var cleanupReminderSection: some View {
         Section {
             Toggle(
+                appLocalized("Unlock Unlimited Rescans Premium Feature"),
+                isOn: $debugUnlockUnlimitedRescans
+            )
+
+            Toggle(
                 isOn: Binding(
                     get: { viewModel.cleanupReminderState.isEnabled },
                     set: { isEnabled in
@@ -193,7 +205,7 @@ public struct SettingsView: View {
                 }
 
                 Button {
-                    presentedPremiumFeature = .cleanupReminders
+                    presentedPremiumFeature = .cleanupReminderCustomization
                 } label: {
                     HStack(spacing: Spacing.small) {
                         Image(systemName: "lock.badge.clock")
@@ -327,6 +339,16 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
 
             Toggle(
+                appLocalized("Unlock Advanced Filters Premium Feature"),
+                isOn: $debugUnlockAdvancedFilters
+            )
+
+            Toggle(
+                appLocalized("Unlock Batch Cleanup Premium Feature"),
+                isOn: $debugUnlockBatchCleanup
+            )
+
+            Toggle(
                 appLocalized("Unlock Custom Reminder Schedule Premium Feature"),
                 isOn: $debugUnlockCleanupReminders
             )
@@ -449,7 +471,7 @@ public struct SettingsView: View {
     }
 
     private var hasCleanupReminderAccess: Bool {
-        premiumAccess.hasAccess(to: .cleanupReminders)
+        premiumAccess.hasAccess(to: .cleanupReminderCustomization)
     }
 
     private var isCleanupReminderErrorPresented: Binding<Bool> {

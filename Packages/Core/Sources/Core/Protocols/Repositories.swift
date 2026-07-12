@@ -25,6 +25,18 @@ public protocol PhotoClusterRepository: Sendable {
     func hasGalleryChanged() async -> Bool
 }
 
+/// Repository for the installation-local number of successfully completed scans.
+public protocol ScanUsageRepository: Sendable {
+    /// Returns nil when usage has not yet been initialized on this installation.
+    func loadCompletedScanCount() async -> Int?
+
+    /// Stores an initial count when migrating an existing installation.
+    func initializeCompletedScanCount(_ count: Int) async
+
+    /// Records one successful scan and returns the new count.
+    func recordCompletedScan() async -> Int
+}
+
 /// Repository for cleanup review state per photo cluster.
 public protocol ClusterReviewStateRepository: Sendable {
     /// Load review state for a cluster.

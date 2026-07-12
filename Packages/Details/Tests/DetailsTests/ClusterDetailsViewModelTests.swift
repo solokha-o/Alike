@@ -279,7 +279,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
                 snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
                 snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
-            ]
+            ],
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
         )
 
         await viewModel.load()
@@ -376,16 +377,55 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.deleteErrorMessage, "Select at least one photo before deleting.")
     }
 
+    func testFreeUserCanRequestSinglePhotoCleanup() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        let decision = viewModel.requestDeleteConfirmation()
+
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+    }
+
+    func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        let decision = viewModel.requestDeleteConfirmation()
+        await viewModel.confirmDelete()
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+
+        XCTAssertEqual(decision, .requiresPremium)
+        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
+        XCTAssertFalse(cleanupDidRun)
+    }
+
     private func makeViewModel(
         snapshots: [ReviewAssetSnapshot],
         reviewRepository: (any ClusterReviewStateRepository)? = nil,
-        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil
+        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController()
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
             reviewRepository: reviewRepository ?? repository,
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
             assetSnapshots: snapshots
         )
     }

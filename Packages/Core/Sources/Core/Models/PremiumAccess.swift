@@ -1,24 +1,65 @@
 import Foundation
 
 public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
+    case unlimitedRescans
     case screenshotCleanup
     case blurredPhotoCleanup
-    case cleanupReminders
+    case advancedFilters
+    case batchCleanup
+    case cleanupReminderCustomization
 
     public var id: String { rawValue }
 
 #if DEBUG
     public var debugOverrideDefaultsKey: String {
         switch self {
+        case .unlimitedRescans:
+            "debug.premium.unlimitedRescans"
         case .screenshotCleanup:
             "debug.premium.screenshotCleanup"
         case .blurredPhotoCleanup:
             "debug.premium.blurredPhotoCleanup"
-        case .cleanupReminders:
+        case .advancedFilters:
+            "debug.premium.advancedFilters"
+        case .batchCleanup:
+            "debug.premium.batchCleanup"
+        case .cleanupReminderCustomization:
             "debug.premium.cleanupReminders"
         }
     }
 #endif
+}
+
+public enum PremiumAccessContext: Equatable, Sendable {
+    case none
+    case rescan(completedScanCount: Int)
+    case cleanupSelection(count: Int)
+}
+
+public enum PremiumAccessDecision: Equatable, Sendable {
+    case allowed
+    case requiresPremium
+
+    public var isAllowed: Bool { self == .allowed }
+}
+
+public enum PremiumAccessPolicy {
+    public static func decision(
+        for feature: PremiumFeature,
+        context: PremiumAccessContext = .none,
+        isPremium: Bool
+    ) -> PremiumAccessDecision {
+        guard !isPremium else { return .allowed }
+
+        switch (feature, context) {
+        case (.unlimitedRescans, .rescan(let completedScanCount)):
+            return completedScanCount <= 1 ? .allowed : .requiresPremium
+        case (.batchCleanup, .cleanupSelection(let count)):
+            return count <= 1 ? .allowed : .requiresPremium
+        default:
+            return .requiresPremium
+        }
+    }
 }
 
 public enum PremiumEntitlementSource: String, Codable, Equatable, Sendable {
@@ -52,7 +93,20 @@ public struct PremiumEntitlementState: Codable, Equatable, Sendable {
 @MainActor
 public protocol PremiumAccessControlling: Sendable {
     var entitlementState: PremiumEntitlementState { get }
-    func hasAccess(to feature: PremiumFeature) -> Bool
+    func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision
+}
+
+public extension PremiumAccessControlling {
+    func access(to feature: PremiumFeature) -> PremiumAccessDecision {
+        access(to: feature, context: .none)
+    }
+
+    func hasAccess(to feature: PremiumFeature) -> Bool {
+        access(to: feature).isAllowed
+    }
 }
 
 public extension PremiumFeature {
@@ -62,7 +116,7 @@ public extension PremiumFeature {
             .screenshots
         case .blurredPhotoCleanup:
             .blurredPhotos
-        case .cleanupReminders:
+        case .unlimitedRescans, .advancedFilters, .batchCleanup, .cleanupReminderCustomization:
             nil
         }
     }
@@ -81,7 +135,13 @@ public struct PremiumAccessController: PremiumAccessControlling {
         )
     }
 
-    public func hasAccess(to feature: PremiumFeature) -> Bool {
-        unlockedFeatures.contains(feature)
+    public func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        if unlockedFeatures.contains(feature) {
+            return .allowed
+        }
+        return PremiumAccessPolicy.decision(for: feature, context: context, isPremium: false)
     }
 }

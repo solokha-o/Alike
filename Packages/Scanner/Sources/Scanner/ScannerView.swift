@@ -66,7 +66,7 @@ public struct ScannerView: View {
         .onChange(of: shouldStartScan) { _, newValue in
             if newValue {
                 Task {
-                    await viewModel.startScanning()
+                    await startScan()
                     shouldStartScan = false
                 }
             }
@@ -95,7 +95,14 @@ public struct ScannerView: View {
                 .interactiveDismissDisabled()
         }
         .sheet(isPresented: $isClusterControlsPresented) {
-            ScannerClusterControlsSheet(controls: $viewModel.clusterControls)
+            ScannerClusterControlsSheet(
+                controls: $viewModel.clusterControls,
+                isAdvancedFilteringLocked: viewModel.isAdvancedFilteringLocked,
+                onRequestAdvancedFilters: {
+                    isClusterControlsPresented = false
+                    presentedPaywallFeature = .advancedFilters
+                }
+            )
         }
         .alert(
             appLocalized("Couldn't Open Cleanup Category"),
@@ -170,6 +177,7 @@ public struct ScannerView: View {
                 cluster: cluster,
                 cleanupService: viewModel.cleanupService,
                 cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                premiumAccess: viewModel.premiumAccess,
                 openSettingsAction: {
                     PhotoPermissionManagerImpl().openSettings()
                 },
@@ -215,7 +223,7 @@ public struct ScannerView: View {
             
             PrimaryButton(appLocalized("Start Scanning"), icon: "sparkles") {
                 Task {
-                    await viewModel.startScanning()
+                    await startScan()
                 }
             }
             .padding(.horizontal, Spacing.large)
@@ -307,7 +315,7 @@ public struct ScannerView: View {
                     if viewModel.shouldShowRescanPrompt {
                         RescanPromptCard {
                             Task {
-                                await viewModel.startScanning()
+                                await startScan()
                             }
                         }
                     }
@@ -384,7 +392,7 @@ public struct ScannerView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
-                        await viewModel.startScanning()
+                        await startScan()
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -406,7 +414,7 @@ public struct ScannerView: View {
             ToolbarItem {
                 Button {
                     Task {
-                        await viewModel.startScanning()
+                        await startScan()
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -446,6 +454,13 @@ public struct ScannerView: View {
             presentedCleanupCategory = PresentedCleanupCategory(kind: category.kind, assets: assets)
         } catch {
             cleanupCategoryErrorMessage = error.localizedDescription
+        }
+    }
+
+    private func startScan() async {
+        let decision = await viewModel.startScanning()
+        if decision == .requiresPremium {
+            presentedPaywallFeature = .unlimitedRescans
         }
     }
 
@@ -561,6 +576,8 @@ private struct CleanupInsightsCard: View {
 private struct ScannerClusterControlsSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var controls: ScannerClusterControls
+    let isAdvancedFilteringLocked: Bool
+    let onRequestAdvancedFilters: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -574,17 +591,24 @@ private struct ScannerClusterControlsSheet: View {
                 }
 
                 Section(appLocalized("Filter by")) {
-                    Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
-                        ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
-                            Text(filter.title).tag(filter)
+                    if isAdvancedFilteringLocked {
+                        Button(action: onRequestAdvancedFilters) {
+                            Label(appLocalized("Unlock advanced filters"), systemImage: "lock.fill")
                         }
-                    }
-                    Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
-                        ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
-                            Text(size.title).tag(size)
+                        .accessibilityHint(Text(appLocalized("Opens premium details for advanced filters")))
+                    } else {
+                        Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                            ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
+                                Text(filter.title).tag(filter)
+                            }
                         }
+                        Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                            ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
+                                Text(size.title).tag(size)
+                            }
+                        }
+                        Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
                     }
-                    Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
                 }
 
                 Section {
@@ -1022,7 +1046,13 @@ private struct PremiumPaywallSheet: View {
 
     private var title: String {
         switch feature {
-        case .cleanupReminders:
+        case .unlimitedRescans:
+            appLocalized("Unlimited rescans are a premium feature")
+        case .advancedFilters:
+            appLocalized("Advanced filters are a premium feature")
+        case .batchCleanup:
+            appLocalized("Batch cleanup is a premium feature")
+        case .cleanupReminderCustomization:
             appLocalized("Custom reminder schedule is a premium feature")
         case .screenshotCleanup, .blurredPhotoCleanup:
             feature.categoryKind?.presentation.paywallTitle ?? ""
@@ -1031,7 +1061,13 @@ private struct PremiumPaywallSheet: View {
 
     private var message: String {
         switch feature {
-        case .cleanupReminders:
+        case .unlimitedRescans:
+            appLocalized("Unlock unlimited rescans to keep your cleanup results current as your library changes.")
+        case .advancedFilters:
+            appLocalized("Unlock review status, cluster size, and favorites filters for faster cleanup.")
+        case .batchCleanup:
+            appLocalized("Unlock batch cleanup to remove multiple selected photos in one action.")
+        case .cleanupReminderCustomization:
             appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine.")
         case .screenshotCleanup, .blurredPhotoCleanup:
             feature.categoryKind?.presentation.paywallMessage ?? ""

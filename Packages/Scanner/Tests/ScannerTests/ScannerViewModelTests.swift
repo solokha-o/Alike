@@ -13,6 +13,7 @@ final class ScannerViewModelTests: XCTestCase {
     var mockCleanupSessionRepository: MockCleanupSessionRepository!
     var mockCleanupService: MockPhotoCleanupService!
     var mockCleanupHistoryRepository: MockCleanupHistoryRepository!
+    var scanUsageRepository: MockScanUsageRepository!
     var premiumAccess: MockPremiumAccessController!
     
     override func setUp() async throws {
@@ -23,6 +24,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupSessionRepository = MockCleanupSessionRepository()
         mockCleanupService = MockPhotoCleanupService()
         mockCleanupHistoryRepository = MockCleanupHistoryRepository()
+        scanUsageRepository = MockScanUsageRepository()
         premiumAccess = MockPremiumAccessController()
         viewModel = ScannerViewModel(
             gridColumns: 3,
@@ -34,7 +36,8 @@ final class ScannerViewModelTests: XCTestCase {
             cleanupSessionRepository: mockCleanupSessionRepository,
             cleanupService: mockCleanupService,
             cleanupHistoryRepository: mockCleanupHistoryRepository,
-            premiumAccess: premiumAccess
+            premiumAccess: premiumAccess,
+            scanUsageRepository: scanUsageRepository
         )
     }
     
@@ -47,6 +50,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupSessionRepository = nil
         mockCleanupService = nil
         mockCleanupHistoryRepository = nil
+        scanUsageRepository = nil
         premiumAccess = nil
     }
     
@@ -62,6 +66,57 @@ final class ScannerViewModelTests: XCTestCase {
     
     func testInitialGridColumns() {
         XCTAssertEqual(viewModel.gridColumns, 3)
+    }
+
+    func testSuccessfulScanIncrementsUsageExactlyOnce() async {
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        let decision = await viewModel.startScanning()
+        let count = await scanUsageRepository.currentCount()
+        let recordCalls = await scanUsageRepository.recordCallCount()
+
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertEqual(count, 1)
+        XCTAssertEqual(recordCalls, 1)
+    }
+
+    func testFailedScanDoesNotConsumeAllowance() async {
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.failure(TestError()))
+
+        let decision = await viewModel.startScanning()
+        let count = await scanUsageRepository.currentCount()
+        let recordCalls = await scanUsageRepository.recordCallCount()
+
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertEqual(count, 0)
+        XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testThirdScanRequiresPremiumWithoutChangingResults() async {
+        await scanUsageRepository.setCompletedScanCount(2)
+        let existing = createMockCluster(photoCount: 2)
+        viewModel.state = .results([existing])
+
+        let decision = await viewModel.startScanning()
+        let recordCalls = await scanUsageRepository.recordCallCount()
+
+        XCTAssertEqual(decision, .requiresPremium)
+        XCTAssertEqual(viewModel.state, .results([existing]))
+        XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testAdvancedFiltersUsePremiumAccess() {
+        XCTAssertTrue(viewModel.isAdvancedFilteringLocked)
+
+        let unlockedViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.advancedFilters]),
+            scanUsageRepository: scanUsageRepository
+        )
+
+        XCTAssertFalse(unlockedViewModel.isAdvancedFilteringLocked)
     }
     
     // MARK: - Load Cached Results Tests
@@ -1114,6 +1169,36 @@ final class ScannerViewModelTests: XCTestCase {
 
 private struct TestError: LocalizedError {
     var errorDescription: String? { "Test error" }
+}
+
+actor MockScanUsageRepository: ScanUsageRepository {
+    private var count: Int?
+    private var records = 0
+
+    init(count: Int? = 0) {
+        self.count = count
+    }
+
+    func loadCompletedScanCount() -> Int? { count }
+
+    func initializeCompletedScanCount(_ count: Int) {
+        guard self.count == nil else { return }
+        self.count = count
+    }
+
+    func recordCompletedScan() -> Int {
+        records += 1
+        let next = (count ?? 0) + 1
+        count = next
+        return next
+    }
+
+    func setCompletedScanCount(_ count: Int?) {
+        self.count = count
+    }
+
+    func currentCount() -> Int { count ?? 0 }
+    func recordCallCount() -> Int { records }
 }
 
 private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {

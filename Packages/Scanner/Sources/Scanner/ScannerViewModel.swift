@@ -110,7 +110,8 @@ public final class ScannerViewModel {
     private let cleanupSessionRepository: CleanupSessionRepository
     private let cleanupManager: any CleanupSessionManaging
     private let cleanupInsightsProvider: any CleanupInsightsProviding
-    private let premiumAccess: any PremiumAccessControlling
+    let premiumAccess: any PremiumAccessControlling
+    private let scanUsageRepository: any ScanUsageRepository
     private let cleanupRefreshAutoDismissDelay: Duration
     private var cleanupRefreshDismissTask: Task<Void, Never>?
     private var isCleanupRefreshInFlight = false
@@ -120,6 +121,8 @@ public final class ScannerViewModel {
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
     public var clusterControls = ScannerClusterControls()
+    public private(set) var completedScanCount = 0
+    private var hasLoadedScanUsage = false
     
     public init(
         gridColumns: Int = 3,
@@ -132,6 +135,7 @@ public final class ScannerViewModel {
         cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
         cleanupManager: (any CleanupSessionManaging)? = nil,
         cleanupInsightsProvider: (any CleanupInsightsProviding)? = nil,
         cleanupRefreshAutoDismissDelay: Duration = .seconds(5)
@@ -145,6 +149,7 @@ public final class ScannerViewModel {
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
+        self.scanUsageRepository = scanUsageRepository
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = cleanupInsightsProvider
             ?? CleanupInsightsService(repository: cleanupHistoryRepository)
@@ -166,6 +171,7 @@ public final class ScannerViewModel {
     
     public func loadCachedResults() async {
         await loadCleanupInsights()
+        await loadScanUsageIfNeeded()
         do {
             let clusters = try await repository.loadClusters()
             await loadCleanupCategories()
@@ -188,7 +194,15 @@ public final class ScannerViewModel {
         }
     }
     
-    public func startScanning() async {
+    @discardableResult
+    public func startScanning() async -> PremiumAccessDecision {
+        await loadScanUsageIfNeeded()
+        let decision = premiumAccess.access(
+            to: .unlimitedRescans,
+            context: .rescan(completedScanCount: completedScanCount)
+        )
+        guard decision.isAllowed else { return decision }
+
         do {
             setCleanupRefreshState(nil)
             try await runScan(showProgress: true)
@@ -196,6 +210,7 @@ public final class ScannerViewModel {
             AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
             state = .error(error.localizedDescription)
         }
+        return .allowed
     }
 
     public func handleCleanupCompleted(_ record: CleanupCompletionRecord) async {
@@ -278,7 +293,11 @@ public final class ScannerViewModel {
     }
 
     public func isCategoryLocked(_ kind: CleanupCategoryKind) -> Bool {
-        !premiumAccess.hasAccess(to: kind.premiumFeature)
+        !premiumAccess.access(to: kind.premiumFeature).isAllowed
+    }
+
+    public var isAdvancedFilteringLocked: Bool {
+        !premiumAccess.access(to: .advancedFilters).isAllowed
     }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
@@ -512,6 +531,21 @@ private extension ScannerViewModel {
             cleanupCategories = []
         }
         state = .results(sorted)
+        completedScanCount = await scanUsageRepository.recordCompletedScan()
+    }
+
+    private func loadScanUsageIfNeeded() async {
+        guard !hasLoadedScanUsage else { return }
+        hasLoadedScanUsage = true
+
+        if let storedCount = await scanUsageRepository.loadCompletedScanCount() {
+            completedScanCount = storedCount
+            return
+        }
+
+        let migratedCount = await repository.getLastScanDate() == nil ? 0 : 1
+        await scanUsageRepository.initializeCompletedScanCount(migratedCount)
+        completedScanCount = migratedCount
     }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
