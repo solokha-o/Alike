@@ -14,6 +14,7 @@ import Settings
 import Core
 import Cleanup
 import Storage
+import Purchases
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -49,6 +50,7 @@ struct MainTabView: View {
     @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
+    @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
@@ -73,19 +75,9 @@ struct MainTabView: View {
 
     private var premiumAccess: any PremiumAccessControlling {
 #if DEBUG
-        var unlockedFeatures: Set<PremiumFeature> = []
-        if debugUnlockScreenshotCleanup {
-            unlockedFeatures.insert(.screenshotCleanup)
-        }
-        if debugUnlockBlurredPhotoCleanup {
-            unlockedFeatures.insert(.blurredPhotoCleanup)
-        }
-        if debugUnlockCleanupReminders {
-            unlockedFeatures.insert(.cleanupReminders)
-        }
-        return PremiumAccessController(unlockedFeatures: unlockedFeatures)
+        DebugPremiumAccessController(base: subscriptionStore)
 #else
-        return PremiumAccessController()
+        subscriptionStore
 #endif
     }
 
@@ -101,6 +93,10 @@ struct MainTabView: View {
     }
     
     var body: some View {
+        // Reading the observable state keeps all injected feature views in sync
+        // when StoreKit confirms, restores, or revokes an entitlement.
+        let _ = subscriptionStore.entitlementState
+
         TabView(selection: Bindable(tabManager).selectedTab) {
             ForEach(tabs, id: \.self) { tab in
                 tabView(for: tab)
@@ -116,10 +112,18 @@ struct MainTabView: View {
             if clamped != gridColumns {
                 gridColumns = clamped
             }
+            await subscriptionStore.start()
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await subscriptionStore.refreshEntitlements()
         }
         .task(id: cleanupReminderTaskID) {
             guard scenePhase == .active else { return }
             await resyncCleanupReminder()
+        }
+        .onDisappear {
+            subscriptionStore.stop()
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
