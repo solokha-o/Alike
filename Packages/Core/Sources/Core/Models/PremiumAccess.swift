@@ -1,7 +1,7 @@
 import Foundation
 
 public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
-    case unlimitedRescans
+    case unlimitedScans
     case screenshotCleanup
     case blurredPhotoCleanup
     case advancedFilters
@@ -13,7 +13,7 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
 #if DEBUG
     public var debugOverrideDefaultsKey: String {
         switch self {
-        case .unlimitedRescans:
+        case .unlimitedScans:
             "debug.premium.unlimitedRescans"
         case .screenshotCleanup:
             "debug.premium.screenshotCleanup"
@@ -32,7 +32,7 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
 
 public enum PremiumAccessContext: Equatable, Sendable {
     case none
-    case rescan(completedScanCount: Int)
+    case scan(completedThisMonth: Int)
     case cleanupSelection(count: Int)
 }
 
@@ -44,6 +44,8 @@ public enum PremiumAccessDecision: Equatable, Sendable {
 }
 
 public enum PremiumAccessPolicy {
+    public static let monthlyFreeScanLimit = 3
+
     public static func decision(
         for feature: PremiumFeature,
         context: PremiumAccessContext = .none,
@@ -52,8 +54,8 @@ public enum PremiumAccessPolicy {
         guard !isPremium else { return .allowed }
 
         switch (feature, context) {
-        case (.unlimitedRescans, .rescan(let completedScanCount)):
-            return completedScanCount <= 1 ? .allowed : .requiresPremium
+        case (.unlimitedScans, .scan(let completedThisMonth)):
+            return completedThisMonth < monthlyFreeScanLimit ? .allowed : .requiresPremium
         case (.batchCleanup, .cleanupSelection(let count)):
             return count <= 1 ? .allowed : .requiresPremium
         default:
@@ -116,7 +118,7 @@ public extension PremiumFeature {
             .screenshots
         case .blurredPhotoCleanup:
             .blurredPhotos
-        case .unlimitedRescans, .advancedFilters, .batchCleanup, .cleanupReminderCustomization:
+        case .unlimitedScans, .advancedFilters, .batchCleanup, .cleanupReminderCustomization:
             nil
         }
     }

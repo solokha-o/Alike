@@ -54,7 +54,7 @@ struct MainTabView: View {
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
-    @AppStorage(PremiumFeature.unlimitedRescans.debugOverrideDefaultsKey)
+    @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
     private var debugUnlockUnlimitedRescans = false
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false

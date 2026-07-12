@@ -93,8 +93,8 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(recordCalls, 0)
     }
 
-    func testThirdScanRequiresPremiumWithoutChangingResults() async {
-        await scanUsageRepository.setCompletedScanCount(2)
+    func testFourthMonthlyScanRequiresPremiumWithoutChangingResults() async {
+        await scanUsageRepository.setCompletedScanCount(3)
         let existing = createMockCluster(photoCount: 2)
         viewModel.state = .results([existing])
 
@@ -104,6 +104,25 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(decision, .requiresPremium)
         XCTAssertEqual(viewModel.state, .results([existing]))
         XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testMonthlyScanAllowanceResetsOnFreshLaunchInNewMonth() async {
+        let july = Date(timeIntervalSince1970: 1_783_814_400)
+        let august = Date(timeIntervalSince1970: 1_786_492_800)
+        let usageRepository = MockScanUsageRepository(count: nil)
+        await usageRepository.setMonthlyUsage(count: 3, date: july)
+        let relaunchedViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: usageRepository,
+            calendar: Calendar(identifier: .gregorian),
+            now: { august }
+        )
+
+        await relaunchedViewModel.loadCachedResults()
+
+        XCTAssertEqual(relaunchedViewModel.remainingFreeScans, 3)
     }
 
     func testAdvancedFiltersUsePremiumAccess() {
@@ -1172,33 +1191,60 @@ private struct TestError: LocalizedError {
 }
 
 actor MockScanUsageRepository: ScanUsageRepository {
-    private var count: Int?
+    private var usage: MonthlyScanUsage?
     private var records = 0
 
     init(count: Int? = 0) {
-        self.count = count
+        self.usage = count.map { Self.makeUsage(count: $0) }
     }
 
-    func loadCompletedScanCount() -> Int? { count }
-
-    func initializeCompletedScanCount(_ count: Int) {
-        guard self.count == nil else { return }
-        self.count = count
+    func loadMonthlyUsage(at date: Date) -> MonthlyScanUsage? {
+        guard let usage else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        guard calendar.isDate(usage.periodStart, equalTo: date, toGranularity: .month) else {
+            let reset = Self.makeUsage(count: 0, date: date)
+            self.usage = reset
+            return reset
+        }
+        return usage
     }
 
-    func recordCompletedScan() -> Int {
+    func initializeMonthlyUsage(_ usage: MonthlyScanUsage) {
+        guard self.usage == nil else { return }
+        self.usage = usage
+    }
+
+    func recordCompletedScan(at date: Date) -> MonthlyScanUsage {
         records += 1
-        let next = (count ?? 0) + 1
-        count = next
-        return next
+        let next = (usage?.completedScanCount ?? 0) + 1
+        let updated = Self.makeUsage(count: next, date: date)
+        usage = updated
+        return updated
     }
 
     func setCompletedScanCount(_ count: Int?) {
-        self.count = count
+        usage = count.map { Self.makeUsage(count: $0) }
     }
 
-    func currentCount() -> Int { count ?? 0 }
+    func setMonthlyUsage(count: Int, date: Date) {
+        usage = Self.makeUsage(count: count, date: date)
+    }
+
+    func currentCount() -> Int { usage?.completedScanCount ?? 0 }
     func recordCallCount() -> Int { records }
+
+    private static func makeUsage(count: Int, date: Date = Date()) -> MonthlyScanUsage {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let components = calendar.dateComponents([.year, .month], from: date)
+        let start = calendar.date(from: components) ?? date
+        return MonthlyScanUsage(
+            periodStart: start,
+            nextResetDate: calendar.date(byAdding: .month, value: 1, to: start) ?? date,
+            completedScanCount: count
+        )
+    }
 }
 
 private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {

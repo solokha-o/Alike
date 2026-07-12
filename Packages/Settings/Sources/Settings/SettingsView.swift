@@ -21,7 +21,7 @@ public struct SettingsView: View {
     @State private var presentedPremiumFeature: PremiumFeature?
     private let premiumAccess: any PremiumAccessControlling
 #if DEBUG
-    @AppStorage(PremiumFeature.unlimitedRescans.debugOverrideDefaultsKey)
+    @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
     private var debugUnlockUnlimitedRescans = false
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
@@ -109,7 +109,7 @@ public struct SettingsView: View {
     private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
         switch feature {
         case .cleanupReminderCustomization, .screenshotCleanup, .blurredPhotoCleanup,
-             .unlimitedRescans, .advancedFilters, .batchCleanup:
+             .unlimitedScans, .advancedFilters, .batchCleanup:
             ReminderPremiumSheet()
         }
     }
@@ -157,7 +157,7 @@ public struct SettingsView: View {
     private var cleanupReminderSection: some View {
         Section {
             Toggle(
-                appLocalized("Unlock Unlimited Rescans Premium Feature"),
+                appLocalized("Unlock Unlimited Scans Premium Feature"),
                 isOn: $debugUnlockUnlimitedRescans
             )
 

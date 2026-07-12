@@ -91,7 +91,11 @@ public struct ScannerView: View {
             .interactiveDismissDisabled()
         }
         .sheet(item: $presentedPaywallFeature) { feature in
-            PremiumPaywallSheet(feature: feature)
+            PremiumPaywallSheet(
+                feature: feature,
+                remainingFreeScans: viewModel.remainingFreeScans,
+                resetDate: viewModel.nextFreeScanResetDate
+            )
                 .interactiveDismissDisabled()
         }
         .sheet(isPresented: $isClusterControlsPresented) {
@@ -214,6 +218,8 @@ public struct ScannerView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
 
+            scanAllowanceCard
+
             if viewModel.cleanupInsights.hasHistory {
                 CleanupInsightsCard(insights: viewModel.cleanupInsights)
                     .padding(.horizontal, Spacing.medium)
@@ -284,6 +290,8 @@ public struct ScannerView: View {
 
         return ScrollView {
             VStack(spacing: Spacing.medium) {
+                scanAllowanceCard
+
                 if viewModel.cleanupInsights.hasHistory {
                     CleanupInsightsCard(insights: viewModel.cleanupInsights)
                 }
@@ -460,7 +468,17 @@ public struct ScannerView: View {
     private func startScan() async {
         let decision = await viewModel.startScanning()
         if decision == .requiresPremium {
-            presentedPaywallFeature = .unlimitedRescans
+            presentedPaywallFeature = .unlimitedScans
+        }
+    }
+
+    @ViewBuilder
+    private var scanAllowanceCard: some View {
+        if !viewModel.hasUnlimitedScanAccess {
+            FreeScanAllowanceCard(
+                remainingScans: viewModel.remainingFreeScans,
+                resetDate: viewModel.nextFreeScanResetDate
+            )
         }
     }
 
@@ -991,6 +1009,8 @@ private struct PremiumPaywallSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     let feature: PremiumFeature
+    let remainingFreeScans: Int
+    let resetDate: Date?
 
     var body: some View {
         RoutedNavigationStack {
@@ -1046,8 +1066,8 @@ private struct PremiumPaywallSheet: View {
 
     private var title: String {
         switch feature {
-        case .unlimitedRescans:
-            appLocalized("Unlimited rescans are a premium feature")
+        case .unlimitedScans:
+            appLocalized("Unlimited scans are a premium feature")
         case .advancedFilters:
             appLocalized("Advanced filters are a premium feature")
         case .batchCleanup:
@@ -1061,8 +1081,8 @@ private struct PremiumPaywallSheet: View {
 
     private var message: String {
         switch feature {
-        case .unlimitedRescans:
-            appLocalized("Unlock unlimited rescans to keep your cleanup results current as your library changes.")
+        case .unlimitedScans:
+            scanAllowanceMessage
         case .advancedFilters:
             appLocalized("Unlock review status, cluster size, and favorites filters for faster cleanup.")
         case .batchCleanup:
@@ -1072,6 +1092,54 @@ private struct PremiumPaywallSheet: View {
         case .screenshotCleanup, .blurredPhotoCleanup:
             feature.categoryKind?.presentation.paywallMessage ?? ""
         }
+    }
+
+    private var scanAllowanceMessage: String {
+        guard let resetDate else {
+            return appLocalized("Free includes 3 scans per calendar month. Unlock Premium for unlimited scans.")
+        }
+        return String(
+            format: appLocalized("Free includes %d scans per calendar month. You have %d remaining. Your allowance resets %@."),
+            PremiumAccessPolicy.monthlyFreeScanLimit,
+            remainingFreeScans,
+            resetDate.formatted(.dateTime.month(.wide).day().year())
+        )
+    }
+}
+
+private struct FreeScanAllowanceCard: View {
+    let remainingScans: Int
+    let resetDate: Date?
+
+    var body: some View {
+        HStack(spacing: Spacing.small) {
+            Image(systemName: remainingScans == 0 ? "lock.fill" : "calendar.badge.clock")
+                .foregroundStyle(Color.accent)
+            VStack(alignment: .leading, spacing: Spacing.xxxSmall) {
+                Text(
+                    String(
+                        format: appLocalized("%d of %d free scans remaining"),
+                        remainingScans,
+                        PremiumAccessPolicy.monthlyFreeScanLimit
+                    )
+                )
+                .font(.appHeadline)
+                if let resetDate {
+                    Text(
+                        String(
+                            format: appLocalized("Resets %@"),
+                            resetDate.formatted(.dateTime.month(.wide).day().year())
+                        )
+                    )
+                    .font(.appCaption)
+                    .foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .accessibilityElement(children: .combine)
     }
 }
 

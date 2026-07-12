@@ -12,19 +12,23 @@ final class PremiumAccessTests: XCTestCase {
         XCTAssertEqual(controller.access(to: .cleanupReminderCustomization), .requiresPremium)
     }
 
-    func testFreeTierAllowsInitialScanAndFirstRescan() {
+    func testFreeTierAllowsThreeMonthlyScansAndLocksFourth() {
         let controller = PremiumAccessController()
 
         XCTAssertEqual(
-            controller.access(to: .unlimitedRescans, context: .rescan(completedScanCount: 0)),
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 0)),
             .allowed
         )
         XCTAssertEqual(
-            controller.access(to: .unlimitedRescans, context: .rescan(completedScanCount: 1)),
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 1)),
             .allowed
         )
         XCTAssertEqual(
-            controller.access(to: .unlimitedRescans, context: .rescan(completedScanCount: 2)),
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 2)),
+            .allowed
+        )
+        XCTAssertEqual(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 3)),
             .requiresPremium
         )
     }

@@ -112,6 +112,8 @@ public final class ScannerViewModel {
     private let cleanupInsightsProvider: any CleanupInsightsProviding
     let premiumAccess: any PremiumAccessControlling
     private let scanUsageRepository: any ScanUsageRepository
+    private let calendar: Calendar
+    private let now: @Sendable () -> Date
     private let cleanupRefreshAutoDismissDelay: Duration
     private var cleanupRefreshDismissTask: Task<Void, Never>?
     private var isCleanupRefreshInFlight = false
@@ -121,8 +123,20 @@ public final class ScannerViewModel {
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
     public var clusterControls = ScannerClusterControls()
-    public private(set) var completedScanCount = 0
+    public private(set) var monthlyScanUsage: MonthlyScanUsage?
     private var hasLoadedScanUsage = false
+
+    public var remainingFreeScans: Int {
+        monthlyScanUsage?.remainingFreeScans ?? PremiumAccessPolicy.monthlyFreeScanLimit
+    }
+
+    public var nextFreeScanResetDate: Date? {
+        monthlyScanUsage?.nextResetDate
+    }
+
+    public var hasUnlimitedScanAccess: Bool {
+        premiumAccess.access(to: .unlimitedScans).isAllowed
+    }
     
     public init(
         gridColumns: Int = 3,
@@ -136,6 +150,8 @@ public final class ScannerViewModel {
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
+        calendar: Calendar = .autoupdatingCurrent,
+        now: @escaping @Sendable () -> Date = Date.init,
         cleanupManager: (any CleanupSessionManaging)? = nil,
         cleanupInsightsProvider: (any CleanupInsightsProviding)? = nil,
         cleanupRefreshAutoDismissDelay: Duration = .seconds(5)
@@ -150,6 +166,8 @@ public final class ScannerViewModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.scanUsageRepository = scanUsageRepository
+        self.calendar = calendar
+        self.now = now
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = cleanupInsightsProvider
             ?? CleanupInsightsService(repository: cleanupHistoryRepository)
@@ -198,8 +216,8 @@ public final class ScannerViewModel {
     public func startScanning() async -> PremiumAccessDecision {
         await loadScanUsageIfNeeded()
         let decision = premiumAccess.access(
-            to: .unlimitedRescans,
-            context: .rescan(completedScanCount: completedScanCount)
+            to: .unlimitedScans,
+            context: .scan(completedThisMonth: monthlyScanUsage?.completedScanCount ?? 0)
         )
         guard decision.isAllowed else { return decision }
 
@@ -531,21 +549,33 @@ private extension ScannerViewModel {
             cleanupCategories = []
         }
         state = .results(sorted)
-        completedScanCount = await scanUsageRepository.recordCompletedScan()
+        monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
     }
 
     private func loadScanUsageIfNeeded() async {
         guard !hasLoadedScanUsage else { return }
         hasLoadedScanUsage = true
 
-        if let storedCount = await scanUsageRepository.loadCompletedScanCount() {
-            completedScanCount = storedCount
+        let currentDate = now()
+        if let storedUsage = await scanUsageRepository.loadMonthlyUsage(at: currentDate) {
+            monthlyScanUsage = storedUsage
             return
         }
 
-        let migratedCount = await repository.getLastScanDate() == nil ? 0 : 1
-        await scanUsageRepository.initializeCompletedScanCount(migratedCount)
-        completedScanCount = migratedCount
+        let lastScanDate = await repository.getLastScanDate()
+        let migratedCount = lastScanDate.map {
+            calendar.isDate($0, equalTo: currentDate, toGranularity: .month) ? 1 : 0
+        } ?? 0
+        let components = calendar.dateComponents([.year, .month], from: currentDate)
+        let periodStart = calendar.date(from: components) ?? currentDate
+        let nextResetDate = calendar.date(byAdding: .month, value: 1, to: periodStart) ?? currentDate
+        let migratedUsage = MonthlyScanUsage(
+            periodStart: periodStart,
+            nextResetDate: nextResetDate,
+            completedScanCount: migratedCount
+        )
+        await scanUsageRepository.initializeMonthlyUsage(migratedUsage)
+        monthlyScanUsage = migratedUsage
     }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
