@@ -9,6 +9,56 @@ final class SubscriptionStoreTests: XCTestCase {
         yearlyID: "test.alike.yearly"
     )
 
+    func testProductionCatalogUsesPermanentProductIdentifiers() {
+        let catalog = SubscriptionCatalog.production
+
+        XCTAssertTrue(catalog.isConfigured)
+        XCTAssertEqual(catalog.productID(for: .monthly), "com.alike.app.pro.monthly")
+        XCTAssertEqual(catalog.productID(for: .yearly), "com.alike.app.pro.yearly")
+        XCTAssertEqual(catalog.plan(for: "com.alike.app.pro.monthly"), .monthly)
+        XCTAssertEqual(catalog.plan(for: "com.alike.app.pro.yearly"), .yearly)
+        XCTAssertEqual(catalog.allProductIDs.count, SubscriptionPlan.allCases.count)
+        XCTAssertTrue(catalog.allProductIDs.allSatisfy { $0.hasPrefix("com.alike.app.pro.") })
+    }
+
+    func testPlanPresentationAndCommercialMetadata() {
+        XCTAssertEqual(SubscriptionPlan.presentationOrder, [.yearly, .monthly])
+        XCTAssertTrue(SubscriptionPlan.yearly.isPrimary)
+        XCTAssertFalse(SubscriptionPlan.monthly.isPrimary)
+        XCTAssertEqual(SubscriptionPlan.monthly.advertisedPriceUSD, Decimal(string: "6.99"))
+        XCTAssertEqual(SubscriptionPlan.yearly.advertisedPriceUSD, Decimal(string: "39.99"))
+        XCTAssertNil(SubscriptionPlan.monthly.trialDays)
+        XCTAssertEqual(SubscriptionPlan.yearly.trialDays, 7)
+    }
+
+    func testProductionCatalogLoadsBothProducts() async {
+        let client = MockStoreKitClient(
+            products: [
+                StorefrontProduct(
+                    id: "com.alike.app.pro.monthly",
+                    displayName: "Alike Pro Monthly",
+                    displayPrice: "$6.99"
+                ),
+                StorefrontProduct(
+                    id: "com.alike.app.pro.yearly",
+                    displayName: "Alike Pro Yearly",
+                    displayPrice: "$39.99"
+                )
+            ]
+        )
+        let store = SubscriptionStore(
+            catalog: .production,
+            client: client,
+            defaults: UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!,
+            cacheKey: UUID().uuidString
+        )
+
+        await store.loadProducts()
+
+        XCTAssertEqual(store.productLoadState, .loaded)
+        XCTAssertEqual(store.products.count, SubscriptionPlan.allCases.count)
+    }
+
     func testLoadProductsMapsEveryPlan() async {
         let client = MockStoreKitClient(
             products: [

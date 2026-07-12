@@ -1,0 +1,107 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : []
+  },
+  "identifier" : "DDE0D7C4-5564-45DF-A439-0722CC158FAC",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "A3FF13B5-7C2B-4649-80AF-D6A18CC8D111",
+      "localizations" : [
+        {
+          "displayName" : "Alike Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "Alike Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "39.99",
+              "displayPrice" : "39.99",
+              "internalID" : "7F62CF31-EF45-48A3-A802-B9AF72D3DC7D",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "8DF024F3-2BD4-4344-8611-BD713F55ED14",
+          "introductoryOffers" : [
+            {
+              "internalID" : "6EA10A0D-99B4-4D3B-B50F-25CE1B8E57F4",
+              "paymentMode" : "free",
+              "subscriptionPeriod" : "P1W"
+            }
+          ],
+          "localizations" : [
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.alike.app.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Alike Pro Yearly",
+          "subscriptionGroupID" : "A3FF13B5-7C2B-4649-80AF-D6A18CC8D111",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        },
+        {
+          "adHocOffers" : [],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "6.99",
+              "displayPrice" : "6.99",
+              "internalID" : "BD8BD477-C8EF-4922-9686-84E568F3AF2D",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "DC051154-FA79-4782-BBCD-24A768DC86F8",
+          "introductoryOffers" : [],
+          "localizations" : [
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.alike.app.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Alike Pro Monthly",
+          "subscriptionGroupID" : "A3FF13B5-7C2B-4649-80AF-D6A18CC8D111",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}

@@ -50,7 +50,7 @@ struct MainTabView: View {
     @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
-    @State private var subscriptionStore = SubscriptionStore()
+    @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG

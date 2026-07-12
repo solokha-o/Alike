@@ -17,7 +17,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
     private var updatesTask: Task<Void, Never>?
     private var hasStarted = false
 
-    public init(catalog: SubscriptionCatalog = .unconfigured) {
+    public init(catalog: SubscriptionCatalog = .production) {
         self.catalog = catalog
         self.client = AppStoreKitClient()
         self.defaults = .standard

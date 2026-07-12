@@ -6,10 +6,17 @@ public enum SubscriptionPlan: String, CaseIterable, Codable, Hashable, Identifia
 
     public var id: String { rawValue }
 
+    /// Stable paywall ordering. StoreKit remains the source of localized product data.
+    public static let presentationOrder: [SubscriptionPlan] = [.yearly, .monthly]
+
+    public var isPrimary: Bool {
+        self == .yearly
+    }
+
     public var advertisedPriceUSD: Decimal {
         switch self {
-        case .monthly: 6.99
-        case .yearly: 39.99
+        case .monthly: Decimal(string: "6.99")!
+        case .yearly: Decimal(string: "39.99")!
         }
     }
 
@@ -34,7 +41,13 @@ public struct SubscriptionCatalog: Equatable, Sendable {
         self.productIDs = productIDs
     }
 
-    /// Used until Task 09 supplies the App Store and local StoreKit identifiers.
+    /// The App Store Connect and local StoreKit product identifier source of truth.
+    public static let production = SubscriptionCatalog(
+        monthlyID: "com.alike.app.pro.monthly",
+        yearlyID: "com.alike.app.pro.yearly"
+    )
+
+    /// Available for isolated tests and previews that intentionally omit StoreKit products.
     public static let unconfigured = SubscriptionCatalog(productIDs: [:])
 
     public var isConfigured: Bool {
