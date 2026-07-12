@@ -5,7 +5,7 @@ protocol StoreKitClient: Sendable {
     func loadProducts(ids: Set<String>) async throws -> [StorefrontProduct]
     func purchase(productID: String) async throws -> StoreKitPurchaseOutcome
     func sync() async throws
-    func currentEntitlements() async -> [StoreKitEntitlement]
+    func currentEntitlements() async throws -> [StoreKitEntitlement]
     func transactionUpdates() -> AsyncStream<StoreKitTransactionUpdate>
 }
 
@@ -45,9 +45,11 @@ struct AppStoreKitClient: StoreKitClient {
         try await AppStore.sync()
     }
 
-    func currentEntitlements() async -> [StoreKitEntitlement] {
+    func currentEntitlements() async throws -> [StoreKitEntitlement] {
+        try Task.checkCancellation()
         var entitlements: [StoreKitEntitlement] = []
         for await verification in Transaction.currentEntitlements {
+            try Task.checkCancellation()
             switch verification {
             case .verified(let transaction):
                 entitlements.append(makeEntitlement(from: transaction, isVerified: true))
@@ -55,6 +57,7 @@ struct AppStoreKitClient: StoreKitClient {
                 entitlements.append(makeEntitlement(from: transaction, isVerified: false))
             }
         }
+        try Task.checkCancellation()
         return entitlements
     }
 

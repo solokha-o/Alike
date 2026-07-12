@@ -20,7 +20,9 @@ public enum SubscriptionPlan: String, CaseIterable, Codable, Hashable, Identifia
         }
     }
 
-    public var trialDays: Int? {
+    /// The introductory offer configured for this plan. This does not indicate
+    /// whether the current customer is eligible; query StoreKit before showing trial copy.
+    public var configuredTrialDays: Int? {
         switch self {
         case .monthly: nil
         case .yearly: 7

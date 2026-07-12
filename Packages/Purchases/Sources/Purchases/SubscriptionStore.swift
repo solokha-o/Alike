@@ -16,6 +16,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
     private let cacheKey: String
     private var updatesTask: Task<Void, Never>?
     private var hasStarted = false
+    private var reconciliationGeneration = 0
 
     public init(catalog: SubscriptionCatalog = .production) {
         self.catalog = catalog
@@ -45,16 +46,18 @@ public final class SubscriptionStore: PremiumAccessControlling {
         hasStarted = true
         loadCachedEntitlement()
         startTransactionObservation()
-        await loadProducts()
         await refreshEntitlements()
+        await loadProducts()
     }
 
     public func loadProducts() async {
         guard catalog.isConfigured else {
+            products = [:]
             productLoadState = .unconfigured
             return
         }
 
+        products = [:]
         productLoadState = .loading
         do {
             let storefrontProducts = try await client.loadProducts(ids: catalog.allProductIDs)
@@ -87,15 +90,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
 
     public func refreshEntitlements() async {
         guard catalog.isConfigured else { return }
-        let entitlement = activeEntitlement(in: await client.currentEntitlements())
-        setEntitlementState(
-            PremiumEntitlementState(
-                isPremium: entitlement != nil,
-                source: .verified,
-                productID: entitlement?.productID,
-                expirationDate: entitlement?.expirationDate
-            )
-        )
+        await reconcileEntitlements()
     }
 
     public func purchase(plan: SubscriptionPlan) async throws -> PurchaseOutcome {
@@ -112,11 +107,14 @@ public final class SubscriptionStore: PremiumAccessControlling {
                 guard entitlement.isVerified else {
                     throw SubscriptionStoreError.purchaseFailed("The purchase could not be verified.")
                 }
-                await refreshEntitlements()
+                applyEntitlements([entitlement])
+                lastError = nil
                 return .purchased
             case .pending:
+                lastError = nil
                 return .pending
             case .cancelled:
+                lastError = nil
                 return .cancelled
             }
         } catch let error as SubscriptionStoreError {
@@ -133,6 +131,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
         do {
             try await client.sync()
             await refreshEntitlements()
+            lastError = nil
         } catch {
             let storeError = SubscriptionStoreError.restoreFailed(error.localizedDescription)
             lastError = storeError
@@ -149,11 +148,57 @@ public final class SubscriptionStore: PremiumAccessControlling {
     private func startTransactionObservation() {
         updatesTask?.cancel()
         updatesTask = Task { [weak self, client] in
-            for await _ in client.transactionUpdates() {
+            for await update in client.transactionUpdates() {
                 guard let self else { return }
-                await self.refreshEntitlements()
+                await self.reconcileEntitlements(supplementing: update.entitlement)
             }
         }
+    }
+
+    private func reconcileEntitlements(supplementing supplementalEntitlement: StoreKitEntitlement? = nil) async {
+        guard catalog.isConfigured else { return }
+
+        reconciliationGeneration &+= 1
+        let generation = reconciliationGeneration
+
+        do {
+            var entitlements = try await client.currentEntitlements()
+            try Task.checkCancellation()
+            guard generation == reconciliationGeneration else { return }
+
+            if let supplementalEntitlement, supplementalEntitlement.isVerified {
+                entitlements.removeAll { $0.productID == supplementalEntitlement.productID }
+                entitlements.append(supplementalEntitlement)
+            }
+
+            applyEntitlements(entitlements)
+        } catch is CancellationError {
+            guard
+                generation == reconciliationGeneration,
+                let supplementalEntitlement,
+                supplementalEntitlement.isVerified
+            else { return }
+            applyEntitlements([supplementalEntitlement])
+        } catch {
+            guard
+                generation == reconciliationGeneration,
+                let supplementalEntitlement,
+                supplementalEntitlement.isVerified
+            else { return }
+            applyEntitlements([supplementalEntitlement])
+        }
+    }
+
+    private func applyEntitlements(_ entitlements: [StoreKitEntitlement]) {
+        let entitlement = activeEntitlement(in: entitlements)
+        setEntitlementState(
+            PremiumEntitlementState(
+                isPremium: entitlement != nil,
+                source: .verified,
+                productID: entitlement?.productID,
+                expirationDate: entitlement?.expirationDate
+            )
+        )
     }
 
     private func activeEntitlement(in entitlements: [StoreKitEntitlement]) -> StoreKitEntitlement? {
