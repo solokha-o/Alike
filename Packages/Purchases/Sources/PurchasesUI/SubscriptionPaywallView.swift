@@ -4,9 +4,25 @@ import Purchases
 import DesignSystem
 import NavigationKit
 
+private enum HeroIconAnimationPhase: CaseIterable, Equatable {
+    case idle
+    case zoomed
+    case settled
+    case rotated
+
+    var scale: CGFloat {
+        self == .zoomed ? 1.14 : 1
+    }
+
+    var rotation: Double {
+        self == .rotated ? 360 : 0
+    }
+}
+
 public struct SubscriptionPaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let store: SubscriptionStore?
     private let legalLinks: SubscriptionLegalLinks
@@ -14,6 +30,8 @@ public struct SubscriptionPaywallView: View {
     @State private var purchaseFeedback: PurchaseFeedback?
     @State private var isPurchasing = false
     @State private var isRestoring = false
+    @State private var heroEffectTrigger = 0
+    @State private var activationEffectTrigger = 0
 
     public init(
         context: PremiumSurfaceContext,
@@ -35,11 +53,14 @@ public struct SubscriptionPaywallView: View {
 
                     if isPremium {
                         activeStatus
+                            .transition(activeStatusTransition)
                     } else {
                         plans
+                            .transition(.opacity)
 
                         if let purchaseFeedback {
                             feedbackView(purchaseFeedback)
+                                .transition(feedbackTransition)
                         }
                     }
 
@@ -50,12 +71,17 @@ public struct SubscriptionPaywallView: View {
                 .padding(.horizontal, Spacing.large)
                 .padding(.top, Spacing.medium)
                 .padding(.bottom, isPremium ? Spacing.large : 140)
+                .animation(stateAnimation, value: store?.productLoadState)
+                .animation(stateAnimation, value: purchaseFeedback)
+                .animation(stateAnimation, value: isPremium)
             }
             .safeAreaInset(edge: .bottom) {
                 if !isPremium {
                     purchaseActions
+                        .transition(.opacity)
                 }
             }
+            .animation(stateAnimation, value: isPremium)
             .navigationTitle(Text(appLocalized("Alike Pro")))
 #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -74,17 +100,14 @@ public struct SubscriptionPaywallView: View {
         }
 #if os(iOS)
         .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
+        .presentationDragIndicator(.hidden)
+        .interactiveDismissDisabled()
 #endif
     }
 
     private var hero: some View {
         VStack(spacing: Spacing.small) {
-            Image(systemName: presentation.context.systemImage)
-                .font(.system(size: 52, weight: .semibold))
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(Color.accent)
-                .accessibilityHidden(true)
+            heroIcon
 
             Text(presentation.context.title)
                 .font(.appTitle2)
@@ -96,6 +119,11 @@ public struct SubscriptionPaywallView: View {
                 .multilineTextAlignment(.center)
         }
         .accessibilityElement(children: .combine)
+        .task {
+            guard !reduceMotion else { return }
+            await Task.yield()
+            heroEffectTrigger += 1
+        }
     }
 
     private var benefits: some View {
@@ -174,8 +202,10 @@ public struct SubscriptionPaywallView: View {
     private func planCard(_ product: SubscriptionProduct) -> some View {
         let isSelected = presentation.selectedPlan == product.plan
         return Button {
-            presentation.selectedPlan = product.plan
-            purchaseFeedback = nil
+            withAnimation(interactionAnimation) {
+                presentation.selectedPlan = product.plan
+                purchaseFeedback = nil
+            }
         } label: {
             VStack(alignment: .leading, spacing: Spacing.xSmall) {
                 HStack {
@@ -183,8 +213,7 @@ public struct SubscriptionPaywallView: View {
                         .font(.appHeadline)
                         .multilineTextAlignment(.leading)
                     Spacer()
-                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(isSelected ? Color.accent : Color.secondary)
+                    selectionIndicator(isSelected: isSelected)
                 }
 
                 Text(product.displayPrice)
@@ -224,11 +253,14 @@ public struct SubscriptionPaywallView: View {
                     if isPurchasing {
                         ProgressView()
                             .tint(.white)
+                            .transition(.opacity)
                     }
                     Text(purchaseButtonTitle)
                         .font(.appHeadline)
+                        .contentTransition(.opacity)
                 }
                 .frame(maxWidth: .infinity)
+                .animation(stateAnimation, value: isPurchasing)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -237,12 +269,15 @@ public struct SubscriptionPaywallView: View {
             Button(action: restorePurchases) {
                 if isRestoring {
                     ProgressView()
+                        .transition(.opacity)
                 } else {
                     Label(appLocalized("Restore Purchases"), systemImage: "arrow.clockwise")
+                        .transition(.opacity)
                 }
             }
             .buttonStyle(.borderless)
             .disabled(store == nil || isPurchasing || isRestoring)
+            .animation(stateAnimation, value: isRestoring)
 
             Text(appLocalized("Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."))
                 .font(.appCaption)
@@ -283,9 +318,7 @@ public struct SubscriptionPaywallView: View {
                     .foregroundStyle(.secondary)
             }
         } icon: {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.title2)
-                .foregroundStyle(Color.accent)
+            activeStatusIcon
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
@@ -303,6 +336,81 @@ public struct SubscriptionPaywallView: View {
 
     private var isPremium: Bool {
         store?.entitlementState.isPremium == true
+    }
+
+    private var stateAnimation: Animation? {
+        reduceMotion ? nil : .appSmooth
+    }
+
+    private var interactionAnimation: Animation? {
+        reduceMotion ? nil : .appInteractive
+    }
+
+    private var feedbackTransition: AnyTransition {
+        reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity)
+    }
+
+    private var activeStatusTransition: AnyTransition {
+        reduceMotion ? .opacity : .scale(scale: 0.96).combined(with: .opacity)
+    }
+
+    @ViewBuilder
+    private var heroIcon: some View {
+        let image = Image(systemName: presentation.context.systemImage)
+            .font(.system(size: 52, weight: .semibold))
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(Color.accent)
+            .frame(width: Spacing.xxxLarge, height: Spacing.xxxLarge)
+            .accessibilityHidden(true)
+
+        if reduceMotion {
+            image
+        } else {
+            image.phaseAnimator(
+                HeroIconAnimationPhase.allCases,
+                trigger: heroEffectTrigger
+            ) { content, phase in
+                content
+                    .scaleEffect(phase.scale)
+                    .rotationEffect(.degrees(phase.rotation))
+            } animation: { phase in
+                switch phase {
+                case .idle:
+                    .appQuick
+                case .zoomed:
+                    .appBouncy
+                case .settled:
+                    .appQuick
+                case .rotated:
+                    .easeInOut(duration: 0.5)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func selectionIndicator(isSelected: Bool) -> some View {
+        let image = Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+            .foregroundStyle(isSelected ? Color.accent : Color.secondary)
+
+        if reduceMotion {
+            image
+        } else {
+            image.contentTransition(.symbolEffect(.replace))
+        }
+    }
+
+    @ViewBuilder
+    private var activeStatusIcon: some View {
+        let image = Image(systemName: "checkmark.seal.fill")
+            .font(.title2)
+            .foregroundStyle(Color.accent)
+
+        if reduceMotion {
+            image
+        } else {
+            image.symbolEffect(.bounce, value: activationEffectTrigger)
+        }
     }
 
     private var canPurchase: Bool {
@@ -338,6 +446,7 @@ public struct SubscriptionPaywallView: View {
                 switch try await store.purchase(plan: presentation.selectedPlan) {
                 case .purchased:
                     purchaseFeedback = .success(appLocalized("Alike Pro is now active."))
+                    activationEffectTrigger += 1
                 case .pending:
                     purchaseFeedback = .pending(appLocalized("Your purchase is pending App Store approval."))
                 case .cancelled:
