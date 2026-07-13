@@ -15,8 +15,14 @@ public struct MockPremiumAccessController: PremiumAccessControlling {
         )
     }
 
-    public func hasAccess(to feature: PremiumFeature) -> Bool {
-        unlockedFeatures.contains(feature)
+    public func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        if unlockedFeatures.contains(feature) {
+            return .allowed
+        }
+        return PremiumAccessPolicy.decision(for: feature, context: context, isPremium: false)
     }
 }
 

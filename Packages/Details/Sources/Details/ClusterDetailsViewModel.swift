@@ -12,6 +12,7 @@ final class ClusterDetailsViewModel {
     private let reviewRepository: ClusterReviewStateRepository
     private let cleanupService: any PhotoCleanupService
     private let cleanupHistoryRepository: CleanupHistoryRepository
+    private let premiumAccess: any PremiumAccessControlling
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
 
@@ -31,6 +32,7 @@ final class ClusterDetailsViewModel {
         reviewRepository: ClusterReviewStateRepository = FileClusterReviewStateRepository(),
         cleanupService: any PhotoCleanupService = UnsupportedPhotoCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil
     ) {
@@ -39,6 +41,7 @@ final class ClusterDetailsViewModel {
         self.reviewRepository = reviewRepository
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
+        self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
         self.assetSnapshots = resolvedSnapshots
         self.bestShotAssetID = Self.bestShotLocalIdentifier(from: resolvedSnapshots) ?? ""
@@ -183,15 +186,29 @@ final class ClusterDetailsViewModel {
         await persistCurrentState()
     }
 
-    func requestDeleteConfirmation() {
-        guard isDeleteActionVisible, !isDeleting else { return }
+    @discardableResult
+    func requestDeleteConfirmation() -> PremiumAccessDecision {
+        guard isDeleteActionVisible, !isDeleting else { return .allowed }
+        let decision = premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        )
+        guard decision.isAllowed else { return decision }
         isDeleteConfirmationPresented = true
+        return .allowed
     }
 
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
             applyDeleteFailure(message: appLocalized("Select at least one photo before deleting."), offersOpenSettings: false)
+            return
+        }
+        guard premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        ).isAllowed else {
+            isDeleteConfirmationPresented = false
             return
         }
 

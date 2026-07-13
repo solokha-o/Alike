@@ -15,6 +15,7 @@ public struct ClusterDetailsView: View {
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
+    @State private var presentedPremiumFeature: PremiumFeature?
     @State private var didCompleteCleanup = false
     @Environment(\.dismiss) private var dismiss
 
@@ -22,6 +23,7 @@ public struct ClusterDetailsView: View {
         cluster: PhotoCluster,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
@@ -33,6 +35,7 @@ public struct ClusterDetailsView: View {
             cluster: cluster,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
             openSettingsAction: openSettingsAction
         ))
     }
@@ -109,7 +112,7 @@ public struct ClusterDetailsView: View {
                         onKeepBestOnly: viewModel.keepBestOnly,
                         onSelectAllExceptBest: viewModel.selectAllExceptBest,
                         onClearSelection: viewModel.clearSelection,
-                        onDeleteSelected: viewModel.requestDeleteConfirmation,
+                        onDeleteSelected: requestDeleteConfirmation,
                         isDeleteActionVisible: viewModel.isDeleteActionVisible,
                         isDeleting: viewModel.isDeleting
                     )
@@ -143,6 +146,9 @@ public struct ClusterDetailsView: View {
         }
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
+        }
+        .sheet(item: $presentedPremiumFeature) { _ in
+            BatchCleanupPremiumSheet()
         }
         .alert(
             deleteConfirmationTitle,
@@ -198,6 +204,12 @@ public struct ClusterDetailsView: View {
 }
 
 private extension ClusterDetailsView {
+    func requestDeleteConfirmation() {
+        if viewModel.requestDeleteConfirmation() == .requiresPremium {
+            presentedPremiumFeature = .batchCleanup
+        }
+    }
+
     var deleteConfirmationTitle: String {
         if viewModel.selectedCount == 1 {
             return appLocalized("Move 1 Selected Photo to Recently Deleted?")
@@ -213,6 +225,47 @@ private extension ClusterDetailsView {
             ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
             : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
         return String(format: format, viewModel.estimatedSavingsText)
+    }
+}
+
+struct BatchCleanupPremiumSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: Spacing.large) {
+                Image(systemName: "lock.shield.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Color.accent)
+                Text(appLocalized("Batch cleanup is a premium feature"))
+                    .font(.appTitle2)
+                    .multilineTextAlignment(.center)
+                Text(appLocalized("Unlock batch cleanup to remove multiple selected photos in one action."))
+                    .font(.appBody)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") { dismiss() }
+                Spacer()
+            }
+            .padding(Spacing.large)
+            .navigationTitle(Text(appLocalized("Premium")))
+#if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+#endif
+            .toolbar {
+#if os(iOS)
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { dismiss() } label: { Image(systemName: "xmark") }
+                        .accessibilityLabel(Text(appLocalized("Close")))
+                }
+#else
+                ToolbarItem {
+                    Button { dismiss() } label: { Image(systemName: "xmark") }
+                        .accessibilityLabel(Text(appLocalized("Close")))
+                }
+#endif
+            }
+        }
     }
 }
 
@@ -541,6 +594,7 @@ public struct ClusterDetailsView: View {
         cluster: PhotoCluster,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil

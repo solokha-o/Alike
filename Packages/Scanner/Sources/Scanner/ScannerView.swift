@@ -22,6 +22,7 @@ public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var presentedCleanupCategory: PresentedCleanupCategory?
     @State private var presentedPaywallFeature: PremiumFeature?
+    @State private var pendingPaywallFeature: PremiumFeature?
     @State private var cleanupCategoryErrorMessage: String?
     @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
@@ -66,7 +67,7 @@ public struct ScannerView: View {
         .onChange(of: shouldStartScan) { _, newValue in
             if newValue {
                 Task {
-                    await viewModel.startScanning()
+                    await startScan()
                     shouldStartScan = false
                 }
             }
@@ -78,6 +79,7 @@ public struct ScannerView: View {
                     sourceCategory: presented.kind,
                     cleanupService: viewModel.cleanupService,
                     cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                    premiumAccess: viewModel.premiumAccess,
                     openSettingsAction: {
                         PhotoPermissionManagerImpl().openSettings()
                     },
@@ -91,11 +93,22 @@ public struct ScannerView: View {
             .interactiveDismissDisabled()
         }
         .sheet(item: $presentedPaywallFeature) { feature in
-            PremiumPaywallSheet(feature: feature)
+            PremiumPaywallSheet(
+                feature: feature,
+                remainingFreeScans: viewModel.remainingFreeScans,
+                resetDate: viewModel.nextFreeScanResetDate
+            )
                 .interactiveDismissDisabled()
         }
-        .sheet(isPresented: $isClusterControlsPresented) {
-            ScannerClusterControlsSheet(controls: $viewModel.clusterControls)
+        .sheet(isPresented: $isClusterControlsPresented, onDismiss: presentPendingPaywall) {
+            ScannerClusterControlsSheet(
+                controls: $viewModel.clusterControls,
+                isAdvancedFilteringLocked: viewModel.isAdvancedFilteringLocked,
+                onRequestAdvancedFilters: {
+                    pendingPaywallFeature = .advancedFilters
+                    isClusterControlsPresented = false
+                }
+            )
         }
         .alert(
             appLocalized("Couldn't Open Cleanup Category"),
@@ -170,6 +183,7 @@ public struct ScannerView: View {
                 cluster: cluster,
                 cleanupService: viewModel.cleanupService,
                 cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                premiumAccess: viewModel.premiumAccess,
                 openSettingsAction: {
                     PhotoPermissionManagerImpl().openSettings()
                 },
@@ -206,6 +220,8 @@ public struct ScannerView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xLarge)
 
+            scanAllowanceCard
+
             if viewModel.cleanupInsights.hasHistory {
                 CleanupInsightsCard(insights: viewModel.cleanupInsights)
                     .padding(.horizontal, Spacing.medium)
@@ -215,7 +231,7 @@ public struct ScannerView: View {
             
             PrimaryButton(appLocalized("Start Scanning"), icon: "sparkles") {
                 Task {
-                    await viewModel.startScanning()
+                    await startScan()
                 }
             }
             .padding(.horizontal, Spacing.large)
@@ -276,6 +292,8 @@ public struct ScannerView: View {
 
         return ScrollView {
             VStack(spacing: Spacing.medium) {
+                scanAllowanceCard
+
                 if viewModel.cleanupInsights.hasHistory {
                     CleanupInsightsCard(insights: viewModel.cleanupInsights)
                 }
@@ -307,7 +325,7 @@ public struct ScannerView: View {
                     if viewModel.shouldShowRescanPrompt {
                         RescanPromptCard {
                             Task {
-                                await viewModel.startScanning()
+                                await startScan()
                             }
                         }
                     }
@@ -376,7 +394,7 @@ public struct ScannerView: View {
                 Button {
                     isClusterControlsPresented = true
                 } label: {
-                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                    Image(systemName: viewModel.effectiveClusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
                 }
                 .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
                 .accessibilityValue(Text(activeControlsSummary))
@@ -384,7 +402,7 @@ public struct ScannerView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
-                        await viewModel.startScanning()
+                        await startScan()
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -398,7 +416,7 @@ public struct ScannerView: View {
                 Button {
                     isClusterControlsPresented = true
                 } label: {
-                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                    Image(systemName: viewModel.effectiveClusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
                 }
                 .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
                 .accessibilityValue(Text(activeControlsSummary))
@@ -406,7 +424,7 @@ public struct ScannerView: View {
             ToolbarItem {
                 Button {
                     Task {
-                        await viewModel.startScanning()
+                        await startScan()
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -421,18 +439,25 @@ public struct ScannerView: View {
     }
 
     private var activeControlsSummary: String {
-        guard !viewModel.clusterControls.isDefault else { return appLocalized("No active controls") }
-        var values = [viewModel.clusterControls.sort.title]
-        if viewModel.clusterControls.reviewFilter != .all {
-            values.append(viewModel.clusterControls.reviewFilter.title)
+        let controls = viewModel.effectiveClusterControls
+        guard !controls.isDefault else { return appLocalized("No active controls") }
+        var values = [controls.sort.title]
+        if controls.reviewFilter != .all {
+            values.append(controls.reviewFilter.title)
         }
-        if viewModel.clusterControls.minimumClusterSize != .any {
-            values.append(viewModel.clusterControls.minimumClusterSize.title)
+        if controls.minimumClusterSize != .any {
+            values.append(controls.minimumClusterSize.title)
         }
-        if viewModel.clusterControls.favoritesOnly {
+        if controls.favoritesOnly {
             values.append(appLocalized("Favorites only"))
         }
         return values.joined(separator: ", ")
+    }
+
+    private func presentPendingPaywall() {
+        guard let feature = pendingPaywallFeature else { return }
+        pendingPaywallFeature = nil
+        presentedPaywallFeature = feature
     }
 
     private func openCleanupCategory(_ category: CleanupCategorySummary) async {
@@ -446,6 +471,23 @@ public struct ScannerView: View {
             presentedCleanupCategory = PresentedCleanupCategory(kind: category.kind, assets: assets)
         } catch {
             cleanupCategoryErrorMessage = error.localizedDescription
+        }
+    }
+
+    private func startScan() async {
+        let decision = await viewModel.startScanning()
+        if decision == .requiresPremium {
+            presentedPaywallFeature = .unlimitedScans
+        }
+    }
+
+    @ViewBuilder
+    private var scanAllowanceCard: some View {
+        if !viewModel.hasUnlimitedScanAccess {
+            FreeScanAllowanceCard(
+                remainingScans: viewModel.remainingFreeScans,
+                resetDate: viewModel.nextFreeScanResetDate
+            )
         }
     }
 
@@ -561,6 +603,8 @@ private struct CleanupInsightsCard: View {
 private struct ScannerClusterControlsSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var controls: ScannerClusterControls
+    let isAdvancedFilteringLocked: Bool
+    let onRequestAdvancedFilters: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -574,17 +618,24 @@ private struct ScannerClusterControlsSheet: View {
                 }
 
                 Section(appLocalized("Filter by")) {
-                    Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
-                        ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
-                            Text(filter.title).tag(filter)
+                    if isAdvancedFilteringLocked {
+                        Button(action: onRequestAdvancedFilters) {
+                            Label(appLocalized("Unlock advanced filters"), systemImage: "lock.fill")
                         }
-                    }
-                    Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
-                        ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
-                            Text(size.title).tag(size)
+                        .accessibilityHint(Text(appLocalized("Opens premium details for advanced filters")))
+                    } else {
+                        Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                            ForEach(ScannerReviewFilter.allCases, id: \.self) { filter in
+                                Text(filter.title).tag(filter)
+                            }
                         }
+                        Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                            ForEach(ScannerMinimumClusterSize.allCases, id: \.self) { size in
+                                Text(size.title).tag(size)
+                            }
+                        }
+                        Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
                     }
-                    Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
                 }
 
                 Section {
@@ -967,6 +1018,8 @@ private struct PremiumPaywallSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     let feature: PremiumFeature
+    let remainingFreeScans: Int
+    let resetDate: Date?
 
     var body: some View {
         RoutedNavigationStack {
@@ -1022,7 +1075,13 @@ private struct PremiumPaywallSheet: View {
 
     private var title: String {
         switch feature {
-        case .cleanupReminders:
+        case .unlimitedScans:
+            appLocalized("Unlimited scans are a premium feature")
+        case .advancedFilters:
+            appLocalized("Advanced filters are a premium feature")
+        case .batchCleanup:
+            appLocalized("Batch cleanup is a premium feature")
+        case .cleanupReminderCustomization:
             appLocalized("Custom reminder schedule is a premium feature")
         case .screenshotCleanup, .blurredPhotoCleanup:
             feature.categoryKind?.presentation.paywallTitle ?? ""
@@ -1031,11 +1090,65 @@ private struct PremiumPaywallSheet: View {
 
     private var message: String {
         switch feature {
-        case .cleanupReminders:
+        case .unlimitedScans:
+            scanAllowanceMessage
+        case .advancedFilters:
+            appLocalized("Unlock review status, cluster size, and favorites filters for faster cleanup.")
+        case .batchCleanup:
+            appLocalized("Unlock batch cleanup to remove multiple selected photos in one action.")
+        case .cleanupReminderCustomization:
             appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine.")
         case .screenshotCleanup, .blurredPhotoCleanup:
             feature.categoryKind?.presentation.paywallMessage ?? ""
         }
+    }
+
+    private var scanAllowanceMessage: String {
+        guard let resetDate else {
+            return appLocalized("Free includes 3 scans per calendar month. Unlock Premium for unlimited scans.")
+        }
+        return String(
+            format: appLocalized("Free includes %d scans per calendar month. You have %d remaining. Your allowance resets %@."),
+            PremiumAccessPolicy.monthlyFreeScanLimit,
+            remainingFreeScans,
+            resetDate.formatted(.dateTime.month(.wide).day().year())
+        )
+    }
+}
+
+private struct FreeScanAllowanceCard: View {
+    let remainingScans: Int
+    let resetDate: Date?
+
+    var body: some View {
+        HStack(spacing: Spacing.small) {
+            Image(systemName: remainingScans == 0 ? "lock.fill" : "calendar.badge.clock")
+                .foregroundStyle(Color.accent)
+            VStack(alignment: .leading, spacing: Spacing.xxxSmall) {
+                Text(
+                    String(
+                        format: appLocalized("%d of %d free scans remaining"),
+                        remainingScans,
+                        PremiumAccessPolicy.monthlyFreeScanLimit
+                    )
+                )
+                .font(.appHeadline)
+                if let resetDate {
+                    Text(
+                        String(
+                            format: appLocalized("Resets %@"),
+                            resetDate.formatted(.dateTime.month(.wide).day().year())
+                        )
+                    )
+                    .font(.appCaption)
+                    .foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .accessibilityElement(children: .combine)
     }
 }
 

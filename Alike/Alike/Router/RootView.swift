@@ -54,11 +54,17 @@ struct MainTabView: View {
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
+    @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
+    private var debugUnlockUnlimitedRescans = false
     @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
     private var debugUnlockScreenshotCleanup = false
     @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBlurredPhotoCleanup = false
-    @AppStorage(PremiumFeature.cleanupReminders.debugOverrideDefaultsKey)
+    @AppStorage(PremiumFeature.advancedFilters.debugOverrideDefaultsKey)
+    private var debugUnlockAdvancedFilters = false
+    @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBatchCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
     private let gridConfiguration = GridConfiguration.current
@@ -82,7 +88,7 @@ struct MainTabView: View {
     }
 
     private var hasCleanupReminderCustomizationAccess: Bool {
-        premiumAccess.hasAccess(to: .cleanupReminders)
+        premiumAccess.hasAccess(to: .cleanupReminderCustomization)
     }
 
     private var cleanupReminderTaskID: CleanupReminderTaskID {
@@ -155,7 +161,7 @@ struct MainTabView: View {
                 )
             )
 #if DEBUG
-            .id("\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)")
+            .id("\(debugUnlockUnlimitedRescans)-\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)-\(debugUnlockAdvancedFilters)-\(debugUnlockBatchCleanup)")
 #endif
         case .settings:
             SettingsView(

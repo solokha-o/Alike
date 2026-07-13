@@ -14,6 +14,7 @@ public struct ScreenshotCleanupView: View {
     @State private var viewModel: ScreenshotCleanupViewModel
     @State private var gridColumns = 3
     @State private var selectedAsset: PresentedScreenshotAsset?
+    @State private var presentedPremiumFeature: PremiumFeature?
     @State private var didCompleteCleanup = false
 
     public init(
@@ -21,6 +22,7 @@ public struct ScreenshotCleanupView: View {
         sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
@@ -31,6 +33,7 @@ public struct ScreenshotCleanupView: View {
             sourceCategory: sourceCategory,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
             openSettingsAction: openSettingsAction
         ))
     }
@@ -67,6 +70,9 @@ public struct ScreenshotCleanupView: View {
         }
         .fullScreenCover(item: $selectedAsset) { selection in
             ScreenshotFullscreenPhotoPagerView(assets: assets, selectedIndex: selection.index)
+        }
+        .sheet(item: $presentedPremiumFeature) { _ in
+            BatchCleanupPremiumSheet()
         }
         .alert(
             deleteConfirmationTitle,
@@ -163,7 +169,7 @@ private extension ScreenshotCleanupView {
             ScreenshotCleanupActionBar(
                 onSelectAll: viewModel.selectAll,
                 onClearSelection: viewModel.clearSelection,
-                onDeleteSelected: viewModel.requestDeleteConfirmation,
+                onDeleteSelected: requestDeleteConfirmation,
                 isDeleteActionVisible: viewModel.isDeleteActionVisible,
                 isDeleting: viewModel.isDeleting
             )
@@ -186,6 +192,12 @@ private extension ScreenshotCleanupView {
             }
         } label: {
             Image(systemName: "square.grid.3x2")
+        }
+    }
+
+    func requestDeleteConfirmation() {
+        if viewModel.requestDeleteConfirmation() == .requiresPremium {
+            presentedPremiumFeature = .batchCleanup
         }
     }
 
@@ -226,6 +238,7 @@ public struct ScreenshotCleanupView: View {
         sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {}

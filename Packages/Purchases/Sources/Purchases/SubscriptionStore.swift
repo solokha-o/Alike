@@ -37,8 +37,15 @@ public final class SubscriptionStore: PremiumAccessControlling {
         self.cacheKey = cacheKey
     }
 
-    public func hasAccess(to feature: PremiumFeature) -> Bool {
-        entitlementState.isPremium
+    public func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        PremiumAccessPolicy.decision(
+            for: feature,
+            context: context,
+            isPremium: entitlementState.isPremium
+        )
     }
 
     public func start() async {
@@ -250,8 +257,14 @@ public final class DebugPremiumAccessController: PremiumAccessControlling {
 
     public var entitlementState: PremiumEntitlementState { base.entitlementState }
 
-    public func hasAccess(to feature: PremiumFeature) -> Bool {
-        defaults.bool(forKey: feature.debugOverrideDefaultsKey) || base.hasAccess(to: feature)
+    public func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        if defaults.bool(forKey: feature.debugOverrideDefaultsKey) {
+            return .allowed
+        }
+        return base.access(to: feature, context: context)
     }
 }
 #endif

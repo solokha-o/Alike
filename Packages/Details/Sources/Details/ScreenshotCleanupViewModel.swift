@@ -10,6 +10,7 @@ import Storage
 final class ScreenshotCleanupViewModel {
     private let cleanupService: any PhotoCleanupService
     private let cleanupHistoryRepository: CleanupHistoryRepository
+    private let premiumAccess: any PremiumAccessControlling
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
     let sourceCategory: CleanupCategoryKind
@@ -27,11 +28,13 @@ final class ScreenshotCleanupViewModel {
         sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupService: any PhotoCleanupService = UnsupportedPhotoCleanupService(),
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil
     ) {
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
+        self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
         self.assetSnapshots = assetSnapshots ?? assets.map(ReviewAssetSnapshot.init)
         self.sourceCategory = sourceCategory
@@ -87,15 +90,29 @@ final class ScreenshotCleanupViewModel {
         }
     }
 
-    func requestDeleteConfirmation() {
-        guard isDeleteActionVisible, !isDeleting else { return }
+    @discardableResult
+    func requestDeleteConfirmation() -> PremiumAccessDecision {
+        guard isDeleteActionVisible, !isDeleting else { return .allowed }
+        let decision = premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        )
+        guard decision.isAllowed else { return decision }
         isDeleteConfirmationPresented = true
+        return .allowed
     }
 
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
             applyDeleteFailure(message: appLocalized("Select at least one photo before deleting."), offersOpenSettings: false)
+            return
+        }
+        guard premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        ).isAllowed else {
+            isDeleteConfirmationPresented = false
             return
         }
 

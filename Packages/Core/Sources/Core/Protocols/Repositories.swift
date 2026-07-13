@@ -25,6 +25,34 @@ public protocol PhotoClusterRepository: Sendable {
     func hasGalleryChanged() async -> Bool
 }
 
+public struct MonthlyScanUsage: Codable, Equatable, Sendable {
+    public let periodStart: Date
+    public let nextResetDate: Date
+    public let completedScanCount: Int
+
+    public init(periodStart: Date, nextResetDate: Date, completedScanCount: Int) {
+        self.periodStart = periodStart
+        self.nextResetDate = nextResetDate
+        self.completedScanCount = max(0, completedScanCount)
+    }
+
+    public var remainingFreeScans: Int {
+        max(0, PremiumAccessPolicy.monthlyFreeScanLimit - completedScanCount)
+    }
+}
+
+/// Repository for installation-local monthly scan usage.
+public protocol ScanUsageRepository: Sendable {
+    /// Loads usage for the calendar month containing date, resetting stale persisted usage.
+    func loadMonthlyUsage(at date: Date) async -> MonthlyScanUsage?
+
+    /// Stores initial usage when migrating an existing installation.
+    func initializeMonthlyUsage(_ usage: MonthlyScanUsage) async
+
+    /// Records one successful scan in the current calendar month.
+    func recordCompletedScan(at date: Date) async -> MonthlyScanUsage
+}
+
 /// Repository for cleanup review state per photo cluster.
 public protocol ClusterReviewStateRepository: Sendable {
     /// Load review state for a cluster.
