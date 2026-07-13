@@ -58,7 +58,7 @@
          </EnvironmentVariable>
       </EnvironmentVariables>
       <StoreKitConfigurationFileReference
-         identifier = "../../Configuration/Alike.storekit">
+         identifier = "../../Alike/Configuration/Alike.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

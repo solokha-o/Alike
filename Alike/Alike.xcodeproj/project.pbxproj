@@ -426,13 +426,13 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Storage;
 		};
-		7A1B00032F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Purchases" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Packages/Purchases;
-		};
 		5A19A10232B8A5D2008C44A1 /* XCLocalSwiftPackageReference "../Packages/NavigationKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/NavigationKit;
+		};
+		7A1B00032F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Purchases" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Purchases;
 		};
 /* End XCLocalSwiftPackageReference section */
 

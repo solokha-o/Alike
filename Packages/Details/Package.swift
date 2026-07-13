@@ -17,12 +17,17 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../DesignSystem"),
         .package(path: "../Storage"),
-        .package(path: "../NavigationKit")
+        .package(path: "../NavigationKit"),
+        .package(path: "../Purchases")
     ],
     targets: [
         .target(
             name: "Details",
-            dependencies: ["Core", "DesignSystem", "Storage", "NavigationKit"],
+            dependencies: [
+                "Core", "DesignSystem", "Storage", "NavigationKit",
+                .product(name: "Purchases", package: "Purchases"),
+                .product(name: "PurchasesUI", package: "Purchases")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]

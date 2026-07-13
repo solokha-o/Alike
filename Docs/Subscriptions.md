@@ -2,7 +2,7 @@
 
 This document is the release and QA reference for Alike Pro subscriptions. The
 production identifiers are defined in `SubscriptionCatalog.production`; the
-local StoreKit mirror is `Alike/Configuration/Alike.storekit`.
+local StoreKit mirror is `Alike/Alike/Configuration/Alike.storekit`.
 
 ## Product catalog
 
@@ -41,7 +41,7 @@ development and simulator QA.
 ## Local QA
 
 The shared `Alike`, `Alike-VerboseLogs`, and `Alike-DebugVerboseLogs` launch
-schemes use `Alike/Configuration/Alike.storekit`. Xcode's StoreKit transaction
+schemes use `Alike/Alike/Configuration/Alike.storekit`. Xcode's StoreKit transaction
 manager can reset transactions and simulate interrupted purchases, Ask to Buy,
 billing retry, renewals, expiration, revocation, and refunds. Change those
 controls only for the scenario under test and restore their defaults afterward.

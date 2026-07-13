@@ -154,6 +154,7 @@ struct MainTabView: View {
                 ),
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan,
+                subscriptionStore: subscriptionStore,
                 viewModel: ScannerViewModel(
                     gridColumns: gridConfiguration.clampedColumns(gridColumns),
                     sensitivity: sensitivity.wrappedValue,
@@ -172,6 +173,7 @@ struct MainTabView: View {
                 sensitivity: sensitivity,
                 needsRescan: Bindable(tabManager).needsRescan,
                 premiumAccess: premiumAccess,
+                subscriptionStore: subscriptionStore,
                 viewModel: SettingsViewModel(
                     cleanupReminderManager: cleanupReminderManager
                 )

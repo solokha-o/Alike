@@ -3,6 +3,8 @@ import Photos
 import Core
 import DesignSystem
 import Storage
+import Purchases
+import PurchasesUI
 
 #if os(iOS)
 
@@ -11,6 +13,7 @@ public struct ScreenshotCleanupView: View {
 
     private let assets: [PHAsset]
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
+    private let subscriptionStore: SubscriptionStore?
     @State private var viewModel: ScreenshotCleanupViewModel
     @State private var gridColumns = 3
     @State private var selectedAsset: PresentedScreenshotAsset?
@@ -23,11 +26,13 @@ public struct ScreenshotCleanupView: View {
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.assets = assets
         self.onCleanupCompleted = onCleanupCompleted
+        self.subscriptionStore = subscriptionStore
         self._viewModel = State(initialValue: ScreenshotCleanupViewModel(
             assets: assets,
             sourceCategory: sourceCategory,
@@ -72,7 +77,13 @@ public struct ScreenshotCleanupView: View {
             ScreenshotFullscreenPhotoPagerView(assets: assets, selectedIndex: selection.index)
         }
         .sheet(item: $presentedPremiumFeature) { _ in
-            BatchCleanupPremiumSheet()
+            SubscriptionPaywallView(
+                context: .batchCleanup(
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavings: viewModel.estimatedSavingsText
+                ),
+                store: subscriptionStore
+            )
         }
         .alert(
             deleteConfirmationTitle,
@@ -239,6 +250,7 @@ public struct ScreenshotCleanupView: View {
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {}

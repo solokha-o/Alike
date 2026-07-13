@@ -5,6 +5,8 @@ import Details
 import Photos
 import Cleanup
 import NavigationKit
+import Purchases
+import PurchasesUI
 
 private enum ScannerRoute: Hashable {
     case clusterDetails(PhotoCluster)
@@ -28,16 +30,19 @@ public struct ScannerView: View {
     @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var shouldStartScan: Bool
+    private let subscriptionStore: SubscriptionStore?
     
     public init(
         gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
         shouldStartScan: Binding<Bool> = .constant(false),
+        subscriptionStore: SubscriptionStore? = nil,
         viewModel: ScannerViewModel? = nil
     ) {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._shouldStartScan = shouldStartScan
+        self.subscriptionStore = subscriptionStore
         if let viewModel {
             self._viewModel = State(initialValue: viewModel)
         } else {
@@ -80,6 +85,7 @@ public struct ScannerView: View {
                     cleanupService: viewModel.cleanupService,
                     cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
                     premiumAccess: viewModel.premiumAccess,
+                    subscriptionStore: subscriptionStore,
                     openSettingsAction: {
                         PhotoPermissionManagerImpl().openSettings()
                     },
@@ -93,12 +99,10 @@ public struct ScannerView: View {
             .interactiveDismissDisabled()
         }
         .sheet(item: $presentedPaywallFeature) { feature in
-            PremiumPaywallSheet(
-                feature: feature,
-                remainingFreeScans: viewModel.remainingFreeScans,
-                resetDate: viewModel.nextFreeScanResetDate
+            SubscriptionPaywallView(
+                context: paywallContext(for: feature),
+                store: subscriptionStore
             )
-                .interactiveDismissDisabled()
         }
         .sheet(isPresented: $isClusterControlsPresented, onDismiss: presentPendingPaywall) {
             ScannerClusterControlsSheet(
@@ -184,6 +188,7 @@ public struct ScannerView: View {
                 cleanupService: viewModel.cleanupService,
                 cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
                 premiumAccess: viewModel.premiumAccess,
+                subscriptionStore: subscriptionStore,
                 openSettingsAction: {
                     PhotoPermissionManagerImpl().openSettings()
                 },
@@ -458,6 +463,32 @@ public struct ScannerView: View {
         guard let feature = pendingPaywallFeature else { return }
         pendingPaywallFeature = nil
         presentedPaywallFeature = feature
+    }
+
+    private func paywallContext(for feature: PremiumFeature) -> PremiumSurfaceContext {
+        if feature == .unlimitedScans {
+            return .scanAllowance(
+                remaining: viewModel.remainingFreeScans,
+                resetDate: viewModel.nextFreeScanResetDate
+            )
+        }
+
+        if
+            let categoryKind = feature.categoryKind,
+            let category = viewModel.cleanupCategories.first(where: { $0.kind == categoryKind })
+        {
+            let savings = ByteCountFormatter.string(
+                fromByteCount: category.estimatedSavingsBytes,
+                countStyle: .file
+            )
+            return .smartCategory(
+                feature: feature,
+                title: category.kind.presentation.title,
+                estimatedSavings: savings
+            )
+        }
+
+        return .feature(feature)
     }
 
     private func openCleanupCategory(_ category: CleanupCategorySummary) async {
@@ -973,8 +1004,7 @@ private struct CleanupCategoryRow: View {
                 Spacer()
 
                 if isLocked {
-                    Image(systemName: "lock.fill")
-                        .foregroundStyle(.secondary)
+                    PremiumLockedAccessory()
                 } else {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(.secondary)
@@ -985,7 +1015,13 @@ private struct CleanupCategoryRow: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(summary.kind.presentation.title))
-        .accessibilityValue(Text("\(summary.assetCount)"))
+        .accessibilityValue(
+            Text(
+                isLocked
+                    ? "\(summary.assetCount), \(appLocalized("Requires Alike Pro"))"
+                    : "\(summary.assetCount)"
+            )
+        )
         .accessibilityHint(
             Text(
                 isLocked
@@ -1010,108 +1046,6 @@ private struct CleanupCategoryRow: View {
             format: appLocalized("%d items • %@ estimated reclaimable"),
             summary.assetCount,
             estimatedSavings
-        )
-    }
-}
-
-private struct PremiumPaywallSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    let feature: PremiumFeature
-    let remainingFreeScans: Int
-    let resetDate: Date?
-
-    var body: some View {
-        RoutedNavigationStack {
-            VStack(spacing: Spacing.large) {
-                Image(systemName: "lock.shield.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(Color.accent)
-
-                VStack(spacing: Spacing.small) {
-                    Text(title)
-                        .font(.appTitle2)
-                        .multilineTextAlignment(.center)
-                    Text(message)
-                        .font(.appBody)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-
-                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") {
-                    dismiss()
-                }
-
-                Spacer()
-            }
-            .padding(Spacing.large)
-            .navigationTitle(Text(appLocalized("Premium")))
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                    .accessibilityLabel(Text(appLocalized("Close")))
-                }
-#else
-                ToolbarItem {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                    .accessibilityLabel(Text(appLocalized("Close")))
-                }
-#endif
-            }
-        }
-    }
-
-    private var title: String {
-        switch feature {
-        case .unlimitedScans:
-            appLocalized("Unlimited scans are a premium feature")
-        case .advancedFilters:
-            appLocalized("Advanced filters are a premium feature")
-        case .batchCleanup:
-            appLocalized("Batch cleanup is a premium feature")
-        case .cleanupReminderCustomization:
-            appLocalized("Custom reminder schedule is a premium feature")
-        case .screenshotCleanup, .blurredPhotoCleanup:
-            feature.categoryKind?.presentation.paywallTitle ?? ""
-        }
-    }
-
-    private var message: String {
-        switch feature {
-        case .unlimitedScans:
-            scanAllowanceMessage
-        case .advancedFilters:
-            appLocalized("Unlock review status, cluster size, and favorites filters for faster cleanup.")
-        case .batchCleanup:
-            appLocalized("Unlock batch cleanup to remove multiple selected photos in one action.")
-        case .cleanupReminderCustomization:
-            appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine.")
-        case .screenshotCleanup, .blurredPhotoCleanup:
-            feature.categoryKind?.presentation.paywallMessage ?? ""
-        }
-    }
-
-    private var scanAllowanceMessage: String {
-        guard let resetDate else {
-            return appLocalized("Free includes 3 scans per calendar month. Unlock Premium for unlimited scans.")
-        }
-        return String(
-            format: appLocalized("Free includes %d scans per calendar month. You have %d remaining. Your allowance resets %@."),
-            PremiumAccessPolicy.monthlyFreeScanLimit,
-            remainingFreeScans,
-            resetDate.formatted(.dateTime.month(.wide).day().year())
         )
     }
 }
