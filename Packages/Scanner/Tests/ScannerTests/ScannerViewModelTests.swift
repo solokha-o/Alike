@@ -1,4 +1,5 @@
 import XCTest
+import Foundation
 import Photos
 import Core
 @testable import Scanner
@@ -26,19 +27,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupHistoryRepository = MockCleanupHistoryRepository()
         scanUsageRepository = MockScanUsageRepository()
         premiumAccess = MockPremiumAccessController()
-        viewModel = ScannerViewModel(
-            gridColumns: 3,
-            sensitivity: .medium,
-            analysisService: mockAnalysisService,
-            repository: mockRepository,
-            reviewRepository: mockReviewRepository,
-            cleanupCategoryRepository: mockCleanupCategoryRepository,
-            cleanupSessionRepository: mockCleanupSessionRepository,
-            cleanupService: mockCleanupService,
-            cleanupHistoryRepository: mockCleanupHistoryRepository,
-            premiumAccess: premiumAccess,
-            scanUsageRepository: scanUsageRepository
-        )
+        viewModel = makeViewModel(premiumAccess: premiumAccess)
     }
     
     override func tearDown() async throws {
@@ -93,6 +82,26 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(recordCalls, 0)
     }
 
+    func testPostCleanupReconciliationDoesNotConsumeUserInitiatedScanAllowance() async {
+        await scanUsageRepository.setCompletedScanCount(2)
+        await viewModel.loadCachedResults()
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 1,
+            estimatedSavingsBytes: 512
+        )
+
+        await viewModel.handleCleanupCompleted(completionRecord)
+
+        let count = await scanUsageRepository.currentCount()
+        let recordCalls = await scanUsageRepository.recordCallCount()
+        XCTAssertEqual(count, 2)
+        XCTAssertEqual(recordCalls, 0)
+        XCTAssertEqual(viewModel.remainingFreeScans, 1)
+    }
+
     func testFourthMonthlyScanRequiresPremiumWithoutChangingResults() async {
         await scanUsageRepository.setCompletedScanCount(3)
         let existing = createMockCluster(photoCount: 2)
@@ -104,6 +113,73 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(decision, .requiresPremium)
         XCTAssertEqual(viewModel.state, .results([existing]))
         XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testConcurrentUserInitiatedScansShareOneAdmissionAndAnalysis() async {
+        let analysisService = SuspendedPhotoAnalysisService()
+        let usageRepository = MockScanUsageRepository(count: 2)
+        let serializedViewModel = ScannerViewModel(
+            analysisService: analysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: usageRepository
+        )
+
+        let firstScan = Task { await serializedViewModel.startScanning() }
+        await analysisService.waitUntilAnalyzeCallCount(1)
+        let resumeAnalysis = Task {
+            await Task.yield()
+            await analysisService.resumeNext(returning: [])
+        }
+
+        let secondDecision = await serializedViewModel.startScanning()
+        let firstDecision = await firstScan.value
+        await resumeAnalysis.value
+        let analyzeCallCount = await analysisService.currentAnalyzeCallCount()
+        let maximumConcurrentCount = await analysisService.maximumConcurrentAnalyzeCount()
+        let completedScanCount = await usageRepository.currentCount()
+        let recordCallCount = await usageRepository.recordCallCount()
+
+        XCTAssertEqual(firstDecision, .allowed)
+        XCTAssertEqual(secondDecision, .allowed)
+        XCTAssertEqual(analyzeCallCount, 1)
+        XCTAssertEqual(maximumConcurrentCount, 1)
+        XCTAssertEqual(completedScanCount, 3)
+        XCTAssertEqual(recordCallCount, 1)
+    }
+
+    func testConcurrentColdStartAdmissionsNeverAuthorizeUnknownUsageAsZero() async {
+        let usageRepository = SuspendedScanUsageRepository()
+        let storedUsage = makeMonthlyUsage(count: 3, date: Date())
+        let coldStartViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: usageRepository
+        )
+
+        let firstScan = Task { await coldStartViewModel.startScanning() }
+        await usageRepository.waitUntilLoadCallCount(1)
+        let resumeUsageLoad = Task {
+            await Task.yield()
+            await usageRepository.resumeNextLoad(returning: storedUsage)
+        }
+
+        let secondDecision = await coldStartViewModel.startScanning()
+        let firstDecision = await firstScan.value
+        await resumeUsageLoad.value
+        let loadCallCount = await usageRepository.loadCallCount()
+        let didAnalyze = await mockAnalysisService.didCallAnalyzePhotoLibrary
+
+        XCTAssertEqual(firstDecision, .requiresPremium)
+        XCTAssertEqual(secondDecision, .requiresPremium)
+        XCTAssertEqual(loadCallCount, 1)
+        XCTAssertFalse(didAnalyze)
     }
 
     func testMonthlyScanAllowanceResetsOnFreshLaunchInNewMonth() async {
@@ -125,6 +201,35 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(relaunchedViewModel.remainingFreeScans, 3)
     }
 
+    func testMonthlyScanAllowanceResetsWithoutRecreatingViewModel() async {
+        let july = makeDate(year: 2026, month: 7, day: 31)
+        let august = makeDate(year: 2026, month: 8, day: 1)
+        let clock = LockedDateProvider(july)
+        let usageRepository = MockScanUsageRepository(count: nil)
+        await usageRepository.setMonthlyUsage(count: 3, date: july)
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        let persistentViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: usageRepository,
+            calendar: utcCalendar,
+            now: { clock.now() }
+        )
+
+        await persistentViewModel.loadCachedResults()
+        XCTAssertEqual(persistentViewModel.remainingFreeScans, 0)
+
+        clock.set(august)
+        let decision = await persistentViewModel.startScanning()
+        let completedScanCount = await usageRepository.currentCount()
+
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertEqual(persistentViewModel.remainingFreeScans, 2)
+        XCTAssertEqual(completedScanCount, 1)
+    }
+
     func testAdvancedFiltersUsePremiumAccess() {
         XCTAssertTrue(viewModel.isAdvancedFilteringLocked)
 
@@ -136,6 +241,50 @@ final class ScannerViewModelTests: XCTestCase {
         )
 
         XCTAssertFalse(unlockedViewModel.isAdvancedFilteringLocked)
+    }
+
+    func testPremiumFilterFieldsStopAffectingResultsAfterAccessRevocation() {
+        let mutableAccess = MutablePremiumAccessController(unlocksAdvancedFilters: true)
+        let revocableViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            premiumAccess: mutableAccess,
+            scanUsageRepository: scanUsageRepository
+        )
+        revocableViewModel.clusterControls.sort = .similarity
+        revocableViewModel.clusterControls.reviewFilter = .reviewed
+        revocableViewModel.clusterControls.minimumClusterSize = .twenty
+        revocableViewModel.clusterControls.favoritesOnly = true
+
+        XCTAssertEqual(
+            revocableViewModel.effectiveClusterControls,
+            revocableViewModel.clusterControls
+        )
+
+        mutableAccess.unlocksAdvancedFilters = false
+
+        XCTAssertEqual(revocableViewModel.effectiveClusterControls.sort, .similarity)
+        XCTAssertEqual(revocableViewModel.effectiveClusterControls.reviewFilter, .all)
+        XCTAssertEqual(revocableViewModel.effectiveClusterControls.minimumClusterSize, .any)
+        XCTAssertFalse(revocableViewModel.effectiveClusterControls.favoritesOnly)
+
+        let lowSimilarity = PhotoCluster(
+            id: UUID(),
+            assets: [],
+            createdAt: Date(timeIntervalSince1970: 200),
+            averageSimilarity: 0.2
+        )
+        let highSimilarity = PhotoCluster(
+            id: UUID(),
+            assets: [],
+            createdAt: Date(timeIntervalSince1970: 100),
+            averageSimilarity: 0.9
+        )
+
+        XCTAssertEqual(
+            revocableViewModel.sortedClusters(from: [lowSimilarity, highSimilarity]).map(\.id),
+            [highSimilarity.id, lowSimilarity.id]
+        )
     }
     
     // MARK: - Load Cached Results Tests
@@ -192,7 +341,67 @@ final class ScannerViewModelTests: XCTestCase {
         }
     }
 
+    func testDeniedScanDoesNotSuppressInFlightCachedResults() async {
+        let cachedCluster = createMockCluster(photoCount: 2)
+        let suspendedRepository = SuspendedCachedLoadPhotoClusterRepository()
+        let usageRepository = MockScanUsageRepository(count: 3)
+        let cacheAwareViewModel = ScannerViewModel(
+            analysisService: mockAnalysisService,
+            repository: suspendedRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: usageRepository
+        )
+
+        let cacheLoad = Task { await cacheAwareViewModel.loadCachedResults() }
+        await suspendedRepository.waitUntilLoadClustersCallCount(1)
+
+        let decision = await cacheAwareViewModel.startScanning()
+        await suspendedRepository.resumeNextLoadClusters(returning: [cachedCluster])
+        await cacheLoad.value
+
+        XCTAssertEqual(decision, .requiresPremium)
+        XCTAssertEqual(cacheAwareViewModel.state, .results([cachedCluster]))
+    }
+
+    func testInFlightCachedResultsCannotOverwriteNewerManualScan() async {
+        let cachedCluster = createMockCluster(photoCount: 2)
+        let scannedCluster = createMockCluster(photoCount: 2)
+        let suspendedRepository = SuspendedCachedLoadPhotoClusterRepository()
+        let suspendedAnalysis = SuspendedPhotoAnalysisService()
+        let cacheAwareViewModel = ScannerViewModel(
+            analysisService: suspendedAnalysis,
+            repository: suspendedRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: scanUsageRepository
+        )
+
+        let cacheLoad = Task { await cacheAwareViewModel.loadCachedResults() }
+        await suspendedRepository.waitUntilLoadClustersCallCount(1)
+        let manualScan = Task { await cacheAwareViewModel.startScanning() }
+        await suspendedAnalysis.waitUntilAnalyzeCallCount(1)
+        await suspendedAnalysis.resumeNext(returning: [scannedCluster])
+        _ = await manualScan.value
+
+        await suspendedRepository.resumeNextLoadClusters(returning: [cachedCluster])
+        await cacheLoad.value
+
+        XCTAssertEqual(cacheAwareViewModel.state, .results([scannedCluster]))
+    }
+
     func testLoadCachedResultsKeepsCanonicalClustersWhenFiltersAreActive() async {
+        viewModel = makeViewModel(
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.advancedFilters])
+        )
         let reviewed = createMockCluster(photoCount: 2)
         let notReviewed = createMockCluster(photoCount: 2)
         viewModel.clusterControls.reviewFilter = .reviewed
@@ -268,6 +477,9 @@ final class ScannerViewModelTests: XCTestCase {
     }
 
     func testRescanKeepsCanonicalClustersWhenFiltersAreActive() async {
+        viewModel = makeViewModel(
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.advancedFilters])
+        )
         let reviewed = createMockCluster(photoCount: 2)
         let notReviewed = createMockCluster(photoCount: 2)
         viewModel.clusterControls.reviewFilter = .reviewed
@@ -459,6 +671,9 @@ final class ScannerViewModelTests: XCTestCase {
     }
 
     func testGlobalSessionProgressAndContinueCandidateIgnoreVisibleFilters() async {
+        viewModel = makeViewModel(
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.advancedFilters])
+        )
         let reviewedID = UUID()
         let notReviewedID = UUID()
         let reviewed = createMockCluster(id: reviewedID, photoCount: 2)
@@ -1158,6 +1373,45 @@ final class ScannerViewModelTests: XCTestCase {
     }
     
     // MARK: - Helper
+
+    private var utcCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }
+
+    private func makeDate(year: Int, month: Int, day: Int) -> Date {
+        utcCalendar.date(from: DateComponents(year: year, month: month, day: day))!
+    }
+
+    private func makeMonthlyUsage(count: Int, date: Date) -> MonthlyScanUsage {
+        let calendar = utcCalendar
+        let components = calendar.dateComponents([.year, .month], from: date)
+        let periodStart = calendar.date(from: components)!
+        return MonthlyScanUsage(
+            periodStart: periodStart,
+            nextResetDate: calendar.date(byAdding: .month, value: 1, to: periodStart)!,
+            completedScanCount: count
+        )
+    }
+
+    private func makeViewModel(
+        premiumAccess: any PremiumAccessControlling
+    ) -> ScannerViewModel {
+        ScannerViewModel(
+            gridColumns: 3,
+            sensitivity: .medium,
+            analysisService: mockAnalysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: scanUsageRepository
+        )
+    }
     
     private func createMockCluster(id: UUID = UUID(), photoCount: Int) -> PhotoCluster {
         PhotoCluster(id: id, assets: [], createdAt: Date(), averageSimilarity: 0.95)
@@ -1190,6 +1444,139 @@ private struct TestError: LocalizedError {
     var errorDescription: String? { "Test error" }
 }
 
+@MainActor
+private final class MutablePremiumAccessController: PremiumAccessControlling {
+    var unlocksAdvancedFilters: Bool
+    let entitlementState = PremiumEntitlementState.unknown
+
+    init(unlocksAdvancedFilters: Bool) {
+        self.unlocksAdvancedFilters = unlocksAdvancedFilters
+    }
+
+    func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        if feature == .advancedFilters, unlocksAdvancedFilters {
+            return .allowed
+        }
+        return PremiumAccessPolicy.decision(for: feature, context: context, isPremium: false)
+    }
+}
+
+private final class LockedDateProvider: @unchecked Sendable {
+    private let lock = NSLock()
+    private var date: Date
+
+    init(_ date: Date) {
+        self.date = date
+    }
+
+    func now() -> Date {
+        lock.lock()
+        defer { lock.unlock() }
+        return date
+    }
+
+    func set(_ date: Date) {
+        lock.lock()
+        self.date = date
+        lock.unlock()
+    }
+}
+
+private actor SuspendedScanUsageRepository: ScanUsageRepository {
+    private var loadContinuations: [CheckedContinuation<MonthlyScanUsage?, Never>] = []
+    private var loads = 0
+    private var usage: MonthlyScanUsage?
+
+    func loadMonthlyUsage(at date: Date) async -> MonthlyScanUsage? {
+        loads += 1
+        return await withCheckedContinuation { continuation in
+            loadContinuations.append(continuation)
+        }
+    }
+
+    func initializeMonthlyUsage(_ usage: MonthlyScanUsage) {
+        guard self.usage == nil else { return }
+        self.usage = usage
+    }
+
+    func recordCompletedScan(at date: Date) -> MonthlyScanUsage {
+        let current = usage ?? Self.makeUsage(count: 0, date: date)
+        let updated = Self.makeUsage(count: current.completedScanCount + 1, date: date)
+        usage = updated
+        return updated
+    }
+
+    func waitUntilLoadCallCount(_ expectedCount: Int) async {
+        while loads < expectedCount {
+            await Task.yield()
+        }
+    }
+
+    func resumeNextLoad(returning usage: MonthlyScanUsage?) {
+        self.usage = usage
+        loadContinuations.removeFirst().resume(returning: usage)
+    }
+
+    func loadCallCount() -> Int { loads }
+
+    private static func makeUsage(count: Int, date: Date) -> MonthlyScanUsage {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let components = calendar.dateComponents([.year, .month], from: date)
+        let start = calendar.date(from: components) ?? date
+        return MonthlyScanUsage(
+            periodStart: start,
+            nextResetDate: calendar.date(byAdding: .month, value: 1, to: start) ?? date,
+            completedScanCount: count
+        )
+    }
+}
+
+private actor SuspendedCachedLoadPhotoClusterRepository: PhotoClusterRepository {
+    private var loadContinuations: [CheckedContinuation<[PhotoCluster], Error>] = []
+    private var loadCalls = 0
+    private var savedClusters: [PhotoCluster] = []
+    private var lastScanDate: Date?
+
+    func loadClusters() async throws -> [PhotoCluster] {
+        loadCalls += 1
+        return try await withCheckedThrowingContinuation { continuation in
+            loadContinuations.append(continuation)
+        }
+    }
+
+    func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot] { [] }
+
+    func saveClusters(_ clusters: [PhotoCluster]) async throws {
+        savedClusters = clusters
+    }
+
+    func deleteAllClusters() async throws {
+        savedClusters = []
+    }
+
+    func getLastScanDate() async -> Date? { lastScanDate }
+
+    func updateLastScanDate(_ date: Date) async throws {
+        lastScanDate = date
+    }
+
+    func hasGalleryChanged() async -> Bool { false }
+
+    func waitUntilLoadClustersCallCount(_ expectedCount: Int) async {
+        while loadCalls < expectedCount {
+            await Task.yield()
+        }
+    }
+
+    func resumeNextLoadClusters(returning clusters: [PhotoCluster]) {
+        loadContinuations.removeFirst().resume(returning: clusters)
+    }
+}
+
 actor MockScanUsageRepository: ScanUsageRepository {
     private var usage: MonthlyScanUsage?
     private var records = 0
@@ -1217,7 +1604,8 @@ actor MockScanUsageRepository: ScanUsageRepository {
 
     func recordCompletedScan(at date: Date) -> MonthlyScanUsage {
         records += 1
-        let next = (usage?.completedScanCount ?? 0) + 1
+        let current = loadMonthlyUsage(at: date)
+        let next = (current?.completedScanCount ?? 0) + 1
         let updated = Self.makeUsage(count: next, date: date)
         usage = updated
         return updated

@@ -88,6 +88,19 @@ public final class ScannerViewModel {
         case success(CleanupCompletionRecord)
         case failed(CleanupCompletionRecord, message: String)
     }
+
+    private enum ScanPurpose {
+        case userInitiated
+        case postCleanupReconciliation
+
+        var showsProgress: Bool {
+            self == .userInitiated
+        }
+
+        var consumesFreeScanAllowance: Bool {
+            self == .userInitiated
+        }
+    }
     
     public var state: State = .idle
     public var gridColumns: Int
@@ -116,6 +129,16 @@ public final class ScannerViewModel {
     private let now: @Sendable () -> Date
     private let cleanupRefreshAutoDismissDelay: Duration
     private var cleanupRefreshDismissTask: Task<Void, Never>?
+    private var userInitiatedScanOperation: (
+        id: UUID,
+        task: Task<PremiumAccessDecision, Never>
+    )?
+    private var scanUsageMigrationOperation: (
+        id: UUID,
+        task: Task<MonthlyScanUsage, Never>
+    )?
+    private var scanMutationGeneration = 0
+    private var isUserInitiatedScanExecutionInFlight = false
     private var isCleanupRefreshInFlight = false
     private var activeCleanupRefreshRecord: CleanupCompletionRecord?
     private var queuedCleanupRefreshRecord: CleanupCompletionRecord?
@@ -124,7 +147,6 @@ public final class ScannerViewModel {
     public var sensitivity: SensitivityLevel
     public var clusterControls = ScannerClusterControls()
     public private(set) var monthlyScanUsage: MonthlyScanUsage?
-    private var hasLoadedScanUsage = false
 
     public var remainingFreeScans: Int {
         monthlyScanUsage?.remainingFreeScans ?? PremiumAccessPolicy.monthlyFreeScanLimit
@@ -188,11 +210,21 @@ public final class ScannerViewModel {
     }
     
     public func loadCachedResults() async {
-        await loadCleanupInsights()
-        await loadScanUsageIfNeeded()
+        let expectedScanGeneration = scanMutationGeneration
+        let cachedInsights = await fetchCleanupInsights()
+        let currentUsage = await resolveMonthlyScanUsage(at: now())
+
+        if canCommitCachedResults(for: expectedScanGeneration) {
+            cleanupInsights = cachedInsights
+            monthlyScanUsage = currentUsage
+        }
+
         do {
             let clusters = try await repository.loadClusters()
-            await loadCleanupCategories()
+            let cachedCategories = await fetchCleanupCategories()
+            guard canCommitCachedResults(for: expectedScanGeneration) else { return }
+
+            cleanupCategories = cachedCategories
             if !clusters.isEmpty {
                 let sorted = canonicalSortedClusters(from: clusters)
                 if case .results(let existing) = state, existing == sorted {
@@ -200,12 +232,18 @@ public final class ScannerViewModel {
                 }
                 AppLog.ui.debug("\(AppLog.tag(.cache, "Loaded cached clusters: \(sorted.count)"))")
                 state = .results(sorted)
-                await loadReviewStates(clusters: sorted)
+                await loadReviewStates(
+                    clusters: sorted,
+                    expectedScanGeneration: expectedScanGeneration
+                )
             } else {
+                let session = await cleanupManager.syncSession(for: [], reviewStates: [:])
+                guard canCommitCachedResults(for: expectedScanGeneration) else { return }
+
                 shouldShowRescanPrompt = false
                 reviewStates = [:]
                 resurfacingStates = [:]
-                activeCleanupSession = await cleanupManager.syncSession(for: [], reviewStates: [:])
+                activeCleanupSession = session
             }
         } catch {
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to load cached results: \(error.localizedDescription)"))")
@@ -214,16 +252,40 @@ public final class ScannerViewModel {
     
     @discardableResult
     public func startScanning() async -> PremiumAccessDecision {
-        await loadScanUsageIfNeeded()
+        if let operation = userInitiatedScanOperation {
+            return await operation.task.value
+        }
+
+        let operationID = UUID()
+        let task = Task { @MainActor [weak self] in
+            guard let self else { return PremiumAccessDecision.requiresPremium }
+            return await self.performUserInitiatedScan()
+        }
+        userInitiatedScanOperation = (operationID, task)
+
+        let decision = await task.value
+        if userInitiatedScanOperation?.id == operationID {
+            userInitiatedScanOperation = nil
+        }
+        return decision
+    }
+
+    private func performUserInitiatedScan() async -> PremiumAccessDecision {
+        let currentUsage = await resolveMonthlyScanUsage(at: now())
+        monthlyScanUsage = currentUsage
         let decision = premiumAccess.access(
             to: .unlimitedScans,
-            context: .scan(completedThisMonth: monthlyScanUsage?.completedScanCount ?? 0)
+            context: .scan(completedThisMonth: currentUsage.completedScanCount)
         )
         guard decision.isAllowed else { return decision }
 
+        scanMutationGeneration &+= 1
+        isUserInitiatedScanExecutionInFlight = true
+        defer { isUserInitiatedScanExecutionInFlight = false }
+
         do {
             setCleanupRefreshState(nil)
-            try await runScan(showProgress: true)
+            try await runScan(purpose: .userInitiated)
         } catch {
             AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
             state = .error(error.localizedDescription)
@@ -239,6 +301,7 @@ public final class ScannerViewModel {
             return
         }
 
+        scanMutationGeneration &+= 1
         isCleanupRefreshInFlight = true
         var nextRecord: CleanupCompletionRecord? = record
 
@@ -257,7 +320,7 @@ public final class ScannerViewModel {
         setCleanupRefreshState(.refreshing(record))
 
         do {
-            try await runScan(showProgress: false)
+            try await runScan(purpose: .postCleanupReconciliation)
             await loadCleanupInsights()
             setCleanupRefreshState(.success(record))
         } catch {
@@ -292,18 +355,38 @@ public final class ScannerViewModel {
     }
 
     public func loadReviewStates(clusters: [PhotoCluster]) async {
+        await loadReviewStates(clusters: clusters, expectedScanGeneration: nil)
+    }
+
+    private func loadReviewStates(
+        clusters: [PhotoCluster],
+        expectedScanGeneration: Int?
+    ) async {
+        let loadedReviewStates: [UUID: ClusterReviewState]
         do {
-            reviewStates = try await reviewRepository.loadAllReviewStates()
+            loadedReviewStates = try await reviewRepository.loadAllReviewStates()
         } catch {
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to load review states: \(error.localizedDescription)"))")
-            reviewStates = [:]
+            loadedReviewStates = [:]
         }
-        resurfacingStates = Dictionary(
+
+        let loadedResurfacingStates = Dictionary(
             uniqueKeysWithValues: clusters.map { cluster in
-                (cluster.id, reviewStates[cluster.id]?.resurfacingState ?? .unchanged)
+                (cluster.id, loadedReviewStates[cluster.id]?.resurfacingState ?? .unchanged)
             }
         )
-        activeCleanupSession = await cleanupManager.syncSession(for: clusters, reviewStates: reviewStates)
+        let loadedSession = await cleanupManager.syncSession(
+            for: clusters,
+            reviewStates: loadedReviewStates
+        )
+
+        if let expectedScanGeneration {
+            guard canCommitCachedResults(for: expectedScanGeneration) else { return }
+        }
+
+        reviewStates = loadedReviewStates
+        resurfacingStates = loadedResurfacingStates
+        activeCleanupSession = loadedSession
     }
 
     public func reviewState(for clusterID: UUID) -> ClusterReviewState? {
@@ -316,6 +399,16 @@ public final class ScannerViewModel {
 
     public var isAdvancedFilteringLocked: Bool {
         !premiumAccess.access(to: .advancedFilters).isAllowed
+    }
+
+    var effectiveClusterControls: ScannerClusterControls {
+        guard isAdvancedFilteringLocked else { return clusterControls }
+
+        var controls = clusterControls
+        controls.reviewFilter = .all
+        controls.minimumClusterSize = .any
+        controls.favoritesOnly = false
+        return controls
     }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
@@ -360,7 +453,7 @@ public final class ScannerViewModel {
     }
 
     public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
-        filteredAndSortedClusters(from: clusters, controls: clusterControls)
+        filteredAndSortedClusters(from: clusters, controls: effectiveClusterControls)
     }
 
     func canonicalSortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
@@ -465,32 +558,40 @@ private extension ScannerViewModel {
         cleanupRefreshDismissTask = nil
     }
 
-    func loadCleanupInsights() async {
+    func fetchCleanupInsights() async -> CleanupInsights {
         do {
-            cleanupInsights = try await cleanupInsightsProvider.loadInsights()
+            return try await cleanupInsightsProvider.loadInsights()
         } catch {
             AppLog.storage.error(
                 "\(AppLog.tag(.error, "Failed to load cleanup insights: \(error.localizedDescription)"))"
             )
-            cleanupInsights = .empty
+            return .empty
         }
     }
 
-    func loadCleanupCategories() async {
+    func loadCleanupInsights() async {
+        cleanupInsights = await fetchCleanupInsights()
+    }
+
+    func fetchCleanupCategories() async -> [CleanupCategorySummary] {
         do {
             let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
-            cleanupCategories = CleanupCategoryKind.allCases.compactMap { snapshots[$0]?.summary }
+            return CleanupCategoryKind.allCases.compactMap { snapshots[$0]?.summary }
         } catch {
             AppLog.photoKit.error(
                 "\(AppLog.tag(.error, "Failed to load cleanup categories: \(error.localizedDescription)"))"
             )
-            cleanupCategories = []
+            return []
         }
     }
 
-    func runScan(showProgress: Bool) async throws {
+    func loadCleanupCategories() async {
+        cleanupCategories = await fetchCleanupCategories()
+    }
+
+    private func runScan(purpose: ScanPurpose) async throws {
         AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
-        if showProgress {
+        if purpose.showsProgress {
             state = .scanning(progress: 0.0)
         }
 
@@ -499,7 +600,7 @@ private extension ScannerViewModel {
         let clusters = try await analysisService.analyzePhotoLibrary(
             sensitivity: sensitivity.threshold
         ) { progress in
-            guard showProgress else { return }
+            guard purpose.showsProgress else { return }
             Task { @MainActor in
                 self.state = .scanning(progress: progress)
             }
@@ -549,19 +650,55 @@ private extension ScannerViewModel {
             cleanupCategories = []
         }
         state = .results(sorted)
-        monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
+        if purpose.consumesFreeScanAllowance {
+            monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
+        }
     }
 
-    private func loadScanUsageIfNeeded() async {
-        guard !hasLoadedScanUsage else { return }
-        hasLoadedScanUsage = true
-
-        let currentDate = now()
-        if let storedUsage = await scanUsageRepository.loadMonthlyUsage(at: currentDate) {
-            monthlyScanUsage = storedUsage
-            return
+    private func resolveMonthlyScanUsage(at date: Date) async -> MonthlyScanUsage {
+        if let storedUsage = await scanUsageRepository.loadMonthlyUsage(at: date) {
+            return storedUsage
         }
 
+        let migratedUsage = await migrateMonthlyScanUsageIfNeeded(at: date)
+        if let canonicalUsage = await scanUsageRepository.loadMonthlyUsage(at: date) {
+            return canonicalUsage
+        }
+        return migratedUsage
+    }
+
+    private func migrateMonthlyScanUsageIfNeeded(at date: Date) async -> MonthlyScanUsage {
+        if let operation = scanUsageMigrationOperation {
+            _ = await operation.task.value
+            if let canonicalUsage = await scanUsageRepository.loadMonthlyUsage(at: date) {
+                return canonicalUsage
+            }
+            return await makeMigratedMonthlyScanUsage(at: date)
+        }
+
+        let operationID = UUID()
+        let task = Task { @MainActor [weak self] in
+            guard let self else {
+                return MonthlyScanUsage(
+                    periodStart: date,
+                    nextResetDate: date,
+                    completedScanCount: 0
+                )
+            }
+            let migratedUsage = await self.makeMigratedMonthlyScanUsage(at: date)
+            await self.scanUsageRepository.initializeMonthlyUsage(migratedUsage)
+            return migratedUsage
+        }
+        scanUsageMigrationOperation = (operationID, task)
+
+        let migratedUsage = await task.value
+        if scanUsageMigrationOperation?.id == operationID {
+            scanUsageMigrationOperation = nil
+        }
+        return migratedUsage
+    }
+
+    private func makeMigratedMonthlyScanUsage(at currentDate: Date) async -> MonthlyScanUsage {
         let lastScanDate = await repository.getLastScanDate()
         let migratedCount = lastScanDate.map {
             calendar.isDate($0, equalTo: currentDate, toGranularity: .month) ? 1 : 0
@@ -569,13 +706,17 @@ private extension ScannerViewModel {
         let components = calendar.dateComponents([.year, .month], from: currentDate)
         let periodStart = calendar.date(from: components) ?? currentDate
         let nextResetDate = calendar.date(byAdding: .month, value: 1, to: periodStart) ?? currentDate
-        let migratedUsage = MonthlyScanUsage(
+        return MonthlyScanUsage(
             periodStart: periodStart,
             nextResetDate: nextResetDate,
             completedScanCount: migratedCount
         )
-        await scanUsageRepository.initializeMonthlyUsage(migratedUsage)
-        monthlyScanUsage = migratedUsage
+    }
+
+    private func canCommitCachedResults(for expectedScanGeneration: Int) -> Bool {
+        scanMutationGeneration == expectedScanGeneration
+            && !isUserInitiatedScanExecutionInFlight
+            && !isCleanupRefreshInFlight
     }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {

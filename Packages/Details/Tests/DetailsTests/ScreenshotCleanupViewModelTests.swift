@@ -38,14 +38,49 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
     }
 
-    func testConfirmDeletePassesSelectedAssetsAndCategorySourceID() async throws {
+    func testFreeUserCanDeleteSinglePhoto() async throws {
+        let expectedRecord = CleanupCompletionRecord(
+            sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
+            deletedCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        await cleanupService.setDeleteAssetsResult(.success(expectedRecord))
+        let viewModel = makeViewModel()
+        viewModel.toggleSelection(for: "one")
+
+        let decision = viewModel.requestDeleteConfirmation()
+        await viewModel.confirmDelete()
+
+        let lastIdentifiers = await cleanupService.lastLocalIdentifiers
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertEqual(lastIdentifiers, ["one"])
+        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
+    }
+
+    func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
+        let viewModel = makeViewModel()
+        viewModel.selectAll()
+
+        let decision = viewModel.requestDeleteConfirmation()
+        await viewModel.confirmDelete()
+        let cleanupDidRun = await cleanupService.didCallDeleteAssets
+
+        XCTAssertEqual(decision, .requiresPremium)
+        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
+        XCTAssertFalse(cleanupDidRun)
+    }
+
+    func testPremiumUserCanDeleteMultiplePhotos() async throws {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 2,
             estimatedSavingsBytes: 150
         )
         await cleanupService.setDeleteAssetsResult(.success(expectedRecord))
-        let viewModel = makeViewModel()
+        let viewModel = makeViewModel(
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
+        )
         viewModel.selectAll()
 
         await viewModel.confirmDelete()
@@ -68,7 +103,10 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         )
         let suspendedHistoryRepository = SuspendedScreenshotCleanupHistoryRepository()
         await cleanupService.setDeleteAssetsResult(.success(expectedRecord))
-        let viewModel = makeViewModel(cleanupHistoryRepository: suspendedHistoryRepository)
+        let viewModel = makeViewModel(
+            cleanupHistoryRepository: suspendedHistoryRepository,
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
+        )
         viewModel.selectAll()
 
         let deleteTask = Task { await viewModel.confirmDelete() }
@@ -87,12 +125,14 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
     }
 
     private func makeViewModel(
-        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil
+        cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController()
     ) -> ScreenshotCleanupViewModel {
         ScreenshotCleanupViewModel(
             assets: [],
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
             assetSnapshots: [
                 snapshot(id: "one", area: 200),
                 snapshot(id: "two", area: 100)

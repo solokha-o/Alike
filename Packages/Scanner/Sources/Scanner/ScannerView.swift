@@ -22,6 +22,7 @@ public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var presentedCleanupCategory: PresentedCleanupCategory?
     @State private var presentedPaywallFeature: PremiumFeature?
+    @State private var pendingPaywallFeature: PremiumFeature?
     @State private var cleanupCategoryErrorMessage: String?
     @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
@@ -78,6 +79,7 @@ public struct ScannerView: View {
                     sourceCategory: presented.kind,
                     cleanupService: viewModel.cleanupService,
                     cleanupHistoryRepository: viewModel.cleanupHistoryRepository,
+                    premiumAccess: viewModel.premiumAccess,
                     openSettingsAction: {
                         PhotoPermissionManagerImpl().openSettings()
                     },
@@ -98,13 +100,13 @@ public struct ScannerView: View {
             )
                 .interactiveDismissDisabled()
         }
-        .sheet(isPresented: $isClusterControlsPresented) {
+        .sheet(isPresented: $isClusterControlsPresented, onDismiss: presentPendingPaywall) {
             ScannerClusterControlsSheet(
                 controls: $viewModel.clusterControls,
                 isAdvancedFilteringLocked: viewModel.isAdvancedFilteringLocked,
                 onRequestAdvancedFilters: {
+                    pendingPaywallFeature = .advancedFilters
                     isClusterControlsPresented = false
-                    presentedPaywallFeature = .advancedFilters
                 }
             )
         }
@@ -392,7 +394,7 @@ public struct ScannerView: View {
                 Button {
                     isClusterControlsPresented = true
                 } label: {
-                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                    Image(systemName: viewModel.effectiveClusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
                 }
                 .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
                 .accessibilityValue(Text(activeControlsSummary))
@@ -414,7 +416,7 @@ public struct ScannerView: View {
                 Button {
                     isClusterControlsPresented = true
                 } label: {
-                    Image(systemName: viewModel.clusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                    Image(systemName: viewModel.effectiveClusterControls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
                 }
                 .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
                 .accessibilityValue(Text(activeControlsSummary))
@@ -437,18 +439,25 @@ public struct ScannerView: View {
     }
 
     private var activeControlsSummary: String {
-        guard !viewModel.clusterControls.isDefault else { return appLocalized("No active controls") }
-        var values = [viewModel.clusterControls.sort.title]
-        if viewModel.clusterControls.reviewFilter != .all {
-            values.append(viewModel.clusterControls.reviewFilter.title)
+        let controls = viewModel.effectiveClusterControls
+        guard !controls.isDefault else { return appLocalized("No active controls") }
+        var values = [controls.sort.title]
+        if controls.reviewFilter != .all {
+            values.append(controls.reviewFilter.title)
         }
-        if viewModel.clusterControls.minimumClusterSize != .any {
-            values.append(viewModel.clusterControls.minimumClusterSize.title)
+        if controls.minimumClusterSize != .any {
+            values.append(controls.minimumClusterSize.title)
         }
-        if viewModel.clusterControls.favoritesOnly {
+        if controls.favoritesOnly {
             values.append(appLocalized("Favorites only"))
         }
         return values.joined(separator: ", ")
+    }
+
+    private func presentPendingPaywall() {
+        guard let feature = pendingPaywallFeature else { return }
+        pendingPaywallFeature = nil
+        presentedPaywallFeature = feature
     }
 
     private func openCleanupCategory(_ category: CleanupCategorySummary) async {

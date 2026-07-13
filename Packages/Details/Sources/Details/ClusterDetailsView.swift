@@ -228,7 +228,7 @@ private extension ClusterDetailsView {
     }
 }
 
-private struct BatchCleanupPremiumSheet: View {
+struct BatchCleanupPremiumSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
