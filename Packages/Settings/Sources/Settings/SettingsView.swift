@@ -157,11 +157,6 @@ public struct SettingsView: View {
     private var cleanupReminderSection: some View {
         Section {
             Toggle(
-                appLocalized("Unlock Unlimited Scans Premium Feature"),
-                isOn: $debugUnlockUnlimitedRescans
-            )
-
-            Toggle(
                 isOn: Binding(
                     get: { viewModel.cleanupReminderState.isEnabled },
                     set: { isEnabled in
@@ -326,6 +321,11 @@ public struct SettingsView: View {
 #if DEBUG
     private var debugSection: some View {
         Section {
+            Toggle(
+                appLocalized("Unlock Unlimited Scans Premium Feature"),
+                isOn: $debugUnlockUnlimitedRescans
+            )
+
             Toggle(
                 appLocalized("Unlock Screenshot Cleanup Premium Feature"),
                 isOn: $debugUnlockScreenshotCleanup
