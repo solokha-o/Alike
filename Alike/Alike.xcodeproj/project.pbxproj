@@ -17,6 +17,7 @@
 		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
 		7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00022F30000100DAB1E2 /* Purchases */; };
+		7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00052F30000100DAB1E2 /* PurchasesUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 				531BB6312F29293A00DAB1E2 /* Core in Frameworks */,
 				53458A5B2F29457F00D1CCCC /* Storage in Frameworks */,
 				7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */,
+				7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */,
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
 			);
@@ -98,6 +100,7 @@
 				53458A572F29457200D1CCCC /* PhotoAnalysis */,
 				53458A5A2F29457F00D1CCCC /* Storage */,
 				7A1B00022F30000100DAB1E2 /* Purchases */,
+				7A1B00052F30000100DAB1E2 /* PurchasesUI */,
 			);
 			productName = Alike;
 			productReference = 531BB61D2F29132C00DAB1E2 /* Alike.app */;
@@ -476,6 +479,10 @@
 		7A1B00022F30000100DAB1E2 /* Purchases */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Purchases;
+		};
+		7A1B00052F30000100DAB1E2 /* PurchasesUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PurchasesUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

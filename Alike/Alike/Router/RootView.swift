@@ -15,6 +15,7 @@ import Core
 import Cleanup
 import Storage
 import Purchases
+import PurchasesUI
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -113,6 +114,7 @@ struct MainTabView: View {
             }
         }
         .tint(.accent)
+        .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
         .task {
             let clamped = gridConfiguration.clampedColumns(gridColumns)
             if clamped != gridColumns {

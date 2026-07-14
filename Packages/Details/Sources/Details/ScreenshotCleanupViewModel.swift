@@ -62,6 +62,13 @@ final class ScreenshotCleanupViewModel {
         selectedCount > 0
     }
 
+    var requiresPremiumForCurrentSelection: Bool {
+        !premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        ).isAllowed
+    }
+
     func toggleSelection(for localIdentifier: String) {
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
@@ -88,6 +95,20 @@ final class ScreenshotCleanupViewModel {
             selectedAssetIDs.removeAll()
             refreshDerivedState()
         }
+    }
+
+    func continueWithSingleFreeSelection() {
+        guard
+            let retainedID = assetSnapshots
+                .map(\.localIdentifier)
+                .first(where: selectedAssetIDs.contains)
+        else { return }
+
+        withAnimation(.appInteractive) {
+            selectedAssetIDs = [retainedID]
+            refreshDerivedState()
+        }
+        isDeleteConfirmationPresented = true
     }
 
     @discardableResult

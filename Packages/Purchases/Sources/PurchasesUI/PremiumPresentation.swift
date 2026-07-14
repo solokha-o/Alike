@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Core
 import Purchases
 import DesignSystem
@@ -9,10 +10,11 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
     case scanAllowance(remaining: Int, resetDate: Date?)
     case smartCategory(feature: PremiumFeature, title: String, estimatedSavings: String?)
     case batchCleanup(selectedCount: Int, estimatedSavings: String)
+    case postFirstScan(similarClusterCount: Int, candidateCount: Int, estimatedSavings: String?)
 
     public var feature: PremiumFeature? {
         switch self {
-        case .general:
+        case .general, .postFirstScan:
             nil
         case .feature(let feature), .smartCategory(let feature, _, _):
             feature
@@ -44,6 +46,8 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
         switch self {
         case .general:
             appLocalized("Make every cleanup faster with Alike Pro")
+        case .postFirstScan:
+            appLocalized("You found your first cleanup opportunities")
         case .feature(.unlimitedScans), .scanAllowance:
             appLocalized("Keep scanning without monthly limits")
         case .feature(.advancedFilters):
@@ -65,6 +69,19 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
         switch self {
         case .general:
             return appLocalized("Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders.")
+        case .postFirstScan(let clusterCount, let candidateCount, let estimatedSavings):
+            let opportunityCount = clusterCount + candidateCount
+            if let estimatedSavings {
+                return String(
+                    format: appLocalized("Your scan found %d cleanup opportunities with %@ estimated reclaimable. Unlock Alike Pro to clean up faster."),
+                    opportunityCount,
+                    estimatedSavings
+                )
+            }
+            return String(
+                format: appLocalized("Your scan found %d cleanup opportunities. Unlock Alike Pro to clean up faster."),
+                opportunityCount
+            )
         case .scanAllowance(let remaining, let resetDate):
             return scanAllowanceMessage(remaining: remaining, resetDate: resetDate)
         case .smartCategory(_, _, let estimatedSavings):
@@ -123,6 +140,23 @@ public struct SubscriptionLegalLinks: Equatable, Sendable {
     }
 
     public static let unconfigured = SubscriptionLegalLinks()
+}
+
+private struct SubscriptionLegalLinksEnvironmentKey: EnvironmentKey {
+    static let defaultValue = SubscriptionLegalLinks.unconfigured
+}
+
+public extension EnvironmentValues {
+    var subscriptionLegalLinks: SubscriptionLegalLinks {
+        get { self[SubscriptionLegalLinksEnvironmentKey.self] }
+        set { self[SubscriptionLegalLinksEnvironmentKey.self] = newValue }
+    }
+}
+
+public extension View {
+    func subscriptionLegalLinks(_ links: SubscriptionLegalLinks) -> some View {
+        environment(\.subscriptionLegalLinks, links)
+    }
 }
 
 public struct PaywallPresentationState: Equatable, Sendable {

@@ -414,6 +414,25 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(cleanupDidRun)
     }
 
+    func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        XCTAssertTrue(viewModel.requiresPremiumForCurrentSelection)
+        viewModel.continueWithSingleFreeSelection()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
+        XCTAssertFalse(viewModel.requiresPremiumForCurrentSelection)
+        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+    }
+
     private func makeViewModel(
         snapshots: [ReviewAssetSnapshot],
         reviewRepository: (any ClusterReviewStateRepository)? = nil,

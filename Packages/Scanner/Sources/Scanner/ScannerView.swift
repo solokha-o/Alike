@@ -12,6 +12,18 @@ private enum ScannerRoute: Hashable {
     case clusterDetails(PhotoCluster)
 }
 
+private enum ScannerPaywallRoute: Identifiable, Equatable {
+    case feature(PremiumFeature)
+    case postFirstScan(PostScanPremiumOffer)
+
+    var id: String {
+        switch self {
+        case .feature(let feature): "feature-\(feature.rawValue)"
+        case .postFirstScan(let offer): "post-scan-\(offer.id.uuidString)"
+        }
+    }
+}
+
 private struct PresentedCleanupCategory: Identifiable {
     let kind: CleanupCategoryKind
     let assets: [PHAsset]
@@ -23,8 +35,8 @@ private struct PresentedCleanupCategory: Identifiable {
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var presentedCleanupCategory: PresentedCleanupCategory?
-    @State private var presentedPaywallFeature: PremiumFeature?
-    @State private var pendingPaywallFeature: PremiumFeature?
+    @State private var presentedPaywallRoute: ScannerPaywallRoute?
+    @State private var pendingPaywallRoute: ScannerPaywallRoute?
     @State private var cleanupCategoryErrorMessage: String?
     @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
@@ -77,7 +89,12 @@ public struct ScannerView: View {
                 }
             }
         }
-        .sheet(item: $presentedCleanupCategory) { presented in
+        .onChange(of: viewModel.pendingPostScanPremiumOffer) { _, offer in
+            guard let offer else { return }
+            viewModel.consumePostScanPremiumOffer()
+            requestPaywall(.postFirstScan(offer), deferUntilNextUpdate: true)
+        }
+        .sheet(item: $presentedCleanupCategory, onDismiss: presentPendingPaywall) { presented in
             RoutedNavigationStack {
                 ScreenshotCleanupView(
                     assets: presented.assets,
@@ -98,9 +115,9 @@ public struct ScannerView: View {
             }
             .interactiveDismissDisabled()
         }
-        .sheet(item: $presentedPaywallFeature) { feature in
+        .sheet(item: $presentedPaywallRoute) { route in
             SubscriptionPaywallView(
-                context: paywallContext(for: feature),
+                context: paywallContext(for: route),
                 store: subscriptionStore
             )
         }
@@ -109,7 +126,7 @@ public struct ScannerView: View {
                 controls: $viewModel.clusterControls,
                 isAdvancedFilteringLocked: viewModel.isAdvancedFilteringLocked,
                 onRequestAdvancedFilters: {
-                    pendingPaywallFeature = .advancedFilters
+                    pendingPaywallRoute = .feature(.advancedFilters)
                     isClusterControlsPresented = false
                 }
             )
@@ -460,12 +477,43 @@ public struct ScannerView: View {
     }
 
     private func presentPendingPaywall() {
-        guard let feature = pendingPaywallFeature else { return }
-        pendingPaywallFeature = nil
-        presentedPaywallFeature = feature
+        guard let route = pendingPaywallRoute else { return }
+        pendingPaywallRoute = nil
+        presentedPaywallRoute = route
     }
 
-    private func paywallContext(for feature: PremiumFeature) -> PremiumSurfaceContext {
+    private func requestPaywall(
+        _ route: ScannerPaywallRoute,
+        deferUntilNextUpdate: Bool = false
+    ) {
+        guard presentedCleanupCategory == nil, !isClusterControlsPresented else {
+            pendingPaywallRoute = route
+            return
+        }
+
+        if deferUntilNextUpdate {
+            Task { @MainActor in
+                await Task.yield()
+                presentedPaywallRoute = route
+            }
+        } else {
+            presentedPaywallRoute = route
+        }
+    }
+
+    private func paywallContext(for route: ScannerPaywallRoute) -> PremiumSurfaceContext {
+        guard case .feature(let feature) = route else {
+            guard case .postFirstScan(let offer) = route else { return .general }
+            let savings = offer.estimatedSavingsBytes > 0
+                ? ByteCountFormatter.string(fromByteCount: offer.estimatedSavingsBytes, countStyle: .file)
+                : nil
+            return .postFirstScan(
+                similarClusterCount: offer.similarClusterCount,
+                candidateCount: offer.cleanupCategoryCandidateCount,
+                estimatedSavings: savings
+            )
+        }
+
         if feature == .unlimitedScans {
             return .scanAllowance(
                 remaining: viewModel.remainingFreeScans,
@@ -493,7 +541,7 @@ public struct ScannerView: View {
 
     private func openCleanupCategory(_ category: CleanupCategorySummary) async {
         if viewModel.isCategoryLocked(category.kind) {
-            presentedPaywallFeature = category.kind.premiumFeature
+            requestPaywall(.feature(category.kind.premiumFeature))
             return
         }
 
@@ -508,7 +556,7 @@ public struct ScannerView: View {
     private func startScan() async {
         let decision = await viewModel.startScanning()
         if decision == .requiresPremium {
-            presentedPaywallFeature = .unlimitedScans
+            requestPaywall(.feature(.unlimitedScans))
         }
     }
 

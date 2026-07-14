@@ -15,6 +15,7 @@ final class ScannerViewModelTests: XCTestCase {
     var mockCleanupService: MockPhotoCleanupService!
     var mockCleanupHistoryRepository: MockCleanupHistoryRepository!
     var scanUsageRepository: MockScanUsageRepository!
+    var premiumPromptHistoryRepository: MockPremiumPromptHistoryRepository!
     var premiumAccess: MockPremiumAccessController!
     
     override func setUp() async throws {
@@ -26,6 +27,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupService = MockPhotoCleanupService()
         mockCleanupHistoryRepository = MockCleanupHistoryRepository()
         scanUsageRepository = MockScanUsageRepository()
+        premiumPromptHistoryRepository = MockPremiumPromptHistoryRepository()
         premiumAccess = MockPremiumAccessController()
         viewModel = makeViewModel(premiumAccess: premiumAccess)
     }
@@ -40,6 +42,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupService = nil
         mockCleanupHistoryRepository = nil
         scanUsageRepository = nil
+        premiumPromptHistoryRepository = nil
         premiumAccess = nil
     }
     
@@ -80,6 +83,59 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(decision, .allowed)
         XCTAssertEqual(count, 0)
         XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testFirstUsefulScanPublishesOnePersistedPremiumOffer() async {
+        let cluster = createMockCluster(photoCount: 2)
+        let category = CleanupCategorySummary(
+            kind: .screenshots,
+            assetCount: 3,
+            estimatedSavingsBytes: 4_096
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([category]))
+
+        await viewModel.startScanning()
+
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.similarClusterCount, 1)
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.cleanupCategoryCandidateCount, 3)
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.estimatedSavingsBytes, 4_096)
+
+        viewModel.consumePostScanPremiumOffer()
+        await viewModel.startScanning()
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 2)
+    }
+
+    func testEmptyScanDefersPremiumOfferUntilUsefulScan() async {
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await viewModel.startScanning()
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .blurredPhotos, assetCount: 1, estimatedSavingsBytes: 512)
+        ]))
+        await viewModel.startScanning()
+
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.cleanupCategoryCandidateCount, 1)
+        XCTAssertEqual(claimCallCount, 1)
+    }
+
+    func testPremiumUserDoesNotReceivePostScanOffer() async {
+        viewModel = makeViewModel(
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([createMockCluster(photoCount: 2)]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        await viewModel.startScanning()
+
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 0)
     }
 
     func testPostCleanupReconciliationDoesNotConsumeUserInitiatedScanAllowance() async {
@@ -382,7 +438,8 @@ final class ScannerViewModelTests: XCTestCase {
             cleanupService: mockCleanupService,
             cleanupHistoryRepository: mockCleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            scanUsageRepository: scanUsageRepository
+            scanUsageRepository: scanUsageRepository,
+            premiumPromptHistoryRepository: premiumPromptHistoryRepository
         )
 
         let cacheLoad = Task { await cacheAwareViewModel.loadCachedResults() }
@@ -1409,7 +1466,8 @@ final class ScannerViewModelTests: XCTestCase {
             cleanupService: mockCleanupService,
             cleanupHistoryRepository: mockCleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            scanUsageRepository: scanUsageRepository
+            scanUsageRepository: scanUsageRepository,
+            premiumPromptHistoryRepository: premiumPromptHistoryRepository
         )
     }
     

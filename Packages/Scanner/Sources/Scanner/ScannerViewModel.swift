@@ -73,6 +73,25 @@ public struct ScannerClusterControls: Equatable, Sendable {
     public init() {}
 }
 
+public struct PostScanPremiumOffer: Identifiable, Equatable, Sendable {
+    public let id: UUID
+    public let similarClusterCount: Int
+    public let cleanupCategoryCandidateCount: Int
+    public let estimatedSavingsBytes: Int64
+
+    public init(
+        id: UUID = UUID(),
+        similarClusterCount: Int,
+        cleanupCategoryCandidateCount: Int,
+        estimatedSavingsBytes: Int64
+    ) {
+        self.id = id
+        self.similarClusterCount = similarClusterCount
+        self.cleanupCategoryCandidateCount = cleanupCategoryCandidateCount
+        self.estimatedSavingsBytes = estimatedSavingsBytes
+    }
+}
+
 @MainActor
 @Observable
 public final class ScannerViewModel {
@@ -111,6 +130,7 @@ public final class ScannerViewModel {
     public private(set) var cleanupRefreshState: CleanupRefreshState?
     public private(set) var cleanupCategories: [CleanupCategorySummary] = []
     public private(set) var cleanupInsights: CleanupInsights = .empty
+    public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
 
     public var isCleanupRefreshInProgress: Bool {
         isCleanupRefreshInFlight
@@ -125,6 +145,7 @@ public final class ScannerViewModel {
     private let cleanupInsightsProvider: any CleanupInsightsProviding
     let premiumAccess: any PremiumAccessControlling
     private let scanUsageRepository: any ScanUsageRepository
+    private let premiumPromptHistoryRepository: any PremiumPromptHistoryRepository
     private let calendar: Calendar
     private let now: @Sendable () -> Date
     private let cleanupRefreshAutoDismissDelay: Duration
@@ -172,6 +193,7 @@ public final class ScannerViewModel {
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
+        premiumPromptHistoryRepository: any PremiumPromptHistoryRepository = UserDefaultsPremiumPromptHistoryRepository(),
         calendar: Calendar = .autoupdatingCurrent,
         now: @escaping @Sendable () -> Date = Date.init,
         cleanupManager: (any CleanupSessionManaging)? = nil,
@@ -188,6 +210,7 @@ public final class ScannerViewModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.scanUsageRepository = scanUsageRepository
+        self.premiumPromptHistoryRepository = premiumPromptHistoryRepository
         self.calendar = calendar
         self.now = now
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
@@ -497,6 +520,10 @@ public final class ScannerViewModel {
     public func resetClusterControls() {
         clusterControls = ScannerClusterControls()
     }
+
+    public func consumePostScanPremiumOffer() {
+        pendingPostScanPremiumOffer = nil
+    }
 }
 
 private extension ScannerViewModel {
@@ -652,7 +679,34 @@ private extension ScannerViewModel {
         state = .results(sorted)
         if purpose.consumesFreeScanAllowance {
             monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
+            await publishPostScanPremiumOfferIfEligible(
+                clusters: sorted,
+                categories: cleanupCategories
+            )
         }
+    }
+
+    func publishPostScanPremiumOfferIfEligible(
+        clusters: [PhotoCluster],
+        categories: [CleanupCategorySummary]
+    ) async {
+        guard !premiumAccess.entitlementState.isPremium else { return }
+
+        let categoryCandidateCount = categories.reduce(0) { $0 + $1.assetCount }
+        guard !clusters.isEmpty || categoryCandidateCount > 0 else { return }
+        guard await premiumPromptHistoryRepository.claimPostFirstUsefulScanPrompt() else { return }
+
+        let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
+            total += cluster.assets.reduce(0) { $0 + $1.estimatedCleanupBytes }
+        }
+        let categorySavings = categories.reduce(into: Int64(0)) { total, category in
+            total += category.estimatedSavingsBytes
+        }
+        pendingPostScanPremiumOffer = PostScanPremiumOffer(
+            similarClusterCount: clusters.count,
+            cleanupCategoryCandidateCount: categoryCandidateCount,
+            estimatedSavingsBytes: clusterSavings + categorySavings
+        )
     }
 
     private func resolveMonthlyScanUsage(at date: Date) async -> MonthlyScanUsage {

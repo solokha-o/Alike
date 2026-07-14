@@ -71,6 +71,13 @@ final class ClusterDetailsViewModel {
         selectedCount > 0
     }
 
+    var requiresPremiumForCurrentSelection: Bool {
+        !premiumAccess.access(
+            to: .batchCleanup,
+            context: .cleanupSelection(count: selectedCount)
+        ).isAllowed
+    }
+
     var displayedAssetIdentifiers: [String] {
         switch reviewMode {
         case .selection:
@@ -180,6 +187,22 @@ final class ClusterDetailsViewModel {
         Task {
             await save()
         }
+    }
+
+    func continueWithSingleFreeSelection() {
+        guard
+            let retainedID = assetSnapshots
+                .map(\.localIdentifier)
+                .first(where: selectedAssetIDs.contains)
+        else { return }
+
+        withAnimation(.appInteractive) {
+            selectedAssetIDs = [retainedID]
+            reviewMode = .selection
+            refreshDerivedState()
+        }
+        isDeleteConfirmationPresented = true
+        Task { await save() }
     }
 
     func save() async {

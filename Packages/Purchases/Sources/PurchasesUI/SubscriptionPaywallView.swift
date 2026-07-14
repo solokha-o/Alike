@@ -23,9 +23,10 @@ public struct SubscriptionPaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.subscriptionLegalLinks) private var environmentLegalLinks
 
     private let store: SubscriptionStore?
-    private let legalLinks: SubscriptionLegalLinks
+    private let legalLinksOverride: SubscriptionLegalLinks?
     @State private var presentation: PaywallPresentationState
     @State private var purchaseFeedback: PurchaseFeedback?
     @State private var isPurchasing = false
@@ -36,11 +37,15 @@ public struct SubscriptionPaywallView: View {
     public init(
         context: PremiumSurfaceContext,
         store: SubscriptionStore? = nil,
-        legalLinks: SubscriptionLegalLinks = .unconfigured
+        legalLinks: SubscriptionLegalLinks? = nil
     ) {
         self.store = store
-        self.legalLinks = legalLinks
+        self.legalLinksOverride = legalLinks
         self._presentation = State(initialValue: PaywallPresentationState(context: context))
+    }
+
+    private var legalLinks: SubscriptionLegalLinks {
+        legalLinksOverride ?? environmentLegalLinks
     }
 
     public var body: some View {

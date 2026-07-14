@@ -38,4 +38,17 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(context.message.contains("12"))
         XCTAssertTrue(context.message.contains("240 MB"))
     }
+
+
+    func testPostFirstScanContextIncludesMeasuredValue() {
+        let context = PremiumSurfaceContext.postFirstScan(
+            similarClusterCount: 2,
+            candidateCount: 3,
+            estimatedSavings: "120 MB"
+        )
+
+        XCTAssertNil(context.feature)
+        XCTAssertTrue(context.message.contains("5"))
+        XCTAssertTrue(context.message.contains("120 MB"))
+    }
 }

@@ -124,6 +124,15 @@ public struct ClusterDetailsView: View {
                     )
                     .disabled(viewModel.isDeleting)
                 }
+
+                if viewModel.requiresPremiumForCurrentSelection {
+                    BatchCleanupUpsellCard(
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavings: viewModel.estimatedSavingsText,
+                        onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                        onContinueFree: viewModel.continueWithSingleFreeSelection
+                    )
+                }
             }
             .padding(.horizontal, Spacing.medium)
             .padding(.top, Spacing.small)
