@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Alike/Configuration/Alike.storekit">
+         identifier = "../../Configuration/Alike.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

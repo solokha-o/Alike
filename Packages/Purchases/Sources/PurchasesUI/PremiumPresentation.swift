@@ -71,16 +71,9 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
             return appLocalized("Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders.")
         case .postFirstScan(let clusterCount, let candidateCount, let estimatedSavings):
             let opportunityCount = clusterCount + candidateCount
-            if let estimatedSavings {
-                return String(
-                    format: appLocalized("Your scan found %d cleanup opportunities with %@ estimated reclaimable. Unlock Alike Pro to clean up faster."),
-                    opportunityCount,
-                    estimatedSavings
-                )
-            }
-            return String(
-                format: appLocalized("Your scan found %d cleanup opportunities. Unlock Alike Pro to clean up faster."),
-                opportunityCount
+            return PaywallL10n.postFirstScanMessage(
+                opportunityCount: opportunityCount,
+                estimatedSavings: estimatedSavings
             )
         case .scanAllowance(let remaining, let resetDate):
             return scanAllowanceMessage(remaining: remaining, resetDate: resetDate)
@@ -93,10 +86,9 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
             }
             return appLocalized("Review smart cleanup suggestions while keeping full control over every deletion.")
         case .batchCleanup(let count, let estimatedSavings):
-            return String(
-                format: appLocalized("Review and remove %d selected photos in one action, with %@ estimated reclaimable."),
-                count,
-                estimatedSavings
+            return PaywallL10n.batchCleanupMessage(
+                selectedCount: count,
+                estimatedSavings: estimatedSavings
             )
         case .feature(.unlimitedScans):
             return appLocalized("Free includes three scans per calendar month. Pro keeps your cleanup results current whenever your library changes.")
@@ -161,17 +153,146 @@ public extension View {
 
 public struct PaywallPresentationState: Equatable, Sendable {
     public var selectedPlan: SubscriptionPlan
-    public let context: PremiumSurfaceContext
 
-    public init(
-        context: PremiumSurfaceContext,
-        selectedPlan: SubscriptionPlan = .yearly
-    ) {
-        self.context = context
+    public init(selectedPlan: SubscriptionPlan = .yearly) {
         self.selectedPlan = selectedPlan
     }
 
     public var orderedPlans: [SubscriptionPlan] {
         SubscriptionPlan.presentationOrder
+    }
+}
+
+enum PaywallPluralCategory: Equatable {
+    case one
+    case few
+    case many
+    case other
+
+    static func resolve(count: Int, locale: Locale) -> PaywallPluralCategory {
+        let absoluteCount = abs(count)
+        guard locale.language.languageCode?.identifier == "uk" else {
+            return absoluteCount == 1 ? .one : .other
+        }
+
+        let lastDigit = absoluteCount % 10
+        let lastTwoDigits = absoluteCount % 100
+        if lastDigit == 1, lastTwoDigits != 11 {
+            return .one
+        }
+        if (2...4).contains(lastDigit), !(12...14).contains(lastTwoDigits) {
+            return .few
+        }
+        return .many
+    }
+}
+
+enum PaywallL10n {
+    static func postFirstScanMessage(
+        opportunityCount: Int,
+        estimatedSavings: String?,
+        locale: Locale = .current
+    ) -> String {
+        let category = PaywallPluralCategory.resolve(count: opportunityCount, locale: locale)
+        if let estimatedSavings {
+            switch category {
+            case .one:
+                return String(
+                    localized: "purchases.paywall.postFirstScan.withSavings.one",
+                    defaultValue: "Your scan found \(opportunityCount) cleanup opportunity with \(estimatedSavings) estimated reclaimable. Unlock Alike Pro to clean up faster.",
+                    bundle: .main,
+                    locale: locale
+                )
+            case .few:
+                return String(
+                    localized: "purchases.paywall.postFirstScan.withSavings.few",
+                    defaultValue: "Your scan found \(opportunityCount) cleanup opportunities with \(estimatedSavings) estimated reclaimable. Unlock Alike Pro to clean up faster.",
+                    bundle: .main,
+                    locale: locale
+                )
+            case .many:
+                return String(
+                    localized: "purchases.paywall.postFirstScan.withSavings.many",
+                    defaultValue: "Your scan found \(opportunityCount) cleanup opportunities with \(estimatedSavings) estimated reclaimable. Unlock Alike Pro to clean up faster.",
+                    bundle: .main,
+                    locale: locale
+                )
+            case .other:
+                return String(
+                    localized: "purchases.paywall.postFirstScan.withSavings.other",
+                    defaultValue: "Your scan found \(opportunityCount) cleanup opportunities with \(estimatedSavings) estimated reclaimable. Unlock Alike Pro to clean up faster.",
+                    bundle: .main,
+                    locale: locale
+                )
+            }
+        }
+
+        switch category {
+        case .one:
+            return String(
+                localized: "purchases.paywall.postFirstScan.one",
+                defaultValue: "Your scan found \(opportunityCount) cleanup opportunity. Unlock Alike Pro to clean up faster.",
+                bundle: .main,
+                locale: locale
+            )
+        case .few:
+            return String(
+                localized: "purchases.paywall.postFirstScan.few",
+                defaultValue: "Your scan found \(opportunityCount) cleanup opportunities. Unlock Alike Pro to clean up faster.",
+                bundle: .main,
+                locale: locale
+            )
+        case .many:
+            return String(
+                localized: "purchases.paywall.postFirstScan.many",
+                defaultValue: "Your scan found \(opportunityCount) cleanup opportunities. Unlock Alike Pro to clean up faster.",
+                bundle: .main,
+                locale: locale
+            )
+        case .other:
+            return String(
+                localized: "purchases.paywall.postFirstScan.other",
+                defaultValue: "Your scan found \(opportunityCount) cleanup opportunities. Unlock Alike Pro to clean up faster.",
+                bundle: .main,
+                locale: locale
+            )
+        }
+    }
+
+    static func batchCleanupMessage(
+        selectedCount: Int,
+        estimatedSavings: String,
+        locale: Locale = .current
+    ) -> String {
+        switch PaywallPluralCategory.resolve(count: selectedCount, locale: locale) {
+        case .one:
+            return String(
+                localized: "purchases.paywall.batchCleanup.one",
+                defaultValue: "Review and remove \(selectedCount) selected photo in one action, with \(estimatedSavings) estimated reclaimable.",
+                bundle: .main,
+                locale: locale
+            )
+        case .few:
+            return String(
+                localized: "purchases.paywall.batchCleanup.few",
+                defaultValue: "Review and remove \(selectedCount) selected photos in one action, with \(estimatedSavings) estimated reclaimable.",
+                bundle: .main,
+                locale: locale
+            )
+        case .many:
+            return String(
+                localized: "purchases.paywall.batchCleanup.many",
+                defaultValue: "Review and remove \(selectedCount) selected photos in one action, with \(estimatedSavings) estimated reclaimable.",
+                bundle: .main,
+                locale: locale
+            )
+        case .other:
+            return String(
+                localized: "purchases.paywall.batchCleanup.other",
+                defaultValue: "Review and remove \(selectedCount) selected photos in one action, with \(estimatedSavings) estimated reclaimable.",
+                bundle: .main,
+                locale: locale
+            )
+        }
     }
 }

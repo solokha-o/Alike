@@ -25,9 +25,10 @@ public struct SubscriptionPaywallView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.subscriptionLegalLinks) private var environmentLegalLinks
 
+    private let context: PremiumSurfaceContext
     private let store: SubscriptionStore?
     private let legalLinksOverride: SubscriptionLegalLinks?
-    @State private var presentation: PaywallPresentationState
+    @State private var selectedPlan: SubscriptionPlan
     @State private var purchaseFeedback: PurchaseFeedback?
     @State private var isPurchasing = false
     @State private var isRestoring = false
@@ -39,9 +40,10 @@ public struct SubscriptionPaywallView: View {
         store: SubscriptionStore? = nil,
         legalLinks: SubscriptionLegalLinks? = nil
     ) {
+        self.context = context
         self.store = store
         self.legalLinksOverride = legalLinks
-        self._presentation = State(initialValue: PaywallPresentationState(context: context))
+        self._selectedPlan = State(initialValue: .yearly)
     }
 
     private var legalLinks: SubscriptionLegalLinks {
@@ -114,11 +116,11 @@ public struct SubscriptionPaywallView: View {
         VStack(spacing: Spacing.small) {
             heroIcon
 
-            Text(presentation.context.title)
+            Text(context.title)
                 .font(.appTitle2)
                 .multilineTextAlignment(.center)
 
-            Text(presentation.context.message)
+            Text(context.message)
                 .font(.appBody)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -169,12 +171,15 @@ public struct SubscriptionPaywallView: View {
             ContentUnavailableView {
                 Label(appLocalized("Plans couldn't be loaded"), systemImage: "exclamationmark.triangle.fill")
             } description: {
-                Text(message)
+                Text(appLocalized("Check your connection and try loading subscription plans again."))
             } actions: {
                 Button(appLocalized("Retry")) {
                     Task { await store?.loadProducts() }
                 }
                 .buttonStyle(.bordered)
+            }
+            .onAppear {
+                logFailure(operation: "product loading", details: message)
             }
         case .unconfigured, .none:
             ContentUnavailableView {
@@ -197,7 +202,7 @@ public struct SubscriptionPaywallView: View {
 
     @ViewBuilder
     private var planCards: some View {
-        ForEach(presentation.orderedPlans) { plan in
+        ForEach(SubscriptionPlan.presentationOrder) { plan in
             if let product = store?.products[plan] {
                 planCard(product)
             }
@@ -205,10 +210,10 @@ public struct SubscriptionPaywallView: View {
     }
 
     private func planCard(_ product: SubscriptionProduct) -> some View {
-        let isSelected = presentation.selectedPlan == product.plan
+        let isSelected = selectedPlan == product.plan
         return Button {
             withAnimation(interactionAnimation) {
-                presentation.selectedPlan = product.plan
+                selectedPlan = product.plan
                 purchaseFeedback = nil
             }
         } label: {
@@ -361,7 +366,7 @@ public struct SubscriptionPaywallView: View {
 
     @ViewBuilder
     private var heroIcon: some View {
-        let image = Image(systemName: presentation.context.systemImage)
+        let image = Image(systemName: context.systemImage)
             .font(.system(size: 52, weight: .semibold))
             .symbolRenderingMode(.palette)
             .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
@@ -420,13 +425,16 @@ public struct SubscriptionPaywallView: View {
 
     private var canPurchase: Bool {
         guard store?.productLoadState == .loaded else { return false }
-        return store?.products[presentation.selectedPlan] != nil
+        return store?.products[selectedPlan] != nil
     }
 
     private var purchaseButtonTitle: String {
         if isPurchasing { return appLocalized("Purchasing…") }
-        guard let product = store?.products[presentation.selectedPlan] else {
-            return appLocalized("Continue with Alike Free")
+        guard store?.productLoadState == .loaded else {
+            return appLocalized("Subscription plans unavailable")
+        }
+        guard let product = store?.products[selectedPlan] else {
+            return appLocalized("Select a subscription plan")
         }
         return String(format: appLocalized("Continue with %@"), product.displayPrice)
     }
@@ -448,7 +456,7 @@ public struct SubscriptionPaywallView: View {
         Task {
             defer { isPurchasing = false }
             do {
-                switch try await store.purchase(plan: presentation.selectedPlan) {
+                switch try await store.purchase(plan: selectedPlan) {
                 case .purchased:
                     purchaseFeedback = .success(appLocalized("Alike Pro is now active."))
                     activationEffectTrigger += 1
@@ -458,7 +466,10 @@ public struct SubscriptionPaywallView: View {
                     purchaseFeedback = nil
                 }
             } catch {
-                purchaseFeedback = .failure(error.localizedDescription)
+                logFailure(operation: "purchase", details: error.localizedDescription)
+                purchaseFeedback = .failure(
+                    appLocalized("We couldn't complete your purchase. Check your connection and try again.")
+                )
             }
         }
     }
@@ -475,9 +486,17 @@ public struct SubscriptionPaywallView: View {
                     ? .success(appLocalized("Your Alike Pro subscription was restored."))
                     : .pending(appLocalized("No active Alike Pro subscription was found."))
             } catch {
-                purchaseFeedback = .failure(error.localizedDescription)
+                logFailure(operation: "restore", details: error.localizedDescription)
+                purchaseFeedback = .failure(
+                    appLocalized("We couldn't restore your purchases. Check your connection and try again.")
+                )
             }
         }
+    }
+
+    private func logFailure(operation: String, details: String) {
+        let message = AppLog.tag(.error, "Subscription \(operation) failed: \(details)")
+        AppLog.ui.error("\(message, privacy: .public)")
     }
 }
 

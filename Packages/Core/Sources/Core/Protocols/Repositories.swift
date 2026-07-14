@@ -59,6 +59,9 @@ public protocol PremiumPromptHistoryRepository: Sendable {
     ///
     /// Returns `true` only for the first successful claim on this installation.
     func claimPostFirstUsefulScanPrompt() async -> Bool
+
+    /// Releases a claim that could not be resolved into a free-user offer.
+    func releasePostFirstUsefulScanPromptClaim() async
 }
 
 /// Repository for cleanup review state per photo cluster.

@@ -36,7 +36,7 @@ public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var presentedCleanupCategory: PresentedCleanupCategory?
     @State private var presentedPaywallRoute: ScannerPaywallRoute?
-    @State private var pendingPaywallRoute: ScannerPaywallRoute?
+    @State private var pendingPaywallRoutes: [ScannerPaywallRoute] = []
     @State private var cleanupCategoryErrorMessage: String?
     @State private var isClusterControlsPresented = false
     @Binding var gridColumns: Int
@@ -91,8 +91,7 @@ public struct ScannerView: View {
         }
         .onChange(of: viewModel.pendingPostScanPremiumOffer) { _, offer in
             guard let offer else { return }
-            viewModel.consumePostScanPremiumOffer()
-            requestPaywall(.postFirstScan(offer), deferUntilNextUpdate: true)
+            requestPostScanPaywall(for: offer)
         }
         .sheet(item: $presentedCleanupCategory, onDismiss: presentPendingPaywall) { presented in
             RoutedNavigationStack {
@@ -115,7 +114,7 @@ public struct ScannerView: View {
             }
             .interactiveDismissDisabled()
         }
-        .sheet(item: $presentedPaywallRoute) { route in
+        .sheet(item: $presentedPaywallRoute, onDismiss: presentPendingPaywall) { route in
             SubscriptionPaywallView(
                 context: paywallContext(for: route),
                 store: subscriptionStore
@@ -126,7 +125,7 @@ public struct ScannerView: View {
                 controls: $viewModel.clusterControls,
                 isAdvancedFilteringLocked: viewModel.isAdvancedFilteringLocked,
                 onRequestAdvancedFilters: {
-                    pendingPaywallRoute = .feature(.advancedFilters)
+                    requestPaywall(.feature(.advancedFilters))
                     isClusterControlsPresented = false
                 }
             )
@@ -477,27 +476,38 @@ public struct ScannerView: View {
     }
 
     private func presentPendingPaywall() {
-        guard let route = pendingPaywallRoute else { return }
-        pendingPaywallRoute = nil
-        presentedPaywallRoute = route
+        guard
+            presentedCleanupCategory == nil,
+            !isClusterControlsPresented,
+            presentedPaywallRoute == nil,
+            !pendingPaywallRoutes.isEmpty
+        else { return }
+
+        presentedPaywallRoute = pendingPaywallRoutes.removeFirst()
     }
 
-    private func requestPaywall(
-        _ route: ScannerPaywallRoute,
-        deferUntilNextUpdate: Bool = false
-    ) {
-        guard presentedCleanupCategory == nil, !isClusterControlsPresented else {
-            pendingPaywallRoute = route
+    private func requestPaywall(_ route: ScannerPaywallRoute) {
+        guard
+            presentedCleanupCategory == nil,
+            !isClusterControlsPresented,
+            presentedPaywallRoute == nil
+        else {
+            if !pendingPaywallRoutes.contains(route) {
+                pendingPaywallRoutes.append(route)
+            }
             return
         }
 
-        if deferUntilNextUpdate {
-            Task { @MainActor in
-                await Task.yield()
-                presentedPaywallRoute = route
+        presentedPaywallRoute = route
+    }
+
+    private func requestPostScanPaywall(for offer: PostScanPremiumOffer) {
+        Task { @MainActor in
+            await Task.yield()
+            requestPaywall(.postFirstScan(offer))
+            if viewModel.pendingPostScanPremiumOffer?.id == offer.id {
+                viewModel.consumePostScanPremiumOffer()
             }
-        } else {
-            presentedPaywallRoute = route
         }
     }
 

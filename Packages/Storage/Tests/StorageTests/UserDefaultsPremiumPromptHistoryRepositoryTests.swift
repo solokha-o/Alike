@@ -39,6 +39,30 @@ final class UserDefaultsPremiumPromptHistoryRepositoryTests: XCTestCase {
         XCTAssertEqual(claims.filter { $0 }.count, 1)
     }
 
+    func testConcurrentClaimsAcrossRepositoryInstancesProduceOneWinner() async {
+        let repositories = (0..<100).map { _ in makeRepository() }
+
+        let claims = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
+            for repository in repositories {
+                group.addTask { await repository.claimPostFirstUsefulScanPrompt() }
+            }
+            return await group.reduce(into: []) { $0.append($1) }
+        }
+
+        XCTAssertEqual(claims.filter { $0 }.count, 1)
+    }
+
+    func testReleasedClaimCanBeClaimedAgain() async {
+        let repository = makeRepository()
+        let firstClaim = await repository.claimPostFirstUsefulScanPrompt()
+
+        XCTAssertTrue(firstClaim)
+        await repository.releasePostFirstUsefulScanPromptClaim()
+
+        let reclaimed = await makeRepository().claimPostFirstUsefulScanPrompt()
+        XCTAssertTrue(reclaimed)
+    }
+
     private func makeRepository() -> UserDefaultsPremiumPromptHistoryRepository {
         UserDefaultsPremiumPromptHistoryRepository(postFirstUsefulScanKey: key)
     }

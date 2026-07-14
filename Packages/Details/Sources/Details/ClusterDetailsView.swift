@@ -130,7 +130,11 @@ public struct ClusterDetailsView: View {
                         selectedCount: viewModel.selectedCount,
                         estimatedSavings: viewModel.estimatedSavingsText,
                         onUpgrade: { presentedPremiumFeature = .batchCleanup },
-                        onContinueFree: viewModel.continueWithSingleFreeSelection
+                        onContinueFree: {
+                            Task {
+                                await viewModel.continueWithSingleFreeSelection()
+                            }
+                        }
                     )
                 }
             }

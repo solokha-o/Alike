@@ -15,6 +15,7 @@ final class ClusterDetailsViewModel {
     private let premiumAccess: any PremiumAccessControlling
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
+    private var persistenceTask: Task<Void, Never>?
 
     private(set) var bestShotAssetID: String
     var selectedAssetIDs: Set<String>
@@ -149,9 +150,7 @@ final class ClusterDetailsViewModel {
             reviewMode = .selection
             refreshDerivedState()
         }
-        Task {
-            await save()
-        }
+        enqueueCurrentStatePersistence()
     }
 
     func selectAllExceptBest() {
@@ -161,9 +160,7 @@ final class ClusterDetailsViewModel {
             reviewMode = .selection
             refreshDerivedState()
         }
-        Task {
-            await save()
-        }
+        enqueueCurrentStatePersistence()
     }
 
     func keepBestOnly() {
@@ -173,9 +170,7 @@ final class ClusterDetailsViewModel {
             reviewMode = .keepBestOnly
             refreshDerivedState()
         }
-        Task {
-            await save()
-        }
+        enqueueCurrentStatePersistence()
     }
 
     func clearSelection() {
@@ -184,12 +179,10 @@ final class ClusterDetailsViewModel {
             reviewMode = .selection
             refreshDerivedState()
         }
-        Task {
-            await save()
-        }
+        enqueueCurrentStatePersistence()
     }
 
-    func continueWithSingleFreeSelection() {
+    func continueWithSingleFreeSelection() async {
         guard
             let retainedID = assetSnapshots
                 .map(\.localIdentifier)
@@ -201,12 +194,13 @@ final class ClusterDetailsViewModel {
             reviewMode = .selection
             refreshDerivedState()
         }
+        await save()
         isDeleteConfirmationPresented = true
-        Task { await save() }
     }
 
     func save() async {
-        await persistCurrentState()
+        guard let task = enqueueCurrentStatePersistence() else { return }
+        await task.value
     }
 
     @discardableResult
@@ -234,6 +228,8 @@ final class ClusterDetailsViewModel {
             isDeleteConfirmationPresented = false
             return
         }
+
+        await persistenceTask?.value
 
         isDeleteConfirmationPresented = false
         deleteErrorMessage = nil
@@ -360,8 +356,9 @@ private extension ClusterDetailsViewModel {
         )
     }
 
-    func persistCurrentState() async {
-        guard !bestShotAssetID.isEmpty else { return }
+    @discardableResult
+    func enqueueCurrentStatePersistence() -> Task<Void, Never>? {
+        guard !bestShotAssetID.isEmpty else { return nil }
         let state = ClusterReviewState(
             clusterID: cluster.id,
             bestShotLocalIdentifier: bestShotAssetID,
@@ -371,12 +368,19 @@ private extension ClusterDetailsViewModel {
             estimatedSavingsBytes: estimatedSavingsBytes,
             resurfacingState: reviewStatus == .needsReReview ? .changed : nil
         )
+        let previousTask = persistenceTask
+        let reviewRepository = reviewRepository
 
-        do {
-            try await reviewRepository.saveReviewState(state)
-        } catch {
-            AppLog.storage.error("\(AppLog.tag(.error, "Failed to save review state: \(error.localizedDescription)"))")
+        let task = Task {
+            await previousTask?.value
+            do {
+                try await reviewRepository.saveReviewState(state)
+            } catch {
+                AppLog.storage.error("\(AppLog.tag(.error, "Failed to save review state: \(error.localizedDescription)"))")
+            }
         }
+        persistenceTask = task
+        return task
     }
 
     static func reviewStatus(

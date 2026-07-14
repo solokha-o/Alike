@@ -13,6 +13,36 @@ private enum SettingsRoute: Hashable {
     case userGuide
 }
 
+private enum RestorePurchasesFeedback: String, Identifiable {
+    case restored
+    case noActiveSubscription
+    case failed
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .restored:
+            appLocalized("Alike Pro is active")
+        case .noActiveSubscription:
+            appLocalized("No active Alike Pro subscription was found.")
+        case .failed:
+            appLocalized("Couldn't Restore Purchases")
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .restored:
+            appLocalized("Your Alike Pro subscription was restored.")
+        case .noActiveSubscription:
+            appLocalized("You can continue using Alike Free.")
+        case .failed:
+            appLocalized("Please check your connection and try restoring again.")
+        }
+    }
+}
+
 /// Settings screen
 public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
@@ -22,6 +52,7 @@ public struct SettingsView: View {
     @State private var viewModel: SettingsViewModel
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var isRestoringPurchases = false
+    @State private var restorePurchasesFeedback: RestorePurchasesFeedback?
     private let premiumAccess: any PremiumAccessControlling
     private let subscriptionStore: SubscriptionStore?
 #if DEBUG
@@ -81,6 +112,13 @@ public struct SettingsView: View {
             }
         } message: {
             Text(viewModel.cleanupReminderErrorMessage ?? "")
+        }
+        .alert(item: $restorePurchasesFeedback) { feedback in
+            Alert(
+                title: Text(feedback.title),
+                message: Text(feedback.message),
+                dismissButton: .default(Text(appLocalized("OK")))
+            )
         }
     }
 
@@ -144,7 +182,12 @@ public struct SettingsView: View {
 
         let entitlement = subscriptionStore.entitlementState
         if entitlement.source == .unknown {
-            return .loading
+            switch subscriptionStore.productLoadState {
+            case .idle, .loading:
+                return .loading
+            case .loaded, .failed, .unconfigured:
+                return .unavailable
+            }
         }
         if entitlement.isPremium {
             let planName = entitlement.productID.flatMap { productID in
@@ -163,7 +206,17 @@ public struct SettingsView: View {
         isRestoringPurchases = true
         Task {
             defer { isRestoringPurchases = false }
-            try? await subscriptionStore.restorePurchases()
+            do {
+                try await subscriptionStore.restorePurchases()
+                restorePurchasesFeedback = subscriptionStore.entitlementState.isPremium
+                    ? .restored
+                    : .noActiveSubscription
+            } catch {
+                AppLog.ui.error(
+                    "\(AppLog.tag(.error, "Failed to restore purchases: \(error.localizedDescription)"))"
+                )
+                restorePurchasesFeedback = .failed
+            }
         }
     }
 

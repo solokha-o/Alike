@@ -690,11 +690,18 @@ private extension ScannerViewModel {
         clusters: [PhotoCluster],
         categories: [CleanupCategorySummary]
     ) async {
-        guard !premiumAccess.entitlementState.isPremium else { return }
+        let entitlementState = premiumAccess.entitlementState
+        guard entitlementState.source != .unknown, !entitlementState.isPremium else { return }
 
         let categoryCandidateCount = categories.reduce(0) { $0 + $1.assetCount }
         guard !clusters.isEmpty || categoryCandidateCount > 0 else { return }
         guard await premiumPromptHistoryRepository.claimPostFirstUsefulScanPrompt() else { return }
+        let currentEntitlementState = premiumAccess.entitlementState
+        guard currentEntitlementState.source != .unknown else {
+            await premiumPromptHistoryRepository.releasePostFirstUsefulScanPromptClaim()
+            return
+        }
+        guard !currentEntitlementState.isPremium else { return }
 
         let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
             total += cluster.assets.reduce(0) { $0 + $1.estimatedCleanupBytes }
