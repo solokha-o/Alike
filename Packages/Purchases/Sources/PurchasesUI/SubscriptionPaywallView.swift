@@ -363,8 +363,8 @@ public struct SubscriptionPaywallView: View {
     private var heroIcon: some View {
         let image = Image(systemName: presentation.context.systemImage)
             .font(.system(size: 52, weight: .semibold))
-            .symbolRenderingMode(.hierarchical)
-            .foregroundStyle(Color.accent)
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
             .frame(width: Spacing.xxxLarge, height: Spacing.xxxLarge)
             .accessibilityHidden(true)
 
