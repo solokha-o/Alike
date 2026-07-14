@@ -3,12 +3,44 @@ import StoreKit
 import Core
 import DesignSystem
 import NavigationKit
+import Purchases
+import PurchasesUI
 #if canImport(UIKit)
 import UIKit
 #endif
 
 private enum SettingsRoute: Hashable {
     case userGuide
+}
+
+private enum RestorePurchasesFeedback: String, Identifiable {
+    case restored
+    case noActiveSubscription
+    case failed
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .restored:
+            appLocalized("Alike Pro is active")
+        case .noActiveSubscription:
+            appLocalized("No active Alike Pro subscription was found.")
+        case .failed:
+            appLocalized("Couldn't Restore Purchases")
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .restored:
+            appLocalized("Your Alike Pro subscription was restored.")
+        case .noActiveSubscription:
+            appLocalized("You can continue using Alike Free.")
+        case .failed:
+            appLocalized("Please check your connection and try restoring again.")
+        }
+    }
 }
 
 /// Settings screen
@@ -19,7 +51,10 @@ public struct SettingsView: View {
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
     @State private var presentedPremiumFeature: PremiumFeature?
+    @State private var isRestoringPurchases = false
+    @State private var restorePurchasesFeedback: RestorePurchasesFeedback?
     private let premiumAccess: any PremiumAccessControlling
+    private let subscriptionStore: SubscriptionStore?
 #if DEBUG
     @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
     private var debugUnlockUnlimitedRescans = false
@@ -40,12 +75,14 @@ public struct SettingsView: View {
         sensitivity: Binding<SensitivityLevel>,
         needsRescan: Binding<Bool>,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
         viewModel: SettingsViewModel = SettingsViewModel()
     ) {
         self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
         self.premiumAccess = premiumAccess
+        self.subscriptionStore = subscriptionStore
         self._viewModel = State(initialValue: viewModel)
     }
     
@@ -76,10 +113,18 @@ public struct SettingsView: View {
         } message: {
             Text(viewModel.cleanupReminderErrorMessage ?? "")
         }
+        .alert(item: $restorePurchasesFeedback) { feedback in
+            Alert(
+                title: Text(feedback.title),
+                message: Text(feedback.message),
+                dismissButton: .default(Text(appLocalized("OK")))
+            )
+        }
     }
 
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
         Form {
+            subscriptionSection
             appearanceSection
             languageSection
             analysisSection
@@ -107,10 +152,71 @@ public struct SettingsView: View {
 
     @ViewBuilder
     private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
-        switch feature {
-        case .cleanupReminderCustomization, .screenshotCleanup, .blurredPhotoCleanup,
-             .unlimitedScans, .advancedFilters, .batchCleanup:
-            ReminderPremiumSheet()
+        SubscriptionPaywallView(
+            context: .feature(feature),
+            store: subscriptionStore
+        )
+    }
+
+    private var subscriptionSection: some View {
+        Section {
+            PremiumStatusCard(
+                status: subscriptionStatus,
+                isRestoring: isRestoringPurchases,
+                onViewPlans: {
+                    presentedPremiumFeature = .unlimitedScans
+                },
+                onRestore: restorePurchases
+            )
+        } header: {
+            Text(appLocalized("Subscription"))
+        }
+    }
+
+    private var subscriptionStatus: PremiumStatusCard.Status {
+        guard let subscriptionStore else {
+            return premiumAccess.entitlementState.isPremium
+                ? .active(planName: nil, expirationDate: premiumAccess.entitlementState.expirationDate)
+                : .free
+        }
+
+        let entitlement = subscriptionStore.entitlementState
+        if entitlement.source == .unknown {
+            switch subscriptionStore.productLoadState {
+            case .idle, .loading:
+                return .loading
+            case .loaded, .failed, .unconfigured:
+                return .unavailable
+            }
+        }
+        if entitlement.isPremium {
+            let planName = entitlement.productID.flatMap { productID in
+                subscriptionStore.products.values.first(where: { $0.id == productID })?.displayName
+            }
+            return .active(planName: planName, expirationDate: entitlement.expirationDate)
+        }
+        if case .failed = subscriptionStore.productLoadState {
+            return .unavailable
+        }
+        return .free
+    }
+
+    private func restorePurchases() {
+        guard let subscriptionStore else { return }
+        isRestoringPurchases = true
+        Task {
+            defer { isRestoringPurchases = false }
+            do {
+                try await subscriptionStore.restorePurchases()
+                restorePurchasesFeedback = subscriptionStore.entitlementState.isPremium
+                    ? .restored
+                    : .noActiveSubscription
+            } catch {
+                AppLog.ui.error(
+                    "\(AppLog.tag(.error, "Failed to restore purchases: \(error.localizedDescription)"))"
+                )
+                restorePurchasesFeedback = .failed
+            }
         }
     }
 
@@ -540,51 +646,6 @@ public struct SettingsView: View {
         }
     }
     #endif
-}
-
-private struct ReminderPremiumSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        RoutedNavigationStack {
-            VStack(spacing: Spacing.large) {
-                Image(systemName: "bell.badge.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(Color.accent)
-
-                VStack(spacing: Spacing.small) {
-                    Text(appLocalized("Custom reminder schedule is a premium feature"))
-                        .font(.appTitle2)
-                        .multilineTextAlignment(.center)
-                    Text(appLocalized("Unlock custom reminder timing to choose the day and time that fits your cleanup routine."))
-                        .font(.appBody)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-
-                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") {
-                    dismiss()
-                }
-
-                Spacer()
-            }
-            .padding(Spacing.large)
-            .navigationTitle(Text(appLocalized("Premium")))
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-#endif
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                    .accessibilityLabel(Text(appLocalized("Close")))
-                }
-            }
-        }
-    }
 }
 
 // MARK: - User Guide View

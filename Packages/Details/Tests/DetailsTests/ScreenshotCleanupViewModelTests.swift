@@ -71,6 +71,18 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertFalse(cleanupDidRun)
     }
 
+    func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() {
+        let viewModel = makeViewModel()
+        viewModel.selectAll()
+
+        XCTAssertTrue(viewModel.requiresPremiumForCurrentSelection)
+        viewModel.continueWithSingleFreeSelection()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
+        XCTAssertFalse(viewModel.requiresPremiumForCurrentSelection)
+        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+    }
+
     func testPremiumUserCanDeleteMultiplePhotos() async throws {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,

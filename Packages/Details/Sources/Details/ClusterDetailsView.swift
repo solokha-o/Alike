@@ -4,6 +4,8 @@ import Core
 import DesignSystem
 import Storage
 import NavigationKit
+import Purchases
+import PurchasesUI
 
 #if os(iOS)
 
@@ -12,6 +14,7 @@ public struct ClusterDetailsView: View {
     let cluster: PhotoCluster
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
+    private let subscriptionStore: SubscriptionStore?
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
@@ -24,6 +27,7 @@ public struct ClusterDetailsView: View {
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
@@ -31,6 +35,7 @@ public struct ClusterDetailsView: View {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
+        self.subscriptionStore = subscriptionStore
         self._viewModel = State(initialValue: ClusterDetailsViewModel(
             cluster: cluster,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
@@ -49,6 +54,7 @@ public struct ClusterDetailsView: View {
         self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
+        self.subscriptionStore = nil
         self._viewModel = State(initialValue: viewModel)
     }
     
@@ -118,6 +124,19 @@ public struct ClusterDetailsView: View {
                     )
                     .disabled(viewModel.isDeleting)
                 }
+
+                if viewModel.requiresPremiumForCurrentSelection {
+                    BatchCleanupUpsellCard(
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavings: viewModel.estimatedSavingsText,
+                        onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                        onContinueFree: {
+                            Task {
+                                await viewModel.continueWithSingleFreeSelection()
+                            }
+                        }
+                    )
+                }
             }
             .padding(.horizontal, Spacing.medium)
             .padding(.top, Spacing.small)
@@ -148,7 +167,13 @@ public struct ClusterDetailsView: View {
             FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
         }
         .sheet(item: $presentedPremiumFeature) { _ in
-            BatchCleanupPremiumSheet()
+            SubscriptionPaywallView(
+                context: .batchCleanup(
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavings: viewModel.estimatedSavingsText
+                ),
+                store: subscriptionStore
+            )
         }
         .alert(
             deleteConfirmationTitle,
@@ -225,47 +250,6 @@ private extension ClusterDetailsView {
             ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
             : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
         return String(format: format, viewModel.estimatedSavingsText)
-    }
-}
-
-struct BatchCleanupPremiumSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: Spacing.large) {
-                Image(systemName: "lock.shield.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(Color.accent)
-                Text(appLocalized("Batch cleanup is a premium feature"))
-                    .font(.appTitle2)
-                    .multilineTextAlignment(.center)
-                Text(appLocalized("Unlock batch cleanup to remove multiple selected photos in one action."))
-                    .font(.appBody)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                PrimaryButton(appLocalized("Continue"), icon: "arrow.right") { dismiss() }
-                Spacer()
-            }
-            .padding(Spacing.large)
-            .navigationTitle(Text(appLocalized("Premium")))
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .topBarLeading) {
-                    Button { dismiss() } label: { Image(systemName: "xmark") }
-                        .accessibilityLabel(Text(appLocalized("Close")))
-                }
-#else
-                ToolbarItem {
-                    Button { dismiss() } label: { Image(systemName: "xmark") }
-                        .accessibilityLabel(Text(appLocalized("Close")))
-                }
-#endif
-            }
-        }
     }
 }
 
@@ -595,6 +579,7 @@ public struct ClusterDetailsView: View {
         cleanupService: (any PhotoCleanupService)? = nil,
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil

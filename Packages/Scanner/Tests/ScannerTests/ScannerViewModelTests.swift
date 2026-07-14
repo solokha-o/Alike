@@ -15,6 +15,7 @@ final class ScannerViewModelTests: XCTestCase {
     var mockCleanupService: MockPhotoCleanupService!
     var mockCleanupHistoryRepository: MockCleanupHistoryRepository!
     var scanUsageRepository: MockScanUsageRepository!
+    var premiumPromptHistoryRepository: MockPremiumPromptHistoryRepository!
     var premiumAccess: MockPremiumAccessController!
     
     override func setUp() async throws {
@@ -26,6 +27,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupService = MockPhotoCleanupService()
         mockCleanupHistoryRepository = MockCleanupHistoryRepository()
         scanUsageRepository = MockScanUsageRepository()
+        premiumPromptHistoryRepository = MockPremiumPromptHistoryRepository()
         premiumAccess = MockPremiumAccessController()
         viewModel = makeViewModel(premiumAccess: premiumAccess)
     }
@@ -40,6 +42,7 @@ final class ScannerViewModelTests: XCTestCase {
         mockCleanupService = nil
         mockCleanupHistoryRepository = nil
         scanUsageRepository = nil
+        premiumPromptHistoryRepository = nil
         premiumAccess = nil
     }
     
@@ -80,6 +83,139 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(decision, .allowed)
         XCTAssertEqual(count, 0)
         XCTAssertEqual(recordCalls, 0)
+    }
+
+    func testFirstUsefulScanPublishesOnePersistedPremiumOffer() async {
+        viewModel = makeViewModel(
+            premiumAccess: MutableEntitlementPremiumAccessController(
+                entitlementState: PremiumEntitlementState(isPremium: false, source: .verified)
+            )
+        )
+        let cluster = createMockCluster(photoCount: 2)
+        let category = CleanupCategorySummary(
+            kind: .screenshots,
+            assetCount: 3,
+            estimatedSavingsBytes: 4_096
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([cluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([category]))
+
+        await viewModel.startScanning()
+
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.similarClusterCount, 1)
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.cleanupCategoryCandidateCount, 3)
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.estimatedSavingsBytes, 4_096)
+
+        viewModel.consumePostScanPremiumOffer()
+        await viewModel.startScanning()
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 2)
+    }
+
+    func testEmptyScanDefersPremiumOfferUntilUsefulScan() async {
+        viewModel = makeViewModel(
+            premiumAccess: MutableEntitlementPremiumAccessController(
+                entitlementState: PremiumEntitlementState(isPremium: false, source: .verified)
+            )
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await viewModel.startScanning()
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .blurredPhotos, assetCount: 1, estimatedSavingsBytes: 512)
+        ]))
+        await viewModel.startScanning()
+
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.cleanupCategoryCandidateCount, 1)
+        XCTAssertEqual(claimCallCount, 1)
+    }
+
+    func testPremiumUserDoesNotReceivePostScanOffer() async {
+        viewModel = makeViewModel(
+            premiumAccess: MutableEntitlementPremiumAccessController(
+                entitlementState: PremiumEntitlementState(isPremium: true, source: .verified)
+            )
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([createMockCluster(photoCount: 2)]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        await viewModel.startScanning()
+
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 0)
+    }
+
+    func testUnknownEntitlementDoesNotClaimOrPublishPostScanOffer() async {
+        viewModel = makeViewModel(
+            premiumAccess: MutableEntitlementPremiumAccessController(entitlementState: .unknown)
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([createMockCluster(photoCount: 2)]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        await viewModel.startScanning()
+
+        let claimCallCount = await premiumPromptHistoryRepository.claimCallCount
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 0)
+    }
+
+    func testEntitlementBecomingPremiumDuringClaimDoesNotPublishPostScanOffer() async {
+        let premiumAccess = MutableEntitlementPremiumAccessController(
+            entitlementState: PremiumEntitlementState(isPremium: false, source: .verified)
+        )
+        let suspendedPromptHistoryRepository = SuspendedPremiumPromptHistoryRepository()
+        viewModel = makeViewModel(
+            premiumAccess: premiumAccess,
+            promptHistoryRepository: suspendedPromptHistoryRepository
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([createMockCluster(photoCount: 2)]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        let scan = Task { await viewModel.startScanning() }
+        await suspendedPromptHistoryRepository.waitUntilClaimCallCount(1)
+        premiumAccess.entitlementState = PremiumEntitlementState(isPremium: true, source: .verified)
+        await suspendedPromptHistoryRepository.resumeClaim(returning: true)
+        _ = await scan.value
+
+        let claimCallCount = await suspendedPromptHistoryRepository.currentClaimCallCount()
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        XCTAssertEqual(claimCallCount, 1)
+    }
+
+    func testEntitlementBecomingUnknownDuringClaimReleasesClaimForLaterFreeOffer() async {
+        let premiumAccess = MutableEntitlementPremiumAccessController(
+            entitlementState: PremiumEntitlementState(isPremium: false, source: .verified)
+        )
+        let suspendedPromptHistoryRepository = SuspendedPremiumPromptHistoryRepository()
+        viewModel = makeViewModel(
+            premiumAccess: premiumAccess,
+            promptHistoryRepository: suspendedPromptHistoryRepository
+        )
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([createMockCluster(photoCount: 2)]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+
+        let scan = Task { await viewModel.startScanning() }
+        await suspendedPromptHistoryRepository.waitUntilClaimCallCount(1)
+        premiumAccess.entitlementState = .unknown
+        await suspendedPromptHistoryRepository.resumeClaim(returning: true)
+        _ = await scan.value
+
+        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
+        let releaseCallCount = await suspendedPromptHistoryRepository.currentReleaseCallCount()
+        XCTAssertEqual(releaseCallCount, 1)
+
+        premiumAccess.entitlementState = PremiumEntitlementState(isPremium: false, source: .verified)
+        let retryScan = Task { await viewModel.startScanning() }
+        await suspendedPromptHistoryRepository.waitUntilClaimCallCount(2)
+        await suspendedPromptHistoryRepository.resumeClaim(returning: true)
+        _ = await retryScan.value
+
+        XCTAssertNotNil(viewModel.pendingPostScanPremiumOffer)
     }
 
     func testPostCleanupReconciliationDoesNotConsumeUserInitiatedScanAllowance() async {
@@ -382,7 +518,8 @@ final class ScannerViewModelTests: XCTestCase {
             cleanupService: mockCleanupService,
             cleanupHistoryRepository: mockCleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            scanUsageRepository: scanUsageRepository
+            scanUsageRepository: scanUsageRepository,
+            premiumPromptHistoryRepository: premiumPromptHistoryRepository
         )
 
         let cacheLoad = Task { await cacheAwareViewModel.loadCachedResults() }
@@ -1396,7 +1533,8 @@ final class ScannerViewModelTests: XCTestCase {
     }
 
     private func makeViewModel(
-        premiumAccess: any PremiumAccessControlling
+        premiumAccess: any PremiumAccessControlling,
+        promptHistoryRepository: (any PremiumPromptHistoryRepository)? = nil
     ) -> ScannerViewModel {
         ScannerViewModel(
             gridColumns: 3,
@@ -1409,7 +1547,8 @@ final class ScannerViewModelTests: XCTestCase {
             cleanupService: mockCleanupService,
             cleanupHistoryRepository: mockCleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            scanUsageRepository: scanUsageRepository
+            scanUsageRepository: scanUsageRepository,
+            premiumPromptHistoryRepository: promptHistoryRepository ?? premiumPromptHistoryRepository
         )
     }
     
@@ -1461,6 +1600,62 @@ private final class MutablePremiumAccessController: PremiumAccessControlling {
             return .allowed
         }
         return PremiumAccessPolicy.decision(for: feature, context: context, isPremium: false)
+    }
+}
+
+@MainActor
+private final class MutableEntitlementPremiumAccessController: PremiumAccessControlling {
+    var entitlementState: PremiumEntitlementState
+
+    init(entitlementState: PremiumEntitlementState) {
+        self.entitlementState = entitlementState
+    }
+
+    func access(
+        to feature: PremiumFeature,
+        context: PremiumAccessContext
+    ) -> PremiumAccessDecision {
+        PremiumAccessPolicy.decision(
+            for: feature,
+            context: context,
+            isPremium: entitlementState.isPremium
+        )
+    }
+}
+
+private actor SuspendedPremiumPromptHistoryRepository: PremiumPromptHistoryRepository {
+    private var continuation: CheckedContinuation<Bool, Never>?
+    private var claimCalls = 0
+    private var releaseCalls = 0
+
+    func claimPostFirstUsefulScanPrompt() async -> Bool {
+        claimCalls += 1
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func waitUntilClaimCallCount(_ expectedCount: Int) async {
+        while claimCalls < expectedCount {
+            await Task.yield()
+        }
+    }
+
+    func resumeClaim(returning result: Bool) {
+        continuation?.resume(returning: result)
+        continuation = nil
+    }
+
+    func currentClaimCallCount() -> Int {
+        claimCalls
+    }
+
+    func releasePostFirstUsefulScanPromptClaim() {
+        releaseCalls += 1
+    }
+
+    func currentReleaseCallCount() -> Int {
+        releaseCalls
     }
 }
 

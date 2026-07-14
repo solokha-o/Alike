@@ -414,6 +414,66 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(cleanupDidRun)
     }
 
+    func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        XCTAssertTrue(viewModel.requiresPremiumForCurrentSelection)
+        await viewModel.continueWithSingleFreeSelection()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
+        XCTAssertFalse(viewModel.requiresPremiumForCurrentSelection)
+        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+    }
+
+    func testContinueFreeSerializesEarlierSaveBeforeConfirmationAndDeletion() async {
+        let reviewRepository = SuspendableSaveClusterReviewStateRepository()
+        await cleanupService.setDeleteAssetsResult(.success(
+            CleanupCompletionRecord(
+                sourceClusterID: clusterID,
+                deletedCount: 1,
+                estimatedSavingsBytes: 90
+            )
+        ))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ],
+            reviewRepository: reviewRepository
+        )
+        await viewModel.load()
+        await reviewRepository.suspendNextSave()
+        viewModel.selectAllExceptBest()
+        await reviewRepository.waitUntilSuspendedSaveStarts()
+
+        let continueTask = Task {
+            await viewModel.continueWithSingleFreeSelection()
+        }
+
+        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
+
+        await reviewRepository.finishSuspendedSave()
+        await continueTask.value
+
+        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+        let persistedFallbackState = await reviewRepository.storedState(clusterID: clusterID)
+        XCTAssertEqual(persistedFallbackState?.selectedLocalIdentifiers, ["one"])
+
+        await viewModel.confirmDelete()
+
+        let stateAfterDelete = await reviewRepository.storedState(clusterID: clusterID)
+        XCTAssertNil(stateAfterDelete)
+    }
+
     private func makeViewModel(
         snapshots: [ReviewAssetSnapshot],
         reviewRepository: (any ClusterReviewStateRepository)? = nil,
@@ -445,6 +505,68 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             creationDate: createdAt,
             modificationDate: modifiedAt
         )
+    }
+}
+
+private actor SuspendableSaveClusterReviewStateRepository: ClusterReviewStateRepository {
+    private var states: [UUID: ClusterReviewState] = [:]
+    private var saveCount = 0
+    private var shouldSuspendNextSave = false
+    private var suspendedSaveStarted = false
+    private var saveContinuation: CheckedContinuation<Void, Never>?
+
+    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? {
+        states[clusterID]
+    }
+
+    func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
+        states
+    }
+
+    func saveReviewState(_ state: ClusterReviewState) async throws {
+        if shouldSuspendNextSave {
+            shouldSuspendNextSave = false
+            suspendedSaveStarted = true
+            await withCheckedContinuation { continuation in
+                saveContinuation = continuation
+            }
+        }
+        states[state.clusterID] = state
+        saveCount += 1
+    }
+
+    func deleteReviewState(clusterID: UUID) async throws {
+        states.removeValue(forKey: clusterID)
+    }
+
+    func deleteAllReviewStates() async throws {
+        states.removeAll()
+    }
+
+    func suspendNextSave() {
+        shouldSuspendNextSave = true
+        suspendedSaveStarted = false
+    }
+
+    func waitUntilSaveCount(_ expectedCount: Int) async {
+        while saveCount < expectedCount {
+            await Task.yield()
+        }
+    }
+
+    func waitUntilSuspendedSaveStarts() async {
+        while !suspendedSaveStarted {
+            await Task.yield()
+        }
+    }
+
+    func finishSuspendedSave() {
+        saveContinuation?.resume()
+        saveContinuation = nil
+    }
+
+    func storedState(clusterID: UUID) -> ClusterReviewState? {
+        states[clusterID]
     }
 }
 

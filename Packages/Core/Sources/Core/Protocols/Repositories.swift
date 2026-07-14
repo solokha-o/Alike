@@ -53,6 +53,17 @@ public protocol ScanUsageRepository: Sendable {
     func recordCompletedScan(at date: Date) async -> MonthlyScanUsage
 }
 
+/// Repository for installation-local, one-time premium conversion prompts.
+public protocol PremiumPromptHistoryRepository: Sendable {
+    /// Atomically claims the post-first-useful-scan prompt.
+    ///
+    /// Returns `true` only for the first successful claim on this installation.
+    func claimPostFirstUsefulScanPrompt() async -> Bool
+
+    /// Releases a claim that could not be resolved into a free-user offer.
+    func releasePostFirstUsefulScanPromptClaim() async
+}
+
 /// Repository for cleanup review state per photo cluster.
 public protocol ClusterReviewStateRepository: Sendable {
     /// Load review state for a cluster.

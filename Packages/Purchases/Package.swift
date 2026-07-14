@@ -9,9 +9,12 @@ let package = Package(
     ],
     products: [
         .library(name: "Purchases", targets: ["Purchases"]),
+        .library(name: "PurchasesUI", targets: ["PurchasesUI"]),
     ],
     dependencies: [
-        .package(path: "../Core")
+        .package(path: "../Core"),
+        .package(path: "../DesignSystem"),
+        .package(path: "../NavigationKit")
     ],
     targets: [
         .target(
@@ -21,9 +24,20 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
+        .target(
+            name: "PurchasesUI",
+            dependencies: ["Purchases", "Core", "DesignSystem", "NavigationKit"],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
         .testTarget(
             name: "PurchasesTests",
             dependencies: ["Purchases", "Core"]
+        ),
+        .testTarget(
+            name: "PurchasesUITests",
+            dependencies: ["PurchasesUI", "Purchases", "Core"]
         ),
     ]
 )
