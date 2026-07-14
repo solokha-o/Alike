@@ -16,6 +16,9 @@ let package = Package(
     targets: [
         .target(
             name: "DesignSystem",
+            resources: [
+                .process("Resources")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
