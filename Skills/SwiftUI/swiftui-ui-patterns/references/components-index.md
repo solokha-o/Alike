@@ -22,6 +22,7 @@ Use this file to find component-specific guidance. Each entry lists when to use 
 - Focus handling: `references/focus.md` — Use for chaining fields and keyboard focus management.
 - Searchable: `references/searchable.md` — Use for native search UI with scopes and async results.
 - Async images and media: `references/media.md` — Use for remote media, previews, and media viewers.
+- Animated static hero: `references/animated-static-hero.md` — Use when a complete PNG hero needs lightweight, lifecycle-gated Lottie effects for scanning, review, cleanup, or success states.
 - Haptics: `references/haptics.md` — Use for tactile feedback tied to key actions.
 - Matched transitions: `references/matched-transitions.md` — Use for smooth source-to-destination animations.
 - Deep links and URL routing: `references/deeplinks.md` — Use for in-app navigation from URLs.

@@ -1,6 +1,6 @@
 ---
 name: swiftui-ui-patterns
-description: Best practices and example-driven guidance for building SwiftUI views and components. Use when creating or refactoring SwiftUI UI, designing tab architecture with TabView, composing screens, or needing component-specific patterns and examples.
+description: Best practices and example-driven guidance for building SwiftUI views and components. Use when creating or refactoring SwiftUI UI, designing tab architecture with TabView, composing screens, building static hero + Lottie overlays, or needing component-specific patterns and examples.
 ---
 
 # SwiftUI UI Patterns
@@ -34,6 +34,7 @@ Choose a track based on your goal:
 - **Navigation**: In this repo, prefer `NavigationKit` and `RoutedNavigationStack` for project-owned navigation instead of introducing new raw `NavigationStack` wrappers in app/package code.
 - **Sheets**: Prefer `.sheet(item:)` over `.sheet(isPresented:)` when state represents a selected model. Avoid `if let` inside a sheet body. Sheets should own their actions and call `dismiss()` internally instead of forwarding `onCancel`/`onConfirm` closures.
 - **Modals**: Disable interactive swipe-to-dismiss when accidental dismissal would undermine the current flow. When the surrounding modal chrome uses the repo dismiss pattern, prefer an icon-only close button with an explicit accessibility label.
+- **Animated heroes**: Keep a complete static illustration authoritative and layer only decorative, lifecycle-gated Lottie motion. Follow `references/animated-static-hero.md`.
 
 ## Workflow for a new SwiftUI view
 
