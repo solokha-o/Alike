@@ -2,12 +2,6 @@ import SwiftUI
 import Core
 import DesignSystem
 
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
-
 struct ALIComparisonReviewPresentation: Equatable {
     let animationURL: URL?
     let playback: OverlayAnimationPlayback
