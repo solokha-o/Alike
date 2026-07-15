@@ -72,34 +72,26 @@ public struct ClusterDetailsView: View {
                     columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
                     spacing: Spacing.small
                 ) {
-                    Section {
-                        ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                            SelectablePhotoThumbnail(
-                                asset: asset,
-                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                                isSelected: viewModel.isSelected(asset.localIdentifier),
-                                onToggleSelection: {
-                                    viewModel.toggleSelection(for: asset.localIdentifier)
-                                },
-                                onOpenOriginal: {
-                                    if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
-                                        selectedAsset = SelectedAsset(asset: asset, index: index)
-                                    }
+                    ForEach(displayedAssets, id: \.localIdentifier) { asset in
+                        SelectablePhotoThumbnail(
+                            asset: asset,
+                            isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                            isSelected: viewModel.isSelected(asset.localIdentifier),
+                            onToggleSelection: {
+                                viewModel.toggleSelection(for: asset.localIdentifier)
+                            },
+                            onOpenOriginal: {
+                                if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
+                                    selectedAsset = SelectedAsset(asset: asset, index: index)
                                 }
+                            }
+                        )
+                        .transition(
+                            .asymmetric(
+                                insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                removal: .scale(scale: 0.94).combined(with: .opacity)
                             )
-                            .transition(
-                                .asymmetric(
-                                    insertion: .scale(scale: 0.94).combined(with: .opacity),
-                                    removal: .scale(scale: 0.94).combined(with: .opacity)
-                                )
-                            )
-                        }
-                    } header: {
-                        if ALIComparisonReviewPresentation.isEligible(assetCount: cluster.assets.count) {
-                            ALIComparisonReviewView()
-                                .frame(maxWidth: .infinity)
-                                .padding(.bottom, Spacing.medium)
-                        }
+                        )
                     }
                 }
                 .allowsHitTesting(!viewModel.isDeleting)
@@ -114,6 +106,11 @@ public struct ClusterDetailsView: View {
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .safeAreaInset(edge: .top) {
             VStack(spacing: Spacing.small) {
+                if ALIComparisonReviewPresentation.isEligible(assetCount: cluster.assets.count) {
+                    ALIComparisonReviewView()
+                        .frame(maxWidth: .infinity)
+                }
+
                 ClusterReviewSummaryCard(
                     bestShotLabel: viewModel.bestShotLabel,
                     selectedCount: viewModel.selectedCount,

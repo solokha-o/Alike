@@ -4,7 +4,7 @@ import DesignSystem
 @testable import Details
 
 final class ALIComparisonReviewLifecycleTests: XCTestCase {
-    func testVisibleActivePresentationEnablesContinuousMotion() {
+    func testVisibleActivePresentationLoopsOverlayWithoutTranslatingStaticImage() {
         let presentation = ALIComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .active
@@ -12,7 +12,7 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
 
         XCTAssertEqual(presentation.animationURL, ALIAssets.comparisonReviewOverlayURL)
         XCTAssertEqual(presentation.playback, .loop)
-        XCTAssertEqual(presentation.ambientMotion, .breathe)
+        XCTAssertEqual(presentation.ambientMotion, .breatheInPlace)
     }
 
     func testInactiveAndBackgroundPresentationsDisableMotion() {
@@ -41,7 +41,7 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
         XCTAssertNil(inactivePresentation.animationURL)
         XCTAssertEqual(inactivePresentation.ambientMotion, .none)
         XCTAssertEqual(activePresentation.animationURL, ALIAssets.comparisonReviewOverlayURL)
-        XCTAssertEqual(activePresentation.ambientMotion, .breathe)
+        XCTAssertEqual(activePresentation.ambientMotion, .breatheInPlace)
     }
 
     func testDisappearingPresentationDisablesMotion() {

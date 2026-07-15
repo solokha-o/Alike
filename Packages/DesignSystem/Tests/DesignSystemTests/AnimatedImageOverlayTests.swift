@@ -28,4 +28,16 @@ final class AnimatedImageOverlayTests: XCTestCase {
 
         XCTAssertNotNil(view)
     }
+
+    func testSupportsInPlaceBreathingMotion() {
+        let view = AnimatedImageOverlay(
+            animationURL: nil,
+            aspectRatio: 1,
+            ambientMotion: .breatheInPlace
+        ) {
+            Image(systemName: "photo")
+        }
+
+        XCTAssertNotNil(view)
+    }
 }

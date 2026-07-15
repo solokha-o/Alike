@@ -17,14 +17,14 @@ struct ALIComparisonReviewPresentation: Equatable {
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.comparisonReviewOverlayURL : nil,
             playback: .loop,
-            ambientMotion: isMotionEnabled ? .breathe : .none
+            ambientMotion: isMotionEnabled ? .breatheInPlace : .none
         )
     }
 }
 
 struct ALIComparisonReviewView: View {
     private enum Constants {
-        static let maximumWidth: CGFloat = 250
+        static let maximumWidth: CGFloat = 112
     }
 
     @Environment(\.displayScale) private var displayScale

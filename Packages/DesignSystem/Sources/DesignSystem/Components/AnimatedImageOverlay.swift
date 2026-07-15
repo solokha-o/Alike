@@ -9,6 +9,7 @@ public enum OverlayAnimationPlayback: Sendable, Equatable {
 public enum AnimatedImageAmbientMotion: Sendable, Equatable {
     case none
     case breathe
+    case breatheInPlace
 }
 
 /// Composes static SwiftUI content with an optional transparent Lottie overlay.
@@ -43,21 +44,34 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
 
     @ViewBuilder
     public var body: some View {
-        if ambientMotion == .breathe && !reduceMotion {
+        if reduceMotion {
             composite
-                .phaseAnimator([false, true]) { content, isLifted in
-                    content
-                        .scaleEffect(isLifted ? 1.02 : 0.995)
-                        .offset(
-                            x: isLifted ? 2 : -2,
-                            y: isLifted ? -6 : 2
-                        )
-                        .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
-                } animation: { _ in
-                    .easeInOut(duration: 2.4)
-                }
         } else {
-            composite
+            switch ambientMotion {
+            case .none:
+                composite
+            case .breathe:
+                composite
+                    .phaseAnimator([false, true]) { content, isLifted in
+                        content
+                            .scaleEffect(isLifted ? 1.02 : 0.995)
+                            .offset(
+                                x: isLifted ? 2 : -2,
+                                y: isLifted ? -6 : 2
+                            )
+                            .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
+                    } animation: { _ in
+                        .easeInOut(duration: 2.4)
+                    }
+            case .breatheInPlace:
+                composite
+                    .phaseAnimator([false, true]) { content, isExpanded in
+                        content
+                            .scaleEffect(isExpanded ? 1.012 : 0.998)
+                    } animation: { _ in
+                        .easeInOut(duration: 2.4)
+                    }
+            }
         }
     }
 
