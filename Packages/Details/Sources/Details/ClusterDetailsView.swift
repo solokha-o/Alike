@@ -20,6 +20,7 @@ public struct ClusterDetailsView: View {
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var didCompleteCleanup = false
+    @State private var hasLoadedReviewState = false
     @Environment(\.dismiss) private var dismiss
 
     public init(
@@ -60,90 +61,87 @@ public struct ClusterDetailsView: View {
     
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets(from: cluster.assets)
-
-        ScrollView {
-            if cluster.assets.isEmpty {
-                ContentUnavailableView {
-                    Label(appLocalized("No Photos Available"), systemImage: "photo")
-                }
-                .padding(.top, 80)
-            } else {
-                LazyVGrid(
-                    columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
-                    spacing: Spacing.small
-                ) {
-                    ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                        SelectablePhotoThumbnail(
-                            asset: asset,
-                            isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                            isSelected: viewModel.isSelected(asset.localIdentifier),
-                            onToggleSelection: {
-                                viewModel.toggleSelection(for: asset.localIdentifier)
-                            },
-                            onOpenOriginal: {
-                                if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
-                                    selectedAsset = SelectedAsset(asset: asset, index: index)
-                                }
-                            }
-                        )
-                        .transition(
-                            .asymmetric(
-                                insertion: .scale(scale: 0.94).combined(with: .opacity),
-                                removal: .scale(scale: 0.94).combined(with: .opacity)
-                            )
-                        )
+        VStack(spacing: Spacing.small) {
+            ClusterReviewSummaryCard(
+                assetCount: cluster.assets.count,
+                bestShotLabel: viewModel.bestShotLabel,
+                selectedCount: viewModel.selectedCount,
+                estimatedSavingsText: viewModel.estimatedSavingsText,
+                reviewStatus: viewModel.reviewStatus
+            )
+            
+            if viewModel.isActionBarVisible {
+                ClusterReviewActionBar(
+                    onKeepBestOnly: viewModel.keepBestOnly,
+                    onSelectAllExceptBest: viewModel.selectAllExceptBest,
+                    onClearSelection: viewModel.clearSelection,
+                    onDeleteSelected: requestDeleteConfirmation,
+                    isDeleteActionVisible: viewModel.isDeleteActionVisible,
+                    isDeleting: viewModel.isDeleting
+                )
+                .disabled(viewModel.isDeleting)
+            }
+            
+            if viewModel.requiresPremiumForCurrentSelection {
+                BatchCleanupUpsellCard(
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavings: viewModel.estimatedSavingsText,
+                    onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                    onContinueFree: {
+                        Task {
+                            await viewModel.continueWithSingleFreeSelection()
+                        }
                     }
+                )
+            }
+            
+            ScrollView {
+                if cluster.assets.isEmpty {
+                    ContentUnavailableView {
+                        Label(appLocalized("No Photos Available"), systemImage: "photo")
+                    }
+                    .padding(.top, 80)
+                } else {
+                    LazyVGrid(
+                        columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
+                        spacing: Spacing.small
+                    ) {
+                        ForEach(displayedAssets, id: \.localIdentifier) { asset in
+                            SelectablePhotoThumbnail(
+                                asset: asset,
+                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                isSelected: viewModel.isSelected(asset.localIdentifier),
+                                onToggleSelection: {
+                                    viewModel.toggleSelection(for: asset.localIdentifier)
+                                },
+                                onOpenOriginal: {
+                                    if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
+                                        selectedAsset = SelectedAsset(asset: asset, index: index)
+                                    }
+                                }
+                            )
+                            .transition(
+                                .asymmetric(
+                                    insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                    removal: .scale(scale: 0.94).combined(with: .opacity)
+                                )
+                            )
+                        }
+                    }
+                    .allowsHitTesting(!viewModel.isDeleting)
+                    .padding(.horizontal, Spacing.medium)
+                    .padding(.bottom, Spacing.medium)
                 }
-                .allowsHitTesting(!viewModel.isDeleting)
-                .padding(.horizontal, Spacing.medium)
-                .padding(.bottom, Spacing.medium)
             }
         }
-        .animation(.appSmooth, value: displayedAssets.map(\.localIdentifier))
-        .animation(.appInteractive, value: viewModel.selectedAssetIDs)
-        .animation(.appInteractive, value: viewModel.reviewStatus)
+        .padding(.horizontal, Spacing.medium)
+        .padding(.top, Spacing.small)
+        .padding(.bottom, Spacing.medium)
+        .animation(hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
+        .animation(hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
+        .animation(hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
-        .safeAreaInset(edge: .top) {
-            VStack(spacing: Spacing.small) {
-                ClusterReviewSummaryCard(
-                    assetCount: cluster.assets.count,
-                    bestShotLabel: viewModel.bestShotLabel,
-                    selectedCount: viewModel.selectedCount,
-                    estimatedSavingsText: viewModel.estimatedSavingsText,
-                    reviewStatus: viewModel.reviewStatus
-                )
-
-                if viewModel.isActionBarVisible {
-                    ClusterReviewActionBar(
-                        onKeepBestOnly: viewModel.keepBestOnly,
-                        onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                        onClearSelection: viewModel.clearSelection,
-                        onDeleteSelected: requestDeleteConfirmation,
-                        isDeleteActionVisible: viewModel.isDeleteActionVisible,
-                        isDeleting: viewModel.isDeleting
-                    )
-                    .disabled(viewModel.isDeleting)
-                }
-
-                if viewModel.requiresPremiumForCurrentSelection {
-                    BatchCleanupUpsellCard(
-                        selectedCount: viewModel.selectedCount,
-                        estimatedSavings: viewModel.estimatedSavingsText,
-                        onUpgrade: { presentedPremiumFeature = .batchCleanup },
-                        onContinueFree: {
-                            Task {
-                                await viewModel.continueWithSingleFreeSelection()
-                            }
-                        }
-                    )
-                }
-            }
-            .padding(.horizontal, Spacing.medium)
-            .padding(.top, Spacing.small)
-            .padding(.bottom, Spacing.medium)
-            .background(.regularMaterial)
-        }
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
@@ -213,7 +211,9 @@ public struct ClusterDetailsView: View {
             Text(viewModel.deleteErrorMessage ?? "")
         }
         .task {
+            hasLoadedReviewState = false
             await viewModel.load()
+            hasLoadedReviewState = true
         }
         .onChange(of: viewModel.pendingCompletionRecord) { _, record in
             guard let record else { return }

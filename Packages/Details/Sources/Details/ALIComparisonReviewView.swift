@@ -17,7 +17,7 @@ struct ALIComparisonReviewPresentation: Equatable {
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.comparisonReviewOverlayURL : nil,
             playback: .loop,
-            ambientMotion: isMotionEnabled ? .breatheInPlace : .none
+            ambientMotion: isMotionEnabled ? .breathe : .none
         )
     }
 }
@@ -44,10 +44,10 @@ struct ALIComparisonReviewView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(appLocalized("ALI comparing similar photos")))
         .onAppear {
-            isVisible = true
+            setVisibility(true)
         }
         .onDisappear {
-            isVisible = false
+            setVisibility(false)
         }
     }
 
@@ -84,6 +84,10 @@ struct ALIComparisonReviewView: View {
 
     private var presentation: ALIComparisonReviewPresentation {
         .resolve(isVisible: isVisible, scenePhase: scenePhase)
+    }
+
+    private func setVisibility(_ isVisible: Bool) {
+        self.isVisible = isVisible
     }
 
     private var comparisonImageScale: ALIAssets.ComparisonReviewScale {

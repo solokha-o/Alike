@@ -9,7 +9,6 @@ public enum OverlayAnimationPlayback: Sendable, Equatable {
 public enum AnimatedImageAmbientMotion: Sendable, Equatable {
     case none
     case breathe
-    case breatheInPlace
 }
 
 /// Composes static SwiftUI content with an optional transparent Lottie overlay.
@@ -60,14 +59,6 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
                                 y: isLifted ? -6 : 2
                             )
                             .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
-                    } animation: { _ in
-                        .easeInOut(duration: 2.4)
-                    }
-            case .breatheInPlace:
-                composite
-                    .phaseAnimator([false, true]) { content, isExpanded in
-                        content
-                            .scaleEffect(isExpanded ? 1.012 : 0.998)
                     } animation: { _ in
                         .easeInOut(duration: 2.4)
                     }
