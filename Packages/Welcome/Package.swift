@@ -21,7 +21,11 @@ let package = Package(
     targets: [
         .target(
             name: "Welcome",
-            dependencies: ["Core", "PhotoAnalysis", "DesignSystem"],
+            dependencies: [
+                "Core",
+                "PhotoAnalysis",
+                "DesignSystem"
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]

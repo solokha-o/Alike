@@ -262,41 +262,50 @@ public struct ScannerView: View {
     
     // MARK: - Scanning View
     private func scanningView(progress: Double) -> some View {
-        VStack(spacing: Spacing.xxLarge) {
-            Spacer()
-            
-            ZStack {
-                Circle()
-                    .stroke(Color.accent.opacity(ColorOpacity.progressTrack), lineWidth: 8)
-                    .frame(width: 120, height: 120)
-                
-                Circle()
-                    .trim(from: 0, to: progress)
-                    .stroke(Color.accent, style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                    .frame(width: 120, height: 120)
-                    .rotationEffect(.degrees(-90))
-                    .animation(.appSmooth, value: progress)
-                
-                Text("\(Int(progress * 100))%")
-                    .font(.title.bold())
-                    .foregroundColor(.accent)
-                    .monospacedDigit()
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: Spacing.large) {
+                    ALIScannerSearchingView()
+
+                    ZStack {
+                        Circle()
+                            .stroke(Color.accent.opacity(ColorOpacity.progressTrack), lineWidth: 8)
+                            .frame(width: 112, height: 112)
+
+                        Circle()
+                            .trim(from: 0, to: progress)
+                            .stroke(Color.accent, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                            .frame(width: 112, height: 112)
+                            .rotationEffect(.degrees(-90))
+                            .animation(.appSmooth, value: progress)
+
+                        Text("\(Int(progress * 100))%")
+                            .font(.title.bold())
+                            .foregroundColor(.accent)
+                            .monospacedDigit()
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(Text(appLocalized("Scanning progress")))
+                    .accessibilityValue(Text("\(Int(progress * 100))%"))
+
+                    VStack(spacing: Spacing.small) {
+                        Text(appLocalized("Analyzing Photos..."))
+                            .font(.appTitle2)
+                            .foregroundColor(.primary)
+
+                        Text(appLocalized("Finding visually similar images"))
+                            .font(.appBody)
+                            .foregroundColor(.secondary)
+                    }
+                    .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: geometry.size.height)
+                .padding(.horizontal, Spacing.large)
+                .padding(.vertical, Spacing.medium)
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(Text(appLocalized("Scanning progress")))
-            .accessibilityValue(Text("\(Int(progress * 100))%"))
-            
-            Text(appLocalized("Analyzing Photos..."))
-                .font(.appTitle2)
-                .foregroundColor(.primary)
-            
-            Text(appLocalized("Finding visually similar images"))
-                .font(.appBody)
-                .foregroundColor(.secondary)
-            
-            Spacer()
+            .scrollIndicators(.hidden)
         }
-        .padding()
     }
     
     // MARK: - Results View
@@ -591,6 +600,78 @@ public struct ScannerView: View {
             }
         } description: {
             Text(message)
+        }
+    }
+}
+
+private struct ALIScannerSearchingView: View {
+    @Environment(\.displayScale) private var displayScale
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var isVisible = false
+
+    var body: some View {
+        AnimatedImageOverlay(
+            animationURL: isOverlayPlaybackEnabled ? ALIAssets.scannerSearchingOverlayURL : nil,
+            aspectRatio: 1,
+            maximumWidth: 260,
+            playback: .loop,
+            ambientMotion: isOverlayPlaybackEnabled ? .breathe : .none
+        ) {
+            searchingImage
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(appLocalized("ALI searching for similar photos")))
+        .onAppear {
+            isVisible = true
+        }
+        .onDisappear {
+            isVisible = false
+        }
+    }
+
+    @ViewBuilder
+    private var searchingImage: some View {
+        let imageURL = ALIAssets.scannerSearchingURL(for: searchingImageScale)
+
+#if canImport(UIKit)
+        if let image = UIImage(contentsOfFile: imageURL.path) {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else {
+            fallbackImage
+        }
+#elseif canImport(AppKit)
+        if let image = NSImage(contentsOf: imageURL) {
+            Image(nsImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else {
+            fallbackImage
+        }
+#endif
+    }
+
+    private var fallbackImage: some View {
+        Image(systemName: "camera.viewfinder")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .foregroundStyle(Color.accent)
+            .padding(Spacing.xxLarge)
+    }
+
+    private var isOverlayPlaybackEnabled: Bool {
+        isVisible && scenePhase == .active
+    }
+
+    private var searchingImageScale: ALIAssets.ScannerSearchingScale {
+        switch displayScale {
+        case ..<1.5:
+            .oneX
+        case ..<2.5:
+            .twoX
+        default:
+            .threeX
         }
     }
 }

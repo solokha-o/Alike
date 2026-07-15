@@ -18,6 +18,40 @@
         }
       }
     },
+    "ALI searching for similar photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI searching for similar photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI шукає схожі фотографії"
+          }
+        }
+      }
+    },
+    "ALI, Alike's photo detective": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI, Alike's photo detective"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI, фотодетектив Alike"
+          }
+        }
+      }
+    },
     "Analyzing Photos...": {
       "extractionState": "manual",
       "localizations": {
