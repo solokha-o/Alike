@@ -57,7 +57,7 @@ public enum ALIAssets {
         )
     }
 
-    /// Returns the shared-coordinate scanning-line and magnifier-glint overlay.
+    /// Returns the shared-coordinate photo-candidate, scan-pulse, and magnifier overlay.
     public static var scannerSearchingOverlayURL: URL? {
         optionalResourceURL(
             named: "ALIScannerSearchingOverlay",

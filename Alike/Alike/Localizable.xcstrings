@@ -18,6 +18,23 @@
         }
       }
     },
+    "ALI searching for similar photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI searching for similar photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI шукає схожі фотографії"
+          }
+        }
+      }
+    },
     "Analyzing Photos...": {
       "extractionState": "manual",
       "localizations": {

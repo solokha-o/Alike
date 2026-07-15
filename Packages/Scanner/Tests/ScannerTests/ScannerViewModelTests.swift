@@ -572,6 +572,44 @@ final class ScannerViewModelTests: XCTestCase {
             XCTAssertEqual(clusters.count, 1)
         }
     }
+
+    func testScanPublishesProgressWhileAnalysisRemainsSuspended() async {
+        let analysisService = SuspendedPhotoAnalysisService()
+        let progressViewModel = ScannerViewModel(
+            analysisService: analysisService,
+            repository: mockRepository,
+            reviewRepository: mockReviewRepository,
+            cleanupCategoryRepository: mockCleanupCategoryRepository,
+            cleanupSessionRepository: mockCleanupSessionRepository,
+            cleanupService: mockCleanupService,
+            cleanupHistoryRepository: mockCleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            scanUsageRepository: scanUsageRepository,
+            premiumPromptHistoryRepository: premiumPromptHistoryRepository
+        )
+
+        let scan = Task { await progressViewModel.startScanning() }
+        await analysisService.waitUntilAnalyzeCallCount(1)
+
+        guard case .scanning(let initialProgress) = progressViewModel.state else {
+            return XCTFail("Expected scanning state while analysis is suspended")
+        }
+        XCTAssertEqual(initialProgress, 0)
+
+        await analysisService.publishProgress(0.42)
+        while progressViewModel.state != .scanning(progress: 0.42) {
+            await Task.yield()
+        }
+
+        guard case .scanning(let updatedProgress) = progressViewModel.state else {
+            return XCTFail("Expected progress update to preserve scanning state")
+        }
+        XCTAssertEqual(updatedProgress, 0.42)
+
+        await analysisService.resumeNext(returning: [])
+        _ = await scan.value
+        XCTAssertEqual(progressViewModel.state, .results([]))
+    }
     
     func testScanSavesClusters() async {
         let mockCluster = createMockCluster(photoCount: 2)
@@ -1832,6 +1870,7 @@ actor MockScanUsageRepository: ScanUsageRepository {
 
 private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
     private var continuations: [CheckedContinuation<[PhotoCluster], Error>] = []
+    private var progressHandlers: [@Sendable (Double) -> Void] = []
     private var analyzeCallCount = 0
     private var concurrentAnalyzeCount = 0
     private var maximumConcurrentCount = 0
@@ -1846,6 +1885,7 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
         defer { concurrentAnalyzeCount -= 1 }
         return try await withCheckedThrowingContinuation { continuation in
             continuations.append(continuation)
+            progressHandlers.append(progress)
         }
     }
 
@@ -1861,7 +1901,12 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
     }
 
     func resumeNext(returning clusters: [PhotoCluster]) {
+        progressHandlers.removeFirst()
         continuations.removeFirst().resume(returning: clusters)
+    }
+
+    func publishProgress(_ progress: Double) {
+        progressHandlers.first?(progress)
     }
 
     func currentAnalyzeCallCount() -> Int {
