@@ -11,9 +11,11 @@ import AppKit
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
     @Environment(\.displayScale) private var displayScale
+    @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     @State private var isSymbolAnimating = false
+    @State private var isALIWelcomeHeroVisible = false
     
     public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
         self._isCompleted = isCompleted
@@ -167,7 +169,7 @@ public struct WelcomeView: View {
 
     private var aliWelcomeHero: some View {
         AnimatedImageOverlay(
-            animationURL: ALIAssets.welcomeHeroOverlayURL,
+            animationURL: playsALIWelcomeOverlay ? ALIAssets.welcomeHeroOverlayURL : nil,
             aspectRatio: 1080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
@@ -179,6 +181,16 @@ public struct WelcomeView: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(appLocalized("ALI, Alike's photo detective"))
+        .onAppear {
+            isALIWelcomeHeroVisible = true
+        }
+        .onDisappear {
+            isALIWelcomeHeroVisible = false
+        }
+    }
+
+    private var playsALIWelcomeOverlay: Bool {
+        isALIWelcomeHeroVisible && scenePhase == .active
     }
 
     private var welcomeImage: Image {
