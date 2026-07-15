@@ -24,7 +24,7 @@ struct ALIComparisonReviewPresentation: Equatable {
 
 struct ALIComparisonReviewView: View {
     private enum Constants {
-        static let maximumWidth: CGFloat = 112
+        static let maximumWidth: CGFloat = 72
     }
 
     @Environment(\.displayScale) private var displayScale

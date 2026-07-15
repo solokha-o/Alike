@@ -106,12 +106,8 @@ public struct ClusterDetailsView: View {
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .safeAreaInset(edge: .top) {
             VStack(spacing: Spacing.small) {
-                if ALIComparisonReviewPresentation.isEligible(assetCount: cluster.assets.count) {
-                    ALIComparisonReviewView()
-                        .frame(maxWidth: .infinity)
-                }
-
                 ClusterReviewSummaryCard(
+                    assetCount: cluster.assets.count,
                     bestShotLabel: viewModel.bestShotLabel,
                     selectedCount: viewModel.selectedCount,
                     estimatedSavingsText: viewModel.estimatedSavingsText,
