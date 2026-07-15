@@ -173,7 +173,7 @@ public struct WelcomeView: View {
             aspectRatio: 1080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
-            ambientMotion: .breathe
+            ambientMotion: playsALIWelcomeOverlay ? .breathe : .none
         ) {
             welcomeImage
                 .resizable()

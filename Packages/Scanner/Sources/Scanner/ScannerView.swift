@@ -615,7 +615,7 @@ private struct ALIScannerSearchingView: View {
             aspectRatio: 1,
             maximumWidth: 260,
             playback: .loop,
-            ambientMotion: .breathe
+            ambientMotion: isOverlayPlaybackEnabled ? .breathe : .none
         ) {
             searchingImage
         }

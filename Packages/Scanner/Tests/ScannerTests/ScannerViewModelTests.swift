@@ -597,9 +597,18 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(initialProgress, 0)
 
         await analysisService.publishProgress(0.42)
-        while progressViewModel.state != .scanning(progress: 0.42) {
-            await Task.yield()
+        let progressUpdated = expectation(description: "Scanner publishes analysis progress")
+        let progressObserver = Task { @MainActor in
+            while !Task.isCancelled {
+                if progressViewModel.state == .scanning(progress: 0.42) {
+                    progressUpdated.fulfill()
+                    return
+                }
+                await Task.yield()
+            }
         }
+        await fulfillment(of: [progressUpdated], timeout: 1.0)
+        progressObserver.cancel()
 
         guard case .scanning(let updatedProgress) = progressViewModel.state else {
             return XCTFail("Expected progress update to preserve scanning state")
