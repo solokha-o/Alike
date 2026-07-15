@@ -26,18 +26,22 @@ public enum ALIAssets {
     }
 
     /// Returns the shared-coordinate sparkle and magnifier-glint overlay.
-    public static var welcomeHeroOverlayURL: URL {
-        resourceURL(named: "ALIWelcomeHeroOverlay", extension: "json")
+    public static var welcomeHeroOverlayURL: URL? {
+        optionalResourceURL(named: "ALIWelcomeHeroOverlay", extension: "json")
     }
 
     private static func resourceURL(named name: String, extension fileExtension: String) -> URL {
-        guard let url = Bundle.module.url(
+        guard let url = optionalResourceURL(named: name, extension: fileExtension) else {
+            fatalError("Missing ALI design-system resource: \(name).\(fileExtension)")
+        }
+        return url
+    }
+
+    private static func optionalResourceURL(named name: String, extension fileExtension: String) -> URL? {
+        Bundle.module.url(
             forResource: name,
             withExtension: fileExtension,
             subdirectory: "WelcomeHero"
-        ) else {
-            fatalError("Missing ALI design-system resource: \\(name).\\(fileExtension)")
-        }
-        return url
+        ) ?? Bundle.module.url(forResource: name, withExtension: fileExtension)
     }
 }

@@ -1,4 +1,5 @@
 import XCTest
+import Lottie
 @testable import DesignSystem
 
 final class ALIAssetsTests: XCTestCase {
@@ -9,6 +10,9 @@ final class ALIAssetsTests: XCTestCase {
     }
 
     func testWelcomeHeroOverlayIsAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.welcomeHeroOverlayURL.path))
+        let overlayURL = try? XCTUnwrap(ALIAssets.welcomeHeroOverlayURL)
+        XCTAssertNotNil(overlayURL)
+        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
     }
 }

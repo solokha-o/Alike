@@ -2,8 +2,15 @@ import SwiftUI
 import Photos
 import DesignSystem
 
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
+    @Environment(\.displayScale) private var displayScale
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     @State private var isSymbolAnimating = false
@@ -41,6 +48,7 @@ public struct WelcomeView: View {
         ScrollView {
             VStack(spacing: Spacing.large) {
                 heroSection(
+                    showsALIWelcomeHero: true,
                     title: appLocalized("Clean up your library with confidence"),
                     subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
                 )
@@ -127,15 +135,20 @@ public struct WelcomeView: View {
 
     private func heroSection(
         icon: String = "camera.viewfinder",
+        showsALIWelcomeHero: Bool = false,
         title: String,
         subtitle: String
     ) -> some View {
         VStack(spacing: Spacing.medium) {
-            Image(systemName: icon)
-                .font(.system(size: 80, weight: .bold))
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
-                .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
+            if showsALIWelcomeHero {
+                aliWelcomeHero
+            } else {
+                Image(systemName: icon)
+                    .font(.system(size: 80, weight: .bold))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
+                    .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
+            }
 
             Text(appLocalized("Alike"))
                 .font(.appLargeTitle)
@@ -149,6 +162,49 @@ public struct WelcomeView: View {
                 .font(.appCallout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+        }
+    }
+
+    private var aliWelcomeHero: some View {
+        AnimatedImageOverlay(
+            animationURL: ALIAssets.welcomeHeroOverlayURL,
+            aspectRatio: 1080.0 / 912.0,
+            maximumWidth: 420,
+            playback: .loop,
+            ambientMotion: .breathe
+        ) {
+            welcomeImage
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(appLocalized("ALI, Alike's photo detective"))
+    }
+
+    private var welcomeImage: Image {
+        let imageURL = ALIAssets.welcomeHeroURL(for: welcomeHeroScale)
+
+        #if canImport(UIKit)
+        guard let image = UIImage(contentsOfFile: imageURL.path) else {
+            return Image(systemName: "camera.viewfinder")
+        }
+        return Image(uiImage: image)
+        #elseif canImport(AppKit)
+        guard let image = NSImage(contentsOf: imageURL) else {
+            return Image(systemName: "camera.viewfinder")
+        }
+        return Image(nsImage: image)
+        #endif
+    }
+
+    private var welcomeHeroScale: ALIAssets.WelcomeHeroScale {
+        switch displayScale {
+        case ..<1.5:
+            .oneX
+        case ..<2.5:
+            .twoX
+        default:
+            .threeX
         }
     }
     
