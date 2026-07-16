@@ -56,6 +56,24 @@ public enum ALIAssets {
         }
     }
 
+    /// Available runtime exports for the Best Shot celebration illustration.
+    public enum BestShotScale: Sendable {
+        case oneX
+        case twoX
+        case threeX
+
+        fileprivate var resourceName: String {
+            switch self {
+            case .oneX:
+                "ALIBestShot"
+            case .twoX:
+                "ALIBestShot@2x"
+            case .threeX:
+                "ALIBestShot@3x"
+            }
+        }
+    }
+
     /// Returns a transparent PNG for the specified Welcome hero export scale.
     public static func welcomeHeroURL(for scale: WelcomeHeroScale) -> URL {
         resourceURL(named: scale.resourceName, extension: "png")
@@ -99,6 +117,24 @@ public enum ALIAssets {
             named: "ALIComparisonReviewOverlay",
             extension: "json",
             subdirectory: "ComparisonReview"
+        )
+    }
+
+    /// Returns a transparent PNG for the specified Best Shot celebration export scale.
+    public static func bestShotURL(for scale: BestShotScale) -> URL {
+        resourceURL(
+            named: scale.resourceName,
+            extension: "png",
+            subdirectory: "BestShot"
+        )
+    }
+
+    /// Returns the shared-coordinate one-shot sparkle and confetti overlay.
+    public static var bestShotOverlayURL: URL? {
+        optionalResourceURL(
+            named: "ALIBestShotOverlay",
+            extension: "json",
+            subdirectory: "BestShot"
         )
     }
 
