@@ -3,14 +3,14 @@ import DesignSystem
 @testable import Details
 
 final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
-    func testVisibleActivePresentationPlaysOverlayOnceWithAmbientMotion() {
+    func testVisibleActivePresentationLoopsOverlayWithAmbientMotion() {
         let presentation = ALIBestShotCelebrationPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
         XCTAssertEqual(presentation.animationURL, ALIAssets.bestShotOverlayURL)
-        XCTAssertEqual(presentation.playback, .once)
+        XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .breathe)
     }
 
@@ -21,7 +21,7 @@ final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
         )
 
         XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.playback, .once)
+        XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
@@ -32,7 +32,7 @@ final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
         )
 
         XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.playback, .once)
+        XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 

@@ -16,7 +16,7 @@ struct ALIComparisonReviewPresentation: Equatable {
 
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.comparisonReviewOverlayURL : nil,
-            playback: .once,
+            playback: .loop,
             ambientMotion: isMotionEnabled ? .breathe : .none
         )
     }
