@@ -12,7 +12,7 @@ struct ALIBestShotCelebrationPresentation: Equatable {
 
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.bestShotOverlayURL : nil,
-            playback: .loop,
+            playback: .once,
             ambientMotion: isMotionEnabled ? .breathe : .none
         )
     }

@@ -4,14 +4,14 @@ import DesignSystem
 @testable import Details
 
 final class ALIComparisonReviewLifecycleTests: XCTestCase {
-    func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
+    func testVisibleActivePresentationPlaysOverlayOnceWithContinuousBreathing() {
         let presentation = ALIComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
         XCTAssertEqual(presentation.animationURL, ALIAssets.comparisonReviewOverlayURL)
-        XCTAssertEqual(presentation.playback, .loop)
+        XCTAssertEqual(presentation.playback, .once)
         XCTAssertEqual(presentation.ambientMotion, .breathe)
     }
 
@@ -23,7 +23,7 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
             )
 
             XCTAssertNil(presentation.animationURL)
-            XCTAssertEqual(presentation.playback, .loop)
+            XCTAssertEqual(presentation.playback, .once)
             XCTAssertEqual(presentation.ambientMotion, .none)
         }
     }
