@@ -16,12 +16,12 @@ final class ClusterDetailsViewModel {
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
     private var persistenceTask: Task<Void, Never>?
-
     private(set) var bestShotAssetID: String
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
     private(set) var reviewStatus: ClusterReviewStatus
     private(set) var estimatedSavingsBytes: Int64
+    private(set) var hasLoadedReviewState = false
     var isDeleteConfirmationPresented = false
     private(set) var isDeleting = false
     private(set) var deleteErrorMessage: String?
@@ -56,12 +56,32 @@ final class ClusterDetailsViewModel {
         selectedAssetIDs.count
     }
 
+    var assetCount: Int {
+        assetSnapshots.count
+    }
+
+    var assets: [PHAsset] {
+        cluster.assets
+    }
+
+    var hasAssets: Bool {
+        !assets.isEmpty
+    }
+
     var estimatedSavingsText: String {
         ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
     }
 
     var bestShotLabel: String {
         assetSnapshots.first(where: { $0.localIdentifier == bestShotAssetID })?.title ?? appLocalized("Best Shot")
+    }
+
+    var isBestShotCelebrationVisible: Bool {
+        assetCount > 1 && !bestShotAssetID.isEmpty && reviewStatus == .reviewed
+    }
+
+    var hasCompletedCleanup: Bool {
+        pendingCompletionRecord != nil
     }
 
     var isActionBarVisible: Bool {
@@ -88,7 +108,43 @@ final class ClusterDetailsViewModel {
         }
     }
 
+    var displayedAssets: [PHAsset] {
+        let displayedIDs = Set(displayedAssetIdentifiers)
+        return assets.filter { displayedIDs.contains($0.localIdentifier) }
+    }
+
+    var deleteConfirmationTitle: String {
+        if selectedCount == 1 {
+            return appLocalized("Move 1 Selected Photo to Recently Deleted?")
+        }
+        return String(
+            format: appLocalized("Move %d Selected Photos to Recently Deleted?"),
+            selectedCount
+        )
+    }
+
+    var deleteConfirmationMessage: String {
+        let format = selectedCount == 1
+            ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
+            : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
+        return String(format: format, estimatedSavingsText)
+    }
+
+    var isDeleteErrorPresented: Bool {
+        get { deleteErrorMessage != nil }
+        set {
+            if !newValue {
+                clearDeleteError()
+            }
+        }
+    }
+
     func load() async {
+        hasLoadedReviewState = false
+        defer {
+            hasLoadedReviewState = true
+        }
+
         guard !assetSnapshots.isEmpty else {
             bestShotAssetID = ""
             selectedAssetIDs = []
@@ -278,6 +334,10 @@ final class ClusterDetailsViewModel {
     func openSettings() {
         openSettingsAction?()
     }
+
+    func assetIndex(for localIdentifier: String) -> Int? {
+        assets.firstIndex { $0.localIdentifier == localIdentifier }
+    }
 }
 
 extension ClusterDetailsViewModel {
@@ -289,10 +349,6 @@ extension ClusterDetailsViewModel {
         selectedAssetIDs.contains(localIdentifier)
     }
 
-    func displayedAssets(from assets: [PHAsset]) -> [PHAsset] {
-        let displayedIDs = Set(displayedAssetIdentifiers)
-        return assets.filter { displayedIDs.contains($0.localIdentifier) }
-    }
 }
 
 private extension ClusterDetailsViewModel {

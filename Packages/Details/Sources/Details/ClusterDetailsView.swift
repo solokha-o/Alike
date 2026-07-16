@@ -11,17 +11,16 @@ import PurchasesUI
 
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
-    let cluster: PhotoCluster
+    @Environment(\.dismiss) private var dismiss
+
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
+
     @State private var viewModel: ClusterDetailsViewModel
     @State private var gridColumns: Int = 3
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
-    @State private var didCompleteCleanup = false
-    @State private var hasLoadedReviewState = false
-    @Environment(\.dismiss) private var dismiss
 
     public init(
         cluster: PhotoCluster,
@@ -33,7 +32,6 @@ public struct ClusterDetailsView: View {
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
-        self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = subscriptionStore
@@ -52,7 +50,6 @@ public struct ClusterDetailsView: View {
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
-        self.cluster = cluster
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = nil
@@ -60,14 +57,15 @@ public struct ClusterDetailsView: View {
     }
     
     public var body: some View {
-        let displayedAssets = viewModel.displayedAssets(from: cluster.assets)
+        let displayedAssets = viewModel.displayedAssets
         VStack(spacing: Spacing.small) {
             ClusterReviewSummaryCard(
-                assetCount: cluster.assets.count,
+                assetCount: viewModel.assetCount,
                 bestShotLabel: viewModel.bestShotLabel,
                 selectedCount: viewModel.selectedCount,
                 estimatedSavingsText: viewModel.estimatedSavingsText,
-                reviewStatus: viewModel.reviewStatus
+                reviewStatus: viewModel.reviewStatus,
+                isBestShotCelebrationVisible: viewModel.isBestShotCelebrationVisible
             )
             
             if viewModel.isActionBarVisible {
@@ -96,7 +94,7 @@ public struct ClusterDetailsView: View {
             }
             
             ScrollView {
-                if cluster.assets.isEmpty {
+                if !viewModel.hasAssets {
                     ContentUnavailableView {
                         Label(appLocalized("No Photos Available"), systemImage: "photo")
                     }
@@ -115,7 +113,7 @@ public struct ClusterDetailsView: View {
                                     viewModel.toggleSelection(for: asset.localIdentifier)
                                 },
                                 onOpenOriginal: {
-                                    if let index = cluster.assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
+                                    if let index = viewModel.assetIndex(for: asset.localIdentifier) {
                                         selectedAsset = SelectedAsset(asset: asset, index: index)
                                     }
                                 }
@@ -137,9 +135,9 @@ public struct ClusterDetailsView: View {
         .padding(.horizontal, Spacing.medium)
         .padding(.top, Spacing.small)
         .padding(.bottom, Spacing.medium)
-        .animation(hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
-        .animation(hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
-        .animation(hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
+        .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
+        .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
+        .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .navigationTitle(Text(appLocalized("Similar Photos")))
@@ -163,7 +161,7 @@ public struct ClusterDetailsView: View {
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in
-            FullscreenPhotoPagerView(assets: cluster.assets, selectedIndex: selection.index)
+            FullscreenPhotoPagerView(assets: viewModel.assets, selectedIndex: selection.index)
         }
         .sheet(item: $presentedPremiumFeature) { _ in
             SubscriptionPaywallView(
@@ -175,7 +173,7 @@ public struct ClusterDetailsView: View {
             )
         }
         .alert(
-            deleteConfirmationTitle,
+            viewModel.deleteConfirmationTitle,
             isPresented: Bindable(viewModel).isDeleteConfirmationPresented
         ) {
             Button(appLocalized("Cancel"), role: .cancel) {}
@@ -185,18 +183,11 @@ public struct ClusterDetailsView: View {
                 }
             }
         } message: {
-            Text(deleteConfirmationMessage)
+            Text(viewModel.deleteConfirmationMessage)
         }
         .alert(
             appLocalized("Cleanup Unavailable"),
-            isPresented: Binding(
-                get: { viewModel.deleteErrorMessage != nil },
-                set: { isPresented in
-                    if !isPresented {
-                        viewModel.clearDeleteError()
-                    }
-                }
-            )
+            isPresented: Bindable(viewModel).isDeleteErrorPresented
         ) {
             if viewModel.shouldOfferOpenSettings {
                 Button(appLocalized("Open Settings")) {
@@ -211,18 +202,15 @@ public struct ClusterDetailsView: View {
             Text(viewModel.deleteErrorMessage ?? "")
         }
         .task {
-            hasLoadedReviewState = false
             await viewModel.load()
-            hasLoadedReviewState = true
         }
         .onChange(of: viewModel.pendingCompletionRecord) { _, record in
             guard let record else { return }
-            didCompleteCleanup = true
             onCleanupCompleted?(record)
             dismiss()
         }
         .onDisappear {
-            guard !didCompleteCleanup else { return }
+            guard !viewModel.hasCompletedCleanup else { return }
             onReviewStateChanged?()
         }
         .interactiveDismissDisabled(viewModel.isDeleting)
@@ -234,23 +222,6 @@ private extension ClusterDetailsView {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
-    }
-
-    var deleteConfirmationTitle: String {
-        if viewModel.selectedCount == 1 {
-            return appLocalized("Move 1 Selected Photo to Recently Deleted?")
-        }
-        return String(
-            format: appLocalized("Move %d Selected Photos to Recently Deleted?"),
-            viewModel.selectedCount
-        )
-    }
-
-    var deleteConfirmationMessage: String {
-        let format = viewModel.selectedCount == 1
-            ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
-            : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
-        return String(format: format, viewModel.estimatedSavingsText)
     }
 }
 

@@ -10,6 +10,7 @@ struct ClusterReviewSummaryCard: View {
     let selectedCount: Int
     let estimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
+    let isBestShotCelebrationVisible: Bool
 
     var body: some View {
         Group {
@@ -80,7 +81,10 @@ struct ClusterReviewSummaryCard: View {
 
     @ViewBuilder
     private func comparisonArtwork(width: CGFloat) -> some View {
-        if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
+        if isBestShotCelebrationVisible {
+            ALIBestShotCelebrationView()
+                .frame(width: width)
+        } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
             ALIComparisonReviewView()
                 .frame(width: width)
                 .accessibilityHidden(true)
