@@ -43,26 +43,21 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
 
     @ViewBuilder
     public var body: some View {
-        if reduceMotion {
+        if ambientMotion == .breathe && !reduceMotion {
             composite
+                .phaseAnimator([false, true]) { content, isLifted in
+                    content
+                        .scaleEffect(isLifted ? 1.02 : 0.995)
+                        .offset(
+                            x: isLifted ? 2 : -2,
+                            y: isLifted ? -6 : 2
+                        )
+                        .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
+                } animation: { _ in
+                    .easeInOut(duration: 2.4)
+                }
         } else {
-            switch ambientMotion {
-            case .none:
-                composite
-            case .breathe:
-                composite
-                    .phaseAnimator([false, true]) { content, isLifted in
-                        content
-                            .scaleEffect(isLifted ? 1.02 : 0.995)
-                            .offset(
-                                x: isLifted ? 2 : -2,
-                                y: isLifted ? -6 : 2
-                            )
-                            .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
-                    } animation: { _ in
-                        .easeInOut(duration: 2.4)
-                    }
-            }
+            composite
         }
     }
 

@@ -55,7 +55,7 @@ public struct ClusterDetailsView: View {
         self.subscriptionStore = nil
         self._viewModel = State(initialValue: viewModel)
     }
-    
+
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets
         VStack(spacing: Spacing.small) {
@@ -67,7 +67,7 @@ public struct ClusterDetailsView: View {
                 reviewStatus: viewModel.reviewStatus,
                 isBestShotCelebrationVisible: viewModel.isBestShotCelebrationVisible
             )
-            
+
             if viewModel.isActionBarVisible {
                 ClusterReviewActionBar(
                     onKeepBestOnly: viewModel.keepBestOnly,
@@ -79,7 +79,7 @@ public struct ClusterDetailsView: View {
                 )
                 .disabled(viewModel.isDeleting)
             }
-            
+
             if viewModel.requiresPremiumForCurrentSelection {
                 BatchCleanupUpsellCard(
                     selectedCount: viewModel.selectedCount,
@@ -92,7 +92,7 @@ public struct ClusterDetailsView: View {
                     }
                 )
             }
-            
+
             ScrollView {
                 if !viewModel.hasAssets {
                     ContentUnavailableView {
@@ -127,7 +127,6 @@ public struct ClusterDetailsView: View {
                         }
                     }
                     .allowsHitTesting(!viewModel.isDeleting)
-                    .padding(.horizontal, Spacing.medium)
                     .padding(.bottom, Spacing.medium)
                 }
             }

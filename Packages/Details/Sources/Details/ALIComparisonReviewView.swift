@@ -20,6 +20,21 @@ struct ALIComparisonReviewPresentation: Equatable {
             ambientMotion: isMotionEnabled ? .breathe : .none
         )
     }
+
+    static func imageURL(for displayScale: CGFloat) -> URL {
+        ALIAssets.comparisonReviewURL(for: imageScale(for: displayScale))
+    }
+
+    private static func imageScale(for displayScale: CGFloat) -> ALIAssets.ComparisonReviewScale {
+        switch displayScale {
+        case ..<1.5:
+            .oneX
+        case ..<2.5:
+            .twoX
+        default:
+            .threeX
+        }
+    }
 }
 
 struct ALIComparisonReviewView: View {
@@ -53,7 +68,7 @@ struct ALIComparisonReviewView: View {
 
     @ViewBuilder
     private var comparisonImage: some View {
-        let imageURL = ALIAssets.comparisonReviewURL(for: comparisonImageScale)
+        let imageURL = ALIComparisonReviewPresentation.imageURL(for: displayScale)
 
 #if canImport(UIKit)
         if let image = UIImage(contentsOfFile: imageURL.path) {
@@ -88,16 +103,5 @@ struct ALIComparisonReviewView: View {
 
     private func setVisibility(_ isVisible: Bool) {
         self.isVisible = isVisible
-    }
-
-    private var comparisonImageScale: ALIAssets.ComparisonReviewScale {
-        switch displayScale {
-        case ..<1.5:
-            .oneX
-        case ..<2.5:
-            .twoX
-        default:
-            .threeX
-        }
     }
 }

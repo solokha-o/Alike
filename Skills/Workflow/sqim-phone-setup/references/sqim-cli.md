@@ -7,7 +7,8 @@ This reference was checked against the official SQIM CLI `0.2.4` and [sqim.dev](
 - Official Homebrew package: `brew install milq-ai/tap/sqim`
 - Login status: `sqim status --json`
 - Browser login: `sqim login`
-- Code-based login: `sqim login --no-browser` or `sqim login --code CODE`
+- Code-based login: `sqim login --no-browser`; complete authorization through
+  the interactive flow and never pass a login code as a command argument.
 - Credentials are stored by SQIM in the OS user configuration directory under `sqim/config.json`; never read or print that file.
 
 The iPhone must have been connected to this Mac through Xcode at least once, and local development signing must work.

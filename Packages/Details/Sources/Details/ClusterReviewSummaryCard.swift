@@ -87,7 +87,6 @@ struct ClusterReviewSummaryCard: View {
         } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
             ALIComparisonReviewView()
                 .frame(width: width)
-                .accessibilityHidden(true)
         }
     }
 

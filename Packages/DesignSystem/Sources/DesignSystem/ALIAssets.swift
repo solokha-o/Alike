@@ -129,7 +129,7 @@ public enum ALIAssets {
         )
     }
 
-    /// Returns the shared-coordinate one-shot sparkle and confetti overlay.
+    /// Returns the shared-coordinate looping sparkle and confetti overlay.
     public static var bestShotOverlayURL: URL? {
         optionalResourceURL(
             named: "ALIBestShotOverlay",

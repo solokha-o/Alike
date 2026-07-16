@@ -59,4 +59,23 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
         XCTAssertFalse(ALIComparisonReviewPresentation.isEligible(assetCount: 1))
         XCTAssertTrue(ALIComparisonReviewPresentation.isEligible(assetCount: 2))
     }
+
+    func testDisplayScaleSelectsMatchingComparisonExport() {
+        XCTAssertEqual(
+            ALIComparisonReviewPresentation.imageURL(for: 1.49),
+            ALIAssets.comparisonReviewURL(for: .oneX)
+        )
+        XCTAssertEqual(
+            ALIComparisonReviewPresentation.imageURL(for: 1.5),
+            ALIAssets.comparisonReviewURL(for: .twoX)
+        )
+        XCTAssertEqual(
+            ALIComparisonReviewPresentation.imageURL(for: 2.49),
+            ALIAssets.comparisonReviewURL(for: .twoX)
+        )
+        XCTAssertEqual(
+            ALIComparisonReviewPresentation.imageURL(for: 2.5),
+            ALIAssets.comparisonReviewURL(for: .threeX)
+        )
+    }
 }
