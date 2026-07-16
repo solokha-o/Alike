@@ -30,6 +30,7 @@ request needs that extra depth.
 | `SwiftUI/swiftui-ui-patterns` | Create/refactor SwiftUI UI, TabView, sheets, navigation, reusable components, static hero + Lottie overlays | Use external SwiftUI only for broad/current API guidance | No |
 | `SwiftUI/swiftui-view-refactor` | Split/refactor SwiftUI views, structure/order, MV/Observation patterns | Use external SwiftUI only for API uncertainty | No |
 | `Testing/swift-testing` | Add/fix/review tests, async test isolation, package test architecture, XCTest migration planning | Use external testing only for API depth or large-scale migration details | No |
+| `Workflow/sqim-phone-setup` | Explicit request to set up, install, or push Alike on the user's physical phone/iPhone with SQIM; never ordinary build or simulator work | No | No |
 | `Workflow/todo-management` | Create, review, audit, resolve, or report TODO-family comments and deferred code work | No | No |
 
 ## Routine Commands
