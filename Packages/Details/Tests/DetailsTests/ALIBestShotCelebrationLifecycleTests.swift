@@ -3,7 +3,7 @@ import DesignSystem
 @testable import Details
 
 final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
-    func testVisibleActivePresentationLoopsOverlayWithAmbientMotion() {
+    func testVisibleActivePresentationLoopsOverlayWithoutAmbientMotion() {
         let presentation = ALIBestShotCelebrationPresentation.resolve(
             isVisible: true,
             scenePhase: .active
@@ -11,7 +11,7 @@ final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
 
         XCTAssertEqual(presentation.animationURL, ALIAssets.bestShotOverlayURL)
         XCTAssertEqual(presentation.playback, .loop)
-        XCTAssertEqual(presentation.ambientMotion, .breathe)
+        XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
     func testInvisiblePresentationKeepsStaticSceneWithoutMotion() {

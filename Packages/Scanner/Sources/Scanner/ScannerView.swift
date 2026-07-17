@@ -324,6 +324,8 @@ public struct ScannerView: View {
             VStack(spacing: Spacing.medium) {
                 scanAllowanceCard
 
+                scannerReactionSlot
+
                 if viewModel.cleanupInsights.hasHistory {
                     CleanupInsightsCard(insights: viewModel.cleanupInsights)
                 }
@@ -586,6 +588,43 @@ public struct ScannerView: View {
                 remainingScans: viewModel.remainingFreeScans,
                 resetDate: viewModel.nextFreeScanResetDate
             )
+        }
+    }
+
+    @ViewBuilder
+    private var scannerReactionSlot: some View {
+        if let cue = viewModel.currentALIReaction,
+           let copy = scannerReactionCopy(for: cue.state) {
+            HStack(spacing: Spacing.medium) {
+                ALIReactionView(cue: cue, maximumWidth: 64)
+
+                Text(copy)
+                    .font(.appHeadline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(Spacing.medium)
+            .background(
+                Color.secondary.opacity(ColorOpacity.placeholderFill),
+                in: RoundedRectangle(cornerRadius: CornerRadius.medium)
+            )
+            .accessibilityElement(children: .contain)
+            .onDisappear {
+                guard cue.persistence == .oneShot else { return }
+                viewModel.consumeALIReaction(id: cue.id)
+            }
+        }
+    }
+
+    private func scannerReactionCopy(for state: ALIState) -> String? {
+        switch state {
+        case .resultsFound:
+            appLocalized("Cleanup opportunities found")
+        case .noResults:
+            appLocalized("Your library is all caught up")
+        case .cleanupSuccess:
+            appLocalized("Cleanup complete")
+        case .idle, .scanning, .cleanupReady, .permissionIssue, .recoverableError:
+            nil
         }
     }
 

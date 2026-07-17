@@ -88,7 +88,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
         XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        XCTAssertNil(viewModel.bestShotCelebrationCue)
     }
 
     func testSelectAllExceptBestExcludesBestShot() async {
@@ -106,6 +107,11 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
         XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        XCTAssertEqual(viewModel.bestShotCelebrationCue?.id.generation, 1)
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+        )
     }
 
     func testKeepBestOnlySelectsAllNonBestAssets() async {
@@ -122,6 +128,9 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
         XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        let cue = viewModel.bestShotCelebrationCue
+        viewModel.keepBestOnly()
+        XCTAssertEqual(viewModel.bestShotCelebrationCue, cue)
     }
 
     func testClearSelectionResetsState() async {

@@ -106,6 +106,13 @@ public final class ScannerViewModel {
         case refreshing(CleanupCompletionRecord)
         case success(CleanupCompletionRecord)
         case failed(CleanupCompletionRecord, message: String)
+
+        var record: CleanupCompletionRecord {
+            switch self {
+            case .refreshing(let record), .success(let record), .failed(let record, _):
+                record
+            }
+        }
     }
 
     private enum ScanPurpose {
@@ -131,6 +138,7 @@ public final class ScannerViewModel {
     public private(set) var cleanupCategories: [CleanupCategorySummary] = []
     public private(set) var cleanupInsights: CleanupInsights = .empty
     public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
+    public private(set) var currentALIReaction: ALIReactionCue?
 
     public var isCleanupRefreshInProgress: Bool {
         isCleanupRefreshInFlight
@@ -163,6 +171,7 @@ public final class ScannerViewModel {
     private var isCleanupRefreshInFlight = false
     private var activeCleanupRefreshRecord: CleanupCompletionRecord?
     private var queuedCleanupRefreshRecord: CleanupCompletionRecord?
+    private var aliReactionResolver = ALIReactionResolver()
     let cleanupService: any PhotoCleanupService
     let cleanupHistoryRepository: CleanupHistoryRepository
     public var sensitivity: SensitivityLevel
@@ -302,15 +311,25 @@ public final class ScannerViewModel {
         )
         guard decision.isAllowed else { return decision }
 
+        let scanOperationID = UUID()
+        let stateBeforeScan = state
         scanMutationGeneration &+= 1
         isUserInitiatedScanExecutionInFlight = true
         defer { isUserInitiatedScanExecutionInFlight = false }
 
         do {
             setCleanupRefreshState(nil)
-            try await runScan(purpose: .userInitiated)
+            publishALIEvent(.scanAdmitted(id: scanOperationID))
+            try await runScan(
+                purpose: .userInitiated,
+                scanOperationID: scanOperationID
+            )
+        } catch is CancellationError {
+            publishALIEvent(.scanCancelled(id: scanOperationID))
+            state = stateBeforeScan
         } catch {
             AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
+            publishScanFailure(error, operationID: scanOperationID)
             state = .error(error.localizedDescription)
         }
         return .allowed
@@ -341,16 +360,25 @@ public final class ScannerViewModel {
 
     private func performCleanupRefresh(for record: CleanupCompletionRecord) async {
         setCleanupRefreshState(.refreshing(record))
+        publishALIEvent(.cleanupStarted(id: record.id))
 
         do {
-            try await runScan(purpose: .postCleanupReconciliation)
-            await loadCleanupInsights()
+            try await runScan(purpose: .postCleanupReconciliation, scanOperationID: nil)
+            try await loadCleanupInsightsForReconciliation()
             setCleanupRefreshState(.success(record))
+            publishALIEvent(.cleanupCompleted(
+                id: record.id,
+                summary: ALICleanupSummary(
+                    itemCount: record.deletedCount,
+                    estimatedSavingsBytes: record.estimatedSavingsBytes
+                )
+            ))
         } catch {
             AppLog.scan.error(
                 "\(AppLog.tag(.error, "Cleanup refresh failed: \(error.localizedDescription)"))"
             )
             await loadCleanupInsights()
+            publishALIEvent(.cleanupReconciliationFailed(id: record.id))
             setCleanupRefreshState(.failed(
                 record,
                 message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.")
@@ -364,7 +392,19 @@ public final class ScannerViewModel {
     }
 
     public func dismissCleanupRefreshState() {
+        if let record = cleanupRefreshState?.record {
+            consumeALIReaction(
+                id: ALIReactionCueID(
+                    eventID: .cleanup(record.id),
+                    kind: currentALIReaction?.id.kind ?? .cleanupSuccess
+                )
+            )
+        }
         setCleanupRefreshState(nil)
+    }
+
+    public func consumeALIReaction(id: ALIReactionCueID) {
+        publishALIEvent(.reactionConsumed(id: id))
     }
     
     public func checkForGalleryChanges() async -> Bool {
@@ -581,6 +621,9 @@ private extension ScannerViewModel {
         guard cleanupRefreshState == .success(record) else {
             return
         }
+        consumeALIReaction(
+            id: ALIReactionCueID(eventID: .cleanup(record.id), kind: .cleanupSuccess)
+        )
         cleanupRefreshState = nil
         cleanupRefreshDismissTask = nil
     }
@@ -600,6 +643,10 @@ private extension ScannerViewModel {
         cleanupInsights = await fetchCleanupInsights()
     }
 
+    func loadCleanupInsightsForReconciliation() async throws {
+        cleanupInsights = try await cleanupInsightsProvider.loadInsights()
+    }
+
     func fetchCleanupCategories() async -> [CleanupCategorySummary] {
         do {
             let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
@@ -616,7 +663,7 @@ private extension ScannerViewModel {
         cleanupCategories = await fetchCleanupCategories()
     }
 
-    private func runScan(purpose: ScanPurpose) async throws {
+    private func runScan(purpose: ScanPurpose, scanOperationID: UUID?) async throws {
         AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
         if purpose.showsProgress {
             state = .scanning(progress: 0.0)
@@ -668,21 +715,44 @@ private extension ScannerViewModel {
         activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
         AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
         shouldShowRescanPrompt = false
-        do {
-            cleanupCategories = try await analysisService.refreshCleanupCategories()
-        } catch {
-            AppLog.photoKit.error(
-                "\(AppLog.tag(.error, "Failed to refresh cleanup categories: \(error.localizedDescription)"))"
-            )
-            cleanupCategories = []
-        }
+        cleanupCategories = try await analysisService.refreshCleanupCategories()
         state = .results(sorted)
         if purpose.consumesFreeScanAllowance {
+            if let scanOperationID {
+                let categoryCandidateCount = cleanupCategories.reduce(0) { total, category in
+                    total + max(0, category.assetCount)
+                }
+                publishALIEvent(.scanCompleted(
+                    id: scanOperationID,
+                    candidateCount: sorted.count + categoryCandidateCount
+                ))
+            }
             monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
             await publishPostScanPremiumOfferIfEligible(
                 clusters: sorted,
                 categories: cleanupCategories
             )
+        }
+    }
+
+    func publishALIEvent(_ event: ALIEvent) {
+        _ = aliReactionResolver.apply(event)
+        currentALIReaction = aliReactionResolver.currentCue
+    }
+
+    func publishScanFailure(_ error: Error, operationID: UUID) {
+        let eventID = ALIEventID.scan(operationID)
+
+        if error as? PhotoCleanupError == .notAuthorized {
+            publishALIEvent(.permissionBlocked(
+                id: eventID,
+                context: ALIPermissionContext(operation: .scan)
+            ))
+        } else {
+            publishALIEvent(.recoverableFailure(
+                id: eventID,
+                context: ALIErrorContext(operation: .scan)
+            ))
         }
     }
 

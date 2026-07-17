@@ -145,6 +145,15 @@ public enum ALIAssets {
         )
     }
 
+    /// Safely resolves Scanner searching artwork for fallback-capable reaction surfaces.
+    public static func optionalScannerSearchingURL(for scale: ScannerSearchingScale) -> URL? {
+        optionalResourceURL(
+            named: scale.resourceName,
+            extension: "png",
+            subdirectory: "ScannerSearching"
+        )
+    }
+
     /// Returns the shared-coordinate photo-candidate, scan-pulse, and magnifier overlay.
     public static var scannerSearchingOverlayURL: URL? {
         optionalResourceURL(
@@ -160,6 +169,18 @@ public enum ALIAssets {
         scale: ScannerIdleScale
     ) -> URL {
         resourceURL(
+            named: state.resourceStem + scale.filenameSuffix,
+            extension: "png",
+            subdirectory: state.resourceDirectory
+        )
+    }
+
+    /// Safely resolves contextual Scanner idle artwork.
+    public static func optionalScannerIdleURL(
+        for state: ScannerIdleState,
+        scale: ScannerIdleScale
+    ) -> URL? {
+        optionalResourceURL(
             named: state.resourceStem + scale.filenameSuffix,
             extension: "png",
             subdirectory: state.resourceDirectory

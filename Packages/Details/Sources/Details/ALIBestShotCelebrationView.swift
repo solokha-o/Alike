@@ -13,7 +13,7 @@ struct ALIBestShotCelebrationPresentation: Equatable {
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.bestShotOverlayURL : nil,
             playback: .loop,
-            ambientMotion: isMotionEnabled ? .breathe : .none
+            ambientMotion: .none
         )
     }
 
@@ -41,6 +41,7 @@ struct ALIBestShotCelebrationView: View {
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
+    let cueID: ALIReviewReactionCue.ID
 
     var body: some View {
         AnimatedImageOverlay(
@@ -52,6 +53,7 @@ struct ALIBestShotCelebrationView: View {
         ) {
             bestShotImage
         }
+        .id(cueID)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(appLocalized("ALI celebrating the Best Shot")))
         .onAppear {

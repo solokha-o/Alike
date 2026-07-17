@@ -37,7 +37,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ScannerTests",
-            dependencies: ["Scanner", "Core"]
+            dependencies: ["Scanner", "Core", "Cleanup"]
         ),
     ]
 )
