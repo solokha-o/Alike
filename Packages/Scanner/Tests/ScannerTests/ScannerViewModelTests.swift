@@ -61,6 +61,48 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.gridColumns, 3)
     }
 
+    func testInitialALIIdlePresentationIsReady() {
+        XCTAssertEqual(viewModel.scannerALIIdlePresentation?.cue.state, .idle(.ready))
+    }
+
+    func testCachedUnreviewedClustersProduceHasReviewsIdlePresentation() async {
+        let clusters = [createMockCluster(photoCount: 2), createMockCluster(photoCount: 2)]
+        await mockRepository.setLoadClustersResult(.success(clusters))
+
+        await viewModel.loadCachedResults()
+
+        XCTAssertEqual(
+            viewModel.scannerALIIdlePresentation?.cue.state,
+            .idle(.hasReviews(count: 2))
+        )
+        XCTAssertEqual(viewModel.scannerALIIdlePresentation?.cta, .review)
+    }
+
+    func testEmptyCachedResultsWithScanDateProduceAllCaughtUp() async {
+        await mockRepository.setGetLastScanDateResult(Date())
+        await mockRepository.setLoadClustersResult(.success([]))
+
+        await viewModel.loadCachedResults()
+
+        XCTAssertEqual(viewModel.state, .results([]))
+        XCTAssertEqual(viewModel.scannerALIIdlePresentation?.cue.state, .idle(.allCaughtUp))
+    }
+
+    func testGalleryChangeOverridesPendingReviews() async {
+        let cluster = createMockCluster(photoCount: 2)
+        await mockRepository.setGetLastScanDateResult(Date())
+        await mockRepository.setLoadClustersResult(.success([cluster]))
+        await mockRepository.setHasGalleryChangedResult(true)
+
+        await viewModel.loadCachedResults()
+        _ = await viewModel.checkForGalleryChanges()
+
+        XCTAssertEqual(
+            viewModel.scannerALIIdlePresentation?.cue.state,
+            .idle(.libraryChanged(newItemsCount: nil))
+        )
+    }
+
     func testDeniedScanDoesNotCreateALIReaction() async {
         await scanUsageRepository.setCompletedScanCount(PremiumAccessPolicy.monthlyFreeScanLimit)
 

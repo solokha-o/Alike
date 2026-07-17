@@ -139,6 +139,7 @@ public final class ScannerViewModel {
     public private(set) var cleanupInsights: CleanupInsights = .empty
     public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
     public private(set) var currentALIReaction: ALIReactionCue?
+    public private(set) var hasCompletedScanBaseline = false
 
     public var isCleanupRefreshInProgress: Bool {
         isCleanupRefreshInFlight
@@ -245,10 +246,12 @@ public final class ScannerViewModel {
         let expectedScanGeneration = scanMutationGeneration
         let cachedInsights = await fetchCleanupInsights()
         let currentUsage = await resolveMonthlyScanUsage(at: now())
+        let lastScanDate = await repository.getLastScanDate()
 
         if canCommitCachedResults(for: expectedScanGeneration) {
             cleanupInsights = cachedInsights
             monthlyScanUsage = currentUsage
+            hasCompletedScanBaseline = lastScanDate != nil
         }
 
         do {
@@ -276,6 +279,9 @@ public final class ScannerViewModel {
                 reviewStates = [:]
                 resurfacingStates = [:]
                 activeCleanupSession = session
+                if hasCompletedScanBaseline {
+                    state = .results([])
+                }
             }
         } catch {
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to load cached results: \(error.localizedDescription)"))")
@@ -409,7 +415,7 @@ public final class ScannerViewModel {
     
     public func checkForGalleryChanges() async -> Bool {
         let hasChanged = await repository.hasGalleryChanged()
-        shouldShowRescanPrompt = hasChanged && !currentResultClusters.isEmpty
+        shouldShowRescanPrompt = hasChanged && hasScanBaseline
         return shouldShowRescanPrompt
     }
 
@@ -513,6 +519,29 @@ public final class ScannerViewModel {
 
     public func cleanupEntryCluster(from clusters: [PhotoCluster]) -> PhotoCluster? {
         cleanupManager.nextClusterToReview(from: clusters, reviewStates: reviewStates)
+    }
+
+    var scannerALIIdleFacts: ScannerALIIdleFacts {
+        let clusters = currentResultClusters
+        let progress = displayedSessionProgress(for: clusters)
+        return ScannerALIIdleFacts(
+            isScanActive: {
+                if case .scanning = state { return true }
+                return false
+            }(),
+            isCleanupExecutionActive: isCleanupRefreshInProgress,
+            hasLibraryChanged: shouldShowRescanPrompt,
+            pendingReviewCount: progress.remainingClusters,
+            hasCompletedScanBaseline: hasScanBaseline,
+            hasReviewEntryCluster: cleanupEntryCluster(from: clusters) != nil,
+            hasInReviewCluster: clusters.contains {
+                reviewStatus(for: $0.id) == .inReview
+            }
+        )
+    }
+
+    var scannerALIIdlePresentation: ScannerALIIdlePresentation? {
+        ScannerALIIdlePresentation.resolve(facts: scannerALIIdleFacts)
     }
 
     public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
@@ -682,6 +711,7 @@ private extension ScannerViewModel {
 
         try await repository.saveClusters(clusters)
         try await repository.updateLastScanDate(Date())
+        hasCompletedScanBaseline = true
 
         let sorted = canonicalSortedClusters(from: clusters)
 
@@ -866,5 +896,11 @@ private extension ScannerViewModel {
             return clusters
         }
         return []
+    }
+
+    var hasScanBaseline: Bool {
+        guard !hasCompletedScanBaseline else { return true }
+        if case .results = state { return true }
+        return false
     }
 }
