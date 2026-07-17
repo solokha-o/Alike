@@ -2,6 +2,58 @@ import Foundation
 
 /// Shared ALI visual resources for use across feature packages.
 public enum ALIAssets {
+    /// Contextual static scenes shown while Scanner Home is idle.
+    public enum ScannerIdleState: String, CaseIterable, Sendable {
+        case ready
+        case hasReviews
+        case allCaughtUp
+        case libraryChanged
+
+        fileprivate var resourceStem: String {
+            switch self {
+            case .ready:
+                "ALIScannerIdleReady"
+            case .hasReviews:
+                "ALIScannerIdleHasReviews"
+            case .allCaughtUp:
+                "ALIScannerIdleAllCaughtUp"
+            case .libraryChanged:
+                "ALIScannerIdleLibraryChanged"
+            }
+        }
+
+        fileprivate var resourceDirectory: String {
+            switch self {
+            case .ready:
+                "ScannerIdleReady"
+            case .hasReviews:
+                "ScannerIdleHasReviews"
+            case .allCaughtUp:
+                "ScannerIdleAllCaughtUp"
+            case .libraryChanged:
+                "ScannerIdleLibraryChanged"
+            }
+        }
+    }
+
+    /// Available runtime export scales for contextual Scanner idle scenes.
+    public enum ScannerIdleScale: Sendable {
+        case oneX
+        case twoX
+        case threeX
+
+        fileprivate var filenameSuffix: String {
+            switch self {
+            case .oneX:
+                ""
+            case .twoX:
+                "@2x"
+            case .threeX:
+                "@3x"
+            }
+        }
+    }
+
     /// Available runtime exports for the Welcome hero illustration.
     public enum WelcomeHeroScale: Sendable {
         case oneX
@@ -99,6 +151,27 @@ public enum ALIAssets {
             named: "ALIScannerSearchingOverlay",
             extension: "json",
             subdirectory: "ScannerSearching"
+        )
+    }
+
+    /// Returns a transparent PNG for a contextual Scanner idle state and scale.
+    public static func scannerIdleURL(
+        for state: ScannerIdleState,
+        scale: ScannerIdleScale
+    ) -> URL {
+        resourceURL(
+            named: state.resourceStem + scale.filenameSuffix,
+            extension: "png",
+            subdirectory: state.resourceDirectory
+        )
+    }
+
+    /// Returns the optional effects-only overlay for a contextual Scanner idle state.
+    public static func scannerIdleOverlayURL(for state: ScannerIdleState) -> URL? {
+        optionalResourceURL(
+            named: state.resourceStem + "Overlay",
+            extension: "json",
+            subdirectory: state.resourceDirectory
         )
     }
 
