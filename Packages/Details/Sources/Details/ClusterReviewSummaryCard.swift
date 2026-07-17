@@ -3,62 +3,94 @@ import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
+    let assetCount: Int
     let bestShotLabel: String
     let selectedCount: Int
     let estimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
+    let isBestShotCelebrationVisible: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.small) {
-            HStack(alignment: .center, spacing: Spacing.small) {
-                Image(systemName: statusIconName)
-                    .font(.appHeadline)
-                    .foregroundStyle(statusColor)
-                    .frame(width: 20, height: 20)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    statistics
+                    comparisonArtwork(width: 56)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+            } else {
+                HStack(alignment: .top, spacing: Spacing.medium) {
+                    statistics
 
-                Text(appLocalized("Cleanup Review"))
-                    .font(.appHeadline)
-                    .lineLimit(1)
-
-                Spacer()
-
-                statusChip
+                    comparisonArtwork(width: 72)
+                }
             }
-            .frame(minHeight: 28)
+        }
+        .padding(Spacing.medium)
+        .background(
+            Color.secondary.opacity(ColorOpacity.placeholderFill),
+            in: RoundedRectangle(cornerRadius: CornerRadius.medium)
+        )
+    }
+
+    private var statistics: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Cleanup Review"))
+                .font(.appHeadline)
+
+            statusLabel
 
             summaryMetric(
                 title: appLocalized("Best Shot"),
                 value: bestShotLabel,
-                lineLimit: 2,
-                minHeight: 56
+                usesMonospacedDigits: false
             )
 
-            HStack(alignment: .top, spacing: Spacing.medium) {
-                summaryMetric(
-                    title: appLocalized("Selected to Review"),
-                    value: "\(selectedCount)",
-                    usesMonospacedDigits: true,
-                    minHeight: 44
-                )
-                summaryMetric(
-                    title: appLocalized("Estimated Savings"),
-                    value: estimatedSavingsText,
-                    usesMonospacedDigits: true,
-                    minHeight: 44
-                )
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    selectionMetric
+                    savingsMetric
+                }
+            } else {
+                HStack(alignment: .top, spacing: Spacing.medium) {
+                    selectionMetric
+                    savingsMetric
+                }
             }
         }
-        .padding(Spacing.medium)
-        .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: CornerRadius.large))
-        .overlay(
-            RoundedRectangle(cornerRadius: CornerRadius.large)
-                .stroke(statusColor.opacity(borderOpacity), lineWidth: 1)
-        )
-        .subtleShadow()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var statusChip: some View {
+    private var selectionMetric: some View {
+        summaryMetric(
+            title: appLocalized("Selected to Review"),
+            value: "\(selectedCount)",
+            usesMonospacedDigits: true
+        )
+    }
+
+    private var savingsMetric: some View {
+        summaryMetric(
+            title: appLocalized("Estimated Savings"),
+            value: estimatedSavingsText,
+            usesMonospacedDigits: true
+        )
+    }
+
+    @ViewBuilder
+    private func comparisonArtwork(width: CGFloat) -> some View {
+        if isBestShotCelebrationVisible {
+            ALIBestShotCelebrationView()
+                .frame(width: width)
+        } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
+            ALIComparisonReviewView()
+                .frame(width: width)
+        }
+    }
+
+    private var statusLabel: some View {
         HStack(spacing: Spacing.xxSmall) {
             Image(systemName: statusIconName)
                 .font(.caption.weight(.semibold))
@@ -66,13 +98,8 @@ struct ClusterReviewSummaryCard: View {
 
             Text(statusTitle)
                 .font(.caption.weight(.semibold))
-                .lineLimit(1)
         }
         .foregroundStyle(statusColor)
-        .padding(.horizontal, Spacing.xSmall)
-        .padding(.vertical, 6)
-        .frame(minWidth: 110, minHeight: 28, alignment: .center)
-        .background(statusColor.opacity(chipOpacity), in: Capsule())
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(statusTitle))
         .accessibilityHint(Text(appLocalized("Current cleanup review status")))
@@ -117,34 +144,22 @@ struct ClusterReviewSummaryCard: View {
         }
     }
 
-    private var chipOpacity: Double {
-        colorScheme == .dark ? ColorOpacity.statusBackgroundDark : ColorOpacity.statusBackground
-    }
-
-    private var borderOpacity: Double {
-        colorScheme == .dark ? ColorOpacity.cardBorderDark : ColorOpacity.cardBorder
-    }
-
     private func summaryMetric(
         title: String,
         value: String,
-        usesMonospacedDigits: Bool = false,
-        lineLimit: Int = 1,
-        minHeight: CGFloat = 44
+        usesMonospacedDigits: Bool
     ) -> some View {
         VStack(alignment: .leading, spacing: Spacing.xxSmall) {
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .fixedSize(horizontal: false, vertical: true)
             Text(value)
                 .font(.appHeadline)
-                .lineLimit(lineLimit)
-                .truncationMode(.tail)
-                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
                 .monospacedDigitIfNeeded(usesMonospacedDigits)
         }
-        .frame(maxWidth: .infinity, minHeight: minHeight, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 }
 

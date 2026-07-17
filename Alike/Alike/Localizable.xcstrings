@@ -18,6 +18,40 @@
         }
       }
     },
+    "ALI comparing similar photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI comparing similar photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI порівнює схожі фотографії"
+          }
+        }
+      }
+    },
+    "ALI celebrating the Best Shot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI celebrating the Best Shot"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALI святкує вибір найкращого кадру"
+          }
+        }
+      }
+    },
     "ALI searching for similar photos": {
       "extractionState": "manual",
       "localizations": {

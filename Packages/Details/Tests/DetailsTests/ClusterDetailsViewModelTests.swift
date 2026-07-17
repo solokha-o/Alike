@@ -36,6 +36,36 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
     }
 
+    func testLoadKeepsComparisonVisibleForUnreviewedCluster() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+
+        await viewModel.load()
+
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+    }
+
+    func testLoadDoesNotShowBestShotCelebrationForSingleAsset() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "only", isFavorite: true, area: 100, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+    }
+
     func testLoadRestoresPersistedSelection() async throws {
         let state = ClusterReviewState(
             clusterID: clusterID,
@@ -58,6 +88,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
         XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
     }
 
     func testSelectAllExceptBestExcludesBestShot() async {
@@ -74,6 +105,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
     }
 
     func testKeepBestOnlySelectsAllNonBestAssets() async {
@@ -89,6 +121,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
     }
 
     func testClearSelectionResetsState() async {
@@ -106,6 +139,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
         XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
     }
 
     func testTogglingBestShotDoesNothing() async {
@@ -185,6 +219,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
         XCTAssertEqual(viewModel.reviewStatus, .inReview)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
     }
 
     func testBestShotBreaksTieByIdentifier() async {
@@ -298,6 +333,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(storedEntries, [completionRecord])
         XCTAssertNil(remainingState)
         XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
+        XCTAssertTrue(viewModel.hasCompletedCleanup)
         XCTAssertFalse(viewModel.isDeleting)
     }
 
@@ -375,6 +411,47 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
         XCTAssertFalse(cleanupDidRun)
         XCTAssertEqual(viewModel.deleteErrorMessage, "Select at least one photo before deleting.")
+    }
+
+    func testDismissingDeleteErrorClearsErrorState() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        await viewModel.confirmDelete()
+
+        XCTAssertTrue(viewModel.isDeleteErrorPresented)
+
+        viewModel.isDeleteErrorPresented = false
+
+        XCTAssertFalse(viewModel.isDeleteErrorPresented)
+        XCTAssertNil(viewModel.deleteErrorMessage)
+        XCTAssertFalse(viewModel.shouldOfferOpenSettings)
+    }
+
+    func testDeleteConfirmationCopyReflectsSelectionCountAndSavings() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 300, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 200, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 100, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "one")
+
+        XCTAssertEqual(viewModel.deleteConfirmationTitle, "Move 1 Selected Photo to Recently Deleted?")
+        XCTAssertTrue(viewModel.deleteConfirmationMessage.contains(viewModel.estimatedSavingsText))
+
+        viewModel.toggleSelection(for: "two")
+
+        XCTAssertEqual(viewModel.deleteConfirmationTitle, "Move 2 Selected Photos to Recently Deleted?")
+        XCTAssertTrue(viewModel.deleteConfirmationMessage.contains(viewModel.estimatedSavingsText))
     }
 
     func testFreeUserCanRequestSinglePhotoCleanup() async {
