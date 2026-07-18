@@ -185,9 +185,7 @@ public struct ALIReactionResolver: Sendable {
 
         case .cleanupStarted(let id):
             if currentCue?.id.eventID == .cleanupSelection(id)
-                || currentCue?.id.eventID == .cleanup(id)
-                || currentCue?.id.kind == .cleanupReady
-                || currentCue?.id.kind == .cleanupSuccess {
+                || currentCue?.id.eventID == .cleanup(id) {
                 currentCue = nil
             }
             return nil
@@ -271,12 +269,12 @@ public struct ALIReactionResolver: Sendable {
         persistence: ALIReactionPersistence
     ) -> ALIReactionCue? {
         let id = ALIReactionCueID(eventID: eventID, kind: kind)
-        guard currentCue?.id != id else { return nil }
+        let cue = ALIReactionCue(id: id, state: state, persistence: persistence)
+        guard currentCue != cue else { return nil }
         if persistence == .oneShot {
             guard handledOneShotIDs.insert(id).inserted else { return nil }
         }
 
-        let cue = ALIReactionCue(id: id, state: state, persistence: persistence)
         currentCue = cue
         return cue
     }

@@ -344,6 +344,11 @@ final class ClusterDetailsViewModel {
     func clearDeleteError() {
         deleteErrorMessage = nil
         shouldOfferOpenSettings = false
+        if let currentALIReaction,
+           currentALIReaction.id.eventID == .cleanup(cleanupSelectionID) {
+            publishALIEvent(.reactionConsumed(id: currentALIReaction.id))
+        }
+        publishCleanupSelectionReaction()
     }
 
     func openSettings() {
@@ -373,6 +378,19 @@ extension ClusterDetailsViewModel {
 
 private extension ClusterDetailsViewModel {
     func handleDeleteError(_ error: PhotoCleanupError) {
+        let eventID = ALIEventID.cleanup(cleanupSelectionID)
+        if error == .notAuthorized {
+            publishALIEvent(.permissionBlocked(
+                id: eventID,
+                context: ALIPermissionContext(operation: .cleanup)
+            ))
+        } else {
+            publishALIEvent(.recoverableFailure(
+                id: eventID,
+                context: ALIErrorContext(operation: .cleanup)
+            ))
+        }
+
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
@@ -441,6 +459,10 @@ private extension ClusterDetailsViewModel {
             bestShotCelebrationCue = nil
         }
 
+        publishCleanupSelectionReaction()
+    }
+
+    func publishCleanupSelectionReaction() {
         if selectedAssetIDs.isEmpty {
             publishALIEvent(.cleanupSelectionCleared(id: cleanupSelectionID))
         } else {

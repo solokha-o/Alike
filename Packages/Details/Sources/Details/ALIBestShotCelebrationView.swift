@@ -12,7 +12,7 @@ struct ALIBestShotCelebrationPresentation: Equatable {
 
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.bestShotOverlayURL : nil,
-            playback: .loop,
+            playback: .once,
             ambientMotion: .none
         )
     }
@@ -36,12 +36,19 @@ struct ALIBestShotCelebrationPresentation: Equatable {
 struct ALIBestShotCelebrationView: View {
     private enum Constants {
         static let maximumWidth: CGFloat = 72
+        static let playbackDuration: Duration = .seconds(4)
+    }
+
+    private struct PlaybackTaskID: Hashable {
+        let cueID: ALIReviewReactionCue.ID
+        let canPlay: Bool
     }
 
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
     let cueID: ALIReviewReactionCue.ID
+    let onPlaybackFinished: () -> Void
 
     var body: some View {
         AnimatedImageOverlay(
@@ -61,6 +68,15 @@ struct ALIBestShotCelebrationView: View {
         }
         .onDisappear {
             isVisible = false
+        }
+        .task(id: playbackTaskID) {
+            guard playbackTaskID.canPlay else { return }
+            do {
+                try await Task.sleep(for: Constants.playbackDuration)
+            } catch {
+                return
+            }
+            onPlaybackFinished()
         }
     }
 
@@ -97,5 +113,9 @@ struct ALIBestShotCelebrationView: View {
 
     private var presentation: ALIBestShotCelebrationPresentation {
         .resolve(isVisible: isVisible, scenePhase: scenePhase)
+    }
+
+    private var playbackTaskID: PlaybackTaskID {
+        PlaybackTaskID(cueID: cueID, canPlay: isVisible && scenePhase == .active)
     }
 }

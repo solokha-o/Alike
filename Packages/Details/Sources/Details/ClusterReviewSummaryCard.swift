@@ -1,4 +1,5 @@
 import SwiftUI
+import Core
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
@@ -10,6 +11,7 @@ struct ClusterReviewSummaryCard: View {
     let selectedCount: Int
     let estimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
+    let aliReactionCue: ALIReactionCue?
     let bestShotCelebrationCue: ALIReviewReactionCue?
     let onBestShotCelebrationDismissed: (ALIReviewReactionCue.ID) -> Void
 
@@ -83,11 +85,18 @@ struct ClusterReviewSummaryCard: View {
     @ViewBuilder
     private func comparisonArtwork(width: CGFloat) -> some View {
         if let bestShotCelebrationCue {
-            ALIBestShotCelebrationView(cueID: bestShotCelebrationCue.id)
+            ALIBestShotCelebrationView(
+                cueID: bestShotCelebrationCue.id,
+                onPlaybackFinished: {
+                    onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
+                }
+            )
                 .frame(width: width)
                 .onDisappear {
                     onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                 }
+        } else if let aliReactionCue {
+            ALIReactionView(cue: aliReactionCue, maximumWidth: width)
         } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
             ALIComparisonReviewView()
                 .frame(width: width)

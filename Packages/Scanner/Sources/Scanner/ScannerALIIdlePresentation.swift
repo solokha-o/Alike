@@ -12,8 +12,7 @@ struct ScannerALIIdleFacts: Equatable, Sendable {
     let hasLibraryChanged: Bool
     let pendingReviewCount: Int
     let hasCompletedScanBaseline: Bool
-    let hasReviewEntryCluster: Bool
-    let hasInReviewCluster: Bool
+    let reviewEntryStatus: ClusterReviewStatus?
 }
 
 struct ScannerALIIdlePresentation: Equatable, Sendable {
@@ -106,8 +105,8 @@ struct ScannerALIIdlePresentation: Equatable, Sendable {
             )
             let ctaLabel: String?
             let cta: ScannerALIIdleCTA?
-            if facts.hasReviewEntryCluster {
-                ctaLabel = facts.hasInReviewCluster
+            if let reviewEntryStatus = facts.reviewEntryStatus {
+                ctaLabel = reviewEntryStatus == .inReview
                     ? localized(
                         "scanner.ali.hasReviews.continueCTA",
                         defaultValue: "Continue Review",

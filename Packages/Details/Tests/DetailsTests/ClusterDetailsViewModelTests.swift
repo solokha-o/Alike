@@ -231,6 +231,25 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
     }
 
+    func testCleanupReadyReactionTracksSelectionChanges() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+
+        viewModel.toggleSelection(for: "one")
+        viewModel.toggleSelection(for: "two")
+
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+        )
+    }
+
     func testBestShotBreaksTieByIdentifier() async {
         let viewModel = makeViewModel(
             snapshots: [
@@ -403,7 +422,18 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
         XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .recoverableError(ALIErrorContext(operation: .cleanup))
+        )
         XCTAssertFalse(viewModel.isDeleting)
+
+        viewModel.clearDeleteError()
+
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 1, estimatedSavingsBytes: 45))
+        )
     }
 
     func testConfirmDeleteDoesNotRunWithoutSelection() async {

@@ -103,6 +103,27 @@ final class ScannerViewModelTests: XCTestCase {
         )
     }
 
+    func testReviewCTAReflectsTheClusterItWillOpen() async {
+        let unreviewedCluster = createMockCluster(photoCount: 2)
+        let inReviewCluster = createMockCluster(photoCount: 2)
+        let inReviewState = ClusterReviewState(
+            clusterID: inReviewCluster.id,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["candidate"],
+            status: .inReview,
+            estimatedSavingsBytes: 100
+        )
+        viewModel.state = .results([unreviewedCluster, inReviewCluster])
+        await mockReviewRepository.setStoredStates([inReviewCluster.id: inReviewState])
+        await viewModel.loadReviewStates()
+
+        XCTAssertEqual(viewModel.scannerALIIdlePresentation?.ctaLabel, "Review Groups")
+        XCTAssertEqual(
+            viewModel.cleanupEntryCluster(from: [unreviewedCluster, inReviewCluster])?.id,
+            unreviewedCluster.id
+        )
+    }
+
     func testDeniedScanDoesNotCreateALIReaction() async {
         await scanUsageRepository.setCompletedScanCount(PremiumAccessPolicy.monthlyFreeScanLimit)
 
@@ -153,6 +174,28 @@ final class ScannerViewModelTests: XCTestCase {
             XCTAssertTrue(true)
         } else {
             XCTFail("Expected category failure to preserve the error path")
+        }
+        let didSaveClusters = await mockRepository.didCallSaveClusters
+        XCTAssertFalse(didSaveClusters)
+    }
+
+    func testLastScanDateFailureRestoresPreviouslyPersistedClusters() async {
+        let previousCluster = createMockCluster(photoCount: 2)
+        let newCluster = createMockCluster(photoCount: 3)
+        viewModel.state = .results([previousCluster])
+        await mockRepository.setLoadClustersResult(.success([previousCluster]))
+        await mockAnalysisService.setAnalyzePhotoLibraryResult(.success([newCluster]))
+        await mockAnalysisService.setRefreshCleanupCategoriesResult(.success([]))
+        await mockRepository.setUpdateLastScanDateResult(.failure(TestError()))
+
+        await viewModel.startScanning()
+
+        let persistedClusters = await mockRepository.savedClusters
+        XCTAssertEqual(persistedClusters.map(\.id), [previousCluster.id])
+        if case .error = viewModel.state {
+            XCTAssertTrue(true)
+        } else {
+            XCTFail("Expected metadata failure to preserve the scan error path")
         }
     }
 

@@ -127,4 +127,38 @@ final class ALIReactionTests: XCTestCase {
         _ = resolver.apply(.cleanupStarted(id: selectionID))
         XCTAssertNil(resolver.currentCue)
     }
+
+    func testPersistentCueWithStableIdentityPublishesUpdatedState() {
+        let selectionID = UUID()
+        var resolver = ALIReactionResolver()
+        _ = resolver.apply(.cleanupReady(
+            id: selectionID,
+            summary: ALICleanupSummary(itemCount: 1, estimatedSavingsBytes: 100)
+        ))
+
+        let updated = resolver.apply(.cleanupReady(
+            id: selectionID,
+            summary: ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
+        ))
+
+        XCTAssertEqual(
+            updated?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300))
+        )
+        XCTAssertEqual(resolver.currentCue, updated)
+    }
+
+    func testCleanupStartDoesNotClearAnotherCleanupCue() {
+        let firstID = UUID()
+        let secondID = UUID()
+        var resolver = ALIReactionResolver()
+        let secondCue = resolver.apply(.cleanupReady(
+            id: secondID,
+            summary: ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
+        ))
+
+        _ = resolver.apply(.cleanupStarted(id: firstID))
+
+        XCTAssertEqual(resolver.currentCue, secondCue)
+    }
 }

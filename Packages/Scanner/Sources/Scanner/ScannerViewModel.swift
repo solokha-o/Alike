@@ -319,6 +319,7 @@ public final class ScannerViewModel {
 
         let scanOperationID = UUID()
         let stateBeforeScan = state
+        let clustersBeforeScan = resultClusters(in: stateBeforeScan)
         scanMutationGeneration &+= 1
         isUserInitiatedScanExecutionInFlight = true
         defer { isUserInitiatedScanExecutionInFlight = false }
@@ -328,7 +329,8 @@ public final class ScannerViewModel {
             publishALIEvent(.scanAdmitted(id: scanOperationID))
             try await runScan(
                 purpose: .userInitiated,
-                scanOperationID: scanOperationID
+                scanOperationID: scanOperationID,
+                clustersForRestoration: clustersBeforeScan
             )
         } catch is CancellationError {
             publishALIEvent(.scanCancelled(id: scanOperationID))
@@ -365,11 +367,16 @@ public final class ScannerViewModel {
     }
 
     private func performCleanupRefresh(for record: CleanupCompletionRecord) async {
+        let clustersBeforeRefresh = currentResultClusters
         setCleanupRefreshState(.refreshing(record))
         publishALIEvent(.cleanupStarted(id: record.id))
 
         do {
-            try await runScan(purpose: .postCleanupReconciliation, scanOperationID: nil)
+            try await runScan(
+                purpose: .postCleanupReconciliation,
+                scanOperationID: nil,
+                clustersForRestoration: clustersBeforeRefresh
+            )
             try await loadCleanupInsightsForReconciliation()
             setCleanupRefreshState(.success(record))
             publishALIEvent(.cleanupCompleted(
@@ -524,6 +531,7 @@ public final class ScannerViewModel {
     var scannerALIIdleFacts: ScannerALIIdleFacts {
         let clusters = currentResultClusters
         let progress = displayedSessionProgress(for: clusters)
+        let reviewEntryCluster = cleanupEntryCluster(from: clusters)
         return ScannerALIIdleFacts(
             isScanActive: {
                 if case .scanning = state { return true }
@@ -533,10 +541,7 @@ public final class ScannerViewModel {
             hasLibraryChanged: shouldShowRescanPrompt,
             pendingReviewCount: progress.remainingClusters,
             hasCompletedScanBaseline: hasScanBaseline,
-            hasReviewEntryCluster: cleanupEntryCluster(from: clusters) != nil,
-            hasInReviewCluster: clusters.contains {
-                reviewStatus(for: $0.id) == .inReview
-            }
+            reviewEntryStatus: reviewEntryCluster.map { reviewStatus(for: $0.id) }
         )
     }
 
@@ -692,7 +697,11 @@ private extension ScannerViewModel {
         cleanupCategories = await fetchCleanupCategories()
     }
 
-    private func runScan(purpose: ScanPurpose, scanOperationID: UUID?) async throws {
+    private func runScan(
+        purpose: ScanPurpose,
+        scanOperationID: UUID?,
+        clustersForRestoration: [PhotoCluster]?
+    ) async throws {
         AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
         if purpose.showsProgress {
             state = .scanning(progress: 0.0)
@@ -708,9 +717,23 @@ private extension ScannerViewModel {
                 self.state = .scanning(progress: progress)
             }
         }
+        let refreshedCleanupCategories = try await analysisService.refreshCleanupCategories()
 
         try await repository.saveClusters(clusters)
-        try await repository.updateLastScanDate(Date())
+        do {
+            try await repository.updateLastScanDate(Date())
+        } catch {
+            if let clustersForRestoration {
+                do {
+                    try await repository.saveClusters(clustersForRestoration)
+                } catch {
+                    AppLog.storage.error(
+                        "\(AppLog.tag(.error, "Failed to restore clusters after scan metadata failure: \(error.localizedDescription)"))"
+                    )
+                }
+            }
+            throw error
+        }
         hasCompletedScanBaseline = true
 
         let sorted = canonicalSortedClusters(from: clusters)
@@ -745,7 +768,7 @@ private extension ScannerViewModel {
         activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
         AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
         shouldShowRescanPrompt = false
-        cleanupCategories = try await analysisService.refreshCleanupCategories()
+        cleanupCategories = refreshedCleanupCategories
         state = .results(sorted)
         if purpose.consumesFreeScanAllowance {
             if let scanOperationID {
@@ -896,6 +919,11 @@ private extension ScannerViewModel {
             return clusters
         }
         return []
+    }
+
+    func resultClusters(in state: State) -> [PhotoCluster]? {
+        guard case .results(let clusters) = state else { return nil }
+        return clusters
     }
 
     var hasScanBaseline: Bool {

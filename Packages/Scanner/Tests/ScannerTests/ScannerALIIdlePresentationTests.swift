@@ -17,7 +17,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
             hasLibraryChanged: true,
             pendingReviewCount: 4,
             hasCompletedScanBaseline: true,
-            hasReviewEntryCluster: true
+            reviewEntryStatus: .notReviewed
         ))
 
         XCTAssertEqual(presentation.cue.state, .idle(.libraryChanged(newItemsCount: nil)))
@@ -29,7 +29,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         let presentation = try XCTUnwrap(resolve(
             pendingReviewCount: 3,
             hasCompletedScanBaseline: true,
-            hasReviewEntryCluster: true
+            reviewEntryStatus: .notReviewed
         ))
 
         XCTAssertEqual(presentation.cue.state, .idle(.hasReviews(count: 3)))
@@ -42,8 +42,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         let presentation = try XCTUnwrap(resolve(
             pendingReviewCount: 1,
             hasCompletedScanBaseline: true,
-            hasReviewEntryCluster: true,
-            hasInReviewCluster: true
+            reviewEntryStatus: .inReview
         ))
 
         XCTAssertEqual(presentation.message, "1 group is waiting for review.")
@@ -54,7 +53,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         let presentation = try XCTUnwrap(resolve(
             pendingReviewCount: 2,
             hasCompletedScanBaseline: true,
-            hasReviewEntryCluster: false
+            reviewEntryStatus: nil
         ))
 
         XCTAssertEqual(presentation.cue.state, .idle(.hasReviews(count: 2)))
@@ -89,7 +88,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         let ready = try XCTUnwrap(resolve())
         let reviews = try XCTUnwrap(resolve(
             pendingReviewCount: 2,
-            hasReviewEntryCluster: true
+            reviewEntryStatus: .notReviewed
         ))
 
         XCTAssertEqual(ready.cue.id, reviews.cue.id)
@@ -102,7 +101,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         let facts = makeFacts(
             pendingReviewCount: 2,
             hasCompletedScanBaseline: true,
-            hasReviewEntryCluster: true
+            reviewEntryStatus: .notReviewed
         )
 
         XCTAssertEqual(
@@ -121,8 +120,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         hasLibraryChanged: Bool = false,
         pendingReviewCount: Int = 0,
         hasCompletedScanBaseline: Bool = false,
-        hasReviewEntryCluster: Bool = false,
-        hasInReviewCluster: Bool = false
+        reviewEntryStatus: ClusterReviewStatus? = nil
     ) -> ScannerALIIdlePresentation? {
         ScannerALIIdlePresentation.resolve(
             facts: makeFacts(
@@ -131,8 +129,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
                 hasLibraryChanged: hasLibraryChanged,
                 pendingReviewCount: pendingReviewCount,
                 hasCompletedScanBaseline: hasCompletedScanBaseline,
-                hasReviewEntryCluster: hasReviewEntryCluster,
-                hasInReviewCluster: hasInReviewCluster
+                reviewEntryStatus: reviewEntryStatus
             ),
             locale: englishLocale
         )
@@ -144,8 +141,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
         hasLibraryChanged: Bool = false,
         pendingReviewCount: Int = 0,
         hasCompletedScanBaseline: Bool = false,
-        hasReviewEntryCluster: Bool = false,
-        hasInReviewCluster: Bool = false
+        reviewEntryStatus: ClusterReviewStatus? = nil
     ) -> ScannerALIIdleFacts {
         ScannerALIIdleFacts(
             isScanActive: isScanActive,
@@ -153,8 +149,7 @@ final class ScannerALIIdlePresentationTests: XCTestCase {
             hasLibraryChanged: hasLibraryChanged,
             pendingReviewCount: pendingReviewCount,
             hasCompletedScanBaseline: hasCompletedScanBaseline,
-            hasReviewEntryCluster: hasReviewEntryCluster,
-            hasInReviewCluster: hasInReviewCluster
+            reviewEntryStatus: reviewEntryStatus
         )
     }
 }

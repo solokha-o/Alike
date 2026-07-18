@@ -65,6 +65,7 @@ public struct ClusterDetailsView: View {
                 selectedCount: viewModel.selectedCount,
                 estimatedSavingsText: viewModel.estimatedSavingsText,
                 reviewStatus: viewModel.reviewStatus,
+                aliReactionCue: viewModel.currentALIReaction,
                 bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                 onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
             )
