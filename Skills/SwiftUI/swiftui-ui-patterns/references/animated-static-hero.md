@@ -82,6 +82,22 @@ Prefer removing the optional animation URL over introducing timers, polling,
 or playback state in a feature view model. State transitions should remove the
 hero naturally through the parent view's state switch.
 
+### Bounded celebration loops
+
+Some success effects, including the Details Best Shot celebration, are authored
+as seamless loops shown by a bounded one-shot reaction cue. For these effects:
+
+- Keep `OverlayAnimationPlayback.loop`; the cue lifecycle owns the presentation
+  duration and removes the view when the celebration is complete.
+- Gate the animation URL on view visibility and `scenePhase == .active`, so the
+  loop cannot continue offscreen or in the background.
+- Keep deterministic cue consumption or dismissal coverage in the feature.
+- Do not "correct" the playback mode to `.once`. A one-shot reaction cue and a
+  looping Lottie overlay are intentionally different concerns.
+
+Current policy example:
+`Packages/Details/Sources/Details/ALIBestShotCelebrationView.swift`.
+
 ## Asset rules
 
 - Store the PNG exports and JSON together under a named DesignSystem resource

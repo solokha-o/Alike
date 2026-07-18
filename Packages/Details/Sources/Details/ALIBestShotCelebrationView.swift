@@ -12,6 +12,8 @@ struct ALIBestShotCelebrationPresentation: Equatable {
 
         return Self(
             animationURL: isMotionEnabled ? ALIAssets.bestShotOverlayURL : nil,
+            // Product intent: the effect is a seamless loop bounded by the cue lifetime below.
+            // Do not change this to `.once`; visibility and timed cue consumption stop playback.
             playback: .loop,
             ambientMotion: .none
         )
