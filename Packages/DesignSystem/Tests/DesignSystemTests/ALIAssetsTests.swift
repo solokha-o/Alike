@@ -3,6 +3,25 @@ import Lottie
 @testable import DesignSystem
 
 final class ALIAssetsTests: XCTestCase {
+    func testScannerIdleExportsAreAvailableForEveryStateAndScale() {
+        let scales: [ALIAssets.ScannerIdleScale] = [.oneX, .twoX, .threeX]
+
+        for state in ALIAssets.ScannerIdleState.allCases {
+            for scale in scales {
+                let url = ALIAssets.scannerIdleURL(for: state, scale: scale)
+                XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+            }
+        }
+    }
+
+    func testScannerIdleOverlaysAreAvailableAndValid() throws {
+        for state in ALIAssets.ScannerIdleState.allCases {
+            let overlayURL = try XCTUnwrap(ALIAssets.scannerIdleOverlayURL(for: state))
+            XCTAssertTrue(FileManager.default.fileExists(atPath: overlayURL.path))
+            XCTAssertNotNil(LottieAnimation.filepath(overlayURL.path))
+        }
+    }
+
     func testWelcomeHeroExportsAreAvailable() {
         XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.welcomeHeroURL(for: .oneX).path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.welcomeHeroURL(for: .twoX).path))

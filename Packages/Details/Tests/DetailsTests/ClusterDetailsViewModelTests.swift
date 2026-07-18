@@ -88,7 +88,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
         XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        XCTAssertNil(viewModel.bestShotCelebrationCue)
     }
 
     func testSelectAllExceptBestExcludesBestShot() async {
@@ -106,6 +107,11 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
         XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        XCTAssertEqual(viewModel.bestShotCelebrationCue?.id.generation, 1)
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+        )
     }
 
     func testKeepBestOnlySelectsAllNonBestAssets() async {
@@ -122,6 +128,9 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
         XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        let cue = viewModel.bestShotCelebrationCue
+        viewModel.keepBestOnly()
+        XCTAssertEqual(viewModel.bestShotCelebrationCue, cue)
     }
 
     func testClearSelectionResetsState() async {
@@ -220,6 +229,25 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
         XCTAssertEqual(viewModel.reviewStatus, .inReview)
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+    }
+
+    func testCleanupReadyReactionTracksSelectionChanges() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await viewModel.load()
+
+        viewModel.toggleSelection(for: "one")
+        viewModel.toggleSelection(for: "two")
+
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+        )
     }
 
     func testBestShotBreaksTieByIdentifier() async {
@@ -394,7 +422,18 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
         XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .recoverableError(ALIErrorContext(operation: .cleanup))
+        )
         XCTAssertFalse(viewModel.isDeleting)
+
+        viewModel.clearDeleteError()
+
+        XCTAssertEqual(
+            viewModel.currentALIReaction?.state,
+            .cleanupReady(ALICleanupSummary(itemCount: 1, estimatedSavingsBytes: 45))
+        )
     }
 
     func testConfirmDeleteDoesNotRunWithoutSelection() async {

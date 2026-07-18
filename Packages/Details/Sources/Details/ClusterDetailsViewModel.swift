@@ -4,6 +4,15 @@ import SwiftUI
 import DesignSystem
 import Storage
 
+struct ALIReviewReactionCue: Identifiable, Equatable, Sendable {
+    struct ID: Hashable, Sendable {
+        let clusterID: UUID
+        let generation: Int
+    }
+
+    let id: ID
+}
+
 @MainActor
 @Observable
 final class ClusterDetailsViewModel {
@@ -16,6 +25,9 @@ final class ClusterDetailsViewModel {
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let assetSnapshots: [ReviewAssetSnapshot]
     private var persistenceTask: Task<Void, Never>?
+    private var aliReactionResolver = ALIReactionResolver()
+    private let cleanupSelectionID = UUID()
+    private var reviewCompletionGeneration = 0
     private(set) var bestShotAssetID: String
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
@@ -27,6 +39,8 @@ final class ClusterDetailsViewModel {
     private(set) var deleteErrorMessage: String?
     private(set) var shouldOfferOpenSettings = false
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
+    private(set) var currentALIReaction: ALIReactionCue?
+    private(set) var bestShotCelebrationCue: ALIReviewReactionCue?
 
     init(
         cluster: PhotoCluster,
@@ -77,7 +91,7 @@ final class ClusterDetailsViewModel {
     }
 
     var isBestShotCelebrationVisible: Bool {
-        assetCount > 1 && !bestShotAssetID.isEmpty && reviewStatus == .reviewed
+        assetCount > 1 && !bestShotAssetID.isEmpty && bestShotCelebrationCue != nil
     }
 
     var hasCompletedCleanup: Bool {
@@ -204,7 +218,7 @@ final class ClusterDetailsViewModel {
 
         withAnimation(.appInteractive) {
             reviewMode = .selection
-            refreshDerivedState()
+            refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
     }
@@ -214,7 +228,7 @@ final class ClusterDetailsViewModel {
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             reviewMode = .selection
-            refreshDerivedState()
+            refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
     }
@@ -224,7 +238,7 @@ final class ClusterDetailsViewModel {
         withAnimation(.appSmooth) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             reviewMode = .keepBestOnly
-            refreshDerivedState()
+            refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
     }
@@ -233,7 +247,7 @@ final class ClusterDetailsViewModel {
         withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
             reviewMode = .selection
-            refreshDerivedState()
+            refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
     }
@@ -248,7 +262,7 @@ final class ClusterDetailsViewModel {
         withAnimation(.appInteractive) {
             selectedAssetIDs = [retainedID]
             reviewMode = .selection
-            refreshDerivedState()
+            refreshDerivedState(emitsReviewCompletion: true)
         }
         await save()
         isDeleteConfirmationPresented = true
@@ -292,6 +306,7 @@ final class ClusterDetailsViewModel {
         shouldOfferOpenSettings = false
         pendingCompletionRecord = nil
         isDeleting = true
+        publishALIEvent(.cleanupStarted(id: cleanupSelectionID))
 
         do {
             let record = try await cleanupService.deleteAssets(
@@ -329,6 +344,11 @@ final class ClusterDetailsViewModel {
     func clearDeleteError() {
         deleteErrorMessage = nil
         shouldOfferOpenSettings = false
+        if let currentALIReaction,
+           currentALIReaction.id.eventID == .cleanup(cleanupSelectionID) {
+            publishALIEvent(.reactionConsumed(id: currentALIReaction.id))
+        }
+        publishCleanupSelectionReaction()
     }
 
     func openSettings() {
@@ -337,6 +357,11 @@ final class ClusterDetailsViewModel {
 
     func assetIndex(for localIdentifier: String) -> Int? {
         assets.firstIndex { $0.localIdentifier == localIdentifier }
+    }
+
+    func consumeBestShotCelebration(id: ALIReviewReactionCue.ID) {
+        guard bestShotCelebrationCue?.id == id else { return }
+        bestShotCelebrationCue = nil
     }
 }
 
@@ -353,6 +378,19 @@ extension ClusterDetailsViewModel {
 
 private extension ClusterDetailsViewModel {
     func handleDeleteError(_ error: PhotoCleanupError) {
+        let eventID = ALIEventID.cleanup(cleanupSelectionID)
+        if error == .notAuthorized {
+            publishALIEvent(.permissionBlocked(
+                id: eventID,
+                context: ALIPermissionContext(operation: .cleanup)
+            ))
+        } else {
+            publishALIEvent(.recoverableFailure(
+                id: eventID,
+                context: ALIErrorContext(operation: .cleanup)
+            ))
+        }
+
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
@@ -399,7 +437,8 @@ private extension ClusterDetailsViewModel {
         }
     }
 
-    func refreshDerivedState() {
+    func refreshDerivedState(emitsReviewCompletion: Bool = false) {
+        let previousStatus = reviewStatus
         estimatedSavingsBytes = assetSnapshots
             .filter { selectedAssetIDs.contains($0.localIdentifier) }
             .reduce(into: Int64(0)) { partialResult, snapshot in
@@ -410,6 +449,36 @@ private extension ClusterDetailsViewModel {
             assetCount: assetSnapshots.count,
             bestShotAssetID: bestShotAssetID
         )
+
+        if emitsReviewCompletion, previousStatus != .reviewed, reviewStatus == .reviewed {
+            reviewCompletionGeneration &+= 1
+            bestShotCelebrationCue = ALIReviewReactionCue(
+                id: .init(clusterID: cluster.id, generation: reviewCompletionGeneration)
+            )
+        } else if reviewStatus != .reviewed {
+            bestShotCelebrationCue = nil
+        }
+
+        publishCleanupSelectionReaction()
+    }
+
+    func publishCleanupSelectionReaction() {
+        if selectedAssetIDs.isEmpty {
+            publishALIEvent(.cleanupSelectionCleared(id: cleanupSelectionID))
+        } else {
+            publishALIEvent(.cleanupReady(
+                id: cleanupSelectionID,
+                summary: ALICleanupSummary(
+                    itemCount: selectedAssetIDs.count,
+                    estimatedSavingsBytes: estimatedSavingsBytes
+                )
+            ))
+        }
+    }
+
+    func publishALIEvent(_ event: ALIEvent) {
+        _ = aliReactionResolver.apply(event)
+        currentALIReaction = aliReactionResolver.currentCue
     }
 
     @discardableResult

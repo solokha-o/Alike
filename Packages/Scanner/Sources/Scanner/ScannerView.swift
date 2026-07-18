@@ -224,39 +224,28 @@ public struct ScannerView: View {
     
     // MARK: - Idle View
     private var idleView: some View {
-        VStack(spacing: Spacing.xLarge) {
-            Spacer()
-            
-            Image(systemName: "photo.stack")
-                .font(.system(size: 80))
-                .foregroundColor(.accent)
-            
-            Text(appLocalized("Ready to Scan"))
-                .font(.appTitle)
-                .foregroundColor(.primary)
-            
-            Text(appLocalized("Tap the button below to analyze your photo library"))
-                .font(.appBody)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, Spacing.xLarge)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: Spacing.large) {
+                    scanAllowanceCard
 
-            scanAllowanceCard
+                    if let presentation = viewModel.scannerALIIdlePresentation {
+                        ScannerALIIdleCard(presentation: presentation) {
+                            Task {
+                                await startScan()
+                            }
+                        }
+                    }
 
-            if viewModel.cleanupInsights.hasHistory {
-                CleanupInsightsCard(insights: viewModel.cleanupInsights)
-                    .padding(.horizontal, Spacing.medium)
-            }
-            
-            Spacer()
-            
-            PrimaryButton(appLocalized("Start Scanning"), icon: "sparkles") {
-                Task {
-                    await startScan()
+                    if viewModel.cleanupInsights.hasHistory {
+                        CleanupInsightsCard(insights: viewModel.cleanupInsights)
+                    }
                 }
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: geometry.size.height, alignment: .center)
+                .padding(Spacing.medium)
             }
-            .padding(.horizontal, Spacing.large)
-            .padding(.bottom, Spacing.xLarge)
+            .scrollIndicators(.hidden)
         }
     }
     
@@ -324,6 +313,8 @@ public struct ScannerView: View {
             VStack(spacing: Spacing.medium) {
                 scanAllowanceCard
 
+                scannerALISlot(router: router, canonicalClusters: canonicalClusters)
+
                 if viewModel.cleanupInsights.hasHistory {
                     CleanupInsightsCard(insights: viewModel.cleanupInsights)
                 }
@@ -352,14 +343,6 @@ public struct ScannerView: View {
                     }
                     .padding(.top, viewModel.cleanupCategories.isEmpty ? 100 : Spacing.large)
                 } else {
-                    if viewModel.shouldShowRescanPrompt {
-                        RescanPromptCard {
-                            Task {
-                                await startScan()
-                            }
-                        }
-                    }
-
                     if !needsReviewClusters.isEmpty {
                         ClusterSectionCard(
                             title: appLocalized("Needs review"),
@@ -586,6 +569,76 @@ public struct ScannerView: View {
                 remainingScans: viewModel.remainingFreeScans,
                 resetDate: viewModel.nextFreeScanResetDate
             )
+        }
+    }
+
+    @ViewBuilder
+    private func scannerALISlot(
+        router: StackRouter<ScannerRoute>,
+        canonicalClusters: [PhotoCluster]
+    ) -> some View {
+        if let cue = viewModel.currentALIReaction,
+           let copy = scannerReactionCopy(for: cue.state) {
+            HStack(spacing: Spacing.medium) {
+                ALIReactionView(cue: cue, maximumWidth: 64)
+
+                Text(copy)
+                    .font(.appHeadline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(Spacing.medium)
+            .background(
+                Color.secondary.opacity(ColorOpacity.placeholderFill),
+                in: RoundedRectangle(cornerRadius: CornerRadius.medium)
+            )
+            .accessibilityElement(children: .contain)
+            .task(id: cue.id) {
+                guard cue.persistence == .oneShot else { return }
+                do {
+                    try await Task.sleep(for: .seconds(4))
+                } catch {
+                    return
+                }
+                viewModel.consumeALIReaction(id: cue.id)
+            }
+            .onDisappear {
+                guard cue.persistence == .oneShot else { return }
+                viewModel.consumeALIReaction(id: cue.id)
+            }
+        } else if let presentation = viewModel.scannerALIIdlePresentation {
+            ScannerALIIdleCard(presentation: presentation) {
+                switch presentation.cta {
+                case .startScanning:
+                    Task {
+                        await startScan()
+                    }
+                case .review:
+                    if let cluster = viewModel.cleanupEntryCluster(from: canonicalClusters) {
+                        router.push(.clusterDetails(cluster))
+                    }
+                case .none:
+                    break
+                }
+            }
+        }
+    }
+
+    private func scannerReactionCopy(for state: ALIState) -> String? {
+        switch state {
+        case .resultsFound:
+            appLocalized("Cleanup opportunities found")
+        case .noResults:
+            appLocalized("Your library is all caught up")
+        case .cleanupSuccess:
+            appLocalized("Cleanup complete")
+        case .cleanupReady:
+            appLocalized("Your cleanup is ready")
+        case .permissionIssue:
+            appLocalized("Photo library access is needed to continue")
+        case .recoverableError:
+            appLocalized("ALI could not complete the current operation")
+        case .idle, .scanning:
+            nil
         }
     }
 
@@ -1282,34 +1335,6 @@ private struct ClusterReviewBadge: View {
 
     private var badgeMaterial: Material {
         colorScheme == .dark ? .thickMaterial : .regularMaterial
-    }
-}
-
-private struct RescanPromptCard: View {
-    let onRescan: () -> Void
-
-    var body: some View {
-        HStack(alignment: .center, spacing: Spacing.medium) {
-            Image(systemName: "arrow.clockwise.circle.fill")
-                .font(.title2)
-                .foregroundStyle(Color.statusNeedsReview)
-
-            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                Text(appLocalized("Gallery changed since your last scan"))
-                    .font(.appHeadline)
-                Text(appLocalized("Run a rescan to refresh clusters and review the latest changes"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer(minLength: Spacing.small)
-
-            Button(appLocalized("Rescan"), action: onRescan)
-                .buttonStyle(.borderedProminent)
-                .tint(Color.statusNeedsReview)
-        }
-        .padding(Spacing.medium)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
     }
 }
 
