@@ -2550,6 +2550,8 @@
     "ALI needs photo library permission to continue": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI needs photo library permission to continue"}},"uk":{"stringUnit":{"state":"translated","value":"ALI потрібен доступ до фототеки, щоб продовжити"}}}},
     "ALI says your photo library is all caught up": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI says your photo library is all caught up"}},"uk":{"stringUnit":{"state":"translated","value":"ALI повідомляє, що у фототеці все впорядковано"}}}},
     "Cleanup complete": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Cleanup complete"}},"uk":{"stringUnit":{"state":"translated","value":"Очищення завершено"}}}},
+    "Recently Deleted": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Recently Deleted"}},"uk":{"stringUnit":{"state":"translated","value":"Нещодавно видалені"}}}},
+    "Storage": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Storage"}},"uk":{"stringUnit":{"state":"translated","value":"Сховище"}}}},
     "Cleanup opportunities found": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Cleanup opportunities found"}},"uk":{"stringUnit":{"state":"translated","value":"Знайдено можливості для очищення"}}}},
     "Your library is all caught up": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your library is all caught up"}},"uk":{"stringUnit":{"state":"translated","value":"У вашій фототеці все впорядковано"}}}},
     "Photo library access is needed to continue": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo library access is needed to continue"}},"uk":{"stringUnit":{"state":"translated","value":"Щоб продовжити, потрібен доступ до фототеки"}}}},
@@ -2570,6 +2572,9 @@
     "scanner.ali.allCaughtUp.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"All caught up. Your library looks good."}},"uk":{"stringUnit":{"state":"translated","value":"Усе переглянуто. Ваша фототека в порядку."}}}},
     "scanner.ali.allCaughtUp.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan again whenever you want a fresh look."}},"uk":{"stringUnit":{"state":"translated","value":"Скануйте знову, коли захочете оновити результати."}}}},
     "scanner.ali.allCaughtUp.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan Again"}},"uk":{"stringUnit":{"state":"translated","value":"Сканувати знову"}}}},
+    "ALI organizing selected photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI organizing selected photos"}},"uk":{"stringUnit":{"state":"translated","value":"ALI впорядковує вибрані фотографії"}}}},
+    "Organizing Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Organizing Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Упорядкування фотографій"}}}},
+    "Selected Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Selected Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Вибрані фотографії"}}}},
     "photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"photos"}},"uk":{"stringUnit":{"state":"translated","value":"фото"}}}}
   },
   "version": "1.1"

@@ -3,6 +3,15 @@ import Core
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
+    enum ArtworkIdentity: Equatable, Hashable {
+        case bestShot(ALIReviewReactionCue.ID)
+        case cleanupProgress(ALIReactionCueID)
+        case reaction(ALIReactionCueID)
+        case comparison
+        case none
+    }
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -82,25 +91,81 @@ struct ClusterReviewSummaryCard: View {
         )
     }
 
-    @ViewBuilder
     private func comparisonArtwork(width: CGFloat) -> some View {
-        if let bestShotCelebrationCue {
-            ALIBestShotCelebrationView(
-                cueID: bestShotCelebrationCue.id,
-                onPlaybackFinished: {
-                    onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
-                }
+        ZStack {
+            artwork(for: artworkIdentity, width: width)
+                .id(artworkIdentity)
+                .transition(
+                    .asymmetric(
+                        insertion: .scale(scale: 0.84).combined(with: .opacity),
+                        removal: .scale(scale: 1.06).combined(with: .opacity)
+                    )
+                )
+        }
+        .frame(width: width, height: width)
+        .animation(reduceMotion ? nil : .appSmooth, value: artworkIdentity)
+    }
+
+    @ViewBuilder
+    private func artwork(for identity: ArtworkIdentity, width: CGFloat) -> some View {
+        switch identity {
+        case .bestShot:
+            if let bestShotCelebrationCue {
+                ALIBestShotCelebrationView(
+                    cueID: bestShotCelebrationCue.id,
+                    onPlaybackFinished: {
+                        onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
+                    }
+                )
+                    .frame(width: width)
+                    .onDisappear {
+                        onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
+                    }
+            }
+        case .cleanupProgress:
+            ALICleanupProgressHero(
+                isActive: true,
+                maximumWidth: width,
+                accessibilityLabel: appLocalized("ALI organizing selected photos")
             )
-                .frame(width: width)
-                .onDisappear {
-                    onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
-                }
-        } else if let aliReactionCue {
-            ALIReactionView(cue: aliReactionCue, maximumWidth: width)
-        } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
+        case .reaction:
+            if let aliReactionCue {
+                ALIReactionView(cue: aliReactionCue, maximumWidth: width)
+            }
+        case .comparison:
             ALIComparisonReviewView()
                 .frame(width: width)
+        case .none:
+            EmptyView()
         }
+    }
+
+    private var artworkIdentity: ArtworkIdentity {
+        Self.resolveArtworkIdentity(
+            assetCount: assetCount,
+            aliReactionCue: aliReactionCue,
+            bestShotCelebrationCue: bestShotCelebrationCue
+        )
+    }
+
+    static func resolveArtworkIdentity(
+        assetCount: Int,
+        aliReactionCue: ALIReactionCue?,
+        bestShotCelebrationCue: ALIReviewReactionCue?
+    ) -> ArtworkIdentity {
+        if let bestShotCelebrationCue {
+            return .bestShot(bestShotCelebrationCue.id)
+        }
+        if let aliReactionCue {
+            if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount),
+               case .cleanupReady = aliReactionCue.state {
+                return .cleanupProgress(aliReactionCue.id)
+            }
+            return .reaction(aliReactionCue.id)
+        }
+        return ALIComparisonReviewPresentation.isEligible(assetCount: assetCount)
+            ? .comparison
+            : .none
     }
 
     private var statusLabel: some View {

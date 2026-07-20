@@ -59,18 +59,20 @@ public struct ClusterDetailsView: View {
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets
         VStack(spacing: Spacing.small) {
-            ClusterReviewSummaryCard(
-                assetCount: viewModel.assetCount,
-                bestShotLabel: viewModel.bestShotLabel,
-                selectedCount: viewModel.selectedCount,
-                estimatedSavingsText: viewModel.estimatedSavingsText,
-                reviewStatus: viewModel.reviewStatus,
-                aliReactionCue: viewModel.currentALIReaction,
-                bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
-                onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
-            )
+            if !viewModel.isDeleting {
+                ClusterReviewSummaryCard(
+                    assetCount: viewModel.assetCount,
+                    bestShotLabel: viewModel.bestShotLabel,
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavingsText: viewModel.estimatedSavingsText,
+                    reviewStatus: viewModel.reviewStatus,
+                    aliReactionCue: viewModel.currentALIReaction,
+                    bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
+                    onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
+                )
+            }
 
-            if viewModel.isActionBarVisible {
+            if viewModel.isActionBarVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
                     onKeepBestOnly: viewModel.keepBestOnly,
                     onSelectAllExceptBest: viewModel.selectAllExceptBest,
@@ -79,10 +81,9 @@ public struct ClusterDetailsView: View {
                     isDeleteActionVisible: viewModel.isDeleteActionVisible,
                     isDeleting: viewModel.isDeleting
                 )
-                .disabled(viewModel.isDeleting)
             }
 
-            if viewModel.requiresPremiumForCurrentSelection {
+            if viewModel.requiresPremiumForCurrentSelection && !viewModel.isDeleting {
                 BatchCleanupUpsellCard(
                     selectedCount: viewModel.selectedCount,
                     estimatedSavings: viewModel.estimatedSavingsText,
@@ -96,7 +97,14 @@ public struct ClusterDetailsView: View {
             }
 
             ScrollView {
-                if !viewModel.hasAssets {
+                if viewModel.isDeleting {
+                    ALICleanupProgressView(
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavingsText: viewModel.estimatedSavingsText,
+                        isExecuting: viewModel.isDeleting
+                    )
+                    .padding(.bottom, Spacing.medium)
+                } else if !viewModel.hasAssets {
                     ContentUnavailableView {
                         Label(appLocalized("No Photos Available"), systemImage: "photo")
                     }
@@ -128,7 +136,6 @@ public struct ClusterDetailsView: View {
                             )
                         }
                     }
-                    .allowsHitTesting(!viewModel.isDeleting)
                     .padding(.bottom, Spacing.medium)
                 }
             }
@@ -145,20 +152,22 @@ public struct ClusterDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Picker(selection: $gridColumns) {
-                        ForEach(2...4, id: \.self) { count in
-                            Text("\(count)").tag(count)
+            if !viewModel.isDeleting {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Picker(selection: $gridColumns) {
+                            ForEach(2...4, id: \.self) { count in
+                                Text("\(count)").tag(count)
+                            }
+                        } label: {
+                            Text(appLocalized("Columns"))
                         }
                     } label: {
-                        Text(appLocalized("Columns"))
+                        Image(systemName: "square.grid.3x2")
                     }
-                } label: {
-                    Image(systemName: "square.grid.3x2")
+                    .accessibilityLabel(Text(appLocalized("Grid Columns")))
+                    .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
                 }
-                .accessibilityLabel(Text(appLocalized("Grid Columns")))
-                .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in

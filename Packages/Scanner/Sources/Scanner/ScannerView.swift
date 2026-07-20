@@ -153,15 +153,7 @@ public struct ScannerView: View {
     private func content(router: StackRouter<ScannerRoute>) -> some View {
         VStack(spacing: Spacing.medium) {
             if let cleanupRefreshState = viewModel.cleanupRefreshState {
-                CleanupRefreshBanner(
-                    state: cleanupRefreshState,
-                    onRetry: {
-                        Task {
-                            await viewModel.retryCleanupRefresh()
-                        }
-                    },
-                    onDismiss: viewModel.dismissCleanupRefreshState
-                )
+                cleanupRefreshSurface(for: cleanupRefreshState)
                 .padding(.horizontal, Spacing.medium)
                 .padding(.top, Spacing.small)
                 .transition(
@@ -218,6 +210,31 @@ public struct ScannerView: View {
                         await viewModel.handleCleanupCompleted(record)
                     }
                 }
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func cleanupRefreshSurface(
+        for state: ScannerViewModel.CleanupRefreshState
+    ) -> some View {
+        switch state {
+        case .success(let record):
+            ALICleanupSuccessResultView(
+                record: record,
+                cue: viewModel.currentALIReaction,
+                onConsumeCue: viewModel.consumeALIReaction(id:),
+                onDismiss: viewModel.dismissCleanupRefreshState
+            )
+        case .refreshing, .failed:
+            CleanupRefreshBanner(
+                state: state,
+                onRetry: {
+                    Task {
+                        await viewModel.retryCleanupRefresh()
+                    }
+                },
+                onDismiss: viewModel.dismissCleanupRefreshState
             )
         }
     }
@@ -313,7 +330,9 @@ public struct ScannerView: View {
             VStack(spacing: Spacing.medium) {
                 scanAllowanceCard
 
-                scannerALISlot(router: router, canonicalClusters: canonicalClusters)
+                if !isCleanupSuccessResultVisible {
+                    scannerALISlot(router: router, canonicalClusters: canonicalClusters)
+                }
 
                 if viewModel.cleanupInsights.hasHistory {
                     CleanupInsightsCard(insights: viewModel.cleanupInsights)
@@ -640,6 +659,11 @@ public struct ScannerView: View {
         case .idle, .scanning:
             nil
         }
+    }
+
+    private var isCleanupSuccessResultVisible: Bool {
+        guard case .success? = viewModel.cleanupRefreshState else { return false }
+        return true
     }
 
     

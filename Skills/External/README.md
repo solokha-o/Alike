@@ -12,6 +12,9 @@ skills.
 - Do not treat external skills as replacements for local skills unless the local skill is missing that topic.
 - If local and external guidance conflicts, follow the local Alike skill and
   mention the conflict when it affects the result.
+- For `improve-animations`, return plans in the response and never create or
+  edit `plans/` or `animation-plans/`; this local read-only rule overrides the
+  vendored skill's plan-file instructions.
 
 ## Vendored Skills
 
@@ -19,6 +22,13 @@ skills.
 - `swift-concurrency` from `AvdLee/Swift-Concurrency-Agent-Skill`
 - `core-data-expert` from `AvdLee/Core-Data-Agent-Skill`
 - `swift-testing-expert` from `AvdLee/Swift-Testing-Agent-Skill`
+- `emilkowalski-skills` from `emilkowalski/skills`, containing:
+  - `animation-vocabulary`
+  - `apple-design`
+  - `emil-design-eng`
+  - `find-animation-opportunities`
+  - `improve-animations`
+  - `review-animations`
 
 ## Duplication Map
 
@@ -30,6 +40,12 @@ skills.
   Default to the local testing skill. Use this external skill only for Swift Testing API depth, traits/tags, parameterized testing, async waiting, or XCTest modernization.
 - `core-data-expert` has no local Core Data equivalent.
   Use it when Core Data, migrations, persistent history, CloudKit sync, fetches, or context/threading issues are involved.
+- `emilkowalski-skills` overlaps with local `Skills/DesignConcept` and
+  `Skills/SwiftUI/*` skills. Use the pack for motion vocabulary, design-engineering
+  judgment, animation opportunities, and focused animation audits. Its examples
+  and some hard rules target web technologies; translate them to native SwiftUI,
+  use Apple accessibility APIs, and keep local Alike guidance authoritative.
+  Respect each vendored skill's mutation limits and invocation metadata.
 
 ## Update Policy
 

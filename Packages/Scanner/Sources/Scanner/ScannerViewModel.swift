@@ -378,7 +378,6 @@ public final class ScannerViewModel {
                 clustersForRestoration: clustersBeforeRefresh
             )
             try await loadCleanupInsightsForReconciliation()
-            setCleanupRefreshState(.success(record))
             publishALIEvent(.cleanupCompleted(
                 id: record.id,
                 summary: ALICleanupSummary(
@@ -386,6 +385,7 @@ public final class ScannerViewModel {
                     estimatedSavingsBytes: record.estimatedSavingsBytes
                 )
             ))
+            setCleanupRefreshState(.success(record))
         } catch {
             AppLog.scan.error(
                 "\(AppLog.tag(.error, "Cleanup refresh failed: \(error.localizedDescription)"))"
@@ -638,7 +638,7 @@ private extension ScannerViewModel {
 
         let delay = cleanupRefreshAutoDismissDelay
         guard delay > .zero else {
-            cleanupRefreshState = nil
+            dismissCleanupRefreshStateIfMatching(record)
             return
         }
         cleanupRefreshDismissTask = Task { [weak self] in
