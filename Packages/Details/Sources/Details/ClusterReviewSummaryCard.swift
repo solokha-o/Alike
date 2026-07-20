@@ -5,6 +5,7 @@ import DesignSystem
 struct ClusterReviewSummaryCard: View {
     enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(ALIReviewReactionCue.ID)
+        case cleanupProgress(ALIReactionCueID)
         case reaction(ALIReactionCueID)
         case comparison
         case none
@@ -121,6 +122,12 @@ struct ClusterReviewSummaryCard: View {
                         onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                     }
             }
+        case .cleanupProgress:
+            ALICleanupProgressHero(
+                isActive: true,
+                maximumWidth: width,
+                accessibilityLabel: appLocalized("ALI organizing selected photos")
+            )
         case .reaction:
             if let aliReactionCue {
                 ALIReactionView(cue: aliReactionCue, maximumWidth: width)
@@ -150,6 +157,10 @@ struct ClusterReviewSummaryCard: View {
             return .bestShot(bestShotCelebrationCue.id)
         }
         if let aliReactionCue {
+            if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount),
+               case .cleanupReady = aliReactionCue.state {
+                return .cleanupProgress(aliReactionCue.id)
+            }
             return .reaction(aliReactionCue.id)
         }
         return ALIComparisonReviewPresentation.isEligible(assetCount: assetCount)

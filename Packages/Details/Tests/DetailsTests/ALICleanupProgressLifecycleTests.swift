@@ -73,7 +73,7 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
     }
 
     @MainActor
-    func testCleanupReadyUsesStaticReactionInsteadOfProgressArtwork() {
+    func testCleanupReadyUsesAnimatedProgressArtworkDuringReview() {
         let cue = ALIReactionCue(
             id: .init(eventID: .cleanupSelection(UUID()), kind: .cleanupReady),
             state: .cleanupReady(.init(itemCount: 1, estimatedSavingsBytes: 512)),
@@ -86,6 +86,6 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
             bestShotCelebrationCue: nil
         )
 
-        XCTAssertEqual(identity, .reaction(cue.id))
+        XCTAssertEqual(identity, .cleanupProgress(cue.id))
     }
 }
