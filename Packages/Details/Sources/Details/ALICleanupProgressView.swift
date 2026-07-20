@@ -42,10 +42,7 @@ struct ALICleanupProgressView: View {
         static let maximumArtworkWidth: CGFloat = 260
     }
 
-    @Environment(\.displayScale) private var displayScale
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var isVisible = false
 
     let selectedCount: Int
     let estimatedSavingsText: String
@@ -59,17 +56,11 @@ struct ALICleanupProgressView: View {
 
             metrics
 
-            AnimatedImageOverlay(
-                animationURL: presentation.animationURL,
-                aspectRatio: 1,
+            ALICleanupProgressHero(
+                isActive: isExecuting,
                 maximumWidth: Constants.maximumArtworkWidth,
-                playback: presentation.playback,
-                ambientMotion: presentation.ambientMotion
-            ) {
-                cleanupImage
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(Text(appLocalized("ALI organizing selected photos")))
+                accessibilityLabel: appLocalized("ALI organizing selected photos")
+            )
         }
         .frame(maxWidth: .infinity)
         .padding(Spacing.large)
@@ -77,12 +68,6 @@ struct ALICleanupProgressView: View {
             Color.secondary.opacity(ColorOpacity.placeholderFill),
             in: RoundedRectangle(cornerRadius: CornerRadius.medium)
         )
-        .onAppear {
-            isVisible = true
-        }
-        .onDisappear {
-            isVisible = false
-        }
     }
 
     @ViewBuilder
@@ -132,6 +117,33 @@ struct ALICleanupProgressView: View {
         .accessibilityElement(children: .combine)
     }
 
+}
+
+struct ALICleanupProgressHero: View {
+    @Environment(\.displayScale) private var displayScale
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var isVisible = false
+
+    let isActive: Bool
+    let maximumWidth: CGFloat
+    let accessibilityLabel: String
+
+    var body: some View {
+        AnimatedImageOverlay(
+            animationURL: presentation.animationURL,
+            aspectRatio: 1,
+            maximumWidth: maximumWidth,
+            playback: presentation.playback,
+            ambientMotion: presentation.ambientMotion
+        ) {
+            cleanupImage
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibilityLabel))
+        .onAppear { isVisible = true }
+        .onDisappear { isVisible = false }
+    }
+
     @ViewBuilder
     private var cleanupImage: some View {
         let imageURL = ALICleanupProgressPresentation.imageURL(for: displayScale)
@@ -160,12 +172,12 @@ struct ALICleanupProgressView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(Color.accent)
-            .padding(Spacing.xxLarge)
+            .padding(maximumWidth * 0.2)
     }
 
     private var presentation: ALICleanupProgressPresentation {
         .resolve(
-            isExecuting: isExecuting,
+            isExecuting: isActive,
             isVisible: isVisible,
             scenePhase: scenePhase
         )

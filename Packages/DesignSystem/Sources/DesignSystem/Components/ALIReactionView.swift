@@ -22,13 +22,16 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         switch cue.state {
         case .idle(let context):
             let idleState = scannerIdleState(for: context)
+            let usesCalmStaticPresentation = context == .allCaughtUp
             return Self(
                 kind: .idle,
                 staticImageURL: ALIAssets.optionalScannerIdleURL(for: idleState, scale: imageScale),
-                animationURL: canPlay ? ALIAssets.scannerIdleOverlayURL(for: idleState) : nil,
+                animationURL: canPlay && !usesCalmStaticPresentation
+                    ? ALIAssets.scannerIdleOverlayURL(for: idleState)
+                    : nil,
                 fallbackSystemImageName: "photo.stack",
                 playback: .loop,
-                ambientMotion: canPlay ? .breathe : .none,
+                ambientMotion: canPlay && !usesCalmStaticPresentation ? .breathe : .none,
                 accessibilityLabel: appLocalized("ALI is ready to help organize your photo library")
             )
 
@@ -53,10 +56,17 @@ public struct ALIReactionPresentation: Equatable, Sendable {
             )
 
         case .noResults:
-            return nativeFallback(
+            return Self(
                 kind: .noResults,
-                symbol: "checkmark.circle.fill",
-                label: appLocalized("ALI says your photo library is all caught up")
+                staticImageURL: ALIAssets.optionalScannerIdleURL(
+                    for: .allCaughtUp,
+                    scale: imageScale
+                ),
+                animationURL: nil,
+                fallbackSystemImageName: "checkmark.circle.fill",
+                playback: .once,
+                ambientMotion: .none,
+                accessibilityLabel: appLocalized("ALI says your photo library is all caught up")
             )
 
         case .cleanupReady:
@@ -67,10 +77,16 @@ public struct ALIReactionPresentation: Equatable, Sendable {
             )
 
         case .cleanupSuccess:
-            return nativeFallback(
+            return Self(
                 kind: .cleanupSuccess,
-                symbol: "party.popper.fill",
-                label: appLocalized("ALI celebrates your completed cleanup")
+                staticImageURL: ALIAssets.cleanupSuccessURL(
+                    for: cleanupSuccessScale(for: displayScale)
+                ),
+                animationURL: canPlay ? ALIAssets.cleanupSuccessOverlayURL : nil,
+                fallbackSystemImageName: "party.popper.fill",
+                playback: .once,
+                ambientMotion: .none,
+                accessibilityLabel: appLocalized("ALI celebrates your completed cleanup")
             )
 
         case .permissionIssue:
@@ -125,6 +141,16 @@ public struct ALIReactionPresentation: Equatable, Sendable {
     private static func scannerSearchingScale(
         for displayScale: CGFloat
     ) -> ALIAssets.ScannerSearchingScale {
+        switch displayScale {
+        case ..<1.5: .oneX
+        case ..<2.5: .twoX
+        default: .threeX
+        }
+    }
+
+    private static func cleanupSuccessScale(
+        for displayScale: CGFloat
+    ) -> ALIAssets.CleanupSuccessScale {
         switch displayScale {
         case ..<1.5: .oneX
         case ..<2.5: .twoX

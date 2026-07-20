@@ -1698,6 +1698,7 @@ final class ScannerViewModelTests: XCTestCase {
         await Task.yield()
 
         XCTAssertNil(fastViewModel.cleanupRefreshState)
+        XCTAssertNil(fastViewModel.currentALIReaction)
     }
 
     func testCleanupInsightsFailureSuppressesCleanupSuccess() async {

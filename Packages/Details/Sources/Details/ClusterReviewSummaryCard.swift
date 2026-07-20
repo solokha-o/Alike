@@ -95,12 +95,26 @@ struct ClusterReviewSummaryCard: View {
                 .onDisappear {
                     onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                 }
+        } else if let aliReactionCue, usesCleanupProgressHero(for: aliReactionCue) {
+            ALICleanupProgressHero(
+                isActive: true,
+                maximumWidth: width,
+                accessibilityLabel: appLocalized("ALI organizing selected photos")
+            )
         } else if let aliReactionCue {
             ALIReactionView(cue: aliReactionCue, maximumWidth: width)
         } else if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) {
             ALIComparisonReviewView()
                 .frame(width: width)
         }
+    }
+
+    private func usesCleanupProgressHero(for cue: ALIReactionCue) -> Bool {
+        guard ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) else {
+            return false
+        }
+        guard case .cleanupReady = cue.state else { return false }
+        return true
     }
 
     private var statusLabel: some View {
