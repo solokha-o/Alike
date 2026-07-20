@@ -12,6 +12,9 @@ skills.
 - Do not treat external skills as replacements for local skills unless the local skill is missing that topic.
 - If local and external guidance conflicts, follow the local Alike skill and
   mention the conflict when it affects the result.
+- For `improve-animations`, return plans in the response and never create or
+  edit `plans/` or `animation-plans/`; this local read-only rule overrides the
+  vendored skill's plan-file instructions.
 
 ## Vendored Skills
 

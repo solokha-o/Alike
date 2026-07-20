@@ -1,3 +1,4 @@
+import Core
 import SwiftUI
 import XCTest
 import DesignSystem
@@ -69,5 +70,22 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
             ALICleanupProgressPresentation.imageURL(for: 2.5),
             ALIAssets.cleanupProgressURL(for: .threeX)
         )
+    }
+
+    @MainActor
+    func testCleanupReadyUsesStaticReactionInsteadOfProgressArtwork() {
+        let cue = ALIReactionCue(
+            id: .init(eventID: .cleanupSelection(UUID()), kind: .cleanupReady),
+            state: .cleanupReady(.init(itemCount: 1, estimatedSavingsBytes: 512)),
+            persistence: .persistent
+        )
+
+        let identity = ClusterReviewSummaryCard.resolveArtworkIdentity(
+            assetCount: 2,
+            aliReactionCue: cue,
+            bestShotCelebrationCue: nil
+        )
+
+        XCTAssertEqual(identity, .reaction(cue.id))
     }
 }

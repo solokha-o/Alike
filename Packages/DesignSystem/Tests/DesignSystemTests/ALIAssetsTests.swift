@@ -1,3 +1,5 @@
+import Foundation
+import ImageIO
 import XCTest
 import Lottie
 @testable import DesignSystem
@@ -74,10 +76,12 @@ final class ALIAssetsTests: XCTestCase {
         XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
     }
 
-    func testCleanupProgressExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupProgressURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupProgressURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupProgressURL(for: .threeX).path))
+    func testCleanupProgressExportsAreDecodableAtExpectedSizes() throws {
+        try assertRasterExports([
+            (ALIAssets.cleanupProgressURL(for: .oneX), 418),
+            (ALIAssets.cleanupProgressURL(for: .twoX), 836),
+            (ALIAssets.cleanupProgressURL(for: .threeX), 1_254),
+        ])
     }
 
     func testCleanupProgressOverlayIsAvailable() {
@@ -87,10 +91,12 @@ final class ALIAssetsTests: XCTestCase {
         XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
     }
 
-    func testCleanupSuccessExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .threeX).path))
+    func testCleanupSuccessExportsAreDecodableAtExpectedSizes() throws {
+        try assertRasterExports([
+            (ALIAssets.cleanupSuccessURL(for: .oneX), 418),
+            (ALIAssets.cleanupSuccessURL(for: .twoX), 836),
+            (ALIAssets.cleanupSuccessURL(for: .threeX), 1_254),
+        ])
     }
 
     func testCleanupSuccessOverlayIsAvailable() {
@@ -98,5 +104,28 @@ final class ALIAssetsTests: XCTestCase {
         XCTAssertNotNil(overlayURL)
         XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    }
+
+    private func assertRasterExports(
+        _ exports: [(url: URL, expectedPixelSize: Int)],
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) throws {
+        for export in exports {
+            let source = try XCTUnwrap(
+                CGImageSourceCreateWithURL(export.url as CFURL, nil),
+                "Expected a decodable image source at \(export.url.lastPathComponent)",
+                file: file,
+                line: line
+            )
+            let image = try XCTUnwrap(
+                CGImageSourceCreateImageAtIndex(source, 0, nil),
+                "Expected a decodable image at \(export.url.lastPathComponent)",
+                file: file,
+                line: line
+            )
+            XCTAssertEqual(image.width, export.expectedPixelSize, file: file, line: line)
+            XCTAssertEqual(image.height, export.expectedPixelSize, file: file, line: line)
+        }
     }
 }

@@ -3,9 +3,8 @@ import Core
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
-    private enum ArtworkIdentity: Equatable, Hashable {
+    enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(ALIReviewReactionCue.ID)
-        case cleanupProgress(ALIReactionCueID)
         case reaction(ALIReactionCueID)
         case comparison
         case none
@@ -122,12 +121,6 @@ struct ClusterReviewSummaryCard: View {
                         onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                     }
             }
-        case .cleanupProgress:
-            ALICleanupProgressHero(
-                isActive: true,
-                maximumWidth: width,
-                accessibilityLabel: appLocalized("ALI organizing selected photos")
-            )
         case .reaction:
             if let aliReactionCue {
                 ALIReactionView(cue: aliReactionCue, maximumWidth: width)
@@ -141,25 +134,27 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var artworkIdentity: ArtworkIdentity {
+        Self.resolveArtworkIdentity(
+            assetCount: assetCount,
+            aliReactionCue: aliReactionCue,
+            bestShotCelebrationCue: bestShotCelebrationCue
+        )
+    }
+
+    static func resolveArtworkIdentity(
+        assetCount: Int,
+        aliReactionCue: ALIReactionCue?,
+        bestShotCelebrationCue: ALIReviewReactionCue?
+    ) -> ArtworkIdentity {
         if let bestShotCelebrationCue {
             return .bestShot(bestShotCelebrationCue.id)
         }
         if let aliReactionCue {
-            return usesCleanupProgressHero(for: aliReactionCue)
-                ? .cleanupProgress(aliReactionCue.id)
-                : .reaction(aliReactionCue.id)
+            return .reaction(aliReactionCue.id)
         }
         return ALIComparisonReviewPresentation.isEligible(assetCount: assetCount)
             ? .comparison
             : .none
-    }
-
-    private func usesCleanupProgressHero(for cue: ALIReactionCue) -> Bool {
-        guard ALIComparisonReviewPresentation.isEligible(assetCount: assetCount) else {
-            return false
-        }
-        guard case .cleanupReady = cue.state else { return false }
-        return true
     }
 
     private var statusLabel: some View {
