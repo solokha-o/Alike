@@ -2570,6 +2570,9 @@
     "scanner.ali.allCaughtUp.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"All caught up. Your library looks good."}},"uk":{"stringUnit":{"state":"translated","value":"Усе переглянуто. Ваша фототека в порядку."}}}},
     "scanner.ali.allCaughtUp.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan again whenever you want a fresh look."}},"uk":{"stringUnit":{"state":"translated","value":"Скануйте знову, коли захочете оновити результати."}}}},
     "scanner.ali.allCaughtUp.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan Again"}},"uk":{"stringUnit":{"state":"translated","value":"Сканувати знову"}}}},
+    "ALI organizing selected photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI organizing selected photos"}},"uk":{"stringUnit":{"state":"translated","value":"ALI впорядковує вибрані фотографії"}}}},
+    "Organizing Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Organizing Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Упорядкування фотографій"}}}},
+    "Selected Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Selected Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Вибрані фотографії"}}}},
     "photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"photos"}},"uk":{"stringUnit":{"state":"translated","value":"фото"}}}}
   },
   "version": "1.1"

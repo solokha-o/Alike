@@ -45,7 +45,15 @@ public struct ScreenshotCleanupView: View {
 
     public var body: some View {
         ScrollView {
-            if assets.isEmpty {
+            if viewModel.isDeleting {
+                ALICleanupProgressView(
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavingsText: viewModel.estimatedSavingsText,
+                    isExecuting: viewModel.isDeleting
+                )
+                .padding(.horizontal, Spacing.medium)
+                .padding(.vertical, Spacing.small)
+            } else if assets.isEmpty {
                 emptyState
             } else {
                 screenshotGrid
@@ -54,7 +62,9 @@ public struct ScreenshotCleanupView: View {
         .animation(.appInteractive, value: viewModel.selectedAssetIDs)
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
         .safeAreaInset(edge: .top) {
-            header
+            if !viewModel.isDeleting {
+                header
+            }
         }
         .navigationTitle(Text(viewModel.presentation.navigationTitle))
         .navigationBarTitleDisplayMode(.inline)
@@ -69,8 +79,10 @@ public struct ScreenshotCleanupView: View {
                 .disabled(viewModel.isDeleting)
             }
 
-            ToolbarItem(placement: .topBarTrailing) {
-                columnsMenu
+            if !viewModel.isDeleting {
+                ToolbarItem(placement: .topBarTrailing) {
+                    columnsMenu
+                }
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in
