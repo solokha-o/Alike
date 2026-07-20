@@ -86,4 +86,17 @@ final class ALIAssetsTests: XCTestCase {
         XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
     }
+
+    func testCleanupSuccessExportsAreAvailable() {
+        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .oneX).path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .twoX).path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.cleanupSuccessURL(for: .threeX).path))
+    }
+
+    func testCleanupSuccessOverlayIsAvailable() {
+        let overlayURL = try? XCTUnwrap(ALIAssets.cleanupSuccessOverlayURL)
+        XCTAssertNotNil(overlayURL)
+        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    }
 }

@@ -144,6 +144,24 @@ public enum ALIAssets {
         }
     }
 
+    /// Available runtime exports for the cleanup-complete illustration.
+    public enum CleanupSuccessScale: Sendable {
+        case oneX
+        case twoX
+        case threeX
+
+        fileprivate var resourceName: String {
+            switch self {
+            case .oneX:
+                "ALICleanupSuccess"
+            case .twoX:
+                "ALICleanupSuccess@2x"
+            case .threeX:
+                "ALICleanupSuccess@3x"
+            }
+        }
+    }
+
     /// Returns a transparent PNG for the specified Welcome hero export scale.
     public static func welcomeHeroURL(for scale: WelcomeHeroScale) -> URL {
         resourceURL(named: scale.resourceName, extension: "png")
@@ -265,6 +283,24 @@ public enum ALIAssets {
             named: "ALICleanupProgressOverlay",
             extension: "json",
             subdirectory: "CleanupProgress"
+        )
+    }
+
+    /// Returns a transparent PNG for the specified cleanup-complete export scale.
+    public static func cleanupSuccessURL(for scale: CleanupSuccessScale) -> URL {
+        resourceURL(
+            named: scale.resourceName,
+            extension: "png",
+            subdirectory: "CleanupSuccess"
+        )
+    }
+
+    /// Returns the shared-coordinate one-shot sparkle and confetti overlay.
+    public static var cleanupSuccessOverlayURL: URL? {
+        optionalResourceURL(
+            named: "ALICleanupSuccessOverlay",
+            extension: "json",
+            subdirectory: "CleanupSuccess"
         )
     }
 
