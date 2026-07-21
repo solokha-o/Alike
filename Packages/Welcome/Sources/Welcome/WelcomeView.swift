@@ -55,7 +55,7 @@ public struct WelcomeView: View {
     @ViewBuilder
     private var welcomePager: some View {
         #if os(iOS)
-        TabView(selection: $selectedWelcomePage) {
+        TabView(selection: $selectedWelcomePage.animation()) {
             ForEach(WelcomePage.allCases, id: \.self) { page in
                 welcomePage(page)
                     .tag(page)
@@ -179,7 +179,7 @@ public struct WelcomeView: View {
                     .frame(width: page == selectedWelcomePage ? 20 : 8, height: 8)
             }
         }
-        .animation(accessibilityReduceMotion ? nil : .appSmooth, value: selectedWelcomePage)
+        .animation(accessibilityReduceMotion ? nil : .appQuick, value: selectedWelcomePage)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(pageIndicatorAccessibilityLabel)
     }
@@ -193,6 +193,28 @@ public struct WelcomeView: View {
     }
 
     private var welcomeNavigation: some View {
+        Group {
+            #if os(iOS)
+            if #available(iOS 26.0, *) {
+                GlassEffectContainer(spacing: Spacing.medium) {
+                    glassWelcomeNavigation
+                }
+                .tint(.accent)
+            } else {
+                standardWelcomeNavigation
+            }
+            #else
+            standardWelcomeNavigation
+            #endif
+        }
+        .frame(maxWidth: 560)
+        .padding(.horizontal, Spacing.large)
+        .lineLimit(1)
+        .allowsTightening(true)
+        .minimumScaleFactor(0.85)
+    }
+
+    private var standardWelcomeNavigation: some View {
         HStack(spacing: Spacing.medium) {
             if let previousPage = selectedWelcomePage.previous {
                 SecondaryButton(appLocalized("Back"), icon: "chevron.left") {
@@ -212,15 +234,56 @@ public struct WelcomeView: View {
                 }
             }
         }
-        .frame(maxWidth: 560)
-        .padding(.horizontal, Spacing.large)
     }
+
+    #if os(iOS)
+    @available(iOS 26.0, *)
+    private var glassWelcomeNavigation: some View {
+        HStack(spacing: Spacing.medium) {
+            if let previousPage = selectedWelcomePage.previous {
+                Button {
+                    selectWelcomePage(previousPage)
+                } label: {
+                    Label(appLocalized("Back"), systemImage: "chevron.left")
+                        .font(.appHeadline)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
+                .controlSize(.large)
+            }
+
+            if let nextPage = selectedWelcomePage.next {
+                Button {
+                    selectWelcomePage(nextPage)
+                } label: {
+                    Label(appLocalized("Next"), systemImage: "chevron.right")
+                        .font(.appHeadline)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                .controlSize(.large)
+            } else {
+                Button {
+                    Task {
+                        await viewModel.requestPermission()
+                    }
+                } label: {
+                    Label(appLocalized("Grant Access"), systemImage: "photo.on.rectangle")
+                        .font(.appHeadline)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                .controlSize(.large)
+            }
+        }
+    }
+    #endif
 
     private func selectWelcomePage(_ page: WelcomePage) {
         if accessibilityReduceMotion {
             selectedWelcomePage = page
         } else {
-            withAnimation(.appSmooth) {
+            withAnimation(.appQuick) {
                 selectedWelcomePage = page
             }
         }
