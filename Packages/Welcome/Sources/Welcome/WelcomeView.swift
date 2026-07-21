@@ -223,17 +223,34 @@ public struct WelcomeView: View {
             }
 
             if let nextPage = selectedWelcomePage.next {
-                PrimaryButton(appLocalized("Next"), icon: "chevron.right") {
-                    selectWelcomePage(nextPage)
-                }
+                standardNextButton(nextPage)
             } else {
-                PrimaryButton(appLocalized("Grant Access"), icon: "photo.on.rectangle") {
+                PrimaryButton(appLocalized("Grant Access")) {
                     Task {
                         await viewModel.requestPermission()
                     }
                 }
             }
         }
+    }
+
+    private func standardNextButton(_ nextPage: WelcomePage) -> some View {
+        Button {
+            selectWelcomePage(nextPage)
+        } label: {
+            HStack(spacing: Spacing.small) {
+                Text(appLocalized("Next"))
+                Image(systemName: "chevron.right")
+            }
+            .font(.appHeadline)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.accent)
+            .foregroundColor(.white)
+            .cornerRadius(CornerRadius.medium)
+        }
+        .scaleOnPress()
+        .accessibilityLabel(appLocalized("Next"))
     }
 
     #if os(iOS)
@@ -256,19 +273,23 @@ public struct WelcomeView: View {
                 Button {
                     selectWelcomePage(nextPage)
                 } label: {
-                    Label(appLocalized("Next"), systemImage: "chevron.right")
-                        .font(.appHeadline)
-                        .frame(maxWidth: .infinity)
+                    HStack(spacing: Spacing.small) {
+                        Text(appLocalized("Next"))
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.appHeadline)
+                    .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
+                .accessibilityLabel(appLocalized("Next"))
             } else {
                 Button {
                     Task {
                         await viewModel.requestPermission()
                     }
                 } label: {
-                    Label(appLocalized("Grant Access"), systemImage: "photo.on.rectangle")
+                    Text(appLocalized("Grant Access"))
                         .font(.appHeadline)
                         .frame(maxWidth: .infinity)
                 }
