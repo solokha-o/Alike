@@ -4,12 +4,14 @@ import DesignSystem
 
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
+    @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     @State private var isSymbolAnimating = false
     @State private var isALIWelcomeHeroVisible = false
+    @State private var selectedWelcomePage = WelcomePage.welcome
     
     public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
         self._isCompleted = isCompleted
@@ -41,49 +43,187 @@ public struct WelcomeView: View {
     
     // MARK: - Initial State
     private var initialState: some View {
+        VStack(spacing: Spacing.small) {
+            welcomePager
+            pageIndicator
+            welcomeNavigation
+        }
+        .padding(.bottom, Spacing.medium)
+        .sensoryFeedback(.success, trigger: viewModel.isAuthorized)
+    }
+
+    @ViewBuilder
+    private var welcomePager: some View {
+        #if os(iOS)
+        TabView(selection: $selectedWelcomePage) {
+            ForEach(WelcomePage.allCases, id: \.self) { page in
+                welcomePage(page)
+                    .tag(page)
+            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        #else
+        welcomePage(selectedWelcomePage)
+        #endif
+    }
+
+    @ViewBuilder
+    private func welcomePage(_ page: WelcomePage) -> some View {
         ScrollView {
-            VStack(spacing: Spacing.large) {
-                heroSection(
-                    showsALIWelcomeHero: true,
-                    title: appLocalized("Clean up your library with confidence"),
-                    subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
-                )
-
-                VStack(spacing: Spacing.medium) {
-                    BenefitCard(
-                        icon: "internaldrive.fill",
-                        title: appLocalized("Free up storage faster"),
-                        message: appLocalized("Find duplicate and near-duplicate photos worth reviewing first.")
-                    )
-                    BenefitCard(
-                        icon: "lock.shield.fill",
-                        title: appLocalized("Private on-device analysis"),
-                        message: appLocalized("Your photo analysis stays on this device and gives you guided cleanup suggestions.")
-                    )
-                    BenefitCard(
-                        icon: "checkmark.shield.fill",
-                        title: appLocalized("Nothing is deleted automatically"),
-                        message: appLocalized("You review suggestions first and confirm every cleanup action yourself.")
-                    )
+            Group {
+                switch page {
+                case .welcome:
+                    welcomeOverviewPage
+                case .howItWorks:
+                    howAlikeHelpsPage
+                case .privacy:
+                    privacyPage
                 }
+            }
+            .frame(maxWidth: 560)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, Spacing.large)
+            .padding(.vertical, Spacing.medium)
+        }
+        .scrollBounceBehavior(.basedOnSize)
+    }
 
-                PermissionRationaleCard(
-                    title: appLocalized("Why Alike asks for photo access"),
-                    message: appLocalized("Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review."),
-                    footnote: appLocalized("You can change access later in Settings, and Alike never deletes anything without your confirmation.")
+    private var welcomeOverviewPage: some View {
+        heroSection(
+            showsALIWelcomeHero: true,
+            title: appLocalized("Clean up your library with confidence"),
+            subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
+        )
+    }
+
+    private var howAlikeHelpsPage: some View {
+        VStack(spacing: Spacing.large) {
+            onboardingHeader(
+                icon: "sparkles.rectangle.stack.fill",
+                title: appLocalized("How Alike helps"),
+                subtitle: appLocalized("Turn a crowded library into a guided cleanup.")
+            )
+
+            VStack(spacing: Spacing.medium) {
+                BenefitCard(
+                    icon: "photo.stack",
+                    title: appLocalized("Find cleanup opportunities"),
+                    message: appLocalized("Group visually similar photos and other items worth reviewing.")
                 )
+                BenefitCard(
+                    icon: "eye.fill",
+                    title: appLocalized("Review every suggestion"),
+                    message: appLocalized("Compare photos and keep the shots that matter to you.")
+                )
+                BenefitCard(
+                    icon: "internaldrive.fill",
+                    title: appLocalized("See potential savings"),
+                    message: appLocalized("Know how much space you could reclaim before you clean up.")
+                )
+            }
+        }
+    }
 
+    private var privacyPage: some View {
+        VStack(spacing: Spacing.large) {
+            onboardingHeader(
+                icon: "lock.shield.fill",
+                title: appLocalized("Private and always in your control"),
+                subtitle: appLocalized("Analysis stays on your device, and nothing is deleted automatically.")
+            )
+
+            VStack(spacing: Spacing.medium) {
+                BenefitCard(
+                    icon: "iphone.gen3",
+                    title: appLocalized("Private on-device analysis"),
+                    message: appLocalized("Your photo analysis stays on this device and gives you guided cleanup suggestions.")
+                )
+                BenefitCard(
+                    icon: "checkmark.shield.fill",
+                    title: appLocalized("Nothing is deleted automatically"),
+                    message: appLocalized("You review suggestions first and confirm every cleanup action yourself.")
+                )
+            }
+
+            PermissionRationaleCard(
+                title: appLocalized("Why Alike asks for photo access"),
+                message: appLocalized("Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review."),
+                footnote: appLocalized("You can change access later in Settings, and Alike never deletes anything without your confirmation.")
+            )
+        }
+    }
+
+    private func onboardingHeader(icon: String, title: String, subtitle: String) -> some View {
+        VStack(spacing: Spacing.medium) {
+            Image(systemName: icon)
+                .font(.system(size: 64, weight: .bold))
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(Color.accent, Color.heroGold, Color.heroCoral)
+
+            Text(title)
+                .font(.appTitle)
+                .multilineTextAlignment(.center)
+
+            Text(subtitle)
+                .font(.appCallout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+    }
+
+    private var pageIndicator: some View {
+        HStack(spacing: Spacing.xSmall) {
+            ForEach(WelcomePage.allCases, id: \.self) { page in
+                Capsule(style: .continuous)
+                    .fill(page == selectedWelcomePage ? Color.accent : Color.secondary.opacity(0.3))
+                    .frame(width: page == selectedWelcomePage ? 20 : 8, height: 8)
+            }
+        }
+        .animation(accessibilityReduceMotion ? nil : .appSmooth, value: selectedWelcomePage)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(pageIndicatorAccessibilityLabel)
+    }
+
+    private var pageIndicatorAccessibilityLabel: String {
+        String(
+            format: appLocalized("Page %lld of %lld"),
+            Int64(selectedWelcomePage.rawValue + 1),
+            Int64(WelcomePage.allCases.count)
+        )
+    }
+
+    private var welcomeNavigation: some View {
+        HStack(spacing: Spacing.medium) {
+            if let previousPage = selectedWelcomePage.previous {
+                SecondaryButton(appLocalized("Back"), icon: "chevron.left") {
+                    selectWelcomePage(previousPage)
+                }
+            }
+
+            if let nextPage = selectedWelcomePage.next {
+                PrimaryButton(appLocalized("Next"), icon: "chevron.right") {
+                    selectWelcomePage(nextPage)
+                }
+            } else {
                 PrimaryButton(appLocalized("Grant Access"), icon: "photo.on.rectangle") {
                     Task {
                         await viewModel.requestPermission()
                     }
                 }
-                .padding(.top, Spacing.small)
             }
-            .padding(.horizontal, Spacing.large)
-            .padding(.vertical, Spacing.xLarge)
         }
-        .sensoryFeedback(.success, trigger: viewModel.isAuthorized)
+        .frame(maxWidth: 560)
+        .padding(.horizontal, Spacing.large)
+    }
+
+    private func selectWelcomePage(_ page: WelcomePage) {
+        if accessibilityReduceMotion {
+            selectedWelcomePage = page
+        } else {
+            withAnimation(.appSmooth) {
+                selectedWelcomePage = page
+            }
+        }
     }
     
     // MARK: - Denied State
@@ -184,7 +324,9 @@ public struct WelcomeView: View {
     }
 
     private var playsALIWelcomeOverlay: Bool {
-        isALIWelcomeHeroVisible && scenePhase == .active
+        isALIWelcomeHeroVisible
+            && selectedWelcomePage == .welcome
+            && scenePhase == .active
     }
 
     private var welcomeImage: Image {
@@ -239,6 +381,20 @@ public struct WelcomeView: View {
                 isCompleted = true
             }
         }
+    }
+}
+
+private enum WelcomePage: Int, CaseIterable {
+    case welcome
+    case howItWorks
+    case privacy
+
+    var previous: WelcomePage? {
+        WelcomePage(rawValue: rawValue - 1)
+    }
+
+    var next: WelcomePage? {
+        WelcomePage(rawValue: rawValue + 1)
     }
 }
 
