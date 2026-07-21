@@ -12,6 +12,7 @@ public struct WelcomeView: View {
     @State private var isSymbolAnimating = false
     @State private var isALIWelcomeHeroVisible = false
     @State private var selectedWelcomePage = WelcomePage.welcome
+    @State private var glassGrantAccessFeedbackTrigger = 0
     
     public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
         self._isCompleted = isCompleted
@@ -35,6 +36,11 @@ public struct WelcomeView: View {
                 initialState
             }
         }
+        #if os(iOS)
+        .sensoryFeedback(.success, trigger: viewModel.isAuthorized) { wasAuthorized, isAuthorized in
+            !wasAuthorized && isAuthorized
+        }
+        #endif
         .onAppear {
             viewModel.checkStatus()
             isSymbolAnimating = true
@@ -49,7 +55,9 @@ public struct WelcomeView: View {
             welcomeNavigation
         }
         .padding(.bottom, Spacing.medium)
-        .sensoryFeedback(.success, trigger: viewModel.isAuthorized)
+        #if os(iOS)
+        .sensoryFeedback(.selection, trigger: selectedWelcomePage)
+        #endif
     }
 
     @ViewBuilder
@@ -285,6 +293,7 @@ public struct WelcomeView: View {
                 .accessibilityLabel(appLocalized("Next"))
             } else {
                 Button {
+                    glassGrantAccessFeedbackTrigger += 1
                     Task {
                         await viewModel.requestPermission()
                     }
@@ -295,6 +304,10 @@ public struct WelcomeView: View {
                 }
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
+                .sensoryFeedback(
+                    .impact(flexibility: .soft),
+                    trigger: glassGrantAccessFeedbackTrigger
+                )
             }
         }
     }
