@@ -63,7 +63,7 @@ public struct WelcomeView: View {
     @ViewBuilder
     private var welcomePager: some View {
         #if os(iOS)
-        TabView(selection: $selectedWelcomePage.animation()) {
+        TabView(selection: $selectedWelcomePage) {
             ForEach(WelcomePage.allCases, id: \.self) { page in
                 welcomePage(page)
                     .tag(page)
