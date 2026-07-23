@@ -164,6 +164,7 @@ private extension ScreenshotCleanupView {
             ForEach(assets, id: \.localIdentifier) { asset in
                 SelectablePhotoThumbnail(
                     asset: asset,
+                    thumbnailAspectRatio: 16 / 9,
                     isBestShot: false,
                     isSelected: viewModel.isSelected(asset.localIdentifier),
                     onToggleSelection: {

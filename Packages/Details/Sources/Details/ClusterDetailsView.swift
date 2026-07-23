@@ -8,18 +8,28 @@ import NavigationKit
 import Purchases
 import PurchasesUI
 
+struct ClusterGridLayoutPolicy: Equatable {
+    let columnCounts: ClosedRange<Int>
+    let defaultColumnCount: Int
+
+    static let compact = ClusterGridLayoutPolicy(columnCounts: 1...2, defaultColumnCount: 2)
+    static let regular = ClusterGridLayoutPolicy(columnCounts: 2...5, defaultColumnCount: 4)
+}
+
 #if os(iOS)
 
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
 
     @State private var viewModel: ClusterDetailsViewModel
-    @State private var gridColumns: Int = 3
+    @State private var compactGridColumns = ClusterGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = ClusterGridLayoutPolicy.regular.defaultColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
 
@@ -59,6 +69,7 @@ public struct ClusterDetailsView: View {
 
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets
+        let gridColumns = selectedGridColumnCount
         VStack(spacing: Spacing.small) {
             if !viewModel.isDeleting {
                 ClusterReviewSummaryCard(
@@ -112,12 +123,16 @@ public struct ClusterDetailsView: View {
                     .padding(.top, 80)
                 } else {
                     LazyVGrid(
-                        columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
-                        spacing: Spacing.small
+                        columns: Array(
+                            repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
+                            count: gridColumns
+                        ),
+                        spacing: Spacing.xxSmall
                     ) {
                         ForEach(displayedAssets, id: \.localIdentifier) { asset in
                             SelectablePhotoThumbnail(
                                 asset: asset,
+                                thumbnailAspectRatio: 1,
                                 isBestShot: viewModel.isBestShot(asset.localIdentifier),
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
                                 onToggleSelection: {
@@ -156,8 +171,8 @@ public struct ClusterDetailsView: View {
             if !viewModel.isDeleting {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Picker(selection: $gridColumns) {
-                            ForEach(2...4, id: \.self) { count in
+                        Picker(selection: selectedGridColumnBinding) {
+                            ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
                                 Text("\(count)").tag(count)
                             }
                         } label: {
@@ -229,6 +244,28 @@ public struct ClusterDetailsView: View {
 }
 
 private extension ClusterDetailsView {
+    var gridLayoutPolicy: ClusterGridLayoutPolicy {
+        horizontalSizeClass == .regular ? .regular : .compact
+    }
+
+    var selectedGridColumnCount: Int {
+        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
+    }
+
+    var selectedGridColumnBinding: Binding<Int> {
+        Binding(
+            get: { selectedGridColumnCount },
+            set: { newValue in
+                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
+                if horizontalSizeClass == .regular {
+                    regularGridColumns = newValue
+                } else {
+                    compactGridColumns = newValue
+                }
+            }
+        )
+    }
+
     func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
@@ -242,8 +279,46 @@ private struct SelectedAsset: Identifiable {
     var id: String { asset.localIdentifier }
 }
 
+private struct ThumbnailAspectRatioLayout: Layout {
+    let aspectRatio: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        guard aspectRatio > 0 else { return .zero }
+
+        if let width = proposal.width, width.isFinite {
+            return CGSize(width: width, height: width / aspectRatio)
+        }
+        if let height = proposal.height, height.isFinite {
+            return CGSize(width: height * aspectRatio, height: height)
+        }
+
+        let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
+        return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        for subview in subviews {
+            subview.place(
+                at: bounds.origin,
+                anchor: .topLeading,
+                proposal: ProposedViewSize(bounds.size)
+            )
+        }
+    }
+}
+
 struct SelectablePhotoThumbnail: View {
     let asset: PHAsset
+    let thumbnailAspectRatio: CGFloat
     let isBestShot: Bool
     let isSelected: Bool
     let onToggleSelection: () -> Void
@@ -254,35 +329,49 @@ struct SelectablePhotoThumbnail: View {
 
     var body: some View {
         Button(action: onToggleSelection) {
-            ZStack {
-                Color.clear
+            ThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
+                ZStack {
+                    Color.secondary.opacity(ColorOpacity.placeholderFill)
 
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 120)
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
-                        .clipped()
-                        .aspectRatio(16/9, contentMode: .fit)
-                } else {
-                    Rectangle()
-                        .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
-                        .frame(height: 120)
-                        .overlay {
-                            ProgressView()
-                        }
+                    if let image {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else {
+                        ProgressView()
+                    }
                 }
             }
             .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
+            .clipShape(thumbnailShape)
+            .overlay {
+                if isSelected {
+                    thumbnailShape
+                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
+                        .transition(.opacity)
+                }
+            }
+            .overlay {
+                thumbnailShape
+                    .stroke(borderColor, lineWidth: borderLineWidth)
+            }
             .overlay(alignment: .topLeading) {
                 if isBestShot {
-                    Label(appLocalized("Best Shot"), systemImage: "star.fill")
+                    Label {
+                        Text(appLocalized("Best Shot"))
+                            .foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(Color.heroGold)
+                    }
                         .font(.caption.bold())
                         .padding(.horizontal, Spacing.xSmall)
                         .padding(.vertical, Spacing.xxSmall)
                         .background(.regularMaterial, in: Capsule())
+                        .overlay {
+                            Capsule()
+                                .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                        }
                         .padding(Spacing.xSmall)
                         .transition(.scale(scale: 0.92).combined(with: .opacity))
                 }
@@ -291,28 +380,19 @@ struct SelectablePhotoThumbnail: View {
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title3)
+                        .symbolRenderingMode(.palette)
                         .foregroundStyle(.white, Color.accent)
+                        .background(.white, in: Circle())
                         .padding(Spacing.xSmall)
                         .transition(.scale(scale: 0.7).combined(with: .opacity))
                 }
-            }
-            .overlay {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: CornerRadius.small)
-                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
-                        .transition(.opacity)
-                }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: CornerRadius.small)
-                    .stroke(borderColor, lineWidth: borderLineWidth)
             }
             .animation(.appInteractiveFast, value: isSelected)
             .animation(.appInteractiveFast, value: isBestShot)
         }
         .buttonStyle(.plain)
-        .contentShape(Rectangle())
-        .cornerRadius(CornerRadius.small)
+        .contentShape(.interaction, thumbnailShape)
+        .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
             Button {
                 showingMetadata = true
@@ -333,13 +413,15 @@ struct SelectablePhotoThumbnail: View {
                     Image(systemName: "arrow.up.right.square")
                 }
             }
+        } preview: {
+            contextMenuPreview
         }
         .sheet(isPresented: $showingMetadata) {
             MetadataView(asset: asset)
                 .presentationDetents([.medium, .large])
         }
         .task {
-            image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
+            image = try? await asset.loadImage(targetSize: thumbnailTargetSize)
         }
         .accessibilityLabel(Text(accessibilityLabel))
         .accessibilityValue(Text(accessibilityValue))
@@ -361,6 +443,37 @@ struct SelectablePhotoThumbnail: View {
         (isBestShot || isSelected) ? 2 : 0
     }
 
+    private var thumbnailShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: CornerRadius.small, style: .continuous)
+    }
+
+    private var thumbnailTargetSize: CGSize {
+        thumbnailAspectRatio == 1
+            ? CGSize(width: 1_000, height: 1_000)
+            : CGSize(width: 300, height: 300)
+    }
+
+    private var contextMenuPreview: some View {
+        ZStack {
+            Color.secondary.opacity(ColorOpacity.placeholderFill)
+
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                ProgressView()
+            }
+        }
+        .frame(
+            width: contextMenuPreviewWidth,
+            height: contextMenuPreviewWidth / thumbnailAspectRatio
+        )
+        .clipShape(thumbnailShape)
+    }
+
+    private var contextMenuPreviewWidth: CGFloat { 240 }
+
     private var accessibilityLabel: String {
         if isBestShot {
             return appLocalized("Best Shot")
@@ -372,7 +485,10 @@ struct SelectablePhotoThumbnail: View {
     }
 
     private var accessibilityValue: String {
-        isSelected ? appLocalized("Selected") : appLocalized("Not selected")
+        if isBestShot {
+            return appLocalized("Best Shot")
+        }
+        return isSelected ? appLocalized("Selected") : appLocalized("Not selected")
     }
 
     private var accessibilityHint: String {
