@@ -82,6 +82,7 @@ public struct ClusterDetailsView: View {
                     bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                     onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
                 )
+                .padding(.horizontal, Spacing.medium)
             }
 
             if viewModel.isActionBarVisible && !viewModel.isDeleting {
@@ -93,6 +94,7 @@ public struct ClusterDetailsView: View {
                     isDeleteActionVisible: viewModel.isDeleteActionVisible,
                     isDeleting: viewModel.isDeleting
                 )
+                .padding(.horizontal, Spacing.medium)
             }
 
             if viewModel.requiresPremiumForCurrentSelection && !viewModel.isDeleting {
@@ -106,6 +108,7 @@ public struct ClusterDetailsView: View {
                         }
                     }
                 )
+                .padding(.horizontal, Spacing.medium)
             }
 
             ScrollView {
@@ -115,11 +118,13 @@ public struct ClusterDetailsView: View {
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         isExecuting: viewModel.isDeleting
                     )
+                    .padding(.horizontal, Spacing.medium)
                     .padding(.bottom, Spacing.medium)
                 } else if !viewModel.hasAssets {
                     ContentUnavailableView {
                         Label(appLocalized("No Photos Available"), systemImage: "photo")
                     }
+                    .padding(.horizontal, Spacing.medium)
                     .padding(.top, 80)
                 } else {
                     LazyVGrid(
@@ -152,11 +157,12 @@ public struct ClusterDetailsView: View {
                             )
                         }
                     }
-                    .padding(.bottom, Spacing.medium)
+                    .padding(.horizontal, Spacing.medium)
+                    .padding(.vertical, Spacing.medium)
                 }
             }
+            .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, Spacing.medium)
         .padding(.top, Spacing.small)
         .padding(.bottom, Spacing.medium)
         .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
