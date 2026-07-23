@@ -159,8 +159,7 @@ public struct ClusterDetailsView: View {
                     isDeleteActionVisible: viewModel.isDeleteActionVisible,
                     isDeleting: viewModel.isDeleting
                 )
-                .padding(.horizontal, Spacing.medium)
-                .padding(.vertical, Spacing.small)
+                .padding(Spacing.xSmall)
             }
         }
         .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
@@ -171,6 +170,7 @@ public struct ClusterDetailsView: View {
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             if !viewModel.isDeleting {
                 ToolbarItem(placement: .topBarTrailing) {
