@@ -70,24 +70,89 @@ public struct ClusterDetailsView: View {
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets
         let gridColumns = selectedGridColumnCount
-        VStack(spacing: Spacing.small) {
-            if !viewModel.isDeleting {
-                ClusterReviewSummaryCard(
-                    assetCount: viewModel.assetCount,
-                    bestShotLabel: viewModel.bestShotLabel,
-                    selectedCount: viewModel.selectedCount,
-                    estimatedSavingsText: viewModel.estimatedSavingsText,
-                    reviewStatus: viewModel.reviewStatus,
-                    aliReactionCue: viewModel.currentALIReaction,
-                    bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
-                    onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
-                )
-                .padding(.horizontal, Spacing.medium)
-            }
+        ScrollView {
+            LazyVStack(spacing: Spacing.medium) {
+                if viewModel.isDeleting {
+                    ALICleanupProgressView(
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavingsText: viewModel.estimatedSavingsText,
+                        isExecuting: viewModel.isDeleting
+                    )
+                } else {
+                    if viewModel.hasAssets {
+                        ClusterReviewSummaryCard(
+                            assetCount: viewModel.assetCount,
+                            bestShotLabel: viewModel.bestShotLabel,
+                            selectedCount: viewModel.selectedCount,
+                            estimatedSavingsText: viewModel.estimatedSavingsText,
+                            reviewStatus: viewModel.reviewStatus,
+                            aliReactionCue: viewModel.currentALIReaction,
+                            bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
+                            onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
+                        )
+                    }
 
+                    if viewModel.requiresPremiumForCurrentSelection {
+                        BatchCleanupUpsellCard(
+                            selectedCount: viewModel.selectedCount,
+                            estimatedSavings: viewModel.estimatedSavingsText,
+                            onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                            onContinueFree: {
+                                Task {
+                                    await viewModel.continueWithSingleFreeSelection()
+                                }
+                            }
+                        )
+                    }
+
+                    if !viewModel.hasAssets {
+                        ContentUnavailableView {
+                            Label(appLocalized("No Photos Available"), systemImage: "photo")
+                        }
+                        .padding(.top, 80)
+                    } else {
+                        LazyVGrid(
+                            columns: Array(
+                                repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
+                                count: gridColumns
+                            ),
+                            spacing: Spacing.xxSmall
+                        ) {
+                            ForEach(displayedAssets, id: \.localIdentifier) { asset in
+                                SelectablePhotoThumbnail(
+                                    asset: asset,
+                                    thumbnailAspectRatio: 1,
+                                    isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                    isSelected: viewModel.isSelected(asset.localIdentifier),
+                                    onToggleSelection: {
+                                        viewModel.toggleSelection(for: asset.localIdentifier)
+                                    },
+                                    onOpenOriginal: {
+                                        if let index = viewModel.assetIndex(for: asset.localIdentifier) {
+                                            selectedAsset = SelectedAsset(asset: asset, index: index)
+                                        }
+                                    }
+                                )
+                                .transition(
+                                    .asymmetric(
+                                        insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                        removal: .scale(scale: 0.94).combined(with: .opacity)
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, Spacing.medium)
+            .padding(.top, Spacing.small)
+            .padding(.bottom, Spacing.medium)
+        }
+        .frame(maxWidth: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             if viewModel.isActionBarVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
-                    onKeepBestOnly: viewModel.keepBestOnly,
+                    selectedCount: viewModel.selectedCount,
                     onSelectAllExceptBest: viewModel.selectAllExceptBest,
                     onClearSelection: viewModel.clearSelection,
                     onDeleteSelected: requestDeleteConfirmation,
@@ -95,76 +160,9 @@ public struct ClusterDetailsView: View {
                     isDeleting: viewModel.isDeleting
                 )
                 .padding(.horizontal, Spacing.medium)
+                .padding(.vertical, Spacing.small)
             }
-
-            if viewModel.requiresPremiumForCurrentSelection && !viewModel.isDeleting {
-                BatchCleanupUpsellCard(
-                    selectedCount: viewModel.selectedCount,
-                    estimatedSavings: viewModel.estimatedSavingsText,
-                    onUpgrade: { presentedPremiumFeature = .batchCleanup },
-                    onContinueFree: {
-                        Task {
-                            await viewModel.continueWithSingleFreeSelection()
-                        }
-                    }
-                )
-                .padding(.horizontal, Spacing.medium)
-            }
-
-            ScrollView {
-                if viewModel.isDeleting {
-                    ALICleanupProgressView(
-                        selectedCount: viewModel.selectedCount,
-                        estimatedSavingsText: viewModel.estimatedSavingsText,
-                        isExecuting: viewModel.isDeleting
-                    )
-                    .padding(.horizontal, Spacing.medium)
-                    .padding(.bottom, Spacing.medium)
-                } else if !viewModel.hasAssets {
-                    ContentUnavailableView {
-                        Label(appLocalized("No Photos Available"), systemImage: "photo")
-                    }
-                    .padding(.horizontal, Spacing.medium)
-                    .padding(.top, 80)
-                } else {
-                    LazyVGrid(
-                        columns: Array(
-                            repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
-                            count: gridColumns
-                        ),
-                        spacing: Spacing.xxSmall
-                    ) {
-                        ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                            SelectablePhotoThumbnail(
-                                asset: asset,
-                                thumbnailAspectRatio: 1,
-                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                                isSelected: viewModel.isSelected(asset.localIdentifier),
-                                onToggleSelection: {
-                                    viewModel.toggleSelection(for: asset.localIdentifier)
-                                },
-                                onOpenOriginal: {
-                                    if let index = viewModel.assetIndex(for: asset.localIdentifier) {
-                                        selectedAsset = SelectedAsset(asset: asset, index: index)
-                                    }
-                                }
-                            )
-                            .transition(
-                                .asymmetric(
-                                    insertion: .scale(scale: 0.94).combined(with: .opacity),
-                                    removal: .scale(scale: 0.94).combined(with: .opacity)
-                                )
-                            )
-                        }
-                    }
-                    .padding(.horizontal, Spacing.medium)
-                    .padding(.vertical, Spacing.medium)
-                }
-            }
-            .frame(maxWidth: .infinity)
         }
-        .padding(.top, Spacing.small)
-        .padding(.bottom, Spacing.medium)
         .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)

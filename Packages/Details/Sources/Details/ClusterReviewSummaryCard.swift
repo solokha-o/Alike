@@ -3,6 +3,10 @@ import Core
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
+    private enum Layout {
+        static let summaryContentHeight: CGFloat = 88
+    }
+
     enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(ALIReviewReactionCue.ID)
         case cleanupProgress(ALIReactionCueID)
@@ -28,66 +32,79 @@ struct ClusterReviewSummaryCard: View {
         Group {
             if dynamicTypeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: Spacing.small) {
-                    statistics
-                    comparisonArtwork(width: 56)
+                    summary
+                    comparisonArtwork(width: 48)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             } else {
-                HStack(alignment: .top, spacing: Spacing.medium) {
-                    statistics
+                HStack(alignment: .center, spacing: Spacing.medium) {
+                    summary
 
-                    comparisonArtwork(width: 72)
+                    comparisonArtwork(width: 56)
                 }
             }
         }
-        .padding(Spacing.medium)
+        .padding(Spacing.small)
         .background(
             Color.secondary.opacity(ColorOpacity.placeholderFill),
             in: RoundedRectangle(cornerRadius: CornerRadius.medium)
         )
     }
 
-    private var statistics: some View {
-        VStack(alignment: .leading, spacing: Spacing.small) {
-            Text(appLocalized("Cleanup Review"))
-                .font(.appHeadline)
+    private var summary: some View {
+        VStack(alignment: .leading, spacing: Spacing.xSmall) {
+            HStack(spacing: Spacing.xSmall) {
+                Text(assetCountTitle)
+                    .font(.appHeadline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .layoutPriority(1)
 
-            statusLabel
+                Spacer(minLength: Spacing.xSmall)
 
-            summaryMetric(
-                title: appLocalized("Best Shot"),
-                value: bestShotLabel,
-                usesMonospacedDigits: false
-            )
-
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: Spacing.small) {
-                    selectionMetric
-                    savingsMetric
-                }
-            } else {
-                HStack(alignment: .top, spacing: Spacing.medium) {
-                    selectionMetric
-                    savingsMetric
-                }
+                statusLabel
             }
+
+            Label {
+                Text(bestShotLabel)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+            } icon: {
+                Image(systemName: "star.fill")
+                    .foregroundStyle(Color.heroGold)
+            }
+            .font(.appCallout.weight(.semibold))
+            .accessibilityLabel(Text("\(appLocalized("Best Shot")): \(bestShotLabel)"))
+
+            Text(selectionSummary)
+                .font(.appCaption)
+                .foregroundStyle(selectedCount > 0 ? Color.accent : Color.secondary)
+                .lineLimit(2, reservesSpace: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: Layout.summaryContentHeight, alignment: .topLeading)
+        .animation(nil, value: selectedCount)
+        .animation(nil, value: reviewStatus)
     }
 
-    private var selectionMetric: some View {
-        summaryMetric(
-            title: appLocalized("Selected to Review"),
-            value: "\(selectedCount)",
-            usesMonospacedDigits: true
-        )
+    private var assetCountTitle: String {
+        if assetCount == 1 {
+            return appLocalized("1 Similar Photo")
+        }
+        return String(format: appLocalized("%d Similar Photos"), assetCount)
     }
 
-    private var savingsMetric: some View {
-        summaryMetric(
-            title: appLocalized("Estimated Savings"),
-            value: estimatedSavingsText,
-            usesMonospacedDigits: true
+    private var selectionSummary: String {
+        guard selectedCount > 0 else {
+            return appLocalized("Tap photos to select them for cleanup")
+        }
+        if selectedCount == 1 {
+            return String(format: appLocalized("1 selected, estimated size %@."), estimatedSavingsText)
+        }
+        return String(
+            format: appLocalized("%d selected, estimated size %@."),
+            selectedCount,
+            estimatedSavingsText
         )
     }
 
@@ -169,18 +186,38 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var statusLabel: some View {
-        HStack(spacing: Spacing.xxSmall) {
-            Image(systemName: statusIconName)
-                .font(.caption.weight(.semibold))
-                .frame(width: 12, height: 12)
+        ZStack(alignment: .leading) {
+            statusContent(title: statusTitle, iconName: statusIconName)
 
-            Text(statusTitle)
-                .font(.caption.weight(.semibold))
+            statusContent(title: appLocalized("Not reviewed"), iconName: "circle")
+                .hidden()
+            statusContent(
+                title: appLocalized("Needs review"),
+                iconName: "arrow.triangle.2.circlepath.circle.fill"
+            )
+            .hidden()
+            statusContent(title: appLocalized("In review"), iconName: "clock.arrow.circlepath")
+                .hidden()
+            statusContent(title: appLocalized("Reviewed"), iconName: "checkmark.seal.fill")
+                .hidden()
         }
+        .fixedSize(horizontal: true, vertical: false)
         .foregroundStyle(statusColor)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(statusTitle))
         .accessibilityHint(Text(appLocalized("Current cleanup review status")))
+    }
+
+    private func statusContent(title: String, iconName: String) -> some View {
+        HStack(spacing: Spacing.xxSmall) {
+            Image(systemName: iconName)
+                .font(.caption.weight(.semibold))
+                .frame(width: 12, height: 12)
+
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .lineLimit(1)
+        }
     }
 
     private var statusTitle: String {
@@ -222,32 +259,4 @@ struct ClusterReviewSummaryCard: View {
         }
     }
 
-    private func summaryMetric(
-        title: String,
-        value: String,
-        usesMonospacedDigits: Bool
-    ) -> some View {
-        VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(value)
-                .font(.appHeadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .monospacedDigitIfNeeded(usesMonospacedDigits)
-        }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
-    }
-}
-
-private extension View {
-    @ViewBuilder
-    func monospacedDigitIfNeeded(_ enabled: Bool) -> some View {
-        if enabled {
-            self.monospacedDigit()
-        } else {
-            self
-        }
-    }
 }

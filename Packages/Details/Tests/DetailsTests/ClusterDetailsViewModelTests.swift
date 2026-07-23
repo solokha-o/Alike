@@ -114,7 +114,16 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         )
     }
 
-    func testKeepBestOnlySelectsAllNonBestAssets() async {
+    func testLoadNormalizesLegacyKeepBestOnlyModeAndKeepsGridVisible() async {
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "best",
+            selectedLocalIdentifiers: ["one"],
+            mode: .keepBestOnly,
+            status: .reviewed,
+            estimatedSavingsBytes: 45
+        )
+        await repository.setStoredStates([clusterID: state])
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -123,14 +132,11 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         )
 
         await viewModel.load()
-        viewModel.keepBestOnly()
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
-        let cue = viewModel.bestShotCelebrationCue
-        viewModel.keepBestOnly()
-        XCTAssertEqual(viewModel.bestShotCelebrationCue, cue)
+        XCTAssertEqual(viewModel.reviewMode, .selection)
+        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "one"])
     }
 
     func testClearSelectionResetsState() async {
@@ -286,22 +292,6 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
 
         XCTAssertEqual(viewModel.bestShotAssetID, "newer")
-    }
-
-    func testKeepBestOnlyShowsOnlyBestShotInGridMode() async {
-        let viewModel = makeViewModel(
-            snapshots: [
-                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
-            ]
-        )
-
-        await viewModel.load()
-        viewModel.keepBestOnly()
-
-        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best"])
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
     }
 
     func testSelectAllExceptBestKeepsAllAssetsVisible() async {
