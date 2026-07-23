@@ -2796,7 +2796,26 @@
     "ALI organizing selected photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI organizing selected photos"}},"uk":{"stringUnit":{"state":"translated","value":"ALI впорядковує вибрані фотографії"}}}},
     "Organizing Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Organizing Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Упорядкування фотографій"}}}},
     "Selected Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Selected Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Вибрані фотографії"}}}},
-    "photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"photos"}},"uk":{"stringUnit":{"state":"translated","value":"фото"}}}}
+    "photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"photos"}},"uk":{"stringUnit":{"state":"translated","value":"фото"}}}},
+    "%@ MP": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"%@ MP"}},"uk":{"stringUnit":{"state":"translated","value":"%@ Мп"}}}},
+    "Dates": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Dates"}},"uk":{"stringUnit":{"state":"translated","value":"Дати"}}}},
+    "Depth Effect": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Depth Effect"}},"uk":{"stringUnit":{"state":"translated","value":"Ефект глибини"}}}},
+    "HDR": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"HDR"}},"uk":{"stringUnit":{"state":"translated","value":"HDR"}}}},
+    "Live Photo": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Live Photo"}},"uk":{"stringUnit":{"state":"translated","value":"Live Photo"}}}},
+    "Loading photo preview": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Loading photo preview"}},"uk":{"stringUnit":{"state":"translated","value":"Завантаження попереднього перегляду фото"}}}},
+    "Location": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Location"}},"uk":{"stringUnit":{"state":"translated","value":"Місце"}}}},
+    "Map showing where the photo was taken": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Map showing where the photo was taken"}},"uk":{"stringUnit":{"state":"translated","value":"Карта з місцем, де було зроблено фото"}}}},
+    "Megapixels": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Megapixels"}},"uk":{"stringUnit":{"state":"translated","value":"Мегапікселі"}}}},
+    "Modified": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Modified"}},"uk":{"stringUnit":{"state":"translated","value":"Змінено"}}}},
+    "Open in Maps": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Open in Maps"}},"uk":{"stringUnit":{"state":"translated","value":"Відкрити в Картах"}}}},
+    "Opens the photo location in Maps": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Opens the photo location in Maps"}},"uk":{"stringUnit":{"state":"translated","value":"Відкриває місце зйомки фото в Картах"}}}},
+    "Panorama": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Panorama"}},"uk":{"stringUnit":{"state":"translated","value":"Панорама"}}}},
+    "Photo": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo"}},"uk":{"stringUnit":{"state":"translated","value":"Фото"}}}},
+    "Photo location": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo location"}},"uk":{"stringUnit":{"state":"translated","value":"Місце зйомки"}}}},
+    "Photo preview": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo preview"}},"uk":{"stringUnit":{"state":"translated","value":"Попередній перегляд фото"}}}},
+    "Photo preview unavailable": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo preview unavailable"}},"uk":{"stringUnit":{"state":"translated","value":"Попередній перегляд фото недоступний"}}}},
+    "Screenshot": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Screenshot"}},"uk":{"stringUnit":{"state":"translated","value":"Знімок екрана"}}}},
+    "Photo Type": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Type"}},"uk":{"stringUnit":{"state":"translated","value":"Тип"}}}}
   },
   "version": "1.1"
 }

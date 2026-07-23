@@ -1,5 +1,6 @@
 import SwiftUI
 import Photos
+import MapKit
 import Core
 import DesignSystem
 import Storage
@@ -334,8 +335,8 @@ struct SelectablePhotoThumbnail: View {
             }
         }
         .sheet(isPresented: $showingMetadata) {
-            MetadataView(metadata: asset.displayMetadata)
-                .presentationDetents([.medium])
+            MetadataView(asset: asset)
+                .presentationDetents([.medium, .large])
         }
         .task {
             image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
@@ -508,25 +509,39 @@ private struct ZoomablePhotoView: View {
 
 // MARK: - Metadata View
 struct MetadataView: View {
-    let metadata: AssetMetadata
+    let asset: PHAsset
     @Environment(\.dismiss) private var dismiss
+
+    private var metadata: AssetMetadata {
+        asset.displayMetadata
+    }
     
     var body: some View {
         RoutedNavigationStack {
             List {
+                PhotoInfoPreview(asset: asset)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+
                 Section {
                     LabeledContent {
                         Text(metadata.resolution)
                     } label: {
                         Text(appLocalized("Resolution"))
                     }
-                    
+
                     LabeledContent {
-                        Text(metadata.formattedCreationDate)
+                        Text(formattedMegapixels)
                     } label: {
-                        Text(appLocalized("Created"))
+                        Text(appLocalized("Megapixels"))
                     }
-                    
+
+                    LabeledContent {
+                        Text(photoType)
+                    } label: {
+                        Text(appLocalized("Photo Type"))
+                    }
+
                     LabeledContent {
                         Text(metadata.isFavorite ? appLocalized("Yes") : appLocalized("No"))
                     } label: {
@@ -534,6 +549,32 @@ struct MetadataView: View {
                     }
                 } header: {
                     Text(appLocalized("Details"))
+                }
+
+                if metadata.creationDate != nil || metadata.modificationDate != nil {
+                    Section {
+                        if metadata.creationDate != nil {
+                            LabeledContent {
+                                Text(metadata.formattedCreationDate)
+                            } label: {
+                                Text(appLocalized("Created"))
+                            }
+                        }
+
+                        if let modified = metadata.formattedModificationDate {
+                            LabeledContent {
+                                Text(modified)
+                            } label: {
+                                Text(appLocalized("Modified"))
+                            }
+                        }
+                    } header: {
+                        Text(appLocalized("Dates"))
+                    }
+                }
+
+                if let location = metadata.location {
+                    PhotoInfoLocationSection(location: location)
                 }
             }
             .navigationTitle(Text(appLocalized("Photo Info")))
@@ -548,6 +589,112 @@ struct MetadataView: View {
                 }
             }
         }
+    }
+
+    private var formattedMegapixels: String {
+        let value = metadata.megapixelCount.formatted(
+            .number.precision(.fractionLength(0...1))
+        )
+        return String(format: appLocalized("%@ MP"), value)
+    }
+
+    private var photoType: String {
+        guard !metadata.photoTraits.isEmpty else {
+            return appLocalized("Photo")
+        }
+
+        return metadata.photoTraits.map { trait in
+            switch trait {
+            case .screenshot:
+                appLocalized("Screenshot")
+            case .panorama:
+                appLocalized("Panorama")
+            case .livePhoto:
+                appLocalized("Live Photo")
+            case .hdr:
+                appLocalized("HDR")
+            case .depthEffect:
+                appLocalized("Depth Effect")
+            }
+        }
+        .joined(separator: ", ")
+    }
+}
+
+private struct PhotoInfoPreview: View {
+    let asset: PHAsset
+
+    @State private var image: UIImage?
+    @State private var isLoading = true
+
+    var body: some View {
+        ZStack {
+            Color.secondary.opacity(ColorOpacity.placeholderFill)
+
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .accessibilityLabel(Text(appLocalized("Photo preview")))
+            } else if isLoading {
+                ProgressView()
+                    .accessibilityLabel(Text(appLocalized("Loading photo preview")))
+            } else {
+                Image(systemName: "photo")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .accessibilityLabel(Text(appLocalized("Photo preview unavailable")))
+            }
+        }
+        .frame(height: 180)
+        .frame(maxWidth: .infinity)
+        .task(id: asset.localIdentifier) {
+            defer { isLoading = false }
+            image = try? await asset.loadImage(targetSize: CGSize(width: 800, height: 600))
+        }
+    }
+}
+
+private struct PhotoInfoLocationSection: View {
+    let location: AssetLocation
+
+    private var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+    }
+
+    private var region: MKCoordinateRegion {
+        MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+    }
+
+    var body: some View {
+        Section {
+            Map(initialPosition: .region(region), interactionModes: []) {
+                Marker(appLocalized("Photo location"), coordinate: coordinate)
+            }
+            .frame(height: 160)
+            .listRowInsets(EdgeInsets())
+            .accessibilityLabel(Text(appLocalized("Map showing where the photo was taken")))
+
+            Button {
+                openInMaps()
+            } label: {
+                Label(appLocalized("Open in Maps"), systemImage: "map")
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .accessibilityHint(Text(appLocalized("Opens the photo location in Maps")))
+        } header: {
+            Text(appLocalized("Location"))
+        }
+    }
+
+    private func openInMaps() {
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = appLocalized("Photo location")
+        mapItem.openInMaps()
     }
 }
 
