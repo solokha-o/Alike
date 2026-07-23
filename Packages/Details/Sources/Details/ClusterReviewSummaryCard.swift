@@ -82,7 +82,7 @@ struct ClusterReviewSummaryCard: View {
                 .lineLimit(2, reservesSpace: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: Layout.summaryContentHeight, alignment: .topLeading)
+        .frame(height: Layout.summaryContentHeight, alignment: .leading)
         .animation(nil, value: selectedCount)
         .animation(nil, value: reviewStatus)
     }
