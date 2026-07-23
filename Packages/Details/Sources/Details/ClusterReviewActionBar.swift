@@ -60,6 +60,9 @@ struct ClusterReviewActionBar: View {
         } label: {
             Label(appLocalized("Selection"), systemImage: "checkmark.circle")
                 .font(.appHeadline)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .allowsTightening(true)
                 .frame(maxWidth: .infinity)
         }
         .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
@@ -79,6 +82,9 @@ struct ClusterReviewActionBar: View {
 
                     Text(deleteActionTitle)
                         .font(.appHeadline)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .allowsTightening(true)
                 }
                 .frame(maxWidth: .infinity)
             }
