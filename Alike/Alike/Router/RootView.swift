@@ -104,15 +104,7 @@ struct MainTabView: View {
         // when StoreKit confirms, restores, or revokes an entitlement.
         let _ = subscriptionStore.entitlementState
 
-        TabView(selection: Bindable(tabManager).selectedTab) {
-            ForEach(tabs, id: \.self) { tab in
-                tabView(for: tab)
-                    .tabItem {
-                        Label(tab.titleKey, systemImage: tab.icon)
-                    }
-                    .tag(tab)
-            }
-        }
+        adaptiveTabView
         .tint(.accent)
         .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
         .task {
@@ -142,6 +134,28 @@ struct MainTabView: View {
             }
         } message: {
             Text("Changing sensitivity requires a new scan to take effect")
+        }
+    }
+
+    @ViewBuilder
+    private var adaptiveTabView: some View {
+        if #available(iOS 26.0, *) {
+            tabView
+                .tabBarMinimizeBehavior(.onScrollDown)
+        } else {
+            tabView
+        }
+    }
+
+    private var tabView: some View {
+        TabView(selection: Bindable(tabManager).selectedTab) {
+            ForEach(tabs, id: \.self) { tab in
+                tabView(for: tab)
+                    .tabItem {
+                        Label(tab.titleKey, systemImage: tab.icon)
+                    }
+                    .tag(tab)
+            }
         }
     }
     
