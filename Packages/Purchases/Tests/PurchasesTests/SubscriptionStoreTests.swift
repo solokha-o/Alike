@@ -62,8 +62,18 @@ final class SubscriptionStoreTests: XCTestCase {
     func testLoadProductsMapsEveryPlan() async {
         let client = MockStoreKitClient(
             products: [
-                StorefrontProduct(id: "test.alike.monthly", displayName: "Monthly", displayPrice: "$6.99"),
-                StorefrontProduct(id: "test.alike.yearly", displayName: "Yearly", displayPrice: "$39.99")
+                StorefrontProduct(
+                    id: "test.alike.monthly",
+                    displayName: "Monthly",
+                    displayPrice: "$6.99",
+                    price: Decimal(string: "6.99")!
+                ),
+                StorefrontProduct(
+                    id: "test.alike.yearly",
+                    displayName: "Yearly",
+                    displayPrice: "$39.99",
+                    price: Decimal(string: "39.99")!
+                )
             ]
         )
         let store = makeStore(client: client)
@@ -72,7 +82,9 @@ final class SubscriptionStoreTests: XCTestCase {
 
         XCTAssertEqual(store.productLoadState, .loaded)
         XCTAssertEqual(store.products[.monthly]?.displayPrice, "$6.99")
+        XCTAssertEqual(store.products[.monthly]?.price, Decimal(string: "6.99"))
         XCTAssertEqual(store.products[.yearly]?.plan, .yearly)
+        XCTAssertEqual(store.products[.yearly]?.price, Decimal(string: "39.99"))
     }
 
     func testRefreshGrantsAccessForVerifiedActiveEntitlement() async {
