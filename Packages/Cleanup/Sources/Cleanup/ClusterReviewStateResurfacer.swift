@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 struct ClusterReviewResurfacingResult: Equatable {
     let migratedReviewStates: [UUID: ClusterReviewState]

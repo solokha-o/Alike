@@ -48,4 +48,10 @@ When no failure analysis or repo mutation is needed, the user can directly run:
    Simulator destination and then run the same full compile.
 5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
+
+## Output style
+
+- Reply in unified diff form. No full-file rewrites unless asked.
+- No preamble, no trailing summary of what you just did.
+- For research questions, answer in 10 lines or fewer unless I ask for depth.
 </INSTRUCTIONS>

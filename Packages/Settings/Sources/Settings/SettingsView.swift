@@ -92,9 +92,6 @@ public struct SettingsView: View {
         } destination: { route, _ in
             destination(for: route)
         }
-        .task {
-            await viewModel.loadCleanupInsights()
-        }
         .task(id: hasCleanupReminderAccess) {
             await viewModel.loadCleanupReminderState(
                 isPremiumUnlocked: hasCleanupReminderAccess
@@ -128,7 +125,6 @@ public struct SettingsView: View {
             appearanceSection
             languageSection
             analysisSection
-            cleanupHistorySection
             cleanupReminderSection
 #if DEBUG
             debugSection
@@ -217,46 +213,6 @@ public struct SettingsView: View {
                 )
                 restorePurchasesFeedback = .failed
             }
-        }
-    }
-
-    private var cleanupHistorySection: some View {
-        Section {
-            if viewModel.cleanupInsights.hasHistory {
-                historyMetricRow(
-                    title: appLocalized("Estimated Reclaimable"),
-                    value: ByteCountFormatter.string(
-                        fromByteCount: viewModel.cleanupInsights.totalSavedBytes,
-                        countStyle: .file
-                    )
-                )
-                historyMetricRow(
-                    title: appLocalized("Photos Moved to Recently Deleted"),
-                    value: "\(viewModel.cleanupInsights.totalDeletedItems)"
-                )
-                historyMetricRow(
-                    title: appLocalized("Cleanup Sessions"),
-                    value: "\(viewModel.cleanupInsights.cleanupSessionCount)"
-                )
-
-                if let latestCleanup = viewModel.cleanupInsights.latestCleanup {
-                    VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                        Text(appLocalized("Latest Cleanup"))
-                            .font(.appSubheadline)
-                        Text(latestCleanupSummary(for: latestCleanup))
-                            .font(.appBody)
-                        Text(relativeDateText(for: latestCleanup.completedAt))
-                            .font(.appCaption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, Spacing.xxxSmall)
-                }
-            } else {
-                Text(appLocalized("No cleanup history yet. Your completed cleanups will appear here."))
-                    .foregroundColor(.secondary)
-            }
-        } header: {
-            Text(appLocalized("Cleanup History"))
         }
     }
 
@@ -549,31 +505,6 @@ public struct SettingsView: View {
         #if os(iOS)
         openAppSettings()
         #endif
-    }
-
-    private func historyMetricRow(title: String, value: String) -> some View {
-        HStack {
-            Text(title)
-            Spacer()
-            Text(value)
-                .foregroundColor(.secondary)
-                .monospacedDigit()
-        }
-    }
-
-    private func latestCleanupSummary(for record: CleanupCompletionRecord) -> String {
-        let savingsText = ByteCountFormatter.string(fromByteCount: record.estimatedSavingsBytes, countStyle: .file)
-        return String(
-            format: appLocalized("%d photos moved • %@ estimated reclaimable"),
-            record.deletedCount,
-            savingsText
-        )
-    }
-
-    private func relativeDateText(for date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter.localizedString(for: date, relativeTo: Date())
     }
 
     private var hasCleanupReminderAccess: Bool {

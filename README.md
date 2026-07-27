@@ -51,8 +51,8 @@ Alike/
 ├── DesignSystem/            # Theme, Typography, Components
 ├── Launch/                  # Splash screen
 ├── Welcome/                 # Onboarding & permissions
-├── Scanner/                 # Analysis & results
-├── Cleanup/                 # Cleanup session orchestration and progress
+├── Scanner/                 # Scan lifecycle, allowance, and scan admission
+├── Cleanup/                 # Review queue, smart cleanup, deletion, and history
 ├── Settings/                # Configuration
 └── Details/                 # Cluster details
 ```
@@ -97,8 +97,12 @@ There are two shared schemes:
 1. **Launch Screen** (3 sec) → 📸 animation
 2. **Welcome Screen** → photo permission request
 3. **Main TabView**:
-  - **Scanner Tab**: scan → results → guided cleanup review
-   - **Settings Tab**: configuration + support
+   - **Scanner Tab**: start and monitor scans, retry failures, and open cleanup results
+   - **Cleanup Tab**: continue review, browse smart categories and clusters, confirm cleanup, and view history
+   - **Settings Tab**: configuration, subscription, reminders, and support
+
+Scanning continues while you move between tabs. A completed scan refreshes the
+Cleanup tab without automatically changing the selected tab.
 
 ## 🎨 Design
 
@@ -118,6 +122,12 @@ Previews for all screens:
 ```
 
 Unit tests run within each package.
+
+```bash
+swift test --package-path Packages/Cleanup
+swift test --package-path Packages/Scanner
+swift test --package-path Packages/Settings
+```
 
 ## 📝 Localization
 

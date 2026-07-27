@@ -14,18 +14,21 @@ final class TabManager {
     // MARK: - Tab Definition
     enum Tab: String, CaseIterable, Hashable {
         case scanner
+        case cleanup
         case settings
         
         var titleKey: LocalizedStringKey {
             switch self {
             case .scanner: return "Scanner"
+            case .cleanup: return "Cleanup"
             case .settings: return "Settings"
             }
         }
         
         var icon: String {
             switch self {
-            case .scanner: return "photo.stack"
+            case .scanner: return "viewfinder"
+            case .cleanup: return "photo.stack"
             case .settings: return "gear"
             }
         }
@@ -42,6 +45,10 @@ final class TabManager {
         if andStartScan {
             shouldStartScan = true
         }
+    }
+
+    func navigateToCleanup() {
+        selectedTab = .cleanup
     }
     
     func requestRescan() {

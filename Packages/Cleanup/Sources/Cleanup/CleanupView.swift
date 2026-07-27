@@ -1,0 +1,884 @@
+import SwiftUI
+import Photos
+import Core
+import DesignSystem
+import Details
+import NavigationKit
+import PhotoAnalysis
+import Purchases
+import PurchasesUI
+
+private enum CleanupRoute: Hashable {
+    case cluster(PhotoCluster)
+    case history
+}
+
+private struct PresentedCleanupCategory: Identifiable {
+    let kind: CleanupCategoryKind
+    let assets: [PHAsset]
+    var id: CleanupCategoryKind { kind }
+}
+
+/// The review-focused home for results produced by ``CleanupWorkspaceModel``.
+/// Scanner owns starting scans and entitlement admission; Cleanup only presents
+/// the durable workspace and routes the user to an explicit rescan action.
+public struct CleanupView: View {
+    private let workspace: CleanupWorkspaceModel
+    @Binding private var gridColumns: Int
+    @Binding private var sensitivity: SensitivityLevel
+    private let premiumAccess: any PremiumAccessControlling
+    private let subscriptionStore: SubscriptionStore?
+    private let onOpenScanner: @MainActor @Sendable () -> Void
+    private let onRequestScan: @MainActor @Sendable () -> Void
+
+    @State private var controls = CleanupClusterControls()
+    @State private var isControlsPresented = false
+    @State private var presentedCategory: PresentedCleanupCategory?
+    @State private var presentedPaywall: PremiumFeature?
+    @State private var categoryError: String?
+    @State private var dismissedReconciliationID: UUID?
+
+    public init(
+        workspace: CleanupWorkspaceModel,
+        gridColumns: Binding<Int>,
+        sensitivity: Binding<SensitivityLevel>,
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
+        onOpenScanner: @escaping @MainActor @Sendable () -> Void,
+        onRequestScan: @escaping @MainActor @Sendable () -> Void
+    ) {
+        self.workspace = workspace
+        self._gridColumns = gridColumns
+        self._sensitivity = sensitivity
+        self.premiumAccess = premiumAccess
+        self.subscriptionStore = subscriptionStore
+        self.onOpenScanner = onOpenScanner
+        self.onRequestScan = onRequestScan
+    }
+
+    public var body: some View {
+        RoutedNavigationStack { router in
+            mainContent(router: router)
+        } destination: { route, _ in
+            destination(for: route)
+        }
+        .task {
+            await workspace.loadCachedContent()
+            _ = await workspace.checkForGalleryChanges()
+        }
+        .sheet(item: $presentedCategory) { category in
+            RoutedNavigationStack {
+                ScreenshotCleanupView(
+                    assets: category.assets,
+                    sourceCategory: category.kind,
+                    cleanupService: workspace.cleanupService,
+                    cleanupHistoryRepository: workspace.cleanupHistoryRepository,
+                    premiumAccess: premiumAccess,
+                    subscriptionStore: subscriptionStore,
+                    openSettingsAction: {
+                        PhotoPermissionManagerImpl().openSettings()
+                    },
+                    onCleanupCompleted: reconcile
+                )
+            }
+            .interactiveDismissDisabled()
+        }
+        .sheet(item: $presentedPaywall) { feature in
+            SubscriptionPaywallView(context: paywallContext(for: feature), store: subscriptionStore)
+        }
+        .sheet(isPresented: $isControlsPresented) {
+            CleanupClusterControlsSheet(
+                controls: $controls,
+                isAdvancedFilteringLocked: !premiumAccess.hasAccess(to: .advancedFilters),
+                onRequestAdvancedFilters: {
+                    isControlsPresented = false
+                    presentedPaywall = .advancedFilters
+                }
+            )
+        }
+        .alert(appLocalized("Couldn't Open Cleanup Category"), isPresented: errorBinding) {
+            Button(appLocalized("OK"), role: .cancel) { categoryError = nil }
+        } message: {
+            Text(categoryError ?? "")
+        }
+    }
+
+    private var errorBinding: Binding<Bool> {
+        Binding(get: { categoryError != nil }, set: { if !$0 { categoryError = nil } })
+    }
+
+    @ViewBuilder
+    private func destination(for route: CleanupRoute) -> some View {
+        switch route {
+        case .cluster(let cluster):
+            ClusterDetailsView(
+                cluster: cluster,
+                cleanupService: workspace.cleanupService,
+                cleanupHistoryRepository: workspace.cleanupHistoryRepository,
+                premiumAccess: premiumAccess,
+                subscriptionStore: subscriptionStore,
+                openSettingsAction: {
+                    PhotoPermissionManagerImpl().openSettings()
+                },
+                onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
+                onCleanupCompleted: reconcile
+            )
+        case .history:
+            CleanupHistoryView(
+                insights: workspace.cleanupInsights,
+                repository: workspace.cleanupHistoryRepository
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func mainContent(router: StackRouter<CleanupRoute>) -> some View {
+        ScrollView {
+            VStack(spacing: Spacing.medium) {
+                banners
+                switch workspace.contentState {
+                case .notLoaded:
+                    ProgressView().padding(.top, Spacing.xxLarge)
+                case .neverScanned:
+                    neverScanned
+                case .unavailable(let message):
+                    unavailable(message)
+                case .content:
+                    cleanupContent(router: router)
+                }
+            }
+            .padding(Spacing.medium)
+        }
+        .navigationTitle(Text(appLocalized("Cleanup")))
+#if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+#endif
+        .toolbar { cleanupToolbar }
+        .animation(.appSmooth, value: workspace.scanOperation)
+        .animation(.appSmooth, value: workspace.reconciliationState)
+    }
+
+    @ViewBuilder
+    private var banners: some View {
+        if case .scanning(let progress, _) = workspace.scanOperation {
+            CleanupStatusBanner(
+                icon: "arrow.triangle.2.circlepath",
+                title: appLocalized("Refreshing Cleanup"),
+                message: String(format: appLocalized("Scanning your library… %d%%"), Int(progress * 100)),
+                showsProgress: true,
+                progress: progress
+            )
+        } else if case .failed(let message, _) = workspace.scanOperation {
+            CleanupStatusBanner(
+                icon: "exclamationmark.triangle.fill",
+                title: appLocalized("Scan Failed"),
+                message: message
+            )
+        }
+        if workspace.shouldShowRescanPrompt {
+            CleanupStatusBanner(
+                icon: "photo.badge.arrow.down",
+                title: appLocalized("Your library changed"),
+                message: appLocalized("Run a new scan to refresh cleanup suggestions."),
+                actionTitle: appLocalized("Rescan"),
+                action: onRequestScan
+            )
+        }
+        if let state = workspace.reconciliationState, state.record.id != dismissedReconciliationID {
+            reconciliationBanner(state)
+        }
+    }
+
+    @ViewBuilder
+    private func reconciliationBanner(_ state: CleanupReconciliationState) -> some View {
+        switch state {
+        case .refreshing(let record):
+            CleanupStatusBanner(
+                icon: "arrow.triangle.2.circlepath",
+                title: String(format: appLocalized("%d photos moved to Recently Deleted."), record.deletedCount),
+                message: appLocalized("Refreshing your cleanup results…"),
+                showsProgress: true
+            )
+        case .success(let record):
+            CleanupStatusBanner(
+                icon: "checkmark.circle.fill",
+                title: String(format: appLocalized("%d photos moved to Recently Deleted."), record.deletedCount),
+                message: appLocalized("Your cleanup results are up to date."),
+                dismiss: { dismissedReconciliationID = record.id }
+            )
+        case .failed(let record, let message):
+            CleanupStatusBanner(
+                icon: "exclamationmark.triangle.fill",
+                title: appLocalized("Refresh Required"),
+                message: message,
+                actionTitle: appLocalized("Rescan"),
+                action: onRequestScan,
+                dismiss: { dismissedReconciliationID = record.id }
+            )
+        }
+    }
+
+    private var neverScanned: some View {
+        ContentUnavailableView {
+            Label(appLocalized("Scan Your Library First"), systemImage: "viewfinder")
+        } description: {
+            Text(appLocalized("Start a scan to find similar photos and smart cleanup suggestions."))
+        } actions: {
+            Button(appLocalized("Go to Scanner"), action: onOpenScanner).buttonStyle(.borderedProminent)
+        }
+        .frame(minHeight: 360)
+    }
+
+    private func unavailable(_ message: String) -> some View {
+        ContentUnavailableView {
+            Label(appLocalized("Cleanup Unavailable"), systemImage: "exclamationmark.triangle")
+        } description: { Text(message) } actions: {
+            Button(appLocalized("Go to Scanner"), action: onOpenScanner).buttonStyle(.bordered)
+        }
+        .frame(minHeight: 360)
+    }
+
+    @ViewBuilder
+    private func cleanupContent(router: StackRouter<CleanupRoute>) -> some View {
+        let allClusters = sorted(workspace.clusters)
+        let visible = filtered(allClusters)
+        let needsReview = visible.filter { workspace.reviewStatus(for: $0.id) == .needsReReview }
+        let remaining = visible.filter { workspace.reviewStatus(for: $0.id) != .needsReReview }
+
+        if let entry = workspace.cleanupEntryCluster() {
+            CleanupProgressCard(progress: workspace.sessionProgress()) { router.push(.cluster(entry)) }
+        }
+        if !workspace.cleanupCategories.isEmpty {
+            CleanupCategoriesCard(categories: workspace.cleanupCategories, isLocked: { !premiumAccess.hasAccess(to: $0.premiumFeature) }, onTap: openCategory)
+        }
+        if allClusters.isEmpty && workspace.cleanupCategories.isEmpty {
+            ContentUnavailableView {
+                Label(appLocalized("No Cleanup Opportunities"), systemImage: "checkmark.seal")
+            } description: { Text(appLocalized("Your latest scan did not find similar photos or smart categories to review.")) }
+            .padding(.top, Spacing.xxLarge)
+        } else if visible.isEmpty && !allClusters.isEmpty {
+            ContentUnavailableView {
+                Label(appLocalized("No Clusters Match These Controls"), systemImage: "line.3.horizontal.decrease.circle")
+            } description: { Text(appLocalized("Try changing filters or resetting controls.")) } actions: {
+                Button(appLocalized("Reset controls")) { controls = CleanupClusterControls() }
+            }
+        } else {
+            if !needsReview.isEmpty {
+                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: needsReview, gridColumns: gridColumns, workspace: workspace) { router.push(.cluster($0)) }
+            }
+            if !remaining.isEmpty {
+                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: remaining, gridColumns: gridColumns, workspace: workspace) { router.push(.cluster($0)) }
+            }
+        }
+        Button { router.push(.history) } label: {
+            Label(appLocalized("Cleanup History"), systemImage: "clock.arrow.circlepath")
+                .frame(maxWidth: .infinity, alignment: .leading).padding(Spacing.medium)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        }.buttonStyle(.plain)
+    }
+
+    @ToolbarContentBuilder
+    private var cleanupToolbar: some ToolbarContent {
+#if os(iOS)
+        if !workspace.clusters.isEmpty {
+            ToolbarItem(placement: .topBarTrailing) { controlsButton }
+        }
+        if workspace.hasCompletedScanBaseline {
+            ToolbarItem(placement: .topBarTrailing) { rescanButton }
+        }
+#else
+        if !workspace.clusters.isEmpty {
+            ToolbarItem { controlsButton }
+        }
+        if workspace.hasCompletedScanBaseline {
+            ToolbarItem { rescanButton }
+        }
+#endif
+    }
+    private var controlsButton: some View {
+        Button { isControlsPresented = true } label: {
+            Image(systemName: controls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+        }
+        .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+    }
+
+    private var rescanButton: some View {
+        Button(action: onRequestScan) { Image(systemName: "arrow.clockwise") }
+            .accessibilityLabel(Text(appLocalized("Rescan Photos")))
+    }
+
+    private func openCategory(_ category: CleanupCategorySummary) {
+        guard premiumAccess.hasAccess(to: category.kind.premiumFeature) else {
+            presentedPaywall = category.kind.premiumFeature
+            return
+        }
+        Task {
+            do {
+                let assets = try await workspace.loadAssets(for: category.kind)
+                presentedCategory = PresentedCleanupCategory(kind: category.kind, assets: assets)
+            } catch {
+                categoryError = error.localizedDescription
+            }
+        }
+    }
+
+    private func reconcile(_ record: CleanupCompletionRecord) {
+        Task { await workspace.reconcile(after: record, sensitivity: sensitivity) }
+    }
+    private func paywallContext(for feature: PremiumFeature) -> PremiumSurfaceContext {
+        if let kind = feature.categoryKind,
+           let category = workspace.cleanupCategories.first(where: { $0.kind == kind }) {
+            return .smartCategory(
+                feature: feature,
+                title: kind.presentation.title,
+                estimatedSavings: ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+            )
+        }
+        return .feature(feature)
+    }
+
+    private func filtered(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
+        clusters.filter { cluster in
+            guard premiumAccess.hasAccess(to: .advancedFilters) else { return true }
+            let status = workspace.reviewStatus(for: cluster.id)
+            let reviewMatches: Bool
+            switch controls.reviewFilter {
+            case .all: reviewMatches = true
+            case .needsReview: reviewMatches = status == .needsReReview
+            case .inReview: reviewMatches = status == .inReview
+            case .reviewed: reviewMatches = status == .reviewed
+            }
+            return reviewMatches
+                && cluster.count >= controls.minimumClusterSize.rawValue
+                && (!controls.favoritesOnly || cluster.assets.contains(where: \.isFavorite))
+        }
+    }
+
+    private func sorted(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
+        clusters.sorted { lhs, rhs in
+            switch controls.sort {
+            case .newest: lhs.createdAt > rhs.createdAt
+            case .largestCluster: lhs.count > rhs.count
+            case .similarity: lhs.averageSimilarity > rhs.averageSimilarity
+            case .reviewStatus: workspace.reviewStatus(for: lhs.id).rawValue < workspace.reviewStatus(for: rhs.id).rawValue
+            case .largestCleanupOpportunity:
+                (workspace.reviewState(for: lhs.id)?.estimatedSavingsBytes ?? 0)
+                    > (workspace.reviewState(for: rhs.id)?.estimatedSavingsBytes ?? 0)
+            }
+        }
+    }
+}
+
+public enum CleanupClusterSort: String, CaseIterable, Sendable {
+    case newest
+    case largestCleanupOpportunity
+    case largestCluster
+    case similarity
+    case reviewStatus
+
+    var title: String {
+        switch self {
+        case .newest:
+            appLocalized("Newest")
+        case .largestCleanupOpportunity:
+            appLocalized("Most space to save")
+        case .largestCluster:
+            appLocalized("Largest cluster")
+        case .similarity:
+            appLocalized("Highest similarity")
+        case .reviewStatus:
+            appLocalized("Review status")
+        }
+    }
+}
+
+public enum CleanupReviewFilter: String, CaseIterable, Sendable {
+    case all
+    case needsReview
+    case inReview
+    case reviewed
+
+    var title: String {
+        switch self {
+        case .all:
+            appLocalized("All review states")
+        case .needsReview:
+            appLocalized("Needs review")
+        case .inReview:
+            appLocalized("In review")
+        case .reviewed:
+            appLocalized("Reviewed")
+        }
+    }
+}
+
+public enum CleanupMinimumClusterSize: Int, CaseIterable, Sendable {
+    case any = 0
+    case two = 2
+    case three = 3
+    case five = 5
+    case ten = 10
+    case twenty = 20
+
+    var title: String {
+        self == .any
+            ? appLocalized("Any size")
+            : String(format: appLocalized("%d or more photos"), rawValue)
+    }
+}
+public struct CleanupClusterControls: Equatable, Sendable {
+    public var sort: CleanupClusterSort = .newest
+    public var reviewFilter: CleanupReviewFilter = .all
+    public var minimumClusterSize: CleanupMinimumClusterSize = .any
+    public var favoritesOnly = false
+    public var isDefault: Bool { self == Self() }
+
+    public init() {}
+}
+
+private struct CleanupClusterControlsSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var controls: CleanupClusterControls
+    let isAdvancedFilteringLocked: Bool
+    let onRequestAdvancedFilters: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(appLocalized("Sort by")) {
+                    Picker(appLocalized("Sort order"), selection: $controls.sort) {
+                        ForEach(CleanupClusterSort.allCases, id: \.self) {
+                            Text($0.title).tag($0)
+                        }
+                    }
+                }
+
+                Section(appLocalized("Filter by")) {
+                    if isAdvancedFilteringLocked {
+                        Button(action: onRequestAdvancedFilters) {
+                            Label(appLocalized("Unlock advanced filters"), systemImage: "lock.fill")
+                        }
+                    } else {
+                        Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                            ForEach(CleanupReviewFilter.allCases, id: \.self) {
+                                Text($0.title).tag($0)
+                            }
+                        }
+                        Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                            ForEach(CleanupMinimumClusterSize.allCases, id: \.self) {
+                                Text($0.title).tag($0)
+                            }
+                        }
+                        Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
+                    }
+                }
+
+                Section {
+                    Button(appLocalized("Reset controls"), role: .destructive) {
+                        controls = CleanupClusterControls()
+                    }
+                    .disabled(controls.isDefault)
+                }
+            }
+            .navigationTitle(Text(appLocalized("Filter and Sort")))
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(appLocalized("Done")) { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+    }
+}
+
+private struct CleanupProgressCard: View {
+    let progress: CleanupSessionProgress
+    let onContinue: () -> Void
+    private let metricColumns = [GridItem(.flexible()), GridItem(.flexible())]
+
+    var body: some View {
+        Button(action: onContinue) {
+            VStack(alignment: .leading, spacing: Spacing.small) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(appLocalized("Continue Review")).font(.appHeadline)
+                        Text(appLocalized("Pick up where you left off"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(Color.accent)
+                }
+                ProgressView(value: progress.reviewedRatio)
+                LazyVGrid(columns: metricColumns, alignment: .leading, spacing: Spacing.small) {
+                    metric("\(progress.reviewedCount)/\(progress.totalClusters)", appLocalized("Reviewed"))
+                    metric("\(progress.remainingClusters)", appLocalized("Remaining"))
+                    metric("\(progress.totalSelectedItems)", appLocalized("Selected"))
+                    metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), appLocalized("Estimated Savings"))
+                }
+            }
+            .padding(Spacing.medium)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(
+            Text(
+                String(
+                    format: appLocalized("Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."),
+                    progress.reviewedCount,
+                    progress.totalClusters,
+                    progress.remainingClusters,
+                    progress.totalSelectedItems,
+                    ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+                )
+            )
+        )
+        .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
+    }
+
+    private func metric(_ value: String, _ label: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(value).font(.caption.bold()).monospacedDigit()
+            Text(label).font(.caption2).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct CleanupCategoriesCard: View {
+    let categories: [CleanupCategorySummary]
+    let isLocked: (CleanupCategoryKind) -> Bool
+    let onTap: (CleanupCategorySummary) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(appLocalized("Smart Cleanup"))
+                .font(.appHeadline)
+
+            ForEach(categories) { category in
+                Button {
+                    onTap(category)
+                } label: {
+                    HStack {
+                        Image(systemName: category.kind.presentation.systemImageName)
+                            .foregroundStyle(Color.accent)
+                        VStack(alignment: .leading) {
+                            Text(category.kind.presentation.title)
+                                .font(.appHeadline)
+                            Text(categoryDetail(category))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Image(systemName: isLocked(category.kind) ? "lock.fill" : "chevron.right")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(Spacing.small)
+                    .background(
+                        Color.secondary.opacity(ColorOpacity.statusBackground),
+                        in: RoundedRectangle(cornerRadius: CornerRadius.small)
+                    )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(categoryAccessibilityLabel(category)))
+                .accessibilityHint(
+                    Text(
+                        isLocked(category.kind)
+                            ? appLocalized("Opens the upgrade options")
+                            : appLocalized("Open this cleanup category")
+                    )
+                )
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+
+    private func categoryDetail(_ category: CleanupCategorySummary) -> String {
+        String(
+            format: appLocalized("%d items • %@ estimated reclaimable"),
+            category.assetCount,
+            ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+        )
+    }
+
+    private func categoryAccessibilityLabel(_ category: CleanupCategorySummary) -> String {
+        let lockedSuffix = isLocked(category.kind) ? ". \(appLocalized("Locked"))" : ""
+        return "\(category.kind.presentation.title). \(categoryDetail(category))\(lockedSuffix)"
+    }
+}
+
+private struct CleanupClusterSection: View {
+    let title: String
+    let subtitle: String
+    let clusters: [PhotoCluster]
+    let gridColumns: Int
+    let workspace: CleanupWorkspaceModel
+    let onOpen: (PhotoCluster) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            HStack {
+                Text(title)
+                    .font(.appHeadline)
+                Text("\(clusters.count)")
+                    .font(.caption.bold())
+                    .padding(.horizontal, 7)
+                    .background(Color.secondary.opacity(ColorOpacity.statusBackground), in: Capsule())
+                Spacer()
+            }
+
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            LazyVGrid(
+                columns: Array(
+                    repeating: GridItem(.flexible(), spacing: Spacing.small),
+                    count: max(1, gridColumns)
+                ),
+                spacing: Spacing.small
+            ) {
+                ForEach(clusters) { cluster in
+                    CleanupClusterCard(
+                        cluster: cluster,
+                        columns: gridColumns,
+                        status: workspace.reviewStatus(for: cluster.id),
+                        resurfacing: workspace.resurfacingState(for: cluster.id)
+                    ) {
+                        onOpen(cluster)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct CleanupClusterCard: View {
+    let cluster: PhotoCluster
+    let columns: Int
+    let status: ClusterReviewStatus
+    let resurfacing: ClusterResurfacingState?
+    let open: () -> Void
+
+#if os(iOS)
+    @State private var image: UIImage?
+#endif
+
+    var body: some View {
+        Button(action: open) {
+            ZStack(alignment: .bottomTrailing) {
+                thumbnail
+                Text("\(cluster.count)")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white)
+                    .padding(6)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding(6)
+            }
+            .overlay(alignment: .topLeading) {
+                Text(statusTitle)
+                    .font(.caption2.bold())
+                    .padding(5)
+                    .background(.regularMaterial, in: Capsule())
+                    .padding(5)
+            }
+            .overlay(alignment: .topTrailing) {
+                if let resurfacing, resurfacing != .unchanged {
+                    Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
+                        .padding(6)
+                        .background(.regularMaterial, in: Circle())
+                        .padding(5)
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.medium))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(clusterAccessibilityLabel))
+        .accessibilityHint(Text(appLocalized("Open this cluster to review photos")))
+    }
+
+    @ViewBuilder
+    private var thumbnail: some View {
+#if os(iOS)
+        if let image {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: columns == 1 ? 260 : 150)
+                .frame(maxWidth: .infinity)
+                .clipped()
+        } else {
+            placeholder.task {
+                if let asset = cluster.thumbnail {
+                    image = try? await asset.loadImage()
+                }
+            }
+        }
+#else
+        placeholder
+#endif
+    }
+
+    private var placeholder: some View {
+        Rectangle()
+            .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
+            .frame(height: columns == 1 ? 260 : 150)
+            .overlay {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
+            }
+    }
+
+    private var statusTitle: String {
+        switch status {
+        case .notReviewed:
+            appLocalized("Not reviewed")
+        case .needsReReview:
+            appLocalized("Needs review")
+        case .inReview:
+            appLocalized("In review")
+        case .reviewed:
+            appLocalized("Reviewed")
+        }
+    }
+
+    private var clusterAccessibilityLabel: String {
+        let resurfacingTitle: String
+        switch resurfacing {
+        case .new:
+            resurfacingTitle = appLocalized("New")
+        case .changed:
+            resurfacingTitle = appLocalized("Changed")
+        case .none, .unchanged:
+            resurfacingTitle = ""
+        }
+
+        return [
+            String(format: appLocalized("%d photos"), cluster.count),
+            statusTitle,
+            resurfacingTitle
+        ]
+        .filter { !$0.isEmpty }
+        .joined(separator: ". ")
+    }
+}
+
+private struct CleanupStatusBanner: View {
+    let icon: String
+    let title: String
+    let message: String
+    var actionTitle: String? = nil
+    var action: (() -> Void)? = nil
+    var showsProgress = false
+    var progress: Double? = nil
+    var dismiss: (() -> Void)? = nil
+
+    var body: some View {
+        HStack(alignment: .top, spacing: Spacing.small) {
+            if showsProgress {
+                ProgressView(value: progress)
+                    .frame(width: 22)
+            } else {
+                Image(systemName: icon)
+                    .foregroundStyle(Color.accent)
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.appHeadline)
+                Text(message)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            if let actionTitle, let action {
+                Button(actionTitle, action: action)
+                    .buttonStyle(.bordered)
+            }
+            if let dismiss {
+                Button(action: dismiss) {
+                    Image(systemName: "xmark")
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .accessibilityLabel(Text(appLocalized("Dismiss cleanup status")))
+                .accessibilityHint(Text(appLocalized("Hide this status message")))
+            }
+        }
+        .padding(Spacing.medium)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+    }
+}
+
+private struct CleanupHistoryView: View {
+    let insights: CleanupInsights
+    let repository: any CleanupHistoryRepository
+    @State private var state = HistoryState.loading
+
+    var body: some View {
+        List {
+            Section(appLocalized("Cleanup History")) {
+                LabeledContent(appLocalized("Photos Moved to Recently Deleted"), value: "\(insights.totalDeletedItems)")
+                LabeledContent(appLocalized("Estimated Reclaimable"), value: ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file))
+                LabeledContent(appLocalized("Cleanup Sessions"), value: "\(insights.cleanupSessionCount)")
+            }
+            historyContent
+        }
+        .navigationTitle(Text(appLocalized("History")))
+        .task { await loadEntries() }
+    }
+
+    @ViewBuilder
+    private var historyContent: some View {
+        switch state {
+        case .loading:
+            Section {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+            }
+        case .empty:
+            ContentUnavailableView(
+                appLocalized("No Cleanup History"),
+                systemImage: "clock.arrow.circlepath",
+                description: Text(appLocalized("Completed cleanups will appear here."))
+            )
+        case .loaded(let entries):
+            Section(appLocalized("Completed Cleanups")) {
+                ForEach(entries) { entry in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(String(format: appLocalized("%d photos moved • %@ estimated reclaimable"), entry.deletedCount, ByteCountFormatter.string(fromByteCount: entry.estimatedSavingsBytes, countStyle: .file)))
+                        Text(entry.completedAt.formatted(date: .abbreviated, time: .shortened))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        case .failed(let message):
+            Section { ContentUnavailableView(appLocalized("History Unavailable"), systemImage: "exclamationmark.triangle", description: Text(message)) }
+        }
+    }
+
+    private func loadEntries() async {
+        do {
+            let entries = try await repository.loadEntries().sorted { $0.completedAt > $1.completedAt }
+            state = entries.isEmpty ? .empty : .loaded(entries)
+        } catch {
+            state = .failed(error.localizedDescription)
+        }
+    }
+
+    private enum HistoryState {
+        case loading
+        case empty
+        case loaded([CleanupCompletionRecord])
+        case failed(String)
+    }
+}

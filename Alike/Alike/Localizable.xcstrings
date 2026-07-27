@@ -1,6 +1,142 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%d photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d фотографій"
+          }
+        }
+      }
+    },
+    "Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продовжити перегляд. Переглянуто %d з %d груп, залишилося %d, вибрано %d, орієнтовна економія — %@."
+          }
+        }
+      }
+    },
+    "Dismiss cleanup status": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dismiss cleanup status"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Закрити статус очищення"
+          }
+        }
+      }
+    },
+    "Hide this status message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide this status message"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приховати це повідомлення про стан"
+          }
+        }
+      }
+    },
+    "Locked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Locked"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заблоковано"
+          }
+        }
+      }
+    },
+    "Open this cleanup category": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open this cleanup category"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити цю категорію очищення"
+          }
+        }
+      }
+    },
+    "Open this cluster to review photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open this cluster to review photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити цю групу для перегляду фотографій"
+          }
+        }
+      }
+    },
+    "Opens the upgrade options": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the upgrade options"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкриває варіанти оновлення підписки"
+          }
+        }
+      }
+    },
     "Alike": {
       "extractionState": "manual",
       "localizations": {
@@ -2826,7 +2962,42 @@
     "Photo preview": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo preview"}},"uk":{"stringUnit":{"state":"translated","value":"Попередній перегляд фото"}}}},
     "Photo preview unavailable": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photo preview unavailable"}},"uk":{"stringUnit":{"state":"translated","value":"Попередній перегляд фото недоступний"}}}},
     "Screenshot": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Screenshot"}},"uk":{"stringUnit":{"state":"translated","value":"Знімок екрана"}}}},
-    "Photo Type": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Type"}},"uk":{"stringUnit":{"state":"translated","value":"Тип"}}}}
+    "Photo Type": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Type"}},"uk":{"stringUnit":{"state":"translated","value":"Тип"}}}},
+    "%d opportunities found • %@ estimated reclaimable": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"%d opportunities found • %@ estimated reclaimable"}},"uk":{"stringUnit":{"state":"translated","value":"Знайдено можливостей для очищення: %d • орієнтовно можна звільнити %@"}}}},
+    "%d or more photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"%d or more photos"}},"uk":{"stringUnit":{"state":"translated","value":"%d фотографій або більше"}}}},
+    "Cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Очищення"}}}},
+    "Cleanup opportunities are ready": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Cleanup opportunities are ready"}},"uk":{"stringUnit":{"state":"translated","value":"Можливості для очищення готові"}}}},
+    "Completed Cleanups": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Completed Cleanups"}},"uk":{"stringUnit":{"state":"translated","value":"Завершені очищення"}}}},
+    "Completed cleanups will appear here.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Completed cleanups will appear here."}},"uk":{"stringUnit":{"state":"translated","value":"Завершені очищення з’являться тут."}}}},
+    "Continue Review": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Continue Review"}},"uk":{"stringUnit":{"state":"translated","value":"Продовжити перегляд"}}}},
+    "Everything else still available in your cleanup queue": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Everything else still available in your cleanup queue"}},"uk":{"stringUnit":{"state":"translated","value":"Усе інше, що ще доступне у вашій черзі очищення"}}}},
+    "Find similar photos and smart cleanup opportunities while keeping every decision in your control.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Find similar photos and smart cleanup opportunities while keeping every decision in your control."}},"uk":{"stringUnit":{"state":"translated","value":"Знаходьте схожі фото й розумні можливості для очищення, зберігаючи контроль над кожним рішенням."}}}},
+    "Go to Scanner": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Go to Scanner"}},"uk":{"stringUnit":{"state":"translated","value":"Перейти до сканера"}}}},
+    "History": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"History"}},"uk":{"stringUnit":{"state":"translated","value":"Історія"}}}},
+    "History Unavailable": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"History Unavailable"}},"uk":{"stringUnit":{"state":"translated","value":"Історія недоступна"}}}},
+    "No Cleanup History": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"No Cleanup History"}},"uk":{"stringUnit":{"state":"translated","value":"Немає історії очищення"}}}},
+    "No Cleanup Opportunities": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"No Cleanup Opportunities"}},"uk":{"stringUnit":{"state":"translated","value":"Немає можливостей для очищення"}}}},
+    "No cleanup opportunities were found in this scan.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"No cleanup opportunities were found in this scan."}},"uk":{"stringUnit":{"state":"translated","value":"Під час цього сканування не знайдено можливостей для очищення."}}}},
+    "Pick up where you left off": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Pick up where you left off"}},"uk":{"stringUnit":{"state":"translated","value":"Продовжте з того місця, де зупинилися"}}}},
+    "Ready to scan your library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Ready to scan your library"}},"uk":{"stringUnit":{"state":"translated","value":"Готові просканувати фототеку"}}}},
+    "Refreshing Cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Refreshing Cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Оновлення очищення"}}}},
+    "Refreshing your cleanup results…": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Refreshing your cleanup results…"}},"uk":{"stringUnit":{"state":"translated","value":"Оновлюємо результати очищення…"}}}},
+    "Remaining": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Remaining"}},"uk":{"stringUnit":{"state":"translated","value":"Залишилося"}}}},
+    "Review Cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Review Cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Переглянути очищення"}}}},
+    "Review Existing Cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Review Existing Cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Переглянути наявне очищення"}}}},
+    "Run a new scan to refresh cleanup suggestions.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Run a new scan to refresh cleanup suggestions."}},"uk":{"stringUnit":{"state":"translated","value":"Запустіть нове сканування, щоб оновити пропозиції для очищення."}}}},
+    "Scan Again": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan Again"}},"uk":{"stringUnit":{"state":"translated","value":"Сканувати знову"}}}},
+    "Scan Your Library First": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan Your Library First"}},"uk":{"stringUnit":{"state":"translated","value":"Спершу проскануйте фототеку"}}}},
+    "Scanning your library… %d%%": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scanning your library… %d%%"}},"uk":{"stringUnit":{"state":"translated","value":"Сканування фототеки… %d%%"}}}},
+    "Scanning your photo library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scanning your photo library"}},"uk":{"stringUnit":{"state":"translated","value":"Сканування фототеки"}}}},
+    "Smart Cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Smart Cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Розумне очищення"}}}},
+    "Start a scan to find similar photos and smart cleanup suggestions.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Start a scan to find similar photos and smart cleanup suggestions."}},"uk":{"stringUnit":{"state":"translated","value":"Запустіть сканування, щоб знайти схожі фото та розумні пропозиції для очищення."}}}},
+    "Try changing filters or resetting controls.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Try changing filters or resetting controls."}},"uk":{"stringUnit":{"state":"translated","value":"Спробуйте змінити фільтри або скинути налаштування."}}}},
+    "Unlock more with Alike Pro": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Unlock more with Alike Pro"}},"uk":{"stringUnit":{"state":"translated","value":"Відкрийте більше можливостей з Alike Pro"}}}},
+    "You can switch tabs while scanning. Your cleanup results will refresh when it finishes.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"You can switch tabs while scanning. Your cleanup results will refresh when it finishes."}},"uk":{"stringUnit":{"state":"translated","value":"Під час сканування можна переходити між вкладками. Результати очищення оновляться після його завершення."}}}},
+    "Your latest scan did not find similar photos or smart categories to review.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your latest scan did not find similar photos or smart categories to review."}},"uk":{"stringUnit":{"state":"translated","value":"Останнє сканування не знайшло схожих фото чи розумних категорій для перегляду."}}}},
+    "Your library changed": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your library changed"}},"uk":{"stringUnit":{"state":"translated","value":"Ваша фототека змінилася"}}}},
+    "Your library is up to date": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your library is up to date"}},"uk":{"stringUnit":{"state":"translated","value":"Ваша фототека актуальна"}}}}
   },
   "version": "1.1"
 }

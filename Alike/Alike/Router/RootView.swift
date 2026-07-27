@@ -52,6 +52,7 @@ struct MainTabView: View {
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
+    @State private var cleanupWorkspace = CleanupWorkspaceModel()
     @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
@@ -164,6 +165,7 @@ struct MainTabView: View {
         switch tab {
         case .scanner:
             ScannerView(
+                workspace: cleanupWorkspace,
                 gridColumns: Binding(
                     get: { gridConfiguration.clampedColumns(gridColumns) },
                     set: { gridColumns = gridConfiguration.clampedColumns($0) }
@@ -171,7 +173,11 @@ struct MainTabView: View {
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan,
                 subscriptionStore: subscriptionStore,
+                onOpenCleanup: {
+                    tabManager.navigateToCleanup()
+                },
                 viewModel: ScannerViewModel(
+                    workspace: cleanupWorkspace,
                     gridColumns: gridConfiguration.clampedColumns(gridColumns),
                     sensitivity: sensitivity.wrappedValue,
                     premiumAccess: premiumAccess
@@ -180,6 +186,23 @@ struct MainTabView: View {
 #if DEBUG
             .id("\(debugUnlockUnlimitedRescans)-\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)-\(debugUnlockAdvancedFilters)-\(debugUnlockBatchCleanup)")
 #endif
+        case .cleanup:
+            CleanupView(
+                workspace: cleanupWorkspace,
+                gridColumns: Binding(
+                    get: { gridConfiguration.clampedColumns(gridColumns) },
+                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
+                ),
+                sensitivity: sensitivity,
+                premiumAccess: premiumAccess,
+                subscriptionStore: subscriptionStore,
+                onOpenScanner: {
+                    tabManager.navigateToScanner()
+                },
+                onRequestScan: {
+                    tabManager.navigateToScanner(andStartScan: true)
+                }
+            )
         case .settings:
             SettingsView(
                 gridColumns: Binding(
