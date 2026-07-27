@@ -24,13 +24,17 @@ private struct PresentedCleanupCategory: Identifiable {
 /// the durable workspace and routes the user to an explicit rescan action.
 public struct CleanupView: View {
     private let workspace: CleanupWorkspaceModel
-    @Binding private var gridColumns: Int
     @Binding private var sensitivity: SensitivityLevel
     private let premiumAccess: any PremiumAccessControlling
     private let subscriptionStore: SubscriptionStore?
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
 
+#if os(iOS)
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+#endif
+    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
     @State private var controls = CleanupClusterControls()
     @State private var isControlsPresented = false
     @State private var presentedCategory: PresentedCleanupCategory?
@@ -40,7 +44,6 @@ public struct CleanupView: View {
 
     public init(
         workspace: CleanupWorkspaceModel,
-        gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         subscriptionStore: SubscriptionStore? = nil,
@@ -48,7 +51,6 @@ public struct CleanupView: View {
         onRequestScan: @escaping @MainActor @Sendable () -> Void
     ) {
         self.workspace = workspace
-        self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
@@ -264,10 +266,10 @@ public struct CleanupView: View {
             }
         } else {
             if !needsReview.isEmpty {
-                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: needsReview, gridColumns: gridColumns, workspace: workspace) { router.push(.cluster($0)) }
+                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: needsReview, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
             if !remaining.isEmpty {
-                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: remaining, gridColumns: gridColumns, workspace: workspace) { router.push(.cluster($0)) }
+                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
         }
         Button { router.push(.history) } label: {
@@ -281,6 +283,7 @@ public struct CleanupView: View {
     private var cleanupToolbar: some ToolbarContent {
 #if os(iOS)
         if !workspace.clusters.isEmpty {
+            ToolbarItem(placement: .topBarTrailing) { columnsMenu }
             ToolbarItem(placement: .topBarTrailing) { controlsButton }
         }
         if workspace.hasCompletedScanBaseline {
@@ -288,6 +291,7 @@ public struct CleanupView: View {
         }
 #else
         if !workspace.clusters.isEmpty {
+            ToolbarItem { columnsMenu }
             ToolbarItem { controlsButton }
         }
         if workspace.hasCompletedScanBaseline {
@@ -295,6 +299,57 @@ public struct CleanupView: View {
         }
 #endif
     }
+
+    private var columnsMenu: some View {
+        Menu {
+            Picker(selection: selectedGridColumnBinding) {
+                ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
+                    Text("\(count)").tag(count)
+                }
+            } label: {
+                Text(appLocalized("Columns"))
+            }
+        } label: {
+            Image(systemName: "square.grid.3x2")
+        }
+        .accessibilityLabel(Text(appLocalized("Grid Columns")))
+        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
+    }
+
+    private var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
+#if os(iOS)
+        horizontalSizeClass == .regular ? .regular : .compact
+#else
+        .regular
+#endif
+    }
+
+    private var selectedGridColumnCount: Int {
+#if os(iOS)
+        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
+#else
+        regularGridColumns
+#endif
+    }
+
+    private var selectedGridColumnBinding: Binding<Int> {
+        Binding(
+            get: { selectedGridColumnCount },
+            set: { newValue in
+                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
+#if os(iOS)
+                if horizontalSizeClass == .regular {
+                    regularGridColumns = newValue
+                } else {
+                    compactGridColumns = newValue
+                }
+#else
+                regularGridColumns = newValue
+#endif
+            }
+        )
+    }
+
     private var controlsButton: some View {
         Button { isControlsPresented = true } label: {
             Image(systemName: controls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
@@ -644,7 +699,6 @@ private struct CleanupClusterSection: View {
                 ForEach(clusters) { cluster in
                     CleanupClusterCard(
                         cluster: cluster,
-                        columns: gridColumns,
                         status: workspace.reviewStatus(for: cluster.id),
                         resurfacing: workspace.resurfacingState(for: cluster.id)
                     ) {
@@ -658,7 +712,6 @@ private struct CleanupClusterSection: View {
 
 private struct CleanupClusterCard: View {
     let cluster: PhotoCluster
-    let columns: Int
     let status: ClusterReviewStatus
     let resurfacing: ClusterResurfacingState?
     let open: () -> Void
@@ -703,29 +756,35 @@ private struct CleanupClusterCard: View {
     @ViewBuilder
     private var thumbnail: some View {
 #if os(iOS)
-        if let image {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: columns == 1 ? 260 : 150)
-                .frame(maxWidth: .infinity)
-                .clipped()
-        } else {
-            placeholder.task {
-                if let asset = cluster.thumbnail {
-                    image = try? await asset.loadImage()
+        PhotoThumbnailAspectRatioLayout(aspectRatio: 1) {
+            ZStack {
+                placeholder
+
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
+        .clipped()
+        .task {
+            if let asset = cluster.thumbnail {
+                image = try? await asset.loadImage(targetSize: CGSize(width: 1_000, height: 1_000))
+            }
+        }
 #else
-        placeholder
+        PhotoThumbnailAspectRatioLayout(aspectRatio: 1) {
+            placeholder
+        }
+        .frame(maxWidth: .infinity)
 #endif
     }
 
     private var placeholder: some View {
         Rectangle()
             .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
-            .frame(height: columns == 1 ? 260 : 150)
             .overlay {
                 Image(systemName: "photo")
                     .foregroundStyle(.secondary)

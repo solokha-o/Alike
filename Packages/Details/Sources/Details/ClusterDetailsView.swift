@@ -8,14 +8,6 @@ import NavigationKit
 import Purchases
 import PurchasesUI
 
-struct ClusterGridLayoutPolicy: Equatable {
-    let columnCounts: ClosedRange<Int>
-    let defaultColumnCount: Int
-
-    static let compact = ClusterGridLayoutPolicy(columnCounts: 1...2, defaultColumnCount: 2)
-    static let regular = ClusterGridLayoutPolicy(columnCounts: 2...5, defaultColumnCount: 4)
-}
-
 #if os(iOS)
 
 /// Details screen showing all photos in a cluster
@@ -28,8 +20,8 @@ public struct ClusterDetailsView: View {
     private let subscriptionStore: SubscriptionStore?
 
     @State private var viewModel: ClusterDetailsViewModel
-    @State private var compactGridColumns = ClusterGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = ClusterGridLayoutPolicy.regular.defaultColumnCount
+    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
 
@@ -248,7 +240,7 @@ public struct ClusterDetailsView: View {
 }
 
 private extension ClusterDetailsView {
-    var gridLayoutPolicy: ClusterGridLayoutPolicy {
+    var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
         horizontalSizeClass == .regular ? .regular : .compact
     }
 
@@ -283,43 +275,6 @@ private struct SelectedAsset: Identifiable {
     var id: String { asset.localIdentifier }
 }
 
-private struct ThumbnailAspectRatioLayout: Layout {
-    let aspectRatio: CGFloat
-
-    func sizeThatFits(
-        proposal: ProposedViewSize,
-        subviews: Subviews,
-        cache: inout ()
-    ) -> CGSize {
-        guard aspectRatio > 0 else { return .zero }
-
-        if let width = proposal.width, width.isFinite {
-            return CGSize(width: width, height: width / aspectRatio)
-        }
-        if let height = proposal.height, height.isFinite {
-            return CGSize(width: height * aspectRatio, height: height)
-        }
-
-        let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
-        return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
-    }
-
-    func placeSubviews(
-        in bounds: CGRect,
-        proposal: ProposedViewSize,
-        subviews: Subviews,
-        cache: inout ()
-    ) {
-        for subview in subviews {
-            subview.place(
-                at: bounds.origin,
-                anchor: .topLeading,
-                proposal: ProposedViewSize(bounds.size)
-            )
-        }
-    }
-}
-
 struct SelectablePhotoThumbnail: View {
     let asset: PHAsset
     let thumbnailAspectRatio: CGFloat
@@ -333,7 +288,7 @@ struct SelectablePhotoThumbnail: View {
 
     var body: some View {
         Button(action: onToggleSelection) {
-            ThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
+            PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
                 ZStack {
                     Color.secondary.opacity(ColorOpacity.placeholderFill)
 

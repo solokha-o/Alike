@@ -189,10 +189,6 @@ struct MainTabView: View {
         case .cleanup:
             CleanupView(
                 workspace: cleanupWorkspace,
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
