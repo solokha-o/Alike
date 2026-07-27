@@ -19,7 +19,7 @@ private struct PresentedCleanupCategory: Identifiable {
     var id: CleanupCategoryKind { kind }
 }
 
-private enum CleanupGlassBadgeShape {
+fileprivate enum CleanupGlassBadgeShape {
     case capsule
     case circle
 }
@@ -47,7 +47,7 @@ private struct CleanupGlassSurfaceModifier: ViewModifier {
     }
 }
 
-private struct CleanupGlassBadgeModifier: ViewModifier {
+fileprivate struct CleanupGlassBadgeModifier: ViewModifier {
     let shape: CleanupGlassBadgeShape
 
     func body(content: Content) -> some View {
@@ -87,7 +87,7 @@ private struct CleanupGlassButtonStyle: ViewModifier {
     }
 }
 
-private extension View {
+extension View {
     func cleanupGlassSurface(
         isInteractive: Bool = false,
         cornerRadius: CGFloat = CornerRadius.medium
@@ -100,7 +100,7 @@ private extension View {
         )
     }
 
-    func cleanupGlassBadge(_ shape: CleanupGlassBadgeShape = .capsule) -> some View {
+    fileprivate func cleanupGlassBadge(_ shape: CleanupGlassBadgeShape = .capsule) -> some View {
         modifier(CleanupGlassBadgeModifier(shape: shape))
     }
 
@@ -217,7 +217,6 @@ public struct CleanupView: View {
             )
         case .history:
             CleanupHistoryView(
-                insights: workspace.cleanupInsights,
                 repository: workspace.cleanupHistoryRepository
             )
         }
@@ -1018,73 +1017,5 @@ private struct CleanupStatusBanner: View {
         }
         .padding(Spacing.medium)
         .cleanupGlassSurface()
-    }
-}
-
-private struct CleanupHistoryView: View {
-    let insights: CleanupInsights
-    let repository: any CleanupHistoryRepository
-    @State private var state = HistoryState.loading
-
-    var body: some View {
-        List {
-            Section(appLocalized("Cleanup History")) {
-                LabeledContent(appLocalized("Photos Moved to Recently Deleted"), value: "\(insights.totalDeletedItems)")
-                LabeledContent(appLocalized("Estimated Reclaimable"), value: ByteCountFormatter.string(fromByteCount: insights.totalSavedBytes, countStyle: .file))
-                LabeledContent(appLocalized("Cleanup Sessions"), value: "\(insights.cleanupSessionCount)")
-            }
-            historyContent
-        }
-        .navigationTitle(Text(appLocalized("History")))
-        .task { await loadEntries() }
-    }
-
-    @ViewBuilder
-    private var historyContent: some View {
-        switch state {
-        case .loading:
-            Section {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
-            }
-        case .empty:
-            ContentUnavailableView(
-                appLocalized("No Cleanup History"),
-                systemImage: "clock.arrow.circlepath",
-                description: Text(appLocalized("Completed cleanups will appear here."))
-            )
-        case .loaded(let entries):
-            Section(appLocalized("Completed Cleanups")) {
-                ForEach(entries) { entry in
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(String(format: appLocalized("%d photos moved • %@ estimated reclaimable"), entry.deletedCount, ByteCountFormatter.string(fromByteCount: entry.estimatedSavingsBytes, countStyle: .file)))
-                        Text(entry.completedAt.formatted(date: .abbreviated, time: .shortened))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-        case .failed(let message):
-            Section { ContentUnavailableView(appLocalized("History Unavailable"), systemImage: "exclamationmark.triangle", description: Text(message)) }
-        }
-    }
-
-    private func loadEntries() async {
-        do {
-            let entries = try await repository.loadEntries().sorted { $0.completedAt > $1.completedAt }
-            state = entries.isEmpty ? .empty : .loaded(entries)
-        } catch {
-            state = .failed(error.localizedDescription)
-        }
-    }
-
-    private enum HistoryState {
-        case loading
-        case empty
-        case loaded([CleanupCompletionRecord])
-        case failed(String)
     }
 }
