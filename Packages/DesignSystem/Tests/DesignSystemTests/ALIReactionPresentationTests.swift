@@ -75,6 +75,29 @@ final class ALIReactionPresentationTests: XCTestCase {
         }
     }
 
+    func testRecoverableErrorUsesStaticAliWithReadyAliFallback() {
+        let cue = ALIReactionCue(
+            id: .init(eventID: .operation(UUID()), kind: .recoverableError),
+            state: .recoverableError(.init(operation: .scan)),
+            persistence: .persistent
+        )
+
+        let presentation = ALIReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+
+        XCTAssertEqual(presentation.staticImageURL, ALIAssets.optionalScannerIssueURL(for: .twoX))
+        XCTAssertEqual(
+            presentation.fallbackStaticImageURL,
+            ALIAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
+        )
+        XCTAssertNil(presentation.animationURL)
+        XCTAssertEqual(presentation.ambientMotion, .none)
+    }
+
     func testCleanupSuccessUsesApprovedAssetsAndOneShotLifecycleGating() {
         let cue = ALIReactionCue(
             id: .init(eventID: .cleanup(UUID()), kind: .cleanupSuccess),

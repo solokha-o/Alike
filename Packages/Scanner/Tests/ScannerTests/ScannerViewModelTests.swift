@@ -129,6 +129,7 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(decision, .allowed)
         XCTAssertEqual(recordCallCount, 0)
         XCTAssertEqual(workspace.clusters.map(\.id), [existing.id])
+        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 1)
         guard case .error = viewModel.state else {
             return XCTFail("Expected scan failure to map to Scanner.State.error")
         }

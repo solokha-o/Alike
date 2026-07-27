@@ -50,6 +50,14 @@ final class ALIAssetsTests: XCTestCase {
         XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
     }
 
+    func testScannerIssueExportsAreDecodableAtExpectedSizes() throws {
+        try assertRasterExports([
+            (ALIAssets.scannerIssueURL(for: .oneX), 418),
+            (ALIAssets.scannerIssueURL(for: .twoX), 836),
+            (ALIAssets.scannerIssueURL(for: .threeX), 1_254),
+        ])
+    }
+
     func testComparisonReviewExportsAreAvailable() {
         XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.comparisonReviewURL(for: .oneX).path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: ALIAssets.comparisonReviewURL(for: .twoX).path))

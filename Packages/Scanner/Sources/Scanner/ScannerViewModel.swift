@@ -41,6 +41,21 @@ public final class ScannerViewModel {
     public var hasUnlimitedScanAccess: Bool { premiumAccess.access(to: .unlimitedScans).isAllowed }
     public var hasCompletedScanBaseline: Bool { workspace.hasCompletedScanBaseline }
 
+    var librarySummary: ScanSummary? {
+        if case .completed(let summary) = state { return summary }
+        if let summary = workspace.lastScanSummary { return summary }
+        guard workspace.hasCompletedScanBaseline,
+              let completedAt = workspace.lastCompletedScanDate else { return nil }
+        return ScanSummary(
+            clusterCount: workspace.clusters.count,
+            cleanupCategoryCandidateCount: workspace.cleanupCategories.reduce(0) {
+                $0 + max($1.assetCount, 0)
+            },
+            estimatedSavingsBytes: estimatedSavings(),
+            completedAt: completedAt
+        )
+    }
+
     public init(
         workspace: CleanupWorkspaceModel,
         gridColumns: Int = 3,
