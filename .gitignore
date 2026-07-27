@@ -86,3 +86,5 @@ fastlane/test_output
 *test-logs
 *.vscode
 .sandbox-home/
+# Added by code-review-graph
+.code-review-graph/
