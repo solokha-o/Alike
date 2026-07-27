@@ -833,6 +833,8 @@ private struct CleanupClusterCard: View {
     let resurfacing: ClusterResurfacingState?
     let open: () -> Void
 
+    @Environment(\.colorScheme) private var colorScheme
+
 #if os(iOS)
     @State private var image: UIImage?
 #endif
@@ -843,14 +845,16 @@ private struct CleanupClusterCard: View {
                 thumbnail
                 Text("\(cluster.count)")
                     .font(.caption.bold())
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(6)
                     .cleanupGlassBadge()
                     .padding(6)
             }
             .overlay(alignment: .topLeading) {
-                Text(statusTitle)
+                Label(statusTitle, systemImage: statusIconName)
                     .font(.caption2.bold())
+                    .foregroundStyle(statusColor)
+                    .lineLimit(1)
                     .padding(5)
                     .cleanupGlassBadge()
                     .padding(5)
@@ -918,6 +922,32 @@ private struct CleanupClusterCard: View {
             appLocalized("In review")
         case .reviewed:
             appLocalized("Reviewed")
+        }
+    }
+
+    private var statusIconName: String {
+        switch status {
+        case .notReviewed:
+            "circle"
+        case .needsReReview:
+            "arrow.triangle.2.circlepath.circle.fill"
+        case .inReview:
+            "clock.arrow.circlepath"
+        case .reviewed:
+            "checkmark.seal.fill"
+        }
+    }
+
+    private var statusColor: Color {
+        switch status {
+        case .notReviewed:
+            colorScheme == .dark ? .primary.opacity(0.85) : .secondary
+        case .needsReReview:
+            .statusNeedsReview
+        case .inReview:
+            .statusInReview
+        case .reviewed:
+            .statusReviewed
         }
     }
 
