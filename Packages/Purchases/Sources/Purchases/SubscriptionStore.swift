@@ -75,7 +75,8 @@ public final class SubscriptionStore: PremiumAccessControlling {
                     id: product.id,
                     plan: plan,
                     displayName: product.displayName,
-                    displayPrice: product.displayPrice
+                    displayPrice: product.displayPrice,
+                    price: product.price
                 )
             }
 

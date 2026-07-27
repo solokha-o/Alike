@@ -114,12 +114,7 @@ final class ClusterDetailsViewModel {
     }
 
     var displayedAssetIdentifiers: [String] {
-        switch reviewMode {
-        case .selection:
-            assetSnapshots.map(\.localIdentifier)
-        case .keepBestOnly:
-            bestShotAssetID.isEmpty ? [] : [bestShotAssetID]
-        }
+        assetSnapshots.map(\.localIdentifier)
     }
 
     var displayedAssets: [PHAsset] {
@@ -228,16 +223,6 @@ final class ClusterDetailsViewModel {
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             reviewMode = .selection
-            refreshDerivedState(emitsReviewCompletion: true)
-        }
-        enqueueCurrentStatePersistence()
-    }
-
-    func keepBestOnly() {
-        guard !bestShotAssetID.isEmpty else { return }
-        withAnimation(.appSmooth) {
-            selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
-            reviewMode = .keepBestOnly
             refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
@@ -424,12 +409,12 @@ private extension ClusterDetailsViewModel {
     func applyState(
         bestShotAssetID: String,
         selectedAssetIDs: Set<String>,
-        reviewMode: ClusterReviewMode,
+        reviewMode _: ClusterReviewMode,
         persistedStatus: ClusterReviewStatus?
     ) {
         self.bestShotAssetID = bestShotAssetID
         self.selectedAssetIDs = selectedAssetIDs
-        self.reviewMode = reviewMode
+        self.reviewMode = .selection
         refreshDerivedState()
         if persistedStatus == .needsReReview {
             reviewStatus = .needsReReview

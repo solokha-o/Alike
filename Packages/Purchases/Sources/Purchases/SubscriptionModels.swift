@@ -74,12 +74,14 @@ public struct SubscriptionProduct: Equatable, Sendable, Identifiable {
     public let plan: SubscriptionPlan
     public let displayName: String
     public let displayPrice: String
+    public let price: Decimal
 
-    init(id: String, plan: SubscriptionPlan, displayName: String, displayPrice: String) {
+    init(id: String, plan: SubscriptionPlan, displayName: String, displayPrice: String, price: Decimal) {
         self.id = id
         self.plan = plan
         self.displayName = displayName
         self.displayPrice = displayPrice
+        self.price = price
     }
 }
 
@@ -117,6 +119,14 @@ struct StorefrontProduct: Sendable {
     let id: String
     let displayName: String
     let displayPrice: String
+    let price: Decimal
+
+    init(id: String, displayName: String, displayPrice: String, price: Decimal = .zero) {
+        self.id = id
+        self.displayName = displayName
+        self.displayPrice = displayPrice
+        self.price = price
+    }
 }
 
 struct StoreKitEntitlement: Sendable {

@@ -188,28 +188,39 @@ public struct SubscriptionPaywallView: View {
                 Text(appLocalized("You can continue using Alike Free while subscription plans are unavailable."))
             }
         case .loaded:
-            if horizontalSizeClass == .regular {
-                HStack(alignment: .top, spacing: Spacing.small) {
-                    planCards
+            if #available(iOS 26.0, macOS 26.0, *) {
+                GlassEffectContainer(spacing: Spacing.small) {
+                    planCardLayout(usesGlass: true)
                 }
             } else {
-                VStack(spacing: Spacing.small) {
-                    planCards
-                }
+                planCardLayout(usesGlass: false)
             }
         }
     }
 
     @ViewBuilder
-    private var planCards: some View {
-        ForEach(SubscriptionPlan.presentationOrder) { plan in
-            if let product = store?.products[plan] {
-                planCard(product)
+    private func planCardLayout(usesGlass: Bool) -> some View {
+        if horizontalSizeClass == .regular {
+            HStack(alignment: .top, spacing: Spacing.small) {
+                planCards(usesGlass: usesGlass)
+            }
+        } else {
+            VStack(spacing: Spacing.small) {
+                planCards(usesGlass: usesGlass)
             }
         }
     }
 
-    private func planCard(_ product: SubscriptionProduct) -> some View {
+    @ViewBuilder
+    private func planCards(usesGlass: Bool) -> some View {
+        ForEach(SubscriptionPlan.presentationOrder) { plan in
+            if let product = store?.products[plan] {
+                planCard(product, usesGlass: usesGlass)
+            }
+        }
+    }
+
+    private func planCard(_ product: SubscriptionProduct, usesGlass: Bool) -> some View {
         let isSelected = selectedPlan == product.plan
         return Button {
             withAnimation(interactionAnimation) {
@@ -234,6 +245,10 @@ public struct SubscriptionPaywallView: View {
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
 
+                Text(planValueDescription(for: product))
+                    .font(.appSubheadline)
+                    .foregroundStyle(.secondary)
+
                 if product.plan.isPrimary {
                     Text(appLocalized("Recommended"))
                         .font(.caption.weight(.semibold))
@@ -243,20 +258,73 @@ public struct SubscriptionPaywallView: View {
                         .background(Color.accent.opacity(ColorOpacity.statusBackground), in: Capsule())
                 }
             }
-            .frame(maxWidth: .infinity, minHeight: 124, alignment: .topLeading)
+            .frame(
+                maxWidth: .infinity,
+                minHeight: horizontalSizeClass == .regular ? 124 : nil,
+                alignment: .topLeading
+            )
             .padding(Spacing.medium)
-            .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: CornerRadius.large))
+            .modifier(PaywallPlanCardSurface(usesGlass: usesGlass))
             .overlay {
                 RoundedRectangle(cornerRadius: CornerRadius.large)
                     .stroke(isSelected ? Color.accent : Color.secondary.opacity(ColorOpacity.cardBorder), lineWidth: isSelected ? 2 : 1)
             }
+            .contentShape(RoundedRectangle(cornerRadius: CornerRadius.large))
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .accessibilityHint(Text(appLocalized("Select this subscription plan")))
     }
 
+    private func planValueDescription(for product: SubscriptionProduct) -> String {
+        guard product.plan == .yearly else {
+            return appLocalized("Pay for one month at a time")
+        }
+        guard
+            let monthlyPrice = store?.products[.monthly]?.price,
+            monthlyPrice > 0
+        else {
+            return appLocalized("Save with annual billing")
+        }
+
+        let monthlyAnnualCost = monthlyPrice * 12
+        guard monthlyAnnualCost > product.price else {
+            return appLocalized("Save with annual billing")
+        }
+
+        var savingsPercentage = (1 - product.price / monthlyAnnualCost) * 100
+        var roundedSavingsPercentage = Decimal()
+        NSDecimalRound(&roundedSavingsPercentage, &savingsPercentage, 0, .plain)
+        let percentage = NSDecimalNumber(decimal: roundedSavingsPercentage).intValue
+        return String(
+            format: appLocalized("Save %d%% compared with monthly"),
+            percentage
+        )
+    }
+
     private var purchaseActions: some View {
+        VStack(spacing: Spacing.xSmall) {
+            if #available(iOS 26.0, macOS 26.0, *) {
+                GlassEffectContainer(spacing: Spacing.xSmall) {
+                    purchaseControls(usesGlass: true)
+                }
+            } else {
+                purchaseControls(usesGlass: false)
+            }
+
+            Text(appLocalized("Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."))
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.horizontal, Spacing.large)
+        .padding(.top, Spacing.small)
+        .padding(.bottom, Spacing.xxSmall)
+        .background(.regularMaterial)
+    }
+
+    @ViewBuilder
+    private func purchaseControls(usesGlass: Bool) -> some View {
         VStack(spacing: Spacing.xSmall) {
             Button(action: purchaseSelectedPlan) {
                 HStack(spacing: Spacing.small) {
@@ -272,7 +340,7 @@ public struct SubscriptionPaywallView: View {
                 .frame(maxWidth: .infinity)
                 .animation(stateAnimation, value: isPurchasing)
             }
-            .buttonStyle(.borderedProminent)
+            .modifier(PaywallPurchaseButtonStyle(usesGlass: usesGlass, isProminent: true))
             .controlSize(.large)
             .disabled(!canPurchase || isPurchasing || isRestoring)
 
@@ -285,18 +353,10 @@ public struct SubscriptionPaywallView: View {
                         .transition(.opacity)
                 }
             }
-            .buttonStyle(.borderless)
+            .modifier(PaywallPurchaseButtonStyle(usesGlass: usesGlass, isProminent: false))
             .disabled(store == nil || isPurchasing || isRestoring)
             .animation(stateAnimation, value: isRestoring)
-
-            Text(appLocalized("Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."))
-                .font(.appCaption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
         }
-        .padding(.horizontal, Spacing.large)
-        .padding(.vertical, Spacing.small)
-        .background(.regularMaterial)
     }
 
     private var disclosure: some View {
@@ -528,5 +588,46 @@ private struct PurchaseFeedback: Equatable {
 
     static func failure(_ message: String) -> PurchaseFeedback {
         PurchaseFeedback(message: message, icon: "exclamationmark.triangle.fill", isError: true)
+    }
+}
+
+private struct PaywallPlanCardSurface: ViewModifier {
+    let usesGlass: Bool
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
+            content
+                .glassEffect(
+                    .regular.interactive(),
+                    in: .rect(cornerRadius: CornerRadius.large)
+                )
+        } else {
+            content
+                .background(
+                    Color.secondaryBackground,
+                    in: RoundedRectangle(cornerRadius: CornerRadius.large)
+                )
+        }
+    }
+}
+
+private struct PaywallPurchaseButtonStyle: ViewModifier {
+    let usesGlass: Bool
+    let isProminent: Bool
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
+            if isProminent {
+                content.buttonStyle(.glassProminent)
+            } else {
+                content.buttonStyle(.glass)
+            }
+        } else if isProminent {
+            content.buttonStyle(.borderedProminent)
+        } else {
+            content.buttonStyle(.borderless)
+        }
     }
 }

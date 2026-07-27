@@ -13,7 +13,12 @@ struct AppStoreKitClient: StoreKitClient {
     func loadProducts(ids: Set<String>) async throws -> [StorefrontProduct] {
         let products = try await Product.products(for: ids)
         return products.map {
-            StorefrontProduct(id: $0.id, displayName: $0.displayName, displayPrice: $0.displayPrice)
+            StorefrontProduct(
+                id: $0.id,
+                displayName: $0.displayName,
+                displayPrice: $0.displayPrice,
+                price: $0.price
+            )
         }
     }
 

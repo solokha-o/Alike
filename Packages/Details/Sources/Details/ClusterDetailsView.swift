@@ -1,5 +1,6 @@
 import SwiftUI
 import Photos
+import MapKit
 import Core
 import DesignSystem
 import Storage
@@ -7,18 +8,28 @@ import NavigationKit
 import Purchases
 import PurchasesUI
 
+struct ClusterGridLayoutPolicy: Equatable {
+    let columnCounts: ClosedRange<Int>
+    let defaultColumnCount: Int
+
+    static let compact = ClusterGridLayoutPolicy(columnCounts: 1...2, defaultColumnCount: 2)
+    static let regular = ClusterGridLayoutPolicy(columnCounts: 2...5, defaultColumnCount: 4)
+}
+
 #if os(iOS)
 
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
 
     @State private var viewModel: ClusterDetailsViewModel
-    @State private var gridColumns: Int = 3
+    @State private var compactGridColumns = ClusterGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = ClusterGridLayoutPolicy.regular.defaultColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
 
@@ -58,91 +69,99 @@ public struct ClusterDetailsView: View {
 
     public var body: some View {
         let displayedAssets = viewModel.displayedAssets
-        VStack(spacing: Spacing.small) {
-            if !viewModel.isDeleting {
-                ClusterReviewSummaryCard(
-                    assetCount: viewModel.assetCount,
-                    bestShotLabel: viewModel.bestShotLabel,
-                    selectedCount: viewModel.selectedCount,
-                    estimatedSavingsText: viewModel.estimatedSavingsText,
-                    reviewStatus: viewModel.reviewStatus,
-                    aliReactionCue: viewModel.currentALIReaction,
-                    bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
-                    onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
-                )
-            }
-
-            if viewModel.isActionBarVisible && !viewModel.isDeleting {
-                ClusterReviewActionBar(
-                    onKeepBestOnly: viewModel.keepBestOnly,
-                    onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                    onClearSelection: viewModel.clearSelection,
-                    onDeleteSelected: requestDeleteConfirmation,
-                    isDeleteActionVisible: viewModel.isDeleteActionVisible,
-                    isDeleting: viewModel.isDeleting
-                )
-            }
-
-            if viewModel.requiresPremiumForCurrentSelection && !viewModel.isDeleting {
-                BatchCleanupUpsellCard(
-                    selectedCount: viewModel.selectedCount,
-                    estimatedSavings: viewModel.estimatedSavingsText,
-                    onUpgrade: { presentedPremiumFeature = .batchCleanup },
-                    onContinueFree: {
-                        Task {
-                            await viewModel.continueWithSingleFreeSelection()
-                        }
-                    }
-                )
-            }
-
-            ScrollView {
+        let gridColumns = selectedGridColumnCount
+        ScrollView {
+            LazyVStack(spacing: Spacing.medium) {
                 if viewModel.isDeleting {
                     ALICleanupProgressView(
                         selectedCount: viewModel.selectedCount,
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         isExecuting: viewModel.isDeleting
                     )
-                    .padding(.bottom, Spacing.medium)
-                } else if !viewModel.hasAssets {
-                    ContentUnavailableView {
-                        Label(appLocalized("No Photos Available"), systemImage: "photo")
-                    }
-                    .padding(.top, 80)
                 } else {
-                    LazyVGrid(
-                        columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
-                        spacing: Spacing.small
-                    ) {
-                        ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                            SelectablePhotoThumbnail(
-                                asset: asset,
-                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                                isSelected: viewModel.isSelected(asset.localIdentifier),
-                                onToggleSelection: {
-                                    viewModel.toggleSelection(for: asset.localIdentifier)
-                                },
-                                onOpenOriginal: {
-                                    if let index = viewModel.assetIndex(for: asset.localIdentifier) {
-                                        selectedAsset = SelectedAsset(asset: asset, index: index)
-                                    }
+                    if viewModel.hasAssets {
+                        ClusterReviewSummaryCard(
+                            assetCount: viewModel.assetCount,
+                            bestShotLabel: viewModel.bestShotLabel,
+                            selectedCount: viewModel.selectedCount,
+                            estimatedSavingsText: viewModel.estimatedSavingsText,
+                            reviewStatus: viewModel.reviewStatus,
+                            aliReactionCue: viewModel.currentALIReaction,
+                            bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
+                            onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
+                        )
+                    }
+
+                    if viewModel.requiresPremiumForCurrentSelection {
+                        BatchCleanupUpsellCard(
+                            selectedCount: viewModel.selectedCount,
+                            estimatedSavings: viewModel.estimatedSavingsText,
+                            onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                            onContinueFree: {
+                                Task {
+                                    await viewModel.continueWithSingleFreeSelection()
                                 }
-                            )
-                            .transition(
-                                .asymmetric(
-                                    insertion: .scale(scale: 0.94).combined(with: .opacity),
-                                    removal: .scale(scale: 0.94).combined(with: .opacity)
+                            }
+                        )
+                    }
+
+                    if !viewModel.hasAssets {
+                        ContentUnavailableView {
+                            Label(appLocalized("No Photos Available"), systemImage: "photo")
+                        }
+                        .padding(.top, 80)
+                    } else {
+                        LazyVGrid(
+                            columns: Array(
+                                repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
+                                count: gridColumns
+                            ),
+                            spacing: Spacing.xxSmall
+                        ) {
+                            ForEach(displayedAssets, id: \.localIdentifier) { asset in
+                                SelectablePhotoThumbnail(
+                                    asset: asset,
+                                    thumbnailAspectRatio: 1,
+                                    isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                    isSelected: viewModel.isSelected(asset.localIdentifier),
+                                    onToggleSelection: {
+                                        viewModel.toggleSelection(for: asset.localIdentifier)
+                                    },
+                                    onOpenOriginal: {
+                                        if let index = viewModel.assetIndex(for: asset.localIdentifier) {
+                                            selectedAsset = SelectedAsset(asset: asset, index: index)
+                                        }
+                                    }
                                 )
-                            )
+                                .transition(
+                                    .asymmetric(
+                                        insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                        removal: .scale(scale: 0.94).combined(with: .opacity)
+                                    )
+                                )
+                            }
                         }
                     }
-                    .padding(.bottom, Spacing.medium)
                 }
             }
+            .padding(.horizontal, Spacing.medium)
+            .padding(.top, Spacing.small)
+            .padding(.bottom, Spacing.medium)
         }
-        .padding(.horizontal, Spacing.medium)
-        .padding(.top, Spacing.small)
-        .padding(.bottom, Spacing.medium)
+        .frame(maxWidth: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if viewModel.isActionBarVisible && !viewModel.isDeleting {
+                ClusterReviewActionBar(
+                    selectedCount: viewModel.selectedCount,
+                    onSelectAllExceptBest: viewModel.selectAllExceptBest,
+                    onClearSelection: viewModel.clearSelection,
+                    onDeleteSelected: requestDeleteConfirmation,
+                    isDeleteActionVisible: viewModel.isDeleteActionVisible,
+                    isDeleting: viewModel.isDeleting
+                )
+                .padding(Spacing.xSmall)
+            }
+        }
         .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
@@ -151,12 +170,13 @@ public struct ClusterDetailsView: View {
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             if !viewModel.isDeleting {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Picker(selection: $gridColumns) {
-                            ForEach(2...4, id: \.self) { count in
+                        Picker(selection: selectedGridColumnBinding) {
+                            ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
                                 Text("\(count)").tag(count)
                             }
                         } label: {
@@ -228,6 +248,28 @@ public struct ClusterDetailsView: View {
 }
 
 private extension ClusterDetailsView {
+    var gridLayoutPolicy: ClusterGridLayoutPolicy {
+        horizontalSizeClass == .regular ? .regular : .compact
+    }
+
+    var selectedGridColumnCount: Int {
+        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
+    }
+
+    var selectedGridColumnBinding: Binding<Int> {
+        Binding(
+            get: { selectedGridColumnCount },
+            set: { newValue in
+                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
+                if horizontalSizeClass == .regular {
+                    regularGridColumns = newValue
+                } else {
+                    compactGridColumns = newValue
+                }
+            }
+        )
+    }
+
     func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
@@ -241,8 +283,46 @@ private struct SelectedAsset: Identifiable {
     var id: String { asset.localIdentifier }
 }
 
+private struct ThumbnailAspectRatioLayout: Layout {
+    let aspectRatio: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        guard aspectRatio > 0 else { return .zero }
+
+        if let width = proposal.width, width.isFinite {
+            return CGSize(width: width, height: width / aspectRatio)
+        }
+        if let height = proposal.height, height.isFinite {
+            return CGSize(width: height * aspectRatio, height: height)
+        }
+
+        let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
+        return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        for subview in subviews {
+            subview.place(
+                at: bounds.origin,
+                anchor: .topLeading,
+                proposal: ProposedViewSize(bounds.size)
+            )
+        }
+    }
+}
+
 struct SelectablePhotoThumbnail: View {
     let asset: PHAsset
+    let thumbnailAspectRatio: CGFloat
     let isBestShot: Bool
     let isSelected: Bool
     let onToggleSelection: () -> Void
@@ -253,35 +333,49 @@ struct SelectablePhotoThumbnail: View {
 
     var body: some View {
         Button(action: onToggleSelection) {
-            ZStack {
-                Color.clear
+            ThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
+                ZStack {
+                    Color.secondary.opacity(ColorOpacity.placeholderFill)
 
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 120)
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0)
-                        .clipped()
-                        .aspectRatio(16/9, contentMode: .fit)
-                } else {
-                    Rectangle()
-                        .fill(Color.secondary.opacity(ColorOpacity.placeholderFill))
-                        .frame(height: 120)
-                        .overlay {
-                            ProgressView()
-                        }
+                    if let image {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else {
+                        ProgressView()
+                    }
                 }
             }
             .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
+            .clipShape(thumbnailShape)
+            .overlay {
+                if isSelected {
+                    thumbnailShape
+                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
+                        .transition(.opacity)
+                }
+            }
+            .overlay {
+                thumbnailShape
+                    .stroke(borderColor, lineWidth: borderLineWidth)
+            }
             .overlay(alignment: .topLeading) {
                 if isBestShot {
-                    Label(appLocalized("Best Shot"), systemImage: "star.fill")
+                    Label {
+                        Text(appLocalized("Best Shot"))
+                            .foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(Color.heroGold)
+                    }
                         .font(.caption.bold())
                         .padding(.horizontal, Spacing.xSmall)
                         .padding(.vertical, Spacing.xxSmall)
                         .background(.regularMaterial, in: Capsule())
+                        .overlay {
+                            Capsule()
+                                .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                        }
                         .padding(Spacing.xSmall)
                         .transition(.scale(scale: 0.92).combined(with: .opacity))
                 }
@@ -290,28 +384,19 @@ struct SelectablePhotoThumbnail: View {
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title3)
+                        .symbolRenderingMode(.palette)
                         .foregroundStyle(.white, Color.accent)
+                        .background(.white, in: Circle())
                         .padding(Spacing.xSmall)
                         .transition(.scale(scale: 0.7).combined(with: .opacity))
                 }
-            }
-            .overlay {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: CornerRadius.small)
-                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
-                        .transition(.opacity)
-                }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: CornerRadius.small)
-                    .stroke(borderColor, lineWidth: borderLineWidth)
             }
             .animation(.appInteractiveFast, value: isSelected)
             .animation(.appInteractiveFast, value: isBestShot)
         }
         .buttonStyle(.plain)
-        .contentShape(Rectangle())
-        .cornerRadius(CornerRadius.small)
+        .contentShape(.interaction, thumbnailShape)
+        .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
             Button {
                 showingMetadata = true
@@ -332,13 +417,15 @@ struct SelectablePhotoThumbnail: View {
                     Image(systemName: "arrow.up.right.square")
                 }
             }
+        } preview: {
+            contextMenuPreview
         }
         .sheet(isPresented: $showingMetadata) {
-            MetadataView(metadata: asset.displayMetadata)
-                .presentationDetents([.medium])
+            MetadataView(asset: asset)
+                .presentationDetents([.medium, .large])
         }
         .task {
-            image = try? await asset.loadImage(targetSize: CGSize(width: 300, height: 300))
+            image = try? await asset.loadImage(targetSize: thumbnailTargetSize)
         }
         .accessibilityLabel(Text(accessibilityLabel))
         .accessibilityValue(Text(accessibilityValue))
@@ -360,6 +447,37 @@ struct SelectablePhotoThumbnail: View {
         (isBestShot || isSelected) ? 2 : 0
     }
 
+    private var thumbnailShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: CornerRadius.small, style: .continuous)
+    }
+
+    private var thumbnailTargetSize: CGSize {
+        thumbnailAspectRatio == 1
+            ? CGSize(width: 1_000, height: 1_000)
+            : CGSize(width: 300, height: 300)
+    }
+
+    private var contextMenuPreview: some View {
+        ZStack {
+            Color.secondary.opacity(ColorOpacity.placeholderFill)
+
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                ProgressView()
+            }
+        }
+        .frame(
+            width: contextMenuPreviewWidth,
+            height: contextMenuPreviewWidth / thumbnailAspectRatio
+        )
+        .clipShape(thumbnailShape)
+    }
+
+    private var contextMenuPreviewWidth: CGFloat { 240 }
+
     private var accessibilityLabel: String {
         if isBestShot {
             return appLocalized("Best Shot")
@@ -371,7 +489,10 @@ struct SelectablePhotoThumbnail: View {
     }
 
     private var accessibilityValue: String {
-        isSelected ? appLocalized("Selected") : appLocalized("Not selected")
+        if isBestShot {
+            return appLocalized("Best Shot")
+        }
+        return isSelected ? appLocalized("Selected") : appLocalized("Not selected")
     }
 
     private var accessibilityHint: String {
@@ -508,25 +629,39 @@ private struct ZoomablePhotoView: View {
 
 // MARK: - Metadata View
 struct MetadataView: View {
-    let metadata: AssetMetadata
+    let asset: PHAsset
     @Environment(\.dismiss) private var dismiss
+
+    private var metadata: AssetMetadata {
+        asset.displayMetadata
+    }
     
     var body: some View {
         RoutedNavigationStack {
             List {
+                PhotoInfoPreview(asset: asset)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+
                 Section {
                     LabeledContent {
                         Text(metadata.resolution)
                     } label: {
                         Text(appLocalized("Resolution"))
                     }
-                    
+
                     LabeledContent {
-                        Text(metadata.formattedCreationDate)
+                        Text(formattedMegapixels)
                     } label: {
-                        Text(appLocalized("Created"))
+                        Text(appLocalized("Megapixels"))
                     }
-                    
+
+                    LabeledContent {
+                        Text(photoType)
+                    } label: {
+                        Text(appLocalized("Photo Type"))
+                    }
+
                     LabeledContent {
                         Text(metadata.isFavorite ? appLocalized("Yes") : appLocalized("No"))
                     } label: {
@@ -534,6 +669,32 @@ struct MetadataView: View {
                     }
                 } header: {
                     Text(appLocalized("Details"))
+                }
+
+                if metadata.creationDate != nil || metadata.modificationDate != nil {
+                    Section {
+                        if metadata.creationDate != nil {
+                            LabeledContent {
+                                Text(metadata.formattedCreationDate)
+                            } label: {
+                                Text(appLocalized("Created"))
+                            }
+                        }
+
+                        if let modified = metadata.formattedModificationDate {
+                            LabeledContent {
+                                Text(modified)
+                            } label: {
+                                Text(appLocalized("Modified"))
+                            }
+                        }
+                    } header: {
+                        Text(appLocalized("Dates"))
+                    }
+                }
+
+                if let location = metadata.location {
+                    PhotoInfoLocationSection(location: location)
                 }
             }
             .navigationTitle(Text(appLocalized("Photo Info")))
@@ -548,6 +709,112 @@ struct MetadataView: View {
                 }
             }
         }
+    }
+
+    private var formattedMegapixels: String {
+        let value = metadata.megapixelCount.formatted(
+            .number.precision(.fractionLength(0...1))
+        )
+        return String(format: appLocalized("%@ MP"), value)
+    }
+
+    private var photoType: String {
+        guard !metadata.photoTraits.isEmpty else {
+            return appLocalized("Photo")
+        }
+
+        return metadata.photoTraits.map { trait in
+            switch trait {
+            case .screenshot:
+                appLocalized("Screenshot")
+            case .panorama:
+                appLocalized("Panorama")
+            case .livePhoto:
+                appLocalized("Live Photo")
+            case .hdr:
+                appLocalized("HDR")
+            case .depthEffect:
+                appLocalized("Depth Effect")
+            }
+        }
+        .joined(separator: ", ")
+    }
+}
+
+private struct PhotoInfoPreview: View {
+    let asset: PHAsset
+
+    @State private var image: UIImage?
+    @State private var isLoading = true
+
+    var body: some View {
+        ZStack {
+            Color.secondary.opacity(ColorOpacity.placeholderFill)
+
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .accessibilityLabel(Text(appLocalized("Photo preview")))
+            } else if isLoading {
+                ProgressView()
+                    .accessibilityLabel(Text(appLocalized("Loading photo preview")))
+            } else {
+                Image(systemName: "photo")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .accessibilityLabel(Text(appLocalized("Photo preview unavailable")))
+            }
+        }
+        .frame(height: 180)
+        .frame(maxWidth: .infinity)
+        .task(id: asset.localIdentifier) {
+            defer { isLoading = false }
+            image = try? await asset.loadImage(targetSize: CGSize(width: 800, height: 600))
+        }
+    }
+}
+
+private struct PhotoInfoLocationSection: View {
+    let location: AssetLocation
+
+    private var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+    }
+
+    private var region: MKCoordinateRegion {
+        MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+    }
+
+    var body: some View {
+        Section {
+            Map(initialPosition: .region(region), interactionModes: []) {
+                Marker(appLocalized("Photo location"), coordinate: coordinate)
+            }
+            .frame(height: 160)
+            .listRowInsets(EdgeInsets())
+            .accessibilityLabel(Text(appLocalized("Map showing where the photo was taken")))
+
+            Button {
+                openInMaps()
+            } label: {
+                Label(appLocalized("Open in Maps"), systemImage: "map")
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .accessibilityHint(Text(appLocalized("Opens the photo location in Maps")))
+        } header: {
+            Text(appLocalized("Location"))
+        }
+    }
+
+    private func openInMaps() {
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = appLocalized("Photo location")
+        mapItem.openInMaps()
     }
 }
 
