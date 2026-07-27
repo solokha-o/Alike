@@ -350,7 +350,11 @@ public struct CleanupView: View {
         let remaining = visible.filter { workspace.reviewStatus(for: $0.id) != .needsReReview }
 
         if let entry = workspace.cleanupEntryCluster() {
-            CleanupProgressCard(progress: workspace.sessionProgress()) { router.push(.cluster(entry)) }
+            CleanupProgressCard(
+                progress: workspace.sessionProgress(),
+                onContinue: { router.push(.cluster(entry)) },
+                onOpenHistory: { router.push(.history) }
+            )
         }
         if !workspace.cleanupCategories.isEmpty {
             CleanupCategoriesCard(categories: workspace.cleanupCategories, isLocked: { !premiumAccess.hasAccess(to: $0.premiumFeature) }, onTap: openCategory)
@@ -375,12 +379,6 @@ public struct CleanupView: View {
                 CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
         }
-        Button { router.push(.history) } label: {
-            Label(appLocalized("Cleanup History"), systemImage: "clock.arrow.circlepath")
-                .frame(maxWidth: .infinity, alignment: .leading).padding(Spacing.medium)
-                .cleanupGlassSurface(isInteractive: true)
-        }
-        .buttonStyle(.plain)
     }
 
     @ToolbarContentBuilder
@@ -653,48 +651,62 @@ private struct CleanupClusterControlsSheet: View {
 private struct CleanupProgressCard: View {
     let progress: CleanupSessionProgress
     let onContinue: () -> Void
+    let onOpenHistory: () -> Void
     private let metricColumns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        Button(action: onContinue) {
-            VStack(alignment: .leading, spacing: Spacing.small) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(appLocalized("Continue Review")).font(.appHeadline)
-                        Text(appLocalized("Pick up where you left off"))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            HStack(alignment: .top, spacing: Spacing.small) {
+                Button(action: onContinue) {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(appLocalized("Continue Review")).font(.appHeadline)
+                            Text(appLocalized("Pick up where you left off"))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(Color.accent)
                     }
-                    Spacer()
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(Color.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
-                ProgressView(value: progress.reviewedRatio)
-                LazyVGrid(columns: metricColumns, alignment: .leading, spacing: Spacing.small) {
-                    metric("\(progress.reviewedCount)/\(progress.totalClusters)", appLocalized("Reviewed"))
-                    metric("\(progress.remainingClusters)", appLocalized("Remaining"))
-                    metric("\(progress.totalSelectedItems)", appLocalized("Selected"))
-                    metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), appLocalized("Estimated Savings"))
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(continueAccessibilityLabel))
+                .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
+
+                Button(action: onOpenHistory) {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .frame(width: 22, height: 22)
                 }
+                .cleanupGlassButton()
+                .controlSize(.small)
+                .accessibilityLabel(Text(appLocalized("Cleanup History")))
             }
-            .padding(Spacing.medium)
-            .cleanupGlassSurface(isInteractive: true)
+
+            ProgressView(value: progress.reviewedRatio)
+            LazyVGrid(columns: metricColumns, alignment: .leading, spacing: Spacing.small) {
+                metric("\(progress.reviewedCount)/\(progress.totalClusters)", appLocalized("Reviewed"))
+                metric("\(progress.remainingClusters)", appLocalized("Remaining"))
+                metric("\(progress.totalSelectedItems)", appLocalized("Selected"))
+                metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), appLocalized("Estimated Savings"))
+            }
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel(
-            Text(
-                String(
-                    format: appLocalized("Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."),
-                    progress.reviewedCount,
-                    progress.totalClusters,
-                    progress.remainingClusters,
-                    progress.totalSelectedItems,
-                    ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
-                )
-            )
+        .padding(Spacing.medium)
+        .cleanupGlassSurface()
+    }
+
+    private var continueAccessibilityLabel: String {
+        String(
+            format: appLocalized("Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."),
+            progress.reviewedCount,
+            progress.totalClusters,
+            progress.remainingClusters,
+            progress.totalSelectedItems,
+            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
         )
-        .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
     }
 
     private func metric(_ value: String, _ label: String) -> some View {
