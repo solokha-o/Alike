@@ -82,9 +82,18 @@ struct ClusterReviewSummaryCard: View {
                 .lineLimit(2, reservesSpace: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: Layout.summaryContentHeight, alignment: .leading)
+        .frame(
+            height: Self.summaryContentHeight(
+                isAccessibilitySize: dynamicTypeSize.isAccessibilitySize
+            ),
+            alignment: .leading
+        )
         .animation(nil, value: selectedCount)
         .animation(nil, value: reviewStatus)
+    }
+
+    static func summaryContentHeight(isAccessibilitySize: Bool) -> CGFloat? {
+        isAccessibilitySize ? nil : Layout.summaryContentHeight
     }
 
     private var assetCountTitle: String {
