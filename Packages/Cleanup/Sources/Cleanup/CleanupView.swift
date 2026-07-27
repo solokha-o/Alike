@@ -19,6 +19,96 @@ private struct PresentedCleanupCategory: Identifiable {
     var id: CleanupCategoryKind { kind }
 }
 
+private enum CleanupGlassBadgeShape {
+    case capsule
+    case circle
+}
+
+private struct CleanupGlassSurfaceModifier: ViewModifier {
+    let isInteractive: Bool
+    let cornerRadius: CGFloat
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            if isInteractive {
+                content.glassEffect(
+                    .regular.interactive(),
+                    in: .rect(cornerRadius: cornerRadius)
+                )
+            } else {
+                content.glassEffect(.regular, in: .rect(cornerRadius: cornerRadius))
+            }
+        } else {
+            content.background(
+                .regularMaterial,
+                in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            )
+        }
+    }
+}
+
+private struct CleanupGlassBadgeModifier: ViewModifier {
+    let shape: CleanupGlassBadgeShape
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            switch shape {
+            case .capsule:
+                content.glassEffect(.regular, in: .capsule)
+            case .circle:
+                content.glassEffect(.regular, in: .circle)
+            }
+        } else {
+            switch shape {
+            case .capsule:
+                content.background(.regularMaterial, in: Capsule())
+            case .circle:
+                content.background(.regularMaterial, in: Circle())
+            }
+        }
+    }
+}
+
+private struct CleanupGlassButtonStyle: ViewModifier {
+    let isProminent: Bool
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            if isProminent {
+                content.buttonStyle(.glassProminent)
+            } else {
+                content.buttonStyle(.glass)
+            }
+        } else if isProminent {
+            content.buttonStyle(.borderedProminent)
+        } else {
+            content.buttonStyle(.bordered)
+        }
+    }
+}
+
+private extension View {
+    func cleanupGlassSurface(
+        isInteractive: Bool = false,
+        cornerRadius: CGFloat = CornerRadius.medium
+    ) -> some View {
+        modifier(
+            CleanupGlassSurfaceModifier(
+                isInteractive: isInteractive,
+                cornerRadius: cornerRadius
+            )
+        )
+    }
+
+    func cleanupGlassBadge(_ shape: CleanupGlassBadgeShape = .capsule) -> some View {
+        modifier(CleanupGlassBadgeModifier(shape: shape))
+    }
+
+    func cleanupGlassButton(isProminent: Bool = false) -> some View {
+        modifier(CleanupGlassButtonStyle(isProminent: isProminent))
+    }
+}
+
 /// The review-focused home for results produced by ``CleanupWorkspaceModel``.
 /// Scanner owns starting scans and entitlement admission; Cleanup only presents
 /// the durable workspace and routes the user to an explicit rescan action.
@@ -136,20 +226,13 @@ public struct CleanupView: View {
     @ViewBuilder
     private func mainContent(router: StackRouter<CleanupRoute>) -> some View {
         ScrollView {
-            VStack(spacing: Spacing.medium) {
-                banners
-                switch workspace.contentState {
-                case .notLoaded:
-                    ProgressView().padding(.top, Spacing.xxLarge)
-                case .neverScanned:
-                    neverScanned
-                case .unavailable(let message):
-                    unavailable(message)
-                case .content:
-                    cleanupContent(router: router)
+            if #available(iOS 26.0, macOS 26.0, *) {
+                GlassEffectContainer(spacing: Spacing.medium) {
+                    cleanupStack(router: router)
                 }
+            } else {
+                cleanupStack(router: router)
             }
-            .padding(Spacing.medium)
         }
         .navigationTitle(Text(appLocalized("Cleanup")))
 #if os(iOS)
@@ -158,6 +241,23 @@ public struct CleanupView: View {
         .toolbar { cleanupToolbar }
         .animation(.appSmooth, value: workspace.scanOperation)
         .animation(.appSmooth, value: workspace.reconciliationState)
+    }
+
+    private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
+        VStack(spacing: Spacing.medium) {
+            banners
+            switch workspace.contentState {
+            case .notLoaded:
+                ProgressView().padding(.top, Spacing.xxLarge)
+            case .neverScanned:
+                neverScanned
+            case .unavailable(let message):
+                unavailable(message)
+            case .content:
+                cleanupContent(router: router)
+            }
+        }
+        .padding(Spacing.medium)
     }
 
     @ViewBuilder
@@ -226,7 +326,8 @@ public struct CleanupView: View {
         } description: {
             Text(appLocalized("Start a scan to find similar photos and smart cleanup suggestions."))
         } actions: {
-            Button(appLocalized("Go to Scanner"), action: onOpenScanner).buttonStyle(.borderedProminent)
+            Button(appLocalized("Go to Scanner"), action: onOpenScanner)
+                .cleanupGlassButton(isProminent: true)
         }
         .frame(minHeight: 360)
     }
@@ -235,7 +336,8 @@ public struct CleanupView: View {
         ContentUnavailableView {
             Label(appLocalized("Cleanup Unavailable"), systemImage: "exclamationmark.triangle")
         } description: { Text(message) } actions: {
-            Button(appLocalized("Go to Scanner"), action: onOpenScanner).buttonStyle(.bordered)
+            Button(appLocalized("Go to Scanner"), action: onOpenScanner)
+                .cleanupGlassButton()
         }
         .frame(minHeight: 360)
     }
@@ -263,6 +365,7 @@ public struct CleanupView: View {
                 Label(appLocalized("No Clusters Match These Controls"), systemImage: "line.3.horizontal.decrease.circle")
             } description: { Text(appLocalized("Try changing filters or resetting controls.")) } actions: {
                 Button(appLocalized("Reset controls")) { controls = CleanupClusterControls() }
+                    .cleanupGlassButton()
             }
         } else {
             if !needsReview.isEmpty {
@@ -275,8 +378,9 @@ public struct CleanupView: View {
         Button { router.push(.history) } label: {
             Label(appLocalized("Cleanup History"), systemImage: "clock.arrow.circlepath")
                 .frame(maxWidth: .infinity, alignment: .leading).padding(Spacing.medium)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
-        }.buttonStyle(.plain)
+                .cleanupGlassSurface(isInteractive: true)
+        }
+        .buttonStyle(.plain)
     }
 
     @ToolbarContentBuilder
@@ -575,7 +679,7 @@ private struct CleanupProgressCard: View {
                 }
             }
             .padding(Spacing.medium)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+            .cleanupGlassSurface(isInteractive: true)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(
@@ -648,7 +752,7 @@ private struct CleanupCategoriesCard: View {
             }
         }
         .padding(Spacing.medium)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .cleanupGlassSurface()
     }
 
     private func categoryDetail(_ category: CleanupCategorySummary) -> String {
@@ -681,7 +785,8 @@ private struct CleanupClusterSection: View {
                 Text("\(clusters.count)")
                     .font(.caption.bold())
                     .padding(.horizontal, 7)
-                    .background(Color.secondary.opacity(ColorOpacity.statusBackground), in: Capsule())
+                    .padding(.vertical, 2)
+                    .cleanupGlassBadge()
                 Spacer()
             }
 
@@ -728,21 +833,21 @@ private struct CleanupClusterCard: View {
                     .font(.caption.bold())
                     .foregroundStyle(.white)
                     .padding(6)
-                    .background(.ultraThinMaterial, in: Capsule())
+                    .cleanupGlassBadge()
                     .padding(6)
             }
             .overlay(alignment: .topLeading) {
                 Text(statusTitle)
                     .font(.caption2.bold())
                     .padding(5)
-                    .background(.regularMaterial, in: Capsule())
+                    .cleanupGlassBadge()
                     .padding(5)
             }
             .overlay(alignment: .topTrailing) {
                 if let resurfacing, resurfacing != .unchanged {
                     Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
                         .padding(6)
-                        .background(.regularMaterial, in: Circle())
+                        .cleanupGlassBadge(.circle)
                         .padding(5)
                 }
             }
@@ -857,20 +962,20 @@ private struct CleanupStatusBanner: View {
 
             if let actionTitle, let action {
                 Button(actionTitle, action: action)
-                    .buttonStyle(.bordered)
+                    .cleanupGlassButton()
             }
             if let dismiss {
                 Button(action: dismiss) {
                     Image(systemName: "xmark")
                 }
-                .buttonStyle(.plain)
+                .cleanupGlassButton()
                 .foregroundStyle(.secondary)
                 .accessibilityLabel(Text(appLocalized("Dismiss cleanup status")))
                 .accessibilityHint(Text(appLocalized("Hide this status message")))
             }
         }
         .padding(Spacing.medium)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .cleanupGlassSurface()
     }
 }
 

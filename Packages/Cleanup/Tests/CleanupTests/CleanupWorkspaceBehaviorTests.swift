@@ -158,6 +158,31 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         XCTAssertEqual(workspace.contentState, .content(workspace.content!))
     }
 
+    func testRepeatedCachedLoadsJoinOneRepositoryRead() async {
+        let repository = ControlledPhotoClusterRepository(
+            initialClusters: [],
+            lastScanDate: .distantPast,
+            blockFirstClusterLoad: true
+        )
+        let workspace = makeWorkspace(repository: repository)
+
+        let firstLoad = Task { @MainActor in await workspace.loadCachedContent() }
+        await repository.waitUntilFirstClusterLoadStarts()
+        let joinedLoad = Task { @MainActor in await workspace.loadCachedContent() }
+        await Task.yield()
+
+        let inFlightLoadCount = await repository.loadClustersCallCount()
+        XCTAssertEqual(inFlightLoadCount, 1)
+
+        await repository.resumeFirstClusterLoad(with: [])
+        await firstLoad.value
+        await joinedLoad.value
+        await workspace.loadCachedContent()
+
+        let completedLoadCount = await repository.loadClustersCallCount()
+        XCTAssertEqual(completedLoadCount, 1)
+    }
+
     func testStaleGalleryChangeResultCannotReenableRescanAfterSuccessfulScan() async throws {
         let repository = ControlledPhotoClusterRepository(
             initialClusters: [],
@@ -339,6 +364,10 @@ private actor ControlledPhotoClusterRepository: PhotoClusterRepository {
             firstClusterLoadWaiters.removeAll()
             waiters.forEach { $0.resume() }
         }
+    }
+
+    func loadClustersCallCount() -> Int {
+        clusterLoadCount
     }
 
     func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot] { [] }

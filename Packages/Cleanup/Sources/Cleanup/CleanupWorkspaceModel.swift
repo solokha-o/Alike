@@ -47,6 +47,7 @@ public final class CleanupWorkspaceModel {
 
     private var lastGoodContent = CleanupWorkspaceContent.empty
     private var scanMutationGeneration = 0
+    private var cachedContentLoadTask: Task<Void, Never>?
     private var activeScanID: UUID?
     private var scanTask: Task<ScanSummary, Error>?
     private var reconciliationTask: Task<Void, Never>?
@@ -89,9 +90,29 @@ public final class CleanupWorkspaceModel {
 
     /// Loads cached Cleanup data without starting a new scan.
     ///
+    /// Repeated callers reuse the first load so tab appearances do not rebuild
+    /// an already-published workspace from disk.
+    ///
     /// A stale cache load is discarded if a scan begins while its repositories
     /// are being read, preventing old data from replacing fresh scan results.
     public func loadCachedContent() async {
+        guard contentState == .notLoaded else { return }
+
+        if let cachedContentLoadTask {
+            await cachedContentLoadTask.value
+            return
+        }
+
+        let task = Task { @MainActor [weak self] in
+            guard let self else { return }
+            await self.performCachedContentLoad()
+        }
+        cachedContentLoadTask = task
+        await task.value
+        cachedContentLoadTask = nil
+    }
+
+    private func performCachedContentLoad() async {
         let expectedGeneration = scanMutationGeneration
         let baselineDate = await repository.getLastScanDate()
         let insights = await fetchCleanupInsights()
@@ -180,7 +201,9 @@ public final class CleanupWorkspaceModel {
         let hasChanged = await repository.hasGalleryChanged()
         guard canCommitCachedLoad(expectedGeneration) else { return false }
         let shouldPrompt = hasChanged && lastGoodContent.hasCompletedScanBaseline
-        publish(replacing(lastGoodContent, shouldShowRescanPrompt: shouldPrompt))
+        if shouldPrompt != lastGoodContent.shouldShowRescanPrompt {
+            publish(replacing(lastGoodContent, shouldShowRescanPrompt: shouldPrompt))
+        }
         return shouldPrompt
     }
 
