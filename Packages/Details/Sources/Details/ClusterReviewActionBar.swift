@@ -31,20 +31,31 @@ struct ClusterReviewActionBar: View {
     @ViewBuilder
     private func controls(usesGlass: Bool) -> some View {
         if dynamicTypeSize.isAccessibilitySize {
-            VStack(spacing: Spacing.small) {
-                selectionMenu(usesGlass: usesGlass)
-                deleteButton(usesGlass: usesGlass)
-            }
+            verticalControls(usesGlass: usesGlass)
         } else {
-            HStack(spacing: Spacing.small) {
-                selectionMenu(usesGlass: usesGlass)
-                deleteButton(usesGlass: usesGlass)
+            ViewThatFits(in: .horizontal) {
+                horizontalControls(usesGlass: usesGlass)
+                verticalControls(usesGlass: usesGlass)
             }
         }
     }
 
+    private func horizontalControls(usesGlass: Bool) -> some View {
+        HStack(spacing: Spacing.small) {
+            selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
+            deleteButton(usesGlass: usesGlass, allowsWrapping: false)
+        }
+    }
+
+    private func verticalControls(usesGlass: Bool) -> some View {
+        VStack(spacing: Spacing.small) {
+            selectionMenu(usesGlass: usesGlass, allowsWrapping: true)
+            deleteButton(usesGlass: usesGlass, allowsWrapping: true)
+        }
+    }
+
     @ViewBuilder
-    private func selectionMenu(usesGlass: Bool) -> some View {
+    private func selectionMenu(usesGlass: Bool, allowsWrapping: Bool) -> some View {
         Menu {
             Button(action: onSelectAllExceptBest) {
                 Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
@@ -58,19 +69,22 @@ struct ClusterReviewActionBar: View {
                 }
             }
         } label: {
-            Label(appLocalized("Selection"), systemImage: "checkmark.circle")
-                .font(.appHeadline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                .allowsTightening(true)
-                .frame(maxWidth: .infinity)
+            Label {
+                Text(appLocalized("Selection"))
+                    .lineLimit(allowsWrapping ? 2 : 1)
+                    .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
+            } icon: {
+                Image(systemName: "checkmark.circle")
+            }
+            .font(.appHeadline)
+            .frame(maxWidth: .infinity)
         }
         .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
         .accessibilityHint(Text(appLocalized("Choose which photos are selected for cleanup")))
     }
 
     @ViewBuilder
-    private func deleteButton(usesGlass: Bool) -> some View {
+    private func deleteButton(usesGlass: Bool, allowsWrapping: Bool) -> some View {
         if isDeleteActionVisible, let onDeleteSelected {
             Button(role: .destructive, action: onDeleteSelected) {
                 HStack(spacing: Spacing.small) {
@@ -82,9 +96,9 @@ struct ClusterReviewActionBar: View {
 
                     Text(deleteActionTitle)
                         .font(.appHeadline)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                        .allowsTightening(true)
+                        .lineLimit(allowsWrapping ? 2 : 1)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
                 }
                 .frame(maxWidth: .infinity)
             }

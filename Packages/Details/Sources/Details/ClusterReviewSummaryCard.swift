@@ -3,9 +3,7 @@ import Core
 import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
-    private enum Layout {
-        static let summaryContentHeight: CGFloat = 88
-    }
+    static let summaryContentMinimumHeight: CGFloat = 88
 
     enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(ALIReviewReactionCue.ID)
@@ -53,22 +51,26 @@ struct ClusterReviewSummaryCard: View {
 
     private var summary: some View {
         VStack(alignment: .leading, spacing: Spacing.xSmall) {
-            HStack(spacing: Spacing.xSmall) {
-                Text(assetCountTitle)
-                    .font(.appHeadline)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.85)
-                    .layoutPriority(1)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: Spacing.xSmall) {
+                    assetCountLabel
+                        .fixedSize(horizontal: true, vertical: false)
 
-                Spacer(minLength: Spacing.xSmall)
+                    Spacer(minLength: Spacing.xSmall)
 
-                statusLabel
+                    statusLabel
+                        .fixedSize(horizontal: true, vertical: false)
+                }
+
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    assetCountLabel
+                    statusLabel
+                }
             }
 
             Label {
                 Text(bestShotLabel)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.85)
+                    .fixedSize(horizontal: false, vertical: true)
             } icon: {
                 Image(systemName: "star.fill")
                     .foregroundStyle(Color.heroGold)
@@ -79,21 +81,18 @@ struct ClusterReviewSummaryCard: View {
             Text(selectionSummary)
                 .font(.appCaption)
                 .foregroundStyle(selectedCount > 0 ? Color.accent : Color.secondary)
-                .lineLimit(2, reservesSpace: true)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(
-            height: Self.summaryContentHeight(
-                isAccessibilitySize: dynamicTypeSize.isAccessibilitySize
-            ),
-            alignment: .leading
-        )
+        .frame(minHeight: Self.summaryContentMinimumHeight, alignment: .leading)
         .animation(nil, value: selectedCount)
         .animation(nil, value: reviewStatus)
     }
 
-    static func summaryContentHeight(isAccessibilitySize: Bool) -> CGFloat? {
-        isAccessibilitySize ? nil : Layout.summaryContentHeight
+    private var assetCountLabel: some View {
+        Text(assetCountTitle)
+            .font(.appHeadline)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private var assetCountTitle: String {
@@ -195,26 +194,11 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var statusLabel: some View {
-        ZStack(alignment: .leading) {
-            statusContent(title: statusTitle, iconName: statusIconName)
-
-            statusContent(title: appLocalized("Not reviewed"), iconName: "circle")
-                .hidden()
-            statusContent(
-                title: appLocalized("Needs review"),
-                iconName: "arrow.triangle.2.circlepath.circle.fill"
-            )
-            .hidden()
-            statusContent(title: appLocalized("In review"), iconName: "clock.arrow.circlepath")
-                .hidden()
-            statusContent(title: appLocalized("Reviewed"), iconName: "checkmark.seal.fill")
-                .hidden()
-        }
-        .fixedSize(horizontal: true, vertical: false)
-        .foregroundStyle(statusColor)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(statusTitle))
-        .accessibilityHint(Text(appLocalized("Current cleanup review status")))
+        statusContent(title: statusTitle, iconName: statusIconName)
+            .foregroundStyle(statusColor)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Text(statusTitle))
+            .accessibilityHint(Text(appLocalized("Current cleanup review status")))
     }
 
     private func statusContent(title: String, iconName: String) -> some View {
@@ -225,7 +209,8 @@ struct ClusterReviewSummaryCard: View {
 
             Text(title)
                 .font(.caption.weight(.semibold))
-                .lineLimit(1)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 

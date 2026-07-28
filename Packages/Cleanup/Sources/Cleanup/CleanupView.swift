@@ -855,12 +855,14 @@ private struct CleanupClusterCard: View {
                 Label(statusTitle, systemImage: statusIconName)
                     .font(.caption2.bold())
                     .foregroundStyle(statusColor)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(5)
                     .cleanupGlassBadge()
                     .padding(5)
             }
-            .overlay(alignment: .topTrailing) {
+            .overlay(alignment: .bottomLeading) {
                 if let resurfacing, resurfacing != .unchanged {
                     Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
                         .padding(6)

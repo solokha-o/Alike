@@ -3,17 +3,10 @@ import XCTest
 
 final class ClusterReviewSummaryCardLayoutTests: XCTestCase {
     @MainActor
-    func testSummaryUsesFixedHeightInHorizontalLayout() {
+    func testSummaryUsesMinimumHeight() {
         XCTAssertEqual(
-            ClusterReviewSummaryCard.summaryContentHeight(isAccessibilitySize: false),
+            ClusterReviewSummaryCard.summaryContentMinimumHeight,
             88
-        )
-    }
-
-    @MainActor
-    func testSummaryUsesIntrinsicHeightInAccessibilityLayout() {
-        XCTAssertNil(
-            ClusterReviewSummaryCard.summaryContentHeight(isAccessibilitySize: true)
         )
     }
 }
