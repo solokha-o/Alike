@@ -62,7 +62,6 @@ public struct ScannerView: View {
 #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
 #endif
-            .animation(.appSmooth, value: viewModel.state)
         }
         .task { await viewModel.load() }
         .onChange(of: gridColumns) { _, value in viewModel.gridColumns = value }

@@ -17,6 +17,7 @@ public enum AnimatedImageAmbientMotion: Sendable, Equatable {
 /// interaction, is omitted for Reduce Motion, and does not affect layout.
 public struct AnimatedImageOverlay<StaticContent: View>: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var ambientPhaseIsLifted = false
 
     private let animationURL: URL?
     private let aspectRatio: CGFloat
@@ -41,32 +42,39 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
         self.staticContent = staticContent()
     }
 
-    @ViewBuilder
     public var body: some View {
-        if ambientMotion == .breathe && !reduceMotion {
-            composite
-                .phaseAnimator([false, true]) { content, isLifted in
-                    content
-                        .scaleEffect(isLifted ? 1.02 : 0.995)
-                        .offset(
-                            x: isLifted ? 2 : -2,
-                            y: isLifted ? -6 : 2
-                        )
-                        .rotationEffect(.degrees(isLifted ? 0.7 : -0.5))
-                } animation: { _ in
-                    .easeInOut(duration: 2.4)
-                }
-        } else {
-            composite
-        }
+        composite
+            .scaleEffect(
+                animatesAmbientMotion
+                    ? (ambientPhaseIsLifted ? 1.02 : 0.995)
+                    : 1
+            )
+            .offset(
+                x: animatesAmbientMotion ? (ambientPhaseIsLifted ? 2 : -2) : 0,
+                y: animatesAmbientMotion ? (ambientPhaseIsLifted ? -6 : 2) : 0
+            )
+            .rotationEffect(
+                .degrees(
+                    animatesAmbientMotion
+                        ? (ambientPhaseIsLifted ? 0.7 : -0.5)
+                        : 0
+                )
+            )
+            .animation(ambientAnimation, value: ambientPhaseIsLifted)
+            .onAppear { ambientPhaseIsLifted = animatesAmbientMotion }
+            .onChange(of: animatesAmbientMotion) { _, shouldAnimate in
+                ambientPhaseIsLifted = shouldAnimate
+            }
     }
 
     private var composite: some View {
         ZStack {
             staticContent
 
-            if !reduceMotion,
-               let animationURL,
+            if Self.shouldRenderAnimation(
+                animationURL: animationURL,
+                reduceMotion: reduceMotion
+            ), let animationURL,
                let animation = LottieAnimation.filepath(animationURL.path) {
                 LottieView(animation: animation)
                     .playing(.fromProgress(0, toProgress: 1, loopMode: loopMode))
@@ -89,5 +97,31 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
         case .loop:
             .loop
         }
+    }
+
+    private var animatesAmbientMotion: Bool {
+        Self.shouldAnimateAmbientMotion(
+            ambientMotion: ambientMotion,
+            reduceMotion: reduceMotion
+        )
+    }
+
+    private var ambientAnimation: Animation? {
+        guard animatesAmbientMotion else { return nil }
+        return .easeInOut(duration: 2.4).repeatForever(autoreverses: true)
+    }
+
+    static func shouldAnimateAmbientMotion(
+        ambientMotion: AnimatedImageAmbientMotion,
+        reduceMotion: Bool
+    ) -> Bool {
+        ambientMotion == .breathe && !reduceMotion
+    }
+
+    static func shouldRenderAnimation(
+        animationURL: URL?,
+        reduceMotion: Bool
+    ) -> Bool {
+        animationURL != nil && !reduceMotion
     }
 }

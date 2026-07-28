@@ -32,6 +32,8 @@ final class ScannerHomePresentationTests: XCTestCase {
 
         XCTAssertEqual(first.cue.state, .scanning)
         XCTAssertEqual(first.cue.id, second.cue.id)
+        XCTAssertEqual(first.visualPhase, second.visualPhase)
+        XCTAssertEqual(first.visualPhase, .scanning)
         XCTAssertEqual(first.progress, 1)
         XCTAssertNil(first.primaryAction)
     }
@@ -44,6 +46,7 @@ final class ScannerHomePresentationTests: XCTestCase {
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.libraryChanged(newItemsCount: nil)))
+        XCTAssertEqual(presentation.visualPhase, .libraryChanged)
         XCTAssertEqual(presentation.primaryAction, .startScanning)
         XCTAssertEqual(presentation.secondaryAction, .openCleanup)
     }
@@ -56,6 +59,7 @@ final class ScannerHomePresentationTests: XCTestCase {
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.hasReviews(count: 4)))
+        XCTAssertEqual(presentation.visualPhase, .reviews)
         XCTAssertEqual(presentation.primaryAction, .openCleanup)
         XCTAssertEqual(presentation.secondaryAction, .startScanning)
     }
@@ -68,6 +72,7 @@ final class ScannerHomePresentationTests: XCTestCase {
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.allCaughtUp))
+        XCTAssertEqual(presentation.visualPhase, .caughtUp)
         XCTAssertEqual(presentation.primaryAction, .startScanning)
         XCTAssertNil(presentation.secondaryAction)
     }
@@ -90,8 +95,36 @@ final class ScannerHomePresentationTests: XCTestCase {
         )
         XCTAssertEqual(first.cue.id, second.cue.id)
         XCTAssertEqual(first.primaryAction, .startScanning)
+        XCTAssertEqual(first.visualPhase, .error)
         XCTAssertEqual(first.secondaryAction, .openCleanup)
         XCTAssertNil(second.secondaryAction)
+    }
+
+    func testVisualPhaseChangesAcrossReadyScanningResultsAndError() {
+        let phases = [
+            ScannerHomePresentation.resolve(
+                state: .idle,
+                hasLibraryChanged: false,
+                hasCompletedScanBaseline: false
+            ).visualPhase,
+            ScannerHomePresentation.resolve(
+                state: .scanning(progress: 0.5),
+                hasLibraryChanged: false,
+                hasCompletedScanBaseline: false
+            ).visualPhase,
+            ScannerHomePresentation.resolve(
+                state: .completed(summary(opportunities: 2)),
+                hasLibraryChanged: false,
+                hasCompletedScanBaseline: true
+            ).visualPhase,
+            ScannerHomePresentation.resolve(
+                state: .error("Interrupted"),
+                hasLibraryChanged: false,
+                hasCompletedScanBaseline: false
+            ).visualPhase,
+        ]
+
+        XCTAssertEqual(Set(phases).count, phases.count)
     }
 
     func testAllowanceIsHiddenForUnlimitedAccessAndClampsRemainingScans() {

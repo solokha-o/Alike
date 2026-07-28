@@ -15,6 +15,15 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.remainingFreeScans, PremiumAccessPolicy.monthlyFreeScanLimit)
     }
 
+    func testDuplicateScanningProgressDoesNotRepublishState() {
+        let viewModel = makeViewModel()
+
+        XCTAssertTrue(viewModel.publishScanningProgress(0.25))
+        XCTAssertFalse(viewModel.publishScanningProgress(0.25))
+        XCTAssertTrue(viewModel.publishScanningProgress(0.5))
+        XCTAssertEqual(viewModel.state, .scanning(progress: 0.5))
+    }
+
     func testLoadMigratesCurrentMonthWorkspaceBaselineIntoUsage() async {
         let date = makeDate(year: 2026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()

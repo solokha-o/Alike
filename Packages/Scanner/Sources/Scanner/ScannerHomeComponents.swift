@@ -22,6 +22,7 @@ private extension View {
 }
 
 struct ScannerHomeHero: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let presentation: ScannerHomePresentation
@@ -29,7 +30,13 @@ struct ScannerHomeHero: View {
 
     var body: some View {
         VStack(spacing: Spacing.medium) {
-            ALIReactionView(cue: presentation.cue, maximumWidth: heroWidth)
+            ScannerHeroArtwork(
+                cue: presentation.cue,
+                maximumWidth: heroWidth
+            )
+            .equatable()
+            .id(presentation.visualPhase)
+            .transition(.opacity)
 
             VStack(spacing: Spacing.xSmall) {
                 Text(presentation.title)
@@ -52,6 +59,10 @@ struct ScannerHomeHero: View {
         .frame(maxWidth: .infinity)
         .padding(Spacing.large)
         .scannerHomeSurface()
+        .animation(
+            reduceMotion ? nil : .appQuick,
+            value: presentation.visualPhase
+        )
     }
 
     private var heroWidth: CGFloat {
@@ -94,6 +105,15 @@ struct ScannerHomeHero: View {
                 .buttonStyle(.bordered)
                 .controlSize(.large)
         }
+    }
+}
+
+private struct ScannerHeroArtwork: View, Equatable {
+    let cue: ALIReactionCue
+    let maximumWidth: CGFloat
+
+    var body: some View {
+        ALIReactionView(cue: cue, maximumWidth: maximumWidth)
     }
 }
 

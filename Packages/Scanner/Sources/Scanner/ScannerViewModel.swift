@@ -117,7 +117,7 @@ public final class ScannerViewModel {
             joinsReconciliation = false
         }
 
-        state = .scanning(progress: workspace.scanOperation.progress ?? 0)
+        publishScanningProgress(workspace.scanOperation.progress ?? 0)
         observeWorkspaceScan()
         do {
             let summary = try await workspace.scan(sensitivity: sensitivity)
@@ -142,7 +142,7 @@ public final class ScannerViewModel {
             while !Task.isCancelled {
                 guard let operation = self?.workspace.scanOperation else { return }
                 if case .scanning(let progress, _) = operation {
-                    self?.state = .scanning(progress: progress)
+                    self?.publishScanningProgress(progress)
                 }
                 try? await Task.sleep(for: .milliseconds(80))
             }
@@ -151,7 +151,7 @@ public final class ScannerViewModel {
 
     private func synchronizeStateWithWorkspace() {
         switch workspace.scanOperation {
-        case .scanning(let progress, .userInitiated): state = .scanning(progress: progress)
+        case .scanning(let progress, .userInitiated): publishScanningProgress(progress)
         case .failed(let message, .userInitiated): state = .error(message)
         default:
             if let summary = workspace.lastScanSummary {
@@ -167,6 +167,14 @@ public final class ScannerViewModel {
                 state = .idle
             }
         }
+    }
+
+    @discardableResult
+    func publishScanningProgress(_ progress: Double) -> Bool {
+        let nextState = State.scanning(progress: progress)
+        guard state != nextState else { return false }
+        state = nextState
+        return true
     }
 
     private func estimatedSavings() -> Int64 {

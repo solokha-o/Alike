@@ -1,6 +1,31 @@
 import Core
 import SwiftUI
 
+@MainActor
+private final class ALIPlatformImageCache {
+    static let shared = ALIPlatformImageCache()
+
+#if canImport(UIKit)
+    private let images = NSCache<NSURL, UIImage>()
+
+    func image(at url: URL) -> UIImage? {
+        if let cached = images.object(forKey: url as NSURL) { return cached }
+        guard let image = UIImage(contentsOfFile: url.path) else { return nil }
+        images.setObject(image, forKey: url as NSURL)
+        return image
+    }
+#elseif canImport(AppKit)
+    private let images = NSCache<NSURL, NSImage>()
+
+    func image(at url: URL) -> NSImage? {
+        if let cached = images.object(forKey: url as NSURL) { return cached }
+        guard let image = NSImage(contentsOf: url) else { return nil }
+        images.setObject(image, forKey: url as NSURL)
+        return image
+    }
+#endif
+}
+
 public struct ALIReactionPresentation: Equatable, Sendable {
     public let kind: ALIReactionKind
     public let staticImageURL: URL?
@@ -251,10 +276,10 @@ public struct ALIReactionView: View {
     private func platformImage(at url: URL?) -> Image? {
         guard let url else { return nil }
 #if canImport(UIKit)
-        guard let image = UIImage(contentsOfFile: url.path) else { return nil }
+        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
         return Image(uiImage: image)
 #elseif canImport(AppKit)
-        guard let image = NSImage(contentsOf: url) else { return nil }
+        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
         return Image(nsImage: image)
 #endif
     }

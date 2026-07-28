@@ -9,6 +9,16 @@ enum ScannerHomeAction: Equatable, Sendable {
 }
 
 struct ScannerHomePresentation: Equatable, Sendable {
+    enum VisualPhase: Hashable, Sendable {
+        case ready
+        case scanning
+        case reviews
+        case caughtUp
+        case libraryChanged
+        case error
+    }
+
+    let visualPhase: VisualPhase
     let cue: ALIReactionCue
     let title: String
     let message: String
@@ -26,6 +36,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
         switch state {
         case .scanning(let progress):
             return Self(
+                visualPhase: .scanning,
                 cue: scanningCue,
                 title: appLocalized("Scanning your photo library"),
                 message: appLocalized("You can switch tabs while scanning. Your cleanup results will refresh when it finishes."),
@@ -38,6 +49,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
 
         case .error(let message):
             return Self(
+                visualPhase: .error,
                 cue: issueCue,
                 title: appLocalized("I couldn't finish this scan."),
                 message: message,
@@ -53,6 +65,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
         case .idle where hasLibraryChanged && hasCompletedScanBaseline,
              .completed where hasLibraryChanged && hasCompletedScanBaseline:
             return Self(
+                visualPhase: .libraryChanged,
                 cue: idleCue(context: .libraryChanged(newItemsCount: nil)),
                 title: appLocalized("scanner.ali.libraryChanged.message"),
                 message: appLocalized("scanner.ali.libraryChanged.supporting"),
@@ -65,6 +78,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
 
         case .idle:
             return Self(
+                visualPhase: .ready,
                 cue: idleCue(context: .ready),
                 title: appLocalized("scanner.ali.ready.message"),
                 message: appLocalized("scanner.ali.ready.supporting"),
@@ -79,6 +93,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
             let opportunityCount = summary.totalOpportunityCount
             if opportunityCount > 0 {
                 return Self(
+                    visualPhase: .reviews,
                     cue: idleCue(context: .hasReviews(count: opportunityCount)),
                     title: appLocalized("Cleanup opportunities are ready"),
                     message: appLocalized("Review each suggestion before anything is removed."),
@@ -91,6 +106,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
             }
 
             return Self(
+                visualPhase: .caughtUp,
                 cue: idleCue(context: .allCaughtUp),
                 title: appLocalized("Your library is up to date"),
                 message: appLocalized("No cleanup opportunities were found in this scan."),
