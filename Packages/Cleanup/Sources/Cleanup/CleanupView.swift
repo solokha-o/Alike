@@ -123,6 +123,7 @@ public struct CleanupView: View {
 #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 #endif
+    @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
     @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
     @State private var controls = CleanupClusterControls()
@@ -233,18 +234,24 @@ public struct CleanupView: View {
                 cleanupStack(router: router)
             }
         }
+        .overlay(alignment: .top) {
+            reconciliationOverlay
+                .animation(
+                    accessibilityReduceMotion ? nil : .appSmooth,
+                    value: workspace.reconciliationState
+                )
+        }
         .navigationTitle(Text(appLocalized("Cleanup")))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
         .toolbar { cleanupToolbar }
-        .animation(.appSmooth, value: workspace.scanOperation)
-        .animation(.appSmooth, value: workspace.reconciliationState)
+        .animation(.appSmooth, value: displayedScanOperation)
     }
 
     private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
         VStack(spacing: Spacing.medium) {
-            banners
+            persistentBanners
             switch workspace.contentState {
             case .notLoaded:
                 ProgressView().padding(.top, Spacing.xxLarge)
@@ -260,8 +267,8 @@ public struct CleanupView: View {
     }
 
     @ViewBuilder
-    private var banners: some View {
-        if case .scanning(let progress, _) = workspace.scanOperation {
+    private var persistentBanners: some View {
+        if case .scanning(let progress, .userInitiated) = workspace.scanOperation {
             CleanupStatusBanner(
                 icon: "arrow.triangle.2.circlepath",
                 title: appLocalized("Refreshing Cleanup"),
@@ -269,7 +276,7 @@ public struct CleanupView: View {
                 showsProgress: true,
                 progress: progress
             )
-        } else if case .failed(let message, _) = workspace.scanOperation {
+        } else if case .failed(let message, .userInitiated) = workspace.scanOperation {
             CleanupStatusBanner(
                 icon: "exclamationmark.triangle.fill",
                 title: appLocalized("Scan Failed"),
@@ -285,27 +292,38 @@ public struct CleanupView: View {
                 action: onRequestScan
             )
         }
-        if let state = workspace.reconciliationState, state.record.id != dismissedReconciliationID {
+    }
+
+    @ViewBuilder
+    private var reconciliationOverlay: some View {
+        if let state = terminalReconciliationState, state.record.id != dismissedReconciliationID {
             reconciliationBanner(state)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, Spacing.medium)
+                .padding(.top, Spacing.xSmall)
+                .transition(
+                    accessibilityReduceMotion
+                        ? .opacity
+                        : .move(edge: .top).combined(with: .opacity)
+                )
+                .zIndex(1)
+                .task(id: state) {
+                    await autoDismissReconciliationSuccess(state)
+                }
         }
     }
 
     @ViewBuilder
     private func reconciliationBanner(_ state: CleanupReconciliationState) -> some View {
         switch state {
-        case .refreshing(let record):
-            CleanupStatusBanner(
-                icon: "arrow.triangle.2.circlepath",
-                title: String(format: appLocalized("%d photos moved to Recently Deleted."), record.deletedCount),
-                message: appLocalized("Refreshing your cleanup results…"),
-                showsProgress: true
-            )
+        case .refreshing:
+            EmptyView()
         case .success(let record):
             CleanupStatusBanner(
                 icon: "checkmark.circle.fill",
                 title: String(format: appLocalized("%d photos moved to Recently Deleted."), record.deletedCount),
                 message: appLocalized("Your cleanup results are up to date."),
-                dismiss: { dismissedReconciliationID = record.id }
+                dismiss: { dismissReconciliation(record.id) }
             )
         case .failed(let record, let message):
             CleanupStatusBanner(
@@ -314,8 +332,42 @@ public struct CleanupView: View {
                 message: message,
                 actionTitle: appLocalized("Rescan"),
                 action: onRequestScan,
-                dismiss: { dismissedReconciliationID = record.id }
+                dismiss: { dismissReconciliation(record.id) }
             )
+        }
+    }
+
+    private var terminalReconciliationState: CleanupReconciliationState? {
+        guard let state = workspace.reconciliationState else { return nil }
+        if case .refreshing = state { return nil }
+        return state
+    }
+
+    private var displayedScanOperation: ScanOperationState? {
+        switch workspace.scanOperation {
+        case .scanning(_, .userInitiated), .failed(_, .userInitiated):
+            workspace.scanOperation
+        case .idle, .scanning(_, .reconciliation), .failed(_, .reconciliation):
+            nil
+        }
+    }
+
+    private func autoDismissReconciliationSuccess(_ state: CleanupReconciliationState) async {
+        guard case .success(let record) = state else { return }
+
+        do {
+            try await Task.sleep(for: .seconds(4))
+        } catch {
+            return
+        }
+
+        guard workspace.reconciliationState == .success(record) else { return }
+        dismissReconciliation(record.id)
+    }
+
+    private func dismissReconciliation(_ recordID: UUID) {
+        withAnimation(accessibilityReduceMotion ? nil : .appSmooth) {
+            dismissedReconciliationID = recordID
         }
     }
 
