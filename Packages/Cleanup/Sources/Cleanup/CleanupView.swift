@@ -845,8 +845,10 @@ private struct CleanupClusterCard: View {
                 Text("\(cluster.count)")
                     .font(.caption.bold())
                     .foregroundStyle(.primary)
-                    .padding(6)
-                    .cleanupGlassBadge()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .frame(width: 28, height: 28)
+                    .cleanupGlassBadge(.circle)
                     .padding(6)
             }
             .overlay(alignment: .topLeading) {
