@@ -44,12 +44,14 @@ public final class CleanupWorkspaceModel {
     private let cleanupManager: any CleanupSessionManaging
     private let cleanupInsightsProvider: any CleanupInsightsProviding
     private let now: @Sendable () -> Date
+    private let postProcessor = ScanPostProcessor()
 
     private var lastGoodContent = CleanupWorkspaceContent.empty
     private var scanMutationGeneration = 0
     private var cachedContentLoadTask: Task<Void, Never>?
     private var activeScanID: UUID?
     private var scanTask: Task<ScanSummary, Error>?
+    private var progressRelay: ScanProgressRelay?
     private var reconciliationTask: Task<Void, Never>?
     private var activeReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
     private var queuedReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
@@ -124,7 +126,7 @@ public final class CleanupWorkspaceModel {
 
             guard canCommitCachedLoad(expectedGeneration) else { return }
 
-            let sortedClusters = canonicalSortedClusters(loadedClusters)
+            let sortedClusters = await postProcessor.canonicalSortedClusters(loadedClusters)
             let content = CleanupWorkspaceContent(
                 clusters: sortedClusters,
                 categories: categories,
@@ -258,6 +260,9 @@ private extension CleanupWorkspaceModel {
         let scanID = UUID()
         activeScanID = scanID
         scanOperation = .scanning(progress: 0, purpose: purpose)
+        progressRelay = ScanProgressRelay { [weak self] progress in
+            self?.publishScanProgress(progress, scanID: scanID, purpose: purpose)
+        }
 
         let task = Task { @MainActor [weak self] () throws -> ScanSummary in
             guard let self else { throw CancellationError() }
@@ -272,6 +277,8 @@ private extension CleanupWorkspaceModel {
         do {
             let summary = try await task.value
             if activeScanID == scanID {
+                await progressRelay?.cancel()
+                progressRelay = nil
                 scanTask = nil
                 activeScanID = nil
                 scanOperation = .idle
@@ -279,6 +286,8 @@ private extension CleanupWorkspaceModel {
             return summary
         } catch {
             if activeScanID == scanID {
+                await progressRelay?.cancel()
+                progressRelay = nil
                 scanTask = nil
                 activeScanID = nil
                 scanOperation = .failed(message: error.localizedDescription, purpose: purpose)
@@ -326,14 +335,17 @@ private extension CleanupWorkspaceModel {
         let previousSnapshots = try await repository.loadClusterSnapshots()
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
 
+        guard let progressRelay else { throw CancellationError() }
         let analyzedClusters = try await analysisService.analyzePhotoLibrary(
             sensitivity: sensitivity.threshold
-        ) { [weak self] progress in
-            Task { @MainActor in
-                self?.updateScanProgress(progress, scanID: scanID, purpose: purpose)
-            }
+        ) { progress in
+            Task { await progressRelay.submit(ScanProgressStages.analysis(progress)) }
         }
-        let refreshedCategories = try await analysisService.refreshCleanupCategories()
+        await progressRelay.submit(ScanProgressStages.analysis(1), force: true)
+        let refreshedCategories = try await analysisService.refreshCleanupCategories { progress in
+            Task { await progressRelay.submit(ScanProgressStages.categories(progress)) }
+        }
+        await progressRelay.submit(ScanProgressStages.persistenceStart, force: true)
 
         let completedAt = now()
         do {
@@ -347,12 +359,13 @@ private extension CleanupWorkspaceModel {
             throw error
         }
 
-        let sortedClusters = canonicalSortedClusters(analyzedClusters)
-        let reviewData = await migratedReviewData(
+        let sortedClusters = await postProcessor.canonicalSortedClusters(analyzedClusters)
+        let migratedStates = await postProcessor.migratedReviewStates(
             previousSnapshots: previousSnapshots,
             previousReviewStates: previousReviewStates,
             newClusters: sortedClusters
         )
+        let reviewData = await persistMigratedReviewData(migratedStates)
         let session = await cleanupManager.syncSession(
             for: sortedClusters,
             reviewStates: reviewData.states
@@ -370,23 +383,23 @@ private extension CleanupWorkspaceModel {
         )
         publish(content)
 
-        let categoryCandidateCount = refreshedCategories.reduce(0) { $0 + max($1.assetCount, 0) }
-        let clusterSavings = sortedClusters.reduce(into: Int64(0)) { total, cluster in
-            total += cluster.assets.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
-        }
-        let categorySavings = refreshedCategories.reduce(into: Int64(0)) { $0 += $1.estimatedSavingsBytes }
+        let aggregates = await postProcessor.scanAggregates(
+            clusters: sortedClusters,
+            categories: refreshedCategories
+        )
         let summary = ScanSummary(
             clusterCount: sortedClusters.count,
-            cleanupCategoryCandidateCount: categoryCandidateCount,
-            estimatedSavingsBytes: clusterSavings + categorySavings,
+            cleanupCategoryCandidateCount: aggregates.categoryCandidateCount,
+            estimatedSavingsBytes: aggregates.estimatedSavingsBytes,
             completedAt: completedAt
         )
         lastScanSummary = summary
         lastCompletedScanDate = summary.completedAt
+        await progressRelay.submit(ScanProgressStages.completed, force: true)
         return summary
     }
 
-    func updateScanProgress(
+    func publishScanProgress(
         _ progress: Double,
         scanID: UUID,
         purpose: ScanOperationPurpose
@@ -396,36 +409,16 @@ private extension CleanupWorkspaceModel {
               activePurpose == purpose else {
             return
         }
-        scanOperation = .scanning(
-            progress: max(current, min(max(progress, 0), 1)),
-            purpose: purpose
-        )
+        let next = max(current, min(max(progress, 0), 1))
+        scanOperation = .scanning(progress: next, purpose: purpose)
     }
 
-    func migratedReviewData(
-        previousSnapshots: [PhotoClusterSnapshot],
-        previousReviewStates: [UUID: ClusterReviewState],
-        newClusters: [PhotoCluster]
+    func persistMigratedReviewData(
+        _ result: ClusterReviewResurfacingResult
     ) async -> (
         states: [UUID: ClusterReviewState],
         resurfacingStates: [UUID: ClusterResurfacingState]
     ) {
-        let result: ClusterReviewResurfacingResult
-        if previousSnapshots.isEmpty {
-            result = ClusterReviewResurfacingResult(
-                migratedReviewStates: [:],
-                resurfacingStates: Dictionary(
-                    uniqueKeysWithValues: newClusters.map { ($0.id, .unchanged) }
-                )
-            )
-        } else {
-            result = ClusterReviewStateResurfacer.resurface(
-                previousSnapshots: previousSnapshots,
-                newClusters: newClusters,
-                existingReviewStates: previousReviewStates
-            )
-        }
-
         do {
             try await persistReviewStates(result.migratedReviewStates)
         } catch {
@@ -448,9 +441,10 @@ private extension CleanupWorkspaceModel {
             states = [:]
         }
 
-        let resurfacingStates = Dictionary(uniqueKeysWithValues: clusters.map { cluster in
-            (cluster.id, states[cluster.id]?.resurfacingState ?? .unchanged)
-        })
+        let resurfacingStates = await postProcessor.resurfacingStates(
+            for: clusters,
+            reviewStates: states
+        )
         let session = await cleanupManager.syncSession(for: clusters, reviewStates: states)
         return (states, resurfacingStates, session)
     }
@@ -499,17 +493,6 @@ private extension CleanupWorkspaceModel {
         }
     }
 
-    func canonicalSortedClusters(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.sorted { lhs, rhs in
-            if lhs.createdAt != rhs.createdAt { return lhs.createdAt > rhs.createdAt }
-            if lhs.count != rhs.count { return lhs.count > rhs.count }
-            if lhs.averageSimilarity != rhs.averageSimilarity {
-                return lhs.averageSimilarity > rhs.averageSimilarity
-            }
-            return lhs.id.uuidString < rhs.id.uuidString
-        }
-    }
-
     func canCommitCachedLoad(_ expectedGeneration: Int) -> Bool {
         scanMutationGeneration == expectedGeneration && scanTask == nil
     }
@@ -537,5 +520,63 @@ private extension CleanupWorkspaceModel {
             hasCompletedScanBaseline: content.hasCompletedScanBaseline,
             shouldShowRescanPrompt: shouldShowRescanPrompt ?? content.shouldShowRescanPrompt
         )
+    }
+}
+
+private actor ScanPostProcessor {
+    func canonicalSortedClusters(
+        _ clusters: [PhotoCluster]
+    ) -> [PhotoCluster] {
+        clusters.sorted { lhs, rhs in
+            if lhs.createdAt != rhs.createdAt { return lhs.createdAt > rhs.createdAt }
+            if lhs.count != rhs.count { return lhs.count > rhs.count }
+            if lhs.averageSimilarity != rhs.averageSimilarity {
+                return lhs.averageSimilarity > rhs.averageSimilarity
+            }
+            return lhs.id.uuidString < rhs.id.uuidString
+        }
+    }
+
+    func migratedReviewStates(
+        previousSnapshots: [PhotoClusterSnapshot],
+        previousReviewStates: [UUID: ClusterReviewState],
+        newClusters: [PhotoCluster]
+    ) -> ClusterReviewResurfacingResult {
+        guard !previousSnapshots.isEmpty else {
+            return ClusterReviewResurfacingResult(
+                migratedReviewStates: [:],
+                resurfacingStates: Dictionary(
+                    uniqueKeysWithValues: newClusters.map { ($0.id, .unchanged) }
+                )
+            )
+        }
+        return ClusterReviewStateResurfacer.resurface(
+            previousSnapshots: previousSnapshots,
+            newClusters: newClusters,
+            existingReviewStates: previousReviewStates
+        )
+    }
+
+    func scanAggregates(
+        clusters: [PhotoCluster],
+        categories: [CleanupCategorySummary]
+    ) -> (categoryCandidateCount: Int, estimatedSavingsBytes: Int64) {
+        let categoryCandidateCount = categories.reduce(0) { $0 + max($1.assetCount, 0) }
+        let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
+            total += cluster.assets.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
+        }
+        let categorySavings = categories.reduce(into: Int64(0)) {
+            $0 += $1.estimatedSavingsBytes
+        }
+        return (categoryCandidateCount, clusterSavings + categorySavings)
+    }
+
+    func resurfacingStates(
+        for clusters: [PhotoCluster],
+        reviewStates: [UUID: ClusterReviewState]
+    ) -> [UUID: ClusterResurfacingState] {
+        Dictionary(uniqueKeysWithValues: clusters.map { cluster in
+            (cluster.id, reviewStates[cluster.id]?.resurfacingState ?? .unchanged)
+        })
     }
 }

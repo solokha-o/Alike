@@ -86,9 +86,7 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         let scan = Task { @MainActor in try await workspace.scan(sensitivity: .medium) }
         await analysis.waitUntilAnalyzeStarts()
 
-        await analysis.sendProgress(0.3)
-        await waitForProgress(in: workspace, toReach: 0.3)
-        await analysis.sendProgress(0.8)
+        await analysis.sendProgress(1)
         await waitForProgress(in: workspace, toReach: 0.8)
         await analysis.sendProgress(0.4)
         await Task.yield()
@@ -299,7 +297,13 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
 
     func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
 
-    func refreshCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
+    func refreshCleanupCategories(
+        progress: @Sendable @escaping (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
+        progress(0)
+        progress(1)
+        return []
+    }
 
     func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
 

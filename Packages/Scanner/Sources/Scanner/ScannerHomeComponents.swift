@@ -74,11 +74,16 @@ struct ScannerHomeHero: View {
             ProgressView(value: progress)
                 .tint(Color.accent)
 
-            Text(progress.formatted(.percent.precision(.fractionLength(0))))
+            Text(progress, format: .percent.precision(.fractionLength(0)))
                 .font(.appSubheadline)
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
+                .contentTransition(.numericText(value: progress))
         }
+        .animation(
+            reduceMotion ? nil : .linear(duration: 0.12),
+            value: progress
+        )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(appLocalized("Scanning progress")))
         .accessibilityValue(Text(progress.formatted(.percent.precision(.fractionLength(0)))))

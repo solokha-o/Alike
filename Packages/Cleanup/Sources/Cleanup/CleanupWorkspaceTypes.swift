@@ -1,6 +1,69 @@
 import Core
 import Foundation
 
+enum ScanProgressStages {
+    static func analysis(_ progress: Double) -> Double { progress * 0.8 }
+    static func categories(_ progress: Double) -> Double { 0.8 + (progress * 0.15) }
+    static let persistenceStart = 0.95
+    static let completed = 1.0
+}
+
+/// Coalesces bursty background progress before hopping to the main actor.
+actor ScanProgressRelay {
+    private let deliver: @MainActor @Sendable (Double) -> Void
+    private var latestProgress = 0.0
+    private var lastDeliveredProgress = 0.0
+    private var deliveryTask: Task<Void, Never>?
+
+    init(deliver: @escaping @MainActor @Sendable (Double) -> Void) {
+        self.deliver = deliver
+    }
+
+    func submit(_ progress: Double, force: Bool = false) async {
+        let next = max(latestProgress, min(max(progress, 0), 1))
+        latestProgress = next
+
+        if force || isBoundary(next) {
+            deliveryTask?.cancel()
+            deliveryTask = nil
+            await flushPending(force: true)
+        } else if deliveryTask == nil {
+            deliveryTask = Task { [weak self] in
+                try? await Task.sleep(for: .milliseconds(100))
+                guard !Task.isCancelled else { return }
+                await self?.flushScheduledDelivery()
+            }
+        }
+    }
+
+    func flushPending() async {
+        await flushPending(force: false)
+    }
+
+    private func flushScheduledDelivery() async {
+        deliveryTask = nil
+        await flushPending(force: false)
+    }
+
+    private func flushPending(force: Bool) async {
+        guard latestProgress > lastDeliveredProgress,
+              force || latestProgress - lastDeliveredProgress >= 0.005 else {
+            return
+        }
+        lastDeliveredProgress = latestProgress
+        await deliver(latestProgress)
+    }
+
+    func cancel() {
+        deliveryTask?.cancel()
+        deliveryTask = nil
+    }
+
+    private func isBoundary(_ progress: Double) -> Bool {
+        progress == 0.8 || progress == 0.95 || progress == 1
+    }
+}
+
 /// Immutable Cleanup data published by ``CleanupWorkspaceModel``.
 ///
 /// A workspace always preserves the last successfully loaded content while a

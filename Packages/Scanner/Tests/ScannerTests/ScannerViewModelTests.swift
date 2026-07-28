@@ -165,6 +165,47 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(recordCallCount, 1)
     }
 
+    func testSuspendedScanPublishesProgressWithoutChangingScanningAliVisualPhase() async {
+        let analysis = SuspendedPhotoAnalysisService()
+        let viewModel = makeViewModel(workspace: makeWorkspace(analysis: analysis))
+
+        let scan = Task { await viewModel.startScanning() }
+        await analysis.waitUntilAnalyzeCallCount(1)
+
+        guard let progress = await waitForPublishedProgress(in: viewModel) else {
+            return XCTFail("Expected progress while analysis remains suspended")
+        }
+        XCTAssertLessThan(progress, 1)
+
+        let published = ScannerHomePresentation.resolve(
+            state: viewModel.state,
+            hasLibraryChanged: false,
+            hasCompletedScanBaseline: false
+        )
+        let subsequent = ScannerHomePresentation.resolve(
+            state: .scanning(progress: min(progress + 0.1, 0.99)),
+            hasLibraryChanged: false,
+            hasCompletedScanBaseline: false
+        )
+
+        XCTAssertEqual(published.visualPhase, .scanning)
+        XCTAssertEqual(published.visualPhase, subsequent.visualPhase)
+        XCTAssertEqual(published.cue.id, subsequent.cue.id)
+
+        await analysis.resumeNext(returning: [])
+        _ = await scan.value
+    }
+
+    private func waitForPublishedProgress(in viewModel: ScannerViewModel) async -> Double? {
+        for _ in 0..<100 {
+            if case .scanning(let progress) = viewModel.state, progress > 0 {
+                return progress
+            }
+            try? await Task.sleep(for: .milliseconds(20))
+        }
+        return nil
+    }
+
     func testJoiningReconciliationScanDoesNotConsumeUserScanAllowance() async {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
@@ -390,7 +431,13 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
     }
 
     func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
-    func refreshCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
+    func refreshCleanupCategories(
+        progress: @Sendable @escaping (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
+        progress(0)
+        progress(1)
+        return []
+    }
     func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 0 }
 
