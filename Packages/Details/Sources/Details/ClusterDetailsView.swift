@@ -77,6 +77,7 @@ public struct ClusterDetailsView: View {
                             bestShotLabel: viewModel.bestShotLabel,
                             selectedCount: viewModel.selectedCount,
                             estimatedSavingsText: viewModel.estimatedSavingsText,
+                            maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
                             reviewStatus: viewModel.reviewStatus,
                             aliReactionCue: viewModel.currentALIReaction,
                             bestShotCelebrationCue: viewModel.bestShotCelebrationCue,

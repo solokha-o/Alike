@@ -21,6 +21,7 @@ struct ClusterReviewSummaryCard: View {
     let bestShotLabel: String
     let selectedCount: Int
     let estimatedSavingsText: String
+    let maximumEstimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
     let aliReactionCue: ALIReactionCue?
     let bestShotCelebrationCue: ALIReviewReactionCue?
@@ -78,10 +79,7 @@ struct ClusterReviewSummaryCard: View {
             .font(.appCallout.weight(.semibold))
             .accessibilityLabel(Text("\(appLocalized("Best Shot")): \(bestShotLabel)"))
 
-            Text(selectionSummary)
-                .font(.appCaption)
-                .foregroundStyle(selectedCount > 0 ? Color.accent : Color.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            selectionSummaryLabel
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(minHeight: Self.summaryContentMinimumHeight, alignment: .leading)
@@ -103,6 +101,40 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var selectionSummary: String {
+        selectionSummary(
+            selectedCount: selectedCount,
+            estimatedSavingsText: estimatedSavingsText
+        )
+    }
+
+    private var selectionSummaryLabel: some View {
+        ZStack(alignment: .topLeading) {
+            ForEach(Self.reservedSelectionCounts(assetCount: assetCount), id: \.self) { count in
+                selectionSummaryText(
+                    selectionSummary(
+                        selectedCount: count,
+                        estimatedSavingsText: maximumEstimatedSavingsText
+                    )
+                )
+                .hidden()
+                .accessibilityHidden(true)
+            }
+
+            selectionSummaryText(selectionSummary)
+                .foregroundStyle(selectedCount > 0 ? Color.accent : Color.secondary)
+        }
+    }
+
+    private func selectionSummaryText(_ text: String) -> some View {
+        Text(text)
+            .font(.appCaption)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func selectionSummary(
+        selectedCount: Int,
+        estimatedSavingsText: String
+    ) -> String {
         guard selectedCount > 0 else {
             return appLocalized("Tap photos to select them for cleanup")
         }
@@ -114,6 +146,13 @@ struct ClusterReviewSummaryCard: View {
             selectedCount,
             estimatedSavingsText
         )
+    }
+
+    static func reservedSelectionCounts(assetCount: Int) -> [Int] {
+        let maximumSelectedCount = max(assetCount - 1, 0)
+        guard maximumSelectedCount > 0 else { return [0] }
+        guard maximumSelectedCount > 1 else { return [0, 1] }
+        return [0, 1, maximumSelectedCount]
     }
 
     private func comparisonArtwork(width: CGFloat) -> some View {
@@ -194,12 +233,30 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var statusLabel: some View {
-        statusContent(title: statusTitle, iconName: statusIconName)
-            .foregroundStyle(statusColor)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(statusTitle))
-            .accessibilityHint(Text(appLocalized("Current cleanup review status")))
+        ZStack(alignment: .leading) {
+            ForEach(Self.reservedReviewStatuses, id: \.rawValue) { status in
+                statusContent(
+                    title: statusTitle(for: status),
+                    iconName: statusIconName(for: status)
+                )
+                .hidden()
+                .accessibilityHidden(true)
+            }
+
+            statusContent(title: statusTitle, iconName: statusIconName)
+        }
+        .foregroundStyle(statusColor)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(statusTitle))
+        .accessibilityHint(Text(appLocalized("Current cleanup review status")))
     }
+
+    static let reservedReviewStatuses: [ClusterReviewStatus] = [
+        .notReviewed,
+        .needsReReview,
+        .inReview,
+        .reviewed
+    ]
 
     private func statusContent(title: String, iconName: String) -> some View {
         HStack(spacing: Spacing.xxSmall) {
@@ -215,7 +272,11 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var statusTitle: String {
-        switch reviewStatus {
+        statusTitle(for: reviewStatus)
+    }
+
+    private func statusTitle(for status: ClusterReviewStatus) -> String {
+        switch status {
         case .notReviewed:
             appLocalized("Not reviewed")
         case .needsReReview:
@@ -228,7 +289,11 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var statusIconName: String {
-        switch reviewStatus {
+        statusIconName(for: reviewStatus)
+    }
+
+    private func statusIconName(for status: ClusterReviewStatus) -> String {
+        switch status {
         case .notReviewed:
             "circle"
         case .needsReReview:

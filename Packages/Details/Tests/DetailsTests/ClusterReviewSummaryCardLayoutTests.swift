@@ -3,10 +3,26 @@ import XCTest
 
 final class ClusterReviewSummaryCardLayoutTests: XCTestCase {
     @MainActor
-    func testSummaryUsesMinimumHeight() {
+    func testReservedSelectionCountsCoverEverySummaryVariant() {
         XCTAssertEqual(
-            ClusterReviewSummaryCard.summaryContentMinimumHeight,
-            88
+            ClusterReviewSummaryCard.reservedSelectionCounts(assetCount: 1),
+            [0]
+        )
+        XCTAssertEqual(
+            ClusterReviewSummaryCard.reservedSelectionCounts(assetCount: 2),
+            [0, 1]
+        )
+        XCTAssertEqual(
+            ClusterReviewSummaryCard.reservedSelectionCounts(assetCount: 8),
+            [0, 1, 7]
+        )
+    }
+
+    @MainActor
+    func testReservedReviewStatusesCoverEveryStatusLayout() {
+        XCTAssertEqual(
+            ClusterReviewSummaryCard.reservedReviewStatuses.map(\.rawValue),
+            ["notReviewed", "needsReReview", "inReview", "reviewed"]
         )
     }
 }

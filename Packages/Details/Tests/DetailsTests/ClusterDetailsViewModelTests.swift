@@ -233,6 +233,10 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         viewModel.toggleSelection(for: "one")
 
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
+        XCTAssertEqual(
+            viewModel.maximumEstimatedSavingsText,
+            ByteCountFormatter.string(fromByteCount: 150, countStyle: .file)
+        )
         XCTAssertEqual(viewModel.reviewStatus, .inReview)
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
     }

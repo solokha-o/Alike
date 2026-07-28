@@ -2,6 +2,7 @@ import SwiftUI
 import DesignSystem
 
 struct ClusterReviewActionBar: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let selectedCount: Int
@@ -24,7 +25,7 @@ struct ClusterReviewActionBar: View {
             }
         }
         .controlSize(.large)
-        .animation(.appInteractiveFast, value: isDeleteActionVisible)
+        .animation(actionVisibilityAnimation, value: isDeleteActionVisible)
         .accessibilityElement(children: .contain)
     }
 
@@ -41,9 +42,25 @@ struct ClusterReviewActionBar: View {
     }
 
     private func horizontalControls(usesGlass: Bool) -> some View {
-        HStack(spacing: Spacing.small) {
-            selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
-            deleteButton(usesGlass: usesGlass, allowsWrapping: false)
+        ZStack {
+            if let onDeleteSelected {
+                HStack(spacing: Spacing.small) {
+                    selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
+                    deleteActionButton(
+                        usesGlass: usesGlass,
+                        allowsWrapping: false,
+                        action: onDeleteSelected
+                    )
+                }
+                .hidden()
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+            }
+
+            HStack(spacing: Spacing.small) {
+                selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
+                deleteButton(usesGlass: usesGlass, allowsWrapping: false)
+            }
         }
     }
 
@@ -86,27 +103,54 @@ struct ClusterReviewActionBar: View {
     @ViewBuilder
     private func deleteButton(usesGlass: Bool, allowsWrapping: Bool) -> some View {
         if isDeleteActionVisible, let onDeleteSelected {
-            Button(role: .destructive, action: onDeleteSelected) {
-                HStack(spacing: Spacing.small) {
-                    if isDeleting {
-                        ProgressView()
-                    } else {
-                        Image(systemName: "trash")
-                    }
-
-                    Text(deleteActionTitle)
-                        .font(.appHeadline)
-                        .lineLimit(allowsWrapping ? 2 : 1)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
-            .disabled(isDeleting)
-            .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
-            .transition(.scale(scale: 0.9).combined(with: .opacity))
+            deleteActionButton(
+                usesGlass: usesGlass,
+                allowsWrapping: allowsWrapping,
+                action: onDeleteSelected
+            )
+            .transition(actionVisibilityTransition)
         }
+    }
+
+    private func deleteActionButton(
+        usesGlass: Bool,
+        allowsWrapping: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(role: .destructive, action: action) {
+            HStack(spacing: Spacing.small) {
+                if isDeleting {
+                    ProgressView()
+                } else {
+                    Image(systemName: "trash")
+                }
+
+                Text(deleteActionTitle)
+                    .font(.appHeadline)
+                    .lineLimit(allowsWrapping ? 2 : 1)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
+        .disabled(isDeleting)
+        .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
+    }
+
+    private var actionVisibilityAnimation: Animation {
+        reduceMotion ? .easeInOut(duration: 0.12) : .appInteractiveFast
+    }
+
+    private var actionVisibilityTransition: AnyTransition {
+        guard !reduceMotion else { return .opacity }
+        return .asymmetric(
+            insertion: .move(edge: .bottom)
+                .combined(with: .scale(scale: 0.9, anchor: .bottom))
+                .combined(with: .opacity),
+            removal: .scale(scale: 0.96, anchor: .bottom)
+                .combined(with: .opacity)
+        )
     }
 
     private var deleteActionTitle: String {

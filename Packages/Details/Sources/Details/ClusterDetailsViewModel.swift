@@ -86,6 +86,15 @@ final class ClusterDetailsViewModel {
         ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
     }
 
+    var maximumEstimatedSavingsText: String {
+        let maximumEstimatedSavingsBytes = assetSnapshots
+            .filter { $0.localIdentifier != bestShotAssetID }
+            .reduce(into: Int64(0)) { partialResult, snapshot in
+                partialResult += snapshot.estimatedCleanupBytes
+            }
+        return ByteCountFormatter.string(fromByteCount: maximumEstimatedSavingsBytes, countStyle: .file)
+    }
+
     var bestShotLabel: String {
         assetSnapshots.first(where: { $0.localIdentifier == bestShotAssetID })?.title ?? appLocalized("Best Shot")
     }
