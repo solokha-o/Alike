@@ -11,7 +11,6 @@
 		531BB6342F29294A00DAB1E2 /* Details in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6332F29294A00DAB1E2 /* Details */; };
 		531BB6372F29299500DAB1E2 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6362F29299500DAB1E2 /* Settings */; };
 		531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6392F2929E900DAB1E2 /* Scanner */; };
-		7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00072F30000100DAB1E2 /* Cleanup */; };
 		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
 		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
 		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
@@ -19,6 +18,7 @@
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
 		7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00022F30000100DAB1E2 /* Purchases */; };
 		7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00052F30000100DAB1E2 /* PurchasesUI */; };
+		7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00072F30000100DAB1E2 /* Cleanup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -413,10 +413,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Scanner;
 		};
-		7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Packages/Cleanup;
-		};
 		531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Welcome;
@@ -445,6 +441,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Purchases;
 		};
+		7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Cleanup;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -463,10 +463,6 @@
 		531BB6392F2929E900DAB1E2 /* Scanner */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Scanner;
-		};
-		7A1B00072F30000100DAB1E2 /* Cleanup */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Cleanup;
 		};
 		531BB63C2F292A3B00DAB1E2 /* Welcome */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -495,6 +491,10 @@
 		7A1B00052F30000100DAB1E2 /* PurchasesUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PurchasesUI;
+		};
+		7A1B00072F30000100DAB1E2 /* Cleanup */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Cleanup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

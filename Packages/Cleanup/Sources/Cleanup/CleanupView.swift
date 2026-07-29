@@ -1037,6 +1037,8 @@ private struct CleanupClusterCard: View {
 }
 
 private struct CleanupStatusBanner: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let icon: String
     let title: String
     let message: String
@@ -1047,40 +1049,118 @@ private struct CleanupStatusBanner: View {
     var dismiss: (() -> Void)? = nil
 
     var body: some View {
-        HStack(alignment: .top, spacing: Spacing.small) {
-            if showsProgress {
-                ProgressView(value: progress)
-                    .frame(width: 22)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                stackedLayout
             } else {
-                Image(systemName: icon)
-                    .foregroundStyle(Color.accent)
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.appHeadline)
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            if let actionTitle, let action {
-                Button(actionTitle, action: action)
-                    .cleanupGlassButton()
-            }
-            if let dismiss {
-                Button(action: dismiss) {
-                    Image(systemName: "xmark")
+                ViewThatFits(in: .horizontal) {
+                    horizontalLayout
+                    stackedLayout
                 }
-                .cleanupGlassButton()
-                .foregroundStyle(.secondary)
-                .accessibilityLabel(Text(appLocalized("Dismiss cleanup status")))
-                .accessibilityHint(Text(appLocalized("Hide this status message")))
             }
         }
         .padding(Spacing.medium)
         .cleanupGlassSurface()
     }
+
+    private var horizontalLayout: some View {
+        HStack(alignment: .top, spacing: Spacing.small) {
+            indicator
+            statusText(allowsWrapping: false)
+            Spacer(minLength: Spacing.small)
+            compactAction
+            dismissButton
+        }
+    }
+
+    private var stackedLayout: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            HStack(alignment: .top, spacing: Spacing.small) {
+                indicator
+                statusText(allowsWrapping: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                dismissButton
+            }
+
+            expandedAction
+        }
+    }
+
+    @ViewBuilder
+    private var indicator: some View {
+        if showsProgress {
+            ProgressView(value: progress)
+                .frame(width: 22)
+        } else {
+            Image(systemName: icon)
+                .foregroundStyle(Color.accent)
+        }
+    }
+
+    private func statusText(allowsWrapping: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.appHeadline)
+            Text(message)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .fixedSize(horizontal: !allowsWrapping, vertical: true)
+    }
+
+    @ViewBuilder
+    private var compactAction: some View {
+        if let actionTitle, let action {
+            Button(actionTitle, action: action)
+                .fixedSize(horizontal: true, vertical: false)
+                .cleanupGlassButton()
+        }
+    }
+
+    @ViewBuilder
+    private var expandedAction: some View {
+        if let actionTitle, let action {
+            Button(action: action) {
+                Text(actionTitle)
+                    .frame(maxWidth: .infinity)
+            }
+            .cleanupGlassButton()
+        }
+    }
+
+    @ViewBuilder
+    private var dismissButton: some View {
+        if let dismiss {
+            Button(action: dismiss) {
+                Image(systemName: "xmark")
+            }
+            .cleanupGlassButton()
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text(appLocalized("Dismiss cleanup status")))
+            .accessibilityHint(Text(appLocalized("Hide this status message")))
+        }
+    }
+}
+
+#Preview("Library Changed") {
+    CleanupStatusBanner(
+        icon: "photo.badge.arrow.down",
+        title: appLocalized("Your library changed"),
+        message: appLocalized("Run a new scan to refresh cleanup suggestions."),
+        actionTitle: appLocalized("Rescan"),
+        action: {}
+    )
+    .padding()
+}
+
+#Preview("Refresh Failure") {
+    CleanupStatusBanner(
+        icon: "exclamationmark.triangle.fill",
+        title: appLocalized("Refresh Required"),
+        message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."),
+        actionTitle: appLocalized("Rescan"),
+        action: {},
+        dismiss: {}
+    )
+    .padding()
 }
