@@ -184,7 +184,14 @@ public final class CleanupWorkspaceModel {
     /// the photo library.
     public func reloadReviewState() async {
         let expectedGeneration = scanMutationGeneration
-        let reviewData = await makeReviewData(for: lastGoodContent.clusters)
+        let reviewStates = await loadReviewStates()
+        guard canCommitCachedLoad(expectedGeneration) else { return }
+        guard reviewStates != lastGoodContent.reviewStates else { return }
+
+        let reviewData = await makeReviewData(
+            for: lastGoodContent.clusters,
+            reviewStates: reviewStates
+        )
         guard canCommitCachedLoad(expectedGeneration) else { return }
 
         let content = replacing(
@@ -434,13 +441,26 @@ private extension CleanupWorkspaceModel {
         resurfacingStates: [UUID: ClusterResurfacingState],
         session: CleanupSession?
     ) {
-        let states: [UUID: ClusterReviewState]
-        do {
-            states = try await reviewRepository.loadAllReviewStates()
-        } catch {
-            states = [:]
-        }
+        let states = await loadReviewStates()
+        return await makeReviewData(for: clusters, reviewStates: states)
+    }
 
+    func loadReviewStates() async -> [UUID: ClusterReviewState] {
+        do {
+            return try await reviewRepository.loadAllReviewStates()
+        } catch {
+            return [:]
+        }
+    }
+
+    func makeReviewData(
+        for clusters: [PhotoCluster],
+        reviewStates states: [UUID: ClusterReviewState]
+    ) async -> (
+        states: [UUID: ClusterReviewState],
+        resurfacingStates: [UUID: ClusterResurfacingState],
+        session: CleanupSession?
+    ) {
         let resurfacingStates = await postProcessor.resurfacingStates(
             for: clusters,
             reviewStates: states

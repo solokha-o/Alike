@@ -136,7 +136,6 @@ public struct CleanupView: View {
     @State private var presentedPaywall: PremiumFeature?
     @State private var categoryError: String?
     @State private var dismissedReconciliationID: UUID?
-    @State private var cleanupScrollPosition: UUID?
 
     public init(
         workspace: CleanupWorkspaceModel,
@@ -239,7 +238,6 @@ public struct CleanupView: View {
                 cleanupStack(router: router)
             }
         }
-        .scrollPosition(id: $cleanupScrollPosition)
         .overlay(alignment: .top) {
             reconciliationOverlay
                 .animation(
@@ -883,10 +881,8 @@ private struct CleanupClusterSection: View {
                     ) {
                         onOpen(cluster)
                     }
-                    .id(cluster.id)
                 }
             }
-            .scrollTargetLayout()
         }
     }
 }

@@ -1,5 +1,6 @@
 import Cleanup
 import Core
+import Observation
 import XCTest
 
 @MainActor
@@ -61,16 +62,76 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(workspace.scanOperation, .idle)
         XCTAssertEqual(workspace.contentState, .content(workspace.content!))
     }
+
+    func testUnchangedReviewReloadDoesNotPublishWorkspaceContent() async {
+        let cluster = PhotoCluster(id: UUID(), assets: [])
+        let repository = MockPhotoClusterRepository()
+        await repository.setLoadClustersResult(.success([cluster]))
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        let reviewRepository = MockClusterReviewStateRepository()
+        let workspace = makeWorkspace(
+            repository: repository,
+            reviewRepository: reviewRepository
+        )
+        await workspace.loadCachedContent()
+        let observation = ObservationChangeFlag()
+
+        withObservationTracking {
+            _ = workspace.contentState
+        } onChange: {
+            observation.recordChange()
+        }
+
+        await workspace.reloadReviewState()
+
+        XCTAssertFalse(observation.hasChanged)
+    }
+
+    func testChangedReviewReloadPublishesWorkspaceContent() async {
+        let cluster = PhotoCluster(id: UUID(), assets: [])
+        let repository = MockPhotoClusterRepository()
+        await repository.setLoadClustersResult(.success([cluster]))
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        let reviewRepository = MockClusterReviewStateRepository()
+        let workspace = makeWorkspace(
+            repository: repository,
+            reviewRepository: reviewRepository
+        )
+        await workspace.loadCachedContent()
+        let updatedState = ClusterReviewState(
+            clusterID: cluster.id,
+            bestShotLocalIdentifier: "best-shot",
+            selectedLocalIdentifiers: ["selected-photo"],
+            status: .inReview,
+            estimatedSavingsBytes: 128
+        )
+        await reviewRepository.setStoredStates([cluster.id: updatedState])
+        let observation = ObservationChangeFlag()
+
+        withObservationTracking {
+            _ = workspace.contentState
+        } onChange: {
+            observation.recordChange()
+        }
+
+        await workspace.reloadReviewState()
+
+        XCTAssertTrue(observation.hasChanged)
+        XCTAssertEqual(workspace.reviewStates[cluster.id], updatedState)
+        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
+    }
 }
 
 private extension CleanupWorkspaceModelTests {
     func makeWorkspace(
-        analysisService: any PhotoAnalysisService = MockPhotoAnalysisService()
+        analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
+        repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
+        reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository()
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
             analysisService: analysisService,
-            repository: MockPhotoClusterRepository(),
-            reviewRepository: MockClusterReviewStateRepository(),
+            repository: repository,
+            reviewRepository: reviewRepository,
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository()
@@ -94,4 +155,21 @@ private actor FailingReviewStateRepository: ClusterReviewStateRepository {
 
 private struct ReviewPersistenceError: LocalizedError {
     var errorDescription: String? { "Review persistence failed" }
+}
+
+private final class ObservationChangeFlag: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storage = false
+
+    var hasChanged: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return storage
+    }
+
+    func recordChange() {
+        lock.lock()
+        storage = true
+        lock.unlock()
+    }
 }

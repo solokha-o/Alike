@@ -12,6 +12,15 @@ extension PHAsset {
             throw PhotoImageRequestError.invalidTargetSize
         }
 
+        let cacheKey = PhotoImageCacheKey(
+            assetIdentifier: localIdentifier,
+            modificationDate: modificationDate,
+            targetSize: targetSize
+        )
+        if let cachedImage = PhotoImageCache.shared.image(for: cacheKey) {
+            return cachedImage
+        }
+
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
@@ -20,7 +29,7 @@ extension PHAsset {
         let manager = PHImageManager.default()
         let request = PhotoKitRequestCoordinator<UIImage?>(manager: manager)
 
-        return try await withTaskCancellationHandler {
+        let image = try await withTaskCancellationHandler {
             try Task.checkCancellation()
 
             return try await withCheckedThrowingContinuation { continuation in
@@ -50,6 +59,11 @@ extension PHAsset {
         } onCancel: {
             request.cancel()
         }
+
+        if let image {
+            PhotoImageCache.shared.insert(image, for: cacheKey)
+        }
+        return image
     }
 }
 #endif

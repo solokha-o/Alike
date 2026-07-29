@@ -13,6 +13,39 @@ struct PhotoImageLoadingTests {
         #expect(!PhotoImageRequestSizePolicy.isValid(CGSize(width: 300, height: CGFloat.nan)))
     }
 
+    @Test("Cache keys distinguish asset versions and requested sizes")
+    func cacheKeyIdentity() {
+        let modificationDate = Date(timeIntervalSinceReferenceDate: 100)
+        let key = PhotoImageCacheKey(
+            assetIdentifier: "asset-1",
+            modificationDate: modificationDate,
+            targetSize: CGSize(width: 300, height: 300)
+        )
+
+        #expect(key == PhotoImageCacheKey(
+            assetIdentifier: "asset-1",
+            modificationDate: modificationDate,
+            targetSize: CGSize(width: 300, height: 300)
+        ))
+        #expect(key != PhotoImageCacheKey(
+            assetIdentifier: "asset-1",
+            modificationDate: modificationDate,
+            targetSize: CGSize(width: 1_000, height: 1_000)
+        ))
+        #expect(key != PhotoImageCacheKey(
+            assetIdentifier: "asset-1",
+            modificationDate: modificationDate.addingTimeInterval(1),
+            targetSize: CGSize(width: 300, height: 300)
+        ))
+    }
+
+    @Test("Cache cost uses decoded byte size and clamps overflow")
+    func cacheCost() {
+        #expect(PhotoImageCacheCostPolicy.byteCost(bytesPerRow: 1_200, height: 300) == 360_000)
+        #expect(PhotoImageCacheCostPolicy.byteCost(bytesPerRow: 0, height: 300) == 0)
+        #expect(PhotoImageCacheCostPolicy.byteCost(bytesPerRow: Int.max, height: 2) == Int.max)
+    }
+
     @Test("A stale completion cannot replace a newer load")
     func staleCompletionIsIgnored() {
         var state = PhotoImageLoadState()
