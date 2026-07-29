@@ -113,6 +113,10 @@ extension View {
 /// Scanner owns starting scans and entitlement admission; Cleanup only presents
 /// the durable workspace and routes the user to an explicit rescan action.
 public struct CleanupView: View {
+    private enum Constants {
+        static let reconciliationDismissalDelay = Duration.milliseconds(500)
+    }
+
     private let workspace: CleanupWorkspaceModel
     @Binding private var sensitivity: SensitivityLevel
     private let premiumAccess: any PremiumAccessControlling
@@ -531,8 +535,13 @@ public struct CleanupView: View {
     }
 
     private func reconcile(_ record: CleanupCompletionRecord) {
-        Task { await workspace.reconcile(after: record, sensitivity: sensitivity) }
+        let selectedSensitivity = sensitivity
+        Task {
+            try? await Task.sleep(for: Constants.reconciliationDismissalDelay)
+            await workspace.reconcile(after: record, sensitivity: selectedSensitivity)
+        }
     }
+
     private func paywallContext(for feature: PremiumFeature) -> PremiumSurfaceContext {
         if let kind = feature.categoryKind,
            let category = workspace.cleanupCategories.first(where: { $0.kind == kind }) {

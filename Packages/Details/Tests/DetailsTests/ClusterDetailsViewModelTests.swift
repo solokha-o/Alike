@@ -400,6 +400,39 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isDeleting)
     }
 
+    func testConfirmDeleteWaitsForCompletionDelayBeforePublishing() async throws {
+        let completionRecord = CleanupCompletionRecord(
+            sourceClusterID: clusterID,
+            deletedCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        let completionDelay = SuspendedClusterCleanupCompletionDelay()
+        await cleanupService.setDeleteAssetsResult(.success(completionRecord))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+            ],
+            completionDelay: { await completionDelay.wait() }
+        )
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+
+        let deleteTask = Task { await viewModel.confirmDelete() }
+        await completionDelay.waitUntilStarted()
+
+        let remainingState = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertNil(remainingState)
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertTrue(viewModel.isDeleting)
+
+        await completionDelay.finish()
+        await deleteTask.value
+
+        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
     func testConfirmDeleteFailurePreservesSelectionAndShowsMessage() async {
         await cleanupService.setDeleteAssetsResult(.failure(PhotoCleanupError.deleteFailed))
         let viewModel = makeViewModel(
@@ -588,7 +621,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         snapshots: [ReviewAssetSnapshot],
         reviewRepository: (any ClusterReviewStateRepository)? = nil,
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController()
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
@@ -596,7 +630,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            assetSnapshots: snapshots
+            assetSnapshots: snapshots,
+            completionDelay: completionDelay
         )
     }
 
@@ -615,6 +650,29 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             creationDate: createdAt,
             modificationDate: modifiedAt
         )
+    }
+}
+
+private actor SuspendedClusterCleanupCompletionDelay {
+    private var continuation: CheckedContinuation<Void, Never>?
+    private var didStart = false
+
+    func wait() async {
+        didStart = true
+        await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func waitUntilStarted() async {
+        while !didStart {
+            await Task.yield()
+        }
+    }
+
+    func finish() {
+        continuation?.resume()
+        continuation = nil
     }
 }
 

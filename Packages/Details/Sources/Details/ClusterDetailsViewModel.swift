@@ -23,6 +23,7 @@ final class ClusterDetailsViewModel {
     private let cleanupHistoryRepository: CleanupHistoryRepository
     private let premiumAccess: any PremiumAccessControlling
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
+    private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshots: [ReviewAssetSnapshot]
     private var persistenceTask: Task<Void, Never>?
     private var aliReactionResolver = ALIReactionResolver()
@@ -49,7 +50,10 @@ final class ClusterDetailsViewModel {
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        assetSnapshots: [ReviewAssetSnapshot]? = nil
+        assetSnapshots: [ReviewAssetSnapshot]? = nil,
+        completionDelay: @escaping @MainActor @Sendable () async -> Void = {
+            try? await Task.sleep(for: .seconds(2))
+        }
     ) {
         let resolvedSnapshots = assetSnapshots ?? cluster.assets.map(ReviewAssetSnapshot.init)
         self.cluster = cluster
@@ -58,6 +62,7 @@ final class ClusterDetailsViewModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
+        self.completionDelay = completionDelay
         self.assetSnapshots = resolvedSnapshots
         self.bestShotAssetID = Self.bestShotLocalIdentifier(from: resolvedSnapshots) ?? ""
         self.selectedAssetIDs = []
@@ -325,6 +330,7 @@ final class ClusterDetailsViewModel {
                 )
             }
 
+            await completionDelay()
             pendingCompletionRecord = record
         } catch let cleanupError as PhotoCleanupError {
             handleDeleteError(cleanupError)
