@@ -285,75 +285,90 @@ struct SelectablePhotoThumbnail: View {
     let onOpenOriginal: () -> Void
 
     @State private var image: UIImage?
+    @State private var imageLoadState = PhotoImageLoadState()
+    @State private var imageLoadAttempt = 0
     @State private var showingMetadata = false
 
     var body: some View {
-        Button(action: onToggleSelection) {
-            PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
-                ZStack {
-                    Color.secondary.opacity(ColorOpacity.placeholderFill)
+        ZStack {
+            Button(action: onToggleSelection) {
+                PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
+                    ZStack {
+                        Color.secondary.opacity(ColorOpacity.placeholderFill)
 
-                    if let image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } else {
-                        ProgressView()
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .clipShape(thumbnailShape)
-            .overlay {
-                if isSelected {
-                    thumbnailShape
-                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
-                        .transition(.opacity)
-                }
-            }
-            .overlay {
-                thumbnailShape
-                    .stroke(borderColor, lineWidth: borderLineWidth)
-            }
-            .overlay(alignment: .topLeading) {
-                if isBestShot {
-                    Label {
-                        Text(appLocalized("Best Shot"))
-                            .foregroundStyle(.primary)
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
-                            .fixedSize(horizontal: false, vertical: true)
-                    } icon: {
-                        Image(systemName: "star.fill")
-                            .foregroundStyle(Color.heroGold)
-                    }
-                        .font(.caption.bold())
-                        .padding(.horizontal, Spacing.xSmall)
-                        .padding(.vertical, Spacing.xxSmall)
-                        .background(.regularMaterial, in: Capsule())
-                        .overlay {
-                            Capsule()
-                                .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                        if let image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } else if imageLoadState.phase == .loading {
+                            ProgressView()
                         }
-                        .padding(Spacing.xSmall)
-                        .transition(.scale(scale: 0.92).combined(with: .opacity))
+                    }
                 }
-            }
-            .overlay(alignment: .topTrailing) {
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, Color.accent)
-                        .background(.white, in: Circle())
-                        .padding(Spacing.xSmall)
-                        .transition(.scale(scale: 0.7).combined(with: .opacity))
+                .frame(maxWidth: .infinity)
+                .clipShape(thumbnailShape)
+                .overlay {
+                    if isSelected {
+                        thumbnailShape
+                            .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
+                            .transition(.opacity)
+                    }
                 }
+                .overlay {
+                    thumbnailShape
+                        .stroke(borderColor, lineWidth: borderLineWidth)
+                }
+                .overlay(alignment: .topLeading) {
+                    if isBestShot {
+                        Label {
+                            Text(appLocalized("Best Shot"))
+                                .foregroundStyle(.primary)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                        } icon: {
+                            Image(systemName: "star.fill")
+                                .foregroundStyle(Color.heroGold)
+                        }
+                            .font(.caption.bold())
+                            .padding(.horizontal, Spacing.xSmall)
+                            .padding(.vertical, Spacing.xxSmall)
+                            .background(.regularMaterial, in: Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                            }
+                            .padding(Spacing.xSmall)
+                            .transition(.scale(scale: 0.92).combined(with: .opacity))
+                    }
+                }
+                .overlay(alignment: .topTrailing) {
+                    if isSelected {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.title3)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, Color.accent)
+                            .background(.white, in: Circle())
+                            .padding(Spacing.xSmall)
+                            .transition(.scale(scale: 0.7).combined(with: .opacity))
+                    }
+                }
+                .animation(.appInteractiveFast, value: isSelected)
+                .animation(.appInteractiveFast, value: isBestShot)
             }
-            .animation(.appInteractiveFast, value: isSelected)
-            .animation(.appInteractiveFast, value: isBestShot)
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(accessibilityLabel))
+            .accessibilityValue(Text(accessibilityValue))
+            .accessibilityHint(Text(accessibilityHint))
+            .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+
+            if imageLoadState.phase == .failed {
+                PhotoLoadFailureView {
+                    imageLoadAttempt += 1
+                }
+                .background(.regularMaterial, in: thumbnailShape)
+            }
         }
-        .buttonStyle(.plain)
         .contentShape(.interaction, thumbnailShape)
         .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
@@ -383,13 +398,9 @@ struct SelectablePhotoThumbnail: View {
             MetadataView(asset: asset)
                 .presentationDetents([.medium, .large])
         }
-        .task {
-            image = try? await asset.loadImage(targetSize: thumbnailTargetSize)
+        .task(id: imageLoadTaskID) {
+            await loadThumbnail()
         }
-        .accessibilityLabel(Text(accessibilityLabel))
-        .accessibilityValue(Text(accessibilityValue))
-        .accessibilityHint(Text(accessibilityHint))
-        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 
     private var borderColor: Color {
@@ -416,6 +427,28 @@ struct SelectablePhotoThumbnail: View {
             : CGSize(width: 300, height: 300)
     }
 
+    private var imageLoadTaskID: String {
+        "\(asset.localIdentifier)#\(imageLoadAttempt)"
+    }
+
+    @MainActor
+    private func loadThumbnail() async {
+        image = nil
+        let generation = imageLoadState.begin()
+        do {
+            guard let loadedImage = try await asset.loadImage(targetSize: thumbnailTargetSize) else {
+                imageLoadState.resolve(.failed, generation: generation)
+                return
+            }
+            guard imageLoadState.resolve(.loaded, generation: generation) else { return }
+            image = loadedImage
+        } catch is CancellationError {
+            imageLoadState.resolve(.cancelled, generation: generation)
+        } catch {
+            imageLoadState.resolve(.failed, generation: generation)
+        }
+    }
+
     private var contextMenuPreview: some View {
         ZStack {
             Color.secondary.opacity(ColorOpacity.placeholderFill)
@@ -424,8 +457,11 @@ struct SelectablePhotoThumbnail: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-            } else {
+            } else if imageLoadState.phase == .loading {
                 ProgressView()
+            } else {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
             }
         }
         .frame(

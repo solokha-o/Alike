@@ -8,29 +8,146 @@ extension PHAsset {
     /// Load the asset as a UIImage
     @MainActor
     public func loadImage(targetSize: CGSize = CGSize(width: 300, height: 300)) async throws -> UIImage? {
+        guard PhotoImageRequestSizePolicy.isValid(targetSize) else {
+            throw PhotoImageRequestError.invalidTargetSize
+        }
+
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         options.isSynchronous = false
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            PHImageManager.default().requestImage(
-                for: self,
-                targetSize: targetSize,
-                contentMode: .aspectFit,
-                options: options
-            ) { image, info in
-                if let error = info?[PHImageErrorKey] as? Error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: image)
+
+        let manager = PHImageManager.default()
+        let request = PhotoKitRequestCoordinator<UIImage?>(manager: manager)
+
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+
+            return try await withCheckedThrowingContinuation { continuation in
+                guard request.install(continuation) else { return }
+
+                let requestID = manager.requestImage(
+                    for: self,
+                    targetSize: targetSize,
+                    contentMode: .aspectFit,
+                    options: options
+                ) { image, info in
+                    if photoInfoFlag(PHImageCancelledKey, in: info) {
+                        request.finish(with: .failure(CancellationError()))
+                    } else if let error = info?[PHImageErrorKey] as? Error {
+                        request.finish(with: .failure(error))
+                    } else if photoInfoFlag(PHImageResultIsDegradedKey, in: info) {
+                        return
+                    } else if let image {
+                        request.finish(with: .success(image))
+                    } else {
+                        request.finish(with: .failure(PhotoImageRequestError.imageUnavailable))
+                    }
                 }
+
+                request.register(requestID)
             }
+        } onCancel: {
+            request.cancel()
         }
     }
-    
 }
 #endif
+
+private final class PhotoKitRequestCoordinator<Value: Sendable>: @unchecked Sendable {
+    private let manager: PHImageManager
+    private let lock = NSLock()
+    private var continuation: CheckedContinuation<Value, Error>?
+    private var requestID: PHImageRequestID?
+    private var isCancelled = false
+    private var isFinished = false
+
+    init(manager: PHImageManager) {
+        self.manager = manager
+    }
+
+    func install(_ continuation: CheckedContinuation<Value, Error>) -> Bool {
+        lock.lock()
+        if isCancelled {
+            lock.unlock()
+            continuation.resume(throwing: CancellationError())
+            return false
+        }
+        self.continuation = continuation
+        lock.unlock()
+        return true
+    }
+
+    func register(_ requestID: PHImageRequestID) {
+        lock.lock()
+        self.requestID = requestID
+        let shouldCancel = isCancelled
+        lock.unlock()
+
+        if shouldCancel {
+            manager.cancelImageRequest(requestID)
+        }
+    }
+
+    func cancel() {
+        lock.lock()
+        isCancelled = true
+        let requestID = requestID
+        let continuation = isFinished ? nil : continuation
+        self.continuation = nil
+        isFinished = true
+        lock.unlock()
+
+        if let requestID {
+            manager.cancelImageRequest(requestID)
+        }
+        continuation?.resume(throwing: CancellationError())
+    }
+
+    func finish(with result: Result<Value, Error>) {
+        lock.lock()
+        guard !isFinished else {
+            lock.unlock()
+            return
+        }
+        isFinished = true
+        let continuation = continuation
+        self.continuation = nil
+        lock.unlock()
+
+        switch result {
+        case .success(let value):
+            continuation?.resume(returning: value)
+        case .failure(let error):
+            continuation?.resume(throwing: error)
+        }
+    }
+
+}
+
+private func photoInfoFlag(_ key: String, in info: [AnyHashable: Any]?) -> Bool {
+    (info?[key] as? NSNumber)?.boolValue ?? false
+}
+
+public enum PhotoImageRequestError: Error, Equatable, LocalizedError, Sendable {
+    case invalidTargetSize
+    case imageUnavailable
+
+    public var errorDescription: String? {
+        switch self {
+        case .invalidTargetSize:
+            "The requested photo size must have positive, finite dimensions."
+        case .imageUnavailable:
+            "PhotoKit did not return an image."
+        }
+    }
+}
+
+public enum PhotoImageRequestSizePolicy {
+    public static func isValid(_ size: CGSize) -> Bool {
+        size.width.isFinite && size.height.isFinite && size.width > 0 && size.height > 0
+    }
+}
 
 extension PHAsset {
     /// Get full resolution image data for Vision processing.
@@ -42,17 +159,32 @@ extension PHAsset {
         options.isNetworkAccessAllowed = true
         options.isSynchronous = false
 
-        return try await withCheckedThrowingContinuation { continuation in
-            PHImageManager.default().requestImageDataAndOrientation(
-                for: self,
-                options: options
-            ) { data, _, _, info in
-                if let error = info?[PHImageErrorKey] as? Error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: data)
+        let manager = PHImageManager.default()
+        let request = PhotoKitRequestCoordinator<Data?>(manager: manager)
+
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+
+            return try await withCheckedThrowingContinuation { continuation in
+                guard request.install(continuation) else { return }
+
+                let requestID = manager.requestImageDataAndOrientation(
+                    for: self,
+                    options: options
+                ) { data, _, _, info in
+                    if photoInfoFlag(PHImageCancelledKey, in: info) {
+                        request.finish(with: .failure(CancellationError()))
+                    } else if let error = info?[PHImageErrorKey] as? Error {
+                        request.finish(with: .failure(error))
+                    } else {
+                        request.finish(with: .success(data))
+                    }
                 }
+
+                request.register(requestID)
             }
+        } onCancel: {
+            request.cancel()
         }
     }
 

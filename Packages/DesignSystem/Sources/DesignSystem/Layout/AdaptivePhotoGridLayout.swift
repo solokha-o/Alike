@@ -26,17 +26,13 @@ public struct PhotoThumbnailAspectRatioLayout: Layout {
         subviews: Subviews,
         cache: inout ()
     ) -> CGSize {
-        guard aspectRatio > 0 else { return .zero }
-
-        if let width = proposal.width, width.isFinite {
-            return CGSize(width: width, height: width / aspectRatio)
-        }
-        if let height = proposal.height, height.isFinite {
-            return CGSize(width: height * aspectRatio, height: height)
-        }
-
         let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
-        return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
+        return PhotoThumbnailAspectRatioSizePolicy.size(
+            proposedWidth: proposal.width,
+            proposedHeight: proposal.height,
+            fallback: fallback,
+            aspectRatio: aspectRatio
+        )
     }
 
     public func placeSubviews(
@@ -45,6 +41,8 @@ public struct PhotoThumbnailAspectRatioLayout: Layout {
         subviews: Subviews,
         cache: inout ()
     ) {
+        guard PhotoThumbnailAspectRatioSizePolicy.isRenderable(bounds.size) else { return }
+
         for subview in subviews {
             subview.place(
                 at: bounds.origin,
@@ -52,5 +50,31 @@ public struct PhotoThumbnailAspectRatioLayout: Layout {
                 proposal: ProposedViewSize(bounds.size)
             )
         }
+    }
+}
+
+public enum PhotoThumbnailAspectRatioSizePolicy {
+    public static func size(
+        proposedWidth: CGFloat?,
+        proposedHeight: CGFloat?,
+        fallback: CGSize,
+        aspectRatio: CGFloat
+    ) -> CGSize {
+        guard aspectRatio.isFinite, aspectRatio > 0 else { return .zero }
+
+        if let proposedWidth, proposedWidth.isFinite, proposedWidth > 0 {
+            return CGSize(width: proposedWidth, height: proposedWidth / aspectRatio)
+        }
+        if let proposedHeight, proposedHeight.isFinite, proposedHeight > 0 {
+            return CGSize(width: proposedHeight * aspectRatio, height: proposedHeight)
+        }
+        if fallback.width.isFinite, fallback.width > 0 {
+            return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
+        }
+        return .zero
+    }
+
+    public static func isRenderable(_ size: CGSize) -> Bool {
+        size.width.isFinite && size.height.isFinite && size.width > 0 && size.height > 0
     }
 }
