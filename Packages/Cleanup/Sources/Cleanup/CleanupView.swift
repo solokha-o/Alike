@@ -901,45 +901,57 @@ private struct CleanupClusterCard: View {
 
 #if os(iOS)
     @State private var image: UIImage?
+    @State private var imageLoadState = PhotoImageLoadState()
+    @State private var imageLoadAttempt = 0
 #endif
 
     var body: some View {
-        Button(action: open) {
-            ZStack(alignment: .bottomTrailing) {
-                thumbnail
-                Text("\(cluster.count)")
-                    .font(.caption.bold())
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                    .frame(width: 28, height: 28)
-                    .cleanupGlassBadge(.circle)
-                    .padding(6)
-            }
-            .overlay(alignment: .topLeading) {
-                Label(statusTitle, systemImage: statusIconName)
-                    .font(.caption2.bold())
-                    .foregroundStyle(statusColor)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(5)
-                    .cleanupGlassBadge()
-                    .padding(5)
-            }
-            .overlay(alignment: .bottomLeading) {
-                if let resurfacing, resurfacing != .unchanged {
-                    Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
-                        .padding(6)
+        ZStack {
+            Button(action: open) {
+                ZStack(alignment: .bottomTrailing) {
+                    thumbnail
+                    Text("\(cluster.count)")
+                        .font(.caption.bold())
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                        .frame(width: 28, height: 28)
                         .cleanupGlassBadge(.circle)
+                        .padding(6)
+                }
+                .overlay(alignment: .topLeading) {
+                    Label(statusTitle, systemImage: statusIconName)
+                        .font(.caption2.bold())
+                        .foregroundStyle(statusColor)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(5)
+                        .cleanupGlassBadge()
                         .padding(5)
                 }
+                .overlay(alignment: .bottomLeading) {
+                    if let resurfacing, resurfacing != .unchanged {
+                        Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
+                            .padding(6)
+                            .cleanupGlassBadge(.circle)
+                            .padding(5)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: CornerRadius.medium))
             }
-            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.medium))
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(clusterAccessibilityLabel))
+            .accessibilityHint(Text(appLocalized("Open this cluster to review photos")))
+#if os(iOS)
+            if imageLoadState.phase == .failed {
+                PhotoLoadFailureView {
+                    imageLoadAttempt += 1
+                }
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.small))
+            }
+#endif
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(clusterAccessibilityLabel))
-        .accessibilityHint(Text(appLocalized("Open this cluster to review photos")))
     }
 
     @ViewBuilder
@@ -958,10 +970,8 @@ private struct CleanupClusterCard: View {
         }
         .frame(maxWidth: .infinity)
         .clipped()
-        .task {
-            if let asset = cluster.thumbnail {
-                image = try? await asset.loadImage(targetSize: CGSize(width: 1_000, height: 1_000))
-            }
+        .task(id: imageLoadTaskID) {
+            await loadThumbnail()
         }
 #else
         PhotoThumbnailAspectRatioLayout(aspectRatio: 1) {
@@ -979,6 +989,34 @@ private struct CleanupClusterCard: View {
                     .foregroundStyle(.secondary)
             }
     }
+
+#if os(iOS)
+    private var imageLoadTaskID: String {
+        "\(cluster.thumbnail?.localIdentifier ?? "missing")#\(imageLoadAttempt)"
+    }
+
+    @MainActor
+    private func loadThumbnail() async {
+        guard let asset = cluster.thumbnail else { return }
+
+        image = nil
+        let generation = imageLoadState.begin()
+        do {
+            guard let loadedImage = try await asset.loadImage(
+                targetSize: CGSize(width: 1_000, height: 1_000)
+            ) else {
+                imageLoadState.resolve(.failed, generation: generation)
+                return
+            }
+            guard imageLoadState.resolve(.loaded, generation: generation) else { return }
+            image = loadedImage
+        } catch is CancellationError {
+            imageLoadState.resolve(.cancelled, generation: generation)
+        } catch {
+            imageLoadState.resolve(.failed, generation: generation)
+        }
+    }
+#endif
 
     private var statusTitle: String {
         switch status {
