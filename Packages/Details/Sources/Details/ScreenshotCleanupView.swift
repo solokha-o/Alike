@@ -10,12 +10,14 @@ import PurchasesUI
 
 public struct ScreenshotCleanupView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private let assets: [PHAsset]
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
     @State private var viewModel: ScreenshotCleanupViewModel
-    @State private var gridColumns = 3
+    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
     @State private var selectedAsset: PresentedScreenshotAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var didCompleteCleanup = false
@@ -158,13 +160,16 @@ private extension ScreenshotCleanupView {
 
     var screenshotGrid: some View {
         LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.small), count: gridColumns),
-            spacing: Spacing.small
+            columns: Array(
+                repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
+                count: selectedGridColumnCount
+            ),
+            spacing: Spacing.xxSmall
         ) {
             ForEach(assets, id: \.localIdentifier) { asset in
                 SelectablePhotoThumbnail(
                     asset: asset,
-                    thumbnailAspectRatio: 16 / 9,
+                    thumbnailAspectRatio: 1,
                     isBestShot: false,
                     isSelected: viewModel.isSelected(asset.localIdentifier),
                     onToggleSelection: {
@@ -187,7 +192,8 @@ private extension ScreenshotCleanupView {
                 category: viewModel.sourceCategory,
                 assetCount: viewModel.assetCount,
                 selectedCount: viewModel.selectedCount,
-                estimatedSavingsText: viewModel.estimatedSavingsText
+                estimatedSavingsText: viewModel.estimatedSavingsText,
+                maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText
             )
 
             ScreenshotCleanupActionBar(
@@ -216,8 +222,8 @@ private extension ScreenshotCleanupView {
 
     var columnsMenu: some View {
         Menu {
-            Picker(selection: $gridColumns) {
-                ForEach(2...4, id: \.self) { count in
+            Picker(selection: selectedGridColumnBinding) {
+                ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
                     Text("\(count)").tag(count)
                 }
             } label: {
@@ -226,6 +232,30 @@ private extension ScreenshotCleanupView {
         } label: {
             Image(systemName: "square.grid.3x2")
         }
+        .accessibilityLabel(Text(appLocalized("Grid Columns")))
+        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
+    }
+
+    var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
+        horizontalSizeClass == .regular ? .regular : .compact
+    }
+
+    var selectedGridColumnCount: Int {
+        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
+    }
+
+    var selectedGridColumnBinding: Binding<Int> {
+        Binding(
+            get: { selectedGridColumnCount },
+            set: { newValue in
+                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
+                if horizontalSizeClass == .regular {
+                    regularGridColumns = newValue
+                } else {
+                    compactGridColumns = newValue
+                }
+            }
+        )
     }
 
     func requestDeleteConfirmation() {

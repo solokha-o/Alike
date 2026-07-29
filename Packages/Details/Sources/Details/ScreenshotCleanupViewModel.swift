@@ -58,6 +58,16 @@ final class ScreenshotCleanupViewModel {
         ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
     }
 
+    var maximumEstimatedSavingsBytes: Int64 {
+        assetSnapshots.reduce(into: Int64(0)) { partialResult, snapshot in
+            partialResult += snapshot.estimatedCleanupBytes
+        }
+    }
+
+    var maximumEstimatedSavingsText: String {
+        ByteCountFormatter.string(fromByteCount: maximumEstimatedSavingsBytes, countStyle: .file)
+    }
+
     var isDeleteActionVisible: Bool {
         selectedCount > 0
     }

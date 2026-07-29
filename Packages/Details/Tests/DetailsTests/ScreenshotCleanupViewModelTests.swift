@@ -26,6 +26,12 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
     }
 
+    func testMaximumEstimatedSavingsIncludesEveryAsset() {
+        let viewModel = makeViewModel()
+
+        XCTAssertEqual(viewModel.maximumEstimatedSavingsBytes, 150)
+    }
+
     func testSelectAllAndClearSelection() {
         let viewModel = makeViewModel()
 
