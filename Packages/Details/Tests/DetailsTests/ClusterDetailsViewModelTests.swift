@@ -66,6 +66,50 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
     }
 
+    func testInitializationDefersAssetSnapshotPreparationUntilLoad() async {
+        let expectedSnapshots = [
+            snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+            snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+        ]
+        let loader = ControlledReviewAssetSnapshotLoader(snapshots: expectedSnapshots)
+        let viewModel = makeViewModel(loader: loader)
+
+        let initialInvocationCount = await loader.invocationCount
+        XCTAssertEqual(initialInvocationCount, 0)
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 0)
+
+        let loadTask = Task { await viewModel.load() }
+        await loader.waitUntilStarted()
+
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 0)
+
+        await loader.finish()
+        await loadTask.value
+
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 2)
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "candidate"])
+    }
+
+    func testCancelledAssetSnapshotPreparationDoesNotPublishPartialState() async {
+        let loader = ControlledReviewAssetSnapshotLoader(
+            snapshots: [snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil)]
+        )
+        let viewModel = makeViewModel(loader: loader)
+        let loadTask = Task { await viewModel.load() }
+        await loader.waitUntilStarted()
+
+        loadTask.cancel()
+        await loadTask.value
+
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 0)
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+    }
+
     func testLoadRestoresPersistedSelection() async throws {
         let state = ClusterReviewState(
             clusterID: clusterID,
@@ -635,6 +679,20 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         )
     }
 
+    private func makeViewModel(
+        loader: ControlledReviewAssetSnapshotLoader
+    ) -> ClusterDetailsViewModel {
+        ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            assetSnapshotLoader: { try await loader.load() },
+            completionDelay: {}
+        )
+    }
+
     private func snapshot(
         id: String,
         isFavorite: Bool,
@@ -650,6 +708,55 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             creationDate: createdAt,
             modificationDate: modifiedAt
         )
+    }
+}
+
+private actor ControlledReviewAssetSnapshotLoader {
+    let snapshots: [ReviewAssetSnapshot]
+    private(set) var invocationCount = 0
+    private var didStart = false
+    private var isFinished = false
+    private var startWaiters: [CheckedContinuation<Void, Never>] = []
+    private var finishContinuation: CheckedContinuation<Void, Never>?
+
+    init(snapshots: [ReviewAssetSnapshot]) {
+        self.snapshots = snapshots
+    }
+
+    func load() async throws -> [ReviewAssetSnapshot] {
+        invocationCount += 1
+        didStart = true
+        startWaiters.forEach { $0.resume() }
+        startWaiters.removeAll()
+
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { continuation in
+                if isFinished {
+                    continuation.resume()
+                } else {
+                    finishContinuation = continuation
+                }
+            }
+        } onCancel: {
+            Task { await self.finish() }
+        }
+
+        try Task.checkCancellation()
+        return snapshots
+    }
+
+    func waitUntilStarted() async {
+        guard !didStart else { return }
+        await withCheckedContinuation { continuation in
+            startWaiters.append(continuation)
+        }
+    }
+
+    func finish() {
+        guard !isFinished else { return }
+        isFinished = true
+        finishContinuation?.resume()
+        finishContinuation = nil
     }
 }
 
