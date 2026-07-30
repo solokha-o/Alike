@@ -97,7 +97,9 @@ public struct ClusterDetailsView: View {
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
-        .toolbar(.hidden, for: .tabBar)
+        // The tab bar stays visible on purpose: hiding it here removed and
+        // re-added the Cleanup scroll view's bottom safe-area inset on every
+        // push/pop, which clamped its content offset and lost the user's place.
         .toolbar {
             if !viewModel.isDeleting {
                 ToolbarItem(placement: .topBarTrailing) {

@@ -136,6 +136,8 @@ public struct CleanupView: View {
     @State private var presentedPaywall: PremiumFeature?
     @State private var categoryError: String?
     @State private var dismissedReconciliationID: UUID?
+    @State private var arrangement = CleanupClusterArrangement()
+    @State private var scrollAnchorID: String?
 
     public init(
         workspace: CleanupWorkspaceModel,
@@ -238,6 +240,7 @@ public struct CleanupView: View {
                 cleanupStack(router: router)
             }
         }
+        .scrollPosition(id: $scrollAnchorID)
         .overlay(alignment: .top) {
             reconciliationOverlay
                 .animation(
@@ -250,12 +253,16 @@ public struct CleanupView: View {
         .navigationBarTitleDisplayMode(.large)
 #endif
         .toolbar { cleanupToolbar }
-        .animation(.appSmooth, value: displayedScanOperation)
+        .onAppear(perform: refreshArrangement)
+        .onChange(of: controls) { _, _ in refreshArrangement() }
+        .onChange(of: workspace.clusters.map(\.id)) { _, _ in refreshArrangement() }
+        .onChange(of: premiumAccess.hasAccess(to: .advancedFilters)) { _, _ in refreshArrangement() }
     }
 
     private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
         VStack(spacing: Spacing.medium) {
             persistentBanners
+                .animation(.appSmooth, value: displayedScanOperation)
             switch workspace.contentState {
             case .notLoaded:
                 ProgressView().padding(.top, Spacing.xxLarge)
@@ -399,12 +406,7 @@ public struct CleanupView: View {
 
     @ViewBuilder
     private func cleanupContent(router: StackRouter<CleanupRoute>) -> some View {
-        let allClusters = sorted(workspace.clusters)
-        let visible = filtered(allClusters)
-        let needsReview = visible.filter { workspace.reviewStatus(for: $0.id) == .needsReReview }
-        let remaining = visible.filter { workspace.reviewStatus(for: $0.id) != .needsReReview }
-
-        if !allClusters.isEmpty {
+        if arrangement.hasAnyCluster {
             let entry = workspace.cleanupEntryCluster()
             CleanupProgressCard(
                 progress: workspace.sessionProgress(),
@@ -415,12 +417,12 @@ public struct CleanupView: View {
         if !workspace.cleanupCategories.isEmpty {
             CleanupCategoriesCard(categories: workspace.cleanupCategories, isLocked: { !premiumAccess.hasAccess(to: $0.premiumFeature) }, onTap: openCategory)
         }
-        if allClusters.isEmpty && workspace.cleanupCategories.isEmpty {
+        if !arrangement.hasAnyCluster && workspace.cleanupCategories.isEmpty {
             ContentUnavailableView {
                 Label(appLocalized("No Cleanup Opportunities"), systemImage: "checkmark.seal")
             } description: { Text(appLocalized("Your latest scan did not find similar photos or smart categories to review.")) }
             .padding(.top, Spacing.xxLarge)
-        } else if visible.isEmpty && !allClusters.isEmpty {
+        } else if arrangement.isEmptyAfterFiltering {
             ContentUnavailableView {
                 Label(appLocalized("No Clusters Match These Controls"), systemImage: "line.3.horizontal.decrease.circle")
             } description: { Text(appLocalized("Try changing filters or resetting controls.")) } actions: {
@@ -428,11 +430,11 @@ public struct CleanupView: View {
                     .cleanupGlassButton()
             }
         } else {
-            if !needsReview.isEmpty {
-                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: needsReview, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
+            if !arrangement.needsReview.isEmpty {
+                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: arrangement.needsReview, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
-            if !remaining.isEmpty {
-                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
+            if !arrangement.remaining.isEmpty {
+                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: arrangement.remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
         }
     }
@@ -555,25 +557,21 @@ public struct CleanupView: View {
         return .feature(feature)
     }
 
-    private func filtered(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
-        guard premiumAccess.hasAccess(to: .advancedFilters) else { return clusters }
-        return clusters.filter { cluster in
-            controls.matches(cluster, reviewStatus: workspace.reviewStatus(for: cluster.id))
-        }
-    }
-
-    private func sorted(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.sorted { lhs, rhs in
-            switch controls.sort {
-            case .newest: lhs.createdAt > rhs.createdAt
-            case .largestCluster: lhs.count > rhs.count
-            case .similarity: lhs.averageSimilarity > rhs.averageSimilarity
-            case .reviewStatus: workspace.reviewStatus(for: lhs.id).rawValue < workspace.reviewStatus(for: rhs.id).rawValue
-            case .largestCleanupOpportunity:
-                (workspace.reviewState(for: lhs.id)?.estimatedSavingsBytes ?? 0)
-                    > (workspace.reviewState(for: rhs.id)?.estimatedSavingsBytes ?? 0)
-            }
-        }
+    /// Re-derives the displayed cluster order and sectioning.
+    ///
+    /// Deliberately not driven by `workspace.reviewStates`: `ClusterDetailsView`
+    /// reports review progress back while it is still pushed, and reordering the
+    /// grid then would leave the restored scroll offset pointing at a different
+    /// row. Cards still show live review badges because they read status from the
+    /// workspace directly.
+    private func refreshArrangement() {
+        arrangement = .make(
+            clusters: workspace.clusters,
+            controls: controls,
+            appliesAdvancedFilters: premiumAccess.hasAccess(to: .advancedFilters),
+            reviewStatus: { workspace.reviewStatus(for: $0) },
+            estimatedSavings: { workspace.reviewState(for: $0)?.estimatedSavingsBytes ?? 0 }
+        )
     }
 }
 
@@ -892,7 +890,7 @@ private struct CleanupCategoriesCard: View {
 private struct CleanupClusterSection: View {
     let title: String
     let subtitle: String
-    let clusters: [PhotoCluster]
+    let clusters: [IdentifiedCluster]
     let gridColumns: Int
     let workspace: CleanupWorkspaceModel
     let onOpen: (PhotoCluster) -> Void
@@ -921,7 +919,8 @@ private struct CleanupClusterSection: View {
                 ),
                 spacing: Spacing.small
             ) {
-                ForEach(clusters) { cluster in
+                ForEach(clusters) { identified in
+                    let cluster = identified.cluster
                     CleanupClusterCard(
                         cluster: cluster,
                         status: workspace.reviewStatus(for: cluster.id),
@@ -929,8 +928,10 @@ private struct CleanupClusterSection: View {
                     ) {
                         onOpen(cluster)
                     }
+                    .id(identified.id)
                 }
             }
+            .scrollTargetLayout()
         }
     }
 }

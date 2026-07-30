@@ -62,16 +62,3 @@ final class CleanupClusterControlsTests: XCTestCase {
         XCTAssertTrue(controls.matches(withFavorite, reviewStatus: .notReviewed))
     }
 }
-
-/// `PhotoCluster` holds `PHAsset` values that cannot be constructed directly, so the
-/// filter tests use a subclass that only reports the properties the predicate reads.
-private final class FakePhotoAsset: PHAsset, @unchecked Sendable {
-    private let favoriteOverride: Bool
-
-    init(isFavorite: Bool = false) {
-        favoriteOverride = isFavorite
-        super.init()
-    }
-
-    override var isFavorite: Bool { favoriteOverride }
-}
