@@ -46,6 +46,10 @@ final class ClusterDetailsViewModel {
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentALIReaction: ALIReactionCue?
     private(set) var bestShotCelebrationCue: ALIReviewReactionCue?
+    /// Increments once every persisted review-state write lands, so hosts can
+    /// refresh their own snapshot of the review state while this screen is
+    /// still visible instead of waiting for it to close.
+    private(set) var persistedRevision = 0
 
     init(
         cluster: PhotoCluster,
@@ -534,13 +538,14 @@ private extension ClusterDetailsViewModel {
         let previousTask = persistenceTask
         let reviewRepository = reviewRepository
 
-        let task = Task {
+        let task = Task { [weak self] in
             await previousTask?.value
             do {
                 try await reviewRepository.saveReviewState(state)
             } catch {
                 AppLog.storage.error("\(AppLog.tag(.error, "Failed to save review state: \(error.localizedDescription)"))")
             }
+            self?.persistedRevision &+= 1
         }
         persistenceTask = task
         return task

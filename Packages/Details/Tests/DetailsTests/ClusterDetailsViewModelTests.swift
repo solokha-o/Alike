@@ -620,6 +620,32 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
     }
 
+    func testPersistedRevisionAdvancesOnlyAfterEachSaveLands() async {
+        let reviewRepository = SuspendableSaveClusterReviewStateRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ],
+            reviewRepository: reviewRepository
+        )
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.persistedRevision, 0)
+
+        await reviewRepository.suspendNextSave()
+        viewModel.toggleSelection(for: "one")
+        await reviewRepository.waitUntilSuspendedSaveStarts()
+
+        XCTAssertEqual(viewModel.persistedRevision, 0)
+
+        await reviewRepository.finishSuspendedSave()
+        await waitForPersistedRevision(1, on: viewModel)
+
+        viewModel.toggleSelection(for: "one")
+        await waitForPersistedRevision(2, on: viewModel)
+    }
+
     func testContinueFreeSerializesEarlierSaveBeforeConfirmationAndDeletion() async {
         let reviewRepository = SuspendableSaveClusterReviewStateRepository()
         await cleanupService.setDeleteAssetsResult(.success(
@@ -691,6 +717,18 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             assetSnapshotLoader: { try await loader.load() },
             completionDelay: {}
         )
+    }
+
+    private func waitForPersistedRevision(
+        _ expected: Int,
+        on viewModel: ClusterDetailsViewModel,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        for _ in 0..<1_000 where viewModel.persistedRevision < expected {
+            await Task.yield()
+        }
+        XCTAssertEqual(viewModel.persistedRevision, expected, file: file, line: line)
     }
 
     private func snapshot(

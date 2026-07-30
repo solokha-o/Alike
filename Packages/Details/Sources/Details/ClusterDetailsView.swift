@@ -12,6 +12,10 @@ import PurchasesUI
 
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
+    fileprivate enum Constants {
+        static let hostReviewStateRefreshDebounce = Duration.milliseconds(250)
+    }
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -157,6 +161,9 @@ public struct ClusterDetailsView: View {
         .task {
             await viewModel.load()
         }
+        .task(id: viewModel.persistedRevision) {
+            await notifyHostOfPersistedReviewState()
+        }
         .onChange(of: viewModel.pendingCompletionRecord) { _, record in
             guard let record else { return }
             onCleanupCompleted?(record)
@@ -280,6 +287,20 @@ private extension ClusterDetailsView {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
+    }
+
+    /// Lets the host reload review state while this screen is still on top, so
+    /// the cleanup screen behind it is already up to date when it is revealed.
+    /// The debounce is cancelled and restarted by every further persisted edit,
+    /// so a burst of selection taps refreshes the host once.
+    func notifyHostOfPersistedReviewState() async {
+        guard viewModel.persistedRevision > 0 else { return }
+        do {
+            try await Task.sleep(for: Constants.hostReviewStateRefreshDebounce)
+        } catch {
+            return
+        }
+        onReviewStateChanged?()
     }
 }
 
