@@ -565,13 +565,15 @@ public struct CleanupView: View {
     /// row. Cards still show live review badges because they read status from the
     /// workspace directly.
     private func refreshArrangement() {
-        arrangement = .make(
+        let updated = CleanupClusterArrangement.make(
             clusters: workspace.clusters,
             controls: controls,
             appliesAdvancedFilters: premiumAccess.hasAccess(to: .advancedFilters),
             reviewStatus: { workspace.reviewStatus(for: $0) },
             estimatedSavings: { workspace.reviewState(for: $0)?.estimatedSavingsBytes ?? 0 }
         )
+        scrollAnchorID = updated.preservedAnchor(scrollAnchorID, replacing: arrangement)
+        arrangement = updated
     }
 }
 

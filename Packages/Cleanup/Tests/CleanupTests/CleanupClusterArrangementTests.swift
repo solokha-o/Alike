@@ -213,6 +213,82 @@ final class CleanupClusterArrangementTests: XCTestCase {
         XCTAssertEqual(ids(afterArrangement.remaining), [after.id])
     }
 
+    // MARK: - Scroll anchor survival
+
+    func testAnchorIsKeptWhenItSurvivesTheRefresh() {
+        let first = cluster()
+        let second = cluster()
+        let before = makeArrangement(clusters: [first, second])
+        let after = makeArrangement(clusters: [first, second])
+        let anchor = before.orderedIDs[1]
+
+        XCTAssertEqual(after.preservedAnchor(anchor, replacing: before), anchor)
+    }
+
+    /// Reconciliation changes the contents of the cluster the user deleted from,
+    /// so its row id changes. Without a fallback the anchor is lost and the grid
+    /// slides once the rescan lands.
+    func testAnchorFallsBackToTheRowBelowWhenItDisappears() {
+        let survivingAbove = cluster()
+        let deleted = cluster()
+        let survivingBelow = cluster()
+
+        let before = makeArrangement(clusters: [survivingAbove, deleted, survivingBelow])
+        let after = makeArrangement(clusters: [survivingAbove, survivingBelow])
+        let anchor = before.orderedIDs[1]
+
+        XCTAssertEqual(
+            after.preservedAnchor(anchor, replacing: before),
+            after.orderedIDs[1]
+        )
+    }
+
+    func testAnchorFallsBackUpwardWhenNothingSurvivesBelow() {
+        let survivingAbove = cluster()
+        let deleted = cluster()
+
+        let before = makeArrangement(clusters: [survivingAbove, deleted])
+        let after = makeArrangement(clusters: [survivingAbove])
+        let anchor = before.orderedIDs[1]
+
+        XCTAssertEqual(
+            after.preservedAnchor(anchor, replacing: before),
+            after.orderedIDs[0]
+        )
+    }
+
+    /// A cluster promoted to "Needs review" by reconciliation moves to the top
+    /// section. The anchor has to follow the row, not its position.
+    func testAnchorFollowsAClusterAcrossSectionMigration() {
+        let promoted = cluster()
+        let untouched = cluster()
+
+        let before = makeArrangement(clusters: [promoted, untouched])
+        let after = makeArrangement(
+            clusters: [promoted, untouched],
+            statuses: [promoted.id: .needsReReview]
+        )
+        let anchor = before.remaining[0].id
+
+        XCTAssertEqual(after.needsReview.map(\.id), [anchor])
+        XCTAssertEqual(after.preservedAnchor(anchor, replacing: before), anchor)
+    }
+
+    func testAnchorIsClearedWhenEveryRowDisappears() {
+        let only = cluster()
+        let before = makeArrangement(clusters: [only])
+        let after = makeArrangement(clusters: [])
+
+        XCTAssertNil(after.preservedAnchor(before.orderedIDs[0], replacing: before))
+    }
+
+    func testNilAnchorStaysNil() {
+        let before = makeArrangement(clusters: [cluster()])
+        let after = makeArrangement(clusters: [cluster()])
+
+        XCTAssertNil(after.preservedAnchor(nil, replacing: before))
+    }
+
     // MARK: - Helpers
 
     private func makeArrangement(

@@ -87,6 +87,44 @@ struct CleanupClusterArrangement: Equatable {
             hasAnyCluster: !clusters.isEmpty
         )
     }
+
+    /// Every row id in the order they are rendered, top section first.
+    var orderedIDs: [String] {
+        needsReview.map(\.id) + remaining.map(\.id)
+    }
+
+    /// The scroll anchor to keep when this arrangement replaces `previous`.
+    ///
+    /// Reconciliation after a deletion changes the affected cluster's contents,
+    /// so its ``IdentifiedCluster/id`` changes too — and if that row was the
+    /// anchor, `scrollPosition` has nothing left to pin and the grid slides. In
+    /// that case fall back to the nearest surviving neighbour, preferring the
+    /// row below because that is what moves up into the anchor's old position.
+    func preservedAnchor(
+        _ anchor: String?,
+        replacing previous: CleanupClusterArrangement
+    ) -> String? {
+        guard let anchor else { return nil }
+
+        let surviving = Set(orderedIDs)
+        if surviving.contains(anchor) { return anchor }
+
+        let previousOrder = previous.orderedIDs
+        guard let index = previousOrder.firstIndex(of: anchor) else { return nil }
+
+        for offset in 1...max(previousOrder.count, 1) {
+            let below = index + offset
+            if below < previousOrder.count, surviving.contains(previousOrder[below]) {
+                return previousOrder[below]
+            }
+            let above = index - offset
+            if above >= 0, surviving.contains(previousOrder[above]) {
+                return previousOrder[above]
+            }
+        }
+
+        return nil
+    }
 }
 
 private extension IdentifiedCluster {
