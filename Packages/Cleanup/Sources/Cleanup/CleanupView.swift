@@ -556,19 +556,9 @@ public struct CleanupView: View {
     }
 
     private func filtered(_ clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.filter { cluster in
-            guard premiumAccess.hasAccess(to: .advancedFilters) else { return true }
-            let status = workspace.reviewStatus(for: cluster.id)
-            let reviewMatches: Bool
-            switch controls.reviewFilter {
-            case .all: reviewMatches = true
-            case .needsReview: reviewMatches = status == .needsReReview
-            case .inReview: reviewMatches = status == .inReview
-            case .reviewed: reviewMatches = status == .reviewed
-            }
-            return reviewMatches
-                && cluster.count >= controls.minimumClusterSize.rawValue
-                && (!controls.favoritesOnly || cluster.assets.contains(where: \.isFavorite))
+        guard premiumAccess.hasAccess(to: .advancedFilters) else { return clusters }
+        return clusters.filter { cluster in
+            controls.matches(cluster, reviewStatus: workspace.reviewStatus(for: cluster.id))
         }
     }
 
@@ -616,6 +606,17 @@ public enum CleanupReviewFilter: String, CaseIterable, Sendable {
     case inReview
     case reviewed
 
+    /// `needsReview` covers everything the user has not finished reviewing: clusters
+    /// never opened (`notReviewed`) as well as clusters a rescan changed (`needsReReview`).
+    public func matches(_ status: ClusterReviewStatus) -> Bool {
+        switch self {
+        case .all: true
+        case .needsReview: status == .notReviewed || status == .needsReReview
+        case .inReview: status == .inReview
+        case .reviewed: status == .reviewed
+        }
+    }
+
     var title: String {
         switch self {
         case .all:
@@ -652,6 +653,12 @@ public struct CleanupClusterControls: Equatable, Sendable {
     public var isDefault: Bool { self == Self() }
 
     public init() {}
+
+    public func matches(_ cluster: PhotoCluster, reviewStatus: ClusterReviewStatus) -> Bool {
+        reviewFilter.matches(reviewStatus)
+            && cluster.count >= minimumClusterSize.rawValue
+            && (!favoritesOnly || cluster.assets.contains(where: \.isFavorite))
+    }
 }
 
 private struct CleanupClusterControlsSheet: View {
