@@ -1,4 +1,5 @@
 import Foundation
+import Photos
 import Testing
 @testable import Core
 
@@ -37,6 +38,52 @@ struct PhotoImageLoadingTests {
             modificationDate: modificationDate.addingTimeInterval(1),
             targetSize: CGSize(width: 300, height: 300)
         ))
+    }
+
+    @Test("Maximum-size requests use the content mode PhotoKit requires")
+    func contentModeForRequestedSize() {
+        #expect(PhotoImageRequestSizePolicy.contentMode(for: CGSize(width: 300, height: 300)) == .aspectFit)
+        #expect(PhotoImageRequestSizePolicy.contentMode(for: PHImageManagerMaximumSize) == .default)
+    }
+
+    @Test("Fullscreen requests scale the viewport by zoom instead of asking for full resolution")
+    func fullscreenTargetSizeUsesViewport() {
+        let size = PhotoFullscreenImageSizePolicy.targetSize(
+            viewportSize: CGSize(width: 390, height: 844),
+            displayScale: 3,
+            maximumZoomScale: 4
+        )
+
+        // 390*3*4 = 4680 exceeds the cap, so both sides shrink proportionally.
+        #expect(max(size.width, size.height) == PhotoFullscreenImageSizePolicy.maximumPixelDimension)
+        #expect(size.width < size.height)
+        #expect(PhotoImageRequestSizePolicy.isValid(size))
+        #expect(!PhotoImageRequestSizePolicy.isMaximumSize(size))
+    }
+
+    @Test("Fullscreen requests stay valid before the viewport is laid out")
+    func fullscreenTargetSizeHandlesUnlaidOutViewport() {
+        let size = PhotoFullscreenImageSizePolicy.targetSize(
+            viewportSize: .zero,
+            displayScale: 0,
+            maximumZoomScale: .nan
+        )
+
+        #expect(PhotoImageRequestSizePolicy.isValid(size))
+        #expect(size.width == PhotoFullscreenImageSizePolicy.fallbackPointDimension)
+        #expect(size.height == PhotoFullscreenImageSizePolicy.fallbackPointDimension)
+    }
+
+    @Test("Fullscreen sizes round to whole pixels so cache keys stay stable")
+    func fullscreenTargetSizeRoundsToWholePixels() {
+        let size = PhotoFullscreenImageSizePolicy.targetSize(
+            viewportSize: CGSize(width: 320.4, height: 480.6),
+            displayScale: 2,
+            maximumZoomScale: 1
+        )
+
+        #expect(size.width == size.width.rounded())
+        #expect(size.height == size.height.rounded())
     }
 
     @Test("Cache cost uses decoded byte size and clamps overflow")
