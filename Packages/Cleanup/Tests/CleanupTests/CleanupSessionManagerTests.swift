@@ -146,4 +146,47 @@ final class CleanupSessionManagerTests: XCTestCase {
         let completed = await manager.nextClusterToReview(from: [reviewed], reviewStates: states)
         XCTAssertNil(completed)
     }
+
+    func testProgressStaysAvailableWhenEveryClusterIsReviewed() async {
+        let repo = MockCleanupSessionRepository()
+        let manager = CleanupSessionManager(repository: repo)
+
+        let firstID = UUID()
+        let secondID = UUID()
+        let clusters = [
+            PhotoCluster(id: firstID, assets: []),
+            PhotoCluster(id: secondID, assets: [])
+        ]
+
+        let states: [UUID: ClusterReviewState] = [
+            firstID: ClusterReviewState(
+                clusterID: firstID,
+                bestShotLocalIdentifier: "best-1",
+                selectedLocalIdentifiers: ["a", "b"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 100
+            ),
+            secondID: ClusterReviewState(
+                clusterID: secondID,
+                bestShotLocalIdentifier: "best-2",
+                selectedLocalIdentifiers: ["c"],
+                mode: .selection,
+                status: .reviewed,
+                estimatedSavingsBytes: 200
+            )
+        ]
+
+        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        XCTAssertNil(next)
+
+        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+
+        XCTAssertEqual(progress.totalClusters, 2)
+        XCTAssertEqual(progress.reviewedCount, 2)
+        XCTAssertEqual(progress.remainingClusters, 0)
+        XCTAssertEqual(progress.reviewedRatio, 1, accuracy: 0.0001)
+        XCTAssertEqual(progress.totalSelectedItems, 3)
+        XCTAssertEqual(progress.reviewedSavingsBytes, 300)
+    }
 }

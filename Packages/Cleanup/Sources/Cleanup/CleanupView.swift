@@ -404,10 +404,11 @@ public struct CleanupView: View {
         let needsReview = visible.filter { workspace.reviewStatus(for: $0.id) == .needsReReview }
         let remaining = visible.filter { workspace.reviewStatus(for: $0.id) != .needsReReview }
 
-        if let entry = workspace.cleanupEntryCluster() {
+        if !allClusters.isEmpty {
+            let entry = workspace.cleanupEntryCluster()
             CleanupProgressCard(
                 progress: workspace.sessionProgress(),
-                onContinue: { router.push(.cluster(entry)) },
+                onContinue: entry.map { cluster in { router.push(.cluster(cluster)) } },
                 onOpenHistory: { router.push(.history) }
             )
         }
@@ -710,32 +711,14 @@ private struct CleanupClusterControlsSheet: View {
 
 private struct CleanupProgressCard: View {
     let progress: CleanupSessionProgress
-    let onContinue: () -> Void
+    let onContinue: (() -> Void)?
     let onOpenHistory: () -> Void
     private let metricColumns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
             HStack(alignment: .top, spacing: Spacing.small) {
-                Button(action: onContinue) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(appLocalized("Continue Review")).font(.appHeadline)
-                            Text(appLocalized("Pick up where you left off"))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Image(systemName: "arrow.right.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(Color.accent)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Text(continueAccessibilityLabel))
-                .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
+                leadingRow
 
                 Button(action: onOpenHistory) {
                     Image(systemName: "clock.arrow.circlepath")
@@ -758,12 +741,70 @@ private struct CleanupProgressCard: View {
         .cleanupGlassSurface()
     }
 
+    @ViewBuilder
+    private var leadingRow: some View {
+        if let onContinue {
+            Button(action: onContinue) {
+                summary(
+                    title: appLocalized("Continue Review"),
+                    subtitle: appLocalized("Pick up where you left off"),
+                    iconName: "arrow.right.circle.fill",
+                    iconColor: Color.accent
+                )
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(continueAccessibilityLabel))
+            .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
+        } else {
+            summary(
+                title: appLocalized("All clusters reviewed"),
+                subtitle: appLocalized("Nothing left to review right now"),
+                iconName: "checkmark.seal.fill",
+                iconColor: .statusReviewed
+            )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(completedAccessibilityLabel))
+        }
+    }
+
+    private func summary(
+        title: String,
+        subtitle: String,
+        iconName: String,
+        iconColor: Color
+    ) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title).font(.appHeadline)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Image(systemName: iconName)
+                .font(.title2)
+                .foregroundStyle(iconColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     private var continueAccessibilityLabel: String {
         String(
             format: appLocalized("Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."),
             progress.reviewedCount,
             progress.totalClusters,
             progress.remainingClusters,
+            progress.totalSelectedItems,
+            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+        )
+    }
+
+    private var completedAccessibilityLabel: String {
+        String(
+            format: appLocalized("All clusters reviewed. %d of %d clusters reviewed, %d selected, %@ estimated savings."),
+            progress.reviewedCount,
+            progress.totalClusters,
             progress.totalSelectedItems,
             ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
         )
