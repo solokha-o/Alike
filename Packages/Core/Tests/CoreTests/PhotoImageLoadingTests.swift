@@ -40,10 +40,10 @@ struct PhotoImageLoadingTests {
         ))
     }
 
-    @Test("Maximum-size requests use the content mode PhotoKit requires")
-    func contentModeForRequestedSize() {
-        #expect(PhotoImageRequestSizePolicy.contentMode(for: CGSize(width: 300, height: 300)) == .aspectFit)
-        #expect(PhotoImageRequestSizePolicy.contentMode(for: PHImageManagerMaximumSize) == .default)
+    @Test("The maximum-size sentinel is not a valid request size")
+    func maximumSizeIsRejectedAsARequestSize() {
+        #expect(!PhotoImageRequestSizePolicy.isValid(PHImageManagerMaximumSize))
+        #expect(PhotoImageRequestSizePolicy.isValid(CGSize(width: 300, height: 300)))
     }
 
     @Test("Only the maximum-size sentinel itself counts as a maximum-size request")

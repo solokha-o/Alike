@@ -39,7 +39,9 @@ extension PHAsset {
                 let requestID = manager.requestImage(
                     for: self,
                     targetSize: targetSize,
-                    contentMode: PhotoImageRequestSizePolicy.contentMode(for: targetSize),
+                    // Always bounded: `isValid` above rejects the maximum-size sentinel, which is
+                    // the only size PhotoKit would want `.default` for.
+                    contentMode: .aspectFit,
                     options: options
                 ) { image, info in
                     if photoInfoFlag(PHImageCancelledKey, in: info) {
@@ -202,14 +204,12 @@ public enum PhotoImageRequestError: Error, Equatable, LocalizedError, Sendable {
 }
 
 public enum PhotoImageRequestSizePolicy {
+    /// Rejects the maximum-size sentinel explicitly rather than letting it fall out of the
+    /// `> 0` checks: callers here always request a bounded size, and reading the rejection as
+    /// an accident of the sentinel being negative is what made the earlier `>=` bug look safe.
     public static func isValid(_ size: CGSize) -> Bool {
-        size.width.isFinite && size.height.isFinite && size.width > 0 && size.height > 0
-    }
-
-    /// PhotoKit requires `.default` when the request asks for the maximum size; pairing that size
-    /// with `.aspectFit` is undefined and can make the request fail instead of returning an image.
-    public static func contentMode(for size: CGSize) -> PHImageContentMode {
-        isMaximumSize(size) ? .default : .aspectFit
+        guard !isMaximumSize(size) else { return false }
+        return size.width.isFinite && size.height.isFinite && size.width > 0 && size.height > 0
     }
 
     /// `PHImageManagerMaximumSize` is a sentinel — `(-1, -1)`, not a large size — so it has to be
