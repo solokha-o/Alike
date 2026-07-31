@@ -50,6 +50,10 @@ playground.xcworkspace
 
 .build/
 
+# Local packages resolve against the app workspace's Package.resolved; the
+# per-package copies are build artifacts left behind by `xcodebuild`/`swift test`.
+Packages/*/Package.resolved
+
 # Xcode-managed SwiftPM workspace user data
 .swiftpm/xcode/package.xcworkspace/xcuserdata/
 
