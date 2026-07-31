@@ -1,123 +1,34 @@
 import SwiftUI
 import DesignSystem
 
+/// The bottom bar carries exactly one job: the destructive action for the
+/// current selection. Review decisions and selection shortcuts live in the
+/// navigation bar, so nothing competes with it for attention.
 struct ClusterReviewActionBar: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let selectedCount: Int
-    let onSelectAllExceptBest: () -> Void
-    let onClearSelection: () -> Void
-    let onDeleteSelected: (() -> Void)?
-    let isDeleteActionVisible: Bool
+    let onDeleteSelected: () -> Void
     let isDeleting: Bool
 
     var body: some View {
         Group {
             if #available(iOS 26.0, macOS 26.0, *) {
                 GlassEffectContainer(spacing: Spacing.small) {
-                    controls(usesGlass: true)
+                    deleteActionButton(usesGlass: true)
                 }
             } else {
-                controls(usesGlass: false)
+                deleteActionButton(usesGlass: false)
                     .padding(Spacing.xSmall)
                     .background(.regularMaterial, in: actionBarShape)
             }
         }
         .controlSize(.large)
-        .animation(actionVisibilityAnimation, value: isDeleteActionVisible)
         .accessibilityElement(children: .contain)
     }
 
-    @ViewBuilder
-    private func controls(usesGlass: Bool) -> some View {
-        if dynamicTypeSize.isAccessibilitySize {
-            verticalControls(usesGlass: usesGlass)
-        } else {
-            ViewThatFits(in: .horizontal) {
-                horizontalControls(usesGlass: usesGlass)
-                verticalControls(usesGlass: usesGlass)
-            }
-        }
-    }
-
-    private func horizontalControls(usesGlass: Bool) -> some View {
-        ZStack {
-            if let onDeleteSelected {
-                HStack(spacing: Spacing.small) {
-                    selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
-                    deleteActionButton(
-                        usesGlass: usesGlass,
-                        allowsWrapping: false,
-                        action: onDeleteSelected
-                    )
-                }
-                .hidden()
-                .allowsHitTesting(false)
-                .accessibilityHidden(true)
-            }
-
-            HStack(spacing: Spacing.small) {
-                selectionMenu(usesGlass: usesGlass, allowsWrapping: false)
-                deleteButton(usesGlass: usesGlass, allowsWrapping: false)
-            }
-        }
-    }
-
-    private func verticalControls(usesGlass: Bool) -> some View {
-        VStack(spacing: Spacing.small) {
-            selectionMenu(usesGlass: usesGlass, allowsWrapping: true)
-            deleteButton(usesGlass: usesGlass, allowsWrapping: true)
-        }
-    }
-
-    @ViewBuilder
-    private func selectionMenu(usesGlass: Bool, allowsWrapping: Bool) -> some View {
-        Menu {
-            Button(action: onSelectAllExceptBest) {
-                Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
-            }
-
-            if selectedCount > 0 {
-                Divider()
-
-                Button(action: onClearSelection) {
-                    Label(appLocalized("Clear Selection"), systemImage: "xmark.circle")
-                }
-            }
-        } label: {
-            Label {
-                Text(appLocalized("Selection"))
-                    .lineLimit(allowsWrapping ? 2 : 1)
-                    .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
-            } icon: {
-                Image(systemName: "checkmark.circle")
-            }
-            .font(.appHeadline)
-            .frame(maxWidth: .infinity)
-        }
-        .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
-        .accessibilityHint(Text(appLocalized("Choose which photos are selected for cleanup")))
-    }
-
-    @ViewBuilder
-    private func deleteButton(usesGlass: Bool, allowsWrapping: Bool) -> some View {
-        if isDeleteActionVisible, let onDeleteSelected {
-            deleteActionButton(
-                usesGlass: usesGlass,
-                allowsWrapping: allowsWrapping,
-                action: onDeleteSelected
-            )
-            .transition(actionVisibilityTransition)
-        }
-    }
-
-    private func deleteActionButton(
-        usesGlass: Bool,
-        allowsWrapping: Bool,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(role: .destructive, action: action) {
+    private func deleteActionButton(usesGlass: Bool) -> some View {
+        Button(role: .destructive, action: onDeleteSelected) {
             HStack(spacing: Spacing.small) {
                 if isDeleting {
                     ProgressView()
@@ -138,19 +49,8 @@ struct ClusterReviewActionBar: View {
         .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
     }
 
-    private var actionVisibilityAnimation: Animation {
-        reduceMotion ? .easeInOut(duration: 0.12) : .appInteractiveFast
-    }
-
-    private var actionVisibilityTransition: AnyTransition {
-        guard !reduceMotion else { return .opacity }
-        return .asymmetric(
-            insertion: .move(edge: .bottom)
-                .combined(with: .scale(scale: 0.9, anchor: .bottom))
-                .combined(with: .opacity),
-            removal: .scale(scale: 0.96, anchor: .bottom)
-                .combined(with: .opacity)
-        )
+    private var allowsWrapping: Bool {
+        dynamicTypeSize.isAccessibilitySize
     }
 
     private var deleteActionTitle: String {
@@ -172,10 +72,10 @@ private struct ClusterReviewButtonStyle: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 26.0, macOS 26.0, *), usesGlass {
             content
-                .buttonStyle(.glass)
+                .buttonStyle(.glassProminent)
         } else {
             content
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderedProminent)
         }
     }
 }

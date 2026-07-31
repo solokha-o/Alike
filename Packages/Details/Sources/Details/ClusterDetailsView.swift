@@ -18,6 +18,7 @@ public struct ClusterDetailsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
@@ -74,16 +75,14 @@ public struct ClusterDetailsView: View {
         }
         .frame(maxWidth: .infinity)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if viewModel.isActionBarVisible && !viewModel.isDeleting {
+            if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
                     selectedCount: viewModel.selectedCount,
-                    onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                    onClearSelection: viewModel.clearSelection,
                     onDeleteSelected: requestDeleteConfirmation,
-                    isDeleteActionVisible: viewModel.isDeleteActionVisible,
                     isDeleting: viewModel.isDeleting
                 )
                 .padding(Spacing.xSmall)
+                .transition(actionBarTransition)
             }
         }
         .animation(
@@ -103,20 +102,14 @@ public struct ClusterDetailsView: View {
         // push/pop, which clamped its content offset and lost the user's place.
         .toolbar {
             if !viewModel.isDeleting {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Picker(selection: selectedGridColumnBinding) {
-                            ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                                Text("\(count)").tag(count)
-                            }
-                        } label: {
-                            Text(appLocalized("Columns"))
-                        }
-                    } label: {
-                        Image(systemName: "square.grid.3x2")
+                if viewModel.isActionBarVisible {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        reviewToggle
                     }
-                    .accessibilityLabel(Text(appLocalized("Grid Columns")))
-                    .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    overflowMenu
                 }
             }
         }
@@ -179,6 +172,81 @@ public struct ClusterDetailsView: View {
         .interactiveDismissDisabled(viewModel.isDeleting)
     }
 
+    /// Finishing the review is a state the user flips, not a step in a flow, so
+    /// it reads as a toggle next to the title instead of a third button
+    /// competing with the destructive action at the bottom.
+    private var reviewToggle: some View {
+        Button {
+            viewModel.toggleReviewConfirmation()
+        } label: {
+            Image(systemName: viewModel.isReviewConfirmed ? "checkmark.seal.fill" : "checkmark.seal")
+                .symbolEffect(.bounce, value: reduceMotion ? false : viewModel.isReviewConfirmed)
+        }
+        .tint(viewModel.isReviewConfirmed ? Color.statusReviewed : nil)
+        .accessibilityLabel(Text(
+            viewModel.isReviewConfirmed
+                ? appLocalized("Reviewed")
+                : appLocalized("Mark Reviewed")
+        ))
+        .accessibilityValue(Text(viewModel.keepSummaryText))
+        .accessibilityHint(Text(reviewToggleHint))
+        .accessibilityAddTraits(viewModel.isReviewConfirmed ? [.isSelected] : [])
+    }
+
+    private var reviewToggleHint: String {
+        if viewModel.isReviewConfirmed {
+            return appLocalized("Double tap to reopen this cluster for review")
+        }
+        return viewModel.selectedCount == 0
+            ? appLocalized("Finishes the review and keeps every photo in this cluster")
+            : appLocalized("Finishes the review and keeps the photos you did not select")
+    }
+
+    /// Two labelled sections instead of one flat list: acting on the selection
+    /// and changing how the grid looks are different jobs, and the column
+    /// options stay folded into a submenu so they never outnumber the actions.
+    private var overflowMenu: some View {
+        Menu {
+            if viewModel.isActionBarVisible {
+                Section(appLocalized("Selection")) {
+                    Button {
+                        viewModel.selectAllExceptBest()
+                    } label: {
+                        Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
+                    }
+
+                    if viewModel.selectedCount > 0 {
+                        Button {
+                            viewModel.clearSelection()
+                        } label: {
+                            Label(appLocalized("Clear Selection"), systemImage: "xmark.circle")
+                        }
+                    }
+                }
+            }
+
+            Section(appLocalized("View")) {
+                Picker(selection: selectedGridColumnBinding) {
+                    ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
+                        Text(String(format: appLocalized("%d Columns"), count)).tag(count)
+                    }
+                } label: {
+                    Label(appLocalized("Columns"), systemImage: "square.grid.3x2")
+                }
+                .pickerStyle(.menu)
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+        }
+        .accessibilityLabel(Text(appLocalized("More Options")))
+        .accessibilityHint(Text(appLocalized("Selection shortcuts and grid layout")))
+    }
+
+    private var actionBarTransition: AnyTransition {
+        guard !reduceMotion else { return .opacity }
+        return .move(edge: .bottom).combined(with: .opacity)
+    }
+
     private var loadedContent: some View {
         let displayedAssets = viewModel.displayedAssets
         let gridColumns = selectedGridColumnCount
@@ -199,6 +267,7 @@ public struct ClusterDetailsView: View {
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
                         reviewStatus: viewModel.reviewStatus,
+                        isReviewConfirmed: viewModel.isReviewConfirmed,
                         aliReactionCue: viewModel.currentALIReaction,
                         bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                         onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration

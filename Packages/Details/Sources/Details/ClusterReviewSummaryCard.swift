@@ -23,6 +23,7 @@ struct ClusterReviewSummaryCard: View {
     let estimatedSavingsText: String
     let maximumEstimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
+    let isReviewConfirmed: Bool
     let aliReactionCue: ALIReactionCue?
     let bestShotCelebrationCue: ALIReviewReactionCue?
     let onBestShotCelebrationDismissed: (ALIReviewReactionCue.ID) -> Void
@@ -103,21 +104,27 @@ struct ClusterReviewSummaryCard: View {
     private var selectionSummary: String {
         selectionSummary(
             selectedCount: selectedCount,
-            estimatedSavingsText: estimatedSavingsText
+            estimatedSavingsText: estimatedSavingsText,
+            isReviewConfirmed: isReviewConfirmed
         )
     }
 
     private var selectionSummaryLabel: some View {
         ZStack(alignment: .topLeading) {
             ForEach(Self.reservedSelectionCounts(assetCount: assetCount), id: \.self) { count in
-                selectionSummaryText(
-                    selectionSummary(
-                        selectedCount: count,
-                        estimatedSavingsText: maximumEstimatedSavingsText
+                // Both wordings are reserved so finishing the review never
+                // reflows the card around the photo grid.
+                ForEach([false, true], id: \.self) { confirmed in
+                    selectionSummaryText(
+                        selectionSummary(
+                            selectedCount: count,
+                            estimatedSavingsText: maximumEstimatedSavingsText,
+                            isReviewConfirmed: confirmed
+                        )
                     )
-                )
-                .hidden()
-                .accessibilityHidden(true)
+                    .hidden()
+                    .accessibilityHidden(true)
+                }
             }
 
             selectionSummaryText(selectionSummary)
@@ -133,10 +140,21 @@ struct ClusterReviewSummaryCard: View {
 
     private func selectionSummary(
         selectedCount: Int,
-        estimatedSavingsText: String
+        estimatedSavingsText: String,
+        isReviewConfirmed: Bool
     ) -> String {
         guard selectedCount > 0 else {
-            return appLocalized("Tap photos to select them for cleanup")
+            return isReviewConfirmed
+                ? String(format: appLocalized("Keeping all %d photos"), assetCount)
+                : appLocalized("Tap photos to select them for cleanup")
+        }
+        if isReviewConfirmed {
+            return String(
+                format: appLocalized("Keeping %d of %d, estimated size %@."),
+                assetCount - selectedCount,
+                assetCount,
+                estimatedSavingsText
+            )
         }
         if selectedCount == 1 {
             return String(format: appLocalized("1 selected, estimated size %@."), estimatedSavingsText)
