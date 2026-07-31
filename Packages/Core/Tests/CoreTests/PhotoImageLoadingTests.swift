@@ -46,6 +46,14 @@ struct PhotoImageLoadingTests {
         #expect(PhotoImageRequestSizePolicy.contentMode(for: PHImageManagerMaximumSize) == .default)
     }
 
+    @Test("Only the maximum-size sentinel itself counts as a maximum-size request")
+    func maximumSizeIsMatchedExactly() {
+        #expect(PhotoImageRequestSizePolicy.isMaximumSize(PHImageManagerMaximumSize))
+        // The sentinel is negative, so a `>=` comparison would swallow every ordinary request.
+        #expect(!PhotoImageRequestSizePolicy.isMaximumSize(CGSize(width: 300, height: 300)))
+        #expect(!PhotoImageRequestSizePolicy.isMaximumSize(CGSize(width: 1_893, height: 4_096)))
+    }
+
     @Test("Fullscreen requests scale the viewport by zoom instead of asking for full resolution")
     func fullscreenTargetSizeUsesViewport() {
         let size = PhotoFullscreenImageSizePolicy.targetSize(

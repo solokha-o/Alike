@@ -168,9 +168,11 @@ public enum PhotoImageRequestSizePolicy {
         isMaximumSize(size) ? .default : .aspectFit
     }
 
+    /// `PHImageManagerMaximumSize` is a sentinel — `(-1, -1)`, not a large size — so it has to be
+    /// matched exactly. Comparing with `>=` classifies every ordinary request as the maximum one.
     static func isMaximumSize(_ size: CGSize) -> Bool {
-        size.width >= PHImageManagerMaximumSize.width
-            || size.height >= PHImageManagerMaximumSize.height
+        size.width == PHImageManagerMaximumSize.width
+            && size.height == PHImageManagerMaximumSize.height
     }
 }
 
