@@ -131,7 +131,9 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
         XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        // Nothing but the best shot is kept, but the review was never finished,
+        // so the cluster stays open instead of counting itself as reviewed.
+        XCTAssertEqual(viewModel.reviewStatus, .inReview)
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
         XCTAssertNil(viewModel.bestShotCelebrationCue)
     }
@@ -149,13 +151,130 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         viewModel.selectAllExceptBest()
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
-        XCTAssertEqual(viewModel.bestShotCelebrationCue?.id.generation, 1)
+        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
         XCTAssertEqual(
             viewModel.currentALIReaction?.state,
             .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
         )
+    }
+
+    func testConfirmingReviewCompletesClusterAndCelebrates() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        viewModel.toggleReviewConfirmation()
+
+        XCTAssertTrue(viewModel.isReviewConfirmed)
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
+        XCTAssertEqual(viewModel.bestShotCelebrationCue?.id.generation, 1)
+    }
+
+    func testConfirmingReviewWithSeveralKeptPhotosStillCompletesCluster() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "two")
+        viewModel.toggleReviewConfirmation()
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
+        XCTAssertEqual(viewModel.keptCount, 2)
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+    }
+
+    func testConfirmingReviewWithoutSelectionKeepsEveryPhoto() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleReviewConfirmation()
+
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+    }
+
+    func testTogglingReviewConfirmationTwiceReopensCluster() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "one")
+        viewModel.toggleReviewConfirmation()
+        viewModel.toggleReviewConfirmation()
+
+        XCTAssertFalse(viewModel.isReviewConfirmed)
+        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+    }
+
+    func testEditingSelectionAfterConfirmationReopensCluster() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleReviewConfirmation()
+        viewModel.toggleSelection(for: "one")
+
+        XCTAssertFalse(viewModel.isReviewConfirmed)
+        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+    }
+
+    func testConfirmedReviewSurvivesReload() async throws {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "two")
+        viewModel.toggleReviewConfirmation()
+        await viewModel.save()
+
+        let stored = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertEqual(stored?.isReviewConfirmed, true)
+        XCTAssertEqual(stored?.status, .reviewed)
+
+        let reloaded = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+        await reloaded.load()
+
+        XCTAssertTrue(reloaded.isReviewConfirmed)
+        XCTAssertEqual(reloaded.selectedAssetIDs, ["two"])
+        XCTAssertEqual(reloaded.reviewStatus, .reviewed)
     }
 
     func testSetBestShotPromotesPhotoAndDeselectsIt() async {
@@ -188,10 +307,32 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         await viewModel.load()
         viewModel.selectAllExceptBest()
+        viewModel.toggleReviewConfirmation()
         viewModel.setBestShot("one")
 
         XCTAssertEqual(viewModel.bestShotAssetID, "one")
         XCTAssertEqual(viewModel.selectedAssetIDs, ["best", "two"])
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+    }
+
+    /// Promoting a keeper inside a multi-keep review must not push the previous
+    /// keeper into the delete pile: the user kept it on purpose.
+    func testSetBestShotOnMultiKeepReviewLeavesPreviousBestKept() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "two")
+        viewModel.toggleReviewConfirmation()
+        viewModel.setBestShot("one")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
         XCTAssertEqual(viewModel.reviewStatus, .reviewed)
     }
 
@@ -537,6 +678,38 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
         XCTAssertTrue(viewModel.hasCompletedCleanup)
         XCTAssertFalse(viewModel.isDeleting)
+    }
+
+    /// The keeper's protection is a selection invariant, so assert it where it
+    /// actually matters: the identifiers handed to the cleanup service.
+    func testConfirmDeleteNeverSendsTheBestShotToCleanup() async {
+        await cleanupService.setDeleteAssetsResult(.success(
+            CleanupCompletionRecord(
+                sourceClusterID: clusterID,
+                deletedCount: 1,
+                estimatedSavingsBytes: 100
+            )
+        ))
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+            ],
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        viewModel.setBestShot("one")
+        viewModel.toggleSelection(for: "best")
+        viewModel.toggleSelection(for: "two")
+        await viewModel.confirmDelete()
+
+        let lastSelection = await cleanupService.lastLocalIdentifiers
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertFalse(lastSelection?.contains("one") ?? true)
+        XCTAssertEqual(lastSelection, Set(["best"]))
     }
 
     func testConfirmDeletePublishesCompletionAfterReviewStateRemovalFinishes() async {

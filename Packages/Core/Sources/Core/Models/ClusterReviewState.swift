@@ -22,6 +22,10 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
     /// their choice instead of replacing it with the recomputed one.
     public let isBestShotUserSelected: Bool
     public let selectedLocalIdentifiers: Set<String>
+    /// `true` once the user explicitly finished the review. Review completion is
+    /// a decision, not a photo count: keeping several photos — or all of them —
+    /// is just as final as keeping only the best shot.
+    public let isReviewConfirmed: Bool
     public let mode: ClusterReviewMode
     public let status: ClusterReviewStatus
     public let estimatedSavingsBytes: Int64
@@ -35,6 +39,7 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         bestShotLocalIdentifier: String,
         isBestShotUserSelected: Bool = false,
         selectedLocalIdentifiers: Set<String>,
+        isReviewConfirmed: Bool? = nil,
         mode: ClusterReviewMode = .selection,
         status: ClusterReviewStatus,
         estimatedSavingsBytes: Int64,
@@ -45,6 +50,9 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         self.bestShotLocalIdentifier = bestShotLocalIdentifier
         self.isBestShotUserSelected = isBestShotUserSelected
         self.selectedLocalIdentifiers = selectedLocalIdentifiers
+        // `.reviewed` only ever means "the user finished", so a caller that
+        // states the status without the flag still gets a consistent state.
+        self.isReviewConfirmed = isReviewConfirmed ?? (status == .reviewed)
         self.mode = mode
         self.status = status
         self.estimatedSavingsBytes = estimatedSavingsBytes
@@ -52,8 +60,9 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         self.resurfacingState = resurfacingState
     }
 
-    /// Decoded by hand so states persisted before `isBestShotUserSelected`
-    /// existed still load instead of failing the whole payload.
+    /// Decoded by hand so states persisted before `isBestShotUserSelected` and
+    /// `isReviewConfirmed` existed still load instead of failing the whole
+    /// payload.
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         clusterID = try container.decode(UUID.self, forKey: .clusterID)
@@ -64,7 +73,15 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         ) ?? false
         selectedLocalIdentifiers = try container.decode(Set<String>.self, forKey: .selectedLocalIdentifiers)
         mode = try container.decode(ClusterReviewMode.self, forKey: .mode)
-        status = try container.decode(ClusterReviewStatus.self, forKey: .status)
+        let decodedStatus = try container.decode(ClusterReviewStatus.self, forKey: .status)
+        status = decodedStatus
+        // Before the explicit confirmation existed, `.reviewed` was derived from
+        // "everything except the best shot is selected", so those states are
+        // already the result of a finished review.
+        isReviewConfirmed = try container.decodeIfPresent(
+            Bool.self,
+            forKey: .isReviewConfirmed
+        ) ?? (decodedStatus == .reviewed)
         estimatedSavingsBytes = try container.decode(Int64.self, forKey: .estimatedSavingsBytes)
         updatedAt = try container.decode(Date.self, forKey: .updatedAt)
         resurfacingState = try container.decodeIfPresent(
@@ -80,6 +97,7 @@ public extension ClusterReviewState {
         bestShotLocalIdentifier: String? = nil,
         isBestShotUserSelected: Bool? = nil,
         selectedLocalIdentifiers: Set<String>? = nil,
+        isReviewConfirmed: Bool? = nil,
         mode: ClusterReviewMode? = nil,
         status: ClusterReviewStatus? = nil,
         estimatedSavingsBytes: Int64? = nil,
@@ -91,6 +109,7 @@ public extension ClusterReviewState {
             bestShotLocalIdentifier: bestShotLocalIdentifier ?? self.bestShotLocalIdentifier,
             isBestShotUserSelected: isBestShotUserSelected ?? self.isBestShotUserSelected,
             selectedLocalIdentifiers: selectedLocalIdentifiers ?? self.selectedLocalIdentifiers,
+            isReviewConfirmed: isReviewConfirmed ?? self.isReviewConfirmed,
             mode: mode ?? self.mode,
             status: status ?? self.status,
             estimatedSavingsBytes: estimatedSavingsBytes ?? self.estimatedSavingsBytes,

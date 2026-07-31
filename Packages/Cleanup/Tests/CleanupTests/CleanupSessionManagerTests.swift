@@ -189,4 +189,44 @@ final class CleanupSessionManagerTests: XCTestCase {
         XCTAssertEqual(progress.totalSelectedItems, 3)
         XCTAssertEqual(progress.reviewedSavingsBytes, 300)
     }
+
+    /// A cluster the user finished while keeping several photos — or all of
+    /// them — is done, so it must not come back around in the review queue.
+    func testConfirmedMultiKeepClustersLeaveTheReviewQueue() async {
+        let repo = MockCleanupSessionRepository()
+        let manager = CleanupSessionManager(repository: repo)
+
+        let multiKeepID = UUID()
+        let keepAllID = UUID()
+        let clusters = [
+            PhotoCluster(id: multiKeepID, assets: []),
+            PhotoCluster(id: keepAllID, assets: [])
+        ]
+
+        let states: [UUID: ClusterReviewState] = [
+            multiKeepID: ClusterReviewState(
+                clusterID: multiKeepID,
+                bestShotLocalIdentifier: "best-1",
+                selectedLocalIdentifiers: ["a"],
+                isReviewConfirmed: true,
+                status: .reviewed,
+                estimatedSavingsBytes: 100
+            ),
+            keepAllID: ClusterReviewState(
+                clusterID: keepAllID,
+                bestShotLocalIdentifier: "best-2",
+                selectedLocalIdentifiers: [],
+                isReviewConfirmed: true,
+                status: .reviewed,
+                estimatedSavingsBytes: 0
+            )
+        ]
+
+        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        XCTAssertNil(next)
+
+        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        XCTAssertEqual(progress.reviewedCount, 2)
+        XCTAssertEqual(progress.remainingClusters, 0)
+    }
 }

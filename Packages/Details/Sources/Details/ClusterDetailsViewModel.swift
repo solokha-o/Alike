@@ -37,6 +37,9 @@ final class ClusterDetailsViewModel {
     private(set) var isBestShotUserSelected = false
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
+    /// Set by the user finishing the review, never derived from how many photos
+    /// are selected — keeping several photos, or all of them, is a decision too.
+    private(set) var isReviewConfirmed = false
     private(set) var reviewStatus: ClusterReviewStatus
     private(set) var estimatedSavingsBytes: Int64
     private(set) var hasLoadedReviewState = false
@@ -138,6 +141,20 @@ final class ClusterDetailsViewModel {
         selectedCount > 0
     }
 
+    var keptCount: Int {
+        max(assetCount - selectedCount, 0)
+    }
+
+    /// Spells out what finishing the review would keep, so the icon-only
+    /// confirmation button is unambiguous — especially with nothing selected,
+    /// where it means "keep everything here".
+    var keepSummaryText: String {
+        guard selectedCount > 0 else {
+            return String(format: appLocalized("Keeping all %d photos"), assetCount)
+        }
+        return String(format: appLocalized("Keeping %d of %d"), keptCount, assetCount)
+    }
+
     var requiresPremiumForCurrentSelection: Bool {
         !premiumAccess.access(
             to: .batchCleanup,
@@ -213,25 +230,42 @@ final class ClusterDetailsViewModel {
         }
 
         withAnimation(.appInteractive) {
+            isReviewConfirmed = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
     }
 
-    /// Promotes `localIdentifier` to the best shot. The previous best shot takes
-    /// the promoted photo's place in the selection when the cluster was already
-    /// fully reviewed, so a finished review stays finished.
+    /// Finishes or reopens the review. Any set of kept photos is valid, so this
+    /// is what marks the cluster reviewed — including the "keep everything,
+    /// nothing to clean here" case where no photo is selected at all.
+    func toggleReviewConfirmation() {
+        guard !bestShotAssetID.isEmpty, !assetSnapshots.isEmpty else { return }
+
+        withAnimation(.appInteractive) {
+            isReviewConfirmed.toggle()
+            reviewMode = .selection
+            refreshDerivedState(emitsReviewCompletion: true)
+        }
+        enqueueCurrentStatePersistence()
+    }
+
+    /// Promotes `localIdentifier` to the best shot, keeping any review
+    /// confirmation intact. The previous best shot only takes the promoted
+    /// photo's place in the selection when the review kept nothing but the best
+    /// shot; when the user deliberately kept several photos it stays kept.
     func setBestShot(_ localIdentifier: String) {
         guard localIdentifier != bestShotAssetID else { return }
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
         let previousBestShotID = bestShotAssetID
-        let wasFullyReviewed = reviewStatus == .reviewed
+        let keptBestShotOnly = reviewStatus == .reviewed
+            && selectedAssetIDs.count == assetSnapshots.count - 1
 
         withAnimation(.appInteractive) {
             selectedAssetIDs.remove(localIdentifier)
-            if wasFullyReviewed, !previousBestShotID.isEmpty {
+            if keptBestShotOnly, !previousBestShotID.isEmpty {
                 selectedAssetIDs.insert(previousBestShotID)
             }
             bestShotAssetID = localIdentifier
@@ -247,6 +281,7 @@ final class ClusterDetailsViewModel {
         guard !bestShotAssetID.isEmpty else { return }
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
+            isReviewConfirmed = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
@@ -256,6 +291,7 @@ final class ClusterDetailsViewModel {
     func clearSelection() {
         withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
+            isReviewConfirmed = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
@@ -271,6 +307,7 @@ final class ClusterDetailsViewModel {
 
         withAnimation(.appInteractive) {
             selectedAssetIDs = [retainedID]
+            isReviewConfirmed = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
@@ -408,6 +445,7 @@ private extension ClusterDetailsViewModel {
             bestShotLabel = appLocalized("Best Shot")
             isBestShotUserSelected = false
             selectedAssetIDs = []
+            isReviewConfirmed = false
             reviewMode = .selection
             reviewStatus = .notReviewed
             estimatedSavingsBytes = 0
@@ -420,6 +458,7 @@ private extension ClusterDetailsViewModel {
                 bestShotAssetID: fallbackBestShotID,
                 isBestShotUserSelected: false,
                 selectedAssetIDs: [],
+                isReviewConfirmed: false,
                 reviewMode: .selection,
                 persistedStatus: nil
             )
@@ -441,6 +480,7 @@ private extension ClusterDetailsViewModel {
             bestShotAssetID: persistedBestShotID,
             isBestShotUserSelected: isPersistedBestShotAvailable && savedState.isBestShotUserSelected,
             selectedAssetIDs: filteredSelection,
+            isReviewConfirmed: savedState.isReviewConfirmed,
             reviewMode: savedState.mode,
             persistedStatus: savedState.status
         )
@@ -494,6 +534,7 @@ private extension ClusterDetailsViewModel {
         bestShotAssetID: String,
         isBestShotUserSelected: Bool,
         selectedAssetIDs: Set<String>,
+        isReviewConfirmed: Bool,
         reviewMode _: ClusterReviewMode,
         persistedStatus: ClusterReviewStatus?
     ) {
@@ -504,9 +545,13 @@ private extension ClusterDetailsViewModel {
         )
         self.isBestShotUserSelected = isBestShotUserSelected
         self.selectedAssetIDs = selectedAssetIDs
+        self.isReviewConfirmed = isReviewConfirmed
         self.reviewMode = .selection
         refreshDerivedState()
+        // A rescan that changed the cluster outranks the stored confirmation:
+        // the user has not seen this set of photos yet.
         if persistedStatus == .needsReReview {
+            self.isReviewConfirmed = false
             reviewStatus = .needsReReview
             estimatedSavingsBytes = 0
         }
@@ -520,6 +565,7 @@ private extension ClusterDetailsViewModel {
                 partialResult += snapshot.estimatedCleanupBytes
             }
         reviewStatus = Self.reviewStatus(
+            isReviewConfirmed: isReviewConfirmed,
             selectedAssetIDs: selectedAssetIDs,
             assetCount: assetSnapshots.count,
             bestShotAssetID: bestShotAssetID
@@ -564,6 +610,7 @@ private extension ClusterDetailsViewModel {
             bestShotLocalIdentifier: bestShotAssetID,
             isBestShotUserSelected: isBestShotUserSelected,
             selectedLocalIdentifiers: selectedAssetIDs,
+            isReviewConfirmed: isReviewConfirmed,
             mode: reviewMode,
             status: reviewStatus,
             estimatedSavingsBytes: estimatedSavingsBytes,
@@ -585,16 +632,17 @@ private extension ClusterDetailsViewModel {
         return task
     }
 
+    /// A cluster is reviewed once the user says so, not once only one photo is
+    /// left: keeping two of five is as final a decision as keeping one.
     static func reviewStatus(
+        isReviewConfirmed: Bool,
         selectedAssetIDs: Set<String>,
         assetCount: Int,
         bestShotAssetID: String
     ) -> ClusterReviewStatus {
-        guard !selectedAssetIDs.isEmpty else { return .notReviewed }
-        guard assetCount > 1, !bestShotAssetID.isEmpty else { return .notReviewed }
-
-        let expectedSelectionCount = max(assetCount - 1, 0)
-        return selectedAssetIDs.count == expectedSelectionCount ? .reviewed : .inReview
+        guard assetCount > 0, !bestShotAssetID.isEmpty else { return .notReviewed }
+        guard !isReviewConfirmed else { return .reviewed }
+        return selectedAssetIDs.isEmpty ? .notReviewed : .inReview
     }
 
     static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
