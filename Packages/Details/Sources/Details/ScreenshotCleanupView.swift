@@ -88,7 +88,7 @@ public struct ScreenshotCleanupView: View {
             }
         }
         .fullScreenCover(item: $selectedAsset) { selection in
-            ScreenshotFullscreenPhotoPagerView(assets: assets, selectedIndex: selection.index)
+            FullscreenPhotoPagerView(assets: assets, selectedIndex: selection.index)
         }
         .sheet(item: $presentedPremiumFeature) { _ in
             SubscriptionPaywallView(
