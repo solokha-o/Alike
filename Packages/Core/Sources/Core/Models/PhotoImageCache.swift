@@ -58,10 +58,6 @@ final class PhotoImageCache {
         )
     }
 
-    func removeAll() {
-        cache.removeAllObjects()
-    }
-
     private func imageCacheCost(_ image: UIImage) -> Int {
         if let cgImage = image.cgImage {
             return PhotoImageCacheCostPolicy.byteCost(
