@@ -1,5 +1,8 @@
 import CoreGraphics
 import XCTest
+#if canImport(UIKit)
+import UIKit
+#endif
 @testable import PhotoAnalysis
 
 final class BlurAnalysisServiceTests: XCTestCase {
@@ -125,6 +128,37 @@ final class BlurAnalysisServiceTests: XCTestCase {
 
         XCTAssertGreaterThan(sharpScore, blurredScore)
     }
+
+    #if canImport(UIKit)
+    func testThumbnailRequestStateCancellationBeforeInstallResumesExactlyOnce() async {
+        let state = BlurThumbnailRequestState()
+        state.cancel()
+
+        do {
+            _ = try await withCheckedThrowingContinuation { continuation in
+                XCTAssertFalse(state.install(continuation))
+                state.timeout()
+            } as CGImage?
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testThumbnailRequestStateTimeoutReturnsNilExactlyOnce() async throws {
+        let state = BlurThumbnailRequestState()
+
+        let image = try await withCheckedThrowingContinuation { continuation in
+            XCTAssertTrue(state.install(continuation))
+            state.timeout()
+            state.finish(.success(nil))
+        } as CGImage?
+
+        XCTAssertNil(image)
+    }
+    #endif
 
     private func makeStripedImage() -> CGImage? {
         let width = 64

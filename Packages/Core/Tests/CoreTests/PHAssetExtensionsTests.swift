@@ -113,4 +113,35 @@ final class PHAssetExtensionsTests: XCTestCase {
         // Just verify it doesn't crash
         XCTAssertTrue(true, "Should handle video asset gracefully")
     }
+
+    // MARK: - PhotoKitRequestCoordinator Timeout/Cancellation Tests
+
+    func testRequestCoordinatorCancellationBeforeInstallResumesExactlyOnce() async {
+        let coordinator = PhotoKitRequestCoordinator<Data?>(manager: .default())
+        coordinator.cancel()
+
+        do {
+            _ = try await withCheckedThrowingContinuation { continuation in
+                XCTAssertFalse(coordinator.install(continuation))
+                coordinator.timeout()
+            } as Data?
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testRequestCoordinatorTimeoutResolvesNilExactlyOnce() async throws {
+        let coordinator = PhotoKitRequestCoordinator<Data?>(manager: .default())
+
+        let data = try await withCheckedThrowingContinuation { continuation in
+            XCTAssertTrue(coordinator.install(continuation))
+            coordinator.timeout()
+            coordinator.finish(with: .success(Data([1])))
+        } as Data?
+
+        XCTAssertNil(data)
+    }
 }

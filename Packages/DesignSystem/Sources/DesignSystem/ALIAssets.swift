@@ -90,6 +90,24 @@ public enum ALIAssets {
         }
     }
 
+    /// Available runtime exports for Scanner states that need user attention.
+    public enum ScannerIssueScale: Sendable {
+        case oneX
+        case twoX
+        case threeX
+
+        fileprivate var resourceName: String {
+            switch self {
+            case .oneX:
+                "ALIScannerIssue"
+            case .twoX:
+                "ALIScannerIssue@2x"
+            case .threeX:
+                "ALIScannerIssue@3x"
+            }
+        }
+    }
+
     /// Available runtime exports for the comparison-review illustration.
     public enum ComparisonReviewScale: Sendable {
         case oneX
@@ -196,6 +214,24 @@ public enum ALIAssets {
             named: "ALIScannerSearchingOverlay",
             extension: "json",
             subdirectory: "ScannerSearching"
+        )
+    }
+
+    /// Returns a transparent PNG for a Scanner state that needs user attention.
+    public static func scannerIssueURL(for scale: ScannerIssueScale) -> URL {
+        resourceURL(
+            named: scale.resourceName,
+            extension: "png",
+            subdirectory: "ScannerIssue"
+        )
+    }
+
+    /// Safely resolves Scanner issue artwork for fallback-capable reaction surfaces.
+    public static func optionalScannerIssueURL(for scale: ScannerIssueScale) -> URL? {
+        optionalResourceURL(
+            named: scale.resourceName,
+            extension: "png",
+            subdirectory: "ScannerIssue"
         )
     }
 

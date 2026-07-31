@@ -10,7 +10,6 @@ public final class SettingsViewModel {
     public let gridConfig: GridConfiguration
     public let appVersion: String
     public var reviewTrigger: Int = 0
-    public private(set) var cleanupInsights: CleanupInsights = .empty
     public private(set) var cleanupReminderState = CleanupReminderState(
         isEnabled: false,
         authorizationStatus: .notDetermined,
@@ -20,7 +19,6 @@ public final class SettingsViewModel {
     public private(set) var isUpdatingCleanupReminder = false
     public private(set) var cleanupReminderErrorMessage: String?
 
-    private let cleanupInsightsProvider: any CleanupInsightsProviding
     private let cleanupReminderManager: any CleanupReminderManaging
     private var cleanupReminderMutationTask: Task<Void, Never>?
     private var cleanupReminderMutationGeneration = 0
@@ -28,12 +26,10 @@ public final class SettingsViewModel {
     public init(
         gridConfig: GridConfiguration = GridConfiguration.current,
         appVersion: String = SettingsViewModel.fullAppVersion(),
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         cleanupReminderManager: (any CleanupReminderManaging)? = nil
     ) {
         self.gridConfig = gridConfig
         self.appVersion = appVersion
-        self.cleanupInsightsProvider = CleanupInsightsService(repository: cleanupHistoryRepository)
         self.cleanupReminderManager = cleanupReminderManager
             ?? CleanupReminderManager(
                 preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
@@ -51,17 +47,6 @@ public final class SettingsViewModel {
     
     public func rescanRequiredAfterSensitivityChange() -> Bool {
         true
-    }
-
-    public func loadCleanupInsights() async {
-        do {
-            cleanupInsights = try await cleanupInsightsProvider.loadInsights()
-        } catch {
-            AppLog.storage.error(
-                "\(AppLog.tag(.error, "Failed to load cleanup insights in settings: \(error.localizedDescription)"))"
-            )
-            cleanupInsights = .empty
-        }
     }
 
     public func loadCleanupReminderState(isPremiumUnlocked: Bool) async {

@@ -12,6 +12,7 @@ final class ScreenshotCleanupViewModel {
     private let cleanupHistoryRepository: CleanupHistoryRepository
     private let premiumAccess: any PremiumAccessControlling
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
+    private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshots: [ReviewAssetSnapshot]
     let sourceCategory: CleanupCategoryKind
 
@@ -30,12 +31,16 @@ final class ScreenshotCleanupViewModel {
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        assetSnapshots: [ReviewAssetSnapshot]? = nil
+        assetSnapshots: [ReviewAssetSnapshot]? = nil,
+        completionDelay: @escaping @MainActor @Sendable () async -> Void = {
+            try? await Task.sleep(for: .seconds(2))
+        }
     ) {
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
+        self.completionDelay = completionDelay
         self.assetSnapshots = assetSnapshots ?? assets.map(ReviewAssetSnapshot.init)
         self.sourceCategory = sourceCategory
         self.selectedAssetIDs = []
@@ -56,6 +61,16 @@ final class ScreenshotCleanupViewModel {
 
     var estimatedSavingsText: String {
         ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
+    }
+
+    var maximumEstimatedSavingsBytes: Int64 {
+        assetSnapshots.reduce(into: Int64(0)) { partialResult, snapshot in
+            partialResult += snapshot.estimatedCleanupBytes
+        }
+    }
+
+    var maximumEstimatedSavingsText: String {
+        ByteCountFormatter.string(fromByteCount: maximumEstimatedSavingsBytes, countStyle: .file)
     }
 
     var isDeleteActionVisible: Bool {
@@ -158,6 +173,7 @@ final class ScreenshotCleanupViewModel {
                 )
             }
 
+            await completionDelay()
             pendingCompletionRecord = record
         } catch let cleanupError as PhotoCleanupError {
             handleDeleteError(cleanupError)

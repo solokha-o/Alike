@@ -173,13 +173,22 @@ public protocol PhotoAnalysisService: Sendable {
     func summarizeCleanupCategories() async throws -> [CleanupCategorySummary]
 
     /// Recompute cleanup categories and persist the refreshed snapshots.
-    func refreshCleanupCategories() async throws -> [CleanupCategorySummary]
+    func refreshCleanupCategories(
+        progress: @Sendable @escaping (Double) -> Void
+    ) async throws -> [CleanupCategorySummary]
 
     /// Load live assets for the requested cleanup category.
     func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset]
     
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float
+}
+
+public extension PhotoAnalysisService {
+    /// Recompute cleanup categories without observing intermediate progress.
+    func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
+        try await refreshCleanupCategories(progress: { _ in })
+    }
 }
 
 /// Manager for photo library permissions

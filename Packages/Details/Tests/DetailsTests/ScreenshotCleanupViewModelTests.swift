@@ -26,6 +26,12 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
     }
 
+    func testMaximumEstimatedSavingsIncludesEveryAsset() {
+        let viewModel = makeViewModel()
+
+        XCTAssertEqual(viewModel.maximumEstimatedSavingsBytes, 150)
+    }
+
     func testSelectAllAndClearSelection() {
         let viewModel = makeViewModel()
 
@@ -136,19 +142,53 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         XCTAssertEqual(entries, [expectedRecord])
     }
 
+    func testBlurredPhotoCompletionWaitsForDelayBeforePublishing() async {
+        let expectedRecord = CleanupCompletionRecord(
+            sourceClusterID: CleanupCategoryKind.blurredPhotos.sourceClusterID,
+            deletedCount: 2,
+            estimatedSavingsBytes: 150
+        )
+        let suspendedDelay = SuspendedScreenshotCleanupCompletionDelay()
+        await cleanupService.setDeleteAssetsResult(.success(expectedRecord))
+        let viewModel = makeViewModel(
+            sourceCategory: .blurredPhotos,
+            premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup]),
+            completionDelay: { await suspendedDelay.wait() }
+        )
+        viewModel.selectAll()
+
+        let deleteTask = Task { await viewModel.confirmDelete() }
+        await suspendedDelay.waitUntilStarted()
+
+        let lastSource = await cleanupService.lastSourceClusterID
+        XCTAssertEqual(lastSource, CleanupCategoryKind.blurredPhotos.sourceClusterID)
+        XCTAssertNil(viewModel.pendingCompletionRecord)
+        XCTAssertTrue(viewModel.isDeleting)
+
+        await suspendedDelay.finish()
+        await deleteTask.value
+
+        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
+        XCTAssertFalse(viewModel.isDeleting)
+    }
+
     private func makeViewModel(
+        sourceCategory: CleanupCategoryKind = .screenshots,
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController()
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ScreenshotCleanupViewModel {
         ScreenshotCleanupViewModel(
             assets: [],
+            sourceCategory: sourceCategory,
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
             assetSnapshots: [
                 snapshot(id: "one", area: 200),
                 snapshot(id: "two", area: 100)
-            ]
+            ],
+            completionDelay: completionDelay
         )
     }
 
@@ -160,6 +200,29 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
             pixelHeight: 1,
             creationDate: nil
         )
+    }
+}
+
+private actor SuspendedScreenshotCleanupCompletionDelay {
+    private var continuation: CheckedContinuation<Void, Never>?
+    private var didStart = false
+
+    func wait() async {
+        didStart = true
+        await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func waitUntilStarted() async {
+        while !didStart {
+            await Task.yield()
+        }
+    }
+
+    func finish() {
+        continuation?.resume()
+        continuation = nil
     }
 }
 

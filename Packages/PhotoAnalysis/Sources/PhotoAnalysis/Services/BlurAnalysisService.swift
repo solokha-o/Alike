@@ -29,6 +29,7 @@ enum BlurAnalysisTaskPool {
     static func compactMap<Input: Sendable, Output: Sendable>(
         _ inputs: [Input],
         maxConcurrentTasks: Int,
+        progress: @Sendable @escaping (Double) -> Void = { _ in },
         operation: @escaping @Sendable (Input) async throws -> Output?
     ) async throws -> [Output] {
         guard !inputs.isEmpty else { return [] }
@@ -40,6 +41,7 @@ enum BlurAnalysisTaskPool {
             var results: [IndexedBlurAnalysisResult<Output>] = []
             results.reserveCapacity(inputs.count)
             var nextIndex = 0
+            var completedCount = 0
 
             func addTask(at index: Int) {
                 let input = inputs[index]
@@ -67,6 +69,8 @@ enum BlurAnalysisTaskPool {
 
             while let result = try await group.next() {
                 results.append(result)
+                completedCount += 1
+                progress(Double(completedCount) / Double(inputs.count))
                 if nextIndex < inputs.count {
                     addTask(at: nextIndex)
                     nextIndex += 1
@@ -175,17 +179,20 @@ struct BlurAnalysisService: Sendable {
     private static let maxConcurrentTasks = 4
 
     private let scorer: BlurSharpnessScorer
-    private let imageProvider: @MainActor @Sendable (PHAsset, CGSize) async throws -> CGImage?
+    private let imageProvider: @Sendable (PHAsset, CGSize) async throws -> CGImage?
 
     init(
         scorer: BlurSharpnessScorer = BlurSharpnessScorer(),
-        imageProvider: @escaping @MainActor @Sendable (PHAsset, CGSize) async throws -> CGImage? = Self.defaultImageProvider
+        imageProvider: @escaping @Sendable (PHAsset, CGSize) async throws -> CGImage? = Self.defaultImageProvider
     ) {
         self.scorer = scorer
         self.imageProvider = imageProvider
     }
 
-    func makeSnapshot(from assets: [PHAsset]) async throws -> CleanupCategorySnapshot? {
+    func makeSnapshot(
+        from assets: [PHAsset],
+        progress: @Sendable @escaping (Double) -> Void = { _ in }
+    ) async throws -> CleanupCategorySnapshot? {
         let workItems = assets.compactMap { asset -> BlurAnalysisWorkItem? in
             guard !asset.mediaSubtypes.contains(.photoScreenshot), !asset.isFavorite else {
                 return nil
@@ -201,7 +208,8 @@ struct BlurAnalysisService: Sendable {
         let scorer = self.scorer
         let candidates: [BlurAnalysisCandidate] = try await BlurAnalysisTaskPool.compactMap(
             workItems,
-            maxConcurrentTasks: Self.maxConcurrentTasks
+            maxConcurrentTasks: Self.maxConcurrentTasks,
+            progress: progress
         ) { workItem in
             guard let image = try await imageProvider(workItem.asset, Self.thumbnailTargetSize) else {
                 return nil
@@ -246,7 +254,6 @@ private struct GrayscalePixels: Sendable {
 }
 
 private extension BlurAnalysisService {
-    @MainActor
     static func defaultImageProvider(asset: PHAsset, targetSize: CGSize) async throws -> CGImage? {
         #if canImport(UIKit)
         let requestState = BlurThumbnailRequestState()
@@ -260,6 +267,7 @@ private extension BlurAnalysisService {
                 options.isNetworkAccessAllowed = false
                 options.isSynchronous = false
 
+                requestState.startTimeout()
                 let requestID = PHImageManager.default().requestImage(
                     for: asset,
                     targetSize: targetSize,
@@ -290,10 +298,11 @@ private extension BlurAnalysisService {
 }
 
 #if canImport(UIKit)
-private final class BlurThumbnailRequestState: @unchecked Sendable {
+final class BlurThumbnailRequestState: @unchecked Sendable {
     private struct State {
         var requestID = PHInvalidImageRequestID
         var continuation: CheckedContinuation<CGImage?, Error>?
+        var timeoutTask: Task<Void, Never>?
         var isCancelled = false
         var isFinished = false
     }
@@ -302,8 +311,7 @@ private final class BlurThumbnailRequestState: @unchecked Sendable {
 
     func install(_ continuation: CheckedContinuation<CGImage?, Error>) -> Bool {
         let shouldStart = state.withLock { state in
-            guard !state.isCancelled else {
-                state.isFinished = true
+            guard !state.isCancelled, !state.isFinished else {
                 return false
             }
             state.continuation = continuation
@@ -319,7 +327,7 @@ private final class BlurThumbnailRequestState: @unchecked Sendable {
     func setRequestID(_ requestID: PHImageRequestID) {
         let shouldCancel = state.withLock { state in
             state.requestID = requestID
-            return state.isCancelled
+            return state.isCancelled || state.isFinished
         }
         if shouldCancel {
             PHImageManager.default().cancelImageRequest(requestID)
@@ -327,33 +335,80 @@ private final class BlurThumbnailRequestState: @unchecked Sendable {
     }
 
     func finish(_ result: Result<CGImage?, Error>) {
-        let continuation = state.withLock { state -> CheckedContinuation<CGImage?, Error>? in
+        let completion = state.withLock { state -> (CheckedContinuation<CGImage?, Error>?, Task<Void, Never>?)? in
             guard !state.isFinished else { return nil }
             state.isFinished = true
-            defer { state.continuation = nil }
-            return state.continuation
+            defer {
+                state.continuation = nil
+                state.timeoutTask = nil
+            }
+            return (state.continuation, state.timeoutTask)
         }
-        continuation?.resume(with: result)
+        completion?.1?.cancel()
+        completion?.0?.resume(with: result)
     }
 
     func cancel() {
         let cancellation = state.withLock { state -> (
             PHImageRequestID,
-            CheckedContinuation<CGImage?, Error>?
+            CheckedContinuation<CGImage?, Error>?,
+            Task<Void, Never>?
         ) in
             state.isCancelled = true
             guard !state.isFinished else {
-                return (state.requestID, nil)
+                return (state.requestID, nil, nil)
             }
             state.isFinished = true
-            defer { state.continuation = nil }
-            return (state.requestID, state.continuation)
+            defer {
+                state.continuation = nil
+                state.timeoutTask = nil
+            }
+            return (state.requestID, state.continuation, state.timeoutTask)
         }
 
         if cancellation.0 != PHInvalidImageRequestID {
             PHImageManager.default().cancelImageRequest(cancellation.0)
         }
+        cancellation.2?.cancel()
         cancellation.1?.resume(throwing: CancellationError())
+    }
+
+    func timeout() {
+        let timeout = state.withLock { state -> (
+            PHImageRequestID,
+            CheckedContinuation<CGImage?, Error>?,
+            Task<Void, Never>?
+        ) in
+            guard !state.isFinished else {
+                return (state.requestID, nil, nil)
+            }
+            state.isFinished = true
+            defer {
+                state.continuation = nil
+                state.timeoutTask = nil
+            }
+            return (state.requestID, state.continuation, state.timeoutTask)
+        }
+
+        if timeout.0 != PHInvalidImageRequestID {
+            PHImageManager.default().cancelImageRequest(timeout.0)
+        }
+        timeout.2?.cancel()
+        timeout.1?.resume(returning: nil)
+    }
+
+    func startTimeout() {
+        let timeoutTask = Task.detached { [weak self] in
+            try? await Task.sleep(for: .seconds(15))
+            guard !Task.isCancelled else { return }
+            self?.timeout()
+        }
+        let shouldCancel = state.withLock { state in
+            guard !state.isFinished else { return true }
+            state.timeoutTask = timeoutTask
+            return false
+        }
+        if shouldCancel { timeoutTask.cancel() }
     }
 }
 #endif

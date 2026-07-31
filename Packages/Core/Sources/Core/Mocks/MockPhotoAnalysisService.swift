@@ -18,6 +18,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var lastSensitivity: Float?
     public var lastLoadedCategory: CleanupCategoryKind?
     public var lastProgressCallback: ((Double) -> Void)?
+    public var lastCleanupCategoryProgressCallback: ((Double) -> Void)?
     
     public init() {}
     
@@ -88,8 +89,13 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         }
     }
 
-    public func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
+    public func refreshCleanupCategories(
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
         didCallRefreshCleanupCategories = true
+        lastCleanupCategoryProgressCallback = progress
+        progress(0)
+        progress(1)
 
         switch refreshCleanupCategoriesResult {
         case .success(let summaries):

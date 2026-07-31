@@ -14,14 +14,14 @@ public struct VisionFeaturePrintService: Sendable {
     private static let progressEpsilon = 0.01
     private static let progressReportInterval: Duration = .milliseconds(400)
     private static let maxConcurrentTasks = min(
-        8,
+        4,
         max(2, ProcessInfo.processInfo.activeProcessorCount)
     )
     
     public init() {}
     
     /// Generate feature print for a single asset
-    public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
+    nonisolated public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
         try Task.checkCancellation()
 
         #if canImport(UIKit)
@@ -39,7 +39,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Generate feature print from CGImage
-    func generateFeaturePrint(
+    nonisolated func generateFeaturePrint(
         from cgImage: CGImage,
         orientation: CGImagePropertyOrientation = .up
     ) async throws -> VNFeaturePrintObservation? {
@@ -58,7 +58,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Calculate distance between two feature prints (lower = more similar)
-    public func computeDistance(
+    nonisolated public func computeDistance(
         between observation1: VNFeaturePrintObservation,
         and observation2: VNFeaturePrintObservation
     ) throws -> Float {
@@ -68,7 +68,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Batch process multiple assets
-    public func generateFeaturePrints(
+    nonisolated public func generateFeaturePrints(
         for assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] {
@@ -160,107 +160,197 @@ private struct FeaturePrintTaskResult: @unchecked Sendable {
 
 #if canImport(UIKit)
 
-private struct ThumbnailCGImage {
+struct ThumbnailCGImage {
     let cgImage: CGImage
     let orientation: CGImagePropertyOrientation
 }
 
 private extension VisionFeaturePrintService {
-    func loadThumbnailCGImage(
+    static let thumbnailRequestQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "com.alike.photo-analysis.thumbnail-requests"
+        queue.qualityOfService = .userInitiated
+        queue.maxConcurrentOperationCount = 4
+        return queue
+    }()
+
+    nonisolated func loadThumbnailCGImage(
         for asset: PHAsset,
         targetSize: CGSize
     ) async throws -> ThumbnailCGImage? {
-        try await withCheckedThrowingContinuation { continuation in
-            let didResume = OSAllocatedUnfairLock(initialState: false)
-            let requestId = OSAllocatedUnfairLock(initialState: PHInvalidImageRequestID)
+        let requestState = FeaturePrintThumbnailRequestState()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { continuation in
+                guard requestState.install(continuation) else { return }
+                requestState.startTimeout()
+                Self.thumbnailRequestQueue.addOperation {
+                    guard requestState.beginRequest() else { return }
 
-            func resumeOnce(_ action: () -> Void) {
-                let shouldResume = didResume.withLock { state in
-                    if state { return false }
-                    state = true
-                    return true
-                }
-                guard shouldResume else { return }
-                action()
-            }
+                    let options = PHImageRequestOptions()
+                    options.deliveryMode = .fastFormat
+                    options.resizeMode = .fast
+                    // Avoid iCloud download/auth errors that can stall scans.
+                    options.isNetworkAccessAllowed = false
+                    // PhotoKit runs this handler before requestImage returns. Keep this
+                    // synchronous work on the bounded operation queue, never MainActor
+                    // or a cooperative task-group thread.
+                    options.isSynchronous = true
 
-            let options = PHImageRequestOptions()
-            options.deliveryMode = .fastFormat
-            options.resizeMode = .fast
-            // Avoid iCloud download/auth errors that can stall scans.
-            options.isNetworkAccessAllowed = false
-            options.isSynchronous = true
-
-            Task { @MainActor in
-                let id = PHImageManager.default().requestImageDataAndOrientation(
-                    for: asset,
-                    options: options
-                ) { data, _, orientation, info in
-                    if let error = info?[PHImageErrorKey] as? Error {
-                        let nsError = error as NSError
-                        if Self.shouldSkipImageDataRequest(for: nsError) {
-                            resumeOnce { continuation.resume(returning: nil) }
-                        } else {
-                            AppLog.photoKit.error(
-                                "\(AppLog.tag(.error, "Image data request error: \(error.localizedDescription)"))"
-                            )
-                            resumeOnce { continuation.resume(throwing: error) }
+                    let requestID = PHImageManager.default().requestImage(
+                        for: asset,
+                        targetSize: targetSize,
+                        contentMode: .aspectFit,
+                        options: options
+                    ) { image, info in
+                        if let error = info?[PHImageErrorKey] as? Error {
+                            let nsError = error as NSError
+                            if Self.shouldSkipImageDataRequest(for: nsError) {
+                                requestState.finish(.success(nil))
+                            } else {
+                                AppLog.photoKit.error(
+                                    "\(AppLog.tag(.error, "Image request error: \(error.localizedDescription)"))"
+                                )
+                                requestState.finish(.failure(error))
+                            }
+                            return
                         }
-                        return
-                    }
 
-                    let cancelled = (info?[PHImageCancelledKey] as? Bool) ?? false
-                    if cancelled {
-                        resumeOnce { continuation.resume(returning: nil) }
-                        return
-                    }
+                        if (info?[PHImageCancelledKey] as? Bool) == true
+                            || (info?[PHImageResultIsInCloudKey] as? Bool) == true {
+                            requestState.finish(.success(nil))
+                            return
+                        }
 
-                    let isInCloud = (info?[PHImageResultIsInCloudKey] as? Bool) ?? false
-                    if isInCloud {
-                        resumeOnce { continuation.resume(returning: nil) }
-                        return
-                    }
+                        guard let cgImage = image?.cgImage else {
+                            requestState.finish(.success(nil))
+                            return
+                        }
 
-                    guard let data,
-                          let source = CGImageSourceCreateWithData(data as CFData, nil) else {
-                        resumeOnce { continuation.resume(returning: nil) }
-                        return
-                    }
-
-                    let thumbOptions: [CFString: Any] = [
-                        kCGImageSourceCreateThumbnailFromImageAlways: true,
-                        kCGImageSourceThumbnailMaxPixelSize: max(targetSize.width, targetSize.height),
-                        kCGImageSourceCreateThumbnailWithTransform: true
-                    ]
-
-                    guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbOptions as CFDictionary) else {
-                        resumeOnce { continuation.resume(returning: nil) }
-                        return
-                    }
-
-                    resumeOnce {
-                        continuation.resume(
-                            returning: ThumbnailCGImage(
-                                cgImage: cgImage,
-                                orientation: orientation
+                        requestState.finish(
+                            .success(
+                                ThumbnailCGImage(
+                                    cgImage: cgImage,
+                                    orientation: CGImagePropertyOrientation(image?.imageOrientation ?? .up)
+                                )
                             )
                         )
                     }
+                    requestState.setRequestID(requestID)
                 }
-                requestId.withLock { $0 = id }
             }
-
-            Task.detached {
-                try? await Task.sleep(nanoseconds: 15_000_000_000)
-                let alreadyResumed = didResume.withLock { $0 }
-                guard !alreadyResumed else { return }
-                let id = requestId.withLock { $0 }
-                if id != PHInvalidImageRequestID {
-                    PHImageManager.default().cancelImageRequest(id)
-                }
-                resumeOnce { continuation.resume(returning: nil) }
-            }
+        } onCancel: {
+            requestState.cancel()
         }
+    }
+
+}
+
+final class FeaturePrintThumbnailRequestState: @unchecked Sendable {
+    private struct State {
+        var requestID = PHInvalidImageRequestID
+        var continuation: CheckedContinuation<ThumbnailCGImage?, Error>?
+        var timeoutTask: Task<Void, Never>?
+        var isCancelled = false
+        var isFinished = false
+    }
+
+    private let state = OSAllocatedUnfairLock(initialState: State())
+
+    func install(_ continuation: CheckedContinuation<ThumbnailCGImage?, Error>) -> Bool {
+        let shouldStart = state.withLock { state in
+            guard !state.isCancelled, !state.isFinished else {
+                return false
+            }
+            state.continuation = continuation
+            return true
+        }
+        if !shouldStart {
+            continuation.resume(throwing: CancellationError())
+        }
+        return shouldStart
+    }
+
+    func setRequestID(_ requestID: PHImageRequestID) {
+        let shouldCancel = state.withLock { state in
+            state.requestID = requestID
+            return state.isCancelled || state.isFinished
+        }
+        if shouldCancel { PHImageManager.default().cancelImageRequest(requestID) }
+    }
+
+    /// Returns false when cancellation or timeout completed the continuation
+    /// while this request was still waiting in the bounded operation queue.
+    func beginRequest() -> Bool {
+        state.withLock { state in
+            !state.isCancelled && !state.isFinished
+        }
+    }
+
+    func finish(_ result: Result<ThumbnailCGImage?, Error>) {
+        let completion = state.withLock { state -> (CheckedContinuation<ThumbnailCGImage?, Error>?, Task<Void, Never>?)? in
+            guard !state.isFinished else { return nil }
+            state.isFinished = true
+            defer {
+                state.continuation = nil
+                state.timeoutTask = nil
+            }
+            return (state.continuation, state.timeoutTask)
+        }
+        completion?.1?.cancel()
+        completion?.0?.resume(with: result)
+    }
+
+    func cancel() {
+        finishAndCancel(error: CancellationError())
+    }
+
+    func timeout() {
+        if finishAndCancel(result: .success(nil)) {
+            AppLog.photoKit.error(
+                "\(AppLog.tag(.error, "Thumbnail request timed out after 15 seconds"))"
+            )
+        }
+    }
+
+    func startTimeout() {
+        let timeoutTask = Task.detached { [weak self] in
+            try? await Task.sleep(for: .seconds(15))
+            guard !Task.isCancelled else { return }
+            self?.timeout()
+        }
+        let shouldCancel = state.withLock { state in
+            guard !state.isFinished else { return true }
+            state.timeoutTask = timeoutTask
+            return false
+        }
+        if shouldCancel { timeoutTask.cancel() }
+    }
+
+    private func finishAndCancel(error: Error) {
+        _ = finishAndCancel(result: .failure(error))
+    }
+
+    @discardableResult
+    private func finishAndCancel(result: Result<ThumbnailCGImage?, Error>) -> Bool {
+        let cancellation = state.withLock { state -> (Bool, PHImageRequestID, CheckedContinuation<ThumbnailCGImage?, Error>?, Task<Void, Never>?) in
+            guard !state.isFinished else { return (false, state.requestID, nil, nil) }
+            state.isFinished = true
+            if case .failure(let error) = result, error is CancellationError {
+                state.isCancelled = true
+            }
+            defer {
+                state.continuation = nil
+                state.timeoutTask = nil
+            }
+            return (true, state.requestID, state.continuation, state.timeoutTask)
+        }
+        guard cancellation.0 else { return false }
+        if cancellation.1 != PHInvalidImageRequestID {
+            PHImageManager.default().cancelImageRequest(cancellation.1)
+        }
+        cancellation.3?.cancel()
+        cancellation.2?.resume(with: result)
+        return true
     }
 }
 

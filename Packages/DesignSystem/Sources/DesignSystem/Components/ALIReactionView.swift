@@ -1,9 +1,35 @@
 import Core
 import SwiftUI
 
+@MainActor
+private final class ALIPlatformImageCache {
+    static let shared = ALIPlatformImageCache()
+
+#if canImport(UIKit)
+    private let images = NSCache<NSURL, UIImage>()
+
+    func image(at url: URL) -> UIImage? {
+        if let cached = images.object(forKey: url as NSURL) { return cached }
+        guard let image = UIImage(contentsOfFile: url.path) else { return nil }
+        images.setObject(image, forKey: url as NSURL)
+        return image
+    }
+#elseif canImport(AppKit)
+    private let images = NSCache<NSURL, NSImage>()
+
+    func image(at url: URL) -> NSImage? {
+        if let cached = images.object(forKey: url as NSURL) { return cached }
+        guard let image = NSImage(contentsOf: url) else { return nil }
+        images.setObject(image, forKey: url as NSURL)
+        return image
+    }
+#endif
+}
+
 public struct ALIReactionPresentation: Equatable, Sendable {
     public let kind: ALIReactionKind
     public let staticImageURL: URL?
+    public let fallbackStaticImageURL: URL?
     public let animationURL: URL?
     public let fallbackSystemImageName: String
     public let playback: OverlayAnimationPlayback
@@ -26,13 +52,14 @@ public struct ALIReactionPresentation: Equatable, Sendable {
             return Self(
                 kind: .idle,
                 staticImageURL: ALIAssets.optionalScannerIdleURL(for: idleState, scale: imageScale),
+                fallbackStaticImageURL: scannerReadyURL(for: imageScale),
                 animationURL: canPlay && !usesCalmStaticPresentation
                     ? ALIAssets.scannerIdleOverlayURL(for: idleState)
                     : nil,
                 fallbackSystemImageName: "photo.stack",
                 playback: .loop,
                 ambientMotion: canPlay && !usesCalmStaticPresentation ? .breathe : .none,
-                accessibilityLabel: appLocalized("ALI is ready to help organize your photo library")
+                accessibilityLabel: idleAccessibilityLabel(for: context)
             )
 
         case .scanning:
@@ -41,6 +68,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
                 staticImageURL: ALIAssets.optionalScannerSearchingURL(
                     for: scannerSearchingScale(for: displayScale)
                 ),
+                fallbackStaticImageURL: scannerReadyURL(for: imageScale),
                 animationURL: canPlay ? ALIAssets.scannerSearchingOverlayURL : nil,
                 fallbackSystemImageName: "camera.viewfinder",
                 playback: .loop,
@@ -62,6 +90,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
                     for: .allCaughtUp,
                     scale: imageScale
                 ),
+                fallbackStaticImageURL: scannerReadyURL(for: imageScale),
                 animationURL: nil,
                 fallbackSystemImageName: "checkmark.circle.fill",
                 playback: .once,
@@ -82,6 +111,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
                 staticImageURL: ALIAssets.cleanupSuccessURL(
                     for: cleanupSuccessScale(for: displayScale)
                 ),
+                fallbackStaticImageURL: nil,
                 animationURL: canPlay ? ALIAssets.cleanupSuccessOverlayURL : nil,
                 fallbackSystemImageName: "party.popper.fill",
                 playback: .once,
@@ -97,10 +127,17 @@ public struct ALIReactionPresentation: Equatable, Sendable {
             )
 
         case .recoverableError:
-            return nativeFallback(
+            return Self(
                 kind: .recoverableError,
-                symbol: "exclamationmark.triangle",
-                label: appLocalized("ALI could not complete the current operation")
+                staticImageURL: ALIAssets.optionalScannerIssueURL(
+                    for: scannerIssueScale(for: displayScale)
+                ),
+                fallbackStaticImageURL: scannerReadyURL(for: imageScale),
+                animationURL: nil,
+                fallbackSystemImageName: "exclamationmark.triangle",
+                playback: .once,
+                ambientMotion: .none,
+                accessibilityLabel: appLocalized("ALI looks concerned because the scan needs attention")
             )
         }
     }
@@ -113,6 +150,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         Self(
             kind: kind,
             staticImageURL: nil,
+            fallbackStaticImageURL: nil,
             animationURL: nil,
             fallbackSystemImageName: symbol,
             playback: kind == .scanning ? .loop : .once,
@@ -145,6 +183,35 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         case ..<1.5: .oneX
         case ..<2.5: .twoX
         default: .threeX
+        }
+    }
+
+    private static func scannerIssueScale(
+        for displayScale: CGFloat
+    ) -> ALIAssets.ScannerIssueScale {
+        switch displayScale {
+        case ..<1.5: .oneX
+        case ..<2.5: .twoX
+        default: .threeX
+        }
+    }
+
+    private static func scannerReadyURL(
+        for scale: ALIAssets.ScannerIdleScale
+    ) -> URL? {
+        ALIAssets.optionalScannerIdleURL(for: .ready, scale: scale)
+    }
+
+    private static func idleAccessibilityLabel(for context: ALIIdleContext) -> String {
+        switch context {
+        case .ready:
+            appLocalized("ALI is ready to help organize your photo library")
+        case .hasReviews:
+            appLocalized("ALI has cleanup opportunities ready for review")
+        case .allCaughtUp:
+            appLocalized("ALI says your photo library is all caught up")
+        case .libraryChanged:
+            appLocalized("ALI noticed new photos in your library")
         }
     }
 
@@ -193,27 +260,28 @@ public struct ALIReactionView: View {
 
     @ViewBuilder
     private var staticContent: some View {
-        if let url = presentation.staticImageURL {
-#if canImport(UIKit)
-            if let image = UIImage(contentsOfFile: url.path) {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                fallbackImage
-            }
-#elseif canImport(AppKit)
-            if let image = NSImage(contentsOf: url) {
-                Image(nsImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                fallbackImage
-            }
-#endif
+        if let image = platformImage(at: presentation.staticImageURL) {
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else if let image = platformImage(at: presentation.fallbackStaticImageURL) {
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         } else {
             fallbackImage
         }
+    }
+
+    private func platformImage(at url: URL?) -> Image? {
+        guard let url else { return nil }
+#if canImport(UIKit)
+        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
+        return Image(uiImage: image)
+#elseif canImport(AppKit)
+        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
+        return Image(nsImage: image)
+#endif
     }
 
     private var fallbackImage: some View {

@@ -463,7 +463,7 @@ public struct WelcomeView: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 80, weight: .bold))
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(Color.statusReviewed, Color.statusSavings, .white)
+                .foregroundStyle(Color.statusReviewed, Color.statusSavings, .foreground)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
             
             Text(appLocalized("Access Granted"))

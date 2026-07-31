@@ -136,6 +136,104 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         XCTAssertEqual(loaded[second.clusterID], second)
     }
 
+    /// States written before the best-shot override flag existed must still
+    /// decode: a decoding failure here drops every cluster's review progress.
+    func testLoadsStatesPersistedBeforeBestShotOverrideFlag() async throws {
+        let clusterID = UUID()
+        let legacyJSON = """
+        {
+          "states": [
+            {
+              "clusterID": "\(clusterID.uuidString)",
+              "bestShotLocalIdentifier": "best",
+              "selectedLocalIdentifiers": ["candidate"],
+              "mode": "selection",
+              "status": "reviewed",
+              "estimatedSavingsBytes": 2048,
+              "updatedAt": 1000
+            }
+          ]
+        }
+        """
+        try Data(legacyJSON.utf8).write(to: fileURL)
+
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertEqual(loaded?.bestShotLocalIdentifier, "best")
+        XCTAssertEqual(loaded?.selectedLocalIdentifiers, ["candidate"])
+        XCTAssertEqual(loaded?.status, .reviewed)
+        XCTAssertEqual(loaded?.isBestShotUserSelected, false)
+    }
+
+    /// Reviews finished before the explicit confirmation existed were stored as
+    /// `.reviewed`, so they must come back confirmed instead of reopening.
+    func testLoadsReviewedStatePersistedBeforeConfirmationFlag() async throws {
+        let clusterID = UUID()
+        let legacyJSON = """
+        {
+          "states": [
+            {
+              "clusterID": "\(clusterID.uuidString)",
+              "bestShotLocalIdentifier": "best",
+              "selectedLocalIdentifiers": ["candidate"],
+              "mode": "selection",
+              "status": "reviewed",
+              "estimatedSavingsBytes": 2048,
+              "updatedAt": 1000
+            }
+          ]
+        }
+        """
+        try Data(legacyJSON.utf8).write(to: fileURL)
+
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertEqual(loaded?.isReviewConfirmed, true)
+    }
+
+    func testLoadsUnfinishedStatePersistedBeforeConfirmationFlag() async throws {
+        let clusterID = UUID()
+        let legacyJSON = """
+        {
+          "states": [
+            {
+              "clusterID": "\(clusterID.uuidString)",
+              "bestShotLocalIdentifier": "best",
+              "selectedLocalIdentifiers": ["candidate"],
+              "mode": "selection",
+              "status": "inReview",
+              "estimatedSavingsBytes": 2048,
+              "updatedAt": 1000
+            }
+          ]
+        }
+        """
+        try Data(legacyJSON.utf8).write(to: fileURL)
+
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+
+        XCTAssertEqual(loaded?.isReviewConfirmed, false)
+    }
+
+    func testSaveAndLoadUserSelectedBestShotRoundTrip() async throws {
+        let clusterID = UUID()
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "chosen",
+            isBestShotUserSelected: true,
+            selectedLocalIdentifiers: ["other"],
+            mode: .selection,
+            status: .reviewed,
+            estimatedSavingsBytes: 128
+        )
+
+        try await repository.saveReviewState(state)
+
+        let loaded = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertEqual(loaded, state)
+        XCTAssertEqual(loaded?.isBestShotUserSelected, true)
+    }
+
     func testCorruptedJSONReturnsEmptyStateMap() async throws {
         try Data("not-json".utf8).write(to: fileURL)
 

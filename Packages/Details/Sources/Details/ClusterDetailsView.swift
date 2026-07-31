@@ -8,28 +8,25 @@ import NavigationKit
 import Purchases
 import PurchasesUI
 
-struct ClusterGridLayoutPolicy: Equatable {
-    let columnCounts: ClosedRange<Int>
-    let defaultColumnCount: Int
-
-    static let compact = ClusterGridLayoutPolicy(columnCounts: 1...2, defaultColumnCount: 2)
-    static let regular = ClusterGridLayoutPolicy(columnCounts: 2...5, defaultColumnCount: 4)
-}
-
 #if os(iOS)
 
 /// Details screen showing all photos in a cluster
 public struct ClusterDetailsView: View {
+    fileprivate enum Constants {
+        static let hostReviewStateRefreshDebounce = Duration.milliseconds(250)
+    }
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let onReviewStateChanged: (() -> Void)?
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
 
     @State private var viewModel: ClusterDetailsViewModel
-    @State private var compactGridColumns = ClusterGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = ClusterGridLayoutPolicy.regular.defaultColumnCount
+    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
+    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
 
@@ -68,125 +65,51 @@ public struct ClusterDetailsView: View {
     }
 
     public var body: some View {
-        let displayedAssets = viewModel.displayedAssets
-        let gridColumns = selectedGridColumnCount
         ScrollView {
-            LazyVStack(spacing: Spacing.medium) {
-                if viewModel.isDeleting {
-                    ALICleanupProgressView(
-                        selectedCount: viewModel.selectedCount,
-                        estimatedSavingsText: viewModel.estimatedSavingsText,
-                        isExecuting: viewModel.isDeleting
-                    )
-                } else {
-                    if viewModel.hasAssets {
-                        ClusterReviewSummaryCard(
-                            assetCount: viewModel.assetCount,
-                            bestShotLabel: viewModel.bestShotLabel,
-                            selectedCount: viewModel.selectedCount,
-                            estimatedSavingsText: viewModel.estimatedSavingsText,
-                            reviewStatus: viewModel.reviewStatus,
-                            aliReactionCue: viewModel.currentALIReaction,
-                            bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
-                            onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
-                        )
-                    }
-
-                    if viewModel.requiresPremiumForCurrentSelection {
-                        BatchCleanupUpsellCard(
-                            selectedCount: viewModel.selectedCount,
-                            estimatedSavings: viewModel.estimatedSavingsText,
-                            onUpgrade: { presentedPremiumFeature = .batchCleanup },
-                            onContinueFree: {
-                                Task {
-                                    await viewModel.continueWithSingleFreeSelection()
-                                }
-                            }
-                        )
-                    }
-
-                    if !viewModel.hasAssets {
-                        ContentUnavailableView {
-                            Label(appLocalized("No Photos Available"), systemImage: "photo")
-                        }
-                        .padding(.top, 80)
-                    } else {
-                        LazyVGrid(
-                            columns: Array(
-                                repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
-                                count: gridColumns
-                            ),
-                            spacing: Spacing.xxSmall
-                        ) {
-                            ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                                SelectablePhotoThumbnail(
-                                    asset: asset,
-                                    thumbnailAspectRatio: 1,
-                                    isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                                    isSelected: viewModel.isSelected(asset.localIdentifier),
-                                    onToggleSelection: {
-                                        viewModel.toggleSelection(for: asset.localIdentifier)
-                                    },
-                                    onOpenOriginal: {
-                                        if let index = viewModel.assetIndex(for: asset.localIdentifier) {
-                                            selectedAsset = SelectedAsset(asset: asset, index: index)
-                                        }
-                                    }
-                                )
-                                .transition(
-                                    .asymmetric(
-                                        insertion: .scale(scale: 0.94).combined(with: .opacity),
-                                        removal: .scale(scale: 0.94).combined(with: .opacity)
-                                    )
-                                )
-                            }
-                        }
-                    }
-                }
+            if viewModel.hasLoadedReviewState {
+                loadedContent
+            } else {
+                ProgressView()
+                    .frame(maxWidth: .infinity, minHeight: 360)
             }
-            .padding(.horizontal, Spacing.medium)
-            .padding(.top, Spacing.small)
-            .padding(.bottom, Spacing.medium)
         }
         .frame(maxWidth: .infinity)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if viewModel.isActionBarVisible && !viewModel.isDeleting {
+            if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
                     selectedCount: viewModel.selectedCount,
-                    onSelectAllExceptBest: viewModel.selectAllExceptBest,
-                    onClearSelection: viewModel.clearSelection,
                     onDeleteSelected: requestDeleteConfirmation,
-                    isDeleteActionVisible: viewModel.isDeleteActionVisible,
                     isDeleting: viewModel.isDeleting
                 )
                 .padding(Spacing.xSmall)
+                .transition(actionBarTransition)
             }
         }
-        .animation(viewModel.hasLoadedReviewState ? .appSmooth : nil, value: displayedAssets.map(\.localIdentifier))
+        .animation(
+            viewModel.hasLoadedReviewState ? .appSmooth : nil,
+            value: viewModel.displayedAssetIdentifiers
+        )
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
+        .sensoryFeedback(.success, trigger: viewModel.bestShotAssetID)
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
-        .toolbar(.hidden, for: .tabBar)
+        // The tab bar stays visible on purpose: hiding it here removed and
+        // re-added the Cleanup scroll view's bottom safe-area inset on every
+        // push/pop, which clamped its content offset and lost the user's place.
         .toolbar {
             if !viewModel.isDeleting {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Picker(selection: selectedGridColumnBinding) {
-                            ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                                Text("\(count)").tag(count)
-                            }
-                        } label: {
-                            Text(appLocalized("Columns"))
-                        }
-                    } label: {
-                        Image(systemName: "square.grid.3x2")
+                if viewModel.isActionBarVisible {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        reviewToggle
                     }
-                    .accessibilityLabel(Text(appLocalized("Grid Columns")))
-                    .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    overflowMenu
                 }
             }
         }
@@ -234,6 +157,9 @@ public struct ClusterDetailsView: View {
         .task {
             await viewModel.load()
         }
+        .task(id: viewModel.persistedRevision) {
+            await notifyHostOfPersistedReviewState()
+        }
         .onChange(of: viewModel.pendingCompletionRecord) { _, record in
             guard let record else { return }
             onCleanupCompleted?(record)
@@ -241,14 +167,179 @@ public struct ClusterDetailsView: View {
         }
         .onDisappear {
             guard !viewModel.hasCompletedCleanup else { return }
-            onReviewStateChanged?()
+            Task {
+                await viewModel.awaitPendingPersistence()
+                onReviewStateChanged?()
+            }
         }
         .interactiveDismissDisabled(viewModel.isDeleting)
+    }
+
+    /// Finishing the review is a state the user flips, not a step in a flow, so
+    /// it reads as a toggle next to the title instead of a third button
+    /// competing with the destructive action at the bottom.
+    private var reviewToggle: some View {
+        Button {
+            viewModel.toggleReviewConfirmation()
+        } label: {
+            Image(systemName: viewModel.isReviewConfirmed ? "checkmark.seal.fill" : "checkmark.seal")
+                .symbolEffect(.bounce, value: reduceMotion ? false : viewModel.isReviewConfirmed)
+        }
+        .tint(viewModel.isReviewConfirmed ? Color.statusReviewed : nil)
+        .accessibilityLabel(Text(
+            viewModel.isReviewConfirmed
+                ? appLocalized("Reviewed")
+                : appLocalized("Mark Reviewed")
+        ))
+        .accessibilityValue(Text(viewModel.keepSummaryText))
+        .accessibilityHint(Text(reviewToggleHint))
+        .accessibilityAddTraits(viewModel.isReviewConfirmed ? [.isSelected] : [])
+    }
+
+    private var reviewToggleHint: String {
+        if viewModel.isReviewConfirmed {
+            return appLocalized("Double tap to reopen this cluster for review")
+        }
+        return viewModel.selectedCount == 0
+            ? appLocalized("Finishes the review and keeps every photo in this cluster")
+            : appLocalized("Finishes the review and keeps the photos you did not select")
+    }
+
+    /// Two labelled sections instead of one flat list: acting on the selection
+    /// and changing how the grid looks are different jobs, and the column
+    /// options stay folded into a submenu so they never outnumber the actions.
+    private var overflowMenu: some View {
+        Menu {
+            if viewModel.isActionBarVisible {
+                Section(appLocalized("Selection")) {
+                    Button {
+                        viewModel.selectAllExceptBest()
+                    } label: {
+                        Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
+                    }
+
+                    if viewModel.selectedCount > 0 {
+                        Button {
+                            viewModel.clearSelection()
+                        } label: {
+                            Label(appLocalized("Clear Selection"), systemImage: "xmark.circle")
+                        }
+                    }
+                }
+            }
+
+            Section(appLocalized("View")) {
+                Picker(selection: selectedGridColumnBinding) {
+                    ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
+                        Text(String(format: appLocalized("%d Columns"), count)).tag(count)
+                    }
+                } label: {
+                    Label(appLocalized("Columns"), systemImage: "square.grid.3x2")
+                }
+                .pickerStyle(.menu)
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+        }
+        .accessibilityLabel(Text(appLocalized("More Options")))
+        .accessibilityHint(Text(appLocalized("Selection shortcuts and grid layout")))
+    }
+
+    private var actionBarTransition: AnyTransition {
+        guard !reduceMotion else { return .opacity }
+        return .move(edge: .bottom).combined(with: .opacity)
+    }
+
+    private var loadedContent: some View {
+        let displayedAssets = viewModel.displayedAssets
+        let gridColumns = selectedGridColumnCount
+
+        return LazyVStack(spacing: Spacing.medium) {
+            if viewModel.isDeleting {
+                ALICleanupProgressView(
+                    selectedCount: viewModel.selectedCount,
+                    estimatedSavingsText: viewModel.estimatedSavingsText,
+                    isExecuting: viewModel.isDeleting
+                )
+            } else {
+                if viewModel.hasAssets {
+                    ClusterReviewSummaryCard(
+                        assetCount: viewModel.assetCount,
+                        bestShotLabel: viewModel.bestShotLabel,
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavingsText: viewModel.estimatedSavingsText,
+                        maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
+                        reviewStatus: viewModel.reviewStatus,
+                        isReviewConfirmed: viewModel.isReviewConfirmed,
+                        aliReactionCue: viewModel.currentALIReaction,
+                        bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
+                        onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
+                    )
+                }
+
+                if viewModel.requiresPremiumForCurrentSelection {
+                    BatchCleanupUpsellCard(
+                        selectedCount: viewModel.selectedCount,
+                        estimatedSavings: viewModel.estimatedSavingsText,
+                        onUpgrade: { presentedPremiumFeature = .batchCleanup },
+                        onContinueFree: {
+                            Task {
+                                await viewModel.continueWithSingleFreeSelection()
+                            }
+                        }
+                    )
+                }
+
+                if !viewModel.hasAssets {
+                    ContentUnavailableView {
+                        Label(appLocalized("No Photos Available"), systemImage: "photo")
+                    }
+                    .padding(.top, 80)
+                } else {
+                    LazyVGrid(
+                        columns: Array(
+                            repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
+                            count: gridColumns
+                        ),
+                        spacing: Spacing.xxSmall
+                    ) {
+                        ForEach(displayedAssets, id: \.localIdentifier) { asset in
+                            SelectablePhotoThumbnail(
+                                asset: asset,
+                                thumbnailAspectRatio: 1,
+                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                isSelected: viewModel.isSelected(asset.localIdentifier),
+                                onToggleSelection: {
+                                    viewModel.toggleSelection(for: asset.localIdentifier)
+                                },
+                                onOpenOriginal: {
+                                    if let index = viewModel.assetIndex(for: asset.localIdentifier) {
+                                        selectedAsset = SelectedAsset(asset: asset, index: index)
+                                    }
+                                },
+                                onMakeBestShot: {
+                                    viewModel.setBestShot(asset.localIdentifier)
+                                }
+                            )
+                            .transition(
+                                .asymmetric(
+                                    insertion: .scale(scale: 0.94).combined(with: .opacity),
+                                    removal: .scale(scale: 0.94).combined(with: .opacity)
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, Spacing.medium)
+        .padding(.top, Spacing.small)
+        .padding(.bottom, Spacing.medium)
     }
 }
 
 private extension ClusterDetailsView {
-    var gridLayoutPolicy: ClusterGridLayoutPolicy {
+    var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
         horizontalSizeClass == .regular ? .regular : .compact
     }
 
@@ -275,49 +366,26 @@ private extension ClusterDetailsView {
             presentedPremiumFeature = .batchCleanup
         }
     }
+
+    /// Lets the host reload review state while this screen is still on top, so
+    /// the cleanup screen behind it is already up to date when it is revealed.
+    /// The debounce is cancelled and restarted by every further persisted edit,
+    /// so a burst of selection taps refreshes the host once.
+    func notifyHostOfPersistedReviewState() async {
+        guard viewModel.persistedRevision > 0 else { return }
+        do {
+            try await Task.sleep(for: Constants.hostReviewStateRefreshDebounce)
+        } catch {
+            return
+        }
+        onReviewStateChanged?()
+    }
 }
 
 private struct SelectedAsset: Identifiable {
     let asset: PHAsset
     let index: Int
     var id: String { asset.localIdentifier }
-}
-
-private struct ThumbnailAspectRatioLayout: Layout {
-    let aspectRatio: CGFloat
-
-    func sizeThatFits(
-        proposal: ProposedViewSize,
-        subviews: Subviews,
-        cache: inout ()
-    ) -> CGSize {
-        guard aspectRatio > 0 else { return .zero }
-
-        if let width = proposal.width, width.isFinite {
-            return CGSize(width: width, height: width / aspectRatio)
-        }
-        if let height = proposal.height, height.isFinite {
-            return CGSize(width: height * aspectRatio, height: height)
-        }
-
-        let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
-        return CGSize(width: fallback.width, height: fallback.width / aspectRatio)
-    }
-
-    func placeSubviews(
-        in bounds: CGRect,
-        proposal: ProposedViewSize,
-        subviews: Subviews,
-        cache: inout ()
-    ) {
-        for subview in subviews {
-            subview.place(
-                at: bounds.origin,
-                anchor: .topLeading,
-                proposal: ProposedViewSize(bounds.size)
-            )
-        }
-    }
 }
 
 struct SelectablePhotoThumbnail: View {
@@ -327,77 +395,113 @@ struct SelectablePhotoThumbnail: View {
     let isSelected: Bool
     let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
+    var onMakeBestShot: (() -> Void)?
 
     @State private var image: UIImage?
+    @State private var imageLoadState = PhotoImageLoadState()
+    @State private var imageLoadAttempt = 0
     @State private var showingMetadata = false
 
     var body: some View {
-        Button(action: onToggleSelection) {
-            ThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
-                ZStack {
-                    Color.secondary.opacity(ColorOpacity.placeholderFill)
+        ZStack {
+            Button(action: onToggleSelection) {
+                PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
+                    ZStack {
+                        Color.secondary.opacity(ColorOpacity.placeholderFill)
 
-                    if let image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } else {
-                        ProgressView()
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .clipShape(thumbnailShape)
-            .overlay {
-                if isSelected {
-                    thumbnailShape
-                        .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
-                        .transition(.opacity)
-                }
-            }
-            .overlay {
-                thumbnailShape
-                    .stroke(borderColor, lineWidth: borderLineWidth)
-            }
-            .overlay(alignment: .topLeading) {
-                if isBestShot {
-                    Label {
-                        Text(appLocalized("Best Shot"))
-                            .foregroundStyle(.primary)
-                    } icon: {
-                        Image(systemName: "star.fill")
-                            .foregroundStyle(Color.heroGold)
-                    }
-                        .font(.caption.bold())
-                        .padding(.horizontal, Spacing.xSmall)
-                        .padding(.vertical, Spacing.xxSmall)
-                        .background(.regularMaterial, in: Capsule())
-                        .overlay {
-                            Capsule()
-                                .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                        if let image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } else if imageLoadState.phase == .loading {
+                            ProgressView()
                         }
-                        .padding(Spacing.xSmall)
-                        .transition(.scale(scale: 0.92).combined(with: .opacity))
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .clipShape(thumbnailShape)
+                .overlay {
+                    if isSelected {
+                        thumbnailShape
+                            .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
+                            .transition(.opacity)
+                    }
+                }
+                .overlay {
+                    thumbnailShape
+                        .stroke(borderColor, lineWidth: borderLineWidth)
+                }
+                .overlay(alignment: .topLeading) {
+                    if isBestShot {
+                        Label {
+                            Text(appLocalized("Best Shot"))
+                                .foregroundStyle(.primary)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                        } icon: {
+                            Image(systemName: "star.fill")
+                                .foregroundStyle(Color.heroGold)
+                        }
+                            .font(.caption.bold())
+                            .padding(.horizontal, Spacing.xSmall)
+                            .padding(.vertical, Spacing.xxSmall)
+                            .background(.regularMaterial, in: Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
+                            }
+                            .padding(Spacing.xSmall)
+                            .transition(.scale(scale: 0.92).combined(with: .opacity))
+                    }
+                }
+                .overlay(alignment: .topTrailing) {
+                    if isSelected {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.title3)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, Color.accent)
+                            .background(.white, in: Circle())
+                            .padding(Spacing.xSmall)
+                            .transition(.scale(scale: 0.7).combined(with: .opacity))
+                    }
+                }
+                .animation(.appInteractiveFast, value: isSelected)
+                .animation(.appInteractiveFast, value: isBestShot)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(accessibilityLabel))
+            .accessibilityValue(Text(accessibilityValue))
+            .accessibilityHint(Text(accessibilityHint))
+            .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+            .accessibilityActions {
+                if let onMakeBestShot, !isBestShot {
+                    Button(appLocalized("Make Best Shot"), action: onMakeBestShot)
                 }
             }
-            .overlay(alignment: .topTrailing) {
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, Color.accent)
-                        .background(.white, in: Circle())
-                        .padding(Spacing.xSmall)
-                        .transition(.scale(scale: 0.7).combined(with: .opacity))
+
+            if imageLoadState.phase == .failed {
+                PhotoLoadFailureView {
+                    imageLoadAttempt += 1
                 }
+                .background(.regularMaterial, in: thumbnailShape)
             }
-            .animation(.appInteractiveFast, value: isSelected)
-            .animation(.appInteractiveFast, value: isBestShot)
         }
-        .buttonStyle(.plain)
         .contentShape(.interaction, thumbnailShape)
         .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
+            if let onMakeBestShot, !isBestShot {
+                Button {
+                    onMakeBestShot()
+                } label: {
+                    Label {
+                        Text(appLocalized("Make Best Shot"))
+                    } icon: {
+                        Image(systemName: "star")
+                    }
+                }
+            }
+
             Button {
                 showingMetadata = true
             } label: {
@@ -424,13 +528,9 @@ struct SelectablePhotoThumbnail: View {
             MetadataView(asset: asset)
                 .presentationDetents([.medium, .large])
         }
-        .task {
-            image = try? await asset.loadImage(targetSize: thumbnailTargetSize)
+        .task(id: imageLoadTaskID) {
+            await loadThumbnail()
         }
-        .accessibilityLabel(Text(accessibilityLabel))
-        .accessibilityValue(Text(accessibilityValue))
-        .accessibilityHint(Text(accessibilityHint))
-        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 
     private var borderColor: Color {
@@ -457,6 +557,28 @@ struct SelectablePhotoThumbnail: View {
             : CGSize(width: 300, height: 300)
     }
 
+    private var imageLoadTaskID: String {
+        "\(asset.localIdentifier)#\(imageLoadAttempt)"
+    }
+
+    @MainActor
+    private func loadThumbnail() async {
+        image = nil
+        let generation = imageLoadState.begin()
+        do {
+            guard let loadedImage = try await asset.loadImage(targetSize: thumbnailTargetSize) else {
+                imageLoadState.resolve(.failed, generation: generation)
+                return
+            }
+            guard imageLoadState.resolve(.loaded, generation: generation) else { return }
+            image = loadedImage
+        } catch is CancellationError {
+            imageLoadState.resolve(.cancelled, generation: generation)
+        } catch {
+            imageLoadState.resolve(.failed, generation: generation)
+        }
+    }
+
     private var contextMenuPreview: some View {
         ZStack {
             Color.secondary.opacity(ColorOpacity.placeholderFill)
@@ -465,8 +587,11 @@ struct SelectablePhotoThumbnail: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-            } else {
+            } else if imageLoadState.phase == .loading {
                 ProgressView()
+            } else {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
             }
         }
         .frame(
@@ -497,133 +622,11 @@ struct SelectablePhotoThumbnail: View {
 
     private var accessibilityHint: String {
         if isBestShot {
-            return appLocalized("This photo is marked as the best shot and cannot be selected")
+            return appLocalized("This photo is kept as the best shot. Long press another photo to make it the best shot instead.")
         }
         return isSelected
             ? appLocalized("Double tap to remove this photo from cleanup selection")
             : appLocalized("Double tap to select this photo for cleanup")
-    }
-}
-
-// MARK: - Fullscreen Photo View
-private struct FullscreenPhotoPagerView: View {
-    let assets: [PHAsset]
-    @State private var currentIndex: Int
-    @Environment(\.dismiss) private var dismiss
-
-    init(assets: [PHAsset], selectedIndex: Int) {
-        self.assets = assets
-        self._currentIndex = State(initialValue: selectedIndex)
-    }
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            Color.black.ignoresSafeArea()
-
-            TabView(selection: $currentIndex) {
-                ForEach(assets.indices, id: \.self) { index in
-                    ZoomablePhotoView(asset: assets[index])
-                        .tag(index)
-                }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .automatic))
-
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 28, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.9))
-                    .padding()
-            }
-            .accessibilityLabel(Text(appLocalized("Close")))
-        }
-    }
-}
-
-private struct ZoomablePhotoView: View {
-    let asset: PHAsset
-    @State private var image: UIImage?
-    @State private var isLoading = true
-    @State private var scale: CGFloat = 1.0
-    @State private var lastScale: CGFloat = 1.0
-    @State private var offset: CGSize = .zero
-    @State private var lastOffset: CGSize = .zero
-
-    private let minScale: CGFloat = 1.0
-    private let maxScale: CGFloat = 4.0
-
-    var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .scaleEffect(scale)
-                        .offset(offset)
-                        .gesture(zoomGesture)
-                        .gesture(
-                            panGesture(in: proxy.size),
-                            including: scale > 1 ? .all : .subviews
-                        )
-                } else if isLoading {
-                    ProgressView()
-                        .tint(.white)
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
-        }
-        .task(id: asset.localIdentifier) {
-            defer { isLoading = false }
-            image = try? await asset.loadImage(targetSize: PHImageManagerMaximumSize)
-        }
-    }
-
-    private var zoomGesture: some Gesture {
-        MagnificationGesture()
-            .onChanged { value in
-                let delta = value / lastScale
-                lastScale = value
-                let newScale = scale * delta
-                scale = min(max(newScale, minScale), maxScale)
-            }
-            .onEnded { _ in
-                lastScale = 1.0
-                if scale <= minScale {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        scale = minScale
-                        offset = .zero
-                        lastOffset = .zero
-                    }
-                }
-            }
-    }
-
-    private func panGesture(in size: CGSize) -> some Gesture {
-        DragGesture()
-            .onChanged { value in
-                guard scale > 1 else { return }
-                let proposed = CGSize(
-                    width: lastOffset.width + value.translation.width,
-                    height: lastOffset.height + value.translation.height
-                )
-                offset = clampedOffset(proposed, in: size)
-            }
-            .onEnded { _ in
-                guard scale > 1 else {
-                    offset = .zero
-                    lastOffset = .zero
-                    return
-                }
-                lastOffset = offset
-            }
-    }
-
-    private func clampedOffset(_ proposed: CGSize, in size: CGSize) -> CGSize {
-        ZoomingHelpers.clampedOffset(proposed, in: size, scale: scale)
     }
 }
 

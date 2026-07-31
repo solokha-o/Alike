@@ -28,4 +28,36 @@ final class AnimatedImageOverlayTests: XCTestCase {
 
         XCTAssertNotNil(view)
     }
+
+    func testReduceMotionPreventsOverlayAnimationRendering() {
+        let animationURL = URL(fileURLWithPath: "/tmp/overlay.json")
+
+        XCTAssertTrue(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+            animationURL: animationURL,
+            reduceMotion: false
+        ))
+        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+            animationURL: animationURL,
+            reduceMotion: true
+        ))
+        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+            animationURL: nil,
+            reduceMotion: false
+        ))
+    }
+
+    func testAmbientMotionRepeatsOnlyWhenMotionIsAllowed() {
+        XCTAssertTrue(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+            ambientMotion: .breathe,
+            reduceMotion: false
+        ))
+        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+            ambientMotion: .breathe,
+            reduceMotion: true
+        ))
+        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+            ambientMotion: .none,
+            reduceMotion: false
+        ))
+    }
 }

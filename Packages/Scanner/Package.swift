@@ -15,10 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(path: "../Storage"),
-        .package(path: "../PhotoAnalysis"),
         .package(path: "../DesignSystem"),
-        .package(path: "../Details"),
         .package(path: "../Cleanup"),
         .package(path: "../NavigationKit"),
         .package(path: "../Purchases")
@@ -27,7 +24,7 @@ let package = Package(
         .target(
             name: "Scanner",
             dependencies: [
-                "Core", "Storage", "PhotoAnalysis", "DesignSystem", "Details", "Cleanup", "NavigationKit",
+                "Core", "DesignSystem", "Cleanup", "NavigationKit",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
             ],

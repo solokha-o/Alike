@@ -10,7 +10,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private let featurePrintRepository: (any PhotoFeaturePrintRepository)?
     private let cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)?
     private let blurAnalysisService: BlurAnalysisService
-    private let assetsProvider: @MainActor @Sendable () -> [PHAsset]
+    private let assetsProvider: @Sendable () -> [PHAsset]
     
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
@@ -34,7 +34,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         featurePrintRepository: (any PhotoFeaturePrintRepository)? = nil,
         cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)? = nil,
         blurAnalysisService: BlurAnalysisService = BlurAnalysisService(),
-        assetsProvider: @escaping @MainActor @Sendable () -> [PHAsset]
+        assetsProvider: @escaping @Sendable () -> [PHAsset]
     ) {
         self.visionService = visionService
         self.clusteringService = clusteringService
@@ -53,7 +53,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let startTime = ContinuousClock().now
 
         // Fetch all photo assets
-        let assets = await MainActor.run { assetsProvider() }
+        let assets = assetsProvider()
         
         guard !assets.isEmpty else {
             throw PhotoAnalysisError.noPhotosFound
@@ -137,19 +137,29 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         )
     }
 
-    public func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
-        let assets = await MainActor.run { assetsProvider() }
-        let snapshots = try await buildCleanupCategorySnapshots(from: assets)
+    public func refreshCleanupCategories(
+        progress: @Sendable @escaping (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
+        try Task.checkCancellation()
+        progress(0)
+
+        let assets = assetsProvider()
+        progress(0.05)
+        let snapshots = try await buildCleanupCategorySnapshots(from: assets) { categoryProgress in
+            progress(0.05 + (categoryProgress * 0.85))
+        }
 
         if let cleanupCategoryRepository {
             try await cleanupCategoryRepository.replaceAllSnapshots(snapshots)
         }
 
+        try Task.checkCancellation()
+        progress(1)
         return CleanupCategorySummaryBuilder.summaries(from: snapshots)
     }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
-        let assets = await MainActor.run { assetsProvider() }
+        let assets = assetsProvider()
         let byIdentifier = Dictionary(uniqueKeysWithValues: assets.map { ($0.localIdentifier, $0) })
 
         if let cleanupCategoryRepository,
@@ -186,8 +196,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     
     // MARK: - Private Helpers
     
-    @MainActor
-    private static func fetchAllPhotoAssets() -> [PHAsset] {
+    nonisolated private static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
@@ -207,17 +216,29 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 }
 
 private extension PhotoAnalysisServiceImpl {
-    func buildCleanupCategorySnapshots(from assets: [PHAsset]) async throws -> [CleanupCategorySnapshot] {
+    func buildCleanupCategorySnapshots(
+        from assets: [PHAsset],
+        progress: @Sendable @escaping (Double) -> Void
+    ) async throws -> [CleanupCategorySnapshot] {
         let assetSnapshots = assets.map(CleanupCategoryAssetSnapshot.init)
         var snapshots: [CleanupCategorySnapshot] = []
 
         if let screenshotSnapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: assetSnapshots) {
             snapshots.append(screenshotSnapshot)
         }
+        progress(0.15)
 
-        if let blurSnapshot = try await blurAnalysisService.makeSnapshot(from: assets) {
+        let blurSnapshot = try await blurAnalysisService.makeSnapshot(
+            from: assets,
+            progress: { blurProgress in
+                progress(0.15 + (blurProgress * 0.85))
+            }
+        )
+        if let blurSnapshot {
             snapshots.append(blurSnapshot)
         }
+
+        progress(1)
 
         return snapshots
     }

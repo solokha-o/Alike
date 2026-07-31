@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 struct ClusterReviewResurfacingResult: Equatable {
     let migratedReviewStates: [UUID: ClusterReviewState]
@@ -37,12 +37,25 @@ enum ClusterReviewStateResurfacer {
                 matchingSnapshots.removeFirst()
                 remainingExactMatches[newSnapshot.assetIdentifiers] = matchingSnapshots
 
-                if matchedSnapshot.bestShotLocalIdentifier == newSnapshot.bestShotLocalIdentifier {
+                let existingState = existingReviewStates[matchedSnapshot.id]
+                // A best shot the user picked themselves outranks the recomputed
+                // one, so metadata changes alone never resurface the cluster.
+                let userPickedBestShotID = existingState.flatMap { state -> String? in
+                    guard
+                        state.isBestShotUserSelected,
+                        newSnapshot.assetIdentifiers.contains(state.bestShotLocalIdentifier)
+                    else { return nil }
+                    return state.bestShotLocalIdentifier
+                }
+
+                if userPickedBestShotID != nil
+                    || matchedSnapshot.bestShotLocalIdentifier == newSnapshot.bestShotLocalIdentifier {
                     resurfacingStates[newSnapshot.id] = .unchanged
-                    if let existingState = existingReviewStates[matchedSnapshot.id] {
+                    if let existingState {
                         migratedReviewStates[newSnapshot.id] = existingState.remapped(
                             clusterID: newSnapshot.id,
-                            bestShotLocalIdentifier: newSnapshot.bestShotLocalIdentifier
+                            bestShotLocalIdentifier: userPickedBestShotID
+                                ?? newSnapshot.bestShotLocalIdentifier
                                 ?? existingState.bestShotLocalIdentifier,
                             selectedLocalIdentifiers: existingState.selectedLocalIdentifiers,
                             updatedAt: existingState.updatedAt,

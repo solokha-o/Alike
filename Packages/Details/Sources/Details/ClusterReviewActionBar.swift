@@ -1,98 +1,56 @@
 import SwiftUI
 import DesignSystem
 
+/// The bottom bar carries exactly one job: the destructive action for the
+/// current selection. Review decisions and selection shortcuts live in the
+/// navigation bar, so nothing competes with it for attention.
 struct ClusterReviewActionBar: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let selectedCount: Int
-    let onSelectAllExceptBest: () -> Void
-    let onClearSelection: () -> Void
-    let onDeleteSelected: (() -> Void)?
-    let isDeleteActionVisible: Bool
+    let onDeleteSelected: () -> Void
     let isDeleting: Bool
 
     var body: some View {
         Group {
             if #available(iOS 26.0, macOS 26.0, *) {
                 GlassEffectContainer(spacing: Spacing.small) {
-                    controls(usesGlass: true)
+                    deleteActionButton(usesGlass: true)
                 }
             } else {
-                controls(usesGlass: false)
+                deleteActionButton(usesGlass: false)
                     .padding(Spacing.xSmall)
                     .background(.regularMaterial, in: actionBarShape)
             }
         }
         .controlSize(.large)
-        .animation(.appInteractiveFast, value: isDeleteActionVisible)
         .accessibilityElement(children: .contain)
     }
 
-    @ViewBuilder
-    private func controls(usesGlass: Bool) -> some View {
-        if dynamicTypeSize.isAccessibilitySize {
-            VStack(spacing: Spacing.small) {
-                selectionMenu(usesGlass: usesGlass)
-                deleteButton(usesGlass: usesGlass)
-            }
-        } else {
+    private func deleteActionButton(usesGlass: Bool) -> some View {
+        Button(role: .destructive, action: onDeleteSelected) {
             HStack(spacing: Spacing.small) {
-                selectionMenu(usesGlass: usesGlass)
-                deleteButton(usesGlass: usesGlass)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func selectionMenu(usesGlass: Bool) -> some View {
-        Menu {
-            Button(action: onSelectAllExceptBest) {
-                Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
-            }
-
-            if selectedCount > 0 {
-                Divider()
-
-                Button(action: onClearSelection) {
-                    Label(appLocalized("Clear Selection"), systemImage: "xmark.circle")
+                if isDeleting {
+                    ProgressView()
+                } else {
+                    Image(systemName: "trash")
                 }
+
+                Text(deleteActionTitle)
+                    .font(.appHeadline)
+                    .lineLimit(allowsWrapping ? 2 : 1)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
             }
-        } label: {
-            Label(appLocalized("Selection"), systemImage: "checkmark.circle")
-                .font(.appHeadline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                .allowsTightening(true)
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
         }
         .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
-        .accessibilityHint(Text(appLocalized("Choose which photos are selected for cleanup")))
+        .disabled(isDeleting)
+        .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
     }
 
-    @ViewBuilder
-    private func deleteButton(usesGlass: Bool) -> some View {
-        if isDeleteActionVisible, let onDeleteSelected {
-            Button(role: .destructive, action: onDeleteSelected) {
-                HStack(spacing: Spacing.small) {
-                    if isDeleting {
-                        ProgressView()
-                    } else {
-                        Image(systemName: "trash")
-                    }
-
-                    Text(deleteActionTitle)
-                        .font(.appHeadline)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                        .allowsTightening(true)
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
-            .disabled(isDeleting)
-            .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
-            .transition(.scale(scale: 0.9).combined(with: .opacity))
-        }
+    private var allowsWrapping: Bool {
+        dynamicTypeSize.isAccessibilitySize
     }
 
     private var deleteActionTitle: String {
@@ -114,10 +72,10 @@ private struct ClusterReviewButtonStyle: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 26.0, macOS 26.0, *), usesGlass {
             content
-                .buttonStyle(.glass)
+                .buttonStyle(.glassProminent)
         } else {
             content
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderedProminent)
         }
     }
 }

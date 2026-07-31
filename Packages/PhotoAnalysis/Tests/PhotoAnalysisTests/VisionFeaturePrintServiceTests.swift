@@ -109,6 +109,57 @@ final class VisionFeaturePrintServiceTests: XCTestCase {
         XCTAssertTrue(VisionFeaturePrintService.shouldSkipImageDataRequest(for: wrapped))
     }
 
+    #if canImport(UIKit)
+    func testThumbnailRequestStateCancellationBeforeInstallResumesExactlyOnce() async {
+        let state = FeaturePrintThumbnailRequestState()
+        state.cancel()
+
+        do {
+            _ = try await withCheckedThrowingContinuation { continuation in
+                XCTAssertFalse(state.install(continuation))
+                state.timeout()
+            } as ThumbnailCGImage?
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testThumbnailRequestStateTimeoutReturnsNilExactlyOnce() async throws {
+        let state = FeaturePrintThumbnailRequestState()
+
+        let thumbnail = try await withCheckedThrowingContinuation { continuation in
+            XCTAssertTrue(state.install(continuation))
+            state.timeout()
+            state.finish(.success(nil))
+        } as ThumbnailCGImage?
+
+        XCTAssertNil(thumbnail)
+    }
+
+    func testThumbnailRequestStateCancellationBeforeQueueStartPreventsRequestExecution() {
+        let state = FeaturePrintThumbnailRequestState()
+
+        state.cancel()
+
+        XCTAssertFalse(state.beginRequest())
+    }
+
+    func testThumbnailRequestStateTimeoutBeforeQueueStartPreventsRequestExecution() async throws {
+        let state = FeaturePrintThumbnailRequestState()
+
+        let thumbnail = try await withCheckedThrowingContinuation { continuation in
+            XCTAssertTrue(state.install(continuation))
+            state.timeout()
+        } as ThumbnailCGImage?
+
+        XCTAssertNil(thumbnail)
+        XCTAssertFalse(state.beginRequest())
+    }
+    #endif
+
     private func generateFeaturePrintOrSkip(from cgImage: CGImage) async throws -> VNFeaturePrintObservation {
         do {
             let featurePrint = try await service.generateFeaturePrint(from: cgImage)
