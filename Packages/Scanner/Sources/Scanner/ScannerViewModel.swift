@@ -41,8 +41,34 @@ public final class ScannerViewModel {
     public var hasUnlimitedScanAccess: Bool { premiumAccess.access(to: .unlimitedScans).isAllowed }
     public var hasCompletedScanBaseline: Bool { workspace.hasCompletedScanBaseline }
 
+    /// The workspace can advance past this view model's own `state` — a
+    /// Cleanup-tab deletion reconciles the workspace directly, with no path
+    /// back into `ScannerViewModel`. Preferring whichever summary completed
+    /// most recently keeps the presentation correct without requiring a new
+    /// user-initiated scan to notice the reconciliation happened.
     var librarySummary: ScanSummary? {
-        if case .completed(let summary) = state { return summary }
+        let stateSummary: ScanSummary? = {
+            if case .completed(let summary) = state { return summary }
+            return nil
+        }()
+        let workspaceSummary = derivedWorkspaceSummary()
+
+        switch (stateSummary, workspaceSummary) {
+        case (let stateSummary?, let workspaceSummary?):
+            return workspaceSummary.completedAt >= stateSummary.completedAt ? workspaceSummary : stateSummary
+        case (let stateSummary?, nil):
+            return stateSummary
+        case (nil, let workspaceSummary?):
+            return workspaceSummary
+        case (nil, nil):
+            return nil
+        }
+    }
+
+    /// The workspace's own summary, either from its last scan or synthesized
+    /// from its current content when only a baseline (no in-memory summary)
+    /// is available.
+    private func derivedWorkspaceSummary() -> ScanSummary? {
         if let summary = workspace.lastScanSummary { return summary }
         guard workspace.hasCompletedScanBaseline,
               let completedAt = workspace.lastCompletedScanDate else { return nil }
@@ -110,21 +136,19 @@ public final class ScannerViewModel {
         )
         guard decision.isAllowed else { return decision }
 
-        let joinsReconciliation: Bool
-        if case .scanning(_, .reconciliation) = workspace.scanOperation {
-            joinsReconciliation = true
-        } else {
-            joinsReconciliation = false
-        }
-
         publishScanningProgress(workspace.scanOperation.progress ?? 0)
         observeWorkspaceScan()
         do {
-            let summary = try await workspace.scan(sensitivity: sensitivity)
-            state = .completed(summary)
-            if !joinsReconciliation {
+            // Whether this call joined an in-flight operation (and so
+            // shouldn't be charged) can only be known after the workspace
+            // resolves the request: a request that finds a reconciliation in
+            // flight may still end up running fresh work of its own if the
+            // sensitivities don't match, and a pre-call check can't see that.
+            let outcome = try await workspace.scanReportingJoinedOperation(sensitivity: sensitivity)
+            state = .completed(outcome.summary)
+            if !outcome.joinedInFlightOperation {
                 monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
-                await publishPostScanPremiumOfferIfEligible(summary)
+                await publishPostScanPremiumOfferIfEligible(outcome.summary)
             }
         } catch is CancellationError {
             synchronizeStateWithWorkspace()

@@ -144,6 +144,34 @@ final class ScannerViewModelTests: XCTestCase {
         }
     }
 
+    func testLibrarySummaryReflectsPostReconciliationWorkspaceSummaryWithoutNewUserScan() async {
+        let analysis = MockPhotoAnalysisService()
+        let firstCluster = makeCluster()
+        await analysis.setAnalyzePhotoLibraryResult(.success([firstCluster]))
+        let clock = TestClock(makeDate(year: 2026, month: 7, day: 1))
+        let workspace = makeWorkspace(analysis: analysis, now: { clock.now })
+        let viewModel = makeViewModel(workspace: workspace)
+
+        let decision = await viewModel.startScanning()
+        XCTAssertEqual(decision, .allowed)
+        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 1)
+
+        // CleanupView reconciles the workspace directly after a deletion —
+        // there is no path back into ScannerViewModel, so `state` goes stale
+        // while `workspace.lastScanSummary` moves on.
+        await analysis.setAnalyzePhotoLibraryResult(.success([]))
+        clock.now = clock.now.addingTimeInterval(60)
+        let record = CleanupCompletionRecord(
+            sourceClusterID: firstCluster.id,
+            deletedCount: 1,
+            estimatedSavingsBytes: 512
+        )
+        await workspace.reconcile(after: record, sensitivity: .medium)
+
+        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 0)
+        XCTAssertEqual(viewModel.librarySummary?.completedAt, workspace.lastScanSummary?.completedAt)
+    }
+
     func testConcurrentStartsShareOneAdmissionAndWorkspaceScan() async {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
@@ -236,6 +264,54 @@ final class ScannerViewModelTests: XCTestCase {
         }
     }
 
+    /// A user scan at a sensitivity that differs from an in-flight
+    /// reconciliation's must not silently join it: it should wait for the
+    /// reconciliation to finish and then run its own scan at the requested
+    /// sensitivity, and that fresh work should be charged normally.
+    func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async {
+        let analysis = SuspendedPhotoAnalysisService()
+        let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
+        let workspace = makeWorkspace(analysis: analysis)
+        let viewModel = makeViewModel(workspace: workspace, usage: usage)
+        viewModel.sensitivity = .high
+        let completion = CleanupCompletionRecord(
+            sourceClusterID: UUID(),
+            deletedCount: 1,
+            estimatedSavingsBytes: 512
+        )
+
+        let reconciliation = Task {
+            await workspace.reconcile(after: completion, sensitivity: .medium)
+        }
+        await analysis.waitUntilAnalyzeCallCount(1)
+        let scanner = Task { await viewModel.startScanning() }
+        await Task.yield()
+        // Resolve the reconciliation's own scan (sensitivity .medium) first.
+        await analysis.resumeNext(returning: [])
+
+        // The requested sensitivity (.high) didn't match the in-flight
+        // reconciliation's (.medium), so the scanner must run a second,
+        // fresh analysis rather than reusing the reconciliation's result.
+        await analysis.waitUntilAnalyzeCallCount(2)
+        let freshCluster = makeCluster()
+        await analysis.resumeNext(returning: [freshCluster])
+
+        let scannerDecision = await scanner.value
+        await reconciliation.value
+        let recordCallCount = await usage.recordCallCount()
+        let lastSensitivity = await analysis.lastSensitivity()
+
+        XCTAssertEqual(scannerDecision, .allowed)
+        XCTAssertEqual(recordCallCount, 1, "Fresh work must be charged even though a reconciliation was in flight")
+        XCTAssertEqual(lastSensitivity, SensitivityLevel.high.threshold)
+        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+            clusterCount: 1,
+            cleanupCategoryCandidateCount: 0,
+            estimatedSavingsBytes: 0,
+            completedAt: viewModel.workspace.lastScanSummary!.completedAt
+        )))
+    }
+
     func testUsefulFreeScanPublishesOneContextualOfferAndConsumptionClearsIt() async {
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([makeCluster()]))
@@ -304,7 +380,8 @@ private extension ScannerViewModelTests {
 
     func makeWorkspace(
         analysis: any PhotoAnalysisService = MockPhotoAnalysisService(),
-        repository: any PhotoClusterRepository = MockPhotoClusterRepository()
+        repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
+        now: @escaping @Sendable () -> Date = Date.init
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
             analysisService: analysis,
@@ -312,7 +389,8 @@ private extension ScannerViewModelTests {
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            now: now
         )
     }
 
@@ -418,17 +496,21 @@ private struct TestPremiumAccess: PremiumAccessControlling {
 private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
     private var continuation: CheckedContinuation<[PhotoCluster], Error>?
     private var analyzeCalls = 0
+    private var lastRequestedSensitivity: Float?
 
     func analyzePhotoLibrary(
         sensitivity: Float,
         progress: @escaping @Sendable (Double) -> Void
     ) async throws -> [PhotoCluster] {
         analyzeCalls += 1
+        lastRequestedSensitivity = sensitivity
         progress(0.5)
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
         }
     }
+
+    func lastSensitivity() -> Float? { lastRequestedSensitivity }
 
     func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] { [] }
     func refreshCleanupCategories(

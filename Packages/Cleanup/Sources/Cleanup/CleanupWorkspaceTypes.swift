@@ -147,6 +147,19 @@ public enum ScanOperationState: Equatable, Sendable {
     }
 }
 
+/// The outcome of a call into ``CleanupWorkspaceModel/scanReportingJoinedOperation(sensitivity:)``.
+public struct ScanOutcome: Equatable, Sendable {
+    public let summary: ScanSummary
+    /// `true` when the call joined an in-flight scan of matching sensitivity
+    /// instead of running fresh work of its own.
+    public let joinedInFlightOperation: Bool
+
+    public init(summary: ScanSummary, joinedInFlightOperation: Bool) {
+        self.summary = summary
+        self.joinedInFlightOperation = joinedInFlightOperation
+    }
+}
+
 /// Result of one successful scan. It contains aggregate information without
 /// granting callers mutable access to workspace collections.
 public struct ScanSummary: Equatable, Sendable {

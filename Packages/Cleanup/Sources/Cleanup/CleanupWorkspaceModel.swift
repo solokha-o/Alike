@@ -49,7 +49,7 @@ public final class CleanupWorkspaceModel {
     private var lastGoodContent = CleanupWorkspaceContent.empty
     private var scanMutationGeneration = 0
     private var cachedContentLoadTask: Task<Void, Never>?
-    private var activeScanID: UUID?
+    private var activeScan: (id: UUID, sensitivity: SensitivityLevel, purpose: ScanOperationPurpose)?
     private var scanTask: Task<ScanSummary, Error>?
     private var progressRelay: ScanProgressRelay?
     private var reconciliationTask: Task<Void, Never>?
@@ -151,10 +151,25 @@ public final class CleanupWorkspaceModel {
         }
     }
 
-    /// Performs one user-requested library scan. Concurrent callers join the
-    /// same single-flight operation and receive the same summary.
+    /// Performs one user-requested library scan. Concurrent callers of matching
+    /// sensitivity join the same single-flight operation and receive the same
+    /// summary; a request at a different sensitivity waits for the in-flight
+    /// operation and then runs fresh work at the sensitivity it asked for.
     @discardableResult
     public func scan(sensitivity: SensitivityLevel) async throws -> ScanSummary {
+        try await startScan(sensitivity: sensitivity, purpose: .userInitiated).summary
+    }
+
+    /// Same as ``scan(sensitivity:)`` but also reports whether the request
+    /// joined an in-flight scan of matching sensitivity rather than running
+    /// fresh work. Callers that charge a scan allowance for fresh work only
+    /// (e.g. Scanner) need this distinction — a pre-call check of whether a
+    /// reconciliation was in flight can't tell whether the call actually
+    /// joined it or ended up running its own scan at a different sensitivity.
+    @discardableResult
+    public func scanReportingJoinedOperation(
+        sensitivity: SensitivityLevel
+    ) async throws -> ScanOutcome {
         try await startScan(sensitivity: sensitivity, purpose: .userInitiated)
     }
 
@@ -229,14 +244,6 @@ public final class CleanupWorkspaceModel {
         return state == .unchanged ? nil : state
     }
 
-    public func needsReviewClusters() -> [PhotoCluster] {
-        clusters.filter { reviewStatus(for: $0.id) == .needsReReview }
-    }
-
-    public func remainingClusters() -> [PhotoCluster] {
-        clusters.filter { reviewStatus(for: $0.id) != .needsReReview }
-    }
-
     public func sessionProgress() -> CleanupSessionProgress {
         cleanupManager.progress(
             for: clusters,
@@ -255,20 +262,43 @@ public final class CleanupWorkspaceModel {
 }
 
 private extension CleanupWorkspaceModel {
+    /// Joins an in-flight scan only when it is analyzing at the same
+    /// sensitivity the caller asked for; a request at a different sensitivity
+    /// would otherwise silently report a summary computed at the wrong
+    /// sensitivity. A mismatched request instead waits for the in-flight scan
+    /// to finish and then runs its own, so the caller's chosen sensitivity is
+    /// always honored.
     func startScan(
         sensitivity: SensitivityLevel,
         purpose: ScanOperationPurpose
-    ) async throws -> ScanSummary {
-        if let scanTask {
-            return try await scanTask.value
+    ) async throws -> ScanOutcome {
+        // Loops rather than checking once: two mismatched requests can both be
+        // waiting on the same in-flight scan, and the one that resumes second
+        // must wait for the scan the first one started instead of racing it.
+        // Awaiting a task that is already finished returns immediately, so the
+        // identity check below is what guarantees the loop terminates.
+        while let inFlight = scanTask {
+            if activeScan?.sensitivity == sensitivity {
+                if purpose == .userInitiated, activeScan?.purpose == .reconciliation {
+                    reflectUserInitiatedJoin()
+                }
+                let summary = try await inFlight.value
+                return ScanOutcome(summary: summary, joinedInFlightOperation: true)
+            }
+            _ = try? await inFlight.value
+            if scanTask == inFlight { break }
         }
 
         scanMutationGeneration &+= 1
         let scanID = UUID()
-        activeScanID = scanID
+        activeScan = (scanID, sensitivity, purpose)
         scanOperation = .scanning(progress: 0, purpose: purpose)
+        // A scan whose owner has not finished its own cleanup yet leaves its
+        // relay behind; cancel it so it stops forwarding into a scan that is
+        // no longer the active one.
+        await progressRelay?.cancel()
         progressRelay = ScanProgressRelay { [weak self] progress in
-            self?.publishScanProgress(progress, scanID: scanID, purpose: purpose)
+            self?.publishScanProgress(progress, scanID: scanID)
         }
 
         let task = Task { @MainActor [weak self] () throws -> ScanSummary in
@@ -283,23 +313,36 @@ private extension CleanupWorkspaceModel {
 
         do {
             let summary = try await task.value
-            if activeScanID == scanID {
+            if activeScan?.id == scanID {
                 await progressRelay?.cancel()
                 progressRelay = nil
                 scanTask = nil
-                activeScanID = nil
+                activeScan = nil
                 scanOperation = .idle
             }
-            return summary
+            return ScanOutcome(summary: summary, joinedInFlightOperation: false)
         } catch {
-            if activeScanID == scanID {
+            if activeScan?.id == scanID {
                 await progressRelay?.cancel()
                 progressRelay = nil
                 scanTask = nil
-                activeScanID = nil
-                scanOperation = .failed(message: error.localizedDescription, purpose: purpose)
+                let failurePurpose = activeScan?.purpose ?? purpose
+                activeScan = nil
+                scanOperation = .failed(message: error.localizedDescription, purpose: failurePurpose)
             }
             throw error
+        }
+    }
+
+    /// Flips the currently active scan's displayed purpose to `.userInitiated`
+    /// when a user scan joins a still-running reconciliation, so the UI shows
+    /// scanning rather than refreshing for the rest of that operation.
+    func reflectUserInitiatedJoin() {
+        guard var current = activeScan, current.purpose == .reconciliation else { return }
+        current.purpose = .userInitiated
+        activeScan = current
+        if case .scanning(let progress, _) = scanOperation {
+            scanOperation = .scanning(progress: progress, purpose: .userInitiated)
         }
     }
 
@@ -406,14 +449,9 @@ private extension CleanupWorkspaceModel {
         return summary
     }
 
-    func publishScanProgress(
-        _ progress: Double,
-        scanID: UUID,
-        purpose: ScanOperationPurpose
-    ) {
-        guard activeScanID == scanID,
-              case .scanning(let current, let activePurpose) = scanOperation,
-              activePurpose == purpose else {
+    func publishScanProgress(_ progress: Double, scanID: UUID) {
+        guard activeScan?.id == scanID,
+              case .scanning(let current, let purpose) = scanOperation else {
             return
         }
         let next = max(current, min(max(progress, 0), 1))

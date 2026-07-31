@@ -57,14 +57,14 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         )
     }
 
-    func testConcurrentScanRequestsJoinOneUnderlyingOperation() async throws {
+    func testConcurrentScanRequestsAtMatchingSensitivityJoinOneUnderlyingOperation() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let cluster = PhotoCluster(id: UUID(), assets: [])
 
         let first = Task { @MainActor in try await workspace.scan(sensitivity: .medium) }
         await analysis.waitUntilAnalyzeStarts()
-        let second = Task { @MainActor in try await workspace.scan(sensitivity: .high) }
+        let second = Task { @MainActor in try await workspace.scan(sensitivity: .medium) }
         await Task.yield()
 
         let callsWhileInFlight = await analysis.analyzeCallCount()
@@ -78,6 +78,38 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         XCTAssertEqual(firstSummary.clusterCount, 1)
         let totalCalls = await analysis.analyzeCallCount()
         XCTAssertEqual(totalCalls, 1)
+    }
+
+    /// A concurrent request at a different sensitivity must not silently
+    /// reuse a summary computed at the wrong sensitivity: it should wait for
+    /// the in-flight scan and then run its own, honoring the sensitivity it
+    /// asked for.
+    func testConcurrentScanRequestAtDifferentSensitivityRunsAfterInFlightScanCompletes() async throws {
+        let analysis = ControlledAnalysisService()
+        let workspace = makeWorkspace(analysisService: analysis)
+        let firstCluster = PhotoCluster(id: UUID(), assets: [])
+        let secondClusters = [PhotoCluster(id: UUID(), assets: []), PhotoCluster(id: UUID(), assets: [])]
+
+        let first = Task { @MainActor in try await workspace.scan(sensitivity: .medium) }
+        await analysis.waitUntilAnalyzeStarts()
+        let second = Task { @MainActor in try await workspace.scan(sensitivity: .high) }
+        await Task.yield()
+
+        let callsWhileFirstInFlight = await analysis.analyzeCallCount()
+        XCTAssertEqual(callsWhileFirstInFlight, 1, "A mismatched sensitivity must not join the in-flight scan")
+
+        await analysis.succeed(with: [firstCluster])
+        let firstSummary = try await first.value
+        XCTAssertEqual(firstSummary.clusterCount, 1)
+
+        await analysis.waitUntilAnalyzeStarts(expectedCallCount: 2)
+        await analysis.succeed(with: secondClusters)
+        let secondSummary = try await second.value
+
+        XCTAssertEqual(secondSummary.clusterCount, 2)
+        XCTAssertNotEqual(firstSummary, secondSummary)
+        let totalCalls = await analysis.analyzeCallCount()
+        XCTAssertEqual(totalCalls, 2)
     }
 
     func testScanProgressNeverMovesBackward() async throws {
