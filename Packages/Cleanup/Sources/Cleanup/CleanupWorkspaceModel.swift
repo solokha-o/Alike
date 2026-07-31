@@ -47,6 +47,17 @@ public final class CleanupWorkspaceModel {
     private let postProcessor = ScanPostProcessor()
 
     private var lastGoodContent = CleanupWorkspaceContent.empty
+
+    /// Derived from `lastGoodContent` and refreshed only when it is replaced.
+    ///
+    /// `CleanupView` reads all three during `body`, where an O(clusters) pass
+    /// would re-run on every unrelated state flip — opening the filter sheet,
+    /// dismissing an alert. Their inputs live entirely in `lastGoodContent`, so
+    /// recomputing where it is published is equivalent and happens far less
+    /// often. They stay observable stored properties, so views still update.
+    private(set) var sessionProgressSnapshot: CleanupSessionProgress = .empty
+    private(set) var cleanupEntryClusterSnapshot: PhotoCluster?
+    private(set) var clusterIdentityKey: [UUID] = []
     private var scanMutationGeneration = 0
     private var cachedContentLoadTask: Task<Void, Never>?
     private var activeScan: (id: UUID, sensitivity: SensitivityLevel, purpose: ScanOperationPurpose)?
@@ -138,6 +149,7 @@ public final class CleanupWorkspaceModel {
                 shouldShowRescanPrompt: false
             )
             lastGoodContent = content
+            refreshDerivedContentSnapshots()
             lastCompletedScanDate = baselineDate
             contentState = baselineDate == nil ? .neverScanned : .content(content)
         } catch {
@@ -244,17 +256,9 @@ public final class CleanupWorkspaceModel {
         return state == .unchanged ? nil : state
     }
 
-    public func sessionProgress() -> CleanupSessionProgress {
-        cleanupManager.progress(
-            for: clusters,
-            reviewStates: reviewStates,
-            activeSession: activeCleanupSession
-        )
-    }
+    public func sessionProgress() -> CleanupSessionProgress { sessionProgressSnapshot }
 
-    public func cleanupEntryCluster() -> PhotoCluster? {
-        cleanupManager.nextClusterToReview(from: clusters, reviewStates: reviewStates)
-    }
+    public func cleanupEntryCluster() -> PhotoCluster? { cleanupEntryClusterSnapshot }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
         try await analysisService.loadAssets(for: category)
@@ -557,7 +561,23 @@ private extension CleanupWorkspaceModel {
 
     func publish(_ content: CleanupWorkspaceContent) {
         lastGoodContent = content
+        refreshDerivedContentSnapshots()
         contentState = content.hasCompletedScanBaseline ? .content(content) : .neverScanned
+    }
+
+    /// Must be called at every site that replaces `lastGoodContent`.
+    func refreshDerivedContentSnapshots() {
+        let content = lastGoodContent
+        clusterIdentityKey = content.clusters.map(\.id)
+        sessionProgressSnapshot = cleanupManager.progress(
+            for: content.clusters,
+            reviewStates: content.reviewStates,
+            activeSession: content.activeSession
+        )
+        cleanupEntryClusterSnapshot = cleanupManager.nextClusterToReview(
+            from: content.clusters,
+            reviewStates: content.reviewStates
+        )
     }
 
     func replacing(

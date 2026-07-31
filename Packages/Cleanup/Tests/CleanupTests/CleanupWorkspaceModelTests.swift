@@ -120,6 +120,43 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(workspace.reviewStates[cluster.id], updatedState)
         XCTAssertEqual(workspace.contentState, .content(workspace.content!))
     }
+
+    /// `sessionProgress()` and `cleanupEntryCluster()` are computed when content
+    /// is published rather than on every read, so a review change arriving after
+    /// the first read has to be reflected — this is what would go stale if a
+    /// publish site ever forgot to refresh the derived snapshots.
+    func testDerivedProgressFollowsReviewStateChangesAfterFirstRead() async {
+        let cluster = PhotoCluster(id: UUID(), assets: [])
+        let repository = MockPhotoClusterRepository()
+        await repository.setLoadClustersResult(.success([cluster]))
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        let reviewRepository = MockClusterReviewStateRepository()
+        let workspace = makeWorkspace(
+            repository: repository,
+            reviewRepository: reviewRepository
+        )
+        await workspace.loadCachedContent()
+
+        XCTAssertEqual(workspace.sessionProgress().totalClusters, 1)
+        XCTAssertEqual(workspace.sessionProgress().reviewedCount, 0)
+        XCTAssertEqual(workspace.cleanupEntryCluster()?.id, cluster.id)
+
+        await reviewRepository.setStoredStates([
+            cluster.id: ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: "best-shot",
+                selectedLocalIdentifiers: [],
+                isReviewConfirmed: true,
+                status: .reviewed,
+                estimatedSavingsBytes: 128
+            )
+        ])
+        await workspace.reloadReviewState()
+
+        XCTAssertEqual(workspace.sessionProgress().reviewedCount, 1)
+        XCTAssertEqual(workspace.sessionProgress().reviewedSavingsBytes, 128)
+        XCTAssertNil(workspace.cleanupEntryCluster())
+    }
 }
 
 private extension CleanupWorkspaceModelTests {

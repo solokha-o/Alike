@@ -255,7 +255,7 @@ public struct CleanupView: View {
         .toolbar { cleanupToolbar }
         .onAppear(perform: refreshArrangement)
         .onChange(of: controls) { _, _ in refreshArrangement() }
-        .onChange(of: workspace.clusters.map(\.id)) { _, _ in refreshArrangement() }
+        .onChange(of: workspace.clusterIdentityKey) { _, _ in refreshArrangement() }
         .onChange(of: premiumAccess.hasAccess(to: .advancedFilters)) { _, _ in refreshArrangement() }
     }
 
