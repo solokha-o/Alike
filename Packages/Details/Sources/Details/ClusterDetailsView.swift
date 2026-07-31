@@ -167,7 +167,10 @@ public struct ClusterDetailsView: View {
         }
         .onDisappear {
             guard !viewModel.hasCompletedCleanup else { return }
-            onReviewStateChanged?()
+            Task {
+                await viewModel.awaitPendingPersistence()
+                onReviewStateChanged?()
+            }
         }
         .interactiveDismissDisabled(viewModel.isDeleting)
     }

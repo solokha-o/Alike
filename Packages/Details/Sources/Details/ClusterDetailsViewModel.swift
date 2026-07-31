@@ -260,7 +260,7 @@ final class ClusterDetailsViewModel {
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
         let previousBestShotID = bestShotAssetID
-        let keptBestShotOnly = reviewStatus == .reviewed
+        let keptBestShotOnly = isReviewConfirmed
             && selectedAssetIDs.count == assetSnapshots.count - 1
 
         withAnimation(.appInteractive) {
@@ -318,6 +318,13 @@ final class ClusterDetailsViewModel {
     func save() async {
         guard let task = enqueueCurrentStatePersistence() else { return }
         await task.value
+    }
+
+    /// Awaits the last enqueued persistence write, if any, without starting a
+    /// new one. Callers that only need to know disk state is caught up (e.g.
+    /// notifying a host before dismissal) should use this instead of `save()`.
+    func awaitPendingPersistence() async {
+        await persistenceTask?.value
     }
 
     @discardableResult

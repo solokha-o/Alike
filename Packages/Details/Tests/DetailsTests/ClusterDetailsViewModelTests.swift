@@ -955,6 +955,33 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await waitForPersistedRevision(2, on: viewModel)
     }
 
+    func testAwaitPendingPersistenceDoesNotReturnUntilTheInFlightSaveLands() async {
+        let reviewRepository = SuspendableSaveClusterReviewStateRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ],
+            reviewRepository: reviewRepository
+        )
+        await viewModel.load()
+
+        await reviewRepository.suspendNextSave()
+        viewModel.toggleSelection(for: "one")
+        await reviewRepository.waitUntilSuspendedSaveStarts()
+        XCTAssertEqual(viewModel.persistedRevision, 0)
+
+        let waiter = Task { await viewModel.awaitPendingPersistence() }
+        await reviewRepository.finishSuspendedSave()
+        await waiter.value
+
+        // The host reads the repository as soon as this returns, so the write
+        // has to be on disk by now, not merely enqueued.
+        XCTAssertEqual(viewModel.persistedRevision, 1)
+        let persisted = try? await reviewRepository.loadReviewState(clusterID: clusterID)
+        XCTAssertEqual(persisted?.selectedLocalIdentifiers, ["one"])
+    }
+
     func testContinueFreeSerializesEarlierSaveBeforeConfirmationAndDeletion() async {
         let reviewRepository = SuspendableSaveClusterReviewStateRepository()
         await cleanupService.setDeleteAssetsResult(.success(
