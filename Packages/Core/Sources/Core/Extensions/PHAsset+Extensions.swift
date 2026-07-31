@@ -34,6 +34,7 @@ extension PHAsset {
 
             return try await withCheckedThrowingContinuation { continuation in
                 guard request.install(continuation) else { return }
+                request.startTimeout()
 
                 let requestID = manager.requestImage(
                     for: self,
@@ -68,11 +69,12 @@ extension PHAsset {
 }
 #endif
 
-private final class PhotoKitRequestCoordinator<Value: Sendable>: @unchecked Sendable {
+final class PhotoKitRequestCoordinator<Value: Sendable & ExpressibleByNilLiteral>: @unchecked Sendable {
     private let manager: PHImageManager
     private let lock = NSLock()
     private var continuation: CheckedContinuation<Value, Error>?
     private var requestID: PHImageRequestID?
+    private var timeoutTask: Task<Void, Never>?
     private var isCancelled = false
     private var isFinished = false
 
@@ -103,18 +105,39 @@ private final class PhotoKitRequestCoordinator<Value: Sendable>: @unchecked Send
         }
     }
 
+    /// PhotoKit's completion handler can fail to fire (stalled iCloud fetch, a
+    /// suspended app, etc.). Without a timeout that leaves the caller's
+    /// `PhotoImageLoadState` stuck at `.loading` forever with no retry path.
+    func startTimeout() {
+        let timeoutTask = Task.detached { [weak self] in
+            try? await Task.sleep(for: .seconds(15))
+            guard !Task.isCancelled else { return }
+            self?.timeout()
+        }
+        lock.lock()
+        let shouldCancel = isFinished
+        if !shouldCancel {
+            self.timeoutTask = timeoutTask
+        }
+        lock.unlock()
+        if shouldCancel { timeoutTask.cancel() }
+    }
+
     func cancel() {
         lock.lock()
         isCancelled = true
         let requestID = requestID
         let continuation = isFinished ? nil : continuation
+        let timeoutTask = isFinished ? nil : timeoutTask
         self.continuation = nil
+        self.timeoutTask = nil
         isFinished = true
         lock.unlock()
 
         if let requestID {
             manager.cancelImageRequest(requestID)
         }
+        timeoutTask?.cancel()
         continuation?.resume(throwing: CancellationError())
     }
 
@@ -126,9 +149,12 @@ private final class PhotoKitRequestCoordinator<Value: Sendable>: @unchecked Send
         }
         isFinished = true
         let continuation = continuation
+        let timeoutTask = timeoutTask
         self.continuation = nil
+        self.timeoutTask = nil
         lock.unlock()
 
+        timeoutTask?.cancel()
         switch result {
         case .success(let value):
             continuation?.resume(returning: value)
@@ -137,6 +163,24 @@ private final class PhotoKitRequestCoordinator<Value: Sendable>: @unchecked Send
         }
     }
 
+    func timeout() {
+        lock.lock()
+        guard !isFinished else {
+            lock.unlock()
+            return
+        }
+        isFinished = true
+        let requestID = requestID
+        let continuation = continuation
+        self.continuation = nil
+        self.timeoutTask = nil
+        lock.unlock()
+
+        if let requestID {
+            manager.cancelImageRequest(requestID)
+        }
+        continuation?.resume(returning: nil)
+    }
 }
 
 private func photoInfoFlag(_ key: String, in info: [AnyHashable: Any]?) -> Bool {
@@ -194,6 +238,7 @@ extension PHAsset {
 
             return try await withCheckedThrowingContinuation { continuation in
                 guard request.install(continuation) else { return }
+                request.startTimeout()
 
                 let requestID = manager.requestImageDataAndOrientation(
                     for: self,
