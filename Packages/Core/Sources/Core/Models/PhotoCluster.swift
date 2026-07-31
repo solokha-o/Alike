@@ -29,6 +29,23 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
     public var thumbnail: PHAsset? {
         assets.first
     }
+
+    /// The photo the cluster is keeping, for previews that should show the
+    /// keeper rather than whatever happened to be clustered first.
+    ///
+    /// - Parameter localIdentifier: A reviewed best shot, when one is known.
+    ///   It wins over the computed pick so a user's own choice is what shows.
+    public func bestShotAsset(preferring localIdentifier: String? = nil) -> PHAsset? {
+        if let localIdentifier,
+           let preferred = assets.first(where: { $0.localIdentifier == localIdentifier }) {
+            return preferred
+        }
+
+        let computedIdentifier = PhotoClusterBestShot.bestShotLocalIdentifier(
+            from: assets.map(PhotoClusterAssetSnapshot.init)
+        )
+        return assets.first { $0.localIdentifier == computedIdentifier } ?? thumbnail
+    }
 }
 
 // MARK: - Content Identity

@@ -925,6 +925,9 @@ private struct CleanupClusterSection: View {
                     let cluster = identified.cluster
                     CleanupClusterCard(
                         cluster: cluster,
+                        previewAsset: cluster.bestShotAsset(
+                            preferring: workspace.reviewState(for: cluster.id)?.bestShotLocalIdentifier
+                        ),
                         status: workspace.reviewStatus(for: cluster.id),
                         resurfacing: workspace.resurfacingState(for: cluster.id)
                     ) {
@@ -940,6 +943,9 @@ private struct CleanupClusterSection: View {
 
 private struct CleanupClusterCard: View {
     let cluster: PhotoCluster
+    /// The cluster's keeper, so the card previews the photo the review is
+    /// keeping instead of whichever asset clustering happened to emit first.
+    let previewAsset: PHAsset?
     let status: ClusterReviewStatus
     let resurfacing: ClusterResurfacingState?
     let open: () -> Void
@@ -1039,12 +1045,12 @@ private struct CleanupClusterCard: View {
 
 #if os(iOS)
     private var imageLoadTaskID: String {
-        "\(cluster.thumbnail?.localIdentifier ?? "missing")#\(imageLoadAttempt)"
+        "\(previewAsset?.localIdentifier ?? "missing")#\(imageLoadAttempt)"
     }
 
     @MainActor
     private func loadThumbnail() async {
-        guard let asset = cluster.thumbnail else { return }
+        guard let asset = previewAsset else { return }
 
         image = nil
         let generation = imageLoadState.begin()
