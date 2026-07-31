@@ -93,6 +93,7 @@ public struct ClusterDetailsView: View {
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
+        .sensoryFeedback(.success, trigger: viewModel.bestShotAssetID)
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
         .navigationTitle(Text(appLocalized("Similar Photos")))
         .navigationBarTitleDisplayMode(.inline)
@@ -243,6 +244,9 @@ public struct ClusterDetailsView: View {
                                     if let index = viewModel.assetIndex(for: asset.localIdentifier) {
                                         selectedAsset = SelectedAsset(asset: asset, index: index)
                                     }
+                                },
+                                onMakeBestShot: {
+                                    viewModel.setBestShot(asset.localIdentifier)
                                 }
                             )
                             .transition(
@@ -319,6 +323,7 @@ struct SelectablePhotoThumbnail: View {
     let isSelected: Bool
     let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
+    var onMakeBestShot: (() -> Void)?
 
     @State private var image: UIImage?
     @State private var imageLoadState = PhotoImageLoadState()
@@ -397,6 +402,11 @@ struct SelectablePhotoThumbnail: View {
             .accessibilityValue(Text(accessibilityValue))
             .accessibilityHint(Text(accessibilityHint))
             .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+            .accessibilityActions {
+                if let onMakeBestShot, !isBestShot {
+                    Button(appLocalized("Make Best Shot"), action: onMakeBestShot)
+                }
+            }
 
             if imageLoadState.phase == .failed {
                 PhotoLoadFailureView {
@@ -408,6 +418,18 @@ struct SelectablePhotoThumbnail: View {
         .contentShape(.interaction, thumbnailShape)
         .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
+            if let onMakeBestShot, !isBestShot {
+                Button {
+                    onMakeBestShot()
+                } label: {
+                    Label {
+                        Text(appLocalized("Make Best Shot"))
+                    } icon: {
+                        Image(systemName: "star")
+                    }
+                }
+            }
+
             Button {
                 showingMetadata = true
             } label: {
@@ -528,7 +550,7 @@ struct SelectablePhotoThumbnail: View {
 
     private var accessibilityHint: String {
         if isBestShot {
-            return appLocalized("This photo is marked as the best shot and cannot be selected")
+            return appLocalized("This photo is kept as the best shot. Long press another photo to make it the best shot instead.")
         }
         return isSelected
             ? appLocalized("Double tap to remove this photo from cleanup selection")

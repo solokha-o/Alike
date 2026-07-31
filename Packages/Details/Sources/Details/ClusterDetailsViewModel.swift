@@ -34,6 +34,7 @@ final class ClusterDetailsViewModel {
     private var reviewCompletionGeneration = 0
     private(set) var bestShotAssetID: String
     private(set) var bestShotLabel: String
+    private(set) var isBestShotUserSelected = false
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
     private(set) var reviewStatus: ClusterReviewStatus
@@ -218,6 +219,30 @@ final class ClusterDetailsViewModel {
         enqueueCurrentStatePersistence()
     }
 
+    /// Promotes `localIdentifier` to the best shot. The previous best shot takes
+    /// the promoted photo's place in the selection when the cluster was already
+    /// fully reviewed, so a finished review stays finished.
+    func setBestShot(_ localIdentifier: String) {
+        guard localIdentifier != bestShotAssetID else { return }
+        guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
+
+        let previousBestShotID = bestShotAssetID
+        let wasFullyReviewed = reviewStatus == .reviewed
+
+        withAnimation(.appInteractive) {
+            selectedAssetIDs.remove(localIdentifier)
+            if wasFullyReviewed, !previousBestShotID.isEmpty {
+                selectedAssetIDs.insert(previousBestShotID)
+            }
+            bestShotAssetID = localIdentifier
+            bestShotLabel = Self.bestShotLabel(for: localIdentifier, in: assetSnapshots)
+            isBestShotUserSelected = true
+            reviewMode = .selection
+            refreshDerivedState(emitsReviewCompletion: true)
+        }
+        enqueueCurrentStatePersistence()
+    }
+
     func selectAllExceptBest() {
         guard !bestShotAssetID.isEmpty else { return }
         withAnimation(.appInteractive) {
@@ -381,6 +406,7 @@ private extension ClusterDetailsViewModel {
         guard !assetSnapshots.isEmpty else {
             bestShotAssetID = ""
             bestShotLabel = appLocalized("Best Shot")
+            isBestShotUserSelected = false
             selectedAssetIDs = []
             reviewMode = .selection
             reviewStatus = .notReviewed
@@ -392,6 +418,7 @@ private extension ClusterDetailsViewModel {
         guard let savedState else {
             applyState(
                 bestShotAssetID: fallbackBestShotID,
+                isBestShotUserSelected: false,
                 selectedAssetIDs: [],
                 reviewMode: .selection,
                 persistedStatus: nil
@@ -400,7 +427,10 @@ private extension ClusterDetailsViewModel {
         }
 
         let validIDs = Set(assetSnapshots.map(\.localIdentifier))
-        let persistedBestShotID = validIDs.contains(savedState.bestShotLocalIdentifier)
+        // A manual pick only survives while its photo does; once the photo is
+        // gone the computed best shot takes over and stops being an override.
+        let isPersistedBestShotAvailable = validIDs.contains(savedState.bestShotLocalIdentifier)
+        let persistedBestShotID = isPersistedBestShotAvailable
             ? savedState.bestShotLocalIdentifier
             : fallbackBestShotID
         let filteredSelection = savedState.selectedLocalIdentifiers
@@ -409,6 +439,7 @@ private extension ClusterDetailsViewModel {
 
         applyState(
             bestShotAssetID: persistedBestShotID,
+            isBestShotUserSelected: isPersistedBestShotAvailable && savedState.isBestShotUserSelected,
             selectedAssetIDs: filteredSelection,
             reviewMode: savedState.mode,
             persistedStatus: savedState.status
@@ -461,6 +492,7 @@ private extension ClusterDetailsViewModel {
 
     func applyState(
         bestShotAssetID: String,
+        isBestShotUserSelected: Bool,
         selectedAssetIDs: Set<String>,
         reviewMode _: ClusterReviewMode,
         persistedStatus: ClusterReviewStatus?
@@ -470,6 +502,7 @@ private extension ClusterDetailsViewModel {
             for: bestShotAssetID,
             in: assetSnapshots
         )
+        self.isBestShotUserSelected = isBestShotUserSelected
         self.selectedAssetIDs = selectedAssetIDs
         self.reviewMode = .selection
         refreshDerivedState()
@@ -529,6 +562,7 @@ private extension ClusterDetailsViewModel {
         let state = ClusterReviewState(
             clusterID: cluster.id,
             bestShotLocalIdentifier: bestShotAssetID,
+            isBestShotUserSelected: isBestShotUserSelected,
             selectedLocalIdentifiers: selectedAssetIDs,
             mode: reviewMode,
             status: reviewStatus,

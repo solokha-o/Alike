@@ -158,6 +158,142 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         )
     }
 
+    func testSetBestShotPromotesPhotoAndDeselectsIt() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "one")
+        viewModel.setBestShot("one")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
+    }
+
+    func testSetBestShotOnReviewedClusterSwapsPreviousBestIntoSelection() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.selectAllExceptBest()
+        viewModel.setBestShot("one")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["best", "two"])
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+    }
+
+    func testSetBestShotOnPartiallyReviewedClusterLeavesPreviousBestUnselected() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.toggleSelection(for: "two")
+        viewModel.setBestShot("one")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
+        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+    }
+
+    func testSetBestShotIgnoresUnknownAndAlreadyBestIdentifiers() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.setBestShot("missing")
+        viewModel.setBestShot("best")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        XCTAssertFalse(viewModel.isBestShotUserSelected)
+    }
+
+    func testSetBestShotPersistsUserOverride() async throws {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+        viewModel.setBestShot("one")
+        await viewModel.save()
+
+        let stored = try await repository.loadReviewState(clusterID: clusterID)
+        XCTAssertEqual(stored?.bestShotLocalIdentifier, "one")
+        XCTAssertEqual(stored?.isBestShotUserSelected, true)
+    }
+
+    func testLoadRestoresUserSelectedBestShot() async {
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "one",
+            isBestShotUserSelected: true,
+            selectedLocalIdentifiers: [],
+            mode: .selection,
+            status: .notReviewed,
+            estimatedSavingsBytes: 0
+        )
+        await repository.setStoredStates([clusterID: state])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "one")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
+    func testLoadDropsUserOverrideWhenChosenPhotoIsGone() async {
+        let state = ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "removed",
+            isBestShotUserSelected: true,
+            selectedLocalIdentifiers: [],
+            mode: .selection,
+            status: .notReviewed,
+            estimatedSavingsBytes: 0
+        )
+        await repository.setStoredStates([clusterID: state])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        XCTAssertFalse(viewModel.isBestShotUserSelected)
+    }
+
     func testLoadNormalizesLegacyKeepBestOnlyModeAndKeepsGridVisible() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
