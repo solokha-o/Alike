@@ -33,13 +33,15 @@ struct RootView: View {
                         }
                     }
                 ))
-            case .welcome:
+            case .welcome(let mode):
                 WelcomeView(isCompleted: .init(
                     get: { false },
                     set: { _ in router.completeWelcome() }
-                ))
+                ), mode: mode)
             case .main:
-                MainTabView()
+                MainTabView {
+                    router.restartAfterDataDeletion()
+                }
             }
         }
         .animation(.smooth, value: router.currentRoute)
@@ -53,8 +55,12 @@ struct MainTabView: View {
     @State private var tabManager = TabManager()
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @State private var cleanupWorkspace = CleanupWorkspaceModel()
-    @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
-    @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+    private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
+    private let onDataDeleted: @MainActor @Sendable () -> Void
+    @AppStorage(AppPreferenceKey.gridColumns)
+    private var gridColumns = GridConfiguration.current.defaultColumns
+    @AppStorage(AppPreferenceKey.sensitivity)
+    private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
     @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
     private var debugUnlockUnlimitedRescans = false
@@ -73,6 +79,10 @@ struct MainTabView: View {
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
     )
+
+    init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
+        self.onDataDeleted = onDataDeleted
+    }
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -209,6 +219,15 @@ struct MainTabView: View {
                 needsRescan: Bindable(tabManager).needsRescan,
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
+                onDeleteAllData: {
+                    await cleanupWorkspace.prepareForDataDeletion()
+                    _ = try await cleanupReminderManager.setEnabled(
+                        false,
+                        isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+                    )
+                    try await localAppDataDeleter.deleteAllData()
+                    onDataDeleted()
+                },
                 viewModel: SettingsViewModel(
                     cleanupReminderManager: cleanupReminderManager
                 )

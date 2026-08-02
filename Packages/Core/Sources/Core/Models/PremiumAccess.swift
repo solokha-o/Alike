@@ -14,17 +14,17 @@ public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
     public var debugOverrideDefaultsKey: String {
         switch self {
         case .unlimitedScans:
-            "debug.premium.unlimitedRescans"
+            AppPreferenceKey.DebugPremium.unlimitedScans
         case .screenshotCleanup:
-            "debug.premium.screenshotCleanup"
+            AppPreferenceKey.DebugPremium.screenshotCleanup
         case .blurredPhotoCleanup:
-            "debug.premium.blurredPhotoCleanup"
+            AppPreferenceKey.DebugPremium.blurredPhotoCleanup
         case .advancedFilters:
-            "debug.premium.advancedFilters"
+            AppPreferenceKey.DebugPremium.advancedFilters
         case .batchCleanup:
-            "debug.premium.batchCleanup"
+            AppPreferenceKey.DebugPremium.batchCleanup
         case .cleanupReminderCustomization:
-            "debug.premium.cleanupReminders"
+            AppPreferenceKey.DebugPremium.cleanupReminders
         }
     }
 #endif

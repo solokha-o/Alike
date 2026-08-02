@@ -11,7 +11,7 @@ public actor UserDefaultsPremiumPromptHistoryRepository: PremiumPromptHistoryRep
 
     public init(
         defaults: UserDefaults = .standard,
-        postFirstUsefulScanKey: String = "premium.prompt.postFirstUsefulScan.v1"
+        postFirstUsefulScanKey: String = AppPreferenceKey.Premium.postFirstUsefulScanPrompt
     ) {
         self.defaults = defaults
         self.postFirstUsefulScanKey = postFirstUsefulScanKey

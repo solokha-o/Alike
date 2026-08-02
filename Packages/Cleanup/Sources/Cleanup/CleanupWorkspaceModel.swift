@@ -263,6 +263,41 @@ public final class CleanupWorkspaceModel {
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
         try await analysisService.loadAssets(for: category)
     }
+
+    /// Quiesces every workspace operation before app-owned persistence is erased.
+    /// Awaiting cancelled work prevents a late scan completion from recreating
+    /// data after the deletion service has finished.
+    public func prepareForDataDeletion() async {
+        scanMutationGeneration &+= 1
+
+        let cachedLoad = cachedContentLoadTask
+        let activeScanTask = scanTask
+        let activeReconciliationTask = reconciliationTask
+
+        cachedLoad?.cancel()
+        activeScanTask?.cancel()
+        activeReconciliationTask?.cancel()
+        await progressRelay?.cancel()
+
+        await cachedLoad?.value
+        _ = try? await activeScanTask?.value
+        await activeReconciliationTask?.value
+
+        cachedContentLoadTask = nil
+        scanTask = nil
+        reconciliationTask = nil
+        progressRelay = nil
+        activeScan = nil
+        activeReconciliation = nil
+        queuedReconciliation = nil
+        lastGoodContent = .empty
+        refreshDerivedContentSnapshots()
+        contentState = .neverScanned
+        scanOperation = .idle
+        reconciliationState = nil
+        lastScanSummary = nil
+        lastCompletedScanDate = nil
+    }
 }
 
 private extension CleanupWorkspaceModel {
@@ -276,6 +311,8 @@ private extension CleanupWorkspaceModel {
         sensitivity: SensitivityLevel,
         purpose: ScanOperationPurpose
     ) async throws -> ScanOutcome {
+        try Task.checkCancellation()
+
         // Loops rather than checking once: two mismatched requests can both be
         // waiting on the same in-flight scan, and the one that resumes second
         // must wait for the scan the first one started instead of racing it.
@@ -356,6 +393,7 @@ private extension CleanupWorkspaceModel {
         var next: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)? = initial
 
         while let request = next {
+            guard !Task.isCancelled else { break }
             activeReconciliation = request
             queuedReconciliation = nil
             reconciliationState = .refreshing(request.record)
@@ -364,6 +402,7 @@ private extension CleanupWorkspaceModel {
                 _ = try await startScan(sensitivity: request.sensitivity, purpose: .reconciliation)
                 reconciliationState = .success(request.record)
             } catch {
+                guard !Task.isCancelled else { break }
                 let refreshedInsights = await fetchCleanupInsights()
                 publish(replacing(lastGoodContent, insights: refreshedInsights))
                 reconciliationState = .failed(
@@ -395,16 +434,19 @@ private extension CleanupWorkspaceModel {
         ) { progress in
             Task { await progressRelay.submit(ScanProgressStages.analysis(progress)) }
         }
+        try Task.checkCancellation()
         await progressRelay.submit(ScanProgressStages.analysis(1), force: true)
         let refreshedCategories = try await analysisService.refreshCleanupCategories { progress in
             Task { await progressRelay.submit(ScanProgressStages.categories(progress)) }
         }
+        try Task.checkCancellation()
         await progressRelay.submit(ScanProgressStages.persistenceStart, force: true)
 
         let completedAt = now()
         do {
             try await repository.saveClusters(analyzedClusters)
             try await repository.updateLastScanDate(completedAt)
+            try Task.checkCancellation()
         } catch {
             await restorePersistedContent(
                 clusters: clustersBeforeScan,
@@ -414,6 +456,7 @@ private extension CleanupWorkspaceModel {
         }
 
         let sortedClusters = await postProcessor.canonicalSortedClusters(analyzedClusters)
+        try Task.checkCancellation()
         let migratedStates = await postProcessor.migratedReviewStates(
             previousSnapshots: previousSnapshots,
             previousReviewStates: previousReviewStates,

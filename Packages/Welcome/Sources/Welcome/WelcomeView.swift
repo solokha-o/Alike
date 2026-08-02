@@ -2,6 +2,19 @@ import SwiftUI
 import Photos
 import DesignSystem
 
+public enum WelcomeMode: Equatable, Sendable {
+    case permissionRequest
+    case dataDeletionReplay
+
+    var replaysOnboarding: Bool {
+        self == .dataDeletionReplay
+    }
+
+    var requestsPhotoPermission: Bool {
+        self == .permissionRequest
+    }
+}
+
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
@@ -13,9 +26,15 @@ public struct WelcomeView: View {
     @State private var isALIWelcomeHeroVisible = false
     @State private var selectedWelcomePage = WelcomePage.welcome
     @State private var glassGrantAccessFeedbackTrigger = 0
+    private let mode: WelcomeMode
     
-    public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
+    public init(
+        isCompleted: Binding<Bool>,
+        mode: WelcomeMode = .permissionRequest,
+        viewModel: WelcomeViewModel? = nil
+    ) {
         self._isCompleted = isCompleted
+        self.mode = mode
         if let viewModel {
             self._viewModel = State(initialValue: viewModel)
         } else {
@@ -25,15 +44,19 @@ public struct WelcomeView: View {
     
     public var body: some View {
         Group {
-            switch viewModel.authorizationStatus {
-            case .notDetermined:
+            if mode.replaysOnboarding {
                 initialState
-            case .denied, .restricted:
-                deniedState
-            case .authorized, .limited:
-                authorizedState
-            @unknown default:
-                initialState
+            } else {
+                switch viewModel.authorizationStatus {
+                case .notDetermined:
+                    initialState
+                case .denied, .restricted:
+                    deniedState
+                case .authorized, .limited:
+                    authorizedState
+                @unknown default:
+                    initialState
+                }
             }
         }
         #if os(iOS)
@@ -42,7 +65,9 @@ public struct WelcomeView: View {
         }
         #endif
         .onAppear {
-            viewModel.checkStatus()
+            if mode.requestsPhotoPermission {
+                viewModel.checkStatus()
+            }
             isSymbolAnimating = true
         }
     }
@@ -50,6 +75,21 @@ public struct WelcomeView: View {
     // MARK: - Initial State
     private var initialState: some View {
         VStack(spacing: Spacing.small) {
+            if mode.replaysOnboarding {
+                Label(
+                    appLocalized("Alike data deleted"),
+                    systemImage: "checkmark.circle.fill"
+                )
+                .font(.appHeadline)
+                .foregroundStyle(Color.statusReviewed)
+                .accessibilityAddTraits(.isHeader)
+
+                Text(appLocalized("Your local Alike data was deleted. Your photos and subscription are unchanged."))
+                    .font(.appSubheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, Spacing.large)
+            }
             welcomePager
             pageIndicator
             welcomeNavigation
@@ -237,10 +277,8 @@ public struct WelcomeView: View {
             if let nextPage = selectedWelcomePage.next {
                 standardNextButton(nextPage)
             } else {
-                PrimaryButton(appLocalized("Grant Access")) {
-                    Task {
-                        await viewModel.requestPermission()
-                    }
+                PrimaryButton(finalActionTitle) {
+                    performFinalAction()
                 }
             }
         }
@@ -298,11 +336,9 @@ public struct WelcomeView: View {
             } else {
                 Button {
                     glassGrantAccessFeedbackTrigger += 1
-                    Task {
-                        await viewModel.requestPermission()
-                    }
+                    performFinalAction()
                 } label: {
-                    Text(appLocalized("Grant Access"))
+                    Text(finalActionTitle)
                         .font(.appHeadline)
                         .frame(maxWidth: .infinity)
                 }
@@ -323,6 +359,22 @@ public struct WelcomeView: View {
         } else {
             withAnimation(.appQuick) {
                 selectedWelcomePage = page
+            }
+        }
+    }
+
+    private var finalActionTitle: String {
+        mode.replaysOnboarding
+            ? appLocalized("Continue")
+            : appLocalized("Grant Access")
+    }
+
+    private func performFinalAction() {
+        if !mode.requestsPhotoPermission {
+            isCompleted = true
+        } else {
+            Task {
+                await viewModel.requestPermission()
             }
         }
     }
