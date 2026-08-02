@@ -22,6 +22,7 @@ public final class ScannerViewModel {
     public private(set) var state: State = .idle
     public private(set) var monthlyScanUsage: MonthlyScanUsage?
     public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
+    public private(set) var scanEventID = UUID()
 
     public let workspace: CleanupWorkspaceModel
     public let premiumAccess: any PremiumAccessControlling
@@ -136,6 +137,7 @@ public final class ScannerViewModel {
         )
         guard decision.isAllowed else { return decision }
 
+        scanEventID = UUID()
         publishScanningProgress(workspace.scanOperation.progress ?? 0)
         observeWorkspaceScan()
         do {

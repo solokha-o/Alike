@@ -31,13 +31,14 @@ struct ScannerHomePresentation: Equatable, Sendable {
     static func resolve(
         state: ScannerViewModel.State,
         hasLibraryChanged: Bool,
-        hasCompletedScanBaseline: Bool
+        hasCompletedScanBaseline: Bool,
+        scanEventID: UUID
     ) -> Self {
         switch state {
         case .scanning(let progress):
             return Self(
                 visualPhase: .scanning,
-                cue: scanningCue,
+                cue: scanningCue(eventID: scanEventID),
                 title: appLocalized("Scanning your photo library"),
                 message: appLocalized("You can switch tabs while scanning. Your cleanup results will refresh when it finishes."),
                 progress: min(max(progress, 0), 1),
@@ -119,14 +120,16 @@ struct ScannerHomePresentation: Equatable, Sendable {
         }
     }
 
-    private static let scanningCue = ALIReactionCue(
-        id: ALIReactionCueID(
-            eventID: .operation(UUID(uuidString: "7FDF377A-F575-45D2-BEC5-E56C99323571")!),
-            kind: .scanning
-        ),
-        state: .scanning,
-        persistence: .persistent
-    )
+    private static func scanningCue(eventID: UUID) -> ALIReactionCue {
+        ALIReactionCue(
+            id: ALIReactionCueID(
+                eventID: .scan(eventID),
+                kind: .scanning
+            ),
+            state: .scanning,
+            persistence: .persistent
+        )
+    }
 
     private static let issueCue = ALIReactionCue(
         id: ALIReactionCueID(

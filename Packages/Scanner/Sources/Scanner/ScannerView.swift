@@ -82,7 +82,8 @@ public struct ScannerView: View {
         .resolve(
             state: viewModel.state,
             hasLibraryChanged: viewModel.workspace.shouldShowRescanPrompt,
-            hasCompletedScanBaseline: viewModel.hasCompletedScanBaseline
+            hasCompletedScanBaseline: viewModel.hasCompletedScanBaseline,
+            scanEventID: viewModel.scanEventID
         )
     }
 
