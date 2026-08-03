@@ -69,7 +69,7 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
     func testPersistentDeletionFailurePropagatesBeforeOtherDataIsRemoved() async throws {
         let alikeDirectory = directoryURL.appendingPathComponent("Alike", isDirectory: true)
         try FileManager.default.createDirectory(at: alikeDirectory, withIntermediateDirectories: true)
-        defaults.set(3, forKey: AppPreferenceKey.gridColumns)
+        defaults.set(3, forKey: AppPreferenceKey.PhotoGrid.compactColumns)
         let service = LocalAppDataDeletionService(
             deletePersistentData: { throw ExpectedError.failure },
             fileManager: .default,
@@ -85,7 +85,7 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
         }
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: alikeDirectory.path))
-        XCTAssertEqual(defaults.integer(forKey: AppPreferenceKey.gridColumns), 3)
+        XCTAssertEqual(defaults.integer(forKey: AppPreferenceKey.PhotoGrid.compactColumns), 3)
     }
 
     private func seedPersistence(_ persistence: PersistenceController) throws {

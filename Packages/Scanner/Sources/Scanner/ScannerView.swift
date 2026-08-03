@@ -10,7 +10,6 @@ import SwiftUI
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var paywall: PresentedPaywall?
-    @Binding private var gridColumns: Int
     @Binding private var sensitivity: SensitivityLevel
     @Binding private var shouldStartScan: Bool
     private let subscriptionStore: SubscriptionStore?
@@ -18,21 +17,18 @@ public struct ScannerView: View {
 
     public init(
         workspace: CleanupWorkspaceModel,
-        gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
         shouldStartScan: Binding<Bool> = .constant(false),
         subscriptionStore: SubscriptionStore? = nil,
         onOpenCleanup: @escaping () -> Void = {},
         viewModel: ScannerViewModel? = nil
     ) {
-        self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._shouldStartScan = shouldStartScan
         self.subscriptionStore = subscriptionStore
         self.onOpenCleanup = onOpenCleanup
         self._viewModel = State(initialValue: viewModel ?? ScannerViewModel(
             workspace: workspace,
-            gridColumns: gridColumns.wrappedValue,
             sensitivity: sensitivity.wrappedValue
         ))
     }
@@ -64,7 +60,6 @@ public struct ScannerView: View {
 #endif
         }
         .task { await viewModel.load() }
-        .onChange(of: gridColumns) { _, value in viewModel.gridColumns = value }
         .onChange(of: sensitivity) { _, value in viewModel.sensitivity = value }
         .onChange(of: shouldStartScan) { _, requested in
             guard requested else { return }

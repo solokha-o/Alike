@@ -124,12 +124,8 @@ public struct CleanupView: View {
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
 
-#if os(iOS)
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-#endif
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
-    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
+    @PhotoGridColumnPreference private var selectedGridColumnCount
     @State private var controls = CleanupClusterControls()
     @State private var isControlsPresented = false
     @State private var presentedCategory: PresentedCleanupCategory?
@@ -461,53 +457,7 @@ public struct CleanupView: View {
     }
 
     private var columnsMenu: some View {
-        Menu {
-            Picker(selection: selectedGridColumnBinding) {
-                ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                    Text("\(count)").tag(count)
-                }
-            } label: {
-                Text(appLocalized("Columns"))
-            }
-        } label: {
-            Image(systemName: "square.grid.3x2")
-        }
-        .accessibilityLabel(Text(appLocalized("Grid Columns")))
-        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
-    }
-
-    private var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
-#if os(iOS)
-        horizontalSizeClass == .regular ? .regular : .compact
-#else
-        .regular
-#endif
-    }
-
-    private var selectedGridColumnCount: Int {
-#if os(iOS)
-        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
-#else
-        regularGridColumns
-#endif
-    }
-
-    private var selectedGridColumnBinding: Binding<Int> {
-        Binding(
-            get: { selectedGridColumnCount },
-            set: { newValue in
-                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
-#if os(iOS)
-                if horizontalSizeClass == .regular {
-                    regularGridColumns = newValue
-                } else {
-                    compactGridColumns = newValue
-                }
-#else
-                regularGridColumns = newValue
-#endif
-            }
-        )
+        PhotoGridColumnsMenu()
     }
 
     private var controlsButton: some View {

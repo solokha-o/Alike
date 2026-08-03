@@ -12,6 +12,18 @@ public struct AdaptivePhotoGridLayoutPolicy: Equatable, Sendable {
         columnCounts: 2...5,
         defaultColumnCount: 4
     )
+
+    public func clampedColumnCount(_ value: Int) -> Int {
+        min(max(value, columnCounts.lowerBound), columnCounts.upperBound)
+    }
+
+#if os(iOS)
+    public static func forHorizontalSizeClass(
+        _ sizeClass: UserInterfaceSizeClass?
+    ) -> AdaptivePhotoGridLayoutPolicy {
+        sizeClass == .regular ? .regular : .compact
+    }
+#endif
 }
 
 public struct PhotoThumbnailAspectRatioLayout: Layout {

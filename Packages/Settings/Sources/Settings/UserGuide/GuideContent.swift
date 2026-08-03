@@ -567,12 +567,6 @@ enum GuideContent {
                         body: "guide.settingsAndReminders.analysis.sensitivity.body"
                     ),
                     GuideItem(
-                        id: "settingsAndReminders.analysis.columns",
-                        symbol: "square.grid.2x2",
-                        title: "guide.settingsAndReminders.analysis.columns.title",
-                        body: "guide.settingsAndReminders.analysis.columns.body"
-                    ),
-                    GuideItem(
                         id: "settingsAndReminders.analysis.language",
                         symbol: "globe",
                         title: "guide.settingsAndReminders.analysis.language.title",

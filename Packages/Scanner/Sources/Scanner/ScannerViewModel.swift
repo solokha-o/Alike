@@ -17,7 +17,6 @@ public final class ScannerViewModel {
         case error(String)
     }
 
-    public var gridColumns: Int
     public var sensitivity: SensitivityLevel
     public private(set) var state: State = .idle
     public private(set) var monthlyScanUsage: MonthlyScanUsage?
@@ -85,7 +84,6 @@ public final class ScannerViewModel {
 
     public init(
         workspace: CleanupWorkspaceModel,
-        gridColumns: Int = 3,
         sensitivity: SensitivityLevel = .medium,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
@@ -94,7 +92,6 @@ public final class ScannerViewModel {
         now: @escaping @Sendable () -> Date = Date.init
     ) {
         self.workspace = workspace
-        self.gridColumns = gridColumns
         self.sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.scanUsageRepository = scanUsageRepository

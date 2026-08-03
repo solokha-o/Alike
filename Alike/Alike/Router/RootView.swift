@@ -57,8 +57,6 @@ struct MainTabView: View {
     @State private var cleanupWorkspace = CleanupWorkspaceModel()
     private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
     private let onDataDeleted: @MainActor @Sendable () -> Void
-    @AppStorage(AppPreferenceKey.gridColumns)
-    private var gridColumns = GridConfiguration.current.defaultColumns
     @AppStorage(AppPreferenceKey.sensitivity)
     private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
@@ -75,7 +73,6 @@ struct MainTabView: View {
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
-    private let gridConfiguration = GridConfiguration.current
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
     )
@@ -119,10 +116,6 @@ struct MainTabView: View {
         .tint(.accent)
         .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
         .task {
-            let clamped = gridConfiguration.clampedColumns(gridColumns)
-            if clamped != gridColumns {
-                gridColumns = clamped
-            }
             await subscriptionStore.start()
         }
         .task(id: scenePhase) {
@@ -176,10 +169,6 @@ struct MainTabView: View {
         case .scanner:
             ScannerView(
                 workspace: cleanupWorkspace,
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan,
                 subscriptionStore: subscriptionStore,
@@ -188,7 +177,6 @@ struct MainTabView: View {
                 },
                 viewModel: ScannerViewModel(
                     workspace: cleanupWorkspace,
-                    gridColumns: gridConfiguration.clampedColumns(gridColumns),
                     sensitivity: sensitivity.wrappedValue,
                     premiumAccess: premiumAccess
                 )
@@ -211,10 +199,6 @@ struct MainTabView: View {
             )
         case .settings:
             SettingsView(
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
                 needsRescan: Bindable(tabManager).needsRescan,
                 premiumAccess: premiumAccess,

@@ -48,7 +48,6 @@ private enum RestorePurchasesFeedback: String, Identifiable {
 /// Settings screen
 public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
-    @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
@@ -74,7 +73,6 @@ public struct SettingsView: View {
 #endif
     
     public init(
-        gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
         needsRescan: Binding<Bool>,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
@@ -82,7 +80,6 @@ public struct SettingsView: View {
         onDeleteAllData: @escaping @MainActor @Sendable () async throws -> Void = {},
         viewModel: SettingsViewModel = SettingsViewModel()
     ) {
-        self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
         self.premiumAccess = premiumAccess
@@ -129,7 +126,6 @@ public struct SettingsView: View {
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
         Form {
             subscriptionSection
-            appearanceSection
             languageSection
             analysisSection
             cleanupReminderSection
@@ -345,29 +341,6 @@ public struct SettingsView: View {
             Text(appLocalized("Cleanup Reminder"))
         } footer: {
             Text(cleanupReminderFooterText)
-        }
-    }
-    
-    // MARK: - Appearance Section
-    private var appearanceSection: some View {
-        Section {
-            Stepper(value: $gridColumns, in: viewModel.gridConfig.minColumns...viewModel.gridConfig.maxColumns) {
-                HStack {
-                    Label {
-                        Text(appLocalized("Grid Columns"))
-                    } icon: {
-                        Image(systemName: "square.grid.3x3")
-                    }
-                    Spacer()
-                    Text("\(gridColumns)")
-                        .foregroundColor(.secondary)
-                }
-            }
-            .accessibilityLabel(Text(appLocalized("Grid Columns")))
-            .accessibilityValue(Text("\(gridColumns)"))
-            .accessibilityHint(Text(appLocalized("Adjust how many columns are used in photo grids")))
-        } header: {
-            Text(appLocalized("Appearance"))
         }
     }
     
@@ -739,7 +712,6 @@ private struct DeleteAllDataView: View {
 // MARK: - Preview
 #Preview {
     SettingsView(
-        gridColumns: .constant(2),
         sensitivity: .constant(.medium),
         needsRescan: .constant(false)
     )

@@ -11,7 +11,6 @@ final class ScannerViewModelTests: XCTestCase {
         let viewModel = makeViewModel()
 
         XCTAssertEqual(viewModel.state, .idle)
-        XCTAssertEqual(viewModel.gridColumns, 3)
         XCTAssertEqual(viewModel.remainingFreeScans, PremiumAccessPolicy.monthlyFreeScanLimit)
     }
 

@@ -7,7 +7,6 @@ import Storage
 @MainActor
 @Observable
 public final class SettingsViewModel {
-    public let gridConfig: GridConfiguration
     public let appVersion: String
     public var reviewTrigger: Int = 0
     public private(set) var cleanupReminderState = CleanupReminderState(
@@ -24,11 +23,9 @@ public final class SettingsViewModel {
     private var cleanupReminderMutationGeneration = 0
 
     public init(
-        gridConfig: GridConfiguration = GridConfiguration.current,
         appVersion: String = SettingsViewModel.fullAppVersion(),
         cleanupReminderManager: (any CleanupReminderManaging)? = nil
     ) {
-        self.gridConfig = gridConfig
         self.appVersion = appVersion
         self.cleanupReminderManager = cleanupReminderManager
             ?? CleanupReminderManager(

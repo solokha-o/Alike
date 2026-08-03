@@ -1,6 +1,12 @@
 public enum AppPreferenceKey {
-    public static let gridColumns = "gridColumns"
     public static let sensitivity = "sensitivity"
+
+    /// Column counts are stored per horizontal size class so a compact-width
+    /// choice never overwrites the wider regular-width layout.
+    public enum PhotoGrid {
+        public static let compactColumns = "photoGrid.columns.compact"
+        public static let regularColumns = "photoGrid.columns.regular"
+    }
 
     public enum CleanupReminder {
         public static let isEnabled = "cleanup.reminder.isEnabled"
@@ -25,8 +31,14 @@ public enum AppPreferenceKey {
         public static let cleanupReminders = "debug.premium.cleanupReminders"
     }
 
+    /// Retired in favour of `PhotoGrid`; still reset so existing installs do not
+    /// keep a stale value in `UserDefaults` forever.
+    private static let legacyGridColumns = "gridColumns"
+
     public static let resettable: [String] = [
-        gridColumns,
+        PhotoGrid.compactColumns,
+        PhotoGrid.regularColumns,
+        legacyGridColumns,
         sensitivity,
         CleanupReminder.isEnabled,
         CleanupReminder.weekday,
