@@ -9,8 +9,9 @@ import PurchasesUI
 import UIKit
 #endif
 
-private enum SettingsRoute: Hashable {
+enum SettingsRoute: Hashable {
     case userGuide
+    case userGuideTopic(GuideTopicID)
     case deleteAllData
 }
 
@@ -149,7 +150,9 @@ public struct SettingsView: View {
     private func destination(for route: SettingsRoute) -> some View {
         switch route {
         case .userGuide:
-            UserGuideView()
+            UserGuideHubView()
+        case .userGuideTopic(let topicID):
+            UserGuideTopicView(topic: GuideContent.topic(topicID))
         case .deleteAllData:
             DeleteAllDataView(model: deleteAllDataModel)
         }
@@ -733,96 +736,6 @@ private struct DeleteAllDataView: View {
     }
 }
 
-// MARK: - User Guide View
-struct UserGuideView: View {
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.large) {
-                guideStep(
-                    number: 1,
-                    icon: "photo.on.rectangle",
-                    title: appLocalized("Grant Access"),
-                    description: appLocalized("Allow Alike to access your photo library")
-                )
-                
-                guideStep(
-                    number: 2,
-                    icon: "sparkles",
-                    title: appLocalized("Start Scanning"),
-                    description: appLocalized("Tap 'Start Scanning' to analyze your photos using advanced computer vision")
-                )
-                
-                guideStep(
-                    number: 3,
-                    icon: "square.grid.3x3",
-                    title: appLocalized("View Results"),
-                    description: appLocalized("Browse similar-photo clusters and start with the ones that need your attention first")
-                )
-                
-                guideStep(
-                    number: 4,
-                    icon: "checklist",
-                    title: appLocalized("Review the Needs Review Section"),
-                    description: appLocalized("After a rescan, check the Needs review section to see new or changed clusters that should be reviewed again")
-                )
-                
-                guideStep(
-                    number: 5,
-                    icon: "photo",
-                    title: appLocalized("Open a Cluster and Pick the Best Shot"),
-                    description: appLocalized("Open any cluster to compare photos, keep the best shot, and mark the rest for cleanup")
-                )
-                
-                guideStep(
-                    number: 6,
-                    icon: "slider.horizontal.3",
-                    title: appLocalized("Adjust Settings"),
-                    description: appLocalized("Fine-tune sensitivity and switch between one- and two-column grid layouts for your preferred review style")
-                )
-
-                guideStep(
-                    number: 7,
-                    icon: "arrow.clockwise",
-                    title: appLocalized("Rescan After Library Changes"),
-                    description: appLocalized("If your gallery changes, use the rescan prompt or refresh button to rebuild clusters and refresh your cleanup progress")
-                )
-            }
-            .padding(Spacing.large)
-        }
-        .navigationTitle(Text(appLocalized("How to Use")))
-#if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
-#endif
-    }
-    
-    private func guideStep(number: Int, icon: String, title: String, description: String) -> some View {
-        HStack(alignment: .top, spacing: Spacing.medium) {
-            ZStack {
-                Circle()
-                    .fill(Color.accent.opacity(ColorOpacity.guideStepBackground))
-                    .frame(width: 50, height: 50)
-                
-                Text("\(number)")
-                    .font(.appHeadline)
-                    .foregroundColor(.accent)
-            }
-            
-            VStack(alignment: .leading, spacing: Spacing.xSmall) {
-                Label {
-                    Text(title)
-                } icon: {
-                    Image(systemName: icon)
-                }
-                .font(.appHeadline)
-                
-                Text(description)
-                    .font(.appBody)
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-}
-
 // MARK: - Preview
 #Preview {
     SettingsView(
@@ -833,7 +746,11 @@ struct UserGuideView: View {
 }
 
 #Preview("User Guide") {
-    RoutedNavigationStack {
-        UserGuideView()
+    RoutedNavigationStack { (_: StackRouter<SettingsRoute>) in
+        UserGuideHubView()
+    } destination: { (route: SettingsRoute, _) in
+        if case .userGuideTopic(let topicID) = route {
+            UserGuideTopicView(topic: GuideContent.topic(topicID))
+        }
     }
 }
