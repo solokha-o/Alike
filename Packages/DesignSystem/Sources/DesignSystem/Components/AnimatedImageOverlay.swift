@@ -44,6 +44,14 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
 
     public var body: some View {
         composite
+            // Ambient motion is a `repeatForever` animation, and it is installed
+            // in the same update that makes the content visible: the overlay is
+            // only resolved once the view appears, and the static artwork can
+            // still be decoding. Without this, that content layout change
+            // inherits the looping animation and oscillates between zero and
+            // full size forever instead of settling. Only the transforms below
+            // may animate.
+            .transaction { $0.animation = nil }
             .scaleEffect(
                 animatesAmbientMotion
                     ? (ambientPhaseIsLifted ? 1.02 : 0.995)
@@ -86,6 +94,12 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
                     .accessibilityHidden(true)
             }
         }
+        // The box is sized by the proposal and the aspect ratio alone, never by
+        // its children. The overlay is inserted only once the view becomes
+        // visible; letting that insertion resize the box hands a layout change
+        // to the ambient `repeatForever` animation, which then slides the
+        // artwork back and forth forever.
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .aspectRatio(aspectRatio, contentMode: .fit)
         .frame(maxWidth: maximumWidth)
     }
