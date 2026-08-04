@@ -20,9 +20,36 @@ public protocol PhotoClusterRepository: Sendable {
     
     /// Update the last scan timestamp
     func updateLastScanDate(_ date: Date) async throws
-    
+
+    /// Read the persisted scan baseline.
+    func loadScanMetadata() async -> ScanMetadataSnapshot?
+
+    /// Replace the scan baseline in a single write; `nil` clears it.
+    func updateScanMetadata(_ metadata: ScanMetadataSnapshot?) async throws
+
+    /// Fingerprint the library as it is right now so a finished scan can be
+    /// recorded as the baseline future change checks compare against.
+    func captureScanMetadata(completedAt: Date) async -> ScanMetadataSnapshot
+
     /// Check if gallery has changed since last scan
     func hasGalleryChanged() async -> Bool
+}
+
+/// Date-only defaults so repositories and test doubles that predate library
+/// fingerprinting keep working unchanged.
+public extension PhotoClusterRepository {
+    func loadScanMetadata() async -> ScanMetadataSnapshot? {
+        await getLastScanDate().map { ScanMetadataSnapshot(lastScanDate: $0) }
+    }
+
+    func updateScanMetadata(_ metadata: ScanMetadataSnapshot?) async throws {
+        guard let metadata else { return }
+        try await updateLastScanDate(metadata.lastScanDate)
+    }
+
+    func captureScanMetadata(completedAt: Date) async -> ScanMetadataSnapshot {
+        ScanMetadataSnapshot(lastScanDate: completedAt)
+    }
 }
 
 public struct MonthlyScanUsage: Codable, Equatable, Sendable {

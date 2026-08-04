@@ -425,6 +425,7 @@ private extension CleanupWorkspaceModel {
     ) async throws -> ScanSummary {
         let clustersBeforeScan = try await repository.loadClusters()
         let categorySnapshotsBeforeScan = try? await cleanupCategoryRepository.loadAllSnapshots()
+        let scanMetadataBeforeScan = await repository.loadScanMetadata()
         let previousSnapshots = try await repository.loadClusterSnapshots()
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
 
@@ -442,15 +443,22 @@ private extension CleanupWorkspaceModel {
         try Task.checkCancellation()
         await progressRelay.submit(ScanProgressStages.persistenceStart, force: true)
 
-        let completedAt = now()
+        let completedAt: Date
         do {
             try await repository.saveClusters(analyzedClusters)
-            try await repository.updateLastScanDate(completedAt)
+            // Fingerprinted after persistence, not before it: anything the
+            // library does while clusters are being written would otherwise
+            // land after the recorded baseline and read as a fresh change.
+            completedAt = now()
+            try await repository.updateScanMetadata(
+                await repository.captureScanMetadata(completedAt: completedAt)
+            )
             try Task.checkCancellation()
         } catch {
             await restorePersistedContent(
                 clusters: clustersBeforeScan,
-                categorySnapshots: categorySnapshotsBeforeScan
+                categorySnapshots: categorySnapshotsBeforeScan,
+                scanMetadata: scanMetadataBeforeScan
             )
             throw error
         }
@@ -563,12 +571,21 @@ private extension CleanupWorkspaceModel {
 
     func restorePersistedContent(
         clusters: [PhotoCluster],
-        categorySnapshots: [CleanupCategoryKind: CleanupCategorySnapshot]?
+        categorySnapshots: [CleanupCategoryKind: CleanupCategorySnapshot]?,
+        scanMetadata: ScanMetadataSnapshot?
     ) async {
         do {
             try await repository.saveClusters(clusters)
         } catch {
             AppLog.storage.error("Failed to restore clusters after scan failure: \(error.localizedDescription)")
+        }
+
+        // The baseline may already have advanced before the failure; leaving it
+        // there would pair a new scan date with the previous scan's clusters.
+        do {
+            try await repository.updateScanMetadata(scanMetadata)
+        } catch {
+            AppLog.storage.error("Failed to restore scan metadata after scan failure: \(error.localizedDescription)")
         }
 
         guard let categorySnapshots else { return }

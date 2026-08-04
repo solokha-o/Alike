@@ -26,9 +26,14 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     }
 
     private let persistence: PersistenceController
-    
-    public init(persistence: PersistenceController = .shared) {
+    private let changeDetector: any PhotoLibraryChangeDetecting
+
+    public init(
+        persistence: PersistenceController = .shared,
+        changeDetector: any PhotoLibraryChangeDetecting = PhotoKitChangeDetector()
+    ) {
         self.persistence = persistence
+        self.changeDetector = changeDetector
     }
     
     public func loadClusters() async throws -> [PhotoCluster] {
@@ -105,54 +110,112 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     }
     
     public func getLastScanDate() async -> Date? {
+        await loadScanMetadata()?.lastScanDate
+    }
+
+    public func loadScanMetadata() async -> ScanMetadataSnapshot? {
         let context = persistence.viewContext
-        
+
         return await context.perform {
-            let request = ScanMetadataEntity.fetchRequest()
-            request.fetchLimit = 1
-            
-            guard let metadata = try? context.fetch(request).first else {
-                return nil
-            }
-            
-            return metadata.lastScanDate
+            guard let metadata = Self.newestMetadata(in: context) else { return nil }
+            guard let lastScanDate = metadata.lastScanDate else { return nil }
+
+            return ScanMetadataSnapshot(
+                lastScanDate: lastScanDate,
+                libraryChangeToken: metadata.photoLibraryChangeToken
+                    .flatMap { Data(base64Encoded: $0) },
+                imageAssetCount: Int(metadata.totalPhotosScanned)
+            )
         }
     }
-    
+
     public func updateLastScanDate(_ date: Date) async throws {
+        try await updateScanMetadata(ScanMetadataSnapshot(lastScanDate: date))
+    }
+
+    /// Writes the whole baseline in one save. A partially written baseline —
+    /// a date without a fingerprint — is what makes change detection fail open
+    /// and prompt for a rescan the app just completed.
+    public func updateScanMetadata(_ metadata: ScanMetadataSnapshot?) async throws {
         try await persistence.performBackgroundTask { context in
             let request = ScanMetadataEntity.fetchRequest()
-            let metadata: ScanMetadataEntity
-            
-            if let existing = try context.fetch(request).first {
-                metadata = existing
-            } else {
-                metadata = ScanMetadataEntity(context: context)
+            request.sortDescriptors = [
+                NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+            ]
+            let existing = try context.fetch(request)
+
+            guard let metadata else {
+                existing.forEach(context.delete)
+                try context.save()
+                return
             }
-            
-            metadata.lastScanDate = date
+
+            // Nothing enforces a singleton row, so collapse any duplicates
+            // instead of leaving an unsorted fetch to pick one at random.
+            let row = existing.first ?? ScanMetadataEntity(context: context)
+            existing.dropFirst().forEach(context.delete)
+
+            row.lastScanDate = metadata.lastScanDate
+            row.photoLibraryChangeToken = metadata.libraryChangeToken?.base64EncodedString()
+            row.totalPhotosScanned = Int32(clamping: metadata.imageAssetCount)
             try context.save()
         }
     }
-    
+
+    public func captureScanMetadata(completedAt: Date) async -> ScanMetadataSnapshot {
+        ScanMetadataSnapshot(
+            lastScanDate: completedAt,
+            libraryChangeToken: changeDetector.currentToken(),
+            imageAssetCount: changeDetector.imageAssetCount()
+        )
+    }
+
+    /// True only when image assets were actually added to or removed from the
+    /// library since the last scan.
     public func hasGalleryChanged() async -> Bool {
-        guard let lastScanDate = await getLastScanDate() else {
-            return true // No previous scan
+        guard let metadata = await loadScanMetadata() else {
+            AppLog.storage.debug("\(AppLog.tag(.storage, "Gallery change check: no scan baseline"))")
+            return true
         }
-        
-        let context = persistence.viewContext
-        
-        return await context.perform {
-            // Get count of photos modified after last scan
-            let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(
-                format: "modificationDate > %@",
-                lastScanDate as NSDate
+
+        guard let token = metadata.libraryChangeToken else {
+            // Baseline written before library fingerprinting existed. A scan did
+            // complete, so adopt the library's current state as its fingerprint
+            // rather than prompting for a rescan that cannot be justified.
+            AppLog.storage.debug(
+                "\(AppLog.tag(.storage, "Gallery change check: backfilling missing change token"))"
             )
-            
-            let modifiedPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-            return modifiedPhotos.count > 0
+            try? await updateScanMetadata(
+                await captureScanMetadata(completedAt: metadata.lastScanDate)
+            )
+            return false
         }
+
+        guard let summary = changeDetector.changes(since: token) else {
+            // Token expired: compare counts instead of assuming a change.
+            let currentCount = changeDetector.imageAssetCount()
+            let changed = currentCount != metadata.imageAssetCount
+            AppLog.storage.debug(
+                "\(AppLog.tag(.storage, "Gallery change check: token unusable, count \(metadata.imageAssetCount)->\(currentCount) changed=\(changed)"))"
+            )
+            return changed
+        }
+
+        let changed = summary.insertedImageCount > 0
+            || (summary.hasDeletions && changeDetector.imageAssetCount() != metadata.imageAssetCount)
+        AppLog.storage.debug(
+            "\(AppLog.tag(.storage, "Gallery change check: inserted=\(summary.insertedImageCount) deletions=\(summary.hasDeletions) changed=\(changed)"))"
+        )
+        return changed
+    }
+
+    private static func newestMetadata(in context: NSManagedObjectContext) -> ScanMetadataEntity? {
+        let request = ScanMetadataEntity.fetchRequest()
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+        ]
+        request.fetchLimit = 1
+        return try? context.fetch(request).first
     }
 
     @MainActor
