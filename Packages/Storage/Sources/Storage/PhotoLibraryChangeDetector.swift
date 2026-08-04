@@ -67,23 +67,55 @@ public struct PhotoKitChangeDetector: PhotoLibraryChangeDetecting {
             return nil
         }
 
+        let detailsProviders = fetchResult.map { change in
+            { () throws -> AssetChangeDetails in
+                let details = try change.changeDetails(for: .asset)
+                return AssetChangeDetails(
+                    insertedLocalIdentifiers: details.insertedLocalIdentifiers,
+                    deletedLocalIdentifiers: details.deletedLocalIdentifiers
+                )
+            }
+        }
+
+        guard var accumulated = Self.accumulateAssetChanges(detailsProviders) else { return nil }
+
+        // An asset inserted and then deleted again is not a change the user
+        // needs to rescan for.
+        accumulated.inserted.subtract(accumulated.deleted)
+
+        return PhotoLibraryChangeSummary(
+            insertedImageCount: imageAssetCount(among: accumulated.inserted),
+            hasDeletions: !accumulated.deleted.isEmpty
+        )
+    }
+
+    /// Local identifiers touched by one persistent-history change, mirroring
+    /// the fields of `PHPersistentObjectChangeDetails` without the PhotoKit
+    /// type — that type has no public initializer, so this is what lets the
+    /// accumulation logic below run against fakes in tests.
+    struct AssetChangeDetails: Equatable, Sendable {
+        let insertedLocalIdentifiers: Set<String>
+        let deletedLocalIdentifiers: Set<String>
+    }
+
+    /// Folds per-change asset details into inserted/deleted identifier sets.
+    /// Returns nil the moment a change's details can't be read, matching the
+    /// detector's contract of nil meaning "cannot answer" — a throwing
+    /// record must not be treated as if it held no changes, since it could
+    /// be the only insertion or deletion in the batch.
+    static func accumulateAssetChanges(
+        _ detailsProviders: [() throws -> AssetChangeDetails]
+    ) -> (inserted: Set<String>, deleted: Set<String>)? {
         var insertedIdentifiers: Set<String> = []
         var deletedIdentifiers: Set<String> = []
 
-        for change in fetchResult {
-            guard let details = try? change.changeDetails(for: .asset) else { continue }
+        for provider in detailsProviders {
+            guard let details = try? provider() else { return nil }
             insertedIdentifiers.formUnion(details.insertedLocalIdentifiers)
             deletedIdentifiers.formUnion(details.deletedLocalIdentifiers)
         }
 
-        // An asset inserted and then deleted again is not a change the user
-        // needs to rescan for.
-        insertedIdentifiers.subtract(deletedIdentifiers)
-
-        return PhotoLibraryChangeSummary(
-            insertedImageCount: imageAssetCount(among: insertedIdentifiers),
-            hasDeletions: !deletedIdentifiers.isEmpty
-        )
+        return (insertedIdentifiers, deletedIdentifiers)
     }
 
     private func imageAssetCount(among identifiers: Set<String>) -> Int {
