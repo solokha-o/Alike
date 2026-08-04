@@ -5,11 +5,13 @@ import NavigationKit
 import Purchases
 import PurchasesUI
 import SwiftUI
+import UserGuide
 
 /// The focused scan lifecycle. Review, deletion and history live in Cleanup.
 public struct ScannerView: View {
     @State private var viewModel: ScannerViewModel
     @State private var paywall: PresentedPaywall?
+    @State private var isGuidePresented = false
     @Binding private var sensitivity: SensitivityLevel
     @Binding private var shouldStartScan: Bool
     private let subscriptionStore: SubscriptionStore?
@@ -58,6 +60,7 @@ public struct ScannerView: View {
 #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
 #endif
+            .toolbar { guideToolbarItem }
         }
         .task { await viewModel.load() }
         .onChange(of: sensitivity) { _, value in viewModel.sensitivity = value }
@@ -70,6 +73,24 @@ public struct ScannerView: View {
         }
         .sheet(item: $paywall) { paywall in
             SubscriptionPaywallView(context: paywall.context, store: subscriptionStore)
+        }
+        .sheet(isPresented: $isGuidePresented) {
+            UserGuideSheet()
+        }
+    }
+
+    /// One-tap way into the user guide from the screen where people first wonder what the app does.
+    private var guideToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                isGuidePresented = true
+            } label: {
+                Image(systemName: "questionmark.circle")
+            }
+            .accessibilityLabel(Text(appLocalized("How to Use")))
+            .accessibilityHint(
+                Text(appLocalized("Open usage instructions and cleanup workflow tips"))
+            )
         }
     }
 
