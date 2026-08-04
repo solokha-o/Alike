@@ -11,13 +11,48 @@ public enum AnimatedImageAmbientMotion: Sendable, Equatable {
     case breathe
 }
 
+/// Full period of the ambient breathe, matching the 2.4s auto-reversing
+/// animation this replaced.
+let ambientMotionCycleDuration: TimeInterval = 4.8
+
+/// Eased 0...1 loop over ``ambientMotionCycleDuration``, derived from wall-clock
+/// time so the motion never restarts and no SwiftUI animation is involved.
+func ambientMotionPhase(at date: Date) -> Double {
+    let elapsed = date.timeIntervalSinceReferenceDate
+        .truncatingRemainder(dividingBy: ambientMotionCycleDuration)
+    return (1 - cos(2 * .pi * elapsed / ambientMotionCycleDuration)) / 2
+}
+
+/// Transform values for one point in the ambient cycle. A `nil` phase means
+/// ambient motion is off and every value is the identity.
+struct AmbientMotionValues {
+    let scale: CGFloat
+    let offsetX: CGFloat
+    let offsetY: CGFloat
+    let rotationDegrees: Double
+
+    init(phase: Double?) {
+        guard let phase else {
+            scale = 1
+            offsetX = 0
+            offsetY = 0
+            rotationDegrees = 0
+            return
+        }
+        let progress = CGFloat(min(max(phase, 0), 1))
+        scale = 0.995 + (1.02 - 0.995) * progress
+        offsetX = -2 + 4 * progress
+        offsetY = 2 - 8 * progress
+        rotationDegrees = -0.5 + 1.2 * Double(progress)
+    }
+}
+
 /// Composes static SwiftUI content with an optional transparent Lottie overlay.
 ///
 /// The static content remains the source of truth. The overlay never handles
 /// interaction, is omitted for Reduce Motion, and does not affect layout.
 public struct AnimatedImageOverlay<StaticContent: View>: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var ambientPhaseIsLifted = false
 
     private let animationURL: URL?
     private let aspectRatio: CGFloat
@@ -42,66 +77,56 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
         self.staticContent = staticContent()
     }
 
+    /// Ambient motion is driven from wall-clock time rather than a
+    /// `repeatForever` animation on purpose.
+    ///
+    /// A looping animation is attached to the view, not to the three transforms
+    /// it was written for, so any layout change that lands while the loop is
+    /// installed — the Lottie overlay appearing once the view becomes visible,
+    /// artwork resolving, an ancestor re-laying-out — is adopted by the loop and
+    /// repeated forever. That is what made the hero collapse to a fraction of
+    /// its size and slide across the card on a 4.8s cycle. Deriving the phase
+    /// from the timeline means no animation exists for layout to inherit, and
+    /// the motion also never restarts when unrelated state changes.
     public var body: some View {
-        composite
-            // Ambient motion is a `repeatForever` animation, and it is installed
-            // in the same update that makes the content visible: the overlay is
-            // only resolved once the view appears, and the static artwork can
-            // still be decoding. Without this, that content layout change
-            // inherits the looping animation and oscillates between zero and
-            // full size forever instead of settling. Only the transforms below
-            // may animate.
-            .transaction { $0.animation = nil }
-            .scaleEffect(
-                animatesAmbientMotion
-                    ? (ambientPhaseIsLifted ? 1.02 : 0.995)
-                    : 1
+        TimelineView(.animation(paused: !animatesAmbientMotion)) { context in
+            let motion = AmbientMotionValues(
+                phase: animatesAmbientMotion ? ambientMotionPhase(at: context.date) : nil
             )
-            .offset(
-                x: animatesAmbientMotion ? (ambientPhaseIsLifted ? 2 : -2) : 0,
-                y: animatesAmbientMotion ? (ambientPhaseIsLifted ? -6 : 2) : 0
-            )
-            .rotationEffect(
-                .degrees(
-                    animatesAmbientMotion
-                        ? (ambientPhaseIsLifted ? 0.7 : -0.5)
-                        : 0
-                )
-            )
-            .animation(ambientAnimation, value: ambientPhaseIsLifted)
-            .onAppear { ambientPhaseIsLifted = animatesAmbientMotion }
-            .onChange(of: animatesAmbientMotion) { _, shouldAnimate in
-                ambientPhaseIsLifted = shouldAnimate
-            }
+            composite
+                .scaleEffect(motion.scale)
+                .offset(x: motion.offsetX, y: motion.offsetY)
+                .rotationEffect(.degrees(motion.rotationDegrees))
+        }
     }
 
     private var composite: some View {
-        ZStack {
-            staticContent
+        // The geometry comes from the static content alone. The overlay is an
+        // `.overlay` rather than a `ZStack` sibling so it cannot participate in
+        // sizing, keeping the promise in this type's documentation that the
+        // overlay never affects layout.
+        staticContent
+            .aspectRatio(aspectRatio, contentMode: .fit)
+            .frame(maxWidth: maximumWidth)
+            .overlay { animationOverlay }
+    }
 
-            if Self.shouldRenderAnimation(
-                animationURL: animationURL,
-                reduceMotion: reduceMotion
-            ), let animationURL,
-               let animation = LottieAnimation.filepath(animationURL.path) {
-                LottieView(animation: animation)
-                    .playing(.fromProgress(0, toProgress: 1, loopMode: loopMode))
-                    .configure { animationView in
-                        animationView.contentMode = .scaleAspectFit
-                        animationView.shouldRasterizeWhenIdle = playback == .once
-                    }
-                    .allowsHitTesting(false)
-                    .accessibilityHidden(true)
-            }
+    @ViewBuilder
+    private var animationOverlay: some View {
+        if Self.shouldRenderAnimation(
+            animationURL: animationURL,
+            reduceMotion: reduceMotion
+        ), let animationURL,
+           let animation = LottieAnimation.filepath(animationURL.path) {
+            LottieView(animation: animation)
+                .playing(.fromProgress(0, toProgress: 1, loopMode: loopMode))
+                .configure { animationView in
+                    animationView.contentMode = .scaleAspectFit
+                    animationView.shouldRasterizeWhenIdle = playback == .once
+                }
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
         }
-        // The box is sized by the proposal and the aspect ratio alone, never by
-        // its children. The overlay is inserted only once the view becomes
-        // visible; letting that insertion resize the box hands a layout change
-        // to the ambient `repeatForever` animation, which then slides the
-        // artwork back and forth forever.
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(aspectRatio, contentMode: .fit)
-        .frame(maxWidth: maximumWidth)
     }
 
     private var loopMode: LottieLoopMode {
@@ -118,11 +143,6 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
             ambientMotion: ambientMotion,
             reduceMotion: reduceMotion
         )
-    }
-
-    private var ambientAnimation: Animation? {
-        guard animatesAmbientMotion else { return nil }
-        return .easeInOut(duration: 2.4).repeatForever(autoreverses: true)
     }
 
     static func shouldAnimateAmbientMotion(
