@@ -127,6 +127,7 @@ Unit tests run within each package.
 swift test --package-path Packages/Cleanup
 swift test --package-path Packages/Scanner
 swift test --package-path Packages/Settings
+swift test --package-path Packages/UserGuide
 ```
 
 ## 📝 Localization
