@@ -1,6 +1,7 @@
 import Cleanup
 import Core
 import Observation
+import Photos
 import XCTest
 
 private enum ScanPersistenceTestError: Error {
@@ -63,6 +64,35 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(writes.count, 1)
         XCTAssertEqual(writes.first??.libraryChangeToken, Data([0xCD]))
         XCTAssertEqual(writes.first??.imageAssetCount, 12)
+        XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
+    }
+
+    /// Guards against a regression where the fingerprint was captured only
+    /// after clusters were persisted: a photo added or removed while
+    /// Vision/category work is still running would then be folded into the
+    /// recorded baseline while remaining absent from the clusters that work
+    /// actually produced, so the next change check would see no delta and
+    /// never prompt for the rescan that photo requires.
+    func testScanCapturesFingerprintBeforeAnalysisSnapshotsAssetsNotAfter() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setLibraryFingerprint(token: Data([0x01]), imageAssetCount: 10)
+        let analysis = MidScanFingerprintMutatingAnalysisService(
+            repository: repository,
+            mutatedToken: Data([0x02]),
+            mutatedImageAssetCount: 11
+        )
+        let workspace = makeWorkspace(analysisService: analysis, repository: repository)
+
+        let summary = try await workspace.scan(sensitivity: .medium)
+
+        let writes = await repository.scanMetadataWrites
+        XCTAssertEqual(writes.count, 1)
+        XCTAssertEqual(
+            writes.first??.libraryChangeToken,
+            Data([0x01]),
+            "Must persist the fingerprint captured before analysis started, not a value mutated mid-scan"
+        )
+        XCTAssertEqual(writes.first??.imageAssetCount, 10)
         XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
     }
 
@@ -255,6 +285,52 @@ private actor FailingReviewStateRepository: ClusterReviewStateRepository {
 
 private struct ReviewPersistenceError: LocalizedError {
     var errorDescription: String? { "Review persistence failed" }
+}
+
+/// Mutates the repository's library fingerprint from inside
+/// `analyzePhotoLibrary`, simulating a photo added or removed while Vision
+/// analysis is reading the library — after a scan would have captured its
+/// fingerprint early, but before clusters are persisted.
+private actor MidScanFingerprintMutatingAnalysisService: PhotoAnalysisService {
+    private let repository: MockPhotoClusterRepository
+    private let mutatedToken: Data
+    private let mutatedImageAssetCount: Int
+    private let delegate = MockPhotoAnalysisService()
+
+    init(repository: MockPhotoClusterRepository, mutatedToken: Data, mutatedImageAssetCount: Int) {
+        self.repository = repository
+        self.mutatedToken = mutatedToken
+        self.mutatedImageAssetCount = mutatedImageAssetCount
+    }
+
+    func analyzePhotoLibrary(
+        sensitivity: Float,
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [PhotoCluster] {
+        await repository.setLibraryFingerprint(
+            token: mutatedToken,
+            imageAssetCount: mutatedImageAssetCount
+        )
+        return try await delegate.analyzePhotoLibrary(sensitivity: sensitivity, progress: progress)
+    }
+
+    func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] {
+        try await delegate.summarizeCleanupCategories()
+    }
+
+    func refreshCleanupCategories(
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
+        try await delegate.refreshCleanupCategories(progress: progress)
+    }
+
+    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
+        try await delegate.loadAssets(for: category)
+    }
+
+    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
+        try await delegate.calculateSimilarity(asset1: asset1, asset2: asset2)
+    }
 }
 
 private final class ObservationChangeFlag: @unchecked Sendable {

@@ -430,6 +430,13 @@ private extension CleanupWorkspaceModel {
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
 
         guard let progressRelay else { throw CancellationError() }
+        // Captured now, immediately before analysis takes its own snapshot of
+        // the library's assets. A photo added or removed while Vision/category
+        // work is running would otherwise be included in a late token/count
+        // while remaining absent from the clusters that work produces, so the
+        // next change check would see no delta and never prompt for the rescan
+        // that photo actually requires.
+        let capturedFingerprint = await repository.captureScanMetadata(completedAt: now())
         let analyzedClusters = try await analysisService.analyzePhotoLibrary(
             sensitivity: sensitivity.threshold
         ) { progress in
@@ -446,12 +453,18 @@ private extension CleanupWorkspaceModel {
         let completedAt: Date
         do {
             try await repository.saveClusters(analyzedClusters)
-            // Fingerprinted after persistence, not before it: anything the
-            // library does while clusters are being written would otherwise
-            // land after the recorded baseline and read as a fresh change.
+            // The fingerprint itself was captured before analysis started, so it
+            // matches the asset input the persisted clusters were derived from.
+            // Only the completion timestamp is stamped now, and the pairing is
+            // persisted only after a successful scan — a failed scan below must
+            // not advance the baseline past clusters that were never saved.
             completedAt = now()
             try await repository.updateScanMetadata(
-                await repository.captureScanMetadata(completedAt: completedAt)
+                ScanMetadataSnapshot(
+                    lastScanDate: completedAt,
+                    libraryChangeToken: capturedFingerprint.libraryChangeToken,
+                    imageAssetCount: capturedFingerprint.imageAssetCount
+                )
             )
             try Task.checkCancellation()
         } catch {
