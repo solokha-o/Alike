@@ -8,6 +8,7 @@ import SwiftUI
 /// `UserDefaults` keys, a change made from one screen's toolbar is picked up by
 /// the others.
 @propertyWrapper
+@MainActor
 public struct PhotoGridColumnPreference: DynamicProperty {
     @AppStorage(AppPreferenceKey.PhotoGrid.compactColumns)
     private var compactColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
