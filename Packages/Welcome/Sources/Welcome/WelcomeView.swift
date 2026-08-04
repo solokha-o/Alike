@@ -2,6 +2,19 @@ import SwiftUI
 import Photos
 import DesignSystem
 
+public enum WelcomeMode: Equatable, Sendable {
+    case permissionRequest
+    case dataDeletionReplay
+
+    var replaysOnboarding: Bool {
+        self == .dataDeletionReplay
+    }
+
+    var requestsPhotoPermission: Bool {
+        self == .permissionRequest
+    }
+}
+
 /// Welcome screen with permission handling
 public struct WelcomeView: View {
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
@@ -10,12 +23,18 @@ public struct WelcomeView: View {
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     @State private var isSymbolAnimating = false
-    @State private var isALIWelcomeHeroVisible = false
+    @State private var isAlikeWelcomeHeroVisible = false
     @State private var selectedWelcomePage = WelcomePage.welcome
     @State private var glassGrantAccessFeedbackTrigger = 0
+    private let mode: WelcomeMode
     
-    public init(isCompleted: Binding<Bool>, viewModel: WelcomeViewModel? = nil) {
+    public init(
+        isCompleted: Binding<Bool>,
+        mode: WelcomeMode = .permissionRequest,
+        viewModel: WelcomeViewModel? = nil
+    ) {
         self._isCompleted = isCompleted
+        self.mode = mode
         if let viewModel {
             self._viewModel = State(initialValue: viewModel)
         } else {
@@ -25,15 +44,19 @@ public struct WelcomeView: View {
     
     public var body: some View {
         Group {
-            switch viewModel.authorizationStatus {
-            case .notDetermined:
+            if mode.replaysOnboarding {
                 initialState
-            case .denied, .restricted:
-                deniedState
-            case .authorized, .limited:
-                authorizedState
-            @unknown default:
-                initialState
+            } else {
+                switch viewModel.authorizationStatus {
+                case .notDetermined:
+                    initialState
+                case .denied, .restricted:
+                    deniedState
+                case .authorized, .limited:
+                    authorizedState
+                @unknown default:
+                    initialState
+                }
             }
         }
         #if os(iOS)
@@ -42,7 +65,9 @@ public struct WelcomeView: View {
         }
         #endif
         .onAppear {
-            viewModel.checkStatus()
+            if mode.requestsPhotoPermission {
+                viewModel.checkStatus()
+            }
             isSymbolAnimating = true
         }
     }
@@ -50,6 +75,21 @@ public struct WelcomeView: View {
     // MARK: - Initial State
     private var initialState: some View {
         VStack(spacing: Spacing.small) {
+            if mode.replaysOnboarding {
+                Label(
+                    appLocalized("Alike data deleted"),
+                    systemImage: "checkmark.circle.fill"
+                )
+                .font(.appHeadline)
+                .foregroundStyle(Color.statusReviewed)
+                .accessibilityAddTraits(.isHeader)
+
+                Text(appLocalized("Your local Alike data was deleted. Your photos and subscription are unchanged."))
+                    .font(.appSubheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, Spacing.large)
+            }
             welcomePager
             pageIndicator
             welcomeNavigation
@@ -102,7 +142,7 @@ public struct WelcomeView: View {
 
     private var welcomeOverviewPage: some View {
         heroSection(
-            showsALIWelcomeHero: true,
+            showsAlikeWelcomeHero: true,
             title: appLocalized("Clean up your library with confidence"),
             subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
         )
@@ -237,10 +277,8 @@ public struct WelcomeView: View {
             if let nextPage = selectedWelcomePage.next {
                 standardNextButton(nextPage)
             } else {
-                PrimaryButton(appLocalized("Grant Access")) {
-                    Task {
-                        await viewModel.requestPermission()
-                    }
+                PrimaryButton(finalActionTitle) {
+                    performFinalAction()
                 }
             }
         }
@@ -298,11 +336,9 @@ public struct WelcomeView: View {
             } else {
                 Button {
                     glassGrantAccessFeedbackTrigger += 1
-                    Task {
-                        await viewModel.requestPermission()
-                    }
+                    performFinalAction()
                 } label: {
-                    Text(appLocalized("Grant Access"))
+                    Text(finalActionTitle)
                         .font(.appHeadline)
                         .frame(maxWidth: .infinity)
                 }
@@ -323,6 +359,22 @@ public struct WelcomeView: View {
         } else {
             withAnimation(.appQuick) {
                 selectedWelcomePage = page
+            }
+        }
+    }
+
+    private var finalActionTitle: String {
+        mode.replaysOnboarding
+            ? appLocalized("Continue")
+            : appLocalized("Grant Access")
+    }
+
+    private func performFinalAction() {
+        if !mode.requestsPhotoPermission {
+            isCompleted = true
+        } else {
+            Task {
+                await viewModel.requestPermission()
             }
         }
     }
@@ -372,13 +424,13 @@ public struct WelcomeView: View {
 
     private func heroSection(
         icon: String = "camera.viewfinder",
-        showsALIWelcomeHero: Bool = false,
+        showsAlikeWelcomeHero: Bool = false,
         title: String,
         subtitle: String
     ) -> some View {
         VStack(spacing: Spacing.medium) {
-            if showsALIWelcomeHero {
-                aliWelcomeHero
+            if showsAlikeWelcomeHero {
+                alikeWelcomeHero
             } else {
                 Image(systemName: icon)
                     .font(.system(size: 80, weight: .bold))
@@ -402,36 +454,36 @@ public struct WelcomeView: View {
         }
     }
 
-    private var aliWelcomeHero: some View {
+    private var alikeWelcomeHero: some View {
         AnimatedImageOverlay(
-            animationURL: playsALIWelcomeOverlay ? ALIAssets.welcomeHeroOverlayURL : nil,
+            animationURL: playsAlikeWelcomeOverlay ? AlikeAssets.welcomeHeroOverlayURL : nil,
             aspectRatio: 1080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
-            ambientMotion: playsALIWelcomeOverlay ? .breathe : .none
+            ambientMotion: playsAlikeWelcomeOverlay ? .breathe : .none
         ) {
             welcomeImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(appLocalized("ALI, Alike's photo detective"))
+        .accessibilityLabel(appLocalized("Alike, your photo detective"))
         .onAppear {
-            isALIWelcomeHeroVisible = true
+            isAlikeWelcomeHeroVisible = true
         }
         .onDisappear {
-            isALIWelcomeHeroVisible = false
+            isAlikeWelcomeHeroVisible = false
         }
     }
 
-    private var playsALIWelcomeOverlay: Bool {
-        isALIWelcomeHeroVisible
+    private var playsAlikeWelcomeOverlay: Bool {
+        isAlikeWelcomeHeroVisible
             && selectedWelcomePage == .welcome
             && scenePhase == .active
     }
 
     private var welcomeImage: Image {
-        let imageURL = ALIAssets.welcomeHeroURL(for: welcomeHeroScale)
+        let imageURL = AlikeAssets.welcomeHeroURL(for: welcomeHeroScale)
 
         #if canImport(UIKit)
         guard let image = UIImage(contentsOfFile: imageURL.path) else {
@@ -446,7 +498,7 @@ public struct WelcomeView: View {
         #endif
     }
 
-    private var welcomeHeroScale: ALIAssets.WelcomeHeroScale {
+    private var welcomeHeroScale: AlikeAssets.WelcomeHeroScale {
         switch displayScale {
         case ..<1.5:
             .oneX

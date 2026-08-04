@@ -10,8 +10,8 @@ public actor UserDefaultsScanUsageRepository: ScanUsageRepository {
 
     public init(
         defaults: UserDefaults = .standard,
-        monthlyUsageKey: String = "premium.monthlyScanUsage.v2",
-        legacyCompletedScanCountKey: String = "premium.completedScanCount.v1",
+        monthlyUsageKey: String = AppPreferenceKey.Premium.monthlyScanUsage,
+        legacyCompletedScanCountKey: String = AppPreferenceKey.Premium.legacyCompletedScanCount,
         calendar: Calendar = .autoupdatingCurrent
     ) {
         self.defaults = defaults

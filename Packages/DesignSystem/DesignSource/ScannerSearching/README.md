@@ -1,4 +1,4 @@
-# ALI Scanner Searching Asset
+# Alike Scanner Searching Asset
 
 The static character and optional Lottie overlay share a square coordinate
 space and must be rendered with identical frames in a `ZStack`.
@@ -10,5 +10,5 @@ space and must be rendered with identical frames in a `ZStack`.
 - Interaction: the overlay must not participate in hit testing.
 - Reduce Motion/failure fallback: omit the overlay; the static pose remains complete.
 
-`ALIScannerSearching-source.png` is the transparent production source. Runtime
+`AlikeScannerSearching-source.png` is the transparent production source. Runtime
 exports live under `Sources/DesignSystem/Resources/ScannerSearching`.

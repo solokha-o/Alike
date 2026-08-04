@@ -5,12 +5,15 @@ import DesignSystem
 import NavigationKit
 import Purchases
 import PurchasesUI
+import UserGuide
 #if canImport(UIKit)
 import UIKit
 #endif
 
-private enum SettingsRoute: Hashable {
+enum SettingsRoute: Hashable {
     case userGuide
+    case userGuideTopic(GuideTopicID)
+    case deleteAllData
 }
 
 private enum RestorePurchasesFeedback: String, Identifiable {
@@ -46,10 +49,10 @@ private enum RestorePurchasesFeedback: String, Identifiable {
 /// Settings screen
 public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
-    @Binding var gridColumns: Int
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
+    @State private var deleteAllDataModel: DeleteAllDataModel
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var isRestoringPurchases = false
     @State private var restorePurchasesFeedback: RestorePurchasesFeedback?
@@ -71,19 +74,21 @@ public struct SettingsView: View {
 #endif
     
     public init(
-        gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
         needsRescan: Binding<Bool>,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         subscriptionStore: SubscriptionStore? = nil,
+        onDeleteAllData: @escaping @MainActor @Sendable () async throws -> Void = {},
         viewModel: SettingsViewModel = SettingsViewModel()
     ) {
-        self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
         self._viewModel = State(initialValue: viewModel)
+        self._deleteAllDataModel = State(
+            initialValue: DeleteAllDataModel(operation: onDeleteAllData)
+        )
     }
     
     public var body: some View {
@@ -122,7 +127,6 @@ public struct SettingsView: View {
     private func formContent(router: StackRouter<SettingsRoute>) -> some View {
         Form {
             subscriptionSection
-            appearanceSection
             languageSection
             analysisSection
             cleanupReminderSection
@@ -130,6 +134,7 @@ public struct SettingsView: View {
             debugSection
 #endif
             supportSection(router: router)
+            dataPrivacySection(router: router)
             aboutSection
         }
         .navigationTitle(Text(appLocalized("Settings")))
@@ -142,7 +147,11 @@ public struct SettingsView: View {
     private func destination(for route: SettingsRoute) -> some View {
         switch route {
         case .userGuide:
-            UserGuideView()
+            UserGuideHubView { SettingsRoute.userGuideTopic($0) }
+        case .userGuideTopic(let topicID):
+            UserGuideTopicView(topicID: topicID)
+        case .deleteAllData:
+            DeleteAllDataView(model: deleteAllDataModel)
         }
     }
 
@@ -336,29 +345,6 @@ public struct SettingsView: View {
         }
     }
     
-    // MARK: - Appearance Section
-    private var appearanceSection: some View {
-        Section {
-            Stepper(value: $gridColumns, in: viewModel.gridConfig.minColumns...viewModel.gridConfig.maxColumns) {
-                HStack {
-                    Label {
-                        Text(appLocalized("Grid Columns"))
-                    } icon: {
-                        Image(systemName: "square.grid.3x3")
-                    }
-                    Spacer()
-                    Text("\(gridColumns)")
-                        .foregroundColor(.secondary)
-                }
-            }
-            .accessibilityLabel(Text(appLocalized("Grid Columns")))
-            .accessibilityValue(Text("\(gridColumns)"))
-            .accessibilityHint(Text(appLocalized("Adjust how many columns are used in photo grids")))
-        } header: {
-            Text(appLocalized("Appearance"))
-        }
-    }
-    
     // MARK: - Analysis Section
     private var analysisSection: some View {
         Section {
@@ -437,7 +423,7 @@ public struct SettingsView: View {
             }
             .accessibilityHint(Text(appLocalized("Open usage instructions and cleanup workflow tips")))
             
-            ShareLink(item: URL(string: "https://apps.apple.com/app/idXXXXXXXX")!) {
+            ShareLink(item: AppStoreLinks.product) {
                 Label {
                     Text(appLocalized("Share App"))
                 } icon: {
@@ -468,6 +454,29 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Open email composer to contact the developer")))
         } header: {
             Text(appLocalized("Support"))
+        }
+    }
+
+    // MARK: - Data & Privacy Section
+    private func dataPrivacySection(router: StackRouter<SettingsRoute>) -> some View {
+        Section {
+            Button {
+                router.push(.deleteAllData)
+            } label: {
+                Label {
+                    Text(appLocalized("Delete Alike Data"))
+                } icon: {
+                    Image(systemName: "trash")
+                }
+                .foregroundStyle(.red)
+            }
+            .accessibilityHint(
+                Text(appLocalized("Review and permanently delete data stored by Alike on this device"))
+            )
+        } header: {
+            Text(appLocalized("Data & Privacy"))
+        } footer: {
+            Text(appLocalized("Your photo library is never deleted by this action."))
         }
     }
     
@@ -579,107 +588,132 @@ public struct SettingsView: View {
     #endif
 }
 
-// MARK: - User Guide View
-struct UserGuideView: View {
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.large) {
-                guideStep(
-                    number: 1,
-                    icon: "photo.on.rectangle",
-                    title: appLocalized("Grant Access"),
-                    description: appLocalized("Allow Alike to access your photo library")
-                )
-                
-                guideStep(
-                    number: 2,
-                    icon: "sparkles",
-                    title: appLocalized("Start Scanning"),
-                    description: appLocalized("Tap 'Start Scanning' to analyze your photos using advanced computer vision")
-                )
-                
-                guideStep(
-                    number: 3,
-                    icon: "square.grid.3x3",
-                    title: appLocalized("View Results"),
-                    description: appLocalized("Browse similar-photo clusters and start with the ones that need your attention first")
-                )
-                
-                guideStep(
-                    number: 4,
-                    icon: "checklist",
-                    title: appLocalized("Review the Needs Review Section"),
-                    description: appLocalized("After a rescan, check the Needs review section to see new or changed clusters that should be reviewed again")
-                )
-                
-                guideStep(
-                    number: 5,
-                    icon: "photo",
-                    title: appLocalized("Open a Cluster and Pick the Best Shot"),
-                    description: appLocalized("Open any cluster to compare photos, keep the best shot, and mark the rest for cleanup")
-                )
-                
-                guideStep(
-                    number: 6,
-                    icon: "slider.horizontal.3",
-                    title: appLocalized("Adjust Settings"),
-                    description: appLocalized("Fine-tune sensitivity and switch between one- and two-column grid layouts for your preferred review style")
-                )
+private struct DeleteAllDataView: View {
+    let model: DeleteAllDataModel
 
-                guideStep(
-                    number: 7,
-                    icon: "arrow.clockwise",
-                    title: appLocalized("Rescan After Library Changes"),
-                    description: appLocalized("If your gallery changes, use the rescan prompt or refresh button to rebuild clusters and refresh your cleanup progress")
+    @State private var isConfirmationPresented = false
+
+    var body: some View {
+        Form {
+            Section {
+                dataRow(
+                    appLocalized("Scan results and analysis caches"),
+                    systemImage: "sparkles.rectangle.stack"
                 )
+                dataRow(
+                    appLocalized("Cleanup progress, sessions, and history"),
+                    systemImage: "clock.arrow.circlepath"
+                )
+                dataRow(
+                    appLocalized("Grid, sensitivity, and reminder preferences"),
+                    systemImage: "slider.horizontal.3"
+                )
+            } header: {
+                Text(appLocalized("What will be deleted"))
             }
-            .padding(Spacing.large)
+
+            Section {
+                dataRow(
+                    appLocalized("Your photos and Recently Deleted items"),
+                    systemImage: "photo.on.rectangle"
+                )
+                dataRow(
+                    appLocalized("Photo access and Alike Pro subscription"),
+                    systemImage: "checkmark.shield"
+                )
+                dataRow(
+                    appLocalized("Monthly free-scan allowance"),
+                    systemImage: "calendar"
+                )
+            } header: {
+                Text(appLocalized("What will stay"))
+            }
+
+            Section {
+                Button(role: .destructive) {
+                    isConfirmationPresented = true
+                } label: {
+                    HStack {
+                        if model.isDeleting {
+                            ProgressView()
+                                .controlSize(.small)
+                        }
+                        Text(
+                            appLocalized(
+                                model.isDeleting
+                                    ? "Deleting..."
+                                    : "Delete Alike Data"
+                            )
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                .disabled(model.isDeleting)
+                .accessibilityHint(
+                    Text(appLocalized("Permanently delete Alike data after confirmation"))
+                )
+            } footer: {
+                Text(appLocalized("This action can't be undone. Alike will replay onboarding when deletion finishes."))
+            }
         }
-        .navigationTitle(Text(appLocalized("How to Use")))
+        .navigationTitle(Text(appLocalized("Delete Alike Data")))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
 #endif
-    }
-    
-    private func guideStep(number: Int, icon: String, title: String, description: String) -> some View {
-        HStack(alignment: .top, spacing: Spacing.medium) {
-            ZStack {
-                Circle()
-                    .fill(Color.accent.opacity(ColorOpacity.guideStepBackground))
-                    .frame(width: 50, height: 50)
-                
-                Text("\(number)")
-                    .font(.appHeadline)
-                    .foregroundColor(.accent)
+        .navigationBarBackButtonHidden(model.isDeleting)
+        .confirmationDialog(
+            appLocalized("Delete all Alike data?"),
+            isPresented: $isConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button(appLocalized("Delete Alike Data"), role: .destructive) {
+                startDeletion()
             }
-            
-            VStack(alignment: .leading, spacing: Spacing.xSmall) {
-                Label {
-                    Text(title)
-                } icon: {
-                    Image(systemName: icon)
-                }
-                .font(.appHeadline)
-                
-                Text(description)
-                    .font(.appBody)
-                    .foregroundColor(.secondary)
-            }
+            Button(appLocalized("Cancel"), role: .cancel) {}
+        } message: {
+            Text(appLocalized("This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."))
         }
+        .alert(
+            appLocalized("Couldn't Delete Alike Data"),
+            isPresented: isDeletionErrorPresented
+        ) {
+            Button(appLocalized("Try Again")) {
+                startDeletion()
+            }
+            Button(appLocalized("Cancel"), role: .cancel) {
+                model.dismissError()
+            }
+        } message: {
+            Text(model.errorMessage ?? "")
+        }
+    }
+
+    private var isDeletionErrorPresented: Binding<Bool> {
+        Binding(
+            get: { model.errorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    model.dismissError()
+                }
+            }
+        )
+    }
+
+    private func startDeletion() {
+        Task {
+            await model.deleteAllData()
+        }
+    }
+
+    private func dataRow(_ title: String, systemImage: String) -> some View {
+        Label(title, systemImage: systemImage)
     }
 }
 
 // MARK: - Preview
 #Preview {
     SettingsView(
-        gridColumns: .constant(2),
         sensitivity: .constant(.medium),
         needsRescan: .constant(false)
     )
-}
-
-#Preview("User Guide") {
-    RoutedNavigationStack {
-        UserGuideView()
-    }
 }

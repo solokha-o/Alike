@@ -7,7 +7,6 @@ import Storage
 @MainActor
 @Observable
 public final class SettingsViewModel {
-    public let gridConfig: GridConfiguration
     public let appVersion: String
     public var reviewTrigger: Int = 0
     public private(set) var cleanupReminderState = CleanupReminderState(
@@ -20,20 +19,22 @@ public final class SettingsViewModel {
     public private(set) var cleanupReminderErrorMessage: String?
 
     private let cleanupReminderManager: any CleanupReminderManaging
+    private let ratingPrompt: RatingPromptCoordinator
     private var cleanupReminderMutationTask: Task<Void, Never>?
     private var cleanupReminderMutationGeneration = 0
+    private var manualRatingTask: Task<Void, Never>?
 
     public init(
-        gridConfig: GridConfiguration = GridConfiguration.current,
         appVersion: String = SettingsViewModel.fullAppVersion(),
-        cleanupReminderManager: (any CleanupReminderManaging)? = nil
+        cleanupReminderManager: (any CleanupReminderManaging)? = nil,
+        ratingPrompt: RatingPromptCoordinator = RatingPromptCoordinator()
     ) {
-        self.gridConfig = gridConfig
         self.appVersion = appVersion
         self.cleanupReminderManager = cleanupReminderManager
             ?? CleanupReminderManager(
                 preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
             )
+        self.ratingPrompt = ratingPrompt
     }
 
     public func handleRateTapped(requestReview: RequestReviewAction) {
@@ -43,6 +44,15 @@ public final class SettingsViewModel {
     func handleRateTapped(requestReview: () -> Void) {
         reviewTrigger += 1
         requestReview()
+        // A manual ask spends the same App Store quota as an automatic one, so it starts
+        // the cooldown for the post-cleanup prompt too.
+        manualRatingTask = Task { [ratingPrompt] in
+            await ratingPrompt.recordManualRating()
+        }
+    }
+
+    func waitForManualRatingRecord() async {
+        await manualRatingTask?.value
     }
     
     public func rescanRequiredAfterSensitivityChange() -> Bool {

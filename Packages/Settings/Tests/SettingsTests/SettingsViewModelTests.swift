@@ -1,11 +1,16 @@
 import XCTest
 import Core
+import Cleanup
 @testable import Settings
 
 @MainActor
 final class SettingsViewModelTests: XCTestCase {
-    func testHandleRateTappedTriggersReview() {
-        let viewModel = SettingsViewModel(gridConfig: .iPhone, appVersion: "1.2.3")
+    func testHandleRateTappedTriggersReview() async {
+        let repository = MockRatingPromptHistoryRepository()
+        let viewModel = SettingsViewModel(
+            appVersion: "1.2.3",
+            ratingPrompt: RatingPromptCoordinator(repository: repository, appVersion: "1.2.3")
+        )
         var didCall = false
 
         XCTAssertEqual(viewModel.reviewTrigger, 0)
@@ -15,18 +20,21 @@ final class SettingsViewModelTests: XCTestCase {
 
         XCTAssertTrue(didCall)
         XCTAssertEqual(viewModel.reviewTrigger, 1)
+
+        await viewModel.waitForManualRatingRecord()
+        let history = await repository.currentHistory()
+        XCTAssertEqual(history.promptCount, 1)
+        XCTAssertEqual(history.lastPromptedAppVersion, "1.2.3")
     }
 
     func testRescanRequiredAfterSensitivityChangeIsTrue() {
-        let viewModel = SettingsViewModel(gridConfig: .iPhone, appVersion: "1.2.3")
+        let viewModel = SettingsViewModel(appVersion: "1.2.3")
         XCTAssertTrue(viewModel.rescanRequiredAfterSensitivityChange())
     }
 
     func testInitUsesProvidedValues() {
-        let viewModel = SettingsViewModel(gridConfig: .iPad, appVersion: "9.9.9")
+        let viewModel = SettingsViewModel(appVersion: "9.9.9")
 
-        XCTAssertEqual(viewModel.gridConfig.defaultColumns, GridConfiguration.iPad.defaultColumns)
-        XCTAssertEqual(viewModel.gridConfig.spacing, GridConfiguration.iPad.spacing)
         XCTAssertEqual(viewModel.appVersion, "9.9.9")
     }
 
@@ -47,7 +55,6 @@ final class SettingsViewModelTests: XCTestCase {
             )
         )
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -84,7 +91,6 @@ final class SettingsViewModelTests: XCTestCase {
             )
         )
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -114,7 +120,6 @@ final class SettingsViewModelTests: XCTestCase {
             )
         )
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -144,7 +149,6 @@ final class SettingsViewModelTests: XCTestCase {
             )
         )
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -175,7 +179,6 @@ final class SettingsViewModelTests: XCTestCase {
             )
         )
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -197,7 +200,6 @@ final class SettingsViewModelTests: XCTestCase {
         let reminderManager = MockCleanupReminderManager(state: authoritativeState)
         await reminderManager.setShouldFailSetEnabled(true)
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -225,7 +227,6 @@ final class SettingsViewModelTests: XCTestCase {
         let reminderManager = MockCleanupReminderManager(state: authoritativeState)
         await reminderManager.setShouldFailSetSchedule(true)
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )
@@ -246,7 +247,6 @@ final class SettingsViewModelTests: XCTestCase {
         let latestSchedule = CleanupReminderSchedule(weekday: 5, hour: 18, minute: 45)
         let reminderManager = SuspendedFirstScheduleReminderManager()
         let viewModel = SettingsViewModel(
-            gridConfig: .iPhone,
             appVersion: "1.2.3",
             cleanupReminderManager: reminderManager
         )

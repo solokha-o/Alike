@@ -5,11 +5,14 @@ import XCTest
 
 @MainActor
 final class ScannerHomePresentationTests: XCTestCase {
+    private let scanEventID = UUID(uuidString: "7FDF377A-F575-45D2-BEC5-E56C99323571")!
+
     func testNeverScannedUsesReadyAliAndStartsScanning() {
         let presentation = ScannerHomePresentation.resolve(
             state: .idle,
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: false
+            hasCompletedScanBaseline: false,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.ready))
@@ -22,12 +25,14 @@ final class ScannerHomePresentationTests: XCTestCase {
         let first = ScannerHomePresentation.resolve(
             state: .scanning(progress: 1.4),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
         let second = ScannerHomePresentation.resolve(
             state: .scanning(progress: 0.5),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(first.cue.state, .scanning)
@@ -42,7 +47,8 @@ final class ScannerHomePresentationTests: XCTestCase {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 4)),
             hasLibraryChanged: true,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.libraryChanged(newItemsCount: nil)))
@@ -55,7 +61,8 @@ final class ScannerHomePresentationTests: XCTestCase {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 4)),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.hasReviews(count: 4)))
@@ -68,7 +75,8 @@ final class ScannerHomePresentationTests: XCTestCase {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 0)),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(presentation.cue.state, .idle(.allCaughtUp))
@@ -81,17 +89,19 @@ final class ScannerHomePresentationTests: XCTestCase {
         let first = ScannerHomePresentation.resolve(
             state: .error("Connection interrupted"),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: true
+            hasCompletedScanBaseline: true,
+            scanEventID: scanEventID
         )
         let second = ScannerHomePresentation.resolve(
             state: .error("Another error"),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: false
+            hasCompletedScanBaseline: false,
+            scanEventID: scanEventID
         )
 
         XCTAssertEqual(
             first.cue.state,
-            .recoverableError(ALIErrorContext(operation: .scan))
+            .recoverableError(AlikeErrorContext(operation: .scan))
         )
         XCTAssertEqual(first.cue.id, second.cue.id)
         XCTAssertEqual(first.primaryAction, .startScanning)
@@ -105,22 +115,26 @@ final class ScannerHomePresentationTests: XCTestCase {
             ScannerHomePresentation.resolve(
                 state: .idle,
                 hasLibraryChanged: false,
-                hasCompletedScanBaseline: false
+                hasCompletedScanBaseline: false,
+                scanEventID: scanEventID
             ).visualPhase,
             ScannerHomePresentation.resolve(
                 state: .scanning(progress: 0.5),
                 hasLibraryChanged: false,
-                hasCompletedScanBaseline: false
+                hasCompletedScanBaseline: false,
+                scanEventID: scanEventID
             ).visualPhase,
             ScannerHomePresentation.resolve(
                 state: .completed(summary(opportunities: 2)),
                 hasLibraryChanged: false,
-                hasCompletedScanBaseline: true
+                hasCompletedScanBaseline: true,
+                scanEventID: scanEventID
             ).visualPhase,
             ScannerHomePresentation.resolve(
                 state: .error("Interrupted"),
                 hasLibraryChanged: false,
-                hasCompletedScanBaseline: false
+                hasCompletedScanBaseline: false,
+                scanEventID: scanEventID
             ).visualPhase,
         ]
 

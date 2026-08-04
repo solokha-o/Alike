@@ -4,7 +4,7 @@ import SwiftUI
 import DesignSystem
 import Storage
 
-struct ALIReviewReactionCue: Identifiable, Equatable, Sendable {
+struct AlikeReviewReactionCue: Identifiable, Equatable, Sendable {
     struct ID: Hashable, Sendable {
         let clusterID: UUID
         let generation: Int
@@ -29,7 +29,7 @@ final class ClusterDetailsViewModel {
     private let assetSnapshotLoader: AssetSnapshotLoader
     private var assetSnapshots: [ReviewAssetSnapshot] = []
     private var persistenceTask: Task<Void, Never>?
-    private var aliReactionResolver = ALIReactionResolver()
+    private var alikeReactionResolver = AlikeReactionResolver()
     private let cleanupSelectionID = UUID()
     private var reviewCompletionGeneration = 0
     private(set) var bestShotAssetID: String
@@ -48,8 +48,8 @@ final class ClusterDetailsViewModel {
     private(set) var deleteErrorMessage: String?
     private(set) var shouldOfferOpenSettings = false
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
-    private(set) var currentALIReaction: ALIReactionCue?
-    private(set) var bestShotCelebrationCue: ALIReviewReactionCue?
+    private(set) var currentAlikeReaction: AlikeReactionCue?
+    private(set) var bestShotCelebrationCue: AlikeReviewReactionCue?
     /// Increments once every persisted review-state write lands, so hosts can
     /// refresh their own snapshot of the review state while this screen is
     /// still visible instead of waiting for it to close.
@@ -360,7 +360,7 @@ final class ClusterDetailsViewModel {
         shouldOfferOpenSettings = false
         pendingCompletionRecord = nil
         isDeleting = true
-        publishALIEvent(.cleanupStarted(id: cleanupSelectionID))
+        publishAlikeEvent(.cleanupStarted(id: cleanupSelectionID))
 
         do {
             let record = try await cleanupService.deleteAssets(
@@ -399,9 +399,9 @@ final class ClusterDetailsViewModel {
     func clearDeleteError() {
         deleteErrorMessage = nil
         shouldOfferOpenSettings = false
-        if let currentALIReaction,
-           currentALIReaction.id.eventID == .cleanup(cleanupSelectionID) {
-            publishALIEvent(.reactionConsumed(id: currentALIReaction.id))
+        if let currentAlikeReaction,
+           currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
+            publishAlikeEvent(.reactionConsumed(id: currentAlikeReaction.id))
         }
         publishCleanupSelectionReaction()
     }
@@ -414,7 +414,7 @@ final class ClusterDetailsViewModel {
         assets.firstIndex { $0.localIdentifier == localIdentifier }
     }
 
-    func consumeBestShotCelebration(id: ALIReviewReactionCue.ID) {
+    func consumeBestShotCelebration(id: AlikeReviewReactionCue.ID) {
         guard bestShotCelebrationCue?.id == id else { return }
         bestShotCelebrationCue = nil
     }
@@ -494,16 +494,16 @@ private extension ClusterDetailsViewModel {
     }
 
     func handleDeleteError(_ error: PhotoCleanupError) {
-        let eventID = ALIEventID.cleanup(cleanupSelectionID)
+        let eventID = AlikeEventID.cleanup(cleanupSelectionID)
         if error == .notAuthorized {
-            publishALIEvent(.permissionBlocked(
+            publishAlikeEvent(.permissionBlocked(
                 id: eventID,
-                context: ALIPermissionContext(operation: .cleanup)
+                context: AlikePermissionContext(operation: .cleanup)
             ))
         } else {
-            publishALIEvent(.recoverableFailure(
+            publishAlikeEvent(.recoverableFailure(
                 id: eventID,
-                context: ALIErrorContext(operation: .cleanup)
+                context: AlikeErrorContext(operation: .cleanup)
             ))
         }
 
@@ -580,7 +580,7 @@ private extension ClusterDetailsViewModel {
 
         if emitsReviewCompletion, previousStatus != .reviewed, reviewStatus == .reviewed {
             reviewCompletionGeneration &+= 1
-            bestShotCelebrationCue = ALIReviewReactionCue(
+            bestShotCelebrationCue = AlikeReviewReactionCue(
                 id: .init(clusterID: cluster.id, generation: reviewCompletionGeneration)
             )
         } else if reviewStatus != .reviewed {
@@ -592,11 +592,11 @@ private extension ClusterDetailsViewModel {
 
     func publishCleanupSelectionReaction() {
         if selectedAssetIDs.isEmpty {
-            publishALIEvent(.cleanupSelectionCleared(id: cleanupSelectionID))
+            publishAlikeEvent(.cleanupSelectionCleared(id: cleanupSelectionID))
         } else {
-            publishALIEvent(.cleanupReady(
+            publishAlikeEvent(.cleanupReady(
                 id: cleanupSelectionID,
-                summary: ALICleanupSummary(
+                summary: AlikeCleanupSummary(
                     itemCount: selectedAssetIDs.count,
                     estimatedSavingsBytes: estimatedSavingsBytes
                 )
@@ -604,9 +604,9 @@ private extension ClusterDetailsViewModel {
         }
     }
 
-    func publishALIEvent(_ event: ALIEvent) {
-        _ = aliReactionResolver.apply(event)
-        currentALIReaction = aliReactionResolver.currentCue
+    func publishAlikeEvent(_ event: AlikeEvent) {
+        _ = alikeReactionResolver.apply(event)
+        currentAlikeReaction = alikeReactionResolver.currentCue
     }
 
     @discardableResult

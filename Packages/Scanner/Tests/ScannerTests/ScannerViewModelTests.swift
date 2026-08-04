@@ -11,7 +11,6 @@ final class ScannerViewModelTests: XCTestCase {
         let viewModel = makeViewModel()
 
         XCTAssertEqual(viewModel.state, .idle)
-        XCTAssertEqual(viewModel.gridColumns, 3)
         XCTAssertEqual(viewModel.remainingFreeScans, PremiumAccessPolicy.monthlyFreeScanLimit)
     }
 
@@ -120,6 +119,20 @@ final class ScannerViewModelTests: XCTestCase {
         )))
     }
 
+    func testEachAdmittedScanGetsFreshAliAnimationIdentity() async {
+        let viewModel = makeViewModel()
+
+        let firstDecision = await viewModel.startScanning()
+        let firstScanEventID = viewModel.scanEventID
+
+        let secondDecision = await viewModel.startScanning()
+        let secondScanEventID = viewModel.scanEventID
+
+        XCTAssertEqual(firstDecision, .allowed)
+        XCTAssertEqual(secondDecision, .allowed)
+        XCTAssertNotEqual(firstScanEventID, secondScanEventID)
+    }
+
     func testFailedScanDoesNotConsumeAllowanceAndKeepsLastGoodWorkspaceContent() async {
         let repository = MockPhotoClusterRepository()
         let existing = makeCluster()
@@ -208,12 +221,14 @@ final class ScannerViewModelTests: XCTestCase {
         let published = ScannerHomePresentation.resolve(
             state: viewModel.state,
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: false
+            hasCompletedScanBaseline: false,
+            scanEventID: viewModel.scanEventID
         )
         let subsequent = ScannerHomePresentation.resolve(
             state: .scanning(progress: min(progress + 0.1, 0.99)),
             hasLibraryChanged: false,
-            hasCompletedScanBaseline: false
+            hasCompletedScanBaseline: false,
+            scanEventID: viewModel.scanEventID
         )
 
         XCTAssertEqual(published.visualPhase, .scanning)

@@ -1,0 +1,177 @@
+import Core
+import SwiftUI
+import XCTest
+@testable import DesignSystem
+
+final class AlikeReactionPresentationTests: XCTestCase {
+    func testScanningLoopsOnlyWhileVisibleAndActive() {
+        let cue = AlikeReactionCue(
+            id: .init(eventID: .scan(UUID()), kind: .scanning),
+            state: .scanning,
+            persistence: .persistent
+        )
+
+        let active = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 3,
+            isVisible: true,
+            scenePhase: .active
+        )
+        let inactive = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 3,
+            isVisible: true,
+            scenePhase: .background
+        )
+
+        XCTAssertEqual(active.playback, .loop)
+        XCTAssertNotNil(active.animationURL)
+        XCTAssertEqual(active.ambientMotion, .breathe)
+        XCTAssertNil(inactive.animationURL)
+        XCTAssertEqual(inactive.ambientMotion, .none)
+    }
+
+    func testOneShotReactionUsesNativeFallbackWhenAssetsArePending() {
+        let cue = AlikeReactionCue(
+            id: .init(eventID: .scan(UUID()), kind: .resultsFound),
+            state: .resultsFound(candidateCount: 2),
+            persistence: .oneShot
+        )
+
+        let presentation = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+
+        XCTAssertEqual(presentation.playback, .once)
+        XCTAssertNil(presentation.staticImageURL)
+        XCTAssertNil(presentation.animationURL)
+        XCTAssertEqual(presentation.fallbackSystemImageName, "sparkles")
+    }
+
+    func testPermissionAndErrorPresentationsHaveNoPlayfulMotion() {
+        let states: [(AlikeReactionKind, AlikeState)] = [
+            (.permissionIssue, .permissionIssue(.init(operation: .scan))),
+            (.recoverableError, .recoverableError(.init(operation: .reconciliation))),
+        ]
+
+        for (kind, state) in states {
+            let cue = AlikeReactionCue(
+                id: .init(eventID: .operation(UUID()), kind: kind),
+                state: state,
+                persistence: .persistent
+            )
+            let presentation = AlikeReactionPresentation.resolve(
+                cue: cue,
+                displayScale: 2,
+                isVisible: true,
+                scenePhase: .active
+            )
+
+            XCTAssertNil(presentation.animationURL)
+            XCTAssertEqual(presentation.ambientMotion, .none)
+        }
+    }
+
+    func testRecoverableErrorUsesStaticAliWithReadyAliFallback() {
+        let cue = AlikeReactionCue(
+            id: .init(eventID: .operation(UUID()), kind: .recoverableError),
+            state: .recoverableError(.init(operation: .scan)),
+            persistence: .persistent
+        )
+
+        let presentation = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+
+        XCTAssertEqual(presentation.staticImageURL, AlikeAssets.optionalScannerIssueURL(for: .twoX))
+        XCTAssertEqual(
+            presentation.fallbackStaticImageURL,
+            AlikeAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
+        )
+        XCTAssertNil(presentation.animationURL)
+        XCTAssertEqual(presentation.ambientMotion, .none)
+    }
+
+    func testCleanupSuccessUsesApprovedAssetsAndOneShotLifecycleGating() {
+        let cue = AlikeReactionCue(
+            id: .init(eventID: .cleanup(UUID()), kind: .cleanupSuccess),
+            state: .cleanupSuccess(.init(itemCount: 2, estimatedSavingsBytes: 1_024)),
+            persistence: .oneShot
+        )
+
+        let active = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+        let hidden = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 2,
+            isVisible: false,
+            scenePhase: .active
+        )
+
+        XCTAssertEqual(active.staticImageURL, AlikeAssets.cleanupSuccessURL(for: .twoX))
+        XCTAssertEqual(active.animationURL, AlikeAssets.cleanupSuccessOverlayURL)
+        XCTAssertEqual(active.playback, .once)
+        XCTAssertEqual(active.ambientMotion, .none)
+        XCTAssertNil(hidden.animationURL)
+    }
+
+    func testNoResultsUsesCalmAllCaughtUpStaticPresentation() {
+        let cue = AlikeReactionCue(
+            id: .init(eventID: .scan(UUID()), kind: .noResults),
+            state: .noResults,
+            persistence: .oneShot
+        )
+
+        let presentation = AlikeReactionPresentation.resolve(
+            cue: cue,
+            displayScale: 3,
+            isVisible: true,
+            scenePhase: .active
+        )
+
+        XCTAssertEqual(
+            presentation.staticImageURL,
+            AlikeAssets.optionalScannerIdleURL(for: .allCaughtUp, scale: .threeX)
+        )
+        XCTAssertNil(presentation.animationURL)
+        XCTAssertEqual(presentation.ambientMotion, .none)
+    }
+
+    func testAllCaughtUpIdleIsStaticWhileOtherIdleContextsKeepMotion() {
+        let allCaughtUp = AlikeReactionPresentation.resolve(
+            cue: idleCue(context: .allCaughtUp),
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+        let ready = AlikeReactionPresentation.resolve(
+            cue: idleCue(context: .ready),
+            displayScale: 2,
+            isVisible: true,
+            scenePhase: .active
+        )
+
+        XCTAssertNil(allCaughtUp.animationURL)
+        XCTAssertEqual(allCaughtUp.ambientMotion, .none)
+        XCTAssertNotNil(ready.animationURL)
+        XCTAssertEqual(ready.ambientMotion, .breathe)
+    }
+
+    private func idleCue(context: AlikeIdleContext) -> AlikeReactionCue {
+        AlikeReactionCue(
+            id: .init(eventID: .idle, kind: .idle),
+            state: .idle(context),
+            persistence: .persistent
+        )
+    }
+}

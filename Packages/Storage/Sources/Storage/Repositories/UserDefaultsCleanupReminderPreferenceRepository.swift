@@ -11,10 +11,10 @@ public actor UserDefaultsCleanupReminderPreferenceRepository: CleanupReminderPre
 
     public init(
         userDefaults: UserDefaults = .standard,
-        reminderEnabledKey: String = "cleanup.reminder.isEnabled",
-        reminderWeekdayKey: String = "cleanup.reminder.weekday",
-        reminderHourKey: String = "cleanup.reminder.hour",
-        reminderMinuteKey: String = "cleanup.reminder.minute"
+        reminderEnabledKey: String = AppPreferenceKey.CleanupReminder.isEnabled,
+        reminderWeekdayKey: String = AppPreferenceKey.CleanupReminder.weekday,
+        reminderHourKey: String = AppPreferenceKey.CleanupReminder.hour,
+        reminderMinuteKey: String = AppPreferenceKey.CleanupReminder.minute
     ) {
         self.userDefaults = userDefaults
         self.reminderEnabledKey = reminderEnabledKey

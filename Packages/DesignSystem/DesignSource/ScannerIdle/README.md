@@ -1,14 +1,14 @@
-# ALI Scanner Idle Assets
+# Alike Scanner Idle Assets
 
 The four contextual Scanner Home idle scenes use the same square coordinate
 space and must render the static PNG and optional Lottie overlay in one `ZStack`.
 
 | State | Runtime stem | Static story | Overlay accent |
 | --- | --- | --- | --- |
-| `ready` | `ALIScannerIdleReady` | Curious ALI holding the magnifier | Magnifier glint |
-| `hasReviews` | `ALIScannerIdleHasReviews` | ALI presenting a photo stack | Photo highlight |
-| `allCaughtUp` | `ALIScannerIdleAllCaughtUp` | Relaxed seated ALI | Calm sparkle |
-| `libraryChanged` | `ALIScannerIdleLibraryChanged` | Surprised ALI with a new photo | Notice pulse |
+| `ready` | `AlikeScannerIdleReady` | Curious Alike holding the magnifier | Magnifier glint |
+| `hasReviews` | `AlikeScannerIdleHasReviews` | Alike presenting a photo stack | Photo highlight |
+| `allCaughtUp` | `AlikeScannerIdleAllCaughtUp` | Relaxed seated Alike | Calm sparkle |
+| `libraryChanged` | `AlikeScannerIdleLibraryChanged` | Surprised Alike with a new photo | Notice pulse |
 
 ## Export and alignment rules
 
@@ -24,9 +24,9 @@ space and must render the static PNG and optional Lottie overlay in one `ZStack`
 
 ## iOS lookup
 
-Use `ALIAssets.scannerIdleURL(for:scale:)` for the static image and
-`ALIAssets.scannerIdleOverlayURL(for:)` for the optional animation. State
+Use `AlikeAssets.scannerIdleURL(for:scale:)` for the static image and
+`AlikeAssets.scannerIdleOverlayURL(for:)` for the optional animation. State
 resolution and Scanner layout belong to the consuming Scanner feature.
 
 The images were generated with the built-in image generation workflow from the
-approved ALI production renders, then chroma-keyed to transparent PNG masters.
+approved Alike production renders, then chroma-keyed to transparent PNG masters.

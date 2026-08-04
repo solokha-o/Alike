@@ -33,13 +33,15 @@ struct RootView: View {
                         }
                     }
                 ))
-            case .welcome:
+            case .welcome(let mode):
                 WelcomeView(isCompleted: .init(
                     get: { false },
                     set: { _ in router.completeWelcome() }
-                ))
+                ), mode: mode)
             case .main:
-                MainTabView()
+                MainTabView {
+                    router.restartAfterDataDeletion()
+                }
             }
         }
         .animation(.smooth, value: router.currentRoute)
@@ -53,8 +55,10 @@ struct MainTabView: View {
     @State private var tabManager = TabManager()
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @State private var cleanupWorkspace = CleanupWorkspaceModel()
-    @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
-    @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
+    private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
+    private let onDataDeleted: @MainActor @Sendable () -> Void
+    @AppStorage(AppPreferenceKey.sensitivity)
+    private var sensitivityRaw = SensitivityLevel.medium.rawValue
 #if DEBUG
     @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
     private var debugUnlockUnlimitedRescans = false
@@ -69,10 +73,16 @@ struct MainTabView: View {
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
-    private let gridConfiguration = GridConfiguration.current
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
     )
+    @State private var ratingPrompt = RatingPromptCoordinator(
+        repository: UserDefaultsRatingPromptHistoryRepository()
+    )
+
+    init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
+        self.onDataDeleted = onDataDeleted
+    }
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -109,11 +119,13 @@ struct MainTabView: View {
         .tint(.accent)
         .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
         .task {
-            let clamped = gridConfiguration.clampedColumns(gridColumns)
-            if clamped != gridColumns {
-                gridColumns = clamped
-            }
             await subscriptionStore.start()
+        }
+        .task {
+            // Seed the rating prompt's install-age clock now, not on whatever cleanup
+            // happens to be the first eligible one — see
+            // `RatingPromptCoordinator.seedInstallAgeOnLaunch`.
+            await ratingPrompt.seedInstallAgeOnLaunch()
         }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
@@ -166,10 +178,6 @@ struct MainTabView: View {
         case .scanner:
             ScannerView(
                 workspace: cleanupWorkspace,
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan,
                 subscriptionStore: subscriptionStore,
@@ -178,7 +186,6 @@ struct MainTabView: View {
                 },
                 viewModel: ScannerViewModel(
                     workspace: cleanupWorkspace,
-                    gridColumns: gridConfiguration.clampedColumns(gridColumns),
                     sensitivity: sensitivity.wrappedValue,
                     premiumAccess: premiumAccess
                 )
@@ -192,6 +199,7 @@ struct MainTabView: View {
                 sensitivity: sensitivity,
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
+                ratingPrompt: ratingPrompt,
                 onOpenScanner: {
                     tabManager.navigateToScanner()
                 },
@@ -201,16 +209,22 @@ struct MainTabView: View {
             )
         case .settings:
             SettingsView(
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
                 needsRescan: Bindable(tabManager).needsRescan,
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
+                onDeleteAllData: {
+                    await cleanupWorkspace.prepareForDataDeletion()
+                    _ = try await cleanupReminderManager.setEnabled(
+                        false,
+                        isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+                    )
+                    try await localAppDataDeleter.deleteAllData()
+                    onDataDeleted()
+                },
                 viewModel: SettingsViewModel(
-                    cleanupReminderManager: cleanupReminderManager
+                    cleanupReminderManager: cleanupReminderManager,
+                    ratingPrompt: ratingPrompt
                 )
             )
         }

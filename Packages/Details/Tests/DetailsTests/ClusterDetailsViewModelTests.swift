@@ -154,8 +154,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.reviewStatus, .inReview)
         XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
         XCTAssertEqual(
-            viewModel.currentALIReaction?.state,
-            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+            viewModel.currentAlikeReaction?.state,
+            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
         )
     }
 
@@ -576,8 +576,8 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         viewModel.toggleSelection(for: "two")
 
         XCTAssertEqual(
-            viewModel.currentALIReaction?.state,
-            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
+            viewModel.currentAlikeReaction?.state,
+            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
         )
     }
 
@@ -803,16 +803,16 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.pendingCompletionRecord)
         XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
         XCTAssertEqual(
-            viewModel.currentALIReaction?.state,
-            .recoverableError(ALIErrorContext(operation: .cleanup))
+            viewModel.currentAlikeReaction?.state,
+            .recoverableError(AlikeErrorContext(operation: .cleanup))
         )
         XCTAssertFalse(viewModel.isDeleting)
 
         viewModel.clearDeleteError()
 
         XCTAssertEqual(
-            viewModel.currentALIReaction?.state,
-            .cleanupReady(ALICleanupSummary(itemCount: 1, estimatedSavingsBytes: 45))
+            viewModel.currentAlikeReaction?.state,
+            .cleanupReady(AlikeCleanupSummary(itemCount: 1, estimatedSavingsBytes: 45))
         )
     }
 

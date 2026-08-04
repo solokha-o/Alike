@@ -22,14 +22,14 @@ public final class SubscriptionStore: PremiumAccessControlling {
         self.catalog = catalog
         self.client = AppStoreKitClient()
         self.defaults = .standard
-        self.cacheKey = "subscription.entitlement.v1"
+        self.cacheKey = AppPreferenceKey.Premium.subscriptionEntitlement
     }
 
     init(
         catalog: SubscriptionCatalog,
         client: any StoreKitClient,
         defaults: UserDefaults = .standard,
-        cacheKey: String = "subscription.entitlement.v1"
+        cacheKey: String = AppPreferenceKey.Premium.subscriptionEntitlement
     ) {
         self.catalog = catalog
         self.client = client

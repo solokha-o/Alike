@@ -263,6 +263,41 @@ public final class CleanupWorkspaceModel {
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
         try await analysisService.loadAssets(for: category)
     }
+
+    /// Quiesces every workspace operation before app-owned persistence is erased.
+    /// Awaiting cancelled work prevents a late scan completion from recreating
+    /// data after the deletion service has finished.
+    public func prepareForDataDeletion() async {
+        scanMutationGeneration &+= 1
+
+        let cachedLoad = cachedContentLoadTask
+        let activeScanTask = scanTask
+        let activeReconciliationTask = reconciliationTask
+
+        cachedLoad?.cancel()
+        activeScanTask?.cancel()
+        activeReconciliationTask?.cancel()
+        await progressRelay?.cancel()
+
+        await cachedLoad?.value
+        _ = try? await activeScanTask?.value
+        await activeReconciliationTask?.value
+
+        cachedContentLoadTask = nil
+        scanTask = nil
+        reconciliationTask = nil
+        progressRelay = nil
+        activeScan = nil
+        activeReconciliation = nil
+        queuedReconciliation = nil
+        lastGoodContent = .empty
+        refreshDerivedContentSnapshots()
+        contentState = .neverScanned
+        scanOperation = .idle
+        reconciliationState = nil
+        lastScanSummary = nil
+        lastCompletedScanDate = nil
+    }
 }
 
 private extension CleanupWorkspaceModel {
@@ -276,6 +311,8 @@ private extension CleanupWorkspaceModel {
         sensitivity: SensitivityLevel,
         purpose: ScanOperationPurpose
     ) async throws -> ScanOutcome {
+        try Task.checkCancellation()
+
         // Loops rather than checking once: two mismatched requests can both be
         // waiting on the same in-flight scan, and the one that resumes second
         // must wait for the scan the first one started instead of racing it.
@@ -356,6 +393,7 @@ private extension CleanupWorkspaceModel {
         var next: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)? = initial
 
         while let request = next {
+            guard !Task.isCancelled else { break }
             activeReconciliation = request
             queuedReconciliation = nil
             reconciliationState = .refreshing(request.record)
@@ -364,6 +402,7 @@ private extension CleanupWorkspaceModel {
                 _ = try await startScan(sensitivity: request.sensitivity, purpose: .reconciliation)
                 reconciliationState = .success(request.record)
             } catch {
+                guard !Task.isCancelled else { break }
                 let refreshedInsights = await fetchCleanupInsights()
                 publish(replacing(lastGoodContent, insights: refreshedInsights))
                 reconciliationState = .failed(
@@ -386,34 +425,59 @@ private extension CleanupWorkspaceModel {
     ) async throws -> ScanSummary {
         let clustersBeforeScan = try await repository.loadClusters()
         let categorySnapshotsBeforeScan = try? await cleanupCategoryRepository.loadAllSnapshots()
+        let scanMetadataBeforeScan = await repository.loadScanMetadata()
         let previousSnapshots = try await repository.loadClusterSnapshots()
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
 
         guard let progressRelay else { throw CancellationError() }
+        // Captured now, immediately before analysis takes its own snapshot of
+        // the library's assets. A photo added or removed while Vision/category
+        // work is running would otherwise be included in a late token/count
+        // while remaining absent from the clusters that work produces, so the
+        // next change check would see no delta and never prompt for the rescan
+        // that photo actually requires.
+        let capturedFingerprint = await repository.captureScanMetadata(completedAt: now())
         let analyzedClusters = try await analysisService.analyzePhotoLibrary(
             sensitivity: sensitivity.threshold
         ) { progress in
             Task { await progressRelay.submit(ScanProgressStages.analysis(progress)) }
         }
+        try Task.checkCancellation()
         await progressRelay.submit(ScanProgressStages.analysis(1), force: true)
         let refreshedCategories = try await analysisService.refreshCleanupCategories { progress in
             Task { await progressRelay.submit(ScanProgressStages.categories(progress)) }
         }
+        try Task.checkCancellation()
         await progressRelay.submit(ScanProgressStages.persistenceStart, force: true)
 
-        let completedAt = now()
+        let completedAt: Date
         do {
             try await repository.saveClusters(analyzedClusters)
-            try await repository.updateLastScanDate(completedAt)
+            // The fingerprint itself was captured before analysis started, so it
+            // matches the asset input the persisted clusters were derived from.
+            // Only the completion timestamp is stamped now, and the pairing is
+            // persisted only after a successful scan — a failed scan below must
+            // not advance the baseline past clusters that were never saved.
+            completedAt = now()
+            try await repository.updateScanMetadata(
+                ScanMetadataSnapshot(
+                    lastScanDate: completedAt,
+                    libraryChangeToken: capturedFingerprint.libraryChangeToken,
+                    imageAssetCount: capturedFingerprint.imageAssetCount
+                )
+            )
+            try Task.checkCancellation()
         } catch {
             await restorePersistedContent(
                 clusters: clustersBeforeScan,
-                categorySnapshots: categorySnapshotsBeforeScan
+                categorySnapshots: categorySnapshotsBeforeScan,
+                scanMetadata: scanMetadataBeforeScan
             )
             throw error
         }
 
         let sortedClusters = await postProcessor.canonicalSortedClusters(analyzedClusters)
+        try Task.checkCancellation()
         let migratedStates = await postProcessor.migratedReviewStates(
             previousSnapshots: previousSnapshots,
             previousReviewStates: previousReviewStates,
@@ -520,12 +584,21 @@ private extension CleanupWorkspaceModel {
 
     func restorePersistedContent(
         clusters: [PhotoCluster],
-        categorySnapshots: [CleanupCategoryKind: CleanupCategorySnapshot]?
+        categorySnapshots: [CleanupCategoryKind: CleanupCategorySnapshot]?,
+        scanMetadata: ScanMetadataSnapshot?
     ) async {
         do {
             try await repository.saveClusters(clusters)
         } catch {
             AppLog.storage.error("Failed to restore clusters after scan failure: \(error.localizedDescription)")
+        }
+
+        // The baseline may already have advanced before the failure; leaving it
+        // there would pair a new scan date with the previous scan's clusters.
+        do {
+            try await repository.updateScanMetadata(scanMetadata)
+        } catch {
+            AppLog.storage.error("Failed to restore scan metadata after scan failure: \(error.localizedDescription)")
         }
 
         guard let categorySnapshots else { return }

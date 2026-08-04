@@ -135,32 +135,188 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         )
     }
     
+    func testUpdateScanMetadataCollapsesDuplicateRows() async throws {
+        // Given: Two metadata rows, as an interrupted write could leave behind
+        let context = inMemoryController.viewContext
+        try await context.perform {
+            let older = ScanMetadataEntity(context: context)
+            older.lastScanDate = Date(timeIntervalSince1970: 1_000)
+            let newer = ScanMetadataEntity(context: context)
+            newer.lastScanDate = Date(timeIntervalSince1970: 2_000)
+            try context.save()
+        }
+
+        // When: Writing a new baseline
+        let scanDate = Date(timeIntervalSince1970: 3_000)
+        try await repository.updateScanMetadata(
+            ScanMetadataSnapshot(lastScanDate: scanDate, imageAssetCount: 7)
+        )
+
+        // Then: One row remains and it holds the newest baseline
+        let rowCount = try await context.perform {
+            try context.count(for: ScanMetadataEntity.fetchRequest())
+        }
+        XCTAssertEqual(rowCount, 1, "Duplicate metadata rows should be collapsed")
+
+        let metadata = await repository.loadScanMetadata()
+        XCTAssertEqual(metadata?.lastScanDate.timeIntervalSince1970, 3_000)
+        XCTAssertEqual(metadata?.imageAssetCount, 7)
+    }
+
+    func testUpdateScanMetadataWithNilClearsBaseline() async throws {
+        try await repository.updateLastScanDate(Date())
+
+        try await repository.updateScanMetadata(nil)
+
+        let metadata = await repository.loadScanMetadata()
+        XCTAssertNil(metadata, "Passing nil should clear the scan baseline")
+    }
+
+    func testScanMetadataRoundTripsChangeToken() async throws {
+        let token = Data([0x01, 0x02, 0x03])
+        let snapshot = ScanMetadataSnapshot(
+            lastScanDate: Date(timeIntervalSince1970: 5_000),
+            libraryChangeToken: token,
+            imageAssetCount: 42
+        )
+
+        try await repository.updateScanMetadata(snapshot)
+
+        let loaded = await repository.loadScanMetadata()
+        XCTAssertEqual(loaded?.libraryChangeToken, token)
+        XCTAssertEqual(loaded?.imageAssetCount, 42)
+    }
+
     // MARK: - Gallery Change Detection Tests
-    
+
     func testHasGalleryChangedWhenNoScanExists() async throws {
         // Given: No previous scan
-        
+
         // When: Checking for changes
         let hasChanged = await repository.hasGalleryChanged()
-        
+
         // Then: Should return true (needs initial scan)
         XCTAssertTrue(hasChanged, "Should indicate change when no previous scan exists")
     }
-    
-    func testHasGalleryChangedWithRecentScan() async throws {
-        // Given: Recent scan date
-        let recentDate = Date() // Now
-        try await repository.updateLastScanDate(recentDate)
-        
+
+    /// The reported bug: a scan finishes, nothing is added or removed, and the
+    /// Cleanup tab immediately asks for a rescan because assets were *touched*.
+    func testHasGalleryChangedIsFalseWhenAssetsWereOnlyModified() async throws {
+        let detector = FakeChangeDetector(
+            token: Data([0xAA]),
+            imageAssetCount: 120,
+            summary: .none
+        )
+        let repository = CoreDataPhotoClusterRepository(
+            persistence: inMemoryController,
+            changeDetector: detector
+        )
+        try await repository.updateScanMetadata(
+            await repository.captureScanMetadata(completedAt: Date())
+        )
+
+        let hasChanged = await repository.hasGalleryChanged()
+
+        XCTAssertFalse(hasChanged, "Metadata-only changes must not request a rescan")
+    }
+
+    func testHasGalleryChangedIsTrueWhenImagesWereInserted() async throws {
+        let detector = FakeChangeDetector(
+            token: Data([0xAA]),
+            imageAssetCount: 120,
+            summary: PhotoLibraryChangeSummary(insertedImageCount: 2, hasDeletions: false)
+        )
+        let repository = CoreDataPhotoClusterRepository(
+            persistence: inMemoryController,
+            changeDetector: detector
+        )
+        try await repository.updateScanMetadata(
+            await repository.captureScanMetadata(completedAt: Date())
+        )
+
+        let hasChanged = await repository.hasGalleryChanged()
+
+        XCTAssertTrue(hasChanged, "Newly inserted images should request a rescan")
+    }
+
+    func testHasGalleryChangedIgnoresDeletionsThatDoNotChangeImageCount() async throws {
+        // A deleted video: history reports a deletion, the image count is intact.
+        let detector = FakeChangeDetector(
+            token: Data([0xAA]),
+            imageAssetCount: 120,
+            summary: PhotoLibraryChangeSummary(insertedImageCount: 0, hasDeletions: true)
+        )
+        let repository = CoreDataPhotoClusterRepository(
+            persistence: inMemoryController,
+            changeDetector: detector
+        )
+        try await repository.updateScanMetadata(
+            await repository.captureScanMetadata(completedAt: Date())
+        )
+
+        let hasChanged = await repository.hasGalleryChanged()
+
+        XCTAssertFalse(hasChanged, "A deletion that leaves the image count intact is not a change")
+    }
+
+    func testHasGalleryChangedUsesCountFallbackWhenTokenIsUnusable() async throws {
+        let detector = FakeChangeDetector(
+            token: Data([0xAA]),
+            imageAssetCount: 120,
+            summary: nil
+        )
+        let repository = CoreDataPhotoClusterRepository(
+            persistence: inMemoryController,
+            changeDetector: detector
+        )
+        try await repository.updateScanMetadata(
+            await repository.captureScanMetadata(completedAt: Date())
+        )
+
+        var hasChanged = await repository.hasGalleryChanged()
+        XCTAssertFalse(hasChanged, "An expired token with an unchanged count is not a change")
+
+        detector.currentImageAssetCount = 121
+        hasChanged = await repository.hasGalleryChanged()
+        XCTAssertTrue(hasChanged, "An expired token with a changed count is a change")
+    }
+
+    func testHasGalleryChangedRequestsOneTimeRescanForLegacyBaselineWithoutToken() async throws {
+        // Given: A baseline written before change tracking existed, so there is
+        // no trustworthy historical fingerprint to migrate from. Changes made
+        // between the legacy scan and now would be silently folded into any
+        // fingerprint captured today, so a rescan must be requested instead.
+        let detector = FakeChangeDetector(
+            token: Data([0xBB]),
+            imageAssetCount: 30,
+            summary: .none
+        )
+        let repository = CoreDataPhotoClusterRepository(
+            persistence: inMemoryController,
+            changeDetector: detector
+        )
+        let legacyDate = Date(timeIntervalSince1970: 9_000)
+        try await repository.updateLastScanDate(legacyDate)
+
         // When: Checking for changes
         let hasChanged = await repository.hasGalleryChanged()
-        
-        // Then: Result depends on actual photo library state
-        // This test is environment-dependent
-        // In a controlled test environment with no photo changes, should return false
-        XCTAssertNotNil(hasChanged, "Should return a boolean value")
+
+        // Then: A one-time rescan is requested rather than silently adopting
+        // today's library state as the historical baseline.
+        XCTAssertTrue(hasChanged, "A missing legacy token must request a one-time rescan")
+        let metadata = await repository.loadScanMetadata()
+        XCTAssertNil(
+            metadata?.libraryChangeToken,
+            "The legacy baseline must not be backfilled from an untrustworthy fingerprint"
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(metadata).lastScanDate.timeIntervalSince1970,
+            legacyDate.timeIntervalSince1970,
+            accuracy: 1.0,
+            "Requesting a rescan must not alter the stored baseline"
+        )
     }
-    
+
     // MARK: - Cluster Property Tests
     
     func testClusterAverageSimilarity() async throws {
@@ -230,4 +386,24 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
             averageSimilarity: averageSimilarity
         )
     }
+}
+
+/// Stands in for PhotoKit so change interpretation is testable without a
+/// library the test can mutate.
+private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked Sendable {
+    var token: Data?
+    var currentImageAssetCount: Int
+    var summary: PhotoLibraryChangeSummary?
+
+    init(token: Data?, imageAssetCount: Int, summary: PhotoLibraryChangeSummary?) {
+        self.token = token
+        self.currentImageAssetCount = imageAssetCount
+        self.summary = summary
+    }
+
+    func currentToken() -> Data? { token }
+
+    func imageAssetCount() -> Int { currentImageAssetCount }
+
+    func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
 }

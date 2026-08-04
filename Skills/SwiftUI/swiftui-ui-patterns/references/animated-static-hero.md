@@ -23,13 +23,13 @@ load, Reduce Motion is enabled, or the app is inactive.
 - Composition primitive:
   `Packages/DesignSystem/Sources/DesignSystem/Components/AnimatedImageOverlay.swift`
 - Typed asset access:
-  `Packages/DesignSystem/Sources/DesignSystem/ALIAssets.swift`
+  `Packages/DesignSystem/Sources/DesignSystem/AlikeAssets.swift`
 - Scanner example:
   `Packages/Scanner/Sources/Scanner/ScannerView.swift`
 - Scanner resources:
   `Packages/DesignSystem/Sources/DesignSystem/Resources/ScannerSearching/`
 - Resource and parsing tests:
-  `Packages/DesignSystem/Tests/DesignSystemTests/ALIAssetsTests.swift`
+  `Packages/DesignSystem/Tests/DesignSystemTests/AlikeAssetsTests.swift`
   and `AnimatedImageOverlayTests.swift`
 
 ## Component shape
@@ -38,7 +38,7 @@ Keep feature-state ownership outside the hero. The focused hero component may
 own only presentation environment and visibility state.
 
 ```swift
-private struct FeatureALIHero: View {
+private struct FeatureAlikeHero: View {
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
@@ -54,7 +54,7 @@ private struct FeatureALIHero: View {
             staticImage
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("ALI status description")))
+        .accessibilityLabel(Text(appLocalized("Alike status description")))
         .onAppear { isVisible = true }
         .onDisappear { isVisible = false }
     }
@@ -96,14 +96,14 @@ as seamless loops shown by a bounded one-shot reaction cue. For these effects:
   looping Lottie overlay are intentionally different concerns.
 
 Current policy example:
-`Packages/Details/Sources/Details/ALIBestShotCelebrationView.swift`.
+`Packages/Details/Sources/Details/AlikeBestShotCelebrationView.swift`.
 
 ## Asset rules
 
 - Store the PNG exports and JSON together under a named DesignSystem resource
   subdirectory.
 - Provide 1×, 2×, and 3× PNGs and select them through `displayScale`.
-- Add typed URL access in `ALIAssets`; feature code must not repeat filenames or
+- Add typed URL access in `AlikeAssets`; feature code must not repeat filenames or
   perform raw bundle lookup.
 - Use the same width, height, and visual alignment for the PNG and Lottie JSON.
 - Keep the Lottie transparent and decorative. Do not duplicate the complete

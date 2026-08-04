@@ -24,6 +24,13 @@ final class WelcomeViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.authorizationStatus, .notDetermined)
         XCTAssertFalse(viewModel.isAuthorized)
     }
+
+    func testDataDeletionReplayReplaysOnboardingWithoutRequestingPermission() {
+        XCTAssertTrue(WelcomeMode.dataDeletionReplay.replaysOnboarding)
+        XCTAssertFalse(WelcomeMode.dataDeletionReplay.requestsPhotoPermission)
+        XCTAssertFalse(WelcomeMode.permissionRequest.replaysOnboarding)
+        XCTAssertTrue(WelcomeMode.permissionRequest.requestsPhotoPermission)
+    }
     
     func testIsAuthorizedWhenAuthorized() {
         mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)

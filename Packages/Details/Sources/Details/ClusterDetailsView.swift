@@ -17,7 +17,6 @@ public struct ClusterDetailsView: View {
     }
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let onReviewStateChanged: (() -> Void)?
@@ -25,8 +24,7 @@ public struct ClusterDetailsView: View {
     private let subscriptionStore: SubscriptionStore?
 
     @State private var viewModel: ClusterDetailsViewModel
-    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
+    @PhotoGridColumnPreference private var selectedGridColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
 
@@ -229,14 +227,7 @@ public struct ClusterDetailsView: View {
             }
 
             Section(appLocalized("View")) {
-                Picker(selection: selectedGridColumnBinding) {
-                    ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                        Text(String(format: appLocalized("%d Columns"), count)).tag(count)
-                    }
-                } label: {
-                    Label(appLocalized("Columns"), systemImage: "square.grid.3x2")
-                }
-                .pickerStyle(.menu)
+                PhotoGridColumnsPicker()
             }
         } label: {
             Image(systemName: "ellipsis")
@@ -256,7 +247,7 @@ public struct ClusterDetailsView: View {
 
         return LazyVStack(spacing: Spacing.medium) {
             if viewModel.isDeleting {
-                ALICleanupProgressView(
+                AlikeCleanupProgressView(
                     selectedCount: viewModel.selectedCount,
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting
@@ -271,7 +262,7 @@ public struct ClusterDetailsView: View {
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
                         reviewStatus: viewModel.reviewStatus,
                         isReviewConfirmed: viewModel.isReviewConfirmed,
-                        aliReactionCue: viewModel.currentALIReaction,
+                        alikeReactionCue: viewModel.currentAlikeReaction,
                         bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                         onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
                     )
@@ -339,28 +330,6 @@ public struct ClusterDetailsView: View {
 }
 
 private extension ClusterDetailsView {
-    var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
-        horizontalSizeClass == .regular ? .regular : .compact
-    }
-
-    var selectedGridColumnCount: Int {
-        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
-    }
-
-    var selectedGridColumnBinding: Binding<Int> {
-        Binding(
-            get: { selectedGridColumnCount },
-            set: { newValue in
-                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
-                if horizontalSizeClass == .regular {
-                    regularGridColumns = newValue
-                } else {
-                    compactGridColumns = newValue
-                }
-            }
-        )
-    }
-
     func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup

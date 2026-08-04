@@ -24,6 +24,39 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         XCTAssertEqual(completed.contentState, .content(completed.content!))
     }
 
+    func testPrepareForDataDeletionCancelsScanBeforeItCanPersist() async {
+        let analysis = ControlledAnalysisService()
+        let repository = MockPhotoClusterRepository()
+        let workspace = makeWorkspace(
+            analysisService: analysis,
+            repository: repository
+        )
+        let lateCluster = PhotoCluster(id: UUID(), assets: [])
+        let scan = Task { @MainActor in
+            try await workspace.scan(sensitivity: .medium)
+        }
+        await analysis.waitUntilAnalyzeStarts()
+
+        let preparation = Task { @MainActor in
+            await workspace.prepareForDataDeletion()
+        }
+        await Task.yield()
+        await analysis.succeed(with: [lateCluster])
+        await preparation.value
+
+        do {
+            _ = try await scan.value
+            XCTFail("Expected the active scan to be cancelled")
+        } catch {
+            XCTAssertTrue(error is CancellationError)
+        }
+        let savedClusters = await repository.savedClusters
+        XCTAssertEqual(savedClusters, [])
+        XCTAssertEqual(workspace.contentState, .neverScanned)
+        XCTAssertEqual(workspace.scanOperation, .idle)
+        XCTAssertNil(workspace.content)
+    }
+
     func testFailedRefreshPreservesLastGoodContent() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)

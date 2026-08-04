@@ -1,7 +1,12 @@
 import Cleanup
 import Core
 import Observation
+import Photos
 import XCTest
+
+private enum ScanPersistenceTestError: Error {
+    case failed
+}
 
 @MainActor
 final class CleanupWorkspaceModelTests: XCTestCase {
@@ -26,6 +31,94 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(workspace.lastCompletedScanDate, summary.completedAt)
         XCTAssertEqual(workspace.content?.clusters, [])
         XCTAssertEqual(workspace.scanOperation, .idle)
+    }
+
+    func testCompletedScanDoesNotImmediatelyAskForARescan() async throws {
+        let repository = MockPhotoClusterRepository()
+        let workspace = makeWorkspace(
+            analysisService: MockPhotoAnalysisService(),
+            repository: repository
+        )
+
+        _ = try await workspace.scan(sensitivity: .medium)
+        let shouldPrompt = await workspace.checkForGalleryChanges()
+
+        XCTAssertFalse(shouldPrompt)
+        XCTAssertFalse(workspace.shouldShowRescanPrompt)
+    }
+
+    func testScanRecordsLibraryFingerprintOnceAfterClustersArePersisted() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setLibraryFingerprint(token: Data([0xCD]), imageAssetCount: 12)
+        let workspace = makeWorkspace(
+            analysisService: MockPhotoAnalysisService(),
+            repository: repository
+        )
+
+        let summary = try await workspace.scan(sensitivity: .medium)
+
+        let log = await repository.persistenceLog
+        XCTAssertEqual(log, ["saveClusters", "updateScanMetadata"])
+
+        let writes = await repository.scanMetadataWrites
+        XCTAssertEqual(writes.count, 1)
+        XCTAssertEqual(writes.first??.libraryChangeToken, Data([0xCD]))
+        XCTAssertEqual(writes.first??.imageAssetCount, 12)
+        XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
+    }
+
+    /// Guards against a regression where the fingerprint was captured only
+    /// after clusters were persisted: a photo added or removed while
+    /// Vision/category work is still running would then be folded into the
+    /// recorded baseline while remaining absent from the clusters that work
+    /// actually produced, so the next change check would see no delta and
+    /// never prompt for the rescan that photo requires.
+    func testScanCapturesFingerprintBeforeAnalysisSnapshotsAssetsNotAfter() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setLibraryFingerprint(token: Data([0x01]), imageAssetCount: 10)
+        let analysis = MidScanFingerprintMutatingAnalysisService(
+            repository: repository,
+            mutatedToken: Data([0x02]),
+            mutatedImageAssetCount: 11
+        )
+        let workspace = makeWorkspace(analysisService: analysis, repository: repository)
+
+        let summary = try await workspace.scan(sensitivity: .medium)
+
+        let writes = await repository.scanMetadataWrites
+        XCTAssertEqual(writes.count, 1)
+        XCTAssertEqual(
+            writes.first??.libraryChangeToken,
+            Data([0x01]),
+            "Must persist the fingerprint captured before analysis started, not a value mutated mid-scan"
+        )
+        XCTAssertEqual(writes.first??.imageAssetCount, 10)
+        XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
+    }
+
+    func testFailedScanRestoresThePreviousLibraryFingerprint() async throws {
+        let repository = MockPhotoClusterRepository()
+        let baseline = ScanMetadataSnapshot(
+            lastScanDate: Date(timeIntervalSince1970: 1_700_000_000),
+            libraryChangeToken: Data([0xEF]),
+            imageAssetCount: 5
+        )
+        try await repository.updateScanMetadata(baseline)
+        await repository.setSaveClustersResult(.failure(ScanPersistenceTestError.failed))
+        let workspace = makeWorkspace(
+            analysisService: MockPhotoAnalysisService(),
+            repository: repository
+        )
+
+        do {
+            _ = try await workspace.scan(sensitivity: .medium)
+            XCTFail("Scan should fail when clusters cannot be persisted")
+        } catch {
+            // Expected
+        }
+
+        let restored = await repository.scanMetadata
+        XCTAssertEqual(restored, baseline, "A failed scan must not move the recorded baseline")
     }
 
     func testCachedContentLoadsPersistedCompletedScanDate() async {
@@ -192,6 +285,52 @@ private actor FailingReviewStateRepository: ClusterReviewStateRepository {
 
 private struct ReviewPersistenceError: LocalizedError {
     var errorDescription: String? { "Review persistence failed" }
+}
+
+/// Mutates the repository's library fingerprint from inside
+/// `analyzePhotoLibrary`, simulating a photo added or removed while Vision
+/// analysis is reading the library — after a scan would have captured its
+/// fingerprint early, but before clusters are persisted.
+private actor MidScanFingerprintMutatingAnalysisService: PhotoAnalysisService {
+    private let repository: MockPhotoClusterRepository
+    private let mutatedToken: Data
+    private let mutatedImageAssetCount: Int
+    private let delegate = MockPhotoAnalysisService()
+
+    init(repository: MockPhotoClusterRepository, mutatedToken: Data, mutatedImageAssetCount: Int) {
+        self.repository = repository
+        self.mutatedToken = mutatedToken
+        self.mutatedImageAssetCount = mutatedImageAssetCount
+    }
+
+    func analyzePhotoLibrary(
+        sensitivity: Float,
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [PhotoCluster] {
+        await repository.setLibraryFingerprint(
+            token: mutatedToken,
+            imageAssetCount: mutatedImageAssetCount
+        )
+        return try await delegate.analyzePhotoLibrary(sensitivity: sensitivity, progress: progress)
+    }
+
+    func summarizeCleanupCategories() async throws -> [CleanupCategorySummary] {
+        try await delegate.summarizeCleanupCategories()
+    }
+
+    func refreshCleanupCategories(
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> [CleanupCategorySummary] {
+        try await delegate.refreshCleanupCategories(progress: progress)
+    }
+
+    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
+        try await delegate.loadAssets(for: category)
+    }
+
+    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
+        try await delegate.calculateSimilarity(asset1: asset1, asset2: asset2)
+    }
 }
 
 private final class ObservationChangeFlag: @unchecked Sendable {

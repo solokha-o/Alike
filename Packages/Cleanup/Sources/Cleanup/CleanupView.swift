@@ -1,5 +1,6 @@
 import SwiftUI
 import Photos
+import StoreKit
 import Core
 import DesignSystem
 import Details
@@ -115,21 +116,22 @@ extension View {
 public struct CleanupView: View {
     private enum Constants {
         static let reconciliationDismissalDelay = Duration.milliseconds(500)
+        /// Lets the success banner land before the system review sheet takes over.
+        static let ratingPromptDelay = Duration.milliseconds(1_500)
     }
 
     private let workspace: CleanupWorkspaceModel
     @Binding private var sensitivity: SensitivityLevel
     private let premiumAccess: any PremiumAccessControlling
     private let subscriptionStore: SubscriptionStore?
+    private let ratingPrompt: RatingPromptCoordinator
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
 
-#if os(iOS)
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-#endif
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
-    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
+    @PhotoGridColumnPreference private var selectedGridColumnCount
     @State private var controls = CleanupClusterControls()
     @State private var isControlsPresented = false
     @State private var presentedCategory: PresentedCleanupCategory?
@@ -144,6 +146,7 @@ public struct CleanupView: View {
         sensitivity: Binding<SensitivityLevel>,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         subscriptionStore: SubscriptionStore? = nil,
+        ratingPrompt: RatingPromptCoordinator,
         onOpenScanner: @escaping @MainActor @Sendable () -> Void,
         onRequestScan: @escaping @MainActor @Sendable () -> Void
     ) {
@@ -151,6 +154,7 @@ public struct CleanupView: View {
         self._sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
+        self.ratingPrompt = ratingPrompt
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
     }
@@ -253,6 +257,9 @@ public struct CleanupView: View {
         .navigationBarTitleDisplayMode(.large)
 #endif
         .toolbar { cleanupToolbar }
+        .task(id: terminalReconciliationState) {
+            await requestRatingIfEligible(for: terminalReconciliationState)
+        }
         .onAppear(perform: refreshArrangement)
         .onChange(of: controls) { _, _ in refreshArrangement() }
         .onChange(of: workspace.clusterIdentityKey) { _, _ in refreshArrangement() }
@@ -363,6 +370,44 @@ public struct CleanupView: View {
         }
     }
 
+    /// `true` while any other surface owns the screen, so the review sheet never lands on
+    /// top of a paywall, a sheet, an alert, or a running scan.
+    private var isRatingPromptBlocked: Bool {
+        presentedCategory != nil
+            || presentedPaywall != nil
+            || isControlsPresented
+            || categoryError != nil
+            || workspace.scanOperation != .idle
+            || scenePhase != .active
+    }
+
+    /// Asks for an App Store review after a cleanup that actually removed photos.
+    ///
+    /// The request is fire-and-forget: iOS decides whether anything is shown, and the
+    /// result is deliberately not observed.
+    private func requestRatingIfEligible(for state: CleanupReconciliationState?) async {
+        guard case .success(let record) = state else { return }
+
+        do {
+            try await Task.sleep(for: Constants.ratingPromptDelay)
+        } catch {
+            return
+        }
+
+        guard
+            await ratingPrompt.requestReviewIfEligible(
+                after: record,
+                isBusy: { isRatingPromptBlocked }
+            )
+        else { return }
+
+        // Recheck live state one more time: the coordinator's own recheck covers the await
+        // it awaits internally, but nothing else has run between its return and this call.
+        guard !isRatingPromptBlocked else { return }
+
+        requestReview()
+    }
+
     private func autoDismissReconciliationSuccess(_ state: CleanupReconciliationState) async {
         guard case .success(let record) = state else { return }
 
@@ -461,53 +506,7 @@ public struct CleanupView: View {
     }
 
     private var columnsMenu: some View {
-        Menu {
-            Picker(selection: selectedGridColumnBinding) {
-                ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                    Text("\(count)").tag(count)
-                }
-            } label: {
-                Text(appLocalized("Columns"))
-            }
-        } label: {
-            Image(systemName: "square.grid.3x2")
-        }
-        .accessibilityLabel(Text(appLocalized("Grid Columns")))
-        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
-    }
-
-    private var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
-#if os(iOS)
-        horizontalSizeClass == .regular ? .regular : .compact
-#else
-        .regular
-#endif
-    }
-
-    private var selectedGridColumnCount: Int {
-#if os(iOS)
-        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
-#else
-        regularGridColumns
-#endif
-    }
-
-    private var selectedGridColumnBinding: Binding<Int> {
-        Binding(
-            get: { selectedGridColumnCount },
-            set: { newValue in
-                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
-#if os(iOS)
-                if horizontalSizeClass == .regular {
-                    regularGridColumns = newValue
-                } else {
-                    compactGridColumns = newValue
-                }
-#else
-                regularGridColumns = newValue
-#endif
-            }
-        )
+        PhotoGridColumnsMenu()
     }
 
     private var controlsButton: some View {

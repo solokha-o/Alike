@@ -114,11 +114,11 @@ struct ScannerHomeHero: View {
 }
 
 private struct ScannerHeroArtwork: View, Equatable {
-    let cue: ALIReactionCue
+    let cue: AlikeReactionCue
     let maximumWidth: CGFloat
 
     var body: some View {
-        ALIReactionView(cue: cue, maximumWidth: maximumWidth)
+        AlikeReactionView(cue: cue, maximumWidth: maximumWidth)
     }
 }
 
@@ -209,7 +209,7 @@ struct ScannerScanScopeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
-            Text(appLocalized("What ALI checks"))
+            Text(appLocalized("What Alike checks"))
                 .font(.appHeadline)
 
             scopeRow(

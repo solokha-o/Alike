@@ -10,14 +10,12 @@ import PurchasesUI
 
 public struct ScreenshotCleanupView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private let assets: [PHAsset]
     private let onCleanupCompleted: ((CleanupCompletionRecord) -> Void)?
     private let subscriptionStore: SubscriptionStore?
     @State private var viewModel: ScreenshotCleanupViewModel
-    @State private var compactGridColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
-    @State private var regularGridColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
+    @PhotoGridColumnPreference private var selectedGridColumnCount
     @State private var selectedAsset: PresentedScreenshotAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var didCompleteCleanup = false
@@ -48,7 +46,7 @@ public struct ScreenshotCleanupView: View {
     public var body: some View {
         ScrollView {
             if viewModel.isDeleting {
-                ALICleanupProgressView(
+                AlikeCleanupProgressView(
                     selectedCount: viewModel.selectedCount,
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting
@@ -221,41 +219,7 @@ private extension ScreenshotCleanupView {
     }
 
     var columnsMenu: some View {
-        Menu {
-            Picker(selection: selectedGridColumnBinding) {
-                ForEach(gridLayoutPolicy.columnCounts, id: \.self) { count in
-                    Text("\(count)").tag(count)
-                }
-            } label: {
-                Text(appLocalized("Columns"))
-            }
-        } label: {
-            Image(systemName: "square.grid.3x2")
-        }
-        .accessibilityLabel(Text(appLocalized("Grid Columns")))
-        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
-    }
-
-    var gridLayoutPolicy: AdaptivePhotoGridLayoutPolicy {
-        horizontalSizeClass == .regular ? .regular : .compact
-    }
-
-    var selectedGridColumnCount: Int {
-        horizontalSizeClass == .regular ? regularGridColumns : compactGridColumns
-    }
-
-    var selectedGridColumnBinding: Binding<Int> {
-        Binding(
-            get: { selectedGridColumnCount },
-            set: { newValue in
-                guard gridLayoutPolicy.columnCounts.contains(newValue) else { return }
-                if horizontalSizeClass == .regular {
-                    regularGridColumns = newValue
-                } else {
-                    compactGridColumns = newValue
-                }
-            }
-        )
+        PhotoGridColumnsMenu()
     }
 
     func requestDeleteConfirmation() {

@@ -17,11 +17,11 @@ public final class ScannerViewModel {
         case error(String)
     }
 
-    public var gridColumns: Int
     public var sensitivity: SensitivityLevel
     public private(set) var state: State = .idle
     public private(set) var monthlyScanUsage: MonthlyScanUsage?
     public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
+    public private(set) var scanEventID = UUID()
 
     public let workspace: CleanupWorkspaceModel
     public let premiumAccess: any PremiumAccessControlling
@@ -84,7 +84,6 @@ public final class ScannerViewModel {
 
     public init(
         workspace: CleanupWorkspaceModel,
-        gridColumns: Int = 3,
         sensitivity: SensitivityLevel = .medium,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
@@ -93,7 +92,6 @@ public final class ScannerViewModel {
         now: @escaping @Sendable () -> Date = Date.init
     ) {
         self.workspace = workspace
-        self.gridColumns = gridColumns
         self.sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.scanUsageRepository = scanUsageRepository
@@ -136,6 +134,7 @@ public final class ScannerViewModel {
         )
         guard decision.isAllowed else { return decision }
 
+        scanEventID = UUID()
         publishScanningProgress(workspace.scanOperation.progress ?? 0)
         observeWorkspaceScan()
         do {
