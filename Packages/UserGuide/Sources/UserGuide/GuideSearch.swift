@@ -13,14 +13,21 @@ extension GuideContent {
     ///
     /// The catalog is a handful of static arrays, so this stays a plain synchronous filter — there
     /// is nothing to index and nothing to cache.
-    static func search(_ query: String) -> [GuideSearchResult] {
+    ///
+    /// `localize` defaults to ``appLocalized(_:)`` so production callers are unaffected; tests
+    /// inject a fixed localizer so matching can be exercised against real EN/UK strings without
+    /// depending on the app bundle being visible to the test runner.
+    static func search(
+        _ query: String,
+        localize: (String.LocalizationValue) -> String = appLocalized
+    ) -> [GuideSearchResult] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
 
         return topics.flatMap { topic in
             topic.sections.flatMap { section in
                 section.items.compactMap { item in
-                    guard matches(item: item, query: trimmed) else { return nil }
+                    guard matches(item: item, query: trimmed, localize: localize) else { return nil }
                     return GuideSearchResult(
                         id: item.id,
                         topicID: topic.id,
@@ -32,8 +39,12 @@ extension GuideContent {
         }
     }
 
-    private static func matches(item: GuideItem, query: String) -> Bool {
-        let haystack = [appLocalized(item.titleKey), item.bodyKey.map(appLocalized) ?? ""]
+    private static func matches(
+        item: GuideItem,
+        query: String,
+        localize: (String.LocalizationValue) -> String
+    ) -> Bool {
+        let haystack = [localize(item.titleKey), item.bodyKey.map(localize) ?? ""]
         return haystack.contains { $0.localizedStandardContains(query) }
     }
 }

@@ -78,4 +78,40 @@ struct GuideContentTests {
 
         #expect(results.contains { $0.id == item.id && $0.topicID == .comparingPhotos })
     }
+
+    /// `GuideContent.search` accepts an injectable localizer precisely so this test can supply
+    /// fixed EN/UK strings and exercise the displayed text, not the dotted fallback key the string
+    /// catalog resolves to under the SwiftPM test runner. This is what actually proves the search
+    /// is case-folded and diacritic-insensitive across scripts.
+    @Test("Search matches localized EN/UK text case- and diacritic-insensitively")
+    func searchMatchesFixedLocalizedTextCaseAndDiacriticInsensitively() throws {
+        let topic = GuideContent.topic(.comparingPhotos)
+        let item = try #require(topic.sections.first?.items.first)
+        let bodyKey = try #require(item.bodyKey)
+
+        let fixedTitle = "Café Tap to Select"
+        let fixedBody = "Торкніться, щоб вибрати фото"
+
+        func fixedLocalizer(_ key: String.LocalizationValue) -> String {
+            if key == item.titleKey { return fixedTitle }
+            if key == bodyKey { return fixedBody }
+            return "unrelated placeholder text"
+        }
+
+        // Case-folded English match against the diacritic-bearing title.
+        let caseFolded = GuideContent.search("CAFE", localize: fixedLocalizer)
+        #expect(caseFolded.contains { $0.id == item.id && $0.topicID == .comparingPhotos })
+
+        // Diacritic-insensitive match: the query has no accent, the title does.
+        let diacriticInsensitive = GuideContent.search("cafe", localize: fixedLocalizer)
+        #expect(diacriticInsensitive.contains { $0.id == item.id })
+
+        // Case-folded Ukrainian match against the body text.
+        let ukrainianMatch = GuideContent.search("ТОРКНІТЬСЯ", localize: fixedLocalizer)
+        #expect(ukrainianMatch.contains { $0.id == item.id })
+
+        // A query absent from both fixed strings must not match.
+        let noMatch = GuideContent.search("no-such-substring", localize: fixedLocalizer)
+        #expect(!noMatch.contains { $0.id == item.id })
+    }
 }
