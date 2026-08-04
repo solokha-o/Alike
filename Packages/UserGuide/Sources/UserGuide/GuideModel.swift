@@ -1,7 +1,7 @@
 import Foundation
 
 /// Stable identity for every guide topic. Drives routing, so it stays small and `Hashable`.
-enum GuideTopicID: String, CaseIterable, Hashable, Sendable {
+public enum GuideTopicID: String, CaseIterable, Hashable, Sendable {
     case gettingStarted
     case scanning
     case cleanupQueue

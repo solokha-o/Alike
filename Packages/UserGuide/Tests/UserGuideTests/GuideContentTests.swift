@@ -1,6 +1,6 @@
 import Testing
 import DesignSystem
-@testable import Settings
+@testable import UserGuide
 
 @Suite("Guide content")
 struct GuideContentTests {

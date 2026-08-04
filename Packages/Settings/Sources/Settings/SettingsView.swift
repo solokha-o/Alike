@@ -5,6 +5,7 @@ import DesignSystem
 import NavigationKit
 import Purchases
 import PurchasesUI
+import UserGuide
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -146,9 +147,9 @@ public struct SettingsView: View {
     private func destination(for route: SettingsRoute) -> some View {
         switch route {
         case .userGuide:
-            UserGuideHubView()
+            UserGuideHubView { SettingsRoute.userGuideTopic($0) }
         case .userGuideTopic(let topicID):
-            UserGuideTopicView(topic: GuideContent.topic(topicID))
+            UserGuideTopicView(topicID: topicID)
         case .deleteAllData:
             DeleteAllDataView(model: deleteAllDataModel)
         }
@@ -715,14 +716,4 @@ private struct DeleteAllDataView: View {
         sensitivity: .constant(.medium),
         needsRescan: .constant(false)
     )
-}
-
-#Preview("User Guide") {
-    RoutedNavigationStack { (_: StackRouter<SettingsRoute>) in
-        UserGuideHubView()
-    } destination: { (route: SettingsRoute, _) in
-        if case .userGuideTopic(let topicID) = route {
-            UserGuideTopicView(topic: GuideContent.topic(topicID))
-        }
-    }
 }

@@ -2,14 +2,22 @@ import SwiftUI
 import DesignSystem
 import NavigationKit
 
-struct UserGuideHubView: View {
+/// The guide hub. It owns no navigation of its own: the enclosing stack supplies the route type,
+/// so the same hub can be pushed inside Settings and presented as a sheet from Scanner.
+public struct UserGuideHubView<Route: Hashable>: View {
     @State private var query = ""
+
+    private let route: (GuideTopicID) -> Route
+
+    public init(route: @escaping (GuideTopicID) -> Route) {
+        self.route = route
+    }
 
     private var results: [GuideSearchResult] {
         GuideContent.search(query)
     }
 
-    var body: some View {
+    public var body: some View {
         List {
             if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 topicsContent
@@ -36,7 +44,7 @@ struct UserGuideHubView: View {
 
         Section {
             ForEach(GuideContent.topics) { topic in
-                NavigationLink(value: SettingsRoute.userGuideTopic(topic.id)) {
+                NavigationLink(value: route(topic.id)) {
                     GuideTopicRow(topic: topic)
                 }
                 .accessibilityHint(Text(appLocalized("guide.hub.topic.hint")))
@@ -62,7 +70,7 @@ struct UserGuideHubView: View {
         } else {
             Section {
                 ForEach(results) { result in
-                    NavigationLink(value: SettingsRoute.userGuideTopic(result.topicID)) {
+                    NavigationLink(value: route(result.topicID)) {
                         VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                             Text(appLocalized(result.item.titleKey))
                                 .font(.appHeadline)
@@ -81,11 +89,11 @@ struct UserGuideHubView: View {
 }
 
 #Preview("Guide hub") {
-    RoutedNavigationStack { (_: StackRouter<SettingsRoute>) in
-        UserGuideHubView()
-    } destination: { (route: SettingsRoute, _) in
-        if case .userGuideTopic(let id) = route {
-            UserGuideTopicView(topic: GuideContent.topic(id))
+    RoutedNavigationStack { (_: StackRouter<GuideRoute>) in
+        UserGuideHubView { GuideRoute.topic($0) }
+    } destination: { (route: GuideRoute, _) in
+        if case .topic(let id) = route {
+            UserGuideTopicView(topicID: id)
         }
     }
 }

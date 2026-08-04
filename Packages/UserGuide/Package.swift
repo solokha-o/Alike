@@ -2,32 +2,27 @@
 import PackageDescription
 
 let package = Package(
-    name: "Settings",
+    name: "UserGuide",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
     ],
     products: [
         .library(
-            name: "Settings",
-            targets: ["Settings"]
+            name: "UserGuide",
+            targets: ["UserGuide"]
         ),
     ],
     dependencies: [
-        .package(path: "../Core"),
         .package(path: "../DesignSystem"),
         .package(path: "../NavigationKit"),
-        .package(path: "../Cleanup"),
-        .package(path: "../Storage"),
-        .package(path: "../Purchases"),
-        .package(path: "../UserGuide")
+        .package(path: "../Purchases")
     ],
     targets: [
         .target(
-            name: "Settings",
+            name: "UserGuide",
             dependencies: [
-                "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide",
-                .product(name: "Purchases", package: "Purchases"),
+                "DesignSystem", "NavigationKit",
                 .product(name: "PurchasesUI", package: "Purchases")
             ],
             swiftSettings: [
@@ -35,8 +30,8 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "SettingsTests",
-            dependencies: ["Settings", "Core"]
+            name: "UserGuideTests",
+            dependencies: ["UserGuide"]
         ),
     ]
 )

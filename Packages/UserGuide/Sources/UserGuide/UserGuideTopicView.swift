@@ -2,10 +2,14 @@ import SwiftUI
 import DesignSystem
 import NavigationKit
 
-struct UserGuideTopicView: View {
-    let topic: GuideTopic
+public struct UserGuideTopicView: View {
+    private let topic: GuideTopic
 
-    var body: some View {
+    public init(topicID: GuideTopicID) {
+        self.topic = GuideContent.topic(topicID)
+    }
+
+    public var body: some View {
         List {
             ForEach(topic.sections) { section in
                 Section {
@@ -32,13 +36,13 @@ struct UserGuideTopicView: View {
 
 #Preview("Topic — Cleanup") {
     RoutedNavigationStack {
-        UserGuideTopicView(topic: GuideContent.topic(.cleanupQueue))
+        UserGuideTopicView(topicID: .cleanupQueue)
     }
 }
 
 #Preview("Topic — dark, large text") {
     RoutedNavigationStack {
-        UserGuideTopicView(topic: GuideContent.topic(.comparingPhotos))
+        UserGuideTopicView(topicID: .comparingPhotos)
     }
     .preferredColorScheme(.dark)
     .dynamicTypeSize(.accessibility3)
