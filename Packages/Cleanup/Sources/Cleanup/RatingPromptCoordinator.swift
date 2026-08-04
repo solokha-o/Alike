@@ -30,13 +30,19 @@ public final class RatingPromptCoordinator {
     /// Evaluates a finished cleanup and, when eligible, records the ask and tells the caller
     /// to present the system review sheet.
     ///
+    /// `isBusy` is a closure rather than a snapshot: `loadHistory` awaits a repository that
+    /// may suspend, and a sheet, paywall, alert, scan, or inactive scene can claim the screen
+    /// while that happens. The closure is read again immediately before the ask is recorded
+    /// so the record and the caller's `RequestReviewAction` never fire against stale state.
+    ///
     /// - Parameters:
     ///   - record: The cleanup that just completed.
-    ///   - isBusy: `true` when another surface owns the screen.
+    ///   - isBusy: Evaluates to `true` while another surface owns the screen. Called more
+    ///     than once, always against live state.
     /// - Returns: `true` when the caller should invoke `RequestReviewAction`.
     public func requestReviewIfEligible(
         after record: CleanupCompletionRecord,
-        isBusy: Bool
+        isBusy: () -> Bool
     ) async -> Bool {
         let date = now()
         let history = await repository.loadHistory(now: date)
@@ -44,10 +50,14 @@ public final class RatingPromptCoordinator {
             deletedCount: record.deletedCount,
             now: date,
             appVersion: appVersion,
-            isBusy: isBusy
+            isBusy: isBusy()
         )
 
         guard policy.shouldRequestReview(history: history, context: context) else { return false }
+
+        // Final check right before spending the ask: `loadHistory` just awaited, and the
+        // screen may no longer be free even though it was at eligibility-check time above.
+        guard !isBusy() else { return false }
 
         await repository.recordPromptShown(at: date, appVersion: appVersion)
         return true
@@ -57,6 +67,19 @@ public final class RatingPromptCoordinator {
     /// prompt respects the same cooldown.
     public func recordManualRating() async {
         await repository.recordPromptShown(at: now(), appVersion: appVersion)
+    }
+
+    /// Seeds the install-age clock as early as possible, instead of waiting for it to be
+    /// seeded implicitly by the first eligible cleanup.
+    ///
+    /// `loadHistory` stamps `firstLaunchDate` on its first read (see
+    /// `RatingPromptHistoryRepository.loadHistory`). Left to the cleanup flow alone, that
+    /// first read can land months after the real install, on an established installation's
+    /// first qualifying cleanup — which then gets rejected by `minimumInstallAge` as if it
+    /// were brand new. Calling this once at app launch/onboarding lets the clock start on
+    /// time.
+    public func seedInstallAgeOnLaunch() async {
+        _ = await repository.loadHistory(now: now())
     }
 
     public static func currentAppVersion() -> String {

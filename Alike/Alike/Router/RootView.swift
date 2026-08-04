@@ -121,6 +121,12 @@ struct MainTabView: View {
         .task {
             await subscriptionStore.start()
         }
+        .task {
+            // Seed the rating prompt's install-age clock now, not on whatever cleanup
+            // happens to be the first eligible one — see
+            // `RatingPromptCoordinator.seedInstallAgeOnLaunch`.
+            await ratingPrompt.seedInstallAgeOnLaunch()
+        }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await subscriptionStore.refreshEntitlements()

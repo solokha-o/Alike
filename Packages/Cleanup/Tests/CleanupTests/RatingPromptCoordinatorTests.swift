@@ -15,6 +15,16 @@ final class RatingPromptCoordinatorTests: XCTestCase {
         }
     }
 
+    /// Mutable flag the `isBusy` closure can read live, so a test can flip it while a
+    /// repository call is suspended and observe whether the coordinator notices.
+    private final class Box: @unchecked Sendable {
+        var value: Bool
+
+        init(_ value: Bool) {
+            self.value = value
+        }
+    }
+
     private func makeCoordinator(
         repository: MockRatingPromptHistoryRepository,
         clock: TestClock
@@ -45,7 +55,7 @@ final class RatingPromptCoordinatorTests: XCTestCase {
 
         let shouldRequest = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 12),
-            isBusy: false
+            isBusy: { false }
         )
 
         XCTAssertTrue(shouldRequest)
@@ -62,11 +72,11 @@ final class RatingPromptCoordinatorTests: XCTestCase {
 
         _ = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 12),
-            isBusy: false
+            isBusy: { false }
         )
         let shouldRequestAgain = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 12),
-            isBusy: false
+            isBusy: { false }
         )
 
         XCTAssertFalse(shouldRequestAgain)
@@ -81,7 +91,7 @@ final class RatingPromptCoordinatorTests: XCTestCase {
 
         let shouldRequest = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 12),
-            isBusy: true
+            isBusy: { true }
         )
 
         XCTAssertFalse(shouldRequest)
@@ -99,10 +109,32 @@ final class RatingPromptCoordinatorTests: XCTestCase {
 
         let shouldRequest = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 12),
-            isBusy: false
+            isBusy: { false }
         )
 
         XCTAssertFalse(shouldRequest)
+    }
+
+    func testSurfaceBecomingBusyDuringTheRepositoryAwaitBlocksTheRequest() async {
+        let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
+        let clock = TestClock(now: referenceDate)
+        let coordinator = makeCoordinator(repository: repository, clock: clock)
+        let becameBusyDuringAwait = Box(false)
+
+        // Simulate a sheet, paywall, or scene-phase change landing while `loadHistory`
+        // is still suspended — the exact race the coordinator's final recheck guards.
+        await repository.setOnLoadHistory {
+            becameBusyDuringAwait.value = true
+        }
+
+        let shouldRequest = await coordinator.requestReviewIfEligible(
+            after: makeRecord(deletedCount: 12),
+            isBusy: { becameBusyDuringAwait.value }
+        )
+
+        XCTAssertFalse(shouldRequest)
+        let history = await repository.currentHistory()
+        XCTAssertEqual(history.promptCount, 0, "A prompt must not be recorded once the screen became busy mid-await")
     }
 
     func testEligibleAgainAfterCooldownOnANewVersion() async {
@@ -119,7 +151,7 @@ final class RatingPromptCoordinatorTests: XCTestCase {
 
         let shouldRequest = await coordinator.requestReviewIfEligible(
             after: makeRecord(deletedCount: 5),
-            isBusy: false
+            isBusy: { false }
         )
 
         XCTAssertTrue(shouldRequest)

@@ -397,9 +397,13 @@ public struct CleanupView: View {
         guard
             await ratingPrompt.requestReviewIfEligible(
                 after: record,
-                isBusy: isRatingPromptBlocked
+                isBusy: { isRatingPromptBlocked }
             )
         else { return }
+
+        // Recheck live state one more time: the coordinator's own recheck covers the await
+        // it awaits internally, but nothing else has run between its return and this call.
+        guard !isRatingPromptBlocked else { return }
 
         requestReview()
     }
