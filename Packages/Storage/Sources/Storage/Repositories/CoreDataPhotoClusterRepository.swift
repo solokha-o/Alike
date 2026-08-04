@@ -179,16 +179,15 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         }
 
         guard let token = metadata.libraryChangeToken else {
-            // Baseline written before library fingerprinting existed. A scan did
-            // complete, so adopt the library's current state as its fingerprint
-            // rather than prompting for a rescan that cannot be justified.
+            // Baseline written before library fingerprinting existed: there is no
+            // historical fingerprint to trust, and adopting today's library state
+            // as the baseline would silently swallow every change made since the
+            // prior-version scan. Require one rescan instead; that scan captures
+            // its fingerprint honestly and this branch is never hit again.
             AppLog.storage.debug(
-                "\(AppLog.tag(.storage, "Gallery change check: backfilling missing change token"))"
+                "\(AppLog.tag(.storage, "Gallery change check: missing change token, requesting one-time rescan"))"
             )
-            try? await updateScanMetadata(
-                await captureScanMetadata(completedAt: metadata.lastScanDate)
-            )
-            return false
+            return true
         }
 
         guard let summary = changeDetector.changes(since: token) else {

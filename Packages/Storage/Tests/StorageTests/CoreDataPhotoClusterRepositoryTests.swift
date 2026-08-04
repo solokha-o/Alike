@@ -281,8 +281,11 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         XCTAssertTrue(hasChanged, "An expired token with a changed count is a change")
     }
 
-    func testHasGalleryChangedBackfillsLegacyBaselineInsteadOfPrompting() async throws {
-        // Given: A baseline written before change tracking existed
+    func testHasGalleryChangedRequestsOneTimeRescanForLegacyBaselineWithoutToken() async throws {
+        // Given: A baseline written before change tracking existed, so there is
+        // no trustworthy historical fingerprint to migrate from. Changes made
+        // between the legacy scan and now would be silently folded into any
+        // fingerprint captured today, so a rescan must be requested instead.
         let detector = FakeChangeDetector(
             token: Data([0xBB]),
             imageAssetCount: 30,
@@ -298,16 +301,19 @@ final class CoreDataPhotoClusterRepositoryTests: XCTestCase {
         // When: Checking for changes
         let hasChanged = await repository.hasGalleryChanged()
 
-        // Then: The fingerprint is adopted rather than a rescan demanded
-        XCTAssertFalse(hasChanged, "A missing token must not be read as a library change")
+        // Then: A one-time rescan is requested rather than silently adopting
+        // today's library state as the historical baseline.
+        XCTAssertTrue(hasChanged, "A missing legacy token must request a one-time rescan")
         let metadata = await repository.loadScanMetadata()
-        XCTAssertEqual(metadata?.libraryChangeToken, Data([0xBB]))
-        XCTAssertEqual(metadata?.imageAssetCount, 30)
+        XCTAssertNil(
+            metadata?.libraryChangeToken,
+            "The legacy baseline must not be backfilled from an untrustworthy fingerprint"
+        )
         XCTAssertEqual(
             try XCTUnwrap(metadata).lastScanDate.timeIntervalSince1970,
             legacyDate.timeIntervalSince1970,
             accuracy: 1.0,
-            "Backfilling must not move the recorded scan date"
+            "Requesting a rescan must not alter the stored baseline"
         )
     }
 
