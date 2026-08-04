@@ -1,11 +1,16 @@
 import XCTest
 import Core
+import Cleanup
 @testable import Settings
 
 @MainActor
 final class SettingsViewModelTests: XCTestCase {
-    func testHandleRateTappedTriggersReview() {
-        let viewModel = SettingsViewModel(appVersion: "1.2.3")
+    func testHandleRateTappedTriggersReview() async {
+        let repository = MockRatingPromptHistoryRepository()
+        let viewModel = SettingsViewModel(
+            appVersion: "1.2.3",
+            ratingPrompt: RatingPromptCoordinator(repository: repository, appVersion: "1.2.3")
+        )
         var didCall = false
 
         XCTAssertEqual(viewModel.reviewTrigger, 0)
@@ -15,6 +20,11 @@ final class SettingsViewModelTests: XCTestCase {
 
         XCTAssertTrue(didCall)
         XCTAssertEqual(viewModel.reviewTrigger, 1)
+
+        await viewModel.waitForManualRatingRecord()
+        let history = await repository.currentHistory()
+        XCTAssertEqual(history.promptCount, 1)
+        XCTAssertEqual(history.lastPromptedAppVersion, "1.2.3")
     }
 
     func testRescanRequiredAfterSensitivityChangeIsTrue() {

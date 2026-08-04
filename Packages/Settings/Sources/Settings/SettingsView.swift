@@ -423,7 +423,7 @@ public struct SettingsView: View {
             }
             .accessibilityHint(Text(appLocalized("Open usage instructions and cleanup workflow tips")))
             
-            ShareLink(item: URL(string: "https://apps.apple.com/app/idXXXXXXXX")!) {
+            ShareLink(item: AppStoreLinks.product) {
                 Label {
                     Text(appLocalized("Share App"))
                 } icon: {

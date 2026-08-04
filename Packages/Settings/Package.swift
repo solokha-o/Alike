@@ -36,7 +36,7 @@ let package = Package(
         ),
         .testTarget(
             name: "SettingsTests",
-            dependencies: ["Settings", "Core"]
+            dependencies: ["Settings", "Core", "Cleanup"]
         ),
     ]
 )

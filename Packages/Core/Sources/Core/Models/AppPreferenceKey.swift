@@ -22,6 +22,12 @@ public enum AppPreferenceKey {
         public static let subscriptionEntitlement = "subscription.entitlement.v1"
     }
 
+    /// Deliberately absent from `resettable`: deleting app data must not hand the user a
+    /// fresh App Store review quota, matching how the premium prompt claim is treated.
+    public enum Rating {
+        public static let promptHistory = "rating.promptHistory.v1"
+    }
+
     public enum DebugPremium {
         public static let unlimitedScans = "debug.premium.unlimitedRescans"
         public static let screenshotCleanup = "debug.premium.screenshotCleanup"

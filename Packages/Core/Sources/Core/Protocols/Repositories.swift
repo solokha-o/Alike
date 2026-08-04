@@ -91,6 +91,15 @@ public protocol PremiumPromptHistoryRepository: Sendable {
     func releasePostFirstUsefulScanPromptClaim() async
 }
 
+/// Repository for the installation-local history of App Store review requests.
+public protocol RatingPromptHistoryRepository: Sendable {
+    /// Loads the stored history, seeding the install date on the first read.
+    func loadHistory(now: Date) async -> RatingPromptHistory
+
+    /// Records that a review request was issued.
+    func recordPromptShown(at date: Date, appVersion: String) async
+}
+
 /// Repository for cleanup review state per photo cluster.
 public protocol ClusterReviewStateRepository: Sendable {
     /// Load review state for a cluster.

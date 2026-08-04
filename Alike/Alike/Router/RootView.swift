@@ -76,6 +76,9 @@ struct MainTabView: View {
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
     )
+    @State private var ratingPrompt = RatingPromptCoordinator(
+        repository: UserDefaultsRatingPromptHistoryRepository()
+    )
 
     init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
         self.onDataDeleted = onDataDeleted
@@ -190,6 +193,7 @@ struct MainTabView: View {
                 sensitivity: sensitivity,
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
+                ratingPrompt: ratingPrompt,
                 onOpenScanner: {
                     tabManager.navigateToScanner()
                 },
@@ -213,7 +217,8 @@ struct MainTabView: View {
                     onDataDeleted()
                 },
                 viewModel: SettingsViewModel(
-                    cleanupReminderManager: cleanupReminderManager
+                    cleanupReminderManager: cleanupReminderManager,
+                    ratingPrompt: ratingPrompt
                 )
             )
         }
