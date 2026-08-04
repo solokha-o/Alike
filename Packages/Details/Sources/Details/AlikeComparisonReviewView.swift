@@ -2,7 +2,7 @@ import SwiftUI
 import Core
 import DesignSystem
 
-struct ALIComparisonReviewPresentation: Equatable {
+struct AlikeComparisonReviewPresentation: Equatable {
     let animationURL: URL?
     let playback: OverlayAnimationPlayback
     let ambientMotion: AnimatedImageAmbientMotion
@@ -15,17 +15,17 @@ struct ALIComparisonReviewPresentation: Equatable {
         let isMotionEnabled = isVisible && scenePhase == .active
 
         return Self(
-            animationURL: isMotionEnabled ? ALIAssets.comparisonReviewOverlayURL : nil,
+            animationURL: isMotionEnabled ? AlikeAssets.comparisonReviewOverlayURL : nil,
             playback: .loop,
             ambientMotion: isMotionEnabled ? .breathe : .none
         )
     }
 
     static func imageURL(for displayScale: CGFloat) -> URL {
-        ALIAssets.comparisonReviewURL(for: imageScale(for: displayScale))
+        AlikeAssets.comparisonReviewURL(for: imageScale(for: displayScale))
     }
 
-    private static func imageScale(for displayScale: CGFloat) -> ALIAssets.ComparisonReviewScale {
+    private static func imageScale(for displayScale: CGFloat) -> AlikeAssets.ComparisonReviewScale {
         switch displayScale {
         case ..<1.5:
             .oneX
@@ -37,7 +37,7 @@ struct ALIComparisonReviewPresentation: Equatable {
     }
 }
 
-struct ALIComparisonReviewView: View {
+struct AlikeComparisonReviewView: View {
     private enum Constants {
         static let maximumWidth: CGFloat = 72
     }
@@ -57,7 +57,7 @@ struct ALIComparisonReviewView: View {
             comparisonImage
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("ALI comparing similar photos")))
+        .accessibilityLabel(Text(appLocalized("Alike comparing similar photos")))
         .onAppear {
             setVisibility(true)
         }
@@ -68,7 +68,7 @@ struct ALIComparisonReviewView: View {
 
     @ViewBuilder
     private var comparisonImage: some View {
-        let imageURL = ALIComparisonReviewPresentation.imageURL(for: displayScale)
+        let imageURL = AlikeComparisonReviewPresentation.imageURL(for: displayScale)
 
 #if canImport(UIKit)
         if let image = UIImage(contentsOfFile: imageURL.path) {
@@ -97,7 +97,7 @@ struct ALIComparisonReviewView: View {
             .padding(Spacing.xxLarge)
     }
 
-    private var presentation: ALIComparisonReviewPresentation {
+    private var presentation: AlikeComparisonReviewPresentation {
         .resolve(isVisible: isVisible, scenePhase: scenePhase)
     }
 

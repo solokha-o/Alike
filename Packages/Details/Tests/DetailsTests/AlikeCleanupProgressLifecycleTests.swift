@@ -4,21 +4,21 @@ import XCTest
 import DesignSystem
 @testable import Details
 
-final class ALICleanupProgressLifecycleTests: XCTestCase {
+final class AlikeCleanupProgressLifecycleTests: XCTestCase {
     func testActiveVisibleExecutionLoopsSortingOverlayWithoutAmbientMotion() {
-        let presentation = ALICleanupProgressPresentation.resolve(
+        let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: true,
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.animationURL, ALIAssets.cleanupProgressOverlayURL)
+        XCTAssertEqual(presentation.animationURL, AlikeAssets.cleanupProgressOverlayURL)
         XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
     func testMotionStopsWhenExecutionEnds() {
-        let presentation = ALICleanupProgressPresentation.resolve(
+        let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: false,
             isVisible: true,
             scenePhase: .active
@@ -30,7 +30,7 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
     }
 
     func testMotionStopsWhenProgressSurfaceDisappears() {
-        let presentation = ALICleanupProgressPresentation.resolve(
+        let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: true,
             isVisible: false,
             scenePhase: .active
@@ -42,7 +42,7 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
 
     func testMotionStopsWhileSceneIsInactiveOrBackgrounded() {
         for scenePhase in [ScenePhase.inactive, .background] {
-            let presentation = ALICleanupProgressPresentation.resolve(
+            let presentation = AlikeCleanupProgressPresentation.resolve(
                 isExecuting: true,
                 isVisible: true,
                 scenePhase: scenePhase
@@ -55,26 +55,26 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
 
     func testDisplayScaleSelectsMatchingCleanupExport() {
         XCTAssertEqual(
-            ALICleanupProgressPresentation.imageURL(for: 1.49),
-            ALIAssets.cleanupProgressURL(for: .oneX)
+            AlikeCleanupProgressPresentation.imageURL(for: 1.49),
+            AlikeAssets.cleanupProgressURL(for: .oneX)
         )
         XCTAssertEqual(
-            ALICleanupProgressPresentation.imageURL(for: 1.5),
-            ALIAssets.cleanupProgressURL(for: .twoX)
+            AlikeCleanupProgressPresentation.imageURL(for: 1.5),
+            AlikeAssets.cleanupProgressURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALICleanupProgressPresentation.imageURL(for: 2.49),
-            ALIAssets.cleanupProgressURL(for: .twoX)
+            AlikeCleanupProgressPresentation.imageURL(for: 2.49),
+            AlikeAssets.cleanupProgressURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALICleanupProgressPresentation.imageURL(for: 2.5),
-            ALIAssets.cleanupProgressURL(for: .threeX)
+            AlikeCleanupProgressPresentation.imageURL(for: 2.5),
+            AlikeAssets.cleanupProgressURL(for: .threeX)
         )
     }
 
     @MainActor
     func testCleanupReadyUsesAnimatedProgressArtworkDuringReview() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .cleanupSelection(UUID()), kind: .cleanupReady),
             state: .cleanupReady(.init(itemCount: 1, estimatedSavingsBytes: 512)),
             persistence: .persistent
@@ -82,7 +82,7 @@ final class ALICleanupProgressLifecycleTests: XCTestCase {
 
         let identity = ClusterReviewSummaryCard.resolveArtworkIdentity(
             assetCount: 2,
-            aliReactionCue: cue,
+            alikeReactionCue: cue,
             bestShotCelebrationCue: nil
         )
 

@@ -2,8 +2,8 @@ import Core
 import SwiftUI
 
 @MainActor
-private final class ALIPlatformImageCache {
-    static let shared = ALIPlatformImageCache()
+private final class AlikePlatformImageCache {
+    static let shared = AlikePlatformImageCache()
 
 #if canImport(UIKit)
     private let images = NSCache<NSURL, UIImage>()
@@ -26,8 +26,8 @@ private final class ALIPlatformImageCache {
 #endif
 }
 
-public struct ALIReactionPresentation: Equatable, Sendable {
-    public let kind: ALIReactionKind
+public struct AlikeReactionPresentation: Equatable, Sendable {
+    public let kind: AlikeReactionKind
     public let staticImageURL: URL?
     public let fallbackStaticImageURL: URL?
     public let animationURL: URL?
@@ -37,7 +37,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
     public let accessibilityLabel: String
 
     public static func resolve(
-        cue: ALIReactionCue,
+        cue: AlikeReactionCue,
         displayScale: CGFloat,
         isVisible: Bool,
         scenePhase: ScenePhase
@@ -51,10 +51,10 @@ public struct ALIReactionPresentation: Equatable, Sendable {
             let usesCalmStaticPresentation = context == .allCaughtUp
             return Self(
                 kind: .idle,
-                staticImageURL: ALIAssets.optionalScannerIdleURL(for: idleState, scale: imageScale),
+                staticImageURL: AlikeAssets.optionalScannerIdleURL(for: idleState, scale: imageScale),
                 fallbackStaticImageURL: scannerReadyURL(for: imageScale),
                 animationURL: canPlay && !usesCalmStaticPresentation
-                    ? ALIAssets.scannerIdleOverlayURL(for: idleState)
+                    ? AlikeAssets.scannerIdleOverlayURL(for: idleState)
                     : nil,
                 fallbackSystemImageName: "photo.stack",
                 playback: .loop,
@@ -65,28 +65,28 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         case .scanning:
             return Self(
                 kind: .scanning,
-                staticImageURL: ALIAssets.optionalScannerSearchingURL(
+                staticImageURL: AlikeAssets.optionalScannerSearchingURL(
                     for: scannerSearchingScale(for: displayScale)
                 ),
                 fallbackStaticImageURL: scannerReadyURL(for: imageScale),
-                animationURL: canPlay ? ALIAssets.scannerSearchingOverlayURL : nil,
+                animationURL: canPlay ? AlikeAssets.scannerSearchingOverlayURL : nil,
                 fallbackSystemImageName: "camera.viewfinder",
                 playback: .loop,
                 ambientMotion: canPlay ? .breathe : .none,
-                accessibilityLabel: appLocalized("ALI searching for similar photos")
+                accessibilityLabel: appLocalized("Alike searching for similar photos")
             )
 
         case .resultsFound:
             return nativeFallback(
                 kind: .resultsFound,
                 symbol: "sparkles",
-                label: appLocalized("ALI found cleanup opportunities")
+                label: appLocalized("Alike found cleanup opportunities")
             )
 
         case .noResults:
             return Self(
                 kind: .noResults,
-                staticImageURL: ALIAssets.optionalScannerIdleURL(
+                staticImageURL: AlikeAssets.optionalScannerIdleURL(
                     for: .allCaughtUp,
                     scale: imageScale
                 ),
@@ -95,41 +95,41 @@ public struct ALIReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "checkmark.circle.fill",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("ALI says your photo library is all caught up")
+                accessibilityLabel: appLocalized("Alike says your photo library is all caught up")
             )
 
         case .cleanupReady:
             return nativeFallback(
                 kind: .cleanupReady,
                 symbol: "checklist",
-                label: appLocalized("ALI is ready for cleanup")
+                label: appLocalized("Alike is ready for cleanup")
             )
 
         case .cleanupSuccess:
             return Self(
                 kind: .cleanupSuccess,
-                staticImageURL: ALIAssets.cleanupSuccessURL(
+                staticImageURL: AlikeAssets.cleanupSuccessURL(
                     for: cleanupSuccessScale(for: displayScale)
                 ),
                 fallbackStaticImageURL: nil,
-                animationURL: canPlay ? ALIAssets.cleanupSuccessOverlayURL : nil,
+                animationURL: canPlay ? AlikeAssets.cleanupSuccessOverlayURL : nil,
                 fallbackSystemImageName: "party.popper.fill",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("ALI celebrates your completed cleanup")
+                accessibilityLabel: appLocalized("Alike celebrates your completed cleanup")
             )
 
         case .permissionIssue:
             return nativeFallback(
                 kind: .permissionIssue,
                 symbol: "lock.trianglebadge.exclamationmark",
-                label: appLocalized("ALI needs photo library permission to continue")
+                label: appLocalized("Alike needs photo library permission to continue")
             )
 
         case .recoverableError:
             return Self(
                 kind: .recoverableError,
-                staticImageURL: ALIAssets.optionalScannerIssueURL(
+                staticImageURL: AlikeAssets.optionalScannerIssueURL(
                     for: scannerIssueScale(for: displayScale)
                 ),
                 fallbackStaticImageURL: scannerReadyURL(for: imageScale),
@@ -137,13 +137,13 @@ public struct ALIReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "exclamationmark.triangle",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("ALI looks concerned because the scan needs attention")
+                accessibilityLabel: appLocalized("Alike ran into a problem with the scan")
             )
         }
     }
 
     private static func nativeFallback(
-        kind: ALIReactionKind,
+        kind: AlikeReactionKind,
         symbol: String,
         label: String
     ) -> Self {
@@ -159,7 +159,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         )
     }
 
-    private static func scannerIdleState(for context: ALIIdleContext) -> ALIAssets.ScannerIdleState {
+    private static func scannerIdleState(for context: AlikeIdleContext) -> AlikeAssets.ScannerIdleState {
         switch context {
         case .ready: .ready
         case .hasReviews: .hasReviews
@@ -168,7 +168,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
         }
     }
 
-    private static func imageScale(for displayScale: CGFloat) -> ALIAssets.ScannerIdleScale {
+    private static func imageScale(for displayScale: CGFloat) -> AlikeAssets.ScannerIdleScale {
         switch displayScale {
         case ..<1.5: .oneX
         case ..<2.5: .twoX
@@ -178,7 +178,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
 
     private static func scannerSearchingScale(
         for displayScale: CGFloat
-    ) -> ALIAssets.ScannerSearchingScale {
+    ) -> AlikeAssets.ScannerSearchingScale {
         switch displayScale {
         case ..<1.5: .oneX
         case ..<2.5: .twoX
@@ -188,7 +188,7 @@ public struct ALIReactionPresentation: Equatable, Sendable {
 
     private static func scannerIssueScale(
         for displayScale: CGFloat
-    ) -> ALIAssets.ScannerIssueScale {
+    ) -> AlikeAssets.ScannerIssueScale {
         switch displayScale {
         case ..<1.5: .oneX
         case ..<2.5: .twoX
@@ -197,27 +197,27 @@ public struct ALIReactionPresentation: Equatable, Sendable {
     }
 
     private static func scannerReadyURL(
-        for scale: ALIAssets.ScannerIdleScale
+        for scale: AlikeAssets.ScannerIdleScale
     ) -> URL? {
-        ALIAssets.optionalScannerIdleURL(for: .ready, scale: scale)
+        AlikeAssets.optionalScannerIdleURL(for: .ready, scale: scale)
     }
 
-    private static func idleAccessibilityLabel(for context: ALIIdleContext) -> String {
+    private static func idleAccessibilityLabel(for context: AlikeIdleContext) -> String {
         switch context {
         case .ready:
-            appLocalized("ALI is ready to help organize your photo library")
+            appLocalized("Alike is ready to help organize your photo library")
         case .hasReviews:
-            appLocalized("ALI has cleanup opportunities ready for review")
+            appLocalized("Alike has cleanup opportunities ready for review")
         case .allCaughtUp:
-            appLocalized("ALI says your photo library is all caught up")
+            appLocalized("Alike says your photo library is all caught up")
         case .libraryChanged:
-            appLocalized("ALI noticed new photos in your library")
+            appLocalized("Alike noticed new photos in your library")
         }
     }
 
     private static func cleanupSuccessScale(
         for displayScale: CGFloat
-    ) -> ALIAssets.CleanupSuccessScale {
+    ) -> AlikeAssets.CleanupSuccessScale {
         switch displayScale {
         case ..<1.5: .oneX
         case ..<2.5: .twoX
@@ -226,16 +226,16 @@ public struct ALIReactionPresentation: Equatable, Sendable {
     }
 }
 
-/// Passive, non-interactive rendering of an already-resolved ALI reaction cue.
-public struct ALIReactionView: View {
+/// Passive, non-interactive rendering of an already-resolved Alike reaction cue.
+public struct AlikeReactionView: View {
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
 
-    private let cue: ALIReactionCue
+    private let cue: AlikeReactionCue
     private let maximumWidth: CGFloat
 
-    public init(cue: ALIReactionCue, maximumWidth: CGFloat = 72) {
+    public init(cue: AlikeReactionCue, maximumWidth: CGFloat = 72) {
         self.cue = cue
         self.maximumWidth = maximumWidth
     }
@@ -276,10 +276,10 @@ public struct ALIReactionView: View {
     private func platformImage(at url: URL?) -> Image? {
         guard let url else { return nil }
 #if canImport(UIKit)
-        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
+        guard let image = AlikePlatformImageCache.shared.image(at: url) else { return nil }
         return Image(uiImage: image)
 #elseif canImport(AppKit)
-        guard let image = ALIPlatformImageCache.shared.image(at: url) else { return nil }
+        guard let image = AlikePlatformImageCache.shared.image(at: url) else { return nil }
         return Image(nsImage: image)
 #endif
     }
@@ -292,7 +292,7 @@ public struct ALIReactionView: View {
             .padding(maximumWidth * 0.2)
     }
 
-    private var presentation: ALIReactionPresentation {
+    private var presentation: AlikeReactionPresentation {
         .resolve(
             cue: cue,
             displayScale: displayScale,

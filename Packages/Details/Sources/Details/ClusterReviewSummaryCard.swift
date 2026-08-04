@@ -6,9 +6,9 @@ struct ClusterReviewSummaryCard: View {
     static let summaryContentMinimumHeight: CGFloat = 88
 
     enum ArtworkIdentity: Equatable, Hashable {
-        case bestShot(ALIReviewReactionCue.ID)
-        case cleanupProgress(ALIReactionCueID)
-        case reaction(ALIReactionCueID)
+        case bestShot(AlikeReviewReactionCue.ID)
+        case cleanupProgress(AlikeReactionCueID)
+        case reaction(AlikeReactionCueID)
         case comparison
         case none
     }
@@ -24,9 +24,9 @@ struct ClusterReviewSummaryCard: View {
     let maximumEstimatedSavingsText: String
     let reviewStatus: ClusterReviewStatus
     let isReviewConfirmed: Bool
-    let aliReactionCue: ALIReactionCue?
-    let bestShotCelebrationCue: ALIReviewReactionCue?
-    let onBestShotCelebrationDismissed: (ALIReviewReactionCue.ID) -> Void
+    let alikeReactionCue: AlikeReactionCue?
+    let bestShotCelebrationCue: AlikeReviewReactionCue?
+    let onBestShotCelebrationDismissed: (AlikeReviewReactionCue.ID) -> Void
 
     var body: some View {
         Group {
@@ -193,7 +193,7 @@ struct ClusterReviewSummaryCard: View {
         switch identity {
         case .bestShot:
             if let bestShotCelebrationCue {
-                ALIBestShotCelebrationView(
+                AlikeBestShotCelebrationView(
                     cueID: bestShotCelebrationCue.id,
                     onPlaybackFinished: {
                         onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
@@ -205,17 +205,17 @@ struct ClusterReviewSummaryCard: View {
                     }
             }
         case .cleanupProgress:
-            ALICleanupProgressHero(
+            AlikeCleanupProgressHero(
                 isActive: true,
                 maximumWidth: width,
-                accessibilityLabel: appLocalized("ALI organizing selected photos")
+                accessibilityLabel: appLocalized("Alike organizing selected photos")
             )
         case .reaction:
-            if let aliReactionCue {
-                ALIReactionView(cue: aliReactionCue, maximumWidth: width)
+            if let alikeReactionCue {
+                AlikeReactionView(cue: alikeReactionCue, maximumWidth: width)
             }
         case .comparison:
-            ALIComparisonReviewView()
+            AlikeComparisonReviewView()
                 .frame(width: width)
         case .none:
             EmptyView()
@@ -225,27 +225,27 @@ struct ClusterReviewSummaryCard: View {
     private var artworkIdentity: ArtworkIdentity {
         Self.resolveArtworkIdentity(
             assetCount: assetCount,
-            aliReactionCue: aliReactionCue,
+            alikeReactionCue: alikeReactionCue,
             bestShotCelebrationCue: bestShotCelebrationCue
         )
     }
 
     static func resolveArtworkIdentity(
         assetCount: Int,
-        aliReactionCue: ALIReactionCue?,
-        bestShotCelebrationCue: ALIReviewReactionCue?
+        alikeReactionCue: AlikeReactionCue?,
+        bestShotCelebrationCue: AlikeReviewReactionCue?
     ) -> ArtworkIdentity {
         if let bestShotCelebrationCue {
             return .bestShot(bestShotCelebrationCue.id)
         }
-        if let aliReactionCue {
-            if ALIComparisonReviewPresentation.isEligible(assetCount: assetCount),
-               case .cleanupReady = aliReactionCue.state {
-                return .cleanupProgress(aliReactionCue.id)
+        if let alikeReactionCue {
+            if AlikeComparisonReviewPresentation.isEligible(assetCount: assetCount),
+               case .cleanupReady = alikeReactionCue.state {
+                return .cleanupProgress(alikeReactionCue.id)
             }
-            return .reaction(aliReactionCue.id)
+            return .reaction(alikeReactionCue.id)
         }
-        return ALIComparisonReviewPresentation.isEligible(assetCount: assetCount)
+        return AlikeComparisonReviewPresentation.isEligible(assetCount: assetCount)
             ? .comparison
             : .none
     }

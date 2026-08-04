@@ -23,7 +23,7 @@ public struct WelcomeView: View {
     @State private var viewModel: WelcomeViewModel
     @Binding var isCompleted: Bool
     @State private var isSymbolAnimating = false
-    @State private var isALIWelcomeHeroVisible = false
+    @State private var isAlikeWelcomeHeroVisible = false
     @State private var selectedWelcomePage = WelcomePage.welcome
     @State private var glassGrantAccessFeedbackTrigger = 0
     private let mode: WelcomeMode
@@ -142,7 +142,7 @@ public struct WelcomeView: View {
 
     private var welcomeOverviewPage: some View {
         heroSection(
-            showsALIWelcomeHero: true,
+            showsAlikeWelcomeHero: true,
             title: appLocalized("Clean up your library with confidence"),
             subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
         )
@@ -424,13 +424,13 @@ public struct WelcomeView: View {
 
     private func heroSection(
         icon: String = "camera.viewfinder",
-        showsALIWelcomeHero: Bool = false,
+        showsAlikeWelcomeHero: Bool = false,
         title: String,
         subtitle: String
     ) -> some View {
         VStack(spacing: Spacing.medium) {
-            if showsALIWelcomeHero {
-                aliWelcomeHero
+            if showsAlikeWelcomeHero {
+                alikeWelcomeHero
             } else {
                 Image(systemName: icon)
                     .font(.system(size: 80, weight: .bold))
@@ -454,36 +454,36 @@ public struct WelcomeView: View {
         }
     }
 
-    private var aliWelcomeHero: some View {
+    private var alikeWelcomeHero: some View {
         AnimatedImageOverlay(
-            animationURL: playsALIWelcomeOverlay ? ALIAssets.welcomeHeroOverlayURL : nil,
+            animationURL: playsAlikeWelcomeOverlay ? AlikeAssets.welcomeHeroOverlayURL : nil,
             aspectRatio: 1080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
-            ambientMotion: playsALIWelcomeOverlay ? .breathe : .none
+            ambientMotion: playsAlikeWelcomeOverlay ? .breathe : .none
         ) {
             welcomeImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(appLocalized("ALI, Alike's photo detective"))
+        .accessibilityLabel(appLocalized("Alike, your photo detective"))
         .onAppear {
-            isALIWelcomeHeroVisible = true
+            isAlikeWelcomeHeroVisible = true
         }
         .onDisappear {
-            isALIWelcomeHeroVisible = false
+            isAlikeWelcomeHeroVisible = false
         }
     }
 
-    private var playsALIWelcomeOverlay: Bool {
-        isALIWelcomeHeroVisible
+    private var playsAlikeWelcomeOverlay: Bool {
+        isAlikeWelcomeHeroVisible
             && selectedWelcomePage == .welcome
             && scenePhase == .active
     }
 
     private var welcomeImage: Image {
-        let imageURL = ALIAssets.welcomeHeroURL(for: welcomeHeroScale)
+        let imageURL = AlikeAssets.welcomeHeroURL(for: welcomeHeroScale)
 
         #if canImport(UIKit)
         guard let image = UIImage(contentsOfFile: imageURL.path) else {
@@ -498,7 +498,7 @@ public struct WelcomeView: View {
         #endif
     }
 
-    private var welcomeHeroScale: ALIAssets.WelcomeHeroScale {
+    private var welcomeHeroScale: AlikeAssets.WelcomeHeroScale {
         switch displayScale {
         case ..<1.5:
             .oneX

@@ -176,70 +176,70 @@
         }
       }
     },
-    "ALI comparing similar photos": {
+    "Alike comparing similar photos": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI comparing similar photos"
+            "value": "Alike comparing similar photos"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI порівнює схожі фотографії"
+            "value": "Alike порівнює схожі фотографії"
           }
         }
       }
     },
-    "ALI celebrating the Best Shot": {
+    "Alike celebrating the Best Shot": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI celebrating the Best Shot"
+            "value": "Alike celebrating the Best Shot"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI святкує вибір найкращого кадру"
+            "value": "Alike святкує вибір найкращого кадру"
           }
         }
       }
     },
-    "ALI searching for similar photos": {
+    "Alike searching for similar photos": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI searching for similar photos"
+            "value": "Alike searching for similar photos"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI шукає схожі фотографії"
+            "value": "Alike шукає схожі фотографії"
           }
         }
       }
     },
-    "ALI, Alike's photo detective": {
+    "Alike, your photo detective": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI, Alike's photo detective"
+            "value": "Alike, your photo detective"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "ALI, фотодетектив Alike"
+            "value": "Alike, ваш фотодетектив"
           }
         }
       }
@@ -2805,16 +2805,16 @@
     "purchases.paywall.postFirstScan.withSavings.many": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your scan found %1$lld cleanup opportunities with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."}},"uk":{"stringUnit":{"state":"translated","value":"Сканування знайшло %1$lld можливостей для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."}}}},
     "purchases.paywall.postFirstScan.withSavings.one": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your scan found %1$lld cleanup opportunity with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."}},"uk":{"stringUnit":{"state":"translated","value":"Сканування знайшло %1$lld можливість для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."}}}},
     "purchases.paywall.postFirstScan.withSavings.other": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Your scan found %1$lld cleanup opportunities with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."}},"uk":{"stringUnit":{"state":"translated","value":"Сканування знайшло %1$lld можливостей для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."}}}},
-    "ALI could not complete the current operation": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI could not complete the current operation"}},"uk":{"stringUnit":{"state":"translated","value":"ALI не вдалося завершити поточну операцію"}}}},
-    "ALI has cleanup opportunities ready for review": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI has cleanup opportunities ready for review"}},"uk":{"stringUnit":{"state":"translated","value":"ALI має готові до перегляду можливості для очищення"}}}},
-    "ALI looks concerned because the scan needs attention": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI looks concerned because the scan needs attention"}},"uk":{"stringUnit":{"state":"translated","value":"ALI виглядає стурбованим, бо сканування потребує уваги"}}}},
-    "ALI noticed new photos in your library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI noticed new photos in your library"}},"uk":{"stringUnit":{"state":"translated","value":"ALI помітив нові фото у вашій фототеці"}}}},
-    "ALI celebrates your completed cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI celebrates your completed cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"ALI радіє завершеному очищенню"}}}},
-    "ALI found cleanup opportunities": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI found cleanup opportunities"}},"uk":{"stringUnit":{"state":"translated","value":"ALI знайшов можливості для очищення"}}}},
-    "ALI is ready for cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI is ready for cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"ALI готовий до очищення"}}}},
-    "ALI is ready to help organize your photo library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI is ready to help organize your photo library"}},"uk":{"stringUnit":{"state":"translated","value":"ALI готовий допомогти впорядкувати фототеку"}}}},
-    "ALI needs photo library permission to continue": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI needs photo library permission to continue"}},"uk":{"stringUnit":{"state":"translated","value":"ALI потрібен доступ до фототеки, щоб продовжити"}}}},
-    "ALI says your photo library is all caught up": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI says your photo library is all caught up"}},"uk":{"stringUnit":{"state":"translated","value":"ALI повідомляє, що у фототеці все впорядковано"}}}},
+    "Alike could not complete the current operation": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike could not complete the current operation"}},"uk":{"stringUnit":{"state":"translated","value":"Alike не вдалося завершити поточну операцію"}}}},
+    "Alike has cleanup opportunities ready for review": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike has cleanup opportunities ready for review"}},"uk":{"stringUnit":{"state":"translated","value":"Alike має готові до перегляду можливості для очищення"}}}},
+    "Alike ran into a problem with the scan": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike ran into a problem with the scan"}},"uk":{"stringUnit":{"state":"translated","value":"Alike не зміг завершити сканування"}}}},
+    "Alike noticed new photos in your library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike noticed new photos in your library"}},"uk":{"stringUnit":{"state":"translated","value":"Alike помітив нові фото у вашій фототеці"}}}},
+    "Alike celebrates your completed cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike celebrates your completed cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Alike радіє завершеному очищенню"}}}},
+    "Alike found cleanup opportunities": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike found cleanup opportunities"}},"uk":{"stringUnit":{"state":"translated","value":"Alike знайшов можливості для очищення"}}}},
+    "Alike is ready for cleanup": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike is ready for cleanup"}},"uk":{"stringUnit":{"state":"translated","value":"Alike готовий до очищення"}}}},
+    "Alike is ready to help organize your photo library": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike is ready to help organize your photo library"}},"uk":{"stringUnit":{"state":"translated","value":"Alike готовий допомогти впорядкувати фототеку"}}}},
+    "Alike needs photo library permission to continue": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike needs photo library permission to continue"}},"uk":{"stringUnit":{"state":"translated","value":"Alike потрібен доступ до фототеки, щоб продовжити"}}}},
+    "Alike says your photo library is all caught up": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike says your photo library is all caught up"}},"uk":{"stringUnit":{"state":"translated","value":"Alike повідомляє, що у фототеці все впорядковано"}}}},
     "Cleanup complete": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Cleanup complete"}},"uk":{"stringUnit":{"state":"translated","value":"Очищення завершено"}}}},
     "Recently Deleted": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Recently Deleted"}},"uk":{"stringUnit":{"state":"translated","value":"Нещодавно видалені"}}}},
     "Storage": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Storage"}},"uk":{"stringUnit":{"state":"translated","value":"Сховище"}}}},
@@ -2834,14 +2834,14 @@
     "Review each suggestion before anything is removed.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Review each suggestion before anything is removed."}},"uk":{"stringUnit":{"state":"translated","value":"Перегляньте кожну пропозицію, перш ніж щось видаляти."}}}},
     "Screen captures that may no longer be useful.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Screen captures that may no longer be useful."}},"uk":{"stringUnit":{"state":"translated","value":"Знімки екрана, які можуть бути вже не потрібні."}}}},
     "These results are from before your photo library changed.": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"These results are from before your photo library changed."}},"uk":{"stringUnit":{"state":"translated","value":"Ці результати отримано до змін у вашій фототеці."}}}},
-    "What ALI checks": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"What ALI checks"}},"uk":{"stringUnit":{"state":"translated","value":"Що перевіряє ALI"}}}},
-    "scanner.ali.ready.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Ready when you are."}},"uk":{"stringUnit":{"state":"translated","value":"Готовий, коли ви готові."}}}},
-    "scanner.ali.ready.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan your photo library for cleanup opportunities."}},"uk":{"stringUnit":{"state":"translated","value":"Проскануйте фототеку, щоб знайти можливості для очищення."}}}},
-    "scanner.ali.ready.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Start Scanning"}},"uk":{"stringUnit":{"state":"translated","value":"Почати сканування"}}}},
-    "scanner.ali.libraryChanged.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"New photos detected."}},"uk":{"stringUnit":{"state":"translated","value":"Виявлено нові фото."}}}},
-    "scanner.ali.libraryChanged.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan again to refresh your cleanup opportunities."}},"uk":{"stringUnit":{"state":"translated","value":"Проскануйте знову, щоб оновити можливості для очищення."}}}},
-    "scanner.ali.libraryChanged.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan New Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Сканувати нові фото"}}}},
-    "ALI organizing selected photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI organizing selected photos"}},"uk":{"stringUnit":{"state":"translated","value":"ALI впорядковує вибрані фотографії"}}}},
+    "What Alike checks": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"What Alike checks"}},"uk":{"stringUnit":{"state":"translated","value":"Що перевіряє Alike"}}}},
+    "scanner.alike.ready.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Ready when you are."}},"uk":{"stringUnit":{"state":"translated","value":"Готовий, коли ви готові."}}}},
+    "scanner.alike.ready.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan your photo library for cleanup opportunities."}},"uk":{"stringUnit":{"state":"translated","value":"Проскануйте фототеку, щоб знайти можливості для очищення."}}}},
+    "scanner.alike.ready.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Start Scanning"}},"uk":{"stringUnit":{"state":"translated","value":"Почати сканування"}}}},
+    "scanner.alike.libraryChanged.message": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"New photos detected."}},"uk":{"stringUnit":{"state":"translated","value":"Виявлено нові фото."}}}},
+    "scanner.alike.libraryChanged.supporting": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan again to refresh your cleanup opportunities."}},"uk":{"stringUnit":{"state":"translated","value":"Проскануйте знову, щоб оновити можливості для очищення."}}}},
+    "scanner.alike.libraryChanged.cta": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan New Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Сканувати нові фото"}}}},
+    "Alike organizing selected photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike organizing selected photos"}},"uk":{"stringUnit":{"state":"translated","value":"Alike впорядковує вибрані фотографії"}}}},
     "Organizing Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Organizing Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Упорядкування фотографій"}}}},
     "Selected Photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Selected Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Вибрані фотографії"}}}},
     "photos": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"photos"}},"uk":{"stringUnit":{"state":"translated","value":"фото"}}}},
@@ -3036,7 +3036,7 @@
     "guide.gettingStarted.loop.move.title": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Move to Recently Deleted"}},"uk":{"stringUnit":{"state":"translated","value":"Перемістіть у «Нещодавно видалені»"}}}},
     "guide.gettingStarted.loop.review.body": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Open a group on the Cleanup tab, compare the photos, and choose which ones you no longer need."}},"uk":{"stringUnit":{"state":"translated","value":"Відкрийте групу на вкладці «Очищення», порівняйте фото й оберіть ті, які більше не потрібні."}}}},
     "guide.gettingStarted.loop.review.title": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Review"}},"uk":{"stringUnit":{"state":"translated","value":"Переглядайте"}}}},
-    "guide.gettingStarted.loop.scan.body": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"ALI looks through your photo library on the Scanner tab and groups photos that look alike."}},"uk":{"stringUnit":{"state":"translated","value":"На вкладці «Сканер» ALI переглядає вашу медіатеку та групує схожі фото."}}}},
+    "guide.gettingStarted.loop.scan.body": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Alike looks through your photo library on the Scanner tab and groups photos that look alike."}},"uk":{"stringUnit":{"state":"translated","value":"На вкладці «Сканер» Alike переглядає вашу медіатеку та групує схожі фото."}}}},
     "guide.gettingStarted.loop.scan.title": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Scan"}},"uk":{"stringUnit":{"state":"translated","value":"Скануйте"}}}},
     "guide.gettingStarted.scope.blurred.body": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Photos that look out of focus, gathered for you to check before removing."}},"uk":{"stringUnit":{"state":"translated","value":"Фото, що виглядають нерізкими, зібрані для перевірки перед видаленням."}}}},
     "guide.gettingStarted.scope.blurred.title": {"extractionState":"manual","localizations":{"en":{"stringUnit":{"state":"translated","value":"Blurred Photos"}},"uk":{"stringUnit":{"state":"translated","value":"Розмиті фото"}}}},

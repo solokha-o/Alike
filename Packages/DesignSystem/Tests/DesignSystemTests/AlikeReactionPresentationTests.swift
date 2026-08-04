@@ -3,21 +3,21 @@ import SwiftUI
 import XCTest
 @testable import DesignSystem
 
-final class ALIReactionPresentationTests: XCTestCase {
+final class AlikeReactionPresentationTests: XCTestCase {
     func testScanningLoopsOnlyWhileVisibleAndActive() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .scanning),
             state: .scanning,
             persistence: .persistent
         )
 
-        let active = ALIReactionPresentation.resolve(
+        let active = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 3,
             isVisible: true,
             scenePhase: .active
         )
-        let inactive = ALIReactionPresentation.resolve(
+        let inactive = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 3,
             isVisible: true,
@@ -32,13 +32,13 @@ final class ALIReactionPresentationTests: XCTestCase {
     }
 
     func testOneShotReactionUsesNativeFallbackWhenAssetsArePending() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .resultsFound),
             state: .resultsFound(candidateCount: 2),
             persistence: .oneShot
         )
 
-        let presentation = ALIReactionPresentation.resolve(
+        let presentation = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 2,
             isVisible: true,
@@ -52,18 +52,18 @@ final class ALIReactionPresentationTests: XCTestCase {
     }
 
     func testPermissionAndErrorPresentationsHaveNoPlayfulMotion() {
-        let states: [(ALIReactionKind, ALIState)] = [
+        let states: [(AlikeReactionKind, AlikeState)] = [
             (.permissionIssue, .permissionIssue(.init(operation: .scan))),
             (.recoverableError, .recoverableError(.init(operation: .reconciliation))),
         ]
 
         for (kind, state) in states {
-            let cue = ALIReactionCue(
+            let cue = AlikeReactionCue(
                 id: .init(eventID: .operation(UUID()), kind: kind),
                 state: state,
                 persistence: .persistent
             )
-            let presentation = ALIReactionPresentation.resolve(
+            let presentation = AlikeReactionPresentation.resolve(
                 cue: cue,
                 displayScale: 2,
                 isVisible: true,
@@ -76,63 +76,63 @@ final class ALIReactionPresentationTests: XCTestCase {
     }
 
     func testRecoverableErrorUsesStaticAliWithReadyAliFallback() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .operation(UUID()), kind: .recoverableError),
             state: .recoverableError(.init(operation: .scan)),
             persistence: .persistent
         )
 
-        let presentation = ALIReactionPresentation.resolve(
+        let presentation = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 2,
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.staticImageURL, ALIAssets.optionalScannerIssueURL(for: .twoX))
+        XCTAssertEqual(presentation.staticImageURL, AlikeAssets.optionalScannerIssueURL(for: .twoX))
         XCTAssertEqual(
             presentation.fallbackStaticImageURL,
-            ALIAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
+            AlikeAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
         )
         XCTAssertNil(presentation.animationURL)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
     func testCleanupSuccessUsesApprovedAssetsAndOneShotLifecycleGating() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .cleanup(UUID()), kind: .cleanupSuccess),
             state: .cleanupSuccess(.init(itemCount: 2, estimatedSavingsBytes: 1_024)),
             persistence: .oneShot
         )
 
-        let active = ALIReactionPresentation.resolve(
+        let active = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 2,
             isVisible: true,
             scenePhase: .active
         )
-        let hidden = ALIReactionPresentation.resolve(
+        let hidden = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 2,
             isVisible: false,
             scenePhase: .active
         )
 
-        XCTAssertEqual(active.staticImageURL, ALIAssets.cleanupSuccessURL(for: .twoX))
-        XCTAssertEqual(active.animationURL, ALIAssets.cleanupSuccessOverlayURL)
+        XCTAssertEqual(active.staticImageURL, AlikeAssets.cleanupSuccessURL(for: .twoX))
+        XCTAssertEqual(active.animationURL, AlikeAssets.cleanupSuccessOverlayURL)
         XCTAssertEqual(active.playback, .once)
         XCTAssertEqual(active.ambientMotion, .none)
         XCTAssertNil(hidden.animationURL)
     }
 
     func testNoResultsUsesCalmAllCaughtUpStaticPresentation() {
-        let cue = ALIReactionCue(
+        let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .noResults),
             state: .noResults,
             persistence: .oneShot
         )
 
-        let presentation = ALIReactionPresentation.resolve(
+        let presentation = AlikeReactionPresentation.resolve(
             cue: cue,
             displayScale: 3,
             isVisible: true,
@@ -141,20 +141,20 @@ final class ALIReactionPresentationTests: XCTestCase {
 
         XCTAssertEqual(
             presentation.staticImageURL,
-            ALIAssets.optionalScannerIdleURL(for: .allCaughtUp, scale: .threeX)
+            AlikeAssets.optionalScannerIdleURL(for: .allCaughtUp, scale: .threeX)
         )
         XCTAssertNil(presentation.animationURL)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
     func testAllCaughtUpIdleIsStaticWhileOtherIdleContextsKeepMotion() {
-        let allCaughtUp = ALIReactionPresentation.resolve(
+        let allCaughtUp = AlikeReactionPresentation.resolve(
             cue: idleCue(context: .allCaughtUp),
             displayScale: 2,
             isVisible: true,
             scenePhase: .active
         )
-        let ready = ALIReactionPresentation.resolve(
+        let ready = AlikeReactionPresentation.resolve(
             cue: idleCue(context: .ready),
             displayScale: 2,
             isVisible: true,
@@ -167,8 +167,8 @@ final class ALIReactionPresentationTests: XCTestCase {
         XCTAssertEqual(ready.ambientMotion, .breathe)
     }
 
-    private func idleCue(context: ALIIdleContext) -> ALIReactionCue {
-        ALIReactionCue(
+    private func idleCue(context: AlikeIdleContext) -> AlikeReactionCue {
+        AlikeReactionCue(
             id: .init(eventID: .idle, kind: .idle),
             state: .idle(context),
             persistence: .persistent

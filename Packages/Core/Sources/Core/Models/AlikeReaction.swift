@@ -1,25 +1,25 @@
 import Foundation
 
-/// Product meaning communicated by ALI, independent of visual assets and playback APIs.
-public enum ALIState: Equatable, Sendable {
-    case idle(ALIIdleContext)
+/// Product meaning communicated by Alike, independent of visual assets and playback APIs.
+public enum AlikeState: Equatable, Sendable {
+    case idle(AlikeIdleContext)
     case scanning
     case resultsFound(candidateCount: Int)
     case noResults
-    case cleanupReady(ALICleanupSummary)
-    case cleanupSuccess(ALICleanupSummary)
-    case permissionIssue(ALIPermissionContext)
-    case recoverableError(ALIErrorContext)
+    case cleanupReady(AlikeCleanupSummary)
+    case cleanupSuccess(AlikeCleanupSummary)
+    case permissionIssue(AlikePermissionContext)
+    case recoverableError(AlikeErrorContext)
 }
 
-public enum ALIIdleContext: Equatable, Hashable, Sendable {
+public enum AlikeIdleContext: Equatable, Hashable, Sendable {
     case ready
     case hasReviews(count: Int)
     case allCaughtUp
     case libraryChanged(newItemsCount: Int?)
 }
 
-public struct ALICleanupSummary: Equatable, Sendable {
+public struct AlikeCleanupSummary: Equatable, Sendable {
     public let itemCount: Int
     public let estimatedSavingsBytes: Int64
 
@@ -29,31 +29,31 @@ public struct ALICleanupSummary: Equatable, Sendable {
     }
 }
 
-public enum ALIOperation: String, Equatable, Sendable {
+public enum AlikeOperation: String, Equatable, Sendable {
     case scan
     case review
     case cleanup
     case reconciliation
 }
 
-public struct ALIPermissionContext: Equatable, Sendable {
-    public let operation: ALIOperation
+public struct AlikePermissionContext: Equatable, Sendable {
+    public let operation: AlikeOperation
 
-    public init(operation: ALIOperation) {
+    public init(operation: AlikeOperation) {
         self.operation = operation
     }
 }
 
-public struct ALIErrorContext: Equatable, Sendable {
-    public let operation: ALIOperation
+public struct AlikeErrorContext: Equatable, Sendable {
+    public let operation: AlikeOperation
 
-    public init(operation: ALIOperation) {
+    public init(operation: AlikeOperation) {
         self.operation = operation
     }
 }
 
 /// Stable identity of the domain event that produced a reaction.
-public enum ALIEventID: Equatable, Hashable, Sendable {
+public enum AlikeEventID: Equatable, Hashable, Sendable {
     case idle
     case scan(UUID)
     case cleanupSelection(UUID)
@@ -62,7 +62,7 @@ public enum ALIEventID: Equatable, Hashable, Sendable {
     case operation(UUID)
 }
 
-public enum ALIReactionKind: String, Equatable, Hashable, Sendable {
+public enum AlikeReactionKind: String, Equatable, Hashable, Sendable {
     case idle
     case scanning
     case resultsFound
@@ -74,30 +74,30 @@ public enum ALIReactionKind: String, Equatable, Hashable, Sendable {
 }
 
 /// Playback identity. One domain event can produce distinct cues, such as scan start and completion.
-public struct ALIReactionCueID: Equatable, Hashable, Sendable {
-    public let eventID: ALIEventID
-    public let kind: ALIReactionKind
+public struct AlikeReactionCueID: Equatable, Hashable, Sendable {
+    public let eventID: AlikeEventID
+    public let kind: AlikeReactionKind
 
-    public init(eventID: ALIEventID, kind: ALIReactionKind) {
+    public init(eventID: AlikeEventID, kind: AlikeReactionKind) {
         self.eventID = eventID
         self.kind = kind
     }
 }
 
-public enum ALIReactionPersistence: Equatable, Sendable {
+public enum AlikeReactionPersistence: Equatable, Sendable {
     case persistent
     case oneShot
 }
 
-public struct ALIReactionCue: Identifiable, Equatable, Sendable {
-    public let id: ALIReactionCueID
-    public let state: ALIState
-    public let persistence: ALIReactionPersistence
+public struct AlikeReactionCue: Identifiable, Equatable, Sendable {
+    public let id: AlikeReactionCueID
+    public let state: AlikeState
+    public let persistence: AlikeReactionPersistence
 
     public init(
-        id: ALIReactionCueID,
-        state: ALIState,
-        persistence: ALIReactionPersistence
+        id: AlikeReactionCueID,
+        state: AlikeState,
+        persistence: AlikeReactionPersistence
     ) {
         self.id = id
         self.state = state
@@ -106,33 +106,33 @@ public struct ALIReactionCue: Identifiable, Equatable, Sendable {
 }
 
 /// Product events observed at feature view-model boundaries.
-public enum ALIEvent: Equatable, Sendable {
-    case idle(ALIIdleContext)
+public enum AlikeEvent: Equatable, Sendable {
+    case idle(AlikeIdleContext)
     case scanAdmitted(id: UUID)
     case scanCompleted(id: UUID, candidateCount: Int)
     case scanCancelled(id: UUID)
-    case cleanupReady(id: UUID, summary: ALICleanupSummary)
+    case cleanupReady(id: UUID, summary: AlikeCleanupSummary)
     case cleanupSelectionCleared(id: UUID)
     case cleanupStarted(id: UUID)
-    case cleanupCompleted(id: UUID, summary: ALICleanupSummary)
+    case cleanupCompleted(id: UUID, summary: AlikeCleanupSummary)
     case cleanupReconciliationFailed(id: UUID)
-    case permissionBlocked(id: ALIEventID, context: ALIPermissionContext)
-    case permissionRecovered(id: ALIEventID)
-    case recoverableFailure(id: ALIEventID, context: ALIErrorContext)
-    case reactionConsumed(id: ALIReactionCueID)
+    case permissionBlocked(id: AlikeEventID, context: AlikePermissionContext)
+    case permissionRecovered(id: AlikeEventID)
+    case recoverableFailure(id: AlikeEventID, context: AlikeErrorContext)
+    case reactionConsumed(id: AlikeReactionCueID)
 }
 
-/// Deterministic in-memory resolver for ALI state, precedence, and one-shot deduplication.
-public struct ALIReactionResolver: Sendable {
-    public private(set) var currentCue: ALIReactionCue?
+/// Deterministic in-memory resolver for Alike state, precedence, and one-shot deduplication.
+public struct AlikeReactionResolver: Sendable {
+    public private(set) var currentCue: AlikeReactionCue?
 
-    private var handledOneShotIDs: Set<ALIReactionCueID> = []
+    private var handledOneShotIDs: Set<AlikeReactionCueID> = []
 
     public init() {}
 
     /// Applies an event and returns a newly published cue, or `nil` when it is suppressed/duplicate.
     @discardableResult
-    public mutating func apply(_ event: ALIEvent) -> ALIReactionCue? {
+    public mutating func apply(_ event: AlikeEvent) -> AlikeReactionCue? {
         switch event {
         case .idle(let context):
             guard !hasBlockingOrActiveCue else { return nil }
@@ -152,7 +152,7 @@ public struct ALIReactionResolver: Sendable {
             )
 
         case .scanCompleted(let id, let candidateCount):
-            let eventID = ALIEventID.scan(id)
+            let eventID = AlikeEventID.scan(id)
             guard !isBlocked(eventID: eventID) else { return nil }
             let normalizedCount = max(0, candidateCount)
             if normalizedCount > 0 {
@@ -195,7 +195,7 @@ public struct ALIReactionResolver: Sendable {
             return nil
 
         case .cleanupCompleted(let id, let summary):
-            let eventID = ALIEventID.cleanup(id)
+            let eventID = AlikeEventID.cleanup(id)
             if case .permissionIssue = currentCue?.state, currentCue?.id.eventID == eventID {
                 return nil
             }
@@ -210,7 +210,7 @@ public struct ALIReactionResolver: Sendable {
             return publish(
                 eventID: .cleanup(id),
                 kind: .recoverableError,
-                state: .recoverableError(ALIErrorContext(operation: .reconciliation)),
+                state: .recoverableError(AlikeErrorContext(operation: .reconciliation)),
                 persistence: .persistent
             )
 
@@ -252,7 +252,7 @@ public struct ALIReactionResolver: Sendable {
         }
     }
 
-    private func isBlocked(eventID: ALIEventID) -> Bool {
+    private func isBlocked(eventID: AlikeEventID) -> Bool {
         guard currentCue?.id.eventID == eventID else { return false }
         return switch currentCue?.state {
         case .permissionIssue, .recoverableError:
@@ -263,13 +263,13 @@ public struct ALIReactionResolver: Sendable {
     }
 
     private mutating func publish(
-        eventID: ALIEventID,
-        kind: ALIReactionKind,
-        state: ALIState,
-        persistence: ALIReactionPersistence
-    ) -> ALIReactionCue? {
-        let id = ALIReactionCueID(eventID: eventID, kind: kind)
-        let cue = ALIReactionCue(id: id, state: state, persistence: persistence)
+        eventID: AlikeEventID,
+        kind: AlikeReactionKind,
+        state: AlikeState,
+        persistence: AlikeReactionPersistence
+    ) -> AlikeReactionCue? {
+        let id = AlikeReactionCueID(eventID: eventID, kind: kind)
+        let cue = AlikeReactionCue(id: id, state: state, persistence: persistence)
         guard currentCue != cue else { return nil }
         if persistence == .oneShot {
             guard handledOneShotIDs.insert(id).inserted else { return nil }
@@ -279,12 +279,12 @@ public struct ALIReactionResolver: Sendable {
         return cue
     }
 
-    private mutating func clearIfEventMatches(_ eventID: ALIEventID) {
+    private mutating func clearIfEventMatches(_ eventID: AlikeEventID) {
         guard currentCue?.id.eventID == eventID else { return }
         currentCue = nil
     }
 
-    private static func normalized(_ context: ALIIdleContext) -> ALIIdleContext {
+    private static func normalized(_ context: AlikeIdleContext) -> AlikeIdleContext {
         switch context {
         case .hasReviews(let count):
             .hasReviews(count: max(0, count))

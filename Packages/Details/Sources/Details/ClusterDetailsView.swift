@@ -247,7 +247,7 @@ public struct ClusterDetailsView: View {
 
         return LazyVStack(spacing: Spacing.medium) {
             if viewModel.isDeleting {
-                ALICleanupProgressView(
+                AlikeCleanupProgressView(
                     selectedCount: viewModel.selectedCount,
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting
@@ -262,7 +262,7 @@ public struct ClusterDetailsView: View {
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
                         reviewStatus: viewModel.reviewStatus,
                         isReviewConfirmed: viewModel.isReviewConfirmed,
-                        aliReactionCue: viewModel.currentALIReaction,
+                        alikeReactionCue: viewModel.currentAlikeReaction,
                         bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                         onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
                     )

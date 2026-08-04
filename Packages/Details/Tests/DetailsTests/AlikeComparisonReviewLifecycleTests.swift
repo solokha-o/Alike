@@ -3,21 +3,21 @@ import XCTest
 import DesignSystem
 @testable import Details
 
-final class ALIComparisonReviewLifecycleTests: XCTestCase {
+final class AlikeComparisonReviewLifecycleTests: XCTestCase {
     func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
-        let presentation = ALIComparisonReviewPresentation.resolve(
+        let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.animationURL, ALIAssets.comparisonReviewOverlayURL)
+        XCTAssertEqual(presentation.animationURL, AlikeAssets.comparisonReviewOverlayURL)
         XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .breathe)
     }
 
     func testInactiveAndBackgroundPresentationsDisableMotion() {
         for scenePhase in [ScenePhase.inactive, .background] {
-            let presentation = ALIComparisonReviewPresentation.resolve(
+            let presentation = AlikeComparisonReviewPresentation.resolve(
                 isVisible: true,
                 scenePhase: scenePhase
             )
@@ -29,23 +29,23 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
     }
 
     func testForegroundingVisiblePresentationRestoresContinuousMotion() {
-        let inactivePresentation = ALIComparisonReviewPresentation.resolve(
+        let inactivePresentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .inactive
         )
-        let activePresentation = ALIComparisonReviewPresentation.resolve(
+        let activePresentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
         XCTAssertNil(inactivePresentation.animationURL)
         XCTAssertEqual(inactivePresentation.ambientMotion, .none)
-        XCTAssertEqual(activePresentation.animationURL, ALIAssets.comparisonReviewOverlayURL)
+        XCTAssertEqual(activePresentation.animationURL, AlikeAssets.comparisonReviewOverlayURL)
         XCTAssertEqual(activePresentation.ambientMotion, .breathe)
     }
 
     func testDisappearingPresentationDisablesMotion() {
-        let presentation = ALIComparisonReviewPresentation.resolve(
+        let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: false,
             scenePhase: .active
         )
@@ -55,27 +55,27 @@ final class ALIComparisonReviewLifecycleTests: XCTestCase {
     }
 
     func testComparisonHelperRequiresAtLeastTwoPhotos() {
-        XCTAssertFalse(ALIComparisonReviewPresentation.isEligible(assetCount: 0))
-        XCTAssertFalse(ALIComparisonReviewPresentation.isEligible(assetCount: 1))
-        XCTAssertTrue(ALIComparisonReviewPresentation.isEligible(assetCount: 2))
+        XCTAssertFalse(AlikeComparisonReviewPresentation.isEligible(assetCount: 0))
+        XCTAssertFalse(AlikeComparisonReviewPresentation.isEligible(assetCount: 1))
+        XCTAssertTrue(AlikeComparisonReviewPresentation.isEligible(assetCount: 2))
     }
 
     func testDisplayScaleSelectsMatchingComparisonExport() {
         XCTAssertEqual(
-            ALIComparisonReviewPresentation.imageURL(for: 1.49),
-            ALIAssets.comparisonReviewURL(for: .oneX)
+            AlikeComparisonReviewPresentation.imageURL(for: 1.49),
+            AlikeAssets.comparisonReviewURL(for: .oneX)
         )
         XCTAssertEqual(
-            ALIComparisonReviewPresentation.imageURL(for: 1.5),
-            ALIAssets.comparisonReviewURL(for: .twoX)
+            AlikeComparisonReviewPresentation.imageURL(for: 1.5),
+            AlikeAssets.comparisonReviewURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALIComparisonReviewPresentation.imageURL(for: 2.49),
-            ALIAssets.comparisonReviewURL(for: .twoX)
+            AlikeComparisonReviewPresentation.imageURL(for: 2.49),
+            AlikeAssets.comparisonReviewURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALIComparisonReviewPresentation.imageURL(for: 2.5),
-            ALIAssets.comparisonReviewURL(for: .threeX)
+            AlikeComparisonReviewPresentation.imageURL(for: 2.5),
+            AlikeAssets.comparisonReviewURL(for: .threeX)
         )
     }
 }

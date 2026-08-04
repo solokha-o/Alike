@@ -101,7 +101,7 @@ final class ScannerHomePresentationTests: XCTestCase {
 
         XCTAssertEqual(
             first.cue.state,
-            .recoverableError(ALIErrorContext(operation: .scan))
+            .recoverableError(AlikeErrorContext(operation: .scan))
         )
         XCTAssertEqual(first.cue.id, second.cue.id)
         XCTAssertEqual(first.primaryAction, .startScanning)

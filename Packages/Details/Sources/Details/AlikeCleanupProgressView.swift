@@ -2,7 +2,7 @@ import SwiftUI
 import Core
 import DesignSystem
 
-struct ALICleanupProgressPresentation: Equatable {
+struct AlikeCleanupProgressPresentation: Equatable {
     let animationURL: URL?
     let playback: OverlayAnimationPlayback
     let ambientMotion: AnimatedImageAmbientMotion
@@ -15,17 +15,17 @@ struct ALICleanupProgressPresentation: Equatable {
         let isMotionEnabled = isExecuting && isVisible && scenePhase == .active
 
         return Self(
-            animationURL: isMotionEnabled ? ALIAssets.cleanupProgressOverlayURL : nil,
+            animationURL: isMotionEnabled ? AlikeAssets.cleanupProgressOverlayURL : nil,
             playback: .loop,
             ambientMotion: .none
         )
     }
 
     static func imageURL(for displayScale: CGFloat) -> URL {
-        ALIAssets.cleanupProgressURL(for: imageScale(for: displayScale))
+        AlikeAssets.cleanupProgressURL(for: imageScale(for: displayScale))
     }
 
-    private static func imageScale(for displayScale: CGFloat) -> ALIAssets.CleanupProgressScale {
+    private static func imageScale(for displayScale: CGFloat) -> AlikeAssets.CleanupProgressScale {
         switch displayScale {
         case ..<1.5:
             .oneX
@@ -37,7 +37,7 @@ struct ALICleanupProgressPresentation: Equatable {
     }
 }
 
-struct ALICleanupProgressView: View {
+struct AlikeCleanupProgressView: View {
     private enum Constants {
         static let maximumArtworkWidth: CGFloat = 260
     }
@@ -56,10 +56,10 @@ struct ALICleanupProgressView: View {
 
             metrics
 
-            ALICleanupProgressHero(
+            AlikeCleanupProgressHero(
                 isActive: isExecuting,
                 maximumWidth: Constants.maximumArtworkWidth,
-                accessibilityLabel: appLocalized("ALI organizing selected photos")
+                accessibilityLabel: appLocalized("Alike organizing selected photos")
             )
         }
         .frame(maxWidth: .infinity)
@@ -119,7 +119,7 @@ struct ALICleanupProgressView: View {
 
 }
 
-struct ALICleanupProgressHero: View {
+struct AlikeCleanupProgressHero: View {
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
@@ -146,7 +146,7 @@ struct ALICleanupProgressHero: View {
 
     @ViewBuilder
     private var cleanupImage: some View {
-        let imageURL = ALICleanupProgressPresentation.imageURL(for: displayScale)
+        let imageURL = AlikeCleanupProgressPresentation.imageURL(for: displayScale)
 
 #if canImport(UIKit)
         if let image = UIImage(contentsOfFile: imageURL.path) {
@@ -175,7 +175,7 @@ struct ALICleanupProgressHero: View {
             .padding(maximumWidth * 0.2)
     }
 
-    private var presentation: ALICleanupProgressPresentation {
+    private var presentation: AlikeCleanupProgressPresentation {
         .resolve(
             isExecuting: isActive,
             isVisible: isVisible,

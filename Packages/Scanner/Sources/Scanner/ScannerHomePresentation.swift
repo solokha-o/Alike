@@ -19,7 +19,7 @@ struct ScannerHomePresentation: Equatable, Sendable {
     }
 
     let visualPhase: VisualPhase
-    let cue: ALIReactionCue
+    let cue: AlikeReactionCue
     let title: String
     let message: String
     let progress: Double?
@@ -68,11 +68,11 @@ struct ScannerHomePresentation: Equatable, Sendable {
             return Self(
                 visualPhase: .libraryChanged,
                 cue: idleCue(context: .libraryChanged(newItemsCount: nil)),
-                title: appLocalized("scanner.ali.libraryChanged.message"),
-                message: appLocalized("scanner.ali.libraryChanged.supporting"),
+                title: appLocalized("scanner.alike.libraryChanged.message"),
+                message: appLocalized("scanner.alike.libraryChanged.supporting"),
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("scanner.ali.libraryChanged.cta"),
+                primaryActionTitle: appLocalized("scanner.alike.libraryChanged.cta"),
                 secondaryAction: .openCleanup,
                 secondaryActionTitle: appLocalized("Review Existing Cleanup")
             )
@@ -81,11 +81,11 @@ struct ScannerHomePresentation: Equatable, Sendable {
             return Self(
                 visualPhase: .ready,
                 cue: idleCue(context: .ready),
-                title: appLocalized("scanner.ali.ready.message"),
-                message: appLocalized("scanner.ali.ready.supporting"),
+                title: appLocalized("scanner.alike.ready.message"),
+                message: appLocalized("scanner.alike.ready.supporting"),
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("scanner.ali.ready.cta"),
+                primaryActionTitle: appLocalized("scanner.alike.ready.cta"),
                 secondaryAction: nil,
                 secondaryActionTitle: nil
             )
@@ -120,9 +120,9 @@ struct ScannerHomePresentation: Equatable, Sendable {
         }
     }
 
-    private static func scanningCue(eventID: UUID) -> ALIReactionCue {
-        ALIReactionCue(
-            id: ALIReactionCueID(
+    private static func scanningCue(eventID: UUID) -> AlikeReactionCue {
+        AlikeReactionCue(
+            id: AlikeReactionCueID(
                 eventID: .scan(eventID),
                 kind: .scanning
             ),
@@ -131,18 +131,18 @@ struct ScannerHomePresentation: Equatable, Sendable {
         )
     }
 
-    private static let issueCue = ALIReactionCue(
-        id: ALIReactionCueID(
+    private static let issueCue = AlikeReactionCue(
+        id: AlikeReactionCueID(
             eventID: .operation(UUID(uuidString: "15CD3DE5-39D9-46BB-9DB0-232139801BC6")!),
             kind: .recoverableError
         ),
-        state: .recoverableError(ALIErrorContext(operation: .scan)),
+        state: .recoverableError(AlikeErrorContext(operation: .scan)),
         persistence: .persistent
     )
 
-    private static func idleCue(context: ALIIdleContext) -> ALIReactionCue {
-        ALIReactionCue(
-            id: ALIReactionCueID(eventID: .idle, kind: .idle),
+    private static func idleCue(context: AlikeIdleContext) -> AlikeReactionCue {
+        AlikeReactionCue(
+            id: AlikeReactionCueID(eventID: .idle, kind: .idle),
             state: .idle(context),
             persistence: .persistent
         )

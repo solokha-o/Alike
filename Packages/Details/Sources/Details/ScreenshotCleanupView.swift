@@ -46,7 +46,7 @@ public struct ScreenshotCleanupView: View {
     public var body: some View {
         ScrollView {
             if viewModel.isDeleting {
-                ALICleanupProgressView(
+                AlikeCleanupProgressView(
                     selectedCount: viewModel.selectedCount,
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting

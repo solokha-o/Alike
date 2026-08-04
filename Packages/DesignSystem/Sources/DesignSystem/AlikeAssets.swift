@@ -1,7 +1,7 @@
 import Foundation
 
-/// Shared ALI visual resources for use across feature packages.
-public enum ALIAssets {
+/// Shared Alike visual resources for use across feature packages.
+public enum AlikeAssets {
     /// Contextual static scenes shown while Scanner Home is idle.
     public enum ScannerIdleState: String, CaseIterable, Sendable {
         case ready
@@ -12,13 +12,13 @@ public enum ALIAssets {
         fileprivate var resourceStem: String {
             switch self {
             case .ready:
-                "ALIScannerIdleReady"
+                "AlikeScannerIdleReady"
             case .hasReviews:
-                "ALIScannerIdleHasReviews"
+                "AlikeScannerIdleHasReviews"
             case .allCaughtUp:
-                "ALIScannerIdleAllCaughtUp"
+                "AlikeScannerIdleAllCaughtUp"
             case .libraryChanged:
-                "ALIScannerIdleLibraryChanged"
+                "AlikeScannerIdleLibraryChanged"
             }
         }
 
@@ -63,11 +63,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALIWelcomeHero"
+                "AlikeWelcomeHero"
             case .twoX:
-                "ALIWelcomeHero@2x"
+                "AlikeWelcomeHero@2x"
             case .threeX:
-                "ALIWelcomeHero@3x"
+                "AlikeWelcomeHero@3x"
             }
         }
     }
@@ -81,11 +81,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALIScannerSearching"
+                "AlikeScannerSearching"
             case .twoX:
-                "ALIScannerSearching@2x"
+                "AlikeScannerSearching@2x"
             case .threeX:
-                "ALIScannerSearching@3x"
+                "AlikeScannerSearching@3x"
             }
         }
     }
@@ -99,11 +99,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALIScannerIssue"
+                "AlikeScannerIssue"
             case .twoX:
-                "ALIScannerIssue@2x"
+                "AlikeScannerIssue@2x"
             case .threeX:
-                "ALIScannerIssue@3x"
+                "AlikeScannerIssue@3x"
             }
         }
     }
@@ -117,11 +117,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALIComparisonReview"
+                "AlikeComparisonReview"
             case .twoX:
-                "ALIComparisonReview@2x"
+                "AlikeComparisonReview@2x"
             case .threeX:
-                "ALIComparisonReview@3x"
+                "AlikeComparisonReview@3x"
             }
         }
     }
@@ -135,11 +135,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALIBestShot"
+                "AlikeBestShot"
             case .twoX:
-                "ALIBestShot@2x"
+                "AlikeBestShot@2x"
             case .threeX:
-                "ALIBestShot@3x"
+                "AlikeBestShot@3x"
             }
         }
     }
@@ -153,11 +153,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALICleanupProgress"
+                "AlikeCleanupProgress"
             case .twoX:
-                "ALICleanupProgress@2x"
+                "AlikeCleanupProgress@2x"
             case .threeX:
-                "ALICleanupProgress@3x"
+                "AlikeCleanupProgress@3x"
             }
         }
     }
@@ -171,11 +171,11 @@ public enum ALIAssets {
         fileprivate var resourceName: String {
             switch self {
             case .oneX:
-                "ALICleanupSuccess"
+                "AlikeCleanupSuccess"
             case .twoX:
-                "ALICleanupSuccess@2x"
+                "AlikeCleanupSuccess@2x"
             case .threeX:
-                "ALICleanupSuccess@3x"
+                "AlikeCleanupSuccess@3x"
             }
         }
     }
@@ -187,7 +187,7 @@ public enum ALIAssets {
 
     /// Returns the shared-coordinate sparkle and magnifier-glint overlay.
     public static var welcomeHeroOverlayURL: URL? {
-        optionalResourceURL(named: "ALIWelcomeHeroOverlay", extension: "json")
+        optionalResourceURL(named: "AlikeWelcomeHeroOverlay", extension: "json")
     }
 
     /// Returns a transparent PNG for the specified Scanner searching export scale.
@@ -211,7 +211,7 @@ public enum ALIAssets {
     /// Returns the shared-coordinate photo-candidate, scan-pulse, and magnifier overlay.
     public static var scannerSearchingOverlayURL: URL? {
         optionalResourceURL(
-            named: "ALIScannerSearchingOverlay",
+            named: "AlikeScannerSearchingOverlay",
             extension: "json",
             subdirectory: "ScannerSearching"
         )
@@ -280,7 +280,7 @@ public enum ALIAssets {
     /// Returns the shared-coordinate card-focus and comparison-accent overlay.
     public static var comparisonReviewOverlayURL: URL? {
         optionalResourceURL(
-            named: "ALIComparisonReviewOverlay",
+            named: "AlikeComparisonReviewOverlay",
             extension: "json",
             subdirectory: "ComparisonReview"
         )
@@ -298,7 +298,7 @@ public enum ALIAssets {
     /// Returns the shared-coordinate looping sparkle and confetti overlay.
     public static var bestShotOverlayURL: URL? {
         optionalResourceURL(
-            named: "ALIBestShotOverlay",
+            named: "AlikeBestShotOverlay",
             extension: "json",
             subdirectory: "BestShot"
         )
@@ -316,7 +316,7 @@ public enum ALIAssets {
     /// Returns the shared-coordinate looping sorting-progress overlay.
     public static var cleanupProgressOverlayURL: URL? {
         optionalResourceURL(
-            named: "ALICleanupProgressOverlay",
+            named: "AlikeCleanupProgressOverlay",
             extension: "json",
             subdirectory: "CleanupProgress"
         )
@@ -334,7 +334,7 @@ public enum ALIAssets {
     /// Returns the shared-coordinate one-shot sparkle and confetti overlay.
     public static var cleanupSuccessOverlayURL: URL? {
         optionalResourceURL(
-            named: "ALICleanupSuccessOverlay",
+            named: "AlikeCleanupSuccessOverlay",
             extension: "json",
             subdirectory: "CleanupSuccess"
         )
@@ -350,7 +350,7 @@ public enum ALIAssets {
             extension: fileExtension,
             subdirectory: subdirectory
         ) else {
-            fatalError("Missing ALI design-system resource: \(name).\(fileExtension)")
+            fatalError("Missing Alike design-system resource: \(name).\(fileExtension)")
         }
         return url
     }

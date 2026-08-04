@@ -2,7 +2,7 @@ import SwiftUI
 import Core
 import DesignSystem
 
-struct ALIBestShotCelebrationPresentation: Equatable {
+struct AlikeBestShotCelebrationPresentation: Equatable {
     let animationURL: URL?
     let playback: OverlayAnimationPlayback
     let ambientMotion: AnimatedImageAmbientMotion
@@ -11,7 +11,7 @@ struct ALIBestShotCelebrationPresentation: Equatable {
         let isMotionEnabled = isVisible && scenePhase == .active
 
         return Self(
-            animationURL: isMotionEnabled ? ALIAssets.bestShotOverlayURL : nil,
+            animationURL: isMotionEnabled ? AlikeAssets.bestShotOverlayURL : nil,
             // Product intent: the effect is a seamless loop bounded by the cue lifetime below.
             // Do not change this to `.once`; visibility and timed cue consumption stop playback.
             playback: .loop,
@@ -20,10 +20,10 @@ struct ALIBestShotCelebrationPresentation: Equatable {
     }
 
     static func imageURL(for displayScale: CGFloat) -> URL {
-        ALIAssets.bestShotURL(for: imageScale(for: displayScale))
+        AlikeAssets.bestShotURL(for: imageScale(for: displayScale))
     }
 
-    private static func imageScale(for displayScale: CGFloat) -> ALIAssets.BestShotScale {
+    private static func imageScale(for displayScale: CGFloat) -> AlikeAssets.BestShotScale {
         switch displayScale {
         case ..<1.5:
             .oneX
@@ -35,21 +35,21 @@ struct ALIBestShotCelebrationPresentation: Equatable {
     }
 }
 
-struct ALIBestShotCelebrationView: View {
+struct AlikeBestShotCelebrationView: View {
     private enum Constants {
         static let maximumWidth: CGFloat = 72
         static let playbackDuration: Duration = .seconds(4)
     }
 
     private struct PlaybackTaskID: Hashable {
-        let cueID: ALIReviewReactionCue.ID
+        let cueID: AlikeReviewReactionCue.ID
         let canPlay: Bool
     }
 
     @Environment(\.displayScale) private var displayScale
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
-    let cueID: ALIReviewReactionCue.ID
+    let cueID: AlikeReviewReactionCue.ID
     let onPlaybackFinished: () -> Void
 
     var body: some View {
@@ -64,7 +64,7 @@ struct ALIBestShotCelebrationView: View {
         }
         .id(cueID)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("ALI celebrating the Best Shot")))
+        .accessibilityLabel(Text(appLocalized("Alike celebrating the Best Shot")))
         .onAppear {
             isVisible = true
         }
@@ -84,7 +84,7 @@ struct ALIBestShotCelebrationView: View {
 
     @ViewBuilder
     private var bestShotImage: some View {
-        let imageURL = ALIBestShotCelebrationPresentation.imageURL(for: displayScale)
+        let imageURL = AlikeBestShotCelebrationPresentation.imageURL(for: displayScale)
 
 #if canImport(UIKit)
         if let image = UIImage(contentsOfFile: imageURL.path) {
@@ -113,7 +113,7 @@ struct ALIBestShotCelebrationView: View {
             .padding(Spacing.xxLarge)
     }
 
-    private var presentation: ALIBestShotCelebrationPresentation {
+    private var presentation: AlikeBestShotCelebrationPresentation {
         .resolve(isVisible: isVisible, scenePhase: scenePhase)
     }
 

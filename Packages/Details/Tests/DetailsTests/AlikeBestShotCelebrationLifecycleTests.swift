@@ -2,20 +2,20 @@ import XCTest
 import DesignSystem
 @testable import Details
 
-final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
+final class AlikeBestShotCelebrationLifecycleTests: XCTestCase {
     func testVisibleActivePresentationLoopsOverlayWithoutAmbientMotion() {
-        let presentation = ALIBestShotCelebrationPresentation.resolve(
+        let presentation = AlikeBestShotCelebrationPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.animationURL, ALIAssets.bestShotOverlayURL)
+        XCTAssertEqual(presentation.animationURL, AlikeAssets.bestShotOverlayURL)
         XCTAssertEqual(presentation.playback, .loop)
         XCTAssertEqual(presentation.ambientMotion, .none)
     }
 
     func testInvisiblePresentationKeepsStaticSceneWithoutMotion() {
-        let presentation = ALIBestShotCelebrationPresentation.resolve(
+        let presentation = AlikeBestShotCelebrationPresentation.resolve(
             isVisible: false,
             scenePhase: .active
         )
@@ -26,7 +26,7 @@ final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
     }
 
     func testInactivePresentationKeepsStaticSceneWithoutMotion() {
-        let presentation = ALIBestShotCelebrationPresentation.resolve(
+        let presentation = AlikeBestShotCelebrationPresentation.resolve(
             isVisible: true,
             scenePhase: .inactive
         )
@@ -38,20 +38,20 @@ final class ALIBestShotCelebrationLifecycleTests: XCTestCase {
 
     func testDisplayScaleSelectsMatchingBestShotExport() {
         XCTAssertEqual(
-            ALIBestShotCelebrationPresentation.imageURL(for: 1.49),
-            ALIAssets.bestShotURL(for: .oneX)
+            AlikeBestShotCelebrationPresentation.imageURL(for: 1.49),
+            AlikeAssets.bestShotURL(for: .oneX)
         )
         XCTAssertEqual(
-            ALIBestShotCelebrationPresentation.imageURL(for: 1.5),
-            ALIAssets.bestShotURL(for: .twoX)
+            AlikeBestShotCelebrationPresentation.imageURL(for: 1.5),
+            AlikeAssets.bestShotURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALIBestShotCelebrationPresentation.imageURL(for: 2.49),
-            ALIAssets.bestShotURL(for: .twoX)
+            AlikeBestShotCelebrationPresentation.imageURL(for: 2.49),
+            AlikeAssets.bestShotURL(for: .twoX)
         )
         XCTAssertEqual(
-            ALIBestShotCelebrationPresentation.imageURL(for: 2.5),
-            ALIAssets.bestShotURL(for: .threeX)
+            AlikeBestShotCelebrationPresentation.imageURL(for: 2.5),
+            AlikeAssets.bestShotURL(for: .threeX)
         )
     }
 }

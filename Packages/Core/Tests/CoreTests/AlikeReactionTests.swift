@@ -1,27 +1,27 @@
 import XCTest
 @testable import Core
 
-final class ALIReactionTests: XCTestCase {
+final class AlikeReactionTests: XCTestCase {
     func testAllEightStatesConstructAndNormalizeAssociatedValues() {
-        let cleanup = ALICleanupSummary(itemCount: -2, estimatedSavingsBytes: -10)
-        XCTAssertEqual(cleanup, ALICleanupSummary(itemCount: 0, estimatedSavingsBytes: 0))
+        let cleanup = AlikeCleanupSummary(itemCount: -2, estimatedSavingsBytes: -10)
+        XCTAssertEqual(cleanup, AlikeCleanupSummary(itemCount: 0, estimatedSavingsBytes: 0))
 
-        let states: [ALIState] = [
+        let states: [AlikeState] = [
             .idle(.ready),
             .scanning,
             .resultsFound(candidateCount: 3),
             .noResults,
             .cleanupReady(cleanup),
             .cleanupSuccess(cleanup),
-            .permissionIssue(ALIPermissionContext(operation: .scan)),
-            .recoverableError(ALIErrorContext(operation: .cleanup)),
+            .permissionIssue(AlikePermissionContext(operation: .scan)),
+            .recoverableError(AlikeErrorContext(operation: .cleanup)),
         ]
         XCTAssertEqual(states.count, 8)
     }
 
     func testScanStartAndCompletionShareEventIdentityButHaveDistinctCueIdentity() {
         let operationID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
 
         let scanning = resolver.apply(.scanAdmitted(id: operationID))
         let results = resolver.apply(.scanCompleted(id: operationID, candidateCount: 4))
@@ -35,7 +35,7 @@ final class ALIReactionTests: XCTestCase {
 
     func testEmptySuccessfulScanMapsToNoResultsAndNegativeCountIsClamped() {
         let operationID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         _ = resolver.apply(.scanAdmitted(id: operationID))
 
         let cue = resolver.apply(.scanCompleted(id: operationID, candidateCount: -1))
@@ -46,7 +46,7 @@ final class ALIReactionTests: XCTestCase {
 
     func testRepeatedOneShotIsRejectedAfterConsumption() {
         let operationID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         let first = resolver.apply(.scanCompleted(id: operationID, candidateCount: 2))
         XCTAssertNotNil(first)
         _ = resolver.apply(.reactionConsumed(id: first!.id))
@@ -56,33 +56,33 @@ final class ALIReactionTests: XCTestCase {
     }
 
     func testDifferentOperationIdentityEmitsNewOneShot() {
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         XCTAssertNotNil(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
         XCTAssertNotNil(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
     }
 
     func testErrorAndPermissionSuppressPositiveTerminalCueForSameEvent() {
         let scanID = UUID()
-        var errorResolver = ALIReactionResolver()
+        var errorResolver = AlikeReactionResolver()
         _ = errorResolver.apply(.recoverableFailure(
             id: .scan(scanID),
-            context: ALIErrorContext(operation: .scan)
+            context: AlikeErrorContext(operation: .scan)
         ))
         XCTAssertNil(errorResolver.apply(.scanCompleted(id: scanID, candidateCount: 2)))
 
         let cleanupID = UUID()
-        var permissionResolver = ALIReactionResolver()
+        var permissionResolver = AlikeReactionResolver()
         _ = permissionResolver.apply(.permissionBlocked(
             id: .cleanup(cleanupID),
-            context: ALIPermissionContext(operation: .cleanup)
+            context: AlikePermissionContext(operation: .cleanup)
         ))
         XCTAssertEqual(permissionResolver.currentCue?.state, .permissionIssue(.init(operation: .cleanup)))
     }
 
     func testCleanupRetryUpgradesFailureToOneSuccessWithoutReplay() {
         let recordID = UUID()
-        let summary = ALICleanupSummary(itemCount: 3, estimatedSavingsBytes: 1_024)
-        var resolver = ALIReactionResolver()
+        let summary = AlikeCleanupSummary(itemCount: 3, estimatedSavingsBytes: 1_024)
+        var resolver = AlikeReactionResolver()
         _ = resolver.apply(.cleanupReconciliationFailed(id: recordID))
 
         let success = resolver.apply(.cleanupCompleted(id: recordID, summary: summary))
@@ -92,7 +92,7 @@ final class ALIReactionTests: XCTestCase {
     }
 
     func testConsumptionDoesNotClearNewerCue() {
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         let older = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1))!
         let newer = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2))!
 
@@ -104,7 +104,7 @@ final class ALIReactionTests: XCTestCase {
     func testCancellationClearsOnlyMatchingScanCue() {
         let firstID = UUID()
         let secondID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         _ = resolver.apply(.scanAdmitted(id: firstID))
         _ = resolver.apply(.scanAdmitted(id: secondID))
 
@@ -117,10 +117,10 @@ final class ALIReactionTests: XCTestCase {
 
     func testCleanupReadyIsEntitlementIndependentAndClearsOnStart() {
         let selectionID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         let cue = resolver.apply(.cleanupReady(
             id: selectionID,
-            summary: ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 500)
+            summary: AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 500)
         ))
         XCTAssertEqual(cue?.state, .cleanupReady(.init(itemCount: 2, estimatedSavingsBytes: 500)))
 
@@ -130,20 +130,20 @@ final class ALIReactionTests: XCTestCase {
 
     func testPersistentCueWithStableIdentityPublishesUpdatedState() {
         let selectionID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         _ = resolver.apply(.cleanupReady(
             id: selectionID,
-            summary: ALICleanupSummary(itemCount: 1, estimatedSavingsBytes: 100)
+            summary: AlikeCleanupSummary(itemCount: 1, estimatedSavingsBytes: 100)
         ))
 
         let updated = resolver.apply(.cleanupReady(
             id: selectionID,
-            summary: ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
+            summary: AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
         ))
 
         XCTAssertEqual(
             updated?.state,
-            .cleanupReady(ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300))
+            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300))
         )
         XCTAssertEqual(resolver.currentCue, updated)
     }
@@ -151,10 +151,10 @@ final class ALIReactionTests: XCTestCase {
     func testCleanupStartDoesNotClearAnotherCleanupCue() {
         let firstID = UUID()
         let secondID = UUID()
-        var resolver = ALIReactionResolver()
+        var resolver = AlikeReactionResolver()
         let secondCue = resolver.apply(.cleanupReady(
             id: secondID,
-            summary: ALICleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
+            summary: AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
         ))
 
         _ = resolver.apply(.cleanupStarted(id: firstID))
