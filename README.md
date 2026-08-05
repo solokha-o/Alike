@@ -130,6 +130,26 @@ swift test --package-path Packages/Settings
 swift test --package-path Packages/UserGuide
 ```
 
+## 🚦 CI/CD
+
+Local validation and App Store delivery run through the wrappers in `tools/`:
+
+```bash
+tools/quick
+```
+
+```bash
+tools/full
+```
+
+`tools/quick` runs whitespace checks, the four package suites above, and App Store
+metadata bundle validation. `tools/full` adds every remaining package and the app
+compile gate. Release preflight, metadata upload, and TestFlight upload live behind
+`tools/release-check`, `tools/upload`, and `tools/upload-build`.
+
+See [`Docs/ci-cd.md`](Docs/ci-cd.md) for the full runbook, required environment
+variables, and the safety rules that keep uploads deliberate.
+
 ## 📝 Localization
 
 Languages via `Localizable.xcstrings`:

@@ -1,0 +1,13 @@
+TODO: App Review notes for Alike.
+
+Cover at least the following before submission:
+- No account and no sign-in are required. The app opens straight into the photo
+  library permission request.
+- Photo library access is required to find visually similar photos. Grant "Full
+  Access" (or "Limited Access" and pick several similar photos) when prompted.
+- All analysis runs on device with the Apple Vision framework. No photo or
+  analysis result leaves the device.
+- Deletion always requires explicit confirmation and moves photos to the iOS
+  Recently Deleted album; nothing is erased permanently by the app.
+- Alike Pro is an auto-renewable subscription. The paywall is reachable from the
+  Scanner, cluster Details, and Settings tabs.

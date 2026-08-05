@@ -1,0 +1,8 @@
+app_identifier("com.alike.app")
+
+skip_binary_upload(true)
+skip_metadata(false)
+skip_screenshots(false)
+submit_for_review(false)
+overwrite_screenshots(true)
+run_precheck_before_submit(false)
