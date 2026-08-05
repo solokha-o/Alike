@@ -297,13 +297,54 @@ ALIKE_NO_ENV=1 tools/meta
 
 Do not edit generated files under `build/generated/store_upload/` by hand.
 
+## Landing Page
+
+The marketing site and the legal pages live in `site/` and deploy to GitHub Pages
+via `.github/workflows/pages.yml` on every push to `main` that touches `site/`.
+
+| Page | EN | UK |
+|---|---|---|
+| Home | `/Alike/` | `/Alike/uk/` |
+| Privacy Policy | `/Alike/privacy/` | `/Alike/uk/privacy/` |
+| Terms of Use | `/Alike/terms/` | `/Alike/uk/terms/` |
+| Support | `/Alike/support/` | `/Alike/uk/support/` |
+
+Those last two supply the values the metadata bundle needs:
+
+```sh
+ALIKE_PRIVACY_URL="https://solokha-o.github.io/Alike/privacy/"
+```
+
+```sh
+ALIKE_SUPPORT_URL="https://solokha-o.github.io/Alike/support/"
+```
+
+Local preview needs Ruby and Jekyll:
+
+```sh
+cd site && JEKYLL_NO_BUNDLER_REQUIRE=true jekyll build --destination _site
+```
+
+Regenerate the image assets from the app's own artwork after changing the
+mascot illustrations or the app icon:
+
+```sh
+tools/build_site_assets.sh
+```
+
+The deploy workflow fails the build if the rendered site references any
+third-party host. That is deliberate: the privacy policy states Alike makes no
+network requests and bundles no analytics, and a landing page loading a web font
+or an analytics script would make that claim false.
+
 ## Outstanding Setup
 
 The tooling is in place but the App Store content is not:
 
 - Localized `en-US`, `en-GB`, and `uk` copy in `tools/prepare_app_store_upload_bundle.py` is still `TODO:` placeholder text.
-- `Docs/images/` has no screenshots yet, so screenshot upload is not usable.
+- `Docs/images/` has no screenshots yet, so screenshot upload is not usable. See `Docs/screenshot-shot-list.md` for the capture spec.
 - `Docs/app-store-review-notes.txt` needs the final reviewer notes.
-- `ALIKE_PRIVACY_URL` and `ALIKE_SUPPORT_URL` need real published pages.
+- GitHub Pages must be switched to the **GitHub Actions** source before the site first deploys.
+- `AppStoreLinks.appID` is still the `0000000000` placeholder.
 
 `tools/quick`, `tools/full`, and `tools/meta` work today; the upload commands intentionally refuse to run until the items above are done.

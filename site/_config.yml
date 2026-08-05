@@ -1,0 +1,36 @@
+title: Alike
+url: "https://solokha-o.github.io"
+# Project Pages site: served from /Alike/, not the domain root. Without this
+# every absolute URL — including the privacy URL the app ships in
+# SubscriptionConfiguration.swift — is wrong by one path segment.
+baseurl: "/Alike"
+
+contact_email: oleksandr.solokha@gmail.com
+
+# No plugins. The sitemap is generated with Liquid in sitemap.xml and the SEO
+# tags live in _includes/seo-meta.html, which keeps the build usable with
+# actions/jekyll-build-pages and avoids plugin drift.
+plugins: []
+
+languages: [en, uk]
+default_lang: en
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+sass:
+  style: compressed
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: page
+      lang: en
+  - scope:
+      path: "uk"
+    values:
+      lang: uk

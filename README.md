@@ -16,7 +16,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
 - 📊 **Adaptive grid** — 1 to 2 columns optimized for phone and tablet layouts
 - 💾 **CoreData caching** — stores scan results
-- 🎨 **Indigo design** — modern UI with animations and haptic feedback
+- 🎨 **Teal design** — modern UI with animations and haptic feedback
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
 - 📱 **iPad support** — optimized for tablets
@@ -106,7 +106,7 @@ Cleanup tab without automatically changing the selected tab.
 
 ## 🎨 Design
 
-- **Accent Color**: Indigo (#5C66F2)
+- **Accent Color**: Teal (#1F9EB8), defined in `DesignSystem/Theme.swift`
 - **Typography**: SF Rounded
 - **Spacing**: 8pt grid system
 - **Animations**: Spring-based

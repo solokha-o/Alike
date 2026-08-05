@@ -5,13 +5,17 @@ disclosure.
 
 ```
 Docs/legal/
-├── README.md                     this file
-├── privacy/en.md                 Privacy Policy, English
-├── privacy/uk.md                 Privacy Policy, Ukrainian
-├── terms/en.md                   Terms of Use, English
-├── terms/uk.md                   Terms of Use, Ukrainian
+├── README.md                     this file — the runbook
 └── subscription-disclosure.md    paywall disclosure copy, EN + UK
+
+site/                             the published pages themselves
+├── privacy.md   uk/privacy.md    Privacy Policy, EN + UK
+└── terms.md     uk/terms.md      Terms of Use, EN + UK
 ```
+
+The legal pages live in `site/` because they *are* the landing page — they are
+built and deployed with it by `.github/workflows/pages.yml`. There is one copy
+of each document, not a source copy and a published copy that can drift.
 
 ## Operator details
 
@@ -87,9 +91,9 @@ the landing page rather than from the app's Terms link.
    from the fact that the codebase contains no networking and no analytics SDKs —
    re-verify both before each release that touches those areas.
 2. Update the "Last updated" date in every file you changed, in both languages.
-3. Copy the four Markdown files into the Pages site, preserving the `permalink`
-   front matter, and confirm `_config.yml` sets `baseurl: "/Alike"`.
-4. Publish and confirm all four URLs load publicly with no sign-in.
+3. Merge to `main`. The Pages workflow builds `site/` and deploys it; no manual
+   copying is involved.
+4. Confirm all four URLs load publicly with no sign-in.
 5. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
 6. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
    the metadata bundle.

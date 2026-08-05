@@ -89,6 +89,12 @@ fastlane/test_output
 
 # Local App Store Connect / signing configuration
 .env
+
+# Jekyll landing page build output
+site/_site/
+site/.jekyll-cache/
+site/.jekyll-metadata
+site/Gemfile.lock
 *.cache
 *test-logs
 *.vscode

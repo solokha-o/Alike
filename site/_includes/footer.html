@@ -1,0 +1,20 @@
+{%- assign t = site.data[page.lang] -%}
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__tagline">{{ t.footer.tagline }}</p>
+
+    <nav class="site-footer__links" aria-label="{{ t.footer.privacy }}">
+      <a href="{{ t.privacy_url | relative_url }}">{{ t.footer.privacy }}</a>
+      <a href="{{ t.terms_url | relative_url }}">{{ t.footer.terms }}</a>
+      <a href="{{ t.support_url | relative_url }}">{{ t.footer.support }}</a>
+      <a href="mailto:{{ site.contact_email }}">{{ t.footer.contact }}</a>
+      <a href="{{ page.alt_url | default: t.switch_url | relative_url }}" lang="{% if page.lang == 'en' %}uk{% else %}en{% endif %}" rel="alternate">{{ t.switch_to }}</a>
+    </nav>
+
+    <p class="site-footer__legal">
+      © {{ 'now' | date: "%Y" }} Oleksandr Solokha. {{ t.footer.rights }}
+      <span class="site-footer__built">{{ t.footer.built }}</span>
+    </p>
+  </div>
+</footer>

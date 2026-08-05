@@ -1,0 +1,69 @@
+{%- assign t = site.data[page.lang] -%}
+{%- if page.title -%}
+  {%- assign page_title = page.title | append: " — " | append: site.title -%}
+{%- else -%}
+  {%- assign page_title = t.meta.title -%}
+{%- endif -%}
+{%- assign page_description = page.description | default: t.meta.description -%}
+{%- assign canonical = page.url | absolute_url -%}
+
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_description | strip_html | normalize_whitespace }}">
+<link rel="canonical" href="{{ canonical }}">
+
+{%- comment -%}
+Pair every page with its translation so search engines serve the right language.
+x-default points at English.
+{%- endcomment -%}
+{%- if page.alt_url %}
+  {%- if page.lang == "en" %}
+<link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="uk" href="{{ page.alt_url | absolute_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
+  {%- else %}
+<link rel="alternate" hreflang="uk" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="en" href="{{ page.alt_url | absolute_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ page.alt_url | absolute_url }}">
+  {%- endif %}
+{%- endif %}
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="{% if page.lang == 'uk' %}uk_UA{% else %}en_US{% endif %}">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description | strip_html | normalize_whitespace }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ '/assets/img/og-image.jpg' | absolute_url }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ page_description | strip_html | normalize_whitespace }}">
+<meta name="twitter:image" content="{{ '/assets/img/og-image.jpg' | absolute_url }}">
+
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/img/favicon-32.png' | relative_url }}">
+<link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
+
+{%- if page.layout == "home" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Alike",
+  "applicationCategory": "PhotoApplication",
+  "operatingSystem": "iOS 17.0 or later",
+  "description": {{ t.meta.description | jsonify }},
+  "url": {{ canonical | jsonify }},
+  "image": {{ '/assets/img/og-image.jpg' | absolute_url | jsonify }},
+  "inLanguage": ["en", "uk"],
+  "author": {
+    "@type": "Person",
+    "name": "Oleksandr Solokha"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download with an optional Alike Pro subscription."
+  }
+}
+</script>
+{%- endif %}

@@ -1,0 +1,20 @@
+---
+permalink: /sitemap.xml
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- for page in site.pages -%}
+{%- if page.permalink and page.layout and page.layout != "null" %}
+  <url>
+    <loc>{{ page.url | absolute_url }}</loc>
+    {%- if page.alt_url %}
+    <xhtml:link rel="alternate" hreflang="{{ page.lang }}" href="{{ page.url | absolute_url }}"/>
+    <xhtml:link rel="alternate" hreflang="{% if page.lang == 'en' %}uk{% else %}en{% endif %}" href="{{ page.alt_url | absolute_url }}"/>
+    {%- endif %}
+    <changefreq>monthly</changefreq>
+  </url>
+{%- endif -%}
+{%- endfor %}
+</urlset>

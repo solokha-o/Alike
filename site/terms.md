@@ -2,9 +2,10 @@
 layout: page
 title: Terms of Use
 permalink: /terms/
+lang: en
+alt_url: /uk/terms/
+description: "Terms of Use for Alike, including the Alike Pro subscription, billing, renewal, trial, and cancellation."
 ---
-
-# Alike Terms of Use
 
 Last updated: August 5, 2026
 
