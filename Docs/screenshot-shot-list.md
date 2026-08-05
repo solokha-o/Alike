@@ -1,7 +1,18 @@
 # Alike Screenshot Shot List
 
-The specification to capture against. Nothing here is captured yet — both the
-App Store upload bundle and the landing page are waiting on these.
+Nine of the thirteen shots are captured, in English and Ukrainian, from a
+physical iPhone at 1125 x 2436. `tools/import_device_screenshots.py` upscales
+them to the required 1320 x 2868 and pads the 10px remainder with black (the
+app's screens are black at both edges, so the padding is invisible), and emits
+520px copies for the landing-page device frames.
+
+Re-run after adding captures:
+
+```sh
+python3 tools/import_device_screenshots.py --source ~/Downloads
+```
+
+The mapping from source filename to shot lives in `SHOTS` in that script.
 
 Two consumers, one set of captures:
 
@@ -12,9 +23,10 @@ Two consumers, one set of captures:
 
 ## Capture spec
 
-- **Device:** iPhone 6.9" simulator.
-- **Size:** exactly **1320 × 2868**. `validate_screenshots()` in
-  `tools/prepare_app_store_upload_bundle.py` rejects anything else.
+- **Device:** a physical iPhone, or the iPhone 17 Pro Max simulator.
+- **Size:** the bundle requires exactly **1320 × 2868**. Captures at
+  1125 × 2436 are accepted and converted by the import script; anything smaller
+  would upscale too far to stay sharp.
 - **Format:** PNG. Files must be named with a leading two-digit number
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
@@ -22,36 +34,38 @@ Two consumers, one set of captures:
   `en-US`, `en-GB`, and `uk`.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
-- **Content:** use a **synthetic demo library**. These become public assets, so
-  no real personal photos, no recognisable faces, no location-revealing images,
-  and no readable personal data in any status bar or notification.
+- **Content:** the current captures use a real photo library. These become
+  public assets, so before each release check every frame for recognisable
+  faces, location-revealing images, readable personal data, and anything legible
+  on a screen shown inside a photo. `tools/generate_demo_library.py` builds a
+  synthetic library if you would rather not publish real photos.
 - **Status bar:** full signal, full battery, no notifications.
 
 ## Shots
 
-| # | Screen | State to set up | App Store | Site |
-|---|---|---|---|---|
-| 1 | Scanner idle | Ready state, mascot hero visible, Start Scan prominent | ✅ | ✅ |
-| 2 | Scanner scanning | Mid-scan with progress and a photo count | ✅ | — |
-| 3 | Cleanup queue | Several clusters, mixed New / Needs review / Reviewed badges | ✅ | ✅ |
-| 4 | Cluster details | Best Shot highlighted, some photos selected, estimated savings shown | ✅ | ✅ |
-| 5 | Comparison review | `AlikeComparisonReviewView` with two similar photos side by side | ✅ | ✅ |
-| 6 | Cleanup confirm | Confirmation sheet showing selected count and estimated savings | — | — |
-| 7 | Cleanup success | `CleanupSuccess` celebration with freed space | ✅ | ✅ |
-| 8 | Screenshot cleanup | `ScreenshotCleanupView` with a screenshot group | ✅ | — |
-| 9 | History | `CleanupHistoryView` grouped by month with an all-time total | — | ✅ |
-| 10 | Settings | Subscription card, Data & Privacy, and the Legal section | — | — |
-| 11 | Paywall | Both plans, renewal and trial disclosure, both legal links visible | — | — |
-| 12 | User Guide | `UserGuideHubView` topic list | — | — |
-| 13 | Welcome | Permission explanation shown before the system prompt | ✅ | — |
+| # | Screen | EN | UK | On site | File |
+|---|---|---|---|---|---|
+| 1 | Scanner idle | ✅ | ✅ | ✅ | `01-scanner-idle` |
+| 2 | Scanner scanning | ✅ | ✅ | — | `02-scanner-scanning` |
+| 3 | Cleanup queue | ✅ | ✅ | ✅ | `03-cleanup-queue` |
+| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | `04-cluster-details` |
+| 5 | Comparison review | ✅ | ✅ | ✅ | `05-comparison-review` |
+| 6 | Cleanup confirm (iOS dialog) | ✅ | — | — | `06-cleanup-confirm` |
+| 7 | Cleanup progress | ✅ | ✅ | ✅ | `07-cleanup-progress` |
+| 8 | Screenshot cleanup | ✅ | — | — | `08-screenshot-cleanup` |
+| 9 | History | — | — | — | still needed |
+| 10 | Settings with Legal section | — | — | — | still needed |
+| 11 | Paywall with disclosure | — | — | — | still needed |
+| 12 | User Guide | — | — | — | still needed |
+| 13 | Welcome / privacy | ✅ | ✅ | — | `13-welcome-privacy` |
 
-The App Store allows up to 10 screenshots; the eight marked above are the
-recommended set, in that order.
+Outstanding: 9, 10, 11, 12, plus Ukrainian versions of 6 and 8.
 
-**Capture 10 and 11 even though neither ships.** They are the evidence that the
-Legal section and the subscription disclosure exist, which is exactly what App
-Review checks for an auto-renewable subscription. Keep them to hand for the
-review notes in `Docs/app-store-review-notes.txt`.
+Shots 10 and 11 do not ship on the listing but are worth capturing as App
+Review evidence that the Legal section and the subscription disclosure exist.
+
+The App Store allows up to 10 screenshots, so the nine captured cover the
+listing with room for one more.
 
 ## Wiring a screenshot into the site
 

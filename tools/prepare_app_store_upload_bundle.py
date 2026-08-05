@@ -254,11 +254,12 @@ def generate_review_information() -> None:
 
 
 def copy_screenshots() -> None:
-    files = numbered_pngs(SOURCE_SCREENSHOTS_ROOT)
+    # Screenshots are captured per language, so each source locale has its own
+    # folder under Docs/images/. en-GB reuses the en-US captures.
     for mapping in UPLOAD_SAFE_LOCALES:
         destination_root = SCREENSHOTS_ROOT / mapping.apple
         destination_root.mkdir(parents=True, exist_ok=True)
-        for source in files:
+        for source in numbered_pngs(SOURCE_SCREENSHOTS_ROOT / mapping.source):
             shutil.copy2(source, destination_root / source.name)
 
 
