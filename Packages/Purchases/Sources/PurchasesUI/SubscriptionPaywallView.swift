@@ -366,6 +366,11 @@ public struct SubscriptionPaywallView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
+            Text(appLocalized("The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."))
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
             HStack(spacing: Spacing.medium) {
                 if let privacyPolicy = legalLinks.privacyPolicy {
                     Link(appLocalized("Privacy Policy"), destination: privacyPolicy)
