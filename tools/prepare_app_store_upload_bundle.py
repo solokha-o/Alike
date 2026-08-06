@@ -29,7 +29,7 @@ REVIEW_NOTES_FILE = ROOT / "Docs" / "app-store-review-notes.txt"
 STOREKIT_PATH = ROOT / "Alike" / "Configuration" / "Alike.storekit"
 EXPECTED_SCREENSHOT_SIZE = (1320, 2868)
 APP_IDENTIFIER = "com.alike.app"
-APP_NAME = "TODO: App Store name"
+APP_NAME = "Alike: Similar Photo Cleaner"
 COPYRIGHT = "2026 Oleksandr Solokha. Alike"
 PRIMARY_CATEGORY = "PHOTO_AND_VIDEO"
 SECONDARY_CATEGORY = "UTILITIES"
@@ -93,30 +93,148 @@ REQUIRED_LOCALIZED_FILES = (
 )
 
 
-# Localized App Store copy. Every value is an explicit placeholder: strict
-# generation refuses to upload while any TODO marker remains, so the bundle can
-# be validated structurally long before the marketing copy is written.
+# Localized App Store copy. Every claim here must stay consistent with the
+# published privacy policy, terms of use and landing page under `site/`, and
+# with the free/Pro split defined by PremiumFeature and PremiumAccessPolicy.
+# Prices are never stated: StoreKit supplies localized pricing.
+EN_US_DESCRIPTION = """\
+Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
+
+HOW IT WORKS
+Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone or iPad. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
+Review. Every group opens with a Best Shot already selected, so you can decide in seconds. Keep Best Only, Select All Except Best, or pick by hand.
+Clear. Confirm, and the photos you chose move to Recently Deleted, where iOS keeps them for about 30 days.
+
+PRIVACY IS THE WHOLE POINT
+- All analysis runs on device with Apple's Vision framework.
+- No photo, thumbnail or feature print is ever uploaded.
+- No account, no sign-in, no Alike server.
+- No analytics, no tracking, no advertising identifiers.
+- Nothing is deleted without your explicit confirmation.
+
+FEATURES
+- Three sensitivity levels, from near-identical shots to a wider net.
+- Best Shot detection, so every group has a sensible default to keep.
+- Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
+- Progress, Selected and Estimated Savings, plus cleanup history by month.
+- An adaptive layout for iPhone and iPad, remembered per device.
+- Full English and Ukrainian, and complete Dark Mode support.
+
+ALIKE FREE
+- 3 scans per month
+- Guided review with Best Shot
+- Sorting and cleanup history
+- Clean up one photo at a time
+
+ALIKE PRO
+- Unlimited scans
+- Clean up whole selections at once
+- Screenshot cleanup
+- Blurred photo cleanup
+- Advanced filters
+- Custom cleanup reminders
+
+Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
+
+EN_GB_DESCRIPTION = """\
+Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
+
+HOW IT WORKS
+Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone or iPad. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
+Review. Every group opens with a Best Shot already selected, so you can decide in seconds. Keep Best Only, Select All Except Best, or pick by hand.
+Clear. Confirm, and the photos you chose move to Recently Deleted, where iOS keeps them for about 30 days.
+
+PRIVACY IS THE WHOLE POINT
+- All analysis runs on device with Apple's Vision framework.
+- No photo, thumbnail or feature print is ever uploaded.
+- No account, no sign-in, no Alike server.
+- No analytics, no tracking, no advertising identifiers.
+- Nothing is deleted without your explicit confirmation.
+
+FEATURES
+- Three sensitivity levels, from near-identical shots to a wider net.
+- Best Shot detection, so every group has a sensible default to keep.
+- Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
+- Progress, Selected and Estimated Savings, plus cleanup history by month.
+- An adaptive layout for iPhone and iPad, remembered per device.
+- Full English and Ukrainian, and complete Dark Mode support.
+
+ALIKE FREE
+- 3 scans per month
+- Guided review with Best Shot
+- Sorting and cleanup history
+- Organise one photo at a time
+
+ALIKE PRO
+- Unlimited scans
+- Organise whole selections at once
+- Screenshot cleanup
+- Blurred photo cleanup
+- Advanced filters
+- Customised cleanup reminders
+
+Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
+
+UK_DESCRIPTION = """\
+Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту — і жодне фото не залишає ваш пристрій.
+
+ЯК ЦЕ ПРАЦЮЄ
+Сканування. Alike порівнює медіатеку за допомогою фреймворку Apple Vision повністю на вашому iPhone чи iPad. Порівнюються знімки, близькі за часом і місцем зйомки, а знімки екрана не потрапляють у результати, якщо ви не попросите.
+Перегляд. Кожна група відкривається з уже обраним найкращим знімком, тож рішення займає секунди. «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну.
+Прибирання. Підтвердьте — і обрані фотографії потраплять до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.
+
+КОНФІДЕНЦІЙНІСТЬ — ЦЕ СУТЬ
+- Увесь аналіз виконується на пристрої фреймворком Apple Vision.
+- Жодне фото, ескіз чи відбиток ознак не завантажується в інтернет.
+- Без облікового запису, без входу, без сервера Alike.
+- Без аналітики, відстеження та рекламних ідентифікаторів.
+- Нічого не видаляється без вашого явного підтвердження.
+
+МОЖЛИВОСТІ
+- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку.
+- Вибір найкращого знімка, тож у кожній групі є розумний варіант залишити.
+- Позначки: «Нове», «У перегляді», «Переглянуто», «Потребує перегляду».
+- Прогрес, «Обрано» й «Орієнтовна економія», а також історія за місяцями.
+- Адаптивний макет для iPhone та iPad, окремо для кожного пристрою.
+- Повна підтримка англійської та української й темна тема.
+
+ALIKE FREE
+- 3 сканування на місяць
+- Покроковий перегляд із найкращим знімком
+- Сортування та історія прибирання
+- Прибирання по одному фото за раз
+
+ALIKE PRO
+- Необмежені сканування
+- Прибирання цілих виділень одразу
+- Прибирання знімків екрана
+- Прибирання розмитих фото
+- Розширені фільтри
+- Власні нагадування про прибирання
+
+Alike Pro — це підписка з автоматичним поновленням, річний і місячний плани, ціни у вашій валюті. Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право; оплата починається після завершення пробного періоду. Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS."""
+
 METADATA = {
     "en-US": {
-        "subtitle": "TODO: subtitle (max 30)",
-        "description": "TODO: English App Store description.",
-        "keywords": "TODO,keywords",
-        "promotional_text": "TODO: English promotional text.",
-        "release_notes": "TODO: English release notes.",
+        "subtitle": "Find and clear similar photos",
+        "description": EN_US_DESCRIPTION,
+        "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
+        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. Everything runs on your device.",
+        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest — all on device.",
     },
     "en-GB": {
-        "subtitle": "TODO: subtitle (max 30)",
-        "description": "TODO: English App Store description.",
-        "keywords": "TODO,keywords",
-        "promotional_text": "TODO: English promotional text.",
-        "release_notes": "TODO: English release notes.",
+        "subtitle": "Find and clear similar photos",
+        "description": EN_GB_DESCRIPTION,
+        "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
+        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you organise the rest. Everything runs on your device.",
+        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and organise the rest — all on device.",
     },
     "uk": {
-        "subtitle": "TODO: subtitle (max 30)",
-        "description": "TODO: Ukrainian App Store description.",
-        "keywords": "TODO,keywords",
-        "promotional_text": "TODO: Ukrainian promotional text.",
-        "release_notes": "TODO: Ukrainian release notes.",
+        "subtitle": "Знайти й прибрати схожі фото",
+        "description": UK_DESCRIPTION,
+        "keywords": "фото,схожі,дублікати,прибирання,памʼять,медіатека",
+        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Усе працює на вашому пристрої.",
+        "release_notes": "Перший випуск Alike. Скануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту — усе на пристрої.",
     },
 }
 
@@ -424,7 +542,7 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy in `tools/prepare_app_store_upload_bundle.py` is still `TODO:` placeholder text. Strict generation refuses to run until it is replaced.
+- Localized copy for `en-US`, `en-GB` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`. Strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.

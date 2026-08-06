@@ -1,13 +1,55 @@
-TODO: App Review notes for Alike.
+Thank you for reviewing Alike.
 
-Cover at least the following before submission:
-- No account and no sign-in are required. The app opens straight into the photo
-  library permission request.
-- Photo library access is required to find visually similar photos. Grant "Full
-  Access" (or "Limited Access" and pick several similar photos) when prompted.
-- All analysis runs on device with the Apple Vision framework. No photo or
-  analysis result leaves the device.
-- Deletion always requires explicit confirmation and moves photos to the iOS
-  Recently Deleted album; nothing is erased permanently by the app.
-- Alike Pro is an auto-renewable subscription. The paywall is reachable from the
-  Scanner, cluster Details, and Settings tabs.
+NO ACCOUNT IS NEEDED
+Alike has no account, no sign-in and no server, so there is nothing to log in
+to. The demo credential fields are intentionally empty and a demo account is
+not required. The app opens straight into the photo library permission request.
+
+PHOTO LIBRARY ACCESS
+Alike compares the photos in the library to find visually similar ones, so
+photo library access is the app's core permission. Please grant "Full Access"
+when prompted. If you prefer "Limited Access", select several visually similar
+photos (for example three or four shots of the same subject taken in a row),
+otherwise the scan will correctly report that it found no groups.
+
+Notification permission is requested only if you turn on the cleanup reminder
+in Settings; it is not needed to review the app.
+
+HOW TO EXERCISE THE APP
+1. Grant photo library access.
+2. Tap Scan on the Scanner tab. Analysis runs locally and progress is shown.
+3. Open any group. A Best Shot is preselected; use Keep Best Only, Select All
+   Except Best, or select photos by hand.
+4. Tap the delete action and confirm. iOS then shows its own confirmation.
+
+ON-DEVICE ANALYSIS
+All similarity analysis runs on device with the Apple Vision framework. No
+photo, thumbnail, feature print or analysis result leaves the device, and the
+app makes no network requests of its own. The only outbound activity is
+handled by StoreKit when a subscription is purchased or restored.
+
+DELETION IS ALWAYS CONFIRMED
+Alike never deletes anything on its own. Every cleanup requires explicit
+confirmation in the app, iOS presents its own system confirmation, and the
+photos are moved to the iOS Recently Deleted album, where they remain
+recoverable for about 30 days. The app never erases photos permanently.
+
+SUBSCRIPTION
+Alike Pro is an auto-renewable subscription with yearly and monthly plans.
+The free tier allows 3 scans per month and cleanup of one photo at a time.
+Alike Pro adds unlimited scans, batch cleanup, screenshot cleanup, blurred
+photo cleanup, advanced filters and custom cleanup reminders.
+
+The paywall is reachable from three places: the Scanner tab, the Details view
+of a group, and Settings. It states the subscription length, that renewal is
+automatic unless cancelled at least 24 hours before the end of the current
+period, that payment is charged to the Apple Account, and that the yearly plan
+includes a 7-day free trial for eligible new subscribers with billing starting
+when the trial ends. Restore Purchases is available on the paywall and in
+Settings. Links to the Privacy Policy and to Apple's Standard EULA are shown
+on the paywall and under Settings, then Legal.
+
+DATA DELETION
+Settings, then Data & Privacy, then Delete Alike Data erases all scan results,
+cleanup history and preferences stored on the device. It does not touch the
+photo library, the photo permission or the subscription.
