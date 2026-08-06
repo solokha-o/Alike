@@ -57,7 +57,7 @@ visual rules, and the QA checklist to run before an upload.
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
 - **Languages:** capture every shot twice, EN and UK. `Docs/images/raw/en-US/`
-  feeds `en-US` and `en-GB`; `Docs/images/raw/uk/` feeds `uk`.
+  feeds `en-US`, `Docs/images/raw/uk/` feeds `uk`. `en-GB` is not uploaded.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become

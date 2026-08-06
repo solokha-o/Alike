@@ -35,6 +35,11 @@ PRIMARY_CATEGORY = "PHOTO_AND_VIDEO"
 SECONDARY_CATEGORY = "UTILITIES"
 PRIVACY_URL_PLACEHOLDER = "__ALIKE_PRIVACY_URL__"
 SUPPORT_URL_PLACEHOLDER = "__ALIKE_SUPPORT_URL__"
+# Apple treats the marketing URL as optional, and deliver leaves the App Store
+# Connect value untouched when the file is absent. So this one has no
+# placeholder: either ALIKE_MARKETING_URL is set and the file is written, or
+# nothing is written at all.
+MARKETING_URL_ENV = "ALIKE_MARKETING_URL"
 TERMS_URL_PLACEHOLDER = "__ALIKE_TERMS_URL__"
 TERMS_URL_DEFAULT = TERMS_URL_PLACEHOLDER
 PRIVACY_LABEL = "Privacy Policy"
@@ -70,9 +75,12 @@ class LocaleMapping:
     apple: str
 
 
+# en-GB is deliberately not uploaded. Its copy stays in METADATA so the
+# localization can be switched back on by adding a mapping here; an en-GB
+# localization that already exists in App Store Connect has to be removed there
+# by hand, because deliver never deletes localizations.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
-    LocaleMapping(source="en-US", apple="en-GB"),
     LocaleMapping(source="uk", apple="uk"),
 )
 
@@ -337,7 +345,7 @@ def description_with_links(description: str, privacy_url: str, terms_url: str) -
     return f"{description.rstrip()}\n\n{footer}"
 
 
-def generate_metadata(privacy_url: str, support_url: str, terms_url: str) -> None:
+def generate_metadata(privacy_url: str, support_url: str, terms_url: str, marketing_url: str) -> None:
     write_text(METADATA_ROOT / "copyright.txt", COPYRIGHT)
     write_text(METADATA_ROOT / "primary_category.txt", PRIMARY_CATEGORY)
     write_text(METADATA_ROOT / "secondary_category.txt", SECONDARY_CATEGORY)
@@ -356,6 +364,8 @@ def generate_metadata(privacy_url: str, support_url: str, terms_url: str) -> Non
         write_text(locale_root / "release_notes.txt", values["release_notes"])
         write_text(locale_root / "privacy_url.txt", privacy_url)
         write_text(locale_root / "support_url.txt", support_url)
+        if marketing_url:
+            write_text(locale_root / "marketing_url.txt", marketing_url)
 
 
 def generate_review_information() -> None:
@@ -372,8 +382,8 @@ def generate_review_information() -> None:
 
 
 def copy_screenshots() -> None:
-    # Screenshots are captured per language, so each source locale has its own
-    # folder under Docs/images/. en-GB reuses the en-US captures.
+    # Screenshots are rendered per language, so each source locale has its own
+    # folder under Docs/images/.
     for mapping in UPLOAD_SAFE_LOCALES:
         destination_root = SCREENSHOTS_ROOT / mapping.apple
         destination_root.mkdir(parents=True, exist_ok=True)
@@ -542,15 +552,15 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for `en-US`, `en-GB` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`. Strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for `en-US`, `en-GB` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`, but only `en-US` and `uk` are uploaded. Strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
-- `marketing_url.txt` is intentionally omitted until a marketing site is selected.
+- `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
-- Screenshots in `Docs/images/` are copied into each upload-safe locale; generated copies remain under `build/`.
+- Screenshots come from `Docs/images/<locale>/`, rendered by `tools/generate_app_store_product_screenshots.py`, and are copied into each upload-safe locale; generated copies remain under `build/`.
 """,
     )
 
@@ -567,6 +577,14 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
                 errors.append(f"{path} still contains placeholder URL")
             if value and value not in {PRIVACY_URL_PLACEHOLDER, SUPPORT_URL_PLACEHOLDER} and not value.startswith("https://"):
                 errors.append(f"{path} must use an https:// URL")
+        # Optional: absent means "leave the App Store Connect value alone".
+        marketing_path = METADATA_ROOT / mapping.apple / "marketing_url.txt"
+        if marketing_path.exists():
+            marketing_value = marketing_path.read_text(encoding="utf-8").strip()
+            if not marketing_value:
+                errors.append(f"{marketing_path} is empty; unset {MARKETING_URL_ENV} instead")
+            elif not marketing_value.startswith("https://"):
+                errors.append(f"{marketing_path} must use an https:// URL")
         description_path = METADATA_ROOT / mapping.apple / "description.txt"
         if description_path.exists():
             description = description_path.read_text(encoding="utf-8")
@@ -778,6 +796,7 @@ def main() -> None:
             privacy_url=env_or_placeholder("ALIKE_PRIVACY_URL", PRIVACY_URL_PLACEHOLDER),
             support_url=env_or_placeholder("ALIKE_SUPPORT_URL", SUPPORT_URL_PLACEHOLDER),
             terms_url=env_or_placeholder("ALIKE_TERMS_URL", TERMS_URL_DEFAULT),
+            marketing_url=os.environ.get(MARKETING_URL_ENV, "").strip(),
         )
         generate_review_information()
         copy_screenshots()

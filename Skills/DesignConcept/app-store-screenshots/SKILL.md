@@ -23,7 +23,7 @@ canvas around the phone sparse.
 - Drafts and contact sheets: `build/generated/product_screenshot_drafts/`, `build/generated/product_screenshots/`.
 - Phone mockup: `tools/assets/iphone-mockup.png` (1022 x 2082, screen rect 52,46,970,2036).
 - Canvas: `1320 x 2868` exactly — the bundle rejects anything else.
-- Locales: `en-US` and `uk`; the bundle maps `en-GB` onto the `en-US` files.
+- Locales: `en-US` and `uk`. `en-GB` is not uploaded.
 - Runtime: `build/tools-venv/bin/python` — Pillow is not in the system Python.
 
 ```sh

@@ -76,6 +76,8 @@ For metadata validation and uploads:
 - `.env` or your shell provides real public `https` values for:
   - `ALIKE_PRIVACY_URL`
   - `ALIKE_SUPPORT_URL`
+  - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
+    unset, the App Store Connect value is left untouched.
 
 For App Store Connect uploads:
 
@@ -321,6 +323,12 @@ ALIKE_PRIVACY_URL="https://solokha-o.github.io/Alike/privacy/"
 ALIKE_SUPPORT_URL="https://solokha-o.github.io/Alike/support/"
 ```
 
+The landing page itself is the marketing URL:
+
+```sh
+ALIKE_MARKETING_URL="https://solokha-o.github.io/Alike/"
+```
+
 Local preview needs Ruby and Jekyll:
 
 ```sh
@@ -343,10 +351,7 @@ or an analytics script would make that claim false.
 
 The tooling is in place but the App Store content is not:
 
-- Localized `en-US`, `en-GB`, and `uk` copy in `tools/prepare_app_store_upload_bundle.py` is still `TODO:` placeholder text.
 - `Docs/images/` carries five product screenshots per locale. Four of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured.
-- `Docs/app-store-review-notes.txt` needs the final reviewer notes.
-- GitHub Pages must be switched to the **GitHub Actions** source before the site first deploys.
-- `AppStoreLinks.appID` is still the `0000000000` placeholder.
+- GitHub Pages must be switched to the **GitHub Actions** source, and `site/` must reach `main`, before the site first deploys. Until then the privacy, support and marketing URLs in the metadata are dead links.
 
 `tools/quick`, `tools/full`, and `tools/meta` work today; the upload commands intentionally refuse to run until the items above are done.
