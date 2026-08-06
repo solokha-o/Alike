@@ -215,6 +215,23 @@ All three upload commands:
 - do not submit for review
 - do not create or push tags
 
+### Duplicate screenshots
+
+App Store Connect does not list freshly uploaded screenshots straight away, and
+deliver 2.230.0 reads that empty list as "nothing was uploaded": it prints
+`... is missing on App Store Connect` for every file and uploads the whole deck
+a second time, leaving 9-10 images in a set that should hold 5.
+
+`wait_for_screenshot_indexing_before_verifying` in `fastlane/Fastfile` holds the
+verification back until App Store Connect lists as many screenshots as were just
+uploaded. The wait is capped by `ALIKE_SCREENSHOT_INDEXING_GRACE_SECONDS`
+(default 120); after that deliver decides for itself, which is the old
+behaviour.
+
+If a set already holds duplicates, just upload again — `overwrite_screenshots`
+deletes the whole set first. Watch for a single `Uploaded ...` block and no
+`missing on App Store Connect` lines.
+
 ## Build Upload Command
 
 ### `tools/upload-build [version] [build]`

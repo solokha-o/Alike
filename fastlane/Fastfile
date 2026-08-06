@@ -59,6 +59,52 @@ def preserve_review_attachments_when_not_configured
   end
 end
 
+# App Store Connect does not list freshly uploaded screenshots straight away.
+# deliver's `wait_for_complete` only waits while something is in the
+# UPLOAD_COMPLETE state, so against an empty list it returns instantly, the MD5
+# verification that follows finds nothing (checksums appear only once an asset
+# reaches COMPLETE), every local file is reported "missing on App Store
+# Connect", and the whole deck is uploaded a second time. That is where the
+# duplicate screenshots come from.
+#
+# This waits until App Store Connect lists at least as many screenshots as were
+# just uploaded before deliver is allowed to judge them. The wait is capped, so
+# the worst case is the behaviour we already have.
+def wait_for_screenshot_indexing_before_verifying
+  require "deliver/upload_screenshots"
+  return if Deliver::UploadScreenshots.method_defined?(:alike_original_retry_upload_screenshots_if_needed)
+
+  Deliver::UploadScreenshots.class_eval do
+    alias_method :alike_original_retry_upload_screenshots_if_needed, :retry_upload_screenshots_if_needed
+
+    def retry_upload_screenshots_if_needed(iterator, states, number_of_screenshots, tries, timeout_seconds, localizations, screenshots_per_language)
+      grace = ENV.fetch("ALIKE_SCREENSHOT_INDEXING_GRACE_SECONDS", "120").to_i
+      deadline = Time.now + grace
+
+      loop do
+        visible = iterator.each_app_screenshot.count
+        break if visible >= number_of_screenshots
+
+        if Time.now >= deadline
+          FastlaneCore::UI.important("App Store Connect still lists #{visible} of #{number_of_screenshots} screenshots after #{grace}s; letting deliver decide.")
+          break
+        end
+
+        FastlaneCore::UI.message("Waiting for App Store Connect to list the uploaded screenshots (#{visible}/#{number_of_screenshots})...")
+        sleep(5)
+      end
+
+      # Re-read the states now that the assets exist, so processing is awaited
+      # and checksums are populated before the verification runs.
+      states = wait_for_complete(iterator, timeout_seconds)
+
+      alike_original_retry_upload_screenshots_if_needed(
+        iterator, states, number_of_screenshots, tries, timeout_seconds, localizations, screenshots_per_language
+      )
+    end
+  end
+end
+
 def app_store_api_key
   key_id = ENV["APP_STORE_CONNECT_KEY_ID"]
   issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
@@ -116,6 +162,7 @@ def deliver_store_bundle(skip_metadata:, skip_screenshots:)
   prepare_store_upload_bundle
   log_store_upload_paths
   preserve_review_attachments_when_not_configured
+  wait_for_screenshot_indexing_before_verifying unless skip_screenshots
 
   deliver(
     api_key: api_key,
