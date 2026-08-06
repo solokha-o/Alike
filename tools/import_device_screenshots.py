@@ -3,11 +3,13 @@
 
 Source captures are 1125 x 2436 (the 5.8" iPhone size). Two consumers:
 
-  App Store  `Docs/images/` must be exactly 1320 x 2868, which
-             `tools/prepare_app_store_upload_bundle.py` enforces. 1125 -> 1320
-             is a 1.17x upscale landing at 1320 x 2858, so the remaining 10px
-             is padded with black — the app's screens are black at the top and
-             bottom edges, so the padding is invisible.
+  App Store  `Docs/images/raw/` holds the bare captures at exactly
+             1320 x 2868. 1125 -> 1320 is a 1.17x upscale landing at
+             1320 x 2858, so the remaining 10px is padded with black — the
+             app's screens are black at the top and bottom edges, so the
+             padding is invisible. `tools/generate_app_store_product_screenshots.py`
+             turns these into the marketing renders in `Docs/images/<locale>/`
+             that `tools/prepare_app_store_upload_bundle.py` uploads.
 
   Website    `site/assets/img/screens/` renders in ~260px frames, so a 520px
              wide copy covers 2x with room to spare and keeps the page light.
@@ -65,7 +67,7 @@ def main() -> None:
 
     source = Path(args.source).expanduser()
     repo = Path(args.repo).resolve()
-    store_dir = repo / "Docs" / "images"
+    store_dir = repo / "Docs" / "images" / "raw"
     site_dir = repo / "site" / "assets" / "img" / "screens"
 
     store_dir.mkdir(parents=True, exist_ok=True)
@@ -92,7 +94,8 @@ def main() -> None:
                 print(f"  !! {src.name} is {size[0]}x{size[1]}, expected {SOURCE_SIZE[0]}x{SOURCE_SIZE[1]}")
                 continue
 
-            # App Store: numbered so `numbered_pngs()` picks it up, per locale.
+            # App Store: numbered so the product generator (and in turn
+            # `numbered_pngs()`) picks it up, per locale.
             locale_dir = "en-US" if lang == "en" else lang
             target = store_dir / locale_dir / f"{shot:02d}-{spec['name']}.png"
             target.parent.mkdir(parents=True, exist_ok=True)
