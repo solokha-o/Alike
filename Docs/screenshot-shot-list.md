@@ -55,14 +55,29 @@ Two consumers, one set of captures:
 | 8 | Screenshot cleanup | ✅ | — | — | `08-screenshot-cleanup` |
 | 9 | History | — | — | — | still needed |
 | 10 | Settings with Legal section | — | — | — | still needed |
-| 11 | Paywall with disclosure | — | — | — | still needed |
+| 11 | Paywall with disclosure | ✅ | — | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
 | 12 | User Guide | — | — | — | still needed |
 | 13 | Welcome / privacy | ✅ | ✅ | — | `13-welcome-privacy` |
 
-Outstanding: 9, 10, 11, 12, plus Ukrainian versions of 6 and 8.
+Outstanding: 9, 10, 12, plus Ukrainian versions of 6 and 8.
 
-Shots 10 and 11 do not ship on the listing but are worth capturing as App
-Review evidence that the Legal section and the subscription disclosure exist.
+Shots 10 and 11 do not ship on the listing but are App Review evidence that the
+Legal section and the subscription disclosure exist. They live in
+`Docs/images/review/`, which the upload bundle deliberately ignores — only
+`Docs/images/en-US/` and `Docs/images/uk/` are copied into the listing.
+
+`review/11-paywall-disclosure.png` is the paywall shot App Store Connect asks
+for with the subscription; point `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` at it.
+Both shot 11 files came from the iPhone 17 Pro simulator at 1206 × 2622, which
+the import script does not handle. Converting a 6.3" capture takes:
+
+```sh
+sips --resampleWidth 1320 in.png --out tmp.png
+sips -c 2868 1320 tmp.png --out out.png
+```
+
+The crop trims one pixel from the top and bottom, inside the status-bar and
+home-indicator margins.
 
 The App Store allows up to 10 screenshots, so the nine captured cover the
 listing with room for one more.
