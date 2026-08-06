@@ -9,6 +9,7 @@ request needs that extra depth.
 | `Architecture/adaptive-ui-layout` | Responsive SwiftUI layout, iPhone/iPad adaptation, size classes, Dynamic Type | Rarely; use SwiftUI external only for platform API uncertainty | No |
 | `Architecture/SwiftUIModular` | New package/module, package boundaries, modular SwiftUI architecture | Rarely; use SwiftUI external only for broad platform API guidance | No |
 | `DesignConcept` | Native SwiftUI design concepts, colors, typography, SF Symbols | Rarely; use SwiftUI external only for API-specific design implementation | No |
+| `DesignConcept/app-store-screenshots` | App Store screenshots, product/marketing screenshots, screenshot copy, phone mockups, screenshot generator | No | No |
 | `External/core-data-expert` | Core Data, migrations, persistent history, fetch/context issues | This is already external depth; use directly only for Core Data tasks | No |
 | `External/emilkowalski-skills/animation-vocabulary` | Name or disambiguate an animation/motion effect from a visual description | This is external terminology depth; use directly for naming, not implementation | Yes |
 | `External/emilkowalski-skills/apple-design` | Apple-style fluid motion, gesture physics, interruptibility, feedback, and spatial consistency | Pair with the narrowest local SwiftUI/design skill; translate web examples to native SwiftUI and keep local guidance authoritative | No |

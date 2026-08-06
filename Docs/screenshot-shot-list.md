@@ -14,12 +14,38 @@ python3 tools/import_device_screenshots.py --source ~/Downloads
 
 The mapping from source filename to shot lives in `SHOTS` in that script.
 
-Two consumers, one set of captures:
+Three consumers, one set of captures:
 
 | Consumer | Where the files go |
 | --- | --- |
-| App Store | `Docs/images/` — picked up by `tools/prepare_app_store_upload_bundle.py` and copied into every upload-safe locale |
+| Captures | `Docs/images/raw/<locale>/` — the bare screens, the input for everything below |
+| App Store | `Docs/images/<locale>/` — product renders, picked up by `tools/prepare_app_store_upload_bundle.py` and copied into every upload-safe locale |
 | Landing page | `site/assets/img/screens/` — see "Wiring a screenshot into the site" below |
+
+## From captures to product screenshots
+
+The listing does not ship bare captures. `tools/generate_app_store_product_screenshots.py`
+renders five marketing slides per locale — headline, supporting line, tilted
+iPhone — onto a dark canvas that matches the app's own appearance:
+
+```sh
+build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
+```
+
+The venv is created once, because Pillow is not in the system Python:
+
+```sh
+python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow
+```
+
+Slides, copy and layout live in `SLIDES` and `COPY` in that script. Four
+background variants share the same concept; `--drafts` renders all of them into
+`build/generated/product_screenshot_drafts/` with a comparison contact sheet, and
+`--variant <name>` renders the chosen one into `Docs/images/`. The listing
+currently ships `spotlight`.
+
+See `Skills/DesignConcept/app-store-screenshots/SKILL.md` for the copy and
+visual rules, and the QA checklist to run before an upload.
 
 ## Capture spec
 
@@ -30,8 +56,8 @@ Two consumers, one set of captures:
 - **Format:** PNG. Files must be named with a leading two-digit number
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
-- **Languages:** capture every shot twice, EN and UK. `Docs/images/` feeds
-  `en-US`, `en-GB`, and `uk`.
+- **Languages:** capture every shot twice, EN and UK. `Docs/images/raw/en-US/`
+  feeds `en-US` and `en-GB`; `Docs/images/raw/uk/` feeds `uk`.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become
@@ -61,10 +87,16 @@ Two consumers, one set of captures:
 
 Outstanding: 9, 10, 12, plus Ukrainian versions of 6 and 8.
 
+Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES`; the others are
+captured but unused on the listing. Adding one to the deck means adding a
+`SlideLayout` and a copy line per locale in
+`tools/generate_app_store_product_screenshots.py`.
+
 Shots 10 and 11 do not ship on the listing but are App Review evidence that the
 Legal section and the subscription disclosure exist. They live in
-`Docs/images/review/`, which the upload bundle deliberately ignores — only
-`Docs/images/en-US/` and `Docs/images/uk/` are copied into the listing.
+`Docs/images/review/`, which the upload bundle deliberately ignores — like
+`Docs/images/raw/`, it is a subfolder, and only numbered PNGs sitting directly
+in `Docs/images/en-US/` and `Docs/images/uk/` are copied into the listing.
 
 `review/11-paywall-disclosure.png` is the paywall shot App Store Connect asks
 for with the subscription; point `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` at it.

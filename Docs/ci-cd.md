@@ -290,7 +290,9 @@ ALIKE_NO_ENV=1 tools/meta
 ## Source Of Truth
 
 - App Review notes: `Docs/app-store-review-notes.txt`
-- Screenshot source assets: `Docs/images/`
+- Screenshot captures: `Docs/images/raw/`
+- Uploaded product screenshots: `Docs/images/<locale>/`, rendered by
+  `tools/generate_app_store_product_screenshots.py`
 - Metadata source: `tools/prepare_app_store_upload_bundle.py`
 - Subscription catalog reference: `Docs/Subscriptions.md`
 - Generated upload bundle: `build/generated/store_upload/`
@@ -342,7 +344,7 @@ or an analytics script would make that claim false.
 The tooling is in place but the App Store content is not:
 
 - Localized `en-US`, `en-GB`, and `uk` copy in `tools/prepare_app_store_upload_bundle.py` is still `TODO:` placeholder text.
-- `Docs/images/` has no screenshots yet, so screenshot upload is not usable. See `Docs/screenshot-shot-list.md` for the capture spec.
+- `Docs/images/` carries five product screenshots per locale. Four of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured.
 - `Docs/app-store-review-notes.txt` needs the final reviewer notes.
 - GitHub Pages must be switched to the **GitHub Actions** source before the site first deploys.
 - `AppStoreLinks.appID` is still the `0000000000` placeholder.
