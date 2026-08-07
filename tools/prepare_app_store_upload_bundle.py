@@ -12,11 +12,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_SCREENSHOTS_ROOT = ROOT / "Docs" / "images"
-GENERATED_STORE_UPLOAD_ROOT = Path(
-    os.environ.get(
-        "ALIKE_GENERATED_STORE_UPLOAD_ROOT",
-        ROOT / "build" / "generated" / "store_upload",
-    )
+generated_store_upload_root_value = os.environ.get("ALIKE_GENERATED_STORE_UPLOAD_ROOT", "").strip()
+# An empty override must fall back to the default: Path("") is the current
+# directory, and reset_output_dirs() would then rmtree ./metadata,
+# ./screenshots and ./iap_metadata in whatever directory the tool runs from.
+GENERATED_STORE_UPLOAD_ROOT = (
+    Path(generated_store_upload_root_value)
+    if generated_store_upload_root_value
+    else ROOT / "build" / "generated" / "store_upload"
 )
 STORE_UPLOAD_ROOT = GENERATED_STORE_UPLOAD_ROOT
 METADATA_ROOT = GENERATED_STORE_UPLOAD_ROOT / "metadata"

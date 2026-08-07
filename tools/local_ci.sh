@@ -221,21 +221,27 @@ package_slug() {
   printf "%s" "${package_path#$ROOT_DIR/}" | tr '/:' '--' | tr -cd '[:alnum:]_.-'
 }
 
-swiftpm_common_args() {
+# Populates SWIFTPM_COMMON_ARGS instead of printing, so paths containing
+# spaces survive the expansion at the call site.
+SWIFTPM_COMMON_ARGS=()
+
+set_swiftpm_common_args() {
   local package_path="$1"
   local slug
   slug="$(package_slug "$package_path")"
 
-  printf '%s\n' \
-    --package-path "$package_path" \
-    --scratch-path "$SWIFTPM_SCRATCH_ROOT/$slug" \
+  SWIFTPM_COMMON_ARGS=(
+    --package-path "$package_path"
+    --scratch-path "$SWIFTPM_SCRATCH_ROOT/$slug"
     --cache-path "$SWIFTPM_SHARED_CACHE"
+  )
 }
 
 run_package_tests() {
   local package_path
   for package_path in "$@"; do
-    run_step "swift test ${package_path#$ROOT_DIR/}" swift test $(swiftpm_common_args "$package_path")
+    set_swiftpm_common_args "$package_path"
+    run_step "swift test ${package_path#$ROOT_DIR/}" swift test "${SWIFTPM_COMMON_ARGS[@]}"
   done
 }
 
@@ -258,10 +264,11 @@ run_package_validation() {
       skip_step "swift test $relative_path" "not runnable under plain swift test on macOS; covered by the app compile gate"
       continue
     fi
+    set_swiftpm_common_args "$package_path"
     if [[ -d "$package_path/Tests" ]]; then
-      run_step "swift test $relative_path" swift test $(swiftpm_common_args "$package_path")
+      run_step "swift test $relative_path" swift test "${SWIFTPM_COMMON_ARGS[@]}"
     else
-      run_step "swift build $relative_path" swift build $(swiftpm_common_args "$package_path")
+      run_step "swift build $relative_path" swift build "${SWIFTPM_COMMON_ARGS[@]}"
     fi
   done
 }
