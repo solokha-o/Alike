@@ -217,20 +217,30 @@ All three upload commands:
 
 ### Duplicate screenshots
 
-App Store Connect does not list freshly uploaded screenshots straight away, and
-deliver 2.230.0 reads that empty list as "nothing was uploaded": it prints
-`... is missing on App Store Connect` for every file and uploads the whole deck
-a second time, leaving 9-10 images in a set that should hold 5.
+deliver 2.230.0 decides whether a screenshot arrived by matching the local MD5
+against `sourceFileChecksum` on App Store Connect, and App Store Connect keeps
+returning that field as `null` for roughly 20-30 seconds after the bytes land.
+deliver looks about 7 seconds in, prints `... is missing on App Store Connect`
+for every file and uploads the whole deck a second time, leaving 9-10 images in
+a set that should hold 5.
 
-`wait_for_screenshot_indexing_before_verifying` in `fastlane/Fastfile` holds the
-verification back until App Store Connect lists as many screenshots as were just
-uploaded. The wait is capped by `ALIKE_SCREENSHOT_INDEXING_GRACE_SECONDS`
-(default 120); after that deliver decides for itself, which is the old
-behaviour.
+Counting what App Store Connect lists does not detect this: Spaceship creates a
+placeholder row before it uploads any bytes, so the full count is there from the
+start.
+
+`wait_for_screenshot_checksums_before_verifying` in `fastlane/Fastfile` holds the
+verification back until every local checksum is readable on App Store Connect.
+The wait is capped by `ALIKE_SCREENSHOT_CHECKSUM_GRACE_SECONDS` (default 300).
+On timeout it deletes the screenshots for the locales being uploaded, so
+deliver's own retry starts from an empty set instead of stacking a second copy
+on top; the worst case is a slow clean re-upload, never a doubled set. A
+screenshot that App Store Connect reports as failed ends the wait immediately
+and is left to deliver's retry.
 
 If a set already holds duplicates, just upload again — `overwrite_screenshots`
-deletes the whole set first. Watch for a single `Uploaded ...` block and no
-`missing on App Store Connect` lines.
+deletes the whole set first. Watch for at least one
+`Waiting for App Store Connect to publish screenshot checksums ...` line, a
+single `Uploaded ...` block, and no `missing on App Store Connect` lines.
 
 ## Build Upload Command
 

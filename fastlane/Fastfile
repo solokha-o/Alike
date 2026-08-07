@@ -59,43 +59,89 @@ def preserve_review_attachments_when_not_configured
   end
 end
 
-# App Store Connect does not list freshly uploaded screenshots straight away.
-# deliver's `wait_for_complete` only waits while something is in the
-# UPLOAD_COMPLETE state, so against an empty list it returns instantly, the MD5
-# verification that follows finds nothing (checksums appear only once an asset
-# reaches COMPLETE), every local file is reported "missing on App Store
-# Connect", and the whole deck is uploaded a second time. That is where the
-# duplicate screenshots come from.
+# deliver decides whether a screenshot made it by matching the local MD5 against
+# `sourceFileChecksum` on App Store Connect, and App Store Connect keeps
+# returning that field as nil for roughly 20-30 seconds after the bytes land.
+# deliver looks about 7 seconds in, finds no checksums, reports every local file
+# as "missing on App Store Connect" and uploads the whole deck a second time.
+# That is where the duplicate screenshots come from.
 #
-# This waits until App Store Connect lists at least as many screenshots as were
-# just uploaded before deliver is allowed to judge them. The wait is capped, so
-# the worst case is the behaviour we already have.
-def wait_for_screenshot_indexing_before_verifying
+# Counting the screenshots App Store Connect lists does not detect this:
+# Spaceship POSTs a placeholder row before it uploads any bytes, so the full
+# count is there from the start.
+#
+# This holds the verification back until every local checksum is actually
+# readable on App Store Connect. The wait is capped, and on timeout the
+# screenshots for the locales being uploaded are deleted first, so deliver's own
+# retry starts from an empty set instead of stacking a second copy on top.
+def wait_for_screenshot_checksums_before_verifying
   require "deliver/upload_screenshots"
   return if Deliver::UploadScreenshots.method_defined?(:alike_original_retry_upload_screenshots_if_needed)
 
   Deliver::UploadScreenshots.class_eval do
     alias_method :alike_original_retry_upload_screenshots_if_needed, :retry_upload_screenshots_if_needed
 
-    def retry_upload_screenshots_if_needed(iterator, states, number_of_screenshots, tries, timeout_seconds, localizations, screenshots_per_language)
-      grace = ENV.fetch("ALIKE_SCREENSHOT_INDEXING_GRACE_SECONDS", "120").to_i
+    # Local files never change during a run, so these are collected once and the
+    # polling below only re-reads App Store Connect.
+    def alike_local_checksums(iterator, screenshots_per_language)
+      iterator.each_local_screenshot(screenshots_per_language)
+              .map { |_, _, screenshot| Deliver::UploadScreenshots.calculate_checksum(screenshot.path) }
+    end
+
+    # Returns the checksums App Store Connect publishes right now, plus whether
+    # any screenshot is in an error state. A failed asset never publishes a
+    # checksum, so waiting on it would only burn the whole grace period.
+    def alike_remote_checksums(iterator)
+      checksums = []
+      failed = false
+
+      iterator.each_app_screenshot do |_, _, app_screenshot|
+        checksums << app_screenshot.source_file_checksum
+        failed ||= app_screenshot.error?
+      end
+
+      [checksums.compact, failed]
+    end
+
+    def alike_delete_screenshots_for_upload(iterator, screenshots_per_language)
+      iterator.each_app_screenshot do |localization, _, app_screenshot|
+        next unless screenshots_per_language.key?(localization.locale)
+
+        app_screenshot.delete!
+      end
+    end
+
+    def alike_wait_for_screenshot_checksums(iterator, screenshots_per_language)
+      local_checksums = alike_local_checksums(iterator, screenshots_per_language)
+      grace = ENV.fetch("ALIKE_SCREENSHOT_CHECKSUM_GRACE_SECONDS", "300").to_i
       deadline = Time.now + grace
 
       loop do
-        visible = iterator.each_app_screenshot.count
-        break if visible >= number_of_screenshots
+        remote_checksums, failed = alike_remote_checksums(iterator)
+        unpublished = local_checksums.count { |checksum| !remote_checksums.include?(checksum) }
+        return if unpublished.zero?
 
-        if Time.now >= deadline
-          FastlaneCore::UI.important("App Store Connect still lists #{visible} of #{number_of_screenshots} screenshots after #{grace}s; letting deliver decide.")
-          break
+        if failed
+          FastlaneCore::UI.important("App Store Connect reports a failed screenshot; letting deliver retry.")
+          return
         end
 
-        FastlaneCore::UI.message("Waiting for App Store Connect to list the uploaded screenshots (#{visible}/#{number_of_screenshots})...")
+        if Time.now >= deadline
+          FastlaneCore::UI.important("App Store Connect still has #{unpublished} of #{local_checksums.count} screenshot checksums unpublished after #{grace}s; deleting the uploaded screenshots so the retry cannot duplicate them.")
+          alike_delete_screenshots_for_upload(iterator, screenshots_per_language)
+          return
+        end
+
+        FastlaneCore::UI.message("Waiting for App Store Connect to publish screenshot checksums (#{unpublished} of #{local_checksums.count} still unpublished)...")
         sleep(5)
       end
+    end
 
-      # Re-read the states now that the assets exist, so processing is awaited
-      # and checksums are populated before the verification runs.
+    def retry_upload_screenshots_if_needed(iterator, states, number_of_screenshots, tries, timeout_seconds, localizations, screenshots_per_language)
+      alike_wait_for_screenshot_checksums(iterator, screenshots_per_language) unless screenshots_per_language.empty?
+
+      # Re-read the states after the wait so `is_processing` is judged on fresh
+      # state rather than the hash captured before it.
       states = wait_for_complete(iterator, timeout_seconds)
 
       alike_original_retry_upload_screenshots_if_needed(
@@ -162,7 +208,7 @@ def deliver_store_bundle(skip_metadata:, skip_screenshots:)
   prepare_store_upload_bundle
   log_store_upload_paths
   preserve_review_attachments_when_not_configured
-  wait_for_screenshot_indexing_before_verifying unless skip_screenshots
+  wait_for_screenshot_checksums_before_verifying unless skip_screenshots
 
   deliver(
     api_key: api_key,
