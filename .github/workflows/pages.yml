@@ -24,7 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pages is not enabled on the repository yet; `enablement` lets the first
+      # run create the site instead of failing with "Not Found".
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
