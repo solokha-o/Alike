@@ -22,13 +22,46 @@ Customer-facing paywalls must use StoreKit's localized `displayName` and
 `displayPrice`. The prices above describe the intended App Store Connect setup;
 they are not a currency-formatting source for UI.
 
+## Localizations
+
+Localized product copy lives in `Alike/Configuration/Alike.storekit` and is the
+source `tools/prepare_app_store_upload_bundle.py` reads to emit
+`build/generated/store_upload/iap_metadata/app_store_connect_iap_metadata.json`.
+App Store Connect limits the display name to 30 characters and the description
+to 45.
+
+| Product | Locale | Display name | Description |
+| --- | --- | --- | --- |
+| Group | en-US | Alike Pro | — |
+| Group | uk | Alike Pro | — |
+| Yearly | en-US | Alike Pro Yearly | Unlock all Alike Pro photo cleanup features. |
+| Yearly | uk | Alike Pro на рік | Усі функції очищення фото Alike Pro. |
+| Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
+| Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
+
+The paywall shows StoreKit's localized `displayName`, so a missing locale means
+that storefront falls back to English plan names in the paywall and in
+Settings, then Subscriptions.
+
+`fastlane deliver` does not touch in-app purchases. Subscription and group
+localizations reach App Store Connect only through
+`bundle exec ruby tools/app_store_iap_metadata.rb upload-localizations`, which
+is not wired into any lane. That script upserts localizations onto products
+that already exist; it never creates the group or the products. It also
+tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
+skipped rather than failing, so read the `skipped` line in its output before
+assuming `uk` landed.
+
 ## App Store Connect setup
 
 1. Create one auto-renewable subscription group named **Alike Pro**.
 2. Create the yearly and monthly products with the exact identifiers above.
 3. Set yearly above monthly in the subscription level order.
 4. Configure the intended US prices and localize each storefront in App Store
-   Connect as release markets are added.
+   Connect as release markets are added. Add the en-US and uk product
+   localizations from the table above, either by hand or with
+   `tools/app_store_iap_metadata.rb upload-localizations` once the products
+   exist.
 5. Add a seven-day free-trial introductory offer to yearly only. Eligibility is
    determined by StoreKit per subscription group.
 6. Supply review information and submit the products with the app version that
