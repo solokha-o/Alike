@@ -84,12 +84,15 @@ open Alike/Alike.xcodeproj
 
 3. **Build & Run** (⌘R)
 
-## 🧾 Logging
+## 🧾 Schemes and logging
 
-There are two shared schemes:
+There are three shared schemes:
 
-- `Alike` — normal logging (info/errors only).
-- `Alike-VerboseLogs` — enables verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
+- `Alike` — builds and runs **Release** with no debugger attached and no local StoreKit configuration, so ⌘R gives the same build the App Store gets. Normal logging (info/errors only). Its Test action stays on Debug, because the test targets need the `#if DEBUG` mocks in `Packages/Core/Sources/Core/Mocks`.
+- `Alike-VerboseLogs` — Debug build with verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
+- `Alike-DebugVerboseLogs` — Debug build with verbose logging, profiled and analyzed in Debug too.
+
+Use one of the verbose schemes for anything that needs a debugger, the debug menu, the premium overrides, or local StoreKit transactions — all of those are compiled out of `Alike`.
 
 ## 📱 User flow
 

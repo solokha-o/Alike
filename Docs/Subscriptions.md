@@ -40,8 +40,10 @@ development and simulator QA.
 
 ## Local QA
 
-The shared `Alike`, `Alike-VerboseLogs`, and `Alike-DebugVerboseLogs` launch
-schemes use `Alike/Configuration/Alike.storekit`. Xcode's StoreKit transaction
+The `Alike-VerboseLogs` and `Alike-DebugVerboseLogs` launch schemes use
+`Alike/Configuration/Alike.storekit`; use one of them for subscription QA. The
+`Alike` scheme runs Release with no StoreKit configuration attached, so its
+purchases go to the real StoreKit sandbox. Xcode's StoreKit transaction
 manager can reset transactions and simulate interrupted purchases, Ask to Buy,
 billing retry, renewals, expiration, revocation, and refunds. Change those
 controls only for the scenario under test and restore their defaults afterward.

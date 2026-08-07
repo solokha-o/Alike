@@ -271,13 +271,25 @@ It does not:
 
 ## Schemes
 
-| Scheme | Use for |
-|---|---|
-| `Alike` | local validation, package and app compile checks, release archive/export, TestFlight upload |
-| `Alike-VerboseLogs` | manual debugging with verbose scan/vision/storage logging |
-| `Alike-DebugVerboseLogs` | manual debugging with verbose logging in Debug builds |
+| Scheme | Run configuration | Use for |
+|---|---|---|
+| `Alike` | Release | local validation, package and app compile checks, release archive/export, TestFlight upload |
+| `Alike-VerboseLogs` | Debug | manual debugging with verbose scan/vision/storage logging |
+| `Alike-DebugVerboseLogs` | Debug | manual debugging with verbose logging in Debug builds |
 
 Only `Alike` is used by CI/CD. The verbose schemes are for interactive debugging.
+
+`Alike` runs Release with no debugger attached and no local StoreKit
+configuration, so ⌘R gives the same build the App Store gets: optimized, with
+every `#if DEBUG` surface compiled out (the premium override in
+`DebugPremiumAccessController`, the debug section in `SettingsView`, the
+`Core/Mocks` doubles) and purchases going to the real StoreKit sandbox instead
+of `Alike.storekit`. Use `Alike-DebugVerboseLogs` for anything that needs a
+debugger, the debug menu, or local StoreKit transactions.
+
+Its Test action stays on Debug: the test targets depend on the `#if DEBUG`
+mocks in `Packages/Core/Sources/Core/Mocks`, which do not exist in a Release
+build.
 
 ## Reports
 
