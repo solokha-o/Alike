@@ -1,7 +1,8 @@
 # Alike Screenshot Shot List
 
-Nine of the thirteen shots are captured, in English and Ukrainian, from a
-physical iPhone at 1125 x 2436. `tools/import_device_screenshots.py` upscales
+Nine of the thirteen shots are captured, from a physical iPhone at 1125 x 2436.
+One shot is still open, one is optional and the rest are retired — see
+"What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), and emits
 520px copies for the landing-page device frames.
@@ -60,7 +61,9 @@ rules behind it.
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
 - **Languages:** capture every shot twice, EN and UK. `Docs/images/raw/en-US/`
-  feeds `en-US`, `Docs/images/raw/uk/` feeds `uk`. `en-GB` is not uploaded.
+  feeds `en-US`, `Docs/images/raw/uk/` feeds `uk`. Those are the only two
+  localizations the listing has. Some shots are English-only on purpose; the
+  status table says which.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become
@@ -83,16 +86,44 @@ rules behind it.
 | 3 | Cleanup queue | ✅ | ✅ | ✅ | `03-cleanup-queue` |
 | 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | `04-cluster-details` |
 | 5 | Comparison review | ✅ | ✅ | ✅ | `05-comparison-review` |
-| 6 | Cleanup confirm (iOS dialog) | ✅ | — | — | `06-cleanup-confirm` |
+| 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | — | `06-cleanup-confirm` |
 | 7 | Cleanup progress | ✅ | ✅ | ✅ | `07-cleanup-progress` |
-| 8 | Screenshot cleanup | ✅ | — | — | `08-screenshot-cleanup` |
-| 9 | History | — | — | — | still needed |
-| 10 | Settings with Legal section | — | — | — | still needed |
-| 11 | Paywall with disclosure | ✅ | — | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
-| 12 | User Guide | — | — | — | still needed |
+| 8 | Screenshot cleanup | ✅ | n/a | — | `08-screenshot-cleanup` |
+| 9 | History | optional | optional | — | — |
+| 10 | Settings with Legal section | open | n/a | — | — |
+| 11 | Paywall with disclosure | ✅ | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
+| 12 | User Guide | retired | retired | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | — | `13-welcome-privacy` |
 
-Outstanding: 9, 10, 12, plus Ukrainian versions of 6 and 8.
+### What is actually outstanding
+
+Every shot is now either captured, or has a reason it is not. A shot with no
+consumer is not a gap.
+
+**Open — one shot:**
+
+- **10. Settings with the Legal section.** App Review evidence that the legal
+  links are in the app. English only; App Review reads one language. Cheap to
+  capture and worth having if the legal links are ever queried.
+
+**Optional — capture only if you decide to grow a surface:**
+
+- **9. History.** Earlier notes called this "the last landing-page frame". That
+  is no longer true: `site/_data/screens.yml` holds five slots and all five have
+  images. Adding History means adding a sixth entry there, or a sixth deck
+  slide — a deliberate choice about the surface, not a hole to plug.
+
+**Retired — with the reason, so nobody re-opens them:**
+
+- **12. User Guide.** Always "optional, listing only". The deck is five slides
+  with a deliberate alternating rhythm and no room for a sixth that says nothing
+  new.
+- **Ukrainian 6 and 8.** Shots 6 and 8 are not in the deck or on the site in
+  *either* locale, so a Ukrainian twin has no consumer.
+- **Ukrainian 11.** App Store Connect takes one review screenshot per in-app
+  purchase and it is locale-agnostic. The English capture is that screenshot.
+
+`n/a` in the table means the same thing: not missing, not wanted.
 
 Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES`; the others are
 captured but unused on the listing. Adding one to the deck means adding a
