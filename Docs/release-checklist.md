@@ -174,7 +174,12 @@ Manual, in App Store Connect:
 - [ ] App Review information filled — contact, notes, no demo account (there is
       none; `demo_account_required` is false and the demo fields are
       intentionally empty).
-- [ ] Age rating, category, export compliance answered.
+- [ ] Age rating and category answered. Export compliance should not be asked
+      at all — `INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO` in the Xcode
+      project answers it per build, matching `uses_non_exempt_encryption: false`
+      in the Fastfile. The app implements no encryption of its own; if the
+      question still appears, the answer is "None of the algorithms mentioned
+      above".
 - [ ] Subscription attached to the version for review.
 - [ ] Submitted.
 
