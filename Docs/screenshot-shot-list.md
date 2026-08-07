@@ -66,10 +66,12 @@ rules behind it.
 - **Content:** the current captures use a real photo library. These become
   public assets, so before each release check every frame for recognisable
   faces, location-revealing images, readable personal data, and anything legible
-  on a screen shown inside a photo. `tools/generate_demo_library.py` builds a
-  synthetic library if you would rather not publish real photos. The frames
-  captured so far have been reviewed and accepted as they are, including the
-  laptop screen visible in shot 5 UK; the sweep applies to new captures.
+  on a screen shown inside a photo. The frames captured so far have been
+  reviewed and accepted as they are, including the laptop screen visible in
+  shot 5 UK; the sweep applies to new captures. There is no synthetic-library
+  generator in the repo — an earlier draft of this document promised a
+  `tools/generate_demo_library.py` that was never written. Curate the capture
+  device's library by hand instead.
 - **Status bar:** full signal, full battery, no notifications.
 
 ## Shots
