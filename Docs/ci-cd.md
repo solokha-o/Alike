@@ -2,6 +2,9 @@
 
 Run everything from the repository root.
 
+Shipping a release rather than validating a change? Follow
+`Docs/release-checklist.md` — it sequences these commands into the go-live gate.
+
 ## Quick Start
 
 Daily commands are the short wrappers in `tools/`:
@@ -335,6 +338,7 @@ ALIKE_NO_ENV=1 tools/meta
 - Uploaded product screenshots: `Docs/images/<locale>/`, rendered by
   `tools/generate_app_store_product_screenshots.py`
 - Metadata source: `tools/prepare_app_store_upload_bundle.py`
+- Screenshot deck brief: `Docs/screenshot-brief.md`
 - Subscription catalog reference: `Docs/Subscriptions.md`
 - Generated upload bundle: `build/generated/store_upload/`
 
@@ -390,7 +394,7 @@ or an analytics script would make that claim false.
 
 The tooling is in place but the App Store content is not:
 
-- `Docs/images/` carries five product screenshots per locale. Four of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured.
+- `Docs/images/` carries five product screenshots per locale. Three of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured, plus some Ukrainian counterparts. None of them are in the shipping deck — see `Docs/screenshot-brief.md`.
 - GitHub Pages must be switched to the **GitHub Actions** source, and `site/` must reach `main`, before the site first deploys. Until then the privacy, support and marketing URLs in the metadata are dead links.
 
 `tools/quick`, `tools/full`, and `tools/meta` work today; the upload commands intentionally refuse to run until the items above are done.

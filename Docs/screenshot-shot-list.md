@@ -44,8 +44,11 @@ background variants share the same concept; `--drafts` renders all of them into
 `--variant <name>` renders the chosen one into `Docs/images/`. The listing
 currently ships `spotlight`.
 
-See `Skills/DesignConcept/app-store-screenshots/SKILL.md` for the copy and
-visual rules, and the QA checklist to run before an upload.
+`Docs/screenshot-brief.md` is the production brief for that deck: the five
+slides in listing order, their copy per locale, the composition and band colour
+of each, and what to check before upload. See
+`Skills/DesignConcept/app-store-screenshots/SKILL.md` for the copy and visual
+rules behind it.
 
 ## Capture spec
 
@@ -64,7 +67,9 @@ visual rules, and the QA checklist to run before an upload.
   public assets, so before each release check every frame for recognisable
   faces, location-revealing images, readable personal data, and anything legible
   on a screen shown inside a photo. `tools/generate_demo_library.py` builds a
-  synthetic library if you would rather not publish real photos.
+  synthetic library if you would rather not publish real photos. The frames
+  captured so far have been reviewed and accepted as they are, including the
+  laptop screen visible in shot 5 UK; the sweep applies to new captures.
 - **Status bar:** full signal, full battery, no notifications.
 
 ## Shots
