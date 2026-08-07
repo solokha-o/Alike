@@ -11,9 +11,13 @@ Command reference: `Docs/ci-cd.md`. Branch and tag rules:
 ## 0. Environment
 
 - [ ] `.env` present and loaded. It carries `ALIKE_PRIVACY_URL`,
-      `ALIKE_SUPPORT_URL`, the four `ALIKE_REVIEW_*` App Review contact values,
-      and `ALIKE_IAP_REVIEW_SCREENSHOT_PATH`. Every upload command refuses to
-      run without the URLs, by design.
+      `ALIKE_SUPPORT_URL`, `ALIKE_TERMS_URL`, the optional
+      `ALIKE_MARKETING_URL`, the four `ALIKE_REVIEW_*` App Review contact
+      values, and `ALIKE_IAP_REVIEW_SCREENSHOT_PATH`. Every upload command
+      refuses to run without the privacy and support URLs, by design.
+      `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
+      description points at — a stale value there ships a wrong link in the
+      listing without failing anything.
 - [ ] App Store Connect API credentials available to fastlane.
 - [ ] `xcode-select` points at the full Xcode, not the Command Line Tools.
 
@@ -42,8 +46,11 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 
 ## 3. Metadata
 
-- [ ] Release notes updated for the release, in `en-US`, `en-GB` and `uk`
-      (`METADATA` in `tools/prepare_app_store_upload_bundle.py`).
+- [ ] Release notes updated for the release in `METADATA`
+      (`tools/prepare_app_store_upload_bundle.py`). `en-US` and `uk` are the
+      locales that actually upload; `en-GB` is kept in sync so the localization
+      can be switched back on, but nothing generates or ships it today
+      (`UPLOAD_SAFE_LOCALES`).
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
 
 ```sh
@@ -51,8 +58,8 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ```
 
 - [ ] Every field inside its limit — subtitle 30 chars, keywords 100 UTF-8
-      bytes, promotional text 170 chars, description 4000 chars. The generator
-      enforces these; a pass means they hold.
+      bytes, promotional text 170 chars, description 4000 chars, release notes
+      4000 chars. The generator enforces these; a pass means they hold.
 - [ ] `Docs/app-store-review-notes.txt` still describes the build being shipped:
       no account, why photo access is needed, on-device Vision, confirmed
       deletion into Recently Deleted, the three paywall entry points.

@@ -52,6 +52,7 @@ APP_SUBTITLE_MAX_LENGTH = 30
 APP_KEYWORDS_MAX_BYTES = 100
 APP_PROMOTIONAL_TEXT_MAX_LENGTH = 170
 APP_DESCRIPTION_MAX_LENGTH = 4000
+APP_RELEASE_NOTES_MAX_LENGTH = 4000
 APP_REVIEW_NOTES_MAX_LENGTH = 4000
 IAP_DISPLAY_NAME_MIN_LENGTH = 2
 IAP_DISPLAY_NAME_MAX_LENGTH = 30
@@ -680,6 +681,9 @@ def validate_metadata() -> list[str]:
             errors.append(f"{promotional_path} exceeds {APP_PROMOTIONAL_TEXT_MAX_LENGTH} characters")
         if description_path.exists() and len(description_path.read_text(encoding="utf-8").strip()) > APP_DESCRIPTION_MAX_LENGTH:
             errors.append(f"{description_path} exceeds {APP_DESCRIPTION_MAX_LENGTH} characters")
+        release_notes_path = locale_root / "release_notes.txt"
+        if release_notes_path.exists() and len(release_notes_path.read_text(encoding="utf-8").strip()) > APP_RELEASE_NOTES_MAX_LENGTH:
+            errors.append(f"{release_notes_path} exceeds {APP_RELEASE_NOTES_MAX_LENGTH} characters")
     return errors
 
 
