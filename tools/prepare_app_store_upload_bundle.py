@@ -419,6 +419,58 @@ def exported_localizations(localizations: list[dict]) -> list[dict]:
     return exported
 
 
+# StoreKit describes the offer with an ISO 8601 period and a payment mode;
+# App Store Connect wants its own enums. Only the durations Apple actually
+# offers for an introductory offer are mapped, so an unsupported period fails
+# loudly here instead of being rejected mid-upload.
+STOREKIT_TO_APP_STORE_OFFER_DURATION = {
+    "P3D": "THREE_DAYS",
+    "P1W": "ONE_WEEK",
+    "P2W": "TWO_WEEKS",
+    "P1M": "ONE_MONTH",
+    "P2M": "TWO_MONTHS",
+    "P3M": "THREE_MONTHS",
+    "P6M": "SIX_MONTHS",
+    "P1Y": "ONE_YEAR",
+}
+
+STOREKIT_TO_APP_STORE_OFFER_MODE = {
+    "free": "FREE_TRIAL",
+    "payAsYouGo": "PAY_AS_YOU_GO",
+    "payUpFront": "PAY_UP_FRONT",
+}
+
+
+def exported_introductory_offer(subscription: dict) -> dict | None:
+    offer = subscription.get("introductoryOffer")
+    if not offer:
+        return None
+
+    period = offer.get("subscriptionPeriod", "")
+    payment_mode = offer.get("paymentMode", "")
+    product_id = subscription.get("productID", "<unknown>")
+
+    duration = STOREKIT_TO_APP_STORE_OFFER_DURATION.get(period)
+    if duration is None:
+        raise SystemExit(
+            f"{product_id}: introductory offer period {period!r} has no App Store Connect duration"
+        )
+
+    mode = STOREKIT_TO_APP_STORE_OFFER_MODE.get(payment_mode)
+    if mode is None:
+        raise SystemExit(
+            f"{product_id}: introductory offer payment mode {payment_mode!r} is not supported"
+        )
+
+    return {
+        "offerMode": mode,
+        "duration": duration,
+        "numberOfPeriods": offer.get("numberOfPeriods", 1),
+        "storekitSubscriptionPeriod": period,
+        "storekitPaymentMode": payment_mode,
+    }
+
+
 def iap_payload_from_storekit(storekit: dict) -> dict:
     subscription_groups = []
     subscriptions = []
@@ -442,6 +494,7 @@ def iap_payload_from_storekit(storekit: dict) -> dict:
                     "level": subscription.get("groupNumber"),
                     "recurringSubscriptionPeriod": subscription.get("recurringSubscriptionPeriod"),
                     "displayPrice": subscription.get("displayPrice"),
+                    "introductoryOffer": exported_introductory_offer(subscription),
                     "localizations": exported_localizations(subscription.get("localizations", [])),
                 }
             )

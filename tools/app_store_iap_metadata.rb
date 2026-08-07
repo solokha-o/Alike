@@ -221,6 +221,24 @@ def in_app_purchase_localizations(client, iap_id)
   client.paged("/v2/inAppPurchases/#{iap_id}/inAppPurchaseLocalizations?limit=200")
 end
 
+def subscription_introductory_offers(client, subscription_id)
+  client.paged("/v1/subscriptions/#{subscription_id}/introductoryOffers?limit=200&include=territory")
+end
+
+# App Store Connect requires an introductory offer to name a territory, so the
+# offer has to be created once per storefront. The subscription's own price
+# territories are exactly the storefronts where it can be sold, which makes
+# them the right scope; the app has no availableTerritories relationship in
+# this API version.
+def subscription_price_territories(client, subscription_id)
+  client
+    .paged("/v1/subscriptions/#{subscription_id}/prices?limit=200&include=territory")
+    .map { |price| price.dig("relationships", "territory", "data", "id") }
+    .compact
+    .uniq
+    .sort
+end
+
 def subscription_review_screenshot(client, subscription_id)
   response = client.get_optional("/v1/subscriptions/#{subscription_id}/appStoreReviewScreenshot")
   response unless response&.fetch("data").nil?
@@ -351,7 +369,21 @@ def print_status(client, payload)
     screenshot_state = screenshot&.dig("data", "attributes", "assetDeliveryState", "state") || "missing"
     screenshot_errors = screenshot&.dig("data", "attributes", "assetDeliveryState", "errors")
     screenshot_warnings = screenshot&.dig("data", "attributes", "assetDeliveryState", "warnings")
-    puts "subscription=#{product_id} id=#{id} state=#{attrs["state"]} localizations=#{locs.length} review_screenshot=#{screenshot_state}"
+    # One offer exists per territory, so collapse them to distinct shapes with
+    # a territory count instead of printing 175 identical lines.
+    offers = subscription_introductory_offers(client, id)
+    offer_summary = if offers.empty?
+                      "none"
+                    else
+                      offers
+                        .group_by do |offer|
+                          a = offer.fetch("attributes")
+                          "#{a["offerMode"]}/#{a["duration"]}x#{a["numberOfPeriods"]}"
+                        end
+                        .map { |shape, group| "#{shape}(#{group.length} territories)" }
+                        .join(",")
+                    end
+    puts "subscription=#{product_id} id=#{id} state=#{attrs["state"]} localizations=#{locs.length} review_screenshot=#{screenshot_state} introductory_offer=#{offer_summary}"
     puts "  screenshot_errors=#{JSON.generate(screenshot_errors)}" if screenshot_errors
     puts "  screenshot_warnings=#{JSON.generate(screenshot_warnings)}" if screenshot_warnings
   end
@@ -488,6 +520,100 @@ def delete_failed_screenshot(client, screenshot, delete_path_prefix, label)
   true
 end
 
+def create_introductory_offer_payload(subscription_id:, territory_id:, offer:)
+  {
+    data: {
+      type: "subscriptionIntroductoryOffers",
+      attributes: {
+        duration: offer.fetch("duration"),
+        offerMode: offer.fetch("offerMode"),
+        numberOfPeriods: offer.fetch("numberOfPeriods")
+      },
+      relationships: {
+        subscription: {
+          data: { type: "subscriptions", id: subscription_id }
+        },
+        territory: {
+          data: { type: "territories", id: territory_id }
+        }
+      }
+    }
+  }
+end
+
+def introductory_offer_matches?(live_attributes, desired)
+  %w[duration offerMode numberOfPeriods].all? do |key|
+    live_attributes[key] == desired.fetch(key)
+  end
+end
+
+# A price point relationship is only required for the paid offer modes, so
+# FREE_TRIAL needs nothing beyond the subscription and the territory.
+def upload_introductory_offers(client, payload)
+  state = live_state(client, payload)
+  expected = payload_by_product_id(payload.fetch("subscriptions"))
+
+  state.fetch(:subscriptions).each do |subscription|
+    attrs = subscription.fetch("attributes")
+    product_id = attrs.fetch("productId")
+    local = expected[product_id]
+    next unless local
+
+    subscription_id = subscription.fetch("id")
+    desired = local["introductoryOffer"]
+    live = subscription_introductory_offers(client, subscription_id)
+
+    if desired.nil?
+      puts "introductory_offer #{product_id}: none configured locally, #{live.length} live, left alone"
+      next
+    end
+
+    live_by_territory = live.to_h do |offer|
+      [offer.dig("relationships", "territory", "data", "id"), offer]
+    end
+    territories = subscription_price_territories(client, subscription_id)
+    raise "introductory_offer #{product_id}: no price territories found" if territories.empty?
+
+    created = 0
+    unchanged = 0
+    conflicts = []
+
+    territories.each do |territory_id|
+      current = live_by_territory[territory_id]
+      if current
+        if introductory_offer_matches?(current.fetch("attributes"), desired)
+          unchanged += 1
+        else
+          # Never stack a second offer or delete an existing one: a live offer
+          # that does not match is a decision for a human in App Store Connect.
+          conflicts << "#{territory_id}=#{current.fetch("attributes").slice("offerMode", "duration", "numberOfPeriods")}"
+        end
+        next
+      end
+
+      client.post(
+        "/v1/subscriptionIntroductoryOffers",
+        create_introductory_offer_payload(
+          subscription_id: subscription_id,
+          territory_id: territory_id,
+          offer: desired
+        )
+      )
+      created += 1
+    end
+
+    puts "introductory_offer #{product_id} " \
+         "#{desired.fetch("offerMode")}/#{desired.fetch("duration")}x#{desired.fetch("numberOfPeriods")}: " \
+         "territories=#{territories.length} created=#{created} unchanged=#{unchanged} conflicts=#{conflicts.length}"
+
+    unless conflicts.empty?
+      raise "introductory_offer #{product_id}: #{conflicts.length} territory offer(s) differ from the local " \
+            "configuration #{desired.slice("offerMode", "duration", "numberOfPeriods")}; resolve them in App " \
+            "Store Connect. #{conflicts.first(10).join(", ")}"
+    end
+  end
+end
+
 def upload_review_screenshots(client, payload, screenshot_path)
   if screenshot_path.to_s.empty?
     raise "No review screenshot given: pass --screenshot PATH or set #{SCREENSHOT_PATH_ENV_KEY}"
@@ -559,7 +685,7 @@ options = {
 }
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: bundle exec ruby tools/app_store_iap_metadata.rb [status|upload-localizations|upload-review-screenshots] [options]"
+  opts.banner = "Usage: bundle exec ruby tools/app_store_iap_metadata.rb [status|upload-localizations|upload-introductory-offers|upload-review-screenshots] [options]"
   opts.on("--metadata PATH", "Path to app_store_connect_iap_metadata.json") { |value| options[:metadata_path] = value }
   opts.on("--screenshot PATH", "Path to review screenshot image") { |value| options[:screenshot_path] = value }
   opts.on("--env PATH", "Path to env file with App Store Connect credentials") { |value| options[:env_path] = value }
@@ -569,7 +695,7 @@ end
 command = ARGV.shift || "status"
 parser.parse!(ARGV)
 
-unless %w[status upload-localizations upload-review-screenshots].include?(command)
+unless %w[status upload-localizations upload-introductory-offers upload-review-screenshots].include?(command)
   warn parser
   exit 64
 end
@@ -584,6 +710,8 @@ when "status"
   print_status(client, payload)
 when "upload-localizations"
   upload_localizations(client, payload)
+when "upload-introductory-offers"
+  upload_introductory_offers(client, payload)
 when "upload-review-screenshots"
   upload_review_screenshots(client, payload, options[:screenshot_path])
 end

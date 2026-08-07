@@ -52,15 +52,39 @@ tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
 skipped rather than failing, so read the `skipped` line in its output before
 assuming `uk` landed.
 
-The same script has `status` (read-only, safe to run first) and
-`upload-review-screenshots`. The screenshot comes from `--screenshot PATH`, or
-from `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` in `.env` when the flag is omitted:
+The same script has `status` (read-only, safe to run first),
+`upload-introductory-offers` and `upload-review-screenshots`. The screenshot
+comes from `--screenshot PATH`, or from `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` in
+`.env` when the flag is omitted:
 
 ```sh
 bundle exec ruby tools/app_store_iap_metadata.rb status
+bundle exec ruby tools/app_store_iap_metadata.rb upload-introductory-offers
 bundle exec ruby tools/app_store_iap_metadata.rb upload-review-screenshots \
   --screenshot Docs/images/review/11-paywall-disclosure.png
 ```
+
+## Introductory offer
+
+The yearly free trial is configured in `Alike.storekit` as an
+`introductoryOffer` and exported to the generated metadata as
+`FREE_TRIAL` / `ONE_WEEK` / `numberOfPeriods 1`. App Store Connect has no
+"7 days" duration — `ONE_WEEK` is the value that matches `P1W` in StoreKit and
+the "7-day free trial" wording on the paywall. Changing one without the other
+makes the paywall disclosure false, which is a review rejection.
+
+App Store Connect requires every introductory offer to name a **territory**;
+there is no "all storefronts" form. `upload-introductory-offers` therefore
+creates one offer per territory, using the subscription's own price
+territories as the scope (175 for Alike Pro Yearly). Re-running it is safe:
+territories that already carry a matching offer are reported as unchanged. If a
+territory has an offer that does *not* match the local configuration, the
+command fails and names those territories rather than stacking a second offer
+or deleting the existing one — resolve those in App Store Connect by hand.
+
+Eligibility is not a field. An introductory offer is only ever granted to a
+customer who has never subscribed in the group, which is why the paywall says
+"for eligible new subscribers".
 
 ## App Store Connect setup
 
