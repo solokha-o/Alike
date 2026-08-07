@@ -231,21 +231,21 @@ METADATA = {
         "description": EN_US_DESCRIPTION,
         "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
         "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest — all on device.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted.\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.",
     },
     "en-GB": {
         "subtitle": "Find and clear similar photos",
         "description": EN_GB_DESCRIPTION,
         "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
         "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you organise the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and organise the rest — all on device.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and organise the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted.\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
         "description": UK_DESCRIPTION,
         "keywords": "фото,схожі,дублікати,прибирання,памʼять,медіатека",
         "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Усе працює на вашому пристрої.",
-        "release_notes": "Перший випуск Alike. Скануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту — усе на пристрої.",
+        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а видалені фото завжди потрапляють до «Нещодавно видалених».\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування.",
     },
 }
 
