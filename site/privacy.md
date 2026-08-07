@@ -41,7 +41,7 @@ If you enable it, the reminder is scheduled locally on your device by iOS. Alike
 
 ### Analysis runs entirely on your device
 
-Alike compares photos using Apple's Vision framework, which runs locally on your iPhone or iPad. Each photo is reduced to a numeric feature print, and photos are grouped when those feature prints are close enough under the sensitivity level you choose.
+Alike compares photos using Apple's Vision framework, which runs locally on your iPhone. Each photo is reduced to a numeric feature print, and photos are grouped when those feature prints are close enough under the sensitivity level you choose.
 
 **Your photos are never uploaded.** No photo, thumbnail, feature print, or analysis result is transmitted off your device by Alike. There is no Alike server to send them to.
 

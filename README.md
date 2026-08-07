@@ -14,12 +14,11 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🏷️ **Review badges and states** — Not reviewed, In review, Reviewed, and Needs review after rescans
 - 📈 **Cleanup session progress** — track reviewed clusters, selected items, and estimated savings
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
-- 📊 **Adaptive grid** — 1 to 2 columns optimized for phone and tablet layouts
+- 📊 **Adaptive grid** — 1 to 2 columns optimized for iPhone screens
 - 💾 **CoreData caching** — stores scan results
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
-- 📱 **iPad support** — optimized for tablets
 
 ## 🆕 What's New in v1.1.1
 
@@ -59,7 +58,7 @@ Alike/
 
 ## 🛠 Tech stack
 
-- **Platform**: iOS 17+, iPadOS 17+
+- **Platform**: iOS 17+ (iPhone only)
 - **Language**: Swift 6.0 (Strict Concurrency)
 - **UI**: SwiftUI
 - **Frameworks**:

@@ -109,7 +109,7 @@ EN_US_DESCRIPTION = """\
 Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
 
 HOW IT WORKS
-Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone or iPad. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
+Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
 Review. Every group opens with a Best Shot already selected, so you can decide in seconds. Keep Best Only, Select All Except Best, or pick by hand.
 Clear. Confirm, and the photos you chose move to Recently Deleted, where iOS keeps them for about 30 days.
 
@@ -125,7 +125,7 @@ FEATURES
 - Best Shot detection, so every group has a sensible default to keep.
 - Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
 - Progress, Selected and Estimated Savings, plus cleanup history by month.
-- An adaptive layout for iPhone and iPad, remembered per device.
+- A roomy one-column layout or a denser grid, switchable any time and remembered.
 - Full English and Ukrainian, and complete Dark Mode support.
 
 ALIKE FREE
@@ -148,7 +148,7 @@ EN_GB_DESCRIPTION = """\
 Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
 
 HOW IT WORKS
-Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone or iPad. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
+Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
 Review. Every group opens with a Best Shot already selected, so you can decide in seconds. Keep Best Only, Select All Except Best, or pick by hand.
 Clear. Confirm, and the photos you chose move to Recently Deleted, where iOS keeps them for about 30 days.
 
@@ -164,7 +164,7 @@ FEATURES
 - Best Shot detection, so every group has a sensible default to keep.
 - Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
 - Progress, Selected and Estimated Savings, plus cleanup history by month.
-- An adaptive layout for iPhone and iPad, remembered per device.
+- A roomy one-column layout or a denser grid, switchable any time and remembered.
 - Full English and Ukrainian, and complete Dark Mode support.
 
 ALIKE FREE
@@ -187,7 +187,7 @@ UK_DESCRIPTION = """\
 Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту — і жодне фото не залишає ваш пристрій.
 
 ЯК ЦЕ ПРАЦЮЄ
-Сканування. Alike порівнює медіатеку за допомогою фреймворку Apple Vision повністю на вашому iPhone чи iPad. Порівнюються знімки, близькі за часом і місцем зйомки, а знімки екрана не потрапляють у результати, якщо ви не попросите.
+Сканування. Alike порівнює медіатеку за допомогою фреймворку Apple Vision повністю на вашому iPhone. Порівнюються знімки, близькі за часом і місцем зйомки, а знімки екрана не потрапляють у результати, якщо ви не попросите.
 Перегляд. Кожна група відкривається з уже обраним найкращим знімком, тож рішення займає секунди. «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну.
 Прибирання. Підтвердьте — і обрані фотографії потраплять до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.
 
@@ -203,7 +203,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Вибір найкращого знімка, тож у кожній групі є розумний варіант залишити.
 - Позначки: «Нове», «У перегляді», «Переглянуто», «Потребує перегляду».
 - Прогрес, «Обрано» й «Орієнтовна економія», а також історія за місяцями.
-- Адаптивний макет для iPhone та iPad, окремо для кожного пристрою.
+- Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Повна підтримка англійської та української й темна тема.
 
 ALIKE FREE

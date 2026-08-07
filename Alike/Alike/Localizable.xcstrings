@@ -9038,13 +9038,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice, separately on iPhone and iPad."
+            "value": "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice between launches."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перемикайтеся між просторим одноколонковим виглядом і щільнішою сіткою на панелі інструментів будь-якого екрана з фото. Alike запам’ятовує ваш вибір, окремо на iPhone та iPad."
+            "value": "Перемикайтеся між просторим одноколонковим виглядом і щільнішою сіткою на панелі інструментів будь-якого екрана з фото. Alike запам’ятовує ваш вибір між запусками."
           }
         }
       }

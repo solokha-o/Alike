@@ -29,7 +29,7 @@ description: "Support for Alike. No account and no ticket system — email us an
 
 Useful details to include:
 
-- Your iPhone or iPad model and iOS version
+- Your iPhone model and iOS version
 - The Alike version, shown at the bottom of Settings
 - What you did, what you expected, and what happened instead
 - Whether the photo library permission is set to Full Access or Limited Access

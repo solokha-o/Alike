@@ -22,7 +22,7 @@ nav:
   skip: Skip to content
 
 hero:
-  eyebrow: iPhone and iPad
+  eyebrow: iPhone
   headline: "Your camera roll, minus the near-duplicates."
   subhead: "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device."
   badge: Coming to the App Store
@@ -62,8 +62,8 @@ features:
       body: "New, In review, Reviewed, and Needs review after a rescan. You always know where you stopped."
     - title: Progress and savings
       body: "Reviewed, Remaining, Selected, and Estimated Savings, plus a cleanup history grouped by month."
-    - title: Built for iPad too
-      body: "An adaptive grid that switches between a roomy single column and a denser layout, remembered separately per device."
+    - title: A layout that fits you
+      body: "An adaptive grid that switches between a roomy single column and a denser layout, remembered between launches."
     - title: Two languages, Dark Mode
       body: "Full English and Ukrainian throughout, and complete Dark Mode support."
 
