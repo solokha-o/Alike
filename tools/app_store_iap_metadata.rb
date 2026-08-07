@@ -14,8 +14,8 @@ STDOUT.sync = true
 
 ROOT_DIR = File.expand_path("..", __dir__)
 DEFAULT_METADATA_PATH = File.join(ROOT_DIR, "build", "generated", "store_upload", "iap_metadata", "app_store_connect_iap_metadata.json")
-DEFAULT_SCREENSHOT_PATH = ENV.fetch("ALIKE_IAP_REVIEW_SCREENSHOT_PATH", "")
 DEFAULT_ENV_PATH = File.join(ROOT_DIR, ".env")
+SCREENSHOT_PATH_ENV_KEY = "ALIKE_IAP_REVIEW_SCREENSHOT_PATH"
 API_BASE = "https://api.appstoreconnect.apple.com"
 PRIMARY_LOCALE = "en-US"
 
@@ -489,6 +489,9 @@ def delete_failed_screenshot(client, screenshot, delete_path_prefix, label)
 end
 
 def upload_review_screenshots(client, payload, screenshot_path)
+  if screenshot_path.to_s.empty?
+    raise "No review screenshot given: pass --screenshot PATH or set #{SCREENSHOT_PATH_ENV_KEY}"
+  end
   raise "Review screenshot not found: #{screenshot_path}" unless File.file?(screenshot_path)
 
   state = live_state(client, payload)
@@ -546,9 +549,12 @@ def upload_review_screenshots(client, payload, screenshot_path)
   end
 end
 
+# screenshot_path stays nil so the env fallback can be resolved after the .env
+# file is loaded; reading it here would capture the value before load_env_file
+# has had a chance to populate it.
 options = {
   metadata_path: DEFAULT_METADATA_PATH,
-  screenshot_path: DEFAULT_SCREENSHOT_PATH,
+  screenshot_path: nil,
   env_path: DEFAULT_ENV_PATH
 }
 
@@ -569,6 +575,7 @@ unless %w[status upload-localizations upload-review-screenshots].include?(comman
 end
 
 load_env_file(options[:env_path]) if options[:env_path]
+options[:screenshot_path] ||= ENV.fetch(SCREENSHOT_PATH_ENV_KEY, "")
 payload = load_payload(options[:metadata_path])
 client = AppStoreConnectClient.new
 

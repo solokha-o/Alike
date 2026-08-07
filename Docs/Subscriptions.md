@@ -52,6 +52,16 @@ tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
 skipped rather than failing, so read the `skipped` line in its output before
 assuming `uk` landed.
 
+The same script has `status` (read-only, safe to run first) and
+`upload-review-screenshots`. The screenshot comes from `--screenshot PATH`, or
+from `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` in `.env` when the flag is omitted:
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb status
+bundle exec ruby tools/app_store_iap_metadata.rb upload-review-screenshots \
+  --screenshot Docs/images/review/11-paywall-disclosure.png
+```
+
 ## App Store Connect setup
 
 1. Create one auto-renewable subscription group named **Alike Pro**.
