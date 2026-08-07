@@ -60,7 +60,8 @@ change with it.
 | 4 | ПОРІВНЯННЯ | Перевірте перед / видаленням | Перегляд у повний розмір. Нічого не видаляється без підтвердження. |
 | 5 | ВІЛЬНЕ МІСЦЕ | Поверніть / гігабайти | «Обрано» й «Орієнтовна економія» — просто під час прибирання. |
 
-`en-GB` is not uploaded, so it has no deck.
+`en-US` and `uk` are the only localizations the listing has, so there are only
+two decks.
 
 Copy rules that the renderer will not catch for you:
 

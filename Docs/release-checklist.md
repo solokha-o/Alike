@@ -47,10 +47,9 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`). `en-US` and `uk` are the
-      locales that actually upload; `en-GB` is kept in sync so the localization
-      can be switched back on, but nothing generates or ships it today
-      (`UPLOAD_SAFE_LOCALES`).
+      (`tools/prepare_app_store_upload_bundle.py`), for `en-US` and `uk` — the
+      two localizations the listing has. Validation fails if `METADATA` and
+      `UPLOAD_SAFE_LOCALES` ever drift apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
 
 ```sh
