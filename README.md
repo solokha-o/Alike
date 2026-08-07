@@ -14,12 +14,11 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🏷️ **Review badges and states** — Not reviewed, In review, Reviewed, and Needs review after rescans
 - 📈 **Cleanup session progress** — track reviewed clusters, selected items, and estimated savings
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
-- 📊 **Adaptive grid** — 1 to 2 columns optimized for phone and tablet layouts
+- 📊 **Adaptive grid** — 1 to 2 columns optimized for iPhone screens
 - 💾 **CoreData caching** — stores scan results
-- 🎨 **Indigo design** — modern UI with animations and haptic feedback
+- 🎨 **Teal design** — modern UI with animations and haptic feedback
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
-- 📱 **iPad support** — optimized for tablets
 
 ## 🆕 What's New in v1.1.1
 
@@ -59,7 +58,7 @@ Alike/
 
 ## 🛠 Tech stack
 
-- **Platform**: iOS 17+, iPadOS 17+
+- **Platform**: iOS 17+ (iPhone only)
 - **Language**: Swift 6.0 (Strict Concurrency)
 - **UI**: SwiftUI
 - **Frameworks**:
@@ -85,12 +84,15 @@ open Alike/Alike.xcodeproj
 
 3. **Build & Run** (⌘R)
 
-## 🧾 Logging
+## 🧾 Schemes and logging
 
-There are two shared schemes:
+There are three shared schemes:
 
-- `Alike` — normal logging (info/errors only).
-- `Alike-VerboseLogs` — enables verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
+- `Alike` — builds and runs **Release** with no debugger attached and no local StoreKit configuration, so ⌘R gives the same build the App Store gets. Normal logging (info/errors only). Its Test action stays on Debug, because the test targets need the `#if DEBUG` mocks in `Packages/Core/Sources/Core/Mocks`.
+- `Alike-VerboseLogs` — Debug build with verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
+- `Alike-DebugVerboseLogs` — Debug build with verbose logging, profiled and analyzed in Debug too.
+
+Use one of the verbose schemes for anything that needs a debugger, the debug menu, the premium overrides, or local StoreKit transactions — all of those are compiled out of `Alike`.
 
 ## 📱 User flow
 
@@ -106,7 +108,7 @@ Cleanup tab without automatically changing the selected tab.
 
 ## 🎨 Design
 
-- **Accent Color**: Indigo (#5C66F2)
+- **Accent Color**: Teal (#1F9EB8), defined in `DesignSystem/Theme.swift`
 - **Typography**: SF Rounded
 - **Spacing**: 8pt grid system
 - **Animations**: Spring-based
@@ -129,6 +131,26 @@ swift test --package-path Packages/Scanner
 swift test --package-path Packages/Settings
 swift test --package-path Packages/UserGuide
 ```
+
+## 🚦 CI/CD
+
+Local validation and App Store delivery run through the wrappers in `tools/`:
+
+```bash
+tools/quick
+```
+
+```bash
+tools/full
+```
+
+`tools/quick` runs whitespace checks, the four package suites above, and App Store
+metadata bundle validation. `tools/full` adds every remaining package and the app
+compile gate. Release preflight, metadata upload, and TestFlight upload live behind
+`tools/release-check`, `tools/upload`, and `tools/upload-build`.
+
+See [`Docs/ci-cd.md`](Docs/ci-cd.md) for the full runbook, required environment
+variables, and the safety rules that keep uploads deliberate.
 
 ## 📝 Localization
 

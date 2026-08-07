@@ -49,6 +49,7 @@ private enum RestorePurchasesFeedback: String, Identifiable {
 /// Settings screen
 public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
+    @Environment(\.subscriptionLegalLinks) private var legalLinks
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
@@ -135,6 +136,7 @@ public struct SettingsView: View {
 #endif
             supportSection(router: router)
             dataPrivacySection(router: router)
+            legalSection
             aboutSection
         }
         .navigationTitle(Text(appLocalized("Settings")))
@@ -477,6 +479,35 @@ public struct SettingsView: View {
             Text(appLocalized("Data & Privacy"))
         } footer: {
             Text(appLocalized("Your photo library is never deleted by this action."))
+        }
+    }
+
+    // MARK: - Legal Section
+    private var legalSection: some View {
+        Section {
+            if let privacyPolicy = legalLinks.privacyPolicy {
+                Link(destination: privacyPolicy) {
+                    Label {
+                        Text(appLocalized("Privacy Policy"))
+                    } icon: {
+                        Image(systemName: "hand.raised")
+                    }
+                }
+                .accessibilityHint(Text(appLocalized("Open the Alike privacy policy in your browser")))
+            }
+
+            if let termsOfUse = legalLinks.termsOfUse {
+                Link(destination: termsOfUse) {
+                    Label {
+                        Text(appLocalized("Terms of Use"))
+                    } icon: {
+                        Image(systemName: "doc.text")
+                    }
+                }
+                .accessibilityHint(Text(appLocalized("Open the Alike terms of use in your browser")))
+            }
+        } header: {
+            Text(appLocalized("Legal"))
         }
     }
     

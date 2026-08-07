@@ -1,0 +1,204 @@
+---
+layout: default
+---
+{%- assign t = site.data[page.lang] -%}
+
+<section class="hero">
+  <div class="wrap hero__inner">
+    <div class="hero__text">
+      <p class="hero__eyebrow">{{ t.hero.eyebrow }}</p>
+      <h1 class="hero__headline">{{ t.hero.headline }}</h1>
+      <p class="hero__subhead">{{ t.hero.subhead }}</p>
+
+      {%- comment -%}
+      The App Store badge is deliberately a non-interactive <span>: the app is
+      not published yet and AppStoreLinks.appID is still a placeholder. It
+      becomes a real link once the app ships.
+      {%- endcomment -%}
+      <p class="badge badge--pending">
+        <svg class="badge__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M16.5 12.6c0-2 1.6-3 1.7-3-.9-1.4-2.4-1.5-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.2 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2 2.5 2 1 0 1.4-.6 2.6-.6s1.5.6 2.6.6 1.7-.9 2.4-1.9c.7-1.1 1-2.2 1-2.2s-1.9-.8-2.1-3.3zM14.6 6.3c.5-.7.9-1.6.8-2.6-.8 0-1.8.5-2.4 1.2-.5.6-1 1.6-.8 2.5.9.1 1.8-.4 2.4-1.1z"/>
+        </svg>
+        {{ t.hero.badge }}
+      </p>
+      <p class="hero__badge-note">{{ t.hero.badge_note }}</p>
+
+      <p class="hero__trust">
+        <svg class="hero__trust-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2 4 5.5v6c0 4.6 3.4 8.9 8 10.5 4.6-1.6 8-5.9 8-10.5v-6L12 2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="m8.6 12.2 2.3 2.3 4.5-4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ t.hero.trust }}
+      </p>
+    </div>
+
+    <div class="hero__art">
+      <picture>
+        <source type="image/avif" srcset="{{ '/assets/img/hero.avif' | relative_url }} 1x, {{ '/assets/img/hero@2x.avif' | relative_url }} 2x">
+        <img src="{{ '/assets/img/hero.png' | relative_url }}" width="420" height="354" alt="{{ t.hero.image_alt }}" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <h2 class="section__title">{{ t.steps.title }}</h2>
+    <p class="section__subtitle">{{ t.steps.subtitle }}</p>
+
+    <ol class="steps">
+      {%- for step in t.steps.items %}
+      <li class="step">
+        <picture>
+          <source type="image/avif" srcset="{{ '/assets/img/' | append: step.image | append: '.avif' | relative_url }} 1x, {{ '/assets/img/' | append: step.image | append: '@2x.avif' | relative_url }} 2x">
+          <img class="step__art" src="{{ '/assets/img/' | append: step.image | append: '.png' | relative_url }}" width="240" height="240" alt="{{ step.image_alt }}" loading="lazy" decoding="async">
+        </picture>
+        <p class="step__index" aria-hidden="true">{{ forloop.index }}</p>
+        <h3 class="step__title">{{ step.title }}</h3>
+        <p class="step__body">{{ step.body }}</p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint" id="features">
+  <div class="wrap">
+    <h2 class="section__title">{{ t.features.title }}</h2>
+    <ul class="features">
+      {%- for feature in t.features.items %}
+      <li class="feature">
+        <h3 class="feature__title">{{ feature.title }}</h3>
+        <p class="feature__body">{{ feature.body }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="screenshots">
+  <div class="wrap">
+    <h2 class="section__title">{{ t.screenshots.title }}</h2>
+    <p class="section__subtitle">{{ t.screenshots.subtitle }}</p>
+
+    {%- comment -%}
+    Device frames are rendered from site.data.screens so real captures drop
+    straight in: add `image: <basename>` to an entry in _data/screens.yml and
+    the frame swaps from the pending placeholder to the screenshot with no
+    layout change. Shot list lives in Docs/legal/../screenshot-shot-list.md.
+    {%- endcomment -%}
+    <ul class="shots">
+      {%- for shot in site.data.screens.site %}
+      <li class="shot">
+        <div class="phone">
+          <div class="phone__screen">
+            {%- if shot.image %}
+            <img src="{{ '/assets/img/screens/' | append: shot.image | append: '.png' | relative_url }}" width="330" height="717" alt="{{ shot[page.lang].alt }}" loading="lazy" decoding="async">
+            {%- else %}
+            <div class="phone__pending" role="img" aria-label="{{ t.screenshots.pending }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <circle cx="8.5" cy="10" r="1.6" fill="currentColor"/>
+                <path d="m4.5 17 4.8-4.6 3.4 3.2 3-2.6 3.8 3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            {%- endif %}
+          </div>
+        </div>
+        <p class="shot__caption">{{ shot[page.lang].caption }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--privacy" id="privacy">
+  <div class="wrap privacy">
+    <div class="privacy__text">
+      <h2 class="section__title">{{ t.privacy.title }}</h2>
+      <p class="section__subtitle">{{ t.privacy.subtitle }}</p>
+
+      <ul class="claims">
+        {%- for claim in t.privacy.claims %}
+        <li class="claim">
+          <svg class="claim__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <path d="m7.8 12.3 2.6 2.6 5.8-5.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <h3 class="claim__title">{{ claim.title }}</h3>
+            <p class="claim__body">{{ claim.body }}</p>
+          </div>
+        </li>
+        {%- endfor %}
+      </ul>
+
+      <p><a class="button button--ghost" href="{{ t.privacy_url | relative_url }}">{{ t.privacy.cta }}</a></p>
+    </div>
+
+    <div class="privacy__art">
+      <picture>
+        <source type="image/avif" srcset="{{ '/assets/img/privacy.avif' | relative_url }} 1x, {{ '/assets/img/privacy@2x.avif' | relative_url }} 2x">
+        <img src="{{ '/assets/img/privacy.png' | relative_url }}" width="300" height="300" alt="{{ t.privacy.image_alt }}" loading="lazy" decoding="async">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" id="pricing">
+  <div class="wrap">
+    <h2 class="section__title">{{ t.pricing.title }}</h2>
+    <p class="section__subtitle">{{ t.pricing.subtitle }}</p>
+
+    <div class="plans">
+      <div class="plan">
+        <h3 class="plan__name">{{ t.pricing.free.name }}</h3>
+        <p class="plan__price">{{ t.pricing.free.price }}</p>
+        <ul class="plan__features">
+          {%- for item in t.pricing.free.features %}
+          <li>{{ item }}</li>
+          {%- endfor %}
+        </ul>
+      </div>
+
+      <div class="plan plan--featured">
+        <p class="plan__badge">{{ t.pricing.pro.badge }}</p>
+        <h3 class="plan__name">{{ t.pricing.pro.name }}</h3>
+        <p class="plan__price plan__price--note">{{ t.pricing.pro.price_note }}</p>
+        <p class="plan__trial">{{ t.pricing.pro.trial }}</p>
+        <ul class="plan__features">
+          {%- for item in t.pricing.pro.features %}
+          <li>{{ item }}</li>
+          {%- endfor %}
+        </ul>
+      </div>
+    </div>
+
+    {%- comment -%}
+    These two paragraphs must stay word-for-word identical to the in-app paywall
+    disclosure. Source of truth: Docs/legal/subscription-disclosure.md.
+    {%- endcomment -%}
+    <div class="disclosure">
+      <p>{{ t.pricing.disclosure_renewal }}</p>
+      <p>{{ t.pricing.disclosure_trial }}</p>
+      <p class="disclosure__links">
+        <a href="{{ t.privacy_url | relative_url }}">{{ t.footer.privacy }}</a>
+        <a href="{{ t.terms_url | relative_url }}">{{ t.footer.terms }}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap wrap--narrow">
+    <h2 class="section__title">{{ t.faq.title }}</h2>
+    <div class="faq">
+      {%- for item in t.faq.items %}
+      <details class="faq__item">
+        <summary class="faq__q">{{ item.q }}</summary>
+        <div class="faq__a"><p>{{ item.a }}</p></div>
+      </details>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

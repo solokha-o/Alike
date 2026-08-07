@@ -615,11 +615,15 @@ private struct PermissionRationaleCard: View {
     WelcomeView(isCompleted: .constant(false))
 }
 
+// MockPhotoPermissionManager only exists in DEBUG, and #Preview is expanded in
+// every configuration, so these two previews have to be gated or the Release
+// build of Welcome fails to compile.
+#if DEBUG
 #Preview("Denied") {
     @Previewable @State var isCompleted = false
     let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
     let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
-    
+
     return WelcomeView(isCompleted: $isCompleted, viewModel: viewModel)
 }
 
@@ -627,6 +631,7 @@ private struct PermissionRationaleCard: View {
     @Previewable @State var isCompleted = false
     let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
     let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
-    
+
     return WelcomeView(isCompleted: $isCompleted, viewModel: viewModel)
 }
+#endif

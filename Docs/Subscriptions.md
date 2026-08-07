@@ -22,13 +22,80 @@ Customer-facing paywalls must use StoreKit's localized `displayName` and
 `displayPrice`. The prices above describe the intended App Store Connect setup;
 they are not a currency-formatting source for UI.
 
+## Localizations
+
+Localized product copy lives in `Alike/Configuration/Alike.storekit` and is the
+source `tools/prepare_app_store_upload_bundle.py` reads to emit
+`build/generated/store_upload/iap_metadata/app_store_connect_iap_metadata.json`.
+App Store Connect limits the display name to 30 characters and the description
+to 45.
+
+| Product | Locale | Display name | Description |
+| --- | --- | --- | --- |
+| Group | en-US | Alike Pro | — |
+| Group | uk | Alike Pro | — |
+| Yearly | en-US | Alike Pro Yearly | Unlock all Alike Pro photo cleanup features. |
+| Yearly | uk | Alike Pro на рік | Усі функції очищення фото Alike Pro. |
+| Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
+| Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
+
+The paywall shows StoreKit's localized `displayName`, so a missing locale means
+that storefront falls back to English plan names in the paywall and in
+Settings, then Subscriptions.
+
+`fastlane deliver` does not touch in-app purchases. Subscription and group
+localizations reach App Store Connect only through
+`bundle exec ruby tools/app_store_iap_metadata.rb upload-localizations`, which
+is not wired into any lane. That script upserts localizations onto products
+that already exist; it never creates the group or the products. It also
+tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
+skipped rather than failing, so read the `skipped` line in its output before
+assuming `uk` landed.
+
+The same script has `status` (read-only, safe to run first),
+`upload-introductory-offers` and `upload-review-screenshots`. The screenshot
+comes from `--screenshot PATH`, or from `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` in
+`.env` when the flag is omitted:
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb status
+bundle exec ruby tools/app_store_iap_metadata.rb upload-introductory-offers
+bundle exec ruby tools/app_store_iap_metadata.rb upload-review-screenshots \
+  --screenshot Docs/images/review/11-paywall-disclosure.png
+```
+
+## Introductory offer
+
+The yearly free trial is configured in `Alike.storekit` as an
+`introductoryOffer` and exported to the generated metadata as
+`FREE_TRIAL` / `ONE_WEEK` / `numberOfPeriods 1`. App Store Connect has no
+"7 days" duration — `ONE_WEEK` is the value that matches `P1W` in StoreKit and
+the "7-day free trial" wording on the paywall. Changing one without the other
+makes the paywall disclosure false, which is a review rejection.
+
+App Store Connect requires every introductory offer to name a **territory**;
+there is no "all storefronts" form. `upload-introductory-offers` therefore
+creates one offer per territory, using the subscription's own price
+territories as the scope (175 for Alike Pro Yearly). Re-running it is safe:
+territories that already carry a matching offer are reported as unchanged. If a
+territory has an offer that does *not* match the local configuration, the
+command fails and names those territories rather than stacking a second offer
+or deleting the existing one — resolve those in App Store Connect by hand.
+
+Eligibility is not a field. An introductory offer is only ever granted to a
+customer who has never subscribed in the group, which is why the paywall says
+"for eligible new subscribers".
+
 ## App Store Connect setup
 
 1. Create one auto-renewable subscription group named **Alike Pro**.
 2. Create the yearly and monthly products with the exact identifiers above.
 3. Set yearly above monthly in the subscription level order.
 4. Configure the intended US prices and localize each storefront in App Store
-   Connect as release markets are added.
+   Connect as release markets are added. Add the en-US and uk product
+   localizations from the table above, either by hand or with
+   `tools/app_store_iap_metadata.rb upload-localizations` once the products
+   exist.
 5. Add a seven-day free-trial introductory offer to yearly only. Eligibility is
    determined by StoreKit per subscription group.
 6. Supply review information and submit the products with the app version that
@@ -40,8 +107,10 @@ development and simulator QA.
 
 ## Local QA
 
-The shared `Alike`, `Alike-VerboseLogs`, and `Alike-DebugVerboseLogs` launch
-schemes use `Alike/Configuration/Alike.storekit`. Xcode's StoreKit transaction
+The `Alike-VerboseLogs` and `Alike-DebugVerboseLogs` launch schemes use
+`Alike/Configuration/Alike.storekit`; use one of them for subscription QA. The
+`Alike` scheme runs Release with no StoreKit configuration attached, so its
+purchases go to the real StoreKit sandbox. Xcode's StoreKit transaction
 manager can reset transactions and simulate interrupted purchases, Ask to Buy,
 billing retry, renewals, expiration, revocation, and refunds. Change those
 controls only for the scenario under test and restore their defaults afterward.

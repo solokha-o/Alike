@@ -1,0 +1,41 @@
+{%- assign t = site.data[page.lang] -%}
+{%- assign home = t.home_url | relative_url -%}
+
+<a class="skip-link" href="#main">{{ t.nav.skip }}</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="{{ home }}">
+      <picture>
+        <source type="image/avif" srcset="{{ '/assets/img/icon.avif' | relative_url }} 1x, {{ '/assets/img/icon@2x.avif' | relative_url }} 2x">
+        <img class="brand__mark" src="{{ '/assets/img/icon.png' | relative_url }}" width="32" height="32" alt="" loading="eager" decoding="async">
+      </picture>
+      <span class="brand__name">{{ site.title }}</span>
+    </a>
+
+    {%- comment -%}
+    A plain nav, no disclosure widget and no script. On narrow screens the
+    in-page anchors are hidden — the sections sit directly below the fold and
+    the footer repeats every link — leaving Support and the language switch,
+    which are the only two destinations you cannot reach by scrolling.
+    {%- endcomment -%}
+    <nav class="nav" aria-label="{{ t.nav.menu }}">
+      <ul class="nav__list">
+        {%- if page.layout == "home" %}
+        <li class="nav__anchor"><a href="#features">{{ t.nav.features }}</a></li>
+        <li class="nav__anchor"><a href="#privacy">{{ t.nav.privacy }}</a></li>
+        <li class="nav__anchor"><a href="#pricing">{{ t.nav.pricing }}</a></li>
+        <li class="nav__anchor"><a href="#faq">{{ t.nav.faq }}</a></li>
+        {%- else %}
+        <li class="nav__anchor"><a href="{{ home }}#features">{{ t.nav.features }}</a></li>
+        <li class="nav__anchor"><a href="{{ home }}#privacy">{{ t.nav.privacy }}</a></li>
+        <li class="nav__anchor"><a href="{{ home }}#pricing">{{ t.nav.pricing }}</a></li>
+        {%- endif %}
+        <li><a href="{{ t.support_url | relative_url }}">{{ t.nav.support }}</a></li>
+        <li class="nav__lang">
+          <a href="{{ page.alt_url | default: t.switch_url | relative_url }}" lang="{% if page.lang == 'en' %}uk{% else %}en{% endif %}" rel="alternate">{{ t.switch_to }}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,128 @@
+# Alike Screenshot Shot List
+
+Nine of the thirteen shots are captured, in English and Ukrainian, from a
+physical iPhone at 1125 x 2436. `tools/import_device_screenshots.py` upscales
+them to the required 1320 x 2868 and pads the 10px remainder with black (the
+app's screens are black at both edges, so the padding is invisible), and emits
+520px copies for the landing-page device frames.
+
+Re-run after adding captures:
+
+```sh
+python3 tools/import_device_screenshots.py --source ~/Downloads
+```
+
+The mapping from source filename to shot lives in `SHOTS` in that script.
+
+Three consumers, one set of captures:
+
+| Consumer | Where the files go |
+| --- | --- |
+| Captures | `Docs/images/raw/<locale>/` — the bare screens, the input for everything below |
+| App Store | `Docs/images/<locale>/` — product renders, picked up by `tools/prepare_app_store_upload_bundle.py` and copied into every upload-safe locale |
+| Landing page | `site/assets/img/screens/` — see "Wiring a screenshot into the site" below |
+
+## From captures to product screenshots
+
+The listing does not ship bare captures. `tools/generate_app_store_product_screenshots.py`
+renders five marketing slides per locale — headline, supporting line, tilted
+iPhone — onto a dark canvas that matches the app's own appearance:
+
+```sh
+build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
+```
+
+The venv is created once, because Pillow is not in the system Python:
+
+```sh
+python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow
+```
+
+Slides, copy and layout live in `SLIDES` and `COPY` in that script. Four
+background variants share the same concept; `--drafts` renders all of them into
+`build/generated/product_screenshot_drafts/` with a comparison contact sheet, and
+`--variant <name>` renders the chosen one into `Docs/images/`. The listing
+currently ships `spotlight`.
+
+See `Skills/DesignConcept/app-store-screenshots/SKILL.md` for the copy and
+visual rules, and the QA checklist to run before an upload.
+
+## Capture spec
+
+- **Device:** a physical iPhone, or the iPhone 17 Pro Max simulator.
+- **Size:** the bundle requires exactly **1320 × 2868**. Captures at
+  1125 × 2436 are accepted and converted by the import script; anything smaller
+  would upscale too far to stay sharp.
+- **Format:** PNG. Files must be named with a leading two-digit number
+  (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
+  with two digits.
+- **Languages:** capture every shot twice, EN and UK. `Docs/images/raw/en-US/`
+  feeds `en-US`, `Docs/images/raw/uk/` feeds `uk`. `en-GB` is not uploaded.
+- **Appearance:** light for the App Store set. Dark is optional and only for
+  the site.
+- **Content:** the current captures use a real photo library. These become
+  public assets, so before each release check every frame for recognisable
+  faces, location-revealing images, readable personal data, and anything legible
+  on a screen shown inside a photo. `tools/generate_demo_library.py` builds a
+  synthetic library if you would rather not publish real photos.
+- **Status bar:** full signal, full battery, no notifications.
+
+## Shots
+
+| # | Screen | EN | UK | On site | File |
+|---|---|---|---|---|---|
+| 1 | Scanner idle | ✅ | ✅ | ✅ | `01-scanner-idle` |
+| 2 | Scanner scanning | ✅ | ✅ | — | `02-scanner-scanning` |
+| 3 | Cleanup queue | ✅ | ✅ | ✅ | `03-cleanup-queue` |
+| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | `04-cluster-details` |
+| 5 | Comparison review | ✅ | ✅ | ✅ | `05-comparison-review` |
+| 6 | Cleanup confirm (iOS dialog) | ✅ | — | — | `06-cleanup-confirm` |
+| 7 | Cleanup progress | ✅ | ✅ | ✅ | `07-cleanup-progress` |
+| 8 | Screenshot cleanup | ✅ | — | — | `08-screenshot-cleanup` |
+| 9 | History | — | — | — | still needed |
+| 10 | Settings with Legal section | — | — | — | still needed |
+| 11 | Paywall with disclosure | ✅ | — | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
+| 12 | User Guide | — | — | — | still needed |
+| 13 | Welcome / privacy | ✅ | ✅ | — | `13-welcome-privacy` |
+
+Outstanding: 9, 10, 12, plus Ukrainian versions of 6 and 8.
+
+Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES`; the others are
+captured but unused on the listing. Adding one to the deck means adding a
+`SlideLayout` and a copy line per locale in
+`tools/generate_app_store_product_screenshots.py`.
+
+Shots 10 and 11 do not ship on the listing but are App Review evidence that the
+Legal section and the subscription disclosure exist. They live in
+`Docs/images/review/`, which the upload bundle deliberately ignores — like
+`Docs/images/raw/`, it is a subfolder, and only numbered PNGs sitting directly
+in `Docs/images/en-US/` and `Docs/images/uk/` are copied into the listing.
+
+`review/11-paywall-disclosure.png` is the paywall shot App Store Connect asks
+for with the subscription; point `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` at it.
+Both shot 11 files came from the iPhone 17 Pro simulator at 1206 × 2622, which
+the import script does not handle. Converting a 6.3" capture takes:
+
+```sh
+sips --resampleWidth 1320 in.png --out tmp.png
+sips -c 2868 1320 tmp.png --out out.png
+```
+
+The crop trims one pixel from the top and bottom, inside the status-bar and
+home-indicator margins.
+
+The App Store allows up to 10 screenshots, so the nine captured cover the
+listing with room for one more.
+
+## Wiring a screenshot into the site
+
+1. Put the PNG at `site/assets/img/screens/<name>.png`.
+2. Add `image: <name>` to the matching entry in `site/_data/screens.yml`.
+
+The frame swaps from the pending placeholder to the screenshot with no layout
+or CSS change. Entries carry EN and UK `caption` and `alt` text already.
+
+Landing-page captures do not need to be 1320 × 2868 — the frames render at
+roughly 260px wide, so a downscaled copy keeps the page light. Run them through
+`tools/build_site_assets.sh` conventions (AVIF plus a PNG fallback) if the set
+grows large.

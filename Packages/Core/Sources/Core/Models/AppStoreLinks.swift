@@ -6,9 +6,7 @@ import Foundation
 /// numeric App Store identifier lives in exactly one place.
 public enum AppStoreLinks {
     /// Numeric App Store identifier assigned in App Store Connect.
-    ///
-    /// - Warning: Placeholder value. Replace with the real identifier before shipping.
-    public static let appID = "0000000000"
+    public static let appID = "6798399598"
 
     private static let productBase = "https://apps.apple.com/app/id"
 

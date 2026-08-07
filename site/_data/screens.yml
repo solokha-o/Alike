@@ -1,0 +1,55 @@
+# Device-frame slots for the "A look inside" section.
+#
+# Each entry renders a phone frame. While `image:` is absent the frame shows a
+# neutral pending placeholder. To drop a real screenshot in, capture it per the
+# spec in Docs/screenshot-shot-list.md, put the PNG at
+# site/assets/img/screens/<name>.png, and add `image: <name>` to the entry.
+# No layout or CSS changes are needed.
+#
+# `shot` refers to the numbered row in Docs/screenshot-shot-list.md.
+
+site:
+  - shot: 1
+    image: scanner-idle
+    en:
+      caption: Start a scan
+      alt: "The Alike Scanner tab, ready to start a scan."
+    uk:
+      caption: Почати сканування
+      alt: "Вкладка сканера Alike, готова почати сканування."
+
+  - shot: 3
+    image: cleanup-queue
+    en:
+      caption: Work through the queue
+      alt: "The Cleanup tab listing groups of similar photos with review badges."
+    uk:
+      caption: Робота з чергою
+      alt: "Вкладка прибирання зі списком груп схожих фото та позначками перегляду."
+
+  - shot: 4
+    image: cluster-details
+    en:
+      caption: Best Shot, already picked
+      alt: "A group of similar photos with the best shot highlighted and others selected."
+    uk:
+      caption: Найкращий знімок уже обрано
+      alt: "Група схожих фото з виділеним найкращим знімком та обраними іншими."
+
+  - shot: 5
+    image: comparison-review
+    en:
+      caption: Compare side by side
+      alt: "Two visually similar photos compared side by side."
+    uk:
+      caption: Порівняння поруч
+      alt: "Дві візуально схожі фотографії, показані поруч для порівняння."
+
+  - shot: 7
+    image: cleanup-progress
+    en:
+      caption: See what you freed
+      alt: "A cleanup success screen showing the amount of storage freed."
+    uk:
+      caption: Скільки місця звільнено
+      alt: "Екран успішного прибирання з обсягом звільненого місця."

@@ -1,0 +1,158 @@
+locale: en
+locale_tag: en
+locale_name: English
+switch_to: Українською
+switch_url: /uk/
+home_url: /
+privacy_url: /privacy/
+terms_url: /terms/
+support_url: /support/
+
+meta:
+  title: "Alike — find visually similar photos on your iPhone"
+  description: "Alike finds and groups visually similar photos in your photo library using on-device analysis, picks the best shot, and helps you clear the rest. No account, no server, nothing leaves your iPhone."
+
+nav:
+  features: Features
+  privacy: Privacy
+  pricing: Pricing
+  faq: FAQ
+  support: Support
+  menu: Menu
+  skip: Skip to content
+
+hero:
+  eyebrow: iPhone
+  headline: "Your camera roll, minus the near-duplicates."
+  subhead: "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device."
+  badge: Coming to the App Store
+  badge_note: "Free to download, with an optional Pro subscription."
+  trust: "No account. No server. Nothing is uploaded."
+  image_alt: "The Alike mascot, a purple character holding a magnifying glass over two photos."
+
+steps:
+  title: How it works
+  subtitle: "Three steps, and you keep control at every one of them."
+  items:
+    - title: Scan
+      body: "Alike compares your library with Apple's Vision framework, running entirely on your device. Photos close in time and place are compared; screenshots are left out unless you ask for them."
+      image: step-scan
+      image_alt: "The mascot searching through photos with a magnifying glass."
+    - title: Review
+      body: "Each group opens with a Best Shot already picked, so you can decide in seconds. Keep Best Only, Select All Except Best, or choose by hand."
+      image: step-review
+      image_alt: "The mascot celebrating next to a highlighted best photo."
+    - title: Clear
+      body: "Confirm, and the photos you chose go to Recently Deleted, where iOS keeps them for about 30 days. Nothing is ever removed without you saying so."
+      image: step-clean
+      image_alt: "The mascot cheering beside a tidied photo library."
+
+features:
+  title: What you get
+  items:
+    - title: On-device analysis
+      body: "Every comparison uses Apple's Vision framework, locally. There is no upload, no queue, and no cloud processing."
+    - title: Three sensitivity levels
+      body: "Low, Medium, or High. Tighten the threshold when you only want near-identical shots, loosen it to catch more."
+    - title: Best Shot detection
+      body: "A deterministic pick of the strongest photo in each group, so there is always a sensible default to keep."
+    - title: Guided review
+      body: "Work through one group at a time with Keep Best Only, Select All Except Best, and Clear Selection."
+    - title: Review badges
+      body: "New, In review, Reviewed, and Needs review after a rescan. You always know where you stopped."
+    - title: Progress and savings
+      body: "Reviewed, Remaining, Selected, and Estimated Savings, plus a cleanup history grouped by month."
+    - title: A layout that fits you
+      body: "An adaptive grid that switches between a roomy single column and a denser layout, remembered between launches."
+    - title: Two languages, Dark Mode
+      body: "Full English and Ukrainian throughout, and complete Dark Mode support."
+
+screenshots:
+  title: A look inside
+  subtitle: "Screens from the app."
+  pending: "Screenshots are being prepared ahead of launch."
+
+privacy:
+  title: Privacy is the whole point
+  subtitle: "Photo cleanup means handing an app your most personal library. Alike is built so that it never has to leave your hands."
+  image_alt: "The mascot resting beside a tidy, finished photo library."
+  claims:
+    - title: Analysis runs on your device
+      body: "Apple's Vision framework compares your photos locally. There is no Alike server to send anything to."
+    - title: Photos are never uploaded
+      body: "No photo, thumbnail, or feature print ever leaves your device."
+    - title: No analytics, no tracking
+      body: "No usage events, no advertising identifiers, no crash reporting SDK, no cookies. The app makes no network requests of its own."
+    - title: Deletion is always your call
+      body: "Every cleanup needs your confirmation, iOS asks a second time, and the photos land in Recently Deleted."
+  cta: Read the full Privacy Policy
+
+pricing:
+  title: Pricing
+  subtitle: "Alike is free to download. Alike Pro lifts the limits."
+  free:
+    name: Alike Free
+    price: Free
+    period: ""
+    features:
+      - "3 scans per month"
+      - "Guided review with Best Shot"
+      - "Sorting and cleanup history"
+      - "Clean up one photo at a time"
+  pro:
+    name: Alike Pro
+    badge: Recommended
+    price_note: "Yearly and monthly plans, priced in your local currency."
+    trial: 7-day free trial on the yearly plan
+    features:
+      - "Unlimited scans"
+      - "Clean up whole selections at once"
+      - "Screenshot cleanup"
+      - "Blurred photo cleanup"
+      - "Advanced filters"
+      - "Custom cleanup reminders"
+  # Must stay identical to the paywall copy in Docs/legal/subscription-disclosure.md.
+  disclosure_renewal: "Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account."
+  disclosure_trial: "The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."
+
+faq:
+  title: Common questions
+  items:
+    - q: Does Alike upload my photos anywhere?
+      a: "No. All comparison happens on your device using Apple's Vision framework, and the app makes no network requests of its own. The only outbound activity is handled by Apple when you buy or restore a subscription."
+    - q: Will Alike delete photos without asking?
+      a: "Never. You select what to remove, Alike asks you to confirm, and iOS shows its own confirmation before anything is deleted. Deleted photos go to Recently Deleted, where iOS keeps them for about 30 days."
+    - q: Do I need an account?
+      a: "No. Alike has no account, no sign-in, and no server. You open the app and start scanning."
+    - q: What does Alike actually access?
+      a: "Your photo library, requested once at the start. You can grant full access or limited access and pick which photos Alike may see, and change it any time in iOS Settings. Notification permission is only requested if you turn on the weekly cleanup reminder."
+    - q: How does it decide which photos are similar?
+      a: "Each photo gets a numeric feature print from the Vision framework. Photos close in capture time and location are compared, and a photo only joins a group if it is similar to every photo already in it. The sensitivity level sets how close is close enough."
+    - q: What is Best Shot?
+      a: "A deterministic pick of the strongest photo in each group, so there is always a sensible default to keep. You can always override it."
+    - q: How do I cancel a subscription?
+      a: "In iOS Settings, tap your name, then Subscriptions. Cancelling stops future renewals and you keep access until the paid period ends. Subscriptions and refunds are handled by Apple, not by us."
+    - q: Can I erase everything Alike has stored?
+      a: "Yes. Settings, then Data & Privacy, then Delete Alike Data. It erases scan results, cleanup history, and preferences, and leaves your photos, photo access, and subscription untouched."
+
+support:
+  title: Support
+  subtitle: "No account, no ticket system. Send an email and you will get a reply."
+  contact_title: Get in touch
+  contact_body: "Email is the fastest way to reach us. Include your iOS version, your device, and what you expected to happen."
+  response: "Expect a reply within a few days."
+  before_title: Before you write
+  before_body: "The in-app guide covers most of what people ask. Open Alike, go to Settings, then How to Use."
+  bug_title: Reporting a bug
+  bug_body: "Please describe what you did, what you expected, and what happened instead. Do not send photos from your library — we do not need them and would rather not receive them."
+  privacy_title: Privacy questions
+  privacy_body: "Alike has no server and collects nothing, so there is no account data to export or delete. The Privacy Policy explains this in full, and Delete Alike Data in Settings erases everything stored on your device."
+
+footer:
+  tagline: "Find visually similar photos. Keep the best. Clear the rest."
+  privacy: Privacy Policy
+  terms: Terms of Use
+  support: Support
+  contact: Contact
+  rights: "All rights reserved."
+  built: "Made with Swift and SwiftUI."

@@ -86,9 +86,27 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Local App Store Connect / signing configuration
+.env
+
+# Jekyll landing page build output
+site/_site/
+site/.jekyll-cache/
+site/.jekyll-metadata
+site/Gemfile.lock
 *.cache
 *test-logs
 *.vscode
 .sandbox-home/
 # Added by code-review-graph
 .code-review-graph/
+
+# Local Ruby/Bundler install for Fastlane
+.bundle/
+vendor/
+Gemfile.lock
+
+# Notion-mirrored progress notes; the board is the source of truth
+Docs/task*-plan.md
+Docs/phase*-handoff.md

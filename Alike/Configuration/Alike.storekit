@@ -38,6 +38,11 @@
           "description" : "",
           "displayName" : "Alike Pro",
           "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "uk"
         }
       ],
       "name" : "Alike Pro",
@@ -83,6 +88,11 @@
               "description" : "Unlock all Alike Pro photo cleanup features.",
               "displayName" : "Alike Pro Yearly",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Усі функції очищення фото Alike Pro.",
+              "displayName" : "Alike Pro на рік",
+              "locale" : "uk"
             }
           ],
           "productID" : "com.alike.app.pro.yearly",
@@ -122,6 +132,11 @@
               "description" : "Unlock all Alike Pro photo cleanup features.",
               "displayName" : "Alike Pro Monthly",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Усі функції очищення фото Alike Pro.",
+              "displayName" : "Alike Pro на місяць",
+              "locale" : "uk"
             }
           ],
           "productID" : "com.alike.app.pro.monthly",
