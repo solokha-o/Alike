@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=tools/xcode-env.sh
+source "$ROOT_DIR/tools/xcode-env.sh"
 MODE="${1:-}"
 REPORT_ROOT="${ALIKE_LOCAL_CD_REPORT_ROOT:-$ROOT_DIR/build/reports/local-cd}"
 TIMESTAMP="$(date -u +"%Y%m%dT%H%M%SZ")"
@@ -169,6 +171,18 @@ main() {
   [[ -n "$MODE" ]] || fail_usage
   shift
   cd "$ROOT_DIR"
+
+  case "$MODE" in
+    -h|--help|help)
+      usage
+      exit 0
+      ;;
+  esac
+
+  # Fastlane shells out to xcodebuild and to the Java transporter, so it needs
+  # the same toolchain local_ci.sh picks. Its export does not reach here — it is
+  # a sibling process — so resolve it again before any lane runs.
+  ensure_developer_dir
 
   case "$MODE" in
     upload-metadata)

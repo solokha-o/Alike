@@ -18,8 +18,32 @@ Command reference: `Docs/ci-cd.md`. Branch and tag rules:
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
-- [ ] App Store Connect API credentials available to fastlane.
-- [ ] `xcode-select` points at the full Xcode, not the Command Line Tools.
+- [ ] App Store Connect API credentials available to fastlane:
+      `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
+      `APP_STORE_CONNECT_API_KEY_PATH` (or `..._API_KEY_CONTENT`). The same
+      three are what `xcodebuild` authenticates with when it has to create a
+      provisioning profile, so they matter before the upload step too.
+- [ ] `xcode-select` points at the full Xcode, not the Command Line Tools —
+      or don't bother: `tools/local_ci.sh` and `tools/local_cd.sh` both call
+      `ensure_developer_dir` from `tools/xcode-env.sh` and fall back to the
+      newest installed Xcode. Only an explicit `DEVELOPER_DIR` overrides it.
+- [ ] **Signing, first release only.** The export step needs an *App Store
+      distribution* profile for `com.alike.app`. A machine that has only ever
+      built and run the app has an `Apple Development` certificate and a
+      development profile — enough to archive, not enough to export, and the
+      failure reads `No profiles for 'com.alike.app' were found`. Either create
+      the distribution certificate once in Xcode → Settings → Accounts → Manage
+      Certificates, or let `xcodebuild` create it:
+
+```sh
+set -a; . ./.env; set +a
+ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1 tools/upload-build
+```
+
+      That flag is what adds `-allowProvisioningUpdates` and the
+      `-authenticationKey*` arguments. Without it `xcodebuild` only looks
+      locally and never contacts the portal. The API key must be Admin or App
+      Manager; a Developer key cannot create certificates.
 
 ## 1. Version and build
 
@@ -137,7 +161,9 @@ git tag -a vX.Y.Z -m "Alike X.Y.Z"
 
 - [ ] `tools/upload-build X.Y.Z N`. It re-runs `release-check` first, uploads the
       Release IPA to TestFlight, and does **not** submit for review, notify
-      external testers, or push tags.
+      external testers, or push tags. Add
+      `ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1` whenever the signing assets in
+      step 0 are not already on the machine.
 - [ ] Build processed in App Store Connect and attached to the version.
 
 ## 11. Submit
