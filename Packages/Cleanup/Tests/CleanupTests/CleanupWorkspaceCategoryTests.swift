@@ -21,11 +21,11 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
 
         // `loadAllSnapshots` returns a Dictionary, so the repository imposes no
         // order at all — `CleanupCategoryKind.allCases` is the only thing that
-        // can give the Cleanup tab a stable one. With two kinds this assertion
-        // only catches a regression about half the time (Swift seeds Dictionary
-        // ordering per process), but it never fails on correct code, so it is
-        // worth keeping. The per-kind values below are what make the test
-        // deterministic: they catch a summary attached to the wrong kind.
+        // can give the Cleanup tab a stable one. `fetchCleanupCategories` walks
+        // `allCases` and looks each kind up in the dictionary, so the order is
+        // fully determined and this assertion is deterministic: it fails every
+        // time if a kind is dropped or the sequence changes. The per-kind values
+        // below catch a summary attached to the wrong kind.
         XCTAssertEqual(
             workspace.cleanupCategories.map(\.kind),
             CleanupCategoryKind.allCases
