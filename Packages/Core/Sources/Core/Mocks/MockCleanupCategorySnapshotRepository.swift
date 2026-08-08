@@ -27,6 +27,10 @@ public actor MockCleanupCategorySnapshotRepository: CleanupCategorySnapshotRepos
         replaceAllSnapshotsError = error
     }
 
+    public func setLoadAllSnapshotsError(_ error: Error?) {
+        loadAllSnapshotsError = error
+    }
+
     public func loadSnapshot(for kind: CleanupCategoryKind) async throws -> CleanupCategorySnapshot? {
         didCallLoadSnapshot = true
         if let loadSnapshotError {
