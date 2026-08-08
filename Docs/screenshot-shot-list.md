@@ -1,6 +1,6 @@
 # Alike Screenshot Shot List
 
-Nine of the thirteen shots are captured, from a physical iPhone at 1125 x 2436.
+Ten of the thirteen shots are captured, from a physical iPhone at 1125 x 2436.
 One shot is still open, one is optional and the rest are retired — see
 "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the

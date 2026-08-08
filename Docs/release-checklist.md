@@ -80,9 +80,10 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ```
 
-- [ ] Every field inside its limit — subtitle 30 chars, keywords 100 UTF-8
-      bytes, promotional text 170 chars, description 4000 chars, release notes
-      4000 chars. The generator enforces these; a pass means they hold.
+- [ ] Every field inside its limit — subtitle 30 chars, keywords 100 chars
+      including commas, promotional text 170 chars, description 4000 chars,
+      release notes 4000 chars. The generator enforces these; a pass means they
+      hold.
 - [ ] `Docs/app-store-review-notes.txt` still describes the build being shipped:
       no account, why photo access is needed, on-device Vision, confirmed
       deletion into Recently Deleted, the three paywall entry points.
