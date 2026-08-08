@@ -1,6 +1,6 @@
 import Foundation
 
-public enum PremiumFeature: String, Hashable, Identifiable, Sendable, Codable {
+public enum PremiumFeature: String, CaseIterable, Hashable, Identifiable, Sendable, Codable {
     case unlimitedScans
     case screenshotCleanup
     case blurredPhotoCleanup
