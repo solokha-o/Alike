@@ -110,7 +110,8 @@ REQUIRED_LOCALIZED_FILES = (
 
 
 # Localized App Store copy. Every claim here must stay consistent with the
-# published privacy policy, terms of use and landing page under `site/`, and
+# published privacy policy, terms of use and landing page in the
+# alikeapp/alikeapp.github.io repository, and
 # with the free/Pro split defined by PremiumFeature and PremiumAccessPolicy.
 # Prices are never stated: StoreKit supplies localized pricing.
 EN_US_DESCRIPTION = """\

@@ -21,7 +21,7 @@ Three consumers, one set of captures:
 | --- | --- |
 | Captures | `Docs/images/raw/<locale>/` — the bare screens, the input for everything below |
 | App Store | `Docs/images/<locale>/` — product renders, picked up by `tools/prepare_app_store_upload_bundle.py` and copied into every upload-safe locale |
-| Landing page | `site/assets/img/screens/` — see "Wiring a screenshot into the site" below |
+| Landing page | `assets/img/screens/` in `alikeapp/alikeapp.github.io` — see "Wiring a screenshot into the site" below |
 
 ## From captures to product screenshots
 
@@ -109,7 +109,7 @@ consumer is not a gap.
 **Optional — capture only if you decide to grow a surface:**
 
 - **9. History.** Earlier notes called this "the last landing-page frame". That
-  is no longer true: `site/_data/screens.yml` holds five slots and all five have
+  is no longer true: `_data/screens.yml` in the site repo holds five slots and all five have
   images. Adding History means adding a sixth entry there, or a sixth deck
   slide — a deliberate choice about the surface, not a hole to plug.
 
@@ -154,8 +154,12 @@ listing with room for one more.
 
 ## Wiring a screenshot into the site
 
-1. Put the PNG at `site/assets/img/screens/<name>.png`.
-2. Add `image: <name>` to the matching entry in `site/_data/screens.yml`.
+These two steps happen in the `alikeapp/alikeapp.github.io` repository, not
+here. `tools/import_device_screenshots.py --site-repo <path>` writes step 1 for
+you when that checkout is available.
+
+1. Put the PNG at `assets/img/screens/<name>.png`.
+2. Add `image: <name>` to the matching entry in `_data/screens.yml`.
 
 The frame swaps from the pending placeholder to the screenshot with no layout
 or CSS change. Entries carry EN and UK `caption` and `alt` text already.

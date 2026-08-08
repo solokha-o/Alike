@@ -11,11 +11,15 @@ Source captures are 1125 x 2436 (the 5.8" iPhone size). Two consumers:
              turns these into the marketing renders in `Docs/images/<locale>/`
              that `tools/prepare_app_store_upload_bundle.py` uploads.
 
-  Website    `site/assets/img/screens/` renders in ~260px frames, so a 520px
-             wide copy covers 2x with room to spare and keeps the page light.
+  Website    `assets/img/screens/` in the alikeapp/alikeapp.github.io repository
+             renders in ~260px frames, so a 520px wide copy covers 2x with room
+             to spare and keeps the page light. Skipped when that checkout is
+             not next to this one.
 
 Usage:
     python3 tools/import_device_screenshots.py --source ~/Downloads
+    python3 tools/import_device_screenshots.py --source ~/Downloads \
+        --site-repo ../alikeapp.github.io
 """
 from __future__ import annotations
 
@@ -44,7 +48,7 @@ SHOTS = {
     13: {"name": "welcome-privacy",    "en": "IMG_3236.PNG", "uk": "IMG_3245.PNG"},
 }
 
-# Which shots the landing page shows, matching site/_data/screens.yml.
+# Which shots the landing page shows, matching _data/screens.yml in the site repo.
 SITE_SHOTS = [1, 3, 4, 5, 7]
 
 
@@ -63,15 +67,27 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--source", default="~/Downloads", help="folder holding the IMG_*.PNG captures")
     ap.add_argument("--repo", default=".", help="repository root")
+    ap.add_argument(
+        "--site-repo",
+        default="../alikeapp.github.io",
+        help="checkout of alikeapp/alikeapp.github.io; website renders are skipped when it is absent",
+    )
     args = ap.parse_args()
 
     source = Path(args.source).expanduser()
     repo = Path(args.repo).resolve()
     store_dir = repo / "Docs" / "images" / "raw"
-    site_dir = repo / "site" / "assets" / "img" / "screens"
+
+    # The site lives in its own repository now, so its image directory is not
+    # ours to create — an unconditional mkdir would quietly produce a dead
+    # folder here and the renders would never reach the published page. Write
+    # only into a checkout that already exists, and say so when there isn't one.
+    site_root = Path(args.site_repo).expanduser()
+    site_dir = (site_root / "assets" / "img" / "screens").resolve() if site_root.is_dir() else None
 
     store_dir.mkdir(parents=True, exist_ok=True)
-    site_dir.mkdir(parents=True, exist_ok=True)
+    if site_dir is not None:
+        site_dir.mkdir(parents=True, exist_ok=True)
 
     missing = []
     for shot, spec in SHOTS.items():
@@ -110,7 +126,7 @@ def main() -> None:
 
             # Website: only the shots the page actually frames, English only —
             # the site swaps language by text, not by screenshot.
-            if shot in SITE_SHOTS and lang == "en":
+            if site_dir is not None and shot in SITE_SHOTS and lang == "en":
                 site_target = site_dir / f"{spec['name']}.png"
                 shutil.copy2(src, site_target)
                 run("sips", "--resampleWidth", str(SITE_WIDTH), str(site_target), "--out", str(site_target))
@@ -120,7 +136,11 @@ def main() -> None:
 
     print(f"\nApp Store: {store_count} files in {store_dir.relative_to(repo)}/  at "
           f"{APP_STORE_SIZE[0]}x{APP_STORE_SIZE[1]}")
-    print(f"Website:   {site_count} files in {site_dir.relative_to(repo)}/  at {SITE_WIDTH}px wide")
+    if site_dir is None:
+        print(f"Website:   skipped — no checkout at {args.site_repo}; "
+              f"pass --site-repo <path to alikeapp.github.io> to render the page images")
+    else:
+        print(f"Website:   {site_count} files in {site_dir}/  at {SITE_WIDTH}px wide")
 
 
 if __name__ == "__main__":

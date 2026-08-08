@@ -115,17 +115,20 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 
 ## 6. Legal and support site
 
-The site deploys from `.github/workflows/pages.yml`, which triggers **only on
-`main`** — so this step cannot pass before the release merge in step 8.
+The site lives in its own repository, `alikeapp/alikeapp.github.io`, and deploys
+on every push to that repository's `main`. It is **independent of this
+repository's release merge**, so this whole step can and should be completed
+*before* step 8 rather than after it — a dead Privacy Policy URL is grounds for
+App Review rejection, and there is no longer any reason to discover that late.
 
-- [ ] Pages source set to **GitHub Actions** (repo Settings → Pages, web UI).
+- [ ] Pages source set to **GitHub Actions** (that repo's Settings → Pages).
 - [ ] The workflow run succeeded. It fails deliberately if the rendered site
       references any third-party host, because the privacy policy claims Alike
       makes no network requests.
 - [ ] All six URLs return 200:
 
 ```sh
-for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://solokha-o.github.io/Alike/$u)" "$u"; done
+for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "$u"; done
 ```
 
 - [ ] In a **Release** build, the legal links open from all four entry points:
@@ -143,8 +146,9 @@ for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" 
 - [ ] PR `develop` → `main`, titled for the release. Merge commit, never squash
       — release history is preserved on purpose.
 - [ ] Required checks green: version check, build, tests, lint.
-- [ ] Merged. This is what publishes the legal site, so step 6 runs immediately
-      after and must pass before submission.
+- [ ] Merged. The legal site is no longer published by this merge — it lives in
+      `alikeapp/alikeapp.github.io` and step 6 should already be green before
+      you get here.
 
 ## 9. Tag
 
