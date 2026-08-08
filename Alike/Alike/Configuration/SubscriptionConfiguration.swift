@@ -5,7 +5,7 @@ enum SubscriptionConfiguration {
     /// Published legal pages. Source copy lives in `Docs/legal/`; see
     /// `Docs/legal/README.md` for the publishing runbook. These must be live
     /// before submitting for review — App Review rejects unreachable links.
-    private static let privacyPolicyURL = "https://solokha-o.github.io/Alike/privacy/"
+    private static let privacyPolicyURL = "https://alikeapp.github.io/privacy/"
 
     /// Apple standard EULA is the approved Terms fallback for auto-renewable
     /// subscriptions. `Docs/legal/terms/` documents how Alike works and defers

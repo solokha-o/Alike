@@ -8,14 +8,16 @@ Docs/legal/
 ├── README.md                     this file — the runbook
 └── subscription-disclosure.md    paywall disclosure copy, EN + UK
 
-site/                             the published pages themselves
+alikeapp/alikeapp.github.io       the published pages themselves (separate repo)
 ├── privacy.md   uk/privacy.md    Privacy Policy, EN + UK
 └── terms.md     uk/terms.md      Terms of Use, EN + UK
 ```
 
-The legal pages live in `site/` because they *are* the landing page — they are
-built and deployed with it by `.github/workflows/pages.yml`. There is one copy
-of each document, not a source copy and a published copy that can drift.
+The legal pages *are* the landing page, so they live with it — in the
+[`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io)
+repository, which is where an organization Pages site has to be served from.
+There is one copy of each document, not a source copy and a published copy that
+can drift.
 
 ## Operator details
 
@@ -32,29 +34,36 @@ The privacy pages are published as part of the landing page on GitHub Pages.
 
 | Document | URL |
 | --- | --- |
-| Privacy Policy (EN) | `https://solokha-o.github.io/Alike/privacy/` |
-| Privacy Policy (UK) | `https://solokha-o.github.io/Alike/uk/privacy/` |
-| Terms of Use (EN) | `https://solokha-o.github.io/Alike/terms/` |
-| Terms of Use (UK) | `https://solokha-o.github.io/Alike/uk/terms/` |
+| Privacy Policy (EN) | `https://alikeapp.github.io/privacy/` |
+| Privacy Policy (UK) | `https://alikeapp.github.io/uk/privacy/` |
+| Terms of Use (EN) | `https://alikeapp.github.io/terms/` |
+| Terms of Use (UK) | `https://alikeapp.github.io/uk/terms/` |
 
-This is a **project** Pages site under the `/Alike/` path, not a user site.
-`alike.github.io` was considered and is unavailable — `alike` is an existing
-GitHub account (registered 2011, no public repos), so that hostname cannot be
-claimed.
+This is an **organization** Pages site served from the domain root. `alike.github.io`
+was the first choice and is unavailable — `alike` is an existing GitHub account
+(registered 2011, no public repos) — so the site is published from the `alikeapp`
+organization instead, which gets the same root-level shape without a `/Alike/`
+sub-path.
 
 Each Markdown file carries Jekyll front matter with the `permalink` that produces
 the URL above, so the files can be dropped into the Pages site as-is.
 
-> **Project sites need a `baseurl`.** Because the site is served from `/Alike/`
-> rather than the domain root, `_config.yml` must set:
+> **Organization sites take an empty `baseurl`.** Because the site is served from
+> the domain root, `_config.yml` sets:
 >
 > ```yaml
-> baseurl: "/Alike"
+> url: "https://alikeapp.github.io"
+> baseurl: ""
 > ```
 >
-> Without it Jekyll emits `/privacy/` and every published link is wrong by one
-> path segment. The relative cross-links between the privacy and terms pages
-> resolve correctly either way.
+> Every internal link goes through `relative_url`/`absolute_url`, so those two
+> values are the only place the address is configured. A non-empty `baseurl`
+> here would make every published link wrong by one path segment.
+>
+> The deploy workflow's third-party-host check also allow-lists
+> `alikeapp.github.io`. That is not cosmetic: `sitemap.xml` and `robots.txt`
+> emit absolute URLs, so a stale host there fails the build on the site's own
+> links.
 
 If you later move to a custom domain, update `privacyPolicyURL` in
 `Alike/Alike/Configuration/SubscriptionConfiguration.swift`, the table above,
@@ -91,8 +100,9 @@ the landing page rather than from the app's Terms link.
    from the fact that the codebase contains no networking and no analytics SDKs —
    re-verify both before each release that touches those areas.
 2. Update the "Last updated" date in every file you changed, in both languages.
-3. Merge to `main`. The Pages workflow builds `site/` and deploys it; no manual
-   copying is involved.
+3. Push to `main` in `alikeapp/alikeapp.github.io`. The Pages workflow there
+   builds and deploys it; no manual copying is involved, and this does not wait
+   on the app's release merge.
 4. Confirm all four URLs load publicly with no sign-in.
 5. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
 6. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for

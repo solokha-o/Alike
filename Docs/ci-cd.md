@@ -361,30 +361,37 @@ Do not edit generated files under `build/generated/store_upload/` by hand.
 
 ## Landing Page
 
-The marketing site and the legal pages live in `site/` and deploy to GitHub Pages
-via `.github/workflows/pages.yml` on every push to `main` that touches `site/`.
+The marketing site and the legal pages live in their own repository,
+[`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io), and
+deploy to GitHub Pages on every push to that repository's `main`. An organization Pages
+site has to be served from a repository named `<org>.github.io`, which is what buys the
+clean `https://alikeapp.github.io/` address instead of a `/Alike/` sub-path.
+
+The practical consequence for releases: the site no longer rides along with the app
+release merge. It can be deployed and its URLs verified at any time, independently of
+this repository.
 
 | Page | EN | UK |
 |---|---|---|
-| Home | `/Alike/` | `/Alike/uk/` |
-| Privacy Policy | `/Alike/privacy/` | `/Alike/uk/privacy/` |
-| Terms of Use | `/Alike/terms/` | `/Alike/uk/terms/` |
-| Support | `/Alike/support/` | `/Alike/uk/support/` |
+| Home | `/` | `/uk/` |
+| Privacy Policy | `/privacy/` | `/uk/privacy/` |
+| Terms of Use | `/terms/` | `/uk/terms/` |
+| Support | `/support/` | `/uk/support/` |
 
 Those last two supply the values the metadata bundle needs:
 
 ```sh
-ALIKE_PRIVACY_URL="https://solokha-o.github.io/Alike/privacy/"
+ALIKE_PRIVACY_URL="https://alikeapp.github.io/privacy/"
 ```
 
 ```sh
-ALIKE_SUPPORT_URL="https://solokha-o.github.io/Alike/support/"
+ALIKE_SUPPORT_URL="https://alikeapp.github.io/support/"
 ```
 
 The landing page itself is the marketing URL:
 
 ```sh
-ALIKE_MARKETING_URL="https://solokha-o.github.io/Alike/"
+ALIKE_MARKETING_URL="https://alikeapp.github.io/"
 ```
 
 Local preview needs Ruby and Jekyll:
@@ -410,6 +417,6 @@ or an analytics script would make that claim false.
 The tooling is in place but the App Store content is not:
 
 - `Docs/images/` carries five product screenshots per locale. Three of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured, plus some Ukrainian counterparts. None of them are in the shipping deck — see `Docs/screenshot-brief.md`.
-- GitHub Pages must be switched to the **GitHub Actions** source, and `site/` must reach `main`, before the site first deploys. Until then the privacy, support and marketing URLs in the metadata are dead links.
+- The `alikeapp/alikeapp.github.io` repository must exist, hold the site, and have Pages switched to the **GitHub Actions** source before the site first deploys. Until then the privacy, support and marketing URLs in the metadata are dead links. This is no longer blocked by the app's release merge — it can be done first.
 
 `tools/quick`, `tools/full`, and `tools/meta` work today; the upload commands intentionally refuse to run until the items above are done.
