@@ -49,9 +49,13 @@ PRIVACY_LABEL = "Privacy Policy"
 TERMS_LABEL = "Terms of Use"
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
-APP_KEYWORDS_MAX_BYTES = 100
+# App Store Connect counts keywords in characters, commas included — not bytes.
+# Counting bytes made the limit roughly twice as strict for Cyrillic: the uk
+# keyword list has 51 characters of real headroom but only 7 bytes of it.
+APP_KEYWORDS_MAX_LENGTH = 100
 APP_PROMOTIONAL_TEXT_MAX_LENGTH = 170
 APP_DESCRIPTION_MAX_LENGTH = 4000
+APP_RELEASE_NOTES_MAX_LENGTH = 4000
 APP_REVIEW_NOTES_MAX_LENGTH = 4000
 IAP_DISPLAY_NAME_MIN_LENGTH = 2
 IAP_DISPLAY_NAME_MAX_LENGTH = 30
@@ -78,10 +82,11 @@ class LocaleMapping:
     apple: str
 
 
-# en-GB is deliberately not uploaded. Its copy stays in METADATA so the
-# localization can be switched back on by adding a mapping here; an en-GB
-# localization that already exists in App Store Connect has to be removed there
-# by hand, because deliver never deletes localizations.
+# The listing ships two localizations. en-GB will not exist in App Store
+# Connect, so its copy is gone rather than carried unused — a third locale in
+# METADATA that nothing generates is copy nobody keeps in sync and everybody
+# has to reason about. Adding a locale back means a mapping here plus its entry
+# in METADATA, and, if it ever ships, a deck in Docs/images/<locale>/.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
     LocaleMapping(source="uk", apple="uk"),
@@ -147,45 +152,6 @@ ALIKE PRO
 
 Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
 
-EN_GB_DESCRIPTION = """\
-Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
-
-HOW IT WORKS
-Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
-Review. Every group opens with a Best Shot already selected, so you can decide in seconds. Keep Best Only, Select All Except Best, or pick by hand.
-Clear. Confirm, and the photos you chose move to Recently Deleted, where iOS keeps them for about 30 days.
-
-PRIVACY IS THE WHOLE POINT
-- All analysis runs on device with Apple's Vision framework.
-- No photo, thumbnail or feature print is ever uploaded.
-- No account, no sign-in, no Alike server.
-- No analytics, no tracking, no advertising identifiers.
-- Nothing is deleted without your explicit confirmation.
-
-FEATURES
-- Three sensitivity levels, from near-identical shots to a wider net.
-- Best Shot detection, so every group has a sensible default to keep.
-- Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
-- Progress, Selected and Estimated Savings, plus cleanup history by month.
-- A roomy one-column layout or a denser grid, switchable any time and remembered.
-- Full English and Ukrainian, and complete Dark Mode support.
-
-ALIKE FREE
-- 3 scans per month
-- Guided review with Best Shot
-- Sorting and cleanup history
-- Organise one photo at a time
-
-ALIKE PRO
-- Unlimited scans
-- Organise whole selections at once
-- Screenshot cleanup
-- Blurred photo cleanup
-- Advanced filters
-- Customised cleanup reminders
-
-Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
-
 UK_DESCRIPTION = """\
 Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту — і жодне фото не залишає ваш пристрій.
 
@@ -231,21 +197,14 @@ METADATA = {
         "description": EN_US_DESCRIPTION,
         "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
         "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest — all on device.",
-    },
-    "en-GB": {
-        "subtitle": "Find and clear similar photos",
-        "description": EN_GB_DESCRIPTION,
-        "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
-        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you organise the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike. Scan your library for visually similar photos, review each group with a Best Shot already picked, and organise the rest — all on device.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted.\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
         "description": UK_DESCRIPTION,
         "keywords": "фото,схожі,дублікати,прибирання,памʼять,медіатека",
         "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Усе працює на вашому пристрої.",
-        "release_notes": "Перший випуск Alike. Скануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту — усе на пристрої.",
+        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а видалені фото завжди потрапляють до «Нещодавно видалених».\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування.",
     },
 }
 
@@ -608,7 +567,7 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for `en-US`, `en-GB` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`, but only `en-US` and `uk` are uploaded. Strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for `en-US` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`; those are the only two localizations the listing has. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
@@ -653,6 +612,15 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
 
 def validate_metadata() -> list[str]:
     errors: list[str] = []
+    # METADATA and UPLOAD_SAFE_LOCALES have to describe the same set of
+    # localizations. A locale in one and not the other is either copy that
+    # silently never ships or a KeyError deep inside generation.
+    mapped_locales = {mapping.apple for mapping in UPLOAD_SAFE_LOCALES}
+    for locale in sorted(mapped_locales - METADATA.keys()):
+        errors.append(f"{locale} is in UPLOAD_SAFE_LOCALES but has no METADATA entry")
+    for locale in sorted(METADATA.keys() - mapped_locales):
+        errors.append(f"{locale} has METADATA copy but is not in UPLOAD_SAFE_LOCALES, so it never ships")
+
     for filename in ("copyright.txt", "primary_category.txt", "secondary_category.txt"):
         path = METADATA_ROOT / filename
         if not path.exists() or not path.read_text(encoding="utf-8").strip():
@@ -674,12 +642,15 @@ def validate_metadata() -> list[str]:
         description_path = locale_root / "description.txt"
         if subtitle_path.exists() and len(subtitle_path.read_text(encoding="utf-8").strip()) > APP_SUBTITLE_MAX_LENGTH:
             errors.append(f"{subtitle_path} exceeds {APP_SUBTITLE_MAX_LENGTH} characters")
-        if keywords_path.exists() and len(keywords_path.read_text(encoding="utf-8").strip().encode("utf-8")) > APP_KEYWORDS_MAX_BYTES:
-            errors.append(f"{keywords_path} exceeds {APP_KEYWORDS_MAX_BYTES} UTF-8 bytes")
+        if keywords_path.exists() and len(keywords_path.read_text(encoding="utf-8").strip()) > APP_KEYWORDS_MAX_LENGTH:
+            errors.append(f"{keywords_path} exceeds {APP_KEYWORDS_MAX_LENGTH} characters")
         if promotional_path.exists() and len(promotional_path.read_text(encoding="utf-8").strip()) > APP_PROMOTIONAL_TEXT_MAX_LENGTH:
             errors.append(f"{promotional_path} exceeds {APP_PROMOTIONAL_TEXT_MAX_LENGTH} characters")
         if description_path.exists() and len(description_path.read_text(encoding="utf-8").strip()) > APP_DESCRIPTION_MAX_LENGTH:
             errors.append(f"{description_path} exceeds {APP_DESCRIPTION_MAX_LENGTH} characters")
+        release_notes_path = locale_root / "release_notes.txt"
+        if release_notes_path.exists() and len(release_notes_path.read_text(encoding="utf-8").strip()) > APP_RELEASE_NOTES_MAX_LENGTH:
+            errors.append(f"{release_notes_path} exceeds {APP_RELEASE_NOTES_MAX_LENGTH} characters")
     return errors
 
 

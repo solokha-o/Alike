@@ -2,6 +2,9 @@
 
 Run everything from the repository root.
 
+Shipping a release rather than validating a change? Follow
+`Docs/release-checklist.md` — it sequences these commands into the go-live gate.
+
 ## Quick Start
 
 Daily commands are the short wrappers in `tools/`:
@@ -71,6 +74,15 @@ For CI:
 - SwiftPM can build packages under `Packages/`.
 - The app project exists at `Alike/Alike.xcodeproj`.
 
+`xcode-select` does not have to point at Xcode. `local_ci.sh` and `local_cd.sh`
+both source `tools/xcode-env.sh` and call `ensure_developer_dir`, which falls
+back to the newest installed Xcode when the active developer directory is the
+Command Line Tools. An explicit `DEVELOPER_DIR` always wins. Both scripts
+resolve it independently, because `local_cd.sh` runs Fastlane as a sibling of
+`local_ci.sh` and does not inherit its export — and Fastlane fails obscurely
+without it: `Helper.xcode_version` shells out to `xcodebuild -version`, gets
+nothing, and `iTunesTransporter` crashes on `nil.start_with?`.
+
 For metadata validation and uploads:
 
 - `.env` or your shell provides real public `https` values for:
@@ -89,7 +101,13 @@ For App Store Connect uploads:
 
 For TestFlight upload:
 
-- Signing is already configured locally.
+- Signing is already configured locally. Specifically an **App Store
+  distribution** profile for `com.alike.app` — a development certificate is
+  enough to archive but not to export, and the export fails with
+  `No profiles for 'com.alike.app' were found`.
+- `ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1` if it is not, which lets
+  `xcodebuild` create the certificate and profile using the App Store Connect
+  API key. The key must be Admin or App Manager.
 - The `Alike` scheme can archive and export successfully in the `Release` configuration.
 
 ## CI Commands
@@ -335,6 +353,7 @@ ALIKE_NO_ENV=1 tools/meta
 - Uploaded product screenshots: `Docs/images/<locale>/`, rendered by
   `tools/generate_app_store_product_screenshots.py`
 - Metadata source: `tools/prepare_app_store_upload_bundle.py`
+- Screenshot deck brief: `Docs/screenshot-brief.md`
 - Subscription catalog reference: `Docs/Subscriptions.md`
 - Generated upload bundle: `build/generated/store_upload/`
 
@@ -390,7 +409,7 @@ or an analytics script would make that claim false.
 
 The tooling is in place but the App Store content is not:
 
-- `Docs/images/` carries five product screenshots per locale. Four of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured.
+- `Docs/images/` carries five product screenshots per locale. Three of the thirteen shots in `Docs/screenshot-shot-list.md` are still uncaptured, plus some Ukrainian counterparts. None of them are in the shipping deck — see `Docs/screenshot-brief.md`.
 - GitHub Pages must be switched to the **GitHub Actions** source, and `site/` must reach `main`, before the site first deploys. Until then the privacy, support and marketing URLs in the metadata are dead links.
 
 `tools/quick`, `tools/full`, and `tools/meta` work today; the upload commands intentionally refuse to run until the items above are done.

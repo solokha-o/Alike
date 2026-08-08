@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=tools/xcode-env.sh
+source "$ROOT_DIR/tools/xcode-env.sh"
 MODE="${1:-}"
 REPORT_ROOT="${ALIKE_LOCAL_CI_REPORT_ROOT:-$ROOT_DIR/build/reports/local-ci}"
 TIMESTAMP="$(date -u +"%Y%m%dT%H%M%SZ")"
@@ -151,33 +153,6 @@ run_step() {
   if [[ "$exit_code" -ne 0 ]]; then
     write_report "failed"
     exit "$exit_code"
-  fi
-}
-
-ensure_developer_dir() {
-  if [[ -n "${DEVELOPER_DIR:-}" ]]; then
-    return
-  fi
-
-  local selected
-  selected="$(xcode-select -p 2>/dev/null || true)"
-  if [[ "$selected" == *"/Xcode"*".app/Contents/Developer" ]]; then
-    return
-  fi
-
-  # xcode-select points at the Command Line Tools, where `swift test` cannot
-  # load the PreviewsMacros plugin and `xcodebuild` refuses to run. Fall back to
-  # the newest installed Xcode so the wrappers work without a manual export.
-  # Prefer the newest release build; only fall back to a beta if that is all
-  # that is installed.
-  local candidate
-  candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -vi beta | sort -V | tail -1)"
-  if [[ -z "$candidate" ]]; then
-    candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)"
-  fi
-  if [[ -n "$candidate" && -d "$candidate/Contents/Developer" ]]; then
-    export DEVELOPER_DIR="$candidate/Contents/Developer"
-    printf "Using DEVELOPER_DIR=%s\n" "$DEVELOPER_DIR"
   fi
 }
 

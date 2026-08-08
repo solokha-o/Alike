@@ -18,6 +18,10 @@ public actor MockCleanupHistoryRepository: CleanupHistoryRepository {
         self.entries = entries
     }
 
+    public func setLoadEntriesError(_ error: Error?) {
+        loadEntriesError = error
+    }
+
     public func loadEntries() async throws -> [CleanupCompletionRecord] {
         didCallLoadEntries = true
         if let loadEntriesError {
