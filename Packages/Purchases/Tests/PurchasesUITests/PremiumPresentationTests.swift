@@ -13,14 +13,9 @@ final class PremiumPresentationTests: XCTestCase {
     }
 
     func testEveryPremiumFeatureHasContextualPresentation() {
-        for feature in [
-            PremiumFeature.unlimitedScans,
-            .screenshotCleanup,
-            .blurredPhotoCleanup,
-            .advancedFilters,
-            .batchCleanup,
-            .cleanupReminderCustomization
-        ] {
+        // `allCases` rather than a hand-written list, so a feature added later
+        // cannot escape this check by not being typed out here.
+        for feature in PremiumFeature.allCases {
             let context = PremiumSurfaceContext.feature(feature)
             XCTAssertEqual(context.feature, feature)
             XCTAssertFalse(context.title.isEmpty)
