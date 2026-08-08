@@ -49,7 +49,10 @@ PRIVACY_LABEL = "Privacy Policy"
 TERMS_LABEL = "Terms of Use"
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
-APP_KEYWORDS_MAX_BYTES = 100
+# App Store Connect counts keywords in characters, commas included — not bytes.
+# Counting bytes made the limit roughly twice as strict for Cyrillic: the uk
+# keyword list has 51 characters of real headroom but only 7 bytes of it.
+APP_KEYWORDS_MAX_LENGTH = 100
 APP_PROMOTIONAL_TEXT_MAX_LENGTH = 170
 APP_DESCRIPTION_MAX_LENGTH = 4000
 APP_RELEASE_NOTES_MAX_LENGTH = 4000
@@ -639,8 +642,8 @@ def validate_metadata() -> list[str]:
         description_path = locale_root / "description.txt"
         if subtitle_path.exists() and len(subtitle_path.read_text(encoding="utf-8").strip()) > APP_SUBTITLE_MAX_LENGTH:
             errors.append(f"{subtitle_path} exceeds {APP_SUBTITLE_MAX_LENGTH} characters")
-        if keywords_path.exists() and len(keywords_path.read_text(encoding="utf-8").strip().encode("utf-8")) > APP_KEYWORDS_MAX_BYTES:
-            errors.append(f"{keywords_path} exceeds {APP_KEYWORDS_MAX_BYTES} UTF-8 bytes")
+        if keywords_path.exists() and len(keywords_path.read_text(encoding="utf-8").strip()) > APP_KEYWORDS_MAX_LENGTH:
+            errors.append(f"{keywords_path} exceeds {APP_KEYWORDS_MAX_LENGTH} characters")
         if promotional_path.exists() and len(promotional_path.read_text(encoding="utf-8").strip()) > APP_PROMOTIONAL_TEXT_MAX_LENGTH:
             errors.append(f"{promotional_path} exceeds {APP_PROMOTIONAL_TEXT_MAX_LENGTH} characters")
         if description_path.exists() and len(description_path.read_text(encoding="utf-8").strip()) > APP_DESCRIPTION_MAX_LENGTH:
