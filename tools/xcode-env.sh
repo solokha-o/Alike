@@ -28,13 +28,23 @@ ensure_developer_dir() {
   # wrappers work without a manual export.
   # Prefer the newest release build; only fall back to a beta if that is all
   # that is installed.
+  # Both pipelines are expected to come up empty — no Xcode at all, or nothing
+  # but betas, which makes `grep -vi beta` exit 1. The callers run with
+  # `set -o pipefail`, so without `|| true` that empty result aborts the whole
+  # script here instead of falling through to the beta fallback below.
   local candidate
-  candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -vi beta | sort -V | tail -1)"
+  candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -vi beta | sort -V | tail -1 || true)"
   if [[ -z "$candidate" ]]; then
-    candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)"
+    candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1 || true)"
   fi
+  # A bare `if` that falls through returns 1, which would abort the callers'
+  # `set -e` with no message at all. Say what happened and return cleanly: the
+  # fallback is best-effort, and the tool that actually needs Xcode reports a
+  # far better error than a silent exit.
   if [[ -n "$candidate" && -d "$candidate/Contents/Developer" ]]; then
     export DEVELOPER_DIR="$candidate/Contents/Developer"
     printf "Using DEVELOPER_DIR=%s\n" "$DEVELOPER_DIR"
+  else
+    printf "warning: no Xcode.app under /Applications; leaving DEVELOPER_DIR unset\n" >&2
   fi
 }
