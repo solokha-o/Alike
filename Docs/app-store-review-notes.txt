@@ -46,8 +46,10 @@ automatic unless cancelled at least 24 hours before the end of the current
 period, that payment is charged to the Apple Account, and that the yearly plan
 includes a 7-day free trial for eligible new subscribers with billing starting
 when the trial ends. Restore Purchases is available on the paywall and in
-Settings. Links to the Privacy Policy and to Apple's Standard EULA are shown
-on the paywall and under Settings, then Legal.
+Settings. Links to the Privacy Policy and to the Terms of Use are shown on the
+paywall and under Settings, then Legal. The Terms of Use page names Apple's
+Standard EULA as the licence that governs use of the app and defers to it on
+any conflict.
 
 DATA DELETION
 Settings, then Data & Privacy, then Delete Alike Data erases all scan results,

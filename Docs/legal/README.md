@@ -85,13 +85,19 @@ SwiftUI environment everywhere else, so there is exactly one place to change the
 
 ## Terms of Use and the Apple EULA
 
-`termsOfUse` in the app points at
-[Apple's Standard EULA](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/),
-which is the licence that legally governs use of the app. The Terms of Use pages
-in this folder describe how Alike works, what Alike Pro includes, and the
-subscription billing rules, and explicitly defer to Apple's Standard EULA on
-licence terms. Publish them alongside the privacy pages; they are referenced from
-the landing page rather than from the app's Terms link.
+`termsOfUse` in the app points at the published Terms of Use page,
+`https://alikeapp.github.io/terms/` — the same URL the App Store listing carries,
+so the in-app link and the listing lead to the same place.
+
+That page describes how Alike works, what Alike Pro includes, and the
+subscription billing rules, and it names
+[Apple's Standard EULA](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/)
+as the licence that legally governs use of the app, deferring to it wherever the
+two conflict. Apple accepts a custom Terms page on that basis, so the app does
+not link to Apple's copy directly.
+
+Keep the EULA reference and the auto-renewable subscription disclosures on that
+page. Removing either is what would turn this into a review problem.
 
 ## Publishing checklist
 

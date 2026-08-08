@@ -7,10 +7,13 @@ enum SubscriptionConfiguration {
     /// before submitting for review — App Review rejects unreachable links.
     private static let privacyPolicyURL = "https://alikeapp.github.io/privacy/"
 
-    /// Apple standard EULA is the approved Terms fallback for auto-renewable
-    /// subscriptions. `Docs/legal/terms/` documents how Alike works and defers
-    /// to this licence, so the app keeps linking to Apple's canonical copy.
-    private static let termsOfUseURL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+    /// Alike's own Terms, so the in-app link and the App Store listing's Terms
+    /// URL lead to the same page. The page still names Apple's Standard EULA as
+    /// the licence that legally governs use of the app and defers to it on any
+    /// conflict, and it carries the auto-renewable subscription disclosures, so
+    /// pointing here rather than at Apple's copy loses nothing App Review
+    /// requires.
+    private static let termsOfUseURL = "https://alikeapp.github.io/terms/"
 
     static let legalLinks = SubscriptionLegalLinks(
         privacyPolicy: URL(string: privacyPolicyURL),
