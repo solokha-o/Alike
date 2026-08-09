@@ -446,7 +446,11 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Request the App Store rating prompt")))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
-            Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
+            // The subject is percent-encoded in the literal rather than left to
+            // URL(string:), which only accepts the raw space because it defaults to
+            // encodingInvalidCharacters: true. Encoding it here keeps the force
+            // unwrap valid under strict RFC 3986 parsing too.
+            Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike%20Feedback")!) {
                 Label {
                     Text(appLocalized("Contact Developer"))
                 } icon: {
