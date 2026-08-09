@@ -33,7 +33,7 @@ STOREKIT_PATH = ROOT / "Alike" / "Configuration" / "Alike.storekit"
 EXPECTED_SCREENSHOT_SIZE = (1320, 2868)
 APP_IDENTIFIER = "com.alike.app"
 APP_NAME = "Alike: Similar Photo Cleaner"
-COPYRIGHT = "2026 Oleksandr Solokha. Alike"
+COPYRIGHT = "2026 Oleksandr Solokha"
 PRIMARY_CATEGORY = "PHOTO_AND_VIDEO"
 SECONDARY_CATEGORY = "UTILITIES"
 PRIVACY_URL_PLACEHOLDER = "__ALIKE_PRIVACY_URL__"
@@ -47,6 +47,14 @@ TERMS_URL_PLACEHOLDER = "__ALIKE_TERMS_URL__"
 TERMS_URL_DEFAULT = TERMS_URL_PLACEHOLDER
 PRIVACY_LABEL = "Privacy Policy"
 TERMS_LABEL = "Terms of Use"
+# The description footer is the only place the legal links appear as prose, so
+# the labels follow the locale of the copy around them. en-US keeps the values
+# above; validation still looks for the en-US TERMS_LABEL, so this table has to
+# stay in step with it.
+LOCALE_LEGAL_LABELS = {
+    "en-US": (PRIVACY_LABEL, TERMS_LABEL),
+    "uk": ("Політика конфіденційності", "Умови використання"),
+}
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
 # App Store Connect counts keywords in characters, commas included — not bytes.
@@ -127,15 +135,26 @@ PRIVACY IS THE WHOLE POINT
 - No photo, thumbnail or feature print is ever uploaded.
 - No account, no sign-in, no Alike server.
 - No analytics, no tracking, no advertising identifiers.
+- No ads anywhere in the app.
+- Scanning and cleanup need no connection at all — Alike works in Airplane Mode.
 - Nothing is deleted without your explicit confirmation.
 
-FEATURES
+BUILT FOR REAL LIBRARIES
 - Three sensitivity levels, from near-identical shots to a wider net.
 - Best Shot detection, so every group has a sensible default to keep.
 - Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
-- Progress, Selected and Estimated Savings, plus cleanup history by month.
+- Add or delete photos and Alike notices, then resurfaces only the groups that changed — no full rescan to stay current.
+- Progress, Selected and Estimated Savings while you work.
+- Cleanup history grouped by month, so you can see what you have already reclaimed.
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
+- A searchable guide inside the app, one tap from the Scanner.
+- Optional cleanup reminders, delivered as local notifications on your own schedule.
 - Full English and Ukrainian, and complete Dark Mode support.
+
+YOU STAY IN CONTROL
+- Photos you clear go to Recently Deleted, recoverable for about 30 days.
+- Settings, then Data & Privacy, then Delete Alike Data erases every scan result, cleanup record and preference the app has stored — and never touches your photo library.
+- Grant Full Access or Limited Access; Alike works with whatever you choose to share.
 
 ALIKE FREE
 - 3 scans per month
@@ -144,6 +163,7 @@ ALIKE FREE
 - Clean up one photo at a time
 
 ALIKE PRO
+- 7 days free on the yearly plan, for eligible new subscribers
 - Unlimited scans
 - Clean up whole selections at once
 - Screenshot cleanup
@@ -166,15 +186,26 @@ Alike знаходить майже однакові знімки у вашій 
 - Жодне фото, ескіз чи відбиток ознак не завантажується в інтернет.
 - Без облікового запису, без входу, без сервера Alike.
 - Без аналітики, відстеження та рекламних ідентифікаторів.
+- Без реклами в застосунку.
+- Сканування та прибирання не потребують інтернету — Alike працює в режимі польоту.
 - Нічого не видаляється без вашого явного підтвердження.
 
-МОЖЛИВОСТІ
+СТВОРЕНО ДЛЯ СПРАВЖНІХ МЕДІАТЕК
 - Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку.
 - Вибір найкращого знімка, тож у кожній групі є розумний варіант залишити.
 - Позначки: «Нове», «У перегляді», «Переглянуто», «Потребує перегляду».
-- Прогрес, «Обрано» й «Орієнтовна економія», а також історія за місяцями.
+- Додали чи видалили фото — Alike це помічає й повертає до перегляду лише ті групи, що змінилися, без повного пересканування.
+- Прогрес, «Обрано» й «Орієнтовна економія» просто під час роботи.
+- Історія прибирання за місяцями — видно, скільки місця вже повернуто.
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
+- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
+- Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
 - Повна підтримка англійської та української й темна тема.
+
+ВИ КЕРУЄТЕ ВСІМ
+- Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
+- «Дані та приватність» → «Видалити дані Alike» стирає всі результати сканувань, записи прибирання та налаштування застосунку — і не торкається вашої медіатеки.
+- Надайте повний або обмежений доступ: Alike працює з тим, чим ви вирішили поділитися.
 
 ALIKE FREE
 - 3 сканування на місяць
@@ -183,6 +214,7 @@ ALIKE FREE
 - Прибирання по одному фото за раз
 
 ALIKE PRO
+- 7 днів безкоштовно на річному плані, для нових підписників, які мають на це право
 - Необмежені сканування
 - Прибирання цілих виділень одразу
 - Прибирання знімків екрана
@@ -196,16 +228,22 @@ METADATA = {
     "en-US": {
         "subtitle": "Find and clear similar photos",
         "description": EN_US_DESCRIPTION,
-        "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
-        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted.\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.",
+        # App Store Connect indexes the app name and subtitle on top of this
+        # field, so "similar", "photo" and "cleaner" are deliberately absent —
+        # repeating them here would spend characters on terms already covered.
+        "keywords": "duplicate,cleanup,camera roll,storage,space,declutter,gallery,screenshot,blurry,album,delete",
+        # Promotional text is the one field App Store Connect accepts without a
+        # new build, so the trial lives here as well as in the description.
+        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted, where iOS keeps your photos for about 30 days.\n\nIn this first version:\n- Three sensitivity levels, from near-identical shots to a wider net\n- Best Shot detection, so every group opens with a sensible keeper selected\n- Keep Best Only, Select All Except Best, or pick by hand\n- Review badges that track what is new, in review, reviewed, and what needs another look after your library changes\n- Progress, Selected and Estimated Savings while you work, plus cleanup history by month\n- A searchable guide inside the app, one tap from the Scanner\n- Optional cleanup reminders as local notifications\n- English and Ukrainian, with full Dark Mode support\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders. The yearly plan starts with 7 days free for eligible new subscribers.\n\nThank you for trying Alike. Feedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
         "description": UK_DESCRIPTION,
-        "keywords": "фото,схожі,дублікати,прибирання,памʼять,медіатека",
-        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Усе працює на вашому пристрої.",
-        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а видалені фото завжди потрапляють до «Нещодавно видалених».\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування.",
+        # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
+        "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,видалити",
+        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок і допомагає прибрати решту — усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
+        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а прибрані фото завжди потрапляють до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.\n\nУ цій першій версії:\n- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку\n- Вибір найкращого знімка: група відкривається з уже обраним варіантом залишити\n- «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну\n- Позначки перегляду: що нове, що в роботі, що переглянуто і що варто передивитися після змін у медіатеці\n- Прогрес, «Обрано» й «Орієнтовна економія» під час роботи, а також історія прибирання за місяцями\n- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера»\n- Необовʼязкові нагадування про прибирання як локальні сповіщення\n- Англійська та українська, повна підтримка темної теми\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування. Річний план починається з 7 днів безкоштовно для нових підписників, які мають на це право.\n\nДякуємо, що спробували Alike. Відгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
 }
 
@@ -303,9 +341,26 @@ def reset_output_dirs() -> None:
         path.mkdir(parents=True, exist_ok=True)
 
 
-def description_with_links(description: str, privacy_url: str, terms_url: str) -> str:
-    footer = f"{PRIVACY_LABEL}: {privacy_url}\n{TERMS_LABEL}: {terms_url}"
+def description_with_links(
+    description: str, privacy_url: str, terms_url: str, locale: str = "en-US"
+) -> str:
+    privacy_label, terms_label = LOCALE_LEGAL_LABELS.get(locale, (PRIVACY_LABEL, TERMS_LABEL))
+    footer = f"{privacy_label}: {privacy_url}\n{terms_label}: {terms_url}"
     return f"{description.rstrip()}\n\n{footer}"
+
+
+def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
+    """Return the locale's own legal/support URL, falling back to the shared one.
+
+    The site publishes Ukrainian pages at /uk/, so the uk listing should not send
+    Ukrainian readers to English text. Set ALIKE_PRIVACY_URL_UK,
+    ALIKE_TERMS_URL_UK or ALIKE_SUPPORT_URL_UK to point a locale somewhere else;
+    with none of them set, every locale keeps the single shared URL it used
+    before, so an unconfigured .env behaves exactly as it did.
+    """
+    suffix = apple_locale.upper().replace("-", "_")
+    override = os.environ.get(f"ALIKE_{kind}_URL_{suffix}", "").strip()
+    return override if override else base_url
 
 
 def generate_metadata(privacy_url: str, support_url: str, terms_url: str, marketing_url: str) -> None:
@@ -316,17 +371,25 @@ def generate_metadata(privacy_url: str, support_url: str, terms_url: str, market
     for mapping in UPLOAD_SAFE_LOCALES:
         values = METADATA[mapping.apple]
         locale_root = METADATA_ROOT / mapping.apple
+        locale_privacy_url = localized_url(privacy_url, "PRIVACY", mapping.apple)
+        locale_terms_url = localized_url(terms_url, "TERMS", mapping.apple)
+        locale_support_url = localized_url(support_url, "SUPPORT", mapping.apple)
         write_text(locale_root / "name.txt", APP_NAME)
         write_text(locale_root / "subtitle.txt", values["subtitle"])
         write_text(
             locale_root / "description.txt",
-            description_with_links(values["description"], privacy_url, terms_url),
+            description_with_links(
+                values["description"],
+                locale_privacy_url,
+                locale_terms_url,
+                locale=mapping.apple,
+            ),
         )
         write_text(locale_root / "keywords.txt", values["keywords"])
         write_text(locale_root / "promotional_text.txt", values["promotional_text"])
         write_text(locale_root / "release_notes.txt", values["release_notes"])
-        write_text(locale_root / "privacy_url.txt", privacy_url)
-        write_text(locale_root / "support_url.txt", support_url)
+        write_text(locale_root / "privacy_url.txt", locale_privacy_url)
+        write_text(locale_root / "support_url.txt", locale_support_url)
         if marketing_url:
             write_text(locale_root / "marketing_url.txt", marketing_url)
 
@@ -573,6 +636,7 @@ tools/upload-screenshots
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override: `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` (the suffix is the App Store locale, uppercased, `-` to `_`). The site publishes Ukrainian pages under `/uk/`, so set these three or the uk listing sends Ukrainian readers to English legal text. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -604,8 +668,11 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
         description_path = METADATA_ROOT / mapping.apple / "description.txt"
         if description_path.exists():
             description = description_path.read_text(encoding="utf-8")
-            if f"{TERMS_LABEL}:" not in description:
-                errors.append(f"{description_path} is missing a {TERMS_LABEL} link")
+            _, locale_terms_label = LOCALE_LEGAL_LABELS.get(
+                mapping.apple, (PRIVACY_LABEL, TERMS_LABEL)
+            )
+            if f"{locale_terms_label}:" not in description:
+                errors.append(f"{description_path} is missing a {locale_terms_label} link")
             if TERMS_URL_PLACEHOLDER in description and not allow_placeholder_urls:
                 errors.append(f"{description_path} still contains placeholder Terms of Use URL")
     return errors

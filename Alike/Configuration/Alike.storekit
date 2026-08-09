@@ -85,12 +85,12 @@
           ],
           "localizations" : [
             {
-              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "description" : "Unlock every Pro tool. First 7 days free.",
               "displayName" : "Alike Pro Yearly",
               "locale" : "en_US"
             },
             {
-              "description" : "Усі функції очищення фото Alike Pro.",
+              "description" : "Усі функції Alike Pro. 7 днів безкоштовно.",
               "displayName" : "Alike Pro на рік",
               "locale" : "uk"
             }

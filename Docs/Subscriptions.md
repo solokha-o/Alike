@@ -34,8 +34,8 @@ to 45.
 | --- | --- | --- | --- |
 | Group | en-US | Alike Pro | — |
 | Group | uk | Alike Pro | — |
-| Yearly | en-US | Alike Pro Yearly | Unlock all Alike Pro photo cleanup features. |
-| Yearly | uk | Alike Pro на рік | Усі функції очищення фото Alike Pro. |
+| Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool. First 7 days free. |
+| Yearly | uk | Alike Pro на рік | Усі функції Alike Pro. 7 днів безкоштовно. |
 | Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
 | Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
 
