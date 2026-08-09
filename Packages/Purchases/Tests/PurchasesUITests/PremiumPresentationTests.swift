@@ -47,10 +47,82 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(context.message.contains("120 MB"))
     }
 
-    /// Plural forms live in the catalog, not in Swift branches, so what has to be asserted is the
-    /// catalog data. SwiftPM copies `.xcstrings` verbatim instead of running `xcstringstool`, so a
-    /// runtime `String(localized:)` here would resolve to the fallback rather than the translation —
-    /// the compiled `uk.lproj/Localizable.stringsdict` in the app build is what proves resolution.
+    /// Exercises the production lookup against a bundle compiled from the shipped catalog, so the
+    /// plural category actually selected for a count is asserted, not just its presence in JSON.
+    /// See `CompiledCatalogFixture` for why the fixture is needed under `swift test`.
+    func testUkrainianPaywallCopySelectsThePluralFormForEachCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "uk")
+        let uk = Locale(identifier: "uk")
+
+        func postFirstScan(_ count: Int, savings: String? = nil) -> String {
+            PaywallL10n.postFirstScanMessage(
+                opportunityCount: count,
+                estimatedSavings: savings,
+                locale: uk,
+                bundle: bundle
+            )
+        }
+
+        // one: 1, 21 — few: 2 — many: 0, 5
+        XCTAssertTrue(postFirstScan(1).contains("1 можливість"), postFirstScan(1))
+        XCTAssertTrue(postFirstScan(21).contains("21 можливість"), postFirstScan(21))
+        XCTAssertTrue(postFirstScan(2).contains("2 можливості"), postFirstScan(2))
+        XCTAssertTrue(postFirstScan(5).contains("5 можливостей"), postFirstScan(5))
+        XCTAssertTrue(postFirstScan(0).contains("0 можливостей"), postFirstScan(0))
+
+        // The savings variant carries a second, differently typed argument in %2$@.
+        let withSavings = postFirstScan(2, savings: "120 MB")
+        XCTAssertTrue(withSavings.contains("2 можливості"), withSavings)
+        XCTAssertTrue(withSavings.contains("120 MB"), withSavings)
+
+        func batchCleanup(_ count: Int) -> String {
+            PaywallL10n.batchCleanupMessage(
+                selectedCount: count,
+                estimatedSavings: "120 MB",
+                locale: uk,
+                bundle: bundle
+            )
+        }
+
+        XCTAssertTrue(batchCleanup(1).contains("1 вибране фото"), batchCleanup(1))
+        XCTAssertTrue(batchCleanup(2).contains("2 вибрані фото"), batchCleanup(2))
+        XCTAssertTrue(batchCleanup(5).contains("5 вибраних фото"), batchCleanup(5))
+        XCTAssertTrue(batchCleanup(5).contains("120 MB"), batchCleanup(5))
+    }
+
+    func testEnglishPaywallCopySelectsThePluralFormForEachCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "en")
+        let en = Locale(identifier: "en")
+
+        func postFirstScan(_ count: Int, savings: String? = nil) -> String {
+            PaywallL10n.postFirstScanMessage(
+                opportunityCount: count,
+                estimatedSavings: savings,
+                locale: en,
+                bundle: bundle
+            )
+        }
+
+        XCTAssertTrue(postFirstScan(1).contains("1 cleanup opportunity."), postFirstScan(1))
+        XCTAssertTrue(postFirstScan(2).contains("2 cleanup opportunities."), postFirstScan(2))
+        XCTAssertTrue(postFirstScan(0).contains("0 cleanup opportunities."), postFirstScan(0))
+
+        let withSavings = postFirstScan(1, savings: "120 MB")
+        XCTAssertTrue(withSavings.contains("1 cleanup opportunity with 120 MB"), withSavings)
+
+        XCTAssertTrue(
+            PaywallL10n.batchCleanupMessage(
+                selectedCount: 1,
+                estimatedSavings: "120 MB",
+                locale: en,
+                bundle: bundle
+            ).contains("1 selected photo in one action, with 120 MB"),
+            "singular batch-cleanup copy"
+        )
+    }
+
+    /// Complements the runtime checks above: the catalog is the thing translators edit, so the
+    /// category set each language declares is asserted directly as well.
     func testPaywallPluralsAreDeclaredAsCatalogVariations() throws {
         let catalog = try LocalizationCatalog.load()
 

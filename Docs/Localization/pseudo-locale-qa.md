@@ -15,11 +15,17 @@ Scheme **`Alike-Pseudolocale`** (shared, Debug) launches the app with:
 -NSSurroundLocalizedStrings [[]]  # brackets mark the boundaries of each string
 ```
 
-From the command line:
+It also loads `Configuration/Alike.storekit`, the same StoreKit configuration the verbose debug
+schemes use — without it the paywall sits in its unconfigured state and the plan cards, which are
+some of the longest copy in the app, never render.
+
+From the command line (quote the brackets so the shell does not glob them):
 
 ```bash
-xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES
+xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'
 ```
+
+A command-line launch has no StoreKit configuration, so use the scheme for the paywall screens.
 
 `-NSShowNonLocalizedStrings` is the one to watch: anything appearing in CAPITALS is
 a string that never reached a catalog, which after the task 39 split usually means a

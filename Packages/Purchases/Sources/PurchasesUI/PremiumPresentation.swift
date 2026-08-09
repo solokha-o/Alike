@@ -166,17 +166,22 @@ public struct PaywallPresentationState: Equatable, Sendable {
 /// Plural forms live in `Localizable.xcstrings` as plural variations, never in Swift
 /// control flow — see `Docs/Localization/README.md`. Languages added later (pl, ar)
 /// bring their own set of categories without touching this file.
+///
+/// `bundle` is a parameter only so tests can point these at a compiled fixture: SwiftPM copies
+/// `.xcstrings` verbatim instead of running `xcstringstool`, so `.module` carries no compiled
+/// plural data under `swift test`. Production callers use the default.
 enum PaywallL10n {
     static func postFirstScanMessage(
         opportunityCount: Int,
         estimatedSavings: String?,
-        locale: Locale = .current
+        locale: Locale = .current,
+        bundle: Bundle = .module
     ) -> String {
         if let estimatedSavings {
             return String(
                 localized: "purchases.paywall.postFirstScan.withSavings",
                 defaultValue: "Your scan found \(opportunityCount) cleanup opportunities with \(estimatedSavings) estimated reclaimable. Unlock Alike Pro to clean up faster.",
-                bundle: .module,
+                bundle: bundle,
                 locale: locale
             )
         }
@@ -184,7 +189,7 @@ enum PaywallL10n {
         return String(
             localized: "purchases.paywall.postFirstScan",
             defaultValue: "Your scan found \(opportunityCount) cleanup opportunities. Unlock Alike Pro to clean up faster.",
-            bundle: .module,
+            bundle: bundle,
             locale: locale
         )
     }
@@ -192,12 +197,13 @@ enum PaywallL10n {
     static func batchCleanupMessage(
         selectedCount: Int,
         estimatedSavings: String,
-        locale: Locale = .current
+        locale: Locale = .current,
+        bundle: Bundle = .module
     ) -> String {
         String(
             localized: "purchases.paywall.batchCleanup",
             defaultValue: "Review and remove \(selectedCount) selected photos in one action, with \(estimatedSavings) estimated reclaimable.",
-            bundle: .module,
+            bundle: bundle,
             locale: locale
         )
     }
