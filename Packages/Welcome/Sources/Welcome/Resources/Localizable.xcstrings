@@ -1,0 +1,703 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "welcome.main.accessGranted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access Granted"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступ надано"
+          }
+        }
+      }
+    },
+    "welcome.main.alike": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        }
+      }
+    },
+    "welcome.main.alikeDataDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike data deleted"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дані Alike видалено"
+          }
+        }
+      }
+    },
+    "welcome.main.alikeNeedsPhotoAccessScan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo access to scan your library and prepare cleanup suggestions."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike потрібен доступ до фото, щоб сканувати вашу фототеку та підготувати рекомендації для очищення."
+          }
+        }
+      }
+    },
+    "welcome.main.alikeNeverDeletesPhotosAutomatically": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ніколи не видаляє фото автоматично. Ви спочатку переглядаєте рекомендації й підтверджуєте кожну дію."
+          }
+        }
+      }
+    },
+    "welcome.main.alikeYourPhotoDetective": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, your photo detective"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, ваш фотодетектив"
+          }
+        }
+      }
+    },
+    "welcome.main.analysisStaysDeviceNothingDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis stays on your device, and nothing is deleted automatically."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аналіз виконується на вашому пристрої, і нічого не видаляється автоматично."
+          }
+        }
+      }
+    },
+    "welcome.main.back": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Назад"
+          }
+        }
+      }
+    },
+    "welcome.main.canChangeAccessLaterSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can change access later in Settings, and Alike never deletes anything without your confirmation."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пізніше ви можете змінити доступ у Налаштуваннях, а Alike нічого не видаляє без вашого підтвердження."
+          }
+        }
+      }
+    },
+    "welcome.main.canGrantAccessNowReturn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can grant access now and return to cleanup whenever you're ready."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ви можете надати доступ зараз і повернутися до очищення, коли будете готові."
+          }
+        }
+      }
+    },
+    "welcome.main.cleanUpLibraryWithConfidence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean up your library with confidence"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищуйте фототеку впевнено"
+          }
+        }
+      }
+    },
+    "welcome.main.comparePhotosKeepShotsThat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare photos and keep the shots that matter to you."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Порівнюйте фото й залишайте важливі для вас знімки."
+          }
+        }
+      }
+    },
+    "welcome.main.continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продовжити"
+          }
+        }
+      }
+    },
+    "welcome.main.enablePhotoAccessSettingsWhen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable photo access in Settings when you're ready to continue."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкніть доступ до фото в Налаштуваннях, коли будете готові продовжити."
+          }
+        }
+      }
+    },
+    "welcome.main.everyDeletionStaysConfirmedVisible": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every deletion stays confirmed, visible, and fully in your hands."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кожне видалення підтверджується, залишається прозорим і повністю у ваших руках."
+          }
+        }
+      }
+    },
+    "welcome.main.findCleanupOpportunities": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find cleanup opportunities"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знаходьте можливості для очищення"
+          }
+        }
+      }
+    },
+    "welcome.main.grantAccess": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant Access"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Надати доступ"
+          }
+        }
+      }
+    },
+    "welcome.main.groupVisuallySimilarPhotosOther": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group visually similar photos and other items worth reviewing."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Групуйте візуально схожі фото та інші елементи, які варто переглянути."
+          }
+        }
+      }
+    },
+    "welcome.main.howAlikeHelps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How Alike helps"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Як допомагає Alike"
+          }
+        }
+      }
+    },
+    "welcome.main.knowHowMuchSpaceCould": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Know how much space you could reclaim before you clean up."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дізнавайтеся, скільки місця можна звільнити, ще до очищення."
+          }
+        }
+      }
+    },
+    "welcome.main.localAlikeDataWasDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your local Alike data was deleted. Your photos and subscription are unchanged."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Локальні дані Alike видалено. Ваші фотографії та підписка не змінилися."
+          }
+        }
+      }
+    },
+    "welcome.main.next": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Далі"
+          }
+        }
+      }
+    },
+    "welcome.main.nothingIsDeletedAutomatically": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing is deleted automatically"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нічого не видаляється автоматично"
+          }
+        }
+      }
+    },
+    "welcome.main.openSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити налаштування"
+          }
+        }
+      }
+    },
+    "welcome.main.pageOf": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %lld of %lld"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сторінка %lld з %lld"
+          }
+        }
+      }
+    },
+    "welcome.main.photoAccessLetsAlikeScan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступ до фото дозволяє Alike сканувати фототеку, групувати схожі фото та готувати рекомендації для перегляду."
+          }
+        }
+      }
+    },
+    "welcome.main.photoAccessRequired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Access Required"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Потрібен доступ до фото"
+          }
+        }
+      }
+    },
+    "welcome.main.photoAnalysisStaysThisDevice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photo analysis stays on this device and gives you guided cleanup suggestions."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аналіз фото виконується на цьому пристрої, а Alike готує підказки для прибирання."
+          }
+        }
+      }
+    },
+    "welcome.main.photosStayPrivateYoullConfirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos stay private, and you'll confirm every cleanup before anything is removed."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваші фото залишаються приватними, і ви підтвердите кожне очищення перед видаленням."
+          }
+        }
+      }
+    },
+    "welcome.main.privateAlwaysControl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private and always in your control"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приватно й завжди під вашим контролем"
+          }
+        }
+      }
+    },
+    "welcome.main.privateOnDeviceAnalysis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private on-device analysis"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приватний аналіз на пристрої"
+          }
+        }
+      }
+    },
+    "welcome.main.reviewEverySuggestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review every suggestion"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглядайте кожну рекомендацію"
+          }
+        }
+      }
+    },
+    "welcome.main.reviewSimilarPhotosFreeUp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review similar photos, free up storage, and stay in control of every deletion."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглядайте схожі фото, звільняйте пам’ять і контролюйте кожне видалення."
+          }
+        }
+      }
+    },
+    "welcome.main.reviewSuggestionsFirstConfirmEvery": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You review suggestions first and confirm every cleanup action yourself."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ви спочатку переглядаєте рекомендації й самі підтверджуєте кожну дію очищення."
+          }
+        }
+      }
+    },
+    "welcome.main.safeCleanupFlow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe cleanup flow"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Безпечний сценарій очищення"
+          }
+        }
+      }
+    },
+    "welcome.main.seePotentialSavings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See potential savings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оцінюйте можливу економію пам’яті"
+          }
+        }
+      }
+    },
+    "welcome.main.spotSimilarPhotosThatCan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spot similar photos that can free up space once you decide what to remove."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знаходьте схожі фото, які можуть звільнити місце, коли ви вирішите, що видаляти."
+          }
+        }
+      }
+    },
+    "welcome.main.storageSavings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage savings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Економія пам’яті"
+          }
+        }
+      }
+    },
+    "welcome.main.turnCrowdedLibraryIntoGuided": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn a crowded library into a guided cleanup."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перетворіть переповнену фототеку на впорядкований процес очищення."
+          }
+        }
+      }
+    },
+    "welcome.main.whyAlikeAsksPhotoAccess": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why Alike asks for photo access"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Навіщо Alike доступ до фото"
+          }
+        }
+      }
+    },
+    "welcome.main.yourLibraryStaysUnderControl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your library stays under your control"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваша фототека залишається під вашим контролем"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1372 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "purchases.common.alikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.common.alikeProIsActive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro is active"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro активна"
+          }
+        }
+      }
+    },
+    "purchases.common.cleanUpAllSelectedPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean up all selected photos with Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очистіть усі вибрані фото з Pro"
+          }
+        }
+      }
+    },
+    "purchases.common.restorePurchases": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відновити покупки"
+          }
+        }
+      }
+    },
+    "purchases.paywall.batchCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review and remove %1$lld selected photo in one action, with %2$@ estimated reclaimable."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review and remove %1$lld selected photos in one action, with %2$@ estimated reclaimable."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перегляньте й видаліть %1$lld вибране фото однією дією; орієнтовно можна звільнити %2$@."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перегляньте й видаліть %1$lld вибрані фото однією дією; орієнтовно можна звільнити %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перегляньте й видаліть %1$lld вибраних фото однією дією; орієнтовно можна звільнити %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перегляньте й видаліть %1$lld вибраних фото однією дією; орієнтовно можна звільнити %2$@."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "purchases.paywall.postFirstScan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Your scan found %1$lld cleanup opportunity. Unlock Alike Pro to clean up faster."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Your scan found %1$lld cleanup opportunities. Unlock Alike Pro to clean up faster."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливість для очищення. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливості для очищення. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливостей для очищення. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливостей для очищення. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "purchases.paywall.postFirstScan.withSavings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Your scan found %1$lld cleanup opportunity with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Your scan found %1$lld cleanup opportunities with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливість для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливості для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливостей для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Сканування знайшло %1$lld можливостей для очищення; орієнтовно можна звільнити %2$@. Розблокуйте Alike Pro, щоб очищувати швидше."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "purchases.premium.chooseWeeklyReminderDayTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the weekly reminder day and time that fits your routine."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виберіть день і час щотижневого нагадування, що відповідають вашому розпорядку."
+          }
+        }
+      }
+    },
+    "purchases.premium.findPhotosThatMatterFaster": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find the photos that matter faster"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Швидше знаходьте потрібні фото"
+          }
+        }
+      }
+    },
+    "purchases.premium.foundFirstCleanupOpportunities": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You found your first cleanup opportunities"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ви знайшли перші можливості для очищення"
+          }
+        }
+      }
+    },
+    "purchases.premium.freeIncludesScansPerCalendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free includes %1$d scans per calendar month. You have %2$d remaining and the allowance resets %3$@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free включає %1$d сканування на календарний місяць. Залишилося %2$d, ліміт оновиться %3$@."
+          }
+        }
+      }
+    },
+    "purchases.premium.freeIncludesScansPerCalendar2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free includes %1$d scans per calendar month. You have %2$d remaining."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free включає %1$d сканування на календарний місяць. Залишилося %2$d."
+          }
+        }
+      }
+    },
+    "purchases.premium.freeIncludesThreeScansPer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free includes three scans per calendar month. Pro keeps your cleanup results current whenever your library changes."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free включає три сканування на календарний місяць. Pro дає змогу оновлювати результати після кожної зміни фототеки."
+          }
+        }
+      }
+    },
+    "purchases.premium.keepScanningWithoutMonthlyLimits": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep scanning without monthly limits"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скануйте без щомісячних обмежень"
+          }
+        }
+      }
+    },
+    "purchases.premium.makeCleanupFitYourSchedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make cleanup fit your schedule"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підлаштуйте очищення під свій розклад"
+          }
+        }
+      }
+    },
+    "purchases.premium.makeEveryCleanupFasterWith": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make every cleanup faster with Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищуйте швидше з Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premium.removeMultipleSelectedPhotosOne": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove multiple selected photos in one safe, confirmed action."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видаляйте кілька вибраних фото однією безпечною дією з підтвердженням."
+          }
+        }
+      }
+    },
+    "purchases.premium.reviewLikelyBlurredPhotosFaster": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review likely blurred photos faster"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Швидше переглядайте ймовірно розмиті фото"
+          }
+        }
+      }
+    },
+    "purchases.premium.reviewLikelyLowQualityShots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review likely low-quality shots before deciding what to keep or remove."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перегляньте ймовірно невдалі кадри, перш ніж вирішити, що залишити або видалити."
+          }
+        }
+      }
+    },
+    "purchases.premium.reviewScreenshotsTogetherChooseExactly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review screenshots together and choose exactly what should move to Recently Deleted."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перегляньте знімки екрана разом і точно виберіть, що перемістити до «Недавно видалених»."
+          }
+        }
+      }
+    },
+    "purchases.premium.reviewSmartCleanupSuggestionsWhile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review smart cleanup suggestions while keeping full control over every deletion."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглядайте розумні пропозиції та повністю контролюйте кожне видалення."
+          }
+        }
+      }
+    },
+    "purchases.premium.reviewThisSmartCategoryReclaim": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review this smart category and reclaim an estimated %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перегляньте цю розумну категорію та звільніть орієнтовно %@."
+          }
+        }
+      }
+    },
+    "purchases.premium.turnScreenshotClutterIntoFree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn screenshot clutter into free space"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перетворіть зайві знімки екрана на вільне місце"
+          }
+        }
+      }
+    },
+    "purchases.premium.unlockReviewStatusClusterSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock review status, cluster size, and favorites filters for faster cleanup."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте фільтри за станом перегляду, розміром групи та вибраним для швидшого очищення."
+          }
+        }
+      }
+    },
+    "purchases.premium.unlockUnlimitedScansSmartCategories": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте необмежені сканування, розумні категорії, розширені фільтри, пакетне очищення та власні нагадування."
+          }
+        }
+      }
+    },
+    "purchases.premium.unlockWithAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock %@ with Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте %@ з Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.activeThrough": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Active through %2$@"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Активна до %2$@"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.alikeProStatusUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro status unavailable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Статус Alike Pro недоступний"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.checkingAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевірка Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.checkingSubscriptionStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking subscription status"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевірка стану підписки"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.confirmingAppStoreSubscriptionStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirming your App Store subscription status."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підтверджуємо стан вашої підписки в App Store."
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.continueWithOnePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue with one photo"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продовжити з одним фото"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.currentAccessPreservedOpenPlans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your current access is preserved. Open plans to retry loading subscription details."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваш поточний доступ збережено. Відкрийте плани, щоб повторити завантаження відомостей про підписку."
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.pro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.requiresAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requires Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Потрібна Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.selectedEstimatedReclaimable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d selected • %2$@ estimated reclaimable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано: %1$d • орієнтовно можна звільнити %2$@"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.unlockUnlimitedScansSmartCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте необмежені сканування, розумне очищення та пакетні дії."
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.upgradeToAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перейти на Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.viewAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянути Alike Pro"
+          }
+        }
+      }
+    },
+    "purchases.premiumComponents.viewPlans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View plans"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянути плани"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.advancedFiltersAndBatchCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced filters and batch cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розширені фільтри та пакетне очищення"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.alikeFreeStillIncludesThree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free включає три сканування щомісяця, перегляд наявних результатів і очищення по одному фото."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.alikeProIsNowActive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro is now active."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro тепер активна."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.alikeProSubscriptionWasRestored": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Alike Pro subscription was restored."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вашу підписку Alike Pro відновлено."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.billedMonthly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Billed monthly"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оплата щомісяця"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.billedYearly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Billed yearly"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оплата щороку"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.canContinueUsingAlikeFree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can continue using Alike Free while subscription plans are unavailable."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ви можете продовжувати користуватися Alike Free, поки плани підписки недоступні."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.checkConnectionTryLoadingSubscription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check your connection and try loading subscription plans again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевірте підключення до інтернету та спробуйте завантажити плани підписки ще раз."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.cleanupReminderSchedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A cleanup reminder on your schedule"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нагадування про очищення за вашим розкладом"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Закрити"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.continueWith": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue with %@"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продовжити за %@"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.loadingAppStorePlans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading App Store plans…"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завантаження планів App Store…"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.noActiveAlikeProSubscription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active Alike Pro subscription was found."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активну підписку Alike Pro не знайдено."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.payOneMonthAtTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pay for one month at a time"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сплачуйте лише за один місяць"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.plansArentAvailableYet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans aren't available yet"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плани поки недоступні"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.plansCouldntBeLoaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans couldn't be loaded"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося завантажити плани"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.privacyPolicy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Політика конфіденційності"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.purchasePendingAppStoreApproval": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your purchase is pending App Store approval."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покупка очікує підтвердження App Store."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.purchasing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchasing…"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оформлення…"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.recommended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рекомендовано"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторити"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.saveComparedWithMonthly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save %d%% compared with monthly"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заощадьте %d%% порівняно з місячним планом"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.saveWithAnnualBilling": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save with annual billing"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заощаджуйте з річною оплатою"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.selectASubscriptionPlan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a subscription plan"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виберіть план підписки"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.selectThisSubscriptionPlan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select this subscription plan"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрати цей план підписки"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.smartScreenshotBlurredPhotoCategories": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart screenshot and blurred-photo categories"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розумні категорії знімків екрана та розмитих фото"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.subscriptionPlansUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription plans unavailable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плани підписки недоступні"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду. Оплата стягується з вашого облікового запису Apple."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.termsOfUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Умови використання"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.unlimitedLibraryScans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited library scans"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Необмежені сканування фототеки"
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.unlimitedScansAllProCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited scans and all Pro cleanup tools are unlocked."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Необмежені сканування та всі інструменти очищення Pro розблоковано."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.weCouldntCompletePurchaseCheck": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn't complete your purchase. Check your connection and try again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося завершити покупку. Перевірте підключення до інтернету та спробуйте ще раз."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.weCouldntRestorePurchasesCheck": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn't restore your purchases. Check your connection and try again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося відновити покупки. Перевірте підключення до інтернету та спробуйте ще раз."
+          }
+        }
+      }
+    },
+    "purchases.subscriptionPaywall.yearlyPlanIncludes7Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право. Оплата починається після завершення пробного періоду, якщо ви не скасуєте підписку щонайменше за 24 години до цього. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS."
+          }
+        }
+      }
+    }
+  }
+}

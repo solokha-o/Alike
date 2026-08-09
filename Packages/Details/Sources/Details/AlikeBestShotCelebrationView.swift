@@ -64,7 +64,7 @@ struct AlikeBestShotCelebrationView: View {
         }
         .id(cueID)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("Alike celebrating the Best Shot")))
+        .accessibilityLabel(Text(DetailsL10n.AlikeBestShotCelebration.alikeCelebratingTheBestShot))
         .onAppear {
             isVisible = true
         }

@@ -10,7 +10,7 @@ public struct PremiumLockedAccessory: View {
         HStack(spacing: Spacing.xxSmall) {
             Image(systemName: "lock.fill")
                 .accessibilityHidden(true)
-            Text(appLocalized("Pro"))
+            Text(PurchasesL10n.PremiumComponents.pro)
                 .font(.caption.weight(.semibold))
         }
         .foregroundStyle(Color.accent)
@@ -18,7 +18,7 @@ public struct PremiumLockedAccessory: View {
         .padding(.vertical, Spacing.xxSmall)
         .background(Color.accent.opacity(ColorOpacity.statusBackground), in: Capsule())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("Requires Alike Pro")))
+        .accessibilityLabel(Text(PurchasesL10n.PremiumComponents.requiresAlikePro))
     }
 }
 
@@ -68,13 +68,13 @@ public struct PremiumStatusCard: View {
 
                 if status == .loading {
                     ProgressView()
-                        .accessibilityLabel(Text(appLocalized("Checking subscription status")))
+                        .accessibilityLabel(Text(PurchasesL10n.PremiumComponents.checkingSubscriptionStatus))
                 }
             }
 
             switch status {
             case .free, .unavailable:
-                Button(appLocalized("View plans"), action: onViewPlans)
+                Button(PurchasesL10n.PremiumComponents.viewPlans, action: onViewPlans)
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
 
@@ -82,7 +82,7 @@ public struct PremiumStatusCard: View {
                     if isRestoring {
                         ProgressView()
                     } else {
-                        Label(appLocalized("Restore Purchases"), systemImage: "arrow.clockwise")
+                        Label(PurchasesL10n.Common.restorePurchases, systemImage: "arrow.clockwise")
                     }
                 }
                 .buttonStyle(.borderless)
@@ -109,29 +109,29 @@ public struct PremiumStatusCard: View {
     private var title: String {
         switch status {
         case .active:
-            appLocalized("Alike Pro is active")
+            PurchasesL10n.Common.alikeProIsActive
         case .loading:
-            appLocalized("Checking Alike Pro")
+            PurchasesL10n.PremiumComponents.checkingAlikePro
         case .free:
-            appLocalized("Upgrade to Alike Pro")
+            PurchasesL10n.PremiumComponents.upgradeToAlikePro
         case .unavailable:
-            appLocalized("Alike Pro status unavailable")
+            PurchasesL10n.PremiumComponents.alikeProStatusUnavailable
         }
     }
 
     private var detail: String {
         switch status {
         case .loading:
-            return appLocalized("Confirming your App Store subscription status.")
+            return PurchasesL10n.PremiumComponents.confirmingAppStoreSubscriptionStatus
         case .free:
-            return appLocalized("Unlock unlimited scans, smart cleanup, and batch actions.")
+            return PurchasesL10n.PremiumComponents.unlockUnlimitedScansSmartCleanup
         case .unavailable:
-            return appLocalized("Your current access is preserved. Open plans to retry loading subscription details.")
+            return PurchasesL10n.PremiumComponents.currentAccessPreservedOpenPlans
         case .active(let planName, let expirationDate):
-            let plan = planName ?? appLocalized("Alike Pro")
+            let plan = planName ?? PurchasesL10n.Common.alikePro
             guard let expirationDate else { return plan }
             return String(
-                format: appLocalized("%@ • Active through %@"),
+                format: PurchasesL10n.PremiumComponents.activeThrough,
                 plan,
                 expirationDate.formatted(date: .abbreviated, time: .omitted)
             )
@@ -159,13 +159,13 @@ public struct BatchCleanupUpsellCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
-            Label(appLocalized("Clean up all selected photos with Pro"), systemImage: "checkmark.circle.badge.xmark")
+            Label(PurchasesL10n.Common.cleanUpAllSelectedPhotos, systemImage: "checkmark.circle.badge.xmark")
                 .font(.appHeadline)
                 .foregroundStyle(Color.accent)
 
             Text(
                 String(
-                    format: appLocalized("%d selected • %@ estimated reclaimable"),
+                    format: PurchasesL10n.PremiumComponents.selectedEstimatedReclaimable,
                     selectedCount,
                     estimatedSavings
                 )
@@ -173,10 +173,10 @@ public struct BatchCleanupUpsellCard: View {
             .font(.appSubheadline)
             .foregroundStyle(.secondary)
 
-            Button(appLocalized("View Alike Pro"), action: onUpgrade)
+            Button(PurchasesL10n.PremiumComponents.viewAlikePro, action: onUpgrade)
                 .buttonStyle(.borderedProminent)
 
-            Button(appLocalized("Continue with one photo"), action: onContinueFree)
+            Button(PurchasesL10n.PremiumComponents.continueWithOnePhoto, action: onContinueFree)
                 .buttonStyle(.borderless)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

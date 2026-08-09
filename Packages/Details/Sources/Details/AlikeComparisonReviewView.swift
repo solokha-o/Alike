@@ -57,7 +57,7 @@ struct AlikeComparisonReviewView: View {
             comparisonImage
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("Alike comparing similar photos")))
+        .accessibilityLabel(Text(DetailsL10n.AlikeComparisonReview.alikeComparingSimilarPhotos))
         .onAppear {
             setVisibility(true)
         }

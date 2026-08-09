@@ -77,14 +77,14 @@ public struct WelcomeView: View {
         VStack(spacing: Spacing.small) {
             if mode.replaysOnboarding {
                 Label(
-                    appLocalized("Alike data deleted"),
+                    WelcomeL10n.Main.alikeDataDeleted,
                     systemImage: "checkmark.circle.fill"
                 )
                 .font(.appHeadline)
                 .foregroundStyle(Color.statusReviewed)
                 .accessibilityAddTraits(.isHeader)
 
-                Text(appLocalized("Your local Alike data was deleted. Your photos and subscription are unchanged."))
+                Text(WelcomeL10n.Main.localAlikeDataWasDeleted)
                     .font(.appSubheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -143,8 +143,8 @@ public struct WelcomeView: View {
     private var welcomeOverviewPage: some View {
         heroSection(
             showsAlikeWelcomeHero: true,
-            title: appLocalized("Clean up your library with confidence"),
-            subtitle: appLocalized("Review similar photos, free up storage, and stay in control of every deletion.")
+            title: WelcomeL10n.Main.cleanUpLibraryWithConfidence,
+            subtitle: WelcomeL10n.Main.reviewSimilarPhotosFreeUp
         )
     }
 
@@ -152,25 +152,25 @@ public struct WelcomeView: View {
         VStack(spacing: Spacing.large) {
             onboardingHeader(
                 icon: "sparkles.rectangle.stack.fill",
-                title: appLocalized("How Alike helps"),
-                subtitle: appLocalized("Turn a crowded library into a guided cleanup.")
+                title: WelcomeL10n.Main.howAlikeHelps,
+                subtitle: WelcomeL10n.Main.turnCrowdedLibraryIntoGuided
             )
 
             VStack(spacing: Spacing.medium) {
                 BenefitCard(
                     icon: "photo.stack",
-                    title: appLocalized("Find cleanup opportunities"),
-                    message: appLocalized("Group visually similar photos and other items worth reviewing.")
+                    title: WelcomeL10n.Main.findCleanupOpportunities,
+                    message: WelcomeL10n.Main.groupVisuallySimilarPhotosOther
                 )
                 BenefitCard(
                     icon: "eye.fill",
-                    title: appLocalized("Review every suggestion"),
-                    message: appLocalized("Compare photos and keep the shots that matter to you.")
+                    title: WelcomeL10n.Main.reviewEverySuggestion,
+                    message: WelcomeL10n.Main.comparePhotosKeepShotsThat
                 )
                 BenefitCard(
                     icon: "internaldrive.fill",
-                    title: appLocalized("See potential savings"),
-                    message: appLocalized("Know how much space you could reclaim before you clean up.")
+                    title: WelcomeL10n.Main.seePotentialSavings,
+                    message: WelcomeL10n.Main.knowHowMuchSpaceCould
                 )
             }
         }
@@ -180,27 +180,27 @@ public struct WelcomeView: View {
         VStack(spacing: Spacing.large) {
             onboardingHeader(
                 icon: "lock.shield.fill",
-                title: appLocalized("Private and always in your control"),
-                subtitle: appLocalized("Analysis stays on your device, and nothing is deleted automatically.")
+                title: WelcomeL10n.Main.privateAlwaysControl,
+                subtitle: WelcomeL10n.Main.analysisStaysDeviceNothingDeleted
             )
 
             VStack(spacing: Spacing.medium) {
                 BenefitCard(
                     icon: "iphone.gen3",
-                    title: appLocalized("Private on-device analysis"),
-                    message: appLocalized("Your photo analysis stays on this device and gives you guided cleanup suggestions.")
+                    title: WelcomeL10n.Main.privateOnDeviceAnalysis,
+                    message: WelcomeL10n.Main.photoAnalysisStaysThisDevice
                 )
                 BenefitCard(
                     icon: "checkmark.shield.fill",
-                    title: appLocalized("Nothing is deleted automatically"),
-                    message: appLocalized("You review suggestions first and confirm every cleanup action yourself.")
+                    title: WelcomeL10n.Main.nothingIsDeletedAutomatically,
+                    message: WelcomeL10n.Main.reviewSuggestionsFirstConfirmEvery
                 )
             }
 
             PermissionRationaleCard(
-                title: appLocalized("Why Alike asks for photo access"),
-                message: appLocalized("Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review."),
-                footnote: appLocalized("You can change access later in Settings, and Alike never deletes anything without your confirmation.")
+                title: WelcomeL10n.Main.whyAlikeAsksPhotoAccess,
+                message: WelcomeL10n.Main.photoAccessLetsAlikeScan,
+                footnote: WelcomeL10n.Main.canChangeAccessLaterSettings
             )
         }
     }
@@ -238,7 +238,7 @@ public struct WelcomeView: View {
 
     private var pageIndicatorAccessibilityLabel: String {
         String(
-            format: appLocalized("Page %lld of %lld"),
+            format: WelcomeL10n.Main.pageOf,
             Int64(selectedWelcomePage.rawValue + 1),
             Int64(WelcomePage.allCases.count)
         )
@@ -269,7 +269,7 @@ public struct WelcomeView: View {
     private var standardWelcomeNavigation: some View {
         HStack(spacing: Spacing.medium) {
             if let previousPage = selectedWelcomePage.previous {
-                SecondaryButton(appLocalized("Back"), icon: "chevron.left") {
+                SecondaryButton(WelcomeL10n.Main.back, icon: "chevron.left") {
                     selectWelcomePage(previousPage)
                 }
             }
@@ -289,7 +289,7 @@ public struct WelcomeView: View {
             selectWelcomePage(nextPage)
         } label: {
             HStack(spacing: Spacing.small) {
-                Text(appLocalized("Next"))
+                Text(WelcomeL10n.Main.next)
                 Image(systemName: "chevron.right")
             }
             .font(.appHeadline)
@@ -300,7 +300,7 @@ public struct WelcomeView: View {
             .cornerRadius(CornerRadius.medium)
         }
         .scaleOnPress()
-        .accessibilityLabel(appLocalized("Next"))
+        .accessibilityLabel(WelcomeL10n.Main.next)
     }
 
     #if os(iOS)
@@ -311,7 +311,7 @@ public struct WelcomeView: View {
                 Button {
                     selectWelcomePage(previousPage)
                 } label: {
-                    Label(appLocalized("Back"), systemImage: "chevron.left")
+                    Label(WelcomeL10n.Main.back, systemImage: "chevron.left")
                         .font(.appHeadline)
                         .frame(maxWidth: .infinity)
                 }
@@ -324,7 +324,7 @@ public struct WelcomeView: View {
                     selectWelcomePage(nextPage)
                 } label: {
                     HStack(spacing: Spacing.small) {
-                        Text(appLocalized("Next"))
+                        Text(WelcomeL10n.Main.next)
                         Image(systemName: "chevron.right")
                     }
                     .font(.appHeadline)
@@ -332,7 +332,7 @@ public struct WelcomeView: View {
                 }
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
-                .accessibilityLabel(appLocalized("Next"))
+                .accessibilityLabel(WelcomeL10n.Main.next)
             } else {
                 Button {
                     glassGrantAccessFeedbackTrigger += 1
@@ -365,8 +365,8 @@ public struct WelcomeView: View {
 
     private var finalActionTitle: String {
         mode.replaysOnboarding
-            ? appLocalized("Continue")
-            : appLocalized("Grant Access")
+            ? WelcomeL10n.Main.`continue`
+            : WelcomeL10n.Main.grantAccess
     }
 
     private func performFinalAction() {
@@ -385,35 +385,35 @@ public struct WelcomeView: View {
             VStack(spacing: Spacing.large) {
                 heroSection(
                     icon: "photo.on.rectangle.slash",
-                    title: appLocalized("Photo Access Required"),
-                    subtitle: appLocalized("Alike needs photo access to scan your library and prepare cleanup suggestions.")
+                    title: WelcomeL10n.Main.photoAccessRequired,
+                    subtitle: WelcomeL10n.Main.alikeNeedsPhotoAccessScan
                 )
 
                 PermissionRationaleCard(
-                    title: appLocalized("Your library stays under your control"),
-                    message: appLocalized("Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."),
-                    footnote: appLocalized("Enable photo access in Settings when you're ready to continue.")
+                    title: WelcomeL10n.Main.yourLibraryStaysUnderControl,
+                    message: WelcomeL10n.Main.alikeNeverDeletesPhotosAutomatically,
+                    footnote: WelcomeL10n.Main.enablePhotoAccessSettingsWhen
                 )
 
                 VStack(spacing: Spacing.medium) {
                     BenefitCard(
                         icon: "internaldrive.fill",
-                        title: appLocalized("Storage savings"),
-                        message: appLocalized("Spot similar photos that can free up space once you decide what to remove.")
+                        title: WelcomeL10n.Main.storageSavings,
+                        message: WelcomeL10n.Main.spotSimilarPhotosThatCan
                     )
                     BenefitCard(
                         icon: "hand.raised.fill",
-                        title: appLocalized("Safe cleanup flow"),
-                        message: appLocalized("Every deletion stays confirmed, visible, and fully in your hands.")
+                        title: WelcomeL10n.Main.safeCleanupFlow,
+                        message: WelcomeL10n.Main.everyDeletionStaysConfirmedVisible
                     )
                 }
 
-                Text(appLocalized("You can grant access now and return to cleanup whenever you're ready."))
+                Text(WelcomeL10n.Main.canGrantAccessNowReturn)
                     .font(.appSubheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
-                PrimaryButton(appLocalized("Open Settings"), icon: "gear") {
+                PrimaryButton(WelcomeL10n.Main.openSettings, icon: "gear") {
                     viewModel.openSettings()
                 }
             }
@@ -439,7 +439,7 @@ public struct WelcomeView: View {
                     .symbolEffect(.bounce, options: .repeating, value: isSymbolAnimating)
             }
 
-            Text(appLocalized("Alike"))
+            Text(WelcomeL10n.Main.alike)
                 .font(.appLargeTitle)
                 .foregroundColor(.accent)
 
@@ -467,7 +467,7 @@ public struct WelcomeView: View {
                 .aspectRatio(contentMode: .fit)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(appLocalized("Alike, your photo detective"))
+        .accessibilityLabel(WelcomeL10n.Main.alikeYourPhotoDetective)
         .onAppear {
             isAlikeWelcomeHeroVisible = true
         }
@@ -518,11 +518,11 @@ public struct WelcomeView: View {
                 .foregroundStyle(Color.statusReviewed, Color.statusSavings, .foreground)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
             
-            Text(appLocalized("Access Granted"))
+            Text(WelcomeL10n.Main.accessGranted)
                 .font(.appTitle)
                 .foregroundColor(.accent)
 
-            Text(appLocalized("Your photos stay private, and you'll confirm every cleanup before anything is removed."))
+            Text(WelcomeL10n.Main.photosStayPrivateYoullConfirm)
                 .font(.appCallout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

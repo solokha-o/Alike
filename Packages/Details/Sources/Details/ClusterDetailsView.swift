@@ -92,7 +92,7 @@ public struct ClusterDetailsView: View {
         .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
         .sensoryFeedback(.success, trigger: viewModel.bestShotAssetID)
         .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
-        .navigationTitle(Text(appLocalized("Similar Photos")))
+        .navigationTitle(Text(DetailsL10n.ClusterDetails.similarPhotos))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)
         // The tab bar stays visible on purpose: hiding it here removed and
@@ -127,8 +127,8 @@ public struct ClusterDetailsView: View {
             viewModel.deleteConfirmationTitle,
             isPresented: Bindable(viewModel).isDeleteConfirmationPresented
         ) {
-            Button(appLocalized("Cancel"), role: .cancel) {}
-            Button(appLocalized("Move"), role: .destructive) {
+            Button(DetailsL10n.Common.cancel, role: .cancel) {}
+            Button(DetailsL10n.Common.move, role: .destructive) {
                 Task {
                     await viewModel.confirmDelete()
                 }
@@ -137,16 +137,16 @@ public struct ClusterDetailsView: View {
             Text(viewModel.deleteConfirmationMessage)
         }
         .alert(
-            appLocalized("Cleanup Unavailable"),
+            DetailsL10n.Common.cleanupUnavailable,
             isPresented: Bindable(viewModel).isDeleteErrorPresented
         ) {
             if viewModel.shouldOfferOpenSettings {
-                Button(appLocalized("Open Settings")) {
+                Button(DetailsL10n.Common.openSettings) {
                     viewModel.openSettings()
                     viewModel.clearDeleteError()
                 }
             }
-            Button(appLocalized("OK"), role: .cancel) {
+            Button(DetailsL10n.Common.ok, role: .cancel) {
                 viewModel.clearDeleteError()
             }
         } message: {
@@ -186,8 +186,8 @@ public struct ClusterDetailsView: View {
         .tint(viewModel.isReviewConfirmed ? Color.statusReviewed : nil)
         .accessibilityLabel(Text(
             viewModel.isReviewConfirmed
-                ? appLocalized("Reviewed")
-                : appLocalized("Mark Reviewed")
+                ? DetailsL10n.Common.reviewed
+                : DetailsL10n.ClusterDetails.markReviewed
         ))
         .accessibilityValue(Text(viewModel.keepSummaryText))
         .accessibilityHint(Text(reviewToggleHint))
@@ -196,11 +196,11 @@ public struct ClusterDetailsView: View {
 
     private var reviewToggleHint: String {
         if viewModel.isReviewConfirmed {
-            return appLocalized("Double tap to reopen this cluster for review")
+            return DetailsL10n.ClusterDetails.doubleTapReopenThisCluster
         }
         return viewModel.selectedCount == 0
-            ? appLocalized("Finishes the review and keeps every photo in this cluster")
-            : appLocalized("Finishes the review and keeps the photos you did not select")
+            ? DetailsL10n.ClusterDetails.finishesReviewKeepsEveryPhoto
+            : DetailsL10n.ClusterDetails.finishesReviewKeepsPhotosDid
     }
 
     /// Two labelled sections instead of one flat list: acting on the selection
@@ -209,31 +209,31 @@ public struct ClusterDetailsView: View {
     private var overflowMenu: some View {
         Menu {
             if viewModel.isActionBarVisible {
-                Section(appLocalized("Selection")) {
+                Section(DetailsL10n.ClusterDetails.selection) {
                     Button {
                         viewModel.selectAllExceptBest()
                     } label: {
-                        Label(appLocalized("Select All Except Best"), systemImage: "checkmark.circle")
+                        Label(DetailsL10n.ClusterDetails.selectAllExceptBest, systemImage: "checkmark.circle")
                     }
 
                     if viewModel.selectedCount > 0 {
                         Button {
                             viewModel.clearSelection()
                         } label: {
-                            Label(appLocalized("Clear Selection"), systemImage: "xmark.circle")
+                            Label(DetailsL10n.Common.clearSelection, systemImage: "xmark.circle")
                         }
                     }
                 }
             }
 
-            Section(appLocalized("View")) {
+            Section(DetailsL10n.ClusterDetails.view) {
                 PhotoGridColumnsPicker()
             }
         } label: {
             Image(systemName: "ellipsis")
         }
-        .accessibilityLabel(Text(appLocalized("More Options")))
-        .accessibilityHint(Text(appLocalized("Selection shortcuts and grid layout")))
+        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.moreOptions))
+        .accessibilityHint(Text(DetailsL10n.ClusterDetails.selectionShortcutsAndGridLayout))
     }
 
     private var actionBarTransition: AnyTransition {
@@ -283,7 +283,7 @@ public struct ClusterDetailsView: View {
 
                 if !viewModel.hasAssets {
                     ContentUnavailableView {
-                        Label(appLocalized("No Photos Available"), systemImage: "photo")
+                        Label(DetailsL10n.ClusterDetails.noPhotosAvailable, systemImage: "photo")
                     }
                     .padding(.top, 80)
                 } else {
@@ -403,7 +403,7 @@ struct SelectablePhotoThumbnail: View {
                 .overlay(alignment: .topLeading) {
                     if isBestShot {
                         Label {
-                            Text(appLocalized("Best Shot"))
+                            Text(DetailsL10n.Common.bestShot)
                                 .foregroundStyle(.primary)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
@@ -445,7 +445,7 @@ struct SelectablePhotoThumbnail: View {
             .accessibilityAddTraits(isSelected ? [.isSelected] : [])
             .accessibilityActions {
                 if let onMakeBestShot, !isBestShot {
-                    Button(appLocalized("Make Best Shot"), action: onMakeBestShot)
+                    Button(DetailsL10n.ClusterDetails.makeBestShot, action: onMakeBestShot)
                 }
             }
 
@@ -464,7 +464,7 @@ struct SelectablePhotoThumbnail: View {
                     onMakeBestShot()
                 } label: {
                     Label {
-                        Text(appLocalized("Make Best Shot"))
+                        Text(DetailsL10n.ClusterDetails.makeBestShot)
                     } icon: {
                         Image(systemName: "star")
                     }
@@ -475,7 +475,7 @@ struct SelectablePhotoThumbnail: View {
                 showingMetadata = true
             } label: {
                 Label {
-                    Text(appLocalized("Show Info"))
+                    Text(DetailsL10n.ClusterDetails.showInfo)
                 } icon: {
                     Image(systemName: "info.circle")
                 }
@@ -485,7 +485,7 @@ struct SelectablePhotoThumbnail: View {
                 onOpenOriginal()
             } label: {
                 Label {
-                    Text(appLocalized("Open Original"))
+                    Text(DetailsL10n.ClusterDetails.openOriginal)
                 } icon: {
                     Image(systemName: "arrow.up.right.square")
                 }
@@ -574,28 +574,28 @@ struct SelectablePhotoThumbnail: View {
 
     private var accessibilityLabel: String {
         if isBestShot {
-            return appLocalized("Best Shot")
+            return DetailsL10n.Common.bestShot
         }
         if isSelected {
-            return appLocalized("Selected for cleanup review")
+            return DetailsL10n.ClusterDetails.selectedForCleanupReview
         }
-        return appLocalized("Not selected")
+        return DetailsL10n.ClusterDetails.notSelected
     }
 
     private var accessibilityValue: String {
         if isBestShot {
-            return appLocalized("Best Shot")
+            return DetailsL10n.Common.bestShot
         }
-        return isSelected ? appLocalized("Selected") : appLocalized("Not selected")
+        return isSelected ? DetailsL10n.ClusterDetails.selected : DetailsL10n.ClusterDetails.notSelected
     }
 
     private var accessibilityHint: String {
         if isBestShot {
-            return appLocalized("This photo is kept as the best shot. Long press another photo to make it the best shot instead.")
+            return DetailsL10n.ClusterDetails.thisPhotoKeptAsBest
         }
         return isSelected
-            ? appLocalized("Double tap to remove this photo from cleanup selection")
-            : appLocalized("Double tap to select this photo for cleanup")
+            ? DetailsL10n.ClusterDetails.doubleTapRemoveThisPhoto
+            : DetailsL10n.ClusterDetails.doubleTapSelectThisPhoto
     }
 }
 
@@ -619,28 +619,28 @@ struct MetadataView: View {
                     LabeledContent {
                         Text(metadata.resolution)
                     } label: {
-                        Text(appLocalized("Resolution"))
+                        Text(DetailsL10n.ClusterDetails.resolution)
                     }
 
                     LabeledContent {
                         Text(formattedMegapixels)
                     } label: {
-                        Text(appLocalized("Megapixels"))
+                        Text(DetailsL10n.ClusterDetails.megapixels)
                     }
 
                     LabeledContent {
                         Text(photoType)
                     } label: {
-                        Text(appLocalized("Photo Type"))
+                        Text(DetailsL10n.ClusterDetails.type)
                     }
 
                     LabeledContent {
-                        Text(metadata.isFavorite ? appLocalized("Yes") : appLocalized("No"))
+                        Text(metadata.isFavorite ? DetailsL10n.ClusterDetails.yes : DetailsL10n.ClusterDetails.no)
                     } label: {
-                        Text(appLocalized("Favorite"))
+                        Text(DetailsL10n.ClusterDetails.favorite)
                     }
                 } header: {
-                    Text(appLocalized("Details"))
+                    Text(DetailsL10n.ClusterDetails.details)
                 }
 
                 if metadata.creationDate != nil || metadata.modificationDate != nil {
@@ -649,7 +649,7 @@ struct MetadataView: View {
                             LabeledContent {
                                 Text(metadata.formattedCreationDate)
                             } label: {
-                                Text(appLocalized("Created"))
+                                Text(DetailsL10n.ClusterDetails.created)
                             }
                         }
 
@@ -657,11 +657,11 @@ struct MetadataView: View {
                             LabeledContent {
                                 Text(modified)
                             } label: {
-                                Text(appLocalized("Modified"))
+                                Text(DetailsL10n.ClusterDetails.modified)
                             }
                         }
                     } header: {
-                        Text(appLocalized("Dates"))
+                        Text(DetailsL10n.ClusterDetails.dates)
                     }
                 }
 
@@ -669,14 +669,14 @@ struct MetadataView: View {
                     PhotoInfoLocationSection(location: location)
                 }
             }
-            .navigationTitle(Text(appLocalized("Photo Info")))
+            .navigationTitle(Text(DetailsL10n.ClusterDetails.photoInfo))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
                     } label: {
-                        Text(appLocalized("Done"))
+                        Text(DetailsL10n.ClusterDetails.done)
                     }
                 }
             }
@@ -687,26 +687,26 @@ struct MetadataView: View {
         let value = metadata.megapixelCount.formatted(
             .number.precision(.fractionLength(0...1))
         )
-        return String(format: appLocalized("%@ MP"), value)
+        return String(format: DetailsL10n.ClusterDetails.mp, value)
     }
 
     private var photoType: String {
         guard !metadata.photoTraits.isEmpty else {
-            return appLocalized("Photo")
+            return DetailsL10n.ClusterDetails.photo
         }
 
         return metadata.photoTraits.map { trait in
             switch trait {
             case .screenshot:
-                appLocalized("Screenshot")
+                DetailsL10n.ClusterDetails.screenshot
             case .panorama:
-                appLocalized("Panorama")
+                DetailsL10n.ClusterDetails.panorama
             case .livePhoto:
-                appLocalized("Live Photo")
+                DetailsL10n.ClusterDetails.livePhoto
             case .hdr:
-                appLocalized("HDR")
+                DetailsL10n.ClusterDetails.hdr
             case .depthEffect:
-                appLocalized("Depth Effect")
+                DetailsL10n.ClusterDetails.depthEffect
             }
         }
         .joined(separator: ", ")
@@ -727,15 +727,15 @@ private struct PhotoInfoPreview: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .accessibilityLabel(Text(appLocalized("Photo preview")))
+                    .accessibilityLabel(Text(DetailsL10n.Common.photoPreview))
             } else if isLoading {
                 ProgressView()
-                    .accessibilityLabel(Text(appLocalized("Loading photo preview")))
+                    .accessibilityLabel(Text(DetailsL10n.Common.loadingPhotoPreview))
             } else {
                 Image(systemName: "photo")
                     .font(.largeTitle)
                     .foregroundStyle(.secondary)
-                    .accessibilityLabel(Text(appLocalized("Photo preview unavailable")))
+                    .accessibilityLabel(Text(DetailsL10n.Common.photoPreviewUnavailable))
             }
         }
         .frame(height: 180)
@@ -764,28 +764,28 @@ private struct PhotoInfoLocationSection: View {
     var body: some View {
         Section {
             Map(initialPosition: .region(region), interactionModes: []) {
-                Marker(appLocalized("Photo location"), coordinate: coordinate)
+                Marker(DetailsL10n.ClusterDetails.photoLocation, coordinate: coordinate)
             }
             .frame(height: 160)
             .listRowInsets(EdgeInsets())
-            .accessibilityLabel(Text(appLocalized("Map showing where the photo was taken")))
+            .accessibilityLabel(Text(DetailsL10n.ClusterDetails.mapShowingWherePhotoWas))
 
             Button {
                 openInMaps()
             } label: {
-                Label(appLocalized("Open in Maps"), systemImage: "map")
+                Label(DetailsL10n.ClusterDetails.openInMaps, systemImage: "map")
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            .accessibilityHint(Text(appLocalized("Opens the photo location in Maps")))
+            .accessibilityHint(Text(DetailsL10n.ClusterDetails.opensPhotoLocationMaps))
         } header: {
-            Text(appLocalized("Location"))
+            Text(DetailsL10n.ClusterDetails.location)
         }
     }
 
     private func openInMaps() {
         let placemark = MKPlacemark(coordinate: coordinate)
         let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = appLocalized("Photo location")
+        mapItem.name = DetailsL10n.ClusterDetails.photoLocation
         mapItem.openInMaps()
     }
 }
@@ -810,9 +810,9 @@ public struct ClusterDetailsView: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label(appLocalized("Similar Photos"), systemImage: "photo.stack")
+            Label(DetailsL10n.ClusterDetails.similarPhotos, systemImage: "photo.stack")
         } description: {
-            Text(appLocalized("Cluster details are available on iOS."))
+            Text(DetailsL10n.ClusterDetails.clusterDetailsAvailableIOS)
         }
     }
 }

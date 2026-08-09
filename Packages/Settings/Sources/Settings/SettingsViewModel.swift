@@ -163,10 +163,7 @@ private extension SettingsViewModel {
                     self.cleanupReminderMutationGeneration == generation
                 else { return }
                 self.cleanupReminderState = state
-                self.cleanupReminderErrorMessage = String(
-                    localized: "Your cleanup reminder couldn't be updated. Please try again.",
-                    bundle: .main
-                )
+                self.cleanupReminderErrorMessage = SettingsL10n.Main.cleanupReminderCouldntBeUpdated
             }
         }
     }

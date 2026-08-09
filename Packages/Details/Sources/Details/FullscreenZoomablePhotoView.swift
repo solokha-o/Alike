@@ -36,7 +36,7 @@ struct FullscreenPhotoPagerView: View {
                     .foregroundColor(.white.opacity(0.9))
                     .padding()
             }
-            .accessibilityLabel(Text(appLocalized("Close")))
+            .accessibilityLabel(Text(DetailsL10n.Common.close))
         }
     }
 }
@@ -79,7 +79,7 @@ struct FullscreenZoomablePhotoView: View {
                             panGesture(in: proxy.size),
                             including: scale > 1 ? .all : .subviews
                         )
-                        .accessibilityLabel(Text(appLocalized("Photo preview")))
+                        .accessibilityLabel(Text(DetailsL10n.Common.photoPreview))
                 } else if imageLoadState.phase == .failed {
                     FullscreenPhotoLoadFailureView {
                         imageLoadAttempt += 1
@@ -87,7 +87,7 @@ struct FullscreenZoomablePhotoView: View {
                 } else {
                     ProgressView()
                         .tint(.white)
-                        .accessibilityLabel(Text(appLocalized("Loading photo preview")))
+                        .accessibilityLabel(Text(DetailsL10n.Common.loadingPhotoPreview))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -173,16 +173,16 @@ struct FullscreenPhotoLoadFailureView: View {
                 .font(.largeTitle)
                 .accessibilityHidden(true)
 
-            Text(appLocalized("Photo preview unavailable"))
+            Text(DetailsL10n.Common.photoPreviewUnavailable)
                 .font(.callout)
                 .multilineTextAlignment(.center)
 
             Button(action: retry) {
-                Label(appLocalized("Retry"), systemImage: "arrow.clockwise")
+                Label(DetailsL10n.FullscreenZoomablePhoto.retry, systemImage: "arrow.clockwise")
             }
             .buttonStyle(.bordered)
             .tint(.white)
-            .accessibilityHint(Text(appLocalized("Try loading the photo again")))
+            .accessibilityHint(Text(DetailsL10n.FullscreenZoomablePhoto.tryLoadingThePhotoAgain))
         }
         .foregroundStyle(.white.opacity(0.9))
         .padding(Spacing.medium)

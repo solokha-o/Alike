@@ -73,14 +73,14 @@ public struct AlikeReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "camera.viewfinder",
                 playback: .loop,
                 ambientMotion: canPlay ? .breathe : .none,
-                accessibilityLabel: appLocalized("Alike searching for similar photos")
+                accessibilityLabel: DesignSystemL10n.AlikeReaction.alikeSearchingForSimilarPhotos
             )
 
         case .resultsFound:
             return nativeFallback(
                 kind: .resultsFound,
                 symbol: "sparkles",
-                label: appLocalized("Alike found cleanup opportunities")
+                label: DesignSystemL10n.AlikeReaction.alikeFoundCleanupOpportunities
             )
 
         case .noResults:
@@ -95,14 +95,14 @@ public struct AlikeReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "checkmark.circle.fill",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("Alike says your photo library is all caught up")
+                accessibilityLabel: DesignSystemL10n.AlikeReaction.alikeSaysPhotoLibraryAll
             )
 
         case .cleanupReady:
             return nativeFallback(
                 kind: .cleanupReady,
                 symbol: "checklist",
-                label: appLocalized("Alike is ready for cleanup")
+                label: DesignSystemL10n.AlikeReaction.alikeIsReadyForCleanup
             )
 
         case .cleanupSuccess:
@@ -116,14 +116,14 @@ public struct AlikeReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "party.popper.fill",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("Alike celebrates your completed cleanup")
+                accessibilityLabel: DesignSystemL10n.AlikeReaction.alikeCelebratesYourCompletedCleanup
             )
 
         case .permissionIssue:
             return nativeFallback(
                 kind: .permissionIssue,
                 symbol: "lock.trianglebadge.exclamationmark",
-                label: appLocalized("Alike needs photo library permission to continue")
+                label: DesignSystemL10n.AlikeReaction.alikeNeedsPhotoLibraryPermission
             )
 
         case .recoverableError:
@@ -137,7 +137,7 @@ public struct AlikeReactionPresentation: Equatable, Sendable {
                 fallbackSystemImageName: "exclamationmark.triangle",
                 playback: .once,
                 ambientMotion: .none,
-                accessibilityLabel: appLocalized("Alike ran into a problem with the scan")
+                accessibilityLabel: DesignSystemL10n.AlikeReaction.alikeRanIntoProblemWith
             )
         }
     }
@@ -205,13 +205,13 @@ public struct AlikeReactionPresentation: Equatable, Sendable {
     private static func idleAccessibilityLabel(for context: AlikeIdleContext) -> String {
         switch context {
         case .ready:
-            appLocalized("Alike is ready to help organize your photo library")
+            DesignSystemL10n.AlikeReaction.alikeReadyHelpOrganizePhoto
         case .hasReviews:
-            appLocalized("Alike has cleanup opportunities ready for review")
+            DesignSystemL10n.AlikeReaction.alikeHasCleanupOpportunitiesReady
         case .allCaughtUp:
-            appLocalized("Alike says your photo library is all caught up")
+            DesignSystemL10n.AlikeReaction.alikeSaysPhotoLibraryAll
         case .libraryChanged:
-            appLocalized("Alike noticed new photos in your library")
+            DesignSystemL10n.AlikeReaction.alikeNoticedNewPhotosLibrary
         }
     }
 

@@ -1,0 +1,652 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "scanner.alike.libraryChanged.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan New Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сканувати нові фото"
+          }
+        }
+      }
+    },
+    "scanner.alike.libraryChanged.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New photos detected."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виявлено нові фото."
+          }
+        }
+      }
+    },
+    "scanner.alike.libraryChanged.supporting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan again to refresh your cleanup opportunities."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проскануйте знову, щоб оновити можливості для очищення."
+          }
+        }
+      }
+    },
+    "scanner.alike.ready.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scanning"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Почати сканування"
+          }
+        }
+      }
+    },
+    "scanner.alike.ready.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready when you are."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готовий, коли ви готові."
+          }
+        }
+      }
+    },
+    "scanner.alike.ready.supporting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan your photo library for cleanup opportunities."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проскануйте фототеку, щоб знайти можливості для очищення."
+          }
+        }
+      }
+    },
+    "scanner.main.howToUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Use"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Як користуватись"
+          }
+        }
+      }
+    },
+    "scanner.main.openUsageInstructionsCleanupWorkflow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open usage instructions and cleanup workflow tips"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити інструкції та поради щодо процесу очищення"
+          }
+        }
+      }
+    },
+    "scanner.main.scanner": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanner"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сканер"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.canSwitchTabsWhileScanning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Під час сканування можна переходити між вкладками. Результати очищення оновляться після його завершення."
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.cleanupOpportunitiesAreReady": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup opportunities are ready"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Можливості для очищення готові"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.iCouldntFinishThisScan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I couldn't finish this scan."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мені не вдалося завершити це сканування."
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.libraryUpDate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your library is up to date"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваша фототека актуальна"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.noCleanupOpportunitiesWereFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No cleanup opportunities were found in this scan."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Під час цього сканування не знайдено можливостей для очищення."
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторити"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.reviewCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянути очищення"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.reviewEachSuggestionBeforeAnything": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review each suggestion before anything is removed."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перегляньте кожну пропозицію, перш ніж щось видаляти."
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.reviewExistingCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Existing Cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянути наявне очищення"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.scanAgain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Again"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сканувати знову"
+          }
+        }
+      }
+    },
+    "scanner.scannerHome.scanningYourPhotoLibrary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning your photo library"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сканування фототеки"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.blurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розмиті фото"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.groupsPhotosThatLookAlike": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groups of photos that look alike."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Групи схожих між собою фото."
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.lastScan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last Scan"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Останнє сканування"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.libraryStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Library Status"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Стан фототеки"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.likelyLowQualityPhotosReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely low-quality photos to review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Імовірно неякісні фото для перегляду."
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.needsRefresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs refresh"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Потрібне оновлення"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.ofFreeScansRemaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d of %2$d free scans remaining"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Залишилося безкоштовних сканувань: %1$d із %2$d"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.opensTheUpgradeOptions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the upgrade options"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкриває варіанти оновлення підписки"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.opportunities": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opportunities"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Можливості"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.reclaimable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reclaimable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Можна звільнити"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.scanningProgress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning progress"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хід сканування"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.screenCapturesThatMayNo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen captures that may no longer be useful."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімки екрана, які можуть бути вже не потрібні."
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.screenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімки екрана"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.similarPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Схожі фото"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.theseResultsFromBeforePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These results are from before your photo library changed."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ці результати отримано до змін у вашій фототеці."
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.unlockMoreWithAlikePro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock more with Alike Pro"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрийте більше можливостей з Alike Pro"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.unlockUnlimitedScansSmartCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте необмежені сканування, розумне очищення та пакетні дії."
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.whatAlikeChecks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike checks"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Що перевіряє Alike"
+          }
+        }
+      }
+    }
+  }
+}

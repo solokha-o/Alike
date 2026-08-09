@@ -24,7 +24,7 @@ public struct UserGuideSheet: View {
                         } label: {
                             Image(systemName: "xmark")
                         }
-                        .accessibilityLabel(Text(appLocalized("Close")))
+                        .accessibilityLabel(Text(UserGuideL10n.UserGuideSheet.close))
                     }
                 }
         } destination: { route, _ in

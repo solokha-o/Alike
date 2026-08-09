@@ -89,7 +89,7 @@ public struct SubscriptionPaywallView: View {
                 }
             }
             .animation(stateAnimation, value: isPremium)
-            .navigationTitle(Text(appLocalized("Alike Pro")))
+            .navigationTitle(Text(PurchasesL10n.Common.alikePro))
 #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
@@ -100,7 +100,7 @@ public struct SubscriptionPaywallView: View {
                     } label: {
                         Image(systemName: "xmark")
                     }
-                    .accessibilityLabel(Text(appLocalized("Close")))
+                    .accessibilityLabel(Text(PurchasesL10n.SubscriptionPaywall.close))
                     .disabled(isPurchasing)
                 }
             }
@@ -135,10 +135,10 @@ public struct SubscriptionPaywallView: View {
 
     private var benefits: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
-            benefit(appLocalized("Unlimited library scans"), icon: "arrow.triangle.2.circlepath")
-            benefit(appLocalized("Smart screenshot and blurred-photo categories"), icon: "wand.and.stars")
-            benefit(appLocalized("Advanced filters and batch cleanup"), icon: "line.3.horizontal.decrease.circle")
-            benefit(appLocalized("A cleanup reminder on your schedule"), icon: "calendar.badge.clock")
+            benefit(PurchasesL10n.SubscriptionPaywall.unlimitedLibraryScans, icon: "arrow.triangle.2.circlepath")
+            benefit(PurchasesL10n.SubscriptionPaywall.smartScreenshotBlurredPhotoCategories, icon: "wand.and.stars")
+            benefit(PurchasesL10n.SubscriptionPaywall.advancedFiltersAndBatchCleanup, icon: "line.3.horizontal.decrease.circle")
+            benefit(PurchasesL10n.SubscriptionPaywall.cleanupReminderSchedule, icon: "calendar.badge.clock")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
@@ -161,7 +161,7 @@ public struct SubscriptionPaywallView: View {
         case .loading, .idle:
             VStack(spacing: Spacing.small) {
                 ProgressView()
-                Text(appLocalized("Loading App Store plans…"))
+                Text(PurchasesL10n.SubscriptionPaywall.loadingAppStorePlans)
                     .font(.appSubheadline)
                     .foregroundStyle(.secondary)
             }
@@ -169,11 +169,11 @@ public struct SubscriptionPaywallView: View {
             .padding(Spacing.large)
         case .failed(let message):
             ContentUnavailableView {
-                Label(appLocalized("Plans couldn't be loaded"), systemImage: "exclamationmark.triangle.fill")
+                Label(PurchasesL10n.SubscriptionPaywall.plansCouldntBeLoaded, systemImage: "exclamationmark.triangle.fill")
             } description: {
-                Text(appLocalized("Check your connection and try loading subscription plans again."))
+                Text(PurchasesL10n.SubscriptionPaywall.checkConnectionTryLoadingSubscription)
             } actions: {
-                Button(appLocalized("Retry")) {
+                Button(PurchasesL10n.SubscriptionPaywall.retry) {
                     Task { await store?.loadProducts() }
                 }
                 .buttonStyle(.bordered)
@@ -183,9 +183,9 @@ public struct SubscriptionPaywallView: View {
             }
         case .unconfigured, .none:
             ContentUnavailableView {
-                Label(appLocalized("Plans aren't available yet"), systemImage: "exclamationmark.triangle")
+                Label(PurchasesL10n.SubscriptionPaywall.plansArentAvailableYet, systemImage: "exclamationmark.triangle")
             } description: {
-                Text(appLocalized("You can continue using Alike Free while subscription plans are unavailable."))
+                Text(PurchasesL10n.SubscriptionPaywall.canContinueUsingAlikeFree)
             }
         case .loaded:
             if #available(iOS 26.0, macOS 26.0, *) {
@@ -241,7 +241,7 @@ public struct SubscriptionPaywallView: View {
                     .font(.appTitle3)
                     .monospacedDigit()
 
-                Text(product.plan == .yearly ? appLocalized("Billed yearly") : appLocalized("Billed monthly"))
+                Text(product.plan == .yearly ? PurchasesL10n.SubscriptionPaywall.billedYearly : PurchasesL10n.SubscriptionPaywall.billedMonthly)
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
 
@@ -250,7 +250,7 @@ public struct SubscriptionPaywallView: View {
                     .foregroundStyle(.secondary)
 
                 if product.plan.isPrimary {
-                    Text(appLocalized("Recommended"))
+                    Text(PurchasesL10n.SubscriptionPaywall.recommended)
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Color.accent)
                         .padding(.horizontal, Spacing.xSmall)
@@ -273,23 +273,23 @@ public struct SubscriptionPaywallView: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-        .accessibilityHint(Text(appLocalized("Select this subscription plan")))
+        .accessibilityHint(Text(PurchasesL10n.SubscriptionPaywall.selectThisSubscriptionPlan))
     }
 
     private func planValueDescription(for product: SubscriptionProduct) -> String {
         guard product.plan == .yearly else {
-            return appLocalized("Pay for one month at a time")
+            return PurchasesL10n.SubscriptionPaywall.payOneMonthAtTime
         }
         guard
             let monthlyPrice = store?.products[.monthly]?.price,
             monthlyPrice > 0
         else {
-            return appLocalized("Save with annual billing")
+            return PurchasesL10n.SubscriptionPaywall.saveWithAnnualBilling
         }
 
         let monthlyAnnualCost = monthlyPrice * 12
         guard monthlyAnnualCost > product.price else {
-            return appLocalized("Save with annual billing")
+            return PurchasesL10n.SubscriptionPaywall.saveWithAnnualBilling
         }
 
         var savingsPercentage = (1 - product.price / monthlyAnnualCost) * 100
@@ -297,7 +297,7 @@ public struct SubscriptionPaywallView: View {
         NSDecimalRound(&roundedSavingsPercentage, &savingsPercentage, 0, .plain)
         let percentage = NSDecimalNumber(decimal: roundedSavingsPercentage).intValue
         return String(
-            format: appLocalized("Save %d%% compared with monthly"),
+            format: PurchasesL10n.SubscriptionPaywall.saveComparedWithMonthly,
             percentage
         )
     }
@@ -312,7 +312,7 @@ public struct SubscriptionPaywallView: View {
                 purchaseControls(usesGlass: false)
             }
 
-            Text(appLocalized("Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."))
+            Text(PurchasesL10n.SubscriptionPaywall.alikeFreeStillIncludesThree)
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -349,7 +349,7 @@ public struct SubscriptionPaywallView: View {
                     ProgressView()
                         .transition(.opacity)
                 } else {
-                    Label(appLocalized("Restore Purchases"), systemImage: "arrow.clockwise")
+                    Label(PurchasesL10n.Common.restorePurchases, systemImage: "arrow.clockwise")
                         .transition(.opacity)
                 }
             }
@@ -361,22 +361,22 @@ public struct SubscriptionPaywallView: View {
 
     private var disclosure: some View {
         VStack(spacing: Spacing.xSmall) {
-            Text(appLocalized("Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account."))
+            Text(PurchasesL10n.SubscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled)
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            Text(appLocalized("The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."))
+            Text(PurchasesL10n.SubscriptionPaywall.yearlyPlanIncludes7Day)
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
             HStack(spacing: Spacing.medium) {
                 if let privacyPolicy = legalLinks.privacyPolicy {
-                    Link(appLocalized("Privacy Policy"), destination: privacyPolicy)
+                    Link(PurchasesL10n.SubscriptionPaywall.privacyPolicy, destination: privacyPolicy)
                 }
                 if let termsOfUse = legalLinks.termsOfUse {
-                    Link(appLocalized("Terms of Use"), destination: termsOfUse)
+                    Link(PurchasesL10n.SubscriptionPaywall.termsOfUse, destination: termsOfUse)
                 }
             }
             .font(.appCaption)
@@ -386,7 +386,7 @@ public struct SubscriptionPaywallView: View {
     private var activeStatus: some View {
         Label {
             VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                Text(appLocalized("Alike Pro is active"))
+                Text(PurchasesL10n.Common.alikeProIsActive)
                     .font(.appHeadline)
                 Text(activePlanDescription)
                     .font(.appSubheadline)
@@ -494,14 +494,14 @@ public struct SubscriptionPaywallView: View {
     }
 
     private var purchaseButtonTitle: String {
-        if isPurchasing { return appLocalized("Purchasing…") }
+        if isPurchasing { return PurchasesL10n.SubscriptionPaywall.purchasing }
         guard store?.productLoadState == .loaded else {
-            return appLocalized("Subscription plans unavailable")
+            return PurchasesL10n.SubscriptionPaywall.subscriptionPlansUnavailable
         }
         guard let product = store?.products[selectedPlan] else {
-            return appLocalized("Select a subscription plan")
+            return PurchasesL10n.SubscriptionPaywall.selectASubscriptionPlan
         }
-        return String(format: appLocalized("Continue with %@"), product.displayPrice)
+        return String(format: PurchasesL10n.SubscriptionPaywall.continueWith, product.displayPrice)
     }
 
     private var activePlanDescription: String {
@@ -509,7 +509,7 @@ public struct SubscriptionPaywallView: View {
             let productID = store?.entitlementState.productID,
             let product = store?.products.values.first(where: { $0.id == productID })
         else {
-            return appLocalized("Unlimited scans and all Pro cleanup tools are unlocked.")
+            return PurchasesL10n.SubscriptionPaywall.unlimitedScansAllProCleanup
         }
         return product.displayName
     }
@@ -523,17 +523,17 @@ public struct SubscriptionPaywallView: View {
             do {
                 switch try await store.purchase(plan: selectedPlan) {
                 case .purchased:
-                    purchaseFeedback = .success(appLocalized("Alike Pro is now active."))
+                    purchaseFeedback = .success(PurchasesL10n.SubscriptionPaywall.alikeProIsNowActive)
                     activationEffectTrigger += 1
                 case .pending:
-                    purchaseFeedback = .pending(appLocalized("Your purchase is pending App Store approval."))
+                    purchaseFeedback = .pending(PurchasesL10n.SubscriptionPaywall.purchasePendingAppStoreApproval)
                 case .cancelled:
                     purchaseFeedback = nil
                 }
             } catch {
                 logFailure(operation: "purchase", details: error.localizedDescription)
                 purchaseFeedback = .failure(
-                    appLocalized("We couldn't complete your purchase. Check your connection and try again.")
+                    PurchasesL10n.SubscriptionPaywall.weCouldntCompletePurchaseCheck
                 )
             }
         }
@@ -548,12 +548,12 @@ public struct SubscriptionPaywallView: View {
             do {
                 try await store.restorePurchases()
                 purchaseFeedback = store.entitlementState.isPremium
-                    ? .success(appLocalized("Your Alike Pro subscription was restored."))
-                    : .pending(appLocalized("No active Alike Pro subscription was found."))
+                    ? .success(PurchasesL10n.SubscriptionPaywall.alikeProSubscriptionWasRestored)
+                    : .pending(PurchasesL10n.SubscriptionPaywall.noActiveAlikeProSubscription)
             } catch {
                 logFailure(operation: "restore", details: error.localizedDescription)
                 purchaseFeedback = .failure(
-                    appLocalized("We couldn't restore your purchases. Check your connection and try again.")
+                    PurchasesL10n.SubscriptionPaywall.weCouldntRestorePurchasesCheck
                 )
             }
         }

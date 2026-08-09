@@ -72,13 +72,13 @@ public struct PhotoGridColumnsMenu: View {
                     Text("\(count)").tag(count)
                 }
             } label: {
-                Text(appLocalized("Columns"))
+                Text(DesignSystemL10n.PhotoGridColumnPreference.columns2)
             }
         } label: {
             Image(systemName: "square.grid.3x2")
         }
-        .accessibilityLabel(Text(appLocalized("Grid Columns")))
-        .accessibilityHint(Text(appLocalized("Choose how many columns are used to display photos")))
+        .accessibilityLabel(Text(DesignSystemL10n.PhotoGridColumnPreference.gridColumns))
+        .accessibilityHint(Text(DesignSystemL10n.PhotoGridColumnPreference.chooseHowManyColumnsUsed))
     }
 }
 
@@ -91,10 +91,10 @@ public struct PhotoGridColumnsPicker: View {
     public var body: some View {
         Picker(selection: $columns) {
             ForEach(_columns.layoutPolicy.columnCounts, id: \.self) { count in
-                Text(String(format: appLocalized("%d Columns"), count)).tag(count)
+                Text(String(format: DesignSystemL10n.PhotoGridColumnPreference.columns, count)).tag(count)
             }
         } label: {
-            Label(appLocalized("Columns"), systemImage: "square.grid.3x2")
+            Label(DesignSystemL10n.PhotoGridColumnPreference.columns2, systemImage: "square.grid.3x2")
         }
         .pickerStyle(.menu)
     }

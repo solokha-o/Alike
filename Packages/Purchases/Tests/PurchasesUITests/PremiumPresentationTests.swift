@@ -47,40 +47,41 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(context.message.contains("120 MB"))
     }
 
-    func testEnglishPluralCategories() {
-        let locale = Locale(identifier: "en")
+    /// Plural forms live in the catalog, not in Swift branches, so what has to be asserted is the
+    /// catalog data. SwiftPM copies `.xcstrings` verbatim instead of running `xcstringstool`, so a
+    /// runtime `String(localized:)` here would resolve to the fallback rather than the translation —
+    /// the compiled `uk.lproj/Localizable.stringsdict` in the app build is what proves resolution.
+    func testPaywallPluralsAreDeclaredAsCatalogVariations() throws {
+        let catalog = try LocalizationCatalog.load()
 
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 0, locale: locale), .other)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 1, locale: locale), .one)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 2, locale: locale), .other)
-    }
-
-    func testUkrainianPluralCategories() {
-        let locale = Locale(identifier: "uk")
-
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 0, locale: locale), .many)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 1, locale: locale), .one)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 2, locale: locale), .few)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 5, locale: locale), .many)
-        XCTAssertEqual(PaywallPluralCategory.resolve(count: 21, locale: locale), .one)
-    }
-
-    func testEnglishPostFirstScanCopyUsesSingularAndPluralForms() {
-        let locale = Locale(identifier: "en")
+        for key in [
+            "purchases.paywall.postFirstScan",
+            "purchases.paywall.postFirstScan.withSavings",
+            "purchases.paywall.batchCleanup"
+        ] {
+            XCTAssertEqual(try catalog.pluralCategories(of: key, language: "en"), ["one", "other"], key)
+            XCTAssertEqual(
+                try catalog.pluralCategories(of: key, language: "uk"),
+                ["few", "many", "one", "other"],
+                key
+            )
+        }
 
         XCTAssertTrue(
-            PaywallL10n.postFirstScanMessage(
-                opportunityCount: 1,
-                estimatedSavings: nil,
-                locale: locale
-            ).contains("1 cleanup opportunity.")
+            try catalog.plural("purchases.paywall.postFirstScan", language: "uk", category: "one")
+                .contains("можливість")
         )
         XCTAssertTrue(
-            PaywallL10n.postFirstScanMessage(
-                opportunityCount: 2,
-                estimatedSavings: nil,
-                locale: locale
-            ).contains("2 cleanup opportunities.")
+            try catalog.plural("purchases.paywall.postFirstScan", language: "uk", category: "few")
+                .contains("можливості")
+        )
+        XCTAssertTrue(
+            try catalog.plural("purchases.paywall.postFirstScan", language: "uk", category: "many")
+                .contains("можливостей")
+        )
+        XCTAssertTrue(
+            try catalog.plural("purchases.paywall.batchCleanup", language: "en", category: "one")
+                .contains("selected photo in one action")
         )
     }
 }

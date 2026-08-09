@@ -1,0 +1,533 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "core.cleanupCategory.blurredPhotoCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photo Cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення розмитих фото"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.blurredPhotoCleanupPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred photo cleanup is a premium feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення розмитих фото — преміум-функція"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.blurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розмиті фото"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.likelyBlurredPhotosAvailableReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d likely blurred photos available for review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Імовірно розмитих фото для перегляду: %d."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.likelyLowQualityPhotosBased": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely low-quality photos based on on-device analysis. Review before deleting."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Імовірно неякісні фото за результатами аналізу на пристрої. Перегляньте їх перед видаленням."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.move1SelectedBlurredPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move 1 Selected Blurred Photo to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити 1 вибране розмите фото до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.move1SelectedScreenshotRecently": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move 1 Selected Screenshot to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити 1 вибраний знімок екрана до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.moveSelectedBlurredPhotosRecently": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move %d Selected Blurred Photos to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити вибрані розмиті фото (%d) до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move %d Selected Screenshots to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити вибрані знімки екрана (%d) до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.n1LikelyBlurredPhotoAvailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 likely blurred photo available for review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для перегляду доступне 1 імовірно розмите фото."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.n1ScreenshotAvailableForReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 screenshot available for review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для перегляду доступний 1 знімок екрана."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.n1SelectedEstimatedSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 selected, estimated size %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано: 1, орієнтовний розмір: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.noBlurredPhotosFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Blurred Photos Found"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розмитих фото не знайдено"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.noScreenshotsFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Screenshots Found"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімків екрана не знайдено"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.openBlurredPhotoCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open blurred photo cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити очищення розмитих фото"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.openScreenshotCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open screenshot cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити очищення знімків екрана"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.opensPremiumPaywallBlurredPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the premium paywall for blurred photo cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкриває преміум-екран очищення розмитих фото"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.opensPremiumPaywallScreenshotCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the premium paywall for screenshot cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкриває преміум-екран очищення знімків екрана"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.runNewScanAfterLibrary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run a new scan after your library changes or if more photos need review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запустіть нове сканування після змін у фототеці або коли потрібно перевірити більше фото."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.screenshotCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot Cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення знімків екрана"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.screenshotCleanupPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot cleanup is a premium feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення знімків екрана — преміум-функція"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.screenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімки екрана"
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.screenshotsAvailableForReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d screenshots available for review."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімків екрана для перегляду: %d."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectedEstimatedSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d selected, estimated size %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано: %d, орієнтовний розмір: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectedPhotoWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибране фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім залишатиметься в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки фото не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectedPhotosWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрані фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки їх не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectedScreenshotWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибраний знімок екрана буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім він залишатиметься в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки знімок не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectedScreenshotsWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрані знімки екрана буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки знімки не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.tryRescanningAfterLibraryUpdates": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try rescanning after your library updates."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спробуйте пересканувати після оновлення фототеки."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.unlockBlurredPhotoCleanupReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте очищення розмитих фото, щоб переглядати й видаляти ймовірно неякісні кадри з безпечним підтвердженням."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.unlockScreenshotCleanupReviewDelete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокуйте очищення знімків екрана, щоб переглядати й видаляти їх із безпечним підтвердженням."
+          }
+        }
+      }
+    }
+  }
+}

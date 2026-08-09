@@ -199,8 +199,8 @@ public struct CleanupView: View {
                 }
             )
         }
-        .alert(appLocalized("Couldn't Open Cleanup Category"), isPresented: errorBinding) {
-            Button(appLocalized("OK"), role: .cancel) { categoryError = nil }
+        .alert(CleanupL10n.Main.couldntOpenCleanupCategory, isPresented: errorBinding) {
+            Button(CleanupL10n.Main.ok, role: .cancel) { categoryError = nil }
         } message: {
             Text(categoryError ?? "")
         }
@@ -252,7 +252,7 @@ public struct CleanupView: View {
                     value: workspace.reconciliationState
                 )
         }
-        .navigationTitle(Text(appLocalized("Cleanup")))
+        .navigationTitle(Text(CleanupL10n.Main.cleanup))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -289,24 +289,24 @@ public struct CleanupView: View {
         if case .scanning(let progress, .userInitiated) = workspace.scanOperation {
             CleanupStatusBanner(
                 icon: "arrow.triangle.2.circlepath",
-                title: appLocalized("Refreshing Cleanup"),
-                message: String(format: appLocalized("Scanning your library… %d%%"), Int(progress * 100)),
+                title: CleanupL10n.Main.refreshingCleanup,
+                message: String(format: CleanupL10n.Main.scanningYourLibrary, Int(progress * 100)),
                 showsProgress: true,
                 progress: progress
             )
         } else if case .failed(let message, .userInitiated) = workspace.scanOperation {
             CleanupStatusBanner(
                 icon: "exclamationmark.triangle.fill",
-                title: appLocalized("Scan Failed"),
+                title: CleanupL10n.Main.scanFailed,
                 message: message
             )
         }
         if workspace.shouldShowRescanPrompt {
             CleanupStatusBanner(
                 icon: "photo.badge.arrow.down",
-                title: appLocalized("Your library changed"),
-                message: appLocalized("Run a new scan to refresh cleanup suggestions."),
-                actionTitle: appLocalized("Rescan"),
+                title: CleanupL10n.Main.yourLibraryChanged,
+                message: CleanupL10n.Main.runNewScanRefreshCleanup,
+                actionTitle: CleanupL10n.Main.rescan,
                 action: onRequestScan
             )
         }
@@ -339,16 +339,16 @@ public struct CleanupView: View {
         case .success(let record):
             CleanupStatusBanner(
                 icon: "checkmark.circle.fill",
-                title: String(format: appLocalized("%d photos moved to Recently Deleted."), record.deletedCount),
-                message: appLocalized("Your cleanup results are up to date."),
+                title: String(format: CleanupL10n.Main.photosMovedToRecentlyDeleted, record.deletedCount),
+                message: CleanupL10n.Main.cleanupResultsUpDate,
                 dismiss: { dismissReconciliation(record.id) }
             )
         case .failed(let record, let message):
             CleanupStatusBanner(
                 icon: "exclamationmark.triangle.fill",
-                title: appLocalized("Refresh Required"),
+                title: CleanupL10n.Main.refreshRequired,
                 message: message,
-                actionTitle: appLocalized("Rescan"),
+                actionTitle: CleanupL10n.Main.rescan,
                 action: onRequestScan,
                 dismiss: { dismissReconciliation(record.id) }
             )
@@ -429,11 +429,11 @@ public struct CleanupView: View {
 
     private var neverScanned: some View {
         ContentUnavailableView {
-            Label(appLocalized("Scan Your Library First"), systemImage: "viewfinder")
+            Label(CleanupL10n.Main.scanYourLibraryFirst, systemImage: "viewfinder")
         } description: {
-            Text(appLocalized("Start a scan to find similar photos and smart cleanup suggestions."))
+            Text(CleanupL10n.Main.startScanFindSimilarPhotos)
         } actions: {
-            Button(appLocalized("Go to Scanner"), action: onOpenScanner)
+            Button(CleanupL10n.Main.goToScanner, action: onOpenScanner)
                 .cleanupGlassButton(isProminent: true)
         }
         .frame(minHeight: 360)
@@ -441,9 +441,9 @@ public struct CleanupView: View {
 
     private func unavailable(_ message: String) -> some View {
         ContentUnavailableView {
-            Label(appLocalized("Cleanup Unavailable"), systemImage: "exclamationmark.triangle")
+            Label(CleanupL10n.Main.cleanupUnavailable, systemImage: "exclamationmark.triangle")
         } description: { Text(message) } actions: {
-            Button(appLocalized("Go to Scanner"), action: onOpenScanner)
+            Button(CleanupL10n.Main.goToScanner, action: onOpenScanner)
                 .cleanupGlassButton()
         }
         .frame(minHeight: 360)
@@ -464,22 +464,22 @@ public struct CleanupView: View {
         }
         if !arrangement.hasAnyCluster && workspace.cleanupCategories.isEmpty {
             ContentUnavailableView {
-                Label(appLocalized("No Cleanup Opportunities"), systemImage: "checkmark.seal")
-            } description: { Text(appLocalized("Your latest scan did not find similar photos or smart categories to review.")) }
+                Label(CleanupL10n.Main.noCleanupOpportunities, systemImage: "checkmark.seal")
+            } description: { Text(CleanupL10n.Main.latestScanDidNotFind) }
             .padding(.top, Spacing.xxLarge)
         } else if arrangement.isEmptyAfterFiltering {
             ContentUnavailableView {
-                Label(appLocalized("No Clusters Match These Controls"), systemImage: "line.3.horizontal.decrease.circle")
-            } description: { Text(appLocalized("Try changing filters or resetting controls.")) } actions: {
-                Button(appLocalized("Reset controls")) { controls = CleanupClusterControls() }
+                Label(CleanupL10n.Main.noClustersMatchTheseControls, systemImage: "line.3.horizontal.decrease.circle")
+            } description: { Text(CleanupL10n.Main.tryChangingFiltersResettingControls) } actions: {
+                Button(CleanupL10n.Main.resetControls) { controls = CleanupClusterControls() }
                     .cleanupGlassButton()
             }
         } else {
             if !arrangement.needsReview.isEmpty {
-                CleanupClusterSection(title: appLocalized("Needs review"), subtitle: appLocalized("New and changed clusters after your latest rescan"), clusters: arrangement.needsReview, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
+                CleanupClusterSection(title: CleanupL10n.Main.needsReview, subtitle: CleanupL10n.Main.newChangedClustersAfterLatest, clusters: arrangement.needsReview, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
             if !arrangement.remaining.isEmpty {
-                CleanupClusterSection(title: appLocalized("All clusters"), subtitle: appLocalized("Everything else still available in your cleanup queue"), clusters: arrangement.remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
+                CleanupClusterSection(title: CleanupL10n.Main.allClusters, subtitle: CleanupL10n.Main.everythingElseStillAvailableCleanup, clusters: arrangement.remaining, gridColumns: selectedGridColumnCount, workspace: workspace) { router.push(.cluster($0)) }
             }
         }
     }
@@ -513,12 +513,12 @@ public struct CleanupView: View {
         Button { isControlsPresented = true } label: {
             Image(systemName: controls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
         }
-        .accessibilityLabel(Text(appLocalized("Filter and sort clusters")))
+        .accessibilityLabel(Text(CleanupL10n.Main.filterAndSortClusters))
     }
 
     private var rescanButton: some View {
         Button(action: onRequestScan) { Image(systemName: "arrow.clockwise") }
-            .accessibilityLabel(Text(appLocalized("Rescan Photos")))
+            .accessibilityLabel(Text(CleanupL10n.Main.rescanPhotos))
     }
 
     private func openCategory(_ category: CleanupCategorySummary) {
@@ -586,15 +586,15 @@ public enum CleanupClusterSort: String, CaseIterable, Sendable {
     var title: String {
         switch self {
         case .newest:
-            appLocalized("Newest")
+            CleanupL10n.Main.newest
         case .largestCleanupOpportunity:
-            appLocalized("Most space to save")
+            CleanupL10n.Main.mostSpaceToSave
         case .largestCluster:
-            appLocalized("Largest cluster")
+            CleanupL10n.Main.largestCluster
         case .similarity:
-            appLocalized("Highest similarity")
+            CleanupL10n.Main.highestSimilarity
         case .reviewStatus:
-            appLocalized("Review status")
+            CleanupL10n.Main.reviewStatus
         }
     }
 }
@@ -619,13 +619,13 @@ public enum CleanupReviewFilter: String, CaseIterable, Sendable {
     var title: String {
         switch self {
         case .all:
-            appLocalized("All review states")
+            CleanupL10n.Main.allReviewStates
         case .needsReview:
-            appLocalized("Needs review")
+            CleanupL10n.Main.needsReview
         case .inReview:
-            appLocalized("In review")
+            CleanupL10n.Main.inReview
         case .reviewed:
-            appLocalized("Reviewed")
+            CleanupL10n.Main.reviewed
         }
     }
 }
@@ -640,8 +640,8 @@ public enum CleanupMinimumClusterSize: Int, CaseIterable, Sendable {
 
     var title: String {
         self == .any
-            ? appLocalized("Any size")
-            : String(format: appLocalized("%d or more photos"), rawValue)
+            ? CleanupL10n.Main.anySize
+            : String(format: CleanupL10n.Main.orMorePhotos, rawValue)
     }
 }
 public struct CleanupClusterControls: Equatable, Sendable {
@@ -669,45 +669,45 @@ private struct CleanupClusterControlsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(appLocalized("Sort by")) {
-                    Picker(appLocalized("Sort order"), selection: $controls.sort) {
+                Section(CleanupL10n.Main.sortBy) {
+                    Picker(CleanupL10n.Main.sortOrder, selection: $controls.sort) {
                         ForEach(CleanupClusterSort.allCases, id: \.self) {
                             Text($0.title).tag($0)
                         }
                     }
                 }
 
-                Section(appLocalized("Filter by")) {
+                Section(CleanupL10n.Main.filterBy) {
                     if isAdvancedFilteringLocked {
                         Button(action: onRequestAdvancedFilters) {
-                            Label(appLocalized("Unlock advanced filters"), systemImage: "lock.fill")
+                            Label(CleanupL10n.Main.unlockAdvancedFilters, systemImage: "lock.fill")
                         }
                     } else {
-                        Picker(appLocalized("Review status"), selection: $controls.reviewFilter) {
+                        Picker(CleanupL10n.Main.reviewStatus, selection: $controls.reviewFilter) {
                             ForEach(CleanupReviewFilter.allCases, id: \.self) {
                                 Text($0.title).tag($0)
                             }
                         }
-                        Picker(appLocalized("Minimum cluster size"), selection: $controls.minimumClusterSize) {
+                        Picker(CleanupL10n.Main.minimumClusterSize, selection: $controls.minimumClusterSize) {
                             ForEach(CleanupMinimumClusterSize.allCases, id: \.self) {
                                 Text($0.title).tag($0)
                             }
                         }
-                        Toggle(appLocalized("Favorites only"), isOn: $controls.favoritesOnly)
+                        Toggle(CleanupL10n.Main.favoritesOnly, isOn: $controls.favoritesOnly)
                     }
                 }
 
                 Section {
-                    Button(appLocalized("Reset controls"), role: .destructive) {
+                    Button(CleanupL10n.Main.resetControls, role: .destructive) {
                         controls = CleanupClusterControls()
                     }
                     .disabled(controls.isDefault)
                 }
             }
-            .navigationTitle(Text(appLocalized("Filter and Sort")))
+            .navigationTitle(Text(CleanupL10n.Main.filterAndSort))
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(appLocalized("Done")) { dismiss() }
+                    Button(CleanupL10n.Main.done) { dismiss() }
                 }
             }
         }
@@ -732,15 +732,15 @@ private struct CleanupProgressCard: View {
                 }
                 .cleanupGlassButton()
                 .controlSize(.small)
-                .accessibilityLabel(Text(appLocalized("Cleanup History")))
+                .accessibilityLabel(Text(CleanupL10n.Main.cleanupHistory))
             }
 
             ProgressView(value: progress.reviewedRatio)
             LazyVGrid(columns: metricColumns, alignment: .leading, spacing: Spacing.small) {
-                metric("\(progress.reviewedCount)/\(progress.totalClusters)", appLocalized("Reviewed"))
-                metric("\(progress.remainingClusters)", appLocalized("Remaining"))
-                metric("\(progress.totalSelectedItems)", appLocalized("Selected"))
-                metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), appLocalized("Estimated Savings"))
+                metric("\(progress.reviewedCount)/\(progress.totalClusters)", CleanupL10n.Main.reviewed)
+                metric("\(progress.remainingClusters)", CleanupL10n.Main.remaining)
+                metric("\(progress.totalSelectedItems)", CleanupL10n.Main.selected)
+                metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), CleanupL10n.Main.estimatedSavings)
             }
         }
         .padding(Spacing.medium)
@@ -752,8 +752,8 @@ private struct CleanupProgressCard: View {
         if let onContinue {
             Button(action: onContinue) {
                 summary(
-                    title: appLocalized("Continue Review"),
-                    subtitle: appLocalized("Pick up where you left off"),
+                    title: CleanupL10n.Main.continueReview,
+                    subtitle: CleanupL10n.Main.pickUpWhereLeftOff,
                     iconName: "arrow.right.circle.fill",
                     iconColor: Color.accent
                 )
@@ -761,11 +761,11 @@ private struct CleanupProgressCard: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(Text(continueAccessibilityLabel))
-            .accessibilityHint(Text(appLocalized("Open next cluster to continue cleanup")))
+            .accessibilityHint(Text(CleanupL10n.Main.openNextClusterContinueCleanup))
         } else {
             summary(
-                title: appLocalized("All clusters reviewed"),
-                subtitle: appLocalized("Nothing left to review right now"),
+                title: CleanupL10n.Main.allClustersReviewed,
+                subtitle: CleanupL10n.Main.nothingLeftReviewRightNow,
                 iconName: "checkmark.seal.fill",
                 iconColor: .statusReviewed
             )
@@ -797,7 +797,7 @@ private struct CleanupProgressCard: View {
 
     private var continueAccessibilityLabel: String {
         String(
-            format: appLocalized("Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings."),
+            format: CleanupL10n.Main.continueReviewClustersReviewedRemaining,
             progress.reviewedCount,
             progress.totalClusters,
             progress.remainingClusters,
@@ -808,7 +808,7 @@ private struct CleanupProgressCard: View {
 
     private var completedAccessibilityLabel: String {
         String(
-            format: appLocalized("All clusters reviewed. %d of %d clusters reviewed, %d selected, %@ estimated savings."),
+            format: CleanupL10n.Main.allClustersReviewedSelectedEstimated,
             progress.reviewedCount,
             progress.totalClusters,
             progress.totalSelectedItems,
@@ -832,7 +832,7 @@ private struct CleanupCategoriesCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
-            Text(appLocalized("Smart Cleanup"))
+            Text(CleanupL10n.Main.smartCleanup)
                 .font(.appHeadline)
 
             ForEach(categories) { category in
@@ -864,8 +864,8 @@ private struct CleanupCategoriesCard: View {
                 .accessibilityHint(
                     Text(
                         isLocked(category.kind)
-                            ? appLocalized("Opens the upgrade options")
-                            : appLocalized("Open this cleanup category")
+                            ? CleanupL10n.Main.opensTheUpgradeOptions
+                            : CleanupL10n.Main.openThisCleanupCategory
                     )
                 )
             }
@@ -876,14 +876,14 @@ private struct CleanupCategoriesCard: View {
 
     private func categoryDetail(_ category: CleanupCategorySummary) -> String {
         String(
-            format: appLocalized("%d items • %@ estimated reclaimable"),
+            format: CleanupL10n.Main.itemsEstimatedReclaimable,
             category.assetCount,
             ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
         )
     }
 
     private func categoryAccessibilityLabel(_ category: CleanupCategorySummary) -> String {
-        let lockedSuffix = isLocked(category.kind) ? ". \(appLocalized("Locked"))" : ""
+        let lockedSuffix = isLocked(category.kind) ? ". \(CleanupL10n.Main.locked)" : ""
         return "\(category.kind.presentation.title). \(categoryDetail(category))\(lockedSuffix)"
     }
 }
@@ -994,7 +994,7 @@ private struct CleanupClusterCard: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(Text(clusterAccessibilityLabel))
-            .accessibilityHint(Text(appLocalized("Open this cluster to review photos")))
+            .accessibilityHint(Text(CleanupL10n.Main.openThisClusterReviewPhotos))
 #if os(iOS)
             if imageLoadState.phase == .failed {
                 PhotoLoadFailureView {
@@ -1073,13 +1073,13 @@ private struct CleanupClusterCard: View {
     private var statusTitle: String {
         switch status {
         case .notReviewed:
-            appLocalized("Not reviewed")
+            CleanupL10n.Main.notReviewed
         case .needsReReview:
-            appLocalized("Needs review")
+            CleanupL10n.Main.needsReview
         case .inReview:
-            appLocalized("In review")
+            CleanupL10n.Main.inReview
         case .reviewed:
-            appLocalized("Reviewed")
+            CleanupL10n.Main.reviewed
         }
     }
 
@@ -1113,15 +1113,15 @@ private struct CleanupClusterCard: View {
         let resurfacingTitle: String
         switch resurfacing {
         case .new:
-            resurfacingTitle = appLocalized("New")
+            resurfacingTitle = CleanupL10n.Main.new
         case .changed:
-            resurfacingTitle = appLocalized("Changed")
+            resurfacingTitle = CleanupL10n.Main.changed
         case .none, .unchanged:
             resurfacingTitle = ""
         }
 
         return [
-            String(format: appLocalized("%d photos"), cluster.count),
+            String(format: CleanupL10n.Common.photos, cluster.count),
             statusTitle,
             resurfacingTitle
         ]
@@ -1230,8 +1230,8 @@ private struct CleanupStatusBanner: View {
             }
             .cleanupGlassButton()
             .foregroundStyle(.secondary)
-            .accessibilityLabel(Text(appLocalized("Dismiss cleanup status")))
-            .accessibilityHint(Text(appLocalized("Hide this status message")))
+            .accessibilityLabel(Text(CleanupL10n.Main.dismissCleanupStatus))
+            .accessibilityHint(Text(CleanupL10n.Main.hideThisStatusMessage))
         }
     }
 }
@@ -1239,9 +1239,9 @@ private struct CleanupStatusBanner: View {
 #Preview("Library Changed") {
     CleanupStatusBanner(
         icon: "photo.badge.arrow.down",
-        title: appLocalized("Your library changed"),
-        message: appLocalized("Run a new scan to refresh cleanup suggestions."),
-        actionTitle: appLocalized("Rescan"),
+        title: CleanupL10n.Main.yourLibraryChanged,
+        message: CleanupL10n.Main.runNewScanRefreshCleanup,
+        actionTitle: CleanupL10n.Main.rescan,
         action: {}
     )
     .padding()
@@ -1250,9 +1250,9 @@ private struct CleanupStatusBanner: View {
 #Preview("Refresh Failure") {
     CleanupStatusBanner(
         icon: "exclamationmark.triangle.fill",
-        title: appLocalized("Refresh Required"),
-        message: appLocalized("The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."),
-        actionTitle: appLocalized("Rescan"),
+        title: CleanupL10n.Main.refreshRequired,
+        message: CleanupL10n.Main.photosWereDeletedButLibrary,
+        actionTitle: CleanupL10n.Main.rescan,
         action: {},
         dismiss: {}
     )
