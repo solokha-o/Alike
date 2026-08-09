@@ -127,15 +127,26 @@ PRIVACY IS THE WHOLE POINT
 - No photo, thumbnail or feature print is ever uploaded.
 - No account, no sign-in, no Alike server.
 - No analytics, no tracking, no advertising identifiers.
+- No ads anywhere in the app.
+- Scanning and cleanup need no connection at all — Alike works in Airplane Mode.
 - Nothing is deleted without your explicit confirmation.
 
-FEATURES
+BUILT FOR REAL LIBRARIES
 - Three sensitivity levels, from near-identical shots to a wider net.
 - Best Shot detection, so every group has a sensible default to keep.
 - Review badges: New, In Review, Reviewed, and Needs Review after a rescan.
-- Progress, Selected and Estimated Savings, plus cleanup history by month.
+- Add or delete photos and Alike notices, then resurfaces only the groups that changed — no full rescan to stay current.
+- Progress, Selected and Estimated Savings while you work.
+- Cleanup history grouped by month, so you can see what you have already reclaimed.
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
+- A searchable guide inside the app, one tap from the Scanner.
+- Optional cleanup reminders, delivered as local notifications on your own schedule.
 - Full English and Ukrainian, and complete Dark Mode support.
+
+YOU STAY IN CONTROL
+- Photos you clear go to Recently Deleted, recoverable for about 30 days.
+- Settings, then Data & Privacy, then Delete Alike Data erases every scan result, cleanup record and preference the app has stored — and never touches your photo library.
+- Grant Full Access or Limited Access; Alike works with whatever you choose to share.
 
 ALIKE FREE
 - 3 scans per month
@@ -166,15 +177,26 @@ Alike знаходить майже однакові знімки у вашій 
 - Жодне фото, ескіз чи відбиток ознак не завантажується в інтернет.
 - Без облікового запису, без входу, без сервера Alike.
 - Без аналітики, відстеження та рекламних ідентифікаторів.
+- Без реклами в застосунку.
+- Сканування та прибирання не потребують інтернету — Alike працює в режимі польоту.
 - Нічого не видаляється без вашого явного підтвердження.
 
-МОЖЛИВОСТІ
+СТВОРЕНО ДЛЯ СПРАВЖНІХ МЕДІАТЕК
 - Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку.
 - Вибір найкращого знімка, тож у кожній групі є розумний варіант залишити.
 - Позначки: «Нове», «У перегляді», «Переглянуто», «Потребує перегляду».
-- Прогрес, «Обрано» й «Орієнтовна економія», а також історія за місяцями.
+- Додали чи видалили фото — Alike це помічає й повертає до перегляду лише ті групи, що змінилися, без повного пересканування.
+- Прогрес, «Обрано» й «Орієнтовна економія» просто під час роботи.
+- Історія прибирання за місяцями — видно, скільки місця вже повернуто.
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
+- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
+- Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
 - Повна підтримка англійської та української й темна тема.
+
+ВИ КЕРУЄТЕ ВСІМ
+- Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
+- «Дані та приватність» → «Видалити дані Alike» стирає всі результати сканувань, записи прибирання та налаштування застосунку — і не торкається вашої медіатеки.
+- Надайте повний або обмежений доступ: Alike працює з тим, чим ви вирішили поділитися.
 
 ALIKE FREE
 - 3 сканування на місяць
@@ -196,16 +218,20 @@ METADATA = {
     "en-US": {
         "subtitle": "Find and clear similar photos",
         "description": EN_US_DESCRIPTION,
-        "keywords": "duplicate,similar,photo cleaner,cleanup,camera roll,storage,space,declutter,gallery",
-        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. Everything runs on your device.",
-        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted.\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.",
+        # App Store Connect indexes the app name and subtitle on top of this
+        # field, so "similar", "photo" and "cleaner" are deliberately absent —
+        # repeating them here would spend characters on terms already covered.
+        "keywords": "duplicate,cleanup,camera roll,storage,space,declutter,gallery,screenshot,blurry,album,delete",
+        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. No account, no uploads — everything runs on your iPhone.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted, where iOS keeps your photos for about 30 days.\n\nIn this first version:\n- Three sensitivity levels, from near-identical shots to a wider net\n- Best Shot detection, so every group opens with a sensible keeper selected\n- Keep Best Only, Select All Except Best, or pick by hand\n- Review badges that track what is new, in review, reviewed, and what needs another look after your library changes\n- Progress, Selected and Estimated Savings while you work, plus cleanup history by month\n- A searchable guide inside the app, one tap from the Scanner\n- Optional cleanup reminders as local notifications\n- English and Ukrainian, with full Dark Mode support\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.\n\nThank you for trying Alike. Feedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
         "description": UK_DESCRIPTION,
-        "keywords": "фото,схожі,дублікати,прибирання,памʼять,медіатека",
-        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Усе працює на вашому пристрої.",
-        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а видалені фото завжди потрапляють до «Нещодавно видалених».\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування.",
+        # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
+        "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,видалити",
+        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок у кожній групі й допомагає прибрати решту. Без облікового запису й вивантажень — усе працює на вашому iPhone.",
+        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а прибрані фото завжди потрапляють до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.\n\nУ цій першій версії:\n- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку\n- Вибір найкращого знімка: група відкривається з уже обраним варіантом залишити\n- «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну\n- Позначки перегляду: що нове, що в роботі, що переглянуто і що варто передивитися після змін у медіатеці\n- Прогрес, «Обрано» й «Орієнтовна економія» під час роботи, а також історія прибирання за місяцями\n- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера»\n- Необовʼязкові нагадування про прибирання як локальні сповіщення\n- Англійська та українська, повна підтримка темної теми\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування.\n\nДякуємо, що спробували Alike. Відгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
 }
 
