@@ -20,14 +20,16 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What's New in v1.1.1
+## 🆕 What's New in v1.0.0
 
-- Added Guided Cleanup Review flow in cluster details with Best Shot and selection-first UX.
-- Added quick bulk actions: Keep Best Only, Select All Except Best, and Clear Selection.
-- Added persistent cluster review states so progress is restored after relaunch.
-- Added cleanup session progress summary with selected count and estimated storage savings.
-- Added scanner badges and "Needs review" resurfacing flow after library changes and rescans.
-- Improved scanner-to-details navigation reliability during cleanup entry.
+First release of Alike.
+
+- Guided Cleanup Review in cluster details, with Best Shot picked for you and a selection-first flow.
+- Quick bulk actions: Keep Best Only, Select All Except Best, and Clear Selection.
+- Persistent cluster review states, so progress is restored after relaunch.
+- Cleanup session progress summary with selected count and estimated storage savings.
+- Scanner badges and the "Needs review" resurfacing flow after library changes and rescans.
+- Alike Pro: unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.
 
 ## 🧠 Similarity algorithm
 
@@ -48,10 +50,13 @@ Alike/
 ├── Storage/                 # CoreData persistence
 ├── PhotoAnalysis/           # Vision framework + clustering
 ├── DesignSystem/            # Theme, Typography, Components
+├── NavigationKit/           # Shared navigation primitives
 ├── Launch/                  # Splash screen
 ├── Welcome/                 # Onboarding & permissions
 ├── Scanner/                 # Scan lifecycle, allowance, and scan admission
 ├── Cleanup/                 # Review queue, smart cleanup, deletion, and history
+├── Purchases/               # StoreKit subscriptions, entitlements, paywalls
+├── UserGuide/               # In-app guide catalog, hub and topics
 ├── Settings/                # Configuration
 └── Details/                 # Cluster details
 ```

@@ -48,11 +48,11 @@ tools/meta
 If you need to override version and build explicitly:
 
 ```sh
-tools/release-check 1.0.0 6
+tools/release-check 1.0.0 4
 ```
 
 ```sh
-tools/upload-build 1.0.0 6
+tools/upload-build 1.0.0 4
 ```
 
 ## Mental Model
