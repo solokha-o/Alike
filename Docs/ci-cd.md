@@ -88,8 +88,14 @@ For metadata validation and uploads:
 - `.env` or your shell provides real public `https` values for:
   - `ALIKE_PRIVACY_URL`
   - `ALIKE_SUPPORT_URL`
+  - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
+  - `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` —
+    per-locale overrides. Unset, the uk listing reuses the three URLs above,
+    which point at the English pages even though the site publishes Ukrainian
+    ones under `/uk/`. The suffix is the App Store locale, uppercased, with `-`
+    replaced by `_`, so a third localization follows the same pattern.
 
 For App Store Connect uploads:
 

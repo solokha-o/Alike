@@ -47,6 +47,14 @@ TERMS_URL_PLACEHOLDER = "__ALIKE_TERMS_URL__"
 TERMS_URL_DEFAULT = TERMS_URL_PLACEHOLDER
 PRIVACY_LABEL = "Privacy Policy"
 TERMS_LABEL = "Terms of Use"
+# The description footer is the only place the legal links appear as prose, so
+# the labels follow the locale of the copy around them. en-US keeps the values
+# above; validation still looks for the en-US TERMS_LABEL, so this table has to
+# stay in step with it.
+LOCALE_LEGAL_LABELS = {
+    "en-US": (PRIVACY_LABEL, TERMS_LABEL),
+    "uk": ("Політика конфіденційності", "Умови використання"),
+}
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
 # App Store Connect counts keywords in characters, commas included — not bytes.
@@ -329,9 +337,26 @@ def reset_output_dirs() -> None:
         path.mkdir(parents=True, exist_ok=True)
 
 
-def description_with_links(description: str, privacy_url: str, terms_url: str) -> str:
-    footer = f"{PRIVACY_LABEL}: {privacy_url}\n{TERMS_LABEL}: {terms_url}"
+def description_with_links(
+    description: str, privacy_url: str, terms_url: str, locale: str = "en-US"
+) -> str:
+    privacy_label, terms_label = LOCALE_LEGAL_LABELS.get(locale, (PRIVACY_LABEL, TERMS_LABEL))
+    footer = f"{privacy_label}: {privacy_url}\n{terms_label}: {terms_url}"
     return f"{description.rstrip()}\n\n{footer}"
+
+
+def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
+    """Return the locale's own legal/support URL, falling back to the shared one.
+
+    The site publishes Ukrainian pages at /uk/, so the uk listing should not send
+    Ukrainian readers to English text. Set ALIKE_PRIVACY_URL_UK,
+    ALIKE_TERMS_URL_UK or ALIKE_SUPPORT_URL_UK to point a locale somewhere else;
+    with none of them set, every locale keeps the single shared URL it used
+    before, so an unconfigured .env behaves exactly as it did.
+    """
+    suffix = apple_locale.upper().replace("-", "_")
+    override = os.environ.get(f"ALIKE_{kind}_URL_{suffix}", "").strip()
+    return override if override else base_url
 
 
 def generate_metadata(privacy_url: str, support_url: str, terms_url: str, marketing_url: str) -> None:
@@ -342,17 +367,25 @@ def generate_metadata(privacy_url: str, support_url: str, terms_url: str, market
     for mapping in UPLOAD_SAFE_LOCALES:
         values = METADATA[mapping.apple]
         locale_root = METADATA_ROOT / mapping.apple
+        locale_privacy_url = localized_url(privacy_url, "PRIVACY", mapping.apple)
+        locale_terms_url = localized_url(terms_url, "TERMS", mapping.apple)
+        locale_support_url = localized_url(support_url, "SUPPORT", mapping.apple)
         write_text(locale_root / "name.txt", APP_NAME)
         write_text(locale_root / "subtitle.txt", values["subtitle"])
         write_text(
             locale_root / "description.txt",
-            description_with_links(values["description"], privacy_url, terms_url),
+            description_with_links(
+                values["description"],
+                locale_privacy_url,
+                locale_terms_url,
+                locale=mapping.apple,
+            ),
         )
         write_text(locale_root / "keywords.txt", values["keywords"])
         write_text(locale_root / "promotional_text.txt", values["promotional_text"])
         write_text(locale_root / "release_notes.txt", values["release_notes"])
-        write_text(locale_root / "privacy_url.txt", privacy_url)
-        write_text(locale_root / "support_url.txt", support_url)
+        write_text(locale_root / "privacy_url.txt", locale_privacy_url)
+        write_text(locale_root / "support_url.txt", locale_support_url)
         if marketing_url:
             write_text(locale_root / "marketing_url.txt", marketing_url)
 
@@ -599,6 +632,7 @@ tools/upload-screenshots
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override: `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` (the suffix is the App Store locale, uppercased, `-` to `_`). The site publishes Ukrainian pages under `/uk/`, so set these three or the uk listing sends Ukrainian readers to English legal text. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -630,8 +664,11 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
         description_path = METADATA_ROOT / mapping.apple / "description.txt"
         if description_path.exists():
             description = description_path.read_text(encoding="utf-8")
-            if f"{TERMS_LABEL}:" not in description:
-                errors.append(f"{description_path} is missing a {TERMS_LABEL} link")
+            _, locale_terms_label = LOCALE_LEGAL_LABELS.get(
+                mapping.apple, (PRIVACY_LABEL, TERMS_LABEL)
+            )
+            if f"{locale_terms_label}:" not in description:
+                errors.append(f"{description_path} is missing a {locale_terms_label} link")
             if TERMS_URL_PLACEHOLDER in description and not allow_placeholder_urls:
                 errors.append(f"{description_path} still contains placeholder Terms of Use URL")
     return errors

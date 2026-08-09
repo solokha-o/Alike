@@ -18,6 +18,16 @@ Command reference: `Docs/ci-cd.md`. Branch and tag rules:
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
+- [ ] `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK` and `ALIKE_SUPPORT_URL_UK`
+      set to the `/uk/` pages. These are optional overrides and nothing fails
+      without them — the uk listing simply reuses the English URLs, which is a
+      silent localization gap rather than an error:
+
+```sh
+ALIKE_PRIVACY_URL_UK="https://alikeapp.github.io/uk/privacy/"
+ALIKE_TERMS_URL_UK="https://alikeapp.github.io/uk/terms/"
+ALIKE_SUPPORT_URL_UK="https://alikeapp.github.io/uk/support/"
+```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
       `APP_STORE_CONNECT_API_KEY_PATH` (or `..._API_KEY_CONTENT`). The same
@@ -179,6 +189,12 @@ Manual, in App Store Connect:
 - [ ] App Review information filled — contact, notes, no demo account (there is
       none; `demo_account_required` is false and the demo fields are
       intentionally empty).
+- [ ] **App Privacy questionnaire answered.** Nothing in the pipeline covers
+      this — `deliver` uploads the privacy *URL* and nothing else, so the
+      nutrition label is filled by hand and a version cannot be submitted until
+      it is. Alike collects nothing: answer **"Data Not Collected"** for every
+      category. Any other answer contradicts the published privacy policy and
+      the app's own "no network requests" claim.
 - [ ] Age rating and category answered. Export compliance should not be asked
       at all — `INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO` in the Xcode
       project answers it per build, matching `uses_non_exempt_encryption: false`
