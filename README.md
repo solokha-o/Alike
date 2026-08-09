@@ -4,7 +4,15 @@
 
 Alike is an iOS app that finds and groups visually similar photos using Computer Vision (Apple Vision framework). Every scan runs on your device — no account, no uploads.
 
-> **🚀 1.0.0 (build 4) — first release, shipping now.** This is the version going to the App Store; there is no earlier public version. The product page goes live once review approves it.
+<!--
+  App Store button. When 1.0.0 is approved, delete the placeholder line below and
+  uncomment this one — the product page is apps.apple.com/app/id6798399598, the same
+  ID `AppStoreLinks.appID` uses.
+
+[![Download on the App Store](https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us)](https://apps.apple.com/app/id6798399598)
+-->
+
+**📲 Coming soon to the App Store**
 
 ## ✨ Features
 
@@ -220,7 +228,7 @@ If GitHub Discussions are enabled later, product ideas and broader proposals can
 
 - Email: oleksandr.solokha@gmail.com
 - Support: [alikeapp.github.io/support](https://alikeapp.github.io/support/)
-- App Store: link goes live when 1.0.0 clears review
+- App Store: coming soon — the button at the top of this file goes live with the release
 
 ## 📄 License
 
