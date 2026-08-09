@@ -1,17 +1,19 @@
 import XCTest
 import Photos
 import Vision
+import os
+import Core
 @testable import PhotoAnalysis
 
 @MainActor
 final class PhotoAnalysisServiceImplTests: XCTestCase {
     func testAnalyzePhotoLibraryNoPhotosThrows() async {
-        var didCallAssetsProvider = false
+        let didCallAssetsProvider = ThreadSafeFlag()
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
             clusteringService: MockClusteringService(),
             assetsProvider: {
-                didCallAssetsProvider = true
+                didCallAssetsProvider.set()
                 return []
             }
         )
@@ -30,7 +32,141 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(didCallAssetsProvider, "Assets provider should be invoked")
+        XCTAssertTrue(didCallAssetsProvider.value, "Assets provider should be invoked")
+    }
+
+    func testSummarizeCleanupCategoriesLoadsCachedSnapshots() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        await repository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["shot-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            ),
+            .blurredPhotos: CleanupCategorySnapshot(
+                kind: .blurredPhotos,
+                localIdentifiers: ["blur-1"],
+                assetCount: 1,
+                estimatedSavingsBytes: 200
+            )
+        ])
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        let summaries = try await service.summarizeCleanupCategories()
+
+        XCTAssertEqual(summaries.map(\.kind), [.screenshots, .blurredPhotos])
+    }
+
+    func testRefreshCleanupCategoriesReplacesCachedSnapshotsOnce() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        await repository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["stale"],
+                assetCount: 1,
+                estimatedSavingsBytes: 100
+            )
+        ])
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        let summaries = try await service.refreshCleanupCategories()
+
+        let storedSnapshots = await repository.storedSnapshots
+        let replaceCallCount = await repository.replaceAllSnapshotsCallCount
+        let didCallDelete = await repository.didCallDeleteAllSnapshots
+        let didCallSave = await repository.didCallSaveSnapshot
+        XCTAssertTrue(summaries.isEmpty)
+        XCTAssertTrue(storedSnapshots.isEmpty)
+        XCTAssertEqual(replaceCallCount, 1)
+        XCTAssertFalse(didCallDelete)
+        XCTAssertFalse(didCallSave)
+    }
+
+    func testRefreshCleanupCategoriesPreservesCachedSnapshotsWhenReplacementFails() async throws {
+        let repository = MockCleanupCategorySnapshotRepository()
+        let existingSnapshot = CleanupCategorySnapshot(
+            kind: .screenshots,
+            localIdentifiers: ["existing"],
+            assetCount: 1,
+            estimatedSavingsBytes: 100
+        )
+        await repository.setStoredSnapshots([.screenshots: existingSnapshot])
+        await repository.setReplaceAllSnapshotsError(TestError.replacementFailed)
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            cleanupCategoryRepository: repository,
+            assetsProvider: { [] }
+        )
+
+        do {
+            _ = try await service.refreshCleanupCategories()
+            XCTFail("Expected replacement failure")
+        } catch {
+            XCTAssertEqual(error as? TestError, .replacementFailed)
+        }
+
+        let storedSnapshots = await repository.storedSnapshots
+        let replaceCallCount = await repository.replaceAllSnapshotsCallCount
+        XCTAssertEqual(storedSnapshots, [.screenshots: existingSnapshot])
+        XCTAssertEqual(replaceCallCount, 1)
+    }
+
+    func testRefreshCleanupCategoriesReportsMonotonicProgressThroughCompletion() async throws {
+        let progress = ProgressRecorder()
+        let service = PhotoAnalysisServiceImpl(
+            visionService: MockVisionService(),
+            clusteringService: MockClusteringService(),
+            assetsProvider: { [] }
+        )
+
+        _ = try await service.refreshCleanupCategories { value in
+            progress.append(value)
+        }
+
+        let values = progress.values
+        XCTAssertEqual(values.first, 0)
+        XCTAssertEqual(values.last, 1)
+        XCTAssertTrue(zip(values, values.dropFirst()).allSatisfy { $0 <= $1 })
+    }
+}
+
+private enum TestError: Error, Equatable {
+    case replacementFailed
+}
+
+private final class ThreadSafeFlag: @unchecked Sendable {
+    private let storage = OSAllocatedUnfairLock(initialState: false)
+
+    func set() {
+        storage.withLock { $0 = true }
+    }
+
+    var value: Bool {
+        storage.withLock { $0 }
+    }
+}
+
+private final class ProgressRecorder: @unchecked Sendable {
+    private let storage = OSAllocatedUnfairLock(initialState: [Double]())
+
+    func append(_ value: Double) {
+        storage.withLock { $0.append(value) }
+    }
+
+    var values: [Double] {
+        storage.withLock { $0 }
     }
 }
 

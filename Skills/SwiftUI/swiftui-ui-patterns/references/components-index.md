@@ -5,9 +5,9 @@ Use this file to find component-specific guidance. Each entry lists when to use 
 ## Available components
 
 - TabView: `references/tabview.md` — Use when building a tab-based app or any tabbed feature set.
-- NavigationStack: `references/navigationstack.md` — Use when you need push navigation and programmatic routing, especially per-tab history.
+- NavigationKit / RoutedNavigationStack: `references/navigationstack.md` — Use when you need project-standard push navigation, programmatic routing, modal navigation chrome, or per-tab history.
 - Sheets and modal routing: `references/sheets.md` — Use when you want centralized, enum-driven sheet presentation.
-- App wiring and dependency graph: `references/app-wiring.md` — Use to wire TabView + NavigationStack + sheets at the root and install global dependencies.
+- App wiring and dependency graph: `references/app-wiring.md` — Use to wire TabView + `RoutedNavigationStack` + sheets at the root and install global dependencies.
 - Form and Settings: `references/form.md` — Use for settings, grouped inputs, and structured data entry.
 - macOS Settings: `references/macos-settings.md` — Use when building a macOS Settings window with SwiftUI's Settings scene.
 - Split views and columns: `references/split-views.md` — Use for iPad/macOS multi-column layouts or custom secondary columns.
@@ -22,6 +22,7 @@ Use this file to find component-specific guidance. Each entry lists when to use 
 - Focus handling: `references/focus.md` — Use for chaining fields and keyboard focus management.
 - Searchable: `references/searchable.md` — Use for native search UI with scopes and async results.
 - Async images and media: `references/media.md` — Use for remote media, previews, and media viewers.
+- Animated static hero: `references/animated-static-hero.md` — Use when a complete PNG hero needs lightweight, lifecycle-gated Lottie effects for scanning, review, cleanup, or success states.
 - Haptics: `references/haptics.md` — Use for tactile feedback tied to key actions.
 - Matched transitions: `references/matched-transitions.md` — Use for smooth source-to-destination animations.
 - Deep links and URL routing: `references/deeplinks.md` — Use for in-app navigation from URLs.

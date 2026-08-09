@@ -65,16 +65,29 @@ public actor PersistenceController: Sendable {
     
     /// Delete all data
     public func deleteAllData() async throws {
-        try await performBackgroundTask { context in
+        let deletedObjectIDs = try await performBackgroundTask { context in
             let entities = ["ClusterEntity", "PhotoEntity", "ScanMetadataEntity"]
+            var deletedObjectIDs: [NSManagedObjectID] = []
             
             for entityName in entities {
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
                 let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                try context.execute(deleteRequest)
+                deleteRequest.resultType = .resultTypeObjectIDs
+                let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+                deletedObjectIDs.append(contentsOf: result?.result as? [NSManagedObjectID] ?? [])
             }
-            
-            try context.save()
+
+            return deletedObjectIDs
+        }
+
+        await viewContext.perform { [viewContext] in
+            if !deletedObjectIDs.isEmpty {
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: [NSDeletedObjectsKey: deletedObjectIDs],
+                    into: [viewContext]
+                )
+            }
+            viewContext.reset()
         }
     }
 }

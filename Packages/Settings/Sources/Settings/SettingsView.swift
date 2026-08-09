@@ -2,65 +2,348 @@ import SwiftUI
 import StoreKit
 import Core
 import DesignSystem
+import NavigationKit
+import Purchases
+import PurchasesUI
+import UserGuide
 #if canImport(UIKit)
 import UIKit
 #endif
 
+enum SettingsRoute: Hashable {
+    case userGuide
+    case userGuideTopic(GuideTopicID)
+    case deleteAllData
+}
+
+private enum RestorePurchasesFeedback: String, Identifiable {
+    case restored
+    case noActiveSubscription
+    case failed
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .restored:
+            appLocalized("Alike Pro is active")
+        case .noActiveSubscription:
+            appLocalized("No active Alike Pro subscription was found.")
+        case .failed:
+            appLocalized("Couldn't Restore Purchases")
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .restored:
+            appLocalized("Your Alike Pro subscription was restored.")
+        case .noActiveSubscription:
+            appLocalized("You can continue using Alike Free.")
+        case .failed:
+            appLocalized("Please check your connection and try restoring again.")
+        }
+    }
+}
+
 /// Settings screen
 public struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
-    @Binding var gridColumns: Int
+    @Environment(\.subscriptionLegalLinks) private var legalLinks
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
+    @State private var deleteAllDataModel: DeleteAllDataModel
+    @State private var presentedPremiumFeature: PremiumFeature?
+    @State private var isRestoringPurchases = false
+    @State private var restorePurchasesFeedback: RestorePurchasesFeedback?
+    private let premiumAccess: any PremiumAccessControlling
+    private let subscriptionStore: SubscriptionStore?
+#if DEBUG
+    @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
+    private var debugUnlockUnlimitedRescans = false
+    @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockScreenshotCleanup = false
+    @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBlurredPhotoCleanup = false
+    @AppStorage(PremiumFeature.advancedFilters.debugOverrideDefaultsKey)
+    private var debugUnlockAdvancedFilters = false
+    @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBatchCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
+    private var debugUnlockCleanupReminders = false
+#endif
     
     public init(
-        gridColumns: Binding<Int>,
         sensitivity: Binding<SensitivityLevel>,
-        needsRescan: Binding<Bool>
+        needsRescan: Binding<Bool>,
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
+        onDeleteAllData: @escaping @MainActor @Sendable () async throws -> Void = {},
+        viewModel: SettingsViewModel = SettingsViewModel()
     ) {
-        self._gridColumns = gridColumns
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
-        self._viewModel = State(initialValue: SettingsViewModel())
+        self.premiumAccess = premiumAccess
+        self.subscriptionStore = subscriptionStore
+        self._viewModel = State(initialValue: viewModel)
+        self._deleteAllDataModel = State(
+            initialValue: DeleteAllDataModel(operation: onDeleteAllData)
+        )
     }
     
     public var body: some View {
-        NavigationStack {
-            Form {
-                appearanceSection
-                languageSection
-                analysisSection
-                supportSection
-                aboutSection
+        RoutedNavigationStack { router in
+            formContent(router: router)
+        } destination: { route, _ in
+            destination(for: route)
+        }
+        .task(id: hasCleanupReminderAccess) {
+            await viewModel.loadCleanupReminderState(
+                isPremiumUnlocked: hasCleanupReminderAccess
+            )
+        }
+        .sheet(item: $presentedPremiumFeature) { feature in
+            premiumFeatureSheet(for: feature)
+        }
+        .alert(
+            appLocalized("Couldn't Update Reminder"),
+            isPresented: isCleanupReminderErrorPresented
+        ) {
+            Button(appLocalized("OK"), role: .cancel) {
+                viewModel.dismissCleanupReminderError()
             }
-            .navigationTitle(Text(appLocalized("Settings")))
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.large)
-#endif
+        } message: {
+            Text(viewModel.cleanupReminderErrorMessage ?? "")
+        }
+        .alert(item: $restorePurchasesFeedback) { feedback in
+            Alert(
+                title: Text(feedback.title),
+                message: Text(feedback.message),
+                dismissButton: .default(Text(appLocalized("OK")))
+            )
         }
     }
-    
-    // MARK: - Appearance Section
-    private var appearanceSection: some View {
+
+    private func formContent(router: StackRouter<SettingsRoute>) -> some View {
+        Form {
+            subscriptionSection
+            languageSection
+            analysisSection
+            cleanupReminderSection
+#if DEBUG
+            debugSection
+#endif
+            supportSection(router: router)
+            dataPrivacySection(router: router)
+            legalSection
+            aboutSection
+        }
+        .navigationTitle(Text(appLocalized("Settings")))
+#if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+#endif
+    }
+
+    @ViewBuilder
+    private func destination(for route: SettingsRoute) -> some View {
+        switch route {
+        case .userGuide:
+            UserGuideHubView { SettingsRoute.userGuideTopic($0) }
+        case .userGuideTopic(let topicID):
+            UserGuideTopicView(topicID: topicID)
+        case .deleteAllData:
+            DeleteAllDataView(model: deleteAllDataModel)
+        }
+    }
+
+    @ViewBuilder
+    private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
+        SubscriptionPaywallView(
+            context: .feature(feature),
+            store: subscriptionStore
+        )
+    }
+
+    private var subscriptionSection: some View {
         Section {
-            Stepper(value: $gridColumns, in: viewModel.gridConfig.minColumns...viewModel.gridConfig.maxColumns) {
-                HStack {
-                    Label {
-                        Text(appLocalized("Grid Columns"))
-                    } icon: {
-                        Image(systemName: "square.grid.3x3")
+            PremiumStatusCard(
+                status: subscriptionStatus,
+                isRestoring: isRestoringPurchases,
+                onViewPlans: {
+                    presentedPremiumFeature = .unlimitedScans
+                },
+                onRestore: restorePurchases
+            )
+        } header: {
+            Text(appLocalized("Subscription"))
+        }
+    }
+
+    private var subscriptionStatus: PremiumStatusCard.Status {
+        guard let subscriptionStore else {
+            return premiumAccess.entitlementState.isPremium
+                ? .active(planName: nil, expirationDate: premiumAccess.entitlementState.expirationDate)
+                : .free
+        }
+
+        let entitlement = subscriptionStore.entitlementState
+        if entitlement.source == .unknown {
+            switch subscriptionStore.productLoadState {
+            case .idle, .loading:
+                return .loading
+            case .loaded, .failed, .unconfigured:
+                return .unavailable
+            }
+        }
+        if entitlement.isPremium {
+            let planName = entitlement.productID.flatMap { productID in
+                subscriptionStore.products.values.first(where: { $0.id == productID })?.displayName
+            }
+            return .active(planName: planName, expirationDate: entitlement.expirationDate)
+        }
+        if case .failed = subscriptionStore.productLoadState {
+            return .unavailable
+        }
+        return .free
+    }
+
+    private func restorePurchases() {
+        guard let subscriptionStore else { return }
+        isRestoringPurchases = true
+        Task {
+            defer { isRestoringPurchases = false }
+            do {
+                try await subscriptionStore.restorePurchases()
+                restorePurchasesFeedback = subscriptionStore.entitlementState.isPremium
+                    ? .restored
+                    : .noActiveSubscription
+            } catch {
+                AppLog.ui.error(
+                    "\(AppLog.tag(.error, "Failed to restore purchases: \(error.localizedDescription)"))"
+                )
+                restorePurchasesFeedback = .failed
+            }
+        }
+    }
+
+    private var cleanupReminderSection: some View {
+        Section {
+            Toggle(
+                isOn: Binding(
+                    get: { viewModel.cleanupReminderState.isEnabled },
+                    set: { isEnabled in
+                        viewModel.setCleanupReminderEnabled(
+                            isEnabled,
+                            isPremiumUnlocked: hasCleanupReminderAccess
+                        )
                     }
-                    Spacer()
-                    Text("\(gridColumns)")
-                        .foregroundColor(.secondary)
+                )
+            ) {
+                Label {
+                    Text(appLocalized("Weekly cleanup reminder"))
+                } icon: {
+                    Image(systemName: "bell.badge")
                 }
             }
-            .accessibilityLabel(Text(appLocalized("Grid Columns")))
-            .accessibilityValue(Text("\(gridColumns)"))
-            .accessibilityHint(Text(appLocalized("Adjust how many columns are used in photo grids")))
+            .disabled(viewModel.isUpdatingCleanupReminder)
+            .accessibilityHint(Text(appLocalized("Enable a weekly reminder to come back and continue cleanup")))
+
+            if viewModel.cleanupReminderState.authorizationStatus == .denied {
+                Text(appLocalized("Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."))
+                    .foregroundColor(.secondary)
+
+#if canImport(UIKit)
+                Button(appLocalized("Open Settings")) {
+                    openAppSettings()
+                }
+#endif
+            }
+
+            if viewModel.cleanupReminderState.isScheduleCustomizationLocked {
+                HStack {
+                    Label {
+                        Text(appLocalized("Reminder schedule"))
+                    } icon: {
+                        Image(systemName: "calendar.badge.clock")
+                    }
+                    Spacer()
+                    Text(scheduleDescription(viewModel.cleanupReminderState.schedule))
+                        .foregroundStyle(.secondary)
+                }
+
+                Button {
+                    presentedPremiumFeature = .cleanupReminderCustomization
+                } label: {
+                    HStack(spacing: Spacing.small) {
+                        Image(systemName: "lock.badge.clock")
+                            .foregroundStyle(Color.accent)
+                        Text(appLocalized("Customize day & time"))
+                        Spacer()
+                        Image(systemName: "lock.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint(Text(appLocalized("Open premium details for custom cleanup reminder scheduling")))
+            } else {
+                HStack {
+                    Label {
+                        Text(appLocalized("Reminder schedule"))
+                    } icon: {
+                        Image(systemName: "calendar.badge.clock")
+                    }
+                    Spacer()
+                    Text(scheduleDescription(viewModel.cleanupReminderState.schedule))
+                        .foregroundStyle(.secondary)
+                }
+
+                Picker(
+                    appLocalized("Reminder day"),
+                    selection: Binding(
+                        get: { viewModel.cleanupReminderState.schedule.weekday },
+                        set: { weekday in
+                            viewModel.setCleanupReminderSchedule(
+                                CleanupReminderSchedule(
+                                    weekday: weekday,
+                                    hour: viewModel.cleanupReminderState.schedule.hour,
+                                    minute: viewModel.cleanupReminderState.schedule.minute
+                                ),
+                                isPremiumUnlocked: hasCleanupReminderAccess
+                            )
+                        }
+                    )
+                ) {
+                    ForEach(weekdayOptions, id: \.value) { option in
+                        Text(option.title).tag(option.value)
+                    }
+                }
+                .disabled(viewModel.isUpdatingCleanupReminder)
+
+                DatePicker(
+                    appLocalized("Reminder time"),
+                    selection: Binding(
+                        get: { reminderTimeDate(for: viewModel.cleanupReminderState.schedule) },
+                        set: { date in
+                            let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+                            viewModel.setCleanupReminderSchedule(
+                                CleanupReminderSchedule(
+                                    weekday: viewModel.cleanupReminderState.schedule.weekday,
+                                    hour: components.hour ?? viewModel.cleanupReminderState.schedule.hour,
+                                    minute: components.minute ?? viewModel.cleanupReminderState.schedule.minute
+                                ),
+                                isPremiumUnlocked: hasCleanupReminderAccess
+                            )
+                        }
+                    ),
+                    displayedComponents: [.hourAndMinute]
+                )
+                .disabled(viewModel.isUpdatingCleanupReminder)
+            }
         } header: {
-            Text(appLocalized("Appearance"))
+            Text(appLocalized("Cleanup Reminder"))
+        } footer: {
+            Text(cleanupReminderFooterText)
         }
     }
     
@@ -84,12 +367,55 @@ public struct SettingsView: View {
             Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images"))
         }
     }
+
+#if DEBUG
+    private var debugSection: some View {
+        Section {
+            Toggle(
+                appLocalized("Unlock Unlimited Scans Premium Feature"),
+                isOn: $debugUnlockUnlimitedRescans
+            )
+
+            Toggle(
+                appLocalized("Unlock Screenshot Cleanup Premium Feature"),
+                isOn: $debugUnlockScreenshotCleanup
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium screenshot cleanup access in debug builds")))
+
+            Toggle(
+                appLocalized("Unlock Blurred Photo Cleanup Premium Feature"),
+                isOn: $debugUnlockBlurredPhotoCleanup
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
+
+            Toggle(
+                appLocalized("Unlock Advanced Filters Premium Feature"),
+                isOn: $debugUnlockAdvancedFilters
+            )
+
+            Toggle(
+                appLocalized("Unlock Batch Cleanup Premium Feature"),
+                isOn: $debugUnlockBatchCleanup
+            )
+
+            Toggle(
+                appLocalized("Unlock Custom Reminder Schedule Premium Feature"),
+                isOn: $debugUnlockCleanupReminders
+            )
+            .accessibilityHint(Text(appLocalized("Enable premium reminder schedule customization in debug builds")))
+        } header: {
+            Text(appLocalized("Debug"))
+        } footer: {
+            Text(appLocalized("This override is available only in debug builds and affects local premium gating."))
+        }
+    }
+#endif
     
     // MARK: - Support Section
-    private var supportSection: some View {
+    private func supportSection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
-            NavigationLink {
-                UserGuideView()
+            Button {
+                router.push(.userGuide)
             } label: {
                 Label {
                     Text(appLocalized("How to Use"))
@@ -99,7 +425,7 @@ public struct SettingsView: View {
             }
             .accessibilityHint(Text(appLocalized("Open usage instructions and cleanup workflow tips")))
             
-            ShareLink(item: URL(string: "https://apps.apple.com/app/idXXXXXXXX")!) {
+            ShareLink(item: AppStoreLinks.product) {
                 Label {
                     Text(appLocalized("Share App"))
                 } icon: {
@@ -120,7 +446,11 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Request the App Store rating prompt")))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
-            Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike Feedback")!) {
+            // The subject is percent-encoded in the literal rather than left to
+            // URL(string:), which only accepts the raw space because it defaults to
+            // encodingInvalidCharacters: true. Encoding it here keeps the force
+            // unwrap valid under strict RFC 3986 parsing too.
+            Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike%20Feedback")!) {
                 Label {
                     Text(appLocalized("Contact Developer"))
                 } icon: {
@@ -130,6 +460,58 @@ public struct SettingsView: View {
             .accessibilityHint(Text(appLocalized("Open email composer to contact the developer")))
         } header: {
             Text(appLocalized("Support"))
+        }
+    }
+
+    // MARK: - Data & Privacy Section
+    private func dataPrivacySection(router: StackRouter<SettingsRoute>) -> some View {
+        Section {
+            Button {
+                router.push(.deleteAllData)
+            } label: {
+                Label {
+                    Text(appLocalized("Delete Alike Data"))
+                } icon: {
+                    Image(systemName: "trash")
+                }
+                .foregroundStyle(.red)
+            }
+            .accessibilityHint(
+                Text(appLocalized("Review and permanently delete data stored by Alike on this device"))
+            )
+        } header: {
+            Text(appLocalized("Data & Privacy"))
+        } footer: {
+            Text(appLocalized("Your photo library is never deleted by this action."))
+        }
+    }
+
+    // MARK: - Legal Section
+    private var legalSection: some View {
+        Section {
+            if let privacyPolicy = legalLinks.privacyPolicy {
+                Link(destination: privacyPolicy) {
+                    Label {
+                        Text(appLocalized("Privacy Policy"))
+                    } icon: {
+                        Image(systemName: "hand.raised")
+                    }
+                }
+                .accessibilityHint(Text(appLocalized("Open the Alike privacy policy in your browser")))
+            }
+
+            if let termsOfUse = legalLinks.termsOfUse {
+                Link(destination: termsOfUse) {
+                    Label {
+                        Text(appLocalized("Terms of Use"))
+                    } icon: {
+                        Image(systemName: "doc.text")
+                    }
+                }
+                .accessibilityHint(Text(appLocalized("Open the Alike terms of use in your browser")))
+            }
+        } header: {
+            Text(appLocalized("Legal"))
         }
     }
     
@@ -165,6 +547,71 @@ public struct SettingsView: View {
 
     private func openLanguageSettings() {
         #if os(iOS)
+        openAppSettings()
+        #endif
+    }
+
+    private var hasCleanupReminderAccess: Bool {
+        premiumAccess.hasAccess(to: .cleanupReminderCustomization)
+    }
+
+    private var isCleanupReminderErrorPresented: Binding<Bool> {
+        Binding(
+            get: { viewModel.cleanupReminderErrorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    viewModel.dismissCleanupReminderError()
+                }
+            }
+        )
+    }
+
+    private var weekdayOptions: [(value: Int, title: String)] {
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
+        let firstWeekdayIndex = max(1, min(calendar.firstWeekday, weekdaySymbols.count)) - 1
+
+        return (0..<weekdaySymbols.count).map { offset in
+            let index = (firstWeekdayIndex + offset) % weekdaySymbols.count
+            return (value: index + 1, title: weekdaySymbols[index])
+        }
+    }
+
+    private var cleanupReminderFooterText: String {
+        if hasCleanupReminderAccess {
+            return appLocalized("Premium lets you choose a custom weekly reminder schedule.")
+        }
+
+        return appLocalized(
+            "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
+        )
+    }
+
+    private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        components.hour = schedule.hour
+        components.minute = schedule.minute
+        return Calendar.current.date(from: components) ?? Date()
+    }
+
+    private func scheduleDescription(_ schedule: CleanupReminderSchedule) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
+        let weekdayIndex = max(1, min(schedule.weekday, weekdaySymbols.count)) - 1
+        let weekday = weekdaySymbols.isEmpty ? "" : weekdaySymbols[weekdayIndex]
+        let timeDate = reminderTimeDate(for: schedule)
+
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+
+        return "\(weekday) at \(formatter.string(from: timeDate))"
+    }
+
+    #if canImport(UIKit)
+    private func openAppSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
@@ -172,111 +619,136 @@ public struct SettingsView: View {
         if UIApplication.shared.canOpenURL(settingsURL) {
             UIApplication.shared.open(settingsURL)
         }
-        #endif
     }
+    #endif
 }
 
-// MARK: - User Guide View
-struct UserGuideView: View {
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.large) {
-                guideStep(
-                    number: 1,
-                    icon: "photo.on.rectangle",
-                    title: appLocalized("Grant Access"),
-                    description: appLocalized("Allow Alike to access your photo library")
-                )
-                
-                guideStep(
-                    number: 2,
-                    icon: "sparkles",
-                    title: appLocalized("Start Scanning"),
-                    description: appLocalized("Tap 'Start Scanning' to analyze your photos using advanced computer vision")
-                )
-                
-                guideStep(
-                    number: 3,
-                    icon: "square.grid.3x3",
-                    title: appLocalized("View Results"),
-                    description: appLocalized("Browse similar-photo clusters and start with the ones that need your attention first")
-                )
-                
-                guideStep(
-                    number: 4,
-                    icon: "checklist",
-                    title: appLocalized("Review the Needs Review Section"),
-                    description: appLocalized("After a rescan, check the Needs review section to see new or changed clusters that should be reviewed again")
-                )
-                
-                guideStep(
-                    number: 5,
-                    icon: "photo",
-                    title: appLocalized("Open a Cluster and Pick the Best Shot"),
-                    description: appLocalized("Open any cluster to compare photos, keep the best shot, and mark the rest for cleanup")
-                )
-                
-                guideStep(
-                    number: 6,
-                    icon: "slider.horizontal.3",
-                    title: appLocalized("Adjust Settings"),
-                    description: appLocalized("Fine-tune sensitivity and switch between one- and two-column grid layouts for your preferred review style")
-                )
+private struct DeleteAllDataView: View {
+    let model: DeleteAllDataModel
 
-                guideStep(
-                    number: 7,
-                    icon: "arrow.clockwise",
-                    title: appLocalized("Rescan After Library Changes"),
-                    description: appLocalized("If your gallery changes, use the rescan prompt or refresh button to rebuild clusters and refresh your cleanup progress")
+    @State private var isConfirmationPresented = false
+
+    var body: some View {
+        Form {
+            Section {
+                dataRow(
+                    appLocalized("Scan results and analysis caches"),
+                    systemImage: "sparkles.rectangle.stack"
                 )
+                dataRow(
+                    appLocalized("Cleanup progress, sessions, and history"),
+                    systemImage: "clock.arrow.circlepath"
+                )
+                dataRow(
+                    appLocalized("Grid, sensitivity, and reminder preferences"),
+                    systemImage: "slider.horizontal.3"
+                )
+            } header: {
+                Text(appLocalized("What will be deleted"))
             }
-            .padding(Spacing.large)
+
+            Section {
+                dataRow(
+                    appLocalized("Your photos and Recently Deleted items"),
+                    systemImage: "photo.on.rectangle"
+                )
+                dataRow(
+                    appLocalized("Photo access and Alike Pro subscription"),
+                    systemImage: "checkmark.shield"
+                )
+                dataRow(
+                    appLocalized("Monthly free-scan allowance"),
+                    systemImage: "calendar"
+                )
+            } header: {
+                Text(appLocalized("What will stay"))
+            }
+
+            Section {
+                Button(role: .destructive) {
+                    isConfirmationPresented = true
+                } label: {
+                    HStack {
+                        if model.isDeleting {
+                            ProgressView()
+                                .controlSize(.small)
+                        }
+                        Text(
+                            appLocalized(
+                                model.isDeleting
+                                    ? "Deleting..."
+                                    : "Delete Alike Data"
+                            )
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                .disabled(model.isDeleting)
+                .accessibilityHint(
+                    Text(appLocalized("Permanently delete Alike data after confirmation"))
+                )
+            } footer: {
+                Text(appLocalized("This action can't be undone. Alike will replay onboarding when deletion finishes."))
+            }
         }
-        .navigationTitle(Text(appLocalized("How to Use")))
+        .navigationTitle(Text(appLocalized("Delete Alike Data")))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
 #endif
-    }
-    
-    private func guideStep(number: Int, icon: String, title: String, description: String) -> some View {
-        HStack(alignment: .top, spacing: Spacing.medium) {
-            ZStack {
-                Circle()
-                    .fill(Color.accent.opacity(ColorOpacity.guideStepBackground))
-                    .frame(width: 50, height: 50)
-                
-                Text("\(number)")
-                    .font(.appHeadline)
-                    .foregroundColor(.accent)
+        .navigationBarBackButtonHidden(model.isDeleting)
+        .confirmationDialog(
+            appLocalized("Delete all Alike data?"),
+            isPresented: $isConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button(appLocalized("Delete Alike Data"), role: .destructive) {
+                startDeletion()
             }
-            
-            VStack(alignment: .leading, spacing: Spacing.xSmall) {
-                Label {
-                    Text(title)
-                } icon: {
-                    Image(systemName: icon)
-                }
-                .font(.appHeadline)
-                
-                Text(description)
-                    .font(.appBody)
-                    .foregroundColor(.secondary)
-            }
+            Button(appLocalized("Cancel"), role: .cancel) {}
+        } message: {
+            Text(appLocalized("This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."))
         }
+        .alert(
+            appLocalized("Couldn't Delete Alike Data"),
+            isPresented: isDeletionErrorPresented
+        ) {
+            Button(appLocalized("Try Again")) {
+                startDeletion()
+            }
+            Button(appLocalized("Cancel"), role: .cancel) {
+                model.dismissError()
+            }
+        } message: {
+            Text(model.errorMessage ?? "")
+        }
+    }
+
+    private var isDeletionErrorPresented: Binding<Bool> {
+        Binding(
+            get: { model.errorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    model.dismissError()
+                }
+            }
+        )
+    }
+
+    private func startDeletion() {
+        Task {
+            await model.deleteAllData()
+        }
+    }
+
+    private func dataRow(_ title: String, systemImage: String) -> some View {
+        Label(title, systemImage: systemImage)
     }
 }
 
 // MARK: - Preview
 #Preview {
     SettingsView(
-        gridColumns: .constant(2),
         sensitivity: .constant(.medium),
         needsRescan: .constant(false)
     )
-}
-
-#Preview("User Guide") {
-    NavigationStack {
-        UserGuideView()
-    }
 }

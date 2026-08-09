@@ -15,19 +15,28 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(path: "../DesignSystem")
+        .package(path: "../DesignSystem"),
+        .package(path: "../NavigationKit"),
+        .package(path: "../Cleanup"),
+        .package(path: "../Storage"),
+        .package(path: "../Purchases"),
+        .package(path: "../UserGuide")
     ],
     targets: [
         .target(
             name: "Settings",
-            dependencies: ["Core", "DesignSystem"],
+            dependencies: [
+                "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide",
+                .product(name: "Purchases", package: "Purchases"),
+                .product(name: "PurchasesUI", package: "Purchases")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "SettingsTests",
-            dependencies: ["Settings"]
+            dependencies: ["Settings", "Core", "Cleanup"]
         ),
     ]
 )

@@ -15,23 +15,27 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(path: "../Storage"),
-        .package(path: "../PhotoAnalysis"),
         .package(path: "../DesignSystem"),
-        .package(path: "../Details"),
-        .package(path: "../Cleanup")
+        .package(path: "../Cleanup"),
+        .package(path: "../NavigationKit"),
+        .package(path: "../Purchases"),
+        .package(path: "../UserGuide")
     ],
     targets: [
         .target(
             name: "Scanner",
-            dependencies: ["Core", "Storage", "PhotoAnalysis", "DesignSystem", "Details", "Cleanup"],
+            dependencies: [
+                "Core", "DesignSystem", "Cleanup", "NavigationKit", "UserGuide",
+                .product(name: "Purchases", package: "Purchases"),
+                .product(name: "PurchasesUI", package: "Purchases")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "ScannerTests",
-            dependencies: ["Scanner", "Core"]
+            dependencies: ["Scanner", "Core", "Cleanup"]
         ),
     ]
 )

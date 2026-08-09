@@ -13,16 +13,27 @@ let package = Package(
             targets: ["DesignSystem"]
         ),
     ],
+    dependencies: [
+        .package(path: "../Core"),
+        .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.6.1")
+    ],
     targets: [
         .target(
             name: "DesignSystem",
+            dependencies: [
+                "Core",
+                .product(name: "Lottie", package: "lottie-spm")
+            ],
+            resources: [
+                .process("Resources")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "DesignSystemTests",
-            dependencies: ["DesignSystem"]
+            dependencies: ["DesignSystem", "Core"]
         ),
     ]
 )

@@ -5,12 +5,17 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
+import os
 import SwiftUI
 import Launch
 import Welcome
 import Scanner
 import Settings
 import Core
+import Cleanup
+import Storage
+import Purchases
+import PurchasesUI
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -28,13 +33,15 @@ struct RootView: View {
                         }
                     }
                 ))
-            case .welcome:
+            case .welcome(let mode):
                 WelcomeView(isCompleted: .init(
                     get: { false },
                     set: { _ in router.completeWelcome() }
-                ))
+                ), mode: mode)
             case .main:
-                MainTabView()
+                MainTabView {
+                    router.restartAfterDataDeletion()
+                }
             }
         }
         .animation(.smooth, value: router.currentRoute)
@@ -43,11 +50,39 @@ struct RootView: View {
 
 // MARK: - Main Tab View
 struct MainTabView: View {
+    @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
-    @AppStorage("gridColumns") private var gridColumns = GridConfiguration.current.defaultColumns
-    @AppStorage("sensitivity") private var sensitivityRaw = SensitivityLevel.medium.rawValue
-    private let gridConfiguration = GridConfiguration.current
+    @State private var subscriptionStore = SubscriptionStore(catalog: .production)
+    @State private var cleanupWorkspace = CleanupWorkspaceModel()
+    private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
+    private let onDataDeleted: @MainActor @Sendable () -> Void
+    @AppStorage(AppPreferenceKey.sensitivity)
+    private var sensitivityRaw = SensitivityLevel.medium.rawValue
+#if DEBUG
+    @AppStorage(PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
+    private var debugUnlockUnlimitedRescans = false
+    @AppStorage(PremiumFeature.screenshotCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockScreenshotCleanup = false
+    @AppStorage(PremiumFeature.blurredPhotoCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBlurredPhotoCleanup = false
+    @AppStorage(PremiumFeature.advancedFilters.debugOverrideDefaultsKey)
+    private var debugUnlockAdvancedFilters = false
+    @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
+    private var debugUnlockBatchCleanup = false
+    @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
+    private var debugUnlockCleanupReminders = false
+#endif
+    private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
+        preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
+    )
+    @State private var ratingPrompt = RatingPromptCoordinator(
+        repository: UserDefaultsRatingPromptHistoryRepository()
+    )
+
+    init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
+        self.onDataDeleted = onDataDeleted
+    }
     
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
@@ -55,23 +90,53 @@ struct MainTabView: View {
             set: { sensitivityRaw = $0.rawValue }
         )
     }
+
+    private var premiumAccess: any PremiumAccessControlling {
+#if DEBUG
+        DebugPremiumAccessController(base: subscriptionStore)
+#else
+        subscriptionStore
+#endif
+    }
+
+    private var hasCleanupReminderCustomizationAccess: Bool {
+        premiumAccess.hasAccess(to: .cleanupReminderCustomization)
+    }
+
+    private var cleanupReminderTaskID: CleanupReminderTaskID {
+        CleanupReminderTaskID(
+            scenePhase: scenePhase,
+            isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+        )
+    }
     
     var body: some View {
-        TabView(selection: Bindable(tabManager).selectedTab) {
-            ForEach(tabs, id: \.self) { tab in
-                tabView(for: tab)
-                    .tabItem {
-                        Label(tab.titleKey, systemImage: tab.icon)
-                    }
-                    .tag(tab)
-            }
-        }
+        // Reading the observable state keeps all injected feature views in sync
+        // when StoreKit confirms, restores, or revokes an entitlement.
+        let _ = subscriptionStore.entitlementState
+
+        adaptiveTabView
         .tint(.accent)
+        .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
         .task {
-            let clamped = gridConfiguration.clampedColumns(gridColumns)
-            if clamped != gridColumns {
-                gridColumns = clamped
-            }
+            await subscriptionStore.start()
+        }
+        .task {
+            // Seed the rating prompt's install-age clock now, not on whatever cleanup
+            // happens to be the first eligible one — see
+            // `RatingPromptCoordinator.seedInstallAgeOnLaunch`.
+            await ratingPrompt.seedInstallAgeOnLaunch()
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await subscriptionStore.refreshEntitlements()
+        }
+        .task(id: cleanupReminderTaskID) {
+            guard scenePhase == .active else { return }
+            await resyncCleanupReminder()
+        }
+        .onDisappear {
+            subscriptionStore.stop()
         }
         .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
             Button("Later", role: .cancel) {
@@ -84,28 +149,101 @@ struct MainTabView: View {
             Text("Changing sensitivity requires a new scan to take effect")
         }
     }
+
+    @ViewBuilder
+    private var adaptiveTabView: some View {
+        if #available(iOS 26.0, *) {
+            tabView
+                .tabBarMinimizeBehavior(.onScrollDown)
+        } else {
+            tabView
+        }
+    }
+
+    private var tabView: some View {
+        TabView(selection: Bindable(tabManager).selectedTab) {
+            ForEach(tabs, id: \.self) { tab in
+                tabView(for: tab)
+                    .tabItem {
+                        Label(tab.titleKey, systemImage: tab.icon)
+                    }
+                    .tag(tab)
+            }
+        }
+    }
     
     @ViewBuilder
     private func tabView(for tab: TabManager.Tab) -> some View {
         switch tab {
         case .scanner:
             ScannerView(
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
+                workspace: cleanupWorkspace,
                 sensitivity: sensitivity,
-                shouldStartScan: Bindable(tabManager).shouldStartScan
+                shouldStartScan: Bindable(tabManager).shouldStartScan,
+                subscriptionStore: subscriptionStore,
+                onOpenCleanup: {
+                    tabManager.navigateToCleanup()
+                },
+                viewModel: ScannerViewModel(
+                    workspace: cleanupWorkspace,
+                    sensitivity: sensitivity.wrappedValue,
+                    premiumAccess: premiumAccess
+                )
+            )
+#if DEBUG
+            .id("\(debugUnlockUnlimitedRescans)-\(debugUnlockScreenshotCleanup)-\(debugUnlockBlurredPhotoCleanup)-\(debugUnlockAdvancedFilters)-\(debugUnlockBatchCleanup)")
+#endif
+        case .cleanup:
+            CleanupView(
+                workspace: cleanupWorkspace,
+                sensitivity: sensitivity,
+                premiumAccess: premiumAccess,
+                subscriptionStore: subscriptionStore,
+                ratingPrompt: ratingPrompt,
+                onOpenScanner: {
+                    tabManager.navigateToScanner()
+                },
+                onRequestScan: {
+                    tabManager.navigateToScanner(andStartScan: true)
+                }
             )
         case .settings:
             SettingsView(
-                gridColumns: Binding(
-                    get: { gridConfiguration.clampedColumns(gridColumns) },
-                    set: { gridColumns = gridConfiguration.clampedColumns($0) }
-                ),
                 sensitivity: sensitivity,
-                needsRescan: Bindable(tabManager).needsRescan
+                needsRescan: Bindable(tabManager).needsRescan,
+                premiumAccess: premiumAccess,
+                subscriptionStore: subscriptionStore,
+                onDeleteAllData: {
+                    await cleanupWorkspace.prepareForDataDeletion()
+                    _ = try await cleanupReminderManager.setEnabled(
+                        false,
+                        isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+                    )
+                    try await localAppDataDeleter.deleteAllData()
+                    onDataDeleted()
+                },
+                viewModel: SettingsViewModel(
+                    cleanupReminderManager: cleanupReminderManager,
+                    ratingPrompt: ratingPrompt
+                )
             )
         }
     }
+
+    private func resyncCleanupReminder() async {
+        do {
+            try await cleanupReminderManager.resync(
+                isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+            )
+        } catch {
+            AppLog.storage.error(
+                "\(AppLog.tag(.error, "Failed to resync cleanup reminder: \(error.localizedDescription)"))"
+            )
+        }
+    }
+}
+
+private struct CleanupReminderTaskID: Equatable {
+    let scenePhase: ScenePhase
+    let isPremiumUnlocked: Bool
 }

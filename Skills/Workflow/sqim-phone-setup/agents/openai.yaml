@@ -1,0 +1,4 @@
+interface:
+  display_name: "SQIM Phone Setup"
+  short_description: "Install Alike builds on a real iPhone"
+  default_prompt: "Use $sqim-phone-setup to set up this iOS app on my phone with SQIM."

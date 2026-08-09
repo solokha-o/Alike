@@ -8,15 +8,16 @@
 import SwiftUI
 import PhotoAnalysis
 import Photos
+import Welcome
 
 /// Manages app-wide navigation state
 @MainActor
 @Observable
 final class AppRouter {
     // MARK: - Route Definition
-    enum Route {
+    enum Route: Equatable {
         case launch
-        case welcome
+        case welcome(WelcomeMode)
         case main
     }
     
@@ -34,11 +35,15 @@ final class AppRouter {
         if permissionManager.isAuthorized {
             currentRoute = .main
         } else {
-            currentRoute = .welcome
+            currentRoute = .welcome(.permissionRequest)
         }
     }
     
     func completeWelcome() {
         currentRoute = .main
+    }
+
+    func restartAfterDataDeletion() {
+        currentRoute = .welcome(.dataDeletionReplay)
     }
 }

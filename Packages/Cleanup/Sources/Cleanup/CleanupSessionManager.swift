@@ -27,6 +27,17 @@ public struct CleanupSessionProgress: Equatable, Sendable {
     public let reviewedSavingsBytes: Int64
     public let totalSelectedItems: Int
 
+    /// Progress over an empty workspace, before any content has been published.
+    public static let empty = CleanupSessionProgress(
+        totalClusters: 0,
+        reviewedCount: 0,
+        needsReReviewCount: 0,
+        inReviewCount: 0,
+        notReviewedCount: 0,
+        reviewedSavingsBytes: 0,
+        totalSelectedItems: 0
+    )
+
     public var remainingClusters: Int {
         max(totalClusters - reviewedCount, 0)
     }
@@ -152,7 +163,6 @@ public actor CleanupSessionManager: CleanupSessionManaging {
         clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .needsReReview })
             ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .notReviewed })
             ?? clusters.first(where: { status(for: $0.id, reviewStates: reviewStates) == .inReview })
-            ?? clusters.first
     }
 }
 

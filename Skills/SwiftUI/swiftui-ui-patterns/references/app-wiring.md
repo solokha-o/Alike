@@ -2,34 +2,37 @@
 
 ## Intent
 
-Show how to wire the app shell (TabView + NavigationStack + sheets) and install a global dependency graph (environment objects, services, streaming clients, SwiftData ModelContainer) in one place.
+Show how to wire the app shell (TabView + `RoutedNavigationStack` + sheets) and install a global dependency graph (environment objects, services, streaming clients, SwiftData ModelContainer) in one place.
 
 ## Recommended structure
 
-1) Root view sets up tabs, per-tab routers, and sheets.
+1) Root view sets up tabs, per-tab routed stacks, and sheets.
 2) A dedicated view modifier installs global dependencies and lifecycle tasks (auth state, streaming watchers, push tokens, data containers).
 3) Feature views pull only what they need from the environment; feature-specific state stays local.
 
 ## Root shell example (generic)
 
 ```swift
+import NavigationKit
+
+enum AppRoute: Hashable {
+  case detail(id: String)
+}
+
 @MainActor
 struct AppView: View {
   @State private var selectedTab: AppTab = .home
-  @State private var tabRouter = TabRouter()
+  @State private var presentedSheet: SheetDestination?
 
   var body: some View {
     TabView(selection: $selectedTab) {
       ForEach(AppTab.allCases) { tab in
-        let router = tabRouter.router(for: tab)
-        NavigationStack(path: tabRouter.binding(for: tab)) {
+        RoutedNavigationStack {
           tab.makeContentView()
+        } destination: { route, _ in
+          destination(for: route)
         }
-        .withSheetDestinations(sheet: Binding(
-          get: { router.presentedSheet },
-          set: { router.presentedSheet = $0 }
-        ))
-        .environment(router)
+        .withSheetDestinations(sheet: $presentedSheet)
         .tabItem { tab.label }
         .tag(tab)
       }
@@ -70,14 +73,7 @@ enum AppTab: Identifiable, Hashable, CaseIterable {
 Router skeleton:
 
 ```swift
-@MainActor
-@Observable
-final class RouterPath {
-  var path: [Route] = []
-  var presentedSheet: SheetDestination?
-}
-
-enum Route: Hashable {
+enum AppRoute: Hashable {
   case detail(id: String)
 }
 ```
@@ -181,11 +177,13 @@ extension View {
 
 Why: enum-driven sheets keep presentation centralized and testable; adding a new sheet means adding one enum case and one switch branch.
 
+When sheet presentation must be driven from deep children, keep that state in a dedicated app router or root-owned observable type rather than reintroducing raw `NavigationStack` wrappers.
+
 ## When to use
 
 - Apps with multiple packages/modules that share environment objects and services.
 - Apps that need to react to account/client changes and rewire streaming/push safely.
-- Any app that wants consistent TabView + NavigationStack + sheet wiring without repeating environment setup.
+- Any app that wants consistent TabView + `RoutedNavigationStack` + sheet wiring without repeating environment setup.
 
 ## Caveats
 

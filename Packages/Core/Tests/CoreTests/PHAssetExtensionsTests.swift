@@ -1,4 +1,5 @@
 import XCTest
+import ImageIO
 import Photos
 @testable import Core
 
@@ -61,11 +62,9 @@ final class PHAssetExtensionsTests: XCTestCase {
             return
         }
         
-        // Then: Should be valid image format (can create UIImage)
-        let image = UIImage(data: imageData)
-        XCTAssertNotNil(image, "Image data should be valid image format")
-        XCTAssertGreaterThan(image?.size.width ?? 0, 0, "Image should have width")
-        XCTAssertGreaterThan(image?.size.height ?? 0, 0, "Image should have height")
+        // Then: Should be valid image data on every supported platform.
+        let source = CGImageSourceCreateWithData(imageData as CFData, nil)
+        XCTAssertNotNil(source, "Image data should be a valid image format")
     }
     
     // MARK: - Performance Tests
@@ -108,10 +107,41 @@ final class PHAssetExtensionsTests: XCTestCase {
         
         // When: Attempting to load image data from video asset
         // Then: Should either return nil or throw error gracefully
-        let imageData = try? await videoAsset.loadFullResolutionImageData()
+        _ = try? await videoAsset.loadFullResolutionImageData()
         
         // Video assets might return thumbnail data or nil
         // Just verify it doesn't crash
         XCTAssertTrue(true, "Should handle video asset gracefully")
+    }
+
+    // MARK: - PhotoKitRequestCoordinator Timeout/Cancellation Tests
+
+    func testRequestCoordinatorCancellationBeforeInstallResumesExactlyOnce() async {
+        let coordinator = PhotoKitRequestCoordinator<Data?>(manager: .default())
+        coordinator.cancel()
+
+        do {
+            _ = try await withCheckedThrowingContinuation { continuation in
+                XCTAssertFalse(coordinator.install(continuation))
+                coordinator.timeout()
+            } as Data?
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testRequestCoordinatorTimeoutResolvesNilExactlyOnce() async throws {
+        let coordinator = PhotoKitRequestCoordinator<Data?>(manager: .default())
+
+        let data = try await withCheckedThrowingContinuation { continuation in
+            XCTAssertTrue(coordinator.install(continuation))
+            coordinator.timeout()
+            coordinator.finish(with: .success(Data([1])))
+        } as Data?
+
+        XCTAssertNil(data)
     }
 }

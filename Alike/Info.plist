@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Every other Info.plist key is generated from INFOPLIST_KEY_* build
+	     settings (GENERATE_INFOPLIST_FILE = YES merges them into this file).
+	     UILaunchScreen lives here because its nested UIColorName has no
+	     INFOPLIST_KEY_ equivalent: the only launch-screen build setting Xcode
+	     understands is UILaunchScreen_Generation, which produces an empty dict
+	     and therefore a blank white/black launch screen.
+
+	     AccentColor matches the background of LaunchView, so the system launch
+	     screen hands over to the app without a colour flash in Light or Dark. -->
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>AccentColor</string>
+	</dict>
+</dict>
+</plist>

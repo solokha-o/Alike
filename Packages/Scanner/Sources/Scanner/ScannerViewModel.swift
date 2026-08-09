@@ -1,237 +1,255 @@
-import SwiftUI
-import Core
-import Storage
-import PhotoAnalysis
 import Cleanup
+import Core
+import DesignSystem
+import Foundation
+import Observation
+import Purchases
 
+/// Scanner-only state. Cleanup content and reconciliation belong to the shared
+/// ``CleanupWorkspaceModel`` so they survive navigation between tabs.
 @MainActor
 @Observable
 public final class ScannerViewModel {
     public enum State: Equatable {
         case idle
         case scanning(progress: Double)
-        case results([PhotoCluster])
+        case completed(ScanSummary)
         case error(String)
     }
-    
-    public var state: State = .idle
-    public var gridColumns: Int
-    public private(set) var shouldShowRescanPrompt = false
-    public private(set) var reviewStates: [UUID: ClusterReviewState] = [:]
-    public private(set) var resurfacingStates: [UUID: ClusterResurfacingState] = [:]
-    public private(set) var activeCleanupSession: CleanupSession?
-    
-    private let analysisService: PhotoAnalysisService
-    private let repository: PhotoClusterRepository
-    private let reviewRepository: ClusterReviewStateRepository
-    private let cleanupManager: any CleanupSessionManaging
+
     public var sensitivity: SensitivityLevel
-    
+    public private(set) var state: State = .idle
+    public private(set) var monthlyScanUsage: MonthlyScanUsage?
+    public private(set) var pendingPostScanPremiumOffer: PostScanPremiumOffer?
+    public private(set) var scanEventID = UUID()
+
+    public let workspace: CleanupWorkspaceModel
+    public let premiumAccess: any PremiumAccessControlling
+
+    private let scanUsageRepository: any ScanUsageRepository
+    private let premiumPromptHistoryRepository: any PremiumPromptHistoryRepository
+    private let calendar: Calendar
+    private let now: @Sendable () -> Date
+    private var scanOperation: Task<PremiumAccessDecision, Never>?
+    private var workspaceObservationTask: Task<Void, Never>?
+
+    public var remainingFreeScans: Int {
+        monthlyScanUsage?.remainingFreeScans ?? PremiumAccessPolicy.monthlyFreeScanLimit
+    }
+
+    public var nextFreeScanResetDate: Date? { monthlyScanUsage?.nextResetDate }
+    public var hasUnlimitedScanAccess: Bool { premiumAccess.access(to: .unlimitedScans).isAllowed }
+    public var hasCompletedScanBaseline: Bool { workspace.hasCompletedScanBaseline }
+
+    /// The workspace can advance past this view model's own `state` — a
+    /// Cleanup-tab deletion reconciles the workspace directly, with no path
+    /// back into `ScannerViewModel`. Preferring whichever summary completed
+    /// most recently keeps the presentation correct without requiring a new
+    /// user-initiated scan to notice the reconciliation happened.
+    var librarySummary: ScanSummary? {
+        let stateSummary: ScanSummary? = {
+            if case .completed(let summary) = state { return summary }
+            return nil
+        }()
+        let workspaceSummary = derivedWorkspaceSummary()
+
+        switch (stateSummary, workspaceSummary) {
+        case (let stateSummary?, let workspaceSummary?):
+            return workspaceSummary.completedAt >= stateSummary.completedAt ? workspaceSummary : stateSummary
+        case (let stateSummary?, nil):
+            return stateSummary
+        case (nil, let workspaceSummary?):
+            return workspaceSummary
+        case (nil, nil):
+            return nil
+        }
+    }
+
+    /// The workspace's own summary, either from its last scan or synthesized
+    /// from its current content when only a baseline (no in-memory summary)
+    /// is available.
+    private func derivedWorkspaceSummary() -> ScanSummary? {
+        if let summary = workspace.lastScanSummary { return summary }
+        guard workspace.hasCompletedScanBaseline,
+              let completedAt = workspace.lastCompletedScanDate else { return nil }
+        return ScanSummary(
+            clusterCount: workspace.clusters.count,
+            cleanupCategoryCandidateCount: workspace.cleanupCategories.reduce(0) {
+                $0 + max($1.assetCount, 0)
+            },
+            estimatedSavingsBytes: estimatedSavings(),
+            completedAt: completedAt
+        )
+    }
+
     public init(
-        gridColumns: Int = 3,
+        workspace: CleanupWorkspaceModel,
         sensitivity: SensitivityLevel = .medium,
-        analysisService: PhotoAnalysisService? = nil,
-        repository: PhotoClusterRepository = CoreDataPhotoClusterRepository(),
-        reviewRepository: ClusterReviewStateRepository = FileClusterReviewStateRepository(),
-        cleanupSessionRepository: CleanupSessionRepository = FileCleanupSessionRepository(),
-        cleanupManager: (any CleanupSessionManaging)? = nil
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        scanUsageRepository: any ScanUsageRepository = UserDefaultsScanUsageRepository(),
+        premiumPromptHistoryRepository: any PremiumPromptHistoryRepository = UserDefaultsPremiumPromptHistoryRepository(),
+        calendar: Calendar = .autoupdatingCurrent,
+        now: @escaping @Sendable () -> Date = Date.init
     ) {
-        self.gridColumns = gridColumns
+        self.workspace = workspace
         self.sensitivity = sensitivity
-        self.repository = repository
-        self.reviewRepository = reviewRepository
-        self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
-        
-        if let analysisService {
-            self.analysisService = analysisService
-        } else if let featurePrintRepository = repository as? PhotoFeaturePrintRepository {
-            self.analysisService = PhotoAnalysisServiceImpl(featurePrintRepository: featurePrintRepository)
-        } else {
-            self.analysisService = PhotoAnalysisServiceImpl()
-        }
+        self.premiumAccess = premiumAccess
+        self.scanUsageRepository = scanUsageRepository
+        self.premiumPromptHistoryRepository = premiumPromptHistoryRepository
+        self.calendar = calendar
+        self.now = now
     }
-    
-    public func loadCachedResults() async {
-        do {
-            let clusters = try await repository.loadClusters()
-            if !clusters.isEmpty {
-                let sorted = sortedClusters(from: clusters)
-                if case .results(let existing) = state, existing == sorted {
-                    return
-                }
-                AppLog.ui.debug("\(AppLog.tag(.cache, "Loaded cached clusters: \(sorted.count)"))")
-                state = .results(sorted)
-                await loadReviewStates(clusters: sorted)
-            } else {
-                shouldShowRescanPrompt = false
-                reviewStates = [:]
-                resurfacingStates = [:]
-                activeCleanupSession = await cleanupManager.syncSession(for: [], reviewStates: [:])
-            }
-        } catch {
-            AppLog.ui.error("\(AppLog.tag(.error, "Failed to load cached results: \(error.localizedDescription)"))")
-        }
+
+    public func load() async {
+        await workspace.loadCachedContent()
+        monthlyScanUsage = await resolveMonthlyScanUsage(at: now())
+        await workspace.checkForGalleryChanges()
+        synchronizeStateWithWorkspace()
     }
-    
-    public func startScanning() async {
-        AppLog.scan.info("\(AppLog.tag(.start, "Scan started"))")
-        state = .scanning(progress: 0.0)
-        
+
+    /// Admission and allowance are Scanner responsibilities; the workspace
+    /// executes and retains the actual scan for both top-level tabs.
+    @discardableResult
+    public func startScanning() async -> PremiumAccessDecision {
+        if let scanOperation { return await scanOperation.value }
+
+        let task = Task { @MainActor [weak self] in
+            guard let self else { return PremiumAccessDecision.requiresPremium }
+            return await self.performUserInitiatedScan()
+        }
+        scanOperation = task
+        let decision = await task.value
+        scanOperation = nil
+        return decision
+    }
+
+    public func consumePostScanPremiumOffer() { pendingPostScanPremiumOffer = nil }
+
+    private func performUserInitiatedScan() async -> PremiumAccessDecision {
+        let usage = await resolveMonthlyScanUsage(at: now())
+        monthlyScanUsage = usage
+        let decision = premiumAccess.access(
+            to: .unlimitedScans,
+            context: .scan(completedThisMonth: usage.completedScanCount)
+        )
+        guard decision.isAllowed else { return decision }
+
+        scanEventID = UUID()
+        publishScanningProgress(workspace.scanOperation.progress ?? 0)
+        observeWorkspaceScan()
         do {
-            let previousSnapshots = try await repository.loadClusterSnapshots()
-            let previousReviewStates = (try? await loadAllReviewStates()) ?? [:]
-            let clusters = try await analysisService.analyzePhotoLibrary(
-                sensitivity: sensitivity.threshold
-            ) { progress in
-                Task { @MainActor in
-                    self.state = .scanning(progress: progress)
-                }
+            // Whether this call joined an in-flight operation (and so
+            // shouldn't be charged) can only be known after the workspace
+            // resolves the request: a request that finds a reconciliation in
+            // flight may still end up running fresh work of its own if the
+            // sensitivities don't match, and a pre-call check can't see that.
+            let outcome = try await workspace.scanReportingJoinedOperation(sensitivity: sensitivity)
+            state = .completed(outcome.summary)
+            if !outcome.joinedInFlightOperation {
+                monthlyScanUsage = await scanUsageRepository.recordCompletedScan(at: now())
+                await publishPostScanPremiumOfferIfEligible(outcome.summary)
             }
-            
-            // Save results
-            try await repository.saveClusters(clusters)
-            try await repository.updateLastScanDate(Date())
-            
-            let sorted = sortedClusters(from: clusters)
-            if case .results(let existing) = state, existing == sorted {
-                return
-            }
-
-            if previousSnapshots.isEmpty {
-                reviewStates = [:]
-                resurfacingStates = Dictionary(uniqueKeysWithValues: sorted.map { ($0.id, .unchanged) })
-                do {
-                    try await persistReviewStates([:])
-                } catch {
-                    AppLog.storage.error(
-                        "\(AppLog.tag(.error, "Failed to clear stale review states: \(error.localizedDescription)"))"
-                    )
-                }
-            } else {
-                let resurfacing = ClusterReviewStateResurfacer.resurface(
-                    previousSnapshots: previousSnapshots,
-                    newClusters: sorted,
-                    existingReviewStates: previousReviewStates
-                )
-                reviewStates = resurfacing.migratedReviewStates
-                resurfacingStates = resurfacing.resurfacingStates
-                do {
-                    try await persistReviewStates(reviewStates)
-                } catch {
-                    AppLog.storage.error(
-                        "\(AppLog.tag(.error, "Failed to persist migrated review states: \(error.localizedDescription)"))"
-                    )
-                }
-            }
-
-            activeCleanupSession = await cleanupManager.syncSession(for: sorted, reviewStates: reviewStates)
-            AppLog.scan.info("\(AppLog.tag(.finish, "Scan finished with clusters: \(sorted.count)"))")
-            shouldShowRescanPrompt = false
-            state = .results(sorted)
+        } catch is CancellationError {
+            synchronizeStateWithWorkspace()
         } catch {
-            AppLog.scan.error("\(AppLog.tag(.error, "Scan failed: \(error.localizedDescription)"))")
             state = .error(error.localizedDescription)
         }
-    }
-    
-    public func checkForGalleryChanges() async -> Bool {
-        let hasChanged = await repository.hasGalleryChanged()
-        shouldShowRescanPrompt = hasChanged && !currentResultClusters.isEmpty
-        return shouldShowRescanPrompt
+        workspaceObservationTask?.cancel()
+        workspaceObservationTask = nil
+        return .allowed
     }
 
-    public func loadReviewStates() async {
-        await loadReviewStates(clusters: currentResultClusters)
-    }
-
-    public func loadReviewStates(clusters: [PhotoCluster]) async {
-        do {
-            reviewStates = try await reviewRepository.loadAllReviewStates()
-        } catch {
-            AppLog.ui.error("\(AppLog.tag(.error, "Failed to load review states: \(error.localizedDescription)"))")
-            reviewStates = [:]
+    private func observeWorkspaceScan() {
+        workspaceObservationTask?.cancel()
+        workspaceObservationTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                guard let operation = self?.workspace.scanOperation else { return }
+                if case .scanning(let progress, _) = operation {
+                    self?.publishScanningProgress(progress)
+                }
+                try? await Task.sleep(for: .milliseconds(80))
+            }
         }
-        resurfacingStates = Dictionary(
-            uniqueKeysWithValues: clusters.map { cluster in
-                (cluster.id, reviewStates[cluster.id]?.resurfacingState ?? .unchanged)
+    }
+
+    private func synchronizeStateWithWorkspace() {
+        switch workspace.scanOperation {
+        case .scanning(let progress, .userInitiated): publishScanningProgress(progress)
+        case .failed(let message, .userInitiated): state = .error(message)
+        default:
+            if let summary = workspace.lastScanSummary {
+                state = .completed(summary)
+            } else if workspace.hasCompletedScanBaseline {
+                state = .completed(ScanSummary(
+                    clusterCount: workspace.clusters.count,
+                    cleanupCategoryCandidateCount: workspace.cleanupCategories.reduce(0) { $0 + max($1.assetCount, 0) },
+                    estimatedSavingsBytes: estimatedSavings(),
+                    completedAt: workspace.lastCompletedScanDate ?? now()
+                ))
+            } else {
+                state = .idle
             }
-        )
-        activeCleanupSession = await cleanupManager.syncSession(for: clusters, reviewStates: reviewStates)
-    }
-
-    public func reviewState(for clusterID: UUID) -> ClusterReviewState? {
-        reviewStates[clusterID]
-    }
-
-    public func reviewStatus(for clusterID: UUID) -> ClusterReviewStatus {
-        reviewStates[clusterID]?.status ?? .notReviewed
-    }
-
-    public func resurfacingState(for clusterID: UUID) -> ClusterResurfacingState? {
-        let state = resurfacingStates[clusterID] ?? .unchanged
-        return state == .unchanged ? nil : state
-    }
-
-    public func needsReviewClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.filter { reviewStatus(for: $0.id) == .needsReReview }
-    }
-
-    public func remainingClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.filter { reviewStatus(for: $0.id) != .needsReReview }
-    }
-
-    public func sessionProgress(for clusters: [PhotoCluster]) -> CleanupSessionProgress {
-        cleanupManager.progress(
-            for: clusters,
-            reviewStates: reviewStates,
-            activeSession: nil
-        )
-    }
-
-    public func displayedSessionProgress(for clusters: [PhotoCluster]) -> CleanupSessionProgress {
-        cleanupManager.progress(
-            for: clusters,
-            reviewStates: reviewStates,
-            activeSession: activeCleanupSession
-        )
-    }
-
-    public func cleanupEntryCluster(from clusters: [PhotoCluster]) -> PhotoCluster? {
-        cleanupManager.nextClusterToReview(from: clusters, reviewStates: reviewStates)
-    }
-
-    public func sortedClusters(from clusters: [PhotoCluster]) -> [PhotoCluster] {
-        clusters.sorted {
-            if $0.createdAt != $1.createdAt {
-                return $0.createdAt > $1.createdAt
-            }
-            if $0.count != $1.count {
-                return $0.count > $1.count
-            }
-            if $0.averageSimilarity != $1.averageSimilarity {
-                return $0.averageSimilarity > $1.averageSimilarity
-            }
-            return $0.id.uuidString < $1.id.uuidString
         }
+    }
+
+    @discardableResult
+    func publishScanningProgress(_ progress: Double) -> Bool {
+        let nextState = State.scanning(progress: progress)
+        guard state != nextState else { return false }
+        state = nextState
+        return true
+    }
+
+    private func estimatedSavings() -> Int64 {
+        let clusterSavings = workspace.clusters.flatMap(\.assets).reduce(Int64(0)) { $0 + $1.estimatedCleanupBytes }
+        return clusterSavings + workspace.cleanupCategories.reduce(Int64(0)) { $0 + $1.estimatedSavingsBytes }
+    }
+
+    private func publishPostScanPremiumOfferIfEligible(_ summary: ScanSummary) async {
+        let entitlement = premiumAccess.entitlementState
+        guard entitlement.source != .unknown,
+              !entitlement.isPremium,
+              summary.clusterCount + summary.cleanupCategoryCandidateCount > 0,
+              await premiumPromptHistoryRepository.claimPostFirstUsefulScanPrompt() else { return }
+
+        let currentEntitlement = premiumAccess.entitlementState
+        guard currentEntitlement.source != .unknown else {
+            await premiumPromptHistoryRepository.releasePostFirstUsefulScanPromptClaim()
+            return
+        }
+        guard !currentEntitlement.isPremium else { return }
+        pendingPostScanPremiumOffer = PostScanPremiumOffer(
+            similarClusterCount: summary.clusterCount,
+            cleanupCategoryCandidateCount: summary.cleanupCategoryCandidateCount,
+            estimatedSavingsBytes: summary.estimatedSavingsBytes
+        )
+    }
+
+    private func resolveMonthlyScanUsage(at date: Date) async -> MonthlyScanUsage {
+        if let usage = await scanUsageRepository.loadMonthlyUsage(at: date) { return usage }
+        let lastScanDate = workspace.lastCompletedScanDate
+        let completedCount = lastScanDate.map { calendar.isDate($0, equalTo: date, toGranularity: .month) ? 1 : 0 } ?? 0
+        let periodStart = calendar.date(from: calendar.dateComponents([.year, .month], from: date)) ?? date
+        let usage = MonthlyScanUsage(
+            periodStart: periodStart,
+            nextResetDate: calendar.date(byAdding: .month, value: 1, to: periodStart) ?? date,
+            completedScanCount: completedCount
+        )
+        await scanUsageRepository.initializeMonthlyUsage(usage)
+        return usage
     }
 }
 
-private extension ScannerViewModel {
-    func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] {
-        try await reviewRepository.loadAllReviewStates()
-    }
+public struct PostScanPremiumOffer: Identifiable, Equatable, Sendable {
+    public let id: UUID
+    public let similarClusterCount: Int
+    public let cleanupCategoryCandidateCount: Int
+    public let estimatedSavingsBytes: Int64
 
-    func persistReviewStates(_ states: [UUID: ClusterReviewState]) async throws {
-        try await reviewRepository.deleteAllReviewStates()
-        for state in states.values {
-            try await reviewRepository.saveReviewState(state)
-        }
-    }
-
-    var currentResultClusters: [PhotoCluster] {
-        if case .results(let clusters) = state {
-            return clusters
-        }
-        return []
+    public init(id: UUID = UUID(), similarClusterCount: Int, cleanupCategoryCandidateCount: Int, estimatedSavingsBytes: Int64) {
+        self.id = id
+        self.similarClusterCount = similarClusterCount
+        self.cleanupCategoryCandidateCount = cleanupCategoryCandidateCount
+        self.estimatedSavingsBytes = estimatedSavingsBytes
     }
 }
