@@ -70,10 +70,13 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(postFirstScan(5).contains("5 можливостей"), postFirstScan(5))
         XCTAssertTrue(postFirstScan(0).contains("0 можливостей"), postFirstScan(0))
 
-        // The savings variant carries a second, differently typed argument in %2$@.
-        let withSavings = postFirstScan(2, savings: "120 MB")
-        XCTAssertTrue(withSavings.contains("2 можливості"), withSavings)
-        XCTAssertTrue(withSavings.contains("120 MB"), withSavings)
+        // The savings variant carries a second, differently typed argument in %2$@, and has to
+        // pick its category across the same boundaries as the one-argument key.
+        for (count, form) in [(1, "1 можливість"), (2, "2 можливості"), (5, "5 можливостей")] {
+            let withSavings = postFirstScan(count, savings: "120 MB")
+            XCTAssertTrue(withSavings.contains(form), withSavings)
+            XCTAssertTrue(withSavings.contains("120 MB"), withSavings)
+        }
 
         func batchCleanup(_ count: Int) -> String {
             PaywallL10n.batchCleanupMessage(
@@ -107,17 +110,30 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(postFirstScan(2).contains("2 cleanup opportunities."), postFirstScan(2))
         XCTAssertTrue(postFirstScan(0).contains("0 cleanup opportunities."), postFirstScan(0))
 
-        let withSavings = postFirstScan(1, savings: "120 MB")
-        XCTAssertTrue(withSavings.contains("1 cleanup opportunity with 120 MB"), withSavings)
+        // Both two-argument keys are exercised in `one` and `other`: an empty `other` value or a
+        // dropped `%2$@` would otherwise slip through on the singular alone.
+        let oneWithSavings = postFirstScan(1, savings: "120 MB")
+        XCTAssertTrue(oneWithSavings.contains("1 cleanup opportunity with 120 MB"), oneWithSavings)
 
-        XCTAssertTrue(
+        let twoWithSavings = postFirstScan(2, savings: "120 MB")
+        XCTAssertTrue(twoWithSavings.contains("2 cleanup opportunities with 120 MB"), twoWithSavings)
+
+        func batchCleanup(_ count: Int) -> String {
             PaywallL10n.batchCleanupMessage(
-                selectedCount: 1,
+                selectedCount: count,
                 estimatedSavings: "120 MB",
                 locale: en,
                 bundle: bundle
-            ).contains("1 selected photo in one action, with 120 MB"),
-            "singular batch-cleanup copy"
+            )
+        }
+
+        XCTAssertTrue(
+            batchCleanup(1).contains("1 selected photo in one action, with 120 MB"),
+            batchCleanup(1)
+        )
+        XCTAssertTrue(
+            batchCleanup(2).contains("2 selected photos in one action, with 120 MB"),
+            batchCleanup(2)
         )
     }
 

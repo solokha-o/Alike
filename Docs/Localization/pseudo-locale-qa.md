@@ -33,10 +33,14 @@ key that failed to move into its package.
 
 ## Screens to walk
 
+**Run the full pass from the `Alike-Pseudolocale` scheme.** The command line above is a
+convenience for the non-paywall screens only — without the StoreKit configuration the paywall
+never leaves its unconfigured state, and its plan cards carry some of the longest copy in the app.
+
 Welcome onboarding · Scanner home · Cleanup progress and queue · Cleanup history ·
-Cluster details and review bar · Settings (including the reminder rows) · the four
-paywall entry points (post-first-scan, batch cleanup, advanced filters, reminders) ·
-User Guide hub and a topic.
+Cluster details and review bar · Settings (including the reminder rows) · User Guide hub
+and a topic · **scheme only:** the four paywall entry points (post-first-scan, batch cleanup,
+advanced filters, reminders).
 
 ## Findings — 2026-08-09
 
