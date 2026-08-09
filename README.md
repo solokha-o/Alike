@@ -2,7 +2,9 @@
 
 **Find visually similar photos in your library**
 
-Alike is an iOS app that finds and groups visually similar photos using Computer Vision (Apple Vision framework).
+Alike is an iOS app that finds and groups visually similar photos using Computer Vision (Apple Vision framework). Every scan runs on your device — no account, no uploads.
+
+> **🚀 1.0.0 (build 4) — first release, shipping now.** This is the version going to the App Store; there is no earlier public version. The product page goes live once review approves it.
 
 ## ✨ Features
 
@@ -12,24 +14,39 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - ⭐ **Best Shot detection** — deterministic pick of the strongest photo in each cluster
 - ✅ **Quick cleanup actions** — Keep Best Only, Select All Except Best, and Clear Selection
 - 🏷️ **Review badges and states** — Not reviewed, In review, Reviewed, and Needs review after rescans
+- 🧹 **Smart categories** — screenshot cleanup and blurred-photo cleanup alongside similar-photo clusters *(Pro)*
 - 📈 **Cleanup session progress** — track reviewed clusters, selected items, and estimated savings
+- 🕓 **History and insights** — every completed cleanup recorded locally, grouped by month
+- ⏰ **Cleanup reminders** — optional local notifications, on your own schedule *(custom schedules are Pro)*
+- 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
-- 📊 **Adaptive grid** — 1 to 2 columns optimized for iPhone screens
-- 💾 **CoreData caching** — stores scan results
+- 📊 **Adaptive grid** — 1 to 2 columns on iPhone, remembered between screens and launches
+- 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
+- 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
 - 🌍 **Two languages** — Ukrainian and English
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What's New in v1.0.0
+## 🆕 What ships in 1.0.0
 
-First release of Alike.
+The first public release. Everything below is in the build going to review:
 
+- Similar-photo scanning with Vision feature prints, three sensitivity levels, and complete-link clustering.
 - Guided Cleanup Review in cluster details, with Best Shot picked for you and a selection-first flow.
 - Quick bulk actions: Keep Best Only, Select All Except Best, and Clear Selection.
 - Persistent cluster review states, so progress is restored after relaunch.
 - Cleanup session progress summary with selected count and estimated storage savings.
 - Scanner badges and the "Needs review" resurfacing flow after library changes and rescans.
-- Alike Pro: unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.
+- Cleanup history, monthly insights, and optional cleanup reminders.
+- **Alike Free**: 3 scans per month. **Alike Pro**: unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.
+
+## 🔒 Privacy
+
+Alike makes no network requests. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
+
+- [Privacy Policy](https://alikeapp.github.io/privacy/) · [Terms of Use](https://alikeapp.github.io/terms/) · [Support](https://alikeapp.github.io/support/)
+- Ukrainian: [Політика конфіденційності](https://alikeapp.github.io/uk/privacy/) · [Умови використання](https://alikeapp.github.io/uk/terms/)
+- Source copy for both lives in [`Docs/legal/`](Docs/legal/).
 
 ## 🧠 Similarity algorithm
 
@@ -68,9 +85,11 @@ Alike/
 - **UI**: SwiftUI
 - **Frameworks**:
   - Vision (analysis)
-  - Photos (PhotoKit)
+  - Photos (PhotoKit — library access, change history, deletion)
   - CoreData (caching)
-  - StoreKit (reviews)
+  - StoreKit 2 (subscriptions, entitlements, and the review prompt)
+  - User Notifications (cleanup reminders)
+- **Dependency**: [Lottie](https://github.com/airbnb/lottie-spm) via SwiftPM — see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
 - **Architecture**: MVVM + Swift Packages
 - **Async**: async/await, Actors
 
@@ -78,7 +97,7 @@ Alike/
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
+git clone https://github.com/solokha-o/Alike.git
 cd Alike
 ```
 
@@ -104,9 +123,9 @@ Use one of the verbose schemes for anything that needs a debugger, the debug men
 1. **Launch Screen** (3 sec) → 📸 animation
 2. **Welcome Screen** → photo permission request
 3. **Main TabView**:
-   - **Scanner Tab**: start and monitor scans, retry failures, and open cleanup results
+   - **Scanner Tab**: start and monitor scans, retry failures, open cleanup results, and reach the user guide from the **How to Use** toolbar button
    - **Cleanup Tab**: continue review, browse smart categories and clusters, confirm cleanup, and view history
-   - **Settings Tab**: configuration, subscription, reminders, and support
+   - **Settings Tab**: configuration, subscription, reminders, legal links, and support
 
 Scanning continues while you move between tabs. A completed scan refreshes the
 Cleanup tab without automatically changing the selected tab.
@@ -121,14 +140,8 @@ Cleanup tab without automatically changing the selected tab.
 
 ## 🧪 Testing
 
-Previews for all screens:
-```swift
-#Preview("Scanner") { ScannerView(...) }
-#Preview("Settings") { SettingsView(...) }
-#Preview("Dark Mode") { ... }
-```
-
-Unit tests run within each package.
+Tests live in the package that owns the code and run with Swift Testing. The four
+fastest suites, the ones `tools/quick` runs:
 
 ```bash
 swift test --package-path Packages/Cleanup
@@ -136,6 +149,14 @@ swift test --package-path Packages/Scanner
 swift test --package-path Packages/Settings
 swift test --package-path Packages/UserGuide
 ```
+
+`tools/full` runs every package that has tests, plus the app compile gate.
+`Packages/Storage` is the one exception — SwiftPM does not compile its
+`.xcdatamodeld`, so its suite runs in Xcode and its code is covered by the compile
+gate instead. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
+
+SwiftUI `#Preview` blocks accompany the screens in each feature package; use one of
+the verbose Debug schemes for previews and the debug menu.
 
 ## 🚦 CI/CD
 
@@ -198,11 +219,13 @@ If GitHub Discussions are enabled later, product ideas and broader proposals can
 ## 👨‍💻 Contact
 
 - Email: oleksandr.solokha@gmail.com
-- App Store: (coming soon)
+- Support: [alikeapp.github.io/support](https://alikeapp.github.io/support/)
+- App Store: link goes live when 1.0.0 clears review
 
 ## 📄 License
 
-MIT
+[MIT](LICENSE) © 2026 Oleksandr Solokha. Third-party components are covered by
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ---
 
