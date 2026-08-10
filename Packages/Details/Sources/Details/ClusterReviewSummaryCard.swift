@@ -78,7 +78,7 @@ struct ClusterReviewSummaryCard: View {
                     .foregroundStyle(Color.heroGold)
             }
             .font(.appCallout.weight(.semibold))
-            .accessibilityLabel(Text("\(DetailsL10n.Common.bestShot): \(bestShotLabel)"))
+            .accessibilityLabel(Text(verbatim: "\(DetailsL10n.Common.bestShot): \(bestShotLabel)"))
 
             selectionSummaryLabel
         }

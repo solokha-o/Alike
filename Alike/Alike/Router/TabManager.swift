@@ -19,9 +19,9 @@ final class TabManager {
         
         var titleKey: LocalizedStringKey {
             switch self {
-            case .scanner: return "Scanner"
-            case .cleanup: return "Cleanup"
-            case .settings: return "Settings"
+            case .scanner: return "alike.tab.scanner"
+            case .cleanup: return "alike.tab.cleanup"
+            case .settings: return "alike.tab.settings"
             }
         }
         
