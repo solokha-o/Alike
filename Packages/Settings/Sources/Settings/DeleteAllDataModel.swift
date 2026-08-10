@@ -40,10 +40,7 @@ final class DeleteAllDataModel {
                 "\(AppLog.tag(.error, "Failed to delete local app data: \(error.localizedDescription)"))"
             )
             state = .failed(
-                message: String(
-                    localized: "Some data may already have been removed. Please try again to finish deleting your Alike data.",
-                    bundle: .main
-                )
+                message: SettingsL10n.DeleteAllDataModel.someDataMayAlreadyHave
             )
         }
     }

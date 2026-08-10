@@ -141,7 +141,7 @@ final class ScreenshotCleanupViewModel {
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
-            applyDeleteFailure(message: appLocalized("Select at least one photo before deleting."), offersOpenSettings: false)
+            applyDeleteFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
             return
         }
         guard premiumAccess.access(
@@ -211,22 +211,22 @@ private extension ScreenshotCleanupViewModel {
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
-                message: appLocalized("Select at least one photo before deleting."),
+                message: DetailsL10n.Common.selectAtLeastOnePhoto,
                 offersOpenSettings: false
             )
         case .notAuthorized:
             applyDeleteFailure(
-                message: appLocalized("Alike needs photo library access before it can delete photos. Open Settings to continue."),
+                message: DetailsL10n.Common.alikeNeedsPhotoLibraryAccess,
                 offersOpenSettings: true
             )
         case .selectedAssetsUnavailable:
             applyDeleteFailure(
-                message: appLocalized("Some selected photos are no longer available. Your library access may be limited, or the library changed since the last scan."),
+                message: DetailsL10n.Common.someSelectedPhotosNoLonger,
                 offersOpenSettings: true
             )
         case .deleteFailed:
             applyDeleteFailure(
-                message: appLocalized("Couldn't delete the selected photos. Please try again."),
+                message: DetailsL10n.Common.couldntDeleteSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }

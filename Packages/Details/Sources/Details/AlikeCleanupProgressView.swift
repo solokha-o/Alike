@@ -50,7 +50,7 @@ struct AlikeCleanupProgressView: View {
 
     var body: some View {
         VStack(spacing: Spacing.medium) {
-            Text(appLocalized("Organizing Photos"))
+            Text(DetailsL10n.AlikeCleanupProgress.organizingPhotos)
                 .font(.appTitle2)
                 .multilineTextAlignment(.center)
 
@@ -59,7 +59,7 @@ struct AlikeCleanupProgressView: View {
             AlikeCleanupProgressHero(
                 isActive: isExecuting,
                 maximumWidth: Constants.maximumArtworkWidth,
-                accessibilityLabel: appLocalized("Alike organizing selected photos")
+                accessibilityLabel: DetailsL10n.Common.alikeOrganizingSelectedPhotos
             )
         }
         .frame(maxWidth: .infinity)
@@ -87,14 +87,14 @@ struct AlikeCleanupProgressView: View {
 
     private var selectedMetric: some View {
         metric(
-            title: appLocalized("Selected Photos"),
+            title: DetailsL10n.AlikeCleanupProgress.selectedPhotos,
             value: "\(selectedCount)"
         )
     }
 
     private var savingsMetric: some View {
         metric(
-            title: appLocalized("Estimated Savings"),
+            title: DetailsL10n.AlikeCleanupProgress.estimatedSavings,
             value: estimatedSavingsText
         )
     }

@@ -801,7 +801,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, "Couldn't delete the selected photos. Please try again.")
+        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntDeleteSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))
@@ -829,7 +829,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
         XCTAssertFalse(cleanupDidRun)
-        XCTAssertEqual(viewModel.deleteErrorMessage, "Select at least one photo before deleting.")
+        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
     }
 
     func testDismissingDeleteErrorClearsErrorState() async {
@@ -864,13 +864,28 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertEqual(viewModel.deleteConfirmationTitle, "Move 1 Selected Photo to Recently Deleted?")
-        XCTAssertTrue(viewModel.deleteConfirmationMessage.contains(viewModel.estimatedSavingsText))
+        XCTAssertEqual(viewModel.deleteConfirmationTitle, DetailsL10n.ClusterDetails.move1SelectedPhotoRecently)
+        XCTAssertEqual(
+            viewModel.deleteConfirmationMessage,
+            String(
+                format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
+                viewModel.estimatedSavingsText
+            )
+        )
 
         viewModel.toggleSelection(for: "two")
 
-        XCTAssertEqual(viewModel.deleteConfirmationTitle, "Move 2 Selected Photos to Recently Deleted?")
-        XCTAssertTrue(viewModel.deleteConfirmationMessage.contains(viewModel.estimatedSavingsText))
+        XCTAssertEqual(
+            viewModel.deleteConfirmationTitle,
+            String(format: DetailsL10n.ClusterDetails.moveSelectedPhotosRecentlyDeleted, 2)
+        )
+        XCTAssertEqual(
+            viewModel.deleteConfirmationMessage,
+            String(
+                format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
+                viewModel.estimatedSavingsText
+            )
+        )
     }
 
     func testFreeUserCanRequestSinglePhotoCleanup() async {

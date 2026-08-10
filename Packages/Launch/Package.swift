@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "Launch",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -20,6 +21,9 @@ let package = Package(
         .target(
             name: "Launch",
             dependencies: ["DesignSystem"],
+            resources: [
+                .process("Resources")
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]

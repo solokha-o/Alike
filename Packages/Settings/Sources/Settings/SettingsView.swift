@@ -26,22 +26,22 @@ private enum RestorePurchasesFeedback: String, Identifiable {
     var title: String {
         switch self {
         case .restored:
-            appLocalized("Alike Pro is active")
+            SettingsL10n.Main.alikeProIsActive
         case .noActiveSubscription:
-            appLocalized("No active Alike Pro subscription was found.")
+            SettingsL10n.Main.noActiveAlikeProSubscription
         case .failed:
-            appLocalized("Couldn't Restore Purchases")
+            SettingsL10n.Main.couldntRestorePurchases
         }
     }
 
     var message: String {
         switch self {
         case .restored:
-            appLocalized("Your Alike Pro subscription was restored.")
+            SettingsL10n.Main.alikeProSubscriptionWasRestored
         case .noActiveSubscription:
-            appLocalized("You can continue using Alike Free.")
+            SettingsL10n.Main.canContinueUsingAlikeFree
         case .failed:
-            appLocalized("Please check your connection and try restoring again.")
+            SettingsL10n.Main.pleaseCheckConnectionTryRestoring
         }
     }
 }
@@ -107,10 +107,10 @@ public struct SettingsView: View {
             premiumFeatureSheet(for: feature)
         }
         .alert(
-            appLocalized("Couldn't Update Reminder"),
+            SettingsL10n.Main.couldntUpdateReminder,
             isPresented: isCleanupReminderErrorPresented
         ) {
-            Button(appLocalized("OK"), role: .cancel) {
+            Button(SettingsL10n.Main.ok, role: .cancel) {
                 viewModel.dismissCleanupReminderError()
             }
         } message: {
@@ -120,7 +120,7 @@ public struct SettingsView: View {
             Alert(
                 title: Text(feedback.title),
                 message: Text(feedback.message),
-                dismissButton: .default(Text(appLocalized("OK")))
+                dismissButton: .default(Text(SettingsL10n.Main.ok))
             )
         }
     }
@@ -139,7 +139,7 @@ public struct SettingsView: View {
             legalSection
             aboutSection
         }
-        .navigationTitle(Text(appLocalized("Settings")))
+        .navigationTitle(Text(SettingsL10n.Main.settings))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -176,7 +176,7 @@ public struct SettingsView: View {
                 onRestore: restorePurchases
             )
         } header: {
-            Text(appLocalized("Subscription"))
+            Text(SettingsL10n.Main.subscription)
         }
     }
 
@@ -241,20 +241,20 @@ public struct SettingsView: View {
                 )
             ) {
                 Label {
-                    Text(appLocalized("Weekly cleanup reminder"))
+                    Text(SettingsL10n.Main.weeklyCleanupReminder)
                 } icon: {
                     Image(systemName: "bell.badge")
                 }
             }
             .disabled(viewModel.isUpdatingCleanupReminder)
-            .accessibilityHint(Text(appLocalized("Enable a weekly reminder to come back and continue cleanup")))
+            .accessibilityHint(Text(SettingsL10n.Main.enableWeeklyReminderComeBack))
 
             if viewModel.cleanupReminderState.authorizationStatus == .denied {
-                Text(appLocalized("Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."))
+                Text(SettingsL10n.Main.notificationsTurnedOffAlikeEnable)
                     .foregroundColor(.secondary)
 
 #if canImport(UIKit)
-                Button(appLocalized("Open Settings")) {
+                Button(SettingsL10n.Main.openSettings) {
                     openAppSettings()
                 }
 #endif
@@ -263,7 +263,7 @@ public struct SettingsView: View {
             if viewModel.cleanupReminderState.isScheduleCustomizationLocked {
                 HStack {
                     Label {
-                        Text(appLocalized("Reminder schedule"))
+                        Text(SettingsL10n.Main.reminderSchedule)
                     } icon: {
                         Image(systemName: "calendar.badge.clock")
                     }
@@ -278,18 +278,18 @@ public struct SettingsView: View {
                     HStack(spacing: Spacing.small) {
                         Image(systemName: "lock.badge.clock")
                             .foregroundStyle(Color.accent)
-                        Text(appLocalized("Customize day & time"))
+                        Text(SettingsL10n.Main.customizeDayTime)
                         Spacer()
                         Image(systemName: "lock.fill")
                             .foregroundStyle(.secondary)
                     }
                 }
                 .buttonStyle(.plain)
-                .accessibilityHint(Text(appLocalized("Open premium details for custom cleanup reminder scheduling")))
+                .accessibilityHint(Text(SettingsL10n.Main.openPremiumDetailsCustomCleanup))
             } else {
                 HStack {
                     Label {
-                        Text(appLocalized("Reminder schedule"))
+                        Text(SettingsL10n.Main.reminderSchedule)
                     } icon: {
                         Image(systemName: "calendar.badge.clock")
                     }
@@ -299,7 +299,7 @@ public struct SettingsView: View {
                 }
 
                 Picker(
-                    appLocalized("Reminder day"),
+                    SettingsL10n.Main.reminderDay,
                     selection: Binding(
                         get: { viewModel.cleanupReminderState.schedule.weekday },
                         set: { weekday in
@@ -321,7 +321,7 @@ public struct SettingsView: View {
                 .disabled(viewModel.isUpdatingCleanupReminder)
 
                 DatePicker(
-                    appLocalized("Reminder time"),
+                    SettingsL10n.Main.reminderTime,
                     selection: Binding(
                         get: { reminderTimeDate(for: viewModel.cleanupReminderState.schedule) },
                         set: { date in
@@ -341,7 +341,7 @@ public struct SettingsView: View {
                 .disabled(viewModel.isUpdatingCleanupReminder)
             }
         } header: {
-            Text(appLocalized("Cleanup Reminder"))
+            Text(SettingsL10n.Main.cleanupReminder)
         } footer: {
             Text(cleanupReminderFooterText)
         }
@@ -355,16 +355,16 @@ public struct SettingsView: View {
                     Text(level.displayName).tag(level)
                 }
             } label: {
-                Text(appLocalized("Sensitivity"))
+                Text(SettingsL10n.Main.sensitivity)
             }
-            .accessibilityHint(Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images")))
+            .accessibilityHint(Text(SettingsL10n.Main.higherSensitivityFindsMoreSimilar))
             .onChange(of: sensitivity) { _, _ in
                 needsRescan = viewModel.rescanRequiredAfterSensitivityChange()
             }
         } header: {
-            Text(appLocalized("Analysis"))
+            Text(SettingsL10n.Main.analysis)
         } footer: {
-            Text(appLocalized("Higher sensitivity finds more similar photos but may include less alike images"))
+            Text(SettingsL10n.Main.higherSensitivityFindsMoreSimilar)
         }
     }
 
@@ -372,41 +372,41 @@ public struct SettingsView: View {
     private var debugSection: some View {
         Section {
             Toggle(
-                appLocalized("Unlock Unlimited Scans Premium Feature"),
+                SettingsL10n.Main.unlockUnlimitedScansPremiumFeature,
                 isOn: $debugUnlockUnlimitedRescans
             )
 
             Toggle(
-                appLocalized("Unlock Screenshot Cleanup Premium Feature"),
+                SettingsL10n.Main.unlockScreenshotCleanupPremiumFeature,
                 isOn: $debugUnlockScreenshotCleanup
             )
-            .accessibilityHint(Text(appLocalized("Enable premium screenshot cleanup access in debug builds")))
+            .accessibilityHint(Text(SettingsL10n.Main.enablePremiumScreenshotCleanupAccess))
 
             Toggle(
-                appLocalized("Unlock Blurred Photo Cleanup Premium Feature"),
+                SettingsL10n.Main.unlockBlurredPhotoCleanupPremium,
                 isOn: $debugUnlockBlurredPhotoCleanup
             )
-            .accessibilityHint(Text(appLocalized("Enable premium blurred photo cleanup access in debug builds")))
+            .accessibilityHint(Text(SettingsL10n.Main.enablePremiumBlurredPhotoCleanup))
 
             Toggle(
-                appLocalized("Unlock Advanced Filters Premium Feature"),
+                SettingsL10n.Main.unlockAdvancedFiltersPremiumFeature,
                 isOn: $debugUnlockAdvancedFilters
             )
 
             Toggle(
-                appLocalized("Unlock Batch Cleanup Premium Feature"),
+                SettingsL10n.Main.unlockBatchCleanupPremiumFeature,
                 isOn: $debugUnlockBatchCleanup
             )
 
             Toggle(
-                appLocalized("Unlock Custom Reminder Schedule Premium Feature"),
+                SettingsL10n.Main.unlockCustomReminderSchedulePremium,
                 isOn: $debugUnlockCleanupReminders
             )
-            .accessibilityHint(Text(appLocalized("Enable premium reminder schedule customization in debug builds")))
+            .accessibilityHint(Text(SettingsL10n.Main.enablePremiumReminderScheduleCustomization))
         } header: {
-            Text(appLocalized("Debug"))
+            Text(SettingsL10n.Main.debug)
         } footer: {
-            Text(appLocalized("This override is available only in debug builds and affects local premium gating."))
+            Text(SettingsL10n.Main.thisOverrideAvailableOnlyDebug)
         }
     }
 #endif
@@ -418,32 +418,32 @@ public struct SettingsView: View {
                 router.push(.userGuide)
             } label: {
                 Label {
-                    Text(appLocalized("How to Use"))
+                    Text(SettingsL10n.Main.howToUse)
                 } icon: {
                     Image(systemName: "book")
                 }
             }
-            .accessibilityHint(Text(appLocalized("Open usage instructions and cleanup workflow tips")))
+            .accessibilityHint(Text(SettingsL10n.Main.openUsageInstructionsCleanupWorkflow))
             
             ShareLink(item: AppStoreLinks.product) {
                 Label {
-                    Text(appLocalized("Share App"))
+                    Text(SettingsL10n.Main.shareApp)
                 } icon: {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
-            .accessibilityHint(Text(appLocalized("Share the app using available sharing options")))
+            .accessibilityHint(Text(SettingsL10n.Main.shareAppUsingAvailableSharing))
             
             Button {
                 viewModel.handleRateTapped(requestReview: requestReview)
             } label: {
                 Label {
-                    Text(appLocalized("Rate on App Store"))
+                    Text(SettingsL10n.Main.rateOnAppStore)
                 } icon: {
                     Image(systemName: "star")
                 }
             }
-            .accessibilityHint(Text(appLocalized("Request the App Store rating prompt")))
+            .accessibilityHint(Text(SettingsL10n.Main.requestAppStoreRatingPrompt))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
             // The subject is percent-encoded in the literal rather than left to
@@ -452,14 +452,14 @@ public struct SettingsView: View {
             // unwrap valid under strict RFC 3986 parsing too.
             Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike%20Feedback")!) {
                 Label {
-                    Text(appLocalized("Contact Developer"))
+                    Text(SettingsL10n.Main.contactDeveloper)
                 } icon: {
                     Image(systemName: "envelope")
                 }
             }
-            .accessibilityHint(Text(appLocalized("Open email composer to contact the developer")))
+            .accessibilityHint(Text(SettingsL10n.Main.openEmailComposerContactDeveloper))
         } header: {
-            Text(appLocalized("Support"))
+            Text(SettingsL10n.Main.support)
         }
     }
 
@@ -470,19 +470,19 @@ public struct SettingsView: View {
                 router.push(.deleteAllData)
             } label: {
                 Label {
-                    Text(appLocalized("Delete Alike Data"))
+                    Text(SettingsL10n.Main.deleteAlikeData)
                 } icon: {
                     Image(systemName: "trash")
                 }
                 .foregroundStyle(.red)
             }
             .accessibilityHint(
-                Text(appLocalized("Review and permanently delete data stored by Alike on this device"))
+                Text(SettingsL10n.Main.reviewPermanentlyDeleteDataStored)
             )
         } header: {
-            Text(appLocalized("Data & Privacy"))
+            Text(SettingsL10n.Main.dataPrivacy)
         } footer: {
-            Text(appLocalized("Your photo library is never deleted by this action."))
+            Text(SettingsL10n.Main.photoLibraryNeverDeletedBy)
         }
     }
 
@@ -492,26 +492,26 @@ public struct SettingsView: View {
             if let privacyPolicy = legalLinks.privacyPolicy {
                 Link(destination: privacyPolicy) {
                     Label {
-                        Text(appLocalized("Privacy Policy"))
+                        Text(SettingsL10n.Main.privacyPolicy)
                     } icon: {
                         Image(systemName: "hand.raised")
                     }
                 }
-                .accessibilityHint(Text(appLocalized("Open the Alike privacy policy in your browser")))
+                .accessibilityHint(Text(SettingsL10n.Main.openAlikePrivacyPolicyBrowser))
             }
 
             if let termsOfUse = legalLinks.termsOfUse {
                 Link(destination: termsOfUse) {
                     Label {
-                        Text(appLocalized("Terms of Use"))
+                        Text(SettingsL10n.Main.termsOfUse)
                     } icon: {
                         Image(systemName: "doc.text")
                     }
                 }
-                .accessibilityHint(Text(appLocalized("Open the Alike terms of use in your browser")))
+                .accessibilityHint(Text(SettingsL10n.Main.openAlikeTermsUseBrowser))
             }
         } header: {
-            Text(appLocalized("Legal"))
+            Text(SettingsL10n.Main.legal)
         }
     }
     
@@ -519,7 +519,7 @@ public struct SettingsView: View {
     private var aboutSection: some View {
         Section {
             HStack {
-                Text(appLocalized("Version"))
+                Text(SettingsL10n.Main.version)
                 Spacer()
                 Text(viewModel.appVersion)
                     .foregroundColor(.secondary)
@@ -534,14 +534,14 @@ public struct SettingsView: View {
                 openLanguageSettings()
             } label: {
                 Label {
-                    Text(appLocalized("Change Language"))
+                    Text(SettingsL10n.Main.changeLanguage)
                 } icon: {
                     Image(systemName: "globe")
                 }
             }
-            .accessibilityHint(Text(appLocalized("Open system settings to change app language")))
+            .accessibilityHint(Text(SettingsL10n.Main.openSystemSettingsChangeApp))
         } header: {
-            Text(appLocalized("Language"))
+            Text(SettingsL10n.Main.language)
         }
     }
 
@@ -581,12 +581,10 @@ public struct SettingsView: View {
 
     private var cleanupReminderFooterText: String {
         if hasCleanupReminderAccess {
-            return appLocalized("Premium lets you choose a custom weekly reminder schedule.")
+            return SettingsL10n.Main.premiumLetsChooseCustomWeekly
         }
 
-        return appLocalized(
-            "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
-        )
+        return SettingsL10n.Main.freeRemindersUseSundayAt
     }
 
     private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
@@ -632,36 +630,36 @@ private struct DeleteAllDataView: View {
         Form {
             Section {
                 dataRow(
-                    appLocalized("Scan results and analysis caches"),
+                    SettingsL10n.Main.scanResultsAndAnalysisCaches,
                     systemImage: "sparkles.rectangle.stack"
                 )
                 dataRow(
-                    appLocalized("Cleanup progress, sessions, and history"),
+                    SettingsL10n.Main.cleanupProgressSessionsAndHistory,
                     systemImage: "clock.arrow.circlepath"
                 )
                 dataRow(
-                    appLocalized("Grid, sensitivity, and reminder preferences"),
+                    SettingsL10n.Main.gridSensitivityAndReminderPreferences,
                     systemImage: "slider.horizontal.3"
                 )
             } header: {
-                Text(appLocalized("What will be deleted"))
+                Text(SettingsL10n.Main.whatWillBeDeleted)
             }
 
             Section {
                 dataRow(
-                    appLocalized("Your photos and Recently Deleted items"),
+                    SettingsL10n.Main.photosRecentlyDeletedItems,
                     systemImage: "photo.on.rectangle"
                 )
                 dataRow(
-                    appLocalized("Photo access and Alike Pro subscription"),
+                    SettingsL10n.Main.photoAccessAlikeProSubscription,
                     systemImage: "checkmark.shield"
                 )
                 dataRow(
-                    appLocalized("Monthly free-scan allowance"),
+                    SettingsL10n.Main.monthlyFreeScanAllowance,
                     systemImage: "calendar"
                 )
             } header: {
-                Text(appLocalized("What will stay"))
+                Text(SettingsL10n.Main.whatWillStay)
             }
 
             Section {
@@ -674,48 +672,46 @@ private struct DeleteAllDataView: View {
                                 .controlSize(.small)
                         }
                         Text(
-                            appLocalized(
-                                model.isDeleting
-                                    ? "Deleting..."
-                                    : "Delete Alike Data"
-                            )
+                            (model.isDeleting
+                                    ? SettingsL10n.Main.deleting
+                                    : SettingsL10n.Main.deleteAlikeData)
                         )
                         .frame(maxWidth: .infinity)
                     }
                 }
                 .disabled(model.isDeleting)
                 .accessibilityHint(
-                    Text(appLocalized("Permanently delete Alike data after confirmation"))
+                    Text(SettingsL10n.Main.permanentlyDeleteAlikeDataAfter)
                 )
             } footer: {
-                Text(appLocalized("This action can't be undone. Alike will replay onboarding when deletion finishes."))
+                Text(SettingsL10n.Main.thisActionCantBeUndone)
             }
         }
-        .navigationTitle(Text(appLocalized("Delete Alike Data")))
+        .navigationTitle(Text(SettingsL10n.Main.deleteAlikeData))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
 #endif
         .navigationBarBackButtonHidden(model.isDeleting)
         .confirmationDialog(
-            appLocalized("Delete all Alike data?"),
+            SettingsL10n.Main.deleteAllAlikeData,
             isPresented: $isConfirmationPresented,
             titleVisibility: .visible
         ) {
-            Button(appLocalized("Delete Alike Data"), role: .destructive) {
+            Button(SettingsL10n.Main.deleteAlikeData, role: .destructive) {
                 startDeletion()
             }
-            Button(appLocalized("Cancel"), role: .cancel) {}
+            Button(SettingsL10n.Main.cancel, role: .cancel) {}
         } message: {
-            Text(appLocalized("This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."))
+            Text(SettingsL10n.Main.thisPermanentlyDeletesAlikesLocal)
         }
         .alert(
-            appLocalized("Couldn't Delete Alike Data"),
+            SettingsL10n.Main.couldntDeleteAlikeData,
             isPresented: isDeletionErrorPresented
         ) {
-            Button(appLocalized("Try Again")) {
+            Button(SettingsL10n.Main.tryAgain) {
                 startDeletion()
             }
-            Button(appLocalized("Cancel"), role: .cancel) {
+            Button(SettingsL10n.Main.cancel, role: .cancel) {
                 model.dismissError()
             }
         } message: {

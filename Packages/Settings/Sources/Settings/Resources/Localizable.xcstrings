@@ -1,0 +1,1292 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "settings.deleteAllDataModel.someDataMayAlreadyHave": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some data may already have been removed. Please try again to finish deleting your Alike data."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Деякі дані вже могли бути видалені. Спробуйте ще раз, щоб завершити видалення даних Alike."
+          }
+        }
+      }
+    },
+    "settings.main.alikeProIsActive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro is active"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro активна"
+          }
+        }
+      }
+    },
+    "settings.main.alikeProSubscriptionWasRestored": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Alike Pro subscription was restored."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вашу підписку Alike Pro відновлено."
+          }
+        }
+      }
+    },
+    "settings.main.analysis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аналіз"
+          }
+        }
+      }
+    },
+    "settings.main.canContinueUsingAlikeFree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can continue using Alike Free."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ви можете продовжувати користуватися Alike Free."
+          }
+        }
+      }
+    },
+    "settings.main.cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скасувати"
+          }
+        }
+      }
+    },
+    "settings.main.changeLanguage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change Language"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Змінити мову"
+          }
+        }
+      }
+    },
+    "settings.main.cleanupProgressSessionsAndHistory": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup progress, sessions, and history"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прогрес очищення, сеанси та історію"
+          }
+        }
+      }
+    },
+    "settings.main.cleanupReminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Reminder"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нагадування про очищення"
+          }
+        }
+      }
+    },
+    "settings.main.cleanupReminderCouldntBeUpdated": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your cleanup reminder couldn't be updated. Please try again."
+          }
+        }
+      }
+    },
+    "settings.main.contactDeveloper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact Developer"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зв'язатися з розробником"
+          }
+        }
+      }
+    },
+    "settings.main.couldntDeleteAlikeData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Delete Alike Data"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося видалити дані Alike"
+          }
+        }
+      }
+    },
+    "settings.main.couldntRestorePurchases": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Restore Purchases"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося відновити покупки"
+          }
+        }
+      }
+    },
+    "settings.main.couldntUpdateReminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Update Reminder"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося оновити нагадування"
+          }
+        }
+      }
+    },
+    "settings.main.customizeDayTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Customize day & time"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налаштувати день і час"
+          }
+        }
+      }
+    },
+    "settings.main.dataPrivacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data & Privacy"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дані та приватність"
+          }
+        }
+      }
+    },
+    "settings.main.debug": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налагодження"
+          }
+        }
+      }
+    },
+    "settings.main.deleteAlikeData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Alike Data"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалити дані Alike"
+          }
+        }
+      }
+    },
+    "settings.main.deleteAllAlikeData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete all Alike data?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалити всі дані Alike?"
+          }
+        }
+      }
+    },
+    "settings.main.deleting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалення..."
+          }
+        }
+      }
+    },
+    "settings.main.enablePremiumBlurredPhotoCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable premium blurred photo cleanup access in debug builds"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкнути преміум-доступ до очищення розмитих фото в debug-збірках"
+          }
+        }
+      }
+    },
+    "settings.main.enablePremiumReminderScheduleCustomization": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable premium reminder schedule customization in debug builds"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкнути преміум-налаштування розкладу нагадувань у debug-збірках"
+          }
+        }
+      }
+    },
+    "settings.main.enablePremiumScreenshotCleanupAccess": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable premium screenshot cleanup access in debug builds"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкнути преміум-доступ до очищення знімків екрана в debug-збірках"
+          }
+        }
+      }
+    },
+    "settings.main.enableWeeklyReminderComeBack": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable a weekly reminder to come back and continue cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увімкніть щотижневе нагадування, щоб повернутися й продовжити очищення"
+          }
+        }
+      }
+    },
+    "settings.main.freeRemindersUseSundayAt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Безплатні нагадування використовують неділю о 18:00. Розблокуйте преміум, щоб обрати власний день і час."
+          }
+        }
+      }
+    },
+    "settings.main.gridSensitivityAndReminderPreferences": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grid, sensitivity, and reminder preferences"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налаштування сітки, чутливості та нагадувань"
+          }
+        }
+      }
+    },
+    "settings.main.higherSensitivityFindsMoreSimilar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Higher sensitivity finds more similar photos but may include less alike images"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вища чутливість знаходить більше схожих фото, але може включати менш подібні"
+          }
+        }
+      }
+    },
+    "settings.main.howToUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Use"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Як користуватись"
+          }
+        }
+      }
+    },
+    "settings.main.language": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мова"
+          }
+        }
+      }
+    },
+    "settings.main.legal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legal"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Правова інформація"
+          }
+        }
+      }
+    },
+    "settings.main.monthlyFreeScanAllowance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monthly free-scan allowance"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Місячний ліміт безкоштовних сканувань"
+          }
+        }
+      }
+    },
+    "settings.main.noActiveAlikeProSubscription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active Alike Pro subscription was found."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активну підписку Alike Pro не знайдено."
+          }
+        }
+      }
+    },
+    "settings.main.notificationsTurnedOffAlikeEnable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для Alike вимкнено сповіщення. Увімкніть їх у Налаштуваннях, щоб отримувати щотижневе нагадування про очищення."
+          }
+        }
+      }
+    },
+    "settings.main.ok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гаразд"
+          }
+        }
+      }
+    },
+    "settings.main.openAlikePrivacyPolicyBrowser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Alike privacy policy in your browser"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити політику конфіденційності Alike у браузері"
+          }
+        }
+      }
+    },
+    "settings.main.openAlikeTermsUseBrowser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Alike terms of use in your browser"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити умови використання Alike у браузері"
+          }
+        }
+      }
+    },
+    "settings.main.openEmailComposerContactDeveloper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open email composer to contact the developer"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити редактор листа, щоб зв’язатися з розробником"
+          }
+        }
+      }
+    },
+    "settings.main.openPremiumDetailsCustomCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open premium details for custom cleanup reminder scheduling"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити преміум-деталі для власного розкладу нагадувань про очищення"
+          }
+        }
+      }
+    },
+    "settings.main.openSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити налаштування"
+          }
+        }
+      }
+    },
+    "settings.main.openSystemSettingsChangeApp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open system settings to change app language"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити системні налаштування, щоб змінити мову застосунку"
+          }
+        }
+      }
+    },
+    "settings.main.openUsageInstructionsCleanupWorkflow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open usage instructions and cleanup workflow tips"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити інструкції та поради щодо процесу очищення"
+          }
+        }
+      }
+    },
+    "settings.main.permanentlyDeleteAlikeDataAfter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently delete Alike data after confirmation"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Назавжди видалити дані Alike після підтвердження"
+          }
+        }
+      }
+    },
+    "settings.main.photoAccessAlikeProSubscription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo access and Alike Pro subscription"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступ до фото та підписка Alike Pro"
+          }
+        }
+      }
+    },
+    "settings.main.photoLibraryNeverDeletedBy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photo library is never deleted by this action."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ця дія ніколи не видаляє вашу фототеку."
+          }
+        }
+      }
+    },
+    "settings.main.photosRecentlyDeletedItems": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos and Recently Deleted items"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваші фотографії та елементи в «Нещодавно видалені»"
+          }
+        }
+      }
+    },
+    "settings.main.pleaseCheckConnectionTryRestoring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please check your connection and try restoring again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевірте підключення до інтернету та спробуйте відновити покупки ще раз."
+          }
+        }
+      }
+    },
+    "settings.main.premiumLetsChooseCustomWeekly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium lets you choose a custom weekly reminder schedule."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Преміум дає змогу вибрати власний щотижневий розклад нагадувань."
+          }
+        }
+      }
+    },
+    "settings.main.privacyPolicy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Політика конфіденційності"
+          }
+        }
+      }
+    },
+    "settings.main.rateOnAppStore": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate on App Store"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оцінити в App Store"
+          }
+        }
+      }
+    },
+    "settings.main.reminderDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder day"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "День нагадування"
+          }
+        }
+      }
+    },
+    "settings.main.reminderSchedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder schedule"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розклад нагадування"
+          }
+        }
+      }
+    },
+    "settings.main.reminderTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder time"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Час нагадування"
+          }
+        }
+      }
+    },
+    "settings.main.requestAppStoreRatingPrompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Request the App Store rating prompt"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показати запит на оцінку в App Store"
+          }
+        }
+      }
+    },
+    "settings.main.reviewPermanentlyDeleteDataStored": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review and permanently delete data stored by Alike on this device"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянути й назавжди видалити дані Alike на цьому пристрої"
+          }
+        }
+      }
+    },
+    "settings.main.scanResultsAndAnalysisCaches": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan results and analysis caches"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Результати сканування та кеші аналізу"
+          }
+        }
+      }
+    },
+    "settings.main.sensitivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensitivity"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чутливість"
+          }
+        }
+      }
+    },
+    "settings.main.settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налаштування"
+          }
+        }
+      }
+    },
+    "settings.main.shareApp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share App"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поділитися застосунком"
+          }
+        }
+      }
+    },
+    "settings.main.shareAppUsingAvailableSharing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share the app using available sharing options"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поділитися застосунком доступним способом"
+          }
+        }
+      }
+    },
+    "settings.main.subscription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підписка"
+          }
+        }
+      }
+    },
+    "settings.main.support": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підтримка"
+          }
+        }
+      }
+    },
+    "settings.main.termsOfUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Умови використання"
+          }
+        }
+      }
+    },
+    "settings.main.thisActionCantBeUndone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This action can't be undone. Alike will replay onboarding when deletion finishes."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Цю дію неможливо скасувати. Після видалення Alike знову покаже вступні екрани."
+          }
+        }
+      }
+    },
+    "settings.main.thisOverrideAvailableOnlyDebug": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This override is available only in debug builds and affects local premium gating."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це перевизначення доступне лише в debug-збірках і впливає на локальні преміум-обмеження."
+          }
+        }
+      }
+    },
+    "settings.main.thisPermanentlyDeletesAlikesLocal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це назавжди видалить локальні результати Alike, історію очищення та налаштування. Ваші фотографії та підписка залишаться."
+          }
+        }
+      }
+    },
+    "settings.main.tryAgain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try Again"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спробувати ще раз"
+          }
+        }
+      }
+    },
+    "settings.main.unlockAdvancedFiltersPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Advanced Filters Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію розширених фільтрів"
+          }
+        }
+      }
+    },
+    "settings.main.unlockBatchCleanupPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Batch Cleanup Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію пакетного очищення"
+          }
+        }
+      }
+    },
+    "settings.main.unlockBlurredPhotoCleanupPremium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Blurred Photo Cleanup Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-очищення розмитих фото"
+          }
+        }
+      }
+    },
+    "settings.main.unlockCustomReminderSchedulePremium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Custom Reminder Schedule Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію власного розкладу нагадувань"
+          }
+        }
+      }
+    },
+    "settings.main.unlockScreenshotCleanupPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Screenshot Cleanup Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-очищення знімків екрана"
+          }
+        }
+      }
+    },
+    "settings.main.unlockUnlimitedScansPremiumFeature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Unlimited Scans Premium Feature"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розблокувати преміум-функцію необмежених сканувань"
+          }
+        }
+      }
+    },
+    "settings.main.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версія"
+          }
+        }
+      }
+    },
+    "settings.main.weeklyCleanupReminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly cleanup reminder"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щотижневе нагадування про очищення"
+          }
+        }
+      }
+    },
+    "settings.main.whatWillBeDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What will be deleted"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Що буде видалено"
+          }
+        }
+      }
+    },
+    "settings.main.whatWillStay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What will stay"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Що залишиться"
+          }
+        }
+      }
+    }
+  }
+}

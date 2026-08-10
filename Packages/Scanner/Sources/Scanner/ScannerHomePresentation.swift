@@ -39,8 +39,8 @@ struct ScannerHomePresentation: Equatable, Sendable {
             return Self(
                 visualPhase: .scanning,
                 cue: scanningCue(eventID: scanEventID),
-                title: appLocalized("Scanning your photo library"),
-                message: appLocalized("You can switch tabs while scanning. Your cleanup results will refresh when it finishes."),
+                title: ScannerL10n.ScannerHome.scanningYourPhotoLibrary,
+                message: ScannerL10n.ScannerHome.canSwitchTabsWhileScanning,
                 progress: min(max(progress, 0), 1),
                 primaryAction: nil,
                 primaryActionTitle: nil,
@@ -52,14 +52,14 @@ struct ScannerHomePresentation: Equatable, Sendable {
             return Self(
                 visualPhase: .error,
                 cue: issueCue,
-                title: appLocalized("I couldn't finish this scan."),
+                title: ScannerL10n.ScannerHome.iCouldntFinishThisScan,
                 message: message,
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("Retry"),
+                primaryActionTitle: ScannerL10n.ScannerHome.retry,
                 secondaryAction: hasCompletedScanBaseline ? .openCleanup : nil,
                 secondaryActionTitle: hasCompletedScanBaseline
-                    ? appLocalized("Review Existing Cleanup")
+                    ? ScannerL10n.ScannerHome.reviewExistingCleanup
                     : nil
             )
 
@@ -68,24 +68,24 @@ struct ScannerHomePresentation: Equatable, Sendable {
             return Self(
                 visualPhase: .libraryChanged,
                 cue: idleCue(context: .libraryChanged(newItemsCount: nil)),
-                title: appLocalized("scanner.alike.libraryChanged.message"),
-                message: appLocalized("scanner.alike.libraryChanged.supporting"),
+                title: ScannerL10n.Alike.librarychangedMessage,
+                message: ScannerL10n.Alike.librarychangedSupporting,
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("scanner.alike.libraryChanged.cta"),
+                primaryActionTitle: ScannerL10n.Alike.librarychangedCta,
                 secondaryAction: .openCleanup,
-                secondaryActionTitle: appLocalized("Review Existing Cleanup")
+                secondaryActionTitle: ScannerL10n.ScannerHome.reviewExistingCleanup
             )
 
         case .idle:
             return Self(
                 visualPhase: .ready,
                 cue: idleCue(context: .ready),
-                title: appLocalized("scanner.alike.ready.message"),
-                message: appLocalized("scanner.alike.ready.supporting"),
+                title: ScannerL10n.Alike.readyMessage,
+                message: ScannerL10n.Alike.readySupporting,
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("scanner.alike.ready.cta"),
+                primaryActionTitle: ScannerL10n.Alike.readyCta,
                 secondaryAction: nil,
                 secondaryActionTitle: nil
             )
@@ -96,24 +96,24 @@ struct ScannerHomePresentation: Equatable, Sendable {
                 return Self(
                     visualPhase: .reviews,
                     cue: idleCue(context: .hasReviews(count: opportunityCount)),
-                    title: appLocalized("Cleanup opportunities are ready"),
-                    message: appLocalized("Review each suggestion before anything is removed."),
+                    title: ScannerL10n.ScannerHome.cleanupOpportunitiesAreReady,
+                    message: ScannerL10n.ScannerHome.reviewEachSuggestionBeforeAnything,
                     progress: nil,
                     primaryAction: .openCleanup,
-                    primaryActionTitle: appLocalized("Review Cleanup"),
+                    primaryActionTitle: ScannerL10n.ScannerHome.reviewCleanup,
                     secondaryAction: .startScanning,
-                    secondaryActionTitle: appLocalized("Scan Again")
+                    secondaryActionTitle: ScannerL10n.ScannerHome.scanAgain
                 )
             }
 
             return Self(
                 visualPhase: .caughtUp,
                 cue: idleCue(context: .allCaughtUp),
-                title: appLocalized("Your library is up to date"),
-                message: appLocalized("No cleanup opportunities were found in this scan."),
+                title: ScannerL10n.ScannerHome.libraryUpDate,
+                message: ScannerL10n.ScannerHome.noCleanupOpportunitiesWereFound,
                 progress: nil,
                 primaryAction: .startScanning,
-                primaryActionTitle: appLocalized("Scan Again"),
+                primaryActionTitle: ScannerL10n.ScannerHome.scanAgain,
                 secondaryAction: nil,
                 secondaryActionTitle: nil
             )

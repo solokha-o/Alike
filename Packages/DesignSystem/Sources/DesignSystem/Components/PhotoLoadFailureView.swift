@@ -13,17 +13,17 @@ public struct PhotoLoadFailureView: View {
                 .font(.title3)
                 .accessibilityHidden(true)
 
-            Text(appLocalized("Photo preview unavailable"))
+            Text(DesignSystemL10n.PhotoLoadFailure.photoPreviewUnavailable)
                 .font(.caption2)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
 
             Button(action: retry) {
-                Label(appLocalized("Retry"), systemImage: "arrow.clockwise")
+                Label(DesignSystemL10n.PhotoLoadFailure.retry, systemImage: "arrow.clockwise")
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            .accessibilityHint(Text(appLocalized("Try loading the photo again")))
+            .accessibilityHint(Text(DesignSystemL10n.PhotoLoadFailure.tryLoadingThePhotoAgain))
         }
         .foregroundStyle(.secondary)
         .padding(Spacing.xxSmall)

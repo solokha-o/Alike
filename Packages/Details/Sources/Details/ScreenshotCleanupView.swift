@@ -75,7 +75,7 @@ public struct ScreenshotCleanupView: View {
                 } label: {
                     Image(systemName: "xmark")
                 }
-                .accessibilityLabel(Text(appLocalized("Close")))
+                .accessibilityLabel(Text(DetailsL10n.Common.close))
                 .disabled(viewModel.isDeleting)
             }
 
@@ -101,8 +101,8 @@ public struct ScreenshotCleanupView: View {
             deleteConfirmationTitle,
             isPresented: Bindable(viewModel).isDeleteConfirmationPresented
         ) {
-            Button(appLocalized("Cancel"), role: .cancel) {}
-            Button(appLocalized("Move"), role: .destructive) {
+            Button(DetailsL10n.Common.cancel, role: .cancel) {}
+            Button(DetailsL10n.Common.move, role: .destructive) {
                 Task {
                     await viewModel.confirmDelete()
                 }
@@ -111,7 +111,7 @@ public struct ScreenshotCleanupView: View {
             Text(deleteConfirmationMessage)
         }
         .alert(
-            appLocalized("Cleanup Unavailable"),
+            DetailsL10n.Common.cleanupUnavailable,
             isPresented: Binding(
                 get: { viewModel.deleteErrorMessage != nil },
                 set: { isPresented in
@@ -122,12 +122,12 @@ public struct ScreenshotCleanupView: View {
             )
         ) {
             if viewModel.shouldOfferOpenSettings {
-                Button(appLocalized("Open Settings")) {
+                Button(DetailsL10n.Common.openSettings) {
                     viewModel.openSettings()
                     viewModel.clearDeleteError()
                 }
             }
-            Button(appLocalized("OK"), role: .cancel) {
+            Button(DetailsL10n.Common.ok, role: .cancel) {
                 viewModel.clearDeleteError()
             }
         } message: {
@@ -273,9 +273,9 @@ public struct ScreenshotCleanupView: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label(appLocalized("Screenshots"), systemImage: "camera.viewfinder")
+            Label(DetailsL10n.ScreenshotCleanup.screenshots, systemImage: "camera.viewfinder")
         } description: {
-            Text(appLocalized("Screenshot cleanup is available on iOS."))
+            Text(DetailsL10n.ScreenshotCleanup.screenshotCleanupAvailableIOS)
         }
     }
 }

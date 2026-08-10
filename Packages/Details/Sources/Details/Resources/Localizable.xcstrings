@@ -1,0 +1,1621 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "details.alikeBestShotCelebration.alikeCelebratingTheBestShot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebrating the Best Shot"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike святкує вибір найкращого кадру"
+          }
+        }
+      }
+    },
+    "details.alikeCleanupProgress.estimatedSavings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimated Savings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оцінена економія"
+          }
+        }
+      }
+    },
+    "details.alikeCleanupProgress.organizingPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Organizing Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Упорядкування фотографій"
+          }
+        }
+      }
+    },
+    "details.alikeCleanupProgress.selectedPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрані фотографії"
+          }
+        }
+      }
+    },
+    "details.alikeComparisonReview.alikeComparingSimilarPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike comparing similar photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike порівнює схожі фотографії"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.clusterDetailsAvailableIOS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cluster details are available on iOS."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Деталі кластера доступні на iOS."
+          }
+        }
+      }
+    },
+    "details.clusterDetails.created": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Створено"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.dates": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дати"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.depthEffect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depth Effect"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ефект глибини"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.details": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Деталі"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готово"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.doubleTapRemoveThisPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to remove this photo from cleanup selection"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Двічі торкніться, щоб зняти вибір цього фото для очищення"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.doubleTapReopenThisCluster": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to reopen this cluster for review"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Двічі торкніться, щоб знову відкрити цей кластер для перегляду"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.doubleTapSelectThisPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to select this photo for cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Двічі торкніться, щоб вибрати це фото для очищення"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.favorite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorite"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Улюблене"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.finishesReviewKeepsEveryPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finishes the review and keeps every photo in this cluster"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завершує перегляд і залишає всі фото цього кластера"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.finishesReviewKeepsPhotosDid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finishes the review and keeps the photos you did not select"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завершує перегляд і залишає фото, які ви не вибрали"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.hdr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.keepingOf": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %d of %d"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Залишаємо %d з %d"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.livePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.location": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Місце"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.makeBestShot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make Best Shot"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зробити найкращим кадром"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.mapShowingWherePhotoWas": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map showing where the photo was taken"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Карта з місцем, де було зроблено фото"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.markReviewed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark Reviewed"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Позначити переглянутим"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.megapixels": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapixels"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мегапікселі"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.modified": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modified"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Змінено"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.moreOptions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More Options"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Більше опцій"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.move1SelectedPhotoRecently": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move 1 Selected Photo to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити 1 вибране фото до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.moveSelectedPhotosRecentlyDeleted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move %d Selected Photos to Recently Deleted?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити вибрані фото (%d) до «Недавно видалені»?"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.mp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Мп"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.no": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ні"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.noPhotosAvailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Photos Available"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Немає доступних фото"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.notSelected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not selected"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вибрано"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.openInMaps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Maps"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити в Картах"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.openOriginal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Original"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити оригінал"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.opensPhotoLocationMaps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the photo location in Maps"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкриває місце зйомки фото в Картах"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.panorama": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Панорама"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фото"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.photoInfo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Info"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Інформація про фото"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.photoLocation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo location"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Місце зйомки"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.resolution": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolution"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Роздільна здатність"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.screenshot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімок екрана"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selectAllExceptBest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All Except Best"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрати все, крім найкращого"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selectedForCleanupReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected for cleanup review"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано для перегляду очищення"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selectedPhotoWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибране фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім залишатиметься в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки фото не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selectedPhotosWillBeRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрані фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки їх не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selection": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selection"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибір"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.selectionShortcutsAndGridLayout": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selection shortcuts and grid layout"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Швидкий вибір фото та вигляд сітки"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.showInfo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Info"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показати інформацію"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.similarPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Схожі фото"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.thisPhotoKeptAsBest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo is kept as the best shot. Long press another photo to make it the best shot instead."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це фото збережено як найкращий кадр. Утримайте інше фото, щоб зробити найкращим кадром його."
+          }
+        }
+      }
+    },
+    "details.clusterDetails.type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тип"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.view": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вигляд"
+          }
+        }
+      }
+    },
+    "details.clusterDetails.yes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Так"
+          }
+        }
+      }
+    },
+    "details.clusterReviewActionBar.move1Photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move 1 Photo"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити 1 фото"
+          }
+        }
+      }
+    },
+    "details.clusterReviewActionBar.movePhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move %d Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити фото: %d"
+          }
+        }
+      }
+    },
+    "details.clusterReviewActionBar.moving": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переміщення..."
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.currentCleanupReviewStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current cleanup review status"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поточний стан перегляду очищення"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.inReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In review"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У перегляді"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.keepingOfEstimatedSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %d of %d, estimated size %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Залишаємо %d з %d, приблизний розмір %@."
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.n1SelectedEstimatedSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 selected, estimated size %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано: 1, орієнтовний розмір: %@."
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.n1SimilarPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Similar Photo"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 схоже фото"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.needsReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs review"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Потребує перегляду"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.notReviewed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not reviewed"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не переглянуто"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.selectedEstimatedSize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d selected, estimated size %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрано: %d, орієнтовний розмір: %@."
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.similarPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Similar Photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Схожих фото: %d"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.tapPhotosSelectThemCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap photos to select them for cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Торкніться фото, щоб вибрати їх для очищення"
+          }
+        }
+      }
+    },
+    "details.common.alikeNeedsPhotoLibraryAccess": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo library access before it can delete photos. Open Settings to continue."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike потрібен доступ до фототеки, щоб видаляти фото. Відкрийте Налаштування, щоб продовжити."
+          }
+        }
+      }
+    },
+    "details.common.alikeOrganizingSelectedPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike organizing selected photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike впорядковує вибрані фотографії"
+          }
+        }
+      }
+    },
+    "details.common.bestShot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Shot"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Найкращий кадр"
+          }
+        }
+      }
+    },
+    "details.common.cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скасувати"
+          }
+        }
+      }
+    },
+    "details.common.cleanupUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Unavailable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення недоступне"
+          }
+        }
+      }
+    },
+    "details.common.clearSelection": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Selection"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очистити вибір"
+          }
+        }
+      }
+    },
+    "details.common.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Закрити"
+          }
+        }
+      }
+    },
+    "details.common.couldntDeleteSelectedPhotosPlease": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't delete the selected photos. Please try again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося видалити вибрані фото. Спробуйте ще раз."
+          }
+        }
+      }
+    },
+    "details.common.keepingAllPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping all %d photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Залишаємо всі %d фото"
+          }
+        }
+      }
+    },
+    "details.common.loadingPhotoPreview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading photo preview"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завантаження попереднього перегляду фото"
+          }
+        }
+      }
+    },
+    "details.common.move": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити"
+          }
+        }
+      }
+    },
+    "details.common.moveCurrentlySelectedPhotosRecently": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move the currently selected photos to Recently Deleted"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перемістити вибрані фото до «Недавно видалені»"
+          }
+        }
+      }
+    },
+    "details.common.ok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гаразд"
+          }
+        }
+      }
+    },
+    "details.common.openSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відкрити налаштування"
+          }
+        }
+      }
+    },
+    "details.common.photoPreview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попередній перегляд фото"
+          }
+        }
+      }
+    },
+    "details.common.photoPreviewUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview unavailable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попередній перегляд фото недоступний"
+          }
+        }
+      }
+    },
+    "details.common.reviewed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewed"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переглянуто"
+          }
+        }
+      }
+    },
+    "details.common.selectAtLeastOnePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select at least one photo before deleting."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перед видаленням виберіть принаймні одне фото."
+          }
+        }
+      }
+    },
+    "details.common.someSelectedPhotosNoLonger": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some selected photos are no longer available. Your library access may be limited, or the library changed since the last scan."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Деякі вибрані фото більше недоступні. Доступ до фототеки може бути обмежений або фототека змінилася після останнього сканування."
+          }
+        }
+      }
+    },
+    "details.fullscreenZoomablePhoto.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторити"
+          }
+        }
+      }
+    },
+    "details.fullscreenZoomablePhoto.tryLoadingThePhotoAgain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try loading the photo again"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спробуйте завантажити фото ще раз"
+          }
+        }
+      }
+    },
+    "details.screenshotCleanup.screenshotCleanupAvailableIOS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot cleanup is available on iOS."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очищення знімків екрана доступне на iOS."
+          }
+        }
+      }
+    },
+    "details.screenshotCleanup.screenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Знімки екрана"
+          }
+        }
+      }
+    },
+    "details.screenshotCleanupComponents.chooseWhichPhotosSelectedCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose which photos are selected for cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виберіть фотографії для очищення"
+          }
+        }
+      }
+    },
+    "details.screenshotCleanupComponents.deleteSelected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Selected"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалити вибране"
+          }
+        }
+      }
+    },
+    "details.screenshotCleanupComponents.deleting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалення..."
+          }
+        }
+      }
+    },
+    "details.screenshotCleanupComponents.selectAll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрати все"
+          }
+        }
+      }
+    }
+  }
+}

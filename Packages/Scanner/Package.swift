@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "Scanner",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -28,6 +29,9 @@ let package = Package(
                 "Core", "DesignSystem", "Cleanup", "NavigationKit", "UserGuide",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
+            ],
+            resources: [
+                .process("Resources")
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")

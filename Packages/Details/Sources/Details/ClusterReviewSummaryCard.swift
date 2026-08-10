@@ -78,7 +78,7 @@ struct ClusterReviewSummaryCard: View {
                     .foregroundStyle(Color.heroGold)
             }
             .font(.appCallout.weight(.semibold))
-            .accessibilityLabel(Text("\(appLocalized("Best Shot")): \(bestShotLabel)"))
+            .accessibilityLabel(Text(verbatim: "\(DetailsL10n.Common.bestShot): \(bestShotLabel)"))
 
             selectionSummaryLabel
         }
@@ -96,9 +96,9 @@ struct ClusterReviewSummaryCard: View {
 
     private var assetCountTitle: String {
         if assetCount == 1 {
-            return appLocalized("1 Similar Photo")
+            return DetailsL10n.ClusterReviewSummaryCard.n1SimilarPhoto
         }
-        return String(format: appLocalized("%d Similar Photos"), assetCount)
+        return String(format: DetailsL10n.ClusterReviewSummaryCard.similarPhotos, assetCount)
     }
 
     private var selectionSummary: String {
@@ -145,22 +145,22 @@ struct ClusterReviewSummaryCard: View {
     ) -> String {
         guard selectedCount > 0 else {
             return isReviewConfirmed
-                ? String(format: appLocalized("Keeping all %d photos"), assetCount)
-                : appLocalized("Tap photos to select them for cleanup")
+                ? String(format: DetailsL10n.Common.keepingAllPhotos, assetCount)
+                : DetailsL10n.ClusterReviewSummaryCard.tapPhotosSelectThemCleanup
         }
         if isReviewConfirmed {
             return String(
-                format: appLocalized("Keeping %d of %d, estimated size %@."),
+                format: DetailsL10n.ClusterReviewSummaryCard.keepingOfEstimatedSize,
                 assetCount - selectedCount,
                 assetCount,
                 estimatedSavingsText
             )
         }
         if selectedCount == 1 {
-            return String(format: appLocalized("1 selected, estimated size %@."), estimatedSavingsText)
+            return String(format: DetailsL10n.ClusterReviewSummaryCard.n1SelectedEstimatedSize, estimatedSavingsText)
         }
         return String(
-            format: appLocalized("%d selected, estimated size %@."),
+            format: DetailsL10n.ClusterReviewSummaryCard.selectedEstimatedSize,
             selectedCount,
             estimatedSavingsText
         )
@@ -208,7 +208,7 @@ struct ClusterReviewSummaryCard: View {
             AlikeCleanupProgressHero(
                 isActive: true,
                 maximumWidth: width,
-                accessibilityLabel: appLocalized("Alike organizing selected photos")
+                accessibilityLabel: DetailsL10n.Common.alikeOrganizingSelectedPhotos
             )
         case .reaction:
             if let alikeReactionCue {
@@ -266,7 +266,7 @@ struct ClusterReviewSummaryCard: View {
         .foregroundStyle(statusColor)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(statusTitle))
-        .accessibilityHint(Text(appLocalized("Current cleanup review status")))
+        .accessibilityHint(Text(DetailsL10n.ClusterReviewSummaryCard.currentCleanupReviewStatus))
     }
 
     static let reservedReviewStatuses: [ClusterReviewStatus] = [
@@ -296,13 +296,13 @@ struct ClusterReviewSummaryCard: View {
     private func statusTitle(for status: ClusterReviewStatus) -> String {
         switch status {
         case .notReviewed:
-            appLocalized("Not reviewed")
+            DetailsL10n.ClusterReviewSummaryCard.notReviewed
         case .needsReReview:
-            appLocalized("Needs review")
+            DetailsL10n.ClusterReviewSummaryCard.needsReview
         case .inReview:
-            appLocalized("In review")
+            DetailsL10n.ClusterReviewSummaryCard.inReview
         case .reviewed:
-            appLocalized("Reviewed")
+            DetailsL10n.Common.reviewed
         }
     }
 

@@ -28,54 +28,50 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
         switch self {
         case .screenshots:
             CleanupCategoryPresentation(
-                title: cleanupLocalized("Screenshots"),
-                reviewTitle: cleanupLocalized("Screenshot Cleanup"),
-                navigationTitle: cleanupLocalized("Screenshots"),
-                summarySingular: cleanupLocalized("1 screenshot available for review."),
-                summaryPluralFormat: cleanupLocalized("%d screenshots available for review."),
-                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
-                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
+                title: CoreL10n.CleanupCategory.screenshots,
+                reviewTitle: CoreL10n.CleanupCategory.screenshotCleanup,
+                navigationTitle: CoreL10n.CleanupCategory.screenshots,
+                summarySingular: CoreL10n.CleanupCategory.n1ScreenshotAvailableForReview,
+                summaryPluralFormat: CoreL10n.CleanupCategory.screenshotsAvailableForReview,
+                selectionSingularFormat: CoreL10n.CleanupCategory.n1SelectedEstimatedSize,
+                selectionPluralFormat: CoreL10n.CleanupCategory.selectedEstimatedSize,
                 helperText: nil,
-                emptyTitle: cleanupLocalized("No Screenshots Found"),
-                emptyDescription: cleanupLocalized("Try rescanning after your library updates."),
-                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Screenshot to Recently Deleted?"),
-                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Screenshots to Recently Deleted?"),
-                alertSingularMessageFormat: cleanupLocalized("The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
-                alertPluralMessageFormat: cleanupLocalized("The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
-                paywallTitle: cleanupLocalized("Screenshot cleanup is a premium feature"),
-                paywallMessage: cleanupLocalized("Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."),
-                openHint: cleanupLocalized("Open screenshot cleanup"),
-                lockedHint: cleanupLocalized("Opens the premium paywall for screenshot cleanup"),
+                emptyTitle: CoreL10n.CleanupCategory.noScreenshotsFound,
+                emptyDescription: CoreL10n.CleanupCategory.tryRescanningAfterLibraryUpdates,
+                alertSingularTitleFormat: CoreL10n.CleanupCategory.move1SelectedScreenshotRecently,
+                alertPluralTitleFormat: CoreL10n.CleanupCategory.moveSelectedScreenshotsRecentlyDeleted,
+                alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotWillBeRemoved,
+                alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotsWillBeRemoved,
+                paywallTitle: CoreL10n.CleanupCategory.screenshotCleanupPremiumFeature,
+                paywallMessage: CoreL10n.CleanupCategory.unlockScreenshotCleanupReviewDelete,
+                openHint: CoreL10n.CleanupCategory.openScreenshotCleanup,
+                lockedHint: CoreL10n.CleanupCategory.opensPremiumPaywallScreenshotCleanup,
                 systemImageName: "camera.viewfinder"
             )
         case .blurredPhotos:
             CleanupCategoryPresentation(
-                title: cleanupLocalized("Blurred Photos"),
-                reviewTitle: cleanupLocalized("Blurred Photo Cleanup"),
-                navigationTitle: cleanupLocalized("Blurred Photos"),
-                summarySingular: cleanupLocalized("1 likely blurred photo available for review."),
-                summaryPluralFormat: cleanupLocalized("%d likely blurred photos available for review."),
-                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
-                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
-                helperText: cleanupLocalized("Likely low-quality photos based on on-device analysis. Review before deleting."),
-                emptyTitle: cleanupLocalized("No Blurred Photos Found"),
-                emptyDescription: cleanupLocalized("Run a new scan after your library changes or if more photos need review."),
-                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Blurred Photo to Recently Deleted?"),
-                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Blurred Photos to Recently Deleted?"),
-                alertSingularMessageFormat: cleanupLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
-                alertPluralMessageFormat: cleanupLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
-                paywallTitle: cleanupLocalized("Blurred photo cleanup is a premium feature"),
-                paywallMessage: cleanupLocalized("Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."),
-                openHint: cleanupLocalized("Open blurred photo cleanup"),
-                lockedHint: cleanupLocalized("Opens the premium paywall for blurred photo cleanup"),
+                title: CoreL10n.CleanupCategory.blurredPhotos,
+                reviewTitle: CoreL10n.CleanupCategory.blurredPhotoCleanup,
+                navigationTitle: CoreL10n.CleanupCategory.blurredPhotos,
+                summarySingular: CoreL10n.CleanupCategory.n1LikelyBlurredPhotoAvailable,
+                summaryPluralFormat: CoreL10n.CleanupCategory.likelyBlurredPhotosAvailableReview,
+                selectionSingularFormat: CoreL10n.CleanupCategory.n1SelectedEstimatedSize,
+                selectionPluralFormat: CoreL10n.CleanupCategory.selectedEstimatedSize,
+                helperText: CoreL10n.CleanupCategory.likelyLowQualityPhotosBased,
+                emptyTitle: CoreL10n.CleanupCategory.noBlurredPhotosFound,
+                emptyDescription: CoreL10n.CleanupCategory.runNewScanAfterLibrary,
+                alertSingularTitleFormat: CoreL10n.CleanupCategory.move1SelectedBlurredPhoto,
+                alertPluralTitleFormat: CoreL10n.CleanupCategory.moveSelectedBlurredPhotosRecently,
+                alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedPhotoWillBeRemoved,
+                alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedPhotosWillBeRemoved,
+                paywallTitle: CoreL10n.CleanupCategory.blurredPhotoCleanupPremiumFeature,
+                paywallMessage: CoreL10n.CleanupCategory.unlockBlurredPhotoCleanupReview,
+                openHint: CoreL10n.CleanupCategory.openBlurredPhotoCleanup,
+                lockedHint: CoreL10n.CleanupCategory.opensPremiumPaywallBlurredPhoto,
                 systemImageName: "drop.triangle"
             )
         }
     }
-}
-
-private func cleanupLocalized(_ key: String.LocalizationValue) -> String {
-    String(localized: key, bundle: .main)
 }
 
 public struct CleanupCategorySummary: Identifiable, Equatable, Sendable, Codable {

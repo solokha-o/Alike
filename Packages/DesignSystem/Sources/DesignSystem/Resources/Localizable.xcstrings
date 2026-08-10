@@ -1,0 +1,295 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.1",
+  "strings": {
+    "designSystem.alikeReaction.alikeCelebratesYourCompletedCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebrates your completed cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike радіє завершеному очищенню"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeFoundCleanupOpportunities": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike found cleanup opportunities"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike знайшов можливості для очищення"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeHasCleanupOpportunitiesReady": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike has cleanup opportunities ready for review"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike має готові до перегляду можливості для очищення"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeIsReadyForCleanup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike is ready for cleanup"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike готовий до очищення"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeNeedsPhotoLibraryPermission": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo library permission to continue"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike потрібен доступ до фототеки, щоб продовжити"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeNoticedNewPhotosLibrary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike noticed new photos in your library"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike помітив нові фото у вашій фототеці"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeRanIntoProblemWith": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ran into a problem with the scan"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike не зміг завершити сканування"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeReadyHelpOrganizePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike is ready to help organize your photo library"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike готовий допомогти впорядкувати фототеку"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeSaysPhotoLibraryAll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike says your photo library is all caught up"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike повідомляє, що у фототеці все впорядковано"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeSearchingForSimilarPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike searching for similar photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike шукає схожі фотографії"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.chooseHowManyColumnsUsed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose how many columns are used to display photos"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виберіть кількість стовпців для відображення фото"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.columns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Columns"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d колонки"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.columns2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columns"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Колонки"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.gridColumns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grid Columns"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Стовпців у сітці"
+          }
+        }
+      }
+    },
+    "designSystem.photoLoadFailure.photoPreviewUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview unavailable"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попередній перегляд фото недоступний"
+          }
+        }
+      }
+    },
+    "designSystem.photoLoadFailure.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторити"
+          }
+        }
+      }
+    },
+    "designSystem.photoLoadFailure.tryLoadingThePhotoAgain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try loading the photo again"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спробуйте завантажити фото ще раз"
+          }
+        }
+      }
+    }
+  }
+}
