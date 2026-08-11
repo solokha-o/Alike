@@ -11,7 +11,9 @@ struct LocalizationCatalog {
     static let wrapperName = "SettingsL10n"
     static let modulePrefix = "settings."
     /// Keys that are deliberately English-only until a translation pass picks them up.
-    static let untranslated: Set<String> = ["settings.main.cleanupReminderCouldntBeUpdated"]
+    /// Task 40 emptied this list, and it is meant to stay empty: a key parked here ships as
+    /// English in every other language, silently.
+    static let untranslated: Set<String> = []
 
     let strings: [String: [String: Any]]
 

@@ -16,7 +16,12 @@ Packages/<Pkg>/Sources/<Target>/
 and declares `defaultLocalization: "en"` plus `resources: [.process("Resources")]`
 in its `Package.swift`.
 
-The app target's `Alike/Alike/Localizable.xcstrings` holds app-level strings only.
+The app target's `Alike/Alike/Localizable.xcstrings` holds app-level strings only —
+after task 40 that is seven keys, resolved through `Alike/Alike/Localization/AlikeL10n.swift`
+and guarded by `Alike/AlikeTests/LocalizationCatalogTests.swift`. That test asserts both
+directions: no wrapper key missing from the catalog, and **no catalog key the wrapper cannot
+reach**. The second one is what stops the app catalog silting up with orphans again — it is
+where the 103 that task 40 deleted came from.
 Nothing in `Packages/` may resolve against `bundle: .main` — that was the old
 `appLocalized(_:)` shim, and it is gone. Strings shared between packages are
 duplicated in each owner's catalog rather than read across bundle boundaries;
@@ -75,7 +80,12 @@ real lookup against a compiled fixture — see `CompiledCatalogFixture` in
 
 Every text-owning package has `LocalizationCatalogTests`, which assert that the
 generated wrapper and the catalog agree, that keys stay inside the module namespace,
-and that every key carries both `en` and `uk`.
+and that every key carries every shipped language. The app target has the same test in
+`Alike/AlikeTests`, run by the `Alike` scheme's test action.
+
+`LocalizationCatalog.untranslated` in each package is an allowlist for keys deliberately
+left English-only. Task 40 emptied the last one. Keep it empty: a key parked there ships
+as English in six languages without anything failing.
 
 These tests read the catalog file directly rather than calling `String(localized:)`,
 because **SwiftPM copies `.xcstrings` verbatim instead of compiling it** — under

@@ -704,3 +704,7 @@ Details,details.clusterDetails.move1SelectedPhotoRecently,details.clusterDetails
 Details,details.clusterDetails.moveSelectedPhotosRecentlyDeleted,details.clusterDetails.deleteAlertTitle
 Details,details.clusterReviewSummaryCard.n1SelectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
 Details,details.clusterReviewSummaryCard.selectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
+Alike,Rescan Required,alike.rescan.title
+Alike,Later,alike.rescan.later
+Alike,Rescan Now,alike.rescan.now
+Alike,Changing sensitivity requires a new scan to take effect,alike.rescan.message

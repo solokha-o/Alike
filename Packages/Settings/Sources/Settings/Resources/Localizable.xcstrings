@@ -163,6 +163,12 @@
             "state": "translated",
             "value": "Your cleanup reminder couldn't be updated. Please try again."
           }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося оновити нагадування про очищення. Спробуйте ще раз."
+          }
         }
       }
     },
