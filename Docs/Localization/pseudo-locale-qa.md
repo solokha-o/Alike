@@ -163,14 +163,37 @@ Two things worth recording:
 `Mover 1 foto` / `Mover 6 fotos` confirm the review action bar's new plural key resolving
 on device.
 
+## Findings — the delete confirmation in de, fr, es and pt-BR
+
+The cluster-details confirmation was walked at 1 and at 3 selected in all four languages.
+**No defects.** Both halves of the key pair render in full, with correct agreement:
+
+- `fr` — "La photo sélectionnée sera retirée … conservée … sa suppression définitive"
+  against "Les photos … seront retirées … conservées … leur suppression"
+- `de` — "Das ausgewählte Foto wird … bleibt … wenn es endgültig gelöscht ist" against
+  "Die ausgewählten Fotos werden … bleiben … wenn sie … sind"
+- `pt-BR` — "A foto … será removida … ficará … ela seja apagada" against "As fotos …
+  serão removidas … ficarão … elas sejam apagadas"
+- `es` — "La foto … se eliminará … permanecerá … se elimine" against "Las fotos …
+  se eliminarán … permanecerán … se eliminen"
+
+This is the pair `xcstringstool` will not accept as a plural variation, so it stays two
+top-level strings picked in Swift. Seeing both halves on screen in four languages is the
+only way to know the second one agrees — a catalog test cannot judge that.
+
+Titles and action bars matched throughout: "Déplacer 3 photos", "3 Fotos bewegen",
+"Mover 3 fotos", and their singular forms.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
   can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
   `simctl launch` can pass them too, and that is the cheaper route:
   `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
-- The delete confirmation inside the smart-category screens — the only screen in the set
-  that has not been seen in any language other than Ukrainian.
+- The delete confirmation inside the **smart-category** screens. The cluster-details one is
+  now covered in five languages, but the smart-category screens use a different key set
+  (`core.cleanupCategory.alertTitle*` and `core.cleanupCategory.selected*WillBeRemoved`)
+  with the same sentence shape. Low risk, but not the same thing as verified.
 - The double-length pseudo-locale pass (command above). Every defect this task found was a
   wrong string rather than a layout failure, so this is now the cheapest remaining check.
 
