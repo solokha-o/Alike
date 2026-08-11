@@ -35,7 +35,7 @@ struct LocalizationCatalog {
         let url = packageRoot(file: file)
             .appendingPathComponent("Sources/\(targetName)/Localization/\(wrapperName).swift")
         let source = try String(contentsOf: url, encoding: .utf8)
-        let pattern = try NSRegularExpression(pattern: #"string\("([^"]+)"\)"#)
+        let pattern = try NSRegularExpression(pattern: #"(?:string|plural)\("([^"]+)"[,)]"#)
         let range = NSRange(source.startIndex..., in: source)
         return Set(pattern.matches(in: source, range: range).compactMap {
             Range($0.range(at: 1), in: source).map { String(source[$0]) }

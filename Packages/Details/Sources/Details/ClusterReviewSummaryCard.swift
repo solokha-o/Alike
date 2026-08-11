@@ -156,11 +156,7 @@ struct ClusterReviewSummaryCard: View {
                 estimatedSavingsText
             )
         }
-        if selectedCount == 1 {
-            return String(format: DetailsL10n.ClusterReviewSummaryCard.n1SelectedEstimatedSize, estimatedSavingsText)
-        }
-        return String(
-            format: DetailsL10n.ClusterReviewSummaryCard.selectedEstimatedSize,
+        return DetailsL10n.ClusterReviewSummaryCard.selectionSummary(
             selectedCount,
             estimatedSavingsText
         )

@@ -33,10 +33,7 @@ struct ScreenshotCleanupSummaryCard: View {
     }
 
     private var summaryText: String {
-        if assetCount == 1 {
-            return category.presentation.summarySingular
-        }
-        return String(format: category.presentation.summaryPluralFormat, assetCount)
+        category.summary(count: assetCount)
     }
 
     private var selectionSummary: some View {
@@ -72,14 +69,7 @@ struct ScreenshotCleanupSummaryCard: View {
     }
 
     private func savingsText(selectedCount: Int, estimatedSavingsText: String) -> String {
-        if selectedCount == 1 {
-            return String(format: category.presentation.selectionSingularFormat, estimatedSavingsText)
-        }
-        return String(
-            format: category.presentation.selectionPluralFormat,
-            selectedCount,
-            estimatedSavingsText
-        )
+        category.selectionSummary(count: selectedCount, estimatedSize: estimatedSavingsText)
     }
 
     static func reservedSelectionCounts(assetCount: Int) -> [Int] {

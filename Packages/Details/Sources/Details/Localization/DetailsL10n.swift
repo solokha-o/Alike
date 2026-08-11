@@ -24,6 +24,10 @@ public enum DetailsL10n {
     }
 
     public enum ClusterDetails {
+        /// Move %1$lld Selected Photos to Recently Deleted? (plural)
+        public static func deleteAlertTitle(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterDetails.deleteAlertTitle", count, bundle: bundle, locale: locale)
+        }
         /// Cluster details are available on iOS.
         public static var clusterDetailsAvailableIOS: String { DetailsL10n.string("details.clusterDetails.clusterDetailsAvailableIOS") }
         /// Created
@@ -68,10 +72,6 @@ public enum DetailsL10n {
         public static var modified: String { DetailsL10n.string("details.clusterDetails.modified") }
         /// More Options
         public static var moreOptions: String { DetailsL10n.string("details.clusterDetails.moreOptions") }
-        /// Move 1 Selected Photo to Recently Deleted?
-        public static var move1SelectedPhotoRecently: String { DetailsL10n.string("details.clusterDetails.move1SelectedPhotoRecently") }
-        /// Move %d Selected Photos to Recently Deleted?
-        public static var moveSelectedPhotosRecentlyDeleted: String { DetailsL10n.string("details.clusterDetails.moveSelectedPhotosRecentlyDeleted") }
         /// %@ MP
         public static var mp: String { DetailsL10n.string("details.clusterDetails.mp") }
         /// No
@@ -136,22 +136,22 @@ public enum DetailsL10n {
     }
 
     public enum ClusterReviewSummaryCard {
+        /// %1$lld selected, estimated size %2$@. (plural)
+        public static func selectionSummary(_ count: Int, _ estimatedSize: String, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterReviewSummaryCard.selectionSummary", count, estimatedSize, bundle: bundle, locale: locale)
+        }
         /// Current cleanup review status
         public static var currentCleanupReviewStatus: String { DetailsL10n.string("details.clusterReviewSummaryCard.currentCleanupReviewStatus") }
         /// In review
         public static var inReview: String { DetailsL10n.string("details.clusterReviewSummaryCard.inReview") }
         /// Keeping %d of %d, estimated size %@.
         public static var keepingOfEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.keepingOfEstimatedSize") }
-        /// 1 selected, estimated size %@.
-        public static var n1SelectedEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.n1SelectedEstimatedSize") }
         /// 1 Similar Photo
         public static var n1SimilarPhoto: String { DetailsL10n.string("details.clusterReviewSummaryCard.n1SimilarPhoto") }
         /// Needs review
         public static var needsReview: String { DetailsL10n.string("details.clusterReviewSummaryCard.needsReview") }
         /// Not reviewed
         public static var notReviewed: String { DetailsL10n.string("details.clusterReviewSummaryCard.notReviewed") }
-        /// %d selected, estimated size %@.
-        public static var selectedEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.selectedEstimatedSize") }
         /// %d Similar Photos
         public static var similarPhotos: String { DetailsL10n.string("details.clusterReviewSummaryCard.similarPhotos") }
         /// Tap photos to select them for cleanup
@@ -227,5 +227,22 @@ public enum DetailsL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Resolves a key whose catalog entry carries plural variations. The count has to be the
+    /// first argument and has to appear in every variation — `xcstringstool` rejects a plural
+    /// variation that never references the number.
+    static func plural(
+        _ key: String,
+        _ arguments: any CVarArg...,
+        bundle: Bundle? = nil,
+        locale: Locale? = nil
+    ) -> String {
+        let bundle = bundle ?? .module
+        return String(
+            format: bundle.localizedString(forKey: key, value: nil, table: nil),
+            locale: locale ?? .current,
+            arguments: arguments
+        )
     }
 }

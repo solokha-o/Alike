@@ -2,6 +2,112 @@
   "sourceLanguage": "en",
   "version": "1.1",
   "strings": {
+    "core.cleanupCategory.alertTitleBlurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибране розмите фото до «Недавно видалені»?"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибрані розмиті фото до «Недавно видалені»?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних розмитих фото до «Недавно видалені»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних розмитих фото до «Недавно видалені»?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.alertTitleScreenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраний знімок екрана до «Недавно видалені»?"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибрані знімки екрана до «Недавно видалені»?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних знімків екрана до «Недавно видалені»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних знімків екрана до «Недавно видалені»?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "core.cleanupCategory.blurredPhotoCleanup": {
       "extractionState": "manual",
       "localizations": {
@@ -53,23 +159,6 @@
         }
       }
     },
-    "core.cleanupCategory.likelyBlurredPhotosAvailableReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d likely blurred photos available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Імовірно розмитих фото для перегляду: %d."
-          }
-        }
-      }
-    },
     "core.cleanupCategory.likelyLowQualityPhotosBased": {
       "extractionState": "manual",
       "localizations": {
@@ -83,125 +172,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Імовірно неякісні фото за результатами аналізу на пристрої. Перегляньте їх перед видаленням."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.move1SelectedBlurredPhoto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move 1 Selected Blurred Photo to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити 1 вибране розмите фото до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.move1SelectedScreenshotRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move 1 Selected Screenshot to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити 1 вибраний знімок екрана до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.moveSelectedBlurredPhotosRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move %d Selected Blurred Photos to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити вибрані розмиті фото (%d) до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move %d Selected Screenshots to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити вибрані знімки екрана (%d) до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1LikelyBlurredPhotoAvailable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 likely blurred photo available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Для перегляду доступне 1 імовірно розмите фото."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1ScreenshotAvailableForReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 screenshot available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Для перегляду доступний 1 знімок екрана."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1SelectedEstimatedSize": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 selected, estimated size %@."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вибрано: 1, орієнтовний розмір: %@."
           }
         }
       }
@@ -376,40 +346,6 @@
         }
       }
     },
-    "core.cleanupCategory.screenshotsAvailableForReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d screenshots available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Знімків екрана для перегляду: %d."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.selectedEstimatedSize": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d selected, estimated size %@."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вибрано: %d, орієнтовний розмір: %@."
-          }
-        }
-      }
-    },
     "core.cleanupCategory.selectedPhotoWillBeRemoved": {
       "extractionState": "manual",
       "localizations": {
@@ -474,6 +410,165 @@
           "stringUnit": {
             "state": "translated",
             "value": "Вибрані знімки екрана буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки знімки не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectionSummary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.summaryBlurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступне %1$lld імовірно розмите фото."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступні %1$lld імовірно розмиті фото."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld імовірно розмитих фото."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld імовірно розмитих фото."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.summaryScreenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshot available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступний %1$lld знімок екрана."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступні %1$lld знімки екрана."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld знімків екрана."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld знімків екрана."
+                }
+              }
+            }
           }
         }
       }

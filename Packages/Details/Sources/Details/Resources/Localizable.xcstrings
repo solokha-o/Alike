@@ -138,6 +138,59 @@
         }
       }
     },
+    "details.clusterDetails.deleteAlertTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Photo to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибране фото до «Недавно видалені»?"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибрані фото до «Недавно видалені»?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних фото до «Недавно видалені»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних фото до «Недавно видалені»?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "details.clusterDetails.depthEffect": {
       "extractionState": "manual",
       "localizations": {
@@ -457,40 +510,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Більше опцій"
-          }
-        }
-      }
-    },
-    "details.clusterDetails.move1SelectedPhotoRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move 1 Selected Photo to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити 1 вибране фото до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "details.clusterDetails.moveSelectedPhotosRecentlyDeleted": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move %d Selected Photos to Recently Deleted?"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перемістити вибрані фото (%d) до «Недавно видалені»?"
           }
         }
       }
@@ -1039,23 +1058,6 @@
         }
       }
     },
-    "details.clusterReviewSummaryCard.n1SelectedEstimatedSize": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 selected, estimated size %@."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вибрано: 1, орієнтовний розмір: %@."
-          }
-        }
-      }
-    },
     "details.clusterReviewSummaryCard.n1SimilarPhoto": {
       "extractionState": "manual",
       "localizations": {
@@ -1107,19 +1109,55 @@
         }
       }
     },
-    "details.clusterReviewSummaryCard.selectedEstimatedSize": {
+    "details.clusterReviewSummaryCard.selectionSummary": {
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d selected, estimated size %@."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вибрано: %d, орієнтовний розмір: %@."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              }
+            }
           }
         }
       }

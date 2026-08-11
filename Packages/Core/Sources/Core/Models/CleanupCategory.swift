@@ -31,15 +31,9 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
                 title: CoreL10n.CleanupCategory.screenshots,
                 reviewTitle: CoreL10n.CleanupCategory.screenshotCleanup,
                 navigationTitle: CoreL10n.CleanupCategory.screenshots,
-                summarySingular: CoreL10n.CleanupCategory.n1ScreenshotAvailableForReview,
-                summaryPluralFormat: CoreL10n.CleanupCategory.screenshotsAvailableForReview,
-                selectionSingularFormat: CoreL10n.CleanupCategory.n1SelectedEstimatedSize,
-                selectionPluralFormat: CoreL10n.CleanupCategory.selectedEstimatedSize,
                 helperText: nil,
                 emptyTitle: CoreL10n.CleanupCategory.noScreenshotsFound,
                 emptyDescription: CoreL10n.CleanupCategory.tryRescanningAfterLibraryUpdates,
-                alertSingularTitleFormat: CoreL10n.CleanupCategory.move1SelectedScreenshotRecently,
-                alertPluralTitleFormat: CoreL10n.CleanupCategory.moveSelectedScreenshotsRecentlyDeleted,
                 alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotWillBeRemoved,
                 alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotsWillBeRemoved,
                 paywallTitle: CoreL10n.CleanupCategory.screenshotCleanupPremiumFeature,
@@ -53,15 +47,9 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
                 title: CoreL10n.CleanupCategory.blurredPhotos,
                 reviewTitle: CoreL10n.CleanupCategory.blurredPhotoCleanup,
                 navigationTitle: CoreL10n.CleanupCategory.blurredPhotos,
-                summarySingular: CoreL10n.CleanupCategory.n1LikelyBlurredPhotoAvailable,
-                summaryPluralFormat: CoreL10n.CleanupCategory.likelyBlurredPhotosAvailableReview,
-                selectionSingularFormat: CoreL10n.CleanupCategory.n1SelectedEstimatedSize,
-                selectionPluralFormat: CoreL10n.CleanupCategory.selectedEstimatedSize,
                 helperText: CoreL10n.CleanupCategory.likelyLowQualityPhotosBased,
                 emptyTitle: CoreL10n.CleanupCategory.noBlurredPhotosFound,
                 emptyDescription: CoreL10n.CleanupCategory.runNewScanAfterLibrary,
-                alertSingularTitleFormat: CoreL10n.CleanupCategory.move1SelectedBlurredPhoto,
-                alertPluralTitleFormat: CoreL10n.CleanupCategory.moveSelectedBlurredPhotosRecently,
                 alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedPhotoWillBeRemoved,
                 alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedPhotosWillBeRemoved,
                 paywallTitle: CoreL10n.CleanupCategory.blurredPhotoCleanupPremiumFeature,
@@ -71,6 +59,41 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
                 systemImageName: "drop.triangle"
             )
         }
+    }
+
+    /// Count-dependent copy resolves through the catalog's plural variations rather than a
+    /// singular/plural pair picked in Swift — see the plural section of `Docs/Localization/README.md`.
+    public func summary(count: Int) -> String {
+        switch self {
+        case .screenshots:
+            CoreL10n.CleanupCategory.summaryScreenshots(count)
+        case .blurredPhotos:
+            CoreL10n.CleanupCategory.summaryBlurredPhotos(count)
+        }
+    }
+
+    public func selectionSummary(count: Int, estimatedSize: String) -> String {
+        CoreL10n.CleanupCategory.selectionSummary(count, estimatedSize)
+    }
+
+    public func deleteAlertTitle(count: Int) -> String {
+        switch self {
+        case .screenshots:
+            CoreL10n.CleanupCategory.alertTitleScreenshots(count)
+        case .blurredPhotos:
+            CoreL10n.CleanupCategory.alertTitleBlurredPhotos(count)
+        }
+    }
+
+    /// The alert body never prints the count, and `xcstringstool` rejects a plural variation
+    /// whose text does not reference the number. Apple's own guidance for that case is two
+    /// top-level strings, so this pair stays a pair; every shipped language reads its
+    /// "greater than one" form for all counts above one.
+    public func deleteAlertMessage(count: Int, estimatedSize: String) -> String {
+        let format = count == 1
+            ? presentation.alertSingularMessageFormat
+            : presentation.alertPluralMessageFormat
+        return String(format: format, estimatedSize)
     }
 }
 
@@ -96,15 +119,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
     public let title: String
     public let reviewTitle: String
     public let navigationTitle: String
-    public let summarySingular: String
-    public let summaryPluralFormat: String
-    public let selectionSingularFormat: String
-    public let selectionPluralFormat: String
     public let helperText: String?
     public let emptyTitle: String
     public let emptyDescription: String
-    public let alertSingularTitleFormat: String
-    public let alertPluralTitleFormat: String
     public let alertSingularMessageFormat: String
     public let alertPluralMessageFormat: String
     public let paywallTitle: String
@@ -117,15 +134,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
         title: String,
         reviewTitle: String,
         navigationTitle: String,
-        summarySingular: String,
-        summaryPluralFormat: String,
-        selectionSingularFormat: String,
-        selectionPluralFormat: String,
         helperText: String?,
         emptyTitle: String,
         emptyDescription: String,
-        alertSingularTitleFormat: String,
-        alertPluralTitleFormat: String,
         alertSingularMessageFormat: String,
         alertPluralMessageFormat: String,
         paywallTitle: String,
@@ -137,15 +148,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
         self.title = title
         self.reviewTitle = reviewTitle
         self.navigationTitle = navigationTitle
-        self.summarySingular = summarySingular
-        self.summaryPluralFormat = summaryPluralFormat
-        self.selectionSingularFormat = selectionSingularFormat
-        self.selectionPluralFormat = selectionPluralFormat
         self.helperText = helperText
         self.emptyTitle = emptyTitle
         self.emptyDescription = emptyDescription
-        self.alertSingularTitleFormat = alertSingularTitleFormat
-        self.alertPluralTitleFormat = alertPluralTitleFormat
         self.alertSingularMessageFormat = alertSingularMessageFormat
         self.alertPluralMessageFormat = alertPluralMessageFormat
         self.paywallTitle = paywallTitle

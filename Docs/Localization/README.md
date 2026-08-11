@@ -57,9 +57,19 @@ until someone notices. The paywall copy in
 implementation: one key per message, plural variations per language in the catalog,
 no plural logic in Swift.
 
-Some copy still predates this rule — `CleanupCategory`'s singular/plural property
-pairs in `Core`, and a few `selectedCount == 1` branches in `Details`. Convert those
-when translating them, not before.
+One exception is imposed by the tooling, not by taste: **`xcstringstool` refuses a
+plural variation whose text never references the number.** Apple's own guidance for
+copy that changes with the count but does not print it is two top-level strings, so
+the delete-alert *bodies* ("The selected photo will be removed…" / "…photos…") stay a
+singular/plural key pair picked in Swift. Their titles, which do print the count, are
+plural variations. Anything that prints a count belongs in the catalog.
+
+Task 40 converted the last of the Swift-side plurals: `CleanupCategory`'s four
+singular/plural property pairs in `Core`, the `selectedCount == 1` branches in
+`ClusterDetailsViewModel`, and the same branch in `ClusterReviewSummaryCard`. The
+count-taking accessors carry `bundle:`/`locale:` parameters so tests can exercise the
+real lookup against a compiled fixture — see `CompiledCatalogFixture` in
+`CoreTests`, `DetailsTests` and `PurchasesUITests`.
 
 ## Testing
 

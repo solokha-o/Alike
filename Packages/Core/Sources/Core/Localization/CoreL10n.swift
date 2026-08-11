@@ -5,30 +5,34 @@ import Foundation
 
 public enum CoreL10n {
     public enum CleanupCategory {
+        /// Move %1$lld Selected Blurred Photos to Recently Deleted? (plural)
+        public static func alertTitleBlurredPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.plural("core.cleanupCategory.alertTitleBlurredPhotos", count, bundle: bundle, locale: locale)
+        }
+        /// Move %1$lld Selected Screenshots to Recently Deleted? (plural)
+        public static func alertTitleScreenshots(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.plural("core.cleanupCategory.alertTitleScreenshots", count, bundle: bundle, locale: locale)
+        }
+        /// %1$lld selected, estimated size %2$@. (plural)
+        public static func selectionSummary(_ count: Int, _ estimatedSize: String, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.plural("core.cleanupCategory.selectionSummary", count, estimatedSize, bundle: bundle, locale: locale)
+        }
+        /// %1$lld likely blurred photos available for review. (plural)
+        public static func summaryBlurredPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.plural("core.cleanupCategory.summaryBlurredPhotos", count, bundle: bundle, locale: locale)
+        }
+        /// %1$lld screenshots available for review. (plural)
+        public static func summaryScreenshots(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.plural("core.cleanupCategory.summaryScreenshots", count, bundle: bundle, locale: locale)
+        }
         /// Blurred Photo Cleanup
         public static var blurredPhotoCleanup: String { CoreL10n.string("core.cleanupCategory.blurredPhotoCleanup") }
         /// Blurred photo cleanup is a premium feature
         public static var blurredPhotoCleanupPremiumFeature: String { CoreL10n.string("core.cleanupCategory.blurredPhotoCleanupPremiumFeature") }
         /// Blurred Photos
         public static var blurredPhotos: String { CoreL10n.string("core.cleanupCategory.blurredPhotos") }
-        /// %d likely blurred photos available for review.
-        public static var likelyBlurredPhotosAvailableReview: String { CoreL10n.string("core.cleanupCategory.likelyBlurredPhotosAvailableReview") }
         /// Likely low-quality photos based on on-device analysis. Review before deleting.
         public static var likelyLowQualityPhotosBased: String { CoreL10n.string("core.cleanupCategory.likelyLowQualityPhotosBased") }
-        /// Move 1 Selected Blurred Photo to Recently Deleted?
-        public static var move1SelectedBlurredPhoto: String { CoreL10n.string("core.cleanupCategory.move1SelectedBlurredPhoto") }
-        /// Move 1 Selected Screenshot to Recently Deleted?
-        public static var move1SelectedScreenshotRecently: String { CoreL10n.string("core.cleanupCategory.move1SelectedScreenshotRecently") }
-        /// Move %d Selected Blurred Photos to Recently Deleted?
-        public static var moveSelectedBlurredPhotosRecently: String { CoreL10n.string("core.cleanupCategory.moveSelectedBlurredPhotosRecently") }
-        /// Move %d Selected Screenshots to Recently Deleted?
-        public static var moveSelectedScreenshotsRecentlyDeleted: String { CoreL10n.string("core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted") }
-        /// 1 likely blurred photo available for review.
-        public static var n1LikelyBlurredPhotoAvailable: String { CoreL10n.string("core.cleanupCategory.n1LikelyBlurredPhotoAvailable") }
-        /// 1 screenshot available for review.
-        public static var n1ScreenshotAvailableForReview: String { CoreL10n.string("core.cleanupCategory.n1ScreenshotAvailableForReview") }
-        /// 1 selected, estimated size %@.
-        public static var n1SelectedEstimatedSize: String { CoreL10n.string("core.cleanupCategory.n1SelectedEstimatedSize") }
         /// No Blurred Photos Found
         public static var noBlurredPhotosFound: String { CoreL10n.string("core.cleanupCategory.noBlurredPhotosFound") }
         /// No Screenshots Found
@@ -49,10 +53,6 @@ public enum CoreL10n {
         public static var screenshotCleanupPremiumFeature: String { CoreL10n.string("core.cleanupCategory.screenshotCleanupPremiumFeature") }
         /// Screenshots
         public static var screenshots: String { CoreL10n.string("core.cleanupCategory.screenshots") }
-        /// %d screenshots available for review.
-        public static var screenshotsAvailableForReview: String { CoreL10n.string("core.cleanupCategory.screenshotsAvailableForReview") }
-        /// %d selected, estimated size %@.
-        public static var selectedEstimatedSize: String { CoreL10n.string("core.cleanupCategory.selectedEstimatedSize") }
         /// The selected photo will be removed from your library and other devices using iCloud Photos, then ...
         public static var selectedPhotoWillBeRemoved: String { CoreL10n.string("core.cleanupCategory.selectedPhotoWillBeRemoved") }
         /// The selected photos will be removed from your library and other devices using iCloud Photos, then...
@@ -72,5 +72,25 @@ public enum CoreL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Resolves a key whose catalog entry carries plural variations.
+    ///
+    /// The count has to be the first argument and has to appear in every variation:
+    /// `xcstringstool` rejects a plural variation that never references the number.
+    /// A compiled catalog stores these as a `.stringsdict` payload, so the lookup returns
+    /// an `NSStringLocalizedFormatKey` format that `String(format:)` then resolves.
+    static func plural(
+        _ key: String,
+        _ arguments: any CVarArg...,
+        bundle: Bundle? = nil,
+        locale: Locale? = nil
+    ) -> String {
+        let bundle = bundle ?? .module
+        return String(
+            format: bundle.localizedString(forKey: key, value: nil, table: nil),
+            locale: locale ?? .current,
+            arguments: arguments
+        )
     }
 }
