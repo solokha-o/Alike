@@ -142,8 +142,10 @@ public enum CleanupL10n {
         public static var opensTheUpgradeOptions: String { CleanupL10n.string("cleanup.main.opensTheUpgradeOptions") }
         /// %d or more photos
         public static var orMorePhotos: String { CleanupL10n.string("cleanup.main.orMorePhotos") }
-        /// %d photos moved to Recently Deleted.
-        public static var photosMovedToRecentlyDeleted: String { CleanupL10n.string("cleanup.main.photosMovedToRecentlyDeleted") }
+        /// %1$lld photos moved to Recently Deleted. (plural)
+        public static func photosMovedToRecentlyDeleted(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CleanupL10n.plural("cleanup.main.photosMovedToRecentlyDeleted", count, bundle: bundle, locale: locale)
+        }
         /// The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.
         public static var photosWereDeletedButLibrary: String { CleanupL10n.string("cleanup.main.photosWereDeletedButLibrary") }
         /// Pick up where you left off
@@ -193,5 +195,22 @@ public enum CleanupL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Resolves a key whose catalog entry carries plural variations. The count has to be the
+    /// first argument and has to appear in every variation — `xcstringstool` rejects a plural
+    /// variation that never references the number.
+    static func plural(
+        _ key: String,
+        _ arguments: any CVarArg...,
+        bundle: Bundle? = nil,
+        locale: Locale? = nil
+    ) -> String {
+        let bundle = bundle ?? .module
+        return String(
+            format: bundle.localizedString(forKey: key, value: nil, table: nil),
+            locale: locale ?? .current,
+            arguments: arguments
+        )
     }
 }

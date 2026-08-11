@@ -396,19 +396,19 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Movidas a Eliminados recientemente"
+            "value": "Traslado a Eliminados recientemente"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Movidas a Eliminados recientemente"
+            "value": "Traslado a Eliminados recientemente"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Movidas para Apagados recentemente"
+            "value": "Movimentação para Apagados recentemente"
           }
         },
         "de": {
@@ -420,7 +420,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Déplacées vers Supprimés récemment"
+            "value": "Déplacement vers Supprimés récemment"
           }
         }
       }
@@ -3014,45 +3014,153 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d photos moved to Recently Deleted."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photo moved to Recently Deleted."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos moved to Recently Deleted."
+                }
+              }
+            }
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Фото переміщено до «Недавно видалені»: %d."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Фото переміщено до «Недавно видалені»: %1$lld."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Фото переміщено до «Недавно видалені»: %1$lld."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Фото переміщено до «Недавно видалені»: %1$lld."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Фото переміщено до «Недавно видалені»: %1$lld."
+                }
+              }
+            }
           }
         },
         "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d fotos movidas a Eliminados recientemente."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto movida a Eliminados recientemente."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos movidas a Eliminados recientemente."
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d fotos movidas a Eliminados recientemente."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto movida a Eliminados recientemente."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos movidas a Eliminados recientemente."
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d fotos movidas para Apagados recentemente."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto movida para Apagados recentemente."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos movidas para Apagados recentemente."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos movidas para Apagados recentemente."
+                }
+              }
+            }
           }
         },
         "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d Fotos in „Zuletzt gelöscht“ bewegt."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Foto in „Zuletzt gelöscht“ bewegt."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Fotos in „Zuletzt gelöscht“ bewegt."
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d photos déplacées vers Supprimés récemment."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photo déplacée vers Supprimés récemment."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos déplacées vers Supprimés récemment."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos déplacées vers Supprimés récemment."
+                }
+              }
+            }
           }
         }
       }

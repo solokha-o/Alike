@@ -339,7 +339,7 @@ public struct CleanupView: View {
         case .success(let record):
             CleanupStatusBanner(
                 icon: "checkmark.circle.fill",
-                title: String(format: CleanupL10n.Main.photosMovedToRecentlyDeleted, record.deletedCount),
+                title: CleanupL10n.Main.photosMovedToRecentlyDeleted(record.deletedCount),
                 message: CleanupL10n.Main.cleanupResultsUpDate,
                 dismiss: { dismissReconciliation(record.id) }
             )

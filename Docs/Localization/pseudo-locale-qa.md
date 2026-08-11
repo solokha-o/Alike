@@ -88,18 +88,45 @@ This is exactly the class of defect the pseudo-locale scheme's `-NSShowNonLocali
 is meant to surface, and it survived task 39's static sweep because the literal is not a
 `Text("…")` — it is string interpolation inside a helper.
 
+## Findings — 2026-08-11, German and French on a real library
+
+The user walked the library-dependent screens on their own iPhone with the app language set
+per-app (Settings → Alike → Language), and sent screenshots. Everything below is from a real
+photo library with 70+ clusters.
+
+**Pass:** the cleanup queue and its two sections, the smart-category rows, all badges
+(`Nicht geprüft` / `In Prüfung` / `Non examinés` / `En cours d'examen`), the "library changed"
+card, cluster details, the summary card at 1 and at 15 selected, the review action bar at 1
+and 15, the cleanup progress screen, and the history screen with real entries. No clipping,
+no truncation, no overlap — German holds `15 Fotos bewegen` and
+`15 ausgewählt, geschätzte Größe 68,6 MB.` on one line each.
+
+**Two defects, both fixed:**
+
+1. **The post-cleanup toast was never a plural.**
+   `cleanup.main.photosMovedToRecentlyDeleted` was a plain `%d` key, so it read
+   "1 Fotos in „Zuletzt gelöscht“ bewegt." and "1 photos déplacées vers Supprimés récemment."
+   — and "1 photos moved to Recently Deleted." in English, which had been shipping. It is a
+   plural key now, in all seven languages.
+
+2. **The history caption assumed more than one photo.**
+   `cleanup.cleanupHistory.movedToRecentlyDeleted` sits directly under a count that is often
+   1, but the Romance translations used an agreeing participle — French "Déplacées vers
+   Supprimés récemment" under "1 photo". The caption carries no number of its own, so it
+   cannot be a plural variation; `fr`, `es`, `es-419` and `pt-BR` now use a count-neutral noun
+   phrase instead. German and Ukrainian were already neutral.
+
+Both are covered by `CleanupToastPluralTests`.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
   can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
   `simctl launch` can pass them too, and that is the cheaper route:
   `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
-- Screens that need a **populated photo library**, which the simulator does not have: the
-  cluster queue with real groups, cluster details and the review bar, the selection summary
-  at 1/2/5 selected (where the plural forms actually render), screenshot and blurred-photo
-  cleanup, the delete confirmations, and Cleanup history. Seed the simulator library first
-  (`xcrun simctl addmedia`), then repeat the walk above.
-- `pt-BR` and `es` past the Welcome screens.
+- Screenshot and blurred-photo cleanup (both are Pro, and the walk ran on a Free account).
+- `pt-BR`, `es` and `es-419` past the Welcome screens. The keys and layout are the same ones
+  German and French exercised, so this is a length check rather than a correctness one.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks
