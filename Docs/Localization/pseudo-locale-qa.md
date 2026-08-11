@@ -118,15 +118,38 @@ no truncation, no overlap — German holds `15 Fotos bewegen` and
 
 Both are covered by `CleanupToastPluralTests`.
 
+## Findings — the two smart-category screens, German
+
+Screenshot and blurred-photo cleanup were walked afterwards. The copy itself is clean at
+110 and at 10 items — "110 Bildschirmfotos zur Durchsicht.",
+"10 wahrscheinlich unscharfe Fotos zur Durchsicht.", "110 ausgewählt, geschätzte Größe
+142,2 MB." — nothing clipped, plural forms right.
+
+**One defect, fixed: the destructive button read like the button above it.** The screen
+stacks "clear selection" directly on top of "delete selected". German had
+`Auswahl aufheben` above `Auswahl löschen` — the second reads most naturally as clearing
+the selection, which is what the first one does. French had `Effacer la sélection` above
+`Supprimer la sélection`, two near-synonyms. On a button that moves photos out of the
+library, that is a mis-tap waiting to happen.
+
+German now says `Ausgewählte löschen` (names the photos, not the selection). French pairs
+the clear action with the Select All label instead: `Tout sélectionner` / `Tout
+désélectionner`. Spanish, Portuguese and Ukrainian were already unambiguous.
+
+No rule catches this class, so `SelectionActionLabelTests` pins both labels in all seven
+languages: a future translation change to either one fails the test and forces a second
+look at the pair.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
   can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
   `simctl launch` can pass them too, and that is the cheaper route:
   `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
-- Screenshot and blurred-photo cleanup (both are Pro, and the walk ran on a Free account).
 - `pt-BR`, `es` and `es-419` past the Welcome screens. The keys and layout are the same ones
   German and French exercised, so this is a length check rather than a correctness one.
+- The delete confirmation inside the smart-category screens, and Cleanup history with more
+  than one entry per month.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks

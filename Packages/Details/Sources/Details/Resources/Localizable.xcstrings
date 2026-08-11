@@ -3658,7 +3658,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Effacer la sélection"
+            "value": "Tout désélectionner"
           }
         }
       }
@@ -4545,7 +4545,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auswahl löschen"
+            "value": "Ausgewählte löschen"
           }
         },
         "fr": {
