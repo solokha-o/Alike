@@ -140,16 +140,39 @@ No rule catches this class, so `SelectionActionLabelTests` pins both labels in a
 languages: a future translation change to either one fails the test and forces a second
 look at the pair.
 
+## Findings — es-419, es and pt-BR on a real library
+
+Walked on device from screenshots, on a build that predates the two Cleanup fixes above.
+
+**No new defects.** The cleanup queue, both smart-category screens at 128 and 10 items,
+cluster details at 1 and 6 selected, the review action bar, and the history screen with
+several entries in one month all render correctly. Nothing clipped; the longest line,
+`128 seleccionadas, tamaño estimado 166,9 MB.`, fits on one line, and
+`6 seleccionadas, tamaño estimado 27,4 MB.` wraps cleanly to two.
+
+Two things worth recording:
+
+- **The `es-419` / `es` split is visible in the running app**, which is the point of
+  shipping them separately: the tab bar reads `Configuración` in `es-419` and `Ajustes`
+  in `es`. Same for `Quitar selección` / `Eliminar seleccionadas`, which are
+  unambiguous in both — unlike the German and French pair fixed above.
+- **The history-caption defect reproduces in Spanish and Portuguese**
+  (`Movidas a Eliminados recientemente` under `1 foto`), on a build from before the fix.
+  That is confirmation the fix was needed in those languages too, not a new finding.
+
+`Mover 1 foto` / `Mover 6 fotos` confirm the review action bar's new plural key resolving
+on device.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
   can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
   `simctl launch` can pass them too, and that is the cheaper route:
   `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
-- `pt-BR`, `es` and `es-419` past the Welcome screens. The keys and layout are the same ones
-  German and French exercised, so this is a length check rather than a correctness one.
-- The delete confirmation inside the smart-category screens, and Cleanup history with more
-  than one entry per month.
+- The delete confirmation inside the smart-category screens — the only screen in the set
+  that has not been seen in any language other than Ukrainian.
+- The double-length pseudo-locale pass (command above). Every defect this task found was a
+  wrong string rather than a layout failure, so this is now the cheapest remaining check.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks
