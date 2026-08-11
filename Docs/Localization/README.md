@@ -1,7 +1,8 @@
 # Localization
 
-Alike ships `en` and `uk`. This document is the convention every future language
-follows; it was written as part of the Phase 6 localization foundation (task 39).
+Alike ships `en`, `uk`, `es-419`, `es`, `pt-BR`, `de` and `fr`. This document is the
+convention every future language follows; it was written as part of the Phase 6
+localization foundation (task 39) and extended when the Tier 1 languages landed (task 40).
 
 ## Ownership
 
@@ -95,9 +96,28 @@ resolution by running the app, not by asserting on a resolved string in a packag
 
 ## Adding a language
 
-1. Add the code to `knownRegions` in `Alike/Alike.xcodeproj/project.pbxproj`.
-2. Add the localization to every package catalog plus the app catalog.
-3. Extend the `uk` expectations in `LocalizationCatalogTests` to the new language.
+1. Add the code to `knownRegions` in `Alike/Alike.xcodeproj/project.pbxproj`. Codes with
+   a region subtag need quoting there: `"es-419"`, `"pt-BR"`.
+2. Add it to `LocalizationCatalog.shippedLanguages` in all eleven test files, and to
+   `pluralCategories(for:)` if its CLDR categories are not `one`/`other`. Do this **first**:
+   the suite then fails until the catalogs catch up, which is the behaviour you want.
+3. Add the localization to every package catalog plus the app catalog.
 
 No code changes should be needed. If a language forces one, the convention above has
 been broken somewhere.
+
+Two things a translation pass has to get right, both of which the tests now catch:
+
+- **Positional specifiers.** `%1$lld` and `%2$@`, never bare `%d`/`%@`, in any string with
+  more than one argument. Word order changes between languages; unpositioned specifiers
+  silently render the wrong argument.
+- **Plural categories.** `es-419`, `es` and `de` use `one`/`other`; `pt-BR` and `fr` add
+  `many` for compact large numbers; `uk` needs all four. A missing category does not fail
+  the build — it falls back, which reads correctly right up until it doesn't.
+
+## Not in the catalogs
+
+`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` is a build setting in
+`Alike/Alike.xcodeproj`, not a catalog key, so the photo-permission prompt shows English
+in every locale. Localizing it means an `InfoPlist.xcstrings` in the app target; it is
+worth doing and is deliberately outside task 40's diff.

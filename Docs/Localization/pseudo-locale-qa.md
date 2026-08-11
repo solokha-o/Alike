@@ -42,28 +42,59 @@ Cluster details and review bar · Settings (including the reminder rows) · User
 and a topic · **scheme only:** the four paywall entry points (post-first-scan, batch cleanup,
 advanced filters, reminders).
 
-## Findings — 2026-08-09
+## Findings — 2026-08-11 (task 40)
 
-| Screen | Status | Note |
-|---|---|---|
-| Welcome, page 1 of 3 | Pass | Title, body and the Next button all reflow at +100%; no clipping, no capitalized fallbacks. Package catalogs resolve correctly (`Welcome_Welcome.bundle`). |
-| Everything else | **Not yet walked** | See below. |
+Both walks — the double-length pseudo-locale and the five real locales — are **still
+owed**, for the same reason task 39 recorded: driving the simulator UI needs the native
+simulator integration, which refuses to attach on this machine because `xcode-select`
+points at `/Library/Developer/CommandLineTools` rather than a full Xcode. Unblocking it
+needs a password, so it cannot be done from a session:
 
-**This pass is incomplete.** Driving the simulator UI needs either the native
-simulator integration — which is unavailable on this machine because `xcode-select`
-points at `/Library/Developer/CommandLineTools` rather than a full Xcode — or
-screen-control access to the Simulator app, which was declined for this session.
-The remaining screens need a manual walk by someone with the simulator in front of
-them; the scheme and the command above are all that pass requires.
+```bash
+sudo xcode-select -s /Applications/Xcode-26.6.0.app/Contents/Developer
+```
 
-What was checked instead, statically, across all packages:
+What *was* verified, on a booted simulator, with real German, French, Spanish and
+Portuguese strings:
 
-- Every `.lineLimit(1)` on a text label (`WelcomeView.swift:264`,
-  `CleanupView.swift:968`) is already paired with `minimumScaleFactor` and
-  `allowsTightening`, so single-line labels shrink rather than clip.
-- Every fixed `.frame(width:)` in the packages sizes an icon or a count badge
-  (22–32pt), never a text run. The count badge at `CleanupView.swift:970` carries
-  `minimumScaleFactor(0.7)`.
+| Screen | Locales | Status | Note |
+|---|---|---|---|
+| Welcome, page 1 of 3 | `de` `fr` `es-419` `es` `pt-BR` | **Pass** | Launched per locale via `simctl launch … -AppleLanguages` and screenshotted. Title, body and the primary button reflow correctly; nothing clipped, nothing truncated, no English fallbacks. `de` and `pt-BR` keep the title on one line; `fr` wraps to two and the body to three, as designed. |
+| Everything else | — | **Not walked** | `simctl` can launch and screenshot but cannot tap, so no screen past the first is reachable from here. |
 
-That is evidence of no *obvious* clipping hazard, not evidence of none — dynamic
-layouts (HStacks of buttons, the paywall plan cards) can only be judged on screen.
+Also checked, statically, across all eleven catalogs:
+
+- Both `.lineLimit(1)` text labels are protected. `WelcomeView.swift:264` scales to 0.85
+  with `allowsTightening`; the count badge at `CleanupView.swift:968` is a number scaling
+  to 0.7 inside a 28pt frame.
+- 106 strings run at 1.5× English or longer in `de` or `fr`. The longest ratios are short
+  labels where the absolute length is small ("Make Best Shot" → "Définir comme meilleure
+  photo", 14 → 29 characters). The ones worth watching on screen are the ones inside
+  horizontal stacks: the Welcome navigation row, the cluster review action bar, and the
+  paywall plan cards.
+
+That is evidence of no *obvious* clipping hazard plus proof that the first screen renders
+in every locale — not evidence that Cleanup, Details, Settings and the paywall survive.
+
+## The walk that is still owed
+
+Run each of these under the `Alike-Pseudolocale` scheme first (double-length catches the
+worst case), then again per locale with the app language set in the scheme or via
+`-AppleLanguages`. `de` and `fr` are the two that matter most; `pt-BR` is close behind.
+
+- [ ] Welcome onboarding, pages 2 and 3 — including the **Grant Access** button, the
+      longest primary label in the set (`de` "Zugriff erteilen", `fr` "Autoriser l'accès")
+- [ ] Scanner home — idle, scanning, complete, error, and the free-scan allowance row
+- [ ] Cleanup progress and queue — both cluster sections, all five badges, the filter and
+      sort sheets
+- [ ] Cleanup history — the all-time impact tiles and a month group
+- [ ] Cluster details and the review bar — selection summary at 1, 2 and 5 selected, so the
+      plural forms are seen rather than assumed
+- [ ] Screenshot and blurred-photo cleanup — summary card and the delete confirmation
+- [ ] Settings — every row, and the reminder day/time pickers
+- [ ] User Guide hub and at least one topic
+- [ ] **Scheme only:** all four paywall entry points (post-first-scan, batch cleanup,
+      advanced filters, reminders), plus the disclosure block and both plan cards
+
+Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
+marks a string that never reached a catalog.
