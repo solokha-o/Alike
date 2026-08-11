@@ -23,6 +23,7 @@ and guarded by `Alike/AlikeTests/LocalizationCatalogTests.swift`. That test asse
 directions: no wrapper key missing from the catalog, and **no catalog key the wrapper cannot
 reach**. The second one is what stops the app catalog silting up with orphans again — it is
 where the 103 that task 40 deleted came from.
+
 Nothing in `Packages/` may resolve against `bundle: .main` — that was the old
 `appLocalized(_:)` shim, and it is gone. Strings shared between packages are
 duplicated in each owner's catalog rather than read across bundle boundaries;
@@ -91,8 +92,12 @@ as English in six languages without anything failing.
 These tests read the catalog file directly rather than calling `String(localized:)`,
 because **SwiftPM copies `.xcstrings` verbatim instead of compiling it** — under
 `swift test` a lookup falls back to the key. Only an Xcode build runs `xcstringstool`
-and produces the `en.lproj` / `uk.lproj` payload the app actually reads. Verify real
+and produces the per-language `.lproj` payload the app actually reads. Verify real
 resolution by running the app, not by asserting on a resolved string in a package test.
+
+Where a test does need real resolution — the plural checks — `CompiledCatalogFixture`
+performs the same conversion `xcstringstool` performs and builds a loadable `.lproj`
+bundle from the shipped catalog at test time, so it cannot drift from it.
 
 ## Adding a language
 
