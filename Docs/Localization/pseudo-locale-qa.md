@@ -184,18 +184,33 @@ only way to know the second one agrees — a catalog test cannot judge that.
 Titles and action bars matched throughout: "Déplacer 3 photos", "3 Fotos bewegen",
 "Mover 3 fotos", and their singular forms.
 
+## Findings — the smart-category confirmation, de / fr / es / pt-BR
+
+The last screen that had only been seen in Ukrainian. Walked at 1 and at 136 selected in
+all four languages. **No defects.** `core.cleanupCategory.alertTitle*` and its message pair
+inflect the category noun and agree with the count:
+
+- `de` — "1 ausgewähltes Bildschirmfoto … bewegen?" / "136 ausgewählte Bildschirmfotos …",
+  bodies "Das … wird … wenn es endgültig gelöscht ist" against "Die … werden … wenn sie …"
+- `fr` — "Déplacer 1 capture d'écran sélectionnée …" / "… 136 captures d'écran
+  sélectionnées …", "conservée … sa suppression" against "conservées … leur suppression"
+- `es` — "¿Mover 1 captura de pantalla seleccionada …?" / "… 136 capturas …?"
+- `pt-BR` — "Mover 1 captura de tela selecionada …?" / "… 136 capturas de tela …?"
+
+The German title hyphenates across lines ("Bildschirm-fotos") at 136 selected. That is
+normal German typesetting in a system alert, not truncation.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
   can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
   `simctl launch` can pass them too, and that is the cheaper route:
   `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
-- The delete confirmation inside the **smart-category** screens. The cluster-details one is
-  now covered in five languages, but the smart-category screens use a different key set
-  (`core.cleanupCategory.alertTitle*` and `core.cleanupCategory.selected*WillBeRemoved`)
-  with the same sentence shape. Low risk, but not the same thing as verified.
-- The double-length pseudo-locale pass (command above). Every defect this task found was a
-  wrong string rather than a layout failure, so this is now the cheapest remaining check.
+
+Every screen in the acceptance list has now been walked on device in the languages that
+matter. Every defect this task found was a wrong string rather than a layout failure, which
+is why the pseudo-locale pass above is the one worth keeping on the list: it targets the
+failure mode nothing else here exercised.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks
