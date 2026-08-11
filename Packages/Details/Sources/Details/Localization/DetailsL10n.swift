@@ -214,12 +214,12 @@ public enum DetailsL10n {
     }
 
     public enum ScreenshotCleanupComponents {
+        /// Move Selected
+        public static var moveSelected: String { DetailsL10n.string("details.screenshotCleanupComponents.moveSelected") }
+        /// Moving...
+        public static var moving: String { DetailsL10n.string("details.screenshotCleanupComponents.moving") }
         /// Choose which photos are selected for cleanup
         public static var chooseWhichPhotosSelectedCleanup: String { DetailsL10n.string("details.screenshotCleanupComponents.chooseWhichPhotosSelectedCleanup") }
-        /// Delete Selected
-        public static var deleteSelected: String { DetailsL10n.string("details.screenshotCleanupComponents.deleteSelected") }
-        /// Deleting...
-        public static var deleting: String { DetailsL10n.string("details.screenshotCleanupComponents.deleting") }
         /// Select All
         public static var selectAll: String { DetailsL10n.string("details.screenshotCleanupComponents.selectAll") }
     }

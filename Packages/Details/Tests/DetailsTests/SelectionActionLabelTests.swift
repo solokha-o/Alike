@@ -11,30 +11,45 @@ import XCTest
 /// changes one, this test fails and the pair gets looked at again — which is the point.
 final class SelectionActionLabelTests: XCTestCase {
     private static let clearKey = "details.common.clearSelection"
-    private static let deleteKey = "details.screenshotCleanupComponents.deleteSelected"
+    private static let moveKey = "details.screenshotCleanupComponents.moveSelected"
     private static let selectAllKey = "details.screenshotCleanupComponents.selectAll"
 
-    private static let expected: [String: (clear: String, delete: String)] = [
-        "en": ("Clear Selection", "Delete Selected"),
-        "uk": ("Очистити вибір", "Видалити вибране"),
-        "es-419": ("Quitar selección", "Eliminar seleccionadas"),
-        "es": ("Quitar selección", "Eliminar seleccionadas"),
-        "pt-BR": ("Limpar seleção", "Apagar selecionadas"),
-        // "Ausgewählte löschen", not "Auswahl löschen": the latter reads as clearing the
-        // selection, which is the button directly above it.
-        "de": ("Auswahl aufheben", "Ausgewählte löschen"),
+    private static let expected: [String: (clear: String, move: String)] = [
+        "en": ("Clear Selection", "Move Selected"),
+        "uk": ("Очистити вибір", "Перемістити вибране"),
+        "es-419": ("Quitar selección", "Mover seleccionadas"),
+        "es": ("Quitar selección", "Mover seleccionadas"),
+        "pt-BR": ("Limpar seleção", "Mover selecionadas"),
+        "de": ("Auswahl aufheben", "Ausgewählte bewegen"),
         // Paired with "Tout sélectionner" so the two selection actions mirror each other,
         // instead of "Effacer"/"Supprimer la sélection", which are near-synonyms.
-        "fr": ("Tout désélectionner", "Supprimer la sélection")
+        "fr": ("Tout désélectionner", "Déplacer la sélection")
     ]
 
-    func testTheClearAndDeleteButtonsStayDistinguishable() throws {
+    func testTheClearAndMoveButtonsStayDistinguishable() throws {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
             let expected = try XCTUnwrap(Self.expected[language], "no expectation for \(language)")
             XCTAssertEqual(try value(Self.clearKey, language, catalog), expected.clear, language)
-            XCTAssertEqual(try value(Self.deleteKey, language, catalog), expected.delete, language)
+            XCTAssertEqual(try value(Self.moveKey, language, catalog), expected.move, language)
+        }
+    }
+
+    /// The button moves photos to Recently Deleted and opens a confirmation that says exactly
+    /// that; the same action on the cluster screen says "Move N Photos". Nothing here may
+    /// promise deletion — that happens 30 days later, in the Photos app, not on this tap.
+    func testNoSelectionActionPromisesDeletion() throws {
+        let catalog = try LocalizationCatalog.load()
+        let forbidden = ["delete", "видал", "elimin", "apagar", "löschen", "supprim"]
+
+        for key in [Self.moveKey, "details.screenshotCleanupComponents.moving"] {
+            for language in LocalizationCatalog.shippedLanguages {
+                let value = try self.value(key, language, catalog).lowercased()
+                for word in forbidden where value.contains(word) {
+                    XCTFail("\(key) [\(language)] promises deletion: \(value)")
+                }
+            }
         }
     }
 

@@ -4509,96 +4509,96 @@
         }
       }
     },
-    "details.screenshotCleanupComponents.deleteSelected": {
+    "details.screenshotCleanupComponents.moveSelected": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Delete Selected"
+            "value": "Move Selected"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Видалити вибране"
+            "value": "Перемістити вибране"
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminar seleccionadas"
+            "value": "Mover seleccionadas"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminar seleccionadas"
+            "value": "Mover seleccionadas"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apagar selecionadas"
+            "value": "Mover selecionadas"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ausgewählte löschen"
+            "value": "Ausgewählte bewegen"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Supprimer la sélection"
+            "value": "Déplacer la sélection"
           }
         }
       }
     },
-    "details.screenshotCleanupComponents.deleting": {
+    "details.screenshotCleanupComponents.moving": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deleting..."
+            "value": "Moving..."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Видалення..."
+            "value": "Переміщення..."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminando..."
+            "value": "Moviendo..."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminando..."
+            "value": "Moviendo..."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apagando..."
+            "value": "Movendo..."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wird gelöscht…"
+            "value": "Wird bewegt…"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suppression…"
+            "value": "Déplacement…"
           }
         }
       }

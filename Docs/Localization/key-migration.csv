@@ -711,3 +711,5 @@ Alike,Changing sensitivity requires a new scan to take effect,alike.rescan.messa
 Details,details.clusterReviewActionBar.move1Photo,details.clusterReviewActionBar.moveSelectedPhotos
 Details,details.clusterReviewActionBar.movePhotos,details.clusterReviewActionBar.moveSelectedPhotos
 Cleanup,cleanup.main.photosMovedToRecentlyDeleted,cleanup.main.photosMovedToRecentlyDeleted
+Details,details.screenshotCleanupComponents.deleteSelected,details.screenshotCleanupComponents.moveSelected
+Details,details.screenshotCleanupComponents.deleting,details.screenshotCleanupComponents.moving

@@ -207,7 +207,11 @@ struct ScreenshotCleanupActionBar: View {
                     Image(systemName: "trash")
                 }
 
-                Text(isDeleting ? DetailsL10n.ScreenshotCleanupComponents.deleting : DetailsL10n.ScreenshotCleanupComponents.deleteSelected)
+                Text(
+                    isDeleting
+                        ? DetailsL10n.ScreenshotCleanupComponents.moving
+                        : DetailsL10n.ScreenshotCleanupComponents.moveSelected
+                )
                     .font(.appHeadline)
                     .lineLimit(allowsWrapping ? 2 : 1)
                     .multilineTextAlignment(.center)

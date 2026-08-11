@@ -200,6 +200,23 @@ inflect the category noun and agree with the count:
 The German title hyphenates across lines ("Bildschirm-fotos") at 136 selected. That is
 normal German typesetting in a system alert, not truncation.
 
+## Copy fix — the button said "Delete", the action is a move
+
+Not a translation defect. The smart-category button read `Delete Selected` in English and
+the six translations followed it faithfully, while the same action on the cluster screen
+said `Move N Photos` and the confirmation it opens says `Move … to Recently Deleted?`.
+Nothing is deleted on that tap: the photos go to Recently Deleted and stay 30 days, which
+the rest of the app's copy is careful to say.
+
+`details.screenshotCleanupComponents.deleteSelected` → `.moveSelected` (`Move Selected`,
+`Ausgewählte bewegen`, `Déplacer la sélection`, `Mover seleccionadas`, `Mover selecionadas`,
+`Перемістити вибране`), and `.deleting` → `.moving` so the in-progress label follows the
+verb. `SelectionActionLabelTests` now also fails if either label promises deletion in any
+of the seven languages.
+
+The pair stays distinguishable from the button above it in every language, which was the
+earlier fix on this same screen.
+
 ## Still owed
 
 - The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
