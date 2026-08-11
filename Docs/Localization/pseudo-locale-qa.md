@@ -44,57 +44,63 @@ advanced filters, reminders).
 
 ## Findings — 2026-08-11 (task 40)
 
-Both walks — the double-length pseudo-locale and the five real locales — are **still
-owed**, for the same reason task 39 recorded: driving the simulator UI needs the native
-simulator integration, which refuses to attach on this machine because `xcode-select`
-points at `/Library/Developer/CommandLineTools` rather than a full Xcode. Unblocking it
-needs a password, so it cannot be done from a session:
+Walked with **RocketSim** (`/Applications/RocketSim.app/Contents/Helpers/rocketsim`), which
+drives the Simulator over its own accessibility bridge and does not need the
+`xcode-select` fix the native integration wants. `rocketsim elements --agent` reads the
+localized accessibility tree directly, so a wrong or missing string shows up as text rather
+than having to be spotted in a screenshot.
 
-```bash
-sudo xcode-select -s /Applications/Xcode-26.6.0.app/Contents/Developer
-```
+| Screen | Locales | Status |
+|---|---|---|
+| Welcome, pages 1–3 | `de` `fr` `es-419` `es` `pt-BR` | **Pass** |
+| Scanner home (idle, free-scan allowance) | `de` `fr` | **Pass** |
+| Cleanup, empty state | `de` | **Pass** |
+| Settings, all sections | `de` `fr` | **Pass after a fix** — see below |
+| Paywall: plan cards, disclosure block, both legal links | `de` `fr` | **Pass** |
+| User Guide hub and a topic | `de` | **Pass** |
 
-What *was* verified, on a booted simulator, with real German, French, Spanish and
-Portuguese strings:
+Notes worth keeping:
 
-| Screen | Locales | Status | Note |
-|---|---|---|---|
-| Welcome, page 1 of 3 | `de` `fr` `es-419` `es` `pt-BR` | **Pass** | Launched per locale via `simctl launch … -AppleLanguages` and screenshotted. Title, body and the primary button reflow correctly; nothing clipped, nothing truncated, no English fallbacks. `de` and `pt-BR` keep the title on one line; `fr` wraps to two and the body to three, as designed. |
-| Everything else | — | **Not walked** | `simctl` can launch and screenshot but cannot tap, so no screen past the first is reachable from here. |
+- **The paywall rendered with live StoreKit products** ($34.99 / $5.99) without the
+  `Alike-Pseudolocale` scheme — the StoreKit configuration persists on the simulator once
+  Xcode has run the app there. Both disclosure paragraphs render in full, and
+  "Politique de confidentialité" + "Conditions d'utilisation" sit side by side on one row
+  in French without clipping. That was the tightest layout risk in the set.
+- **Nothing clipped anywhere.** Onboarding page 3 does overflow one screen in `de`, `fr`
+  and `es` where English fits, but the page is inside a `ScrollView` and the whole text is
+  reachable. (An earlier reading of this as clipping was a testing mistake: the swipe used
+  screenshot-pixel coordinates against a 402×874-point canvas, so it never touched the
+  scroll view.)
+- Long-language compounds wrap correctly throughout — `Aufräum-Sitzungen`,
+  `iCloud-Fotos gleicht die Änderung ab`, `Smarte Kategorien für Bildschirmfotos und
+  unscharfe Fotos` all reflow rather than truncate.
+- The tab bar holds `Scan · Aufräumen · Einstellungen` and `Analyse · Nettoyage · Réglages`
+  at full size.
 
-Also checked, statically, across all eleven catalogs:
+### The bug this walk found
 
-- Both `.lineLimit(1)` text labels are protected. `WelcomeView.swift:264` scales to 0.85
-  with `allowsTightening`; the count badge at `CleanupView.swift:968` is a number scaling
-  to 0.7 inside a 28pt frame.
-- 106 strings run at 1.5× English or longer in `de` or `fr`. The longest ratios are short
-  labels where the absolute length is small ("Make Best Shot" → "Définir comme meilleure
-  photo", 14 → 29 characters). The ones worth watching on screen are the ones inside
-  horizontal stacks: the Welcome navigation row, the cluster review action bar, and the
-  paywall plan cards.
+`SettingsView.scheduleDescription` built the reminder row as `"\(weekday) at \(time)"` —
+a hardcoded English " at " between two localized halves. German read **"Sonntag at 18:00"**,
+and Ukrainian had been reading "Неділя at 18:00" since the feature shipped. It is now
+`settings.main.reminderScheduleWeekdayTime` (`um` / `à` / `às` / `a las` / `о`).
 
-That is evidence of no *obvious* clipping hazard plus proof that the first screen renders
-in every locale — not evidence that Cleanup, Details, Settings and the paywall survive.
+This is exactly the class of defect the pseudo-locale scheme's `-NSShowNonLocalizedStrings`
+is meant to surface, and it survived task 39's static sweep because the literal is not a
+`Text("…")` — it is string interpolation inside a helper.
 
-## The walk that is still owed
+## Still owed
 
-Run each of these under the `Alike-Pseudolocale` scheme first (double-length catches the
-worst case), then again per locale with the app language set in the scheme or via
-`-AppleLanguages`. `de` and `fr` are the two that matter most; `pt-BR` is close behind.
-
-- [ ] Welcome onboarding, pages 2 and 3 — including the **Grant Access** button, the
-      longest primary label in the set (`de` "Zugriff erteilen", `fr` "Autoriser l'accès")
-- [ ] Scanner home — idle, scanning, complete, error, and the free-scan allowance row
-- [ ] Cleanup progress and queue — both cluster sections, all five badges, the filter and
-      sort sheets
-- [ ] Cleanup history — the all-time impact tiles and a month group
-- [ ] Cluster details and the review bar — selection summary at 1, 2 and 5 selected, so the
-      plural forms are seen rather than assumed
-- [ ] Screenshot and blurred-photo cleanup — summary card and the delete confirmation
-- [ ] Settings — every row, and the reminder day/time pickers
-- [ ] User Guide hub and at least one topic
-- [ ] **Scheme only:** all four paywall entry points (post-first-scan, batch cleanup,
-      advanced filters, reminders), plus the disclosure block and both plan cards
+- The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
+  can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
+  `simctl launch` can pass them too, and that is the cheaper route:
+  `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
+- Screens that need a **populated photo library**, which the simulator does not have: the
+  cluster queue with real groups, cluster details and the review bar, the selection summary
+  at 1/2/5 selected (where the plural forms actually render), screenshot and blurred-photo
+  cleanup, the delete confirmations, and Cleanup history. Seed the simulator library first
+  (`xcrun simctl addmedia`), then repeat the walk above.
+- `pt-BR` and `es` past the Welcome screens.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
-marks a string that never reached a catalog.
+marks a string that never reached a catalog. The reminder-row bug above is what one looks
+like when nobody runs that pass.

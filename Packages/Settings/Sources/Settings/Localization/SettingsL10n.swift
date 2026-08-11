@@ -110,6 +110,8 @@ public enum SettingsL10n {
         public static var reminderDay: String { SettingsL10n.string("settings.main.reminderDay") }
         /// Reminder schedule
         public static var reminderSchedule: String { SettingsL10n.string("settings.main.reminderSchedule") }
+        /// %1$@ at %2$@
+        public static var reminderScheduleWeekdayTime: String { SettingsL10n.string("settings.main.reminderScheduleWeekdayTime") }
         /// Reminder time
         public static var reminderTime: String { SettingsL10n.string("settings.main.reminderTime") }
         /// Request the App Store rating prompt
