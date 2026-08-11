@@ -16,6 +16,36 @@
             "state": "translated",
             "value": "Alike радіє завершеному очищенню"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebra tu limpieza completada"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebra tu limpieza completada"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike comemora sua limpeza concluída"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike feiert dein abgeschlossenes Aufräumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike célèbre votre nettoyage terminé"
+          }
         }
       }
     },
@@ -32,6 +62,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike знайшов можливості для очищення"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike encontró oportunidades de limpieza"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ha encontrado oportunidades de limpieza"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike encontrou oportunidades de limpeza"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike hat Aufräummöglichkeiten gefunden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a trouvé des possibilités de nettoyage"
           }
         }
       }
@@ -50,6 +110,36 @@
             "state": "translated",
             "value": "Alike має готові до перегляду можливості для очищення"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike tiene oportunidades de limpieza listas para revisar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike tiene oportunidades de limpieza listas para revisar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike tem oportunidades de limpeza prontas para revisão"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike hat Aufräummöglichkeiten zur Durchsicht bereit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a des possibilités de nettoyage prêtes à être examinées"
+          }
         }
       }
     },
@@ -66,6 +156,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike готовий до очищення"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está listo para limpiar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está listo para limpiar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está pronto para a limpeza"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ist bereit zum Aufräumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike est prêt pour le nettoyage"
           }
         }
       }
@@ -84,6 +204,36 @@
             "state": "translated",
             "value": "Alike потрібен доступ до фототеки, щоб продовжити"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike necesita permiso para acceder a tu fototeca para continuar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike necesita permiso para acceder a tu fototeca para continuar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike precisa de acesso à sua fototeca para continuar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike benötigt Zugriff auf deine Mediathek, um fortzufahren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a besoin d’accéder à votre photothèque pour continuer"
+          }
         }
       }
     },
@@ -100,6 +250,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike помітив нові фото у вашій фототеці"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike detectó fotos nuevas en tu fototeca"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ha detectado fotos nuevas en tu fototeca"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike notou fotos novas na sua fototeca"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike hat neue Fotos in deiner Mediathek entdeckt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a repéré de nouvelles photos dans votre photothèque"
           }
         }
       }
@@ -118,6 +298,36 @@
             "state": "translated",
             "value": "Alike не зміг завершити сканування"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike tuvo un problema con el análisis"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ha tenido un problema con el análisis"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike teve um problema com a análise"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Scan ist ein Problem aufgetreten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a rencontré un problème lors de l’analyse"
+          }
         }
       }
     },
@@ -134,6 +344,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike готовий допомогти впорядкувати фототеку"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está listo para ayudarte a organizar tu fototeca"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está listo para ayudarte a organizar tu fototeca"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está pronto para ajudar a organizar sua fototeca"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike hilft dir gern, deine Mediathek zu ordnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike est prêt à vous aider à organiser votre photothèque"
           }
         }
       }
@@ -152,6 +392,36 @@
             "state": "translated",
             "value": "Alike повідомляє, що у фототеці все впорядковано"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike dice que tu fototeca está al día"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike dice que tu fototeca está al día"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike diz que sua fototeca está em dia"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike sagt, deine Mediathek ist auf dem neuesten Stand"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike indique que votre photothèque est à jour"
+          }
         }
       }
     },
@@ -168,6 +438,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike шукає схожі фотографії"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike buscando fotos similares"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike buscando fotos similares"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike procurando fotos semelhantes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike sucht nach ähnlichen Fotos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike recherche des photos similaires"
           }
         }
       }
@@ -186,6 +486,36 @@
             "state": "translated",
             "value": "Виберіть кількість стовпців для відображення фото"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige cuántas columnas se usan para mostrar las fotos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige cuántas columnas se usan para mostrar las fotos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha quantas colunas são usadas para exibir as fotos"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle, in wie vielen Spalten Fotos angezeigt werden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez le nombre de colonnes utilisées pour afficher les photos"
+          }
         }
       }
     },
@@ -202,6 +532,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d колонки"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d columnas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d columnas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d colunas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Spalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d colonnes"
           }
         }
       }
@@ -220,6 +580,36 @@
             "state": "translated",
             "value": "Колонки"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columnas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columnas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colunas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colonnes"
+          }
         }
       }
     },
@@ -236,6 +626,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Стовпців у сітці"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columnas de la cuadrícula"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columnas de la cuadrícula"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colunas da grade"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rasterspalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colonnes de la grille"
           }
         }
       }
@@ -254,6 +674,36 @@
             "state": "translated",
             "value": "Попередній перегляд фото недоступний"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista previa no disponible"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista previa no disponible"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização indisponível"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschau nicht verfügbar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu indisponible"
+          }
         }
       }
     },
@@ -271,6 +721,36 @@
             "state": "translated",
             "value": "Повторити"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar novamente"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
         }
       }
     },
@@ -287,6 +767,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Спробуйте завантажити фото ще раз"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intenta cargar la foto de nuevo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intenta cargar la foto de nuevo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tente carregar a foto novamente"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versuche, das Foto erneut zu laden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essayez de charger la photo à nouveau"
           }
         }
       }

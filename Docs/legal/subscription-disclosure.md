@@ -2,7 +2,11 @@
 
 This file is the source of truth for the subscription disclosure shown on the
 paywall. The strings below must stay byte-identical to the corresponding entries
-in `Alike/Alike/Localizable.xcstrings`. When you change one, change both.
+in `Packages/Purchases/Sources/PurchasesUI/Resources/Localizable.xcstrings` — the
+task 39 split moved them out of the app catalog. When you change one, change both.
+
+`PurchasesUITests/SubscriptionDisclosureTests` asserts that match, in every
+shipped language, so a locale that drifts fails the suite rather than App Review.
 
 Product facts come from `Docs/Subscriptions.md` and
 `Alike/Configuration/Alike.storekit`.
@@ -40,6 +44,26 @@ Rendered by `disclosure` in
 
 > Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду. Оплата стягується з вашого облікового запису Apple.
 
+**ES-419**
+
+> Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes de que finalice el periodo actual. El pago se carga a tu cuenta de Apple.
+
+**ES**
+
+> Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes de que finalice el periodo actual. El pago se carga a tu cuenta de Apple.
+
+**PT-BR**
+
+> As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. A cobrança é feita na sua conta Apple.
+
+**DE**
+
+> Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums gekündigt werden. Die Zahlung wird über deinen Apple-Account abgerechnet.
+
+**FR**
+
+> Les abonnements sont renouvelés automatiquement, sauf résiliation au moins 24 heures avant la fin de la période en cours. Le paiement est débité de votre compte Apple.
+
 ### Paragraph 2 — trial and cancellation
 
 **EN**
@@ -50,17 +74,48 @@ Rendered by `disclosure` in
 
 > Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право. Оплата починається після завершення пробного періоду, якщо ви не скасуєте підписку щонайменше за 24 години до цього. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS.
 
+**ES-419**
+
+> El plan anual incluye una prueba gratuita de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes gestionar o cancelar la suscripción cuando quieras en Configuración de iOS.
+
+**ES**
+
+> El plan anual incluye una prueba gratuita de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes gestionar o cancelar la suscripción cuando quieras en Ajustes de iOS.
+
+**PT-BR**
+
+> O plano anual inclui 7 dias de teste grátis para novos assinantes qualificados. A cobrança começa quando o teste termina, a menos que você cancele pelo menos 24 horas antes. Gerencie ou cancele quando quiser nos Ajustes do iOS.
+
+**DE**
+
+> Der Jahresplan enthält eine 7-tägige kostenlose Testphase für berechtigte neue Abonnentinnen und Abonnenten. Die Abrechnung beginnt mit dem Ende der Testphase, sofern du nicht mindestens 24 Stunden vorher kündigst. Du kannst dein Abo jederzeit in den iOS-Einstellungen verwalten oder kündigen.
+
+**FR**
+
+> La formule annuelle comprend un essai gratuit de 7 jours pour les nouveaux abonnés éligibles. La facturation commence à la fin de l’essai, sauf résiliation au moins 24 heures avant. Vous pouvez gérer ou résilier votre abonnement à tout moment dans les Réglages iOS.
+
 The phrase "for eligible new subscribers" is load-bearing. Trial eligibility is
 decided by StoreKit per subscription group, and a customer who already used the
 Alike Pro trial will not get another one. The copy must not promise a trial that
-StoreKit will refuse.
+StoreKit will refuse. Every locale above carries the same hedge — "que cumplan los
+requisitos", "qualificados", "berechtigte", "éligibles" — and a translation pass
+must not smooth it away.
 
 ### Link row
 
-| Label (EN) | Label (UK) | Destination |
+| Locale | Privacy Policy | Terms of Use |
 | --- | --- | --- |
-| Privacy Policy | Політика конфіденційності | `SubscriptionConfiguration.legalLinks.privacyPolicy` |
-| Terms of Use | Умови використання | `SubscriptionConfiguration.legalLinks.termsOfUse` |
+| `en` | Privacy Policy | Terms of Use |
+| `uk` | Політика конфіденційності | Умови використання |
+| `es-419` | Política de privacidad | Términos de uso |
+| `es` | Política de privacidad | Términos de uso |
+| `pt-BR` | Política de Privacidade | Termos de Uso |
+| `de` | Datenschutzrichtlinie | Nutzungsbedingungen |
+| `fr` | Politique de confidentialité | Conditions d’utilisation |
+
+Destinations are `SubscriptionConfiguration.legalLinks.privacyPolicy` and
+`.termsOfUse`. Both point at the same URLs in every locale — the linked pages are
+English-only, which Review accepts as long as the links work.
 
 Both links are injected once in `RootView` via `.subscriptionLegalLinks(...)`
 and read from the environment, so every paywall entry point — Scanner, Details,

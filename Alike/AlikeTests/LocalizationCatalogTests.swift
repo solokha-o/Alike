@@ -9,7 +9,9 @@ import XCTest
 struct LocalizationCatalog {
     static let wrapperName = "AlikeL10n"
     static let modulePrefix = "alike."
-    static let shippedLanguages = ["en", "uk"]
+    /// Every language the app ships. Adding one here makes the suite fail until the catalog
+    /// carries it — which is the point.
+    static let shippedLanguages = ["en", "uk", "es-419", "es", "pt-BR", "de", "fr"]
 
     let strings: [String: [String: Any]]
 

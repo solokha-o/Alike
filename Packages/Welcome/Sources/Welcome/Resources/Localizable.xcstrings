@@ -16,6 +16,36 @@
             "state": "translated",
             "value": "Доступ надано"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso concedido"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso concedido"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso concedido"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff erteilt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès autorisé"
+          }
         }
       }
     },
@@ -29,6 +59,36 @@
           }
         },
         "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -50,6 +110,36 @@
             "state": "translated",
             "value": "Дані Alike видалено"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos de Alike eliminados"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos de Alike eliminados"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dados do Alike apagados"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike-Daten gelöscht"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données Alike supprimées"
+          }
         }
       }
     },
@@ -66,6 +156,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike потрібен доступ до фото, щоб сканувати вашу фототеку та підготувати рекомендації для очищення."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca y preparar sugerencias de limpieza."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca y preparar sugerencias de limpieza."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike precisa de acesso às fotos para analisar sua fototeca e preparar sugestões de limpeza."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike benötigt Zugriff auf deine Fotos, um deine Mediathek zu scannen und Aufräumvorschläge vorzubereiten."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a besoin d’accéder à vos photos pour analyser votre photothèque et préparer des suggestions de nettoyage."
           }
         }
       }
@@ -84,6 +204,36 @@
             "state": "translated",
             "value": "Alike ніколи не видаляє фото автоматично. Ви спочатку переглядаєте рекомендації й підтверджуєте кожну дію."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike nunca elimina fotos automáticamente. Primero revisas las sugerencias y confirmas cada acción de limpieza."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike nunca elimina fotos automáticamente. Primero revisas las sugerencias y confirmas cada acción de limpieza."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike nunca apaga fotos automaticamente. Você revisa as sugestões primeiro e confirma cada ação de limpeza."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike löscht nie automatisch Fotos. Du prüfst zuerst die Vorschläge und bestätigst jede Aufräumaktion."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ne supprime jamais de photos automatiquement. Vous examinez d’abord les suggestions et confirmez chaque nettoyage."
+          }
         }
       }
     },
@@ -100,6 +250,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike, ваш фотодетектив"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, tu detective de fotos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, tu detective de fotos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, seu detetive de fotos"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, dein Foto-Detektiv"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, votre détective photo"
           }
         }
       }
@@ -118,6 +298,36 @@
             "state": "translated",
             "value": "Аналіз виконується на вашому пристрої, і нічого не видаляється автоматично."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El análisis se queda en tu dispositivo y no se elimina nada automáticamente."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El análisis se queda en tu dispositivo y no se elimina nada automáticamente."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A análise fica no seu dispositivo, e nada é apagado automaticamente."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Analyse bleibt auf deinem Gerät, und nichts wird automatisch gelöscht."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’analyse reste sur votre appareil et rien n’est supprimé automatiquement."
+          }
         }
       }
     },
@@ -134,6 +344,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Назад"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrás"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrás"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurück"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retour"
           }
         }
       }
@@ -152,6 +392,36 @@
             "state": "translated",
             "value": "Пізніше ви можете змінити доступ у Налаштуваннях, а Alike нічого не видаляє без вашого підтвердження."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiar el acceso más tarde en Configuración, y Alike nunca elimina nada sin tu confirmación."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiar el acceso más tarde en Ajustes, y Alike nunca elimina nada sin tu confirmación."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você pode alterar o acesso depois nos Ajustes, e o Alike nunca apaga nada sem a sua confirmação."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst den Zugriff später in den Einstellungen ändern, und Alike löscht nie etwas ohne deine Bestätigung."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pourrez modifier l’accès plus tard dans Réglages, et Alike ne supprime jamais rien sans votre confirmation."
+          }
         }
       }
     },
@@ -168,6 +438,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ви можете надати доступ зараз і повернутися до очищення, коли будете готові."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes conceder el acceso ahora y volver a la limpieza cuando quieras."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes conceder el acceso ahora y volver a la limpieza cuando quieras."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você pode conceder o acesso agora e voltar à limpeza quando quiser."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst den Zugriff jetzt erteilen und jederzeit zum Aufräumen zurückkehren."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez autoriser l’accès maintenant et revenir au nettoyage quand vous le souhaitez."
           }
         }
       }
@@ -186,6 +486,36 @@
             "state": "translated",
             "value": "Очищуйте фототеку впевнено"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpia tu fototeca con confianza"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpia tu fototeca con confianza"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpe sua fototeca com confiança"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Räume deine Mediathek sicher auf"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyez votre photothèque en toute confiance"
+          }
         }
       }
     },
@@ -202,6 +532,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Порівнюйте фото й залишайте важливі для вас знімки."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara fotos y quédate con las tomas que te importan."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara fotos y quédate con las tomas que te importan."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare fotos e fique com as que importam para você."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergleiche Fotos und behalte die Aufnahmen, die dir wichtig sind."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparez vos photos et gardez les clichés qui comptent pour vous."
           }
         }
       }
@@ -220,6 +580,36 @@
             "state": "translated",
             "value": "Продовжити"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortfahren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
         }
       }
     },
@@ -236,6 +626,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Увімкніть доступ до фото в Налаштуваннях, коли будете готові продовжити."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa el acceso a las fotos en Configuración cuando quieras continuar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa el acceso a las fotos en Ajustes cuando quieras continuar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ative o acesso às fotos nos Ajustes quando quiser continuar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviere den Fotozugriff in den Einstellungen, wenn du fortfahren möchtest."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez l’accès aux photos dans Réglages lorsque vous souhaitez continuer."
           }
         }
       }
@@ -254,6 +674,36 @@
             "state": "translated",
             "value": "Кожне видалення підтверджується, залишається прозорим і повністю у ваших руках."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada eliminación queda confirmada, visible y por completo en tus manos."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada eliminación queda confirmada, visible y por completo en tus manos."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada exclusão fica confirmada, visível e totalmente nas suas mãos."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Löschung bleibt bestätigt, sichtbar und vollständig in deiner Hand."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque suppression reste confirmée, visible et entièrement entre vos mains."
+          }
         }
       }
     },
@@ -270,6 +720,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Знаходьте можливості для очищення"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encuentra oportunidades de limpieza"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encuentra oportunidades de limpieza"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontre oportunidades de limpeza"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufräummöglichkeiten finden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trouver des possibilités de nettoyage"
           }
         }
       }
@@ -288,6 +768,36 @@
             "state": "translated",
             "value": "Надати доступ"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conceder acceso"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conceder acceso"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conceder acesso"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff erteilen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser l’accès"
+          }
         }
       }
     },
@@ -304,6 +814,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Групуйте візуально схожі фото та інші елементи, які варто переглянути."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrupa fotos visualmente similares y otros elementos que vale la pena revisar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrupa fotos visualmente similares y otros elementos que merece la pena revisar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrupe fotos visualmente semelhantes e outros itens que valem uma revisão."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppiert visuell ähnliche Fotos und andere Objekte, die eine Durchsicht lohnen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regroupe les photos visuellement similaires et les autres éléments à examiner."
           }
         }
       }
@@ -322,6 +862,36 @@
             "state": "translated",
             "value": "Як допомагає Alike"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo te ayuda Alike"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo te ayuda Alike"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como o Alike ajuda"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So hilft Alike"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment Alike vous aide"
+          }
         }
       }
     },
@@ -338,6 +908,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Дізнавайтеся, скільки місця можна звільнити, ще до очищення."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descubre cuánto espacio podrías recuperar antes de limpiar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descubre cuánto espacio podrías recuperar antes de limpiar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saiba quanto espaço você pode recuperar antes de limpar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh vor dem Aufräumen, wie viel Speicher du freigeben kannst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sachez combien d’espace vous pourriez récupérer avant de faire le tri."
           }
         }
       }
@@ -356,6 +956,36 @@
             "state": "translated",
             "value": "Локальні дані Alike видалено. Ваші фотографії та підписка не змінилися."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se eliminaron tus datos locales de Alike. Tus fotos y tu suscripción no cambian."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se han eliminado tus datos locales de Alike. Tus fotos y tu suscripción no cambian."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seus dados locais do Alike foram apagados. Suas fotos e sua assinatura continuam iguais."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine lokalen Alike-Daten wurden gelöscht. Deine Fotos und dein Abo bleiben unverändert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos données Alike locales ont été supprimées. Vos photos et votre abonnement sont inchangés."
+          }
         }
       }
     },
@@ -372,6 +1002,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Далі"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avançar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivant"
           }
         }
       }
@@ -390,6 +1050,36 @@
             "state": "translated",
             "value": "Нічого не видаляється автоматично"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se elimina nada automáticamente"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se elimina nada automáticamente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada é apagado automaticamente"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts wird automatisch gelöscht"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien n’est supprimé automatiquement"
+          }
         }
       }
     },
@@ -406,6 +1096,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Відкрити налаштування"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Configuración"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen öffnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
           }
         }
       }
@@ -424,6 +1144,36 @@
             "state": "translated",
             "value": "Сторінка %lld з %lld"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página %lld de %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página %lld de %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página %lld de %lld"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite %lld von %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %lld sur %lld"
+          }
         }
       }
     },
@@ -440,6 +1190,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Доступ до фото дозволяє Alike сканувати фототеку, групувати схожі фото та готувати рекомендації для перегляду."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O acesso às fotos permite que o Alike analise sua fototeca, agrupe fotos semelhantes e prepare sugestões de limpeza para você revisar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit dem Fotozugriff kann Alike deine Mediathek scannen, ähnliche Fotos gruppieren und Aufräumvorschläge für dich vorbereiten."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’accès aux photos permet à Alike d’analyser votre photothèque, de regrouper les photos similaires et de préparer des suggestions de nettoyage à examiner."
           }
         }
       }
@@ -458,6 +1238,36 @@
             "state": "translated",
             "value": "Потрібен доступ до фото"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere acceso a las fotos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere acceso a las fotos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso às fotos necessário"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotozugriff erforderlich"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès aux photos requis"
+          }
         }
       }
     },
@@ -474,6 +1284,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Аналіз фото виконується на цьому пристрої, а Alike готує підказки для прибирання."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El análisis de tus fotos se queda en este dispositivo y te da sugerencias de limpieza guiadas."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El análisis de tus fotos se queda en este dispositivo y te da sugerencias de limpieza guiadas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A análise das suas fotos fica neste dispositivo e gera sugestões de limpeza guiadas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Analyse deiner Fotos bleibt auf diesem Gerät und liefert dir geführte Aufräumvorschläge."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’analyse de vos photos reste sur cet appareil et vous propose un nettoyage guidé."
           }
         }
       }
@@ -492,6 +1332,36 @@
             "state": "translated",
             "value": "Ваші фото залишаються приватними, і ви підтвердите кожне очищення перед видаленням."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus fotos siguen siendo privadas y confirmarás cada limpieza antes de que se elimine algo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus fotos siguen siendo privadas y confirmarás cada limpieza antes de que se elimine nada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas fotos continuam privadas, e você confirma cada limpeza antes que algo seja removido."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Fotos bleiben privat, und du bestätigst jedes Aufräumen, bevor etwas entfernt wird."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos photos restent privées et vous confirmez chaque nettoyage avant toute suppression."
+          }
         }
       }
     },
@@ -508,6 +1378,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Приватно й завжди під вашим контролем"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado y siempre bajo tu control"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado y siempre bajo tu control"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado e sempre sob seu controle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privat und immer unter deiner Kontrolle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privé et toujours sous votre contrôle"
           }
         }
       }
@@ -526,6 +1426,36 @@
             "state": "translated",
             "value": "Приватний аналіз на пристрої"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análisis privado en el dispositivo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análisis privado en el dispositivo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análise privada no dispositivo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private Analyse auf dem Gerät"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse privée sur l’appareil"
+          }
         }
       }
     },
@@ -542,6 +1472,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Переглядайте кожну рекомендацію"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa cada sugerencia"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa cada sugerencia"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revise cada sugestão"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Vorschlag prüfen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examiner chaque suggestion"
           }
         }
       }
@@ -560,6 +1520,36 @@
             "state": "translated",
             "value": "Переглядайте схожі фото, звільняйте пам’ять і контролюйте кожне видалення."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa fotos similares, libera espacio y mantén el control de cada eliminación."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa fotos similares, libera espacio y mantén el control de cada eliminación."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revise fotos semelhantes, libere espaço e mantenha o controle de cada exclusão."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe ähnliche Fotos, gib Speicher frei und behalte jede Löschung in der Hand."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez les photos similaires, libérez de l’espace et gardez la main sur chaque suppression."
+          }
         }
       }
     },
@@ -576,6 +1566,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ви спочатку переглядаєте рекомендації й самі підтверджуєте кожну дію очищення."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero revisas las sugerencias y confirmas tú mismo cada acción de limpieza."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero revisas las sugerencias y confirmas tú mismo cada acción de limpieza."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você revisa as sugestões primeiro e confirma cada ação de limpeza."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du prüfst zuerst die Vorschläge und bestätigst jede Aufräumaktion selbst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous examinez d’abord les suggestions et confirmez vous-même chaque nettoyage."
           }
         }
       }
@@ -594,6 +1614,36 @@
             "state": "translated",
             "value": "Безпечний сценарій очищення"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flujo de limpieza seguro"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flujo de limpieza seguro"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fluxo de limpeza seguro"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherer Aufräumablauf"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage sans risque"
+          }
         }
       }
     },
@@ -610,6 +1660,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Оцінюйте можливу економію пам’яті"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira el ahorro potencial"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira el ahorro potencial"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veja a economia possível"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mögliche Einsparung ansehen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les gains possibles"
           }
         }
       }
@@ -628,6 +1708,36 @@
             "state": "translated",
             "value": "Знаходьте схожі фото, які можуть звільнити місце, коли ви вирішите, що видаляти."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detecta fotos similares que pueden liberar espacio cuando decidas qué eliminar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detecta fotos similares que pueden liberar espacio cuando decidas qué eliminar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontre fotos semelhantes que podem liberar espaço quando você decidir o que remover."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finde ähnliche Fotos, die Speicher freigeben, sobald du entscheidest, was weg soll."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repérez les photos similaires qui libéreront de l’espace une fois votre choix fait."
+          }
         }
       }
     },
@@ -644,6 +1754,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Економія пам’яті"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahorro de espacio"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahorro de espacio"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Economia de espaço"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicherersparnis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espace récupéré"
           }
         }
       }
@@ -662,6 +1802,36 @@
             "state": "translated",
             "value": "Перетворіть переповнену фототеку на впорядкований процес очищення."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convierte una fototeca abarrotada en una limpieza guiada."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convierte una fototeca abarrotada en una limpieza guiada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transforme uma fototeca lotada em uma limpeza guiada."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mach aus einer vollen Mediathek ein geführtes Aufräumen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transformez une photothèque encombrée en nettoyage guidé."
+          }
         }
       }
     },
@@ -679,6 +1849,36 @@
             "state": "translated",
             "value": "Навіщо Alike доступ до фото"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por qué Alike pide acceso a las fotos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por qué Alike pide acceso a las fotos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por que o Alike pede acesso às fotos"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warum Alike nach Fotozugriff fragt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourquoi Alike demande l’accès aux photos"
+          }
         }
       }
     },
@@ -695,6 +1895,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ваша фототека залишається під вашим контролем"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu fototeca sigue bajo tu control"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu fototeca sigue bajo tu control"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua fototeca continua sob seu controle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Mediathek bleibt unter deiner Kontrolle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre photothèque reste sous votre contrôle"
           }
         }
       }
