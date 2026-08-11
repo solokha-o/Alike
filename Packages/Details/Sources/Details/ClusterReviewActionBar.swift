@@ -55,10 +55,7 @@ struct ClusterReviewActionBar: View {
 
     private var deleteActionTitle: String {
         guard !isDeleting else { return DetailsL10n.ClusterReviewActionBar.moving }
-        if selectedCount == 1 {
-            return DetailsL10n.ClusterReviewActionBar.move1Photo
-        }
-        return String(format: DetailsL10n.ClusterReviewActionBar.movePhotos, selectedCount)
+        return DetailsL10n.ClusterReviewActionBar.moveSelectedPhotos(selectedCount)
     }
 
     private var actionBarShape: Capsule {

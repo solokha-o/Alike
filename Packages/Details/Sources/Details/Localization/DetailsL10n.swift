@@ -127,10 +127,10 @@ public enum DetailsL10n {
     }
 
     public enum ClusterReviewActionBar {
-        /// Move 1 Photo
-        public static var move1Photo: String { DetailsL10n.string("details.clusterReviewActionBar.move1Photo") }
-        /// Move %d Photos
-        public static var movePhotos: String { DetailsL10n.string("details.clusterReviewActionBar.movePhotos") }
+        /// Move %1$lld Photos (plural)
+        public static func moveSelectedPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterReviewActionBar.moveSelectedPhotos", count, bundle: bundle, locale: locale)
+        }
         /// Moving...
         public static var moving: String { DetailsL10n.string("details.clusterReviewActionBar.moving") }
     }

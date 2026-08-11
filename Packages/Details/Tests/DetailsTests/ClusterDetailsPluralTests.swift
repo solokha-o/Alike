@@ -47,6 +47,36 @@ final class ClusterDetailsPluralTests: XCTestCase {
         )
     }
 
+    /// The review action bar was the last singular/plural pair picked in Swift — found by
+    /// walking a real 16-photo cluster on device, where the bar read "Перемістити фото: 15".
+    func testReviewActionBarTitleSelectsThePluralFormForEachCount() throws {
+        let en = try CompiledCatalogFixture.bundle(language: "en")
+        let english = Locale(identifier: "en")
+
+        XCTAssertEqual(
+            DetailsL10n.ClusterReviewActionBar.moveSelectedPhotos(1, bundle: en, locale: english),
+            "Move 1 Photo"
+        )
+        XCTAssertEqual(
+            DetailsL10n.ClusterReviewActionBar.moveSelectedPhotos(15, bundle: en, locale: english),
+            "Move 15 Photos"
+        )
+
+        let uk = try CompiledCatalogFixture.bundle(language: "uk")
+        let ukrainian = Locale(identifier: "uk")
+
+        // one: 1, 21 — few: 2 — many: 15. "фото" does not decline, so every form reads the
+        // same; what this asserts is that each category resolves and substitutes the count.
+        for count in [1, 2, 15, 21] {
+            let title = DetailsL10n.ClusterReviewActionBar.moveSelectedPhotos(
+                count,
+                bundle: uk,
+                locale: ukrainian
+            )
+            XCTAssertEqual(title, "Перемістити \(count) фото", title)
+        }
+    }
+
     /// The alert body never prints the count, so it stays a two-key pair — `xcstringstool` rejects
     /// a plural variation whose text does not reference the number.
     func testDeleteAlertMessageKeepsItsSingularAndPluralPair() throws {

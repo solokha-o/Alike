@@ -708,3 +708,5 @@ Alike,Rescan Required,alike.rescan.title
 Alike,Later,alike.rescan.later
 Alike,Rescan Now,alike.rescan.now
 Alike,Changing sensitivity requires a new scan to take effect,alike.rescan.message
+Details,details.clusterReviewActionBar.move1Photo,details.clusterReviewActionBar.moveSelectedPhotos
+Details,details.clusterReviewActionBar.movePhotos,details.clusterReviewActionBar.moveSelectedPhotos
