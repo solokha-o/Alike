@@ -1184,7 +1184,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перегляньте ймовірно невдалі кадри, перш ніж вирішити, що залишити або видалити."
+            "value": "Перегляньте ймовірно неякісні кадри, перш ніж вирішити, що залишити або видалити."
           }
         },
         "es-419": {
@@ -1208,13 +1208,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prüfe wahrscheinlich misslungene Aufnahmen, bevor du entscheidest, was bleibt und was geht."
+            "value": "Prüfe wahrscheinlich qualitativ schlechte Aufnahmen, bevor du entscheidest, was bleibt und was geht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Examinez les clichés probablement ratés avant de décider quoi garder ou supprimer."
+            "value": "Examinez les photos probablement de mauvaise qualité avant de décider quoi garder ou supprimer."
           }
         }
       }

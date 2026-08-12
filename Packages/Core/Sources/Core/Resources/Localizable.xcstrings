@@ -1706,13 +1706,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schalte das Aufräumen unscharfer Fotos frei, um wahrscheinlich misslungene Aufnahmen vor dem Löschen zu prüfen – mit derselben sicheren Bestätigung."
+            "value": "Schalte das Aufräumen unscharfer Fotos frei, um wahrscheinlich qualitativ schlechte Aufnahmen vor dem Löschen zu prüfen – mit derselben sicheren Bestätigung."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Débloquez le nettoyage des photos floues pour examiner les clichés probablement ratés avant de les supprimer, avec la même confirmation sécurisée."
+            "value": "Débloquez le nettoyage des photos floues pour examiner les photos probablement de mauvaise qualité avant de les supprimer, avec la même confirmation sécurisée."
           }
         }
       }
