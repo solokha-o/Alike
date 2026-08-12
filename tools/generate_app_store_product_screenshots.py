@@ -52,7 +52,11 @@ MOCKUP_PATH = ROOT / "tools" / "assets" / "iphone-mockup.png"
 CANVAS = (1320, 2868)
 MOCKUP_SIZE = (1022, 2082)
 PHONE_SCREEN_RECT = (52, 46, 970, 2036)
-LOCALES = ("en-US", "uk")
+# Directory names under Docs/images/, which are the app's own language codes,
+# not the App Store Connect ones. UPLOAD_SAFE_LOCALES in
+# tools/prepare_app_store_upload_bundle.py maps es-419 onto App Store Connect's
+# es-MX slot; nothing here needs to know that.
+LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR")
 
 # The app ships a dark UI, so the canvas is dark too: the phone melts into the
 # background instead of floating on a light card.
@@ -227,6 +231,149 @@ COPY = {
             "ВІЛЬНЕ МІСЦЕ",
             "Поверніть\nгігабайти",
             "«Обрано» й «Орієнтовна економія» — просто під час прибирання.",
+        ),
+    ],
+    # The line break in each headline is chosen for that language, not carried
+    # over from English: German and Portuguese break in different places than
+    # "Find the photos / that look alike" does. fit_font_size() shrinks type
+    # instead of failing, so an unread contact sheet hides an overlong headline
+    # as small text rather than as an error.
+    "de": [
+        (
+            "AUF DEM GERÄT",
+            "Finde die Fotos,\ndie sich ähneln",
+            "Alike durchsucht deine Mediathek mit Apple Vision, ganz auf dem iPhone.",
+        ),
+        (
+            "EINE LISTE",
+            "Jede Gruppe,\nbereit zur Prüfung",
+            "Gruppen kommen mit Prüfstatus: du siehst immer, was noch offen ist.",
+        ),
+        (
+            "BESTE AUFNAHME",
+            "Die beste ist\nschon gewählt",
+            "Alike hebt die beste Aufnahme jeder Gruppe hervor. Du bestätigst nur.",
+        ),
+        (
+            "VERGLEICHEN",
+            "Erst prüfen,\ndann aufräumen",
+            "Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht.",
+        ),
+        (
+            "FREIER PLATZ",
+            "Hol dir die\nGigabyte zurück",
+            "Ausgewählt und geschätzte Ersparnis, während du aufräumst.",
+        ),
+    ],
+    "fr": [
+        (
+            "SUR L’APPAREIL",
+            "Trouvez les photos\nqui se ressemblent",
+            "Alike analyse votre photothèque avec Apple Vision, sur votre iPhone.",
+        ),
+        (
+            "UNE SEULE FILE",
+            "Chaque groupe,\nprêt à examiner",
+            "Les groupes arrivent avec des badges : vous voyez ce qui reste.",
+        ),
+        (
+            "MEILLEURE PHOTO",
+            "La photo à garder\nest déjà choisie",
+            "Alike met en avant la meilleure de chaque groupe. Vous confirmez.",
+        ),
+        (
+            "COMPARER",
+            "Vérifiez avant\nde nettoyer",
+            "Examen en plein écran. Rien n’est supprimé sans votre confirmation.",
+        ),
+        (
+            "ESPACE LIBRE",
+            "Récupérez\nvos gigaoctets",
+            "Sélectionnées et économie estimée, suivies pendant le nettoyage.",
+        ),
+    ],
+    # es and es-419 diverge where the app's own strings do: "cola" is the queue
+    # in Spain and "fila" in Latin America, and es-419 keeps the simple past
+    # where es-ES uses the present perfect.
+    "es": [
+        (
+            "EN EL DISPOSITIVO",
+            "Encuentra las fotos\nque se parecen",
+            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+        ),
+        (
+            "UNA SOLA COLA",
+            "Cada grupo,\nlisto para revisar",
+            "Los grupos llegan con indicadores: siempre sabes qué queda.",
+        ),
+        (
+            "MEJOR TOMA",
+            "La que conservas\nya está elegida",
+            "Alike destaca la mejor toma de cada grupo. Tú solo confirmas.",
+        ),
+        (
+            "COMPARAR",
+            "Comprueba antes\nde limpiar",
+            "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
+        ),
+        (
+            "ESPACIO LIBRE",
+            "Recupera los\ngigabytes",
+            "Seleccionadas y ahorro estimado, mientras vas limpiando.",
+        ),
+    ],
+    "es-419": [
+        (
+            "EN EL DISPOSITIVO",
+            "Encuentra las fotos\nque se parecen",
+            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+        ),
+        (
+            "UNA SOLA FILA",
+            "Cada grupo,\nlisto para revisar",
+            "Los grupos llegan con indicadores: siempre sabes qué falta.",
+        ),
+        (
+            "MEJOR TOMA",
+            "La que conservas\nya está elegida",
+            "Alike destaca la mejor toma de cada grupo. Tú solo confirmas.",
+        ),
+        (
+            "COMPARAR",
+            "Revisa antes\nde limpiar",
+            "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
+        ),
+        (
+            "ESPACIO LIBRE",
+            "Recupera los\ngigabytes",
+            "Seleccionadas y ahorro estimado, mientras vas limpiando.",
+        ),
+    ],
+    "pt-BR": [
+        (
+            "NO DISPOSITIVO",
+            "Encontre as fotos\nque se parecem",
+            "O Alike analisa sua fototeca com Apple Vision, no seu iPhone.",
+        ),
+        (
+            "UMA SÓ FILA",
+            "Cada grupo,\npronto para revisar",
+            "Os grupos chegam com selos: você sempre vê o que falta.",
+        ),
+        (
+            "MELHOR FOTO",
+            "A que fica\njá está escolhida",
+            "O Alike destaca a melhor foto de cada grupo. Você só confirma.",
+        ),
+        (
+            "COMPARAR",
+            "Confira antes\nde limpar",
+            "Revisão em tamanho real. Nada é apagado sem a sua confirmação.",
+        ),
+        (
+            "ESPAÇO LIVRE",
+            "Recupere os\ngigabytes",
+            "Selecionadas e economia estimada, enquanto você limpa.",
         ),
     ],
 }
