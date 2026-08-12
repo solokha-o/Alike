@@ -173,8 +173,8 @@ public enum DetailsL10n {
         public static var clearSelection: String { DetailsL10n.string("details.common.clearSelection") }
         /// Close
         public static var close: String { DetailsL10n.string("details.common.close") }
-        /// Couldn't delete the selected photos. Please try again.
-        public static var couldntDeleteSelectedPhotosPlease: String { DetailsL10n.string("details.common.couldntDeleteSelectedPhotosPlease") }
+        /// Couldn't move the selected photos. Please try again.
+        public static var couldntMoveSelectedPhotosPlease: String { DetailsL10n.string("details.common.couldntMoveSelectedPhotosPlease") }
         /// Keeping all %d photos
         public static var keepingAllPhotos: String { DetailsL10n.string("details.common.keepingAllPhotos") }
         /// Loading photo preview

@@ -801,7 +801,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntDeleteSelectedPhotosPlease)
+        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))

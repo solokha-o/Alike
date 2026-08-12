@@ -3710,49 +3710,49 @@
         }
       }
     },
-    "details.common.couldntDeleteSelectedPhotosPlease": {
+    "details.common.couldntMoveSelectedPhotosPlease": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Couldn't delete the selected photos. Please try again."
+            "value": "Couldn't move the selected photos. Please try again."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Не вдалося видалити вибрані фото. Спробуйте ще раз."
+            "value": "Не вдалося перемістити вибрані фото. Спробуйте ще раз."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudieron eliminar las fotos seleccionadas. Inténtalo de nuevo."
+            "value": "No se pudieron mover las fotos seleccionadas. Inténtalo de nuevo."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se han podido eliminar las fotos seleccionadas. Inténtalo de nuevo."
+            "value": "No se han podido mover las fotos seleccionadas. Inténtalo de nuevo."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Não foi possível apagar as fotos selecionadas. Tente novamente."
+            "value": "Não foi possível mover as fotos selecionadas. Tente novamente."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die ausgewählten Fotos konnten nicht gelöscht werden. Versuche es erneut."
+            "value": "Die ausgewählten Fotos konnten nicht bewegt werden. Versuche es erneut."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de supprimer les photos sélectionnées. Réessayez."
+            "value": "Impossible de déplacer les photos sélectionnées. Réessayez."
           }
         }
       }

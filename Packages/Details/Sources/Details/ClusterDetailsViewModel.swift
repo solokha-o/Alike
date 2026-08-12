@@ -522,7 +522,7 @@ private extension ClusterDetailsViewModel {
             )
         case .deleteFailed:
             applyDeleteFailure(
-                message: DetailsL10n.Common.couldntDeleteSelectedPhotosPlease,
+                message: DetailsL10n.Common.couldntMoveSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }

@@ -16,7 +16,7 @@ public enum PhotoCleanupError: LocalizedError, Equatable, Sendable {
         case .selectedAssetsUnavailable:
             "Some selected photos are no longer available to delete."
         case .deleteFailed:
-            "Couldn't delete the selected photos."
+            "Couldn't move the selected photos to Recently Deleted."
         }
     }
 

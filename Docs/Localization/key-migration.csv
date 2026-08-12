@@ -150,7 +150,7 @@ Details,Cleanup Unavailable,details.common.cleanupUnavailable
 Details,Clear Selection,details.common.clearSelection
 Details,Close,details.common.close
 Details,Cluster details are available on iOS.,details.clusterDetails.clusterDetailsAvailableIOS
-Details,Couldn't delete the selected photos. Please try again.,details.common.couldntDeleteSelectedPhotosPlease
+Details,Couldn't move the selected photos. Please try again.,details.common.couldntMoveSelectedPhotosPlease
 Details,Created,details.clusterDetails.created
 Details,Current cleanup review status,details.clusterReviewSummaryCard.currentCleanupReviewStatus
 Details,Dates,details.clusterDetails.dates
