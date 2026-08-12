@@ -605,7 +605,14 @@ public struct SettingsView: View {
         formatter.timeStyle = .short
         formatter.dateStyle = .none
 
-        return "\(weekday) at \(formatter.string(from: timeDate))"
+        // The separator between the day and the time is a word, and it is not "at" outside
+        // English — de "um", fr "à", pt-BR "às". It has to come from the catalog like any
+        // other copy.
+        return String(
+            format: SettingsL10n.Main.reminderScheduleWeekdayTime,
+            weekday,
+            formatter.string(from: timeDate)
+        )
     }
 
     #if canImport(UIKit)

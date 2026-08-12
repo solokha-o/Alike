@@ -2,6 +2,316 @@
   "sourceLanguage": "en",
   "version": "1.1",
   "strings": {
+    "core.cleanupCategory.alertTitleBlurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибране розмите фото до «Недавно видалені»?"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибрані розмиті фото до «Недавно видалені»?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних розмитих фото до «Недавно видалені»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних розмитих фото до «Недавно видалені»?"
+                }
+              }
+            }
+          }
+        },
+        "es-419": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld foto borrosa seleccionada a Eliminados recientemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados recientemente?"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld foto borrosa seleccionada a Eliminados recientemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados recientemente?"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld foto desfocada selecionada para Apagados recentemente?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados recentemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados recentemente?"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewähltes unscharfes Foto in „Zuletzt gelöscht“ bewegen?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewählte unscharfe Fotos in „Zuletzt gelöscht“ bewegen?"
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photo floue sélectionnée vers Supprimés récemment ?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.alertTitleScreenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраний знімок екрана до «Недавно видалені»?"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибрані знімки екрана до «Недавно видалені»?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних знімків екрана до «Недавно видалені»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Перемістити %1$lld вибраних знімків екрана до «Недавно видалені»?"
+                }
+              }
+            }
+          }
+        },
+        "es-419": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld captura de pantalla seleccionada a Eliminados recientemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados recientemente?"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld captura de pantalla seleccionada a Eliminados recientemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados recientemente?"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld captura de tela selecionada para Apagados recentemente?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados recentemente?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados recentemente?"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewähltes Bildschirmfoto in „Zuletzt gelöscht“ bewegen?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewählte Bildschirmfotos in „Zuletzt gelöscht“ bewegen?"
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld capture d’écran sélectionnée vers Supprimés récemment ?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "core.cleanupCategory.blurredPhotoCleanup": {
       "extractionState": "manual",
       "localizations": {
@@ -15,6 +325,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Очищення розмитих фото"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza de fotos borrosas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza de fotos borrosas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza de fotos desfocadas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unscharfe Fotos aufräumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage des photos floues"
           }
         }
       }
@@ -33,6 +373,36 @@
             "state": "translated",
             "value": "Очищення розмитих фото — преміум-функція"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La limpieza de fotos borrosas es una función premium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La limpieza de fotos borrosas es una función premium"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A limpeza de fotos desfocadas é um recurso premium"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Aufräumen unscharfer Fotos ist eine Premiumfunktion"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le nettoyage des photos floues est une fonctionnalité premium"
+          }
         }
       }
     },
@@ -50,22 +420,35 @@
             "state": "translated",
             "value": "Розмиті фото"
           }
-        }
-      }
-    },
-    "core.cleanupCategory.likelyBlurredPhotosAvailableReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d likely blurred photos available for review."
+            "value": "Fotos borrosas"
           }
         },
-        "uk": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Імовірно розмитих фото для перегляду: %d."
+            "value": "Fotos borrosas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos desfocadas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unscharfe Fotos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos floues"
           }
         }
       }
@@ -84,124 +467,35 @@
             "state": "translated",
             "value": "Імовірно неякісні фото за результатами аналізу на пристрої. Перегляньте їх перед видаленням."
           }
-        }
-      }
-    },
-    "core.cleanupCategory.move1SelectedBlurredPhoto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Move 1 Selected Blurred Photo to Recently Deleted?"
+            "value": "Fotos probablemente de baja calidad según el análisis en el dispositivo. Revísalas antes de eliminarlas."
           }
         },
-        "uk": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перемістити 1 вибране розмите фото до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.move1SelectedScreenshotRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move 1 Selected Screenshot to Recently Deleted?"
+            "value": "Fotos probablemente de baja calidad según el análisis en el dispositivo. Revísalas antes de eliminarlas."
           }
         },
-        "uk": {
+        "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перемістити 1 вибраний знімок екрана до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.moveSelectedBlurredPhotosRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move %d Selected Blurred Photos to Recently Deleted?"
+            "value": "Fotos provavelmente de baixa qualidade, segundo a análise no dispositivo. Revise antes de apagar."
           }
         },
-        "uk": {
+        "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перемістити вибрані розмиті фото (%d) до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move %d Selected Screenshots to Recently Deleted?"
+            "value": "Laut Analyse auf dem Gerät wahrscheinlich Fotos in geringer Qualität. Vor dem Löschen prüfen."
           }
         },
-        "uk": {
+        "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перемістити вибрані знімки екрана (%d) до «Недавно видалені»?"
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1LikelyBlurredPhotoAvailable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 likely blurred photo available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Для перегляду доступне 1 імовірно розмите фото."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1ScreenshotAvailableForReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 screenshot available for review."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Для перегляду доступний 1 знімок екрана."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.n1SelectedEstimatedSize": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 selected, estimated size %@."
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вибрано: 1, орієнтовний розмір: %@."
+            "value": "Photos probablement de faible qualité d’après l’analyse sur l’appareil. À examiner avant suppression."
           }
         }
       }
@@ -220,6 +514,36 @@
             "state": "translated",
             "value": "Розмитих фото не знайдено"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontraron fotos borrosas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han encontrado fotos borrosas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma foto desfocada encontrada"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine unscharfen Fotos gefunden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune photo floue trouvée"
+          }
         }
       }
     },
@@ -236,6 +560,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Знімків екрана не знайдено"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontraron capturas de pantalla"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han encontrado capturas de pantalla"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma captura de tela encontrada"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Bildschirmfotos gefunden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune capture d’écran trouvée"
           }
         }
       }
@@ -254,6 +608,36 @@
             "state": "translated",
             "value": "Відкрити очищення розмитих фото"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpieza de fotos borrosas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpieza de fotos borrosas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpeza de fotos desfocadas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufräumen unscharfer Fotos öffnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le nettoyage des photos floues"
+          }
         }
       }
     },
@@ -270,6 +654,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Відкрити очищення знімків екрана"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpieza de capturas de pantalla"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpieza de capturas de pantalla"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpeza de capturas de tela"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufräumen von Bildschirmfotos öffnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le nettoyage des captures d’écran"
           }
         }
       }
@@ -288,6 +702,36 @@
             "state": "translated",
             "value": "Відкриває преміум-екран очищення розмитих фото"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la oferta premium para la limpieza de fotos borrosas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la oferta premium para la limpieza de fotos borrosas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a oferta premium para a limpeza de fotos desfocadas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet das Premiumangebot für das Aufräumen unscharfer Fotos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l’offre premium pour le nettoyage des photos floues"
+          }
         }
       }
     },
@@ -304,6 +748,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Відкриває преміум-екран очищення знімків екрана"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la oferta premium para la limpieza de capturas de pantalla"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la oferta premium para la limpieza de capturas de pantalla"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a oferta premium para a limpeza de capturas de tela"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet das Premiumangebot für das Aufräumen von Bildschirmfotos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l’offre premium pour le nettoyage des captures d’écran"
           }
         }
       }
@@ -322,6 +796,36 @@
             "state": "translated",
             "value": "Запустіть нове сканування після змін у фототеці або коли потрібно перевірити більше фото."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz un nuevo análisis cuando cambie tu fototeca o si hay más fotos por revisar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz un nuevo análisis cuando cambie tu fototeca o si hay más fotos por revisar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça uma nova análise quando sua fototeca mudar ou se houver mais fotos para revisar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte einen neuen Scan, wenn sich deine Mediathek ändert oder weitere Fotos zu prüfen sind."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancez une nouvelle analyse après une modification de votre photothèque ou s’il reste des photos à examiner."
+          }
         }
       }
     },
@@ -338,6 +842,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Очищення знімків екрана"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza de capturas de pantalla"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza de capturas de pantalla"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza de capturas de tela"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildschirmfotos aufräumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage des captures d’écran"
           }
         }
       }
@@ -356,6 +890,36 @@
             "state": "translated",
             "value": "Очищення знімків екрана — преміум-функція"
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La limpieza de capturas de pantalla es una función premium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La limpieza de capturas de pantalla es una función premium"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A limpeza de capturas de tela é um recurso premium"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Aufräumen von Bildschirmfotos ist eine Premiumfunktion"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le nettoyage des captures d’écran est une fonctionnalité premium"
+          }
         }
       }
     },
@@ -373,39 +937,35 @@
             "state": "translated",
             "value": "Знімки екрана"
           }
-        }
-      }
-    },
-    "core.cleanupCategory.screenshotsAvailableForReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d screenshots available for review."
+            "value": "Capturas de pantalla"
           }
         },
-        "uk": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Знімків екрана для перегляду: %d."
-          }
-        }
-      }
-    },
-    "core.cleanupCategory.selectedEstimatedSize": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d selected, estimated size %@."
+            "value": "Capturas de pantalla"
           }
         },
-        "uk": {
+        "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Вибрано: %d, орієнтовний розмір: %@."
+            "value": "Capturas de tela"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildschirmfotos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captures d’écran"
           }
         }
       }
@@ -424,6 +984,36 @@
             "state": "translated",
             "value": "Вибране фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім залишатиметься в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки фото не буде видалено остаточно. Орієнтовно можна звільнити: %@."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ausgewählte Foto wird aus deiner Mediathek und von anderen Geräten mit iCloud-Fotos entfernt und bleibt bis zu 30 Tage in „Zuletzt gelöscht“. Der Speicher wird möglicherweise erst freigegeben, wenn es endgültig gelöscht ist. Geschätzter freigebbarer Speicher: %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+          }
         }
       }
     },
@@ -440,6 +1030,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Вибрані фото буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки їх не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ausgewählten Fotos werden aus deiner Mediathek und von anderen Geräten mit iCloud-Fotos entfernt und bleiben bis zu 30 Tage in „Zuletzt gelöscht“. Der Speicher wird möglicherweise erst freigegeben, wenn sie endgültig gelöscht sind. Geschätzter freigebbarer Speicher: %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         }
       }
@@ -458,6 +1078,36 @@
             "state": "translated",
             "value": "Вибраний знімок екрана буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім він залишатиметься в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки знімок не буде видалено остаточно. Орієнтовно можна звільнити: %@."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A captura de tela selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ausgewählte Bildschirmfoto wird aus deiner Mediathek und von anderen Geräten mit iCloud-Fotos entfernt und bleibt bis zu 30 Tage in „Zuletzt gelöscht“. Der Speicher wird möglicherweise erst freigegeben, wenn es endgültig gelöscht ist. Geschätzter freigebbarer Speicher: %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+          }
         }
       }
     },
@@ -474,6 +1124,501 @@
           "stringUnit": {
             "state": "translated",
             "value": "Вибрані знімки екрана буде видалено з вашої фототеки та інших пристроїв, які використовують Фото iCloud, а потім вони залишатимуться в альбомі «Недавно видалені» до 30 днів. Місце може не звільнитися, доки знімки не буде видалено остаточно. Орієнтовно можна звільнити: %@."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As capturas de tela selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ausgewählten Bildschirmfotos werden aus deiner Mediathek und von anderen Geräten mit iCloud-Fotos entfernt und bleiben bis zu 30 Tage in „Zuletzt gelöscht“. Der Speicher wird möglicherweise erst freigegeben, wenn sie endgültig gelöscht sind. Geschätzter freigebbarer Speicher: %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.selectionSummary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Вибрано: %1$lld, орієнтовний розмір: %2$@."
+                }
+              }
+            }
+          }
+        },
+        "es-419": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seleccionada, tamaño estimado %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seleccionadas, tamaño estimado %2$@."
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seleccionada, tamaño estimado %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seleccionadas, tamaño estimado %2$@."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionada, tamanho estimado %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewählt, geschätzte Größe %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld ausgewählt, geschätzte Größe %2$@."
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnée, taille estimée %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnées, taille estimée %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnées, taille estimée %2$@."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.summaryBlurredPhotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступне %1$lld імовірно розмите фото."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступні %1$lld імовірно розмиті фото."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld імовірно розмитих фото."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld імовірно розмитих фото."
+                }
+              }
+            }
+          }
+        },
+        "es-419": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto probablemente borrosa disponible para revisar."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos probablemente borrosas disponibles para revisar."
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto probablemente borrosa disponible para revisar."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos probablemente borrosas disponibles para revisar."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto provavelmente desfocada disponível para revisão."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos provavelmente desfocadas disponíveis para revisão."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotos provavelmente desfocadas disponíveis para revisão."
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld wahrscheinlich unscharfes Foto zur Durchsicht."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld wahrscheinlich unscharfe Fotos zur Durchsicht."
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photo probablement floue à examiner."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos probablement floues à examiner."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos probablement floues à examiner."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "core.cleanupCategory.summaryScreenshots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshot available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступний %1$lld знімок екрана."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступні %1$lld знімки екрана."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld знімків екрана."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Для перегляду доступно %1$lld знімків екрана."
+                }
+              }
+            }
+          }
+        },
+        "es-419": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captura de pantalla disponible para revisar."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de pantalla disponibles para revisar."
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captura de pantalla disponible para revisar."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de pantalla disponibles para revisar."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captura de tela disponível para revisão."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de tela disponíveis para revisão."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de tela disponíveis para revisão."
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Bildschirmfoto zur Durchsicht."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Bildschirmfotos zur Durchsicht."
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capture d’écran à examiner."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captures d’écran à examiner."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captures d’écran à examiner."
+                }
+              }
+            }
           }
         }
       }
@@ -492,6 +1637,36 @@
             "state": "translated",
             "value": "Спробуйте пересканувати після оновлення фототеки."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intenta analizar de nuevo cuando se actualice tu fototeca."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba a analizar de nuevo cuando se actualice tu fototeca."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tente analisar novamente depois que sua fototeca for atualizada."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne erneut, nachdem deine Mediathek aktualisiert wurde."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relancez une analyse après la mise à jour de votre photothèque."
+          }
         }
       }
     },
@@ -509,6 +1684,36 @@
             "state": "translated",
             "value": "Розблокуйте очищення розмитих фото, щоб переглядати й видаляти ймовірно неякісні кадри з безпечним підтвердженням."
           }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea la limpieza de fotos borrosas para revisar las tomas probablemente de baja calidad antes de eliminarlas, con la misma confirmación segura."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea la limpieza de fotos borrosas para revisar las tomas probablemente de baja calidad antes de eliminarlas, con la misma confirmación segura."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libere a limpeza de fotos desfocadas para revisar as imagens provavelmente de baixa qualidade antes de apagá-las, com a mesma confirmação segura."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalte das Aufräumen unscharfer Fotos frei, um wahrscheinlich qualitativ schlechte Aufnahmen vor dem Löschen zu prüfen – mit derselben sicheren Bestätigung."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez le nettoyage des photos floues pour examiner les photos probablement de mauvaise qualité avant de les supprimer, avec la même confirmation sécurisée."
+          }
         }
       }
     },
@@ -525,6 +1730,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Розблокуйте очищення знімків екрана, щоб переглядати й видаляти їх із безпечним підтвердженням."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea la limpieza de capturas de pantalla para revisarlas y eliminarlas con la misma confirmación segura."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea la limpieza de capturas de pantalla para revisarlas y eliminarlas con la misma confirmación segura."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libere a limpeza de capturas de tela para revisá-las e apagá-las com a mesma confirmação segura."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalte das Aufräumen von Bildschirmfotos frei, um sie mit derselben sicheren Bestätigung zu prüfen und zu löschen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez le nettoyage des captures d’écran pour les examiner et les supprimer avec la même confirmation sécurisée."
           }
         }
       }

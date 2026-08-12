@@ -150,7 +150,7 @@ Details,Cleanup Unavailable,details.common.cleanupUnavailable
 Details,Clear Selection,details.common.clearSelection
 Details,Close,details.common.close
 Details,Cluster details are available on iOS.,details.clusterDetails.clusterDetailsAvailableIOS
-Details,Couldn't delete the selected photos. Please try again.,details.common.couldntDeleteSelectedPhotosPlease
+Details,Couldn't move the selected photos. Please try again.,details.common.couldntMoveSelectedPhotosPlease
 Details,Created,details.clusterDetails.created
 Details,Current cleanup review status,details.clusterReviewSummaryCard.currentCleanupReviewStatus
 Details,Dates,details.clusterDetails.dates
@@ -690,3 +690,26 @@ Welcome,Your library stays under your control,welcome.main.yourLibraryStaysUnder
 Welcome,Your local Alike data was deleted. Your photos and subscription are unchanged.,welcome.main.localAlikeDataWasDeleted
 Welcome,Your photo analysis stays on this device and gives you guided cleanup suggestions.,welcome.main.photoAnalysisStaysThisDevice
 Welcome,"Your photos stay private, and you'll confirm every cleanup before anything is removed.",welcome.main.photosStayPrivateYoullConfirm
+Core,core.cleanupCategory.n1ScreenshotAvailableForReview,core.cleanupCategory.summaryScreenshots
+Core,core.cleanupCategory.screenshotsAvailableForReview,core.cleanupCategory.summaryScreenshots
+Core,core.cleanupCategory.n1LikelyBlurredPhotoAvailable,core.cleanupCategory.summaryBlurredPhotos
+Core,core.cleanupCategory.likelyBlurredPhotosAvailableReview,core.cleanupCategory.summaryBlurredPhotos
+Core,core.cleanupCategory.n1SelectedEstimatedSize,core.cleanupCategory.selectionSummary
+Core,core.cleanupCategory.selectedEstimatedSize,core.cleanupCategory.selectionSummary
+Core,core.cleanupCategory.move1SelectedScreenshotRecently,core.cleanupCategory.alertTitleScreenshots
+Core,core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted,core.cleanupCategory.alertTitleScreenshots
+Core,core.cleanupCategory.move1SelectedBlurredPhoto,core.cleanupCategory.alertTitleBlurredPhotos
+Core,core.cleanupCategory.moveSelectedBlurredPhotosRecently,core.cleanupCategory.alertTitleBlurredPhotos
+Details,details.clusterDetails.move1SelectedPhotoRecently,details.clusterDetails.deleteAlertTitle
+Details,details.clusterDetails.moveSelectedPhotosRecentlyDeleted,details.clusterDetails.deleteAlertTitle
+Details,details.clusterReviewSummaryCard.n1SelectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
+Details,details.clusterReviewSummaryCard.selectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
+Alike,Rescan Required,alike.rescan.title
+Alike,Later,alike.rescan.later
+Alike,Rescan Now,alike.rescan.now
+Alike,Changing sensitivity requires a new scan to take effect,alike.rescan.message
+Details,details.clusterReviewActionBar.move1Photo,details.clusterReviewActionBar.moveSelectedPhotos
+Details,details.clusterReviewActionBar.movePhotos,details.clusterReviewActionBar.moveSelectedPhotos
+Cleanup,cleanup.main.photosMovedToRecentlyDeleted,cleanup.main.photosMovedToRecentlyDeleted
+Details,details.screenshotCleanupComponents.deleteSelected,details.screenshotCleanupComponents.moveSelected
+Details,details.screenshotCleanupComponents.deleting,details.screenshotCleanupComponents.moving

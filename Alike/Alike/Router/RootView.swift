@@ -138,15 +138,15 @@ struct MainTabView: View {
         .onDisappear {
             subscriptionStore.stop()
         }
-        .alert("Rescan Required", isPresented: Bindable(tabManager).needsRescan) {
-            Button("Later", role: .cancel) {
+        .alert(AlikeL10n.Rescan.title, isPresented: Bindable(tabManager).needsRescan) {
+            Button(AlikeL10n.Rescan.later, role: .cancel) {
                 tabManager.dismissRescan()
             }
-            Button("Rescan Now") {
+            Button(AlikeL10n.Rescan.now) {
                 tabManager.triggerRescan()
             }
         } message: {
-            Text("Changing sensitivity requires a new scan to take effect")
+            Text(AlikeL10n.Rescan.message)
         }
     }
 
@@ -165,7 +165,7 @@ struct MainTabView: View {
             ForEach(tabs, id: \.self) { tab in
                 tabView(for: tab)
                     .tabItem {
-                        Label(tab.titleKey, systemImage: tab.icon)
+                        Label(tab.title, systemImage: tab.icon)
                     }
                     .tag(tab)
             }

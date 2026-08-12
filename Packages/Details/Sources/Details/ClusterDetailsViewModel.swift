@@ -172,15 +172,12 @@ final class ClusterDetailsViewModel {
     }
 
     var deleteConfirmationTitle: String {
-        if selectedCount == 1 {
-            return DetailsL10n.ClusterDetails.move1SelectedPhotoRecently
-        }
-        return String(
-            format: DetailsL10n.ClusterDetails.moveSelectedPhotosRecentlyDeleted,
-            selectedCount
-        )
+        DetailsL10n.ClusterDetails.deleteAlertTitle(selectedCount)
     }
 
+    /// The body never prints the count, and `xcstringstool` rejects a plural variation whose text
+    /// does not reference the number. Apple's guidance for that case is two top-level strings, so
+    /// this one stays a pair; every shipped language reads its "greater than one" form above one.
     var deleteConfirmationMessage: String {
         let format = selectedCount == 1
             ? DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved
@@ -525,7 +522,7 @@ private extension ClusterDetailsViewModel {
             )
         case .deleteFailed:
             applyDeleteFailure(
-                message: DetailsL10n.Common.couldntDeleteSelectedPhotosPlease,
+                message: DetailsL10n.Common.couldntMoveSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }

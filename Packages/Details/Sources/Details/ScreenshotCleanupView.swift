@@ -229,24 +229,14 @@ private extension ScreenshotCleanupView {
     }
 
     var deleteConfirmationTitle: String {
-        viewModel.selectedCount == 1
-            ? viewModel.presentation.alertSingularTitleFormat
-            : String(
-                format: viewModel.presentation.alertPluralTitleFormat,
-                viewModel.selectedCount
-            )
+        viewModel.sourceCategory.deleteAlertTitle(count: viewModel.selectedCount)
     }
 
     var deleteConfirmationMessage: String {
-        viewModel.selectedCount == 1
-            ? String(
-                format: viewModel.presentation.alertSingularMessageFormat,
-                viewModel.estimatedSavingsText
-            )
-            : String(
-                format: viewModel.presentation.alertPluralMessageFormat,
-                viewModel.estimatedSavingsText
-            )
+        viewModel.sourceCategory.deleteAlertMessage(
+            count: viewModel.selectedCount,
+            estimatedSize: viewModel.estimatedSavingsText
+        )
     }
 
     func openOriginal(for asset: PHAsset) {

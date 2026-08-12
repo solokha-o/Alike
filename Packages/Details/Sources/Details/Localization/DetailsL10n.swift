@@ -24,6 +24,10 @@ public enum DetailsL10n {
     }
 
     public enum ClusterDetails {
+        /// Move %1$lld Selected Photos to Recently Deleted? (plural)
+        public static func deleteAlertTitle(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterDetails.deleteAlertTitle", count, bundle: bundle, locale: locale)
+        }
         /// Cluster details are available on iOS.
         public static var clusterDetailsAvailableIOS: String { DetailsL10n.string("details.clusterDetails.clusterDetailsAvailableIOS") }
         /// Created
@@ -68,10 +72,6 @@ public enum DetailsL10n {
         public static var modified: String { DetailsL10n.string("details.clusterDetails.modified") }
         /// More Options
         public static var moreOptions: String { DetailsL10n.string("details.clusterDetails.moreOptions") }
-        /// Move 1 Selected Photo to Recently Deleted?
-        public static var move1SelectedPhotoRecently: String { DetailsL10n.string("details.clusterDetails.move1SelectedPhotoRecently") }
-        /// Move %d Selected Photos to Recently Deleted?
-        public static var moveSelectedPhotosRecentlyDeleted: String { DetailsL10n.string("details.clusterDetails.moveSelectedPhotosRecentlyDeleted") }
         /// %@ MP
         public static var mp: String { DetailsL10n.string("details.clusterDetails.mp") }
         /// No
@@ -127,31 +127,31 @@ public enum DetailsL10n {
     }
 
     public enum ClusterReviewActionBar {
-        /// Move 1 Photo
-        public static var move1Photo: String { DetailsL10n.string("details.clusterReviewActionBar.move1Photo") }
-        /// Move %d Photos
-        public static var movePhotos: String { DetailsL10n.string("details.clusterReviewActionBar.movePhotos") }
+        /// Move %1$lld Photos (plural)
+        public static func moveSelectedPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterReviewActionBar.moveSelectedPhotos", count, bundle: bundle, locale: locale)
+        }
         /// Moving...
         public static var moving: String { DetailsL10n.string("details.clusterReviewActionBar.moving") }
     }
 
     public enum ClusterReviewSummaryCard {
+        /// %1$lld selected, estimated size %2$@. (plural)
+        public static func selectionSummary(_ count: Int, _ estimatedSize: String, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DetailsL10n.plural("details.clusterReviewSummaryCard.selectionSummary", count, estimatedSize, bundle: bundle, locale: locale)
+        }
         /// Current cleanup review status
         public static var currentCleanupReviewStatus: String { DetailsL10n.string("details.clusterReviewSummaryCard.currentCleanupReviewStatus") }
         /// In review
         public static var inReview: String { DetailsL10n.string("details.clusterReviewSummaryCard.inReview") }
         /// Keeping %d of %d, estimated size %@.
         public static var keepingOfEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.keepingOfEstimatedSize") }
-        /// 1 selected, estimated size %@.
-        public static var n1SelectedEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.n1SelectedEstimatedSize") }
         /// 1 Similar Photo
         public static var n1SimilarPhoto: String { DetailsL10n.string("details.clusterReviewSummaryCard.n1SimilarPhoto") }
         /// Needs review
         public static var needsReview: String { DetailsL10n.string("details.clusterReviewSummaryCard.needsReview") }
         /// Not reviewed
         public static var notReviewed: String { DetailsL10n.string("details.clusterReviewSummaryCard.notReviewed") }
-        /// %d selected, estimated size %@.
-        public static var selectedEstimatedSize: String { DetailsL10n.string("details.clusterReviewSummaryCard.selectedEstimatedSize") }
         /// %d Similar Photos
         public static var similarPhotos: String { DetailsL10n.string("details.clusterReviewSummaryCard.similarPhotos") }
         /// Tap photos to select them for cleanup
@@ -173,8 +173,8 @@ public enum DetailsL10n {
         public static var clearSelection: String { DetailsL10n.string("details.common.clearSelection") }
         /// Close
         public static var close: String { DetailsL10n.string("details.common.close") }
-        /// Couldn't delete the selected photos. Please try again.
-        public static var couldntDeleteSelectedPhotosPlease: String { DetailsL10n.string("details.common.couldntDeleteSelectedPhotosPlease") }
+        /// Couldn't move the selected photos. Please try again.
+        public static var couldntMoveSelectedPhotosPlease: String { DetailsL10n.string("details.common.couldntMoveSelectedPhotosPlease") }
         /// Keeping all %d photos
         public static var keepingAllPhotos: String { DetailsL10n.string("details.common.keepingAllPhotos") }
         /// Loading photo preview
@@ -214,12 +214,12 @@ public enum DetailsL10n {
     }
 
     public enum ScreenshotCleanupComponents {
+        /// Move Selected
+        public static var moveSelected: String { DetailsL10n.string("details.screenshotCleanupComponents.moveSelected") }
+        /// Moving...
+        public static var moving: String { DetailsL10n.string("details.screenshotCleanupComponents.moving") }
         /// Choose which photos are selected for cleanup
         public static var chooseWhichPhotosSelectedCleanup: String { DetailsL10n.string("details.screenshotCleanupComponents.chooseWhichPhotosSelectedCleanup") }
-        /// Delete Selected
-        public static var deleteSelected: String { DetailsL10n.string("details.screenshotCleanupComponents.deleteSelected") }
-        /// Deleting...
-        public static var deleting: String { DetailsL10n.string("details.screenshotCleanupComponents.deleting") }
         /// Select All
         public static var selectAll: String { DetailsL10n.string("details.screenshotCleanupComponents.selectAll") }
     }
@@ -227,5 +227,22 @@ public enum DetailsL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Resolves a key whose catalog entry carries plural variations. The count has to be the
+    /// first argument and has to appear in every variation — `xcstringstool` rejects a plural
+    /// variation that never references the number.
+    static func plural(
+        _ key: String,
+        _ arguments: any CVarArg...,
+        bundle: Bundle? = nil,
+        locale: Locale? = nil
+    ) -> String {
+        let bundle = bundle ?? .module
+        return String(
+            format: bundle.localizedString(forKey: key, value: nil, table: nil),
+            locale: locale ?? .current,
+            arguments: arguments
+        )
     }
 }

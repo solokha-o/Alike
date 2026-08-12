@@ -801,7 +801,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntDeleteSelectedPhotosPlease)
+        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))
@@ -864,7 +864,10 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertEqual(viewModel.deleteConfirmationTitle, DetailsL10n.ClusterDetails.move1SelectedPhotoRecently)
+        XCTAssertEqual(
+            viewModel.deleteConfirmationTitle,
+            DetailsL10n.ClusterDetails.deleteAlertTitle(1)
+        )
         XCTAssertEqual(
             viewModel.deleteConfirmationMessage,
             String(
@@ -877,7 +880,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(
             viewModel.deleteConfirmationTitle,
-            String(format: DetailsL10n.ClusterDetails.moveSelectedPhotosRecentlyDeleted, 2)
+            DetailsL10n.ClusterDetails.deleteAlertTitle(2)
         )
         XCTAssertEqual(
             viewModel.deleteConfirmationMessage,

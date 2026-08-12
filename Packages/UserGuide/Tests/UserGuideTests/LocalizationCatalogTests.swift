@@ -13,6 +13,20 @@ struct LocalizationCatalog {
     /// Keys that are deliberately English-only until a translation pass picks them up.
     static let untranslated: Set<String> = []
 
+    /// Every language the app ships. Adding one here makes the whole suite fail until the
+    /// catalog carries it — which is the point.
+    static let shippedLanguages = ["en", "uk", "es-419", "es", "pt-BR", "de", "fr"]
+
+    /// The CLDR plural categories each shipped language actually uses. `es-419`, `es` and `de`
+    /// need one/other; `pt-BR` and `fr` add `many` for compact large numbers; `uk` needs all four.
+    static func pluralCategories(for language: String) -> [String] {
+        switch language {
+        case "uk": ["few", "many", "one", "other"]
+        case "pt-BR", "fr": ["many", "one", "other"]
+        default: ["one", "other"]
+        }
+    }
+
     let strings: [String: [String: Any]]
 
     static func packageRoot(file: StaticString = #filePath) -> URL {
@@ -35,7 +49,7 @@ struct LocalizationCatalog {
         let url = packageRoot(file: file)
             .appendingPathComponent("Sources/\(targetName)/Localization/\(wrapperName).swift")
         let source = try String(contentsOf: url, encoding: .utf8)
-        let pattern = try NSRegularExpression(pattern: #"string\("([^"]+)"\)"#)
+        let pattern = try NSRegularExpression(pattern: #"(?:string|plural)\("([^"]+)"[,)]"#)
         let range = NSRange(source.startIndex..., in: source)
         return Set(pattern.matches(in: source, range: range).compactMap {
             Range($0.range(at: 1), in: source).map { String(source[$0]) }
@@ -90,22 +104,62 @@ final class LocalizationCatalogTests: XCTestCase {
         )
     }
 
-    /// Guards the split itself: a key that lost its Ukrainian value on the way into this package
-    /// would otherwise only surface as English text in a Ukrainian build.
-    func testEveryKeyCarriesEnglishAndUkrainian() throws {
+    /// The check that catches a catalog which silently missed one of the shipped languages —
+    /// the failure mode of a translation pass is a locale that is 99% there, not one that is absent.
+    func testEveryKeyCarriesEveryShippedLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         var incomplete: [String] = []
 
         for key in catalog.strings.keys.sorted() {
             let localizations = try catalog.localizations(of: key)
-            if localizations["en"] == nil {
-                incomplete.append("\(key) [en]")
-            }
-            if localizations["uk"] == nil, !LocalizationCatalog.untranslated.contains(key) {
-                incomplete.append("\(key) [uk]")
+            for language in LocalizationCatalog.shippedLanguages where localizations[language] == nil {
+                guard language == "en" || !LocalizationCatalog.untranslated.contains(key) else {
+                    continue
+                }
+                incomplete.append("\(key) [\(language)]")
             }
         }
 
         XCTAssertTrue(incomplete.isEmpty, "incomplete entries: \(incomplete)")
+    }
+
+    /// A plural key missing `many` in `fr` or `pt-BR` does not fail to build — it silently falls
+    /// back to `other`, which is right for those two only by accident and wrong the moment a
+    /// language with real distinctions is added.
+    func testEveryPluralKeyDeclaresEveryCategoryOfItsLanguage() throws {
+        let catalog = try LocalizationCatalog.load()
+        var wrong: [String] = []
+
+        for key in catalog.strings.keys.sorted() {
+            for language in LocalizationCatalog.shippedLanguages {
+                guard let localization = try catalog.localizations(of: key)[language],
+                      localization["variations"] != nil else { continue }
+                let declared = try catalog.pluralCategories(of: key, language: language)
+                let expected = LocalizationCatalog.pluralCategories(for: language)
+                if declared != expected {
+                    wrong.append("\(key) [\(language)]: \(declared) != \(expected)")
+                }
+            }
+        }
+
+        XCTAssertTrue(wrong.isEmpty, "wrong plural categories: \(wrong)")
+    }
+
+    /// The counterpart of the check above: a key that is plural in English has to be plural in
+    /// every language, or that language quietly ships one grammatical form for every count.
+    func testPluralKeysArePluralInEveryLanguage() throws {
+        let catalog = try LocalizationCatalog.load()
+        var flat: [String] = []
+
+        for key in catalog.strings.keys.sorted() {
+            let localizations = try catalog.localizations(of: key)
+            guard localizations["en"]?["variations"] != nil else { continue }
+            for language in LocalizationCatalog.shippedLanguages
+            where localizations[language]?["variations"] == nil {
+                flat.append("\(key) [\(language)]")
+            }
+        }
+
+        XCTAssertTrue(flat.isEmpty, "plural in en but not in: \(flat)")
     }
 }
