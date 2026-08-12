@@ -54,6 +54,11 @@ TERMS_LABEL = "Terms of Use"
 LOCALE_LEGAL_LABELS = {
     "en-US": (PRIVACY_LABEL, TERMS_LABEL),
     "uk": ("Політика конфіденційності", "Умови використання"),
+    "de-DE": ("Datenschutzrichtlinie", "Nutzungsbedingungen"),
+    "fr-FR": ("Politique de confidentialité", "Conditions d’utilisation"),
+    "es-ES": ("Política de privacidad", "Términos de uso"),
+    "es-MX": ("Política de privacidad", "Términos de uso"),
+    "pt-BR": ("Política de Privacidade", "Termos de Uso"),
 }
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
@@ -90,19 +95,33 @@ class LocaleMapping:
     apple: str
 
 
-# The listing ships two localizations. en-GB will not exist in App Store
-# Connect, so its copy is gone rather than carried unused — a third locale in
-# METADATA that nothing generates is copy nobody keeps in sync and everybody
-# has to reason about. Adding a locale back means a mapping here plus its entry
-# in METADATA, and, if it ever ships, a deck in Docs/images/<locale>/.
+# The listing ships the same seven languages the app itself is translated into.
+# `source` is the app's own language code, which is also the directory name
+# under Docs/images/; `apple` is the App Store Connect locale, which is not the
+# same string. es-419 is the app's Latin American Spanish and maps onto App
+# Store Connect's es-MX slot, the only Latin American Spanish the store offers.
+#
+# Adding a locale means four things, and a missing one is a validation error
+# rather than a silent gap: a mapping here, an entry in METADATA, a row in
+# LOCALE_LEGAL_LABELS, and a deck in Docs/images/<source>/.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
     LocaleMapping(source="uk", apple="uk"),
+    LocaleMapping(source="de", apple="de-DE"),
+    LocaleMapping(source="fr", apple="fr-FR"),
+    LocaleMapping(source="es", apple="es-ES"),
+    LocaleMapping(source="es-419", apple="es-MX"),
+    LocaleMapping(source="pt-BR", apple="pt-BR"),
 )
 
 STOREKIT_TO_APP_STORE_LOCALE = {
     "en_US": "en-US",
     "uk": "uk",
+    "de_DE": "de-DE",
+    "fr_FR": "fr-FR",
+    "es_ES": "es-ES",
+    "es_MX": "es-MX",
+    "pt_BR": "pt-BR",
 }
 
 REQUIRED_LOCALIZED_FILES = (
@@ -149,7 +168,7 @@ BUILT FOR REAL LIBRARIES
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
-- Full English and Ukrainian, and complete Dark Mode support.
+- Seven languages: English, Ukrainian, German, French, Spanish, Latin American Spanish and Brazilian Portuguese. Full Dark Mode support.
 
 YOU STAY IN CONTROL
 - Photos you clear go to Recently Deleted, recoverable for about 30 days.
@@ -200,7 +219,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
-- Повна підтримка англійської та української й темна тема.
+- Сім мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська та бразильська португальська. Повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
 - Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
@@ -224,6 +243,268 @@ ALIKE PRO
 
 Alike Pro — це підписка з автоматичним поновленням, річний і місячний плани, ціни у вашій валюті. Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право; оплата починається після завершення пробного періоду. Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS."""
 
+# The five Tier 1 descriptions below are adapted, not translated. Structure and
+# claims match en-US exactly — the auto-renew paragraph in particular is a legal
+# requirement and appears in full everywhere — but the wording follows the
+# register and vocabulary the app itself already uses in that language: informal
+# in de, es, es-419 and pt-BR, vouvoiement in fr, and feature names taken from
+# the .xcstrings catalogs so the listing and the UI say the same words.
+DE_DE_DESCRIPTION = """\
+Alike findet die Beinahe-Dubletten in deiner Mediathek, gruppiert sie, wählt in jeder Gruppe die beste Aufnahme und hilft dir, den Rest aufzuräumen — und kein einziges Foto verlässt dabei dein Gerät.
+
+SO FUNKTIONIERT ES
+Scannen. Alike vergleicht deine Mediathek mit Apples Vision-Framework, vollständig auf deinem iPhone. Verglichen werden Fotos, die zeitlich und örtlich nah beieinander entstanden sind. Bildschirmfotos bleiben außen vor, solange du sie nicht ausdrücklich anforderst.
+Prüfen. Jede Gruppe öffnet sich mit einer bereits ausgewählten besten Aufnahme, sodass du in Sekunden entscheidest. Nur die beste behalten, alle außer der besten auswählen oder von Hand wählen.
+Aufräumen. Bestätige, und die gewählten Fotos wandern zu „Zuletzt gelöscht“, wo iOS sie rund 30 Tage aufbewahrt.
+
+DATENSCHUTZ IST DER GANZE PUNKT
+- Die gesamte Analyse läuft auf dem Gerät mit Apples Vision-Framework.
+- Kein Foto, keine Miniatur und kein Merkmalsabdruck wird jemals hochgeladen.
+- Kein Konto, keine Anmeldung, kein Alike-Server.
+- Keine Analyse-Tools, kein Tracking, keine Werbe-IDs.
+- Keine Werbung, nirgendwo in der App.
+- Scannen und Aufräumen brauchen überhaupt keine Verbindung — Alike arbeitet im Flugmodus.
+- Nichts wird ohne deine ausdrückliche Bestätigung gelöscht.
+
+FÜR ECHTE MEDIATHEKEN GEBAUT
+- Drei Empfindlichkeitsstufen, von fast identischen Aufnahmen bis zu einem weiteren Netz.
+- Erkennung der besten Aufnahme, damit jede Gruppe eine sinnvolle Vorauswahl hat.
+- Prüfstatus: Neu, In Prüfung, Geprüft und Erneut prüfen nach einem weiteren Scan.
+- Kommen Fotos dazu oder fallen weg, merkt Alike das und zeigt nur die geänderten Gruppen erneut — kein vollständiger Scan, um aktuell zu bleiben.
+- Fortschritt, Ausgewählt und geschätzte Ersparnis, während du arbeitest.
+- Verlauf nach Monaten gruppiert, damit du siehst, wie viel Platz du schon zurückgeholt hast.
+- Ein großzügiges einspaltiges Layout oder ein dichteres Raster, jederzeit umschaltbar und gemerkt.
+- Eine durchsuchbare Anleitung in der App, einen Tipp vom Scanner entfernt.
+- Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem eigenen Zeitplan.
+- Sieben Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch und Brasilianisches Portugiesisch. Voller Dark Mode.
+
+DU BEHÄLTST DIE KONTROLLE
+- Aufgeräumte Fotos landen bei „Zuletzt gelöscht“ und bleiben rund 30 Tage wiederherstellbar.
+- Einstellungen, dann Daten & Datenschutz, dann Alike-Daten löschen entfernt jedes Scan-Ergebnis, jeden Aufräum-Eintrag und jede Einstellung, die die App gespeichert hat — und rührt deine Mediathek nicht an.
+- Erteile vollen oder eingeschränkten Zugriff: Alike arbeitet mit dem, was du teilen möchtest.
+
+ALIKE FREE
+- 3 Scans pro Monat
+- Geführte Prüfung mit bester Aufnahme
+- Sortierung und Aufräum-Verlauf
+- Ein Foto nach dem anderen aufräumen
+
+ALIKE PRO
+- 7 Tage gratis im Jahresplan, für berechtigte neue Abonnenten
+- Unbegrenzte Scans
+- Ganze Auswahlen auf einmal aufräumen
+- Bildschirmfotos aufräumen
+- Unscharfe Fotos aufräumen
+- Erweiterte Filter
+- Eigene Aufräum-Erinnerungen
+
+Alike Pro ist ein Abonnement mit automatischer Verlängerung, im Jahres- und im Monatsplan, berechnet in deiner Landeswährung. Der Jahresplan enthält 7 Tage gratis für berechtigte neue Abonnenten, und die Abrechnung beginnt nach Ablauf des Testzeitraums. Abonnements verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple Account. Verwalten oder kündigen kannst du jederzeit in den iOS-Einstellungen."""
+
+FR_FR_DESCRIPTION = """\
+Alike retrouve les quasi-doublons cachés dans votre photothèque, les regroupe, choisit la meilleure photo de chaque groupe et vous aide à nettoyer le reste — sans qu'une seule photo quitte votre appareil.
+
+COMMENT ÇA MARCHE
+Analyser. Alike compare votre photothèque avec le framework Vision d'Apple, entièrement sur votre iPhone. Les photos prises à des dates et des lieux proches sont comparées, et les captures d'écran restent hors des résultats tant que vous ne les demandez pas.
+Examiner. Chaque groupe s'ouvre avec une meilleure photo déjà sélectionnée : vous décidez en quelques secondes. Ne garder que la meilleure, tout sélectionner sauf la meilleure, ou choisir à la main.
+Nettoyer. Confirmez, et les photos choisies rejoignent « Supprimés récemment », où iOS les conserve environ 30 jours.
+
+LA CONFIDENTIALITÉ EST TOUT L'INTÉRÊT
+- Toute l'analyse se fait sur l'appareil avec le framework Vision d'Apple.
+- Aucune photo, aucune miniature, aucune empreinte n'est jamais envoyée en ligne.
+- Aucun compte, aucune connexion, aucun serveur Alike.
+- Aucune mesure d'audience, aucun suivi, aucun identifiant publicitaire.
+- Aucune publicité, nulle part dans l'app.
+- L'analyse et le nettoyage ne demandent aucune connexion — Alike fonctionne en mode Avion.
+- Rien n'est supprimé sans votre confirmation explicite.
+
+CONÇU POUR DE VRAIES PHOTOTHÈQUES
+- Trois niveaux de sensibilité, des photos presque identiques à un filet plus large.
+- Détection de la meilleure photo : chaque groupe s'ouvre sur un choix raisonnable à garder.
+- Badges d'examen : Nouveau, En cours, Examiné, et À revoir après une nouvelle analyse.
+- Vous ajoutez ou supprimez des photos, Alike le remarque et ne remet en avant que les groupes modifiés — aucune analyse complète pour rester à jour.
+- Progression, Sélectionnées et Économie estimée pendant que vous travaillez.
+- Historique de nettoyage par mois, pour voir l'espace déjà récupéré.
+- Une mise en page aérée sur une colonne ou une grille plus dense, permutables à tout moment et mémorisées.
+- Un mode d'emploi consultable dans l'app, à un geste du Scanner.
+- Rappels de nettoyage facultatifs, en notifications locales, à votre rythme.
+- Sept langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine et portugais brésilien. Mode sombre complet.
+
+VOUS GARDEZ LA MAIN
+- Les photos nettoyées rejoignent « Supprimés récemment » et restent récupérables environ 30 jours.
+- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface tous les résultats d'analyse, l'historique de nettoyage et les préférences enregistrés par l'app — et ne touche jamais à votre photothèque.
+- Accordez un accès complet ou limité : Alike travaille avec ce que vous choisissez de partager.
+
+ALIKE FREE
+- 3 analyses par mois
+- Examen guidé avec la meilleure photo
+- Tri et historique de nettoyage
+- Nettoyage photo par photo
+
+ALIKE PRO
+- 7 jours offerts sur la formule annuelle, pour les nouveaux abonnés éligibles
+- Analyses illimitées
+- Nettoyage groupé d'une sélection entière
+- Nettoyage des captures d'écran
+- Nettoyage des photos floues
+- Filtres avancés
+- Rappels de nettoyage personnalisés
+
+Alike Pro est un abonnement à renouvellement automatique, en formule annuelle ou mensuelle, facturé dans votre devise locale. La formule annuelle comprend 7 jours d'essai gratuit pour les nouveaux abonnés éligibles, et la facturation commence à la fin de l'essai. L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le gérer ou le résilier à tout moment dans les Réglages iOS."""
+
+ES_ES_DESCRIPTION = """\
+Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, sin que ninguna foto salga de tu dispositivo.
+
+CÓMO FUNCIONA
+Analizar. Alike compara tu fototeca con el framework Vision de Apple, íntegramente en tu iPhone. Se comparan las fotos tomadas en momentos y lugares cercanos, y las capturas de pantalla se quedan fuera de los resultados salvo que las pidas.
+Revisar. Cada grupo se abre con una mejor toma ya seleccionada, así que decides en segundos. Quedarte solo con la mejor, seleccionar todas menos la mejor o elegir a mano.
+Limpiar. Confirma y las fotos elegidas pasan a «Eliminados recientemente», donde iOS las guarda unos 30 días.
+
+LA PRIVACIDAD ES TODO EL SENTIDO
+- Todo el análisis se ejecuta en el dispositivo con el framework Vision de Apple.
+- Ninguna foto, miniatura ni huella de características se sube nunca.
+- Sin cuenta, sin inicio de sesión, sin servidor de Alike.
+- Sin analíticas, sin seguimiento, sin identificadores publicitarios.
+- Sin anuncios en ninguna parte de la app.
+- Analizar y limpiar no necesitan conexión: Alike funciona en modo avión.
+- No se elimina nada sin tu confirmación explícita.
+
+HECHO PARA FOTOTECAS REALES
+- Tres niveles de sensibilidad, desde tomas casi idénticas hasta una red más amplia.
+- Detección de la mejor toma, para que cada grupo tenga una opción razonable que conservar.
+- Indicadores de revisión: Nueva, En revisión, Revisada y Requiere revisión tras un nuevo análisis.
+- Añades o eliminas fotos y Alike lo nota, y vuelve a mostrar solo los grupos que han cambiado, sin repetir el análisis completo.
+- Progreso, Seleccionadas y Ahorro estimado mientras trabajas.
+- Historial de limpieza agrupado por meses, para ver cuánto espacio has recuperado ya.
+- Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
+- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
+- Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
+- Siete idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica y portugués de Brasil. Modo oscuro completo.
+
+TÚ TIENES EL CONTROL
+- Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
+- Ajustes, luego Datos y privacidad, luego Eliminar datos de Alike borra todos los resultados de análisis, el historial de limpieza y las preferencias que la app haya guardado, y nunca toca tu fototeca.
+- Concede acceso completo o limitado: Alike trabaja con lo que decidas compartir.
+
+ALIKE FREE
+- 3 análisis al mes
+- Revisión guiada con la mejor toma
+- Ordenación e historial de limpieza
+- Limpieza de una foto cada vez
+
+ALIKE PRO
+- 7 días gratis en el plan anual, para nuevos suscriptores que cumplan los requisitos
+- Análisis ilimitados
+- Limpieza por lotes de selecciones enteras
+- Limpieza de capturas de pantalla
+- Limpieza de fotos borrosas
+- Filtros avanzados
+- Recordatorios de limpieza personalizados
+
+Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratuita para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o cancelarla cuando quieras en los Ajustes de iOS."""
+
+ES_MX_DESCRIPTION = """\
+Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, sin que ninguna foto salga de tu dispositivo.
+
+CÓMO FUNCIONA
+Analizar. Alike compara tu fototeca con el framework Vision de Apple, totalmente en tu iPhone. Se comparan las fotos tomadas en momentos y lugares cercanos, y las capturas de pantalla se quedan fuera de los resultados a menos que las pidas.
+Revisar. Cada grupo se abre con una mejor toma ya seleccionada, así que decides en segundos. Quedarte solo con la mejor, seleccionar todas menos la mejor o elegir a mano.
+Limpiar. Confirma y las fotos elegidas pasan a «Eliminados recientemente», donde iOS las guarda unos 30 días.
+
+LA PRIVACIDAD ES TODO EL SENTIDO
+- Todo el análisis se ejecuta en el dispositivo con el framework Vision de Apple.
+- Ninguna foto, miniatura ni huella de características se sube nunca.
+- Sin cuenta, sin inicio de sesión, sin servidor de Alike.
+- Sin analíticas, sin rastreo, sin identificadores publicitarios.
+- Sin anuncios en ninguna parte de la app.
+- Analizar y limpiar no necesitan conexión: Alike funciona en modo avión.
+- No se elimina nada sin tu confirmación explícita.
+
+HECHO PARA FOTOTECAS REALES
+- Tres niveles de sensibilidad, desde tomas casi idénticas hasta una red más amplia.
+- Detección de la mejor toma, para que cada grupo tenga una opción razonable que conservar.
+- Indicadores de revisión: Nueva, En revisión, Revisada y Requiere revisión después de un nuevo análisis.
+- Agregas o eliminas fotos y Alike lo nota, y vuelve a mostrar solo los grupos que cambiaron, sin repetir el análisis completo.
+- Progreso, Seleccionadas y Ahorro estimado mientras trabajas.
+- Historial de limpieza agrupado por meses, para ver cuánto espacio ya recuperaste.
+- Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
+- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
+- Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
+- Siete idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica y portugués de Brasil. Modo oscuro completo.
+
+TÚ TIENES EL CONTROL
+- Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
+- Configuración, luego Datos y privacidad, luego Eliminar datos de Alike borra todos los resultados de análisis, el historial de limpieza y las preferencias que la app haya guardado, y nunca toca tu fototeca.
+- Otorga acceso completo o limitado: Alike trabaja con lo que decidas compartir.
+
+ALIKE FREE
+- 3 análisis al mes
+- Revisión guiada con la mejor toma
+- Ordenamiento e historial de limpieza
+- Limpieza de una foto a la vez
+
+ALIKE PRO
+- 7 días gratis en el plan anual, para nuevos suscriptores que cumplan los requisitos
+- Análisis ilimitados
+- Limpieza por lotes de selecciones enteras
+- Limpieza de capturas de pantalla
+- Limpieza de fotos borrosas
+- Filtros avanzados
+- Recordatorios de limpieza personalizados
+
+Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratis para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes administrarla o cancelarla cuando quieras en la Configuración de iOS."""
+
+PT_BR_DESCRIPTION = """\
+O Alike encontra as quase duplicadas escondidas na sua fototeca, agrupa todas, escolhe a melhor foto de cada grupo e ajuda você a limpar o resto — sem que uma única foto saia do seu dispositivo.
+
+COMO FUNCIONA
+Analisar. O Alike compara sua fototeca com o framework Vision da Apple, inteiramente no seu iPhone. São comparadas as fotos feitas em horários e lugares próximos, e as capturas de tela ficam fora dos resultados a menos que você peça.
+Revisar. Cada grupo abre com uma melhor foto já selecionada, então você decide em segundos. Manter só a melhor, selecionar todas menos a melhor ou escolher na mão.
+Limpar. Confirme, e as fotos escolhidas vão para «Apagados recentemente», onde o iOS as guarda por cerca de 30 dias.
+
+PRIVACIDADE É O PONTO PRINCIPAL
+- Toda a análise roda no dispositivo, com o framework Vision da Apple.
+- Nenhuma foto, miniatura ou impressão de características é enviada para lugar nenhum.
+- Sem conta, sem login, sem servidor do Alike.
+- Sem analytics, sem rastreamento, sem identificadores de publicidade.
+- Sem anúncios em nenhuma parte do app.
+- Analisar e limpar não precisam de conexão alguma — o Alike funciona em modo avião.
+- Nada é apagado sem a sua confirmação explícita.
+
+FEITO PARA FOTOTECAS DE VERDADE
+- Três níveis de sensibilidade, das fotos quase idênticas até uma rede mais ampla.
+- Detecção da melhor foto, para que cada grupo já tenha uma escolha sensata para manter.
+- Selos de revisão: Nova, Em revisão, Revisada e Revisar de novo depois de uma nova análise.
+- Você adiciona ou apaga fotos e o Alike percebe, trazendo de volta só os grupos que mudaram — sem repetir a análise inteira.
+- Progresso, Selecionadas e Economia estimada enquanto você trabalha.
+- Histórico de limpeza agrupado por mês, para ver quanto espaço você já recuperou.
+- Um layout espaçoso de uma coluna ou uma grade mais densa, alternáveis a qualquer momento e memorizados.
+- Instruções de uso com busca dentro do app, a um toque do Analisador.
+- Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
+- Sete idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina e português do Brasil. Modo escuro completo.
+
+VOCÊ NO CONTROLE
+- As fotos limpas vão para «Apagados recentemente» e continuam recuperáveis por cerca de 30 dias.
+- Ajustes, depois Dados e privacidade, depois Apagar dados do Alike remove todos os resultados de análise, o histórico de limpeza e as preferências que o app guardou — e nunca encosta na sua fototeca.
+- Conceda acesso total ou limitado: o Alike trabalha com o que você escolher compartilhar.
+
+ALIKE FREE
+- 3 análises por mês
+- Revisão guiada com a melhor foto
+- Ordenação e histórico de limpeza
+- Limpeza de uma foto por vez
+
+ALIKE PRO
+- 7 dias grátis no plano anual, para novos assinantes elegíveis
+- Análises ilimitadas
+- Limpeza em lote de seleções inteiras
+- Limpeza de capturas de tela
+- Limpeza de fotos desfocadas
+- Filtros avançados
+- Lembretes de limpeza personalizados
+
+O Alike Pro é uma assinatura de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos assinantes elegíveis, e a cobrança começa quando o teste termina. As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando quiser nos Ajustes do iOS."""
+
+
 METADATA = {
     "en-US": {
         "subtitle": "Find and clear similar photos",
@@ -235,7 +516,7 @@ METADATA = {
         # Promotional text is the one field App Store Connect accepts without a
         # new build, so the trial lives here as well as in the description.
         "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
-        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted, where iOS keeps your photos for about 30 days.\n\nIn this first version:\n- Three sensitivity levels, from near-identical shots to a wider net\n- Best Shot detection, so every group opens with a sensible keeper selected\n- Keep Best Only, Select All Except Best, or pick by hand\n- Review badges that track what is new, in review, reviewed, and what needs another look after your library changes\n- Progress, Selected and Estimated Savings while you work, plus cleanup history by month\n- A searchable guide inside the app, one tap from the Scanner\n- Optional cleanup reminders as local notifications\n- English and Ukrainian, with full Dark Mode support\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders. The yearly plan starts with 7 days free for eligible new subscribers.\n\nThank you for trying Alike. Feedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "release_notes": "First release of Alike.\n\nScan your library for visually similar photos, review each group with a Best Shot already picked, and clear the rest. Every scan runs on your device — no account, no uploads, and deletion always goes to Recently Deleted, where iOS keeps your photos for about 30 days.\n\nIn this first version:\n- Three sensitivity levels, from near-identical shots to a wider net\n- Best Shot detection, so every group opens with a sensible keeper selected\n- Keep Best Only, Select All Except Best, or pick by hand\n- Review badges that track what is new, in review, reviewed, and what needs another look after your library changes\n- Progress, Selected and Estimated Savings while you work, plus cleanup history by month\n- A searchable guide inside the app, one tap from the Scanner\n- Optional cleanup reminders as local notifications\n- Seven languages: English, Ukrainian, German, French, Spanish, Latin American Spanish and Brazilian Portuguese, with full Dark Mode support\n\nAlike Pro adds unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders. The yearly plan starts with 7 days free for eligible new subscribers.\n\nThank you for trying Alike. Feedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
@@ -243,7 +524,47 @@ METADATA = {
         # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
         "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,видалити",
         "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок і допомагає прибрати решту — усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
-        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а прибрані фото завжди потрапляють до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.\n\nУ цій першій версії:\n- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку\n- Вибір найкращого знімка: група відкривається з уже обраним варіантом залишити\n- «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну\n- Позначки перегляду: що нове, що в роботі, що переглянуто і що варто передивитися після змін у медіатеці\n- Прогрес, «Обрано» й «Орієнтовна економія» під час роботи, а також історія прибирання за місяцями\n- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера»\n- Необовʼязкові нагадування про прибирання як локальні сповіщення\n- Англійська та українська, повна підтримка темної теми\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування. Річний план починається з 7 днів безкоштовно для нових підписників, які мають на це право.\n\nДякуємо, що спробували Alike. Відгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Перший випуск Alike.\n\nСкануйте медіатеку на візуально схожі фото, переглядайте кожну групу з уже обраним найкращим знімком і прибирайте решту. Кожне сканування виконується на пристрої — без облікового запису й без вивантаження, а прибрані фото завжди потрапляють до «Нещодавно видалених», де iOS зберігає їх близько 30 днів.\n\nУ цій першій версії:\n- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку\n- Вибір найкращого знімка: група відкривається з уже обраним варіантом залишити\n- «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну\n- Позначки перегляду: що нове, що в роботі, що переглянуто і що варто передивитися після змін у медіатеці\n- Прогрес, «Обрано» й «Орієнтовна економія» під час роботи, а також історія прибирання за місяцями\n- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера»\n- Необовʼязкові нагадування про прибирання як локальні сповіщення\n- Сім мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська та бразильська португальська, з повною підтримкою темної теми\n\nAlike Pro додає необмежені сканування, пакетне прибирання, прибирання знімків екрана та розмитих фото, розширені фільтри й власні нагадування. Річний план починається з 7 днів безкоштовно для нових підписників, які мають на це право.\n\nДякуємо, що спробували Alike. Відгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+    },
+    # Keywords below are researched per market rather than translated. Each set
+    # skips whatever the localized subtitle already indexes — "ähnliche Fotos",
+    # "photos similaires", "duplicados", "duplicadas" — because App Store
+    # Connect indexes the name and subtitle on top of this field, and repeating
+    # them spends a 100-character budget on terms already covered.
+    "de-DE": {
+        "subtitle": "Ähnliche Fotos aufräumen",
+        "description": DE_DE_DESCRIPTION,
+        "keywords": "doppelte,duplikate,bilder,speicherplatz,galerie,bildschirmfoto,unscharf,löschen,kamera",
+        "promotional_text": "Alike gruppiert ähnliche Fotos, wählt die beste Aufnahme und hilft dir, den Rest aufzuräumen — alles auf deinem iPhone. Alike Pro: 7 Tage gratis im Jahresplan.",
+        "release_notes": "Erste Version von Alike.\n\nDurchsuche deine Mediathek nach visuell ähnlichen Fotos, prüfe jede Gruppe mit einer bereits gewählten besten Aufnahme und räume den Rest auf. Jeder Scan läuft auf deinem Gerät — kein Konto, keine Uploads, und Gelöschtes geht immer zu „Zuletzt gelöscht“, wo iOS deine Fotos rund 30 Tage aufbewahrt.\n\nIn dieser ersten Version:\n- Drei Empfindlichkeitsstufen, von fast identischen Aufnahmen bis zu einem weiteren Netz\n- Erkennung der besten Aufnahme, sodass jede Gruppe mit einer sinnvollen Vorauswahl öffnet\n- Nur die beste behalten, alle außer der besten auswählen oder von Hand wählen\n- Prüfstatus dafür, was neu ist, in Prüfung, geprüft und was nach Änderungen an deiner Mediathek noch einmal angesehen werden sollte\n- Fortschritt, Ausgewählt und geschätzte Ersparnis während der Arbeit, dazu ein Aufräum-Verlauf nach Monaten\n- Eine durchsuchbare Anleitung in der App, einen Tipp vom Scanner entfernt\n- Optionale Aufräum-Erinnerungen als lokale Mitteilungen\n- Sieben Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch und Brasilianisches Portugiesisch, mit vollem Dark Mode\n\nAlike Pro ergänzt unbegrenzte Scans, Stapel-Aufräumen, das Aufräumen von Bildschirmfotos und unscharfen Fotos, erweiterte Filter und eigene Aufräum-Erinnerungen. Der Jahresplan beginnt mit 7 Tagen gratis für berechtigte neue Abonnenten.\n\nDanke, dass du Alike ausprobierst. Rückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+    },
+    "fr-FR": {
+        "subtitle": "Nettoyer les photos similaires",
+        "description": FR_FR_DESCRIPTION,
+        "keywords": "doublons,double,images,stockage,espace,galerie,capture,flou,supprimer,pellicule,ranger",
+        "promotional_text": "Alike regroupe les photos qui se ressemblent, choisit la meilleure et vous aide à nettoyer le reste, sur votre iPhone. Alike Pro : 7 jours offerts en formule annuelle.",
+        "release_notes": "Première version d'Alike.\n\nAnalysez votre photothèque à la recherche de photos visuellement similaires, examinez chaque groupe avec une meilleure photo déjà choisie, et nettoyez le reste. Chaque analyse se fait sur votre appareil — aucun compte, aucun envoi, et la suppression passe toujours par « Supprimés récemment », où iOS conserve vos photos environ 30 jours.\n\nDans cette première version :\n- Trois niveaux de sensibilité, des photos presque identiques à un filet plus large\n- Détection de la meilleure photo : chaque groupe s'ouvre sur un choix raisonnable à garder\n- Ne garder que la meilleure, tout sélectionner sauf la meilleure, ou choisir à la main\n- Des badges d'examen qui suivent ce qui est nouveau, en cours, examiné, et ce qui mérite un second regard après une modification de votre photothèque\n- Progression, Sélectionnées et Économie estimée pendant que vous travaillez, plus un historique de nettoyage par mois\n- Un mode d'emploi consultable dans l'app, à un geste du Scanner\n- Des rappels de nettoyage facultatifs, en notifications locales\n- Sept langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine et portugais brésilien, avec un mode sombre complet\n\nAlike Pro ajoute les analyses illimitées, le nettoyage groupé, le nettoyage des captures d'écran et des photos floues, les filtres avancés et des rappels personnalisés. La formule annuelle commence par 7 jours offerts pour les nouveaux abonnés éligibles.\n\nMerci d'essayer Alike. Vos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+    },
+    "es-ES": {
+        "subtitle": "Encuentra y limpia duplicados",
+        "description": ES_ES_DESCRIPTION,
+        "keywords": "fotos,repetidas,similares,almacenamiento,espacio,galería,captura,borrosas,borrar,carrete",
+        "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
+        "release_notes": "Primera versión de Alike.\n\nAnaliza tu fototeca en busca de fotos visualmente similares, revisa cada grupo con una mejor toma ya elegida y limpia el resto. Cada análisis se ejecuta en tu dispositivo: sin cuenta, sin subidas, y lo que se elimina pasa siempre a «Eliminados recientemente», donde iOS guarda tus fotos unos 30 días.\n\nEn esta primera versión:\n- Tres niveles de sensibilidad, desde tomas casi idénticas hasta una red más amplia\n- Detección de la mejor toma, para que cada grupo se abra con una opción razonable ya seleccionada\n- Quedarte solo con la mejor, seleccionar todas menos la mejor o elegir a mano\n- Indicadores de revisión que siguen lo nuevo, lo que está en revisión, lo revisado y lo que conviene mirar otra vez tras un cambio en tu fototeca\n- Progreso, Seleccionadas y Ahorro estimado mientras trabajas, además del historial de limpieza por meses\n- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador\n- Recordatorios de limpieza opcionales, como notificaciones locales\n- Siete idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica y portugués de Brasil, con modo oscuro completo\n\nAlike Pro añade análisis ilimitados, limpieza por lotes, limpieza de capturas de pantalla y fotos borrosas, filtros avanzados y recordatorios personalizados. El plan anual empieza con 7 días gratis para nuevos suscriptores que cumplan los requisitos.\n\nGracias por probar Alike. Los comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+    },
+    "es-MX": {
+        "subtitle": "Encuentra y limpia duplicados",
+        "description": ES_MX_DESCRIPTION,
+        "keywords": "fotos,iguales,liberar espacio,almacenamiento,celular,galería,capturas,borrosas,eliminar",
+        "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
+        "release_notes": "Primera versión de Alike.\n\nAnaliza tu fototeca en busca de fotos visualmente similares, revisa cada grupo con una mejor toma ya elegida y limpia el resto. Cada análisis se ejecuta en tu dispositivo: sin cuenta, sin subidas, y lo que se elimina pasa siempre a «Eliminados recientemente», donde iOS guarda tus fotos unos 30 días.\n\nEn esta primera versión:\n- Tres niveles de sensibilidad, desde tomas casi idénticas hasta una red más amplia\n- Detección de la mejor toma, para que cada grupo se abra con una opción razonable ya seleccionada\n- Quedarte solo con la mejor, seleccionar todas menos la mejor o elegir a mano\n- Indicadores de revisión que siguen lo nuevo, lo que está en revisión, lo revisado y lo que conviene mirar otra vez después de un cambio en tu fototeca\n- Progreso, Seleccionadas y Ahorro estimado mientras trabajas, además del historial de limpieza por meses\n- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador\n- Recordatorios de limpieza opcionales, como notificaciones locales\n- Siete idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica y portugués de Brasil, con modo oscuro completo\n\nAlike Pro agrega análisis ilimitados, limpieza por lotes, limpieza de capturas de pantalla y fotos borrosas, filtros avanzados y recordatorios personalizados. El plan anual empieza con 7 días gratis para nuevos suscriptores que cumplan los requisitos.\n\nGracias por probar Alike. Los comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+    },
+    "pt-BR": {
+        "subtitle": "Encontre e limpe duplicadas",
+        "description": PT_BR_DESCRIPTION,
+        "keywords": "fotos,repetidas,iguais,armazenamento,liberar espaço,galeria,captura,desfocadas,apagar",
+        "promotional_text": "O Alike agrupa as fotos parecidas, escolhe a melhor de cada grupo e ajuda você a limpar o resto, no seu iPhone. Alike Pro: 7 dias grátis no plano anual.",
+        "release_notes": "Primeira versão do Alike.\n\nAnalise sua fototeca em busca de fotos visualmente parecidas, revise cada grupo com uma melhor foto já escolhida e limpe o resto. Cada análise roda no seu dispositivo — sem conta, sem envios, e o que sai vai sempre para «Apagados recentemente», onde o iOS guarda suas fotos por cerca de 30 dias.\n\nNesta primeira versão:\n- Três níveis de sensibilidade, das fotos quase idênticas até uma rede mais ampla\n- Detecção da melhor foto, para que cada grupo abra com uma escolha sensata já selecionada\n- Manter só a melhor, selecionar todas menos a melhor ou escolher na mão\n- Selos de revisão que acompanham o que é novo, o que está em revisão, o que foi revisado e o que merece um segundo olhar depois de uma mudança na sua fototeca\n- Progresso, Selecionadas e Economia estimada enquanto você trabalha, além do histórico de limpeza por mês\n- Instruções de uso com busca dentro do app, a um toque do Analisador\n- Lembretes de limpeza opcionais, como notificações locais\n- Sete idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina e português do Brasil, com modo escuro completo\n\nO Alike Pro adiciona análises ilimitadas, limpeza em lote, limpeza de capturas de tela e de fotos desfocadas, filtros avançados e lembretes personalizados. O plano anual começa com 7 dias grátis para novos assinantes elegíveis.\n\nObrigado por experimentar o Alike. Comentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
 }
 
@@ -357,6 +678,12 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     ALIKE_TERMS_URL_UK or ALIKE_SUPPORT_URL_UK to point a locale somewhere else;
     with none of them set, every locale keeps the single shared URL it used
     before, so an unconfigured .env behaves exactly as it did.
+
+    The same holds for the Tier 1 locales added alongside the app's own
+    translations: ALIKE_*_URL_DE_DE, _FR_FR, _ES_ES, _ES_MX and _PT_BR. Until
+    the site publishes those landing pages, leaving them unset is the intended
+    state — all five fall back to the shared English URL rather than pointing at
+    a page that does not exist.
     """
     suffix = apple_locale.upper().replace("-", "_")
     override = os.environ.get(f"ALIKE_{kind}_URL_{suffix}", "").strip()
@@ -631,12 +958,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for `en-US` and `uk` is defined in `tools/prepare_app_store_upload_bundle.py`; those are the only two localizations the listing has. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all seven listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override: `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` (the suffix is the App Store locale, uppercased, `-` to `_`). The site publishes Ukrainian pages under `/uk/`, so set these three or the uk listing sends Ukrainian readers to English legal text. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override: `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` (the suffix is the App Store locale, uppercased, `-` to `_`). The site publishes Ukrainian pages under `/uk/`, so set these three or the uk listing sends Ukrainian readers to English legal text. The Tier 1 locales use the same three variables suffixed `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX` and `_PT_BR`; until the site publishes those pages, leaving them unset is correct and all five fall back to the shared English URL. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
