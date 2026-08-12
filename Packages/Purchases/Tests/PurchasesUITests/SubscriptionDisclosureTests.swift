@@ -27,27 +27,58 @@ final class SubscriptionDisclosureTests: XCTestCase {
         "fr": "nouveaux abonnés éligibles"
     ]
 
+    /// Compares each catalog value against the value parsed from *that locale's* documented
+    /// location — not against the document as a whole — so a locale that borrows another
+    /// locale's phrase (e.g. German using the English "Privacy Policy") fails instead of passing
+    /// because the borrowed phrase happens to appear somewhere else in the document.
     func testEveryDisclosureStringAppearsVerbatimInTheLegalDocument() throws {
         let document = try legalDocument()
         let catalog = try LocalizationCatalog.load()
-        var missing: [String] = []
+
+        let renewalParagraph = try parseParagraph(
+            titled: "Paragraph 1 — renewal and billing",
+            in: document
+        )
+        let trialParagraph = try parseParagraph(
+            titled: "Paragraph 2 — trial and cancellation",
+            in: document
+        )
+        let linkRow = try parseLinkRow(in: document)
+
+        let expectedByKey: [String: [String: String]] = [
+            "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled": renewalParagraph,
+            "purchases.subscriptionPaywall.yearlyPlanIncludes7Day": trialParagraph,
+            "purchases.subscriptionPaywall.privacyPolicy": linkRow.mapValues(\.privacyPolicy),
+            "purchases.subscriptionPaywall.termsOfUse": linkRow.mapValues(\.termsOfUse)
+        ]
+
+        var mismatches: [String] = []
 
         for key in Self.disclosureKeys {
+            let expected = try XCTUnwrap(expectedByKey[key], "no parsed section for \(key)")
             for language in LocalizationCatalog.shippedLanguages {
                 let localization = try XCTUnwrap(catalog.localizations(of: key)[language])
                 let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-                let value = try XCTUnwrap(unit["value"] as? String)
-                if !document.contains(value) {
-                    missing.append("\(key) [\(language)]: \(value)")
+                let actual = try XCTUnwrap(unit["value"] as? String)
+                guard let documented = expected[language] else {
+                    mismatches.append("\(key) [\(language)]: no documented value found for this locale")
+                    continue
+                }
+                if documented != actual {
+                    mismatches.append(
+                        """
+                        \(key) [\(language)]: expected "\(documented)", catalog has "\(actual)"
+                        """
+                    )
                 }
             }
         }
 
         XCTAssertTrue(
-            missing.isEmpty,
+            mismatches.isEmpty,
             """
             Docs/legal/subscription-disclosure.md does not carry these strings verbatim. \
-            Change the document and the catalog together: \(missing)
+            Change the document and the catalog together: \(mismatches)
             """
         )
     }
@@ -100,5 +131,72 @@ final class SubscriptionDisclosureTests: XCTestCase {
             .deletingLastPathComponent()  // repository root
             .appendingPathComponent("Docs/legal/subscription-disclosure.md")
         return try String(contentsOf: url, encoding: .utf8)
+    }
+
+    /// The doc marks each locale's paragraph with a bold marker line (`**EN**`, `**ES-419**`,
+    /// `**PT-BR**`, ...) followed by a blockquote line (`> ...`). This maps
+    /// `LocalizationCatalog.shippedLanguages` codes to the doc marker, isolates the named
+    /// `### <title>` section, and pulls the blockquote that follows each locale's marker.
+    private func parseParagraph(titled title: String, in document: String) throws -> [String: String] {
+        let section = try section(titled: title, in: document)
+        var values: [String: String] = [:]
+
+        for language in LocalizationCatalog.shippedLanguages {
+            let marker = "**\(Self.docMarker(for: language))**"
+            guard let markerRange = section.range(of: marker) else { continue }
+            let afterMarker = section[markerRange.upperBound...]
+            guard let quoteLine = afterMarker
+                .split(separator: "\n", omittingEmptySubsequences: false)
+                .first(where: { $0.hasPrefix("> ") })
+            else { continue }
+            values[language] = String(quoteLine.dropFirst(2))
+        }
+
+        return values
+    }
+
+    /// The link row is a markdown table with header `| Locale | Privacy Policy | Terms of Use |`
+    /// and rows like `` | `de` | Datenschutzrichtlinie | Nutzungsbedingungen | ``, using lowercase
+    /// codes exactly as in `LocalizationCatalog.shippedLanguages`.
+    private func parseLinkRow(
+        in document: String
+    ) throws -> [String: (privacyPolicy: String, termsOfUse: String)] {
+        let section = try section(titled: "Link row", in: document)
+        var values: [String: (privacyPolicy: String, termsOfUse: String)] = [:]
+
+        for language in LocalizationCatalog.shippedLanguages {
+            let rowMarker = "| `\(language)` |"
+            guard let rowLine = section
+                .split(separator: "\n", omittingEmptySubsequences: false)
+                .first(where: { $0.hasPrefix(rowMarker) })
+            else { continue }
+            let columns = rowLine
+                .split(separator: "|", omittingEmptySubsequences: false)
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+            // ["", "`<code>`", "<privacy policy>", "<terms of use>", ""]
+            guard columns.count >= 4 else { continue }
+            values[language] = (privacyPolicy: columns[2], termsOfUse: columns[3])
+        }
+
+        return values
+    }
+
+    /// Isolates the text of a `### <title>` section, up to (but not including) the next `###`
+    /// heading or the end of the document.
+    private func section(titled title: String, in document: String) throws -> Substring {
+        let heading = "### \(title)"
+        let afterHeading = try XCTUnwrap(
+            document.range(of: heading),
+            "\(heading) not found in Docs/legal/subscription-disclosure.md"
+        )
+        let rest = document[afterHeading.upperBound...]
+        let end = rest.range(of: "\n### ")?.lowerBound ?? rest.endIndex
+        return rest[rest.startIndex..<end]
+    }
+
+    /// `es-419` -> `ES-419`, `pt-BR` -> `PT-BR`: the doc uppercases the whole language code as
+    /// its marker, not just the base subtag.
+    private static func docMarker(for language: String) -> String {
+        language.uppercased()
     }
 }
