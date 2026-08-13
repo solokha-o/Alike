@@ -95,13 +95,15 @@ change with it.
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
 | 1 | EN EL DISPOSITIVO | Encuentra las fotos / que se parecen | Alike analiza tu fototeca con Apple Vision, todo en tu iPhone. |
-| 2 | UNA SOLA FILA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué falta. |
+| 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué falta. |
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Revisa antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
 | 5 | ESPACIO LIBRE | Recupera los / gigabytes | Seleccionadas y ahorro estimado, mientras vas limpiando. |
 
-`es` and `es-419` are deliberately not identical: "cola" is the queue in Spain
-and "fila" in Latin America, which is the same split the app's own strings make.
+`es` and `es-419` are deliberately not identical, but the queue is "cola" in
+both: the app's own catalog says "cola de limpieza" in `es` and `es-419` alike,
+so the decks say it too. What differs is the phrasing around it — "qué queda"
+against "qué falta", "Comprueba antes" against "Revisa antes".
 
 ### pt-BR
 

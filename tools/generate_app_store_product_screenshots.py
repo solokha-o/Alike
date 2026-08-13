@@ -292,9 +292,10 @@ COPY = {
             "Sélectionnées et économie estimée, suivies pendant le nettoyage.",
         ),
     ],
-    # es and es-419 diverge where the app's own strings do: "cola" is the queue
-    # in Spain and "fila" in Latin America, and es-419 keeps the simple past
-    # where es-ES uses the present perfect.
+    # es and es-419 diverge only where the wording, not the vocabulary, differs:
+    # the queue is "cola" in both, because the app's own catalog translates
+    # cleanup.main.everythingElseStillAvailableCleanup with "cola de limpieza"
+    # for es and es-419 alike.
     "es": [
         (
             "EN EL DISPOSITIVO",
@@ -329,7 +330,7 @@ COPY = {
             "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
         ),
         (
-            "UNA SOLA FILA",
+            "UNA SOLA COLA",
             "Cada grupo,\nlisto para revisar",
             "Los grupos llegan con indicadores: siempre sabes qué falta.",
         ),
