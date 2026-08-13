@@ -15,11 +15,14 @@ public enum SensitivityLevel: String, CaseIterable, Sendable {
         }
     }
     
+    /// Shown in the Settings sensitivity picker. Found rendering as English "Medium" in a
+    /// Polish build while walking task 43 — it was the last displayed string in this package
+    /// still hardcoded in Swift.
     public var displayName: String {
         switch self {
-        case .low: return "Low"
-        case .medium: return "Medium"
-        case .high: return "High"
+        case .low: return CoreL10n.SensitivityLevel.low
+        case .medium: return CoreL10n.SensitivityLevel.medium
+        case .high: return CoreL10n.SensitivityLevel.high
         }
     }
 }

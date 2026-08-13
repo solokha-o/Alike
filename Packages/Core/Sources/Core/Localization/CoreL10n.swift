@@ -69,6 +69,15 @@ public enum CoreL10n {
         public static var unlockScreenshotCleanupReviewDelete: String { CoreL10n.string("core.cleanupCategory.unlockScreenshotCleanupReviewDelete") }
     }
 
+    public enum SensitivityLevel {
+        /// High
+        public static var high: String { CoreL10n.string("core.sensitivityLevel.high") }
+        /// Low
+        public static var low: String { CoreL10n.string("core.sensitivityLevel.low") }
+        /// Medium
+        public static var medium: String { CoreL10n.string("core.sensitivityLevel.medium") }
+    }
+
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
