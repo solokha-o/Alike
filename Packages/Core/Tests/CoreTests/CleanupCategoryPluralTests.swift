@@ -51,6 +51,66 @@ final class CleanupCategoryPluralTests: XCTestCase {
         }
     }
 
+    /// Polish is the reason task 43 could not simply add five more columns to the catalog: it needs
+    /// all four CLDR categories, and the boundaries are not where a `count == 1` branch would put
+    /// them. 22 and 25 are the cases that matter — both are "more than five", and they take
+    /// different forms.
+    func testPolishCopySelectsThePluralFormForEachCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "pl")
+        let pl = Locale(identifier: "pl")
+
+        func summary(_ count: Int) -> String {
+            CoreL10n.CleanupCategory.summaryScreenshots(count, bundle: bundle, locale: pl)
+        }
+
+        // one: 1 — few: 2, 22 — many: 5, 25
+        XCTAssertEqual(summary(1), "1 zrzut ekranu do przejrzenia.")
+        XCTAssertEqual(summary(2), "2 zrzuty ekranu do przejrzenia.")
+        XCTAssertEqual(summary(22), "22 zrzuty ekranu do przejrzenia.")
+        XCTAssertEqual(summary(5), "5 zrzutów ekranu do przejrzenia.")
+        XCTAssertEqual(summary(25), "25 zrzutów ekranu do przejrzenia.")
+
+        func alertTitle(_ count: Int) -> String {
+            CoreL10n.CleanupCategory.alertTitleScreenshots(count, bundle: bundle, locale: pl)
+        }
+
+        XCTAssertTrue(alertTitle(1).contains("1 wybrany zrzut ekranu"), alertTitle(1))
+        XCTAssertTrue(alertTitle(22).contains("22 wybrane zrzuty ekranu"), alertTitle(22))
+        XCTAssertTrue(alertTitle(25).contains("25 wybranych zrzutów ekranu"), alertTitle(25))
+
+        // The two-argument key has to keep `%2$@` in all four categories, not just the singular.
+        for count in [1, 2, 5, 22, 25] {
+            let selection = CoreL10n.CleanupCategory.selectionSummary(
+                count,
+                "120 MB",
+                bundle: bundle,
+                locale: pl
+            )
+            XCTAssertTrue(selection.contains("Wybrano \(count)"), selection)
+            XCTAssertTrue(selection.contains("120 MB"), selection)
+        }
+    }
+
+    /// Traditional Chinese is the opposite problem: one grammatical form for every count. A
+    /// one/other pair there would be two spellings of the same sentence, so the catalog declares
+    /// `other` alone — and this asserts the single form still resolves at every count.
+    func testTraditionalChineseUsesOneFormForEveryCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "zh-Hant")
+        let zh = Locale(identifier: "zh-Hant")
+
+        for count in [0, 1, 2, 5, 22, 25] {
+            XCTAssertEqual(
+                CoreL10n.CleanupCategory.summaryScreenshots(count, bundle: bundle, locale: zh),
+                "有 \(count) 張螢幕快照可供檢視。"
+            )
+        }
+
+        XCTAssertEqual(
+            CoreL10n.CleanupCategory.selectionSummary(1, "120 MB", bundle: bundle, locale: zh),
+            "已選取 1 張，預估大小 120 MB。"
+        )
+    }
+
     func testEnglishCopySelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")
@@ -100,6 +160,16 @@ final class CleanupCategoryPluralTests: XCTestCase {
             XCTAssertEqual(
                 try catalog.pluralCategories(of: key, language: "uk"),
                 ["few", "many", "one", "other"],
+                key
+            )
+            XCTAssertEqual(
+                try catalog.pluralCategories(of: key, language: "pl"),
+                ["few", "many", "one", "other"],
+                key
+            )
+            XCTAssertEqual(
+                try catalog.pluralCategories(of: key, language: "zh-Hant"),
+                ["other"],
                 key
             )
         }
