@@ -30,14 +30,33 @@ source `tools/prepare_app_store_upload_bundle.py` reads to emit
 App Store Connect limits the display name to 30 characters and the description
 to 45.
 
+Locales below are the App Store Connect codes the generated JSON carries; the
+StoreKit file spells the same ones `en_US`, `uk`, `de_DE`, `fr_FR`, `es_ES`,
+`es_MX` and `pt_BR`.
+
 | Product | Locale | Display name | Description |
 | --- | --- | --- | --- |
 | Group | en-US | Alike Pro | — |
 | Group | uk | Alike Pro | — |
+| Group | de-DE | Alike Pro | — |
+| Group | fr-FR | Alike Pro | — |
+| Group | es-ES | Alike Pro | — |
+| Group | es-MX | Alike Pro | — |
+| Group | pt-BR | Alike Pro | — |
 | Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool. First 7 days free. |
 | Yearly | uk | Alike Pro на рік | Усі функції Alike Pro. 7 днів безкоштовно. |
+| Yearly | de-DE | Alike Pro Jahresplan | Alle Pro-Funktionen. 7 Tage gratis. |
+| Yearly | fr-FR | Alike Pro annuel | Tous les outils Pro. 7 jours offerts. |
+| Yearly | es-ES | Alike Pro anual | Todas las funciones Pro. 7 días gratis. |
+| Yearly | es-MX | Alike Pro anual | Todas las funciones Pro. 7 días gratis. |
+| Yearly | pt-BR | Alike Pro anual | Todos os recursos Pro. 7 dias grátis. |
 | Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
 | Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
+| Monthly | de-DE | Alike Pro Monatsplan | Alle Aufräumfunktionen von Alike Pro. |
+| Monthly | fr-FR | Alike Pro mensuel | Tout le nettoyage photo d’Alike Pro. |
+| Monthly | es-ES | Alike Pro mensual | Toda la limpieza de fotos de Alike Pro. |
+| Monthly | es-MX | Alike Pro mensual | Toda la limpieza de fotos de Alike Pro. |
+| Monthly | pt-BR | Alike Pro mensal | Toda a limpeza de fotos do Alike Pro. |
 
 The paywall shows StoreKit's localized `displayName`, so a missing locale means
 that storefront falls back to English plan names in the paywall and in
@@ -49,8 +68,10 @@ localizations reach App Store Connect only through
 is not wired into any lane. That script upserts localizations onto products
 that already exist; it never creates the group or the products. It also
 tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
-skipped rather than failing, so read the `skipped` line in its output before
-assuming `uk` landed.
+skipped rather than failing, so a run that skipped every localization still
+exits successfully. Read the `skipped` line in its output before assuming the
+six non-English locales — `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR` —
+landed, and re-run or add them by hand for any that were skipped.
 
 The same script has `status` (read-only, safe to run first),
 `upload-introductory-offers` and `upload-review-screenshots`. The screenshot
@@ -92,10 +113,11 @@ customer who has never subscribed in the group, which is why the paywall says
 2. Create the yearly and monthly products with the exact identifiers above.
 3. Set yearly above monthly in the subscription level order.
 4. Configure the intended US prices and localize each storefront in App Store
-   Connect as release markets are added. Add the en-US and uk product
-   localizations from the table above, either by hand or with
-   `tools/app_store_iap_metadata.rb upload-localizations` once the products
-   exist.
+   Connect as release markets are added. Add all seven product localizations
+   from the table above — en-US, uk, de-DE, fr-FR, es-ES, es-MX and pt-BR —
+   either by hand or with `tools/app_store_iap_metadata.rb upload-localizations`
+   once the products exist, then confirm the count in the `status` output
+   because skipped locales do not fail the run.
 5. Add a seven-day free-trial introductory offer to yearly only. Eligibility is
    determined by StoreKit per subscription group.
 6. Supply review information and submit the products with the app version that
