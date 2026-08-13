@@ -75,6 +75,65 @@ Two spots are worth a closer look because they state facts:
 - `userGuide.freeAndPro.*` and `userGuide.scanning.status.allowance.body` — restate the
   free allowance and what Pro adds. They have to agree with the paywall copy above.
 
+## The landing site — same review, different repository
+
+The Privacy Policy, Terms of Use, support page and landing copy are published in
+`de`, `fr`, `es` and `pt-BR` in `alikeapp/alikeapp.github.io`. They were translated the
+same way the catalogs were — carefully, against the same glossary, by someone who is not
+a native speaker of any of the four. **The same caveat applies: coverage, not a native
+pass.** Legal prose is the one place where that gap costs more than awkwardness, so this
+is the part of the site a reviewer should be handed first.
+
+Sources are `<locale>/privacy.md`, `<locale>/terms.md` and `_data/<locale>.yml` in that
+repository. Register per language matches the app: *du* for German, *vous* for French,
+*tú* for Spanish, *você* for pt-BR.
+
+### Terms of Use — the compliance surface
+
+`scripts/check-site.sh` asserts these are *present*. It cannot assert they are *right*.
+
+| What | Why |
+|---|---|
+| The App Store EULA blockquote | Names Apple's Standard EULA as the licence that legally governs use and defers to it on conflict. `Docs/legal/README.md` records that dropping it is what turns this into a review problem. |
+| The plans table | States the two durations and that the trial is yearly-only, for eligible new subscribers. |
+| Billing and renewal bullets | The 24-hour cancellation window and the 24-hour pre-renewal charge are facts, not phrasing. |
+| "We cannot cancel or refund ourselves" | Sets the expectation Apple actually enforces. A translation that softens this generates support mail we cannot act on. |
+| Governing law + mandatory consumer rights | The second paragraph preserves local consumer protections. It must not read as a waiver. |
+| The Apple section | Apple as third-party beneficiary, verbatim in substance. |
+
+The two subscription disclosure paragraphs on the site were copied byte-for-byte from
+`Docs/legal/subscription-disclosure.md`, so they need no separate review pass.
+
+**They are an independent copy, not a reference.** Nothing propagates: the site is a
+separate repository, `SubscriptionDisclosureTests` can only see the app catalog, and the
+site's own `scripts/check-site.sh` greps short sentinel fragments — enough to catch a
+*dropped* disclosure, not a stale one. Changing the wording is a three-place edit: this
+repo's document, the catalog, and `_data/<locale>.yml` in the site repo. Run
+`tools/check_site_legal_parity.py --require` after any of them to confirm all three
+agree — bare, it skips and exits 0 when the site checkout is absent.
+
+### Privacy Policy — the claims that must not drift
+
+Every one of these is a factual claim about the app, and each must come out of the
+translation exactly as strong as the English, and no stronger:
+
+- Analysis runs on device via Vision; nothing is uploaded — no photo, thumbnail, or
+  feature print.
+- No analytics, no crash reporting, no advertising, no tracking, no cookies; the app
+  makes no network requests of its own.
+- Deletion always requires explicit confirmation, iOS confirms again, and photos land in
+  Recently Deleted for ~30 days.
+- Notification permission is requested *only* for the weekly cleanup reminder.
+- Delete Alike Data erases local Alike data only — **not** photos, photo access, or the
+  subscription. This is the same risk as the `settings.main.*` keys above: blur it and it
+  reads as "this app deletes your photos".
+
+### Landing copy — lower stakes, two exceptions
+
+`_data/<locale>.yml` is marketing prose, so an awkward sentence is a quality problem. Two
+entries state facts and have to agree with the app: the free allowance in `pricing.free`
+("3 scans per month") and the language count in the last `features.items` entry.
+
 ## Per-language notes for the reviewer
 
 - **`es-419` vs `es`** — these are separate texts on purpose. `es-419` uses "Configuración",

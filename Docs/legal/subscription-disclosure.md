@@ -114,8 +114,32 @@ must not smooth it away.
 | `fr` | Politique de confidentialité | Conditions d’utilisation |
 
 Destinations are `SubscriptionConfiguration.legalLinks.privacyPolicy` and
-`.termsOfUse`. Both point at the same URLs in every locale — the linked pages are
-English-only, which Review accepts as long as the links work.
+`.termsOfUse`. Both point at the same English URLs in every locale. The linked
+pages are no longer English-only — the site publishes `en`, `uk`, `de`, `fr`,
+`es` and `pt-BR` — but the *in-app* links are a single shared constant and stay
+on the English pages, which Review accepts as long as the links work. What does
+follow the reader's language is the App Store listing: `localized_url()` in
+`tools/prepare_app_store_upload_bundle.py` sends each locale's `privacy_url.txt`
+and `support_url.txt` to its own pages.
+
+The two paragraphs above are also the source for the site's own pricing section.
+`_data/<locale>.yml` in `alikeapp/alikeapp.github.io` carries them byte-for-byte
+under `pricing.disclosure_renewal` and `pricing.disclosure_trial`, so a wording
+change here is a three-place change: this file, the catalog, and the site.
+
+`SubscriptionDisclosureTests` pins the catalog against this file. Nothing could
+pin the site, because it is a separate repository and neither side's tests can
+see both. `tools/check_site_legal_parity.py` closes that gap — it reads the site
+checkout next to this one and fails on any locale that has drifted:
+
+```sh
+tools/check_site_legal_parity.py --require
+```
+
+Use `--require` whenever the answer is meant to gate something. Bare, the tool
+skips and exits 0 when the site checkout is absent, which is right for an
+incidental local run and wrong for a release step: it would report success
+having compared nothing.
 
 Both links are injected once in `RootView` via `.subscriptionLegalLinks(...)`
 and read from the environment, so every paywall entry point — Scanner, Details,

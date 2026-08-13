@@ -91,11 +91,13 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` —
-    per-locale overrides. Unset, the uk listing reuses the three URLs above,
-    which point at the English pages even though the site publishes Ukrainian
-    ones under `/uk/`. The suffix is the App Store locale, uppercased, with `-`
-    replaced by `_`, so a third localization follows the same pattern.
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR}` —
+    eighteen per-locale overrides, one per non-English listing. Unset, that
+    listing reuses the three URLs above, which point at the English pages even
+    though the site publishes all six locales. The suffix is the App Store
+    locale, uppercased, with `-` replaced by `_`, so a further localization
+    follows the same pattern. `ES_MX` points at the same `/es/` pages as
+    `ES_ES`. Values are listed in `Docs/release-checklist.md` step 1.
 
 For App Store Connect uploads:
 
@@ -377,14 +379,23 @@ The practical consequence for releases: the site no longer rides along with the 
 release merge. It can be deployed and its URLs verified at any time, independently of
 this repository.
 
-| Page | EN | UK |
-|---|---|---|
-| Home | `/` | `/uk/` |
-| Privacy Policy | `/privacy/` | `/uk/privacy/` |
-| Terms of Use | `/terms/` | `/uk/terms/` |
-| Support | `/support/` | `/uk/support/` |
+| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` |
+|---|---|---|---|---|---|---|
+| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` |
+| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` |
+| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` |
+| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` |
 
-Those last two supply the values the metadata bundle needs:
+Six locales against seven listings: the `es` column serves both `es-ES` and
+`es-MX`.
+
+That repository's `scripts/check-site.sh` is the build gate. It runs on every
+pull request there and again before each deploy, and asserts the locale matrix,
+that every internal link and `hreflang` target resolves, that the Terms page in
+each language still names Apple's Standard EULA and carries both subscription
+disclosures, and that the rendered site references no third-party host.
+
+The English row supplies the values the metadata bundle needs:
 
 ```sh
 ALIKE_PRIVACY_URL="https://alikeapp.github.io/privacy/"

@@ -53,8 +53,8 @@ The first public release. Everything below is in the build going to review:
 Alike makes no network requests. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
 
 - [Privacy Policy](https://alikeapp.github.io/privacy/) · [Terms of Use](https://alikeapp.github.io/terms/) · [Support](https://alikeapp.github.io/support/)
-- Ukrainian: [Політика конфіденційності](https://alikeapp.github.io/uk/privacy/) · [Умови використання](https://alikeapp.github.io/uk/terms/)
-- Source copy for both lives in [`Docs/legal/`](Docs/legal/).
+- Also published in [Українська](https://alikeapp.github.io/uk/privacy/) · [Deutsch](https://alikeapp.github.io/de/privacy/) · [Français](https://alikeapp.github.io/fr/privacy/) · [Español](https://alikeapp.github.io/es/privacy/) · [Português (Brasil)](https://alikeapp.github.io/pt-br/privacy/), each with its own Terms and support page.
+- The runbook for all of it lives in [`Docs/legal/`](Docs/legal/); the pages themselves are in [`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io).
 
 ## 🧠 Similarity algorithm
 

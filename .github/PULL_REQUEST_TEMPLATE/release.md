@@ -45,19 +45,24 @@ settings:
 
 **Legal and support site**
 
-- [ ] All six URLs return 200. The site is independent of this merge; it lives
-      in `alikeapp/alikeapp.github.io`.
+- [ ] All 24 URLs return 200 — six locales by four pages. The site is
+      independent of this merge; it lives in `alikeapp/alikeapp.github.io`, and
+      its own `scripts/check-site.sh` has already asserted the matrix, the
+      links, hreflang and the Terms guardrails before deploy.
 
 ```sh
-for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "$u"; done
+for l in "" uk/ de/ fr/ es/ pt-br/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 **Store metadata**
 
 - [ ] Release notes written for `en-US` and `uk`
-- [ ] `.env` carries the per-locale overrides — `ALIKE_PRIVACY_URL_UK`,
-      `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK`. Nothing fails without them;
-      the uk listing just silently reuses the English URLs.
+- [ ] `.env` carries the per-locale URL overrides for all six non-English
+      listings — `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_` suffixed `UK`, `DE_DE`,
+      `FR_FR`, `ES_ES`, `ES_MX` and `PT_BR` (the full list with values is in
+      `Docs/release-checklist.md` step 1). Nothing fails without them; a listing
+      just silently reuses the English URLs. `ES_MX` points at the same `/es/`
+      pages as `ES_ES` on purpose.
 - [ ] IAP localizations uploaded separately — `deliver` does not touch in-app
       purchases
 
