@@ -24,15 +24,39 @@ validate whenever you like; upload when nothing is in review.
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
-- [ ] `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK` and `ALIKE_SUPPORT_URL_UK`
-      set to the `/uk/` pages. These are optional overrides and nothing fails
-      without them — the uk listing simply reuses the English URLs, which is a
-      silent localization gap rather than an error:
+- [ ] The per-locale URL overrides set for every non-English listing. These are
+      optional and nothing fails without them — a listing simply reuses the
+      English URLs, which is a silent localization gap rather than an error. The
+      site now publishes all six locales, so leaving any of these unset sends
+      readers to English legal text they were not reading a moment ago:
 
 ```sh
 ALIKE_PRIVACY_URL_UK="https://alikeapp.github.io/uk/privacy/"
 ALIKE_TERMS_URL_UK="https://alikeapp.github.io/uk/terms/"
 ALIKE_SUPPORT_URL_UK="https://alikeapp.github.io/uk/support/"
+
+ALIKE_PRIVACY_URL_DE_DE="https://alikeapp.github.io/de/privacy/"
+ALIKE_TERMS_URL_DE_DE="https://alikeapp.github.io/de/terms/"
+ALIKE_SUPPORT_URL_DE_DE="https://alikeapp.github.io/de/support/"
+
+ALIKE_PRIVACY_URL_FR_FR="https://alikeapp.github.io/fr/privacy/"
+ALIKE_TERMS_URL_FR_FR="https://alikeapp.github.io/fr/terms/"
+ALIKE_SUPPORT_URL_FR_FR="https://alikeapp.github.io/fr/support/"
+
+ALIKE_PRIVACY_URL_ES_ES="https://alikeapp.github.io/es/privacy/"
+ALIKE_TERMS_URL_ES_ES="https://alikeapp.github.io/es/terms/"
+ALIKE_SUPPORT_URL_ES_ES="https://alikeapp.github.io/es/support/"
+
+# es-MX deliberately points at the same /es/ pages as es-ES. One Spanish page
+# serves both listings: the legal copy does not need the regional vocabulary
+# split, and /es/ advertises hreflang="es-419" for this storefront.
+ALIKE_PRIVACY_URL_ES_MX="https://alikeapp.github.io/es/privacy/"
+ALIKE_TERMS_URL_ES_MX="https://alikeapp.github.io/es/terms/"
+ALIKE_SUPPORT_URL_ES_MX="https://alikeapp.github.io/es/support/"
+
+ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
+ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
+ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
@@ -140,13 +164,16 @@ repository's release merge**, so this whole step can and should be completed
 App Review rejection, and there is no longer any reason to discover that late.
 
 - [ ] Pages source set to **GitHub Actions** (that repo's Settings → Pages).
-- [ ] The workflow run succeeded. It fails deliberately if the rendered site
-      references any third-party host, because the privacy policy claims Alike
-      makes no network requests.
-- [ ] All six URLs return 200:
+- [ ] The workflow run succeeded. `scripts/check-site.sh` runs there on every
+      pull request and again before each deploy, and asserts the locale matrix,
+      internal links, hreflang, the Terms guardrails and — deliberately — that
+      the rendered site references no third-party host, because the privacy
+      policy claims Alike makes no network requests.
+- [ ] All 24 published URLs return 200. The build already checked that each page
+      exists in the rendered output; this checks the deployed site:
 
 ```sh
-for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "$u"; done
+for l in "" uk/ de/ fr/ es/ pt-br/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 - [ ] In a **Release** build, the legal links open from all four entry points:

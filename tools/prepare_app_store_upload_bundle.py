@@ -679,11 +679,12 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     with none of them set, every locale keeps the single shared URL it used
     before, so an unconfigured .env behaves exactly as it did.
 
-    The same holds for the Tier 1 locales added alongside the app's own
-    translations: ALIKE_*_URL_DE_DE, _FR_FR, _ES_ES, _ES_MX and _PT_BR. Until
-    the site publishes those landing pages, leaving them unset is the intended
-    state — all five fall back to the shared English URL rather than pointing at
-    a page that does not exist.
+    The same holds for the Tier 1 locales: ALIKE_*_URL_DE_DE, _FR_FR, _ES_ES,
+    _ES_MX and _PT_BR. The site now publishes all of those pages, so these should
+    be set — an unset override is no longer a safe default but a silent
+    localization gap, sending a reader who was just reading German App Store copy
+    to an English privacy policy. _ES_MX points at the same /es/ pages as _ES_ES
+    on purpose: one Spanish page serves both listings.
     """
     suffix = apple_locale.upper().replace("-", "_")
     override = os.environ.get(f"ALIKE_{kind}_URL_{suffix}", "").strip()
@@ -963,7 +964,7 @@ tools/upload-screenshots
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override: `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` (the suffix is the App Store locale, uppercased, `-` to `_`). The site publishes Ukrainian pages under `/uk/`, so set these three or the uk listing sends Ukrainian readers to English legal text. The Tier 1 locales use the same three variables suffixed `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX` and `_PT_BR`; until the site publishes those pages, leaving them unset is correct and all five fall back to the shared English URL. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`. The site publishes all six of those locales, so set all eighteen — an unset override falls back to the shared English URL, which sends a reader who was just reading localized App Store copy to an English privacy policy. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
