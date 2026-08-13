@@ -101,9 +101,15 @@ repository. Register per language matches the app: *du* for German, *vous* for F
 | Governing law + mandatory consumer rights | The second paragraph preserves local consumer protections. It must not read as a waiver. |
 | The Apple section | Apple as third-party beneficiary, verbatim in substance. |
 
-The two subscription disclosure paragraphs on the site are copied byte-for-byte from
-`Docs/legal/subscription-disclosure.md`, so they need no separate review — but if a
-reviewer changes one there, the site copy changes with it.
+The two subscription disclosure paragraphs on the site were copied byte-for-byte from
+`Docs/legal/subscription-disclosure.md`, so they need no separate review pass.
+
+**They are an independent copy, not a reference.** Nothing propagates: the site is a
+separate repository, `SubscriptionDisclosureTests` can only see the app catalog, and the
+site's own `scripts/check-site.sh` greps short sentinel fragments — enough to catch a
+*dropped* disclosure, not a stale one. Changing the wording is a three-place edit: this
+repo's document, the catalog, and `_data/<locale>.yml` in the site repo. Run
+`tools/check_site_legal_parity.py` after any of them to confirm all three agree.
 
 ### Privacy Policy — the claims that must not drift
 

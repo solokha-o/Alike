@@ -130,27 +130,34 @@ its `check_terms` row.
 2. Update the "Last updated" date in every file you changed, in every language.
    The date belongs to the document, not to the translation: if the English
    Privacy Policy changes, all six copies change and all six dates move.
-3. Open a pull request against `main` in `alikeapp/alikeapp.github.io`. Its
+3. If the subscription disclosure changed, confirm all three copies agree — this
+   document, the catalog, and the site's `_data/<locale>.yml`. Nothing propagates
+   between the two repositories:
+
+   ```sh
+   tools/check_site_legal_parity.py
+   ```
+4. Open a pull request against `main` in `alikeapp/alikeapp.github.io`. Its
    `scripts/check-site.sh` runs there and asserts the locale matrix, internal
    links, hreflang, the Terms guardrails below, and that no third-party host is
    referenced. Merging deploys it; no manual copying is involved, and this does
    not wait on the app's release merge.
-4. Confirm all 24 URLs load publicly with no sign-in — the loop is in
+5. Confirm all 24 URLs load publicly with no sign-in — the loop is in
    `Docs/release-checklist.md` step 6.
-5. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
+6. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
    The in-app links stay English for every locale: they are the app's own
    fallback, and `localized_url()` is what routes each *listing* to its own
    language.
-6. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
+7. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
    the metadata bundle, and set the per-locale overrides
    (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR}`) so
    each listing points at its own pages instead of falling back to English. The
    full list with values is in `Docs/release-checklist.md` step 1.
-7. Check that `copyright_year` in the site's `_config.yml` still equals the year
+8. Check that `copyright_year` in the site's `_config.yml` still equals the year
    in `COPYRIGHT` in `tools/prepare_app_store_upload_bundle.py`. Nothing enforces
    this across the two repositories, and it is a copyright line, not a current
    year — it should only ever change if the year of first publication was wrong.
-8. Verify the links open from all three paywall entry points and from
+9. Verify the links open from all three paywall entry points and from
    Settings → Legal in a Release build.
 
 ## Keeping copy honest

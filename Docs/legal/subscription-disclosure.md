@@ -127,6 +127,15 @@ The two paragraphs above are also the source for the site's own pricing section.
 under `pricing.disclosure_renewal` and `pricing.disclosure_trial`, so a wording
 change here is a three-place change: this file, the catalog, and the site.
 
+`SubscriptionDisclosureTests` pins the catalog against this file. Nothing could
+pin the site, because it is a separate repository and neither side's tests can
+see both. `tools/check_site_legal_parity.py` closes that gap — it reads the site
+checkout next to this one and fails on any locale that has drifted:
+
+```sh
+tools/check_site_legal_parity.py
+```
+
 Both links are injected once in `RootView` via `.subscriptionLegalLinks(...)`
 and read from the environment, so every paywall entry point — Scanner, Details,
 and Settings — shows the same URLs. The same values back the Legal section in
