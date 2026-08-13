@@ -261,7 +261,7 @@ DATENSCHUTZ IST DER GANZE PUNKT
 - Die gesamte Analyse läuft auf dem Gerät mit Apples Vision-Framework.
 - Kein Foto, keine Miniatur und kein Merkmalsabdruck wird jemals hochgeladen.
 - Kein Konto, keine Anmeldung, kein Alike-Server.
-- Keine Analyse-Tools, kein Tracking, keine Werbe-IDs.
+- Keine Nutzungsanalyse, kein Tracking, keine Werbe-IDs.
 - Keine Werbung, nirgendwo in der App.
 - Scannen und Aufräumen brauchen überhaupt keine Verbindung — Alike arbeitet im Flugmodus.
 - Nichts wird ohne deine ausdrückliche Bestätigung gelöscht.
