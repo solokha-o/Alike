@@ -154,6 +154,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld foto sfocata selezionata in «Eliminati di recente»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld foto sfocate selezionate in «Eliminati di recente»?"
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde wazige foto naar 'Recent verwijderd' verplaatsen?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde wazige foto's naar 'Recent verwijderd' verplaatsen?"
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrane rozmyte zdjęcia do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranych rozmytych zdjęć do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrane rozmyte zdjęcie do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranego rozmytego zdjęcia do albumu „Ostatnio usunięte”?"
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld bulanık fotoğraf Son Silinenler'e taşınsın mı?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld bulanık fotoğraf Son Silinenler'e taşınsın mı?"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "將所選的 %1$lld 張模糊照片移到「最近刪除」？"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -309,6 +405,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld screenshot selezionato in «Eliminati di recente»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld screenshot selezionati in «Eliminati di recente»?"
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde schermafbeelding naar 'Recent verwijderd' verplaatsen?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde schermafbeeldingen naar 'Recent verwijderd' verplaatsen?"
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrane zrzuty ekranu do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranych zrzutów ekranu do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrany zrzut ekranu do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranego zrzutu ekranu do albumu „Ostatnio usunięte”?"
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld ekran görüntüsü Son Silinenler'e taşınsın mı?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld ekran görüntüsü Son Silinenler'e taşınsın mı?"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "將所選的 %1$lld 張螢幕快照移到「最近刪除」？"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -355,6 +547,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nettoyage des photos floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulizia foto sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wazige foto's opruimen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki w rozmytych zdjęciach"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık Fotoğraf Temizliği"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模糊照片清理"
           }
         }
       }
@@ -403,6 +625,36 @@
             "state": "translated",
             "value": "Le nettoyage des photos floues est une fonctionnalité premium"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La pulizia delle foto sfocate è una funzione premium"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wazige foto's opruimen is een premiumfunctie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki w rozmytych zdjęciach to funkcja premium"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık fotoğraf temizliği bir premium özelliktir"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模糊照片清理為進階功能"
+          }
         }
       }
     },
@@ -449,6 +701,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photos floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wazige foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rozmyte zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık Fotoğraflar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模糊照片"
           }
         }
       }
@@ -497,6 +779,36 @@
             "state": "translated",
             "value": "Photos probablement de faible qualité d’après l’analyse sur l’appareil. À examiner avant suppression."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto probabilmente di bassa qualità in base all'analisi sul dispositivo. Controllale prima di eliminarle."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waarschijnlijk foto's van lage kwaliteit, op basis van analyse op het apparaat. Bekijk ze voordat je ze verwijdert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zdjęcia prawdopodobnie niskiej jakości według analizy na urządzeniu. Przejrzyj je przed usunięciem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aygıttaki analize göre büyük olasılıkla düşük kaliteli fotoğraflar. Silmeden önce gözden geçir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根據裝置端分析，這些照片品質可能偏低。請先檢視再刪除。"
+          }
         }
       }
     },
@@ -543,6 +855,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucune photo floue trouvée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna foto sfocata trovata"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen wazige foto's gevonden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono rozmytych zdjęć"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık Fotoğraf Bulunamadı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到模糊照片"
           }
         }
       }
@@ -591,6 +933,36 @@
             "state": "translated",
             "value": "Aucune capture d’écran trouvée"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuno screenshot trovato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen schermafbeeldingen gevonden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono zrzutów ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran Görüntüsü Bulunamadı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到螢幕快照"
+          }
         }
       }
     },
@@ -637,6 +1009,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvrir le nettoyage des photos floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri la pulizia delle foto sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open het opruimen van wazige foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwórz porządki w rozmytych zdjęciach"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık fotoğraf temizliğini aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開模糊照片清理"
           }
         }
       }
@@ -685,6 +1087,36 @@
             "state": "translated",
             "value": "Ouvrir le nettoyage des captures d’écran"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri la pulizia degli screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open het opruimen van schermafbeeldingen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwórz porządki w zrzutach ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü temizliğini aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開螢幕快照清理"
+          }
         }
       }
     },
@@ -731,6 +1163,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvre l’offre premium pour le nettoyage des photos floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apre la schermata premium per la pulizia delle foto sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opent het premiumscherm voor het opruimen van wazige foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwiera ekran premium dla porządków w rozmytych zdjęciach"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık fotoğraf temizliği için premium ekranını açar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開模糊照片清理的進階功能頁面"
           }
         }
       }
@@ -779,6 +1241,36 @@
             "state": "translated",
             "value": "Ouvre l’offre premium pour le nettoyage des captures d’écran"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apre la schermata premium per la pulizia degli screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opent het premiumscherm voor het opruimen van schermafbeeldingen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwiera ekran premium dla porządków w zrzutach ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü temizliği için premium ekranını açar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開螢幕快照清理的進階功能頁面"
+          }
         }
       }
     },
@@ -825,6 +1317,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lancez une nouvelle analyse après une modification de votre photothèque ou s’il reste des photos à examiner."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esegui una nuova scansione dopo le modifiche alla libreria o se altre foto necessitano di controllo."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan opnieuw nadat je bibliotheek is gewijzigd of als er meer foto's moeten worden bekeken."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uruchom nowe skanowanie po zmianach w bibliotece lub gdy trzeba przejrzeć więcej zdjęć."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kitaplığın değiştikten sonra ya da gözden geçirilecek başka fotoğraflar varsa yeni bir tarama yap."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圖庫有變動、或還有照片需要檢視時，請重新掃描。"
           }
         }
       }
@@ -873,6 +1395,36 @@
             "state": "translated",
             "value": "Nettoyage des captures d’écran"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulizia screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeeldingen opruimen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki w zrzutach ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran Görüntüsü Temizliği"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照清理"
+          }
         }
       }
     },
@@ -919,6 +1471,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Le nettoyage des captures d’écran est une fonctionnalité premium"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La pulizia degli screenshot è una funzione premium"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeeldingen opruimen is een premiumfunctie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki w zrzutach ekranu to funkcja premium"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü temizliği bir premium özelliktir"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照清理為進階功能"
           }
         }
       }
@@ -967,6 +1549,36 @@
             "state": "translated",
             "value": "Captures d’écran"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeeldingen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrzuty ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran Görüntüleri"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照"
+          }
         }
       }
     },
@@ -1013,6 +1625,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La foto selezionata verrà rimossa dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resterà in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non viene eliminata definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde foto wordt verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijft daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als de foto definitief is verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zdjęcie zostanie usunięte z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostanie w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zdjęcie nie zostanie trwale usunięte. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraf kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
         }
       }
@@ -1061,6 +1703,36 @@
             "state": "translated",
             "value": "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le foto selezionate verranno rimosse dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resteranno in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non vengono eliminate definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde foto's worden verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijven daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als ze definitief zijn verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zdjęcia zostaną usunięte z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostaną w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zdjęcia nie zostaną trwale usunięte. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraflar kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
         }
       }
     },
@@ -1108,6 +1780,36 @@
             "state": "translated",
             "value": "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo screenshot selezionato verrà rimosso dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resterà in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non viene eliminato definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde schermafbeelding wordt verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijft daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als de schermafbeelding definitief is verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrany zrzut ekranu zostanie usunięty z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostanie w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zrzut nie zostanie trwale usunięty. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili ekran görüntüsü kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
         }
       }
     },
@@ -1154,6 +1856,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli screenshot selezionati verranno rimossi dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resteranno in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non vengono eliminati definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde schermafbeeldingen worden verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijven daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als ze definitief zijn verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zrzuty ekranu zostaną usunięte z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostaną w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zrzuty nie zostaną trwale usunięte. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili ekran görüntüleri kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
         }
       }
@@ -1306,6 +2038,102 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%1$lld sélectionnées, taille estimée %2$@."
+                }
+              }
+            }
+          }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selezionata, dimensione stimata %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selezionate, dimensione stimata %2$@."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerd, geschatte grootte %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerd, geschatte grootte %2$@."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seçildi, tahmini boyut %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seçildi, tahmini boyut %2$@."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "已選取 %1$lld 張，預估大小 %2$@。"
                 }
               }
             }
@@ -1465,6 +2293,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto probabilmente sfocata da controllare."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld foto probabilmente sfocate da controllare."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld waarschijnlijk wazige foto om te bekijken."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld waarschijnlijk wazige foto's om te bekijken."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld prawdopodobnie rozmyte zdjęcia do przejrzenia."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld prawdopodobnie rozmytych zdjęć do przejrzenia."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld prawdopodobnie rozmyte zdjęcie do przejrzenia."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld prawdopodobnie rozmytego zdjęcia do przejrzenia."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Gözden geçirilecek %1$lld bulanık olabilecek fotoğraf."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Gözden geçirilecek %1$lld bulanık olabilecek fotoğraf."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "有 %1$lld 張可能模糊的照片可供檢視。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1620,6 +2544,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshot da controllare."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshot da controllare."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld schermafbeelding om te bekijken."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld schermafbeeldingen om te bekijken."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld zrzuty ekranu do przejrzenia."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld zrzutów ekranu do przejrzenia."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld zrzut ekranu do przejrzenia."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld zrzutu ekranu do przejrzenia."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Gözden geçirilecek %1$lld ekran görüntüsü."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Gözden geçirilecek %1$lld ekran görüntüsü."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "有 %1$lld 張螢幕快照可供檢視。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1666,6 +2686,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Relancez une analyse après la mise à jour de votre photothèque."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prova a ripetere la scansione dopo l'aggiornamento della libreria."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan opnieuw nadat je bibliotheek is bijgewerkt."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spróbuj przeskanować ponownie po zaktualizowaniu biblioteki."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kitaplığın güncellendikten sonra yeniden taramayı dene."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圖庫更新後請再掃描一次。"
           }
         }
       }
@@ -1714,6 +2764,36 @@
             "state": "translated",
             "value": "Débloquez le nettoyage des photos floues pour examiner les photos probablement de mauvaise qualité avant de les supprimer, avec la même confirmation sécurisée."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca la pulizia delle foto sfocate per controllare gli scatti probabilmente di bassa qualità prima di eliminarli, con la stessa conferma sicura."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel het opruimen van wazige foto's om waarschijnlijk mislukte opnamen te bekijken voordat je ze verwijdert, met dezelfde veilige bevestiging."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj porządki w rozmytych zdjęciach, aby przejrzeć prawdopodobnie nieudane ujęcia przed ich usunięciem — z tym samym bezpiecznym potwierdzeniem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık fotoğraf temizliğinin kilidini aç; düşük kaliteli olabilecek kareleri aynı güvenli onay akışıyla silmeden önce gözden geçir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖模糊照片清理，透過同樣安全的確認流程，在刪除前先檢視可能品質不佳的照片。"
+          }
         }
       }
     },
@@ -1760,6 +2840,267 @@
           "stringUnit": {
             "state": "translated",
             "value": "Débloquez le nettoyage des captures d’écran pour les examiner et les supprimer avec la même confirmation sécurisée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca la pulizia degli screenshot per controllarli ed eliminarli con la stessa conferma sicura."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel het opruimen van schermafbeeldingen om ze te bekijken en te verwijderen, met dezelfde veilige bevestiging."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj porządki w zrzutach ekranu, aby przeglądać je i usuwać z tym samym bezpiecznym potwierdzeniem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü temizliğinin kilidini aç; ekran görüntülerini aynı güvenli onay akışıyla gözden geçir ve sil."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
+          }
+        }
+      }
+    },
+    "core.sensitivityLevel.high": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Висока"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Élevée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoog"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wysoka"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüksek"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高"
+          }
+        }
+      }
+    },
+    "core.sensitivityLevel.low": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Низька"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baixa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niedrig"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bassa"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laag"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niska"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düşük"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低"
+          }
+        }
+      }
+    },
+    "core.sensitivityLevel.medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Середня"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Média"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyenne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemiddeld"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Średnia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orta"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中"
           }
         }
       }
