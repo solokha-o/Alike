@@ -1,6 +1,6 @@
 ---
 name: spm-localization
-description: Use when adding or refactoring app localization in this repo (SwiftUI + local Swift Packages), including .xcstrings catalogs, typed L10n wrappers, semantic keys, EN/UK support, and Ukrainian pluralization.
+description: Use when adding or refactoring app localization in this repo (SwiftUI + local Swift Packages), including .xcstrings catalogs, typed L10n wrappers, semantic keys, the twelve shipped locales, and CLDR plural categories.
 ---
 
 # SPM Localization (Alike)
@@ -79,14 +79,36 @@ public enum L10n {
 - In views:
   - `Text(category.localizedName)` (preferred for `LocalizedStringResource`).
 
-## Pluralization policy (EN + UK)
+## Shipped locales
 
-- Ship `en` + `uk` by default.
-- For Ukrainian counts, use correct forms:
-  - `one`: `1, 21, 31...` (except 11)
-  - `few`: `2-4, 22-24...` (except 12-14)
-  - `many`: `0, 5-20, 25-30...`
-- Encapsulate this in `L10n` helper methods (do not duplicate logic in views).
+`en`, `uk`, `es-419`, `es`, `pt-BR`, `de`, `fr`, `it`, `nl`, `pl`, `tr`, `zh-Hant`.
+
+The list lives in three places that must agree: `knownRegions` in
+`Alike/Alike.xcodeproj/project.pbxproj`, `LocalizationCatalog.shippedLanguages` in all
+eleven `LocalizationCatalogTests.swift`, and every catalog. Add a language to the tests
+**first** — the suite then fails until the catalogs catch up.
+
+## Pluralization policy
+
+**Plural forms live in the catalog as plural variations, never in Swift `if`/`switch`.**
+A Swift branch covers `one`/`other` only, which is wrong in half the shipped languages and
+silently so.
+
+CLDR categories per shipped language:
+
+| Categories | Locales |
+|---|---|
+| `one`, `other` | `en`, `es-419`, `es`, `de`, `it`, `nl`, `tr` |
+| `many`, `one`, `other` | `pt-BR`, `fr` |
+| `few`, `many`, `one`, `other` | `uk`, `pl` |
+| `other` | `zh-Hant` |
+
+`uk` and `pl` share the four-form shape but not the boundaries — verify with real counts
+(1, 2, 5, 22, 25), not by reasoning about the rule.
+
+One exception is imposed by the tooling: **`xcstringstool` refuses a plural variation whose
+text never references the number.** Copy that changes with the count but does not print it
+stays a singular/plural key pair picked in Swift.
 
 ## Migration checklist
 
@@ -110,7 +132,15 @@ public enum L10n {
 - Include at least:
   - EN: `0, 1, 2`
   - UK: `0, 1, 2, 5, 21`
-- If runtime tests are available, smoke-check with both languages.
+  - PL: `1, 2, 5, 22, 25`
+  - ZH-HANT: any count, to prove the single-category variation resolves rather than
+    falling back to the key
+- **SwiftPM copies `.xcstrings` verbatim instead of compiling it**, so `String(localized:)`
+  resolves to the key under `swift test`. Tests that need real resolution go through
+  `CompiledCatalogFixture`, which performs the same conversion `xcstringstool` does and
+  builds a loadable `.lproj` from the shipped catalog at test time.
+- Verify real resolution by running the app, not by asserting on a resolved string in a
+  package test.
 
 ## Common pitfalls
 
@@ -118,3 +148,6 @@ public enum L10n {
 - Missing `defaultLocalization: "en"` in package manifest.
 - Using `rawValue` for displayed text.
 - Using unsupported overloads with `LocalizedStringResource` (prefer `Text(resource)` or `String(localized: resource)`).
+- Bare `%d`/`%@` in a string with more than one argument. Use `%1$lld`, `%2$@` — word order
+  moves between languages, and unpositioned specifiers silently render the wrong argument.
+- Assembling a sentence from fragments. Turkish suffixes and Polish cases both break it.

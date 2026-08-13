@@ -1,15 +1,26 @@
 # Native review — what still needs a human
 
-Task 40 translated 683 keys into `es-419`, `es`, `pt-BR`, `de` and `fr`. Every unit is
-marked `state: "translated"`, so the catalogs read green in Xcode and the completeness
-tests pass. **That is a statement about coverage, not about a native speaker having read
-it.** This file is the list of strings where a wrong word costs money or a review flag,
-and it is what a reviewer should be handed.
+Task 40 translated 683 keys into `es-419`, `es`, `pt-BR`, `de` and `fr`; task 43 added
+`it`, `nl`, `pl`, `tr` and `zh-Hant` on the same 683 keys. Every unit is marked
+`state: "translated"`, so the catalogs read green in Xcode and the completeness tests
+pass. **That is a statement about coverage, not about a native speaker having read it.**
+This file is the list of strings where a wrong word costs money or a review flag, and it
+is what a reviewer should be handed. The key tables below apply to every shipped language;
+the per-language notes at the end say what to watch for in each.
 
 Terminology was matched against Apple's own platform vocabulary per language rather than
 a generic glossary — "Zuletzt gelöscht", "Supprimés récemment", "Eliminados
-recientemente", "Apagados recentemente", "Bildschirmfotos", "Captures d'écran". A
-reviewer should check that choice as much as the grammar.
+recientemente", "Apagados recentemente", "Eliminati di recente", "Recent verwijderd",
+"Ostatnio usunięte", "Son Silinenler", "最近刪除". A reviewer should check that choice as
+much as the grammar.
+
+Three tier 3 terminology calls are the least certain and should be confirmed first:
+
+| Term | Choice made | Why it is uncertain |
+|---|---|---|
+| Screenshot (`it`) | "screenshot" | Apple's Italian has used both "screenshot" and "istantanea schermo" across releases. Whichever the current iOS Photos album says is the one to use. |
+| Screenshot (`zh-Hant`) | 螢幕快照 | Apple's zh-TW term, but 螢幕截圖 is far more common in everyday Taiwanese usage. This is a house-style call, not a correctness one. |
+| Library (`tr`) | kitaplık | Apple's Turkish for a media library. "Kütüphane" reads more naturally to some, but would diverge from the Photos app. |
 
 ## Tier 1 — a wrong word here costs a refund or a rejection
 
@@ -71,7 +82,8 @@ than promising anything, so an awkward sentence is a quality problem, not a comp
 Two spots are worth a closer look because they state facts:
 
 - `userGuide.settingsAndReminders.analysis.language.body` — lists the shipped languages.
-  Task 40 corrected it; it will go stale again the next time a language is added.
+  Tasks 40 and 43 each corrected it, in every locale; it will go stale again the next time
+  a language is added. Treat it as part of the cost of adding one, not as a bug found later.
 - `userGuide.freeAndPro.*` and `userGuide.scanning.status.allowance.body` — restate the
   free allowance and what Pro adds. They have to agree with the paywall copy above.
 
@@ -145,3 +157,24 @@ entries state facts and have to agree with the app: the free allowance in `prici
 - **`fr`** — the app uses *vous*. Check the reverse.
 - **`pt-BR`** — "apagar" for photos (matching Photos), "excluir" only where the English says
   "deletion" in the abstract.
+- **`it`** — informal *tu*. The longest strings in the set after German, so it shares
+  German's clipping risk on buttons and plan cards.
+- **`nl`** — informal *je*. Compound nouns run long ("Schermafbeeldingen opruimen"); button
+  labels are where that shows first.
+- **`pl`** — informal *ty*. Four plural forms, and case endings mean a fragment key would be
+  unsafe here even if one existed. The counts to eyeball are 1, 2, 5, 22, 25.
+- **`tr`** — informal *sen*. Strings run 30–40% longer than English and suffixes attach to
+  the noun, so nothing may be assembled from pieces. Numerals take a singular noun, which is
+  why `one` and `other` read identically in the count-bearing keys — that is correct Turkish,
+  not a copy-paste slip.
+- **`zh-Hant`** — Taiwan/Hong Kong vocabulary. No plural forms at all. The thing to check is
+  density rather than grammar: short labels leave a lot of empty button, and the
+  numeric-heavy Cleanup screens set differently from Latin script.
+
+## Not yet reviewed by a native speaker
+
+No language in the app has had a native pass. The tier 3 five are the newest and the two
+non-Latin-adjacent risks (`pl` grammar, `zh-Hant` terminology) are concentrated there, so if
+review budget is limited, spend it on `pl` and `tr` first — Polish because wrong plural forms
+are visible to every user on every count, Turkish because the paywall and deletion copy are
+the longest strings in the app in that language.

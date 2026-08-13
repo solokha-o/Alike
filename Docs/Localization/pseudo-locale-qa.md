@@ -217,17 +217,81 @@ of the seven languages.
 The pair stays distinguishable from the button above it in every language, which was the
 earlier fix on this same screen.
 
+## Findings — 2026-08-13 (task 43): Polish, Turkish, Traditional Chinese
+
+Walked with RocketSim on the iPhone 17 Pro simulator, the app relaunched per locale with
+`xcrun simctl launch <udid> com.alike.app -AppleLanguages '(pl)' -AppleLocale pl_PL` and the
+equivalents for `tr` and `zh-Hant`. The StoreKit configuration persists on the simulator, so
+the paywall rendered with live products ($34.99 / $5.99) without launching the scheme.
+
+| Screen | Locales | Status |
+|---|---|---|
+| Scanner home (idle, free-scan allowance) | `pl` `tr` `zh-Hant` | **Pass after a fix** — see below |
+| Cleanup, empty state | `pl` | **Pass** |
+| Settings, all sections | `pl` `tr` `zh-Hant` | **Pass after two fixes** — see below |
+| Paywall: plan cards, both disclosure paragraphs, both legal links | `pl` `tr` `zh-Hant` | **Pass** |
+
+Notes worth keeping:
+
+- **The Turkish paywall is the longest copy in the app and does not clip.** Every heading
+  and feature row wraps to a second line rather than truncating, and
+  `Aylık plana kıyasla %51 tasarruf et` renders correctly — the catalog stores it as
+  `%%%d`, so the literal percent lands before the number where Turkish wants it.
+- **Traditional Chinese sets much shorter than Latin script**, which is the opposite risk:
+  the plan cards and tab bar have a lot of empty room, but nothing reads as broken.
+- Both count-bearing Polish surfaces were checked on screen as well as in tests
+  (`CleanupCategoryPluralTests` and friends cover 1 / 2 / 5 / 22 / 25).
+
+### Three defects, all fixed
+
+1. **The sensitivity picker was English in every language.**
+   `SensitivityLevel.displayName` in `Core` returned the literals `"Low"` / `"Medium"` /
+   `"High"`. Polish Settings read `Czułość, Medium`. It was the last displayed string in
+   that package still hardcoded in Swift, and it had been shipping in all six non-English
+   languages since task 40. Now `core.sensitivityLevel.{low,medium,high}`, translated in
+   all twelve, covered by `SensitivityLevelTests`.
+
+2. **The Library Status row broke alignment in Traditional Chinese.**
+   `2026年8月11日` is wider than the abbreviated Latin date, so the value wrapped to two
+   lines and dropped its caption below the other two metrics — the row stopped reading as
+   one line. The metric value is now `lineLimit(1)` + `minimumScaleFactor(0.7)` at normal
+   Dynamic Type, and still wraps in the stacked accessibility layout where there is nothing
+   to stay level with.
+
+3. **The free-reminder copy named a different time format than the row above it.**
+   `settings.main.freeRemindersUseSundayAt` hardcodes the free schedule as text, while the
+   row above renders it from the system formatter. Turkish said `18.00'i` against a
+   formatter that prints `18:00`; Traditional Chinese said `18:00` against a formatter that
+   prints `下午6:00`. Both now match what the app actually shows.
+
+### The double-length pass, finally run
+
+`xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES
+-NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
+
+Walked Scanner home, Settings and the paywall at +100% text length.
+
+- **Nothing rendered in CAPITALS.** Every visible string reached a catalog — which is the
+  single most valuable thing this pass reports, and the check that would have caught the
+  `" at "` bug from task 40.
+- **Nothing clipped, truncated or overlapped.** Headings, feature rows, the CTA and the tab
+  bar all reflow. `Continue with @ Continue with $34.99` fits its button at double length.
+- `1$d of 2$d free scans remaining …` in the allowance row is the doubling itself mangling
+  positional specifiers, not a catalog defect; the second half of the doubled string renders
+  correctly.
+
+This closes the item task 39 opened and task 40 carried.
+
 ## Still owed
 
-- The **double-length pseudo-locale pass** under the `Alike-Pseudolocale` scheme. RocketSim
-  can drive it, but the scheme has to be launched from Xcode to inject the launch arguments;
-  `simctl launch` can pass them too, and that is the cheaper route:
-  `xcrun simctl launch <udid> com.alike.app -NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings '[[]]'`
+Nothing from the acceptance lists of tasks 39, 40 and 43. The screens below are the ones no
+walk has covered in any language, because they need library state a simulator does not have:
 
-Every screen in the acceptance list has now been walked on device in the languages that
-matter. Every defect this task found was a wrong string rather than a layout failure, which
-is why the pseudo-locale pass above is the one worth keeping on the list: it targets the
-failure mode nothing else here exercised.
+- Cleanup progress and the review queue with real clusters, in `pl` / `tr` / `zh-Hant`.
+  Task 40 covered these on a real iPhone in `de` and `fr`; the tier 3 walk ran on an empty
+  simulator library and could only reach their empty states.
+- Cluster details and the review action bar at a real selection count in `pl` — the counts
+  are covered by `ClusterDetailsPluralTests` against a compiled catalog, but not on screen.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks
