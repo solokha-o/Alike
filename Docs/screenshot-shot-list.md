@@ -1,8 +1,9 @@
 # Alike Screenshot Shot List
 
-Ten of the thirteen shots are captured, from a physical iPhone at 1125 x 2436.
-One shot is still open, one is optional and the rest are retired — see
-"What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
+Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
+1125 x 2436. The five deck shots are captured in the five Tier 1 languages too,
+so all seven decks are complete; one shot is open in English, one is optional
+and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), and emits
 520px copies for the landing-page device frames.
@@ -13,7 +14,22 @@ Re-run after adding captures:
 python3 tools/import_device_screenshots.py --source ~/Downloads
 ```
 
-The mapping from source filename to shot lives in `SHOTS` in that script.
+The mapping from source filename to shot lives in `SHOTS` in that script, for
+EN and UK. Other languages come from an optional
+`Docs/images/raw/capture-manifest.json`, which the script merges over `SHOTS`:
+
+```json
+{
+  "de": {"1": "IMG_4101.PNG", "3": "IMG_4102.PNG"},
+  "fr": {"1": "IMG_4110.PNG", "3": "IMG_4111.PNG"}
+}
+```
+
+Camera-roll filenames for a session that has not happened yet do not belong in
+a checked-in table, which is why they live in a manifest instead of another
+column. Captures already at 1320 x 2868 — what the iPhone 17 Pro Max simulator
+produces — need neither the script nor the manifest; drop them straight into
+`Docs/images/raw/<locale>/` under the names in the table below.
 
 Three consumers, one set of captures:
 
@@ -60,10 +76,15 @@ rules behind it.
 - **Format:** PNG. Files must be named with a leading two-digit number
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
-- **Languages:** capture every shot twice, EN and UK. `Docs/images/raw/en-US/`
-  feeds `en-US`, `Docs/images/raw/uk/` feeds `uk`. Those are the only two
-  localizations the listing has. Some shots are English-only on purpose; the
-  status table says which.
+- **Languages:** the listing has seven localizations, and each needs its own
+  captures — a translated app behind English screenshots reads as an English
+  app. The capture directory is the app's own language code:
+  `Docs/images/raw/{en-US,uk,de,fr,es,es-419,pt-BR}/`. Only the five deck shots
+  (1, 3, 4, 5, 7) are needed in every language; the rest exist for the site or
+  for App Review and stay EN/UK, as the status table says. The device or
+  simulator has to be *running* in that language — Settings, General, Language &
+  Region, or launch with `-AppleLanguages` / `-AppleLocale`. Keep the same
+  library content across languages so the seven decks read as one set.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become
@@ -79,26 +100,41 @@ rules behind it.
 
 ## Shots
 
-| # | Screen | EN | UK | On site | File |
-|---|---|---|---|---|---|
-| 1 | Scanner idle | ✅ | ✅ | ✅ | `01-scanner-idle` |
-| 2 | Scanner scanning | ✅ | ✅ | — | `02-scanner-scanning` |
-| 3 | Cleanup queue | ✅ | ✅ | ✅ | `03-cleanup-queue` |
-| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | `04-cluster-details` |
-| 5 | Comparison review | ✅ | ✅ | ✅ | `05-comparison-review` |
-| 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | — | `06-cleanup-confirm` |
-| 7 | Cleanup progress | ✅ | ✅ | ✅ | `07-cleanup-progress` |
-| 8 | Screenshot cleanup | ✅ | n/a | — | `08-screenshot-cleanup` |
-| 9 | History | optional | optional | — | — |
-| 10 | Settings with Legal section | open | n/a | — | — |
-| 11 | Paywall with disclosure | ✅ | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
-| 12 | User Guide | retired | retired | — | — |
-| 13 | Welcome / privacy | ✅ | ✅ | — | `13-welcome-privacy` |
+"Tier 1" below is the five locales added for the App Store listing: `de`, `fr`,
+`es`, `es-419`, `pt-BR`.
+
+| # | Screen | EN | UK | Tier 1 | On site | File |
+|---|---|---|---|---|---|---|
+| 1 | Scanner idle | ✅ | ✅ | ✅ | ✅ | `01-scanner-idle` |
+| 2 | Scanner scanning | ✅ | ✅ | n/a | — | `02-scanner-scanning` |
+| 3 | Cleanup queue | ✅ | ✅ | ✅ | ✅ | `03-cleanup-queue` |
+| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | ✅ | `04-cluster-details` |
+| 5 | Comparison review | ✅ | ✅ | ✅ | ✅ | `05-comparison-review` |
+| 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | n/a | — | `06-cleanup-confirm` |
+| 7 | Cleanup progress | ✅ | ✅ | ✅ | ✅ | `07-cleanup-progress` |
+| 8 | Screenshot cleanup | ✅ | n/a | n/a | — | `08-screenshot-cleanup` |
+| 9 | History | optional | optional | n/a | — | — |
+| 10 | Settings with Legal section | open | n/a | n/a | — | — |
+| 11 | Paywall with disclosure | ✅ | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
+| 12 | User Guide | retired | retired | n/a | — | — |
+| 13 | Welcome / privacy | ✅ | ✅ | n/a | — | `13-welcome-privacy` |
 
 ### What is actually outstanding
 
 Every shot is now either captured, or has a reason it is not. A shot with no
 consumer is not a gap.
+
+**Captured — the Tier 1 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `de`, `fr`,
+`es`, `es-419` and `pt-BR`, taken in one session on a physical iPhone and
+recorded in `capture-manifest.json`. Nothing else is needed in these languages:
+shots 2, 6, 8 and 13 have no consumer outside EN/UK, and 10 and 11 are App
+Review evidence, which is locale-agnostic. English shot 5 was recaptured in the
+same session so its frame matches the five new decks.
+
+Ukrainian shot 5 is still the older capture, so `uk` is the one deck whose
+comparison-review frame shows different photos from the other six. Not wrong —
+the deck reads fine on its own — but recapturing it is what would make all seven
+decks a single set.
 
 **Open — one shot:**
 
@@ -122,6 +158,10 @@ consumer is not a gap.
   *either* locale, so a Ukrainian twin has no consumer.
 - **Ukrainian 11.** App Store Connect takes one review screenshot per in-app
   purchase and it is locale-agnostic. The English capture is that screenshot.
+- **Tier 1 shots 2, 6, 8, 13.** Same reasoning one step wider: 2 and 13 are
+  captured only because EN and UK already had them, and the deck uses neither.
+  Capturing them in five more languages would produce twenty files nothing
+  reads.
 
 `n/a` in the table means the same thing: not missing, not wanted.
 

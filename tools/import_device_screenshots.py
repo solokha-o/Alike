@@ -16,6 +16,22 @@ Source captures are 1125 x 2436 (the 5.8" iPhone size). Two consumers:
              to spare and keeps the page light. Skipped when that checkout is
              not next to this one.
 
+Languages beyond en and uk come from an optional
+`Docs/images/raw/capture-manifest.json`, which maps each locale's shot numbers
+to the camera-roll filenames of that capture session:
+
+    {
+      "de": {"1": "IMG_4101.PNG", "3": "IMG_4102.PNG"},
+      "fr": {"1": "IMG_4110.PNG", "3": "IMG_4111.PNG"}
+    }
+
+It merges over the table below, so a manifest naming only de leaves en and uk
+untouched. Its locale keys must be the app's own source codes — `es-419`, not
+App Store Connect's `es-MX` — and anything else is rejected rather than imported
+into a directory the renderer never reads. Captures already at 1320 x 2868 — the iPhone 17 Pro Max simulator
+produces that natively — need no conversion and can be dropped straight into
+`Docs/images/raw/<locale>/`, skipping this script entirely.
+
 Usage:
     python3 tools/import_device_screenshots.py --source ~/Downloads
     python3 tools/import_device_screenshots.py --source ~/Downloads \
@@ -24,6 +40,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import struct
 import subprocess
@@ -48,8 +65,61 @@ SHOTS = {
     13: {"name": "welcome-privacy",    "en": "IMG_3236.PNG", "uk": "IMG_3245.PNG"},
 }
 
+# Camera-roll filenames are not something a table in this file can predict for a
+# capture session that has not happened yet, so the languages beyond en and uk
+# come from an optional manifest instead of another hardcoded column. It is a
+# locale -> {shot number: filename} map, and it merges into SHOTS rather than
+# replacing it, so a manifest holding only de leaves en and uk exactly as they
+# are. Absent manifest, this script behaves as it always did.
+MANIFEST_NAME = "capture-manifest.json"
+
+# The locale keys a manifest may use. These are the app's own source codes, the
+# only ones tools/generate_app_store_product_screenshots.py iterates, so a key
+# outside this set would import captures into a directory the renderer never
+# reads: the import would succeed and the deck would silently ship without them.
+# App Store Connect codes are the likely typo, hence the suggestions.
+SUPPORTED_LOCALES = ("en", "uk", "de", "fr", "es", "es-419", "pt-BR")
+LOCALE_SUGGESTIONS = {"es-MX": "es-419", "en-US": "en", "pt": "pt-BR", "pt-PT": "pt-BR"}
+
+# `en` is the only language whose directory name differs from its own code, for
+# the same reason Docs/images/en-US/ is spelled that way: the App Store locale
+# is en-US. Everything else — uk, de, fr, es, es-419, pt-BR — is verbatim.
+LANGUAGE_DIRECTORIES = {"en": "en-US"}
+
 # Which shots the landing page shows, matching _data/screens.yml in the site repo.
 SITE_SHOTS = [1, 3, 4, 5, 7]
+
+
+def languages_of(spec: dict[str, str]) -> list[str]:
+    """Every language key in a shot spec, in a stable order. "name" is not one."""
+    return sorted(key for key in spec if key != "name")
+
+
+def load_shots(manifest_path: Path) -> dict[int, dict[str, str]]:
+    """SHOTS, with any capture manifest merged over it."""
+    shots = {shot: dict(spec) for shot, spec in SHOTS.items()}
+    if not manifest_path.exists():
+        return shots
+
+    manifest = json.loads(manifest_path.read_text())
+    for locale, entries in manifest.items():
+        if locale not in SUPPORTED_LOCALES:
+            suggestion = LOCALE_SUGGESTIONS.get(locale)
+            hint = f" Did you mean {suggestion}?" if suggestion else ""
+            raise SystemExit(
+                f"{manifest_path}: {locale} is not a source locale, so its captures would "
+                f"never reach a deck.{hint} Supported locales are "
+                f"{', '.join(SUPPORTED_LOCALES)}"
+            )
+        for shot_key, filename in entries.items():
+            shot = int(shot_key)
+            if shot not in shots:
+                raise SystemExit(
+                    f"{manifest_path}: shot {shot} for {locale} is not in the shot list; "
+                    f"known shots are {', '.join(str(number) for number in sorted(shots))}"
+                )
+            shots[shot][locale] = filename
+    return shots
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -89,21 +159,21 @@ def main() -> None:
     if site_dir is not None:
         site_dir.mkdir(parents=True, exist_ok=True)
 
+    shots = load_shots(store_dir / MANIFEST_NAME)
+
     missing = []
-    for shot, spec in SHOTS.items():
-        for lang in ("en", "uk"):
-            if lang in spec and not (source / spec[lang]).exists():
+    for shot, spec in shots.items():
+        for lang in languages_of(spec):
+            if not (source / spec[lang]).exists():
                 missing.append(f"shot {shot} {lang}: {spec[lang]}")
     if missing:
         print("Missing source files:", *missing, sep="\n  ", file=sys.stderr)
         raise SystemExit(66)
 
     store_count = site_count = 0
-    for shot in sorted(SHOTS):
-        spec = SHOTS[shot]
-        for lang in ("en", "uk"):
-            if lang not in spec:
-                continue
+    for shot in sorted(shots):
+        spec = shots[shot]
+        for lang in languages_of(spec):
             src = source / spec[lang]
             size = png_size(src)
             if size != SOURCE_SIZE:
@@ -112,7 +182,7 @@ def main() -> None:
 
             # App Store: numbered so the product generator (and in turn
             # `numbered_pngs()`) picks it up, per locale.
-            locale_dir = "en-US" if lang == "en" else lang
+            locale_dir = LANGUAGE_DIRECTORIES.get(lang, lang)
             target = store_dir / locale_dir / f"{shot:02d}-{spec['name']}.png"
             target.parent.mkdir(parents=True, exist_ok=True)
             tmp = target.with_suffix(".tmp.png")
