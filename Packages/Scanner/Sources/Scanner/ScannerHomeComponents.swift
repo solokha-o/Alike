@@ -193,6 +193,12 @@ struct ScannerLibraryStatusCard: View {
                 .font(.appHeadline)
                 .monospacedDigit()
                 .foregroundStyle(.primary)
+                // Side by side, a value that wraps drops its caption below the other two and the
+                // row stops reading as one line of metrics. Traditional Chinese is where this
+                // shows: "2026年8月11日" is wider than the abbreviated Latin date. In the stacked
+                // accessibility layout there is nothing to stay level with, so wrapping is fine.
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+                .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 1 : 0.7)
             Text(label)
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
