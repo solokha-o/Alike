@@ -26,7 +26,9 @@ to the camera-roll filenames of that capture session:
     }
 
 It merges over the table below, so a manifest naming only de leaves en and uk
-untouched. Captures already at 1320 x 2868 — the iPhone 17 Pro Max simulator
+untouched. Its locale keys must be the app's own source codes — `es-419`, not
+App Store Connect's `es-MX` — and anything else is rejected rather than imported
+into a directory the renderer never reads. Captures already at 1320 x 2868 — the iPhone 17 Pro Max simulator
 produces that natively — need no conversion and can be dropped straight into
 `Docs/images/raw/<locale>/`, skipping this script entirely.
 
@@ -71,6 +73,14 @@ SHOTS = {
 # are. Absent manifest, this script behaves as it always did.
 MANIFEST_NAME = "capture-manifest.json"
 
+# The locale keys a manifest may use. These are the app's own source codes, the
+# only ones tools/generate_app_store_product_screenshots.py iterates, so a key
+# outside this set would import captures into a directory the renderer never
+# reads: the import would succeed and the deck would silently ship without them.
+# App Store Connect codes are the likely typo, hence the suggestions.
+SUPPORTED_LOCALES = ("en", "uk", "de", "fr", "es", "es-419", "pt-BR")
+LOCALE_SUGGESTIONS = {"es-MX": "es-419", "en-US": "en", "pt": "pt-BR", "pt-PT": "pt-BR"}
+
 # `en` is the only language whose directory name differs from its own code, for
 # the same reason Docs/images/en-US/ is spelled that way: the App Store locale
 # is en-US. Everything else — uk, de, fr, es, es-419, pt-BR — is verbatim.
@@ -93,6 +103,14 @@ def load_shots(manifest_path: Path) -> dict[int, dict[str, str]]:
 
     manifest = json.loads(manifest_path.read_text())
     for locale, entries in manifest.items():
+        if locale not in SUPPORTED_LOCALES:
+            suggestion = LOCALE_SUGGESTIONS.get(locale)
+            hint = f" Did you mean {suggestion}?" if suggestion else ""
+            raise SystemExit(
+                f"{manifest_path}: {locale} is not a source locale, so its captures would "
+                f"never reach a deck.{hint} Supported locales are "
+                f"{', '.join(SUPPORTED_LOCALES)}"
+            )
         for shot_key, filename in entries.items():
             shot = int(shot_key)
             if shot not in shots:
