@@ -133,8 +133,13 @@ see both. `tools/check_site_legal_parity.py` closes that gap — it reads the si
 checkout next to this one and fails on any locale that has drifted:
 
 ```sh
-tools/check_site_legal_parity.py
+tools/check_site_legal_parity.py --require
 ```
+
+Use `--require` whenever the answer is meant to gate something. Bare, the tool
+skips and exits 0 when the site checkout is absent, which is right for an
+incidental local run and wrong for a release step: it would report success
+having compared nothing.
 
 Both links are injected once in `RootView` via `.subscriptionLegalLinks(...)`
 and read from the environment, so every paywall entry point — Scanner, Details,

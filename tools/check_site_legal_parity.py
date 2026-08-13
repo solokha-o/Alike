@@ -19,11 +19,16 @@ pricing section keeps showing the old text with nothing failing.
 
 Run it before publishing legal copy, per `Docs/legal/README.md`. It needs the
 site checked out next to this repository, the same convention
-`tools/import_device_screenshots.py` uses, and skips with a clear message when
-it is not there.
+`tools/import_device_screenshots.py` uses.
 
-    tools/check_site_legal_parity.py
+    tools/check_site_legal_parity.py --require     # release steps, gating
+    tools/check_site_legal_parity.py               # incidental local run
     tools/check_site_legal_parity.py --site-repo ../alikeapp.github.io
+
+**Pass --require anywhere the answer gates something.** Bare, a missing site
+checkout is a skip that exits 0 — right for a machine that simply does not have
+the sibling repository, and wrong for a checklist step, which would then report
+success having compared nothing.
 
 Exit codes: 0 parity holds (or the checkout is absent and --require was not
 passed), 1 a locale differs, 2 the inputs could not be parsed.
@@ -102,7 +107,8 @@ def main() -> int:
     ap.add_argument(
         "--require",
         action="store_true",
-        help="fail instead of skipping when the site checkout is missing",
+        help="fail instead of skipping when the site checkout is missing; "
+             "use this anywhere the result gates something",
     )
     args = ap.parse_args()
 
@@ -121,7 +127,10 @@ def main() -> int:
         if args.require:
             print(f"error: {message}", file=sys.stderr)
             return 2
+        # Say plainly that nothing was compared. A "skip" line that reads like a
+        # pass is how a checklist step ends up green having checked nothing.
         print(f"Skipped — {message}")
+        print("Nothing was compared. Re-run with --require to make this a failure.")
         return 0
 
     try:

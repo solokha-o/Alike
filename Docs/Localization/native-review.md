@@ -109,7 +109,8 @@ separate repository, `SubscriptionDisclosureTests` can only see the app catalog,
 site's own `scripts/check-site.sh` greps short sentinel fragments — enough to catch a
 *dropped* disclosure, not a stale one. Changing the wording is a three-place edit: this
 repo's document, the catalog, and `_data/<locale>.yml` in the site repo. Run
-`tools/check_site_legal_parity.py` after any of them to confirm all three agree.
+`tools/check_site_legal_parity.py --require` after any of them to confirm all three
+agree — bare, it skips and exits 0 when the site checkout is absent.
 
 ### Privacy Policy — the claims that must not drift
 

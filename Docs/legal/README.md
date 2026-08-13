@@ -135,8 +135,13 @@ its `check_terms` row.
    between the two repositories:
 
    ```sh
-   tools/check_site_legal_parity.py
+   tools/check_site_legal_parity.py --require
    ```
+
+   `--require` is not optional here. Without it a missing site checkout is a
+   skip that exits 0, so the step would report success having compared nothing
+   — exactly the false green this check exists to prevent. Pass `--site-repo`
+   if the checkout is not next to this repository.
 4. Open a pull request against `main` in `alikeapp/alikeapp.github.io`. Its
    `scripts/check-site.sh` runs there and asserts the locale matrix, internal
    links, hreflang, the Terms guardrails below, and that no third-party host is
