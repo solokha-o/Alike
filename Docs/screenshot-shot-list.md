@@ -1,9 +1,9 @@
 # Alike Screenshot Shot List
 
 Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
-1125 x 2436. The five deck shots are still open in the five Tier 1 languages,
-one shot is open in English, one is optional and the rest are retired — see
-"What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
+1125 x 2436. The five deck shots are captured in the five Tier 1 languages too,
+so all seven decks are complete; one shot is open in English, one is optional
+and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), and emits
 520px copies for the landing-page device frames.
