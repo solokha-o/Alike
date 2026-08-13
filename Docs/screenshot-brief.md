@@ -68,7 +68,7 @@ change with it.
 | 2 | EINE LISTE | Jede Gruppe, / bereit zur Prüfung | Gruppen kommen mit Prüfstatus: du siehst immer, was noch offen ist. |
 | 3 | BESTE AUFNAHME | Die beste ist / schon gewählt | Alike hebt die beste Aufnahme jeder Gruppe hervor. Du bestätigst nur. |
 | 4 | VERGLEICHEN | Erst prüfen, / dann aufräumen | Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht. |
-| 5 | FREIER PLATZ | Hol dir die / Gigabyte zurück | Ausgewählt und geschätzte Ersparnis, während du aufräumst. |
+| 5 | FREIER PLATZ | Hol dir die / Gigabyte zurück | Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst. |
 
 ### fr
 
@@ -78,7 +78,7 @@ change with it.
 | 2 | UNE SEULE FILE | Chaque groupe, / prêt à examiner | Les groupes arrivent avec des badges : vous voyez ce qui reste. |
 | 3 | MEILLEURE PHOTO | La photo à garder / est déjà choisie | Alike met en avant la meilleure de chaque groupe. Vous confirmez. |
 | 4 | COMPARER | Vérifiez avant / de nettoyer | Examen en plein écran. Rien n’est supprimé sans votre confirmation. |
-| 5 | ESPACE LIBRE | Récupérez / vos gigaoctets | Sélectionnées et économie estimée, suivies pendant le nettoyage. |
+| 5 | ESPACE LIBRE | Récupérez / vos gigaoctets | Photos sélectionnées et économie estimée, suivies pendant le nettoyage. |
 
 ### es
 
@@ -88,7 +88,7 @@ change with it.
 | 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué queda. |
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Comprueba antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
-| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
 
 ### es-419
 
@@ -98,7 +98,7 @@ change with it.
 | 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué falta. |
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Revisa antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
-| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
 
 `es` and `es-419` are deliberately not identical, but the queue is "cola" in
 both: the app's own catalog says "cola de limpieza" in `es` and `es-419` alike,
@@ -113,7 +113,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 2 | UMA SÓ FILA | Cada grupo, / pronto para revisar | Os grupos chegam com selos: você sempre vê o que falta. |
 | 3 | MELHOR FOTO | A que fica / já está escolhida | O Alike destaca a melhor foto de cada grupo. Você só confirma. |
 | 4 | COMPARAR | Confira antes / de limpar | Revisão em tamanho real. Nada é apagado sem a sua confirmação. |
-| 5 | ESPAÇO LIVRE | Recupere os / gigabytes | Selecionadas e economia estimada, enquanto você limpa. |
+| 5 | ESPAÇO LIVRE | Recupere os / gigabytes | Fotos selecionadas e economia estimada, enquanto você limpa. |
 
 Seven decks, one per listing localization. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`

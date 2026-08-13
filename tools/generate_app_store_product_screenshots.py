@@ -262,7 +262,7 @@ COPY = {
         (
             "FREIER PLATZ",
             "Hol dir die\nGigabyte zurück",
-            "Ausgewählt und geschätzte Ersparnis, während du aufräumst.",
+            "Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst.",
         ),
     ],
     "fr": [
@@ -289,7 +289,7 @@ COPY = {
         (
             "ESPACE LIBRE",
             "Récupérez\nvos gigaoctets",
-            "Sélectionnées et économie estimée, suivies pendant le nettoyage.",
+            "Photos sélectionnées et économie estimée, suivies pendant le nettoyage.",
         ),
     ],
     # es and es-419 diverge only where the wording, not the vocabulary, differs:
@@ -320,7 +320,7 @@ COPY = {
         (
             "ESPACIO LIBRE",
             "Recupera los\ngigabytes",
-            "Seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
         ),
     ],
     "es-419": [
@@ -347,7 +347,7 @@ COPY = {
         (
             "ESPACIO LIBRE",
             "Recupera los\ngigabytes",
-            "Seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
         ),
     ],
     "pt-BR": [
@@ -374,7 +374,7 @@ COPY = {
         (
             "ESPAÇO LIVRE",
             "Recupere os\ngigabytes",
-            "Selecionadas e economia estimada, enquanto você limpa.",
+            "Fotos selecionadas e economia estimada, enquanto você limpa.",
         ),
     ],
 }
