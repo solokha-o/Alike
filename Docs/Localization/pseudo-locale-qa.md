@@ -282,16 +282,66 @@ Walked Scanner home, Settings and the paywall at +100% text length.
 
 This closes the item task 39 opened and task 40 carried.
 
+### Second pass — a seeded simulator library, and the Polish device shots
+
+Two things changed after the first pass. The user walked Polish on a real iPhone and sent
+screenshots, and the simulator library was seeded with `xcrun simctl addmedia` so the
+non-empty states could be reached without a device.
+
+**Polish, on device (user's iPhone, real library).** Every plural surface correct at the
+counts that separate the categories:
+
+| Surface | 1 | 2 | 5 |
+|---|---|---|---|
+| Delete alert title | `1 wybrane zdjęcie` | `2 wybrane zdjęcia` | `5 wybranych zdjęć` |
+| Delete alert body | `zdjęcie zostanie usunięte` | `zdjęcia zostaną…` | `zdjęcia zostaną…` |
+| Review action bar | `Przenieś 1 zdjęcie` | `Przenieś 2 zdjęcia` | `Przenieś 5 zdjęć` |
+| Post-cleanup toast | `1 zdjęcie przeniesione` | — | `5 zdjęć przeniesionych` |
+
+The alert *body* is the one worth calling out: it is the singular/plural key pair picked in
+Swift, because `xcstringstool` refuses a plural variation that never prints the number. It
+switched correctly, which is the thing a catalog test cannot prove.
+
+Also confirmed in `pl`: the cleanup queue with real clusters and `Nieprzejrzane` /
+`W trakcie przeglądu` badges, `Najlepsze ujęcie`, `Podgląd niedostępny` / `Ponów`, and the
+decimal comma in `22,9 MB`. Nothing clipped.
+
+**Turkish and Traditional Chinese, on a seeded simulator.** `simctl addmedia` with ~66
+images gave a library with real counts:
+
+| Screen | Locale | Status |
+|---|---|---|
+| Welcome onboarding, pages 1–3 + permission step | `tr` | **Pass** — the privacy claims render in full; page 3 overflows into its scroll view, as it does in `de`/`fr` |
+| Scanner home after a real scan (`15 Ağu 2026 · 36 · 51,3 MB`) | `tr` | **Pass** — the metric row holds one line |
+| Scanner home after a real scan (`2026年8月15日 · 36 · 51.3 MB`) | `zh-Hant` | **Pass** — confirms the metric fix with non-zero values, which the first pass could only check against zeros |
+| Settings, scrolled through every section | `tr` `zh-Hant` | **Pass** — `Pazar 18:00` matches `saat 18:00'i`, and `星期日 下午6:00` matches `星期日下午 6:00` |
+| User Guide hub and a topic | `zh-Hant` | **Pass** |
+
+One thing the seeded library confirmed rather than found: **the photo-permission prompt is
+English in a Turkish build**. That is `INFOPLIST_KEY_NSPhotoLibraryUsageDescription`, a build
+setting rather than a catalog key — the known gap `Docs/Localization/README.md` already
+records. Worth seeing on screen once, because it is the only English string a user meets in
+an otherwise fully translated app.
+
+`simctl addmedia` has a limit worth knowing for next time: imported app screenshots keep
+their screenshot subtype, so they land in the Pro-locked Screenshots category instead of
+forming similarity clusters, and imported wallpapers did not cluster at all. A seeded
+library reaches the counts and the smart-category row, not the cluster queue.
+
 ## Still owed
 
-Nothing from the acceptance lists of tasks 39, 40 and 43. The screens below are the ones no
-walk has covered in any language, because they need library state a simulator does not have:
+Only the screens that need a real photo library with genuine similarity clusters, in
+`tr` and `zh-Hant`. A seeded simulator cannot reach them — see the note above — and the
+tier 1 walk covered them on a device in `de` and `fr`:
 
-- Cleanup progress and the review queue with real clusters, in `pl` / `tr` / `zh-Hant`.
-  Task 40 covered these on a real iPhone in `de` and `fr`; the tier 3 walk ran on an empty
-  simulator library and could only reach their empty states.
-- Cluster details and the review action bar at a real selection count in `pl` — the counts
-  are covered by `ClusterDetailsPluralTests` against a compiled catalog, but not on screen.
+- Cleanup queue with real clusters, both sections and the badges, plus the filter and sort
+  sheet.
+- Cleanup progress mid-scan.
+- Cleanup History with real entries.
+
+Polish covers all three on device already, so what is missing is length behaviour in Turkish
+and glyph density in Traditional Chinese, not grammar. Nothing here blocks the release; it is
+the last of the "looked at it" evidence rather than a known risk.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
 marks a string that never reached a catalog. The reminder-row bug above is what one looks
