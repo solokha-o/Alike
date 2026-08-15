@@ -580,47 +580,19 @@ public struct SettingsView: View {
     }
 
     private var cleanupReminderFooterText: String {
-        if hasCleanupReminderAccess {
-            return SettingsL10n.Main.premiumLetsChooseCustomWeekly
-        }
-
-        // The free schedule has to be *formatted*, not spelled out in the copy. The row directly
-        // above renders the same schedule through `DateFormatter`, which follows the reader's
-        // 12/24-hour setting and region — so any time written into the string is wrong for half
-        // the readers. Found on a 24-hour device, where the row said "18:00" and the sentence
-        // below it said "6:00 PM".
-        return String(
-            format: SettingsL10n.Main.freeRemindersUseSundayAt,
-            scheduleDescription(.defaultWeekly)
+        CleanupReminderCopy.footerText(
+            hasPremiumAccess: hasCleanupReminderAccess,
+            calendar: .current,
+            locale: .current
         )
     }
 
     private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
-        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-        components.hour = schedule.hour
-        components.minute = schedule.minute
-        return Calendar.current.date(from: components) ?? Date()
+        CleanupReminderCopy.reminderTimeDate(for: schedule, calendar: .current)
     }
 
     private func scheduleDescription(_ schedule: CleanupReminderSchedule) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = .current
-        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
-        let weekdayIndex = max(1, min(schedule.weekday, weekdaySymbols.count)) - 1
-        let weekday = weekdaySymbols.isEmpty ? "" : weekdaySymbols[weekdayIndex]
-        let timeDate = reminderTimeDate(for: schedule)
-
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-
-        // The separator between the day and the time is a word, and it is not "at" outside
-        // English — de "um", fr "à", pt-BR "às". It has to come from the catalog like any
-        // other copy.
-        return String(
-            format: SettingsL10n.Main.reminderScheduleWeekdayTime,
-            weekday,
-            formatter.string(from: timeDate)
-        )
+        CleanupReminderCopy.scheduleDescription(schedule, calendar: .current, locale: .current)
     }
 
     #if canImport(UIKit)

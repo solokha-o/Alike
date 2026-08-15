@@ -58,6 +58,10 @@ public enum SettingsL10n {
         public static var enableWeeklyReminderComeBack: String { SettingsL10n.string("settings.main.enableWeeklyReminderComeBack") }
         /// Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time.
         public static var freeRemindersUseSundayAt: String { SettingsL10n.string("settings.main.freeRemindersUseSundayAt") }
+        /// Free reminders use Sunday at 6:00 PM. — locale/bundle-injectable, see above.
+        public static func freeRemindersUseSundayAt(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            SettingsL10n.string("settings.main.freeRemindersUseSundayAt", bundle: bundle, locale: locale)
+        }
         /// Grid, sensitivity, and reminder preferences
         public static var gridSensitivityAndReminderPreferences: String { SettingsL10n.string("settings.main.gridSensitivityAndReminderPreferences") }
         /// Higher sensitivity finds more similar photos but may include less alike images
@@ -112,6 +116,10 @@ public enum SettingsL10n {
         public static var reminderSchedule: String { SettingsL10n.string("settings.main.reminderSchedule") }
         /// %1$@ at %2$@
         public static var reminderScheduleWeekdayTime: String { SettingsL10n.string("settings.main.reminderScheduleWeekdayTime") }
+        /// %1$@ at %2$@ — locale/bundle-injectable so tests can pin the formatted schedule.
+        public static func reminderScheduleWeekdayTime(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            SettingsL10n.string("settings.main.reminderScheduleWeekdayTime", bundle: bundle, locale: locale)
+        }
         /// Reminder time
         public static var reminderTime: String { SettingsL10n.string("settings.main.reminderTime") }
         /// Request the App Store rating prompt
@@ -167,5 +175,11 @@ public enum SettingsL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Same lookup, but with the bundle/locale exposed so tests can resolve against a compiled
+    /// fixture and a fixed locale instead of the live device state.
+    static func string(_ key: String.LocalizationValue, bundle: Bundle?, locale: Locale?) -> String {
+        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .current)
     }
 }
