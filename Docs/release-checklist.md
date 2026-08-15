@@ -27,7 +27,7 @@ validate whenever you like; upload when nothing is in review.
 - [ ] The per-locale URL overrides set for every non-English listing. These are
       optional and nothing fails without them — a listing simply reuses the
       English URLs, which is a silent localization gap rather than an error. The
-      site now publishes all six locales, so leaving any of these unset sends
+      site now publishes all eleven locales, so leaving any of these unset sends
       readers to English legal text they were not reading a moment ago:
 
 ```sh
@@ -57,6 +57,28 @@ ALIKE_SUPPORT_URL_ES_MX="https://alikeapp.github.io/es/support/"
 ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
 ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
 ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
+
+ALIKE_PRIVACY_URL_IT_IT="https://alikeapp.github.io/it/privacy/"
+ALIKE_TERMS_URL_IT_IT="https://alikeapp.github.io/it/terms/"
+ALIKE_SUPPORT_URL_IT_IT="https://alikeapp.github.io/it/support/"
+
+ALIKE_PRIVACY_URL_NL_NL="https://alikeapp.github.io/nl/privacy/"
+ALIKE_TERMS_URL_NL_NL="https://alikeapp.github.io/nl/terms/"
+ALIKE_SUPPORT_URL_NL_NL="https://alikeapp.github.io/nl/support/"
+
+ALIKE_PRIVACY_URL_PL_PL="https://alikeapp.github.io/pl/privacy/"
+ALIKE_TERMS_URL_PL_PL="https://alikeapp.github.io/pl/terms/"
+ALIKE_SUPPORT_URL_PL_PL="https://alikeapp.github.io/pl/support/"
+
+ALIKE_PRIVACY_URL_TR_TR="https://alikeapp.github.io/tr/privacy/"
+ALIKE_TERMS_URL_TR_TR="https://alikeapp.github.io/tr/terms/"
+ALIKE_SUPPORT_URL_TR_TR="https://alikeapp.github.io/tr/support/"
+
+# The one locale whose site path and App Store code differ only in case:
+# /zh-hant/ pages, ALIKE_*_URL_ZH_HANT overrides, zh-Hant listing.
+ALIKE_PRIVACY_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/privacy/"
+ALIKE_TERMS_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/terms/"
+ALIKE_SUPPORT_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
@@ -169,11 +191,11 @@ App Review rejection, and there is no longer any reason to discover that late.
       internal links, hreflang, the Terms guardrails and — deliberately — that
       the rendered site references no third-party host, because the privacy
       policy claims Alike makes no network requests.
-- [ ] All 24 published URLs return 200. The build already checked that each page
+- [ ] All 44 published URLs return 200. The build already checked that each page
       exists in the rendered output; this checks the deployed site:
 
 ```sh
-for l in "" uk/ de/ fr/ es/ pt-br/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
+for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 - [ ] In a **Release** build, the legal links open from all four entry points:

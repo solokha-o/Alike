@@ -56,7 +56,15 @@ PHONE_SCREEN_RECT = (52, 46, 970, 2036)
 # not the App Store Connect ones. UPLOAD_SAFE_LOCALES in
 # tools/prepare_app_store_upload_bundle.py maps es-419 onto App Store Connect's
 # es-MX slot; nothing here needs to know that.
-LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR")
+LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant")
+
+# Han glyphs carry far more meaning per square than Latin ones, so a headline
+# set at the shared 112 start size reads as a wall rather than a line. Starting
+# zh-Hant lower is a typographic decision, not a fitting one — fit_font_size()
+# would have shrunk it anyway, but to whatever size happened to fit rather than
+# to one chosen for the script. Locales absent here keep Transform's default,
+# which is why the seven existing decks re-render unchanged.
+LOCALE_HEADLINE_SIZE = {"zh-Hant": 92}
 
 # The app ships a dark UI, so the canvas is dark too: the phone melts into the
 # background instead of floating on a light card.
@@ -72,6 +80,29 @@ THEME = {
 
 FONT_PATH = "/System/Library/Fonts/SFNS.ttf"
 FALLBACK_FONT_PATH = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+
+# SF Pro covers Latin and Cyrillic and stops there: it has no Han glyphs, and
+# Pillow does no font fallback, so Chinese copy set in it renders as tofu boxes
+# without raising anything. Traditional Chinese therefore gets its own family.
+#
+# Heiti TC is a system font — no download, no license question — but it ships as
+# a .ttc, so a weight is a (file, face index) pair rather than a variation of one
+# variable font the way SF Pro's are. PingFang would be the more modern choice
+# and is what most snippets reach for, but /System/Library/Fonts/PingFang.ttc
+# does not exist on current macOS; Heiti does, and validate_sources() proves the
+# glyphs are there rather than trusting either.
+SF_PRO = "sf-pro"
+HEITI_TC = "heiti-tc"
+CJK_FONT_FILES = {
+    "Bold": ("/System/Library/Fonts/STHeiti Medium.ttc", 0),
+    "Medium": ("/System/Library/Fonts/STHeiti Light.ttc", 0),
+    "Regular": ("/System/Library/Fonts/STHeiti Light.ttc", 0),
+}
+LOCALE_FONT_FAMILY = {"zh-Hant": HEITI_TC}
+
+# Characters that may not open a line. Breaking Chinese between characters is
+# normal; breaking it directly before closing punctuation is not.
+CJK_NO_BREAK_BEFORE = "。，、！？：；）」』〉》’”%…"
 
 
 @dataclass(frozen=True)
@@ -377,6 +408,144 @@ COPY = {
             "Fotos selecionadas e economia estimada, enquanto você limpa.",
         ),
     ],
+    "it": [
+        (
+            "SUL DISPOSITIVO",
+            "Trova le foto\nche si somigliano",
+            "Alike analizza la libreria con Apple Vision, tutto sul tuo iPhone.",
+        ),
+        (
+            "UNA SOLA CODA",
+            "Ogni gruppo,\npronto da controllare",
+            "I gruppi arrivano con gli indicatori: vedi sempre cosa manca.",
+        ),
+        (
+            "SCATTO MIGLIORE",
+            "La foto da tenere\nè già scelta",
+            "Alike evidenzia lo scatto migliore del gruppo. A te la conferma.",
+        ),
+        (
+            "CONFRONTA",
+            "Controlla prima\ndi eliminare",
+            "Revisione a dimensione piena. Niente sparisce senza conferma.",
+        ),
+        (
+            "SPAZIO LIBERO",
+            "Guarda tornare\ni gigabyte",
+            "Foto selezionate e risparmio stimato, mentre fai pulizia.",
+        ),
+    ],
+    "nl": [
+        (
+            "OP HET APPARAAT",
+            "Vind de foto's\ndie op elkaar lijken",
+            "Alike scant je bibliotheek met Apple Vision, volledig op je iPhone.",
+        ),
+        (
+            "ÉÉN WACHTRIJ",
+            "Elke groep,\nklaar om te bekijken",
+            "Groepen komen met statuslabels: je ziet altijd wat er nog ligt.",
+        ),
+        (
+            "BESTE OPNAME",
+            "De blijver is\nal gekozen",
+            "Alike licht de beste opname uit. Jij hoeft alleen te bevestigen.",
+        ),
+        (
+            "VERGELIJK",
+            "Kijk eerst,\ndan opruimen",
+            "Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging.",
+        ),
+        (
+            "VRIJE RUIMTE",
+            "Zie de gigabytes\nterugkomen",
+            "Geselecteerd en geschatte besparing, terwijl je opruimt.",
+        ),
+    ],
+    "pl": [
+        (
+            "NA URZĄDZENIU",
+            "Znajdź zdjęcia,\nktóre są podobne",
+            "Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie.",
+        ),
+        (
+            "JEDNA KOLEJKA",
+            "Każda grupa\ngotowa do przeglądu",
+            "Grupy mają znaczniki przeglądu — zawsze wiesz, co zostało.",
+        ),
+        (
+            "NAJLEPSZE UJĘCIE",
+            "Zdjęcie do zostawienia\njest już wybrane",
+            "Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz.",
+        ),
+        (
+            "PORÓWNAJ",
+            "Sprawdź, zanim\ncokolwiek zniknie",
+            "Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia.",
+        ),
+        (
+            "WOLNE MIEJSCE",
+            "Odzyskaj\ngigabajty",
+            "Wybrane i szacowana oszczędność, na bieżąco podczas porządków.",
+        ),
+    ],
+    "tr": [
+        (
+            "CİHAZDA",
+            "Birbirine benzeyen\nfotoğrafları bul",
+            "Alike, kitaplığını Apple Vision ile tamamen iPhone'unda tarar.",
+        ),
+        (
+            "TEK KUYRUK",
+            "Her grup\ngözden geçirmeye hazır",
+            "Gruplar rozetleriyle gelir: ne kaldığını her zaman görürsün.",
+        ),
+        (
+            "EN İYİ KARE",
+            "Saklanacak kare\nzaten seçili",
+            "Alike gruptaki en iyi kareyi öne çıkarır. Sen yalnızca onaylarsın.",
+        ),
+        (
+            "KARŞILAŞTIR",
+            "Silmeden önce\nkontrol et",
+            "Tam boyutta incele. Onayın olmadan hiçbir şey silinmez.",
+        ),
+        (
+            "BOŞ ALAN",
+            "Gigabaytların\ngeri gelişini gör",
+            "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
+        ),
+    ],
+    # Chinese headlines carry the same idea in about half the characters, so the
+    # break is placed where the sense divides rather than where the line runs
+    # out. LOCALE_HEADLINE_SIZE starts this deck smaller; see the note there.
+    "zh-Hant": [
+        (
+            "在裝置上",
+            "找出看起來\n相像的照片",
+            "Alike 以 Apple Vision 掃描你的圖庫，全程在 iPhone 上完成。",
+        ),
+        (
+            "同一條佇列",
+            "每一組\n都等著你檢視",
+            "每組都帶著檢視標記，隨時看得出還剩下什麼。",
+        ),
+        (
+            "最佳照片",
+            "要留下的那張\n已經選好",
+            "Alike 會標出每組最好的一張，你只需要確認。",
+        ),
+        (
+            "先比對",
+            "任何照片消失前\n都先看過",
+            "以原尺寸檢視。未經你確認，不會刪除任何東西。",
+        ),
+        (
+            "騰出空間",
+            "看著空間\n一點一點回來",
+            "清理過程中隨時顯示已選取與預估可省空間。",
+        ),
+    ],
 }
 
 
@@ -449,9 +618,12 @@ def selected_locales(raw: str) -> list[str]:
     return values
 
 
-@lru_cache(maxsize=64)
-def font(size: int, weight: str = "Regular") -> ImageFont.FreeTypeFont:
-    """SF Pro at a named weight. SF is a variable font, so Bold is an instance."""
+@lru_cache(maxsize=128)
+def font(size: int, weight: str = "Regular", family: str = SF_PRO) -> ImageFont.FreeTypeFont:
+    """A named weight of a family. SF is variable, so its Bold is an instance."""
+    if family == HEITI_TC:
+        path, index = CJK_FONT_FILES.get(weight, CJK_FONT_FILES["Regular"])
+        return ImageFont.truetype(path, size=size, index=index)
     try:
         face = ImageFont.truetype(FONT_PATH, size=size)
         face.set_variation_by_name(weight)
@@ -619,6 +791,32 @@ def text_width(draw: ImageDraw.ImageDraw, text: str, font_obj: ImageFont.FreeTyp
     return bbox[2] - bbox[0]
 
 
+def break_long_word(word: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
+    """Split one over-wide token between characters.
+
+    Word wrapping assumes spaces, and Chinese has none: a whole zh-Hant subtitle
+    arrives here as a single word, so without this it would be laid out as one
+    line far wider than the caption box. Latin gets the same treatment as a
+    backstop for a compound longer than the column.
+    """
+    pieces: list[str] = []
+    current = ""
+    for character in word:
+        candidate = current + character
+        if text_width(draw, candidate, font_obj) <= max_width or not current:
+            current = candidate
+        elif character in CJK_NO_BREAK_BEFORE:
+            # Punctuation may not open a line, so it overhangs by one character
+            # instead — the same compromise typesetters make.
+            current = candidate
+        else:
+            pieces.append(current)
+            current = character
+    if current:
+        pieces.append(current)
+    return pieces
+
+
 def fit_text_lines(text: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
     lines: list[str] = []
     for source_line in text.splitlines():
@@ -629,11 +827,13 @@ def fit_text_lines(text: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.Fre
         current = ""
         for word in words:
             candidate = word if not current else f"{current} {word}"
-            if text_width(draw, candidate, font_obj) <= max_width or not current:
+            if text_width(draw, candidate, font_obj) <= max_width:
                 current = candidate
-            else:
+                continue
+            if current:
                 lines.append(current)
-                current = word
+            *full, current = break_long_word(word, draw, font_obj, max_width)
+            lines.extend(full)
         if current:
             lines.append(current)
     return lines
@@ -649,11 +849,12 @@ def fit_font_size(
     line_ratio: float,
     max_height: int | None = None,
     min_size: int = 44,
+    family: str = SF_PRO,
 ) -> int:
     """Shrink until the copy fits. Ukrainian headlines run longer than English."""
     size = start_size
     while size > min_size:
-        font_obj = font(size, weight)
+        font_obj = font(size, weight, family)
         lines = fit_text_lines(text, draw, font_obj, max_width)
         fits_height = max_height is None or len(lines) * int(size * line_ratio) <= max_height
         if (
@@ -666,10 +867,10 @@ def fit_font_size(
     return size
 
 
-def draw_label(canvas: Image.Image, layout: SlideLayout, variant: Variant, label: str) -> None:
+def draw_label(canvas: Image.Image, layout: SlideLayout, variant: Variant, label: str, family: str = SF_PRO) -> None:
     accent = THEME[layout.band]
     caption = layout.caption
-    label_font = font(30, "Bold")
+    label_font = font(30, "Bold", family)
     layer, draw = new_layer()
 
     if variant.label_style == "rule":
@@ -701,25 +902,33 @@ def draw_label(canvas: Image.Image, layout: SlideLayout, variant: Variant, label
     canvas.alpha_composite(layer)
 
 
-def draw_caption(canvas: Image.Image, layout: SlideLayout, variant: Variant, copy: tuple[str, str, str]) -> None:
+def draw_caption(
+    canvas: Image.Image,
+    layout: SlideLayout,
+    variant: Variant,
+    copy: tuple[str, str, str],
+    headline_size_override: int | None = None,
+    family: str = SF_PRO,
+) -> None:
     label, headline, subtitle = copy
     caption = layout.caption
-    draw_label(canvas, layout, variant, label)
+    draw_label(canvas, layout, variant, label, family)
 
     layer, draw = new_layer()
     headline_y = caption.y + 72
     headline_size = fit_font_size(
         headline,
         draw,
-        caption.headline_size,
+        headline_size_override or caption.headline_size,
         caption.width,
         3,
         "Bold",
         1.08,
         max_height=max(120, layout.subtitle.y - headline_y - 30),
         min_size=64,
+        family=family,
     )
-    headline_font = font(headline_size, "Bold")
+    headline_font = font(headline_size, "Bold", family)
     line_height = int(headline_size * 1.08)
     text_y = headline_y
     for line in fit_text_lines(headline, draw, headline_font, caption.width):
@@ -734,9 +943,9 @@ def draw_caption(canvas: Image.Image, layout: SlideLayout, variant: Variant, cop
 
     subtitle_transform = layout.subtitle
     subtitle_size = fit_font_size(
-        subtitle, draw, layout.subtitle_size, subtitle_transform.width, 2, "Medium", 1.3, min_size=34
+        subtitle, draw, layout.subtitle_size, subtitle_transform.width, 2, "Medium", 1.3, min_size=34, family=family
     )
-    subtitle_font = font(subtitle_size, "Medium")
+    subtitle_font = font(subtitle_size, "Medium", family)
     subtitle_y = subtitle_transform.y
     for line in fit_text_lines(subtitle, draw, subtitle_font, subtitle_transform.width):
         line_width = text_width(draw, line, subtitle_font)
@@ -817,10 +1026,22 @@ def paste_phone(canvas: Image.Image, layout: SlideLayout, variant: Variant, scre
 
 
 def render_slide(
-    index: int, layout: SlideLayout, variant: Variant, copy: tuple[str, str, str], screenshot_path: Path
+    index: int,
+    layout: SlideLayout,
+    variant: Variant,
+    copy: tuple[str, str, str],
+    screenshot_path: Path,
+    locale: str,
 ) -> Image.Image:
     canvas = base_canvas(index, layout.band, variant.background, layout.caption_zone).copy()
-    draw_caption(canvas, layout, variant, copy)
+    draw_caption(
+        canvas,
+        layout,
+        variant,
+        copy,
+        headline_size_override=LOCALE_HEADLINE_SIZE.get(locale),
+        family=LOCALE_FONT_FAMILY.get(locale, SF_PRO),
+    )
     paste_phone(canvas, layout, variant, screenshot_path)
     return canvas.convert("RGB")
 
@@ -834,6 +1055,7 @@ def validate_sources(locales: list[str]) -> None:
     for locale in locales:
         if locale not in COPY or len(COPY[locale]) != len(SLIDES):
             raise SystemExit(f"Missing marketing copy for {len(SLIDES)} slides in {locale}")
+        validate_glyph_coverage(locale)
         for slide in SLIDES:
             source = SOURCE_ROOT / locale / slide.source
             if not source.exists():
@@ -842,12 +1064,36 @@ def validate_sources(locales: list[str]) -> None:
         raise SystemExit("Missing source captures:\n" + "\n".join(str(path) for path in missing))
 
 
+def validate_glyph_coverage(locale: str) -> None:
+    """Refuse to render copy the locale's font cannot draw.
+
+    Pillow has no font fallback: a character the face does not carry comes out
+    as an empty box, and every other check here passes. That is a silent way to
+    ship an unreadable listing, so the copy is proved against the face before a
+    single slide is drawn rather than trusted afterwards.
+    """
+    family = LOCALE_FONT_FAMILY.get(locale, SF_PRO)
+    face = font(48, "Bold", family)
+    text = "".join("".join(entry) for entry in COPY[locale])
+    missing = sorted({
+        character
+        for character in text
+        if not character.isspace() and face.getmask(character).getbbox() is None
+    })
+    if missing:
+        raise SystemExit(
+            f"{locale}: {family} has no glyph for {' '.join(missing)} — the render would show empty boxes"
+        )
+
+
 def render_locale(variant: Variant, locale: str, output_root: Path, quiet: bool = False) -> list[Path]:
     locale_output = output_root / locale
     locale_output.mkdir(parents=True, exist_ok=True)
     rendered: list[Path] = []
     for index, slide in enumerate(SLIDES):
-        image = render_slide(index, slide, variant, COPY[locale][index], SOURCE_ROOT / locale / slide.source)
+        image = render_slide(
+            index, slide, variant, COPY[locale][index], SOURCE_ROOT / locale / slide.source, locale
+        )
         assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
         target = locale_output / slide.source
         image.save(target, optimize=True)

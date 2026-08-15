@@ -68,6 +68,31 @@
           "description" : "",
           "displayName" : "Alike Pro",
           "locale" : "pt_BR"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "it_IT"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "nl_NL"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "tr_TR"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "zh_TW"
         }
       ],
       "name" : "Alike Pro",
@@ -143,6 +168,31 @@
               "description" : "Todos os recursos Pro. 7 dias grátis.",
               "displayName" : "Alike Pro anual",
               "locale" : "pt_BR"
+            },
+            {
+              "description" : "Tutti gli strumenti Pro. 7 giorni gratis.",
+              "displayName" : "Alike Pro annuale",
+              "locale" : "it_IT"
+            },
+            {
+              "description" : "Alle Pro-functies. Eerste 7 dagen gratis.",
+              "displayName" : "Alike Pro jaarlijks",
+              "locale" : "nl_NL"
+            },
+            {
+              "description" : "Wszystkie funkcje Pro. 7 dni za darmo.",
+              "displayName" : "Alike Pro rocznie",
+              "locale" : "pl_PL"
+            },
+            {
+              "description" : "Tüm Pro araçları. İlk 7 gün ücretsiz.",
+              "displayName" : "Alike Pro yıllık",
+              "locale" : "tr_TR"
+            },
+            {
+              "description" : "解鎖所有 Pro 功能，前 7 天免費。",
+              "displayName" : "Alike Pro 年繳",
+              "locale" : "zh_TW"
             }
           ],
           "productID" : "com.alike.app.pro.yearly",
@@ -212,6 +262,31 @@
               "description" : "Toda a limpeza de fotos do Alike Pro.",
               "displayName" : "Alike Pro mensal",
               "locale" : "pt_BR"
+            },
+            {
+              "description" : "Tutta la pulizia foto di Alike Pro.",
+              "displayName" : "Alike Pro mensile",
+              "locale" : "it_IT"
+            },
+            {
+              "description" : "Al het opruimwerk van Alike Pro.",
+              "displayName" : "Alike Pro maandelijks",
+              "locale" : "nl_NL"
+            },
+            {
+              "description" : "Wszystkie porządki w zdjęciach Alike Pro.",
+              "displayName" : "Alike Pro miesięcznie",
+              "locale" : "pl_PL"
+            },
+            {
+              "description" : "Alike Pro'nun tüm fotoğraf temizliği.",
+              "displayName" : "Alike Pro aylık",
+              "locale" : "tr_TR"
+            },
+            {
+              "description" : "Alike Pro 的完整照片清理功能。",
+              "displayName" : "Alike Pro 月繳",
+              "locale" : "zh_TW"
             }
           ],
           "productID" : "com.alike.app.pro.monthly",

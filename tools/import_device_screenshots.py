@@ -78,12 +78,28 @@ MANIFEST_NAME = "capture-manifest.json"
 # outside this set would import captures into a directory the renderer never
 # reads: the import would succeed and the deck would silently ship without them.
 # App Store Connect codes are the likely typo, hence the suggestions.
-SUPPORTED_LOCALES = ("en", "uk", "de", "fr", "es", "es-419", "pt-BR")
-LOCALE_SUGGESTIONS = {"es-MX": "es-419", "en-US": "en", "pt": "pt-BR", "pt-PT": "pt-BR"}
+SUPPORTED_LOCALES = ("en", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant")
+LOCALE_SUGGESTIONS = {
+    "es-MX": "es-419",
+    "en-US": "en",
+    "pt": "pt-BR",
+    "pt-PT": "pt-BR",
+    # Traditional Chinese is the code nobody guesses right the first time: the
+    # app spells it zh-Hant, iOS reports zh-Hant-TW, and the store calls the
+    # locale zh-Hant too. zh-Hans is a different language and has no deck.
+    "zh": "zh-Hant",
+    "zh-TW": "zh-Hant",
+    "zh-Hant-TW": "zh-Hant",
+    "it-IT": "it",
+    "nl-NL": "nl",
+    "pl-PL": "pl",
+    "tr-TR": "tr",
+}
 
 # `en` is the only language whose directory name differs from its own code, for
 # the same reason Docs/images/en-US/ is spelled that way: the App Store locale
-# is en-US. Everything else — uk, de, fr, es, es-419, pt-BR — is verbatim.
+# is en-US. Everything else — uk, de, fr, es, es-419, pt-BR, it, nl, pl, tr and
+# zh-Hant — is verbatim.
 LANGUAGE_DIRECTORIES = {"en": "en-US"}
 
 # Which shots the landing page shows, matching _data/screens.yml in the site repo.

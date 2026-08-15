@@ -55,17 +55,14 @@ SITE_TO_DOC = {
     "fr": "FR",
     "es": "ES",
     "pt-BR": "PT-BR",
+    "it": "IT",
+    "nl": "NL",
+    "pl": "PL",
+    "tr": "TR",
+    "zh-Hant": "ZH-HANT",
 }
 DOC_ONLY = {
     "ES-419": "/es/ serves both Spanish listings",
-    # Tier 3 app locales (task 43). The app ships them; their site pages are task 44, so they
-    # are listed here rather than silently ignored — an unmapped doc block would otherwise look
-    # like parity holding for a locale nothing ever compared.
-    "IT": "site pages land in task 44",
-    "NL": "site pages land in task 44",
-    "PL": "site pages land in task 44",
-    "TR": "site pages land in task 44",
-    "ZH-HANT": "site pages land in task 44",
 }
 
 PARAGRAPHS = {
