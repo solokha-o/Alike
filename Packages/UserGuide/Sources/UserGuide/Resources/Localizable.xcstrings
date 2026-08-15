@@ -8692,7 +8692,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike'ın kitaplığına okuma ve yazma erişimi gerekir: fotoğrafları analiz etmek için okuma, seçtiklerini taşımak için yazma."
+            "value": "Alike'ın fotoğraf kitaplığınıza okuma ve yazma erişimi gerekir: fotoğrafları analiz etmek için okuma, seçtiklerini taşımak için yazma."
           }
         },
         "zh-Hant": {
@@ -9308,7 +9308,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike, Tarayıcı sekmesinde fotoğraf kitaplığına bakar ve birbirine benzeyen fotoğrafları gruplar."
+            "value": "Alike, Tarayıcı sekmesinde fotoğraf kitaplığınıza bakar ve birbirine benzeyen fotoğrafları gruplar."
           }
         },
         "zh-Hant": {
