@@ -328,21 +328,48 @@ their screenshot subtype, so they land in the Pro-locked Screenshots category in
 forming similarity clusters, and imported wallpapers did not cluster at all. A seeded
 library reaches the counts and the smart-category row, not the cluster queue.
 
+### Third pass — Turkish and Traditional Chinese on device, and the bug it found
+
+The user walked the remaining screens on a real iPhone: the Turkish cleanup queue with 68
+clusters and both sections, all three filter and sort menus, the smart-category rows, the
+Traditional Chinese User Guide hub, Cleanup History with real entries, and the Cleanup screen
+with a live progress card. **Pass** on layout everywhere — the long Turkish menu items wrap to
+two lines inside the system menu rather than truncating, and `Gözden geçirilmeli` fits its
+badge on a grid card.
+
+**The defect: the free-reminder footer wrote a clock time into the copy.**
+`settings.main.freeRemindersUseSundayAt` said "Sunday at 6:00 PM" and each translation
+followed it, while the `Reminder schedule` row directly above renders the same schedule
+through `DateFormatter` with `timeStyle: .short` — which follows the reader's 12/24-hour
+setting. On the user's 24-hour device the row read `18:00` above a sentence saying `6:00 PM`.
+
+It had been wrong since the feature shipped, in every language, and the first tier 3 pass made
+it worse rather than better: the simulator defaults to a 12-hour clock in `zh-TW`, so the
+"fix" recorded above changed the copy to `下午6:00` — correct on that simulator, wrong on this
+device. Chasing the formatter with hardcoded copy cannot work; there is no value that is right
+for both readers.
+
+The footer now takes the formatted schedule as `%@` and is passed the same
+`scheduleDescription(.defaultWeekly)` the row uses, so the two agree by construction. Verified
+on the simulator in both clock modes: `星期日 18:00` / `星期日 下午6:00` in the row and the same
+string inside the sentence. Turkish takes the argument after a colon —
+`Ücretsiz anımsatıcıların programı: Pazar 18:00.` — because a suffix would have to agree with
+whatever the formatter produced, which is exactly the assembly this task set out to remove.
+
+`ReminderScheduleCopyTests` now fails any locale that drops the `%@` or writes a clock time
+back into the sentence.
+
+**Not a defect: the comma in `22,9 MB`.** Byte counts and decimal separators follow the
+reader's *region*, not the app language, so a Traditional Chinese build on a device set to a
+comma region correctly shows `22,9 MB` — including in history entries recorded earlier. This
+is Apple's behaviour and matches the Photos app.
+
 ## Still owed
 
-Only the screens that need a real photo library with genuine similarity clusters, in
-`tr` and `zh-Hant`. A seeded simulator cannot reach them — see the note above — and the
-tier 1 walk covered them on a device in `de` and `fr`:
-
-- Cleanup queue with real clusters, both sections and the badges, plus the filter and sort
-  sheet.
-- Cleanup progress mid-scan.
-- Cleanup History with real entries.
-
-Polish covers all three on device already, so what is missing is length behaviour in Turkish
-and glyph density in Traditional Chinese, not grammar. Nothing here blocks the release; it is
-the last of the "looked at it" evidence rather than a known risk.
+Nothing. Every screen in the acceptance lists of tasks 39, 40 and 43 has been walked, in the
+languages that carry the risk, on a device or a seeded simulator.
 
 Watch for anything in CAPITALS under the pseudo-locale scheme: `-NSShowNonLocalizedStrings`
-marks a string that never reached a catalog. The reminder-row bug above is what one looks
-like when nobody runs that pass.
+marks a string that never reached a catalog. The reminder-row bug from task 40 is what one
+looks like when nobody runs that pass — and the footer bug above is the other shape it takes:
+copy that duplicates something the system formats, which no catalog test can see.

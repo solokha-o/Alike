@@ -584,7 +584,15 @@ public struct SettingsView: View {
             return SettingsL10n.Main.premiumLetsChooseCustomWeekly
         }
 
-        return SettingsL10n.Main.freeRemindersUseSundayAt
+        // The free schedule has to be *formatted*, not spelled out in the copy. The row directly
+        // above renders the same schedule through `DateFormatter`, which follows the reader's
+        // 12/24-hour setting and region — so any time written into the string is wrong for half
+        // the readers. Found on a 24-hour device, where the row said "18:00" and the sentence
+        // below it said "6:00 PM".
+        return String(
+            format: SettingsL10n.Main.freeRemindersUseSundayAt,
+            scheduleDescription(.defaultWeekly)
+        )
     }
 
     private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {

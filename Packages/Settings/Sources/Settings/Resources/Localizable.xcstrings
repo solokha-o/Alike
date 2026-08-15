@@ -1856,73 +1856,73 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time."
+            "value": "Free reminders are scheduled for %@. Unlock premium to choose your own day and time."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Безплатні нагадування використовують неділю о 18:00. Розблокуйте преміум, щоб обрати власний день і час."
+            "value": "Безкоштовні нагадування заплановано на %@. Розблокуйте преміум, щоб вибрати власні день і час."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los recordatorios gratuitos son los domingos a las 6:00 p. m. Consigue premium para elegir tu propio día y hora."
+            "value": "Los recordatorios gratuitos están programados para %@. Desbloquea premium para elegir tu propio día y hora."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los recordatorios gratuitos son los domingos a las 18:00. Consigue premium para elegir tu propio día y hora."
+            "value": "Los recordatorios gratuitos están programados para %@. Desbloquea premium para elegir tu propio día y hora."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Os lembretes gratuitos são aos domingos, às 18h. Libere o premium para escolher seu dia e horário."
+            "value": "Os lembretes gratuitos são agendados para %@. Desbloqueie o premium para escolher seu próprio dia e horário."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kostenlose Erinnerungen kommen sonntags um 18:00 Uhr. Mit Premium wählst du Tag und Uhrzeit selbst."
+            "value": "Kostenlose Erinnerungen sind für %@ geplant. Schalte Premium frei, um Tag und Uhrzeit selbst zu wählen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les rappels gratuits ont lieu le dimanche à 18h00. Passez au premium pour choisir votre jour et votre heure."
+            "value": "Les rappels gratuits sont programmés pour %@. Débloquez le premium pour choisir vos propres jour et heure."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "I promemoria gratuiti usano la domenica alle 18:00. Sblocca il premium per scegliere giorno e ora."
+            "value": "I promemoria gratuiti sono programmati per %@. Sblocca il premium per scegliere giorno e ora."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gratis herinneringen gebruiken zondag om 18:00. Ontgrendel premium om je eigen dag en tijd te kiezen."
+            "value": "Gratis herinneringen staan gepland voor %@. Ontgrendel premium om je eigen dag en tijd te kiezen."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Darmowe przypomnienia przychodzą w niedzielę o 18:00. Odblokuj premium, aby wybrać własny dzień i godzinę."
+            "value": "Darmowe przypomnienia są zaplanowane na %@. Odblokuj premium, aby wybrać własny dzień i godzinę."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ücretsiz anımsatıcılar pazar günü saat 18:00'i kullanır. Kendi gününü ve saatini seçmek için premium'un kilidini aç."
+            "value": "Ücretsiz anımsatıcıların programı: %@. Kendi gününü ve saatini seçmek için premium'un kilidini aç."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "免費提醒固定在星期日下午 6:00。解鎖進階功能即可自選日期與時間。"
+            "value": "免費提醒的排程為 %@。解鎖進階功能即可自選日期與時間。"
           }
         }
       }
