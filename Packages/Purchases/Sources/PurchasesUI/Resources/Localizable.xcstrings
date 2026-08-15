@@ -1964,13 +1964,13 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bekijk waarschijnlijk mislukte opnamen voordat je beslist wat je houdt of verwijdert."
+            "value": "Bekijk opnamen van waarschijnlijk lage kwaliteit voordat je beslist wat je houdt of verwijdert."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Przejrzyj prawdopodobnie nieudane ujęcia, zanim zdecydujesz, co zachować, a co usunąć."
+            "value": "Przejrzyj ujęcia prawdopodobnie niskiej jakości, zanim zdecydujesz, co zachować, a co usunąć."
           }
         },
         "tr": {

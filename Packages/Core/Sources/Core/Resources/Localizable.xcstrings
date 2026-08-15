@@ -2774,13 +2774,13 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ontgrendel het opruimen van wazige foto's om waarschijnlijk mislukte opnamen te bekijken voordat je ze verwijdert, met dezelfde veilige bevestiging."
+            "value": "Ontgrendel het opruimen van wazige foto's om opnamen van waarschijnlijk lage kwaliteit te bekijken voordat je ze verwijdert, met dezelfde veilige bevestiging."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Odblokuj porządki w rozmytych zdjęciach, aby przejrzeć prawdopodobnie nieudane ujęcia przed ich usunięciem — z tym samym bezpiecznym potwierdzeniem."
+            "value": "Odblokuj porządki w rozmytych zdjęciach, aby przejrzeć ujęcia prawdopodobnie niskiej jakości przed ich usunięciem — z tym samym bezpiecznym potwierdzeniem."
           }
         },
         "tr": {
