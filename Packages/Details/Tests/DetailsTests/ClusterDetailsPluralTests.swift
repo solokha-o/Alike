@@ -22,6 +22,38 @@ final class ClusterDetailsPluralTests: XCTestCase {
         XCTAssertTrue(title(0).contains("0 вибраних фото"), title(0))
     }
 
+    /// Polish needs all four categories, and 22 / 25 are the counts that prove it: both are past
+    /// five, and they still take different endings.
+    func testPolishDeleteAlertTitleSelectsThePluralFormForEachCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "pl")
+        let pl = Locale(identifier: "pl")
+
+        func title(_ count: Int) -> String {
+            DetailsL10n.ClusterDetails.deleteAlertTitle(count, bundle: bundle, locale: pl)
+        }
+
+        // one: 1 — few: 2, 22 — many: 5, 25
+        XCTAssertTrue(title(1).contains("1 wybrane zdjęcie"), title(1))
+        XCTAssertTrue(title(2).contains("2 wybrane zdjęcia"), title(2))
+        XCTAssertTrue(title(22).contains("22 wybrane zdjęcia"), title(22))
+        XCTAssertTrue(title(5).contains("5 wybranych zdjęć"), title(5))
+        XCTAssertTrue(title(25).contains("25 wybranych zdjęć"), title(25))
+    }
+
+    /// Traditional Chinese has one form. The assertion worth making is that it resolves at all —
+    /// a single-category variation is the shape most likely to fall back to the key.
+    func testTraditionalChineseDeleteAlertTitleResolvesAtEveryCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "zh-Hant")
+        let zh = Locale(identifier: "zh-Hant")
+
+        for count in [1, 2, 25] {
+            XCTAssertEqual(
+                DetailsL10n.ClusterDetails.deleteAlertTitle(count, bundle: bundle, locale: zh),
+                "將所選的 \(count) 張照片移到「最近刪除」？"
+            )
+        }
+    }
+
     func testEnglishDeleteAlertTitleSelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")
@@ -45,6 +77,11 @@ final class ClusterDetailsPluralTests: XCTestCase {
             try catalog.pluralCategories(of: key, language: "uk"),
             ["few", "many", "one", "other"]
         )
+        XCTAssertEqual(
+            try catalog.pluralCategories(of: key, language: "pl"),
+            ["few", "many", "one", "other"]
+        )
+        XCTAssertEqual(try catalog.pluralCategories(of: key, language: "zh-Hant"), ["other"])
     }
 
     /// The review action bar was the last singular/plural pair picked in Swift — found by

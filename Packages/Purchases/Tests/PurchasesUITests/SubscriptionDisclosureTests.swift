@@ -24,7 +24,12 @@ final class SubscriptionDisclosureTests: XCTestCase {
         "es": "que cumplan los requisitos",
         "pt-BR": "assinantes qualificados",
         "de": "berechtigte neue",
-        "fr": "nouveaux abonnés éligibles"
+        "fr": "nouveaux abonnés éligibles",
+        "it": "nuovi abbonati idonei",
+        "nl": "die daarvoor in aanmerking komen",
+        "pl": "uprawnionych nowych subskrybentów",
+        "tr": "uygun yeni aboneler",
+        "zh-Hant": "符合資格的新訂閱者"
     ]
 
     /// Compares each catalog value against the value parsed from *that locale's* documented

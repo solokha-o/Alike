@@ -49,6 +49,34 @@ final class CleanupToastPluralTests: XCTestCase {
         )
     }
 
+    /// Polish inflects the noun across four categories, and the counts the task names — 1, 2, 5,
+    /// 22, 25 — are exactly the ones that separate them. Traditional Chinese has a single form, so
+    /// the same toast must render identically at every count without falling back to the key.
+    func testPolishAndTraditionalChineseToasts() throws {
+        let pl = try CompiledCatalogFixture.bundle(language: "pl")
+        let polish = Locale(identifier: "pl")
+
+        func toast(_ count: Int) -> String {
+            CleanupL10n.Main.photosMovedToRecentlyDeleted(count, bundle: pl, locale: polish)
+        }
+
+        XCTAssertEqual(toast(1), "1 zdjęcie przeniesione do albumu „Ostatnio usunięte”.")
+        XCTAssertEqual(toast(2), "2 zdjęcia przeniesione do albumu „Ostatnio usunięte”.")
+        XCTAssertEqual(toast(22), "22 zdjęcia przeniesione do albumu „Ostatnio usunięte”.")
+        XCTAssertEqual(toast(5), "5 zdjęć przeniesionych do albumu „Ostatnio usunięte”.")
+        XCTAssertEqual(toast(25), "25 zdjęć przeniesionych do albumu „Ostatnio usunięte”.")
+
+        let zh = try CompiledCatalogFixture.bundle(language: "zh-Hant")
+        let chinese = Locale(identifier: "zh-Hant")
+
+        for count in [1, 2, 5, 25] {
+            XCTAssertEqual(
+                CleanupL10n.Main.photosMovedToRecentlyDeleted(count, bundle: zh, locale: chinese),
+                "已將 \(count) 張照片移到「最近刪除」。"
+            )
+        }
+    }
+
     /// The history caption sits directly under a count that can be 1, and carries no number
     /// of its own — so it cannot be a plural variation. The Romance languages therefore use a
     /// noun phrase rather than a participle that would have to agree.

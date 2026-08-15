@@ -93,6 +93,52 @@ final class PremiumPresentationTests: XCTestCase {
         XCTAssertTrue(batchCleanup(5).contains("120 MB"), batchCleanup(5))
     }
 
+    /// The paywall is the surface where a count is most likely to be wrong in front of a paying
+    /// customer, so Polish gets the same treatment as Ukrainian — at the counts task 43 names.
+    func testPolishPaywallCopySelectsThePluralFormForEachCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "pl")
+        let pl = Locale(identifier: "pl")
+
+        func batchCleanup(_ count: Int) -> String {
+            PaywallL10n.batchCleanupMessage(
+                selectedCount: count,
+                estimatedSavings: "120 MB",
+                locale: pl,
+                bundle: bundle
+            )
+        }
+
+        // one: 1 — few: 2, 22 — many: 5, 25
+        XCTAssertTrue(batchCleanup(1).contains("1 wybrane zdjęcie"), batchCleanup(1))
+        XCTAssertTrue(batchCleanup(2).contains("2 wybrane zdjęcia"), batchCleanup(2))
+        XCTAssertTrue(batchCleanup(22).contains("22 wybrane zdjęcia"), batchCleanup(22))
+        XCTAssertTrue(batchCleanup(5).contains("5 wybranych zdjęć"), batchCleanup(5))
+        XCTAssertTrue(batchCleanup(25).contains("25 wybranych zdjęć"), batchCleanup(25))
+
+        // The savings argument has to survive in every category, not just the singular.
+        for count in [1, 2, 5, 22, 25] {
+            XCTAssertTrue(batchCleanup(count).contains("120 MB"), batchCleanup(count))
+        }
+    }
+
+    /// Traditional Chinese declares `other` alone. This is the shape most likely to fall back to
+    /// the raw key, so both paywall variants are resolved for real.
+    func testTraditionalChinesePaywallCopyResolvesAtEveryCount() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "zh-Hant")
+        let zh = Locale(identifier: "zh-Hant")
+
+        for count in [1, 2, 25] {
+            let message = PaywallL10n.postFirstScanMessage(
+                opportunityCount: count,
+                estimatedSavings: "120 MB",
+                locale: zh,
+                bundle: bundle
+            )
+            XCTAssertTrue(message.contains("找到 \(count) 項可清理的項目"), message)
+            XCTAssertTrue(message.contains("120 MB"), message)
+        }
+    }
+
     func testEnglishPaywallCopySelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")
@@ -153,6 +199,12 @@ final class PremiumPresentationTests: XCTestCase {
                 ["few", "many", "one", "other"],
                 key
             )
+            XCTAssertEqual(
+                try catalog.pluralCategories(of: key, language: "pl"),
+                ["few", "many", "one", "other"],
+                key
+            )
+            XCTAssertEqual(try catalog.pluralCategories(of: key, language: "zh-Hant"), ["other"], key)
         }
 
         XCTAssertTrue(

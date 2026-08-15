@@ -32,7 +32,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
-- 🌍 **Two languages** — Ukrainian and English
+- 🌍 **Twelve languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish and Traditional Chinese
 - 🌓 **Dark Mode** — full support
 
 ## 🆕 What ships in 1.0.0
@@ -188,9 +188,22 @@ variables, and the safety rules that keep uploads deliberate.
 
 ## 📝 Localization
 
-Languages via `Localizable.xcstrings`:
-- 🇬🇧 English (base)
-- 🇺🇦 Ukrainian
+Twelve languages, each in per-package `Localizable.xcstrings` catalogs:
+
+| Tier | Locales |
+|---|---|
+| Base | 🇬🇧 `en` · 🇺🇦 `uk` |
+| Tier 1 | 🇲🇽 `es-419` · 🇪🇸 `es` · 🇧🇷 `pt-BR` · 🇩🇪 `de` · 🇫🇷 `fr` |
+| Tier 3 | 🇮🇹 `it` · 🇳🇱 `nl` · 🇵🇱 `pl` · 🇹🇷 `tr` · 🇹🇼 `zh-Hant` |
+
+A package that renders text owns its own catalog and typed `L10n` accessors; the app
+target's catalog holds app-level strings only. Every package has a `LocalizationCatalogTests`
+suite asserting that each key carries every shipped language and declares the right plural
+categories for it.
+
+[`Docs/Localization/README.md`](Docs/Localization/README.md) is the convention and the
+recipe for adding a language; [`native-review.md`](Docs/Localization/native-review.md) is
+the list of strings a native speaker still needs to sign off.
 
 ## 🤝 Contributing
 

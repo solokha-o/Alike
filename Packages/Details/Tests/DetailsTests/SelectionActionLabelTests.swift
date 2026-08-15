@@ -23,7 +23,12 @@ final class SelectionActionLabelTests: XCTestCase {
         "de": ("Auswahl aufheben", "Ausgewählte bewegen"),
         // Paired with "Tout sélectionner" so the two selection actions mirror each other,
         // instead of "Effacer"/"Supprimer la sélection", which are near-synonyms.
-        "fr": ("Tout désélectionner", "Déplacer la sélection")
+        "fr": ("Tout désélectionner", "Déplacer la sélection"),
+        "it": ("Azzera selezione", "Sposta selezionate"),
+        "nl": ("Wis selectie", "Verplaats selectie"),
+        "pl": ("Wyczyść wybór", "Przenieś wybrane"),
+        "tr": ("Seçimi Temizle", "Seçilenleri Taşı"),
+        "zh-Hant": ("清除選取", "移動已選取項目")
     ]
 
     func testTheClearAndMoveButtonsStayDistinguishable() throws {
@@ -41,7 +46,10 @@ final class SelectionActionLabelTests: XCTestCase {
     /// promise deletion — that happens 30 days later, in the Photos app, not on this tap.
     func testNoSelectionActionPromisesDeletion() throws {
         let catalog = try LocalizationCatalog.load()
-        let forbidden = ["delete", "видал", "elimin", "apagar", "löschen", "supprim"]
+        let forbidden = [
+            "delete", "видал", "elimin", "apagar", "löschen", "supprim",
+            "usuń", "usun", "verwijder", "sil", "刪除"
+        ]
 
         for key in [Self.moveKey, "details.screenshotCleanupComponents.moving"] {
             for language in LocalizationCatalog.shippedLanguages {

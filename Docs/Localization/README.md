@@ -1,8 +1,13 @@
 # Localization
 
-Alike ships `en`, `uk`, `es-419`, `es`, `pt-BR`, `de` and `fr`. This document is the
-convention every future language follows; it was written as part of the Phase 6
-localization foundation (task 39) and extended when the Tier 1 languages landed (task 40).
+Alike ships `en`, `uk`, `es-419`, `es`, `pt-BR`, `de`, `fr`, `it`, `nl`, `pl`, `tr` and
+`zh-Hant` — twelve languages. This document is the convention every future language
+follows; it was written as part of the Phase 6 localization foundation (task 39) and
+extended when the Tier 1 (task 40) and Tier 3 (task 43) languages landed.
+
+`zh-Hans` is deliberately absent. Mainland China requires an ICP filing and a separate
+release track, which is a project rather than a translation pass. Russian is excluded by
+decision.
 
 ## Ownership
 
@@ -57,7 +62,7 @@ reach another module's catalog.
 
 **Plural forms live in the catalog as plural variations. Never in Swift `if`/`switch`.**
 
-`uk` needs `one`/`few`/`many`/`other`; Polish and Arabic need more. Branching in Swift
+`uk` and `pl` need `one`/`few`/`many`/`other`; Arabic needs more. Branching in Swift
 means every new language is a code change, and it silently produces wrong grammar
 until someone notices. The paywall copy in
 `Packages/Purchases/Sources/PurchasesUI/PremiumPresentation.swift` is the reference
@@ -87,7 +92,7 @@ and that every key carries every shipped language. The app target has the same t
 
 `LocalizationCatalog.untranslated` in each package is an allowlist for keys deliberately
 left English-only. Task 40 emptied the last one. Keep it empty: a key parked there ships
-as English in six languages without anything failing.
+as English in eleven languages without anything failing.
 
 These tests read the catalog file directly rather than calling `String(localized:)`,
 because **SwiftPM copies `.xcstrings` verbatim instead of compiling it** — under
@@ -102,23 +107,40 @@ bundle from the shipped catalog at test time, so it cannot drift from it.
 ## Adding a language
 
 1. Add the code to `knownRegions` in `Alike/Alike.xcodeproj/project.pbxproj`. Codes with
-   a region subtag need quoting there: `"es-419"`, `"pt-BR"`.
+   a region or script subtag need quoting there: `"es-419"`, `"pt-BR"`, `"zh-Hant"`.
 2. Add it to `LocalizationCatalog.shippedLanguages` in all eleven test files, and to
    `pluralCategories(for:)` if its CLDR categories are not `one`/`other`. Do this **first**:
    the suite then fails until the catalogs catch up, which is the behaviour you want.
 3. Add the localization to every package catalog plus the app catalog.
 
 No code changes should be needed. If a language forces one, the convention above has
-been broken somewhere.
+been broken somewhere. Task 43 added five languages and changed no production Swift —
+what it did change is copy that names the shipped languages
+(`userGuide.settingsAndReminders.analysis.language.body`), the per-locale expectation
+tables in `SelectionActionLabelTests` and `SubscriptionDisclosureTests`, and
+`Docs/legal/subscription-disclosure.md`. Budget for those four every time.
 
 Two things a translation pass has to get right, both of which the tests now catch:
 
 - **Positional specifiers.** `%1$lld` and `%2$@`, never bare `%d`/`%@`, in any string with
   more than one argument. Word order changes between languages; unpositioned specifiers
   silently render the wrong argument.
-- **Plural categories.** `es-419`, `es` and `de` use `one`/`other`; `pt-BR` and `fr` add
-  `many` for compact large numbers; `uk` needs all four. A missing category does not fail
-  the build — it falls back, which reads correctly right up until it doesn't.
+- **Plural categories.** `es-419`, `es`, `de`, `it`, `nl` and `tr` use `one`/`other`;
+  `pt-BR` and `fr` add `many` for compact large numbers; `uk` and `pl` need all four;
+  `zh-Hant` has a single `other`. A missing category does not fail the build — it falls
+  back, which reads correctly right up until it doesn't.
+
+  Two of these are worth stating plainly, because they are where a "just add a column"
+  translation pass goes wrong:
+
+  - **`pl` has four categories and the boundaries are not intuitive.** 22 and 25 are both
+    past five and still take different endings (`few` and `many`). `CleanupCategoryPluralTests`,
+    `ClusterDetailsPluralTests`, `CleanupToastPluralTests` and `PremiumPresentationTests`
+    each pin 1 / 2 / 5 / 22 / 25 against a compiled bundle for this reason.
+  - **`zh-Hant` has one category.** Declaring a `one`/`other` pair there is two spellings of
+    the same sentence, and the completeness test fails it. The single-category shape is also
+    the one most likely to fall back to the raw key, so it is resolved for real in tests
+    rather than only asserted in JSON.
 
 ## Not in the catalogs
 

@@ -56,7 +56,17 @@ SITE_TO_DOC = {
     "es": "ES",
     "pt-BR": "PT-BR",
 }
-DOC_ONLY = {"ES-419"}
+DOC_ONLY = {
+    "ES-419": "/es/ serves both Spanish listings",
+    # Tier 3 app locales (task 43). The app ships them; their site pages are task 44, so they
+    # are listed here rather than silently ignored — an unmapped doc block would otherwise look
+    # like parity holding for a locale nothing ever compared.
+    "IT": "site pages land in task 44",
+    "NL": "site pages land in task 44",
+    "PL": "site pages land in task 44",
+    "TR": "site pages land in task 44",
+    "ZH-HANT": "site pages land in task 44",
+}
 
 PARAGRAPHS = {
     "disclosure_renewal": "### Paragraph 1 — renewal and billing",
@@ -167,8 +177,8 @@ def main() -> int:
                 print(f"        doc : {want}")
                 print(f"        site: {got}")
 
-    for doc_key in sorted(DOC_ONLY):
-        print(f"note  {doc_key} has no site page by design — /es/ serves both Spanish listings")
+    for doc_key, why in sorted(DOC_ONLY.items()):
+        print(f"note  {doc_key} has no site page — {why}")
 
     print()
     if failures:

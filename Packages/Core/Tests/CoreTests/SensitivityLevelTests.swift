@@ -73,39 +73,46 @@ final class SensitivityLevelTests: XCTestCase {
     
     // MARK: - Display Name Tests
     
-    func testLowDisplayName() {
-        // Given: Low sensitivity
-        let level = SensitivityLevel.low
-        
-        // When: Getting display name
-        let displayName = level.displayName
-        
-        // Then: Should be "Low"
-        XCTAssertEqual(displayName, "Low", "Low level display name should be 'Low'")
+    /// `displayName` used to return English literals, which is what the Settings picker showed in
+    /// every language — found rendering as "Medium" in a Polish build during the task 43 walk. It
+    /// now resolves through the catalog, so the assertion is against a bundle compiled from the
+    /// shipped catalog rather than against the literal (`swift test` alone would return the key —
+    /// see `CompiledCatalogFixture`).
+    func testDisplayNamesResolveFromTheCatalog() throws {
+        let en = try CompiledCatalogFixture.bundle(language: "en")
+        let english = Locale(identifier: "en")
+
+        XCTAssertEqual(SensitivityLevel.low.displayName(bundle: en, locale: english), "Low")
+        XCTAssertEqual(SensitivityLevel.medium.displayName(bundle: en, locale: english), "Medium")
+        XCTAssertEqual(SensitivityLevel.high.displayName(bundle: en, locale: english), "High")
     }
-    
-    func testMediumDisplayName() {
-        // Given: Medium sensitivity
-        let level = SensitivityLevel.medium
-        
-        // When: Getting display name
-        let displayName = level.displayName
-        
-        // Then: Should be "Medium"
-        XCTAssertEqual(displayName, "Medium", "Medium level display name should be 'Medium'")
+
+    func testDisplayNamesAreTranslated() throws {
+        let pl = try CompiledCatalogFixture.bundle(language: "pl")
+        let polish = Locale(identifier: "pl")
+
+        XCTAssertEqual(SensitivityLevel.low.displayName(bundle: pl, locale: polish), "Niska")
+        XCTAssertEqual(SensitivityLevel.medium.displayName(bundle: pl, locale: polish), "Średnia")
+        XCTAssertEqual(SensitivityLevel.high.displayName(bundle: pl, locale: polish), "Wysoka")
     }
-    
-    func testHighDisplayName() {
-        // Given: High sensitivity
-        let level = SensitivityLevel.high
-        
-        // When: Getting display name
-        let displayName = level.displayName
-        
-        // Then: Should be "High"
-        XCTAssertEqual(displayName, "High", "High level display name should be 'High'")
+
+    /// Every level has to reach a catalog key. A level added later without one would fall back to
+    /// its key, which is what this catches.
+    func testEveryLevelHasACatalogKey() throws {
+        let catalog = try LocalizationCatalog.load()
+
+        for level in SensitivityLevel.allCases {
+            let key = "core.sensitivityLevel.\(level.rawValue)"
+            XCTAssertNotNil(catalog.strings[key], "no catalog key for \(level.rawValue)")
+            for language in LocalizationCatalog.shippedLanguages {
+                XCTAssertNotNil(
+                    try catalog.localizations(of: key)[language],
+                    "\(key) is missing \(language)"
+                )
+            }
+        }
     }
-    
+
     // MARK: - Raw Value Tests
     
     func testRawValues() {

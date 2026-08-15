@@ -46,6 +46,36 @@
             "state": "translated",
             "value": "Alike Pro"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
         }
       }
     },
@@ -92,6 +122,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike Pro est actif"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro è attivo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro is actief"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro jest aktywne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro etkin"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro 已啟用"
           }
         }
       }
@@ -140,6 +200,36 @@
             "state": "translated",
             "value": "Nettoyez toutes les photos sélectionnées avec Pro"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulisci tutte le foto selezionate con Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruim alle geselecteerde foto's op met Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uporządkuj wszystkie wybrane zdjęcia dzięki Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili tüm fotoğrafları Pro ile temizle"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Pro 清理所有已選取的照片"
+          }
         }
       }
     },
@@ -186,6 +276,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Restaurer les achats"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristina acquisti"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herstel aankopen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przywróć zakupy"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın Alınanları Geri Yükle"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回復購買項目"
           }
         }
       }
@@ -338,6 +458,102 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Examinez et supprimez %1$lld photos sélectionnées en une seule action, avec %2$@ récupérables estimés."
+                }
+              }
+            }
+          }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Controlla e rimuovi %1$lld foto selezionata in un'unica azione, con %2$@ recuperabili stimati."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Controlla e rimuovi %1$lld foto selezionate in un'unica azione, con %2$@ recuperabili stimati."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Bekijk en verwijder %1$lld geselecteerde foto in één actie, met %2$@ geschat vrij te maken."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Bekijk en verwijder %1$lld geselecteerde foto's in één actie, met %2$@ geschat vrij te maken."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przejrzyj i usuń %1$lld wybrane zdjęcia w jednej operacji, odzyskując szacunkowo %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przejrzyj i usuń %1$lld wybranych zdjęć w jednej operacji, odzyskując szacunkowo %2$@."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przejrzyj i usuń %1$lld wybrane zdjęcie w jednej operacji, odzyskując szacunkowo %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przejrzyj i usuń %1$lld wybranego zdjęcia w jednej operacji, odzyskując szacunkowo %2$@."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld fotoğrafı tek bir işlemde gözden geçirip kaldır, tahmini %2$@ geri kazan."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld fotoğrafı tek bir işlemde gözden geçirip kaldır, tahmini %2$@ geri kazan."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "一次操作即可檢視並移除所選的 %1$lld 張照片，預估可回收 %2$@。"
                 }
               }
             }
@@ -497,6 +713,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La scansione ha trovato %1$lld occasione di pulizia. Sblocca Alike Pro per fare pulizia più in fretta."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La scansione ha trovato %1$lld occasioni di pulizia. Sblocca Alike Pro per fare pulizia più in fretta."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Je scan vond %1$lld opruimkans. Ontgrendel Alike Pro om sneller op te ruimen."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Je scan vond %1$lld opruimkansen. Ontgrendel Alike Pro om sneller op te ruimen."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazje do porządków. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazji do porządków. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazję do porządków. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazji do porządków. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Taraman %1$lld temizlik fırsatı buldu. Daha hızlı temizlemek için Alike Pro'nun kilidini aç."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Taraman %1$lld temizlik fırsatı buldu. Daha hızlı temizlemek için Alike Pro'nun kilidini aç."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "這次掃描找到 %1$lld 項可清理的項目。解鎖 Alike Pro，清理更快速。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -652,6 +964,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La scansione ha trovato %1$lld occasione di pulizia con %2$@ recuperabili stimati. Sblocca Alike Pro per fare pulizia più in fretta."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La scansione ha trovato %1$lld occasioni di pulizia con %2$@ recuperabili stimati. Sblocca Alike Pro per fare pulizia più in fretta."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Je scan vond %1$lld opruimkans met %2$@ geschat vrij te maken. Ontgrendel Alike Pro om sneller op te ruimen."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Je scan vond %1$lld opruimkansen met %2$@ geschat vrij te maken. Ontgrendel Alike Pro om sneller op te ruimen."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazje do porządków z szacunkowo %2$@ do odzyskania. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazji do porządków z szacunkowo %2$@ do odzyskania. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazję do porządków z szacunkowo %2$@ do odzyskania. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Skanowanie znalazło %1$lld okazji do porządków z szacunkowo %2$@ do odzyskania. Odblokuj Alike Pro, aby sprzątać szybciej."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Taraman, tahmini %2$@ geri kazanımla %1$lld temizlik fırsatı buldu. Daha hızlı temizlemek için Alike Pro'nun kilidini aç."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Taraman, tahmini %2$@ geri kazanımla %1$lld temizlik fırsatı buldu. Daha hızlı temizlemek için Alike Pro'nun kilidini aç."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "這次掃描找到 %1$lld 項可清理的項目，預估可回收 %2$@。解鎖 Alike Pro，清理更快速。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -698,6 +1106,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choisissez le jour et l’heure du rappel hebdomadaire qui vous conviennent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli il giorno e l'ora del promemoria settimanale che si adattano alla tua routine."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kies de dag en tijd voor de wekelijkse herinnering die bij jouw ritme passen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz dzień i godzinę cotygodniowego przypomnienia, które pasują do Twojego rytmu."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rutinine uyan haftalık anımsatıcı gününü ve saatini seç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇符合你作息的每週提醒日期與時間。"
           }
         }
       }
@@ -746,6 +1184,36 @@
             "state": "translated",
             "value": "Trouvez plus vite les photos qui comptent"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trova più in fretta le foto che contano"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vind sneller de foto's die ertoe doen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szybciej znajduj ważne zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önemli fotoğrafları daha hızlı bul"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更快找到重要的照片"
+          }
         }
       }
     },
@@ -792,6 +1260,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vous avez trouvé vos premières possibilités de nettoyage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai trovato le tue prime occasioni di pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je hebt je eerste opruimkansen gevonden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masz swoje pierwsze okazje do porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlk temizlik fırsatlarını buldun"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你找到了第一批可清理的項目"
           }
         }
       }
@@ -840,6 +1338,36 @@
             "state": "translated",
             "value": "La version gratuite comprend %1$d analyses par mois civil. Il vous en reste %2$d, et le quota est réinitialisé le %3$@."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La versione gratuita include %1$d scansioni per mese di calendario. Te ne restano %2$d e il limite si azzera il %3$@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis bevat %1$d scans per kalendermaand. Je hebt er nog %2$d en het tegoed wordt op %3$@ vernieuwd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wersja darmowa obejmuje %1$d skanowań w miesiącu kalendarzowym. Pozostało Ci %2$d, a limit odnowi się %3$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ücretsiz sürüm takvim ayı başına %1$d tarama içerir. %2$d tarama hakkın kaldı ve hakkın %3$@ tarihinde sıfırlanır."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次，額度將於 %3$@ 重設。"
+          }
         }
       }
     },
@@ -886,6 +1414,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "La version gratuite comprend %1$d analyses par mois civil. Il vous en reste %2$d."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La versione gratuita include %1$d scansioni per mese di calendario. Te ne restano %2$d."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis bevat %1$d scans per kalendermaand. Je hebt er nog %2$d."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wersja darmowa obejmuje %1$d skanowań w miesiącu kalendarzowym. Pozostało Ci %2$d."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ücretsiz sürüm takvim ayı başına %1$d tarama içerir. %2$d tarama hakkın kaldı."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次。"
           }
         }
       }
@@ -934,6 +1492,36 @@
             "state": "translated",
             "value": "La version gratuite comprend trois analyses par mois civil. Pro garde vos résultats à jour à chaque modification de votre photothèque."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La versione gratuita include tre scansioni per mese di calendario. Pro mantiene aggiornati i risultati della pulizia ogni volta che la libreria cambia."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis bevat drie scans per kalendermaand. Pro houdt je opruimresultaten actueel zodra je bibliotheek verandert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wersja darmowa obejmuje trzy skanowania w miesiącu kalendarzowym. Pro utrzymuje wyniki porządków aktualne przy każdej zmianie biblioteki."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ücretsiz sürüm takvim ayı başına üç tarama içerir. Pro, kitaplığın her değiştiğinde temizlik sonuçlarını güncel tutar."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免費版每個日曆月包含三次掃描。只要圖庫有變動，Pro 就會讓清理結果保持最新。"
+          }
         }
       }
     },
@@ -980,6 +1568,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Analysez sans limite mensuelle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua a scansionare senza limiti mensili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blijf scannen zonder maandlimiet"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skanuj bez miesięcznych limitów"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aylık sınır olmadan taramaya devam et"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無每月次數上限，隨時掃描"
           }
         }
       }
@@ -1028,6 +1646,36 @@
             "state": "translated",
             "value": "Un nettoyage à votre rythme"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adatta la pulizia ai tuoi orari"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laat het opruimen in je agenda passen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopasuj porządki do swojego planu dnia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizliği kendi programına uydur"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "讓清理配合你的行程"
+          }
         }
       }
     },
@@ -1074,6 +1722,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nettoyez plus vite avec Alike Pro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rendi ogni pulizia più veloce con Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maak elke opruiming sneller met Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przyspiesz każde porządki dzięki Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro ile her temizliği hızlandır"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Alike Pro，每次清理都更快"
           }
         }
       }
@@ -1122,6 +1800,36 @@
             "state": "translated",
             "value": "Supprimez plusieurs photos sélectionnées en une seule action sécurisée et confirmée."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi più foto selezionate in un'unica azione sicura e confermata."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwijder meerdere geselecteerde foto's in één veilige, bevestigde actie."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usuwaj wiele wybranych zdjęć w jednej bezpiecznej, potwierdzonej operacji."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili birden çok fotoğrafı tek bir güvenli ve onaylı işlemde kaldır."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在一次安全且經過確認的操作中移除多張已選取的照片。"
+          }
         }
       }
     },
@@ -1168,6 +1876,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Examinez plus vite les photos probablement floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla più in fretta le foto probabilmente sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk waarschijnlijk wazige foto's sneller"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szybciej przeglądaj prawdopodobnie rozmyte zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulanık olabilecek fotoğrafları daha hızlı gözden geçir"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更快檢視可能模糊的照片"
           }
         }
       }
@@ -1216,6 +1954,36 @@
             "state": "translated",
             "value": "Examinez les photos probablement de mauvaise qualité avant de décider quoi garder ou supprimer."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla gli scatti probabilmente di bassa qualità prima di decidere cosa tenere o rimuovere."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk opnamen van waarschijnlijk lage kwaliteit voordat je beslist wat je houdt of verwijdert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejrzyj ujęcia prawdopodobnie niskiej jakości, zanim zdecydujesz, co zachować, a co usunąć."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neyi saklayıp neyi kaldıracağına karar vermeden önce düşük kaliteli olabilecek kareleri gözden geçir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在決定保留或移除之前，先檢視可能品質不佳的照片。"
+          }
         }
       }
     },
@@ -1262,6 +2030,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers Supprimés récemment."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla gli screenshot tutti insieme e scegli con precisione cosa spostare in «Eliminati di recente»."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk schermafbeeldingen samen en kies precies wat naar 'Recent verwijderd' gaat."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejrzyj zrzuty ekranu razem i wybierz dokładnie to, co ma trafić do albumu „Ostatnio usunięte”."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntülerini birlikte gözden geçir ve Son Silinenler'e tam olarak neyin taşınacağını seç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一起檢視螢幕快照，精準選擇要移到「最近刪除」的項目。"
           }
         }
       }
@@ -1310,6 +2108,36 @@
             "state": "translated",
             "value": "Examinez les suggestions de nettoyage intelligent en gardant la main sur chaque suppression."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla i suggerimenti di pulizia intelligenti mantenendo il pieno controllo di ogni eliminazione."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk slimme opruimsuggesties terwijl je volledige controle houdt over elke verwijdering."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przeglądaj inteligentne propozycje porządków, zachowując pełną kontrolę nad każdym usunięciem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her silme işleminin tam kontrolü sende kalırken akıllı temizlik önerilerini gözden geçir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檢視智慧清理建議，同時完全掌控每一次刪除。"
+          }
         }
       }
     },
@@ -1356,6 +2184,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Examinez cette catégorie intelligente et récupérez environ %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla questa categoria intelligente e recupera circa %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk deze slimme categorie en maak naar schatting %@ vrij."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejrzyj tę inteligentną kategorię i odzyskaj szacunkowo %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu akıllı kategoriyi gözden geçir ve tahmini %@ geri kazan."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檢視這個智慧類別，預估可回收 %@。"
           }
         }
       }
@@ -1404,6 +2262,36 @@
             "state": "translated",
             "value": "Transformez vos captures d’écran en espace libre"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trasforma il disordine degli screenshot in spazio libero"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet rommelige schermafbeeldingen om in vrije ruimte"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zamień bałagan ze zrzutów ekranu w wolne miejsce"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü kalabalığını boş alana dönüştür"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把雜亂的螢幕快照變成可用空間"
+          }
         }
       }
     },
@@ -1450,6 +2338,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Débloquez les filtres par statut, taille de groupe et favoris pour nettoyer plus vite."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca i filtri per stato di controllo, dimensione del gruppo e preferiti per una pulizia più rapida."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel filters voor beoordelingsstatus, groepsgrootte en favorieten om sneller op te ruimen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj filtry stanu przeglądu, rozmiaru grupy i ulubionych, aby sprzątać szybciej."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha hızlı temizlik için gözden geçirme durumu, grup boyutu ve favoriler filtrelerinin kilidini aç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖檢視狀態、群組大小與最愛篩選條件，清理更快速。"
           }
         }
       }
@@ -1498,6 +2416,36 @@
             "state": "translated",
             "value": "Débloquez les analyses illimitées, les catégories intelligentes, les filtres avancés, le nettoyage groupé et les rappels personnalisés."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca scansioni illimitate, categorie intelligenti, filtri avanzati, pulizia in blocco e promemoria personalizzati."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel onbeperkt scannen, slimme categorieën, geavanceerde filters, bulkopruiming en aangepaste herinneringen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj nieograniczone skanowania, inteligentne kategorie, zaawansowane filtry, porządki zbiorcze i własne przypomnienia."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız taramaların, akıllı kategorilerin, gelişmiş filtrelerin, toplu temizliğin ve özel anımsatıcıların kilidini aç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖無限次掃描、智慧類別、進階篩選、批次清理與自訂提醒。"
+          }
         }
       }
     },
@@ -1544,6 +2492,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Débloquez %@ avec Alike Pro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca %@ con Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel %@ met Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj %@ dzięki Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro ile %@ kilidini aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Alike Pro 解鎖%@"
           }
         }
       }
@@ -1592,6 +2570,36 @@
             "state": "translated",
             "value": "%1$@ • Actif jusqu’au %2$@"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Attivo fino al %2$@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Actief tot en met %2$@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Aktywne do %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • %2$@ tarihine kadar etkin"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • 有效期至 %2$@"
+          }
         }
       }
     },
@@ -1638,6 +2646,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "État d’Alike Pro indisponible"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stato di Alike Pro non disponibile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status van Alike Pro niet beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stan Alike Pro niedostępny"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro durumu kullanılamıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法取得 Alike Pro 狀態"
           }
         }
       }
@@ -1686,6 +2724,36 @@
             "state": "translated",
             "value": "Vérification d’Alike Pro"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica di Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro wordt gecontroleerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprawdzanie Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro denetleniyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在檢查 Alike Pro"
+          }
         }
       }
     },
@@ -1732,6 +2800,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vérification de l’état de l’abonnement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica dello stato dell'abbonamento"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementsstatus wordt gecontroleerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprawdzanie stanu subskrypcji"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelik durumu denetleniyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在檢查訂閱狀態"
           }
         }
       }
@@ -1780,6 +2878,36 @@
             "state": "translated",
             "value": "Confirmation de l’état de votre abonnement App Store."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conferma dello stato del tuo abbonamento su App Store."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je App Store-abonnementsstatus wordt bevestigd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potwierdzanie stanu Twojej subskrypcji w App Store."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store abonelik durumun doğrulanıyor."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在確認你的 App Store 訂閱狀態。"
+          }
         }
       }
     },
@@ -1826,6 +2954,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Continuer avec une photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua con una foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ga verder met één foto"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontynuuj z jednym zdjęciem"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek fotoğrafla sürdür"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以一張照片繼續"
           }
         }
       }
@@ -1874,6 +3032,36 @@
             "state": "translated",
             "value": "Votre accès actuel est conservé. Ouvrez les formules pour recharger les détails de l’abonnement."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo accesso attuale è mantenuto. Apri i piani per riprovare a caricare i dettagli dell'abbonamento."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je huidige toegang blijft behouden. Open de abonnementen om de gegevens opnieuw te laden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twój obecny dostęp zostaje zachowany. Otwórz plany, aby ponowić wczytywanie szczegółów subskrypcji."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut erişimin korunuyor. Abonelik ayrıntılarını yeniden yüklemek için planları aç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你目前的權限不受影響。打開方案以重新載入訂閱詳細資訊。"
+          }
         }
       }
     },
@@ -1917,6 +3105,36 @@
           }
         },
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Pro"
@@ -1968,6 +3186,36 @@
             "state": "translated",
             "value": "Nécessite Alike Pro"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richiede Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vereist Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wymaga Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro gerektirir"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "須有 Alike Pro"
+          }
         }
       }
     },
@@ -2014,6 +3262,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$d sélectionnées • %2$@ récupérables estimés"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d selezionate • %2$@ recuperabili stimati"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d geselecteerd • %2$@ geschat vrij te maken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrano %1$d • szacunkowo %2$@ do odzyskania"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d seçildi • tahmini %2$@ geri kazanılabilir"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選取 %1$d 張 • 預估可回收 %2$@"
           }
         }
       }
@@ -2062,6 +3340,36 @@
             "state": "translated",
             "value": "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca scansioni illimitate, pulizia intelligente e azioni in blocco."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel onbeperkt scannen, slim opruimen en bulkacties."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj nieograniczone skanowania, inteligentne porządki i operacje zbiorcze."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız taramaların, akıllı temizliğin ve toplu işlemlerin kilidini aç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖無限次掃描、智慧清理與批次操作。"
+          }
         }
       }
     },
@@ -2108,6 +3416,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passer à Alike Pro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passa ad Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade naar Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejdź na Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro'ya Yükselt"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "升級至 Alike Pro"
           }
         }
       }
@@ -2156,6 +3494,36 @@
             "state": "translated",
             "value": "Voir Alike Pro"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scopri Alike Pro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk Alike Pro"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz Alike Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro'yu Gör"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看 Alike Pro"
+          }
         }
       }
     },
@@ -2202,6 +3570,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voir les formules"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi i piani"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk abonnementen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz plany"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planları gör"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看方案"
           }
         }
       }
@@ -2250,6 +3648,36 @@
             "state": "translated",
             "value": "Filtres avancés et nettoyage groupé"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtri avanzati e pulizia in blocco"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geavanceerde filters en bulkopruiming"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaawansowane filtry i porządki zbiorcze"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelişmiş filtreler ve toplu temizlik"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "進階篩選與批次清理"
+          }
         }
       }
     },
@@ -2296,6 +3724,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike Free comprend toujours trois analyses par mois civil, l’examen des résultats existants et le nettoyage photo par photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free include comunque tre scansioni ogni mese di calendario, il controllo dei risultati esistenti e la pulizia di una foto alla volta."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free bevat nog steeds drie scans per kalendermaand, het bekijken van bestaande resultaten en het opruimen van één foto."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free nadal obejmuje trzy skanowania w każdym miesiącu kalendarzowym, przeglądanie istniejących wyników i porządki po jednym zdjęciu."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free her takvim ayında yine üç tarama, mevcut sonuçların gözden geçirilmesi ve tek fotoğrafla temizlik içerir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free 仍包含每個日曆月三次掃描、檢視現有結果，以及單張照片清理。"
           }
         }
       }
@@ -2344,6 +3802,36 @@
             "state": "translated",
             "value": "Alike Pro est désormais actif."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro è ora attivo."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro is nu actief."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro jest już aktywne."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro artık etkin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro 已啟用。"
+          }
         }
       }
     },
@@ -2390,6 +3878,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Votre abonnement Alike Pro a été restauré."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo abbonamento Alike Pro è stato ripristinato."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je Alike Pro-abonnement is hersteld."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twoja subskrypcja Alike Pro została przywrócona."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro aboneliğin geri yüklendi."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已回復你的 Alike Pro 訂閱項目。"
           }
         }
       }
@@ -2438,6 +3956,36 @@
             "state": "translated",
             "value": "Facturé mensuellement"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Addebito mensile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maandelijks gefactureerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rozliczenie miesięczne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aylık faturalandırılır"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每月計費"
+          }
         }
       }
     },
@@ -2484,6 +4032,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Facturé annuellement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Addebito annuale"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jaarlijks gefactureerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rozliczenie roczne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık faturalandırılır"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每年計費"
           }
         }
       }
@@ -2532,6 +4110,36 @@
             "state": "translated",
             "value": "Vous pouvez continuer à utiliser Alike Free tant que les formules d’abonnement sont indisponibles."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puoi continuare a usare Alike Free mentre i piani di abbonamento non sono disponibili."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je kunt Alike Free blijven gebruiken zolang de abonnementen niet beschikbaar zijn."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Możesz nadal korzystać z Alike Free, dopóki plany subskrypcji są niedostępne."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelik planları kullanılamazken Alike Free'yi kullanmayı sürdürebilirsin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "訂閱方案無法取得期間，你可以繼續使用 Alike Free。"
+          }
         }
       }
     },
@@ -2578,6 +4186,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vérifiez votre connexion et rechargez les formules d’abonnement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla la connessione e prova a caricare di nuovo i piani di abbonamento."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controleer je verbinding en probeer de abonnementen opnieuw te laden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprawdź połączenie i spróbuj ponownie wczytać plany subskrypcji."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantını denetle ve abonelik planlarını yeniden yüklemeyi dene."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請檢查網路連線，然後再次載入訂閱方案。"
           }
         }
       }
@@ -2626,6 +4264,36 @@
             "state": "translated",
             "value": "Un rappel de nettoyage à votre rythme"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un promemoria di pulizia quando vuoi tu"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Een opruimherinnering op jouw moment"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przypomnienie o porządkach w Twoim rytmie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kendi programına göre bir temizlik anımsatıcısı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "依你的時間安排的清理提醒"
+          }
         }
       }
     },
@@ -2672,6 +4340,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fermer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiudi"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluit"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zamknij"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉"
           }
         }
       }
@@ -2720,6 +4418,36 @@
             "state": "translated",
             "value": "Continuer avec %@"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua con %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ga door met %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontynuuj z %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ile sürdür"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "繼續使用 %@"
+          }
         }
       }
     },
@@ -2766,6 +4494,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chargement des formules App Store…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caricamento dei piani App Store…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store-abonnementen laden…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wczytywanie planów App Store…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store planları yükleniyor…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在載入 App Store 方案…"
           }
         }
       }
@@ -2814,6 +4572,36 @@
             "state": "translated",
             "value": "Aucun abonnement Alike Pro actif n’a été trouvé."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun abbonamento Alike Pro attivo trovato."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er is geen actief Alike Pro-abonnement gevonden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono aktywnej subskrypcji Alike Pro."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etkin bir Alike Pro aboneliği bulunamadı."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到使用中的 Alike Pro 訂閱項目。"
+          }
         }
       }
     },
@@ -2860,6 +4648,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Payez mois par mois"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paghi un mese alla volta"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betaal per maand"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Płacisz za jeden miesiąc naraz"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayda bir öde"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按月付款"
           }
         }
       }
@@ -2908,6 +4726,36 @@
             "state": "translated",
             "value": "Les formules ne sont pas encore disponibles"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I piani non sono ancora disponibili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementen zijn nog niet beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plany nie są jeszcze dostępne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planlar henüz kullanılamıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "方案尚未推出"
+          }
         }
       }
     },
@@ -2954,6 +4802,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impossible de charger les formules"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossibile caricare i piani"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementen konden niet worden geladen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się wczytać planów"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planlar yüklenemedi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法載入方案"
           }
         }
       }
@@ -3002,6 +4880,36 @@
             "state": "translated",
             "value": "Politique de confidentialité"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informativa sulla privacy"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacybeleid"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polityka prywatności"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik Politikası"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隱私權政策"
+          }
         }
       }
     },
@@ -3048,6 +4956,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Votre achat est en attente de validation par l’App Store."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo acquisto è in attesa dell'approvazione di App Store."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je aankoop wacht op goedkeuring van de App Store."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twój zakup oczekuje na zatwierdzenie przez App Store."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın alman App Store onayını bekliyor."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的購買項目正在等待 App Store 核准。"
           }
         }
       }
@@ -3096,6 +5034,36 @@
             "state": "translated",
             "value": "Achat en cours…"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acquisto in corso…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bezig met kopen…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trwa zakup…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın alınıyor…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在購買…"
+          }
         }
       }
     },
@@ -3142,6 +5110,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Recommandé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consigliato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aanbevolen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polecane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önerilen"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "推薦"
           }
         }
       }
@@ -3190,6 +5188,36 @@
             "state": "translated",
             "value": "Réessayer"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riprova"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opnieuw"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponów"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Dene"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重試"
+          }
         }
       }
     },
@@ -3236,6 +5264,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Économisez %d %% par rapport au mensuel"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risparmia il %d%% rispetto al mensile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bespaar %d%% ten opzichte van maandelijks"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oszczędzasz %d%% w porównaniu z planem miesięcznym"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aylık plana kıyasla %%%d tasarruf et"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "比每月方案省下 %d%%"
           }
         }
       }
@@ -3284,6 +5342,36 @@
             "state": "translated",
             "value": "Économisez avec la facturation annuelle"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risparmia con l'addebito annuale"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bespaar met jaarlijkse facturering"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oszczędzaj przy rozliczeniu rocznym"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık faturalandırmayla tasarruf et"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇年繳更省"
+          }
         }
       }
     },
@@ -3330,6 +5418,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sélectionnez une formule d’abonnement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona un piano di abbonamento"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteer een abonnement"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz plan subskrypcji"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir abonelik planı seç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇訂閱方案"
           }
         }
       }
@@ -3378,6 +5496,36 @@
             "state": "translated",
             "value": "Sélectionner cette formule d’abonnement"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona questo piano di abbonamento"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteer dit abonnement"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz ten plan subskrypcji"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu abonelik planını seç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇這個訂閱方案"
+          }
         }
       }
     },
@@ -3424,6 +5572,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Catégories intelligentes de captures d’écran et de photos floues"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categorie intelligenti per screenshot e foto sfocate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slimme categorieën voor schermafbeeldingen en wazige foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inteligentne kategorie zrzutów ekranu i rozmytych zdjęć"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı ekran görüntüsü ve bulanık fotoğraf kategorileri"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照與模糊照片的智慧類別"
           }
         }
       }
@@ -3472,6 +5650,36 @@
             "state": "translated",
             "value": "Formules d’abonnement indisponibles"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Piani di abbonamento non disponibili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementen niet beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plany subskrypcji niedostępne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelik planları kullanılamıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法取得訂閱方案"
+          }
         }
       }
     },
@@ -3518,6 +5726,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les abonnements sont renouvelés automatiquement, sauf résiliation au moins 24 heures avant la fin de la période en cours. Le paiement est débité de votre compte Apple."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli abbonamenti si rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del periodo in corso. Il pagamento viene addebitato sul tuo account Apple."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu. Płatność jest pobierana z Twojego konta Apple."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir. Ödeme Apple Hesabından tahsil edilir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂。款項將向你的 Apple 帳戶收取。"
           }
         }
       }
@@ -3566,6 +5804,36 @@
             "state": "translated",
             "value": "Conditions d’utilisation"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termini d'uso"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gebruiksvoorwaarden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warunki korzystania"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanım Koşulları"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用條款"
+          }
         }
       }
     },
@@ -3612,6 +5880,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Analyses illimitées de la photothèque"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scansioni illimitate della libreria"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onbeperkt je bibliotheek scannen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieograniczone skanowania biblioteki"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız kitaplık taraması"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無限次圖庫掃描"
           }
         }
       }
@@ -3660,6 +5958,36 @@
             "state": "translated",
             "value": "Les analyses illimitées et tous les outils de nettoyage Pro sont débloqués."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scansioni illimitate e tutti gli strumenti di pulizia Pro sono sbloccati."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onbeperkt scannen en alle Pro-opruimfuncties zijn ontgrendeld."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieograniczone skanowania i wszystkie narzędzia porządkowe Pro są odblokowane."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız taramaların ve tüm Pro temizlik araçlarının kilidi açıldı."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已解鎖無限次掃描與所有 Pro 清理工具。"
+          }
         }
       }
     },
@@ -3706,6 +6034,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nous n’avons pas pu finaliser votre achat. Vérifiez votre connexion et réessayez."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non siamo riusciti a completare l'acquisto. Controlla la connessione e riprova."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We konden je aankoop niet voltooien. Controleer je verbinding en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało nam się dokończyć zakupu. Sprawdź połączenie i spróbuj ponownie."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın almanı tamamlayamadık. Bağlantını denetleyip yeniden dene."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法完成你的購買。請檢查網路連線後再試一次。"
           }
         }
       }
@@ -3754,6 +6112,36 @@
             "state": "translated",
             "value": "Nous n’avons pas pu restaurer vos achats. Vérifiez votre connexion et réessayez."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non siamo riusciti a ripristinare i tuoi acquisti. Controlla la connessione e riprova."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We konden je aankopen niet herstellen. Controleer je verbinding en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało nam się przywrócić Twoich zakupów. Sprawdź połączenie i spróbuj ponownie."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın aldıklarını geri yükleyemedik. Bağlantını denetleyip yeniden dene."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法回復你的購買項目。請檢查網路連線後再試一次。"
+          }
         }
       }
     },
@@ -3800,6 +6188,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "La formule annuelle comprend un essai gratuit de 7 jours pour les nouveaux abonnés éligibles. La facturation commence à la fin de l’essai, sauf résiliation au moins 24 heures avant. Vous pouvez gérer ou résilier votre abonnement à tout moment dans les Réglages iOS."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il piano annuale include una prova gratuita di 7 giorni per i nuovi abbonati idonei. La fatturazione inizia al termine della prova, a meno che tu non annulli almeno 24 ore prima. Puoi gestire o annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen. De facturering begint zodra de proefperiode afloopt, tenzij je minstens 24 uur van tevoren opzegt. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme içerir. Deneme bitmeden en az 24 saat önce iptal etmezsen faturalandırma deneme sona erdiğinde başlar. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir veya iptal edebilirsin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"
           }
         }
       }

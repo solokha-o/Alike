@@ -580,39 +580,19 @@ public struct SettingsView: View {
     }
 
     private var cleanupReminderFooterText: String {
-        if hasCleanupReminderAccess {
-            return SettingsL10n.Main.premiumLetsChooseCustomWeekly
-        }
-
-        return SettingsL10n.Main.freeRemindersUseSundayAt
+        CleanupReminderCopy.footerText(
+            hasPremiumAccess: hasCleanupReminderAccess,
+            calendar: .current,
+            locale: .current
+        )
     }
 
     private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
-        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-        components.hour = schedule.hour
-        components.minute = schedule.minute
-        return Calendar.current.date(from: components) ?? Date()
+        CleanupReminderCopy.reminderTimeDate(for: schedule, calendar: .current)
     }
 
     private func scheduleDescription(_ schedule: CleanupReminderSchedule) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = .current
-        let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
-        let weekdayIndex = max(1, min(schedule.weekday, weekdaySymbols.count)) - 1
-        let weekday = weekdaySymbols.isEmpty ? "" : weekdaySymbols[weekdayIndex]
-        let timeDate = reminderTimeDate(for: schedule)
-
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-
-        // The separator between the day and the time is a word, and it is not "at" outside
-        // English — de "um", fr "à", pt-BR "às". It has to come from the catalog like any
-        // other copy.
-        return String(
-            format: SettingsL10n.Main.reminderScheduleWeekdayTime,
-            weekday,
-            formatter.string(from: timeDate)
-        )
+        CleanupReminderCopy.scheduleDescription(schedule, calendar: .current, locale: .current)
     }
 
     #if canImport(UIKit)

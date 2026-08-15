@@ -46,6 +46,36 @@
             "state": "translated",
             "value": "Alike célèbre la meilleure photo"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike festeggia lo scatto migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike viert de beste opname"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike świętuje najlepsze ujęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike en iyi kareyi kutluyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 為最佳照片喝采"
+          }
         }
       }
     },
@@ -92,6 +122,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Économie estimée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risparmio stimato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschatte besparing"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szacowana oszczędność"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahmini Kazanç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預估可省空間"
           }
         }
       }
@@ -140,6 +200,36 @@
             "state": "translated",
             "value": "Organisation des photos"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Organizzazione delle foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto's ordenen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządkowanie zdjęć"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraflar Düzenleniyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在整理照片"
+          }
         }
       }
     },
@@ -186,6 +276,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photos sélectionnées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto selezionate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geselecteerde foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili Fotoğraflar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選取的照片"
           }
         }
       }
@@ -234,6 +354,36 @@
             "state": "translated",
             "value": "Alike compare les photos similaires"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike confronta foto simili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike vergelijkt vergelijkbare foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike porównuje podobne zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike benzer fotoğrafları karşılaştırıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 正在比較相似照片"
+          }
         }
       }
     },
@@ -280,6 +430,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les détails du groupe sont disponibles sur iOS."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I dettagli del gruppo sono disponibili su iOS."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groepsgegevens zijn beschikbaar op iOS."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szczegóły grupy są dostępne w systemie iOS."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grup ayrıntıları iOS'ta kullanılabilir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "群組詳細資訊可在 iOS 上使用。"
           }
         }
       }
@@ -328,6 +508,36 @@
             "state": "translated",
             "value": "Créée"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creata"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aangemaakt"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utworzono"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oluşturulma"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建立時間"
+          }
         }
       }
     },
@@ -374,6 +584,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dates"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datums"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daty"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarihler"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日期"
           }
         }
       }
@@ -530,6 +770,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld foto selezionata in «Eliminati di recente»?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Spostare %1$lld foto selezionate in «Eliminati di recente»?"
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde foto naar 'Recent verwijderd' verplaatsen?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerde foto's naar 'Recent verwijderd' verplaatsen?"
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrane zdjęcia do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranych zdjęć do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybrane zdjęcie do albumu „Ostatnio usunięte”?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieść %1$lld wybranego zdjęcia do albumu „Ostatnio usunięte”?"
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld fotoğraf Son Silinenler'e taşınsın mı?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Seçili %1$lld fotoğraf Son Silinenler'e taşınsın mı?"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "將所選的 %1$lld 張照片移到「最近刪除」？"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -576,6 +912,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Effet de profondeur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effetto profondità"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diepte-effect"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Efekt głębi"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Derinlik Efekti"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "景深效果"
           }
         }
       }
@@ -624,6 +990,36 @@
             "state": "translated",
             "value": "Détails"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dettagli"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szczegóły"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrıntılar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳細資訊"
+          }
         }
       }
     },
@@ -670,6 +1066,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fine"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gereed"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gotowe"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitti"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
           }
         }
       }
@@ -718,6 +1144,36 @@
             "state": "translated",
             "value": "Touchez deux fois pour retirer cette photo de la sélection de nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca due volte per togliere questa foto dalla selezione di pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tik twee keer om deze foto uit de opruimselectie te halen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stuknij dwukrotnie, aby usunąć to zdjęcie z wyboru do porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu fotoğrafı temizlik seçiminden çıkarmak için iki kez dokun"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點兩下以將這張照片移出清理選取範圍"
+          }
         }
       }
     },
@@ -764,6 +1220,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Touchez deux fois pour rouvrir ce groupe et l’examiner"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca due volte per riaprire questo gruppo e controllarlo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tik twee keer om deze groep opnieuw te bekijken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stuknij dwukrotnie, aby ponownie otworzyć tę grupę do przeglądu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu grubu gözden geçirmek üzere yeniden açmak için iki kez dokun"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點兩下以重新打開這個群組進行檢視"
           }
         }
       }
@@ -812,6 +1298,36 @@
             "state": "translated",
             "value": "Touchez deux fois pour sélectionner cette photo pour le nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca due volte per selezionare questa foto per la pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tik twee keer om deze foto te selecteren voor opruimen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stuknij dwukrotnie, aby wybrać to zdjęcie do porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu fotoğrafı temizlik için seçmek üzere iki kez dokun"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點兩下以選取這張照片進行清理"
+          }
         }
       }
     },
@@ -858,6 +1374,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Favori"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferita"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoriet"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ulubione"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favori"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最愛"
           }
         }
       }
@@ -906,6 +1452,36 @@
             "state": "translated",
             "value": "Termine l’examen et conserve toutes les photos de ce groupe"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termina il controllo e conserva tutte le foto di questo gruppo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rondt de beoordeling af en bewaart elke foto in deze groep"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kończy przegląd i zachowuje wszystkie zdjęcia z tej grupy"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçirmeyi bitirir ve bu gruptaki tüm fotoğrafları saklar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結束檢視，並保留這個群組中的所有照片"
+          }
         }
       }
     },
@@ -952,6 +1528,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Termine l’examen et conserve les photos que vous n’avez pas sélectionnées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termina il controllo e conserva le foto che non hai selezionato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rondt de beoordeling af en bewaart de foto's die je niet hebt geselecteerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kończy przegląd i zachowuje zdjęcia, których nie wybrałeś"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçirmeyi bitirir ve seçmediğin fotoğrafları saklar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結束檢視，並保留你未選取的照片"
           }
         }
       }
@@ -1000,6 +1606,36 @@
             "state": "translated",
             "value": "HDR"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
         }
       }
     },
@@ -1009,43 +1645,73 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keeping %d of %d"
+            "value": "Keeping %1$d of %2$d"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Залишаємо %d з %d"
+            "value": "Залишаємо %1$d з %2$d"
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conservando %d de %d"
+            "value": "Conservando %1$d de %2$d"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conservando %d de %d"
+            "value": "Conservando %1$d de %2$d"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantendo %d de %d"
+            "value": "Mantendo %1$d de %2$d"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d von %d bleiben"
+            "value": "%1$d von %2$d bleiben"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d sur %d conservées"
+            "value": "%1$d sur %2$d conservées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservate %1$d di %2$d"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d van %2$d bewaard"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zachowujesz %1$d z %2$d"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$d fotoğraftan %1$d tanesi saklanıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留 %2$d 張中的 %1$d 張"
           }
         }
       }
@@ -1090,6 +1756,36 @@
           }
         },
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Live Photo"
@@ -1141,6 +1837,36 @@
             "state": "translated",
             "value": "Lieu"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posizione"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Locatie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lokalizacja"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konum"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
         }
       }
     },
@@ -1187,6 +1913,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Définir comme meilleure photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imposta come scatto migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maak beste opname"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ustaw jako najlepsze ujęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare Yap"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設為最佳照片"
           }
         }
       }
@@ -1235,6 +1991,36 @@
             "state": "translated",
             "value": "Carte indiquant le lieu de prise de vue"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappa che mostra dove è stata scattata la foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaart met de plek waar de foto is gemaakt"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mapa pokazująca, gdzie zrobiono zdjęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafın çekildiği yeri gösteren harita"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示照片拍攝地點的地圖"
+          }
         }
       }
     },
@@ -1281,6 +2067,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Marquer comme examiné"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna come controllato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markeer als bekeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oznacz jako przejrzane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden Geçirildi İşaretle"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "標示為已檢視"
           }
         }
       }
@@ -1329,6 +2145,36 @@
             "state": "translated",
             "value": "Mégapixels"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapixel"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapixels"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapiksele"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapiksel"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "百萬像素"
+          }
         }
       }
     },
@@ -1375,6 +2221,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modifiée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modificata"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewijzigd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zmodyfikowano"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değiştirilme"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改時間"
           }
         }
       }
@@ -1423,6 +2299,36 @@
             "state": "translated",
             "value": "Plus d’options"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altre opzioni"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meer opties"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Więcej opcji"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer Seçenekler"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更多選項"
+          }
         }
       }
     },
@@ -1469,6 +2375,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ Mpx"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Mpix"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
           }
         }
       }
@@ -1517,6 +2453,36 @@
             "state": "translated",
             "value": "Non"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nee"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hayır"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "否"
+          }
         }
       }
     },
@@ -1563,6 +2529,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucune photo disponible"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna foto disponibile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen foto's beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brak dostępnych zdjęć"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanılabilir Fotoğraf Yok"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有可用的照片"
           }
         }
       }
@@ -1611,6 +2607,36 @@
             "state": "translated",
             "value": "Non sélectionnée"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non selezionata"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet geselecteerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niewybrane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili değil"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未選取"
+          }
         }
       }
     },
@@ -1657,6 +2683,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvrir dans Plans"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri in Mappe"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Kaarten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwórz w Mapach"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harita'da Aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在「地圖」中打開"
           }
         }
       }
@@ -1705,6 +2761,36 @@
             "state": "translated",
             "value": "Ouvrir l’original"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri originale"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open origineel"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwórz oryginał"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Özgün Dosyayı Aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開原始檔"
+          }
         }
       }
     },
@@ -1751,6 +2837,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvre le lieu de la photo dans Plans"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apre la posizione della foto in Mappe"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opent de fotolocatie in Kaarten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwiera lokalizację zdjęcia w Mapach"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafın konumunu Harita'da açar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在「地圖」中打開照片位置"
           }
         }
       }
@@ -1799,6 +2915,36 @@
             "state": "translated",
             "value": "Panorama"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panoramica"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全景"
+          }
         }
       }
     },
@@ -1845,6 +2991,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zdjęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片"
           }
         }
       }
@@ -1893,6 +3069,36 @@
             "state": "translated",
             "value": "Infos de la photo"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotogegevens"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informacje o zdjęciu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf Bilgisi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片資訊"
+          }
         }
       }
     },
@@ -1939,6 +3145,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lieu de la photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posizione della foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotolocatie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lokalizacja zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf konumu"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片位置"
           }
         }
       }
@@ -1987,6 +3223,36 @@
             "state": "translated",
             "value": "Résolution"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risoluzione"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolutie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rozdzielczość"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çözünürlük"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解析度"
+          }
         }
       }
     },
@@ -2033,6 +3299,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Capture d’écran"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeelding"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrzut ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran Görüntüsü"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照"
           }
         }
       }
@@ -2081,6 +3377,36 @@
             "state": "translated",
             "value": "Tout sélectionner sauf la meilleure"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona tutte tranne la migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteer alles behalve de beste"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaznacz wszystkie oprócz najlepszego"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyisi Hariç Tümünü Seç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選取除最佳照片外的全部"
+          }
         }
       }
     },
@@ -2127,6 +3453,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sélectionnée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selezionata"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geselecteerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçildi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選取"
           }
         }
       }
@@ -2175,6 +3531,36 @@
             "state": "translated",
             "value": "Sélectionnée pour l’examen de nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selezionata per il controllo di pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geselecteerd voor opruimbeoordeling"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane do przeglądu porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik gözden geçirmesi için seçildi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選取以進行清理檢視"
+          }
         }
       }
     },
@@ -2221,6 +3607,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La foto selezionata verrà rimossa dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resterà in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non viene eliminata definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde foto wordt verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijft daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als de foto definitief is verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zdjęcie zostanie usunięte z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostanie w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zdjęcie nie zostanie trwale usunięte. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraf kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
         }
       }
@@ -2269,6 +3685,36 @@
             "state": "translated",
             "value": "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le foto selezionate verranno rimosse dalla tua libreria e dagli altri dispositivi che usano «Foto di iCloud», poi resteranno in «Eliminati di recente» per un massimo di 30 giorni. Lo spazio potrebbe non liberarsi finché non vengono eliminate definitivamente. Spazio recuperabile stimato: %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde foto's worden verwijderd uit je bibliotheek en van andere apparaten die iCloud-foto's gebruiken, en blijven daarna maximaal 30 dagen in 'Recent verwijderd' staan. Er komt mogelijk pas opslagruimte vrij als ze definitief zijn verwijderd. Geschatte vrij te maken ruimte: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane zdjęcia zostaną usunięte z Twojej biblioteki i z innych urządzeń korzystających ze Zdjęć iCloud, a następnie pozostaną w albumie „Ostatnio usunięte” przez maksymalnie 30 dni. Miejsce może nie zostać zwolnione, dopóki zdjęcia nie zostaną trwale usunięte. Szacowane miejsce do odzyskania: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraflar kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
         }
       }
     },
@@ -2315,6 +3761,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sélection"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selezione"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybór"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçim"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選取項目"
           }
         }
       }
@@ -2363,6 +3839,36 @@
             "state": "translated",
             "value": "Raccourcis de sélection et disposition de la grille"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scorciatoie di selezione e disposizione della griglia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectiesnelkoppelingen en rasterindeling"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skróty wyboru i układ siatki"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçim kısayolları ve ızgara düzeni"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選取快捷鍵與格線版面"
+          }
         }
       }
     },
@@ -2409,6 +3915,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Afficher les infos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra info"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon gegevens"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pokaż informacje"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilgileri Göster"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示資訊"
           }
         }
       }
@@ -2457,6 +3993,36 @@
             "state": "translated",
             "value": "Photos similaires"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto simili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergelijkbare foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podobne zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer Fotoğraflar"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相似照片"
+          }
         }
       }
     },
@@ -2503,6 +4069,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cette photo est conservée comme la meilleure. Maintenez une autre photo pour la désigner à la place."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa foto è conservata come scatto migliore. Tieni premuta un'altra foto per impostarla come scatto migliore."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze foto wordt bewaard als beste opname. Houd een andere foto ingedrukt om die als beste opname in te stellen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To zdjęcie jest zachowane jako najlepsze ujęcie. Przytrzymaj inne zdjęcie, aby to ono stało się najlepszym ujęciem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu fotoğraf en iyi kare olarak saklanıyor. Başka bir fotoğrafı en iyi kare yapmak için ona uzun bas."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這張照片會保留為最佳照片。長按其他照片即可改設為最佳照片。"
           }
         }
       }
@@ -2551,6 +4147,36 @@
             "state": "translated",
             "value": "Type"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tür"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "類型"
+          }
         }
       }
     },
@@ -2598,6 +4224,36 @@
             "state": "translated",
             "value": "Voir"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weergave"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widok"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görünüm"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示方式"
+          }
         }
       }
     },
@@ -2644,6 +4300,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sì"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tak"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evet"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "是"
           }
         }
       }
@@ -2800,6 +4486,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Sposta %1$lld foto"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Sposta %1$lld foto"
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Verplaats %1$lld foto"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Verplaats %1$lld foto's"
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieś %1$lld zdjęcia"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieś %1$lld zdjęć"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieś %1$lld zdjęcie"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Przenieś %1$lld zdjęcia"
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Fotoğrafı Taşı"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Fotoğrafı Taşı"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "移動 %1$lld 張照片"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2846,6 +4628,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Déplacement…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spostamento..."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bezig met verplaatsen..."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przenoszenie..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taşınıyor..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在移動…"
           }
         }
       }
@@ -2894,6 +4706,36 @@
             "state": "translated",
             "value": "Statut actuel de l’examen de nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stato attuale del controllo di pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Huidige status van de opruimbeoordeling"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bieżący stan przeglądu porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçerli temizlik gözden geçirme durumu"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目前的清理檢視狀態"
+          }
         }
       }
     },
@@ -2941,6 +4783,36 @@
             "state": "translated",
             "value": "En cours d’examen"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In controllo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wordt bekeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "W trakcie przeglądu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçiriliyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檢視中"
+          }
         }
       }
     },
@@ -2950,43 +4822,73 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keeping %d of %d, estimated size %@."
+            "value": "Keeping %1$d of %2$d, estimated size %3$@."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Залишаємо %d з %d, приблизний розмір %@."
+            "value": "Залишаємо %1$d з %2$d, приблизний розмір %3$@."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conservando %d de %d, tamaño estimado %@."
+            "value": "Conservando %1$d de %2$d, tamaño estimado %3$@."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conservando %d de %d, tamaño estimado %@."
+            "value": "Conservando %1$d de %2$d, tamaño estimado %3$@."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantendo %d de %d, tamanho estimado %@."
+            "value": "Mantendo %1$d de %2$d, tamanho estimado %3$@."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d von %d bleiben, geschätzte Größe %@."
+            "value": "%1$d von %2$d bleiben, geschätzte Größe %3$@."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%d sur %d conservées, taille estimée %@."
+            "value": "%1$d sur %2$d conservées, taille estimée %3$@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservate %1$d di %2$d, dimensione stimata %3$@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d van %2$d bewaard, geschatte grootte %3$@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zachowujesz %1$d z %2$d, szacowany rozmiar %3$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$d fotoğraftan %1$d tanesi saklanıyor, tahmini boyut %3$@."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留 %2$d 張中的 %1$d 張，預估大小 %3$@。"
           }
         }
       }
@@ -3035,6 +4937,36 @@
             "state": "translated",
             "value": "1 photo similaire"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 foto simile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 vergelijkbare foto"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 podobne zdjęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Benzer Fotoğraf"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 張相似照片"
+          }
         }
       }
     },
@@ -3082,6 +5014,36 @@
             "state": "translated",
             "value": "À examiner"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da controllare"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moet worden bekeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wymaga przeglądu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçirilmeli"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待檢視"
+          }
         }
       }
     },
@@ -3128,6 +5090,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Non examiné"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non controllato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet bekeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieprzejrzane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçirilmedi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未檢視"
           }
         }
       }
@@ -3284,6 +5276,102 @@
               }
             }
           }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selezionata, dimensione stimata %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selezionate, dimensione stimata %2$@."
+                }
+              }
+            }
+          }
+        },
+        "nl": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerd, geschatte grootte %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld geselecteerd, geschatte grootte %2$@."
+                }
+              }
+            }
+          }
+        },
+        "pl": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Wybrano %1$lld, szacowany rozmiar %2$@."
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seçildi, tahmini boyut %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld seçildi, tahmini boyut %2$@."
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "已選取 %1$lld 張，預估大小 %2$@。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3330,6 +5418,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d photos similaires"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d foto simili"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d vergelijkbare foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podobne zdjęcia: %d"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Benzer Fotoğraf"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d 張相似照片"
           }
         }
       }
@@ -3378,6 +5496,36 @@
             "state": "translated",
             "value": "Touchez les photos pour les sélectionner pour le nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca le foto per selezionarle per la pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tik op foto's om ze te selecteren voor opruimen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stuknij zdjęcia, aby wybrać je do porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik için seçmek üzere fotoğraflara dokun"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點一下照片即可選取以進行清理"
+          }
         }
       }
     },
@@ -3424,6 +5572,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike a besoin d’accéder à la photothèque avant de pouvoir supprimer des photos. Ouvrez Réglages pour continuer."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ha bisogno dell'accesso alla libreria foto per poter eliminare le foto. Apri Impostazioni per continuare."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike heeft toegang tot je fotobibliotheek nodig om foto's te kunnen verwijderen. Open Instellingen om verder te gaan."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike potrzebuje dostępu do biblioteki zdjęć, aby móc usuwać zdjęcia. Otwórz Ustawienia, aby kontynuować."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike'ın fotoğrafları silebilmesi için fotoğraf kitaplığı erişimi gerekiyor. Sürdürmek için Ayarlar'ı aç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 需要取用照片圖庫才能刪除照片。請打開「設定」以繼續。"
           }
         }
       }
@@ -3472,6 +5650,36 @@
             "state": "translated",
             "value": "Alike organise les photos sélectionnées"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike organizza le foto selezionate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ordent de geselecteerde foto's"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike porządkuje wybrane zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike seçili fotoğrafları düzenliyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 正在整理已選取的照片"
+          }
         }
       }
     },
@@ -3518,6 +5726,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Meilleure photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scatto migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beste opname"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Najlepsze ujęcie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最佳照片"
           }
         }
       }
@@ -3566,6 +5804,36 @@
             "state": "translated",
             "value": "Annuler"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuleer"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anuluj"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
         }
       }
     },
@@ -3612,6 +5880,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nettoyage indisponible"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulizia non disponibile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opruimen niet beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki niedostępne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik Kullanılamıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法進行清理"
           }
         }
       }
@@ -3660,6 +5958,36 @@
             "state": "translated",
             "value": "Tout désélectionner"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azzera selezione"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wis selectie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyczyść wybór"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçimi Temizle"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除選取"
+          }
         }
       }
     },
@@ -3706,6 +6034,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fermer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiudi"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluit"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zamknij"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉"
           }
         }
       }
@@ -3754,6 +6112,36 @@
             "state": "translated",
             "value": "Impossible de déplacer les photos sélectionnées. Réessayez."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non è stato possibile spostare le foto selezionate. Riprova."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De geselecteerde foto's konden niet worden verplaatst. Probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się przenieść wybranych zdjęć. Spróbuj ponownie."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraflar taşınamadı. Lütfen yeniden dene."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法移動所選的照片。請再試一次。"
+          }
         }
       }
     },
@@ -3800,6 +6188,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conservation des %d photos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservate tutte le %d foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %d foto's worden bewaard"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zachowujesz wszystkie zdjęcia: %d"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d fotoğrafın tümü saklanıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留全部 %d 張照片"
           }
         }
       }
@@ -3848,6 +6266,36 @@
             "state": "translated",
             "value": "Chargement de l’aperçu de la photo"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caricamento dell'anteprima"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voorvertoning wordt geladen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wczytywanie podglądu zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf önizlemesi yükleniyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在載入照片預覽"
+          }
         }
       }
     },
@@ -3894,6 +6342,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Déplacer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verplaats"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przenieś"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taşı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動"
           }
         }
       }
@@ -3942,6 +6420,36 @@
             "state": "translated",
             "value": "Déplacer les photos sélectionnées vers Supprimés récemment"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta le foto attualmente selezionate in «Eliminati di recente»"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verplaats de nu geselecteerde foto's naar 'Recent verwijderd'"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przenieś aktualnie wybrane zdjęcia do albumu „Ostatnio usunięte”"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şu anda seçili fotoğrafları Son Silinenler'e taşı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將目前已選取的照片移到「最近刪除」"
+          }
         }
       }
     },
@@ -3988,6 +6496,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
           }
         }
       }
@@ -4036,6 +6574,36 @@
             "state": "translated",
             "value": "Ouvrir Réglages"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri Impostazioni"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Instellingen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwórz Ustawienia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'ı Aç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打開「設定」"
+          }
         }
       }
     },
@@ -4082,6 +6650,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aperçu de la photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anteprima foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotovoorvertoning"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podgląd zdjęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf önizlemesi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片預覽"
           }
         }
       }
@@ -4130,6 +6728,36 @@
             "state": "translated",
             "value": "Aperçu indisponible"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anteprima non disponibile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voorvertoning niet beschikbaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podgląd niedostępny"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf önizlemesi kullanılamıyor"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法預覽照片"
+          }
         }
       }
     },
@@ -4176,6 +6804,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Examiné"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controllato"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejrzane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gözden geçirildi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已檢視"
           }
         }
       }
@@ -4224,6 +6882,36 @@
             "state": "translated",
             "value": "Sélectionnez au moins une photo avant de supprimer."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona almeno una foto prima di eliminare."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteer minstens één foto voordat je verwijdert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz co najmniej jedno zdjęcie przed usunięciem."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silmeden önce en az bir fotoğraf seç."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除前請至少選取一張照片。"
+          }
         }
       }
     },
@@ -4270,6 +6958,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Certaines photos sélectionnées ne sont plus disponibles. Votre accès à la photothèque est peut-être limité, ou la photothèque a changé depuis la dernière analyse."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alcune foto selezionate non sono più disponibili. L'accesso alla tua libreria potrebbe essere limitato oppure la libreria è cambiata dall'ultima scansione."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sommige geselecteerde foto's zijn niet meer beschikbaar. Je bibliotheektoegang is mogelijk beperkt, of de bibliotheek is sinds de laatste scan gewijzigd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Część wybranych zdjęć jest już niedostępna. Dostęp do biblioteki może być ograniczony lub biblioteka zmieniła się od ostatniego skanowania."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili fotoğraflardan bazıları artık kullanılamıyor. Kitaplık erişimin sınırlı olabilir ya da kitaplık son taramadan bu yana değişmiş olabilir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "部分已選取的照片已無法取得。你的圖庫取用權可能受限，或圖庫在上次掃描後有變動。"
           }
         }
       }
@@ -4318,6 +7036,36 @@
             "state": "translated",
             "value": "Réessayer"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riprova"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opnieuw"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponów"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Dene"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重試"
+          }
         }
       }
     },
@@ -4364,6 +7112,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Essayez de charger la photo à nouveau"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prova a caricare di nuovo la foto"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probeer de foto opnieuw te laden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spróbuj wczytać zdjęcie ponownie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafı yeniden yüklemeyi dene"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再次嘗試載入照片"
           }
         }
       }
@@ -4412,6 +7190,36 @@
             "state": "translated",
             "value": "Le nettoyage des captures d’écran est disponible sur iOS."
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La pulizia degli screenshot è disponibile su iOS."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeeldingen opruimen is beschikbaar op iOS."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porządki w zrzutach ekranu są dostępne w systemie iOS."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran görüntüsü temizliği iOS'ta kullanılabilir."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照清理可在 iOS 上使用。"
+          }
         }
       }
     },
@@ -4458,6 +7266,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Captures d’écran"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermafbeeldingen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrzuty ekranu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran Görüntüleri"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "螢幕快照"
           }
         }
       }
@@ -4506,6 +7344,36 @@
             "state": "translated",
             "value": "Choisissez les photos sélectionnées pour le nettoyage"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli quali foto selezionare per la pulizia"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kies welke foto's worden geselecteerd voor opruimen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz, które zdjęcia mają trafić do porządków"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik için hangi fotoğrafların seçileceğini belirle"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇要清理的照片"
+          }
         }
       }
     },
@@ -4552,6 +7420,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Déplacer la sélection"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta selezionate"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verplaats selectie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przenieś wybrane"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilenleri Taşı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動已選取項目"
           }
         }
       }
@@ -4600,6 +7498,36 @@
             "state": "translated",
             "value": "Déplacement…"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spostamento..."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bezig met verplaatsen..."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przenoszenie..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taşınıyor..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在移動…"
+          }
         }
       }
     },
@@ -4646,6 +7574,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tout sélectionner"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona tutte"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteer alles"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaznacz wszystkie"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü Seç"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全選"
           }
         }
       }
