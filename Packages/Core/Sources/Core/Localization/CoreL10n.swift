@@ -71,16 +71,22 @@ public enum CoreL10n {
 
     public enum SensitivityLevel {
         /// High
-        public static var high: String { CoreL10n.string("core.sensitivityLevel.high") }
+        public static func high(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.string("core.sensitivityLevel.high", bundle: bundle, locale: locale)
+        }
         /// Low
-        public static var low: String { CoreL10n.string("core.sensitivityLevel.low") }
+        public static func low(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.string("core.sensitivityLevel.low", bundle: bundle, locale: locale)
+        }
         /// Medium
-        public static var medium: String { CoreL10n.string("core.sensitivityLevel.medium") }
+        public static func medium(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CoreL10n.string("core.sensitivityLevel.medium", bundle: bundle, locale: locale)
+        }
     }
 
     /// Resolves a key that is chosen at runtime against this package's catalog.
-    static func string(_ key: String.LocalizationValue) -> String {
-        String(localized: key, bundle: .module)
+    static func string(_ key: String.LocalizationValue, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .current)
     }
 
     /// Resolves a key whose catalog entry carries plural variations.

@@ -82,18 +82,18 @@ final class SensitivityLevelTests: XCTestCase {
         let en = try CompiledCatalogFixture.bundle(language: "en")
         let english = Locale(identifier: "en")
 
-        XCTAssertEqual(displayName(.low, bundle: en, locale: english), "Low")
-        XCTAssertEqual(displayName(.medium, bundle: en, locale: english), "Medium")
-        XCTAssertEqual(displayName(.high, bundle: en, locale: english), "High")
+        XCTAssertEqual(SensitivityLevel.low.displayName(bundle: en, locale: english), "Low")
+        XCTAssertEqual(SensitivityLevel.medium.displayName(bundle: en, locale: english), "Medium")
+        XCTAssertEqual(SensitivityLevel.high.displayName(bundle: en, locale: english), "High")
     }
 
     func testDisplayNamesAreTranslated() throws {
         let pl = try CompiledCatalogFixture.bundle(language: "pl")
         let polish = Locale(identifier: "pl")
 
-        XCTAssertEqual(displayName(.low, bundle: pl, locale: polish), "Niska")
-        XCTAssertEqual(displayName(.medium, bundle: pl, locale: polish), "Średnia")
-        XCTAssertEqual(displayName(.high, bundle: pl, locale: polish), "Wysoka")
+        XCTAssertEqual(SensitivityLevel.low.displayName(bundle: pl, locale: polish), "Niska")
+        XCTAssertEqual(SensitivityLevel.medium.displayName(bundle: pl, locale: polish), "Średnia")
+        XCTAssertEqual(SensitivityLevel.high.displayName(bundle: pl, locale: polish), "Wysoka")
     }
 
     /// Every level has to reach a catalog key. A level added later without one would fall back to
@@ -113,23 +113,6 @@ final class SensitivityLevelTests: XCTestCase {
         }
     }
 
-    /// `displayName` switches on the case, so the key it resolves is exercised through the same
-    /// lookup the production accessor uses.
-    private func displayName(
-        _ level: SensitivityLevel,
-        bundle: Bundle,
-        locale: Locale
-    ) -> String {
-        String(
-            format: bundle.localizedString(
-                forKey: "core.sensitivityLevel.\(level.rawValue)",
-                value: nil,
-                table: nil
-            ),
-            locale: locale
-        )
-    }
-    
     // MARK: - Raw Value Tests
     
     func testRawValues() {
