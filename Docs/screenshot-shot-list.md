@@ -106,13 +106,13 @@ rules behind it.
 
 | # | Screen | EN | UK | Tier 1 | Tier 3 | On site | File |
 |---|---|---|---|---|---|---|---|
-| 1 | Scanner idle | ✅ | ✅ | ✅ | open | ✅ | `01-scanner-idle` |
+| 1 | Scanner idle | ✅ | ✅ | ✅ | ✅ | ✅ | `01-scanner-idle` |
 | 2 | Scanner scanning | ✅ | ✅ | n/a | n/a | — | `02-scanner-scanning` |
-| 3 | Cleanup queue | ✅ | ✅ | ✅ | open | ✅ | `03-cleanup-queue` |
-| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | open | ✅ | `04-cluster-details` |
-| 5 | Comparison review | ✅ | ✅ | ✅ | open | ✅ | `05-comparison-review` |
+| 3 | Cleanup queue | ✅ | ✅ | ✅ | ✅ | ✅ | `03-cleanup-queue` |
+| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | ✅ | ✅ | `04-cluster-details` |
+| 5 | Comparison review | ✅ | ✅ | ✅ | ✅ | ✅ | `05-comparison-review` |
 | 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | n/a | n/a | — | `06-cleanup-confirm` |
-| 7 | Cleanup progress | ✅ | ✅ | ✅ | open | ✅ | `07-cleanup-progress` |
+| 7 | Cleanup progress | ✅ | ✅ | ✅ | ✅ | ✅ | `07-cleanup-progress` |
 | 8 | Screenshot cleanup | ✅ | n/a | n/a | n/a | — | `08-screenshot-cleanup` |
 | 9 | History | optional | optional | n/a | n/a | — | — |
 | 10 | Settings with Legal section | open | n/a | n/a | n/a | — | — |
@@ -125,17 +125,17 @@ rules behind it.
 Every shot is either captured, has a reason it is not, or is one of the twenty-five
 tier 3 captures below. A shot with no consumer is not a gap.
 
-**Open — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
-`pl`, `tr` and `zh-Hant`, the same five shots the Tier 1 session produced. The
-listing copy, the marketing captions and the renderer are all in place for these
-locales, so the captures are the only thing between them and a shipped deck:
-`tools/prepare_app_store_upload_bundle.py` reports five missing decks until they
-land. The app itself is fully translated, so the capture session is the ordinary
-one — set the device language, walk the same five screens, record the camera-roll
-filenames in `capture-manifest.json`. An iPhone 17 Pro Max simulator captures at
-1320 × 2868 natively and can be dropped straight into `Docs/images/raw/<locale>/`,
-skipping the import script; that is the cheaper route now that the frames need no
-particular photo library beyond a plausible one.
+**Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
+`pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
+in `capture-manifest.json`, exactly as Tier 1 was. All twelve listing locales now
+have a deck.
+
+Polish shot 1 is the one frame that did not arrive as a 1125 × 2436 PNG: it came
+off the device as a 1119 × 2436 JPEG, so it was resampled to 1320 wide and centre-
+cropped by 6px rather than run through `import_device_screenshots.py`, and its
+manifest entry is absent for that reason. The render is indistinguishable from
+its siblings, but it is the one source frame that is not pristine, so replacing it
+with the original PNG is a cheap improvement if that file ever turns up.
 
 **Captured — the Tier 1 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `de`, `fr`,
 `es`, `es-419` and `pt-BR`, taken in one session on a physical iPhone and
