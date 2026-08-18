@@ -58,21 +58,21 @@ ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
 ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
 ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
 
-ALIKE_PRIVACY_URL_IT_IT="https://alikeapp.github.io/it/privacy/"
-ALIKE_TERMS_URL_IT_IT="https://alikeapp.github.io/it/terms/"
-ALIKE_SUPPORT_URL_IT_IT="https://alikeapp.github.io/it/support/"
+ALIKE_PRIVACY_URL_IT="https://alikeapp.github.io/it/privacy/"
+ALIKE_TERMS_URL_IT="https://alikeapp.github.io/it/terms/"
+ALIKE_SUPPORT_URL_IT="https://alikeapp.github.io/it/support/"
 
 ALIKE_PRIVACY_URL_NL_NL="https://alikeapp.github.io/nl/privacy/"
 ALIKE_TERMS_URL_NL_NL="https://alikeapp.github.io/nl/terms/"
 ALIKE_SUPPORT_URL_NL_NL="https://alikeapp.github.io/nl/support/"
 
-ALIKE_PRIVACY_URL_PL_PL="https://alikeapp.github.io/pl/privacy/"
-ALIKE_TERMS_URL_PL_PL="https://alikeapp.github.io/pl/terms/"
-ALIKE_SUPPORT_URL_PL_PL="https://alikeapp.github.io/pl/support/"
+ALIKE_PRIVACY_URL_PL="https://alikeapp.github.io/pl/privacy/"
+ALIKE_TERMS_URL_PL="https://alikeapp.github.io/pl/terms/"
+ALIKE_SUPPORT_URL_PL="https://alikeapp.github.io/pl/support/"
 
-ALIKE_PRIVACY_URL_TR_TR="https://alikeapp.github.io/tr/privacy/"
-ALIKE_TERMS_URL_TR_TR="https://alikeapp.github.io/tr/terms/"
-ALIKE_SUPPORT_URL_TR_TR="https://alikeapp.github.io/tr/support/"
+ALIKE_PRIVACY_URL_TR="https://alikeapp.github.io/tr/privacy/"
+ALIKE_TERMS_URL_TR="https://alikeapp.github.io/tr/terms/"
+ALIKE_SUPPORT_URL_TR="https://alikeapp.github.io/tr/support/"
 
 # The one locale whose site path and App Store code differ only in case:
 # /zh-hant/ pages, ALIKE_*_URL_ZH_HANT overrides, zh-Hant listing.

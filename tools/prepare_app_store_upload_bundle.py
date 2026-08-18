@@ -59,10 +59,10 @@ LOCALE_LEGAL_LABELS = {
     "es-ES": ("Política de privacidad", "Términos de uso"),
     "es-MX": ("Política de privacidad", "Términos de uso"),
     "pt-BR": ("Política de Privacidade", "Termos de Uso"),
-    "it-IT": ("Informativa sulla privacy", "Condizioni d’uso"),
+    "it": ("Informativa sulla privacy", "Condizioni d’uso"),
     "nl-NL": ("Privacybeleid", "Gebruiksvoorwaarden"),
-    "pl-PL": ("Polityka prywatności", "Warunki korzystania"),
-    "tr-TR": ("Gizlilik Politikası", "Kullanım Koşulları"),
+    "pl": ("Polityka prywatności", "Warunki korzystania"),
+    "tr": ("Gizlilik Politikası", "Kullanım Koşulları"),
     "zh-Hant": ("隱私權政策", "使用條款"),
 }
 TODO_MARKER = "TODO:"
@@ -105,7 +105,11 @@ class LocaleMapping:
 # under Docs/images/; `apple` is the App Store Connect locale, which is not the
 # same string. es-419 is the app's Latin American Spanish and maps onto App
 # Store Connect's es-MX slot, the only Latin American Spanish the store offers.
-# zh-Hant is the one code that is identical on both sides.
+# zh-Hant is the one code that is identical on both sides. it, pl and tr are
+# bare codes rather than region-qualified ones: Fastlane `deliver`
+# (`Deliver::Loader.language_folders`, checked as of 2.230.0) rejects the
+# region-qualified it-IT, pl-PL and tr-TR as unsupported directory names, while
+# nl-NL and zh-Hant are accepted as-is.
 #
 # Adding a locale means four things, and a missing one is a validation error
 # rather than a silent gap: a mapping here, an entry in METADATA, a row in
@@ -118,16 +122,43 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="es", apple="es-ES"),
     LocaleMapping(source="es-419", apple="es-MX"),
     LocaleMapping(source="pt-BR", apple="pt-BR"),
-    LocaleMapping(source="it", apple="it-IT"),
+    LocaleMapping(source="it", apple="it"),
     LocaleMapping(source="nl", apple="nl-NL"),
-    LocaleMapping(source="pl", apple="pl-PL"),
-    LocaleMapping(source="tr", apple="tr-TR"),
+    LocaleMapping(source="pl", apple="pl"),
+    LocaleMapping(source="tr", apple="tr"),
     LocaleMapping(source="zh-Hant", apple="zh-Hant"),
+)
+
+# DELIVER_ACCEPTED_LOCALES guards UPLOAD_SAFE_LOCALES against a regression of
+# the it-IT/pl-PL/tr-TR mistake: Fastlane `deliver` accepts a fixed set of
+# locale folder names (see `Deliver::Loader.language_folders`), and a locale
+# spelled outside that set fails at upload time with "Unsupported directory
+# name(s)" instead of at generation time where it is cheap to catch. This
+# project ships only the subset of that set the app is translated into, and
+# validate_locale_folder_names() checks every generated metadata/screenshot
+# folder against it.
+DELIVER_ACCEPTED_LOCALES = frozenset(
+    {
+        "en-US",
+        "uk",
+        "de-DE",
+        "fr-FR",
+        "es-ES",
+        "es-MX",
+        "pt-BR",
+        "it",
+        "nl-NL",
+        "pl",
+        "tr",
+        "zh-Hant",
+    }
 )
 
 # StoreKit writes its own locale spelling into Alike.storekit. Traditional
 # Chinese is the one that does not simply underscore the App Store code: Xcode
-# writes zh_TW, which App Store Connect calls zh-Hant.
+# writes zh_TW, which App Store Connect calls zh-Hant. it_IT, pl_PL and tr_TR
+# map onto the bare it/pl/tr Deliver folder names for the same reason as
+# UPLOAD_SAFE_LOCALES above — Deliver rejects the region-qualified spelling.
 STOREKIT_TO_APP_STORE_LOCALE = {
     "en_US": "en-US",
     "uk": "uk",
@@ -136,10 +167,10 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "es_ES": "es-ES",
     "es_MX": "es-MX",
     "pt_BR": "pt-BR",
-    "it_IT": "it-IT",
+    "it_IT": "it",
     "nl_NL": "nl-NL",
-    "pl_PL": "pl-PL",
-    "tr_TR": "tr-TR",
+    "pl_PL": "pl",
+    "tr_TR": "tr",
     "zh_TW": "zh-Hant",
 }
 
@@ -528,7 +559,7 @@ O Alike Pro é uma assinatura de renovação automática com planos anual e mens
 # lifted from the .xcstrings catalogs so the listing and the UI say the same
 # words. Register follows the catalogs too, which is informal in all five —
 # including Turkish, where the app says "Fotoğrafların", not "Fotoğraflarınız".
-IT_IT_DESCRIPTION = """\
+IT_DESCRIPTION = """\
 Alike trova i quasi-doppioni nascosti nella tua libreria, li raggruppa, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto — senza che una sola foto lasci il tuo dispositivo.
 
 COME FUNZIONA
@@ -630,7 +661,7 @@ ALIKE PRO
 
 Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."""
 
-PL_PL_DESCRIPTION = """\
+PL_DESCRIPTION = """\
 Alike znajduje prawie identyczne zdjęcia ukryte w Twojej bibliotece, grupuje je, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę — a żadne zdjęcie nie opuszcza Twojego urządzenia.
 
 JAK TO DZIAŁA
@@ -681,7 +712,7 @@ ALIKE PRO
 
 Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów, a naliczanie opłat zaczyna się po zakończeniu okresu próbnego. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS."""
 
-TR_TR_DESCRIPTION = """\
+TR_DESCRIPTION = """\
 Alike, kitaplığında saklanan neredeyse aynı fotoğrafları bulur, gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder — üstelik tek bir fotoğraf bile cihazından çıkmaz.
 
 NASIL ÇALIŞIR
@@ -855,9 +886,9 @@ METADATA = {
     # field holds far more Chinese terms than Latin ones, and the subtitle says
     # in eleven characters what English needs twenty-nine for. The constraint
     # there is editorial — say less, not fit less.
-    "it-IT": {
+    "it": {
         "subtitle": "Trova e pulisci i doppioni",
-        "description": IT_IT_DESCRIPTION,
+        "description": IT_DESCRIPTION,
         "keywords": "foto,simili,duplicate,spazio,archiviazione,galleria,screenshot,sfocate,eliminare,rullino",
         "promotional_text": "Alike raggruppa le foto simili, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto, sul tuo iPhone. Alike Pro: 7 giorni gratis sul piano annuale.",
         "release_notes": "Prima versione di Alike.\n\nScansiona la libreria alla ricerca di foto visivamente simili, controlla ogni gruppo con lo scatto migliore già scelto ed elimina il resto. Ogni scansione avviene sul tuo dispositivo — nessun account, nessun caricamento, e ciò che elimini finisce sempre in «Eliminati di recente», dove iOS conserva le foto per circa 30 giorni.\n\nIn questa prima versione:\n- Tre livelli di sensibilità, dagli scatti quasi identici a una rete più ampia\n- Riconoscimento dello scatto migliore: ogni gruppo si apre con una scelta sensata già selezionata\n- Tieni solo la migliore, seleziona tutte tranne la migliore oppure scegli a mano\n- Indicatori di controllo per ciò che è nuovo, in controllo, controllato e da rivedere dopo una modifica alla libreria\n- Avanzamento, Selezionate e Risparmio stimato mentre lavori, più la cronologia pulizia per mese\n- Istruzioni consultabili dentro l'app, a un tocco dallo Scanner\n- Promemoria di pulizia facoltativi, come notifiche locali\n- Dodici lingue: inglese, ucraino, tedesco, francese, spagnolo, spagnolo latinoamericano, portoghese brasiliano, italiano, olandese, polacco, turco e cinese tradizionale, con modalità scura completa\n\nAlike Pro aggiunge scansioni illimitate, pulizia in blocco, pulizia di screenshot e foto sfocate, filtri avanzati e promemoria personalizzati. Il piano annuale inizia con 7 giorni gratis per i nuovi abbonati idonei.\n\nGrazie per aver provato Alike. Commenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
@@ -869,16 +900,16 @@ METADATA = {
         "promotional_text": "Alike groepeert de foto's die op elkaar lijken, kiest de beste opname van elke groep en helpt je de rest op te ruimen. Alike Pro: 7 dagen gratis op het jaarplan.",
         "release_notes": "Eerste versie van Alike.\n\nScan je bibliotheek op visueel vergelijkbare foto's, bekijk elke groep met een beste opname die al gekozen is, en ruim de rest op. Elke scan draait op je apparaat — geen account, geen uploads, en wat je verwijdert gaat altijd naar 'Recent verwijderd', waar iOS je foto's ongeveer 30 dagen bewaart.\n\nIn deze eerste versie:\n- Drie niveaus van gevoeligheid, van bijna identieke opnamen tot een breder net\n- Herkenning van de beste opname, zodat elke groep opent met een verstandige keuze\n- Alleen de beste bewaren, alles behalve de beste selecteren of met de hand kiezen\n- Statuslabels voor wat nieuw is, wordt bekeken, bekeken is en opnieuw moet worden bekeken na een wijziging in je bibliotheek\n- Voortgang, Geselecteerd en Geschatte besparing terwijl je werkt, plus opruimgeschiedenis per maand\n- Een doorzoekbare handleiding in de app, één tik vanaf de Scanner\n- Optionele opruimherinneringen als lokale berichtgevingen\n- Twaalf talen: Engels, Oekraïens, Duits, Frans, Spaans, Latijns-Amerikaans Spaans, Braziliaans Portugees, Italiaans, Nederlands, Pools, Turks en traditioneel Chinees, met een volledige donkere modus\n\nAlike Pro voegt onbeperkt scannen toe, opruimen in bulk, het opruimen van schermafbeeldingen en wazige foto's, geavanceerde filters en eigen herinneringen. Het jaarabonnement begint met 7 dagen gratis voor nieuwe abonnees die daarvoor in aanmerking komen.\n\nBedankt voor het proberen van Alike. Reacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
-    "pl-PL": {
+    "pl": {
         "subtitle": "Znajdź i usuń podobne zdjęcia",
-        "description": PL_PL_DESCRIPTION,
+        "description": PL_DESCRIPTION,
         "keywords": "duplikaty,kopie,porządki,pamięć,miejsce,galeria,zrzut ekranu,rozmyte,usuwanie,album",
         "promotional_text": "Alike grupuje podobnie wyglądające zdjęcia, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę. Alike Pro: 7 dni za darmo w planie rocznym.",
         "release_notes": "Pierwsza wersja Alike.\n\nPrzeskanuj bibliotekę w poszukiwaniu wizualnie podobnych zdjęć, przejrzyj każdą grupę z już wybranym najlepszym ujęciem i uporządkuj resztę. Każde skanowanie działa na Twoim urządzeniu — bez konta, bez wysyłania czegokolwiek, a usunięte zdjęcia zawsze trafiają do albumu „Ostatnio usunięte”, gdzie iOS trzyma je około 30 dni.\n\nW tej pierwszej wersji:\n- Trzy poziomy czułości, od niemal identycznych ujęć po szersze sito\n- Wykrywanie najlepszego ujęcia, więc każda grupa otwiera się z sensownym wyborem\n- Zostaw tylko najlepsze, zaznacz wszystkie oprócz najlepszego albo wybierz ręcznie\n- Znaczniki przeglądu: co nowe, co w trakcie przeglądu, co przejrzane i co wymaga ponownego spojrzenia po zmianie w bibliotece\n- Postęp, Wybrane i Szacowana oszczędność w trakcie pracy oraz historia porządków według miesięcy\n- Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera\n- Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne\n- Dwanaście języków: angielski, ukraiński, niemiecki, francuski, hiszpański, hiszpański latynoamerykański, portugalski brazylijski, włoski, niderlandzki, polski, turecki i chiński tradycyjny, z pełnym trybem ciemnym\n\nAlike Pro dodaje nieograniczone skanowania, porządki w całych zaznaczeniach, porządki w zrzutach ekranu i rozmytych zdjęciach, zaawansowane filtry oraz własne przypomnienia. Plan roczny zaczyna się od 7 dni za darmo dla uprawnionych nowych subskrybentów.\n\nDziękuję za wypróbowanie Alike. Uwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
-    "tr-TR": {
+    "tr": {
         "subtitle": "Benzer fotoğrafları temizle",
-        "description": TR_TR_DESCRIPTION,
+        "description": TR_DESCRIPTION,
         "keywords": "kopya,yinelenen,depolama,alan,galeri,ekran görüntüsü,bulanık,silme,albüm,yer açma",
         "promotional_text": "Alike benzeyen fotoğrafları gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder. Alike Pro: yıllık planda 7 gün ücretsiz.",
         "release_notes": "Alike'ın ilk sürümü.\n\nKitaplığını görsel olarak benzer fotoğraflar için tara, her grubu önceden seçilmiş En İyi Kare ile gözden geçir ve geri kalanını temizle. Her tarama cihazında çalışır — hesap yok, yükleme yok; silinenler her zaman Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nBu ilk sürümde:\n- Üç duyarlılık düzeyi, neredeyse aynı karelerden daha geniş bir ağa\n- En İyi Kare algılama, böylece her grup makul bir seçimle açılır\n- Yalnızca en iyisini tut, en iyisi hariç tümünü seç ya da elle seç\n- Neyin yeni, neyin gözden geçiriliyor, neyin gözden geçirildiği ve kitaplığın değiştikten sonra neyin yeniden bakılması gerektiğini izleyen rozetler\n- Çalışırken İlerleme, Seçildi ve Tahmini Kazanç, ayrıca aya göre temizlik geçmişi\n- Uygulamanın içinde aranabilir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta\n- İsteğe bağlı temizlik anımsatıcıları, yerel bildirim olarak\n- On iki dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe ve Geleneksel Çince, tam Koyu Mod desteğiyle\n\nAlike Pro sınırsız tarama, toplu temizlik, ekran görüntüsü ve bulanık fotoğraf temizliği, gelişmiş filtreler ve kendi anımsatıcılarını ekler. Yıllık plan, uygun yeni aboneler için 7 gün ücretsiz başlar.\n\nAlike'ı denediğin için teşekkürler. Geri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
@@ -1283,12 +1314,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for all seven listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all twelve listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`. The site publishes all six of those locales, so set all eighteen — an unset override falls back to the shared English URL, which sends a reader who was just reading localized App Store copy to an English privacy policy. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so set all thirty-three — an unset override falls back to the shared English URL, which sends a reader who was just reading localized App Store copy to an English privacy policy. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1327,6 +1358,37 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
                 errors.append(f"{description_path} is missing a {locale_terms_label} link")
             if TERMS_URL_PLACEHOLDER in description and not allow_placeholder_urls:
                 errors.append(f"{description_path} still contains placeholder Terms of Use URL")
+    return errors
+
+
+def validate_locale_folder_names() -> list[str]:
+    # Fastlane `deliver` (`Deliver::Loader.language_folders`) accepts only a
+    # fixed set of locale folder names and raises "Unsupported directory
+    # name(s)" for anything outside it — it-IT, pl-PL and tr-TR are the ones
+    # this project has actually hit. Checking UPLOAD_SAFE_LOCALES against
+    # DELIVER_ACCEPTED_LOCALES here catches a region-qualified locale at
+    # generation time instead of at upload time, with no fastlane invocation
+    # needed to do it.
+    errors: list[str] = []
+    for mapping in UPLOAD_SAFE_LOCALES:
+        if mapping.apple not in DELIVER_ACCEPTED_LOCALES:
+            errors.append(
+                f"{mapping.apple} (source {mapping.source}) is not a locale folder name Fastlane deliver "
+                f"accepts; see DELIVER_ACCEPTED_LOCALES"
+            )
+    # review_information/ sits alongside the locale folders under
+    # METADATA_ROOT but is not one itself, so it is excluded here rather than
+    # flagged as an unsupported locale.
+    for locale_root in (METADATA_ROOT, SCREENSHOTS_ROOT):
+        if not locale_root.exists():
+            continue
+        for path in sorted(locale_root.iterdir()):
+            if not path.is_dir() or path.name == "review_information":
+                continue
+            if path.name not in DELIVER_ACCEPTED_LOCALES:
+                errors.append(
+                    f"{path} is not a locale folder name Fastlane deliver accepts; see DELIVER_ACCEPTED_LOCALES"
+                )
     return errors
 
 
@@ -1533,6 +1595,7 @@ def validate_review_information(allow_placeholders: bool) -> list[str]:
 
 def validate_bundle(allow_placeholder_urls: bool) -> None:
     errors = []
+    errors.extend(validate_locale_folder_names())
     errors.extend(validate_metadata())
     errors.extend(validate_urls(allow_placeholder_urls))
     errors.extend(validate_placeholder_copy(allow_placeholder_urls))

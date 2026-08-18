@@ -91,7 +91,7 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT_IT,NL_NL,PL_PL,TR_TR,ZH_HANT}` —
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}` —
     thirty-three per-locale overrides, one per non-English listing. Unset, that
     listing reuses the three URLs above, which point at the English pages even
     though the site publishes all eleven locales. The suffix is the App Store
