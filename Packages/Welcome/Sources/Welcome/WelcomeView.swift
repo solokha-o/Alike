@@ -25,7 +25,7 @@ public struct WelcomeView: View {
     @State private var isSymbolAnimating = false
     @State private var isAlikeWelcomeHeroVisible = false
     @State private var selectedWelcomePage = WelcomePage.welcome
-    @State private var glassGrantAccessFeedbackTrigger = 0
+    @State private var glassFinalActionFeedbackTrigger = 0
     private let mode: WelcomeMode
     
     public init(
@@ -335,7 +335,7 @@ public struct WelcomeView: View {
                 .accessibilityLabel(WelcomeL10n.Main.next)
             } else {
                 Button {
-                    glassGrantAccessFeedbackTrigger += 1
+                    glassFinalActionFeedbackTrigger += 1
                     performFinalAction()
                 } label: {
                     Text(finalActionTitle)
@@ -346,7 +346,7 @@ public struct WelcomeView: View {
                 .controlSize(.large)
                 .sensoryFeedback(
                     .impact(flexibility: .soft),
-                    trigger: glassGrantAccessFeedbackTrigger
+                    trigger: glassFinalActionFeedbackTrigger
                 )
             }
         }
@@ -363,10 +363,10 @@ public struct WelcomeView: View {
         }
     }
 
+    /// Neutral wording on purpose: App Review 5.1.1(iv) reads a "Grant Access" button in front
+    /// of the system prompt as steering the answer.
     private var finalActionTitle: String {
-        mode.replaysOnboarding
-            ? WelcomeL10n.Main.`continue`
-            : WelcomeL10n.Main.grantAccess
+        WelcomeL10n.Main.`continue`
     }
 
     private func performFinalAction() {

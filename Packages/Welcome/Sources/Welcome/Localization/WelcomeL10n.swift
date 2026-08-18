@@ -37,8 +37,6 @@ public enum WelcomeL10n {
         public static var everyDeletionStaysConfirmedVisible: String { WelcomeL10n.string("welcome.main.everyDeletionStaysConfirmedVisible") }
         /// Find cleanup opportunities
         public static var findCleanupOpportunities: String { WelcomeL10n.string("welcome.main.findCleanupOpportunities") }
-        /// Grant Access
-        public static var grantAccess: String { WelcomeL10n.string("welcome.main.grantAccess") }
         /// Group visually similar photos and other items worth reviewing.
         public static var groupVisuallySimilarPhotosOther: String { WelcomeL10n.string("welcome.main.groupVisuallySimilarPhotosOther") }
         /// How Alike helps

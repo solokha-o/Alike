@@ -16,6 +16,11 @@ plus three more that the task 39 list had missed —
 
 Both `en` and `uk` values were intact for every one of them. Nothing was translated first.
 
+One more went later, for a different reason: `welcome.main.grantAccess` in the Welcome catalog.
+App Review rejected the build under guideline 5.1.1(iv) because a "Grant Access" button in front
+of the system photo prompt steers the answer, so the onboarding CTA now resolves
+`welcome.main.continue` in every mode and the old key had no call site left.
+
 ## What stayed
 
 Four keys in the app catalog were live all along — the rescan alert in `Alike/Alike/Router/RootView.swift`.
