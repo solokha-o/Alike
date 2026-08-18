@@ -45,21 +45,27 @@ settings:
 
 **Legal and support site**
 
-- [ ] All 24 URLs return 200 — six locales by four pages. The site is
+- [ ] All 44 URLs return 200 — eleven locales by four pages. The site is
       independent of this merge; it lives in `alikeapp/alikeapp.github.io`, and
       its own `scripts/check-site.sh` has already asserted the matrix, the
       links, hreflang and the Terms guardrails before deploy.
 
 ```sh
-for l in "" uk/ de/ fr/ es/ pt-br/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
+for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 **Store metadata**
 
-- [ ] Release notes written for `en-US` and `uk`
-- [ ] `.env` carries the per-locale URL overrides for all six non-English
+- [ ] Release notes written for all twelve listing localizations — `en-US`,
+      `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`,
+      `tr`, `zh-Hant`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
+      drift apart, but nothing checks that a release note was actually
+      refreshed — that is this box. `it`, `pl` and `tr` are bare codes on
+      purpose: Fastlane `deliver` rejects the region-qualified spelling.
+- [ ] `.env` carries the per-locale URL overrides for all eleven non-English
       listings — `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_` suffixed `UK`, `DE_DE`,
-      `FR_FR`, `ES_ES`, `ES_MX` and `PT_BR` (the full list with values is in
+      `FR_FR`, `ES_ES`, `ES_MX`, `PT_BR`, `IT`, `NL_NL`, `PL`, `TR` and
+      `ZH_HANT`, thirty-three in all (the full list with values is in
       `Docs/release-checklist.md` step 1). Nothing fails without them; a listing
       just silently reuses the English URLs. `ES_MX` points at the same `/es/`
       pages as `ES_ES` on purpose.
