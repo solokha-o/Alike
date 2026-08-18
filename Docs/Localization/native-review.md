@@ -90,15 +90,18 @@ Two spots are worth a closer look because they state facts:
 ## The landing site — same review, different repository
 
 The Privacy Policy, Terms of Use, support page and landing copy are published in
-`de`, `fr`, `es` and `pt-BR` in `alikeapp/alikeapp.github.io`. They were translated the
-same way the catalogs were — carefully, against the same glossary, by someone who is not
-a native speaker of any of the four. **The same caveat applies: coverage, not a native
-pass.** Legal prose is the one place where that gap costs more than awkwardness, so this
-is the part of the site a reviewer should be handed first.
+`de`, `fr`, `es`, `pt-BR`, `it`, `nl`, `pl`, `tr` and `zh-Hant` in
+`alikeapp/alikeapp.github.io`. They were translated the same way the catalogs were —
+carefully, against the same glossary, by someone who is not a native speaker of any of
+the nine. **The same caveat applies: coverage, not a native pass.** Legal prose is the
+one place where that gap costs more than awkwardness, so this is the part of the site a
+reviewer should be handed first.
 
 Sources are `<locale>/privacy.md`, `<locale>/terms.md` and `_data/<locale>.yml` in that
 repository. Register per language matches the app: *du* for German, *vous* for French,
-*tú* for Spanish, *você* for pt-BR.
+*tú* for Spanish, *você* for pt-BR, *tu* for Italian, *je* for Dutch, informal *ty* for
+Polish and informal *sen* for Turkish — Turkish in particular, because a legal page is
+where a translator's instinct reaches for *siz* and the app says *sen* everywhere else.
 
 ### Terms of Use — the compliance surface
 
@@ -172,6 +175,15 @@ entries state facts and have to agree with the app: the free allowance in `prici
   numeric-heavy Cleanup screens set differently from Latin script.
 
 ## Not yet reviewed by a native speaker
+
+Task 44 added the same five languages to the App Store listing — subtitle, keywords,
+description, promotional text, release notes, the in-app-purchase display names, and the
+five marketing screenshot captions — and to the landing site. That copy was written the
+same way and carries the same caveat, with two places worth a reviewer's attention beyond
+the app strings: **keywords**, which are market research rather than translation and are
+the one field where a plausible-sounding word simply fails to be what people search for,
+and the **zh-Hant screenshot captions**, which are the only copy in the project set in
+Heiti TC rather than SF Pro and should be read at thumbnail size, not at full size.
 
 No language in the app has had a native pass. The tier 3 five are the newest and the two
 non-Latin-adjacent risks (`pl` grammar, `zh-Hant` terminology) are concentrated there, so if

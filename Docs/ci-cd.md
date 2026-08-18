@@ -91,10 +91,10 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR}` —
-    eighteen per-locale overrides, one per non-English listing. Unset, that
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}` —
+    thirty-three per-locale overrides, one per non-English listing. Unset, that
     listing reuses the three URLs above, which point at the English pages even
-    though the site publishes all six locales. The suffix is the App Store
+    though the site publishes all eleven locales. The suffix is the App Store
     locale, uppercased, with `-` replaced by `_`, so a further localization
     follows the same pattern. `ES_MX` points at the same `/es/` pages as
     `ES_ES`. Values are listed in `Docs/release-checklist.md` step 1.
@@ -379,14 +379,14 @@ The practical consequence for releases: the site no longer rides along with the 
 release merge. It can be deployed and its URLs verified at any time, independently of
 this repository.
 
-| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` |
-|---|---|---|---|---|---|---|
-| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` |
-| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` |
-| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` |
-| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` |
+| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` | `it` | `nl` | `pl` | `tr` | `zh-Hant` |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` | `/it/` | `/nl/` | `/pl/` | `/tr/` | `/zh-hant/` |
+| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` | `/it/privacy/` | `/nl/privacy/` | `/pl/privacy/` | `/tr/privacy/` | `/zh-hant/privacy/` |
+| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` | `/it/terms/` | `/nl/terms/` | `/pl/terms/` | `/tr/terms/` | `/zh-hant/terms/` |
+| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` | `/it/support/` | `/nl/support/` | `/pl/support/` | `/tr/support/` | `/zh-hant/support/` |
 
-Six locales against seven listings: the `es` column serves both `es-ES` and
+Eleven locales against twelve listings: the `es` column serves both `es-ES` and
 `es-MX`.
 
 That repository's `scripts/check-site.sh` is the build gate. It runs on every

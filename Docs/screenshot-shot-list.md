@@ -100,29 +100,42 @@ rules behind it.
 
 ## Shots
 
-"Tier 1" below is the five locales added for the App Store listing: `de`, `fr`,
-`es`, `es-419`, `pt-BR`.
+"Tier 1" below is the five locales added for the App Store listing in task 40:
+`de`, `fr`, `es`, `es-419`, `pt-BR`. "Tier 3" is the five added in task 44:
+`it`, `nl`, `pl`, `tr`, `zh-Hant`.
 
-| # | Screen | EN | UK | Tier 1 | On site | File |
-|---|---|---|---|---|---|---|
-| 1 | Scanner idle | ✅ | ✅ | ✅ | ✅ | `01-scanner-idle` |
-| 2 | Scanner scanning | ✅ | ✅ | n/a | — | `02-scanner-scanning` |
-| 3 | Cleanup queue | ✅ | ✅ | ✅ | ✅ | `03-cleanup-queue` |
-| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | ✅ | `04-cluster-details` |
-| 5 | Comparison review | ✅ | ✅ | ✅ | ✅ | `05-comparison-review` |
-| 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | n/a | — | `06-cleanup-confirm` |
-| 7 | Cleanup progress | ✅ | ✅ | ✅ | ✅ | `07-cleanup-progress` |
-| 8 | Screenshot cleanup | ✅ | n/a | n/a | — | `08-screenshot-cleanup` |
-| 9 | History | optional | optional | n/a | — | — |
-| 10 | Settings with Legal section | open | n/a | n/a | — | — |
-| 11 | Paywall with disclosure | ✅ | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
-| 12 | User Guide | retired | retired | n/a | — | — |
-| 13 | Welcome / privacy | ✅ | ✅ | n/a | — | `13-welcome-privacy` |
+| # | Screen | EN | UK | Tier 1 | Tier 3 | On site | File |
+|---|---|---|---|---|---|---|---|
+| 1 | Scanner idle | ✅ | ✅ | ✅ | ✅ | ✅ | `01-scanner-idle` |
+| 2 | Scanner scanning | ✅ | ✅ | n/a | n/a | — | `02-scanner-scanning` |
+| 3 | Cleanup queue | ✅ | ✅ | ✅ | ✅ | ✅ | `03-cleanup-queue` |
+| 4 | Cluster details, Best Shot | ✅ | ✅ | ✅ | ✅ | ✅ | `04-cluster-details` |
+| 5 | Comparison review | ✅ | ✅ | ✅ | ✅ | ✅ | `05-comparison-review` |
+| 6 | Cleanup confirm (iOS dialog) | ✅ | n/a | n/a | n/a | — | `06-cleanup-confirm` |
+| 7 | Cleanup progress | ✅ | ✅ | ✅ | ✅ | ✅ | `07-cleanup-progress` |
+| 8 | Screenshot cleanup | ✅ | n/a | n/a | n/a | — | `08-screenshot-cleanup` |
+| 9 | History | optional | optional | n/a | n/a | — | — |
+| 10 | Settings with Legal section | open | n/a | n/a | n/a | — | — |
+| 11 | Paywall with disclosure | ✅ | n/a | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
+| 12 | User Guide | retired | retired | n/a | n/a | — | — |
+| 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
 
 ### What is actually outstanding
 
-Every shot is now either captured, or has a reason it is not. A shot with no
-consumer is not a gap.
+Every shot is either captured, has a reason it is not, or is one of the twenty-five
+tier 3 captures below. A shot with no consumer is not a gap.
+
+**Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
+`pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
+in `capture-manifest.json`, exactly as Tier 1 was. All twelve listing locales now
+have a deck.
+
+Polish shot 1 is the one frame that did not arrive as a 1125 × 2436 PNG: it came
+off the device as a 1119 × 2436 JPEG, so it was resampled to 1320 wide and centre-
+cropped by 6px rather than run through `import_device_screenshots.py`, and its
+manifest entry is absent for that reason. The render is indistinguishable from
+its siblings, but it is the one source frame that is not pristine, so replacing it
+with the original PNG is a cheap improvement if that file ever turns up.
 
 **Captured — the Tier 1 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `de`, `fr`,
 `es`, `es-419` and `pt-BR`, taken in one session on a physical iPhone and

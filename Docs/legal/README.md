@@ -6,19 +6,19 @@ disclosure.
 ```
 Docs/legal/
 ├── README.md                     this file — the runbook
-└── subscription-disclosure.md    paywall disclosure copy, all seven locales
+└── subscription-disclosure.md    paywall disclosure copy, all twelve locales
 
 alikeapp/alikeapp.github.io       the published pages themselves (separate repo)
 ├── privacy.md  terms.md  support.md  index.md        en, at the root
-├── uk/    de/    fr/    es/    pt-br/                the same four per locale
+├── uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/   the same four per locale
 └── scripts/check-site.sh                             the build gate
 ```
 
-The site publishes six locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR` — against
-seven App Store listings. `es` is one page serving both `es-ES` and `es-MX`: the
-legal copy does not need the regional vocabulary split, so `/es/` carries the
-Spain wording and advertises `hreflang="es-419"` for the Latin American
-storefront.
+The site publishes eleven locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR`, `it`,
+`nl`, `pl`, `tr`, `zh-Hant` — against twelve App Store listings. `es` is one page
+serving both `es-ES` and `es-MX`: the legal copy does not need the regional
+vocabulary split, so `/es/` carries the Spain wording and advertises
+`hreflang="es-419"` for the Latin American storefront.
 
 The legal pages *are* the landing page, so they live with it — in the
 [`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io)
@@ -39,7 +39,7 @@ can drift.
 
 The privacy pages are published as part of the landing page on GitHub Pages.
 
-All 24 are `https://alikeapp.github.io` + the path below.
+All 44 are `https://alikeapp.github.io` + the path below.
 
 | Locale | Landing | Privacy Policy | Terms of Use | Support |
 | --- | --- | --- | --- | --- |
@@ -49,9 +49,15 @@ All 24 are `https://alikeapp.github.io` + the path below.
 | `fr` | `/fr/` | `/fr/privacy/` | `/fr/terms/` | `/fr/support/` |
 | `es` | `/es/` | `/es/privacy/` | `/es/terms/` | `/es/support/` |
 | `pt-BR` | `/pt-br/` | `/pt-br/privacy/` | `/pt-br/terms/` | `/pt-br/support/` |
+| `it` | `/it/` | `/it/privacy/` | `/it/terms/` | `/it/support/` |
+| `nl` | `/nl/` | `/nl/privacy/` | `/nl/terms/` | `/nl/support/` |
+| `pl` | `/pl/` | `/pl/privacy/` | `/pl/terms/` | `/pl/support/` |
+| `tr` | `/tr/` | `/tr/privacy/` | `/tr/terms/` | `/tr/support/` |
+| `zh-Hant` | `/zh-hant/` | `/zh-hant/privacy/` | `/zh-hant/terms/` | `/zh-hant/support/` |
 
 URL paths are lowercase, so Brazilian Portuguese is `/pt-br/` while its language
-tag stays `pt-BR`. The App Store `es-MX` listing points at the `es` row.
+tag stays `pt-BR`, and Traditional Chinese is `/zh-hant/` against `zh-Hant`. The
+App Store `es-MX` listing points at the `es` row.
 
 This is an **organization** Pages site served from the domain root. `alike.github.io`
 was the first choice and is unavailable — `alike` is an existing GitHub account
@@ -147,7 +153,7 @@ its `check_terms` row.
    links, hreflang, the Terms guardrails below, and that no third-party host is
    referenced. Merging deploys it; no manual copying is involved, and this does
    not wait on the app's release merge.
-5. Confirm all 24 URLs load publicly with no sign-in — the loop is in
+5. Confirm all 44 URLs load publicly with no sign-in — the loop is in
    `Docs/release-checklist.md` step 6.
 6. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
    The in-app links stay English for every locale: they are the app's own
