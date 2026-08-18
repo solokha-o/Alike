@@ -133,10 +133,10 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`), for all seven localizations
-      the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`,
-      `pt-BR`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever
-      drift apart.
+      (`tools/prepare_app_store_upload_bundle.py`), for all twelve
+      localizations the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`,
+      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`. Validation fails
+      if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
 
 ```sh
@@ -169,9 +169,9 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 
 - [ ] `bundle exec ruby tools/app_store_iap_metadata.rb status` reflects the
       Alike Pro group and both plans.
-- [ ] `upload-localizations` for the display names and descriptions in all seven
-      localizations. Only `en-US` failures are fatal; App Store Connect rejecting
-      another locale is reported as a warning and skipped.
+- [ ] `upload-localizations` for the display names and descriptions in all
+      twelve localizations. Only `en-US` failures are fatal; App Store Connect
+      rejecting another locale is reported as a warning and skipped.
 - [ ] `upload-introductory-offers` for the yearly free trial.
 - [ ] `upload-review-screenshots` — `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` points at
       `Docs/images/review/11-paywall-disclosure.png`, which shows the renewal and
