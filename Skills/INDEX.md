@@ -39,6 +39,7 @@ request needs that extra depth.
 | `Testing/swift-testing` | Add/fix/review tests, async test isolation, package test architecture, XCTest migration planning | Use external testing only for API depth or large-scale migration details | No |
 | `Workflow/sqim-phone-setup` | Explicit request to set up, install, or push Alike on the user's physical phone/iPhone with SQIM; never ordinary build or simulator work | No | No |
 | `Workflow/todo-management` | Create, review, audit, resolve, or report TODO-family comments and deferred code work | No | No |
+| `Workflow/workspace-hygiene` | Keep temporary files, build artifacts, logs, screenshots, exports, and other disposable workspace clutter out of the repository | No | No |
 
 ## Routine Commands
 
