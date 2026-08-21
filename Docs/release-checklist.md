@@ -8,6 +8,12 @@ Command reference: `Docs/ci-cd.md`. Branch and tag rules:
 `Skills/GitFlow/ios-git-flow/SKILL.md` and its
 `references/release-finalization.md`.
 
+**Do not upload metadata, screenshots or IAP localizations while a version is in
+App Review.** Steps 4, 5, 7 and 10 all write to App Store Connect, and writing to
+a submission under review risks disturbing it for no gain — generated copy and
+decks sit in the repo just as happily until the review clears. Generate and
+validate whenever you like; upload when nothing is in review.
+
 ## 0. Environment
 
 - [ ] `.env` present and loaded. It carries `ALIKE_PRIVACY_URL`,
@@ -18,15 +24,61 @@ Command reference: `Docs/ci-cd.md`. Branch and tag rules:
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
-- [ ] `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK` and `ALIKE_SUPPORT_URL_UK`
-      set to the `/uk/` pages. These are optional overrides and nothing fails
-      without them — the uk listing simply reuses the English URLs, which is a
-      silent localization gap rather than an error:
+- [ ] The per-locale URL overrides set for every non-English listing. These are
+      optional and nothing fails without them — a listing simply reuses the
+      English URLs, which is a silent localization gap rather than an error. The
+      site now publishes all eleven locales, so leaving any of these unset sends
+      readers to English legal text they were not reading a moment ago:
 
 ```sh
 ALIKE_PRIVACY_URL_UK="https://alikeapp.github.io/uk/privacy/"
 ALIKE_TERMS_URL_UK="https://alikeapp.github.io/uk/terms/"
 ALIKE_SUPPORT_URL_UK="https://alikeapp.github.io/uk/support/"
+
+ALIKE_PRIVACY_URL_DE_DE="https://alikeapp.github.io/de/privacy/"
+ALIKE_TERMS_URL_DE_DE="https://alikeapp.github.io/de/terms/"
+ALIKE_SUPPORT_URL_DE_DE="https://alikeapp.github.io/de/support/"
+
+ALIKE_PRIVACY_URL_FR_FR="https://alikeapp.github.io/fr/privacy/"
+ALIKE_TERMS_URL_FR_FR="https://alikeapp.github.io/fr/terms/"
+ALIKE_SUPPORT_URL_FR_FR="https://alikeapp.github.io/fr/support/"
+
+ALIKE_PRIVACY_URL_ES_ES="https://alikeapp.github.io/es/privacy/"
+ALIKE_TERMS_URL_ES_ES="https://alikeapp.github.io/es/terms/"
+ALIKE_SUPPORT_URL_ES_ES="https://alikeapp.github.io/es/support/"
+
+# es-MX deliberately points at the same /es/ pages as es-ES. One Spanish page
+# serves both listings: the legal copy does not need the regional vocabulary
+# split, and /es/ advertises hreflang="es-419" for this storefront.
+ALIKE_PRIVACY_URL_ES_MX="https://alikeapp.github.io/es/privacy/"
+ALIKE_TERMS_URL_ES_MX="https://alikeapp.github.io/es/terms/"
+ALIKE_SUPPORT_URL_ES_MX="https://alikeapp.github.io/es/support/"
+
+ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
+ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
+ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
+
+ALIKE_PRIVACY_URL_IT="https://alikeapp.github.io/it/privacy/"
+ALIKE_TERMS_URL_IT="https://alikeapp.github.io/it/terms/"
+ALIKE_SUPPORT_URL_IT="https://alikeapp.github.io/it/support/"
+
+ALIKE_PRIVACY_URL_NL_NL="https://alikeapp.github.io/nl/privacy/"
+ALIKE_TERMS_URL_NL_NL="https://alikeapp.github.io/nl/terms/"
+ALIKE_SUPPORT_URL_NL_NL="https://alikeapp.github.io/nl/support/"
+
+ALIKE_PRIVACY_URL_PL="https://alikeapp.github.io/pl/privacy/"
+ALIKE_TERMS_URL_PL="https://alikeapp.github.io/pl/terms/"
+ALIKE_SUPPORT_URL_PL="https://alikeapp.github.io/pl/support/"
+
+ALIKE_PRIVACY_URL_TR="https://alikeapp.github.io/tr/privacy/"
+ALIKE_TERMS_URL_TR="https://alikeapp.github.io/tr/terms/"
+ALIKE_SUPPORT_URL_TR="https://alikeapp.github.io/tr/support/"
+
+# The one locale whose site path and App Store code differ only in case:
+# /zh-hant/ pages, ALIKE_*_URL_ZH_HANT overrides, zh-Hant listing.
+ALIKE_PRIVACY_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/privacy/"
+ALIKE_TERMS_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/terms/"
+ALIKE_SUPPORT_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
@@ -81,9 +133,10 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`), for `en-US` and `uk` — the
-      two localizations the listing has. Validation fails if `METADATA` and
-      `UPLOAD_SAFE_LOCALES` ever drift apart.
+      (`tools/prepare_app_store_upload_bundle.py`), for all twelve
+      localizations the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`,
+      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`. Validation fails
+      if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
 
 ```sh
@@ -116,8 +169,9 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 
 - [ ] `bundle exec ruby tools/app_store_iap_metadata.rb status` reflects the
       Alike Pro group and both plans.
-- [ ] `upload-localizations` for the `en-US` / `uk` display names and
-      descriptions.
+- [ ] `upload-localizations` for the display names and descriptions in all
+      twelve localizations. Only `en-US` failures are fatal; App Store Connect
+      rejecting another locale is reported as a warning and skipped.
 - [ ] `upload-introductory-offers` for the yearly free trial.
 - [ ] `upload-review-screenshots` — `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` points at
       `Docs/images/review/11-paywall-disclosure.png`, which shows the renewal and
@@ -132,13 +186,16 @@ repository's release merge**, so this whole step can and should be completed
 App Review rejection, and there is no longer any reason to discover that late.
 
 - [ ] Pages source set to **GitHub Actions** (that repo's Settings → Pages).
-- [ ] The workflow run succeeded. It fails deliberately if the rendered site
-      references any third-party host, because the privacy policy claims Alike
-      makes no network requests.
-- [ ] All six URLs return 200:
+- [ ] The workflow run succeeded. `scripts/check-site.sh` runs there on every
+      pull request and again before each deploy, and asserts the locale matrix,
+      internal links, hreflang, the Terms guardrails and — deliberately — that
+      the rendered site references no third-party host, because the privacy
+      policy claims Alike makes no network requests.
+- [ ] All 44 published URLs return 200. The build already checked that each page
+      exists in the rendered output; this checks the deployed site:
 
 ```sh
-for u in "" privacy/ uk/privacy/ terms/ uk/terms/ support/; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "$u"; done
+for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 - [ ] In a **Release** build, the legal links open from all four entry points:

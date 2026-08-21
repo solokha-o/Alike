@@ -24,7 +24,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
-- 🌍 **Two languages** — Ukrainian and English
+- 🌍 **Twelve languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish and Traditional Chinese
 - 🌓 **Dark Mode** — full support
 
 ## 🆕 What ships in 1.0.0
@@ -45,8 +45,8 @@ The first public release, now live on the App Store. What it includes:
 Alike makes no network requests. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
 
 - [Privacy Policy](https://alikeapp.github.io/privacy/) · [Terms of Use](https://alikeapp.github.io/terms/) · [Support](https://alikeapp.github.io/support/)
-- Ukrainian: [Політика конфіденційності](https://alikeapp.github.io/uk/privacy/) · [Умови використання](https://alikeapp.github.io/uk/terms/)
-- Source copy for both lives in [`Docs/legal/`](Docs/legal/).
+- Also published in [Українська](https://alikeapp.github.io/uk/privacy/) · [Deutsch](https://alikeapp.github.io/de/privacy/) · [Français](https://alikeapp.github.io/fr/privacy/) · [Español](https://alikeapp.github.io/es/privacy/) · [Português (Brasil)](https://alikeapp.github.io/pt-br/privacy/), each with its own Terms and support page.
+- The runbook for all of it lives in [`Docs/legal/`](Docs/legal/); the pages themselves are in [`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io).
 
 ## 🧠 Similarity algorithm
 
@@ -180,9 +180,22 @@ variables, and the safety rules that keep uploads deliberate.
 
 ## 📝 Localization
 
-Languages via `Localizable.xcstrings`:
-- 🇬🇧 English (base)
-- 🇺🇦 Ukrainian
+Twelve languages, each in per-package `Localizable.xcstrings` catalogs:
+
+| Tier | Locales |
+|---|---|
+| Base | 🇬🇧 `en` · 🇺🇦 `uk` |
+| Tier 1 | 🇲🇽 `es-419` · 🇪🇸 `es` · 🇧🇷 `pt-BR` · 🇩🇪 `de` · 🇫🇷 `fr` |
+| Tier 3 | 🇮🇹 `it` · 🇳🇱 `nl` · 🇵🇱 `pl` · 🇹🇷 `tr` · 🇹🇼 `zh-Hant` |
+
+A package that renders text owns its own catalog and typed `L10n` accessors; the app
+target's catalog holds app-level strings only. Every package has a `LocalizationCatalogTests`
+suite asserting that each key carries every shipped language and declares the right plural
+categories for it.
+
+[`Docs/Localization/README.md`](Docs/Localization/README.md) is the convention and the
+recipe for adding a language; [`native-review.md`](Docs/Localization/native-review.md) is
+the list of strings a native speaker still needs to sign off.
 
 ## 🤝 Contributing
 

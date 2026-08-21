@@ -37,6 +37,16 @@ SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
 )
 
+# Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
+# plain `swift test` does not resolve the XCFramework's macOS slice — every such
+# package fails to compile with "no such module 'Lottie'" no matter how healthy
+# its own tests are. `xcodebuild test` against an iOS simulator resolves it, so
+# those packages are routed there instead of being skipped. The set is derived
+# from the manifests rather than listed by hand, so a new dependency edge on
+# DesignSystem cannot silently reintroduce the failure.
+XCODEBUILD_TEST_PACKAGES=()
+XCODEBUILD_TEST_PACKAGES_RESOLVED=0
+
 usage() {
   cat <<'USAGE'
 Usage:
@@ -212,9 +222,94 @@ set_swiftpm_common_args() {
   )
 }
 
+# The transitive closure of path dependencies that reach DesignSystem, read out
+# of the manifests so the list cannot drift from the graph.
+resolve_xcodebuild_test_packages() {
+  if [[ "$XCODEBUILD_TEST_PACKAGES_RESOLVED" == "1" ]]; then
+    return
+  fi
+
+  local name
+  while IFS= read -r name; do
+    [[ -n "$name" ]] && XCODEBUILD_TEST_PACKAGES+=("$name")
+  done < <(python3 - "$ROOT_DIR/Packages" <<'PYTHON'
+import pathlib
+import re
+import sys
+
+packages_root = pathlib.Path(sys.argv[1])
+edges = {}
+for manifest in sorted(packages_root.glob("*/Package.swift")):
+    source = manifest.read_text(encoding="utf-8")
+    edges[manifest.parent.name] = set(re.findall(r'\.package\(path:\s*"\.\./([A-Za-z0-9_]+)"', source))
+
+def reaches_design_system(name, seen):
+    if name in seen:
+        return False
+    seen.add(name)
+    for dependency in edges.get(name, ()):
+        if dependency == "DesignSystem" or reaches_design_system(dependency, seen):
+            return True
+    return False
+
+for name in sorted(edges):
+    if name == "DesignSystem" or reaches_design_system(name, set()):
+        print(name)
+PYTHON
+  )
+
+  XCODEBUILD_TEST_PACKAGES_RESOLVED=1
+}
+
+needs_xcodebuild_tests() {
+  local name="$1"
+  local candidate
+
+  resolve_xcodebuild_test_packages
+  for candidate in "${XCODEBUILD_TEST_PACKAGES[@]}"; do
+    if [[ "$name" == "$candidate" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Resolved once per run: every package that goes through xcodebuild shares it.
+PACKAGE_TEST_DESTINATION=""
+
+package_test_destination() {
+  if [[ -z "$PACKAGE_TEST_DESTINATION" ]]; then
+    PACKAGE_TEST_DESTINATION="$(resolve_build_destination)"
+  fi
+  printf '%s\n' "$PACKAGE_TEST_DESTINATION"
+}
+
+run_xcodebuild_package_step() {
+  local package_path="$1"
+  local action="$2"
+  local name relative_path destination slug
+
+  name="$(basename "$package_path")"
+  relative_path="${package_path#$ROOT_DIR/}"
+  slug="$(package_slug "$package_path")"
+  destination="$(package_test_destination)"
+
+  run_step "xcodebuild $action $relative_path" \
+    xcodebuild \
+      -workspace "$package_path" \
+      -scheme "$name" \
+      -destination "$destination" \
+      -derivedDataPath "$DERIVED_DATA_ROOT/packages/$slug" \
+      "$action"
+}
+
 run_package_tests() {
   local package_path
   for package_path in "$@"; do
+    if needs_xcodebuild_tests "$(basename "$package_path")"; then
+      run_xcodebuild_package_step "$package_path" test
+      continue
+    fi
     set_swiftpm_common_args "$package_path"
     run_step "swift test ${package_path#$ROOT_DIR/}" swift test "${SWIFTPM_COMMON_ARGS[@]}"
   done
@@ -237,6 +332,14 @@ run_package_validation() {
     relative_path="${package_path#$ROOT_DIR/}"
     if swiftpm_unsupported "$(basename "$package_path")"; then
       skip_step "swift test $relative_path" "not runnable under plain swift test on macOS; covered by the app compile gate"
+      continue
+    fi
+    if needs_xcodebuild_tests "$(basename "$package_path")"; then
+      if [[ -d "$package_path/Tests" ]]; then
+        run_xcodebuild_package_step "$package_path" test
+      else
+        run_xcodebuild_package_step "$package_path" build
+      fi
       continue
     fi
     set_swiftpm_common_args "$package_path"

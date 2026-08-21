@@ -68,13 +68,14 @@ struct GuideContentTests {
     }
 
     /// The query is the row's own rendered title, so this holds whether or not the string catalog
-    /// resolves — under `swift test`, `appLocalized` sees the test bundle rather than the app.
+    /// resolves — SwiftPM copies `.xcstrings` verbatim instead of compiling it, so under
+    /// `swift test` the lookup falls back to the key itself.
     @Test("Search finds a row by its own title and reports the owning topic")
     func searchFindsRowsByTitle() throws {
         let topic = GuideContent.topic(.comparingPhotos)
         let item = try #require(topic.sections.first?.items.first)
 
-        let results = GuideContent.search(appLocalized(item.titleKey))
+        let results = GuideContent.search(UserGuideL10n.string(item.titleKey))
 
         #expect(results.contains { $0.id == item.id && $0.topicID == .comparingPhotos })
     }

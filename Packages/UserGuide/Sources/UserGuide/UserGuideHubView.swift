@@ -25,8 +25,8 @@ public struct UserGuideHubView<Route: Hashable>: View {
                 resultsContent
             }
         }
-        .searchable(text: $query, prompt: Text(appLocalized("guide.hub.searchPrompt")))
-        .navigationTitle(Text(appLocalized("How to Use")))
+        .searchable(text: $query, prompt: Text(UserGuideL10n.Hub.searchprompt))
+        .navigationTitle(Text(UserGuideL10n.UserGuideHub.howToUse))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -35,7 +35,7 @@ public struct UserGuideHubView<Route: Hashable>: View {
     @ViewBuilder
     private var topicsContent: some View {
         Section {
-            Text(appLocalized("guide.hub.intro"))
+            Text(UserGuideL10n.Hub.intro)
                 .font(.appBody)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -47,12 +47,12 @@ public struct UserGuideHubView<Route: Hashable>: View {
                 NavigationLink(value: route(topic.id)) {
                     GuideTopicRow(topic: topic)
                 }
-                .accessibilityHint(Text(appLocalized("guide.hub.topic.hint")))
+                .accessibilityHint(Text(UserGuideL10n.Hub.topicHint))
             }
         } header: {
-            Text(appLocalized("guide.hub.topics.header"))
+            Text(UserGuideL10n.Hub.topicsHeader)
         } footer: {
-            Text(appLocalized("guide.hub.footer"))
+            Text(UserGuideL10n.Hub.footer)
         }
     }
 
@@ -61,9 +61,9 @@ public struct UserGuideHubView<Route: Hashable>: View {
         if results.isEmpty {
             Section {
                 ContentUnavailableView(
-                    appLocalized("guide.hub.noResults"),
+                    UserGuideL10n.Hub.noresults,
                     systemImage: "magnifyingglass",
-                    description: Text(appLocalized("guide.hub.noResults.message"))
+                    description: Text(UserGuideL10n.Hub.noresultsMessage)
                 )
             }
             .listRowBackground(Color.clear)
@@ -72,10 +72,10 @@ public struct UserGuideHubView<Route: Hashable>: View {
                 ForEach(results) { result in
                     NavigationLink(value: route(result.topicID)) {
                         VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                            Text(appLocalized(result.item.titleKey))
+                            Text(UserGuideL10n.string(result.item.titleKey))
                                 .font(.appHeadline)
                                 .fixedSize(horizontal: false, vertical: true)
-                            Text(appLocalized(result.topicTitleKey))
+                            Text(UserGuideL10n.string(result.topicTitleKey))
                                 .font(.appCaption)
                                 .foregroundStyle(.secondary)
                         }

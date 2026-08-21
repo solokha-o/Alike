@@ -87,8 +87,12 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# Local App Store Connect / signing configuration
+# Local App Store Connect / signing configuration.
+# The glob matters: this file used to ignore `.env` and nothing else, so a
+# backup like `.env.bak-20260809` or `.env.local` showed up as untracked in a
+# public repository with the App Store Connect key ID and issuer ID inside it.
 .env
+.env.*
 
 # Jekyll landing page build output
 site/_site/

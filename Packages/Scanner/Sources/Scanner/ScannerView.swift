@@ -56,7 +56,7 @@ public struct ScannerView: View {
                 .frame(maxWidth: .infinity)
                 .padding(Spacing.medium)
             }
-            .navigationTitle(Text(appLocalized("Scanner")))
+            .navigationTitle(Text(ScannerL10n.Main.scanner))
 #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
 #endif
@@ -87,9 +87,9 @@ public struct ScannerView: View {
             } label: {
                 Image(systemName: "questionmark.circle")
             }
-            .accessibilityLabel(Text(appLocalized("How to Use")))
+            .accessibilityLabel(Text(ScannerL10n.Main.howToUse))
             .accessibilityHint(
-                Text(appLocalized("Open usage instructions and cleanup workflow tips"))
+                Text(ScannerL10n.Main.openUsageInstructionsCleanupWorkflow)
             )
         }
     }

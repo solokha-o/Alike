@@ -28,84 +28,84 @@ enum GuideContent {
     static let gettingStarted = GuideTopic(
         id: .gettingStarted,
         symbol: "hand.wave",
-        title: "guide.gettingStarted.title",
-        summary: "guide.gettingStarted.summary",
+        title: "userGuide.gettingStarted.title",
+        summary: "userGuide.gettingStarted.summary",
         sections: [
             GuideSection(
                 id: "gettingStarted.loop",
-                header: "guide.gettingStarted.loop.header",
-                footer: "guide.gettingStarted.loop.footer",
+                header: "userGuide.gettingStarted.loop.header",
+                footer: "userGuide.gettingStarted.loop.footer",
                 items: [
                     GuideItem(
                         id: "gettingStarted.loop.scan",
                         kind: .step(number: 1, of: 3),
                         symbol: "viewfinder",
-                        title: "guide.gettingStarted.loop.scan.title",
-                        body: "guide.gettingStarted.loop.scan.body"
+                        title: "userGuide.gettingStarted.loop.scan.title",
+                        body: "userGuide.gettingStarted.loop.scan.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.loop.review",
                         kind: .step(number: 2, of: 3),
                         symbol: "photo.stack",
-                        title: "guide.gettingStarted.loop.review.title",
-                        body: "guide.gettingStarted.loop.review.body"
+                        title: "userGuide.gettingStarted.loop.review.title",
+                        body: "userGuide.gettingStarted.loop.review.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.loop.move",
                         kind: .step(number: 3, of: 3),
                         symbol: "trash",
-                        title: "guide.gettingStarted.loop.move.title",
-                        body: "guide.gettingStarted.loop.move.body"
+                        title: "userGuide.gettingStarted.loop.move.title",
+                        body: "userGuide.gettingStarted.loop.move.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "gettingStarted.scope",
-                header: "guide.gettingStarted.scope.header",
-                footer: "guide.gettingStarted.scope.footer",
+                header: "userGuide.gettingStarted.scope.header",
+                footer: "userGuide.gettingStarted.scope.footer",
                 items: [
                     GuideItem(
                         id: "gettingStarted.scope.similar",
                         symbol: "square.stack.3d.up.fill",
-                        title: "guide.gettingStarted.scope.similar.title",
-                        body: "guide.gettingStarted.scope.similar.body"
+                        title: "userGuide.gettingStarted.scope.similar.title",
+                        body: "userGuide.gettingStarted.scope.similar.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.scope.screenshots",
                         symbol: "camera.viewfinder",
-                        title: "guide.gettingStarted.scope.screenshots.title",
-                        body: "guide.gettingStarted.scope.screenshots.body"
+                        title: "userGuide.gettingStarted.scope.screenshots.title",
+                        body: "userGuide.gettingStarted.scope.screenshots.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.scope.blurred",
                         symbol: "drop.triangle",
-                        title: "guide.gettingStarted.scope.blurred.title",
-                        body: "guide.gettingStarted.scope.blurred.body"
+                        title: "userGuide.gettingStarted.scope.blurred.title",
+                        body: "userGuide.gettingStarted.scope.blurred.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "gettingStarted.access",
-                header: "guide.gettingStarted.access.header",
+                header: "userGuide.gettingStarted.access.header",
                 items: [
                     GuideItem(
                         id: "gettingStarted.access.permission",
                         symbol: "photo.on.rectangle",
-                        title: "guide.gettingStarted.access.permission.title",
-                        body: "guide.gettingStarted.access.permission.body"
+                        title: "userGuide.gettingStarted.access.permission.title",
+                        body: "userGuide.gettingStarted.access.permission.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.access.onDevice",
                         symbol: "iphone",
-                        title: "guide.gettingStarted.access.onDevice.title",
-                        body: "guide.gettingStarted.access.onDevice.body"
+                        title: "userGuide.gettingStarted.access.onDevice.title",
+                        body: "userGuide.gettingStarted.access.onDevice.body"
                     ),
                     GuideItem(
                         id: "gettingStarted.access.noAutoDelete",
                         kind: .caution,
                         symbol: "exclamationmark.shield",
-                        title: "guide.gettingStarted.access.noAutoDelete.title",
-                        body: "guide.gettingStarted.access.noAutoDelete.body"
+                        title: "userGuide.gettingStarted.access.noAutoDelete.title",
+                        body: "userGuide.gettingStarted.access.noAutoDelete.body"
                     )
                 ]
             )
@@ -117,75 +117,75 @@ enum GuideContent {
     static let scanning = GuideTopic(
         id: .scanning,
         symbol: "viewfinder",
-        title: "guide.scanning.title",
-        summary: "guide.scanning.summary",
+        title: "userGuide.scanning.title",
+        summary: "userGuide.scanning.summary",
         sections: [
             GuideSection(
                 id: "scanning.run",
-                header: "guide.scanning.run.header",
-                footer: "guide.scanning.run.footer",
+                header: "userGuide.scanning.run.header",
+                footer: "userGuide.scanning.run.footer",
                 items: [
                     GuideItem(
                         id: "scanning.run.start",
                         symbol: "sparkles",
-                        title: "guide.scanning.run.start.title",
-                        body: "guide.scanning.run.start.body"
+                        title: "userGuide.scanning.run.start.title",
+                        body: "userGuide.scanning.run.start.body"
                     ),
                     GuideItem(
                         id: "scanning.run.background",
                         kind: .tip,
                         symbol: "arrow.left.arrow.right",
-                        title: "guide.scanning.run.background.title",
-                        body: "guide.scanning.run.background.body"
+                        title: "userGuide.scanning.run.background.title",
+                        body: "userGuide.scanning.run.background.body"
                     ),
                     GuideItem(
                         id: "scanning.run.cache",
                         symbol: "bolt",
-                        title: "guide.scanning.run.cache.title",
-                        body: "guide.scanning.run.cache.body"
+                        title: "userGuide.scanning.run.cache.title",
+                        body: "userGuide.scanning.run.cache.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "scanning.status",
-                header: "guide.scanning.status.header",
+                header: "userGuide.scanning.status.header",
                 items: [
                     GuideItem(
                         id: "scanning.status.card",
                         symbol: "chart.bar",
-                        title: "guide.scanning.status.card.title",
-                        body: "guide.scanning.status.card.body"
+                        title: "userGuide.scanning.status.card.title",
+                        body: "userGuide.scanning.status.card.body"
                     ),
                     GuideItem(
                         id: "scanning.status.allowance",
                         symbol: "gauge.medium",
-                        title: "guide.scanning.status.allowance.title",
-                        body: "guide.scanning.status.allowance.body"
+                        title: "userGuide.scanning.status.allowance.title",
+                        body: "userGuide.scanning.status.allowance.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "scanning.rescan",
-                header: "guide.scanning.rescan.header",
-                footer: "guide.scanning.rescan.footer",
+                header: "userGuide.scanning.rescan.header",
+                footer: "userGuide.scanning.rescan.footer",
                 items: [
                     GuideItem(
                         id: "scanning.rescan.libraryChanged",
                         symbol: "arrow.clockwise",
-                        title: "guide.scanning.rescan.libraryChanged.title",
-                        body: "guide.scanning.rescan.libraryChanged.body"
+                        title: "userGuide.scanning.rescan.libraryChanged.title",
+                        body: "userGuide.scanning.rescan.libraryChanged.body"
                     ),
                     GuideItem(
                         id: "scanning.rescan.sensitivity",
                         symbol: "slider.horizontal.3",
-                        title: "guide.scanning.rescan.sensitivity.title",
-                        body: "guide.scanning.rescan.sensitivity.body"
+                        title: "userGuide.scanning.rescan.sensitivity.title",
+                        body: "userGuide.scanning.rescan.sensitivity.body"
                     ),
                     GuideItem(
                         id: "scanning.rescan.error",
                         symbol: "exclamationmark.triangle",
-                        title: "guide.scanning.rescan.error.title",
-                        body: "guide.scanning.rescan.error.body"
+                        title: "userGuide.scanning.rescan.error.title",
+                        body: "userGuide.scanning.rescan.error.body"
                     )
                 ]
             )
@@ -197,117 +197,117 @@ enum GuideContent {
     static let cleanupQueue = GuideTopic(
         id: .cleanupQueue,
         symbol: "photo.stack",
-        title: "guide.cleanupQueue.title",
-        summary: "guide.cleanupQueue.summary",
+        title: "userGuide.cleanupQueue.title",
+        summary: "userGuide.cleanupQueue.summary",
         sections: [
             GuideSection(
                 id: "cleanupQueue.progress",
-                header: "guide.cleanupQueue.progress.header",
+                header: "userGuide.cleanupQueue.progress.header",
                 items: [
                     GuideItem(
                         id: "cleanupQueue.progress.continue",
                         symbol: "play.circle",
-                        title: "guide.cleanupQueue.progress.continue.title",
-                        body: "guide.cleanupQueue.progress.continue.body"
+                        title: "userGuide.cleanupQueue.progress.continue.title",
+                        body: "userGuide.cleanupQueue.progress.continue.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.progress.metrics",
                         kind: .legend(.savings),
                         symbol: "chart.pie",
-                        title: "guide.cleanupQueue.progress.metrics.title",
-                        body: "guide.cleanupQueue.progress.metrics.body"
+                        title: "userGuide.cleanupQueue.progress.metrics.title",
+                        body: "userGuide.cleanupQueue.progress.metrics.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.progress.history",
                         symbol: "clock.arrow.circlepath",
-                        title: "guide.cleanupQueue.progress.history.title",
-                        body: "guide.cleanupQueue.progress.history.body"
+                        title: "userGuide.cleanupQueue.progress.history.title",
+                        body: "userGuide.cleanupQueue.progress.history.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "cleanupQueue.sections",
-                header: "guide.cleanupQueue.sections.header",
-                footer: "guide.cleanupQueue.sections.footer",
+                header: "userGuide.cleanupQueue.sections.header",
+                footer: "userGuide.cleanupQueue.sections.footer",
                 items: [
                     GuideItem(
                         id: "cleanupQueue.sections.needsReview",
                         kind: .legend(.needsReview),
                         symbol: "checklist",
-                        title: "guide.cleanupQueue.sections.needsReview.title",
-                        body: "guide.cleanupQueue.sections.needsReview.body"
+                        title: "userGuide.cleanupQueue.sections.needsReview.title",
+                        body: "userGuide.cleanupQueue.sections.needsReview.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.sections.all",
                         symbol: "square.grid.2x2",
-                        title: "guide.cleanupQueue.sections.all.title",
-                        body: "guide.cleanupQueue.sections.all.body"
+                        title: "userGuide.cleanupQueue.sections.all.title",
+                        body: "userGuide.cleanupQueue.sections.all.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "cleanupQueue.badges",
-                header: "guide.cleanupQueue.badges.header",
+                header: "userGuide.cleanupQueue.badges.header",
                 items: [
                     GuideItem(
                         id: "cleanupQueue.badges.notReviewed",
                         symbol: "circle",
-                        title: "guide.cleanupQueue.badges.notReviewed.title",
-                        body: "guide.cleanupQueue.badges.notReviewed.body"
+                        title: "userGuide.cleanupQueue.badges.notReviewed.title",
+                        body: "userGuide.cleanupQueue.badges.notReviewed.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.badges.inReview",
                         kind: .legend(.inReview),
                         symbol: "circle.lefthalf.filled",
-                        title: "guide.cleanupQueue.badges.inReview.title",
-                        body: "guide.cleanupQueue.badges.inReview.body"
+                        title: "userGuide.cleanupQueue.badges.inReview.title",
+                        body: "userGuide.cleanupQueue.badges.inReview.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.badges.reviewed",
                         kind: .legend(.reviewed),
                         symbol: "checkmark.circle",
-                        title: "guide.cleanupQueue.badges.reviewed.title",
-                        body: "guide.cleanupQueue.badges.reviewed.body"
+                        title: "userGuide.cleanupQueue.badges.reviewed.title",
+                        body: "userGuide.cleanupQueue.badges.reviewed.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.badges.new",
                         kind: .legend(.isNew),
                         symbol: "sparkles",
-                        title: "guide.cleanupQueue.badges.new.title",
-                        body: "guide.cleanupQueue.badges.new.body"
+                        title: "userGuide.cleanupQueue.badges.new.title",
+                        body: "userGuide.cleanupQueue.badges.new.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.badges.changed",
                         kind: .legend(.needsReview),
                         symbol: "arrow.triangle.2.circlepath",
-                        title: "guide.cleanupQueue.badges.changed.title",
-                        body: "guide.cleanupQueue.badges.changed.body"
+                        title: "userGuide.cleanupQueue.badges.changed.title",
+                        body: "userGuide.cleanupQueue.badges.changed.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "cleanupQueue.controls",
-                header: "guide.cleanupQueue.controls.header",
-                footer: "guide.cleanupQueue.controls.footer",
+                header: "userGuide.cleanupQueue.controls.header",
+                footer: "userGuide.cleanupQueue.controls.footer",
                 items: [
                     GuideItem(
                         id: "cleanupQueue.controls.sort",
                         symbol: "arrow.up.arrow.down",
-                        title: "guide.cleanupQueue.controls.sort.title",
-                        body: "guide.cleanupQueue.controls.sort.body"
+                        title: "userGuide.cleanupQueue.controls.sort.title",
+                        body: "userGuide.cleanupQueue.controls.sort.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.controls.filters",
                         kind: .pro,
                         symbol: "line.3.horizontal.decrease.circle",
-                        title: "guide.cleanupQueue.controls.filters.title",
-                        body: "guide.cleanupQueue.controls.filters.body"
+                        title: "userGuide.cleanupQueue.controls.filters.title",
+                        body: "userGuide.cleanupQueue.controls.filters.body"
                     ),
                     GuideItem(
                         id: "cleanupQueue.controls.columns",
                         symbol: "square.grid.3x2",
-                        title: "guide.cleanupQueue.controls.columns.title",
-                        body: "guide.cleanupQueue.controls.columns.body"
+                        title: "userGuide.cleanupQueue.controls.columns.title",
+                        body: "userGuide.cleanupQueue.controls.columns.body"
                     )
                 ]
             )
@@ -319,97 +319,97 @@ enum GuideContent {
     static let comparingPhotos = GuideTopic(
         id: .comparingPhotos,
         symbol: "photo.on.rectangle.angled",
-        title: "guide.comparingPhotos.title",
-        summary: "guide.comparingPhotos.summary",
+        title: "userGuide.comparingPhotos.title",
+        summary: "userGuide.comparingPhotos.summary",
         sections: [
             GuideSection(
                 id: "comparingPhotos.selection",
-                header: "guide.comparingPhotos.selection.header",
-                footer: "guide.comparingPhotos.selection.footer",
+                header: "userGuide.comparingPhotos.selection.header",
+                footer: "userGuide.comparingPhotos.selection.footer",
                 items: [
                     GuideItem(
                         id: "comparingPhotos.selection.tap",
                         symbol: "hand.tap",
-                        title: "guide.comparingPhotos.selection.tap.title",
-                        body: "guide.comparingPhotos.selection.tap.body"
+                        title: "userGuide.comparingPhotos.selection.tap.title",
+                        body: "userGuide.comparingPhotos.selection.tap.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.selection.menu",
                         symbol: "ellipsis.circle",
-                        title: "guide.comparingPhotos.selection.menu.title",
-                        body: "guide.comparingPhotos.selection.menu.body"
+                        title: "userGuide.comparingPhotos.selection.menu.title",
+                        body: "userGuide.comparingPhotos.selection.menu.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.selection.batch",
                         kind: .pro,
                         symbol: "square.stack",
-                        title: "guide.comparingPhotos.selection.batch.title",
-                        body: "guide.comparingPhotos.selection.batch.body"
+                        title: "userGuide.comparingPhotos.selection.batch.title",
+                        body: "userGuide.comparingPhotos.selection.batch.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "comparingPhotos.bestShot",
-                header: "guide.comparingPhotos.bestShot.header",
-                footer: "guide.comparingPhotos.bestShot.footer",
+                header: "userGuide.comparingPhotos.bestShot.header",
+                footer: "userGuide.comparingPhotos.bestShot.footer",
                 items: [
                     GuideItem(
                         id: "comparingPhotos.bestShot.auto",
                         symbol: "star.circle",
-                        title: "guide.comparingPhotos.bestShot.auto.title",
-                        body: "guide.comparingPhotos.bestShot.auto.body"
+                        title: "userGuide.comparingPhotos.bestShot.auto.title",
+                        body: "userGuide.comparingPhotos.bestShot.auto.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.bestShot.override",
                         kind: .tip,
                         symbol: "hand.point.up.left",
-                        title: "guide.comparingPhotos.bestShot.override.title",
-                        body: "guide.comparingPhotos.bestShot.override.body"
+                        title: "userGuide.comparingPhotos.bestShot.override.title",
+                        body: "userGuide.comparingPhotos.bestShot.override.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "comparingPhotos.inspect",
-                header: "guide.comparingPhotos.inspect.header",
+                header: "userGuide.comparingPhotos.inspect.header",
                 items: [
                     GuideItem(
                         id: "comparingPhotos.inspect.info",
                         symbol: "info.circle",
-                        title: "guide.comparingPhotos.inspect.info.title",
-                        body: "guide.comparingPhotos.inspect.info.body"
+                        title: "userGuide.comparingPhotos.inspect.info.title",
+                        body: "userGuide.comparingPhotos.inspect.info.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.inspect.fullscreen",
                         symbol: "arrow.up.left.and.arrow.down.right",
-                        title: "guide.comparingPhotos.inspect.fullscreen.title",
-                        body: "guide.comparingPhotos.inspect.fullscreen.body"
+                        title: "userGuide.comparingPhotos.inspect.fullscreen.title",
+                        body: "userGuide.comparingPhotos.inspect.fullscreen.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "comparingPhotos.review",
-                header: "guide.comparingPhotos.review.header",
-                footer: "guide.comparingPhotos.review.footer",
+                header: "userGuide.comparingPhotos.review.header",
+                footer: "userGuide.comparingPhotos.review.footer",
                 items: [
                     GuideItem(
                         id: "comparingPhotos.review.toggle",
                         kind: .legend(.reviewed),
                         symbol: "checkmark.seal",
-                        title: "guide.comparingPhotos.review.toggle.title",
-                        body: "guide.comparingPhotos.review.toggle.body"
+                        title: "userGuide.comparingPhotos.review.toggle.title",
+                        body: "userGuide.comparingPhotos.review.toggle.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.review.keepAll",
                         symbol: "hand.thumbsup",
-                        title: "guide.comparingPhotos.review.keepAll.title",
-                        body: "guide.comparingPhotos.review.keepAll.body"
+                        title: "userGuide.comparingPhotos.review.keepAll.title",
+                        body: "userGuide.comparingPhotos.review.keepAll.body"
                     ),
                     GuideItem(
                         id: "comparingPhotos.review.move",
                         kind: .caution,
                         symbol: "trash",
-                        title: "guide.comparingPhotos.review.move.title",
-                        body: "guide.comparingPhotos.review.move.body"
+                        title: "userGuide.comparingPhotos.review.move.title",
+                        body: "userGuide.comparingPhotos.review.move.body"
                     )
                 ]
             )
@@ -421,65 +421,65 @@ enum GuideContent {
     static let smartCategories = GuideTopic(
         id: .smartCategories,
         symbol: "sparkles",
-        title: "guide.smartCategories.title",
-        summary: "guide.smartCategories.summary",
+        title: "userGuide.smartCategories.title",
+        summary: "userGuide.smartCategories.summary",
         sections: [
             GuideSection(
                 id: "smartCategories.categories",
-                header: "guide.smartCategories.categories.header",
-                footer: "guide.smartCategories.categories.footer",
+                header: "userGuide.smartCategories.categories.header",
+                footer: "userGuide.smartCategories.categories.footer",
                 items: [
                     GuideItem(
                         id: "smartCategories.categories.screenshots",
                         kind: .pro,
                         symbol: "camera.viewfinder",
-                        title: "guide.smartCategories.categories.screenshots.title",
-                        body: "guide.smartCategories.categories.screenshots.body"
+                        title: "userGuide.smartCategories.categories.screenshots.title",
+                        body: "userGuide.smartCategories.categories.screenshots.body"
                     ),
                     GuideItem(
                         id: "smartCategories.categories.blurred",
                         kind: .pro,
                         symbol: "drop.triangle",
-                        title: "guide.smartCategories.categories.blurred.title",
-                        body: "guide.smartCategories.categories.blurred.body"
+                        title: "userGuide.smartCategories.categories.blurred.title",
+                        body: "userGuide.smartCategories.categories.blurred.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "smartCategories.workflow",
-                header: "guide.smartCategories.workflow.header",
+                header: "userGuide.smartCategories.workflow.header",
                 items: [
                     GuideItem(
                         id: "smartCategories.workflow.select",
                         symbol: "checkmark.circle",
-                        title: "guide.smartCategories.workflow.select.title",
-                        body: "guide.smartCategories.workflow.select.body"
+                        title: "userGuide.smartCategories.workflow.select.title",
+                        body: "userGuide.smartCategories.workflow.select.body"
                     ),
                     GuideItem(
                         id: "smartCategories.workflow.inspect",
                         symbol: "info.circle",
-                        title: "guide.smartCategories.workflow.inspect.title",
-                        body: "guide.smartCategories.workflow.inspect.body"
+                        title: "userGuide.smartCategories.workflow.inspect.title",
+                        body: "userGuide.smartCategories.workflow.inspect.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "smartCategories.blurDetection",
-                header: "guide.smartCategories.blurDetection.header",
-                footer: "guide.smartCategories.blurDetection.footer",
+                header: "userGuide.smartCategories.blurDetection.header",
+                footer: "userGuide.smartCategories.blurDetection.footer",
                 items: [
                     GuideItem(
                         id: "smartCategories.blurDetection.conservative",
                         symbol: "eye.trianglebadge.exclamationmark",
-                        title: "guide.smartCategories.blurDetection.conservative.title",
-                        body: "guide.smartCategories.blurDetection.conservative.body"
+                        title: "userGuide.smartCategories.blurDetection.conservative.title",
+                        body: "userGuide.smartCategories.blurDetection.conservative.body"
                     ),
                     GuideItem(
                         id: "smartCategories.blurDetection.favorites",
                         kind: .tip,
                         symbol: "heart",
-                        title: "guide.smartCategories.blurDetection.favorites.title",
-                        body: "guide.smartCategories.blurDetection.favorites.body"
+                        title: "userGuide.smartCategories.blurDetection.favorites.title",
+                        body: "userGuide.smartCategories.blurDetection.favorites.body"
                     )
                 ]
             )
@@ -491,56 +491,56 @@ enum GuideContent {
     static let deletingSafely = GuideTopic(
         id: .deletingSafely,
         symbol: "trash",
-        title: "guide.deletingSafely.title",
-        summary: "guide.deletingSafely.summary",
+        title: "userGuide.deletingSafely.title",
+        summary: "userGuide.deletingSafely.summary",
         sections: [
             GuideSection(
                 id: "deletingSafely.flow",
-                header: "guide.deletingSafely.flow.header",
-                footer: "guide.deletingSafely.flow.footer",
+                header: "userGuide.deletingSafely.flow.header",
+                footer: "userGuide.deletingSafely.flow.footer",
                 items: [
                     GuideItem(
                         id: "deletingSafely.flow.confirm",
                         kind: .caution,
                         symbol: "checkmark.shield",
-                        title: "guide.deletingSafely.flow.confirm.title",
-                        body: "guide.deletingSafely.flow.confirm.body"
+                        title: "userGuide.deletingSafely.flow.confirm.title",
+                        body: "userGuide.deletingSafely.flow.confirm.body"
                     ),
                     GuideItem(
                         id: "deletingSafely.flow.recentlyDeleted",
                         symbol: "clock.arrow.circlepath",
-                        title: "guide.deletingSafely.flow.recentlyDeleted.title",
-                        body: "guide.deletingSafely.flow.recentlyDeleted.body"
+                        title: "userGuide.deletingSafely.flow.recentlyDeleted.title",
+                        body: "userGuide.deletingSafely.flow.recentlyDeleted.body"
                     ),
                     GuideItem(
                         id: "deletingSafely.flow.storage",
                         symbol: "internaldrive",
-                        title: "guide.deletingSafely.flow.storage.title",
-                        body: "guide.deletingSafely.flow.storage.body"
+                        title: "userGuide.deletingSafely.flow.storage.title",
+                        body: "userGuide.deletingSafely.flow.storage.body"
                     ),
                     GuideItem(
                         id: "deletingSafely.flow.icloud",
                         symbol: "icloud",
-                        title: "guide.deletingSafely.flow.icloud.title",
-                        body: "guide.deletingSafely.flow.icloud.body"
+                        title: "userGuide.deletingSafely.flow.icloud.title",
+                        body: "userGuide.deletingSafely.flow.icloud.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "deletingSafely.history",
-                header: "guide.deletingSafely.history.header",
+                header: "userGuide.deletingSafely.history.header",
                 items: [
                     GuideItem(
                         id: "deletingSafely.history.impact",
                         symbol: "chart.bar",
-                        title: "guide.deletingSafely.history.impact.title",
-                        body: "guide.deletingSafely.history.impact.body"
+                        title: "userGuide.deletingSafely.history.impact.title",
+                        body: "userGuide.deletingSafely.history.impact.body"
                     ),
                     GuideItem(
                         id: "deletingSafely.history.activity",
                         symbol: "list.bullet.rectangle",
-                        title: "guide.deletingSafely.history.activity.title",
-                        body: "guide.deletingSafely.history.activity.body"
+                        title: "userGuide.deletingSafely.history.activity.title",
+                        body: "userGuide.deletingSafely.history.activity.body"
                     )
                 ]
             )
@@ -552,63 +552,63 @@ enum GuideContent {
     static let settingsAndReminders = GuideTopic(
         id: .settingsAndReminders,
         symbol: "gear",
-        title: "guide.settingsAndReminders.title",
-        summary: "guide.settingsAndReminders.summary",
+        title: "userGuide.settingsAndReminders.title",
+        summary: "userGuide.settingsAndReminders.summary",
         sections: [
             GuideSection(
                 id: "settingsAndReminders.analysis",
-                header: "guide.settingsAndReminders.analysis.header",
-                footer: "guide.settingsAndReminders.analysis.footer",
+                header: "userGuide.settingsAndReminders.analysis.header",
+                footer: "userGuide.settingsAndReminders.analysis.footer",
                 items: [
                     GuideItem(
                         id: "settingsAndReminders.analysis.sensitivity",
                         symbol: "slider.horizontal.3",
-                        title: "guide.settingsAndReminders.analysis.sensitivity.title",
-                        body: "guide.settingsAndReminders.analysis.sensitivity.body"
+                        title: "userGuide.settingsAndReminders.analysis.sensitivity.title",
+                        body: "userGuide.settingsAndReminders.analysis.sensitivity.body"
                     ),
                     GuideItem(
                         id: "settingsAndReminders.analysis.language",
                         symbol: "globe",
-                        title: "guide.settingsAndReminders.analysis.language.title",
-                        body: "guide.settingsAndReminders.analysis.language.body"
+                        title: "userGuide.settingsAndReminders.analysis.language.title",
+                        body: "userGuide.settingsAndReminders.analysis.language.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "settingsAndReminders.reminder",
-                header: "guide.settingsAndReminders.reminder.header",
-                footer: "guide.settingsAndReminders.reminder.footer",
+                header: "userGuide.settingsAndReminders.reminder.header",
+                footer: "userGuide.settingsAndReminders.reminder.footer",
                 items: [
                     GuideItem(
                         id: "settingsAndReminders.reminder.weekly",
                         symbol: "bell.badge",
-                        title: "guide.settingsAndReminders.reminder.weekly.title",
-                        body: "guide.settingsAndReminders.reminder.weekly.body"
+                        title: "userGuide.settingsAndReminders.reminder.weekly.title",
+                        body: "userGuide.settingsAndReminders.reminder.weekly.body"
                     ),
                     GuideItem(
                         id: "settingsAndReminders.reminder.schedule",
                         kind: .pro,
                         symbol: "calendar.badge.clock",
-                        title: "guide.settingsAndReminders.reminder.schedule.title",
-                        body: "guide.settingsAndReminders.reminder.schedule.body"
+                        title: "userGuide.settingsAndReminders.reminder.schedule.title",
+                        body: "userGuide.settingsAndReminders.reminder.schedule.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "settingsAndReminders.subscription",
-                header: "guide.settingsAndReminders.subscription.header",
+                header: "userGuide.settingsAndReminders.subscription.header",
                 items: [
                     GuideItem(
                         id: "settingsAndReminders.subscription.status",
                         symbol: "crown",
-                        title: "guide.settingsAndReminders.subscription.status.title",
-                        body: "guide.settingsAndReminders.subscription.status.body"
+                        title: "userGuide.settingsAndReminders.subscription.status.title",
+                        body: "userGuide.settingsAndReminders.subscription.status.body"
                     ),
                     GuideItem(
                         id: "settingsAndReminders.subscription.restore",
                         symbol: "arrow.counterclockwise",
-                        title: "guide.settingsAndReminders.subscription.restore.title",
-                        body: "guide.settingsAndReminders.subscription.restore.body"
+                        title: "userGuide.settingsAndReminders.subscription.restore.title",
+                        body: "userGuide.settingsAndReminders.subscription.restore.body"
                     )
                 ]
             )
@@ -620,86 +620,86 @@ enum GuideContent {
     static let freeAndPro = GuideTopic(
         id: .freeAndPro,
         symbol: "crown.fill",
-        title: "guide.freeAndPro.title",
-        summary: "guide.freeAndPro.summary",
+        title: "userGuide.freeAndPro.title",
+        summary: "userGuide.freeAndPro.summary",
         sections: [
             GuideSection(
                 id: "freeAndPro.free",
-                header: "guide.freeAndPro.free.header",
-                footer: "guide.freeAndPro.free.footer",
+                header: "userGuide.freeAndPro.free.header",
+                footer: "userGuide.freeAndPro.free.footer",
                 items: [
                     GuideItem(
                         id: "freeAndPro.free.scans",
                         symbol: "gauge.medium",
-                        title: "guide.freeAndPro.free.scans.title",
-                        body: "guide.freeAndPro.free.scans.body"
+                        title: "userGuide.freeAndPro.free.scans.title",
+                        body: "userGuide.freeAndPro.free.scans.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.free.review",
                         symbol: "photo.stack",
-                        title: "guide.freeAndPro.free.review.title",
-                        body: "guide.freeAndPro.free.review.body"
+                        title: "userGuide.freeAndPro.free.review.title",
+                        body: "userGuide.freeAndPro.free.review.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.free.singlePhoto",
                         symbol: "photo",
-                        title: "guide.freeAndPro.free.singlePhoto.title",
-                        body: "guide.freeAndPro.free.singlePhoto.body"
+                        title: "userGuide.freeAndPro.free.singlePhoto.title",
+                        body: "userGuide.freeAndPro.free.singlePhoto.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.free.sorting",
                         symbol: "arrow.up.arrow.down",
-                        title: "guide.freeAndPro.free.sorting.title",
-                        body: "guide.freeAndPro.free.sorting.body"
+                        title: "userGuide.freeAndPro.free.sorting.title",
+                        body: "userGuide.freeAndPro.free.sorting.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "freeAndPro.pro",
-                header: "guide.freeAndPro.pro.header",
-                footer: "guide.freeAndPro.pro.footer",
+                header: "userGuide.freeAndPro.pro.header",
+                footer: "userGuide.freeAndPro.pro.footer",
                 items: [
                     GuideItem(
                         id: "freeAndPro.pro.unlimitedScans",
                         kind: .pro,
                         symbol: "infinity",
-                        title: "guide.freeAndPro.pro.unlimitedScans.title",
-                        body: "guide.freeAndPro.pro.unlimitedScans.body"
+                        title: "userGuide.freeAndPro.pro.unlimitedScans.title",
+                        body: "userGuide.freeAndPro.pro.unlimitedScans.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.pro.screenshots",
                         kind: .pro,
                         symbol: "camera.viewfinder",
-                        title: "guide.freeAndPro.pro.screenshots.title",
-                        body: "guide.freeAndPro.pro.screenshots.body"
+                        title: "userGuide.freeAndPro.pro.screenshots.title",
+                        body: "userGuide.freeAndPro.pro.screenshots.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.pro.blurred",
                         kind: .pro,
                         symbol: "drop.triangle",
-                        title: "guide.freeAndPro.pro.blurred.title",
-                        body: "guide.freeAndPro.pro.blurred.body"
+                        title: "userGuide.freeAndPro.pro.blurred.title",
+                        body: "userGuide.freeAndPro.pro.blurred.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.pro.filters",
                         kind: .pro,
                         symbol: "line.3.horizontal.decrease.circle",
-                        title: "guide.freeAndPro.pro.filters.title",
-                        body: "guide.freeAndPro.pro.filters.body"
+                        title: "userGuide.freeAndPro.pro.filters.title",
+                        body: "userGuide.freeAndPro.pro.filters.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.pro.batch",
                         kind: .pro,
                         symbol: "square.stack",
-                        title: "guide.freeAndPro.pro.batch.title",
-                        body: "guide.freeAndPro.pro.batch.body"
+                        title: "userGuide.freeAndPro.pro.batch.title",
+                        body: "userGuide.freeAndPro.pro.batch.body"
                     ),
                     GuideItem(
                         id: "freeAndPro.pro.reminder",
                         kind: .pro,
                         symbol: "calendar.badge.clock",
-                        title: "guide.freeAndPro.pro.reminder.title",
-                        body: "guide.freeAndPro.pro.reminder.body"
+                        title: "userGuide.freeAndPro.pro.reminder.title",
+                        body: "userGuide.freeAndPro.pro.reminder.body"
                     )
                 ]
             )
@@ -711,69 +711,69 @@ enum GuideContent {
     static let privacy = GuideTopic(
         id: .privacy,
         symbol: "lock.shield",
-        title: "guide.privacy.title",
-        summary: "guide.privacy.summary",
+        title: "userGuide.privacy.title",
+        summary: "userGuide.privacy.summary",
         sections: [
             GuideSection(
                 id: "privacy.onDevice",
-                header: "guide.privacy.onDevice.header",
-                footer: "guide.privacy.onDevice.footer",
+                header: "userGuide.privacy.onDevice.header",
+                footer: "userGuide.privacy.onDevice.footer",
                 items: [
                     GuideItem(
                         id: "privacy.onDevice.analysis",
                         symbol: "cpu",
-                        title: "guide.privacy.onDevice.analysis.title",
-                        body: "guide.privacy.onDevice.analysis.body"
+                        title: "userGuide.privacy.onDevice.analysis.title",
+                        body: "userGuide.privacy.onDevice.analysis.body"
                     ),
                     GuideItem(
                         id: "privacy.onDevice.network",
                         symbol: "wifi.slash",
-                        title: "guide.privacy.onDevice.network.title",
-                        body: "guide.privacy.onDevice.network.body"
+                        title: "userGuide.privacy.onDevice.network.title",
+                        body: "userGuide.privacy.onDevice.network.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "privacy.permissions",
-                header: "guide.privacy.permissions.header",
+                header: "userGuide.privacy.permissions.header",
                 items: [
                     GuideItem(
                         id: "privacy.permissions.photos",
                         symbol: "photo.on.rectangle",
-                        title: "guide.privacy.permissions.photos.title",
-                        body: "guide.privacy.permissions.photos.body"
+                        title: "userGuide.privacy.permissions.photos.title",
+                        body: "userGuide.privacy.permissions.photos.body"
                     ),
                     GuideItem(
                         id: "privacy.permissions.notifications",
                         symbol: "bell",
-                        title: "guide.privacy.permissions.notifications.title",
-                        body: "guide.privacy.permissions.notifications.body"
+                        title: "userGuide.privacy.permissions.notifications.title",
+                        body: "userGuide.privacy.permissions.notifications.body"
                     )
                 ]
             ),
             GuideSection(
                 id: "privacy.deleteData",
-                header: "guide.privacy.deleteData.header",
-                footer: "guide.privacy.deleteData.footer",
+                header: "userGuide.privacy.deleteData.header",
+                footer: "userGuide.privacy.deleteData.footer",
                 items: [
                     GuideItem(
                         id: "privacy.deleteData.removed",
                         kind: .caution,
                         symbol: "trash",
-                        title: "guide.privacy.deleteData.removed.title",
-                        body: "guide.privacy.deleteData.removed.body"
+                        title: "userGuide.privacy.deleteData.removed.title",
+                        body: "userGuide.privacy.deleteData.removed.body"
                     ),
                     GuideItem(
                         id: "privacy.deleteData.kept",
                         symbol: "checkmark.shield",
-                        title: "guide.privacy.deleteData.kept.title",
-                        body: "guide.privacy.deleteData.kept.body"
+                        title: "userGuide.privacy.deleteData.kept.title",
+                        body: "userGuide.privacy.deleteData.kept.body"
                     ),
                     GuideItem(
                         id: "privacy.deleteData.replay",
                         symbol: "arrow.counterclockwise",
-                        title: "guide.privacy.deleteData.replay.title",
-                        body: "guide.privacy.deleteData.replay.body"
+                        title: "userGuide.privacy.deleteData.replay.title",
+                        body: "userGuide.privacy.deleteData.replay.body"
                     )
                 ]
             )

@@ -33,10 +33,7 @@ struct ScreenshotCleanupSummaryCard: View {
     }
 
     private var summaryText: String {
-        if assetCount == 1 {
-            return category.presentation.summarySingular
-        }
-        return String(format: category.presentation.summaryPluralFormat, assetCount)
+        category.summary(count: assetCount)
     }
 
     private var selectionSummary: some View {
@@ -72,14 +69,7 @@ struct ScreenshotCleanupSummaryCard: View {
     }
 
     private func savingsText(selectedCount: Int, estimatedSavingsText: String) -> String {
-        if selectedCount == 1 {
-            return String(format: category.presentation.selectionSingularFormat, estimatedSavingsText)
-        }
-        return String(
-            format: category.presentation.selectionPluralFormat,
-            selectedCount,
-            estimatedSavingsText
-        )
+        category.selectionSummary(count: selectedCount, estimatedSize: estimatedSavingsText)
     }
 
     static func reservedSelectionCounts(assetCount: Int) -> [Int] {
@@ -156,7 +146,7 @@ struct ScreenshotCleanupActionBar: View {
         Button(action: isDeleteActionVisible ? onClearSelection : onSelectAll) {
             ZStack {
                 selectionButtonLabel(
-                    title: appLocalized("Select All"),
+                    title: DetailsL10n.ScreenshotCleanupComponents.selectAll,
                     systemImage: "checkmark.circle",
                     allowsWrapping: allowsWrapping
                 )
@@ -164,7 +154,7 @@ struct ScreenshotCleanupActionBar: View {
                 .accessibilityHidden(true)
 
                 selectionButtonLabel(
-                    title: appLocalized("Clear Selection"),
+                    title: DetailsL10n.Common.clearSelection,
                     systemImage: "xmark.circle",
                     allowsWrapping: allowsWrapping
                 )
@@ -173,8 +163,8 @@ struct ScreenshotCleanupActionBar: View {
 
                 selectionButtonLabel(
                     title: isDeleteActionVisible
-                        ? appLocalized("Clear Selection")
-                        : appLocalized("Select All"),
+                        ? DetailsL10n.Common.clearSelection
+                        : DetailsL10n.ScreenshotCleanupComponents.selectAll,
                     systemImage: isDeleteActionVisible ? "xmark.circle" : "checkmark.circle",
                     allowsWrapping: allowsWrapping
                 )
@@ -182,7 +172,7 @@ struct ScreenshotCleanupActionBar: View {
             .frame(maxWidth: .infinity)
         }
         .modifier(ScreenshotCleanupButtonStyle(usesGlass: usesGlass))
-        .accessibilityHint(Text(appLocalized("Choose which photos are selected for cleanup")))
+        .accessibilityHint(Text(DetailsL10n.ScreenshotCleanupComponents.chooseWhichPhotosSelectedCleanup))
     }
 
     private func selectionButtonLabel(
@@ -217,7 +207,11 @@ struct ScreenshotCleanupActionBar: View {
                     Image(systemName: "trash")
                 }
 
-                Text(isDeleting ? appLocalized("Deleting...") : appLocalized("Delete Selected"))
+                Text(
+                    isDeleting
+                        ? DetailsL10n.ScreenshotCleanupComponents.moving
+                        : DetailsL10n.ScreenshotCleanupComponents.moveSelected
+                )
                     .font(.appHeadline)
                     .lineLimit(allowsWrapping ? 2 : 1)
                     .multilineTextAlignment(.center)
@@ -227,7 +221,7 @@ struct ScreenshotCleanupActionBar: View {
         }
         .modifier(ScreenshotCleanupButtonStyle(usesGlass: usesGlass))
         .disabled(isDeleting)
-        .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
+        .accessibilityHint(Text(DetailsL10n.Common.moveCurrentlySelectedPhotosRecently))
     }
 
     private var actionVisibilityAnimation: Animation {

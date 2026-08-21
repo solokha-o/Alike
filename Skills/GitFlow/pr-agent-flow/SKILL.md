@@ -1,6 +1,6 @@
 ---
 name: pr-agent-flow
-description: Prepare, review, and ship pull requests with a coding-agent pass, a reviewer-agent pass, clear validation, and a concise PR narrative.
+description: Prepare, review, and ship pull requests with a coding-agent pass, a reviewer-agent pass, clear validation, a concise PR narrative, and a disciplined response to review notes.
 ---
 
 # PR Agent Flow
@@ -52,7 +52,13 @@ Use this skill when the user wants to prepare a pull request, write a PR descrip
 6. Open or hand off the PR.
    - Ensure the title matches the final scope.
    - Prefer a reviewer-ready PR over a draft only when validation is complete and open questions are resolved.
-   - If review comments arrive later, repeat the reviewer-agent pass after each fix set.
+7. Respond to review notes.
+   - Use `references/review-response.md`.
+   - Fetch inline notes with the pulls comments API; `gh pr view --json comments` does not show them.
+   - Triage every note to fixed, declined, or deferred; one note per commit.
+   - Push before replying, then reply per thread with the SHA and the evidence.
+   - Close with one summary comment covering out-of-note changes, your own notes back, and validation.
+   - Repeat the reviewer-agent pass after each fix set.
 
 ## Decision Tree
 
@@ -66,7 +72,7 @@ Use this skill when the user wants to prepare a pull request, write a PR descrip
    - Start at the reviewer-agent pass and skip implementation work unless fixes are requested.
 
 4. Is the request about responding to PR comments?
-   - Read the comments, group them by risk, fix the accepted items, then rewrite the validation and follow-up notes.
+   - Go straight to `references/review-response.md`.
 
 ## Guardrails
 
@@ -75,6 +81,9 @@ Use this skill when the user wants to prepare a pull request, write a PR descrip
 - Do not hide known risk; document it in the PR body.
 - Do not let the PR body become a changelog dump; optimize for reviewer comprehension.
 - Do not resolve review comments by explanation alone when the code is still risky or unclear.
+- Do not reply "fixed" before the commit is pushed, or without the SHA and the evidence.
+- Do not leave a review note unanswered; declining and deferring are answers, silence is not.
+- Do not resolve review threads yourself; that is the reviewer's call.
 
 ## Quick Checklist
 
@@ -84,6 +93,13 @@ Use this skill when the user wants to prepare a pull request, write a PR descrip
 - [ ] Validation matches the touched surface
 - [ ] PR body explains what, why, how, and checks
 - [ ] Risks and follow-ups are explicit
+
+When responding to review notes:
+
+- [ ] Every note ended as fixed, declined, or deferred
+- [ ] One note per commit, pushed before replying
+- [ ] Each reply carries the SHA and evidence the fix works
+- [ ] Summary comment covers out-of-note changes, notes back, and validation
 
 ## Related Skills
 

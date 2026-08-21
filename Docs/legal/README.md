@@ -6,12 +6,19 @@ disclosure.
 ```
 Docs/legal/
 ├── README.md                     this file — the runbook
-└── subscription-disclosure.md    paywall disclosure copy, EN + UK
+└── subscription-disclosure.md    paywall disclosure copy, all twelve locales
 
 alikeapp/alikeapp.github.io       the published pages themselves (separate repo)
-├── privacy.md   uk/privacy.md    Privacy Policy, EN + UK
-└── terms.md     uk/terms.md      Terms of Use, EN + UK
+├── privacy.md  terms.md  support.md  index.md        en, at the root
+├── uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/   the same four per locale
+└── scripts/check-site.sh                             the build gate
 ```
+
+The site publishes eleven locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR`, `it`,
+`nl`, `pl`, `tr`, `zh-Hant` — against twelve App Store listings. `es` is one page
+serving both `es-ES` and `es-MX`: the legal copy does not need the regional
+vocabulary split, so `/es/` carries the Spain wording and advertises
+`hreflang="es-419"` for the Latin American storefront.
 
 The legal pages *are* the landing page, so they live with it — in the
 [`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io)
@@ -32,12 +39,25 @@ can drift.
 
 The privacy pages are published as part of the landing page on GitHub Pages.
 
-| Document | URL |
-| --- | --- |
-| Privacy Policy (EN) | `https://alikeapp.github.io/privacy/` |
-| Privacy Policy (UK) | `https://alikeapp.github.io/uk/privacy/` |
-| Terms of Use (EN) | `https://alikeapp.github.io/terms/` |
-| Terms of Use (UK) | `https://alikeapp.github.io/uk/terms/` |
+All 44 are `https://alikeapp.github.io` + the path below.
+
+| Locale | Landing | Privacy Policy | Terms of Use | Support |
+| --- | --- | --- | --- | --- |
+| `en` | `/` | `/privacy/` | `/terms/` | `/support/` |
+| `uk` | `/uk/` | `/uk/privacy/` | `/uk/terms/` | `/uk/support/` |
+| `de` | `/de/` | `/de/privacy/` | `/de/terms/` | `/de/support/` |
+| `fr` | `/fr/` | `/fr/privacy/` | `/fr/terms/` | `/fr/support/` |
+| `es` | `/es/` | `/es/privacy/` | `/es/terms/` | `/es/support/` |
+| `pt-BR` | `/pt-br/` | `/pt-br/privacy/` | `/pt-br/terms/` | `/pt-br/support/` |
+| `it` | `/it/` | `/it/privacy/` | `/it/terms/` | `/it/support/` |
+| `nl` | `/nl/` | `/nl/privacy/` | `/nl/terms/` | `/nl/support/` |
+| `pl` | `/pl/` | `/pl/privacy/` | `/pl/terms/` | `/pl/support/` |
+| `tr` | `/tr/` | `/tr/privacy/` | `/tr/terms/` | `/tr/support/` |
+| `zh-Hant` | `/zh-hant/` | `/zh-hant/privacy/` | `/zh-hant/terms/` | `/zh-hant/support/` |
+
+URL paths are lowercase, so Brazilian Portuguese is `/pt-br/` while its language
+tag stays `pt-BR`, and Traditional Chinese is `/zh-hant/` against `zh-Hant`. The
+App Store `es-MX` listing points at the `es` row.
 
 This is an **organization** Pages site served from the domain root. `alike.github.io`
 was the first choice and is unavailable — `alike` is an existing GitHub account
@@ -97,7 +117,15 @@ two conflict. Apple accepts a custom Terms page on that basis, so the app does
 not link to Apple's copy directly.
 
 Keep the EULA reference and the auto-renewable subscription disclosures on that
-page. Removing either is what would turn this into a review problem.
+page — **in every language**. Removing either is what would turn this into a
+review problem, and a translation that quietly drops one looks like ordinary
+prose in a diff.
+
+That is now asserted rather than reviewed: `scripts/check-site.sh` in the site
+repo greps each rendered Terms page for a per-locale sentinel proving Apple's
+Standard EULA is still named, plus a fragment of each of the two disclosure
+paragraphs, and fails the build if any is missing. Adding a locale means adding
+its `check_terms` row.
 
 ## Publishing checklist
 
@@ -105,15 +133,42 @@ page. Removing either is what would turn this into a review problem.
    privacy policy claims are derived from the shipped in-app guide strings and
    from the fact that the codebase contains no networking and no analytics SDKs —
    re-verify both before each release that touches those areas.
-2. Update the "Last updated" date in every file you changed, in both languages.
-3. Push to `main` in `alikeapp/alikeapp.github.io`. The Pages workflow there
-   builds and deploys it; no manual copying is involved, and this does not wait
-   on the app's release merge.
-4. Confirm all four URLs load publicly with no sign-in.
-5. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
-6. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
-   the metadata bundle.
-7. Verify the links open from all three paywall entry points and from
+2. Update the "Last updated" date in every file you changed, in every language.
+   The date belongs to the document, not to the translation: if the English
+   Privacy Policy changes, all six copies change and all six dates move.
+3. If the subscription disclosure changed, confirm all three copies agree — this
+   document, the catalog, and the site's `_data/<locale>.yml`. Nothing propagates
+   between the two repositories:
+
+   ```sh
+   tools/check_site_legal_parity.py --require
+   ```
+
+   `--require` is not optional here. Without it a missing site checkout is a
+   skip that exits 0, so the step would report success having compared nothing
+   — exactly the false green this check exists to prevent. Pass `--site-repo`
+   if the checkout is not next to this repository.
+4. Open a pull request against `main` in `alikeapp/alikeapp.github.io`. Its
+   `scripts/check-site.sh` runs there and asserts the locale matrix, internal
+   links, hreflang, the Terms guardrails below, and that no third-party host is
+   referenced. Merging deploys it; no manual copying is involved, and this does
+   not wait on the app's release merge.
+5. Confirm all 44 URLs load publicly with no sign-in — the loop is in
+   `Docs/release-checklist.md` step 6.
+6. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
+   The in-app links stay English for every locale: they are the app's own
+   fallback, and `localized_url()` is what routes each *listing* to its own
+   language.
+7. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
+   the metadata bundle, and set the per-locale overrides
+   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR}`) so
+   each listing points at its own pages instead of falling back to English. The
+   full list with values is in `Docs/release-checklist.md` step 1.
+8. Check that `copyright_year` in the site's `_config.yml` still equals the year
+   in `COPYRIGHT` in `tools/prepare_app_store_upload_bundle.py`. Nothing enforces
+   this across the two repositories, and it is a copyright line, not a current
+   year — it should only ever change if the year of first publication was wrong.
+9. Verify the links open from all three paywall entry points and from
    Settings → Legal in a Release build.
 
 ## Keeping copy honest

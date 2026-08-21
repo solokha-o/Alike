@@ -54,11 +54,11 @@ struct GuideTopicRow: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                Text(appLocalized(topic.titleKey))
+                Text(UserGuideL10n.string(topic.titleKey))
                     .font(.appHeadline)
                     .foregroundStyle(.primary)
 
-                Text(appLocalized(topic.summaryKey))
+                Text(UserGuideL10n.string(topic.summaryKey))
                     .font(.appFootnote)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -85,7 +85,7 @@ struct GuideItemRow: View {
             VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                 titleLine
                 if let bodyKey = item.bodyKey {
-                    Text(appLocalized(bodyKey))
+                    Text(UserGuideL10n.string(bodyKey))
                         .font(.appFootnote)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -137,7 +137,7 @@ struct GuideItemRow: View {
     }
 
     private var titleText: some View {
-        Text(appLocalized(item.titleKey))
+        Text(UserGuideL10n.string(item.titleKey))
             .font(.appHeadline)
             .foregroundStyle(.primary)
             .fixedSize(horizontal: false, vertical: true)
@@ -165,7 +165,7 @@ private struct GuideItemAccessibility: ViewModifier {
             content
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text(stepLabel(number: number, total: total)))
-                .accessibilityValue(Text(item.bodyKey.map(appLocalized) ?? ""))
+                .accessibilityValue(Text(item.bodyKey.map(UserGuideL10n.string) ?? ""))
         } else {
             content.accessibilityElement(children: .combine)
         }
@@ -173,10 +173,10 @@ private struct GuideItemAccessibility: ViewModifier {
 
     private func stepLabel(number: Int, total: Int) -> String {
         String(
-            format: appLocalized("guide.a11y.step"),
+            format: UserGuideL10n.A11y.step,
             number,
             total,
-            appLocalized(item.titleKey)
+            UserGuideL10n.string(item.titleKey)
         )
     }
 }

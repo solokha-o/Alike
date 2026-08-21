@@ -17,11 +17,11 @@ final class TabManager {
         case cleanup
         case settings
         
-        var titleKey: LocalizedStringKey {
+        var title: String {
             switch self {
-            case .scanner: return "Scanner"
-            case .cleanup: return "Cleanup"
-            case .settings: return "Settings"
+            case .scanner: return AlikeL10n.Tab.scanner
+            case .cleanup: return AlikeL10n.Tab.cleanup
+            case .settings: return AlikeL10n.Tab.settings
             }
         }
         

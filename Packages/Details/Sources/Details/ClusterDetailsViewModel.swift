@@ -89,7 +89,7 @@ final class ClusterDetailsViewModel {
             }
         }
         self.bestShotAssetID = ""
-        self.bestShotLabel = appLocalized("Best Shot")
+        self.bestShotLabel = DetailsL10n.Common.bestShot
         self.selectedAssetIDs = []
         self.reviewMode = .selection
         self.reviewStatus = .notReviewed
@@ -150,9 +150,9 @@ final class ClusterDetailsViewModel {
     /// where it means "keep everything here".
     var keepSummaryText: String {
         guard selectedCount > 0 else {
-            return String(format: appLocalized("Keeping all %d photos"), assetCount)
+            return String(format: DetailsL10n.Common.keepingAllPhotos, assetCount)
         }
-        return String(format: appLocalized("Keeping %d of %d"), keptCount, assetCount)
+        return String(format: DetailsL10n.ClusterDetails.keepingOf, keptCount, assetCount)
     }
 
     var requiresPremiumForCurrentSelection: Bool {
@@ -172,19 +172,16 @@ final class ClusterDetailsViewModel {
     }
 
     var deleteConfirmationTitle: String {
-        if selectedCount == 1 {
-            return appLocalized("Move 1 Selected Photo to Recently Deleted?")
-        }
-        return String(
-            format: appLocalized("Move %d Selected Photos to Recently Deleted?"),
-            selectedCount
-        )
+        DetailsL10n.ClusterDetails.deleteAlertTitle(selectedCount)
     }
 
+    /// The body never prints the count, and `xcstringstool` rejects a plural variation whose text
+    /// does not reference the number. Apple's guidance for that case is two top-level strings, so
+    /// this one stays a pair; every shipped language reads its "greater than one" form above one.
     var deleteConfirmationMessage: String {
         let format = selectedCount == 1
-            ? appLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.")
-            : appLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.")
+            ? DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved
+            : DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved
         return String(format: format, estimatedSavingsText)
     }
 
@@ -342,7 +339,7 @@ final class ClusterDetailsViewModel {
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
-            applyDeleteFailure(message: appLocalized("Select at least one photo before deleting."), offersOpenSettings: false)
+            applyDeleteFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
             return
         }
         guard premiumAccess.access(
@@ -449,7 +446,7 @@ private extension ClusterDetailsViewModel {
 
         guard !assetSnapshots.isEmpty else {
             bestShotAssetID = ""
-            bestShotLabel = appLocalized("Best Shot")
+            bestShotLabel = DetailsL10n.Common.bestShot
             isBestShotUserSelected = false
             selectedAssetIDs = []
             isReviewConfirmed = false
@@ -510,22 +507,22 @@ private extension ClusterDetailsViewModel {
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
-                message: appLocalized("Select at least one photo before deleting."),
+                message: DetailsL10n.Common.selectAtLeastOnePhoto,
                 offersOpenSettings: false
             )
         case .notAuthorized:
             applyDeleteFailure(
-                message: appLocalized("Alike needs photo library access before it can delete photos. Open Settings to continue."),
+                message: DetailsL10n.Common.alikeNeedsPhotoLibraryAccess,
                 offersOpenSettings: true
             )
         case .selectedAssetsUnavailable:
             applyDeleteFailure(
-                message: appLocalized("Some selected photos are no longer available. Your library access may be limited, or the library changed since the last scan."),
+                message: DetailsL10n.Common.someSelectedPhotosNoLonger,
                 offersOpenSettings: true
             )
         case .deleteFailed:
             applyDeleteFailure(
-                message: appLocalized("Couldn't delete the selected photos. Please try again."),
+                message: DetailsL10n.Common.couldntMoveSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }
@@ -663,7 +660,7 @@ private extension ClusterDetailsViewModel {
         guard
             let creationDate = snapshots.first(where: { $0.localIdentifier == localIdentifier })?.creationDate
         else {
-            return appLocalized("Best Shot")
+            return DetailsL10n.Common.bestShot
         }
         return creationDate.formatted(date: .abbreviated, time: .shortened)
     }
