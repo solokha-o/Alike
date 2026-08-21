@@ -93,6 +93,46 @@ Alike/
 - **Architecture**: MVVM + Swift Packages
 - **Async**: async/await, Actors
 
+## 🤖 Agent skills
+
+Alike includes a project-owned skill library that gives coding agents the same
+repository-specific playbook: where code belongs, which architectural rules
+apply, how changes should be validated, and which Git conventions to follow.
+[`Skills/INDEX.md`](Skills/INDEX.md) is the canonical router and detailed catalog.
+
+### Skill library
+
+- **Local skills** cover Alike's architecture, native design, SwiftUI patterns,
+  concurrency, testing, localization, Git and PR flows, simulator debugging, and
+  repository workflows.
+- **Vendored external skills** provide deeper expertise for selected topics such
+  as Core Data, SwiftUI, Swift Concurrency, Swift Testing, and motion design. See
+  [`Skills/External/README.md`](Skills/External/README.md) for their sources and
+  update policy.
+
+Local Alike skills are authoritative for repository paths, package boundaries,
+architecture, validation commands, and commit conventions. Generic or external
+guidance supplements them only when the skill index explicitly recommends it.
+
+### How agents work
+
+1. Read the compact router in [`Skills/INDEX.md`](Skills/INDEX.md).
+2. Load the narrowest local `SKILL.md` that matches the task.
+3. Add vendored external depth only when the router recommends it and the local
+   guidance is not enough.
+4. Explore the repository through its code graph before falling back to text
+   search, then implement within the owning package's conventions.
+5. Run validation proportional to the change: focused tests for local behavior,
+   broader suites for cross-package work, and a full app compile when compilable
+   source or build configuration changes.
+
+For simple discovery or update checks that need no interpretation:
+
+```bash
+find Skills -name SKILL.md | sort
+./Skills/External/check-updates.sh
+```
+
 ## 🚀 Installation
 
 1. **Clone the repository**
