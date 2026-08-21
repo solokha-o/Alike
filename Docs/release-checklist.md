@@ -269,3 +269,21 @@ Manual, in App Store Connect:
 - [ ] Watch for App Review messages — rejections on a first submission usually
       concern the subscription disclosure or the legal links, both of which are
       evidenced by `Docs/images/review/`.
+
+## 13. GitHub release
+
+- [ ] One published GitHub release per shipped version, on the `vX.Y.Z` tag.
+      Keep no drafts around: delete a superseded draft instead of leaving it.
+- [ ] Notes carry the store link, not a build. **Never attach an IPA, `.xcarchive`,
+      dSYMs, or any other build artifact** — the shipping binary is distributed
+      by Apple, and an artifact here is unusable, unsigned for anyone else, and
+      only invites confusion.
+
+```sh
+gh release create vX.Y.Z --title "Alike X.Y.Z" --verify-tag --notes "$(cat <<'EOF'
+<user-visible changes, same copy as the App Store release notes>
+
+📲 Download on the App Store: https://apps.apple.com/app/id6798399598
+EOF
+)"
+```

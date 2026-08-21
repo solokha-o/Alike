@@ -4,15 +4,7 @@
 
 Alike is an iOS app that finds and groups visually similar photos using Computer Vision (Apple Vision framework). Every scan runs on your device — no account, no uploads.
 
-<!--
-  App Store button. When 1.0.0 is approved, delete the placeholder line below and
-  uncomment this one — the product page is apps.apple.com/app/id6798399598, the same
-  ID `AppStoreLinks.appID` uses.
-
 [![Download on the App Store](https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us)](https://apps.apple.com/app/id6798399598)
--->
-
-**📲 Coming soon to the App Store**
 
 ## ✨ Features
 
@@ -37,7 +29,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 
 ## 🆕 What ships in 1.0.0
 
-The first public release. Everything below is in the build going to review:
+The first public release, now live on the App Store. What it includes:
 
 - Similar-photo scanning with Vision feature prints, three sensitivity levels, and complete-link clustering.
 - Guided Cleanup Review in cluster details, with Best Shot picked for you and a selection-first flow.
@@ -241,11 +233,19 @@ If GitHub Discussions are enabled later, product ideas and broader proposals can
 
 - Email: oleksandr.solokha@gmail.com
 - Support: [alikeapp.github.io/support](https://alikeapp.github.io/support/)
-- App Store: coming soon — the button at the top of this file goes live with the release
+- App Store: [Alike on the App Store](https://apps.apple.com/app/id6798399598)
 
 ## 📄 License
 
-[MIT](LICENSE) © 2026 Oleksandr Solokha. Third-party components are covered by
+[PolyForm Noncommercial 1.0.0](LICENSE) © 2026 Oleksandr Solokha.
+
+The source is open to read, study, modify, and redistribute for any
+**noncommercial** purpose. Commercial use — except for purposes expressly
+permitted by the PolyForm Noncommercial License — requires a separate
+license: oleksandr.solokha@gmail.com.
+
+The "Alike" name, icon, and visual assets are **not** covered by the code
+license; see [`NOTICE.md`](NOTICE.md). Third-party components are covered by
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ---

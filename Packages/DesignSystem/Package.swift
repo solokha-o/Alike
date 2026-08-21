@@ -25,6 +25,12 @@ let package = Package(
                 "Core",
                 .product(name: "Lottie", package: "lottie-spm")
             ],
+            exclude: [
+                // Asset-licensing notice, not a build input. Excluding it keeps
+                // the file next to the assets it covers without adding it to
+                // the processed resource bundle.
+                "Resources/LICENSE"
+            ],
             resources: [
                 .process("Resources")
             ],

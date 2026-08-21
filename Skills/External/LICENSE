@@ -1,0 +1,18 @@
+This directory holds vendored third-party skills, copied from other people's
+repositories for local use by coding agents. They are not Alike-authored and
+are not covered by Alike's PolyForm Noncommercial License 1.0.0 (see the root
+`LICENSE` and `../../NOTICE.md`).
+
+Each subdirectory carries its own upstream license and is governed solely by
+that license:
+
+- `swiftui-expert-skill`, `swift-concurrency`, `core-data-expert`, and
+  `swift-testing-expert` are MIT-licensed; see the `LICENSE` file vendored in
+  each of those directories.
+- `emilkowalski-skills` is MIT-licensed; see its vendored `LICENSE` file.
+
+`external-skills.tsv` in this directory records, for each vendored skill, the
+upstream repository and the exact pinned commit SHA that was copied here.
+
+See `../../NOTICE.md` and `../../THIRD_PARTY_NOTICES.md` for how this
+directory fits into the rest of the repository's licensing.

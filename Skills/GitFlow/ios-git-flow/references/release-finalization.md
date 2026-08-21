@@ -54,3 +54,13 @@ git tag -a vX.Y.Z -m "Alike X.Y.Z"
 
 - Create the tag only after the `main` merge commit exists.
 - Do not delete or rewrite release tags without explicit user approval.
+
+## GitHub Release Rules
+
+- Publish exactly one GitHub release per shipped version, on the `vX.Y.Z` tag,
+  and delete superseded drafts rather than keeping them.
+- Release notes link to the App Store product page
+  (`https://apps.apple.com/app/id6798399598`, the same ID as
+  `AppStoreLinks.appID`).
+- Never attach build artifacts — no IPA, archive, or dSYMs. Apple distributes
+  the binary; the release carries notes and the store link only.
