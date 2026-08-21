@@ -48,7 +48,30 @@ Before committing, verify that `git status` does not show any local configuratio
 - [ ] No credentials, personal review data, generated upload bundles, or build artifacts are included.
 - [ ] Documentation reflects public behavior and configuration changes.
 
-By contributing, you agree that your contribution is licensed under the
-repository's [PolyForm Noncommercial License 1.0.0](LICENSE), and that you grant
-Oleksandr Solokha a perpetual, irrevocable, worldwide right to relicense your
-contribution — including under commercial terms — as part of Alike.
+## Contribution license
+
+You keep ownership of your own contributions. By submitting a contribution to
+this repository, you also agree to the following, in addition to the license
+terms in [`LICENSE`](LICENSE) and the scope defined in [`NOTICE.md`](NOTICE.md):
+
+- **Copyright license.** You grant Oleksandr Solokha a perpetual, irrevocable,
+  worldwide, royalty-free, non-exclusive copyright license to use, reproduce,
+  modify, prepare derivative works of, publicly display, publicly perform,
+  sublicense, and distribute your contribution, in whole or in part, under any
+  license terms — including the repository's
+  [PolyForm Noncommercial License 1.0.0](LICENSE) and any future commercial or
+  dual-licensing terms Oleksandr Solokha chooses to apply to Alike.
+- **Patent license.** You grant Oleksandr Solokha a perpetual, irrevocable,
+  worldwide, royalty-free, non-exclusive patent license to make, have made,
+  use, sell, offer to sell, import, and otherwise transfer your contribution,
+  for any patent claims you own or control that are necessarily infringed by
+  your contribution alone or by its combination with Alike.
+- **Your representations.** You represent that you have the legal authority
+  to make the contribution under these terms, that the contribution is your
+  original work (or that you have the necessary rights to submit it), and
+  that it does not knowingly infringe any third party's rights.
+- **Successors and assigns.** These terms bind and benefit your and Oleksandr
+  Solokha's respective heirs, successors, and assigns.
+- **How acceptance is recorded.** Opening a pull request against this
+  repository constitutes your acceptance of these terms for the contribution
+  contained in that pull request.

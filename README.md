@@ -227,8 +227,8 @@ If GitHub Discussions are enabled later, product ideas and broader proposals can
 [PolyForm Noncommercial 1.0.0](LICENSE) © 2026 Oleksandr Solokha.
 
 The source is open to read, study, modify, and redistribute for any
-**noncommercial** purpose. Commercial use — including shipping this code, or a
-derivative of it, in a paid or revenue-generating app — requires a separate
+**noncommercial** purpose. Commercial use — except for purposes expressly
+permitted by the PolyForm Noncommercial License — requires a separate
 license: oleksandr.solokha@gmail.com.
 
 The "Alike" name, icon, and visual assets are **not** covered by the code
