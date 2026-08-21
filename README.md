@@ -224,7 +224,15 @@ If GitHub Discussions are enabled later, product ideas and broader proposals can
 
 ## 📄 License
 
-[MIT](LICENSE) © 2026 Oleksandr Solokha. Third-party components are covered by
+[PolyForm Noncommercial 1.0.0](LICENSE) © 2026 Oleksandr Solokha.
+
+The source is open to read, study, modify, and redistribute for any
+**noncommercial** purpose. Commercial use — including shipping this code, or a
+derivative of it, in a paid or revenue-generating app — requires a separate
+license: oleksandr.solokha@gmail.com.
+
+The "Alike" name, icon, and visual assets are **not** covered by the code
+license; see [`NOTICE.md`](NOTICE.md). Third-party components are covered by
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ---

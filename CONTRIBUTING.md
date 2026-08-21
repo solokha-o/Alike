@@ -48,4 +48,7 @@ Before committing, verify that `git status` does not show any local configuratio
 - [ ] No credentials, personal review data, generated upload bundles, or build artifacts are included.
 - [ ] Documentation reflects public behavior and configuration changes.
 
-By contributing, you agree that your contribution is licensed under the repository's MIT License.
+By contributing, you agree that your contribution is licensed under the
+repository's [PolyForm Noncommercial License 1.0.0](LICENSE), and that you grant
+Oleksandr Solokha a perpetual, irrevocable, worldwide right to relicense your
+contribution — including under commercial terms — as part of Alike.
