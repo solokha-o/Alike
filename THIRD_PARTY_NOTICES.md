@@ -32,6 +32,26 @@ Alike uses Apple system frameworks including SwiftUI, Vision, PhotoKit, Core
 Data, StoreKit, and User Notifications under the terms of Apple's SDK
 agreements.
 
+## Vendored skills
+
+`Skills/External/` contains agent-skill content vendored from other people's
+repositories at a pinned commit, tracked in
+`Skills/External/external-skills.tsv`. This content is owned by its
+respective upstream authors and governed by each upstream's own license, not
+by Alike's PolyForm Noncommercial License; see `Skills/External/LICENSE` and
+`NOTICE.md`.
+
+| Directory | Upstream repo | License | Copyright holder | Pinned SHA |
+| --- | --- | --- | --- | --- |
+| `swiftui-expert-skill` | [`solokha-o/SwiftUI-Agent-Skill`](https://github.com/solokha-o/SwiftUI-Agent-Skill) | MIT | Antoine van der Lee | `f06d1437a3fbec7df6cdce93f77004e5409b31ee` |
+| `swift-concurrency` | [`AvdLee/Swift-Concurrency-Agent-Skill`](https://github.com/AvdLee/Swift-Concurrency-Agent-Skill) | MIT | Antoine van der Lee | `0d472de78225d2875283c35eaca1c060c493bdb3` |
+| `core-data-expert` | [`AvdLee/Core-Data-Agent-Skill`](https://github.com/AvdLee/Core-Data-Agent-Skill) | MIT | Antoine van der Lee | `855ca7d0df50e82b00c12881dd9cd23c19ef5f49` |
+| `swift-testing-expert` | [`AvdLee/Swift-Testing-Agent-Skill`](https://github.com/AvdLee/Swift-Testing-Agent-Skill) | MIT | Antoine van der Lee | `798e9b1a2bcac164d4f0c781908199e754f0bab6` |
+| `emilkowalski-skills` | [`emilkowalski/skills`](https://github.com/emilkowalski/skills) | MIT | Emil Kowalski | `6bf24434f7730ad169077756cf9c7cd7bd675fc6` |
+
+Each directory's `LICENSE` file is the exact license text from its upstream
+repository at the pinned commit.
+
 ## Local Swift packages
 
 The original source-code files of every module under `Packages/` are

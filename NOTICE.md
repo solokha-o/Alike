@@ -16,7 +16,9 @@ organization's source of funding) — requires a separate written license.
 
 - Original source-code files in this repository, including the app target
   under `Alike/` and the source code of every module under `Packages/`.
-- Build tooling, scripts, and configuration authored for this project.
+- Build tooling, scripts, and configuration authored for this project,
+  including Alike's own skills under `Skills/` — everything in that
+  directory *outside* `Skills/External/`.
 - This grant does **not** extend to the non-source resources listed under
   "What the license does not cover" below, even where they are physically
   stored inside a covered module such as `Packages/DesignSystem`.
@@ -54,6 +56,16 @@ organization's source of funding) — requires a separate written license.
   [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), which also describes how
   Alike-authored generated assets (such as rendered screenshots) are treated
   under this same policy.
+- **Vendored third-party skills.** `Skills/External/` contains third-party
+  agent-skill content copied from other people's repositories; it is owned by
+  its respective upstream authors, not by Alike. Each subdirectory is
+  governed solely by its own upstream license (vendored alongside it as
+  `LICENSE` where one exists), not by Alike's PolyForm Noncommercial License,
+  and Alike has no right to relicense it. `Skills/External/external-skills.tsv`
+  records the pinned upstream commit for each vendored skill; see
+  `Skills/External/LICENSE` for details. This exclusion applies only to
+  `Skills/External/`; Alike's own skills elsewhere under `Skills/` are
+  Alike-authored and remain covered by "What the license covers" above.
 
 ## Prospective effect of the asset exclusion
 
