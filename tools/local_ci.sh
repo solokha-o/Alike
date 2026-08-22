@@ -97,12 +97,13 @@ record_step() {
   local status="$2"
   local exit_code="$3"
   local log_path="$4"
+  local attempts="${5:-1}"
   local escaped_name escaped_log
 
   escaped_name="$(printf "%s" "$name" | json_escape)"
   escaped_log="$(printf "%s" "$log_path" | json_escape)"
-  printf '    {"name":"%s","status":"%s","exitCode":%s,"log":"%s"}' \
-    "$escaped_name" "$status" "$exit_code" "$escaped_log" >> "$REPORT_DIR/steps.tmp"
+  printf '    {"name":"%s","status":"%s","exitCode":%s,"attempts":%s,"log":"%s"}' \
+    "$escaped_name" "$status" "$exit_code" "$attempts" "$escaped_log" >> "$REPORT_DIR/steps.tmp"
 }
 
 append_step_record() {
@@ -110,11 +111,12 @@ append_step_record() {
   local status="$2"
   local exit_code="$3"
   local log_path="$4"
+  local attempts="${5:-1}"
 
   if [[ -s "$REPORT_DIR/steps.tmp" ]]; then
     printf ',\n' >> "$REPORT_DIR/steps.tmp"
   fi
-  record_step "$name" "$status" "$exit_code" "$log_path"
+  record_step "$name" "$status" "$exit_code" "$log_path" "$attempts"
 }
 
 skip_step() {
@@ -131,23 +133,61 @@ skip_step() {
   append_step_record "$name" "skipped" 0 "$log_file"
 }
 
+# A step whose log carries this line lost its simulator instead of failing.
+# CoreSimulator tears the device down mid-run, every process on it takes SIGTERM
+# and then SIGKILL, xctest dies with the device, and xcodebuild blames whichever
+# test happened to be executing — the matching device teardown shows up in the
+# diagnostic reports as XPC_EXIT_REASON_SIGTERM_TIMEOUT across that device's
+# daemons. Nothing here shuts a device down; the trigger is on the machine (a
+# simulator runtime that fails to load, another client driving the same device),
+# and the suite passes on a rerun. Assertion failures, compile errors, and a
+# crash inside the code under test all report differently, so this signature
+# spends a rerun only on a run that was never valid to begin with.
+STEP_LOST_SIMULATOR_SIGNATURE='Test crashed with signal kill'
+STEP_MAX_ATTEMPTS=2
+
+step_lost_its_simulator() {
+  grep -q "$STEP_LOST_SIMULATOR_SIGNATURE" "$1"
+}
+
 run_step() {
   local name="$1"
   shift
-  local slug log_file status exit_code
+  local slug log_file status exit_code attempt
 
   slug="$(printf "%s" "$name" | tr '[:upper:] /:' '[:lower:]---' | tr -cd '[:alnum:]_.-')"
   log_file="$REPORT_DIR/${slug}.log"
 
   printf "\n==> %s\n" "$name"
-  printf '$' > "$log_file"
-  printf ' %q' "$@" >> "$log_file"
-  printf '\n\n' >> "$log_file"
+  : > "$log_file"
 
-  set +e
-  "$@" >> "$log_file" 2>&1
-  exit_code=$?
-  set -e
+  # Both attempts land in one log, separated by a banner, so a retried step is
+  # still diagnosable from the report alone.
+  for (( attempt = 1; attempt <= STEP_MAX_ATTEMPTS; attempt++ )); do
+    if (( attempt > 1 )); then
+      printf -- '--- attempt %s of %s ---\n\n' "$attempt" "$STEP_MAX_ATTEMPTS" >> "$log_file"
+    fi
+    printf '$' >> "$log_file"
+    printf ' %q' "$@" >> "$log_file"
+    printf '\n\n' >> "$log_file"
+
+    set +e
+    "$@" >> "$log_file" 2>&1
+    exit_code=$?
+    set -e
+
+    if [[ "$exit_code" -eq 0 ]]; then
+      break
+    fi
+
+    if (( attempt < STEP_MAX_ATTEMPTS )) && step_lost_its_simulator "$log_file"; then
+      printf "[retry] %s (exit %s): the simulator was torn down mid-run\n" "$name" "$exit_code"
+      printf '\n' >> "$log_file"
+      continue
+    fi
+
+    break
+  done
 
   if [[ "$exit_code" -eq 0 ]]; then
     status="passed"
@@ -158,7 +198,7 @@ run_step() {
     printf "Log: %s\n" "$log_file"
   fi
 
-  append_step_record "$name" "$status" "$exit_code" "$log_file"
+  append_step_record "$name" "$status" "$exit_code" "$log_file" "$attempt"
 
   if [[ "$exit_code" -ne 0 ]]; then
     write_report "failed"
