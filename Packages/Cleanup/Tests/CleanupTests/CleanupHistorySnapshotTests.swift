@@ -85,12 +85,6 @@ final class CleanupHistorySnapshotTests: XCTestCase {
         XCTAssertEqual(snapshot.sections.first?.entries, [record])
     }
 
-    func testPhotoCountDistinguishesSingularFromOtherCounts() {
-        XCTAssertEqual(CleanupHistoryPhotoCount(1), .one)
-        XCTAssertEqual(CleanupHistoryPhotoCount(0), .other(0))
-        XCTAssertEqual(CleanupHistoryPhotoCount(2), .other(2))
-    }
-
     private func makeRecord(
         id: String,
         count: Int,

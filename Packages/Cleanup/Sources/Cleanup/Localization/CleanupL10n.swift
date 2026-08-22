@@ -13,18 +13,25 @@ public enum CleanupL10n {
         public static var completedCleanupsWillAppearHere: String { CleanupL10n.string("cleanup.cleanupHistory.completedCleanupsWillAppearHere") }
         /// Estimated Reclaimable
         public static var estimatedReclaimable: String { CleanupL10n.string("cleanup.cleanupHistory.estimatedReclaimable") }
-        /// %@ estimated reclaimable, 1 photo moved to Recently Deleted
-        public static var estimatedReclaimable1PhotoMoved: String { CleanupL10n.string("cleanup.cleanupHistory.estimatedReclaimable1PhotoMoved") }
-        /// %@ estimated reclaimable, %d photos moved to Recently Deleted
-        public static var estimatedReclaimablePhotosMovedRecently: String { CleanupL10n.string("cleanup.cleanupHistory.estimatedReclaimablePhotosMovedRecently") }
+        /// %2$@ estimated reclaimable, %1$lld photos moved to Recently Deleted (plural)
+        public static func estimatedReclaimablePhotosMoved(
+            _ count: Int,
+            _ byteCount: String,
+            bundle: Bundle? = nil,
+            locale: Locale? = nil
+        ) -> String {
+            CleanupL10n.plural(
+                "cleanup.cleanupHistory.estimatedReclaimablePhotosMoved",
+                count, byteCount,
+                bundle: bundle, locale: locale
+            )
+        }
         /// History
         public static var history: String { CleanupL10n.string("cleanup.cleanupHistory.history") }
         /// History Unavailable
         public static var historyUnavailable: String { CleanupL10n.string("cleanup.cleanupHistory.historyUnavailable") }
         /// Moved to Recently Deleted
         public static var movedToRecentlyDeleted: String { CleanupL10n.string("cleanup.cleanupHistory.movedToRecentlyDeleted") }
-        /// 1 photo
-        public static var n1Photo: String { CleanupL10n.string("cleanup.cleanupHistory.n1Photo") }
         /// No Cleanup History
         public static var noCleanupHistory: String { CleanupL10n.string("cleanup.cleanupHistory.noCleanupHistory") }
         /// Photos Moved to Recently Deleted

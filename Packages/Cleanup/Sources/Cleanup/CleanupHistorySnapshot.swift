@@ -45,12 +45,3 @@ struct CleanupHistorySection: Identifiable, Equatable, Sendable {
 
     var id: Date { month }
 }
-
-enum CleanupHistoryPhotoCount: Equatable, Sendable {
-    case one
-    case other(Int)
-
-    init(_ count: Int) {
-        self = count == 1 ? .one : .other(count)
-    }
-}

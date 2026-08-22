@@ -70,3 +70,50 @@ final class CleanupPhotoCountPluralTests: XCTestCase {
         }
     }
 }
+
+/// The history row's accessibility label had the same defect in its own pair of keys: a
+/// "1 photo moved" string and a "%d photos moved" string, chosen by the same English-shaped
+/// switch. VoiceOver therefore read the genitive plural at 2 in Ukrainian and a fixed noun in
+/// Polish. The pair is now one plural key, with the count bound to `%1$lld` so the rule can
+/// select on it while each locale keeps its own word order.
+final class CleanupHistoryAccessibilityPluralTests: XCTestCase {
+    func testEnglishReadsSingularAndPlural() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "en")
+        let english = Locale(identifier: "en")
+
+        XCTAssertEqual(
+            CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(1, "1.2 GB", bundle: bundle, locale: english),
+            "1.2 GB estimated reclaimable, 1 photo moved to Recently Deleted"
+        )
+        XCTAssertEqual(
+            CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(4, "1.2 GB", bundle: bundle, locale: english),
+            "1.2 GB estimated reclaimable, 4 photos moved to Recently Deleted"
+        )
+    }
+
+    func testPolishDeclinesTheNounAndParticiple() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "pl")
+        let polish = Locale(identifier: "pl")
+
+        func label(_ count: Int) -> String {
+            CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(count, "1,2 GB", bundle: bundle, locale: polish)
+        }
+
+        XCTAssertTrue(label(1).contains("1 zdjęcie przeniesione"), label(1))
+        XCTAssertTrue(label(2).contains("2 zdjęcia przeniesione"), label(2))
+        XCTAssertTrue(label(5).contains("5 zdjęć przeniesionych"), label(5))
+        XCTAssertTrue(label(22).contains("22 zdjęcia przeniesione"), label(22))
+    }
+
+    /// Traditional Chinese keeps the byte count first in its own word order, which is why the
+    /// count is bound positionally rather than by argument order.
+    func testTraditionalChineseKeepsItsWordOrder() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "zh-Hant")
+        let traditionalChinese = Locale(identifier: "zh-Hant")
+
+        XCTAssertEqual(
+            CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(3, "1.2 GB", bundle: bundle, locale: traditionalChinese),
+            "預估可回收 1.2 GB，已將 3 張照片移到「最近刪除」"
+        )
+    }
+}

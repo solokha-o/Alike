@@ -310,156 +310,253 @@
         }
       }
     },
-    "cleanup.cleanupHistory.estimatedReclaimable1PhotoMoved": {
+    "cleanup.cleanupHistory.estimatedReclaimablePhotosMoved": {
       "extractionState": "manual",
       "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "geschätzt %2$@ freigebbar, %1$lld Foto in „Zuletzt gelöscht“ bewegt"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "geschätzt %2$@ freigebbar, %1$lld Fotos in „Zuletzt gelöscht“ bewegt"
+                }
+              }
+            }
+          }
+        },
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ estimated reclaimable, 1 photo moved to Recently Deleted"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ орієнтовно можна звільнити, 1 фото переміщено до «Недавно видалені»"
-          }
-        },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ recuperables estimados, 1 foto movida a Eliminados recientemente"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ estimated reclaimable, %1$lld photo moved to Recently Deleted"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ estimated reclaimable, %1$lld photos moved to Recently Deleted"
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ recuperables estimados, 1 foto movida a Eliminados recientemente"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ recuperáveis estimados, 1 foto movida para Apagados recentemente"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "geschätzt %@ freigebbar, 1 Foto in „Zuletzt gelöscht“ bewegt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ récupérables estimés, 1 photo déplacée vers Supprimés récemment"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ recuperabili stimati, 1 foto spostata in «Eliminati di recente»"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ geschat vrij te maken, 1 foto naar 'Recent verwijderd' verplaatst"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ szacowanego miejsca do odzyskania, 1 zdjęcie przeniesione do albumu „Ostatnio usunięte”"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tahmini %@ geri kazanılabilir, 1 fotoğraf Son Silinenler'e taşındı"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "預估可回收 %@，已將 1 張照片移到「最近刪除」"
-          }
-        }
-      }
-    },
-    "cleanup.cleanupHistory.estimatedReclaimablePhotosMovedRecently": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ estimated reclaimable, %2$d photos moved to Recently Deleted"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ орієнтовно можна звільнити, фото переміщено до «Недавно видалені»: %2$d"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperables estimados, %1$lld foto movida a Eliminados recientemente"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperables estimados, %1$lld fotos movidas a Eliminados recientemente"
+                }
+              }
+            }
           }
         },
         "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ recuperables estimados, %2$d fotos movidas a Eliminados recientemente"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ recuperables estimados, %2$d fotos movidas a Eliminados recientemente"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ recuperáveis estimados, %2$d fotos movidas para Apagados recentemente"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "geschätzt %1$@ freigebbar, %2$d Fotos in „Zuletzt gelöscht“ bewegt"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperables estimados, %1$lld foto movida a Eliminados recientemente"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperables estimados, %1$lld fotos movidas a Eliminados recientemente"
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ récupérables estimés, %2$d photos déplacées vers Supprimés récemment"
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ récupérables estimés, %1$lld photo déplacée vers Supprimés récemment"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                }
+              }
+            }
           }
         },
         "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ recuperabili stimati, %2$d foto spostate in «Eliminati di recente»"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperabili stimati, %1$lld foto spostata in «Eliminati di recente»"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperabili stimati, %1$lld foto spostate in «Eliminati di recente»"
+                }
+              }
+            }
           }
         },
         "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ geschat vrij te maken, %2$d foto's naar 'Recent verwijderd' verplaatst"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ geschat vrij te maken, %1$lld foto naar 'Recent verwijderd' verplaatst"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ geschat vrij te maken, %1$lld foto's naar 'Recent verwijderd' verplaatst"
+                }
+              }
+            }
           }
         },
         "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ szacowanego miejsca do odzyskania, przeniesionych zdjęć do albumu „Ostatnio usunięte”: %2$d"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ szacowanego miejsca do odzyskania, %1$lld zdjęcia przeniesione do albumu „Ostatnio usunięte”"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ szacowanego miejsca do odzyskania, %1$lld zdjęć przeniesionych do albumu „Ostatnio usunięte”"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ szacowanego miejsca do odzyskania, %1$lld zdjęcie przeniesione do albumu „Ostatnio usunięte”"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ szacowanego miejsca do odzyskania, przeniesionych zdjęć do albumu „Ostatnio usunięte”: %1$lld"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados recentemente"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperáveis estimados, %1$lld foto movida para Apagados recentemente"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados recentemente"
+                }
+              }
+            }
           }
         },
         "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tahmini %1$@ geri kazanılabilir, %2$d fotoğraf Son Silinenler'e taşındı"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Tahmini %2$@ geri kazanılabilir, %1$lld fotoğraf Son Silinenler'e taşındı"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Tahmini %2$@ geri kazanılabilir, %1$lld fotoğraf Son Silinenler'e taşındı"
+                }
+              }
+            }
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ орієнтовно можна звільнити, фото переміщено до «Недавно видалені»: %1$lld"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ орієнтовно можна звільнити, фото переміщено до «Недавно видалені»: %1$lld"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ орієнтовно можна звільнити, %1$lld фото переміщено до «Недавно видалені»"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ орієнтовно можна звільнити, фото переміщено до «Недавно видалені»: %1$lld"
+                }
+              }
+            }
           }
         },
         "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "預估可回收 %1$@，已將 %2$d 張照片移到「最近刪除」"
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "預估可回收 %2$@，已將 %1$lld 張照片移到「最近刪除」"
+                }
+              }
+            }
           }
         }
       }
@@ -691,83 +788,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "已移到「最近刪除」"
-          }
-        }
-      }
-    },
-    "cleanup.cleanupHistory.n1Photo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 photo"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 фото"
-          }
-        },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 foto"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 foto"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 foto"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 Foto"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 photo"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 foto"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 foto"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 zdjęcie"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 fotoğraf"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 張照片"
           }
         }
       }

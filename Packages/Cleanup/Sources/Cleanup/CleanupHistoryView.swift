@@ -292,19 +292,10 @@ private struct CleanupHistoryTimelineRow: View {
     }
 
     private var accessibilityLabel: String {
-        switch CleanupHistoryPhotoCount(entry.deletedCount) {
-        case .one:
-            return String(
-                format: CleanupL10n.CleanupHistory.estimatedReclaimable1PhotoMoved,
-                byteCount(entry.estimatedSavingsBytes)
-            )
-        case .other(let count):
-            return String(
-                format: CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMovedRecently,
-                byteCount(entry.estimatedSavingsBytes),
-                count
-            )
-        }
+        CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(
+            entry.deletedCount,
+            byteCount(entry.estimatedSavingsBytes)
+        )
     }
 }
 
