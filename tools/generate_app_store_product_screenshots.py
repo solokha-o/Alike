@@ -453,13 +453,13 @@ COPY = {
         ),
         (
             "VERGELIJK",
-            "Kijk eerst,\ndan opruimen",
+            "Kijk eerst,\nruim daarna op",
             "Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging.",
         ),
         (
             "VRIJE RUIMTE",
             "Zie de gigabytes\nterugkomen",
-            "Geselecteerd en geschatte besparing, terwijl je opruimt.",
+            "Geselecteerde foto's en geschatte besparing, terwijl je opruimt.",
         ),
     ],
     "pl": [
@@ -486,7 +486,7 @@ COPY = {
         (
             "WOLNE MIEJSCE",
             "Odzyskaj\ngigabajty",
-            "Wybrane i szacowana oszczędność, na bieżąco podczas porządków.",
+            "Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków.",
         ),
     ],
     "tr": [

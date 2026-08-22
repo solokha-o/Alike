@@ -133,8 +133,8 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 1 | OP HET APPARAAT | Vind de foto's / die op elkaar lijken | Alike scant je bibliotheek met Apple Vision, volledig op je iPhone. |
 | 2 | ÉÉN WACHTRIJ | Elke groep, / klaar om te bekijken | Groepen komen met statuslabels: je ziet altijd wat er nog ligt. |
 | 3 | BESTE OPNAME | De blijver is / al gekozen | Alike licht de beste opname uit. Jij hoeft alleen te bevestigen. |
-| 4 | VERGELIJK | Kijk eerst, / dan opruimen | Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging. |
-| 5 | VRIJE RUIMTE | Zie de gigabytes / terugkomen | Geselecteerd en geschatte besparing, terwijl je opruimt. |
+| 4 | VERGELIJK | Kijk eerst, / ruim daarna op | Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging. |
+| 5 | VRIJE RUIMTE | Zie de gigabytes / terugkomen | Geselecteerde foto's en geschatte besparing, terwijl je opruimt. |
 
 ### pl
 
@@ -144,7 +144,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 2 | JEDNA KOLEJKA | Każda grupa / gotowa do przeglądu | Grupy mają znaczniki przeglądu — zawsze wiesz, co zostało. |
 | 3 | NAJLEPSZE UJĘCIE | Zdjęcie do zostawienia / jest już wybrane | Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz. |
 | 4 | PORÓWNAJ | Sprawdź, zanim / cokolwiek zniknie | Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia. |
-| 5 | WOLNE MIEJSCE | Odzyskaj / gigabajty | Wybrane i szacowana oszczędność, na bieżąco podczas porządków. |
+| 5 | WOLNE MIEJSCE | Odzyskaj / gigabajty | Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków. |
 
 ### tr
 
