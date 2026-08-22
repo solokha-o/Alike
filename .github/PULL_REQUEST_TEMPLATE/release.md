@@ -66,9 +66,10 @@ for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/; do for p in "" priv
       listings — `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_` suffixed `UK`, `DE_DE`,
       `FR_FR`, `ES_ES`, `ES_MX`, `PT_BR`, `IT`, `NL_NL`, `PL`, `TR` and
       `ZH_HANT`, thirty-three in all (the full list with values is in
-      `Docs/release-checklist.md` step 1). Nothing fails without them; a listing
-      just silently reuses the English URLs. `ES_MX` points at the same `/es/`
-      pages as `ES_ES` on purpose.
+      `Docs/release-checklist.md` step 0). All of them are required: strict
+      generation fails on an unset override, so this box is checked by the
+      metadata step passing rather than by inspection. `ES_MX` points at the
+      same `/es/` pages as `ES_ES` on purpose.
 - [ ] IAP localizations uploaded separately — `deliver` does not touch in-app
       purchases
 

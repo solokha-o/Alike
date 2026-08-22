@@ -24,11 +24,13 @@ validate whenever you like; upload when nothing is in review.
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
-- [ ] The per-locale URL overrides set for every non-English listing. These are
-      optional and nothing fails without them — a listing simply reuses the
-      English URLs, which is a silent localization gap rather than an error. The
-      site now publishes all eleven locales, so leaving any of these unset sends
-      readers to English legal text they were not reading a moment ago:
+- [ ] The per-locale URL overrides set for every non-English listing. All
+      thirty-three are **required**: strict generation fails on an unset
+      override, naming the variable, rather than falling back to the shared
+      English URL and sending readers to legal text they were not reading a
+      moment ago. `--allow-shared-urls` opts out, and only the generator accepts
+      it — `tools/text` and the Fastlane lanes do not, so a real upload cannot
+      take the fallback:
 
 ```sh
 ALIKE_PRIVACY_URL_UK="https://alikeapp.github.io/uk/privacy/"

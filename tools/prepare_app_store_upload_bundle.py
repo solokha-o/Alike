@@ -1331,7 +1331,7 @@ tools/upload-screenshots
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so all thirty-three are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so all thirty-three are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1413,7 +1413,7 @@ def validate_localized_urls(allow_placeholder_urls: bool, allow_shared_urls: boo
             if not override:
                 errors.append(
                     f"{variable} is unset, so the {mapping.apple} listing would reuse the shared "
-                    f"{kind.title()} URL; set it (values in Docs/release-checklist.md step 1) or pass "
+                    f"{kind.title()} URL; set it (values in Docs/release-checklist.md step 0) or pass "
                     f"--allow-shared-urls"
                 )
                 continue

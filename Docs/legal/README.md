@@ -161,9 +161,11 @@ its `check_terms` row.
    language.
 7. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
    the metadata bundle, and set the per-locale overrides
-   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR}`) so
-   each listing points at its own pages instead of falling back to English. The
-   full list with values is in `Docs/release-checklist.md` step 1.
+   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}`)
+   so each listing points at its own pages. All thirty-three are required —
+   strict generation fails on an unset override instead of falling back to
+   English. The full list with values is in `Docs/release-checklist.md` step
+   0.
 8. Check that `copyright_year` in the site's `_config.yml` still equals the year
    in `COPYRIGHT` in `tools/prepare_app_store_upload_bundle.py`. Nothing enforces
    this across the two repositories, and it is a copyright line, not a current
