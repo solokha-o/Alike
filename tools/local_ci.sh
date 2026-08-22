@@ -284,20 +284,40 @@ package_test_destination() {
   printf '%s\n' "$PACKAGE_TEST_DESTINATION"
 }
 
+# A package whose only product is named after the package gets one generated
+# scheme, "<Name>", and it carries the test targets. A package with several
+# products gets a library scheme per product plus an aggregate
+# "<Name>-Package" — and only the aggregate is configured for the test action,
+# so "-scheme Purchases test" fails with "not currently configured for the test
+# action". Prefer the aggregate whenever Xcode generated one.
+package_scheme() {
+  local package_path="$1"
+  local name="$2"
+
+  if xcodebuild -workspace "$package_path" -list 2>/dev/null \
+    | grep -qx "        ${name}-Package"; then
+    printf '%s\n' "${name}-Package"
+    return
+  fi
+
+  printf '%s\n' "$name"
+}
+
 run_xcodebuild_package_step() {
   local package_path="$1"
   local action="$2"
-  local name relative_path destination slug
+  local name relative_path destination slug scheme
 
   name="$(basename "$package_path")"
   relative_path="${package_path#$ROOT_DIR/}"
   slug="$(package_slug "$package_path")"
   destination="$(package_test_destination)"
+  scheme="$(package_scheme "$package_path" "$name")"
 
   run_step "xcodebuild $action $relative_path" \
     xcodebuild \
       -workspace "$package_path" \
-      -scheme "$name" \
+      -scheme "$scheme" \
       -destination "$destination" \
       -derivedDataPath "$DERIVED_DATA_ROOT/packages/$slug" \
       "$action"
