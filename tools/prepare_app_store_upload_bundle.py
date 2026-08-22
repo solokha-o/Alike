@@ -1041,18 +1041,20 @@ def locale_url_env_var(kind: str, apple_locale: str) -> str:
 def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     """Return the locale's own legal/support URL, falling back to the shared one.
 
-    The site publishes Ukrainian pages at /uk/, so the uk listing should not send
-    Ukrainian readers to English text. Set ALIKE_PRIVACY_URL_UK,
-    ALIKE_TERMS_URL_UK or ALIKE_SUPPORT_URL_UK to point a locale somewhere else;
-    with none of them set, every locale keeps the single shared URL it used
-    before, so an unconfigured .env behaves exactly as it did.
+    The fallback in the last line is not a supported configuration. It survives
+    because `--allow-shared-urls` and `--allow-placeholder-urls` need it, and
+    because this function has no way to tell which run it is in; on every other
+    run `validate_localized_urls` fails before the bundle is used, naming the
+    unset variable. An unconfigured `.env` therefore does not quietly produce
+    English URLs for eleven listings any more — it produces a hard failure.
 
-    The same holds for the Tier 1 locales: ALIKE_*_URL_DE_DE, _FR_FR, _ES_ES,
-    _ES_MX and _PT_BR. The site now publishes all of those pages, so these should
-    be set — an unset override is no longer a safe default but a silent
-    localization gap, sending a reader who was just reading German App Store copy
-    to an English privacy policy. _ES_MX points at the same /es/ pages as _ES_ES
-    on purpose: one Spanish page serves both listings.
+    The site publishes each locale's own pages — /uk/, /de/, /fr/, /es/,
+    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/ — and all eleven non-English
+    listings must point at them through their own
+    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, thirty-three in all.
+    _ES_MX points at the same /es/ pages as _ES_ES on purpose: one Spanish page
+    serves both listings, said explicitly rather than by falling through to
+    English.
     """
     override = os.environ.get(locale_url_env_var(kind, apple_locale), "").strip()
     return override if override else base_url
@@ -1376,19 +1378,23 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
 def validate_localized_urls(allow_placeholder_urls: bool, allow_shared_urls: bool) -> list[str]:
     """Fail strict generation when a non-English listing would carry English legal URLs.
 
-    `localized_url` falls back to the shared ALIKE_*_URL when a locale has no
-    override, which is convenient and silent: with only the three base URLs set,
-    generation and validation both pass while ten listings point German, Polish
-    or Traditional Chinese readers at the English privacy policy, terms and
-    support pages. Nothing in the bundle looks wrong, because a shared URL is
-    indistinguishable from a deliberate one — and since the working `.env` is
-    untracked by design, a clean release machine reproduces exactly that bundle.
+    The failure this exists to prevent, in the past tense because it can no
+    longer happen: `localized_url` falls back to the shared ALIKE_*_URL when a
+    locale has no override, and until this check that fallback was silent. With
+    only the three base URLs set, generation and validation both passed while
+    ten listings pointed German, Polish or Traditional Chinese readers at the
+    English privacy policy, terms and support pages. Nothing in the bundle
+    looked wrong, because a shared URL is indistinguishable from a deliberate
+    one — and since the working `.env` is untracked by design, a clean release
+    machine reproduced exactly that bundle. Release 1.1.0 was generated that way
+    until the overrides were filled in by hand.
 
-    So the fallback is no longer allowed to be the quiet default. Every locale
-    except en-US must set its own three overrides, and the emitted files have to
-    match them. `--allow-shared-urls` opts out for a deliberate shared-URL run,
-    and `--allow-placeholder-urls` (structural generation, no real URLs at all)
-    skips the check the same way it skips the other URL rules.
+    Now every locale except en-US must set its own three overrides, and the
+    emitted files have to match them. `--allow-shared-urls` opts out for a
+    deliberate shared-URL run, and `--allow-placeholder-urls` (structural
+    generation, no real URLs at all) skips the check the same way it skips the
+    other URL rules. Neither flag reaches an upload path: `tools/text` and the
+    Fastlane lanes do not accept them.
 
     es-MX is not an exception: it points at the same /es/ pages as es-ES, but it
     says so through its own overrides rather than by falling through to English.
