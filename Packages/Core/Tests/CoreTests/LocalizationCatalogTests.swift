@@ -79,10 +79,48 @@ struct LocalizationCatalog {
         return try XCTUnwrap(stringUnit["value"] as? String)
     }
 
-    /// A single `stringUnit` value, or nil for a plural entry — plurals are covered by their
-    /// own tests, and each of their variations would need unpacking separately.
+    /// A single `stringUnit` value, or nil for a plural entry.
     static func value(of localization: [String: Any]?) -> String? {
         (localization?["stringUnit"] as? [String: Any])?["value"] as? String
+    }
+
+    /// Every string a localization actually ships: one value for a plain entry, or one per
+    /// plural category. Plural variations are the half `value(of:)` cannot reach, and the
+    /// format-shape check needs them — a plural category is a format string like any other,
+    /// and the keys carrying two arguments live there.
+    static func values(of localization: [String: Any]?) -> [(category: String, value: String)] {
+        if let value = value(of: localization) {
+            return [(category: "", value: value)]
+        }
+        guard
+            let variations = localization?["variations"] as? [String: Any],
+            let plural = variations["plural"] as? [String: Any]
+        else {
+            return []
+        }
+        return plural.keys.sorted().compactMap { category in
+            guard
+                let unit = plural[category] as? [String: Any],
+                let stringUnit = unit["stringUnit"] as? [String: Any],
+                let value = stringUnit["value"] as? String
+            else {
+                return nil
+            }
+            return (category: category, value: value)
+        }
+    }
+
+    /// The shape English states for a key. Every plural category of one language carries the
+    /// same arguments — only the wording around them differs — so `other`, the one category
+    /// every language declares, stands for the key.
+    static func referenceShape(
+        _ localization: [String: Any]?
+    ) -> (specifiers: [String], literalPercents: Int)? {
+        let candidates = values(of: localization)
+        guard let reference = candidates.first(where: { $0.category == "other" }) ?? candidates.first else {
+            return nil
+        }
+        return formatShape(reference.value)
     }
 
     /// Conversion specifiers in sorted order, plus the count of literal `%%`. Sorting is
@@ -246,24 +284,33 @@ final class LocalizationCatalogTests: XCTestCase {
     /// What this does catch is a translation that drops an argument, invents one, loses the
     /// literal percent sign, or leaves a dangling `%` that `String(format:)` would read as
     /// the start of a specifier.
+    ///
+    /// Plural variations are checked category by category, not skipped: each category is a
+    /// format string in its own right, and the keys carrying two arguments — a count and a
+    /// formatted byte count — are exactly the ones that live in variations.
     func testFormatSpecifiersSurviveEveryTranslation() throws {
         let catalog = try LocalizationCatalog.load()
         var mismatched: [String] = []
 
         for key in catalog.strings.keys.sorted() {
             let localizations = try catalog.localizations(of: key)
+            guard let englishShape = LocalizationCatalog.referenceShape(localizations["en"]) else {
+                continue
+            }
             for (language, unit) in localizations.sorted(by: { $0.key < $1.key }) {
-                guard let english = LocalizationCatalog.value(of: localizations["en"]) else { continue }
-                guard let translation = LocalizationCatalog.value(of: unit) else { continue }
-                let englishShape = LocalizationCatalog.formatShape(english)
-                let shape = LocalizationCatalog.formatShape(translation)
-                if shape != englishShape {
-                    mismatched.append(
-                        "\(key) [\(language)] has \(shape) where en has \(englishShape)"
-                    )
-                }
-                if LocalizationCatalog.hasDanglingPercent(translation) {
-                    mismatched.append("\(key) [\(language)] ends on a dangling %")
+                // Plain entries yield one unlabelled value; plural entries yield one per
+                // category, each checked in its own right.
+                for (category, translation) in LocalizationCatalog.values(of: unit) {
+                    let label = category.isEmpty
+                        ? "\(key) [\(language)]"
+                        : "\(key) [\(language).\(category)]"
+                    let shape = LocalizationCatalog.formatShape(translation)
+                    if shape != englishShape {
+                        mismatched.append("\(label) has \(shape) where en has \(englishShape)")
+                    }
+                    if LocalizationCatalog.hasDanglingPercent(translation) {
+                        mismatched.append("\(label) ends on a dangling %")
+                    }
                 }
             }
         }
