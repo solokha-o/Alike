@@ -17,7 +17,7 @@ struct CleanupHistoryView: View {
         .scrollContentBackground(.hidden)
         .background(Color.secondaryBackground.ignoresSafeArea())
         .environment(\.defaultMinListRowHeight, 1)
-        .navigationTitle(Text(appLocalized("History")))
+        .navigationTitle(Text(CleanupL10n.CleanupHistory.history))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
@@ -38,9 +38,9 @@ struct CleanupHistoryView: View {
         case .empty:
             unavailableRow {
                 ContentUnavailableView(
-                    appLocalized("No Cleanup History"),
+                    CleanupL10n.CleanupHistory.noCleanupHistory,
                     systemImage: "clock.arrow.circlepath",
-                    description: Text(appLocalized("Completed cleanups will appear here."))
+                    description: Text(CleanupL10n.CleanupHistory.completedCleanupsWillAppearHere)
                 )
             }
         case .loaded(let snapshot):
@@ -72,11 +72,11 @@ struct CleanupHistoryView: View {
         case .failed:
             unavailableRow {
                 ContentUnavailableView {
-                    Label(appLocalized("History Unavailable"), systemImage: "exclamationmark.triangle")
+                    Label(CleanupL10n.CleanupHistory.historyUnavailable, systemImage: "exclamationmark.triangle")
                 } description: {
-                    Text(appLocalized("Unable to load cleanup history."))
+                    Text(CleanupL10n.CleanupHistory.unableToLoadCleanupHistory)
                 } actions: {
-                    Button(appLocalized("Retry")) {
+                    Button(CleanupL10n.CleanupHistory.retry) {
                         state = .loading
                         Task { await loadHistory() }
                     }
@@ -92,7 +92,7 @@ struct CleanupHistoryView: View {
             .redacted(reason: .placeholder)
             .accessibilityHidden(true)
 
-        Section(appLocalized("Recent Activity")) {
+        Section(CleanupL10n.CleanupHistory.recentActivity) {
             ForEach(0..<3, id: \.self) { index in
                 CleanupHistoryTimelineRow(entry: .placeholder(index: index))
                     .redacted(reason: .placeholder)
@@ -126,7 +126,7 @@ struct CleanupHistoryView: View {
     }
 
     private var activityHeader: some View {
-        Text(appLocalized("Recent Activity"))
+        Text(CleanupL10n.CleanupHistory.recentActivity)
             .font(.appTitle3)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityAddTraits(.isHeader)
@@ -186,7 +186,7 @@ private struct CleanupHistorySummaryCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
-            Label(appLocalized("All-Time Impact"), systemImage: "sparkles")
+            Label(CleanupL10n.CleanupHistory.allTimeImpact, systemImage: "sparkles")
                 .font(.appHeadline)
                 .foregroundStyle(Color.accent)
 
@@ -195,7 +195,7 @@ private struct CleanupHistorySummaryCard: View {
                     .font(.appTitle)
                     .monospacedDigit()
                     .minimumScaleFactor(0.75)
-                Text(appLocalized("Estimated Reclaimable"))
+                Text(CleanupL10n.CleanupHistory.estimatedReclaimable)
                     .font(.appSubheadline)
                     .foregroundStyle(.secondary)
             }
@@ -203,7 +203,7 @@ private struct CleanupHistorySummaryCard: View {
             metrics
 
             Label(
-                appLocalized("Storage may not be freed until items are permanently deleted from Recently Deleted."),
+                CleanupL10n.CleanupHistory.storageMayNotBeFreed,
                 systemImage: "info.circle"
             )
             .font(.appFootnote)
@@ -218,14 +218,14 @@ private struct CleanupHistorySummaryCard: View {
     private var metrics: some View {
         if dynamicTypeSize.isAccessibilitySize {
             VStack(alignment: .leading, spacing: Spacing.small) {
-                metric("\(insights.totalDeletedItems)", appLocalized("Photos Moved to Recently Deleted"))
-                metric("\(insights.cleanupSessionCount)", appLocalized("Cleanup Sessions"))
+                metric("\(insights.totalDeletedItems)", CleanupL10n.CleanupHistory.photosMovedToRecentlyDeleted)
+                metric("\(insights.cleanupSessionCount)", CleanupL10n.CleanupHistory.cleanupSessions)
             }
         } else {
             HStack(alignment: .top, spacing: Spacing.medium) {
-                metric("\(insights.totalDeletedItems)", appLocalized("Photos Moved to Recently Deleted"))
+                metric("\(insights.totalDeletedItems)", CleanupL10n.CleanupHistory.photosMovedToRecentlyDeleted)
                 Divider()
-                metric("\(insights.cleanupSessionCount)", appLocalized("Cleanup Sessions"))
+                metric("\(insights.cleanupSessionCount)", CleanupL10n.CleanupHistory.cleanupSessions)
             }
         }
     }
@@ -262,7 +262,7 @@ private struct CleanupHistoryTimelineRow: View {
             VStack(alignment: .leading, spacing: Spacing.xxxSmall) {
                 Text(photoCountText)
                     .font(.appHeadline)
-                Text(appLocalized("Moved to Recently Deleted"))
+                Text(CleanupL10n.CleanupHistory.movedToRecentlyDeleted)
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
                 Text(entry.completedAt.formatted(date: .abbreviated, time: .shortened))
@@ -288,28 +288,14 @@ private struct CleanupHistoryTimelineRow: View {
     }
 
     private var photoCountText: String {
-        switch CleanupHistoryPhotoCount(entry.deletedCount) {
-        case .one:
-            return appLocalized("1 photo")
-        case .other(let count):
-            return String(format: appLocalized("%d photos"), count)
-        }
+        CleanupL10n.Common.photos(entry.deletedCount)
     }
 
     private var accessibilityLabel: String {
-        switch CleanupHistoryPhotoCount(entry.deletedCount) {
-        case .one:
-            return String(
-                format: appLocalized("%@ estimated reclaimable, 1 photo moved to Recently Deleted"),
-                byteCount(entry.estimatedSavingsBytes)
-            )
-        case .other(let count):
-            return String(
-                format: appLocalized("%@ estimated reclaimable, %d photos moved to Recently Deleted"),
-                byteCount(entry.estimatedSavingsBytes),
-                count
-            )
-        }
+        CleanupL10n.CleanupHistory.estimatedReclaimablePhotosMoved(
+            entry.deletedCount,
+            byteCount(entry.estimatedSavingsBytes)
+        )
     }
 }
 

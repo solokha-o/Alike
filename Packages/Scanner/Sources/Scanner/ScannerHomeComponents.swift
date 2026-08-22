@@ -85,7 +85,7 @@ struct ScannerHomeHero: View {
             value: progress
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(appLocalized("Scanning progress")))
+        .accessibilityLabel(Text(ScannerL10n.ScannerHomeComponents.scanningProgress))
         .accessibilityValue(Text(progress.formatted(.percent.precision(.fractionLength(0)))))
     }
 
@@ -132,13 +132,13 @@ struct ScannerLibraryStatusCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
             HStack(alignment: .firstTextBaseline, spacing: Spacing.small) {
-                Text(appLocalized("Library Status"))
+                Text(ScannerL10n.ScannerHomeComponents.libraryStatus)
                     .font(.appHeadline)
 
                 Spacer()
 
                 if isStale {
-                    Text(appLocalized("Needs refresh"))
+                    Text(ScannerL10n.ScannerHomeComponents.needsRefresh)
                         .font(.appCaption)
                         .foregroundStyle(Color.statusNeedsReview)
                 }
@@ -147,23 +147,23 @@ struct ScannerLibraryStatusCard: View {
             metricLayout {
                 metric(
                     value: summary.completedAt.formatted(date: .abbreviated, time: .omitted),
-                    label: appLocalized("Last Scan")
+                    label: ScannerL10n.ScannerHomeComponents.lastScan
                 )
                 metric(
                     value: "\(summary.totalOpportunityCount)",
-                    label: appLocalized("Opportunities")
+                    label: ScannerL10n.ScannerHomeComponents.opportunities
                 )
                 metric(
                     value: ByteCountFormatter.string(
                         fromByteCount: summary.estimatedSavingsBytes,
                         countStyle: .file
                     ),
-                    label: appLocalized("Reclaimable")
+                    label: ScannerL10n.ScannerHomeComponents.reclaimable
                 )
             }
 
             if isStale {
-                Text(appLocalized("These results are from before your photo library changed."))
+                Text(ScannerL10n.ScannerHomeComponents.theseResultsFromBeforePhoto)
                     .font(.appFootnote)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -193,6 +193,12 @@ struct ScannerLibraryStatusCard: View {
                 .font(.appHeadline)
                 .monospacedDigit()
                 .foregroundStyle(.primary)
+                // Side by side, a value that wraps drops its caption below the other two and the
+                // row stops reading as one line of metrics. Traditional Chinese is where this
+                // shows: "2026年8月11日" is wider than the abbreviated Latin date. In the stacked
+                // accessibility layout there is nothing to stay level with, so wrapping is fine.
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+                .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 1 : 0.7)
             Text(label)
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
@@ -209,23 +215,23 @@ struct ScannerScanScopeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
-            Text(appLocalized("What Alike checks"))
+            Text(ScannerL10n.ScannerHomeComponents.whatAlikeChecks)
                 .font(.appHeadline)
 
             scopeRow(
                 icon: "square.stack.3d.up.fill",
-                title: appLocalized("Similar Photos"),
-                message: appLocalized("Groups of photos that look alike.")
+                title: ScannerL10n.ScannerHomeComponents.similarPhotos,
+                message: ScannerL10n.ScannerHomeComponents.groupsPhotosThatLookAlike
             )
             scopeRow(
                 icon: "camera.viewfinder",
-                title: appLocalized("Screenshots"),
-                message: appLocalized("Screen captures that may no longer be useful.")
+                title: ScannerL10n.ScannerHomeComponents.screenshots,
+                message: ScannerL10n.ScannerHomeComponents.screenCapturesThatMayNo
             )
             scopeRow(
                 icon: "drop.triangle",
-                title: appLocalized("Blurred Photos"),
-                message: appLocalized("Likely low-quality photos to review.")
+                title: ScannerL10n.ScannerHomeComponents.blurredPhotos,
+                message: ScannerL10n.ScannerHomeComponents.likelyLowQualityPhotosReview
             )
 
             if let allowance {
@@ -267,9 +273,9 @@ struct ScannerPremiumOfferCard: View {
                     .foregroundStyle(Color.accent)
 
                 VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                    Text(appLocalized("Unlock more with Alike Pro"))
+                    Text(ScannerL10n.ScannerHomeComponents.unlockMoreWithAlikePro)
                         .font(.appHeadline)
-                    Text(appLocalized("Unlock unlimited scans, smart cleanup, and batch actions."))
+                    Text(ScannerL10n.ScannerHomeComponents.unlockUnlimitedScansSmartCleanup)
                         .font(.appFootnote)
                         .foregroundStyle(.secondary)
                 }
@@ -285,7 +291,7 @@ struct ScannerPremiumOfferCard: View {
         }
         .buttonStyle(.plain)
         .scannerHomeSurface()
-        .accessibilityHint(Text(appLocalized("Opens the upgrade options")))
+        .accessibilityHint(Text(ScannerL10n.ScannerHomeComponents.opensTheUpgradeOptions))
     }
 }
 
@@ -299,7 +305,7 @@ private struct ScannerAllowanceRow: View {
                 .accessibilityHidden(true)
             Text(
                 String(
-                    format: appLocalized("%d of %d free scans remaining"),
+                    format: ScannerL10n.ScannerHomeComponents.ofFreeScansRemaining,
                     allowance.remainingScans,
                     allowance.totalScans
                 )

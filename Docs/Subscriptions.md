@@ -30,14 +30,52 @@ source `tools/prepare_app_store_upload_bundle.py` reads to emit
 App Store Connect limits the display name to 30 characters and the description
 to 45.
 
+Locales below are the App Store Connect codes the generated JSON carries; the
+StoreKit file spells the same ones `en_US`, `uk`, `de_DE`, `fr_FR`, `es_ES`,
+`es_MX`, `pt_BR`, `it_IT`, `nl_NL`, `pl_PL`, `tr_TR` and `zh_TW`. The two codes
+that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
+`zh-Hant`, and `it_IT`/`pl_PL`/`tr_TR`, which it calls bare `it`, `pl` and
+`tr`; `STOREKIT_TO_APP_STORE_LOCALE` in
+`tools/prepare_app_store_upload_bundle.py` holds the mapping.
+
 | Product | Locale | Display name | Description |
 | --- | --- | --- | --- |
 | Group | en-US | Alike Pro | — |
 | Group | uk | Alike Pro | — |
-| Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool. First 7 days free. |
-| Yearly | uk | Alike Pro на рік | Усі функції Alike Pro. 7 днів безкоштовно. |
+| Group | de-DE | Alike Pro | — |
+| Group | fr-FR | Alike Pro | — |
+| Group | es-ES | Alike Pro | — |
+| Group | es-MX | Alike Pro | — |
+| Group | pt-BR | Alike Pro | — |
+| Group | it | Alike Pro | — |
+| Group | nl-NL | Alike Pro | — |
+| Group | pl | Alike Pro | — |
+| Group | tr | Alike Pro | — |
+| Group | zh-Hant | Alike Pro | — |
+| Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool, billed once a year. |
+| Yearly | uk | Alike Pro на рік | Усі функції Alike Pro, оплата раз на рік. |
+| Yearly | de-DE | Alike Pro Jahresplan | Alle Pro-Funktionen, einmal jährlich. |
+| Yearly | fr-FR | Alike Pro annuel | Tous les outils Pro, une fois par an. |
+| Yearly | es-ES | Alike Pro anual | Todas las funciones Pro, pago anual. |
+| Yearly | es-MX | Alike Pro anual | Todas las funciones Pro, pago anual. |
+| Yearly | pt-BR | Alike Pro anual | Todos os recursos Pro, pagamento anual. |
+| Yearly | it | Alike Pro annuale | Tutti gli strumenti Pro, pagamento annuale. |
+| Yearly | nl-NL | Alike Pro jaarlijks | Alle Pro-functies, jaarlijks betaald. |
+| Yearly | pl | Alike Pro rocznie | Wszystkie funkcje Pro, płatność roczna. |
+| Yearly | tr | Alike Pro yıllık | Tüm Pro araçları, yıllık ödeme. |
+| Yearly | zh-Hant | Alike Pro 年繳 | 解鎖所有 Pro 功能，年繳一次。 |
 | Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
 | Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
+| Monthly | de-DE | Alike Pro Monatsplan | Alle Aufräumfunktionen von Alike Pro. |
+| Monthly | fr-FR | Alike Pro mensuel | Tout le nettoyage photo d’Alike Pro. |
+| Monthly | es-ES | Alike Pro mensual | Toda la limpieza de fotos de Alike Pro. |
+| Monthly | es-MX | Alike Pro mensual | Toda la limpieza de fotos de Alike Pro. |
+| Monthly | pt-BR | Alike Pro mensal | Toda a limpeza de fotos do Alike Pro. |
+| Monthly | it | Alike Pro mensile | Tutta la pulizia foto di Alike Pro. |
+| Monthly | nl-NL | Alike Pro maandelijks | Al het opruimwerk van Alike Pro. |
+| Monthly | pl | Alike Pro miesięcznie | Wszystkie porządki w zdjęciach Alike Pro. |
+| Monthly | tr | Alike Pro aylık | Alike Pro'nun tüm fotoğraf temizliği. |
+| Monthly | zh-Hant | Alike Pro 月繳 | Alike Pro 的完整照片清理功能。 |
 
 The paywall shows StoreKit's localized `displayName`, so a missing locale means
 that storefront falls back to English plan names in the paywall and in
@@ -49,8 +87,13 @@ localizations reach App Store Connect only through
 is not wired into any lane. That script upserts localizations onto products
 that already exist; it never creates the group or the products. It also
 tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
-skipped rather than failing, so read the `skipped` line in its output before
-assuming `uk` landed.
+skipped rather than failing, so a run that skipped every localization still
+exits successfully. Read the `skipped` line in its output before assuming the
+eleven non-English locales — `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`,
+`it`, `nl-NL`, `pl`, `tr`, `zh-Hant` — landed, then confirm with `status`: it
+prints `localizations=11/12 missing=zh-Hant` rather than a bare count, with the
+expectation taken from the payload, so a locale added to the StoreKit file
+moves the check with it. Re-run or add by hand anything it names.
 
 The same script has `status` (read-only, safe to run first),
 `upload-introductory-offers` and `upload-review-screenshots`. The screenshot
@@ -86,16 +129,28 @@ Eligibility is not a field. An introductory offer is only ever granted to a
 customer who has never subscribed in the group, which is why the paywall says
 "for eligible new subscribers".
 
+For the same reason the static product descriptions above name no trial at all.
+They are the same string for everyone, so an ineligible returning subscriber
+reads them too, and the hedge does not fit: App Store Connect caps a product
+description at 45 characters and "Unlock every Pro tool. First 7 days free."
+already spends 41. The trial is promised only where eligibility is known — the
+paywall, hedged per `Docs/legal/subscription-disclosure.md`.
+`validate_iap_product_localizations` fails generation if a trial claim
+reappears in any of the twelve locales.
+
 ## App Store Connect setup
 
 1. Create one auto-renewable subscription group named **Alike Pro**.
 2. Create the yearly and monthly products with the exact identifiers above.
 3. Set yearly above monthly in the subscription level order.
 4. Configure the intended US prices and localize each storefront in App Store
-   Connect as release markets are added. Add the en-US and uk product
-   localizations from the table above, either by hand or with
+   Connect as release markets are added. Add all twelve product localizations
+   from the table above — en-US, uk, de-DE, fr-FR, es-ES, es-MX, pt-BR, it,
+   nl-NL, pl, tr and zh-Hant — either by hand or with
    `tools/app_store_iap_metadata.rb upload-localizations` once the products
-   exist.
+   exist, then confirm with `status`, which reports `localizations=N/12` and
+   names any missing locale, because skipped locales do not fail the upload
+   run.
 5. Add a seven-day free-trial introductory offer to yearly only. Eligibility is
    determined by StoreKit per subscription group.
 6. Supply review information and submit the products with the app version that

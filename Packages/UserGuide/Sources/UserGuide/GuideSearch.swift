@@ -14,12 +14,12 @@ extension GuideContent {
     /// The catalog is a handful of static arrays, so this stays a plain synchronous filter — there
     /// is nothing to index and nothing to cache.
     ///
-    /// `localize` defaults to ``appLocalized(_:)`` so production callers are unaffected; tests
+    /// `localize` defaults to ``UserGuideL10n.string(_:)`` so production callers are unaffected; tests
     /// inject a fixed localizer so matching can be exercised against real EN/UK strings without
     /// depending on the app bundle being visible to the test runner.
     static func search(
         _ query: String,
-        localize: (String.LocalizationValue) -> String = appLocalized
+        localize: (String.LocalizationValue) -> String = UserGuideL10n.string
     ) -> [GuideSearchResult] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }

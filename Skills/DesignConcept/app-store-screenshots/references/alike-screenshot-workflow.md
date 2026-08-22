@@ -8,9 +8,10 @@ idea per slide, headlines dominate, layout varies, and exports must pass a
 clipped-text and thumbnail check.
 
 The implementation is deliberately a deterministic Pillow script rather than an
-interactive editor. The deck is five slides in two locales; a Next.js editor
-would be more machinery than the job needs. Reach for one only if the user asks
-for manual iteration, multi-device export, or many more locales.
+interactive editor. The deck is five slides in twelve locales, all driven by one
+`COPY` table; a Next.js editor would be more machinery than the job needs. Reach
+for one only if the user asks for manual iteration, multi-device export, or many
+more locales.
 
 ## Pipeline
 

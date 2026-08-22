@@ -3,6 +3,21 @@
 #
 # Source this file; it defines ensure_developer_dir and runs nothing on its own.
 
+# Print every /Applications/Xcode*.app that is really a toolchain, newest last.
+#
+# The glob also matches things that merely start with "Xcode" — Xcodes.app, the
+# version manager, is the common one — so a name match is not enough: only a
+# bundle carrying Contents/Developer/usr/bin/xcodebuild can back xcrun and
+# xcodebuild. Filtering here keeps an impostor from crowding out the real Xcode
+# in the release/beta preference below.
+_xcode_toolchain_candidates() {
+  local app
+  for app in /Applications/Xcode*.app; do
+    [[ -x "$app/Contents/Developer/usr/bin/xcodebuild" ]] || continue
+    printf "%s\n" "$app"
+  done | sort -V
+}
+
 # Point DEVELOPER_DIR at a real Xcode when the caller has not, so every child
 # process — xcodebuild, swift, and the Java transporter Fastlane shells out to —
 # sees the same toolchain.
@@ -16,7 +31,7 @@ ensure_developer_dir() {
 
   local selected
   selected="$(xcode-select -p 2>/dev/null || true)"
-  if [[ "$selected" == *"/Xcode"*".app/Contents/Developer" ]]; then
+  if [[ "$selected" == *".app/Contents/Developer" && -x "$selected/usr/bin/xcodebuild" ]]; then
     return
   fi
 
@@ -33,15 +48,15 @@ ensure_developer_dir() {
   # `set -o pipefail`, so without `|| true` that empty result aborts the whole
   # script here instead of falling through to the beta fallback below.
   local candidate
-  candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -vi beta | sort -V | tail -1 || true)"
+  candidate="$(_xcode_toolchain_candidates | grep -vi beta | tail -1 || true)"
   if [[ -z "$candidate" ]]; then
-    candidate="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1 || true)"
+    candidate="$(_xcode_toolchain_candidates | tail -1 || true)"
   fi
   # A bare `if` that falls through returns 1, which would abort the callers'
   # `set -e` with no message at all. Say what happened and return cleanly: the
   # fallback is best-effort, and the tool that actually needs Xcode reports a
   # far better error than a silent exit.
-  if [[ -n "$candidate" && -d "$candidate/Contents/Developer" ]]; then
+  if [[ -n "$candidate" ]]; then
     export DEVELOPER_DIR="$candidate/Contents/Developer"
     printf "Using DEVELOPER_DIR=%s\n" "$DEVELOPER_DIR"
   else

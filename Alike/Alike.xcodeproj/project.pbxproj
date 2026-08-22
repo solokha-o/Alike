@@ -22,10 +22,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4010CA7A1000000000000002 /* AlikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		531BB61D2F29132C00DAB1E2 /* Alike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4010CA7A1000000000000001 /* AlikeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AlikeTests;
+			sourceTree = "<group>";
+		};
 		531BB61F2F29132C00DAB1E2 /* Alike */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Alike;
@@ -34,6 +40,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4010CA7A1000000000000004 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		531BB61A2F29132C00DAB1E2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -60,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				531BB61F2F29132C00DAB1E2 /* Alike */,
+				4010CA7A1000000000000001 /* AlikeTests */,
 				531BB61E2F29132C00DAB1E2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				531BB61D2F29132C00DAB1E2 /* Alike.app */,
+				4010CA7A1000000000000002 /* AlikeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,6 +90,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4010CA7A1000000000000006 /* AlikeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4010CA7A1000000000000009 /* Build configuration list for PBXNativeTarget "AlikeTests" */;
+			buildPhases = (
+				4010CA7A1000000000000003 /* Sources */,
+				4010CA7A1000000000000004 /* Frameworks */,
+				4010CA7A1000000000000005 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4010CA7A1000000000000001 /* AlikeTests */,
+			);
+			name = AlikeTests;
+			packageProductDependencies = (
+			);
+			productName = AlikeTests;
+			productReference = 4010CA7A1000000000000002 /* AlikeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		531BB61C2F29132C00DAB1E2 /* Alike */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 531BB6282F29132D00DAB1E2 /* Build configuration list for PBXNativeTarget "Alike" */;
@@ -119,6 +156,9 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					4010CA7A1000000000000006 = {
+						CreatedOnToolsVersion = 26.6;
+					};
 					531BB61C2F29132C00DAB1E2 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -130,6 +170,17 @@
 			knownRegions = (
 				en,
 				Base,
+				uk,
+				"es-419",
+				es,
+				"pt-BR",
+				de,
+				fr,
+				it,
+				nl,
+				pl,
+				tr,
+				"zh-Hant",
 			);
 			mainGroup = 531BB6142F29132C00DAB1E2;
 			minimizedProjectReferenceProxies = 1;
@@ -153,11 +204,19 @@
 			projectRoot = "";
 			targets = (
 				531BB61C2F29132C00DAB1E2 /* Alike */,
+				4010CA7A1000000000000006 /* AlikeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4010CA7A1000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		531BB61B2F29132C00DAB1E2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,6 +227,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4010CA7A1000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		531BB6192F29132C00DAB1E2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +244,46 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		4010CA7A1000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = X8NNCQ3HW6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		4010CA7A1000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = X8NNCQ3HW6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		531BB6262F29132D00DAB1E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -303,7 +409,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -317,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -341,7 +447,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -355,7 +461,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -376,6 +482,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4010CA7A1000000000000009 /* Build configuration list for PBXNativeTarget "AlikeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4010CA7A1000000000000007 /* Debug */,
+				4010CA7A1000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		531BB6182F29132C00DAB1E2 /* Build configuration list for PBXProject "Alike" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

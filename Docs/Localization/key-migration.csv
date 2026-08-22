@@ -1,0 +1,715 @@
+package,old_key,new_key
+Cleanup,"%@ estimated reclaimable, %d photos moved to Recently Deleted",cleanup.cleanupHistory.estimatedReclaimablePhotosMovedRecently
+Cleanup,"%@ estimated reclaimable, 1 photo moved to Recently Deleted",cleanup.cleanupHistory.estimatedReclaimable1PhotoMoved
+Cleanup,%d items • %@ estimated reclaimable,cleanup.main.itemsEstimatedReclaimable
+Cleanup,%d or more photos,cleanup.main.orMorePhotos
+Cleanup,%d photos,cleanup.common.photos
+Cleanup,%d photos moved to Recently Deleted.,cleanup.main.photosMovedToRecentlyDeleted
+Cleanup,1 photo,cleanup.cleanupHistory.n1Photo
+Cleanup,All clusters,cleanup.main.allClusters
+Cleanup,All clusters reviewed,cleanup.main.allClustersReviewed
+Cleanup,"All clusters reviewed. %d of %d clusters reviewed, %d selected, %@ estimated savings.",cleanup.main.allClustersReviewedSelectedEstimated
+Cleanup,All review states,cleanup.main.allReviewStates
+Cleanup,All-Time Impact,cleanup.cleanupHistory.allTimeImpact
+Cleanup,Any size,cleanup.main.anySize
+Cleanup,Changed,cleanup.main.changed
+Cleanup,Cleanup,cleanup.main.cleanup
+Cleanup,Cleanup History,cleanup.main.cleanupHistory
+Cleanup,Cleanup Sessions,cleanup.cleanupHistory.cleanupSessions
+Cleanup,Cleanup Unavailable,cleanup.main.cleanupUnavailable
+Cleanup,Completed cleanups will appear here.,cleanup.cleanupHistory.completedCleanupsWillAppearHere
+Cleanup,Continue Review,cleanup.main.continueReview
+Cleanup,"Continue review. %d of %d clusters reviewed, %d remaining, %d selected, %@ estimated savings.",cleanup.main.continueReviewClustersReviewedRemaining
+Cleanup,Couldn't Open Cleanup Category,cleanup.main.couldntOpenCleanupCategory
+Cleanup,Dismiss cleanup status,cleanup.main.dismissCleanupStatus
+Cleanup,Done,cleanup.main.done
+Cleanup,Estimated Reclaimable,cleanup.cleanupHistory.estimatedReclaimable
+Cleanup,Estimated Savings,cleanup.main.estimatedSavings
+Cleanup,Everything else still available in your cleanup queue,cleanup.main.everythingElseStillAvailableCleanup
+Cleanup,Favorites only,cleanup.main.favoritesOnly
+Cleanup,Filter and Sort,cleanup.main.filterAndSort
+Cleanup,Filter and sort clusters,cleanup.main.filterAndSortClusters
+Cleanup,Filter by,cleanup.main.filterBy
+Cleanup,Go to Scanner,cleanup.main.goToScanner
+Cleanup,Hide this status message,cleanup.main.hideThisStatusMessage
+Cleanup,Highest similarity,cleanup.main.highestSimilarity
+Cleanup,History,cleanup.cleanupHistory.history
+Cleanup,History Unavailable,cleanup.cleanupHistory.historyUnavailable
+Cleanup,In review,cleanup.main.inReview
+Cleanup,Largest cluster,cleanup.main.largestCluster
+Cleanup,Locked,cleanup.main.locked
+Cleanup,Minimum cluster size,cleanup.main.minimumClusterSize
+Cleanup,Most space to save,cleanup.main.mostSpaceToSave
+Cleanup,Moved to Recently Deleted,cleanup.cleanupHistory.movedToRecentlyDeleted
+Cleanup,Needs review,cleanup.main.needsReview
+Cleanup,New,cleanup.main.new
+Cleanup,New and changed clusters after your latest rescan,cleanup.main.newChangedClustersAfterLatest
+Cleanup,Newest,cleanup.main.newest
+Cleanup,No Cleanup History,cleanup.cleanupHistory.noCleanupHistory
+Cleanup,No Cleanup Opportunities,cleanup.main.noCleanupOpportunities
+Cleanup,No Clusters Match These Controls,cleanup.main.noClustersMatchTheseControls
+Cleanup,Not reviewed,cleanup.main.notReviewed
+Cleanup,Nothing left to review right now,cleanup.main.nothingLeftReviewRightNow
+Cleanup,OK,cleanup.main.ok
+Cleanup,Open Alike this week to clear clutter and keep saving storage.,cleanup.cleanupReminderManager.openAlikeThisWeekClear
+Cleanup,Open next cluster to continue cleanup,cleanup.main.openNextClusterContinueCleanup
+Cleanup,Open this cleanup category,cleanup.main.openThisCleanupCategory
+Cleanup,Open this cluster to review photos,cleanup.main.openThisClusterReviewPhotos
+Cleanup,Opens the upgrade options,cleanup.main.opensTheUpgradeOptions
+Cleanup,Photos Moved to Recently Deleted,cleanup.cleanupHistory.photosMovedToRecentlyDeleted
+Cleanup,Pick up where you left off,cleanup.main.pickUpWhereLeftOff
+Cleanup,Ready for another cleanup?,cleanup.cleanupReminderManager.readyForAnotherCleanup
+Cleanup,Recent Activity,cleanup.cleanupHistory.recentActivity
+Cleanup,Refresh Required,cleanup.main.refreshRequired
+Cleanup,Refreshing Cleanup,cleanup.main.refreshingCleanup
+Cleanup,Remaining,cleanup.main.remaining
+Cleanup,Rescan,cleanup.main.rescan
+Cleanup,Rescan Photos,cleanup.main.rescanPhotos
+Cleanup,Reset controls,cleanup.main.resetControls
+Cleanup,Retry,cleanup.cleanupHistory.retry
+Cleanup,Review status,cleanup.main.reviewStatus
+Cleanup,Reviewed,cleanup.main.reviewed
+Cleanup,Run a new scan to refresh cleanup suggestions.,cleanup.main.runNewScanRefreshCleanup
+Cleanup,Scan Failed,cleanup.main.scanFailed
+Cleanup,Scan Your Library First,cleanup.main.scanYourLibraryFirst
+Cleanup,Scanning your library… %d%%,cleanup.main.scanningYourLibrary
+Cleanup,Selected,cleanup.main.selected
+Cleanup,Smart Cleanup,cleanup.main.smartCleanup
+Cleanup,Sort by,cleanup.main.sortBy
+Cleanup,Sort order,cleanup.main.sortOrder
+Cleanup,Start a scan to find similar photos and smart cleanup suggestions.,cleanup.main.startScanFindSimilarPhotos
+Cleanup,Storage may not be freed until items are permanently deleted from Recently Deleted.,cleanup.cleanupHistory.storageMayNotBeFreed
+Cleanup,"The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.",cleanup.main.photosWereDeletedButLibrary
+Cleanup,Try changing filters or resetting controls.,cleanup.main.tryChangingFiltersResettingControls
+Cleanup,Unable to load cleanup history.,cleanup.cleanupHistory.unableToLoadCleanupHistory
+Cleanup,Unlock advanced filters,cleanup.main.unlockAdvancedFilters
+Cleanup,Your cleanup results are up to date.,cleanup.main.cleanupResultsUpDate
+Cleanup,Your latest scan did not find similar photos or smart categories to review.,cleanup.main.latestScanDidNotFind
+Cleanup,Your library changed,cleanup.main.yourLibraryChanged
+Core,%d likely blurred photos available for review.,core.cleanupCategory.likelyBlurredPhotosAvailableReview
+Core,%d screenshots available for review.,core.cleanupCategory.screenshotsAvailableForReview
+Core,"%d selected, estimated size %@.",core.cleanupCategory.selectedEstimatedSize
+Core,1 likely blurred photo available for review.,core.cleanupCategory.n1LikelyBlurredPhotoAvailable
+Core,1 screenshot available for review.,core.cleanupCategory.n1ScreenshotAvailableForReview
+Core,"1 selected, estimated size %@.",core.cleanupCategory.n1SelectedEstimatedSize
+Core,Blurred Photo Cleanup,core.cleanupCategory.blurredPhotoCleanup
+Core,Blurred Photos,core.cleanupCategory.blurredPhotos
+Core,Blurred photo cleanup is a premium feature,core.cleanupCategory.blurredPhotoCleanupPremiumFeature
+Core,Likely low-quality photos based on on-device analysis. Review before deleting.,core.cleanupCategory.likelyLowQualityPhotosBased
+Core,Move %d Selected Blurred Photos to Recently Deleted?,core.cleanupCategory.moveSelectedBlurredPhotosRecently
+Core,Move %d Selected Screenshots to Recently Deleted?,core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted
+Core,Move 1 Selected Blurred Photo to Recently Deleted?,core.cleanupCategory.move1SelectedBlurredPhoto
+Core,Move 1 Selected Screenshot to Recently Deleted?,core.cleanupCategory.move1SelectedScreenshotRecently
+Core,No Blurred Photos Found,core.cleanupCategory.noBlurredPhotosFound
+Core,No Screenshots Found,core.cleanupCategory.noScreenshotsFound
+Core,Open blurred photo cleanup,core.cleanupCategory.openBlurredPhotoCleanup
+Core,Open screenshot cleanup,core.cleanupCategory.openScreenshotCleanup
+Core,Opens the premium paywall for blurred photo cleanup,core.cleanupCategory.opensPremiumPaywallBlurredPhoto
+Core,Opens the premium paywall for screenshot cleanup,core.cleanupCategory.opensPremiumPaywallScreenshotCleanup
+Core,Run a new scan after your library changes or if more photos need review.,core.cleanupCategory.runNewScanAfterLibrary
+Core,Screenshot Cleanup,core.cleanupCategory.screenshotCleanup
+Core,Screenshot cleanup is a premium feature,core.cleanupCategory.screenshotCleanupPremiumFeature
+Core,Screenshots,core.cleanupCategory.screenshots
+Core,"The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.",core.cleanupCategory.selectedPhotoWillBeRemoved
+Core,"The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.",core.cleanupCategory.selectedPhotosWillBeRemoved
+Core,"The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.",core.cleanupCategory.selectedScreenshotWillBeRemoved
+Core,"The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.",core.cleanupCategory.selectedScreenshotsWillBeRemoved
+Core,Try rescanning after your library updates.,core.cleanupCategory.tryRescanningAfterLibraryUpdates
+Core,Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow.,core.cleanupCategory.unlockBlurredPhotoCleanupReview
+Core,Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow.,core.cleanupCategory.unlockScreenshotCleanupReviewDelete
+DesignSystem,%d Columns,designSystem.photoGridColumnPreference.columns
+DesignSystem,Alike celebrates your completed cleanup,designSystem.alikeReaction.alikeCelebratesYourCompletedCleanup
+DesignSystem,Alike found cleanup opportunities,designSystem.alikeReaction.alikeFoundCleanupOpportunities
+DesignSystem,Alike has cleanup opportunities ready for review,designSystem.alikeReaction.alikeHasCleanupOpportunitiesReady
+DesignSystem,Alike is ready for cleanup,designSystem.alikeReaction.alikeIsReadyForCleanup
+DesignSystem,Alike is ready to help organize your photo library,designSystem.alikeReaction.alikeReadyHelpOrganizePhoto
+DesignSystem,Alike needs photo library permission to continue,designSystem.alikeReaction.alikeNeedsPhotoLibraryPermission
+DesignSystem,Alike noticed new photos in your library,designSystem.alikeReaction.alikeNoticedNewPhotosLibrary
+DesignSystem,Alike ran into a problem with the scan,designSystem.alikeReaction.alikeRanIntoProblemWith
+DesignSystem,Alike says your photo library is all caught up,designSystem.alikeReaction.alikeSaysPhotoLibraryAll
+DesignSystem,Alike searching for similar photos,designSystem.alikeReaction.alikeSearchingForSimilarPhotos
+DesignSystem,Choose how many columns are used to display photos,designSystem.photoGridColumnPreference.chooseHowManyColumnsUsed
+DesignSystem,Columns,designSystem.photoGridColumnPreference.columns2
+DesignSystem,Grid Columns,designSystem.photoGridColumnPreference.gridColumns
+DesignSystem,Photo preview unavailable,designSystem.photoLoadFailure.photoPreviewUnavailable
+DesignSystem,Retry,designSystem.photoLoadFailure.retry
+DesignSystem,Try loading the photo again,designSystem.photoLoadFailure.tryLoadingThePhotoAgain
+Details,%@ MP,details.clusterDetails.mp
+Details,%d Similar Photos,details.clusterReviewSummaryCard.similarPhotos
+Details,"%d selected, estimated size %@.",details.clusterReviewSummaryCard.selectedEstimatedSize
+Details,1 Similar Photo,details.clusterReviewSummaryCard.n1SimilarPhoto
+Details,"1 selected, estimated size %@.",details.clusterReviewSummaryCard.n1SelectedEstimatedSize
+Details,Alike celebrating the Best Shot,details.alikeBestShotCelebration.alikeCelebratingTheBestShot
+Details,Alike comparing similar photos,details.alikeComparisonReview.alikeComparingSimilarPhotos
+Details,Alike needs photo library access before it can delete photos. Open Settings to continue.,details.common.alikeNeedsPhotoLibraryAccess
+Details,Alike organizing selected photos,details.common.alikeOrganizingSelectedPhotos
+Details,Best Shot,details.common.bestShot
+Details,Cancel,details.common.cancel
+Details,Choose which photos are selected for cleanup,details.screenshotCleanupComponents.chooseWhichPhotosSelectedCleanup
+Details,Cleanup Unavailable,details.common.cleanupUnavailable
+Details,Clear Selection,details.common.clearSelection
+Details,Close,details.common.close
+Details,Cluster details are available on iOS.,details.clusterDetails.clusterDetailsAvailableIOS
+Details,Couldn't move the selected photos. Please try again.,details.common.couldntMoveSelectedPhotosPlease
+Details,Created,details.clusterDetails.created
+Details,Current cleanup review status,details.clusterReviewSummaryCard.currentCleanupReviewStatus
+Details,Dates,details.clusterDetails.dates
+Details,Delete Selected,details.screenshotCleanupComponents.deleteSelected
+Details,Deleting...,details.screenshotCleanupComponents.deleting
+Details,Depth Effect,details.clusterDetails.depthEffect
+Details,Details,details.clusterDetails.details
+Details,Done,details.clusterDetails.done
+Details,Double tap to remove this photo from cleanup selection,details.clusterDetails.doubleTapRemoveThisPhoto
+Details,Double tap to reopen this cluster for review,details.clusterDetails.doubleTapReopenThisCluster
+Details,Double tap to select this photo for cleanup,details.clusterDetails.doubleTapSelectThisPhoto
+Details,Estimated Savings,details.alikeCleanupProgress.estimatedSavings
+Details,Favorite,details.clusterDetails.favorite
+Details,Finishes the review and keeps every photo in this cluster,details.clusterDetails.finishesReviewKeepsEveryPhoto
+Details,Finishes the review and keeps the photos you did not select,details.clusterDetails.finishesReviewKeepsPhotosDid
+Details,HDR,details.clusterDetails.hdr
+Details,In review,details.clusterReviewSummaryCard.inReview
+Details,Keeping %d of %d,details.clusterDetails.keepingOf
+Details,"Keeping %d of %d, estimated size %@.",details.clusterReviewSummaryCard.keepingOfEstimatedSize
+Details,Keeping all %d photos,details.common.keepingAllPhotos
+Details,Live Photo,details.clusterDetails.livePhoto
+Details,Loading photo preview,details.common.loadingPhotoPreview
+Details,Location,details.clusterDetails.location
+Details,Make Best Shot,details.clusterDetails.makeBestShot
+Details,Map showing where the photo was taken,details.clusterDetails.mapShowingWherePhotoWas
+Details,Mark Reviewed,details.clusterDetails.markReviewed
+Details,Megapixels,details.clusterDetails.megapixels
+Details,Modified,details.clusterDetails.modified
+Details,More Options,details.clusterDetails.moreOptions
+Details,Move,details.common.move
+Details,Move %d Photos,details.clusterReviewActionBar.movePhotos
+Details,Move %d Selected Photos to Recently Deleted?,details.clusterDetails.moveSelectedPhotosRecentlyDeleted
+Details,Move 1 Photo,details.clusterReviewActionBar.move1Photo
+Details,Move 1 Selected Photo to Recently Deleted?,details.clusterDetails.move1SelectedPhotoRecently
+Details,Move the currently selected photos to Recently Deleted,details.common.moveCurrentlySelectedPhotosRecently
+Details,Moving...,details.clusterReviewActionBar.moving
+Details,Needs review,details.clusterReviewSummaryCard.needsReview
+Details,No,details.clusterDetails.no
+Details,No Photos Available,details.clusterDetails.noPhotosAvailable
+Details,Not reviewed,details.clusterReviewSummaryCard.notReviewed
+Details,Not selected,details.clusterDetails.notSelected
+Details,OK,details.common.ok
+Details,Open Original,details.clusterDetails.openOriginal
+Details,Open Settings,details.common.openSettings
+Details,Open in Maps,details.clusterDetails.openInMaps
+Details,Opens the photo location in Maps,details.clusterDetails.opensPhotoLocationMaps
+Details,Organizing Photos,details.alikeCleanupProgress.organizingPhotos
+Details,Panorama,details.clusterDetails.panorama
+Details,Photo,details.clusterDetails.photo
+Details,Photo Info,details.clusterDetails.photoInfo
+Details,Photo Type,details.clusterDetails.type
+Details,Photo location,details.clusterDetails.photoLocation
+Details,Photo preview,details.common.photoPreview
+Details,Photo preview unavailable,details.common.photoPreviewUnavailable
+Details,Resolution,details.clusterDetails.resolution
+Details,Retry,details.fullscreenZoomablePhoto.retry
+Details,Reviewed,details.common.reviewed
+Details,Screenshot,details.clusterDetails.screenshot
+Details,Screenshot cleanup is available on iOS.,details.screenshotCleanup.screenshotCleanupAvailableIOS
+Details,Screenshots,details.screenshotCleanup.screenshots
+Details,Select All,details.screenshotCleanupComponents.selectAll
+Details,Select All Except Best,details.clusterDetails.selectAllExceptBest
+Details,Select at least one photo before deleting.,details.common.selectAtLeastOnePhoto
+Details,Selected,details.clusterDetails.selected
+Details,Selected Photos,details.alikeCleanupProgress.selectedPhotos
+Details,Selected for cleanup review,details.clusterDetails.selectedForCleanupReview
+Details,Selection,details.clusterDetails.selection
+Details,Selection shortcuts and grid layout,details.clusterDetails.selectionShortcutsAndGridLayout
+Details,Show Info,details.clusterDetails.showInfo
+Details,Similar Photos,details.clusterDetails.similarPhotos
+Details,"Some selected photos are no longer available. Your library access may be limited, or the library changed since the last scan.",details.common.someSelectedPhotosNoLonger
+Details,Tap photos to select them for cleanup,details.clusterReviewSummaryCard.tapPhotosSelectThemCleanup
+Details,"The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@.",details.clusterDetails.selectedPhotoWillBeRemoved
+Details,"The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@.",details.clusterDetails.selectedPhotosWillBeRemoved
+Details,This photo is kept as the best shot. Long press another photo to make it the best shot instead.,details.clusterDetails.thisPhotoKeptAsBest
+Details,Try loading the photo again,details.fullscreenZoomablePhoto.tryLoadingThePhotoAgain
+Details,View,details.clusterDetails.view
+Details,Yes,details.clusterDetails.yes
+Launch,Alike,launch.main.alike
+Purchases,%@ • Active through %@,purchases.premiumComponents.activeThrough
+Purchases,%d selected • %@ estimated reclaimable,purchases.premiumComponents.selectedEstimatedReclaimable
+Purchases,A cleanup reminder on your schedule,purchases.subscriptionPaywall.cleanupReminderSchedule
+Purchases,Advanced filters and batch cleanup,purchases.subscriptionPaywall.advancedFiltersAndBatchCleanup
+Purchases,"Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup.",purchases.subscriptionPaywall.alikeFreeStillIncludesThree
+Purchases,Alike Pro,purchases.common.alikePro
+Purchases,Alike Pro is active,purchases.common.alikeProIsActive
+Purchases,Alike Pro is now active.,purchases.subscriptionPaywall.alikeProIsNowActive
+Purchases,Alike Pro status unavailable,purchases.premiumComponents.alikeProStatusUnavailable
+Purchases,Billed monthly,purchases.subscriptionPaywall.billedMonthly
+Purchases,Billed yearly,purchases.subscriptionPaywall.billedYearly
+Purchases,Check your connection and try loading subscription plans again.,purchases.subscriptionPaywall.checkConnectionTryLoadingSubscription
+Purchases,Checking Alike Pro,purchases.premiumComponents.checkingAlikePro
+Purchases,Checking subscription status,purchases.premiumComponents.checkingSubscriptionStatus
+Purchases,Choose the weekly reminder day and time that fits your routine.,purchases.premium.chooseWeeklyReminderDayTime
+Purchases,Clean up all selected photos with Pro,purchases.common.cleanUpAllSelectedPhotos
+Purchases,Close,purchases.subscriptionPaywall.close
+Purchases,Confirming your App Store subscription status.,purchases.premiumComponents.confirmingAppStoreSubscriptionStatus
+Purchases,Continue with %@,purchases.subscriptionPaywall.continueWith
+Purchases,Continue with one photo,purchases.premiumComponents.continueWithOnePhoto
+Purchases,Find the photos that matter faster,purchases.premium.findPhotosThatMatterFaster
+Purchases,Free includes %d scans per calendar month. You have %d remaining and the allowance resets %@.,purchases.premium.freeIncludesScansPerCalendar
+Purchases,Free includes %d scans per calendar month. You have %d remaining.,purchases.premium.freeIncludesScansPerCalendar2
+Purchases,Free includes three scans per calendar month. Pro keeps your cleanup results current whenever your library changes.,purchases.premium.freeIncludesThreeScansPer
+Purchases,Keep scanning without monthly limits,purchases.premium.keepScanningWithoutMonthlyLimits
+Purchases,Loading App Store plans…,purchases.subscriptionPaywall.loadingAppStorePlans
+Purchases,Make cleanup fit your schedule,purchases.premium.makeCleanupFitYourSchedule
+Purchases,Make every cleanup faster with Alike Pro,purchases.premium.makeEveryCleanupFasterWith
+Purchases,No active Alike Pro subscription was found.,purchases.subscriptionPaywall.noActiveAlikeProSubscription
+Purchases,Pay for one month at a time,purchases.subscriptionPaywall.payOneMonthAtTime
+Purchases,Plans aren't available yet,purchases.subscriptionPaywall.plansArentAvailableYet
+Purchases,Plans couldn't be loaded,purchases.subscriptionPaywall.plansCouldntBeLoaded
+Purchases,Privacy Policy,purchases.subscriptionPaywall.privacyPolicy
+Purchases,Pro,purchases.premiumComponents.pro
+Purchases,Purchasing…,purchases.subscriptionPaywall.purchasing
+Purchases,Recommended,purchases.subscriptionPaywall.recommended
+Purchases,"Remove multiple selected photos in one safe, confirmed action.",purchases.premium.removeMultipleSelectedPhotosOne
+Purchases,Requires Alike Pro,purchases.premiumComponents.requiresAlikePro
+Purchases,Restore Purchases,purchases.common.restorePurchases
+Purchases,Retry,purchases.subscriptionPaywall.retry
+Purchases,Review likely blurred photos faster,purchases.premium.reviewLikelyBlurredPhotosFaster
+Purchases,Review likely low-quality shots before deciding what to keep or remove.,purchases.premium.reviewLikelyLowQualityShots
+Purchases,Review screenshots together and choose exactly what should move to Recently Deleted.,purchases.premium.reviewScreenshotsTogetherChooseExactly
+Purchases,Review smart cleanup suggestions while keeping full control over every deletion.,purchases.premium.reviewSmartCleanupSuggestionsWhile
+Purchases,Review this smart category and reclaim an estimated %@.,purchases.premium.reviewThisSmartCategoryReclaim
+Purchases,Save %d%% compared with monthly,purchases.subscriptionPaywall.saveComparedWithMonthly
+Purchases,Save with annual billing,purchases.subscriptionPaywall.saveWithAnnualBilling
+Purchases,Select a subscription plan,purchases.subscriptionPaywall.selectASubscriptionPlan
+Purchases,Select this subscription plan,purchases.subscriptionPaywall.selectThisSubscriptionPlan
+Purchases,Smart screenshot and blurred-photo categories,purchases.subscriptionPaywall.smartScreenshotBlurredPhotoCategories
+Purchases,Subscription plans unavailable,purchases.subscriptionPaywall.subscriptionPlansUnavailable
+Purchases,Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.,purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled
+Purchases,Terms of Use,purchases.subscriptionPaywall.termsOfUse
+Purchases,The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.,purchases.subscriptionPaywall.yearlyPlanIncludes7Day
+Purchases,Turn screenshot clutter into free space,purchases.premium.turnScreenshotClutterIntoFree
+Purchases,Unlimited library scans,purchases.subscriptionPaywall.unlimitedLibraryScans
+Purchases,Unlimited scans and all Pro cleanup tools are unlocked.,purchases.subscriptionPaywall.unlimitedScansAllProCleanup
+Purchases,Unlock %@ with Alike Pro,purchases.premium.unlockWithAlikePro
+Purchases,"Unlock review status, cluster size, and favorites filters for faster cleanup.",purchases.premium.unlockReviewStatusClusterSize
+Purchases,"Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders.",purchases.premium.unlockUnlimitedScansSmartCategories
+Purchases,"Unlock unlimited scans, smart cleanup, and batch actions.",purchases.premiumComponents.unlockUnlimitedScansSmartCleanup
+Purchases,Upgrade to Alike Pro,purchases.premiumComponents.upgradeToAlikePro
+Purchases,View Alike Pro,purchases.premiumComponents.viewAlikePro
+Purchases,View plans,purchases.premiumComponents.viewPlans
+Purchases,We couldn't complete your purchase. Check your connection and try again.,purchases.subscriptionPaywall.weCouldntCompletePurchaseCheck
+Purchases,We couldn't restore your purchases. Check your connection and try again.,purchases.subscriptionPaywall.weCouldntRestorePurchasesCheck
+Purchases,You can continue using Alike Free while subscription plans are unavailable.,purchases.subscriptionPaywall.canContinueUsingAlikeFree
+Purchases,You found your first cleanup opportunities,purchases.premium.foundFirstCleanupOpportunities
+Purchases,Your Alike Pro subscription was restored.,purchases.subscriptionPaywall.alikeProSubscriptionWasRestored
+Purchases,Your current access is preserved. Open plans to retry loading subscription details.,purchases.premiumComponents.currentAccessPreservedOpenPlans
+Purchases,Your purchase is pending App Store approval.,purchases.subscriptionPaywall.purchasePendingAppStoreApproval
+Purchases,purchases.paywall.batchCleanup.few,purchases.paywall.batchCleanup.few
+Purchases,purchases.paywall.batchCleanup.many,purchases.paywall.batchCleanup.many
+Purchases,purchases.paywall.batchCleanup.one,purchases.paywall.batchCleanup.one
+Purchases,purchases.paywall.batchCleanup.other,purchases.paywall.batchCleanup.other
+Purchases,purchases.paywall.postFirstScan.few,purchases.paywall.postFirstScan.few
+Purchases,purchases.paywall.postFirstScan.many,purchases.paywall.postFirstScan.many
+Purchases,purchases.paywall.postFirstScan.one,purchases.paywall.postFirstScan.one
+Purchases,purchases.paywall.postFirstScan.other,purchases.paywall.postFirstScan.other
+Purchases,purchases.paywall.postFirstScan.withSavings.few,purchases.paywall.postFirstScan.withSavings.few
+Purchases,purchases.paywall.postFirstScan.withSavings.many,purchases.paywall.postFirstScan.withSavings.many
+Purchases,purchases.paywall.postFirstScan.withSavings.one,purchases.paywall.postFirstScan.withSavings.one
+Purchases,purchases.paywall.postFirstScan.withSavings.other,purchases.paywall.postFirstScan.withSavings.other
+Scanner,%d of %d free scans remaining,scanner.scannerHomeComponents.ofFreeScansRemaining
+Scanner,Blurred Photos,scanner.scannerHomeComponents.blurredPhotos
+Scanner,Cleanup opportunities are ready,scanner.scannerHome.cleanupOpportunitiesAreReady
+Scanner,Groups of photos that look alike.,scanner.scannerHomeComponents.groupsPhotosThatLookAlike
+Scanner,How to Use,scanner.main.howToUse
+Scanner,I couldn't finish this scan.,scanner.scannerHome.iCouldntFinishThisScan
+Scanner,Last Scan,scanner.scannerHomeComponents.lastScan
+Scanner,Library Status,scanner.scannerHomeComponents.libraryStatus
+Scanner,Likely low-quality photos to review.,scanner.scannerHomeComponents.likelyLowQualityPhotosReview
+Scanner,Needs refresh,scanner.scannerHomeComponents.needsRefresh
+Scanner,No cleanup opportunities were found in this scan.,scanner.scannerHome.noCleanupOpportunitiesWereFound
+Scanner,Open usage instructions and cleanup workflow tips,scanner.main.openUsageInstructionsCleanupWorkflow
+Scanner,Opens the upgrade options,scanner.scannerHomeComponents.opensTheUpgradeOptions
+Scanner,Opportunities,scanner.scannerHomeComponents.opportunities
+Scanner,Reclaimable,scanner.scannerHomeComponents.reclaimable
+Scanner,Retry,scanner.scannerHome.retry
+Scanner,Review Cleanup,scanner.scannerHome.reviewCleanup
+Scanner,Review Existing Cleanup,scanner.scannerHome.reviewExistingCleanup
+Scanner,Review each suggestion before anything is removed.,scanner.scannerHome.reviewEachSuggestionBeforeAnything
+Scanner,Scan Again,scanner.scannerHome.scanAgain
+Scanner,Scanner,scanner.main.scanner
+Scanner,Scanning progress,scanner.scannerHomeComponents.scanningProgress
+Scanner,Scanning your photo library,scanner.scannerHome.scanningYourPhotoLibrary
+Scanner,Screen captures that may no longer be useful.,scanner.scannerHomeComponents.screenCapturesThatMayNo
+Scanner,Screenshots,scanner.scannerHomeComponents.screenshots
+Scanner,Similar Photos,scanner.scannerHomeComponents.similarPhotos
+Scanner,These results are from before your photo library changed.,scanner.scannerHomeComponents.theseResultsFromBeforePhoto
+Scanner,Unlock more with Alike Pro,scanner.scannerHomeComponents.unlockMoreWithAlikePro
+Scanner,"Unlock unlimited scans, smart cleanup, and batch actions.",scanner.scannerHomeComponents.unlockUnlimitedScansSmartCleanup
+Scanner,What Alike checks,scanner.scannerHomeComponents.whatAlikeChecks
+Scanner,You can switch tabs while scanning. Your cleanup results will refresh when it finishes.,scanner.scannerHome.canSwitchTabsWhileScanning
+Scanner,Your library is up to date,scanner.scannerHome.libraryUpDate
+Scanner,scanner.alike.libraryChanged.cta,scanner.alike.libraryChanged.cta
+Scanner,scanner.alike.libraryChanged.message,scanner.alike.libraryChanged.message
+Scanner,scanner.alike.libraryChanged.supporting,scanner.alike.libraryChanged.supporting
+Scanner,scanner.alike.ready.cta,scanner.alike.ready.cta
+Scanner,scanner.alike.ready.message,scanner.alike.ready.message
+Scanner,scanner.alike.ready.supporting,scanner.alike.ready.supporting
+Settings,Alike Pro is active,settings.main.alikeProIsActive
+Settings,Analysis,settings.main.analysis
+Settings,Cancel,settings.main.cancel
+Settings,Change Language,settings.main.changeLanguage
+Settings,Cleanup Reminder,settings.main.cleanupReminder
+Settings,"Cleanup progress, sessions, and history",settings.main.cleanupProgressSessionsAndHistory
+Settings,Contact Developer,settings.main.contactDeveloper
+Settings,Couldn't Delete Alike Data,settings.main.couldntDeleteAlikeData
+Settings,Couldn't Restore Purchases,settings.main.couldntRestorePurchases
+Settings,Couldn't Update Reminder,settings.main.couldntUpdateReminder
+Settings,Customize day & time,settings.main.customizeDayTime
+Settings,Data & Privacy,settings.main.dataPrivacy
+Settings,Debug,settings.main.debug
+Settings,Delete Alike Data,settings.main.deleteAlikeData
+Settings,Delete all Alike data?,settings.main.deleteAllAlikeData
+Settings,Deleting...,settings.main.deleting
+Settings,Enable a weekly reminder to come back and continue cleanup,settings.main.enableWeeklyReminderComeBack
+Settings,Enable premium blurred photo cleanup access in debug builds,settings.main.enablePremiumBlurredPhotoCleanup
+Settings,Enable premium reminder schedule customization in debug builds,settings.main.enablePremiumReminderScheduleCustomization
+Settings,Enable premium screenshot cleanup access in debug builds,settings.main.enablePremiumScreenshotCleanupAccess
+Settings,Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time.,settings.main.freeRemindersUseSundayAt
+Settings,"Grid, sensitivity, and reminder preferences",settings.main.gridSensitivityAndReminderPreferences
+Settings,Higher sensitivity finds more similar photos but may include less alike images,settings.main.higherSensitivityFindsMoreSimilar
+Settings,How to Use,settings.main.howToUse
+Settings,Language,settings.main.language
+Settings,Legal,settings.main.legal
+Settings,Monthly free-scan allowance,settings.main.monthlyFreeScanAllowance
+Settings,No active Alike Pro subscription was found.,settings.main.noActiveAlikeProSubscription
+Settings,Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder.,settings.main.notificationsTurnedOffAlikeEnable
+Settings,OK,settings.main.ok
+Settings,Open Settings,settings.main.openSettings
+Settings,Open email composer to contact the developer,settings.main.openEmailComposerContactDeveloper
+Settings,Open premium details for custom cleanup reminder scheduling,settings.main.openPremiumDetailsCustomCleanup
+Settings,Open system settings to change app language,settings.main.openSystemSettingsChangeApp
+Settings,Open the Alike privacy policy in your browser,settings.main.openAlikePrivacyPolicyBrowser
+Settings,Open the Alike terms of use in your browser,settings.main.openAlikeTermsUseBrowser
+Settings,Open usage instructions and cleanup workflow tips,settings.main.openUsageInstructionsCleanupWorkflow
+Settings,Permanently delete Alike data after confirmation,settings.main.permanentlyDeleteAlikeDataAfter
+Settings,Photo access and Alike Pro subscription,settings.main.photoAccessAlikeProSubscription
+Settings,Please check your connection and try restoring again.,settings.main.pleaseCheckConnectionTryRestoring
+Settings,Premium lets you choose a custom weekly reminder schedule.,settings.main.premiumLetsChooseCustomWeekly
+Settings,Privacy Policy,settings.main.privacyPolicy
+Settings,Rate on App Store,settings.main.rateOnAppStore
+Settings,Reminder day,settings.main.reminderDay
+Settings,Reminder schedule,settings.main.reminderSchedule
+Settings,Reminder time,settings.main.reminderTime
+Settings,Request the App Store rating prompt,settings.main.requestAppStoreRatingPrompt
+Settings,Review and permanently delete data stored by Alike on this device,settings.main.reviewPermanentlyDeleteDataStored
+Settings,Scan results and analysis caches,settings.main.scanResultsAndAnalysisCaches
+Settings,Sensitivity,settings.main.sensitivity
+Settings,Settings,settings.main.settings
+Settings,Share App,settings.main.shareApp
+Settings,Share the app using available sharing options,settings.main.shareAppUsingAvailableSharing
+Settings,Some data may already have been removed. Please try again to finish deleting your Alike data.,settings.deleteAllDataModel.someDataMayAlreadyHave
+Settings,Subscription,settings.main.subscription
+Settings,Support,settings.main.support
+Settings,Terms of Use,settings.main.termsOfUse
+Settings,This action can't be undone. Alike will replay onboarding when deletion finishes.,settings.main.thisActionCantBeUndone
+Settings,This override is available only in debug builds and affects local premium gating.,settings.main.thisOverrideAvailableOnlyDebug
+Settings,"This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay.",settings.main.thisPermanentlyDeletesAlikesLocal
+Settings,Try Again,settings.main.tryAgain
+Settings,Unlock Advanced Filters Premium Feature,settings.main.unlockAdvancedFiltersPremiumFeature
+Settings,Unlock Batch Cleanup Premium Feature,settings.main.unlockBatchCleanupPremiumFeature
+Settings,Unlock Blurred Photo Cleanup Premium Feature,settings.main.unlockBlurredPhotoCleanupPremium
+Settings,Unlock Custom Reminder Schedule Premium Feature,settings.main.unlockCustomReminderSchedulePremium
+Settings,Unlock Screenshot Cleanup Premium Feature,settings.main.unlockScreenshotCleanupPremiumFeature
+Settings,Unlock Unlimited Scans Premium Feature,settings.main.unlockUnlimitedScansPremiumFeature
+Settings,Version,settings.main.version
+Settings,Weekly cleanup reminder,settings.main.weeklyCleanupReminder
+Settings,What will be deleted,settings.main.whatWillBeDeleted
+Settings,What will stay,settings.main.whatWillStay
+Settings,You can continue using Alike Free.,settings.main.canContinueUsingAlikeFree
+Settings,Your Alike Pro subscription was restored.,settings.main.alikeProSubscriptionWasRestored
+Settings,Your photo library is never deleted by this action.,settings.main.photoLibraryNeverDeletedBy
+Settings,Your photos and Recently Deleted items,settings.main.photosRecentlyDeletedItems
+UserGuide,Close,userGuide.userGuideSheet.close
+UserGuide,How to Use,userGuide.userGuideHub.howToUse
+UserGuide,guide.a11y.step,userGuide.a11y.step
+UserGuide,guide.cleanupQueue.badges.changed.body,userGuide.cleanupQueue.badges.changed.body
+UserGuide,guide.cleanupQueue.badges.changed.title,userGuide.cleanupQueue.badges.changed.title
+UserGuide,guide.cleanupQueue.badges.header,userGuide.cleanupQueue.badges.header
+UserGuide,guide.cleanupQueue.badges.inReview.body,userGuide.cleanupQueue.badges.inReview.body
+UserGuide,guide.cleanupQueue.badges.inReview.title,userGuide.cleanupQueue.badges.inReview.title
+UserGuide,guide.cleanupQueue.badges.new.body,userGuide.cleanupQueue.badges.new.body
+UserGuide,guide.cleanupQueue.badges.new.title,userGuide.cleanupQueue.badges.new.title
+UserGuide,guide.cleanupQueue.badges.notReviewed.body,userGuide.cleanupQueue.badges.notReviewed.body
+UserGuide,guide.cleanupQueue.badges.notReviewed.title,userGuide.cleanupQueue.badges.notReviewed.title
+UserGuide,guide.cleanupQueue.badges.reviewed.body,userGuide.cleanupQueue.badges.reviewed.body
+UserGuide,guide.cleanupQueue.badges.reviewed.title,userGuide.cleanupQueue.badges.reviewed.title
+UserGuide,guide.cleanupQueue.controls.columns.body,userGuide.cleanupQueue.controls.columns.body
+UserGuide,guide.cleanupQueue.controls.columns.title,userGuide.cleanupQueue.controls.columns.title
+UserGuide,guide.cleanupQueue.controls.filters.body,userGuide.cleanupQueue.controls.filters.body
+UserGuide,guide.cleanupQueue.controls.filters.title,userGuide.cleanupQueue.controls.filters.title
+UserGuide,guide.cleanupQueue.controls.footer,userGuide.cleanupQueue.controls.footer
+UserGuide,guide.cleanupQueue.controls.header,userGuide.cleanupQueue.controls.header
+UserGuide,guide.cleanupQueue.controls.sort.body,userGuide.cleanupQueue.controls.sort.body
+UserGuide,guide.cleanupQueue.controls.sort.title,userGuide.cleanupQueue.controls.sort.title
+UserGuide,guide.cleanupQueue.progress.continue.body,userGuide.cleanupQueue.progress.continue.body
+UserGuide,guide.cleanupQueue.progress.continue.title,userGuide.cleanupQueue.progress.continue.title
+UserGuide,guide.cleanupQueue.progress.header,userGuide.cleanupQueue.progress.header
+UserGuide,guide.cleanupQueue.progress.history.body,userGuide.cleanupQueue.progress.history.body
+UserGuide,guide.cleanupQueue.progress.history.title,userGuide.cleanupQueue.progress.history.title
+UserGuide,guide.cleanupQueue.progress.metrics.body,userGuide.cleanupQueue.progress.metrics.body
+UserGuide,guide.cleanupQueue.progress.metrics.title,userGuide.cleanupQueue.progress.metrics.title
+UserGuide,guide.cleanupQueue.sections.all.body,userGuide.cleanupQueue.sections.all.body
+UserGuide,guide.cleanupQueue.sections.all.title,userGuide.cleanupQueue.sections.all.title
+UserGuide,guide.cleanupQueue.sections.footer,userGuide.cleanupQueue.sections.footer
+UserGuide,guide.cleanupQueue.sections.header,userGuide.cleanupQueue.sections.header
+UserGuide,guide.cleanupQueue.sections.needsReview.body,userGuide.cleanupQueue.sections.needsReview.body
+UserGuide,guide.cleanupQueue.sections.needsReview.title,userGuide.cleanupQueue.sections.needsReview.title
+UserGuide,guide.cleanupQueue.summary,userGuide.cleanupQueue.summary
+UserGuide,guide.cleanupQueue.title,userGuide.cleanupQueue.title
+UserGuide,guide.comparingPhotos.bestShot.auto.body,userGuide.comparingPhotos.bestShot.auto.body
+UserGuide,guide.comparingPhotos.bestShot.auto.title,userGuide.comparingPhotos.bestShot.auto.title
+UserGuide,guide.comparingPhotos.bestShot.footer,userGuide.comparingPhotos.bestShot.footer
+UserGuide,guide.comparingPhotos.bestShot.header,userGuide.comparingPhotos.bestShot.header
+UserGuide,guide.comparingPhotos.bestShot.override.body,userGuide.comparingPhotos.bestShot.override.body
+UserGuide,guide.comparingPhotos.bestShot.override.title,userGuide.comparingPhotos.bestShot.override.title
+UserGuide,guide.comparingPhotos.inspect.fullscreen.body,userGuide.comparingPhotos.inspect.fullscreen.body
+UserGuide,guide.comparingPhotos.inspect.fullscreen.title,userGuide.comparingPhotos.inspect.fullscreen.title
+UserGuide,guide.comparingPhotos.inspect.header,userGuide.comparingPhotos.inspect.header
+UserGuide,guide.comparingPhotos.inspect.info.body,userGuide.comparingPhotos.inspect.info.body
+UserGuide,guide.comparingPhotos.inspect.info.title,userGuide.comparingPhotos.inspect.info.title
+UserGuide,guide.comparingPhotos.review.footer,userGuide.comparingPhotos.review.footer
+UserGuide,guide.comparingPhotos.review.header,userGuide.comparingPhotos.review.header
+UserGuide,guide.comparingPhotos.review.keepAll.body,userGuide.comparingPhotos.review.keepAll.body
+UserGuide,guide.comparingPhotos.review.keepAll.title,userGuide.comparingPhotos.review.keepAll.title
+UserGuide,guide.comparingPhotos.review.move.body,userGuide.comparingPhotos.review.move.body
+UserGuide,guide.comparingPhotos.review.move.title,userGuide.comparingPhotos.review.move.title
+UserGuide,guide.comparingPhotos.review.toggle.body,userGuide.comparingPhotos.review.toggle.body
+UserGuide,guide.comparingPhotos.review.toggle.title,userGuide.comparingPhotos.review.toggle.title
+UserGuide,guide.comparingPhotos.selection.batch.body,userGuide.comparingPhotos.selection.batch.body
+UserGuide,guide.comparingPhotos.selection.batch.title,userGuide.comparingPhotos.selection.batch.title
+UserGuide,guide.comparingPhotos.selection.footer,userGuide.comparingPhotos.selection.footer
+UserGuide,guide.comparingPhotos.selection.header,userGuide.comparingPhotos.selection.header
+UserGuide,guide.comparingPhotos.selection.menu.body,userGuide.comparingPhotos.selection.menu.body
+UserGuide,guide.comparingPhotos.selection.menu.title,userGuide.comparingPhotos.selection.menu.title
+UserGuide,guide.comparingPhotos.selection.tap.body,userGuide.comparingPhotos.selection.tap.body
+UserGuide,guide.comparingPhotos.selection.tap.title,userGuide.comparingPhotos.selection.tap.title
+UserGuide,guide.comparingPhotos.summary,userGuide.comparingPhotos.summary
+UserGuide,guide.comparingPhotos.title,userGuide.comparingPhotos.title
+UserGuide,guide.deletingSafely.flow.confirm.body,userGuide.deletingSafely.flow.confirm.body
+UserGuide,guide.deletingSafely.flow.confirm.title,userGuide.deletingSafely.flow.confirm.title
+UserGuide,guide.deletingSafely.flow.footer,userGuide.deletingSafely.flow.footer
+UserGuide,guide.deletingSafely.flow.header,userGuide.deletingSafely.flow.header
+UserGuide,guide.deletingSafely.flow.icloud.body,userGuide.deletingSafely.flow.icloud.body
+UserGuide,guide.deletingSafely.flow.icloud.title,userGuide.deletingSafely.flow.icloud.title
+UserGuide,guide.deletingSafely.flow.recentlyDeleted.body,userGuide.deletingSafely.flow.recentlyDeleted.body
+UserGuide,guide.deletingSafely.flow.recentlyDeleted.title,userGuide.deletingSafely.flow.recentlyDeleted.title
+UserGuide,guide.deletingSafely.flow.storage.body,userGuide.deletingSafely.flow.storage.body
+UserGuide,guide.deletingSafely.flow.storage.title,userGuide.deletingSafely.flow.storage.title
+UserGuide,guide.deletingSafely.history.activity.body,userGuide.deletingSafely.history.activity.body
+UserGuide,guide.deletingSafely.history.activity.title,userGuide.deletingSafely.history.activity.title
+UserGuide,guide.deletingSafely.history.header,userGuide.deletingSafely.history.header
+UserGuide,guide.deletingSafely.history.impact.body,userGuide.deletingSafely.history.impact.body
+UserGuide,guide.deletingSafely.history.impact.title,userGuide.deletingSafely.history.impact.title
+UserGuide,guide.deletingSafely.summary,userGuide.deletingSafely.summary
+UserGuide,guide.deletingSafely.title,userGuide.deletingSafely.title
+UserGuide,guide.freeAndPro.free.footer,userGuide.freeAndPro.free.footer
+UserGuide,guide.freeAndPro.free.header,userGuide.freeAndPro.free.header
+UserGuide,guide.freeAndPro.free.review.body,userGuide.freeAndPro.free.review.body
+UserGuide,guide.freeAndPro.free.review.title,userGuide.freeAndPro.free.review.title
+UserGuide,guide.freeAndPro.free.scans.body,userGuide.freeAndPro.free.scans.body
+UserGuide,guide.freeAndPro.free.scans.title,userGuide.freeAndPro.free.scans.title
+UserGuide,guide.freeAndPro.free.singlePhoto.body,userGuide.freeAndPro.free.singlePhoto.body
+UserGuide,guide.freeAndPro.free.singlePhoto.title,userGuide.freeAndPro.free.singlePhoto.title
+UserGuide,guide.freeAndPro.free.sorting.body,userGuide.freeAndPro.free.sorting.body
+UserGuide,guide.freeAndPro.free.sorting.title,userGuide.freeAndPro.free.sorting.title
+UserGuide,guide.freeAndPro.pro.batch.body,userGuide.freeAndPro.pro.batch.body
+UserGuide,guide.freeAndPro.pro.batch.title,userGuide.freeAndPro.pro.batch.title
+UserGuide,guide.freeAndPro.pro.blurred.body,userGuide.freeAndPro.pro.blurred.body
+UserGuide,guide.freeAndPro.pro.blurred.title,userGuide.freeAndPro.pro.blurred.title
+UserGuide,guide.freeAndPro.pro.filters.body,userGuide.freeAndPro.pro.filters.body
+UserGuide,guide.freeAndPro.pro.filters.title,userGuide.freeAndPro.pro.filters.title
+UserGuide,guide.freeAndPro.pro.footer,userGuide.freeAndPro.pro.footer
+UserGuide,guide.freeAndPro.pro.header,userGuide.freeAndPro.pro.header
+UserGuide,guide.freeAndPro.pro.reminder.body,userGuide.freeAndPro.pro.reminder.body
+UserGuide,guide.freeAndPro.pro.reminder.title,userGuide.freeAndPro.pro.reminder.title
+UserGuide,guide.freeAndPro.pro.screenshots.body,userGuide.freeAndPro.pro.screenshots.body
+UserGuide,guide.freeAndPro.pro.screenshots.title,userGuide.freeAndPro.pro.screenshots.title
+UserGuide,guide.freeAndPro.pro.unlimitedScans.body,userGuide.freeAndPro.pro.unlimitedScans.body
+UserGuide,guide.freeAndPro.pro.unlimitedScans.title,userGuide.freeAndPro.pro.unlimitedScans.title
+UserGuide,guide.freeAndPro.summary,userGuide.freeAndPro.summary
+UserGuide,guide.freeAndPro.title,userGuide.freeAndPro.title
+UserGuide,guide.gettingStarted.access.header,userGuide.gettingStarted.access.header
+UserGuide,guide.gettingStarted.access.noAutoDelete.body,userGuide.gettingStarted.access.noAutoDelete.body
+UserGuide,guide.gettingStarted.access.noAutoDelete.title,userGuide.gettingStarted.access.noAutoDelete.title
+UserGuide,guide.gettingStarted.access.onDevice.body,userGuide.gettingStarted.access.onDevice.body
+UserGuide,guide.gettingStarted.access.onDevice.title,userGuide.gettingStarted.access.onDevice.title
+UserGuide,guide.gettingStarted.access.permission.body,userGuide.gettingStarted.access.permission.body
+UserGuide,guide.gettingStarted.access.permission.title,userGuide.gettingStarted.access.permission.title
+UserGuide,guide.gettingStarted.loop.footer,userGuide.gettingStarted.loop.footer
+UserGuide,guide.gettingStarted.loop.header,userGuide.gettingStarted.loop.header
+UserGuide,guide.gettingStarted.loop.move.body,userGuide.gettingStarted.loop.move.body
+UserGuide,guide.gettingStarted.loop.move.title,userGuide.gettingStarted.loop.move.title
+UserGuide,guide.gettingStarted.loop.review.body,userGuide.gettingStarted.loop.review.body
+UserGuide,guide.gettingStarted.loop.review.title,userGuide.gettingStarted.loop.review.title
+UserGuide,guide.gettingStarted.loop.scan.body,userGuide.gettingStarted.loop.scan.body
+UserGuide,guide.gettingStarted.loop.scan.title,userGuide.gettingStarted.loop.scan.title
+UserGuide,guide.gettingStarted.scope.blurred.body,userGuide.gettingStarted.scope.blurred.body
+UserGuide,guide.gettingStarted.scope.blurred.title,userGuide.gettingStarted.scope.blurred.title
+UserGuide,guide.gettingStarted.scope.footer,userGuide.gettingStarted.scope.footer
+UserGuide,guide.gettingStarted.scope.header,userGuide.gettingStarted.scope.header
+UserGuide,guide.gettingStarted.scope.screenshots.body,userGuide.gettingStarted.scope.screenshots.body
+UserGuide,guide.gettingStarted.scope.screenshots.title,userGuide.gettingStarted.scope.screenshots.title
+UserGuide,guide.gettingStarted.scope.similar.body,userGuide.gettingStarted.scope.similar.body
+UserGuide,guide.gettingStarted.scope.similar.title,userGuide.gettingStarted.scope.similar.title
+UserGuide,guide.gettingStarted.summary,userGuide.gettingStarted.summary
+UserGuide,guide.gettingStarted.title,userGuide.gettingStarted.title
+UserGuide,guide.hub.footer,userGuide.hub.footer
+UserGuide,guide.hub.intro,userGuide.hub.intro
+UserGuide,guide.hub.noResults,userGuide.hub.noResults
+UserGuide,guide.hub.noResults.message,userGuide.hub.noResults.message
+UserGuide,guide.hub.searchPrompt,userGuide.hub.searchPrompt
+UserGuide,guide.hub.topic.hint,userGuide.hub.topic.hint
+UserGuide,guide.hub.topics.header,userGuide.hub.topics.header
+UserGuide,guide.privacy.deleteData.footer,userGuide.privacy.deleteData.footer
+UserGuide,guide.privacy.deleteData.header,userGuide.privacy.deleteData.header
+UserGuide,guide.privacy.deleteData.kept.body,userGuide.privacy.deleteData.kept.body
+UserGuide,guide.privacy.deleteData.kept.title,userGuide.privacy.deleteData.kept.title
+UserGuide,guide.privacy.deleteData.removed.body,userGuide.privacy.deleteData.removed.body
+UserGuide,guide.privacy.deleteData.removed.title,userGuide.privacy.deleteData.removed.title
+UserGuide,guide.privacy.deleteData.replay.body,userGuide.privacy.deleteData.replay.body
+UserGuide,guide.privacy.deleteData.replay.title,userGuide.privacy.deleteData.replay.title
+UserGuide,guide.privacy.onDevice.analysis.body,userGuide.privacy.onDevice.analysis.body
+UserGuide,guide.privacy.onDevice.analysis.title,userGuide.privacy.onDevice.analysis.title
+UserGuide,guide.privacy.onDevice.footer,userGuide.privacy.onDevice.footer
+UserGuide,guide.privacy.onDevice.header,userGuide.privacy.onDevice.header
+UserGuide,guide.privacy.onDevice.network.body,userGuide.privacy.onDevice.network.body
+UserGuide,guide.privacy.onDevice.network.title,userGuide.privacy.onDevice.network.title
+UserGuide,guide.privacy.permissions.header,userGuide.privacy.permissions.header
+UserGuide,guide.privacy.permissions.notifications.body,userGuide.privacy.permissions.notifications.body
+UserGuide,guide.privacy.permissions.notifications.title,userGuide.privacy.permissions.notifications.title
+UserGuide,guide.privacy.permissions.photos.body,userGuide.privacy.permissions.photos.body
+UserGuide,guide.privacy.permissions.photos.title,userGuide.privacy.permissions.photos.title
+UserGuide,guide.privacy.summary,userGuide.privacy.summary
+UserGuide,guide.privacy.title,userGuide.privacy.title
+UserGuide,guide.scanning.rescan.error.body,userGuide.scanning.rescan.error.body
+UserGuide,guide.scanning.rescan.error.title,userGuide.scanning.rescan.error.title
+UserGuide,guide.scanning.rescan.footer,userGuide.scanning.rescan.footer
+UserGuide,guide.scanning.rescan.header,userGuide.scanning.rescan.header
+UserGuide,guide.scanning.rescan.libraryChanged.body,userGuide.scanning.rescan.libraryChanged.body
+UserGuide,guide.scanning.rescan.libraryChanged.title,userGuide.scanning.rescan.libraryChanged.title
+UserGuide,guide.scanning.rescan.sensitivity.body,userGuide.scanning.rescan.sensitivity.body
+UserGuide,guide.scanning.rescan.sensitivity.title,userGuide.scanning.rescan.sensitivity.title
+UserGuide,guide.scanning.run.background.body,userGuide.scanning.run.background.body
+UserGuide,guide.scanning.run.background.title,userGuide.scanning.run.background.title
+UserGuide,guide.scanning.run.cache.body,userGuide.scanning.run.cache.body
+UserGuide,guide.scanning.run.cache.title,userGuide.scanning.run.cache.title
+UserGuide,guide.scanning.run.footer,userGuide.scanning.run.footer
+UserGuide,guide.scanning.run.header,userGuide.scanning.run.header
+UserGuide,guide.scanning.run.start.body,userGuide.scanning.run.start.body
+UserGuide,guide.scanning.run.start.title,userGuide.scanning.run.start.title
+UserGuide,guide.scanning.status.allowance.body,userGuide.scanning.status.allowance.body
+UserGuide,guide.scanning.status.allowance.title,userGuide.scanning.status.allowance.title
+UserGuide,guide.scanning.status.card.body,userGuide.scanning.status.card.body
+UserGuide,guide.scanning.status.card.title,userGuide.scanning.status.card.title
+UserGuide,guide.scanning.status.header,userGuide.scanning.status.header
+UserGuide,guide.scanning.summary,userGuide.scanning.summary
+UserGuide,guide.scanning.title,userGuide.scanning.title
+UserGuide,guide.settingsAndReminders.analysis.footer,userGuide.settingsAndReminders.analysis.footer
+UserGuide,guide.settingsAndReminders.analysis.header,userGuide.settingsAndReminders.analysis.header
+UserGuide,guide.settingsAndReminders.analysis.language.body,userGuide.settingsAndReminders.analysis.language.body
+UserGuide,guide.settingsAndReminders.analysis.language.title,userGuide.settingsAndReminders.analysis.language.title
+UserGuide,guide.settingsAndReminders.analysis.sensitivity.body,userGuide.settingsAndReminders.analysis.sensitivity.body
+UserGuide,guide.settingsAndReminders.analysis.sensitivity.title,userGuide.settingsAndReminders.analysis.sensitivity.title
+UserGuide,guide.settingsAndReminders.reminder.footer,userGuide.settingsAndReminders.reminder.footer
+UserGuide,guide.settingsAndReminders.reminder.header,userGuide.settingsAndReminders.reminder.header
+UserGuide,guide.settingsAndReminders.reminder.schedule.body,userGuide.settingsAndReminders.reminder.schedule.body
+UserGuide,guide.settingsAndReminders.reminder.schedule.title,userGuide.settingsAndReminders.reminder.schedule.title
+UserGuide,guide.settingsAndReminders.reminder.weekly.body,userGuide.settingsAndReminders.reminder.weekly.body
+UserGuide,guide.settingsAndReminders.reminder.weekly.title,userGuide.settingsAndReminders.reminder.weekly.title
+UserGuide,guide.settingsAndReminders.subscription.header,userGuide.settingsAndReminders.subscription.header
+UserGuide,guide.settingsAndReminders.subscription.restore.body,userGuide.settingsAndReminders.subscription.restore.body
+UserGuide,guide.settingsAndReminders.subscription.restore.title,userGuide.settingsAndReminders.subscription.restore.title
+UserGuide,guide.settingsAndReminders.subscription.status.body,userGuide.settingsAndReminders.subscription.status.body
+UserGuide,guide.settingsAndReminders.subscription.status.title,userGuide.settingsAndReminders.subscription.status.title
+UserGuide,guide.settingsAndReminders.summary,userGuide.settingsAndReminders.summary
+UserGuide,guide.settingsAndReminders.title,userGuide.settingsAndReminders.title
+UserGuide,guide.smartCategories.blurDetection.conservative.body,userGuide.smartCategories.blurDetection.conservative.body
+UserGuide,guide.smartCategories.blurDetection.conservative.title,userGuide.smartCategories.blurDetection.conservative.title
+UserGuide,guide.smartCategories.blurDetection.favorites.body,userGuide.smartCategories.blurDetection.favorites.body
+UserGuide,guide.smartCategories.blurDetection.favorites.title,userGuide.smartCategories.blurDetection.favorites.title
+UserGuide,guide.smartCategories.blurDetection.footer,userGuide.smartCategories.blurDetection.footer
+UserGuide,guide.smartCategories.blurDetection.header,userGuide.smartCategories.blurDetection.header
+UserGuide,guide.smartCategories.categories.blurred.body,userGuide.smartCategories.categories.blurred.body
+UserGuide,guide.smartCategories.categories.blurred.title,userGuide.smartCategories.categories.blurred.title
+UserGuide,guide.smartCategories.categories.footer,userGuide.smartCategories.categories.footer
+UserGuide,guide.smartCategories.categories.header,userGuide.smartCategories.categories.header
+UserGuide,guide.smartCategories.categories.screenshots.body,userGuide.smartCategories.categories.screenshots.body
+UserGuide,guide.smartCategories.categories.screenshots.title,userGuide.smartCategories.categories.screenshots.title
+UserGuide,guide.smartCategories.summary,userGuide.smartCategories.summary
+UserGuide,guide.smartCategories.title,userGuide.smartCategories.title
+UserGuide,guide.smartCategories.workflow.header,userGuide.smartCategories.workflow.header
+UserGuide,guide.smartCategories.workflow.inspect.body,userGuide.smartCategories.workflow.inspect.body
+UserGuide,guide.smartCategories.workflow.inspect.title,userGuide.smartCategories.workflow.inspect.title
+UserGuide,guide.smartCategories.workflow.select.body,userGuide.smartCategories.workflow.select.body
+UserGuide,guide.smartCategories.workflow.select.title,userGuide.smartCategories.workflow.select.title
+Welcome,Access Granted,welcome.main.accessGranted
+Welcome,Alike,welcome.main.alike
+Welcome,Alike data deleted,welcome.main.alikeDataDeleted
+Welcome,Alike needs photo access to scan your library and prepare cleanup suggestions.,welcome.main.alikeNeedsPhotoAccessScan
+Welcome,Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action.,welcome.main.alikeNeverDeletesPhotosAutomatically
+Welcome,"Alike, your photo detective",welcome.main.alikeYourPhotoDetective
+Welcome,"Analysis stays on your device, and nothing is deleted automatically.",welcome.main.analysisStaysDeviceNothingDeleted
+Welcome,Back,welcome.main.back
+Welcome,Clean up your library with confidence,welcome.main.cleanUpLibraryWithConfidence
+Welcome,Compare photos and keep the shots that matter to you.,welcome.main.comparePhotosKeepShotsThat
+Welcome,Continue,welcome.main.continue
+Welcome,Enable photo access in Settings when you're ready to continue.,welcome.main.enablePhotoAccessSettingsWhen
+Welcome,"Every deletion stays confirmed, visible, and fully in your hands.",welcome.main.everyDeletionStaysConfirmedVisible
+Welcome,Find cleanup opportunities,welcome.main.findCleanupOpportunities
+Welcome,Grant Access,welcome.main.grantAccess
+Welcome,Group visually similar photos and other items worth reviewing.,welcome.main.groupVisuallySimilarPhotosOther
+Welcome,How Alike helps,welcome.main.howAlikeHelps
+Welcome,Know how much space you could reclaim before you clean up.,welcome.main.knowHowMuchSpaceCould
+Welcome,Next,welcome.main.next
+Welcome,Nothing is deleted automatically,welcome.main.nothingIsDeletedAutomatically
+Welcome,Open Settings,welcome.main.openSettings
+Welcome,Page %lld of %lld,welcome.main.pageOf
+Welcome,Photo Access Required,welcome.main.photoAccessRequired
+Welcome,"Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review.",welcome.main.photoAccessLetsAlikeScan
+Welcome,Private and always in your control,welcome.main.privateAlwaysControl
+Welcome,Private on-device analysis,welcome.main.privateOnDeviceAnalysis
+Welcome,Review every suggestion,welcome.main.reviewEverySuggestion
+Welcome,"Review similar photos, free up storage, and stay in control of every deletion.",welcome.main.reviewSimilarPhotosFreeUp
+Welcome,Safe cleanup flow,welcome.main.safeCleanupFlow
+Welcome,See potential savings,welcome.main.seePotentialSavings
+Welcome,Spot similar photos that can free up space once you decide what to remove.,welcome.main.spotSimilarPhotosThatCan
+Welcome,Storage savings,welcome.main.storageSavings
+Welcome,Turn a crowded library into a guided cleanup.,welcome.main.turnCrowdedLibraryIntoGuided
+Welcome,Why Alike asks for photo access,welcome.main.whyAlikeAsksPhotoAccess
+Welcome,"You can change access later in Settings, and Alike never deletes anything without your confirmation.",welcome.main.canChangeAccessLaterSettings
+Welcome,You can grant access now and return to cleanup whenever you're ready.,welcome.main.canGrantAccessNowReturn
+Welcome,You review suggestions first and confirm every cleanup action yourself.,welcome.main.reviewSuggestionsFirstConfirmEvery
+Welcome,Your library stays under your control,welcome.main.yourLibraryStaysUnderControl
+Welcome,Your local Alike data was deleted. Your photos and subscription are unchanged.,welcome.main.localAlikeDataWasDeleted
+Welcome,Your photo analysis stays on this device and gives you guided cleanup suggestions.,welcome.main.photoAnalysisStaysThisDevice
+Welcome,"Your photos stay private, and you'll confirm every cleanup before anything is removed.",welcome.main.photosStayPrivateYoullConfirm
+Core,core.cleanupCategory.n1ScreenshotAvailableForReview,core.cleanupCategory.summaryScreenshots
+Core,core.cleanupCategory.screenshotsAvailableForReview,core.cleanupCategory.summaryScreenshots
+Core,core.cleanupCategory.n1LikelyBlurredPhotoAvailable,core.cleanupCategory.summaryBlurredPhotos
+Core,core.cleanupCategory.likelyBlurredPhotosAvailableReview,core.cleanupCategory.summaryBlurredPhotos
+Core,core.cleanupCategory.n1SelectedEstimatedSize,core.cleanupCategory.selectionSummary
+Core,core.cleanupCategory.selectedEstimatedSize,core.cleanupCategory.selectionSummary
+Core,core.cleanupCategory.move1SelectedScreenshotRecently,core.cleanupCategory.alertTitleScreenshots
+Core,core.cleanupCategory.moveSelectedScreenshotsRecentlyDeleted,core.cleanupCategory.alertTitleScreenshots
+Core,core.cleanupCategory.move1SelectedBlurredPhoto,core.cleanupCategory.alertTitleBlurredPhotos
+Core,core.cleanupCategory.moveSelectedBlurredPhotosRecently,core.cleanupCategory.alertTitleBlurredPhotos
+Details,details.clusterDetails.move1SelectedPhotoRecently,details.clusterDetails.deleteAlertTitle
+Details,details.clusterDetails.moveSelectedPhotosRecentlyDeleted,details.clusterDetails.deleteAlertTitle
+Details,details.clusterReviewSummaryCard.n1SelectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
+Details,details.clusterReviewSummaryCard.selectedEstimatedSize,details.clusterReviewSummaryCard.selectionSummary
+Alike,Rescan Required,alike.rescan.title
+Alike,Later,alike.rescan.later
+Alike,Rescan Now,alike.rescan.now
+Alike,Changing sensitivity requires a new scan to take effect,alike.rescan.message
+Details,details.clusterReviewActionBar.move1Photo,details.clusterReviewActionBar.moveSelectedPhotos
+Details,details.clusterReviewActionBar.movePhotos,details.clusterReviewActionBar.moveSelectedPhotos
+Cleanup,cleanup.main.photosMovedToRecentlyDeleted,cleanup.main.photosMovedToRecentlyDeleted
+Details,details.screenshotCleanupComponents.deleteSelected,details.screenshotCleanupComponents.moveSelected
+Details,details.screenshotCleanupComponents.deleting,details.screenshotCleanupComponents.moving

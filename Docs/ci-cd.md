@@ -91,11 +91,17 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_PRIVACY_URL_UK`, `ALIKE_TERMS_URL_UK`, `ALIKE_SUPPORT_URL_UK` —
-    per-locale overrides. Unset, the uk listing reuses the three URLs above,
-    which point at the English pages even though the site publishes Ukrainian
-    ones under `/uk/`. The suffix is the App Store locale, uppercased, with `-`
-    replaced by `_`, so a third localization follows the same pattern.
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}` —
+    thirty-three per-locale overrides, one per non-English listing, and all of
+    them are required. Strict generation fails on an unset override rather than
+    quietly reusing the three URLs above, which point at the English pages even
+    though the site publishes all eleven locales. `--allow-shared-urls` takes
+    the fallback deliberately, and only the generator accepts it: `tools/text`
+    and the Fastlane lanes have no such flag, so an upload path cannot silence
+    the check. The suffix is the App Store locale, uppercased, with `-` replaced
+    by `_`, so a further localization follows the same pattern. `ES_MX` points
+    at the same `/es/` pages as `ES_ES`. Values are listed in
+    `Docs/release-checklist.md` step 0.
 
 For App Store Connect uploads:
 
@@ -300,8 +306,10 @@ It does not:
 | `Alike` | Release | local validation, package and app compile checks, release archive/export, TestFlight upload |
 | `Alike-VerboseLogs` | Debug | manual debugging with verbose scan/vision/storage logging |
 | `Alike-DebugVerboseLogs` | Debug | manual debugging with verbose logging in Debug builds |
+| `Alike-Pseudolocale` | Debug | localization QA — doubled, bracketed strings and capitalized unlocalized ones (`Docs/Localization/pseudo-locale-qa.md`) |
 
-Only `Alike` is used by CI/CD. The verbose schemes are for interactive debugging.
+Only `Alike` is used by CI/CD. The other three are for interactive debugging
+and localization QA.
 
 `Alike` runs Release with no debugger attached and no local StoreKit
 configuration, so ⌘R gives the same build the App Store gets: optimized, with
@@ -377,14 +385,23 @@ The practical consequence for releases: the site no longer rides along with the 
 release merge. It can be deployed and its URLs verified at any time, independently of
 this repository.
 
-| Page | EN | UK |
-|---|---|---|
-| Home | `/` | `/uk/` |
-| Privacy Policy | `/privacy/` | `/uk/privacy/` |
-| Terms of Use | `/terms/` | `/uk/terms/` |
-| Support | `/support/` | `/uk/support/` |
+| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` | `it` | `nl` | `pl` | `tr` | `zh-Hant` |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` | `/it/` | `/nl/` | `/pl/` | `/tr/` | `/zh-hant/` |
+| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` | `/it/privacy/` | `/nl/privacy/` | `/pl/privacy/` | `/tr/privacy/` | `/zh-hant/privacy/` |
+| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` | `/it/terms/` | `/nl/terms/` | `/pl/terms/` | `/tr/terms/` | `/zh-hant/terms/` |
+| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` | `/it/support/` | `/nl/support/` | `/pl/support/` | `/tr/support/` | `/zh-hant/support/` |
 
-Those last two supply the values the metadata bundle needs:
+Eleven locales against twelve listings: the `es` column serves both `es-ES` and
+`es-MX`.
+
+That repository's `scripts/check-site.sh` is the build gate. It runs on every
+pull request there and again before each deploy, and asserts the locale matrix,
+that every internal link and `hreflang` target resolves, that the Terms page in
+each language still names Apple's Standard EULA and carries both subscription
+disclosures, and that the rendered site references no third-party host.
+
+The English row supplies the values the metadata bundle needs:
 
 ```sh
 ALIKE_PRIVACY_URL="https://alikeapp.github.io/privacy/"

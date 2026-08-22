@@ -203,11 +203,8 @@ private extension CleanupReminderManager {
     func scheduleReminder(schedule: CleanupReminderSchedule) async throws {
         let request = CleanupReminderNotificationRequest(
             identifier: ReminderSchedule.identifier,
-            title: String(localized: "Ready for another cleanup?", bundle: .main),
-            body: String(
-                localized: "Open Alike this week to clear clutter and keep saving storage.",
-                bundle: .main
-            ),
+            title: CleanupL10n.CleanupReminderManager.readyForAnotherCleanup,
+            body: CleanupL10n.CleanupReminderManager.openAlikeThisWeekClear,
             schedule: schedule,
             repeats: true
         )

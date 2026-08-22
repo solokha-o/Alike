@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "Welcome",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -25,6 +26,9 @@ let package = Package(
                 "Core",
                 "PhotoAnalysis",
                 "DesignSystem"
+            ],
+            resources: [
+                .process("Resources")
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")

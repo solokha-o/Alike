@@ -28,54 +28,73 @@ public enum CleanupCategoryKind: String, CaseIterable, Hashable, Identifiable, S
         switch self {
         case .screenshots:
             CleanupCategoryPresentation(
-                title: cleanupLocalized("Screenshots"),
-                reviewTitle: cleanupLocalized("Screenshot Cleanup"),
-                navigationTitle: cleanupLocalized("Screenshots"),
-                summarySingular: cleanupLocalized("1 screenshot available for review."),
-                summaryPluralFormat: cleanupLocalized("%d screenshots available for review."),
-                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
-                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
+                title: CoreL10n.CleanupCategory.screenshots,
+                reviewTitle: CoreL10n.CleanupCategory.screenshotCleanup,
+                navigationTitle: CoreL10n.CleanupCategory.screenshots,
                 helperText: nil,
-                emptyTitle: cleanupLocalized("No Screenshots Found"),
-                emptyDescription: cleanupLocalized("Try rescanning after your library updates."),
-                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Screenshot to Recently Deleted?"),
-                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Screenshots to Recently Deleted?"),
-                alertSingularMessageFormat: cleanupLocalized("The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
-                alertPluralMessageFormat: cleanupLocalized("The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
-                paywallTitle: cleanupLocalized("Screenshot cleanup is a premium feature"),
-                paywallMessage: cleanupLocalized("Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."),
-                openHint: cleanupLocalized("Open screenshot cleanup"),
-                lockedHint: cleanupLocalized("Opens the premium paywall for screenshot cleanup"),
+                emptyTitle: CoreL10n.CleanupCategory.noScreenshotsFound,
+                emptyDescription: CoreL10n.CleanupCategory.tryRescanningAfterLibraryUpdates,
+                alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotWillBeRemoved,
+                alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedScreenshotsWillBeRemoved,
+                paywallTitle: CoreL10n.CleanupCategory.screenshotCleanupPremiumFeature,
+                paywallMessage: CoreL10n.CleanupCategory.unlockScreenshotCleanupReviewDelete,
+                openHint: CoreL10n.CleanupCategory.openScreenshotCleanup,
+                lockedHint: CoreL10n.CleanupCategory.opensPremiumPaywallScreenshotCleanup,
                 systemImageName: "camera.viewfinder"
             )
         case .blurredPhotos:
             CleanupCategoryPresentation(
-                title: cleanupLocalized("Blurred Photos"),
-                reviewTitle: cleanupLocalized("Blurred Photo Cleanup"),
-                navigationTitle: cleanupLocalized("Blurred Photos"),
-                summarySingular: cleanupLocalized("1 likely blurred photo available for review."),
-                summaryPluralFormat: cleanupLocalized("%d likely blurred photos available for review."),
-                selectionSingularFormat: cleanupLocalized("1 selected, estimated size %@."),
-                selectionPluralFormat: cleanupLocalized("%d selected, estimated size %@."),
-                helperText: cleanupLocalized("Likely low-quality photos based on on-device analysis. Review before deleting."),
-                emptyTitle: cleanupLocalized("No Blurred Photos Found"),
-                emptyDescription: cleanupLocalized("Run a new scan after your library changes or if more photos need review."),
-                alertSingularTitleFormat: cleanupLocalized("Move 1 Selected Blurred Photo to Recently Deleted?"),
-                alertPluralTitleFormat: cleanupLocalized("Move %d Selected Blurred Photos to Recently Deleted?"),
-                alertSingularMessageFormat: cleanupLocalized("The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."),
-                alertPluralMessageFormat: cleanupLocalized("The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."),
-                paywallTitle: cleanupLocalized("Blurred photo cleanup is a premium feature"),
-                paywallMessage: cleanupLocalized("Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."),
-                openHint: cleanupLocalized("Open blurred photo cleanup"),
-                lockedHint: cleanupLocalized("Opens the premium paywall for blurred photo cleanup"),
+                title: CoreL10n.CleanupCategory.blurredPhotos,
+                reviewTitle: CoreL10n.CleanupCategory.blurredPhotoCleanup,
+                navigationTitle: CoreL10n.CleanupCategory.blurredPhotos,
+                helperText: CoreL10n.CleanupCategory.likelyLowQualityPhotosBased,
+                emptyTitle: CoreL10n.CleanupCategory.noBlurredPhotosFound,
+                emptyDescription: CoreL10n.CleanupCategory.runNewScanAfterLibrary,
+                alertSingularMessageFormat: CoreL10n.CleanupCategory.selectedPhotoWillBeRemoved,
+                alertPluralMessageFormat: CoreL10n.CleanupCategory.selectedPhotosWillBeRemoved,
+                paywallTitle: CoreL10n.CleanupCategory.blurredPhotoCleanupPremiumFeature,
+                paywallMessage: CoreL10n.CleanupCategory.unlockBlurredPhotoCleanupReview,
+                openHint: CoreL10n.CleanupCategory.openBlurredPhotoCleanup,
+                lockedHint: CoreL10n.CleanupCategory.opensPremiumPaywallBlurredPhoto,
                 systemImageName: "drop.triangle"
             )
         }
     }
-}
 
-private func cleanupLocalized(_ key: String.LocalizationValue) -> String {
-    String(localized: key, bundle: .main)
+    /// Count-dependent copy resolves through the catalog's plural variations rather than a
+    /// singular/plural pair picked in Swift — see the plural section of `Docs/Localization/README.md`.
+    public func summary(count: Int) -> String {
+        switch self {
+        case .screenshots:
+            CoreL10n.CleanupCategory.summaryScreenshots(count)
+        case .blurredPhotos:
+            CoreL10n.CleanupCategory.summaryBlurredPhotos(count)
+        }
+    }
+
+    public func selectionSummary(count: Int, estimatedSize: String) -> String {
+        CoreL10n.CleanupCategory.selectionSummary(count, estimatedSize)
+    }
+
+    public func deleteAlertTitle(count: Int) -> String {
+        switch self {
+        case .screenshots:
+            CoreL10n.CleanupCategory.alertTitleScreenshots(count)
+        case .blurredPhotos:
+            CoreL10n.CleanupCategory.alertTitleBlurredPhotos(count)
+        }
+    }
+
+    /// The alert body never prints the count, and `xcstringstool` rejects a plural variation
+    /// whose text does not reference the number. Apple's own guidance for that case is two
+    /// top-level strings, so this pair stays a pair; every shipped language reads its
+    /// "greater than one" form for all counts above one.
+    public func deleteAlertMessage(count: Int, estimatedSize: String) -> String {
+        let format = count == 1
+            ? presentation.alertSingularMessageFormat
+            : presentation.alertPluralMessageFormat
+        return String(format: format, estimatedSize)
+    }
 }
 
 public struct CleanupCategorySummary: Identifiable, Equatable, Sendable, Codable {
@@ -100,15 +119,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
     public let title: String
     public let reviewTitle: String
     public let navigationTitle: String
-    public let summarySingular: String
-    public let summaryPluralFormat: String
-    public let selectionSingularFormat: String
-    public let selectionPluralFormat: String
     public let helperText: String?
     public let emptyTitle: String
     public let emptyDescription: String
-    public let alertSingularTitleFormat: String
-    public let alertPluralTitleFormat: String
     public let alertSingularMessageFormat: String
     public let alertPluralMessageFormat: String
     public let paywallTitle: String
@@ -121,15 +134,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
         title: String,
         reviewTitle: String,
         navigationTitle: String,
-        summarySingular: String,
-        summaryPluralFormat: String,
-        selectionSingularFormat: String,
-        selectionPluralFormat: String,
         helperText: String?,
         emptyTitle: String,
         emptyDescription: String,
-        alertSingularTitleFormat: String,
-        alertPluralTitleFormat: String,
         alertSingularMessageFormat: String,
         alertPluralMessageFormat: String,
         paywallTitle: String,
@@ -141,15 +148,9 @@ public struct CleanupCategoryPresentation: Equatable, Sendable, Codable {
         self.title = title
         self.reviewTitle = reviewTitle
         self.navigationTitle = navigationTitle
-        self.summarySingular = summarySingular
-        self.summaryPluralFormat = summaryPluralFormat
-        self.selectionSingularFormat = selectionSingularFormat
-        self.selectionPluralFormat = selectionPluralFormat
         self.helperText = helperText
         self.emptyTitle = emptyTitle
         self.emptyDescription = emptyDescription
-        self.alertSingularTitleFormat = alertSingularTitleFormat
-        self.alertPluralTitleFormat = alertPluralTitleFormat
         self.alertSingularMessageFormat = alertSingularMessageFormat
         self.alertPluralMessageFormat = alertPluralMessageFormat
         self.paywallTitle = paywallTitle

@@ -60,8 +60,127 @@ change with it.
 | 4 | ПОРІВНЯННЯ | Перевірте перед / видаленням | Перегляд у повний розмір. Нічого не видаляється без підтвердження. |
 | 5 | ВІЛЬНЕ МІСЦЕ | Поверніть / гігабайти | «Обрано» й «Орієнтовна економія» — просто під час прибирання. |
 
-`en-US` and `uk` are the only localizations the listing has, so there are only
-two decks.
+### de
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | AUF DEM GERÄT | Finde die Fotos, / die sich ähneln | Alike durchsucht deine Mediathek mit Apple Vision, ganz auf dem iPhone. |
+| 2 | EINE LISTE | Jede Gruppe, / bereit zur Prüfung | Gruppen kommen mit Prüfstatus: du siehst immer, was noch offen ist. |
+| 3 | BESTE AUFNAHME | Die beste ist / schon gewählt | Alike hebt die beste Aufnahme jeder Gruppe hervor. Du bestätigst nur. |
+| 4 | VERGLEICHEN | Erst prüfen, / dann aufräumen | Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht. |
+| 5 | FREIER PLATZ | Hol dir die / Gigabyte zurück | Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst. |
+
+### fr
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | SUR L’APPAREIL | Trouvez les photos / qui se ressemblent | Alike analyse votre photothèque avec Apple Vision, sur votre iPhone. |
+| 2 | UNE SEULE FILE | Chaque groupe, / prêt à examiner | Les groupes arrivent avec des badges : vous voyez ce qui reste. |
+| 3 | MEILLEURE PHOTO | La photo à garder / est déjà choisie | Alike met en avant la meilleure de chaque groupe. Vous confirmez. |
+| 4 | COMPARER | Vérifiez avant / de nettoyer | Examen en plein écran. Rien n’est supprimé sans votre confirmation. |
+| 5 | ESPACE LIBRE | Récupérez / vos gigaoctets | Photos sélectionnées et économie estimée, suivies pendant le nettoyage. |
+
+### es
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | EN EL DISPOSITIVO | Encuentra las fotos / que se parecen | Alike analiza tu fototeca con Apple Vision, todo en tu iPhone. |
+| 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué queda. |
+| 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
+| 4 | COMPARAR | Comprueba antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
+| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+
+### es-419
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | EN EL DISPOSITIVO | Encuentra las fotos / que se parecen | Alike analiza tu fototeca con Apple Vision, todo en tu iPhone. |
+| 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué falta. |
+| 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
+| 4 | COMPARAR | Revisa antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
+| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+
+`es` and `es-419` are deliberately not identical, but the queue is "cola" in
+both: the app's own catalog says "cola de limpieza" in `es` and `es-419` alike,
+so the decks say it too. What differs is the phrasing around it — "qué queda"
+against "qué falta", "Comprueba antes" against "Revisa antes".
+
+### pt-BR
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | NO DISPOSITIVO | Encontre as fotos / que se parecem | O Alike analisa sua fototeca com Apple Vision, no seu iPhone. |
+| 2 | UMA SÓ FILA | Cada grupo, / pronto para revisar | Os grupos chegam com selos: você sempre vê o que falta. |
+| 3 | MELHOR FOTO | A que fica / já está escolhida | O Alike destaca a melhor foto de cada grupo. Você só confirma. |
+| 4 | COMPARAR | Confira antes / de limpar | Revisão em tamanho real. Nada é apagado sem a sua confirmação. |
+| 5 | ESPAÇO LIVRE | Recupere os / gigabytes | Fotos selecionadas e economia estimada, enquanto você limpa. |
+
+
+### it
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | SUL DISPOSITIVO | Trova le foto / che si somigliano | Alike analizza la libreria con Apple Vision, tutto sul tuo iPhone. |
+| 2 | UNA SOLA CODA | Ogni gruppo, / pronto da controllare | I gruppi arrivano con gli indicatori: vedi sempre cosa manca. |
+| 3 | SCATTO MIGLIORE | La foto da tenere / è già scelta | Alike evidenzia lo scatto migliore del gruppo. A te la conferma. |
+| 4 | CONFRONTA | Controlla prima / di eliminare | Revisione a dimensione piena. Niente sparisce senza conferma. |
+| 5 | SPAZIO LIBERO | Guarda tornare / i gigabyte | Foto selezionate e risparmio stimato, mentre fai pulizia. |
+
+### nl
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | OP HET APPARAAT | Vind de foto's / die op elkaar lijken | Alike scant je bibliotheek met Apple Vision, volledig op je iPhone. |
+| 2 | ÉÉN WACHTRIJ | Elke groep, / klaar om te bekijken | Groepen komen met statuslabels: je ziet altijd wat er nog ligt. |
+| 3 | BESTE OPNAME | De blijver is / al gekozen | Alike licht de beste opname uit. Jij hoeft alleen te bevestigen. |
+| 4 | VERGELIJK | Kijk eerst, / ruim daarna op | Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging. |
+| 5 | VRIJE RUIMTE | Zie de gigabytes / terugkomen | Geselecteerde foto's en geschatte besparing, terwijl je opruimt. |
+
+### pl
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | NA URZĄDZENIU | Znajdź zdjęcia, / które są podobne | Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie. |
+| 2 | JEDNA KOLEJKA | Każda grupa / gotowa do przeglądu | Grupy mają znaczniki przeglądu — zawsze wiesz, co zostało. |
+| 3 | NAJLEPSZE UJĘCIE | Zdjęcie do zostawienia / jest już wybrane | Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz. |
+| 4 | PORÓWNAJ | Sprawdź, zanim / cokolwiek zniknie | Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia. |
+| 5 | WOLNE MIEJSCE | Odzyskaj / gigabajty | Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków. |
+
+### tr
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | CİHAZDA | Birbirine benzeyen / fotoğrafları bul | Alike, kitaplığını Apple Vision ile tamamen iPhone'unda tarar. |
+| 2 | TEK KUYRUK | Her grup / gözden geçirmeye hazır | Gruplar rozetleriyle gelir: ne kaldığını her zaman görürsün. |
+| 3 | EN İYİ KARE | Saklanacak kare / zaten seçili | Alike gruptaki en iyi kareyi öne çıkarır. Sen yalnızca onaylarsın. |
+| 4 | KARŞILAŞTIR | Silmeden önce / kontrol et | Tam boyutta incele. Onayın olmadan hiçbir şey silinmez. |
+| 5 | BOŞ ALAN | Gigabaytların / geri gelişini gör | Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir. |
+
+### zh-Hant
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | 在裝置上 | 找出看起來 / 相像的照片 | Alike 以 Apple Vision 掃描你的圖庫，全程在 iPhone 上完成。 |
+| 2 | 同一條佇列 | 每一組 / 都等著你檢視 | 每組都帶著檢視標記，隨時看得出還剩下什麼。 |
+| 3 | 最佳照片 | 要留下的那張 / 已經選好 | Alike 會標出每組最好的一張，你只需要確認。 |
+| 4 | 先比對 | 任何照片消失前 / 都先看過 | 以原尺寸檢視。未經你確認，不會刪除任何東西。 |
+| 5 | 騰出空間 | 看著空間 / 一點一點回來 | 清理過程中隨時顯示已選取與預估可省空間。 |
+
+Traditional Chinese is the one deck that does not use SF Pro. SF has no Han
+glyphs and Pillow does no font fallback, so zh-Hant is set in Heiti TC —
+`STHeiti Medium.ttc` for the headline weight, `STHeiti Light.ttc` for the
+supporting line — and `LOCALE_HEADLINE_SIZE` starts it at 92 rather than the
+shared 112, because Han glyphs at the Latin size read as a wall. The generator
+proves every character against the face before rendering; missing glyphs would
+otherwise come out as empty boxes and pass every other check.
+
+Chinese also has no spaces to wrap on, so `break_long_word()` splits between
+characters, holding closing punctuation back from the start of a line.
+
+Twelve decks, one per listing localization. The directory names are the app's own
+language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`
+maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
+the one code that is spelled identically on both sides.
 
 Copy rules that the renderer will not catch for you:
 
@@ -70,9 +189,13 @@ Copy rules that the renderer will not catch for you:
 - No claim the published legal text does not support. On-device Vision, no
   uploads, no account, confirmed deletion into Recently Deleted — those are in
   `Docs/legal/` and the listing description, and the slides must agree.
-- Ukrainian headlines run longer than English. `fit_font_size` shrinks until the
-  copy fits, so an over-long line silently costs type size rather than breaking
-  the render — check the output, not just the exit code.
+- Several languages run longer than English — Ukrainian, German, Portuguese and
+  Polish in particular. `fit_font_size` shrinks until the copy fits, so an over-long
+  line silently costs type size rather than breaking the render. Check the
+  output for every locale, not just the exit code and not just `en-US`.
+- The `\n` in a headline is a per-language decision. German does not break where
+  "Find the photos / that look alike" breaks; pick the point that keeps both
+  lines balanced in that language.
 
 ## Background variant
 
@@ -111,8 +234,9 @@ are App Review evidence and deliberately stay out of the listing.
 
 ## Before upload
 
-- Every locale rendered and eyeballed, not just generated. Ukrainian type size
-  is the usual casualty.
+- All twelve locales rendered and eyeballed, not just generated. Type size in
+  the long languages — uk, de, pt-BR, pl — is the usual casualty, and zh-Hant
+  needs its own look because it is the one deck in a different typeface.
 - Headline and supporting line legible at App Store thumbnail scale.
 - No status-bar noise: full signal, full battery, no notifications.
 - Privacy sweep on any *new* capture — recognisable faces, location giveaways,

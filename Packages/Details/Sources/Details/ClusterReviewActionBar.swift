@@ -46,7 +46,7 @@ struct ClusterReviewActionBar: View {
         }
         .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
         .disabled(isDeleting)
-        .accessibilityHint(Text(appLocalized("Move the currently selected photos to Recently Deleted")))
+        .accessibilityHint(Text(DetailsL10n.Common.moveCurrentlySelectedPhotosRecently))
     }
 
     private var allowsWrapping: Bool {
@@ -54,11 +54,8 @@ struct ClusterReviewActionBar: View {
     }
 
     private var deleteActionTitle: String {
-        guard !isDeleting else { return appLocalized("Moving...") }
-        if selectedCount == 1 {
-            return appLocalized("Move 1 Photo")
-        }
-        return String(format: appLocalized("Move %d Photos"), selectedCount)
+        guard !isDeleting else { return DetailsL10n.ClusterReviewActionBar.moving }
+        return DetailsL10n.ClusterReviewActionBar.moveSelectedPhotos(selectedCount)
     }
 
     private var actionBarShape: Capsule {

@@ -22,7 +22,7 @@ request needs that extra depth.
 | `External/swiftui-expert-skill` | Broad/current SwiftUI APIs, Instruments trace recording/analysis, platform guidance | This is external depth; do not use for routine local SwiftUI refactors | No |
 | `GitFlow/ios-git-flow` | Branching, commits, version/build numbers, release tags, develop/main merge | No | No |
 | `GitFlow/pr-agent-flow` | Pull request preparation, self-review, PR descriptions, and review-comment response with separate coding/review passes | No | No |
-| `Localization/spm-localization` | `.xcstrings`, package localization, typed wrappers, EN/UK strings, pluralization | Pair with Core Data external only when localized model labels cross persistence boundaries | No |
+| `Localization/spm-localization` | `.xcstrings`, package localization, typed wrappers, the twelve shipped locales, CLDR plurals | Pair with Core Data external only when localized model labels cross persistence boundaries | No |
 | `Meta/skill-authoring-governance` | Create, slim, decompose, or update skills | Pair with `project-skill-audit` for audits | No |
 | `project-skill-audit` | Audit project-local skills, suggest updates/new skills, reduce skill duplication | Pair with `Meta/skill-authoring-governance` for implementation | No |
 | `SwiftConcurrency/app-store-changelog` | App Store “What’s New”, release notes from git history/tags | No | No |

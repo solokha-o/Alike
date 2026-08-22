@@ -18,16 +18,16 @@ public struct UserGuideTopicView: View {
                     }
                 } header: {
                     if let headerKey = section.headerKey {
-                        Text(appLocalized(headerKey))
+                        Text(UserGuideL10n.string(headerKey))
                     }
                 } footer: {
                     if let footerKey = section.footerKey {
-                        Text(appLocalized(footerKey))
+                        Text(UserGuideL10n.string(footerKey))
                     }
                 }
             }
         }
-        .navigationTitle(Text(appLocalized(topic.titleKey)))
+        .navigationTitle(Text(UserGuideL10n.string(topic.titleKey)))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
 #endif

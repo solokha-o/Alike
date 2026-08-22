@@ -26,7 +26,7 @@ public struct LaunchView: View {
                     .scaleEffect(scale)
                     .opacity(opacity)
                 
-                Text(appLocalized("Alike"))
+                Text(LaunchL10n.Main.alike)
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .opacity(opacity)

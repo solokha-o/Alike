@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "Settings",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -29,6 +30,9 @@ let package = Package(
                 "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
+            ],
+            resources: [
+                .process("Resources")
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")

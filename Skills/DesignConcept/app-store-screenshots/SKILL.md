@@ -23,7 +23,12 @@ canvas around the phone sparse.
 - Drafts and contact sheets: `build/generated/product_screenshot_drafts/`, `build/generated/product_screenshots/`.
 - Phone mockup: `tools/assets/iphone-mockup.png` (1022 x 2082, screen rect 52,46,970,2036).
 - Canvas: `1320 x 2868` exactly — the bundle rejects anything else.
-- Locales: `en-US` and `uk` — the only two localizations the listing has.
+- Locales: `en-US`, `uk`, `de`, `fr`, `es`, `es-419`, `pt-BR`, `it`, `nl`,
+  `pl`, `tr`, `zh-Hant` — twelve, the app's own language codes, which are the
+  directory names. The upload bundle maps `es-419` onto App Store Connect's
+  `es-MX` and `zh-Hant` onto the bare `it`/`pl`/`tr` spellings alongside it;
+  nothing in the generator knows that. `LOCALES` in the generator is the list
+  that decides; this one follows it.
 - Runtime: `build/tools-venv/bin/python` — Pillow is not in the system Python.
 
 ```sh
@@ -56,7 +61,13 @@ Do not lead with the paywall, onboarding, or settings.
   "Vision-based perceptual hashing".
 - Line breaks in the headline are deliberate; the generator only rewraps when the
   line does not fit.
-- Ukrainian runs longer than English — check both, never only `en-US`.
+- Ukrainian, German and Portuguese run longer than English — check every locale,
+  never only `en-US`. `fit_font_size` shrinks type instead of failing, so an
+  overlong headline shows up as small text, not as an error.
+- The headline `\n` is chosen per language. Do not carry the English break point
+  across; pick the one that balances the two lines in that language.
+- `es` and `es-419` are separate decks and should read differently where the
+  app's own strings differ ("cola" vs "fila").
 - Privacy is a selling point: on-device, no account, nothing deleted without
   confirmation.
 
@@ -65,7 +76,13 @@ Do not lead with the paywall, onboarding, or settings.
 - Dark canvas, because the app's UI is dark: gradient `(11,11,13) → (22,24,28)`.
 - Palette is the app's own: teal `(90,180,204)`, mascot purple `(138,107,209)`,
   green `(48,209,88)` for freed space. No colour outside these.
-- SF Pro only, via the variable `SFNS.ttf` named instances (Bold, Medium).
+- SF Pro only, via the variable `SFNS.ttf` named instances (Bold, Medium) —
+  except `zh-Hant`, which is set in Heiti TC (`STHeiti Medium.ttc` /
+  `STHeiti Light.ttc`, `LOCALE_FONT_FAMILY` in the generator). Pillow does no
+  font fallback, so Chinese copy set in SF Pro renders as tofu boxes; Heiti is
+  a system font with no download and no licence question. `zh-Hant` also starts
+  at headline size 92 rather than 112, a typographic call rather than a fitting
+  one.
 - Alternate composition: caption on top with the phone bleeding off the bottom,
   caption at the bottom with a whole device above. Never five identical slides.
 - Decorations stay out of `SlideLayout.caption_zone`.
