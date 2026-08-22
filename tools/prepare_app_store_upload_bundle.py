@@ -932,6 +932,14 @@ def parse_args() -> argparse.Namespace:
         help="Allow placeholder URLs and placeholder copy for local structural generation.",
     )
     parser.add_argument(
+        "--allow-shared-urls",
+        action="store_true",
+        help=(
+            "Allow non-English listings to fall back to the shared ALIKE_*_URL values. "
+            "Without it, strict generation requires every locale's own overrides."
+        ),
+    )
+    parser.add_argument(
         "--validate-only",
         action="store_true",
         help="Validate the existing generated bundle under build/generated/store_upload without rewriting it.",
@@ -1025,6 +1033,11 @@ def description_with_links(
     return f"{description.rstrip()}\n\n{footer}"
 
 
+def locale_url_env_var(kind: str, apple_locale: str) -> str:
+    """Name of the per-locale override for one URL kind, e.g. ALIKE_PRIVACY_URL_ZH_HANT."""
+    return f"ALIKE_{kind}_URL_{apple_locale.upper().replace('-', '_')}"
+
+
 def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     """Return the locale's own legal/support URL, falling back to the shared one.
 
@@ -1041,8 +1054,7 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     to an English privacy policy. _ES_MX points at the same /es/ pages as _ES_ES
     on purpose: one Spanish page serves both listings.
     """
-    suffix = apple_locale.upper().replace("-", "_")
-    override = os.environ.get(f"ALIKE_{kind}_URL_{suffix}", "").strip()
+    override = os.environ.get(locale_url_env_var(kind, apple_locale), "").strip()
     return override if override else base_url
 
 
@@ -1319,7 +1331,7 @@ tools/upload-screenshots
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so set all thirty-three — an unset override falls back to the shared English URL, which sends a reader who was just reading localized App Store copy to an English privacy policy. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so all thirty-three are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 1. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1358,6 +1370,78 @@ def validate_urls(allow_placeholder_urls: bool) -> list[str]:
                 errors.append(f"{description_path} is missing a {locale_terms_label} link")
             if TERMS_URL_PLACEHOLDER in description and not allow_placeholder_urls:
                 errors.append(f"{description_path} still contains placeholder Terms of Use URL")
+    return errors
+
+
+def validate_localized_urls(allow_placeholder_urls: bool, allow_shared_urls: bool) -> list[str]:
+    """Fail strict generation when a non-English listing would carry English legal URLs.
+
+    `localized_url` falls back to the shared ALIKE_*_URL when a locale has no
+    override, which is convenient and silent: with only the three base URLs set,
+    generation and validation both pass while ten listings point German, Polish
+    or Traditional Chinese readers at the English privacy policy, terms and
+    support pages. Nothing in the bundle looks wrong, because a shared URL is
+    indistinguishable from a deliberate one — and since the working `.env` is
+    untracked by design, a clean release machine reproduces exactly that bundle.
+
+    So the fallback is no longer allowed to be the quiet default. Every locale
+    except en-US must set its own three overrides, and the emitted files have to
+    match them. `--allow-shared-urls` opts out for a deliberate shared-URL run,
+    and `--allow-placeholder-urls` (structural generation, no real URLs at all)
+    skips the check the same way it skips the other URL rules.
+
+    es-MX is not an exception: it points at the same /es/ pages as es-ES, but it
+    says so through its own overrides rather than by falling through to English.
+    """
+    if allow_placeholder_urls or allow_shared_urls:
+        return []
+
+    errors: list[str] = []
+    base_urls = {
+        "PRIVACY": os.environ.get("ALIKE_PRIVACY_URL", "").strip(),
+        "TERMS": os.environ.get("ALIKE_TERMS_URL", "").strip(),
+        "SUPPORT": os.environ.get("ALIKE_SUPPORT_URL", "").strip(),
+    }
+    emitted_files = {"PRIVACY": "privacy_url.txt", "SUPPORT": "support_url.txt"}
+
+    for mapping in UPLOAD_SAFE_LOCALES:
+        if mapping.apple == "en-US":
+            continue
+        for kind in ("PRIVACY", "TERMS", "SUPPORT"):
+            variable = locale_url_env_var(kind, mapping.apple)
+            override = os.environ.get(variable, "").strip()
+            if not override:
+                errors.append(
+                    f"{variable} is unset, so the {mapping.apple} listing would reuse the shared "
+                    f"{kind.title()} URL; set it (values in Docs/release-checklist.md step 1) or pass "
+                    f"--allow-shared-urls"
+                )
+                continue
+            if not override.startswith("https://"):
+                errors.append(f"{variable} must use an https:// URL")
+                continue
+
+            # The override existing is not the same as the bundle carrying it —
+            # a stale bundle validated with --validate-only would otherwise pass
+            # on the strength of the environment alone.
+            filename = emitted_files.get(kind)
+            if filename is None:
+                continue
+            path = METADATA_ROOT / mapping.apple / filename
+            emitted = path.read_text(encoding="utf-8").strip() if path.exists() else ""
+            if emitted and emitted != override:
+                errors.append(f"{path} is {emitted}, not the {variable} value {override}")
+            elif emitted and emitted == base_urls[kind] and base_urls[kind]:
+                errors.append(f"{path} still carries the shared {kind.title()} URL")
+
+        # The Terms URL never gets a file of its own; it reaches the listing
+        # through the footer appended to every description.
+        terms_override = os.environ.get(locale_url_env_var("TERMS", mapping.apple), "").strip()
+        description_path = METADATA_ROOT / mapping.apple / "description.txt"
+        if terms_override and description_path.exists():
+            description = description_path.read_text(encoding="utf-8")
+            if terms_override not in description:
+                errors.append(f"{description_path} does not link {terms_override}")
     return errors
 
 
@@ -1593,11 +1677,12 @@ def validate_review_information(allow_placeholders: bool) -> list[str]:
     return errors
 
 
-def validate_bundle(allow_placeholder_urls: bool) -> None:
+def validate_bundle(allow_placeholder_urls: bool, allow_shared_urls: bool = False) -> None:
     errors = []
     errors.extend(validate_locale_folder_names())
     errors.extend(validate_metadata())
     errors.extend(validate_urls(allow_placeholder_urls))
+    errors.extend(validate_localized_urls(allow_placeholder_urls, allow_shared_urls))
     errors.extend(validate_placeholder_copy(allow_placeholder_urls))
     errors.extend(validate_review_information(allow_placeholder_urls))
     errors.extend(validate_iap_localizations())
@@ -1623,7 +1708,10 @@ def main() -> None:
         write_iap_metadata()
         write_docs()
 
-    validate_bundle(allow_placeholder_urls=args.allow_placeholder_urls)
+    validate_bundle(
+        allow_placeholder_urls=args.allow_placeholder_urls,
+        allow_shared_urls=args.allow_shared_urls,
+    )
     print(f"Prepared App Store upload bundle at {STORE_UPLOAD_ROOT.relative_to(ROOT)}")
 
 
