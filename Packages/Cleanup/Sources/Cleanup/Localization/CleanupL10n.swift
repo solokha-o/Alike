@@ -111,8 +111,19 @@ public enum CleanupL10n {
         public static var highestSimilarity: String { CleanupL10n.string("cleanup.main.highestSimilarity") }
         /// In review
         public static var inReview: String { CleanupL10n.string("cleanup.main.inReview") }
-        /// %d items • %@ estimated reclaimable
-        public static var itemsEstimatedReclaimable: String { CleanupL10n.string("cleanup.main.itemsEstimatedReclaimable") }
+        /// %1$lld items • %2$@ estimated reclaimable (plural)
+        public static func itemsEstimatedReclaimable(
+            _ count: Int,
+            _ byteCount: String,
+            bundle: Bundle? = nil,
+            locale: Locale? = nil
+        ) -> String {
+            CleanupL10n.plural(
+                "cleanup.main.itemsEstimatedReclaimable",
+                count, byteCount,
+                bundle: bundle, locale: locale
+            )
+        }
         /// Largest cluster
         public static var largestCluster: String { CleanupL10n.string("cleanup.main.largestCluster") }
         /// Your latest scan did not find similar photos or smart categories to review.

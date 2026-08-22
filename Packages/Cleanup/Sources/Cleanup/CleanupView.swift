@@ -875,8 +875,7 @@ private struct CleanupCategoriesCard: View {
     }
 
     private func categoryDetail(_ category: CleanupCategorySummary) -> String {
-        String(
-            format: CleanupL10n.Main.itemsEstimatedReclaimable,
+        CleanupL10n.Main.itemsEstimatedReclaimable(
             category.assetCount,
             ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
         )
