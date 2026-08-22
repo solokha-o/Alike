@@ -91,7 +91,7 @@ public struct PhotoGridColumnsPicker: View {
     public var body: some View {
         Picker(selection: $columns) {
             ForEach(_columns.layoutPolicy.columnCounts, id: \.self) { count in
-                Text(String(format: DesignSystemL10n.PhotoGridColumnPreference.columns, count)).tag(count)
+                Text(DesignSystemL10n.PhotoGridColumnPreference.columns(count)).tag(count)
             }
         } label: {
             Label(DesignSystemL10n.PhotoGridColumnPreference.columns2, systemImage: "square.grid.3x2")

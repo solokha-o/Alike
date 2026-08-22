@@ -31,7 +31,9 @@ public enum DesignSystemL10n {
         /// Choose how many columns are used to display photos
         public static var chooseHowManyColumnsUsed: String { DesignSystemL10n.string("designSystem.photoGridColumnPreference.chooseHowManyColumnsUsed") }
         /// %d Columns
-        public static var columns: String { DesignSystemL10n.string("designSystem.photoGridColumnPreference.columns") }
+        public static func columns(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            DesignSystemL10n.plural("designSystem.photoGridColumnPreference.columns", count, bundle: bundle, locale: locale)
+        }
         /// Columns
         public static var columns2: String { DesignSystemL10n.string("designSystem.photoGridColumnPreference.columns2") }
         /// Grid Columns
@@ -50,5 +52,22 @@ public enum DesignSystemL10n {
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue) -> String {
         String(localized: key, bundle: .module)
+    }
+
+    /// Resolves a key whose catalog entry carries plural variations. The count has to be the
+    /// first argument and has to appear in every variation — `xcstringstool` rejects a plural
+    /// variation that never references the number.
+    static func plural(
+        _ key: String,
+        _ arguments: any CVarArg...,
+        bundle: Bundle? = nil,
+        locale: Locale? = nil
+    ) -> String {
+        let bundle = bundle ?? .module
+        return String(
+            format: bundle.localizedString(forKey: key, value: nil, table: nil),
+            locale: locale ?? .current,
+            arguments: arguments
+        )
     }
 }
