@@ -3,7 +3,9 @@ Thank you for reviewing Alike.
 NO ACCOUNT IS NEEDED
 Alike has no account, no sign-in and no server, so there is nothing to log in
 to. The demo credential fields are intentionally empty and a demo account is
-not required. The app opens straight into the photo library permission request.
+not required. The app opens into a short introduction; its last page explains
+why photo access is needed and ends with a neutral "Continue" button that hands
+off to the iOS permission alert, which asks in its own words.
 
 PHOTO LIBRARY ACCESS
 Alike compares the photos in the library to find visually similar ones, so
@@ -16,7 +18,8 @@ Notification permission is requested only if you turn on the cleanup reminder
 in Settings; it is not needed to review the app.
 
 HOW TO EXERCISE THE APP
-1. Grant photo library access.
+1. Step through the introduction and tap "Continue" on its last page, then
+   grant photo library access in the iOS alert.
 2. Tap Scan on the Scanner tab. Analysis runs locally and progress is shown.
 3. Open any group. A Best Shot is preselected; use Keep Best Only, Select All
    Except Best, or select photos by hand.
@@ -50,6 +53,14 @@ Settings. Links to the Privacy Policy and to the Terms of Use are shown on the
 paywall and under Settings, then Legal. The Terms of Use page names Apple's
 Standard EULA as the licence that governs use of the app and defers to it on
 any conflict.
+
+LANGUAGES
+The app, the App Store listing and the Privacy Policy, Terms of Use and
+Support pages are localized into twelve languages: English, Ukrainian, German,
+French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch,
+Polish, Turkish and Traditional Chinese. The iOS photo library permission
+alert itself stays in English; its text is a build setting rather than a
+localized string, and that is a known gap.
 
 DATA DELETION
 Settings, then Data & Privacy, then Delete Alike Data erases all scan results,
