@@ -81,6 +81,74 @@ struct LocalizationCatalog {
         return try XCTUnwrap(stringUnit["value"] as? String)
     }
 
+    /// A single `stringUnit` value, or nil for a plural entry — plurals are covered by their
+    /// own tests, and each of their variations would need unpacking separately.
+    static func value(of localization: [String: Any]?) -> String? {
+        (localization?["stringUnit"] as? [String: Any])?["value"] as? String
+    }
+
+    /// Conversion specifiers in sorted order, plus the count of literal `%%`. Sorting is
+    /// deliberate: a language may put the number before or after the sign, or reorder
+    /// positional arguments, and still be a faithful translation.
+    static func formatShape(_ value: String) -> (specifiers: [String], literalPercents: Int) {
+        var specifiers: [String] = []
+        var literalPercents = 0
+        var characters = Array(value)
+        var index = 0
+
+        while index < characters.count {
+            guard characters[index] == "%" else {
+                index += 1
+                continue
+            }
+            var cursor = index + 1
+            if cursor < characters.count, characters[cursor] == "%" {
+                literalPercents += 1
+                index = cursor + 1
+                continue
+            }
+            var specifier = "%"
+            while cursor < characters.count, !"@dfsuxX".contains(characters[cursor]) {
+                specifier.append(characters[cursor])
+                cursor += 1
+            }
+            if cursor < characters.count {
+                specifier.append(characters[cursor])
+                specifiers.append(specifier)
+                cursor += 1
+            }
+            index = cursor
+        }
+
+        return (specifiers.sorted(), literalPercents)
+    }
+
+    /// A `%` that never resolves into a specifier or a literal — `String(format:)` reads
+    /// whatever follows it as a conversion and prints garbage or drops the tail.
+    static func hasDanglingPercent(_ value: String) -> Bool {
+        var characters = Array(value)
+        var index = 0
+
+        while index < characters.count {
+            guard characters[index] == "%" else {
+                index += 1
+                continue
+            }
+            var cursor = index + 1
+            if cursor < characters.count, characters[cursor] == "%" {
+                index = cursor + 1
+                continue
+            }
+            while cursor < characters.count, !"@dfsuxX".contains(characters[cursor]) {
+                cursor += 1
+            }
+            if cursor >= characters.count { return true }
+            index = cursor + 1
+        }
+
+        return false
+    }
+
     private func plurals(_ key: String, language: String) throws -> [String: Any] {
         let variations = try XCTUnwrap(
             localizations(of: key)[language]?["variations"] as? [String: Any],
@@ -168,5 +236,40 @@ final class LocalizationCatalogTests: XCTestCase {
         }
 
         XCTAssertTrue(flat.isEmpty, "plural in en but not in: \(flat)")
+    }
+    /// Format specifiers have to survive translation, but their *order* does not.
+    ///
+    /// Turkish writes a percentage as `%50`, so `tr` legitimately carries
+    /// `Kitaplığın taranıyor… %%%d` where English carries `Scanning your library… %d%%`.
+    /// Comparing the rendered shape position by position would call that a bug; comparing
+    /// the multiset of conversion specifiers plus the number of literal `%%` calls it what
+    /// it is — the same format, written the way the language writes it.
+    ///
+    /// What this does catch is a translation that drops an argument, invents one, loses the
+    /// literal percent sign, or leaves a dangling `%` that `String(format:)` would read as
+    /// the start of a specifier.
+    func testFormatSpecifiersSurviveEveryTranslation() throws {
+        let catalog = try LocalizationCatalog.load()
+        var mismatched: [String] = []
+
+        for key in catalog.strings.keys.sorted() {
+            let localizations = try catalog.localizations(of: key)
+            for (language, unit) in localizations.sorted(by: { $0.key < $1.key }) {
+                guard let english = LocalizationCatalog.value(of: localizations["en"]) else { continue }
+                guard let translation = LocalizationCatalog.value(of: unit) else { continue }
+                let englishShape = LocalizationCatalog.formatShape(english)
+                let shape = LocalizationCatalog.formatShape(translation)
+                if shape != englishShape {
+                    mismatched.append(
+                        "\(key) [\(language)] has \(shape) where en has \(englishShape)"
+                    )
+                }
+                if LocalizationCatalog.hasDanglingPercent(translation) {
+                    mismatched.append("\(key) [\(language)] ends on a dangling %")
+                }
+            }
+        }
+
+        XCTAssertTrue(mismatched.isEmpty, "format specifiers changed in translation: \(mismatched)")
     }
 }
