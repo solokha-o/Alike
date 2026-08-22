@@ -47,8 +47,10 @@ public enum CleanupL10n {
     }
 
     public enum Common {
-        /// %d photos
-        public static var photos: String { CleanupL10n.string("cleanup.common.photos") }
+        /// %1$lld photos (plural)
+        public static func photos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            CleanupL10n.plural("cleanup.common.photos", count, bundle: bundle, locale: locale)
+        }
     }
 
     public enum Main {

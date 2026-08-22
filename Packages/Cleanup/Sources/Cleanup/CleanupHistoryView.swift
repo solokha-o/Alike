@@ -288,12 +288,7 @@ private struct CleanupHistoryTimelineRow: View {
     }
 
     private var photoCountText: String {
-        switch CleanupHistoryPhotoCount(entry.deletedCount) {
-        case .one:
-            return CleanupL10n.CleanupHistory.n1Photo
-        case .other(let count):
-            return String(format: CleanupL10n.Common.photos, count)
-        }
+        CleanupL10n.Common.photos(entry.deletedCount)
     }
 
     private var accessibilityLabel: String {

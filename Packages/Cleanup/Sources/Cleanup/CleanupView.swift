@@ -1121,7 +1121,7 @@ private struct CleanupClusterCard: View {
         }
 
         return [
-            String(format: CleanupL10n.Common.photos, cluster.count),
+            CleanupL10n.Common.photos(cluster.count),
             statusTitle,
             resurfacingTitle
         ]
