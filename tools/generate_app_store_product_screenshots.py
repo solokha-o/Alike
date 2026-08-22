@@ -63,7 +63,7 @@ LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl",
 # zh-Hant lower is a typographic decision, not a fitting one — fit_font_size()
 # would have shrunk it anyway, but to whatever size happened to fit rather than
 # to one chosen for the script. Locales absent here keep Transform's default,
-# which is why the seven existing decks re-render unchanged.
+# which is why the eleven other decks re-render unchanged.
 LOCALE_HEADLINE_SIZE = {"zh-Hant": 92}
 
 # The app ships a dark UI, so the canvas is dark too: the phone melts into the
