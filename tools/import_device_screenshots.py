@@ -111,6 +111,37 @@ def languages_of(spec: dict[str, str]) -> list[str]:
     return sorted(key for key in spec if key != "name")
 
 
+def confined_source_path(source: Path, filename: str, manifest_path: Path) -> Path:
+    """Resolve one manifest filename inside --source, refusing anything that escapes it.
+
+    Manifest entries are filenames a human types next to a locale, and they were
+    fed straight to `source / name`. `/` makes that an absolute path, `../`
+    walks out of the capture folder, and a symlink inside --source reaches
+    anywhere the filesystem does — after which any PNG the walk lands on is
+    copied into Docs/images/raw/ under a locale's name and, from there, into a
+    published deck. The manifest is a local file, so this is a foot-gun rather
+    than an attack, but the blast radius is committed image content.
+
+    Only a plain relative name is accepted, and the resolved path has to stay
+    under the resolved --source, which is what catches the symlink case that
+    the string checks alone cannot see.
+    """
+    candidate = Path(filename)
+    if candidate.is_absolute() or candidate.drive or candidate.anchor:
+        raise SystemExit(f"{manifest_path}: {filename!r} is an absolute path; use a name inside --source")
+    if ".." in candidate.parts:
+        raise SystemExit(f"{manifest_path}: {filename!r} walks out of --source with '..'")
+
+    root = source.resolve()
+    resolved = (root / candidate).resolve()
+    if resolved != root and root not in resolved.parents:
+        raise SystemExit(
+            f"{manifest_path}: {filename!r} resolves to {resolved}, outside --source {root} "
+            f"(a symlink in the capture folder will do this)"
+        )
+    return resolved
+
+
 def load_shots(manifest_path: Path) -> dict[int, dict[str, str]]:
     """SHOTS, with any capture manifest merged over it."""
     shots = {shot: dict(spec) for shot, spec in SHOTS.items()}
@@ -177,10 +208,17 @@ def main() -> None:
 
     shots = load_shots(store_dir / MANIFEST_NAME)
 
+    # Resolve every manifest filename before anything is read or copied, so a
+    # path that escapes --source stops the run rather than being caught halfway
+    # through writing decks.
+    manifest_path = store_dir / MANIFEST_NAME
+    resolved_sources: dict[tuple[int, str], Path] = {}
     missing = []
     for shot, spec in shots.items():
         for lang in languages_of(spec):
-            if not (source / spec[lang]).exists():
+            resolved = confined_source_path(source, spec[lang], manifest_path)
+            resolved_sources[(shot, lang)] = resolved
+            if not resolved.exists():
                 missing.append(f"shot {shot} {lang}: {spec[lang]}")
     if missing:
         print("Missing source files:", *missing, sep="\n  ", file=sys.stderr)
@@ -190,7 +228,7 @@ def main() -> None:
     for shot in sorted(shots):
         spec = shots[shot]
         for lang in languages_of(spec):
-            src = source / spec[lang]
+            src = resolved_sources[(shot, lang)]
             size = png_size(src)
             if size != SOURCE_SIZE:
                 print(f"  !! {src.name} is {size[0]}x{size[1]}, expected {SOURCE_SIZE[0]}x{SOURCE_SIZE[1]}")
