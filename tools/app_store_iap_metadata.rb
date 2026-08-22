@@ -186,6 +186,27 @@ def payload_by_product_id(items)
   items.to_h { |item| [item.fetch("productID"), item] }
 end
 
+def payload_locales(item)
+  item.fetch("localizations", []).map { |localization| localization.fetch("locale") }
+end
+
+# upload-localizations counts HTTP 400/409/422 on any non-primary locale as
+# skipped and still exits 0, so a run that landed nothing looks the same as a
+# run that landed everything. `status` is where that gets caught: report the
+# live locales against the ones the payload carries and name what is missing,
+# rather than printing a bare count a reader has to know the expected value of.
+# The expectation comes from the payload, so adding a locale to the StoreKit
+# file moves this check with it.
+def localization_summary(expected_locales, live_records)
+  live = live_records.map { |record| record.fetch("attributes").fetch("locale") }
+  missing = expected_locales - live
+  unexpected = live - expected_locales
+  summary = "#{live.length}/#{expected_locales.length}"
+  summary += " missing=#{missing.join(",")}" unless missing.empty?
+  summary += " unexpected=#{unexpected.join(",")}" unless unexpected.empty?
+  summary
+end
+
 def load_payload(path)
   JSON.parse(File.read(path))
 end
@@ -355,7 +376,8 @@ def print_status(client, payload)
 
   group = state.fetch(:group)
   group_locs = state.fetch(:group_localizations)
-  puts "subscription_group=#{group.fetch("id")} referenceName=#{group.dig("attributes", "referenceName")} localizations=#{group_locs.length}"
+  group_locale_summary = localization_summary(payload_locales(group_payload(payload)), group_locs)
+  puts "subscription_group=#{group.fetch("id")} referenceName=#{group.dig("attributes", "referenceName")} localizations=#{group_locale_summary}"
 
   expected_subscriptions = payload_by_product_id(payload.fetch("subscriptions"))
   state.fetch(:subscriptions).each do |subscription|
@@ -383,7 +405,8 @@ def print_status(client, payload)
                         .map { |shape, group| "#{shape}(#{group.length} territories)" }
                         .join(",")
                     end
-    puts "subscription=#{product_id} id=#{id} state=#{attrs["state"]} localizations=#{locs.length} review_screenshot=#{screenshot_state} introductory_offer=#{offer_summary}"
+    locale_summary = localization_summary(payload_locales(expected_subscriptions.fetch(product_id)), locs)
+    puts "subscription=#{product_id} id=#{id} state=#{attrs["state"]} localizations=#{locale_summary} review_screenshot=#{screenshot_state} introductory_offer=#{offer_summary}"
     puts "  screenshot_errors=#{JSON.generate(screenshot_errors)}" if screenshot_errors
     puts "  screenshot_warnings=#{JSON.generate(screenshot_warnings)}" if screenshot_warnings
   end
