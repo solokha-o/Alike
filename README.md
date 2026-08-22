@@ -150,11 +150,12 @@ open Alike/Alike.xcodeproj
 
 ## 🧾 Schemes and logging
 
-There are three shared schemes:
+There are four shared schemes:
 
 - `Alike` — builds and runs **Release** with no debugger attached and no local StoreKit configuration, so ⌘R gives the same build the App Store gets. Normal logging (info/errors only). Its Test action stays on Debug, because the test targets need the `#if DEBUG` mocks in `Packages/Core/Sources/Core/Mocks`.
 - `Alike-VerboseLogs` — Debug build with verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
 - `Alike-DebugVerboseLogs` — Debug build with verbose logging, profiled and analyzed in Debug too.
+- `Alike-Pseudolocale` — Debug build launched with `-NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings [[]]`, so every string renders doubled and bracketed and anything unlocalized shows in capitals. It is the layout-and-coverage pass for twelve languages without reading twelve languages; see `Docs/Localization/pseudo-locale-qa.md`.
 
 Use one of the verbose schemes for anything that needs a debugger, the debug menu, the premium overrides, or local StoreKit transactions — all of those are compiled out of `Alike`.
 

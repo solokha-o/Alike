@@ -306,8 +306,10 @@ It does not:
 | `Alike` | Release | local validation, package and app compile checks, release archive/export, TestFlight upload |
 | `Alike-VerboseLogs` | Debug | manual debugging with verbose scan/vision/storage logging |
 | `Alike-DebugVerboseLogs` | Debug | manual debugging with verbose logging in Debug builds |
+| `Alike-Pseudolocale` | Debug | localization QA — doubled, bracketed strings and capitalized unlocalized ones (`Docs/Localization/pseudo-locale-qa.md`) |
 
-Only `Alike` is used by CI/CD. The verbose schemes are for interactive debugging.
+Only `Alike` is used by CI/CD. The other three are for interactive debugging
+and localization QA.
 
 `Alike` runs Release with no debugger attached and no local StoreKit
 configuration, so ⌘R gives the same build the App Store gets: optimized, with
