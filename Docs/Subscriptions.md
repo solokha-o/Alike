@@ -52,18 +52,18 @@ that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
 | Group | pl | Alike Pro | — |
 | Group | tr | Alike Pro | — |
 | Group | zh-Hant | Alike Pro | — |
-| Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool. First 7 days free. |
-| Yearly | uk | Alike Pro на рік | Усі функції Alike Pro. 7 днів безкоштовно. |
-| Yearly | de-DE | Alike Pro Jahresplan | Alle Pro-Funktionen. 7 Tage gratis. |
-| Yearly | fr-FR | Alike Pro annuel | Tous les outils Pro. 7 jours offerts. |
-| Yearly | es-ES | Alike Pro anual | Todas las funciones Pro. 7 días gratis. |
-| Yearly | es-MX | Alike Pro anual | Todas las funciones Pro. 7 días gratis. |
-| Yearly | pt-BR | Alike Pro anual | Todos os recursos Pro. 7 dias grátis. |
-| Yearly | it | Alike Pro annuale | Tutti gli strumenti Pro. 7 giorni gratis. |
-| Yearly | nl-NL | Alike Pro jaarlijks | Alle Pro-functies. Eerste 7 dagen gratis. |
-| Yearly | pl | Alike Pro rocznie | Wszystkie funkcje Pro. 7 dni za darmo. |
-| Yearly | tr | Alike Pro yıllık | Tüm Pro araçları. İlk 7 gün ücretsiz. |
-| Yearly | zh-Hant | Alike Pro 年繳 | 解鎖所有 Pro 功能，前 7 天免費。 |
+| Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool, billed once a year. |
+| Yearly | uk | Alike Pro на рік | Усі функції Alike Pro, оплата раз на рік. |
+| Yearly | de-DE | Alike Pro Jahresplan | Alle Pro-Funktionen, einmal jährlich. |
+| Yearly | fr-FR | Alike Pro annuel | Tous les outils Pro, une fois par an. |
+| Yearly | es-ES | Alike Pro anual | Todas las funciones Pro, pago anual. |
+| Yearly | es-MX | Alike Pro anual | Todas las funciones Pro, pago anual. |
+| Yearly | pt-BR | Alike Pro anual | Todos os recursos Pro, pagamento anual. |
+| Yearly | it | Alike Pro annuale | Tutti gli strumenti Pro, pagamento annuale. |
+| Yearly | nl-NL | Alike Pro jaarlijks | Alle Pro-functies, jaarlijks betaald. |
+| Yearly | pl | Alike Pro rocznie | Wszystkie funkcje Pro, płatność roczna. |
+| Yearly | tr | Alike Pro yıllık | Tüm Pro araçları, yıllık ödeme. |
+| Yearly | zh-Hant | Alike Pro 年繳 | 解鎖所有 Pro 功能，年繳一次。 |
 | Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
 | Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
 | Monthly | de-DE | Alike Pro Monatsplan | Alle Aufräumfunktionen von Alike Pro. |
@@ -128,6 +128,15 @@ or deleting the existing one — resolve those in App Store Connect by hand.
 Eligibility is not a field. An introductory offer is only ever granted to a
 customer who has never subscribed in the group, which is why the paywall says
 "for eligible new subscribers".
+
+For the same reason the static product descriptions above name no trial at all.
+They are the same string for everyone, so an ineligible returning subscriber
+reads them too, and the hedge does not fit: App Store Connect caps a product
+description at 45 characters and "Unlock every Pro tool. First 7 days free."
+already spends 41. The trial is promised only where eligibility is known — the
+paywall, hedged per `Docs/legal/subscription-disclosure.md`.
+`validate_iap_product_localizations` fails generation if a trial claim
+reappears in any of the twelve locales.
 
 ## App Store Connect setup
 

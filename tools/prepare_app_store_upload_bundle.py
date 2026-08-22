@@ -1592,6 +1592,30 @@ def validate_iap_localizations() -> list[str]:
     return errors
 
 
+# A static IAP description cannot know whether the customer in front of it is
+# eligible for the trial. StoreKit decides that per subscription group, a
+# customer who already used the Alike Pro trial never gets another one, and
+# Docs/legal/subscription-disclosure.md calls the "for eligible new subscribers"
+# hedge load-bearing for exactly that reason. The hedge does not fit: App Store
+# Connect caps the description at 45 characters, and "Unlock every Pro tool.
+# First 7 days free." already spends 41 of them. So the trial is promised only
+# where eligibility is known — the paywall — and these descriptions must not
+# claim it. The tokens below are the trial vocabulary of the twelve shipped
+# locales; the copy that replaced the claims avoids all of them.
+IAP_TRIAL_CLAIM_TOKENS = (
+    "free", "trial",
+    "gratis", "gratuit", "gratuita", "gratuito", "grátis", "offert",
+    "darmo", "bezpłat", "ücretsiz", "deneme",
+    "безкоштов", "безплат",
+    "免費", "試用",
+)
+
+
+def trial_claim_tokens(text: str) -> list[str]:
+    lowered = text.casefold()
+    return [token for token in IAP_TRIAL_CLAIM_TOKENS if token in lowered]
+
+
 def validate_iap_product_localizations(product_id: str, localizations: list[dict]) -> list[str]:
     errors: list[str] = []
     if not localizations:
@@ -1610,6 +1634,14 @@ def validate_iap_product_localizations(product_id: str, localizations: list[dict
             errors.append(f"{product_id} {locale} description exceeds {IAP_DESCRIPTION_MAX_LENGTH} characters")
         if not description:
             errors.append(f"{product_id} {locale} description is empty")
+        claims = trial_claim_tokens(description)
+        if claims:
+            errors.append(
+                f"{product_id} {locale} description promises a free trial ({', '.join(claims)}); "
+                f"eligibility is decided by StoreKit and cannot be hedged inside "
+                f"{IAP_DESCRIPTION_MAX_LENGTH} characters, so the trial belongs on the paywall only "
+                f"(Docs/legal/subscription-disclosure.md)"
+            )
     return errors
 
 
