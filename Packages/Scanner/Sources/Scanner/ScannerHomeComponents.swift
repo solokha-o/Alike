@@ -281,7 +281,7 @@ struct ScannerPremiumOfferCard: View {
                 }
 
                 Spacer(minLength: Spacing.small)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.caption.bold())
                     .foregroundStyle(.secondary)
             }

@@ -31,6 +31,29 @@ A command-line launch has no StoreKit configuration, so use the scheme for the p
 a string that never reached a catalog, which after the task 39 split usually means a
 key that failed to move into its package.
 
+### The right-to-left pass
+
+Scheme **`Alike-RTL`** (shared, Debug) is the mirror image of the same idea: it launches
+with
+
+```text
+-AppleTextDirection YES                  # the system reports a right-to-left interface
+-NSForceRightToLeftWritingDirection YES  # every layout container mirrors
+```
+
+and no language change, so an English reader can check mirroring without also having to
+read Arabic. It keeps the same `Configuration/Alike.storekit` reference for the same
+reason — an unconfigured paywall renders none of its plan cards.
+
+`-NSDoubleLocalizedStrings` is present but **disabled** in the scheme: doubling and
+mirroring are separate passes, and running both at once makes it impossible to say which
+one broke a layout. Enable it in the scheme editor for a deliberate combined run.
+
+Watch for three things the double-length pass cannot show: a chevron or arrow still
+pointing the wrong way, composited art whose surrounding layout failed to mirror
+(`AnimatedImageOverlay` and the two Details overlays it drives), and gesture maths that
+assumes a positive drag means "forward".
+
 ## Screens to walk
 
 **Run the full pass from the `Alike-Pseudolocale` scheme.** The command line above is a

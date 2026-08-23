@@ -754,7 +754,7 @@ private struct CleanupProgressCard: View {
                 summary(
                     title: CleanupL10n.Main.continueReview,
                     subtitle: CleanupL10n.Main.pickUpWhereLeftOff,
-                    iconName: "arrow.right.circle.fill",
+                    iconName: "arrow.forward.circle.fill",
                     iconColor: Color.accent
                 )
                 .contentShape(Rectangle())
@@ -850,7 +850,7 @@ private struct CleanupCategoriesCard: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Image(systemName: isLocked(category.kind) ? "lock.fill" : "chevron.right")
+                        Image(systemName: isLocked(category.kind) ? "lock.fill" : "chevron.forward")
                             .foregroundStyle(.secondary)
                     }
                     .padding(Spacing.small)
