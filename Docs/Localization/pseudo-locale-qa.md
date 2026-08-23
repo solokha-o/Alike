@@ -487,7 +487,7 @@ to survive translation, which the two-argument keys (`selectionSummary`,
 The cleanup queue shows `صفر كيلوبايت` where the count beside it is a digit. That is
 Foundation's own spelling of zero for `ar_SA` — English renders the same field as
 `Zero kB`, German as `0 kB`. Changing it would be a product decision affecting all
-thirteen locales, not an Arabic fix.
+thirteen locales, not an Arabic fix. **Decided: left as Foundation renders it.**
 
 ### Not Arabic's problem, but found here: the permission prompt is English in every locale
 
