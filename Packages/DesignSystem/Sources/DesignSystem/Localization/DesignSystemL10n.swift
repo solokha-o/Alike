@@ -66,7 +66,7 @@ public enum DesignSystemL10n {
         let bundle = bundle ?? .module
         return String(
             format: bundle.localizedString(forKey: key, value: nil, table: nil),
-            locale: locale ?? .current,
+            locale: locale ?? .alikeFormatting,
             arguments: arguments
         )
     }

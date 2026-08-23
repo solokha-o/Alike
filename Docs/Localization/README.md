@@ -148,6 +148,32 @@ Two things a translation pass has to get right, both of which the tests now catc
     is allowed to repeat. The counts that separate them are 0, 1, 2, 3, 11 and 100, and the
     same four compiled-bundle suites pin them.
 
+## Numbers, dates and the formatting locale
+
+Counts, byte sizes and scan timestamps do **not** follow `Locale.current`. They go through
+`Locale.alikeFormatting` (`Packages/Core/Sources/Core/Extensions/Locale+AlikeFormatting.swift`),
+which is the current locale with the numbering system pinned to `latn` and the calendar to
+Gregorian, plus the `String.alikeByteCount(_:)` and `Date.alikeFormatted(date:time:)`
+helpers that carry it into the two Foundation formatters that would otherwise read the
+current locale directly.
+
+Arabic is why. `ar_SA` asks for Arabic-Indic digits and the Umm al-Qura calendar, and
+Foundation obliges — but only for some of the paths a number can take to the screen.
+`String(localized:)` and the formatters follow the locale; `String(format:)` without a
+`locale:` argument does not; digits typed into translated copy stay as typed. Before the
+pin, one Scanner card showed a Hijri date next to `36` next to `٥١٫٣ م.ب.`, and the same
+count rendered as `٣٦` one tab over.
+
+Alike's numbers are technical rather than prose, and the subscription disclosure has to
+stay byte-identical to `Docs/legal/subscription-disclosure.md` and the landing site, so the
+whole app is pinned to Western digits and Gregorian dates. **A new language needs nothing
+here** — the pin is unconditional, so a non-Latin-digit or non-Gregorian locale arrives
+already consistent. What a translation pass must not do is type Arabic-Indic (or any other)
+digits into catalog copy, because those are the one path the pin cannot reach.
+
+Plural *category* selection is unaffected: the numbering system changes how a number is
+spelled, not which CLDR bucket it falls into. `36` still selects `many` in Arabic.
+
 ## Not in the catalogs
 
 `INFOPLIST_KEY_NSPhotoLibraryUsageDescription` is a build setting in

@@ -146,7 +146,7 @@ struct ScannerLibraryStatusCard: View {
 
             metricLayout {
                 metric(
-                    value: summary.completedAt.formatted(date: .abbreviated, time: .omitted),
+                    value: summary.completedAt.alikeFormatted(date: .abbreviated, time: .omitted),
                     label: ScannerL10n.ScannerHomeComponents.lastScan
                 )
                 metric(
@@ -154,10 +154,7 @@ struct ScannerLibraryStatusCard: View {
                     label: ScannerL10n.ScannerHomeComponents.opportunities
                 )
                 metric(
-                    value: ByteCountFormatter.string(
-                        fromByteCount: summary.estimatedSavingsBytes,
-                        countStyle: .file
-                    ),
+                    value: String.alikeByteCount(summary.estimatedSavingsBytes),
                     label: ScannerL10n.ScannerHomeComponents.reclaimable
                 )
             }

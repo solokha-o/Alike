@@ -174,7 +174,7 @@ enum PaywallL10n {
     static func postFirstScanMessage(
         opportunityCount: Int,
         estimatedSavings: String?,
-        locale: Locale = .current,
+        locale: Locale = .alikeFormatting,
         bundle: Bundle = .module
     ) -> String {
         if let estimatedSavings {
@@ -197,7 +197,7 @@ enum PaywallL10n {
     static func batchCleanupMessage(
         selectedCount: Int,
         estimatedSavings: String,
-        locale: Locale = .current,
+        locale: Locale = .alikeFormatting,
         bundle: Bundle = .module
     ) -> String {
         String(

@@ -435,19 +435,25 @@ translated copy.** Every `String(format:)` call in the app omits `locale:` —
 `:148`, `CleanupCategory.swift:96`, `ClusterDetailsView.swift:690`. That was invisible in
 the twelve existing locales, all of which use Western digits.
 
-This is a decision, not a typo, and it is not obviously "make everything Arabic-Indic":
-the disclosure paragraphs have to stay byte-identical to
-`Docs/legal/subscription-disclosure.md` and to the landing site, so their `24` and `7`
-are load-bearing as typed. **Left open pending a call on which direction the app should
-be consistent in.**
+**Resolved: Western digits everywhere.** Alike's numbers are technical rather than prose
+— a file size, a photo count, the moment a scan finished — and the disclosure paragraphs
+have to stay byte-identical to `Docs/legal/subscription-disclosure.md` and to the landing
+site, so their `24` and `7` are load-bearing as typed. `Locale.alikeFormatting` in
+`Packages/Core/Sources/Core/Extensions/Locale+AlikeFormatting.swift` pins the numbering
+system to `latn`, and every plural helper, byte count and timestamp now goes through it.
+The pin is unconditional rather than an `ar` special case: the twelve Latin-digit locales
+are unaffected, and the next non-Latin-digit language arrives already consistent.
 
 ### The last-scan date is Hijri, and it is truncated
 
-`ar_SA` uses the Umm al-Qura calendar, so `آخر فحص` reads `١٠ ربيع الأول، ١٤٤...` — a
-Hijri date, clipped mid-year in the three-column metric row. Two separate problems: the
-clipping is a layout defect regardless, and whether a photo app's "last scan" should be
-Hijri at all is a product call. `ar-AE` and `ar-EG` would render Gregorian, so this is
-also an argument for which Apple locale the App Store listing claims. **Left open.**
+`ar_SA` uses the Umm al-Qura calendar, so `آخر فحص` read `١٠ ربيع الأول، ١٤٤...` — a Hijri
+date, clipped mid-year in the three-column metric row.
+
+**Resolved: Gregorian.** The same `Locale.alikeFormatting` pins the calendar, for the same
+reason it pins the digits — these timestamps say when the app last did something, not what
+today's date is. The truncation went with it: the Gregorian string is short enough for the
+metric column, so `metric(value:label:)` keeps the `lineLimit(1)` + `minimumScaleFactor`
+pair it already had for Traditional Chinese.
 
 ### A doubled preposition — fixed
 

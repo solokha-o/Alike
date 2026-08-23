@@ -550,7 +550,7 @@ public struct CleanupView: View {
             return .smartCategory(
                 feature: feature,
                 title: kind.presentation.title,
-                estimatedSavings: ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+                estimatedSavings: String.alikeByteCount(category.estimatedSavingsBytes)
             )
         }
         return .feature(feature)
@@ -740,7 +740,7 @@ private struct CleanupProgressCard: View {
                 metric("\(progress.reviewedCount)/\(progress.totalClusters)", CleanupL10n.Main.reviewed)
                 metric("\(progress.remainingClusters)", CleanupL10n.Main.remaining)
                 metric("\(progress.totalSelectedItems)", CleanupL10n.Main.selected)
-                metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), CleanupL10n.Main.estimatedSavings)
+                metric(String.alikeByteCount(progress.reviewedSavingsBytes), CleanupL10n.Main.estimatedSavings)
             }
         }
         .padding(Spacing.medium)
@@ -802,7 +802,7 @@ private struct CleanupProgressCard: View {
             progress.totalClusters,
             progress.remainingClusters,
             progress.totalSelectedItems,
-            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(progress.reviewedSavingsBytes)
         )
     }
 
@@ -812,7 +812,7 @@ private struct CleanupProgressCard: View {
             progress.reviewedCount,
             progress.totalClusters,
             progress.totalSelectedItems,
-            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(progress.reviewedSavingsBytes)
         )
     }
 
@@ -877,7 +877,7 @@ private struct CleanupCategoriesCard: View {
     private func categoryDetail(_ category: CleanupCategorySummary) -> String {
         CleanupL10n.Main.itemsEstimatedReclaimable(
             category.assetCount,
-            ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(category.estimatedSavingsBytes)
         )
     }
 
