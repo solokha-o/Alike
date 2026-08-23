@@ -1194,7 +1194,7 @@
               "two": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld عمودان"
+                  "value": "عمودان"
                 }
               },
               "zero": {

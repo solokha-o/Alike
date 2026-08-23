@@ -468,6 +468,27 @@ weekday.
 to a Latin word with no space, which reads badly at the script boundary. Changed to
 `وخدمة iCloud`, giving the conjunction an Arabic word to attach to.
 
+### The dual printed its own number — fixed
+
+Device screenshots of a real library, on screens the simulator's empty library could not
+reach, caught what no test could: the cluster action bar read `نقل 2 صورتين` — "move 2
+two-photos" — and the selection summary `2 محددان` the same way. Arabic's dual *is* the
+count, so the digit in front of it is redundant to the point of being wrong.
+
+All sixteen `two` variations now drop the count specifier and let the noun carry it.
+`xcstringstool` compiles that as long as another variation of the key still references the
+number, and `testFormatSpecifiersSurviveEveryTranslation` was narrowed to allow it — for
+plural categories only, and only for the count. `%2$@` and every other argument still have
+to survive translation, which the two-argument keys (`selectionSummary`,
+`itemsEstimatedReclaimable`, `postFirstScan.withSavings`) prove against compiled bundles.
+
+### Observation, not a defect: `صفر كيلوبايت`
+
+The cleanup queue shows `صفر كيلوبايت` where the count beside it is a digit. That is
+Foundation's own spelling of zero for `ar_SA` — English renders the same field as
+`Zero kB`, German as `0 kB`. Changing it would be a product decision affecting all
+thirteen locales, not an Arabic fix.
+
 ### Not Arabic's problem, but found here: the permission prompt is English in every locale
 
 The photo-library prompt renders `"Alike" would like full access to your Photo Library.` /

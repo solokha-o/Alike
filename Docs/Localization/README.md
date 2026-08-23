@@ -142,6 +142,12 @@ Two things a translation pass has to get right, both of which the tests now catc
     the same sentence, and the completeness test fails it. The single-category shape is also
     the one most likely to fall back to the raw key, so it is resolved for real in tests
     rather than only asserted in JSON.
+  - **`ar`'s dual is the number.** "صورتان" already means "two photos", so printing the
+    count in front of it renders as "2 two-photos". The `two` variation therefore drops the
+    count specifier and lets the noun carry it — `xcstringstool` accepts that as long as
+    another variation of the key still references the number, and
+    `testFormatSpecifiersSurviveEveryTranslation` allows it for plural categories only, and
+    only for the count. Every other argument must still survive translation.
   - **`ar` has all six, and four of them legitimately coincide.** `zero`, `one`, `many` and
     `other` share one wording; only `two` and `few` inflect the noun. Do not "fix" that by
     inventing six distinct spellings — the categories must all be declared, but their text

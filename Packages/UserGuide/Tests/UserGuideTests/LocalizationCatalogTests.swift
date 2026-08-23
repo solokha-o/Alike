@@ -113,6 +113,27 @@ struct LocalizationCatalog {
         }
     }
 
+    /// The same shape with the count argument removed.
+    ///
+    /// Arabic's dual *is* the number: "صورتان" means "two photos", so printing the digit in
+    /// front of it reads as "2 two-photos". The idiomatic translation drops the numeral and
+    /// lets the noun carry the count, which `xcstringstool` accepts as long as some other
+    /// variation of the key still references it.
+    ///
+    /// Only the count may go. Every other argument — the byte size, the date, the plan name —
+    /// must survive translation, which is the whole point of the check, so this returns nil
+    /// rather than a looser shape when there is no count specifier to drop.
+    static func shapeWithoutCount(
+        _ shape: (specifiers: [String], literalPercents: Int)
+    ) -> (specifiers: [String], literalPercents: Int)? {
+        guard let index = shape.specifiers.firstIndex(where: { $0.hasSuffix("lld") || $0.hasSuffix("d") }) else {
+            return nil
+        }
+        var specifiers = shape.specifiers
+        specifiers.remove(at: index)
+        return (specifiers: specifiers, literalPercents: shape.literalPercents)
+    }
+
     /// The shape English states for a key. Every plural category of one language carries the
     /// same arguments — only the wording around them differs — so `other`, the one category
     /// every language declares, stands for the key.
@@ -308,7 +329,11 @@ final class LocalizationCatalogTests: XCTestCase {
                         ? "\(key) [\(language)]"
                         : "\(key) [\(language).\(category)]"
                     let shape = LocalizationCatalog.formatShape(translation)
-                    if shape != englishShape {
+                    // A plural variation may drop the count and spell it into the noun
+                    // instead — see `shapeWithoutCount`. Nothing else may go missing.
+                    let countMayBeLexical = !category.isEmpty
+                    let allowed = countMayBeLexical ? LocalizationCatalog.shapeWithoutCount(englishShape) : nil
+                    if shape != englishShape, shape.specifiers != allowed?.specifiers || shape.literalPercents != englishShape.literalPercents {
                         mismatched.append("\(label) has \(shape) where en has \(englishShape)")
                     }
                     if LocalizationCatalog.hasDanglingPercent(translation) {
