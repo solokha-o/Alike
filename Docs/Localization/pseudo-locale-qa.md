@@ -387,6 +387,92 @@ reader's *region*, not the app language, so a Traditional Chinese build on a dev
 comma region correctly shows `22,9 MB` — including in history entries recorded earlier. This
 is Apple's behaviour and matches the Photos app.
 
+## Findings — 2026-08-23 (task 45): right-to-left and Arabic
+
+Walked on iPhone 17 Pro (iOS 26 simulator) twice: once under the new `Alike-RTL` scheme
+with English strings, to isolate mirroring, and once launched with
+`-AppleLanguages '(ar)' -AppleLocale ar_SA` for the real thing. Screens covered: Welcome
+pages 1–3, Scanner home (idle and post-scan), Cleanup queue, Settings (both halves,
+including the reminder rows), the subscription paywall including the disclosure block, and
+the User Guide hub.
+
+| Screen | Locale | Status |
+|---|---|---|
+| Welcome, pages 1–3 | RTL, `ar` | **Pass** — pager, Back/Next, page dots all mirror |
+| Scanner home, idle | `ar` | **Pass** |
+| Scanner home, after a scan | `ar` | **Fail** — see "Three numbering systems" and "The last-scan date" |
+| Cleanup queue, smart category row | `ar` | **Pass** — `lock.fill` correctly does *not* mirror, the row's trailing edge moves to the left |
+| Settings, subscription + language + analysis | `ar` | **Pass** |
+| Settings, reminder rows | `ar` | **Pass after a fix** — see "A doubled preposition" |
+| Settings, debug overrides | `ar` | **Pass** |
+| Paywall, both plan cards | `ar` | **Pass** |
+| Paywall, disclosure block and legal links | `ar` | **Pass** — the eligibility hedge survives |
+| User Guide hub | `ar` | **Pass after a fix** — see "A conjunction fused onto Latin" |
+
+Mirroring itself came out clean, which the audit predicted: the layout had no physical
+left/right anywhere, so flipping the writing direction was enough. The direction-relative
+symbols from step 2 of this task all point the right way, and `lock.fill` — the one symbol
+in the set that must *not* mirror — does not.
+
+### Three numbering systems on one screen
+
+Scanner's Library Status card renders, side by side:
+
+- `آخر فحص` — an Arabic-Indic **Hijri** date, from `Date.formatted`
+- `الفرص` — **36**, Western digits, from `"\(summary.totalOpportunityCount)"`
+- `قابل للاسترجاع` — **٥١٫٣ م.ب.**, Arabic-Indic, from `ByteCountFormatter`
+- the free-scan footer — `بقي 2 من 3`, Western again, from `String(format:)`
+
+and the Cleanup queue one tab over renders the same 36 as **٣٦**, because that string is a
+catalog plural resolved by `String(localized:)`.
+
+The rule underneath it: **`String(localized:)` and the Foundation formatters follow
+`Locale.current` and so use the Arabic-Indic digits `ar_SA` asks for; `String(format:)`
+without a `locale:` argument does not, and neither do digits typed literally into
+translated copy.** Every `String(format:)` call in the app omits `locale:` —
+`ScannerHomeComponents.swift:308`, `CleanupView.swift:293` and `:644`,
+`ClusterDetailsViewModel.swift:153` and `:155`, `ClusterReviewSummaryCard.swift:101` and
+`:148`, `CleanupCategory.swift:96`, `ClusterDetailsView.swift:690`. That was invisible in
+the twelve existing locales, all of which use Western digits.
+
+This is a decision, not a typo, and it is not obviously "make everything Arabic-Indic":
+the disclosure paragraphs have to stay byte-identical to
+`Docs/legal/subscription-disclosure.md` and to the landing site, so their `24` and `7`
+are load-bearing as typed. **Left open pending a call on which direction the app should
+be consistent in.**
+
+### The last-scan date is Hijri, and it is truncated
+
+`ar_SA` uses the Umm al-Qura calendar, so `آخر فحص` reads `١٠ ربيع الأول، ١٤٤...` — a
+Hijri date, clipped mid-year in the three-column metric row. Two separate problems: the
+clipping is a layout defect regardless, and whether a photo app's "last scan" should be
+Hijri at all is a product call. `ar-AE` and `ar-EG` would render Gregorian, so this is
+also an argument for which Apple locale the App Store listing claims. **Left open.**
+
+### A doubled preposition — fixed
+
+`settings.main.freeRemindersUseSundayAt` took `%@` already carrying its own preposition
+(`الأحد في ٦:٠٠ م`) and put another `في` in front of it: *`في الأحد في ٦:٠٠ م`*. Changed
+the string's own `في` to `يوم`, which is what an Arabic reader expects in front of a
+weekday.
+
+### A conjunction fused onto Latin — fixed
+
+`userGuide.deletingSafely.summary` ended `...، وiCloud.` — an Arabic waw attached directly
+to a Latin word with no space, which reads badly at the script boundary. Changed to
+`وخدمة iCloud`, giving the conjunction an Arabic word to attach to.
+
+### Not Arabic's problem, but found here: the permission prompt is English in every locale
+
+The photo-library prompt renders `"Alike" would like full access to your Photo Library.` /
+`Alike analyzes your photo library to find visually similar images.` under `ar` — and
+under all twelve other locales too. The purpose strings are set as
+`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` build settings in
+`Alike/Alike.xcodeproj/project.pbxproj:419` and `:457`, and there is no
+`InfoPlist.xcstrings` anywhere in the project, so they cannot localize. It is the first
+sentence a new user reads. **Pre-existing and outside task 45's scope; recorded here so it
+is not found a third time.**
+
 ## Still owed
 
 Nothing. Every screen in the acceptance lists of tasks 39, 40 and 43 has been walked, in the
