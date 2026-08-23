@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "歷來成效"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأثر الإجمالي"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "清理次數"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جلسات التنظيف"
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "完成的清理會顯示在這裡。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستظهر عمليات التنظيف المكتملة هنا."
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "預估可回收空間"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "القابل للاسترجاع تقديريًا"
           }
         }
       }
@@ -558,6 +582,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صور إلى «المحذوفة مؤخرًا»"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صورتان إلى «المحذوفة مؤخرًا»"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%2$@ قابلة للاسترجاع تقديريًا، ونُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -634,6 +700,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "歷史記錄"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "السجل"
           }
         }
       }
@@ -712,6 +784,12 @@
             "state": "translated",
             "value": "無法取得歷史記錄"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "السجل غير متوفر"
+          }
         }
       }
     },
@@ -788,6 +866,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已移到「最近刪除」"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نُقلت إلى «المحذوفة مؤخرًا»"
           }
         }
       }
@@ -866,6 +950,12 @@
             "state": "translated",
             "value": "沒有清理歷史記錄"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يوجد سجل تنظيف"
+          }
         }
       }
     },
@@ -942,6 +1032,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已移到「最近刪除」的照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور المنقولة إلى «المحذوفة مؤخرًا»"
           }
         }
       }
@@ -1020,6 +1116,12 @@
             "state": "translated",
             "value": "近期活動"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النشاط الأخير"
+          }
         }
       }
     },
@@ -1096,6 +1198,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "重試"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة المحاولة"
           }
         }
       }
@@ -1174,6 +1282,12 @@
             "state": "translated",
             "value": "在項目從「最近刪除」中永久刪除之前，儲存空間可能不會釋出。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قد لا تتحرر المساحة إلا بعد حذف العناصر نهائيًا من «المحذوفة مؤخرًا»."
+          }
         }
       }
     },
@@ -1250,6 +1364,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法載入清理歷史記錄。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر تحميل سجل التنظيف."
           }
         }
       }
@@ -1328,6 +1448,12 @@
             "state": "translated",
             "value": "本週打開 Alike，清掉雜亂並持續省下空間。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح Alike هذا الأسبوع لإزالة الفوضى ومواصلة توفير المساحة."
+          }
         }
       }
     },
@@ -1404,6 +1530,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "準備好再清理一次了嗎？"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جاهز لجولة تنظيف أخرى؟"
           }
         }
       }
@@ -1656,6 +1788,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صور"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورتان"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1732,6 +1906,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "所有群組"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل المجموعات"
           }
         }
       }
@@ -1810,6 +1990,12 @@
             "state": "translated",
             "value": "所有群組皆已檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعة كل المجموعات"
+          }
         }
       }
     },
@@ -1886,6 +2072,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "所有群組皆已檢視。已檢視 %2$d 個群組中的 %1$d 個，已選取 %3$d 張，預估可省下 %4$@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعة كل المجموعات. تمت مراجعة %1$d من %2$d مجموعة، وحُدد %3$d، والتوفير التقديري %4$@."
           }
         }
       }
@@ -1964,6 +2156,12 @@
             "state": "translated",
             "value": "所有檢視狀態"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل حالات المراجعة"
+          }
         }
       }
     },
@@ -2040,6 +2238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "任何大小"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أي حجم"
           }
         }
       }
@@ -2118,6 +2322,12 @@
             "state": "translated",
             "value": "已變更"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متغيّرة"
+          }
         }
       }
     },
@@ -2194,6 +2404,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف"
           }
         }
       }
@@ -2272,6 +2488,12 @@
             "state": "translated",
             "value": "清理歷史記錄"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجل التنظيف"
+          }
         }
       }
     },
@@ -2348,6 +2570,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的清理結果已是最新狀態。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نتائج التنظيف لديك محدَّثة."
           }
         }
       }
@@ -2426,6 +2654,12 @@
             "state": "translated",
             "value": "無法進行清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف غير متاح"
+          }
         }
       }
     },
@@ -2502,6 +2736,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "繼續檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متابعة المراجعة"
           }
         }
       }
@@ -2580,6 +2820,12 @@
             "state": "translated",
             "value": "繼續檢視。已檢視 %2$d 個群組中的 %1$d 個，尚餘 %3$d 個，已選取 %4$d 張，預估可省下 %5$@。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تابع المراجعة. تمت مراجعة %1$d من %2$d مجموعة، وتبقّى %3$d، وحُدد %4$d، والتوفير التقديري %5$@."
+          }
         }
       }
     },
@@ -2656,6 +2902,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法打開清理類別"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر فتح فئة التنظيف"
           }
         }
       }
@@ -2734,6 +2986,12 @@
             "state": "translated",
             "value": "關閉清理狀態"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إخفاء حالة التنظيف"
+          }
         }
       }
     },
@@ -2810,6 +3068,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "完成"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم"
           }
         }
       }
@@ -2888,6 +3152,12 @@
             "state": "translated",
             "value": "預估可省空間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التوفير التقديري"
+          }
         }
       }
     },
@@ -2964,6 +3234,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "其餘項目仍在你的清理佇列中"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل ما تبقّى لا يزال متاحًا في قائمة التنظيف لديك"
           }
         }
       }
@@ -3042,6 +3318,12 @@
             "state": "translated",
             "value": "僅限最愛"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المفضلة فقط"
+          }
         }
       }
     },
@@ -3118,6 +3400,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "篩選與排序"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التصفية والترتيب"
           }
         }
       }
@@ -3196,6 +3484,12 @@
             "state": "translated",
             "value": "篩選與排序群組"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تصفية المجموعات وترتيبها"
+          }
         }
       }
     },
@@ -3272,6 +3566,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "篩選依據"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التصفية حسب"
           }
         }
       }
@@ -3350,6 +3650,12 @@
             "state": "translated",
             "value": "前往「掃描」"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الانتقال إلى الفحص"
+          }
         }
       }
     },
@@ -3426,6 +3732,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "隱藏此狀態訊息"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إخفاء رسالة الحالة هذه"
           }
         }
       }
@@ -3504,6 +3816,12 @@
             "state": "translated",
             "value": "相似度最高"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأعلى تشابهًا"
+          }
         }
       }
     },
@@ -3580,6 +3898,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視中"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قيد المراجعة"
           }
         }
       }
@@ -3832,6 +4156,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عناصر • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عنصرًا • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عنصر • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عنصر • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عنصران • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عنصر • %2$@ قابلة للاسترجاع تقديريًا"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3908,6 +4274,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最大的群組"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أكبر مجموعة"
           }
         }
       }
@@ -3986,6 +4358,12 @@
             "state": "translated",
             "value": "上次掃描沒有找到可檢視的相似照片或智慧類別。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يعثر فحصك الأخير على صور متشابهة أو فئات ذكية لمراجعتها."
+          }
         }
       }
     },
@@ -4062,6 +4440,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已鎖定"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مقفل"
           }
         }
       }
@@ -4140,6 +4524,12 @@
             "state": "translated",
             "value": "群組最小數量"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحد الأدنى لحجم المجموعة"
+          }
         }
       }
     },
@@ -4216,6 +4606,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "可省下最多空間"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأكثر توفيرًا للمساحة"
           }
         }
       }
@@ -4294,6 +4690,12 @@
             "state": "translated",
             "value": "待檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بحاجة إلى مراجعة"
+          }
         }
       }
     },
@@ -4370,6 +4772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "新項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جديدة"
           }
         }
       }
@@ -4448,6 +4856,12 @@
             "state": "translated",
             "value": "上次重新掃描後新增與變更的群組"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المجموعات الجديدة والمتغيّرة بعد آخر إعادة فحص"
+          }
         }
       }
     },
@@ -4524,6 +4938,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最新"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأحدث"
           }
         }
       }
@@ -4602,6 +5022,12 @@
             "state": "translated",
             "value": "沒有可清理的項目"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد فرص للتنظيف"
+          }
         }
       }
     },
@@ -4678,6 +5104,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒有群組符合這些條件"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد مجموعات تطابق هذه الضوابط"
           }
         }
       }
@@ -4756,6 +5188,12 @@
             "state": "translated",
             "value": "未檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم تُراجَع"
+          }
         }
       }
     },
@@ -4832,6 +5270,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "目前沒有其他待檢視的項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتبقَّ شيء لمراجعته الآن"
           }
         }
       }
@@ -4910,6 +5354,12 @@
             "state": "translated",
             "value": "好"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موافق"
+          }
         }
       }
     },
@@ -4986,6 +5436,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開下一個群組以繼續清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح المجموعة التالية لمتابعة التنظيف"
           }
         }
       }
@@ -5064,6 +5520,12 @@
             "state": "translated",
             "value": "打開這個清理類別"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح فئة التنظيف هذه"
+          }
         }
       }
     },
@@ -5140,6 +5602,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開這個群組以檢視照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح هذه المجموعة لمراجعة الصور"
           }
         }
       }
@@ -5218,6 +5686,12 @@
             "state": "translated",
             "value": "打開升級選項"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح خيارات الترقية"
+          }
         }
       }
     },
@@ -5294,6 +5768,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d 張或以上照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d صور أو أكثر"
           }
         }
       }
@@ -5546,6 +6026,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صور إلى «المحذوفة مؤخرًا»."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صورتان إلى «المحذوفة مؤخرًا»."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نُقلت %1$lld صورة إلى «المحذوفة مؤخرًا»."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -5622,6 +6144,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片已刪除，但圖庫更新失敗。請重新掃描以更新結果。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حُذفت الصور، لكن تحديث المكتبة أخفق. أجرِ فحصًا جديدًا لتحديث نتائجك."
           }
         }
       }
@@ -5700,6 +6228,12 @@
             "state": "translated",
             "value": "從上次中斷的地方繼續"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تابع من حيث توقفت"
+          }
         }
       }
     },
@@ -5776,6 +6310,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "須重新整理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يلزم التحديث"
           }
         }
       }
@@ -5854,6 +6394,12 @@
             "state": "translated",
             "value": "正在更新清理項目"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تحديث التنظيف"
+          }
         }
       }
     },
@@ -5930,6 +6476,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "尚餘"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المتبقي"
           }
         }
       }
@@ -6008,6 +6560,12 @@
             "state": "translated",
             "value": "重新掃描"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة الفحص"
+          }
         }
       }
     },
@@ -6084,6 +6642,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "重新掃描照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة فحص الصور"
           }
         }
       }
@@ -6162,6 +6726,12 @@
             "state": "translated",
             "value": "重置條件"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة تعيين الضوابط"
+          }
         }
       }
     },
@@ -6238,6 +6808,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視狀態"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حالة المراجعة"
           }
         }
       }
@@ -6316,6 +6892,12 @@
             "state": "translated",
             "value": "已檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعتها"
+          }
         }
       }
     },
@@ -6392,6 +6974,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "重新掃描以更新清理建議。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أجرِ فحصًا جديدًا لتحديث اقتراحات التنظيف."
           }
         }
       }
@@ -6470,6 +7058,12 @@
             "state": "translated",
             "value": "掃描失敗"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أخفق الفحص"
+          }
         }
       }
     },
@@ -6546,6 +7140,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "請先掃描你的圖庫"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افحص مكتبتك أولًا"
           }
         }
       }
@@ -6624,6 +7224,12 @@
             "state": "translated",
             "value": "正在掃描你的圖庫… %d%%"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ فحص مكتبتك… %d%%"
+          }
         }
       }
     },
@@ -6700,6 +7306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已選取"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المحدد"
           }
         }
       }
@@ -6778,6 +7390,12 @@
             "state": "translated",
             "value": "智慧清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف الذكي"
+          }
         }
       }
     },
@@ -6854,6 +7472,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "排序依據"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الترتيب حسب"
           }
         }
       }
@@ -6932,6 +7556,12 @@
             "state": "translated",
             "value": "排序方式"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اتجاه الترتيب"
+          }
         }
       }
     },
@@ -7008,6 +7638,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "開始掃描，找出相似照片與智慧清理建議。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ابدأ فحصًا للعثور على الصور المتشابهة واقتراحات التنظيف الذكية."
           }
         }
       }
@@ -7086,6 +7722,12 @@
             "state": "translated",
             "value": "請試著更改篩選條件或重置條件。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جرّب تغيير المرشّحات أو إعادة تعيين الضوابط."
+          }
         }
       }
     },
@@ -7163,6 +7805,12 @@
             "state": "translated",
             "value": "解鎖進階篩選"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح المرشّحات المتقدمة"
+          }
         }
       }
     },
@@ -7239,6 +7887,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的圖庫有變動"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تغيّرت مكتبتك"
           }
         }
       }

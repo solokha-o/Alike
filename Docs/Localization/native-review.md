@@ -1,7 +1,7 @@
 # Native review — what still needs a human
 
 Task 40 translated 683 keys into `es-419`, `es`, `pt-BR`, `de` and `fr`; task 43 added
-`it`, `nl`, `pl`, `tr` and `zh-Hant` on the same 683 keys. Every unit is marked
+`it`, `nl`, `pl`, `tr` and `zh-Hant`, and task 45 added `ar`, all on the same 683 keys. Every unit is marked
 `state: "translated"`, so the catalogs read green in Xcode and the completeness tests
 pass. **That is a statement about coverage, not about a native speaker having read it.**
 This file is the list of strings where a wrong word costs money or a review flag, and it
@@ -11,7 +11,8 @@ the per-language notes at the end say what to watch for in each.
 Terminology was matched against Apple's own platform vocabulary per language rather than
 a generic glossary — "Zuletzt gelöscht", "Supprimés récemment", "Eliminados
 recientemente", "Apagados recentemente", "Eliminati di recente", "Recent verwijderd",
-"Ostatnio usunięte", "Son Silinenler", "最近刪除". A reviewer should check that choice as
+"Ostatnio usunięte", "Son Silinenler", "最近刪除", "المحذوفة مؤخرًا". A reviewer should check
+that choice as
 much as the grammar.
 
 Three tier 3 terminology calls are the least certain and should be confirmed first:
@@ -173,6 +174,15 @@ entries state facts and have to agree with the app: the free allowance in `prici
 - **`zh-Hant`** — Taiwan/Hong Kong vocabulary. No plural forms at all. The thing to check is
   density rather than grammar: short labels leave a lot of empty button, and the
   numeric-heavy Cleanup screens set differently from Latin script.
+- **`ar`** — Modern Standard Arabic, and the only right-to-left language in the set. Three
+  things to check that no other language raises. **Direction:** the whole interface mirrors,
+  so a reviewer should look at layout as much as wording. **Plurals:** all six CLDR
+  categories are declared and four of them share the same wording — that is correct, not a
+  copy-paste slip; the forms that differ are `two` ("صورتان") and `few` ("صور"). **The brand
+  name:** "Alike" stays in Latin script inline in Arabic sentences, which is the usual Apple
+  practice, but a reviewer should confirm the surrounding grammar agrees with it and that no
+  string reads awkwardly around the embedded Latin run. Glyphs also sit taller than Latin
+  ones, so fixed-height labels are where clipping shows first.
 
 ## Not yet reviewed by a native speaker
 
@@ -185,8 +195,9 @@ the one field where a plausible-sounding word simply fails to be what people sea
 and the **zh-Hant screenshot captions**, which are the only copy in the project set in
 Heiti TC rather than SF Pro and should be read at thumbnail size, not at full size.
 
-No language in the app has had a native pass. The tier 3 five are the newest and the two
-non-Latin-adjacent risks (`pl` grammar, `zh-Hant` terminology) are concentrated there, so if
-review budget is limited, spend it on `pl` and `tr` first — Polish because wrong plural forms
-are visible to every user on every count, Turkish because the paywall and deletion copy are
-the longest strings in the app in that language.
+No language in the app has had a native pass. `ar` is the newest and carries the most
+novel risk, because it is the only language where a translation error and a *layout* error
+look the same to a non-reader; spend review budget there first, on the paywall and the
+deletion confirmations. After that, `pl` and `tr` — Polish because wrong plural forms are
+visible to every user on every count, Turkish because the paywall and deletion copy are the
+longest strings in the app in that language.

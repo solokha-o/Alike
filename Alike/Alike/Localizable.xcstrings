@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "稍後"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لاحقًا"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "更改敏感度後須重新掃描才會生效"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتطلب تغيير الحساسية إجراء فحص جديد لكي يسري المفعول"
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "立即重新掃描"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة الفحص الآن"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "須重新掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يلزم إعادة الفحص"
           }
         }
       }
@@ -384,6 +408,12 @@
             "state": "translated",
             "value": "清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف"
+          }
         }
       }
     },
@@ -461,6 +491,12 @@
             "state": "translated",
             "value": "掃描"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفحص"
+          }
         }
       }
     },
@@ -537,6 +573,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "設定"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإعدادات"
           }
         }
       }

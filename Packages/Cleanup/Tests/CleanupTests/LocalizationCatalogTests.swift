@@ -16,15 +16,18 @@ struct LocalizationCatalog {
     /// Every language the app ships. Adding one here makes the whole suite fail until the
     /// catalog carries it — which is the point.
     static let shippedLanguages = [
-        "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant"
+        "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
+        "ar"
     ]
 
-    /// The CLDR plural categories each shipped language actually uses. `uk` and `pl` need all
-    /// four; `pt-BR` and `fr` add `many` for compact large numbers; `zh-Hant` has a single form,
+    /// The CLDR plural categories each shipped language actually uses. `ar` needs all six —
+    /// it is the only shipped language with `zero` and `two`; `uk` and `pl` need four;
+    /// `pt-BR` and `fr` add `many` for compact large numbers; `zh-Hant` has a single form,
     /// so a one/other pair there would be two spellings of the same sentence; everything else
     /// uses one/other.
     static func pluralCategories(for language: String) -> [String] {
         switch language {
+        case "ar": ["few", "many", "one", "other", "two", "zero"]
         case "uk", "pl": ["few", "many", "one", "other"]
         case "pt-BR", "fr": ["many", "one", "other"]
         case "zh-Hant": ["other"]

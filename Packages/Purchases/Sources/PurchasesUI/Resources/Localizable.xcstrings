@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "Alike Pro"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike Pro 已啟用"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike Pro مُفعَّل"
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "使用 Pro 清理所有已選取的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نظّف كل الصور المحددة مع Pro"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "回復購買項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استعادة المشتريات"
           }
         }
       }
@@ -554,6 +578,48 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "一次操作即可檢視並移除所選的 %1$lld 張照片，預估可回收 %2$@。"
+                }
+              }
+            }
+          }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صور محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صورة محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صورة محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صورة محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صورتين محددتين وأزلهما في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "راجع %1$lld صورة محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
                 }
               }
             }
@@ -809,6 +875,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرص للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصتين للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1060,6 +1168,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرص للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصتين للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عثر فحصك على %1$lld فرصة للتنظيف مع %2$@ قابلة للاسترجاع تقديريًا. افتح Alike Pro لتنظّف بسرعة أكبر."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1136,6 +1286,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選擇符合你作息的每週提醒日期與時間。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر يوم التذكير الأسبوعي ووقته بما يناسب روتينك."
           }
         }
       }
@@ -1214,6 +1370,12 @@
             "state": "translated",
             "value": "更快找到重要的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اعثر على الصور المهمة بسرعة أكبر"
+          }
         }
       }
     },
@@ -1290,6 +1452,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你找到了第一批可清理的項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عثرت على أولى فرص التنظيف لديك"
           }
         }
       }
@@ -1368,6 +1536,12 @@
             "state": "translated",
             "value": "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次，額度將於 %3$@ 重設。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تشمل النسخة المجانية %1$d فحوصات في الشهر الميلادي. لديك %2$d متبقية، وتتجدد الحصة في %3$@."
+          }
         }
       }
     },
@@ -1444,6 +1618,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تشمل النسخة المجانية %1$d فحوصات في الشهر الميلادي. لديك %2$d متبقية."
           }
         }
       }
@@ -1522,6 +1702,12 @@
             "state": "translated",
             "value": "免費版每個日曆月包含三次掃描。只要圖庫有變動，Pro 就會讓清理結果保持最新。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تشمل النسخة المجانية ثلاثة فحوصات في الشهر الميلادي. أما Pro فيبقي نتائج تنظيفك محدَّثة كلما تغيّرت مكتبتك."
+          }
         }
       }
     },
@@ -1598,6 +1784,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無每月次數上限，隨時掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "واصل الفحص بلا حدود شهرية"
           }
         }
       }
@@ -1676,6 +1868,12 @@
             "state": "translated",
             "value": "讓清理配合你的行程"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اجعل التنظيف يناسب جدولك"
+          }
         }
       }
     },
@@ -1752,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用 Alike Pro，每次清理都更快"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اجعل كل عملية تنظيف أسرع مع Alike Pro"
           }
         }
       }
@@ -1830,6 +2034,12 @@
             "state": "translated",
             "value": "在一次安全且經過確認的操作中移除多張已選取的照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أزل عدة صور محددة في إجراء واحد آمن ومؤكَّد."
+          }
         }
       }
     },
@@ -1906,6 +2116,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "更快檢視可能模糊的照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع الصور التي يُرجَّح أنها ضبابية بسرعة أكبر"
           }
         }
       }
@@ -1984,6 +2200,12 @@
             "state": "translated",
             "value": "在決定保留或移除之前，先檢視可能品質不佳的照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع اللقطات التي يُرجَّح أنها منخفضة الجودة قبل أن تقرر ما تحتفظ به وما تزيله."
+          }
         }
       }
     },
@@ -2060,6 +2282,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一起檢視螢幕快照，精準選擇要移到「最近刪除」的項目。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع لقطات الشاشة معًا واختر بدقة ما ينبغي نقله إلى «المحذوفة مؤخرًا»."
           }
         }
       }
@@ -2138,6 +2366,12 @@
             "state": "translated",
             "value": "檢視智慧清理建議，同時完全掌控每一次刪除。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع اقتراحات التنظيف الذكية مع الاحتفاظ بالتحكم الكامل في كل عملية حذف."
+          }
         }
       }
     },
@@ -2214,6 +2448,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視這個智慧類別，預估可回收 %@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع هذه الفئة الذكية واسترجع ما يقدَّر بـ %@."
           }
         }
       }
@@ -2292,6 +2532,12 @@
             "state": "translated",
             "value": "把雜亂的螢幕快照變成可用空間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حوّل فوضى لقطات الشاشة إلى مساحة حرة"
+          }
         }
       }
     },
@@ -2368,6 +2614,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "解鎖檢視狀態、群組大小與最愛篩選條件，清理更快速。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح مرشّحات حالة المراجعة وحجم المجموعة والمفضلة لتنظيف أسرع."
           }
         }
       }
@@ -2446,6 +2698,12 @@
             "state": "translated",
             "value": "解鎖無限次掃描、智慧類別、進階篩選、批次清理與自訂提醒。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح فحوصات غير محدودة وفئات ذكية ومرشّحات متقدمة وتنظيفًا جماعيًا وتذكيرات مخصصة."
+          }
         }
       }
     },
@@ -2522,6 +2780,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用 Alike Pro 解鎖%@"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح %@ مع Alike Pro"
           }
         }
       }
@@ -2600,6 +2864,12 @@
             "state": "translated",
             "value": "%1$@ • 有效期至 %2$@"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • مُفعَّل حتى %2$@"
+          }
         }
       }
     },
@@ -2676,6 +2946,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法取得 Alike Pro 狀態"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حالة Alike Pro غير متوفرة"
           }
         }
       }
@@ -2754,6 +3030,12 @@
             "state": "translated",
             "value": "正在檢查 Alike Pro"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ التحقق من Alike Pro"
+          }
         }
       }
     },
@@ -2830,6 +3112,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在檢查訂閱狀態"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ التحقق من حالة الاشتراك"
           }
         }
       }
@@ -2908,6 +3196,12 @@
             "state": "translated",
             "value": "正在確認你的 App Store 訂閱狀態。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تأكيد حالة اشتراكك في App Store."
+          }
         }
       }
     },
@@ -2984,6 +3278,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "以一張照片繼續"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المتابعة بصورة واحدة"
           }
         }
       }
@@ -3062,6 +3362,12 @@
             "state": "translated",
             "value": "你目前的權限不受影響。打開方案以重新載入訂閱詳細資訊。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبقى وصولك الحالي كما هو. افتح الخطط لإعادة محاولة تحميل تفاصيل الاشتراك."
+          }
         }
       }
     },
@@ -3135,6 +3441,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "ar": {
           "stringUnit": {
             "state": "translated",
             "value": "Pro"
@@ -3216,6 +3528,12 @@
             "state": "translated",
             "value": "須有 Alike Pro"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتطلب Alike Pro"
+          }
         }
       }
     },
@@ -3292,6 +3610,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已選取 %1$d 張 • 預估可回收 %2$@"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d محدد • %2$@ قابلة للاسترجاع تقديريًا"
           }
         }
       }
@@ -3370,6 +3694,12 @@
             "state": "translated",
             "value": "解鎖無限次掃描、智慧清理與批次操作。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
+          }
         }
       }
     },
@@ -3446,6 +3776,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "升級至 Alike Pro"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الترقية إلى Alike Pro"
           }
         }
       }
@@ -3524,6 +3860,12 @@
             "state": "translated",
             "value": "查看 Alike Pro"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض Alike Pro"
+          }
         }
       }
     },
@@ -3600,6 +3942,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "查看方案"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض الخطط"
           }
         }
       }
@@ -3678,6 +4026,12 @@
             "state": "translated",
             "value": "進階篩選與批次清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مرشّحات متقدمة وتنظيف جماعي"
+          }
         }
       }
     },
@@ -3754,6 +4108,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike Free 仍包含每個日曆月三次掃描、檢視現有結果，以及單張照片清理。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تزال نسخة Alike المجانية تشمل ثلاثة فحوصات في كل شهر ميلادي، ومراجعة النتائج الحالية، وتنظيف صورة واحدة."
           }
         }
       }
@@ -3832,6 +4192,12 @@
             "state": "translated",
             "value": "Alike Pro 已啟用。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike Pro مُفعَّل الآن."
+          }
         }
       }
     },
@@ -3908,6 +4274,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已回復你的 Alike Pro 訂閱項目。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت استعادة اشتراكك في Alike Pro."
           }
         }
       }
@@ -3986,6 +4358,12 @@
             "state": "translated",
             "value": "每月計費"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفوترة شهريًا"
+          }
         }
       }
     },
@@ -4062,6 +4440,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "每年計費"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفوترة سنويًا"
           }
         }
       }
@@ -4140,6 +4524,12 @@
             "state": "translated",
             "value": "訂閱方案無法取得期間，你可以繼續使用 Alike Free。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك متابعة استخدام Alike المجاني ريثما تتوفر خطط الاشتراك."
+          }
         }
       }
     },
@@ -4216,6 +4606,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "請檢查網路連線，然後再次載入訂閱方案。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحقق من اتصالك وحاول تحميل خطط الاشتراك مرة أخرى."
           }
         }
       }
@@ -4294,6 +4690,12 @@
             "state": "translated",
             "value": "依你的時間安排的清理提醒"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تذكير بالتنظيف وفق جدولك"
+          }
         }
       }
     },
@@ -4370,6 +4772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "關閉"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إغلاق"
           }
         }
       }
@@ -4448,6 +4856,12 @@
             "state": "translated",
             "value": "繼續使用 %@"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المتابعة بـ %@"
+          }
         }
       }
     },
@@ -4524,6 +4938,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在載入 App Store 方案…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تحميل خطط App Store…"
           }
         }
       }
@@ -4602,6 +5022,12 @@
             "state": "translated",
             "value": "找不到使用中的 Alike Pro 訂閱項目。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يُعثر على اشتراك مُفعَّل في Alike Pro."
+          }
         }
       }
     },
@@ -4678,6 +5104,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "按月付款"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ادفع شهرًا واحدًا في كل مرة"
           }
         }
       }
@@ -4756,6 +5188,12 @@
             "state": "translated",
             "value": "方案尚未推出"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخطط غير متوفرة بعد"
+          }
         }
       }
     },
@@ -4832,6 +5270,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法載入方案"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر تحميل الخطط"
           }
         }
       }
@@ -4910,6 +5354,12 @@
             "state": "translated",
             "value": "隱私權政策"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سياسة الخصوصية"
+          }
         }
       }
     },
@@ -4986,6 +5436,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的購買項目正在等待 App Store 核准。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عملية الشراء في انتظار موافقة App Store."
           }
         }
       }
@@ -5064,6 +5520,12 @@
             "state": "translated",
             "value": "正在購買…"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ الشراء…"
+          }
         }
       }
     },
@@ -5140,6 +5602,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "推薦"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موصى به"
           }
         }
       }
@@ -5218,6 +5686,12 @@
             "state": "translated",
             "value": "重試"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة المحاولة"
+          }
         }
       }
     },
@@ -5294,6 +5768,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "比每月方案省下 %d%%"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وفّر %d%% مقارنةً بالاشتراك الشهري"
           }
         }
       }
@@ -5372,6 +5852,12 @@
             "state": "translated",
             "value": "選擇年繳更省"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وفّر مع الفوترة السنوية"
+          }
         }
       }
     },
@@ -5448,6 +5934,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選擇訂閱方案"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر خطة اشتراك"
           }
         }
       }
@@ -5526,6 +6018,12 @@
             "state": "translated",
             "value": "選擇這個訂閱方案"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختيار خطة الاشتراك هذه"
+          }
         }
       }
     },
@@ -5602,6 +6100,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照與模糊照片的智慧類別"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فئتان ذكيتان للقطات الشاشة والصور الضبابية"
           }
         }
       }
@@ -5680,6 +6184,12 @@
             "state": "translated",
             "value": "無法取得訂閱方案"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خطط الاشتراك غير متوفرة"
+          }
         }
       }
     },
@@ -5756,6 +6266,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂。款項將向你的 Apple 帳戶收取。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. تُخصم قيمة الدفع من حساب Apple الخاص بك."
           }
         }
       }
@@ -5834,6 +6350,12 @@
             "state": "translated",
             "value": "使用條款"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شروط الاستخدام"
+          }
         }
       }
     },
@@ -5910,6 +6432,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無限次圖庫掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فحوصات غير محدودة للمكتبة"
           }
         }
       }
@@ -5988,6 +6516,12 @@
             "state": "translated",
             "value": "已解鎖無限次掃描與所有 Pro 清理工具。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم فتح الفحوصات غير المحدودة وجميع أدوات التنظيف في Pro."
+          }
         }
       }
     },
@@ -6064,6 +6598,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法完成你的購買。請檢查網路連線後再試一次。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر إتمام عملية الشراء. تحقق من اتصالك وحاول مرة أخرى."
           }
         }
       }
@@ -6142,6 +6682,12 @@
             "state": "translated",
             "value": "無法回復你的購買項目。請檢查網路連線後再試一次。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّرت استعادة مشترياتك. تحقق من اتصالك وحاول مرة أخرى."
+          }
         }
       }
     },
@@ -6218,6 +6764,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ قبل ذلك بـ 24 ساعة على الأقل. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS."
           }
         }
       }

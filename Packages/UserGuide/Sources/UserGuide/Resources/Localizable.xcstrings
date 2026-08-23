@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "步驟 %1$d，共 %2$d 步：%3$@"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخطوة %1$d من %2$d: %3$@"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已檢視過的群組中新增或移除了照片，值得再看一次。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أُضيفت صور إلى مجموعة سبق أن راجعتها أو أُزيلت منها، لذا تستحق نظرة أخرى."
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "已變更"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متغيّرة"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "標記的意思"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما الذي تعنيه الشارات"
           }
         }
       }
@@ -384,6 +408,12 @@
             "state": "translated",
             "value": "你在這裡選了照片，但尚未將群組標示為已檢視。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حددت صورًا هنا لكنك لم تضع علامة على المجموعة بأنها روجعت."
+          }
         }
       }
     },
@@ -460,6 +490,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視中"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قيد المراجعة"
           }
         }
       }
@@ -538,6 +574,12 @@
             "state": "translated",
             "value": "這個群組出現在最近一次掃描中。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ظهرت هذه المجموعة في أحدث فحص."
+          }
         }
       }
     },
@@ -614,6 +656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "新項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جديدة"
           }
         }
       }
@@ -692,6 +740,12 @@
             "state": "translated",
             "value": "你還沒有打開這個群組。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم تفتح هذه المجموعة بعد."
+          }
         }
       }
     },
@@ -768,6 +822,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "未檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم تُراجَع"
           }
         }
       }
@@ -846,6 +906,12 @@
             "state": "translated",
             "value": "你已對這個群組做出決定，無論是什麼決定。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اتخذت قرارك بشأن هذه المجموعة — أيًّا كان ذلك القرار."
+          }
         }
       }
     },
@@ -922,6 +988,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعتها"
           }
         }
       }
@@ -1000,6 +1072,12 @@
             "state": "translated",
             "value": "在任一照片畫面的工具列中，於寬鬆的單欄版面與較密集的格線之間切換。Alike 會在下次啟動時記住你的選擇。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بدّل بين تخطيط فسيح بعمود واحد وشبكة أكثر كثافة من شريط الأدوات في أي شاشة صور. يتذكر Alike اختيارك بين عمليات التشغيل."
+          }
         }
       }
     },
@@ -1076,6 +1154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "欄數"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأعمدة"
           }
         }
       }
@@ -1154,6 +1238,12 @@
             "state": "translated",
             "value": "依檢視狀態、群組最小數量或僅限最愛來縮小清單範圍。排序在 Alike Free 中仍可使用。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ضيّق القائمة حسب حالة المراجعة أو الحد الأدنى لحجم المجموعة أو المفضلة فقط. يبقى الترتيب متاحًا في Alike المجاني."
+          }
         }
       }
     },
@@ -1230,6 +1320,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "進階篩選"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المرشّحات المتقدمة"
           }
         }
       }
@@ -1308,6 +1404,12 @@
             "state": "translated",
             "value": "「重置條件」會將排序與篩選恢復為預設值。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعيد «إعادة تعيين الضوابط» الترتيب والمرشّحات إلى إعداداتها الافتراضية."
+          }
         }
       }
     },
@@ -1384,6 +1486,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "排序、篩選與版面"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الترتيب والمرشّحات والتخطيط"
           }
         }
       }
@@ -1462,6 +1570,12 @@
             "state": "translated",
             "value": "依最新、可省下最多空間、最大群組、相似度最高或檢視狀態來排序群組。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رتّب المجموعات حسب الأحدث، أو الأكثر توفيرًا للمساحة، أو الأكبر حجمًا، أو الأعلى تشابهًا، أو حالة المراجعة."
+          }
         }
       }
     },
@@ -1538,6 +1652,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "排序"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الترتيب"
           }
         }
       }
@@ -1616,6 +1736,12 @@
             "state": "translated",
             "value": "打開下一個仍需你處理的群組，讓你不必再找上次停在哪裡。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح المجموعة التالية التي لا تزال بحاجة إلى انتباهك، فلا تضطر أبدًا إلى البحث عن الموضع الذي توقفت عنده."
+          }
         }
       }
     },
@@ -1692,6 +1818,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "繼續檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متابعة المراجعة"
           }
         }
       }
@@ -1770,6 +1902,12 @@
             "state": "translated",
             "value": "你的進度"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تقدّمك"
+          }
         }
       }
     },
@@ -1846,6 +1984,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "顯示你至今清理過的所有項目，依月份分組，並附上歷來總計。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعرض كل ما نظّفته حتى الآن، مجمَّعًا حسب الشهر، مع إجماليك منذ البداية."
           }
         }
       }
@@ -1924,6 +2068,12 @@
             "state": "translated",
             "value": "歷史記錄"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "السجل"
+          }
         }
       }
     },
@@ -2000,6 +2150,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "「預估可省空間」是指目前選取的照片在永久刪除後可釋出的空間。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«التوفير التقديري» هو حجم المساحة التي سيحررها تحديدك الحالي بعد حذف الصور نهائيًا."
           }
         }
       }
@@ -2078,6 +2234,12 @@
             "state": "translated",
             "value": "已檢視、尚餘、已選取、預估可省空間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعتها، المتبقي، المحدد، التوفير التقديري"
+          }
         }
       }
     },
@@ -2154,6 +2316,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 找到的所有群組，包括你已標示為已檢視的群組。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل مجموعة عثر عليها Alike، بما فيها تلك التي وضعت عليها علامة أنها روجعت."
           }
         }
       }
@@ -2232,6 +2400,12 @@
             "state": "translated",
             "value": "所有群組"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل المجموعات"
+          }
         }
       }
     },
@@ -2308,6 +2482,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "只有在有新增或變更的項目時，才會出現「待檢視」。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تظهر «بحاجة إلى مراجعة» إلا عندما يكون هناك شيء جديد أو متغيّر لتنظر فيه."
           }
         }
       }
@@ -2386,6 +2566,12 @@
             "state": "translated",
             "value": "兩份群組清單"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قائمتان من المجموعات"
+          }
         }
       }
     },
@@ -2462,6 +2648,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你尚未決定的群組，以及重新掃描後有變動的群組。從這裡開始。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المجموعات التي لم تقرر بشأنها بعد، إضافة إلى تلك التي غيّرتها إعادة الفحص. ابدأ من هنا."
           }
         }
       }
@@ -2540,6 +2732,12 @@
             "state": "translated",
             "value": "待檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بحاجة إلى مراجعة"
+          }
         }
       }
     },
@@ -2616,6 +2814,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的進度、兩個群組區段、標記、排序與篩選。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تقدّمك، وقسما المجموعات، والشارات، والترتيب والمرشّحات."
           }
         }
       }
@@ -2694,6 +2898,12 @@
             "state": "translated",
             "value": "使用「清理」"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "العمل ضمن التنظيف"
+          }
         }
       }
     },
@@ -2770,6 +2980,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最愛優先，其次是解析度最高者，再其次是最新拍攝的。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تأتي المفضلة أولًا، ثم الأعلى دقة، ثم أحدث لقطة."
           }
         }
       }
@@ -2848,6 +3064,12 @@
             "state": "translated",
             "value": "Alike 如何挑選"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كيف يختارها Alike"
+          }
         }
       }
     },
@@ -2924,6 +3146,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "只要那張照片還在，你手動的選擇就會保留。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبقى اختيارك اليدوي ساريًا ما دامت تلك الصورة موجودة."
           }
         }
       }
@@ -3002,6 +3230,12 @@
             "state": "translated",
             "value": "最佳照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أفضل لقطة"
+          }
         }
       }
     },
@@ -3078,6 +3312,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "不同意嗎？長按任一張照片並選擇「設為最佳照片」。原本保留的那張會加入你的選取範圍。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توافق؟ اضغط مطولًا على أي صورة واختر «جعلها أفضل لقطة». وتنضم اللقطة السابقة إلى تحديدك."
           }
         }
       }
@@ -3156,6 +3396,12 @@
             "state": "translated",
             "value": "設為最佳照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جعلها أفضل لقطة"
+          }
         }
       }
     },
@@ -3232,6 +3478,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "以全螢幕打開照片。在群組照片間滑動，並用縮放手勢放大細節。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح الصورة بملء الشاشة. مرّر بين صور المجموعة واستخدم القرص للتكبير على التفاصيل."
           }
         }
       }
@@ -3310,6 +3562,12 @@
             "state": "translated",
             "value": "打開原始檔"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الأصل"
+          }
         }
       }
     },
@@ -3386,6 +3644,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "看得更仔細"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نظرة أقرب"
           }
         }
       }
@@ -3464,6 +3728,12 @@
             "state": "translated",
             "value": "長按照片可查看解析度、檔案類型、日期、最愛狀態與拍攝地點。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اضغط مطولًا على صورة لعرض الدقة ونوع الملف والتواريخ وحالة التفضيل ومكان التقاطها."
+          }
         }
       }
     },
@@ -3540,6 +3810,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "顯示資訊"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض المعلومات"
           }
         }
       }
@@ -3618,6 +3894,12 @@
             "state": "translated",
             "value": "將群組標示為已檢視是你的決定，並非選取照片造成的結果。你隨時可以重新打開。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وضع علامة «تمت المراجعة» على مجموعة هو قرارك، وليس نتيجة لتحديد الصور. ويمكنك إعادة فتحها في أي وقت."
+          }
         }
       }
     },
@@ -3694,6 +3976,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "完成一個群組"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إنهاء مجموعة"
           }
         }
       }
@@ -3772,6 +4060,12 @@
             "state": "translated",
             "value": "如果群組中的每張照片都值得保留，就標示為已檢視並繼續。不必移除任何東西。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذا كانت كل صورة في المجموعة تستحق الاحتفاظ، ضع علامة أنها روجعت وانتقل إلى غيرها. لا يلزم إزالة أي شيء."
+          }
         }
       }
     },
@@ -3848,6 +4142,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "全部保留也算完成"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاحتفاظ بكل شيء يُحتسب أيضًا"
           }
         }
       }
@@ -3926,6 +4226,12 @@
             "state": "translated",
             "value": "底部的按鈕會在你選取項目後出現，並且一定會先請你確認。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يظهر الزر في الأسفل بمجرد تحديد شيء، وهو يطلب التأكيد دائمًا أولًا."
+          }
         }
       }
     },
@@ -4002,6 +4308,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "移動已選取的照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نقل الصور المحددة"
           }
         }
       }
@@ -4080,6 +4392,12 @@
             "state": "translated",
             "value": "完成一個群組後，請使用導覽列上的印章按鈕。再點一下即可重新打開。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدم زر الختم في شريط التنقل عند انتهائك من مجموعة. انقره مرة أخرى لإعادة فتحها."
+          }
         }
       }
     },
@@ -4156,6 +4474,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "標示為已檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وضع علامة تمت المراجعة"
           }
         }
       }
@@ -4234,6 +4558,12 @@
             "state": "translated",
             "value": "Alike Free 一次移動一張照片。Alike Pro 可一步移除整組選取項目。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ينقل Alike المجاني صورة واحدة في كل مرة. أما Alike Pro فيزيل تحديدك كاملًا في خطوة واحدة."
+          }
         }
       }
     },
@@ -4310,6 +4640,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一次移除多張照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إزالة عدة صور دفعة واحدة"
           }
         }
       }
@@ -4388,6 +4724,12 @@
             "state": "translated",
             "value": "你的選取會被儲存，因此關掉群組稍後再回來也不會遺失任何內容。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُحفظ تحديدك، لذا فإن إغلاق مجموعة والعودة إليها لاحقًا لا يفقدك شيئًا."
+          }
         }
       }
     },
@@ -4464,6 +4806,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選擇照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختيار الصور"
           }
         }
       }
@@ -4542,6 +4890,12 @@
             "state": "translated",
             "value": "在 ••• 選單中：一次選取除保留照片外的全部，或清除整組選取。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "من قائمة ••• : حدد كل شيء ما عدا اللقطة المحتفظ بها دفعة واحدة، أو امسح التحديد بالكامل."
+          }
         }
       }
     },
@@ -4618,6 +4972,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選取除最佳照片外的全部"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديد الكل ما عدا الأفضل"
           }
         }
       }
@@ -4696,6 +5056,12 @@
             "state": "translated",
             "value": "點一下照片即可標示為待移除，再點一下即可保留。最佳照片無法被選取。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على أي صورة لتحديدها للإزالة. انقر مرة أخرى للاحتفاظ بها. ولا يمكن تحديد أفضل لقطة."
+          }
         }
       }
     },
@@ -4772,6 +5138,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "點一下選取"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر للتحديد"
           }
         }
       }
@@ -4850,6 +5222,12 @@
             "state": "translated",
             "value": "在群組中挑選要保留的照片，並標示為已檢視。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختيار ما تحتفظ به داخل المجموعة، ووضع علامة أنها روجعت."
+          }
         }
       }
     },
@@ -4926,6 +5304,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "相似照片與最佳照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور المتشابهة وأفضل لقطة"
           }
         }
       }
@@ -5004,6 +5388,12 @@
             "state": "translated",
             "value": "Alike 會顯示將移動哪些項目、佔用多少空間，然後把要求交給系統。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعرض Alike ما سيُنقل وحجم المساحة التي يشغلها، ثم يسلّم الطلب إلى النظام."
+          }
         }
       }
     },
@@ -5080,6 +5470,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "iOS 會請你確認"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يطلب iOS التأكيد"
           }
         }
       }
@@ -5158,6 +5554,12 @@
             "state": "translated",
             "value": "Alike 無法自行移除照片，iOS 一定會先詢問你。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يستطيع Alike إزالة صورة من تلقاء نفسه — يسألك iOS دائمًا أولًا."
+          }
         }
       }
     },
@@ -5234,6 +5636,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "逐步說明"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خطوة بخطوة"
           }
         }
       }
@@ -5312,6 +5720,12 @@
             "state": "translated",
             "value": "若已開啟「iCloud 照片」，同樣的照片也會在你的其他裝置上移到「最近刪除」。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذا كانت صور iCloud مفعّلة، تُنقل الصور نفسها إلى «المحذوفة مؤخرًا» على أجهزتك الأخرى."
+          }
         }
       }
     },
@@ -5388,6 +5802,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "「iCloud 照片」會同步這項變更"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تُزامن صور iCloud التغيير"
           }
         }
       }
@@ -5466,6 +5886,12 @@
             "state": "translated",
             "value": "照片會進入「照片」App 的「最近刪除」相簿，你可以從那裡回復任何一張。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنتهي الصور إلى ألبوم «المحذوفة مؤخرًا» في تطبيق الصور، حيث يمكنك استعادة أي منها."
+          }
         }
       }
     },
@@ -5542,6 +5968,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "30 天可以反悔"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 يومًا لتغيير رأيك"
           }
         }
       }
@@ -5620,6 +6052,12 @@
             "state": "translated",
             "value": "只有在照片離開「最近刪除」之後空間才會回來：30 天後自動清除，或由你手動清空相簿。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تعود المساحة إلا بعد مغادرة الصور «المحذوفة مؤخرًا» — تلقائيًا بعد 30 يومًا، أو عندما تفرّغ الألبوم."
+          }
         }
       }
     },
@@ -5696,6 +6134,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "空間會在最後才釋出"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتحرر المساحة في النهاية"
           }
         }
       }
@@ -5774,6 +6218,12 @@
             "state": "translated",
             "value": "依月份分組的時間軸，讓你看見自己何時清理了什麼。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خط زمني مجمَّع حسب الشهر، لتتمكن من رؤية ما نظّفته ومتى."
+          }
         }
       }
     },
@@ -5850,6 +6300,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "近期活動"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النشاط الأخير"
           }
         }
       }
@@ -5928,6 +6384,12 @@
             "state": "translated",
             "value": "清理歷史記錄"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجل التنظيف"
+          }
         }
       }
     },
@@ -6004,6 +6466,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的累計數字：已回收空間、已移動照片數，以及完成的清理次數。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إجمالياتك الجارية: المساحة المسترجعة، والصور المنقولة، وجلسات التنظيف المكتملة."
           }
         }
       }
@@ -6082,6 +6550,12 @@
             "state": "translated",
             "value": "歷來成效"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأثر الإجمالي"
+          }
         }
       }
     },
@@ -6158,6 +6632,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "「最近刪除」、空間何時真正釋出，以及 iCloud。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«المحذوفة مؤخرًا»، ومتى تتحرر المساحة فعليًا، وiCloud."
           }
         }
       }
@@ -6236,6 +6716,12 @@
             "state": "translated",
             "value": "刪除時會發生什麼"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ماذا يحدث عند الحذف"
+          }
         }
       }
     },
@@ -6312,6 +6798,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已掃描過的結果會持續保留，無論是否訂閱。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تبقى النتائج التي فحصتها بالفعل متاحة، سواء اشتركت أم لا."
           }
         }
       }
@@ -6390,6 +6882,12 @@
             "state": "translated",
             "value": "Alike Free 包含的功能"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المتضمَّن في Alike المجاني"
+          }
         }
       }
     },
@@ -6466,6 +6964,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開每個群組、比較照片、更換最佳照片，並將群組標示為已檢視。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح كل مجموعة، وقارن بين الصور، وغيّر أفضل لقطة، وضع علامة على المجموعات بأنها روجعت."
           }
         }
       }
@@ -6544,6 +7048,12 @@
             "state": "translated",
             "value": "完整檢視相似照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مراجعة كاملة للصور المتشابهة"
+          }
         }
       }
     },
@@ -6620,6 +7130,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "每個日曆月三次掃描，計數會在下個月初重設。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ثلاثة فحوصات في كل شهر ميلادي، ويُصفَّر العدّاد في بداية الشهر التالي."
           }
         }
       }
@@ -6698,6 +7214,12 @@
             "state": "translated",
             "value": "每月三次掃描"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ثلاثة فحوصات شهريًا"
+          }
         }
       }
     },
@@ -6774,6 +7296,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你可以逐張將照片移到「最近刪除」。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك نقل الصور إلى «المحذوفة مؤخرًا» واحدة تلو الأخرى."
           }
         }
       }
@@ -6852,6 +7380,12 @@
             "state": "translated",
             "value": "一次一張照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صورة واحدة في كل مرة"
+          }
         }
       }
     },
@@ -6928,6 +7462,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "「清理」中的所有排序方式都無須訂閱即可使用。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل ترتيبات الفرز في التنظيف متاحة دون اشتراك."
           }
         }
       }
@@ -7006,6 +7546,12 @@
             "state": "translated",
             "value": "所有排序選項"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل خيارات الترتيب"
+          }
         }
       }
     },
@@ -7082,6 +7628,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一步移動整組選取項目，不必逐張處理。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقل تحديدك بالكامل في خطوة واحدة بدلًا من صورة تلو الأخرى."
           }
         }
       }
@@ -7160,6 +7712,12 @@
             "state": "translated",
             "value": "批次清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف الجماعي"
+          }
         }
       }
     },
@@ -7236,6 +7794,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開「模糊照片」類別，檢視裝置端分析標示出的項目。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح فئة الصور الضبابية وراجع ما رصده التحليل على الجهاز."
           }
         }
       }
@@ -7314,6 +7878,12 @@
             "state": "translated",
             "value": "模糊照片清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف الصور الضبابية"
+          }
         }
       }
     },
@@ -7390,6 +7960,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "依檢視狀態、群組最小數量或僅限最愛來篩選「清理」。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صفِّ التنظيف حسب حالة المراجعة أو الحد الأدنى لحجم المجموعة أو المفضلة فقط."
           }
         }
       }
@@ -7468,6 +8044,12 @@
             "state": "translated",
             "value": "進階篩選"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المرشّحات المتقدمة"
+          }
         }
       }
     },
@@ -7544,6 +8126,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你隨時可以在 App Store 管理或取消訂閱項目。訂閱前會先顯示價格。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من App Store. وتُعرض الأسعار قبل أن تشترك."
           }
         }
       }
@@ -7622,6 +8210,12 @@
             "state": "translated",
             "value": "Alike Pro 額外提供"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما يضيفه Alike Pro"
+          }
         }
       }
     },
@@ -7698,6 +8292,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選擇每週清理提醒的日期與時間。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر يوم تذكير التنظيف الأسبوعي ووقته."
           }
         }
       }
@@ -7776,6 +8376,12 @@
             "state": "translated",
             "value": "自訂提醒排程"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جدول تذكير مخصص"
+          }
         }
       }
     },
@@ -7852,6 +8458,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開「螢幕快照」類別，並批次清空。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح فئة لقطات الشاشة وأفرغها دفعة واحدة."
           }
         }
       }
@@ -7930,6 +8542,12 @@
             "state": "translated",
             "value": "螢幕快照清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف لقطات الشاشة"
+          }
         }
       }
     },
@@ -8006,6 +8624,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "想掃描幾次就掃描幾次，沒有每月額度限制。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أعد الفحص كما تشاء، بلا حصة شهرية."
           }
         }
       }
@@ -8084,6 +8708,12 @@
             "state": "translated",
             "value": "無限次掃描"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فحوصات غير محدودة"
+          }
         }
       }
     },
@@ -8160,6 +8790,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無須訂閱即有的功能，以及 Pro 額外提供的功能。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما المتضمَّن دون اشتراك، وما الذي يضيفه Pro."
           }
         }
       }
@@ -8238,6 +8874,12 @@
             "state": "translated",
             "value": "Alike Free 與 Alike Pro"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike المجاني وAlike Pro"
+          }
         }
       }
     },
@@ -8314,6 +8956,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "取用權與安全性"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الوصول والأمان"
           }
         }
       }
@@ -8392,6 +9040,12 @@
             "state": "translated",
             "value": "Alike 只會提出建議。任何移除都需要你的選取和系統確認。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يفعل Alike أكثر من الاقتراح. وكل إزالة تحتاج إلى تحديدك وإلى تأكيد النظام."
+          }
         }
       }
     },
@@ -8468,6 +9122,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "不會自動刪除任何內容"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يُحذف أي شيء تلقائيًا"
           }
         }
       }
@@ -8546,6 +9206,12 @@
             "state": "translated",
             "value": "照片在裝置上分析，不會上傳到任何地方。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تُحلَّل الصور على الجهاز. ولا يُرفع أي شيء إلى أي مكان."
+          }
         }
       }
     },
@@ -8622,6 +9288,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一切都在你的 iPhone 上執行"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل شيء يجري على iPhone الخاص بك"
           }
         }
       }
@@ -8700,6 +9372,12 @@
             "state": "translated",
             "value": "Alike 需要圖庫的讀取與寫入權限：讀取用於分析照片，寫入用於移動你挑選的照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتاج Alike إلى إذن القراءة والكتابة في مكتبتك: القراءة لتحليل الصور، والكتابة لنقل ما تختاره منها."
+          }
         }
       }
     },
@@ -8776,6 +9454,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片取用權"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذن الوصول إلى الصور"
           }
         }
       }
@@ -8854,6 +9538,12 @@
             "state": "translated",
             "value": "你可以在任一步驟後停下，稍後再繼續，進度都會保存。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك التوقف بعد أي خطوة والمتابعة لاحقًا — فتقدّمك محفوظ."
+          }
         }
       }
     },
@@ -8930,6 +9620,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "三步驟循環"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الدورة المكوّنة من ثلاث خطوات"
           }
         }
       }
@@ -9008,6 +9704,12 @@
             "state": "translated",
             "value": "確認後，所選照片會移到「最近刪除」，iOS 會保留 30 天。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أكّد، فتنتقل الصور المحددة إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS مدة 30 يومًا."
+          }
         }
       }
     },
@@ -9084,6 +9786,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "移到「最近刪除」"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النقل إلى «المحذوفة مؤخرًا»"
           }
         }
       }
@@ -9162,6 +9870,12 @@
             "state": "translated",
             "value": "在「清理」標籤頁打開群組，比較照片並挑出你不再需要的。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح مجموعة في علامة تبويب التنظيف، وقارن بين الصور، واختر ما لم تعد بحاجة إليه."
+          }
         }
       }
     },
@@ -9238,6 +9952,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المراجعة"
           }
         }
       }
@@ -9316,6 +10036,12 @@
             "state": "translated",
             "value": "Alike 會在「掃描」標籤頁瀏覽你的照片圖庫，並將外觀相似的照片分組。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبحث Alike في مكتبة صورك من علامة تبويب الفحص ويجمّع الصور المتشابهة."
+          }
         }
       }
     },
@@ -9392,6 +10118,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفحص"
           }
         }
       }
@@ -9470,6 +10202,12 @@
             "state": "translated",
             "value": "看起來失焦的照片，集中起來讓你在移除前先確認。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صور تبدو خارج نطاق التركيز، جُمعت لتتحقق منها قبل الإزالة."
+          }
         }
       }
     },
@@ -9546,6 +10284,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "模糊照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور الضبابية"
           }
         }
       }
@@ -9624,6 +10368,12 @@
             "state": "translated",
             "value": "Alike 只分析照片。影片絕不會被讀取，也不會納入掃描。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحلل Alike الصور فقط. ولا تُقرأ مقاطع الفيديو أو تُدرَج في الفحص أبدًا."
+          }
         }
       }
     },
@@ -9700,6 +10450,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 會看哪些內容"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما الذي ينظر إليه Alike"
           }
         }
       }
@@ -9778,6 +10534,12 @@
             "state": "translated",
             "value": "螢幕擷取畫面不會納入相似群組，而是收在自己的類別中。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تُستبعد لقطات الشاشة من مجموعات التشابه وتُجمع في فئة خاصة بها."
+          }
         }
       }
     },
@@ -9854,6 +10616,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات الشاشة"
           }
         }
       }
@@ -9932,6 +10700,12 @@
             "state": "translated",
             "value": "看起來相似的連拍與近乎重複的照片，也就是同一瞬間拍了好幾張。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللقطات المتتابعة وشبه المكررة التي تبدو متشابهة — اللحظة نفسها مصوَّرة عدة مرات."
+          }
         }
       }
     },
@@ -10008,6 +10782,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "相似照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور المتشابهة"
           }
         }
       }
@@ -10086,6 +10866,12 @@
             "state": "translated",
             "value": "Alike 的用途、觀察範圍，以及三步驟循環。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما الذي يفعله Alike، وما الذي ينظر إليه، والدورة المكوّنة من ثلاث خطوات."
+          }
         }
       }
     },
@@ -10162,6 +10948,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "開始使用"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "البدء"
           }
         }
       }
@@ -10240,6 +11032,12 @@
             "state": "translated",
             "value": "未經你確認，Alike 絕不會移除照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يزيل Alike صورة أبدًا دون تأكيدك."
+          }
         }
       }
     },
@@ -10316,6 +11114,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 找出值得再看一眼的照片，由你決定要留下什麼。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعثر Alike على الصور التي تستحق نظرة ثانية، ويترك لك قرار ما يبقى."
           }
         }
       }
@@ -10394,6 +11198,12 @@
             "state": "translated",
             "value": "沒有結果"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد نتائج"
+          }
         }
       }
     },
@@ -10470,6 +11280,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "換個關鍵字試試，或瀏覽各個主題。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جرّب كلمة مختلفة، أو تصفّح المواضيع."
           }
         }
       }
@@ -10548,6 +11364,12 @@
             "state": "translated",
             "value": "搜尋使用指南"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ابحث في الدليل"
+          }
         }
       }
     },
@@ -10624,6 +11446,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開這個使用指南主題"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح موضوع الدليل هذا"
           }
         }
       }
@@ -10702,6 +11530,12 @@
             "state": "translated",
             "value": "主題"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المواضيع"
+          }
         }
       }
     },
@@ -10778,6 +11612,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "在「設定」的「資料與隱私權」中可以找到。此操作無法還原。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجده في الإعدادات، ضمن «البيانات والخصوصية». ولا يمكن التراجع عنه."
           }
         }
       }
@@ -10856,6 +11696,12 @@
             "state": "translated",
             "value": "刪除 Alike 資料"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف بيانات Alike"
+          }
         }
       }
     },
@@ -10932,6 +11778,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的照片、「最近刪除」相簿、照片取用權，以及 Alike Pro 訂閱項目。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صورك، وألبوم «المحذوفة مؤخرًا» لديك، وإذن الوصول إلى صورك، واشتراكك في Alike Pro."
           }
         }
       }
@@ -11010,6 +11862,12 @@
             "state": "translated",
             "value": "不受影響的項目"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما يبقى دون مساس"
+          }
         }
       }
     },
@@ -11086,6 +11944,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "掃描結果與分析快取、清理進度與歷史記錄，以及你的 Alike 偏好設定。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نتائج الفحص وذواكر التحليل المؤقتة، وتقدّم التنظيف وسجله، وتفضيلات Alike لديك."
           }
         }
       }
@@ -11164,6 +12028,12 @@
             "state": "translated",
             "value": "會被清除的項目"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما الذي يُمحى"
+          }
         }
       }
     },
@@ -11240,6 +12110,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "之後 Alike 會再次顯示介紹流程，但不會再要求一次照片取用權。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعرض Alike مقدمته من جديد بعد ذلك، دون أن يطلب إذن الوصول إلى الصور مرة ثانية."
           }
         }
       }
@@ -11318,6 +12194,12 @@
             "state": "translated",
             "value": "重新開始"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "البدء من جديد"
+          }
         }
       }
     },
@@ -11394,6 +12276,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片會透過 Apple 的裝置端視覺框架進行比較，結果儲存在本機。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تُقارن الصور باستخدام إطار عمل الرؤية من Apple على الجهاز، وتُخزَّن النتائج محليًا."
           }
         }
       }
@@ -11472,6 +12360,12 @@
             "state": "translated",
             "value": "分析絕不會離開你的 iPhone"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يغادر التحليل جهاز iPhone الخاص بك أبدًا"
+          }
         }
       }
     },
@@ -11548,6 +12442,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 沒有帳號、不需登入，也沒有自己的伺服器。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ليس لـ Alike حساب ولا تسجيل دخول ولا خادم خاص به."
           }
         }
       }
@@ -11626,6 +12526,12 @@
             "state": "translated",
             "value": "在你的裝置上"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "على جهازك"
+          }
         }
       }
     },
@@ -11702,6 +12608,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 唯一的網路要求是為了訂閱而連線到 App Store。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "طلبات الشبكة الوحيدة التي يجريها Alike هي إلى App Store، من أجل الاشتراكات."
           }
         }
       }
@@ -11780,6 +12692,12 @@
             "state": "translated",
             "value": "你的照片絕不會被上傳"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تُرفع صورك أبدًا"
+          }
         }
       }
     },
@@ -11856,6 +12774,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 會要求哪些權限"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما الذي يطلبه Alike"
           }
         }
       }
@@ -11934,6 +12858,12 @@
             "state": "translated",
             "value": "只有在你開啟每週清理提醒時才會要求，其他情況一律不會。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُطلب فقط إذا فعّلت تذكير التنظيف الأسبوعي، ولا يُطلب في غير ذلك أبدًا."
+          }
         }
       }
     },
@@ -12010,6 +12940,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "通知"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإشعارات"
           }
         }
       }
@@ -12088,6 +13024,12 @@
             "state": "translated",
             "value": "只在一開始要求一次。你隨時可以在 iOS「設定」中更改或限制。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُطلب مرة واحدة في البداية. ويمكنك تغييره أو تقييده في أي وقت من إعدادات iOS."
+          }
         }
       }
     },
@@ -12164,6 +13106,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片圖庫"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مكتبة الصور"
           }
         }
       }
@@ -12242,6 +13190,12 @@
             "state": "translated",
             "value": "哪些內容留在你的裝置上、Alike 會要求什麼，以及如何清除其資料。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما يبقى على جهازك، وما يطلبه Alike، وكيفية محو بياناته."
+          }
         }
       }
     },
@@ -12318,6 +13272,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "隱私權與你的資料"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخصوصية وبياناتك"
           }
         }
       }
@@ -12396,6 +13356,12 @@
             "state": "translated",
             "value": "卡片會說明出了什麼問題並提供「重試」。在此期間，先前的結果仍可使用。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توضّح البطاقة ما الذي حدث وتتيح «إعادة المحاولة». وتبقى النتائج السابقة متاحة في هذه الأثناء."
+          }
         }
       }
     },
@@ -12472,6 +13438,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "有一次掃描未完成"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يكتمل أحد الفحوصات"
           }
         }
       }
@@ -12550,6 +13522,12 @@
             "state": "translated",
             "value": "移動照片後自動執行的更新，不會計入你的免費掃描次數。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التحديث الذي يجري تلقائيًا بعد نقلك للصور لا يُحتسب من فحوصاتك المجانية."
+          }
         }
       }
     },
@@ -12626,6 +13604,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "何時該重新掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متى تعيد الفحص"
           }
         }
       }
@@ -12704,6 +13688,12 @@
             "state": "translated",
             "value": "當你在別處新增或移除照片時，Alike 會將結果標示為須更新，並提議重新掃描。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عندما تضيف صورًا أو تزيلها من مكان آخر، يضع Alike علامة على النتائج بأنها بحاجة إلى تحديث ويعرض إعادة الفحص."
+          }
         }
       }
     },
@@ -12780,6 +13770,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的圖庫有變動"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تغيّرت مكتبتك"
           }
         }
       }
@@ -12858,6 +13854,12 @@
             "state": "translated",
             "value": "敏感度決定兩張照片要多相似才會歸為同一組，因此更改後 Alike 會要求重新掃描。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحدد الحساسية مقدار التشابه المطلوب بين صورتين لتقعا في المجموعة نفسها، لذا يطلب Alike إعادة الفحص بعد تغييرها."
+          }
         }
       }
     },
@@ -12934,6 +13936,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你更改了敏感度"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "غيّرت الحساسية"
           }
         }
       }
@@ -13012,6 +14020,12 @@
             "state": "translated",
             "value": "切換標籤頁時掃描會持續進行。完成後，「清理」會自動更新。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يستمر الفحص عند تنقلك بين علامات التبويب. ويُحدَّث التنظيف تلقائيًا بمجرد انتهائه."
+          }
         }
       }
     },
@@ -13088,6 +14102,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "掃描期間仍可繼續使用 App"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "واصل استخدام التطبيق أثناء عمله"
           }
         }
       }
@@ -13166,6 +14186,12 @@
             "state": "translated",
             "value": "Alike 會記住它對每張照片的分析結果，只重新分析真正有變動的部分。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتذكر Alike ما تعلّمه عن كل صورة ولا يعيد تحليل سوى ما تغيّر فعلًا."
+          }
         }
       }
     },
@@ -13242,6 +14268,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "之後的掃描會更快"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفحوصات اللاحقة أسرع"
           }
         }
       }
@@ -13320,6 +14352,12 @@
             "state": "translated",
             "value": "「掃描」卡片會隨掃描進度變化，並告訴你下一步該做什麼。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتغيّر بطاقة الفحص مع تقدّم العملية وتخبرك بما ينبغي فعله بعد ذلك."
+          }
         }
       }
     },
@@ -13396,6 +14434,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "執行掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إجراء فحص"
           }
         }
       }
@@ -13474,6 +14518,12 @@
             "state": "translated",
             "value": "點一下「掃描」標籤頁中的按鈕。進度列會顯示分析進行到哪裡。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر الزر في علامة تبويب الفحص. ويُظهر شريط التقدّم مدى تقدّم التحليل."
+          }
         }
       }
     },
@@ -13550,6 +14600,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "開始掃描"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بدء الفحص"
           }
         }
       }
@@ -13628,6 +14684,12 @@
             "state": "translated",
             "value": "Alike Free 每個日曆月包含三次掃描。計數會在下個月初重設。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يشمل Alike المجاني ثلاثة فحوصات في كل شهر ميلادي. ويُصفَّر العدّاد في بداية الشهر التالي."
+          }
         }
       }
     },
@@ -13704,6 +14766,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "剩餘的免費掃描次數"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفحوصات المجانية المتبقية"
           }
         }
       }
@@ -13782,6 +14850,12 @@
             "state": "translated",
             "value": "首次掃描後，卡片會顯示掃描時間、找到多少可清理項目，以及它們佔用多少空間。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بعد فحصك الأول تعرض البطاقة موعد إجرائه وعدد الفرص التي عُثر عليها وحجم المساحة التي تشغلها."
+          }
         }
       }
     },
@@ -13858,6 +14932,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "上次掃描一覽"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "آخر فحص في لمحة"
           }
         }
       }
@@ -13936,6 +15016,12 @@
             "state": "translated",
             "value": "圖庫狀態"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حالة المكتبة"
+          }
         }
       }
     },
@@ -14012,6 +15098,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "執行掃描、讀懂「掃描」卡片，以及何時該重新掃描。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إجراء فحص، وقراءة بطاقة الفحص، ومعرفة متى تعيد الفحص."
           }
         }
       }
@@ -14090,6 +15182,12 @@
             "state": "translated",
             "value": "掃描你的圖庫"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فحص مكتبتك"
+          }
         }
       }
     },
@@ -14166,6 +15264,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "更改敏感度需要重新掃描，因為群組必須重新建立。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يستدعي تغيير الحساسية إعادة فحص، لأن المجموعات يجب أن تُبنى من جديد."
           }
         }
       }
@@ -14244,6 +15348,12 @@
             "state": "translated",
             "value": "調整結果"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ضبط النتائج"
+          }
         }
       }
     },
@@ -14253,73 +15363,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish and Traditional Chinese. The switch opens the iOS Settings page for the app."
+            "value": "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. The switch opens the iOS Settings page for the app."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike доступний англійською, українською, іспанською, португальською, німецькою, французькою, італійською, нідерландською, польською, турецькою та традиційною китайською. Перемикач відкриває сторінку програми в Налаштуваннях iOS."
+            "value": "Alike доступний англійською, українською, іспанською, португальською, німецькою, французькою, італійською, нідерландською, польською, турецькою, традиційною китайською та арабською. Перемикач відкриває сторінку програми в Налаштуваннях iOS."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike está disponible en inglés, ucraniano, español, portugués, alemán, francés, italiano, neerlandés, polaco, turco y chino tradicional. El botón abre la página de la app en Configuración de iOS."
+            "value": "Alike está disponible en inglés, ucraniano, español, portugués, alemán, francés, italiano, neerlandés, polaco, turco, chino tradicional y árabe. El botón abre la página de la app en Configuración de iOS."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike está disponible en inglés, ucraniano, español, portugués, alemán, francés, italiano, neerlandés, polaco, turco y chino tradicional. El botón abre la página de la app en Ajustes de iOS."
+            "value": "Alike está disponible en inglés, ucraniano, español, portugués, alemán, francés, italiano, neerlandés, polaco, turco, chino tradicional y árabe. El botón abre la página de la app en Ajustes de iOS."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O Alike está disponível em inglês, ucraniano, espanhol, português, alemão, francês, italiano, neerlandês, polonês, turco e chinês tradicional. O botão abre a página do app nos Ajustes do iOS."
+            "value": "O Alike está disponível em inglês, ucraniano, espanhol, português, alemão, francês, italiano, neerlandês, polonês, turco, chinês tradicional e árabe. O botão abre a página do app nos Ajustes do iOS."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch und Chinesisch (traditionell) verfügbar. Der Schalter öffnet die iOS-Einstellungsseite der App."
+            "value": "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch, Chinesisch (traditionell) und Arabisch verfügbar. Der Schalter öffnet die iOS-Einstellungsseite der App."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike est disponible en anglais, ukrainien, espagnol, portugais, allemand, français, italien, néerlandais, polonais, turc et chinois traditionnel. Le bouton ouvre la page des Réglages iOS de l’app."
+            "value": "Alike est disponible en anglais, ukrainien, espagnol, portugais, allemand, français, italien, néerlandais, polonais, turc, chinois traditionnel et arabe. Le bouton ouvre la page des Réglages iOS de l’app."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike è disponibile in inglese, ucraino, spagnolo, portoghese, tedesco, francese, italiano, olandese, polacco, turco e cinese tradizionale. Il pulsante apre la pagina dell'app in Impostazioni di iOS."
+            "value": "Alike è disponibile in inglese, ucraino, spagnolo, portoghese, tedesco, francese, italiano, olandese, polacco, turco, cinese tradizionale e arabo. Il pulsante apre la pagina dell'app in Impostazioni di iOS."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike is beschikbaar in het Engels, Oekraïens, Spaans, Portugees, Duits, Frans, Italiaans, Nederlands, Pools, Turks en traditioneel Chinees. De schakelaar opent de iOS-instellingenpagina van de app."
+            "value": "Alike is beschikbaar in het Engels, Oekraïens, Spaans, Portugees, Duits, Frans, Italiaans, Nederlands, Pools, Turks, traditioneel Chinees en Arabisch. De schakelaar opent de iOS-instellingenpagina van de app."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike jest dostępny po angielsku, ukraińsku, hiszpańsku, portugalsku, niemiecku, francusku, włosku, niderlandzku, polsku, turecku i w chińskim tradycyjnym. Przełącznik otwiera stronę aplikacji w Ustawieniach iOS."
+            "value": "Alike jest dostępny po angielsku, ukraińsku, hiszpańsku, portugalsku, niemiecku, francusku, włosku, niderlandzku, polsku, turecku, w chińskim tradycyjnym i po arabsku. Przełącznik otwiera stronę aplikacji w Ustawieniach iOS."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike; İngilizce, Ukraynaca, İspanyolca, Portekizce, Almanca, Fransızca, İtalyanca, Felemenkçe, Lehçe, Türkçe ve Geleneksel Çince dillerinde kullanılabilir. Bu seçenek uygulamanın iOS Ayarlar sayfasını açar."
+            "value": "Alike; İngilizce, Ukraynaca, İspanyolca, Portekizce, Almanca, Fransızca, İtalyanca, Felemenkçe, Lehçe, Türkçe, Geleneksel Çince ve Arapça dillerinde kullanılabilir. Bu seçenek uygulamanın iOS Ayarlar sayfasını açar."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike 提供英文、烏克蘭文、西班牙文、葡萄牙文、德文、法文、義大利文、荷蘭文、波蘭文、土耳其文與繁體中文。此選項會打開 App 的 iOS「設定」頁面。"
+            "value": "Alike 提供英文、烏克蘭文、西班牙文、葡萄牙文、德文、法文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。此選項會打開 App 的 iOS「設定」頁面。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتوفر Alike بالإنجليزية والأوكرانية والإسبانية والبرتغالية والألمانية والفرنسية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ويفتح المُبدِّل صفحة إعدادات iOS الخاصة بالتطبيق."
           }
         }
       }
@@ -14398,6 +15514,12 @@
             "state": "translated",
             "value": "更改語言"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تغيير اللغة"
+          }
         }
       }
     },
@@ -14474,6 +15596,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "「低」只會將幾乎相同的照片分為一組。「高」會放寬範圍，找到更多但關聯較鬆散的結果。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجمّع الحساسية المنخفضة الصور شبه المتطابقة فقط. أما العالية فتوسّع النطاق وتعثر على تطابقات أكثر لكنها أقل ارتباطًا."
           }
         }
       }
@@ -14552,6 +15680,12 @@
             "state": "translated",
             "value": "敏感度"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحساسية"
+          }
         }
       }
     },
@@ -14628,6 +15762,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "提醒預設為關閉，開啟後第一次會要求通知權限。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التذكير معطَّل حتى تفعّله، ويطلب إذن الإشعارات في المرة الأولى."
           }
         }
       }
@@ -14706,6 +15846,12 @@
             "state": "translated",
             "value": "每週清理提醒"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تذكير التنظيف الأسبوعي"
+          }
         }
       }
     },
@@ -14782,6 +15928,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike Pro 讓你把提醒改到最適合你的日期與時間。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتيح لك Alike Pro نقل التذكير إلى اليوم والوقت اللذين يناسبانك."
           }
         }
       }
@@ -14860,6 +16012,12 @@
             "state": "translated",
             "value": "自選日期與時間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر يومك ووقتك"
+          }
         }
       }
     },
@@ -14936,6 +16094,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "溫和地提醒你花幾分鐘整理。在 Alike Free 中，提醒會在星期日傍晚送達。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تذكير لطيف بقضاء بضع دقائق في التنظيف. وفي Alike المجاني يصل مساء الأحد."
           }
         }
       }
@@ -15014,6 +16178,12 @@
             "state": "translated",
             "value": "每週一次的小提醒"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنبيه مرة في الأسبوع"
+          }
         }
       }
     },
@@ -15090,6 +16260,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的訂閱項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اشتراكك"
           }
         }
       }
@@ -15168,6 +16344,12 @@
             "state": "translated",
             "value": "在新裝置上或重新安裝後，這會找回你現有的訂閱項目。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "على جهاز جديد، أو بعد إعادة التثبيت، يعيد هذا اشتراكك الحالي."
+          }
         }
       }
     },
@@ -15244,6 +16426,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "回復購買項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استعادة المشتريات"
           }
         }
       }
@@ -15322,6 +16510,12 @@
             "state": "translated",
             "value": "「設定」最上方的卡片會顯示 Alike Pro 是否啟用，以及何時續訂。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعرض البطاقة في أعلى الإعدادات ما إذا كان Alike Pro مُفعَّلًا ومتى يتجدد."
+          }
         }
       }
     },
@@ -15398,6 +16592,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "訂閱狀態"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حالة الاشتراك"
           }
         }
       }
@@ -15476,6 +16676,12 @@
             "state": "translated",
             "value": "敏感度、語言、每週提醒與你的訂閱項目。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحساسية واللغة والتذكير الأسبوعي واشتراكك."
+          }
         }
       }
     },
@@ -15552,6 +16758,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "設定與提醒"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإعدادات والتذكيرات"
           }
         }
       }
@@ -15630,6 +16842,12 @@
             "state": "translated",
             "value": "Alike 只會建議照片中最模糊的少數幾個百分比，而且僅在數量足以比較時才會這麼做。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يقترح Alike سوى النسبة الأقل وضوحًا من صورك، وفقط عندما يتوفر عدد كافٍ منها للمقارنة."
+          }
         }
       }
     },
@@ -15706,6 +16924,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "只挑最明確的情況"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أوضح الحالات فقط"
           }
         }
       }
@@ -15784,6 +17008,12 @@
             "state": "translated",
             "value": "你標為最愛的照片絕不會出現在這裡；把照片加入最愛即可保護它。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور التي وضعتها في المفضلة لا تظهر هنا أبدًا — ضع صورة في المفضلة لحمايتها."
+          }
         }
       }
     },
@@ -15860,6 +17090,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最愛不會被動到"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تُمسّ المفضلة"
           }
         }
       }
@@ -15938,6 +17174,12 @@
             "state": "translated",
             "value": "清單短是刻意的：漏掉一張模糊照片沒有損失，誤標一段回憶才有。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قِصَر القائمة مقصود: تفويت صورة ضبابية لا يكلفك شيئًا، أما وضع علامة خاطئة على ذكرى عزيزة فيكلفك."
+          }
         }
       }
     },
@@ -16014,6 +17256,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "為什麼模糊清單很短"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لماذا قائمة الصور الضبابية قصيرة"
           }
         }
       }
@@ -16092,6 +17340,12 @@
             "state": "translated",
             "value": "根據裝置端分析看起來失焦的照片。移除前值得先確認。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صور تبدو خارج نطاق التركيز، استنادًا إلى تحليل يجري على الجهاز. تستحق التحقق منها قبل إزالتها."
+          }
         }
       }
     },
@@ -16168,6 +17422,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "模糊照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور الضبابية"
           }
         }
       }
@@ -16246,6 +17506,12 @@
             "state": "translated",
             "value": "這兩個類別皆屬於 Alike Pro。點一下已鎖定的類別，會先顯示它找到了什麼。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كلتا الفئتين جزء من Alike Pro. والنقر على فئة مقفلة يعرض أولًا ما عثرت عليه."
+          }
         }
       }
     },
@@ -16322,6 +17588,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "兩個額外類別"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فئتان إضافيتان"
           }
         }
       }
@@ -16400,6 +17672,12 @@
             "state": "translated",
             "value": "螢幕擷取畫面集中在一處，並顯示佔用的空間。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات شاشة مجموعة في مكان واحد، مع المساحة التي تشغلها."
+          }
         }
       }
     },
@@ -16476,6 +17754,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات الشاشة"
           }
         }
       }
@@ -16554,6 +17838,12 @@
             "state": "translated",
             "value": "在相似群組之外另行收集的螢幕快照與模糊照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات الشاشة والصور الضبابية، مجموعة خارج مجموعات التشابه."
+          }
         }
       }
     },
@@ -16630,6 +17920,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "智慧清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف الذكي"
           }
         }
       }
@@ -16708,6 +18004,12 @@
             "state": "translated",
             "value": "運作方式"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كيف تعمل"
+          }
         }
       }
     },
@@ -16784,6 +18086,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "長按可使用「顯示資訊」或「打開原始檔」，並可從工具列調整欄數。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اضغط مطولًا لعرض المعلومات أو فتح الأصل، واضبط الأعمدة من شريط الأدوات."
           }
         }
       }
@@ -16862,6 +18170,12 @@
             "state": "translated",
             "value": "與群組相同的工具"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأدوات نفسها المستخدمة في المجموعة"
+          }
         }
       }
     },
@@ -16938,6 +18252,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一個按鈕即可全選或清除選取，摘要會即時更新總計。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زر واحد يحدد كل شيء أو يمسح التحديد، ويحتفظ الملخص بإجمالٍ جارٍ."
           }
         }
       }
@@ -17016,6 +18336,12 @@
             "state": "translated",
             "value": "全選或逐張挑選"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديد الكل أو الاختيار فرديًا"
+          }
         }
       }
     },
@@ -17093,6 +18419,12 @@
             "state": "translated",
             "value": "使用說明"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "طريقة الاستخدام"
+          }
         }
       }
     },
@@ -17169,6 +18501,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "關閉"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إغلاق"
           }
         }
       }

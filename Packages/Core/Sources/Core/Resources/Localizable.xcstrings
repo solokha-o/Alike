@@ -250,6 +250,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صور ضبابية محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة ضبابية محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة ضبابية محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة ضبابية محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورتين ضبابيتين محددتين إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة ضبابية محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -501,6 +543,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطات شاشة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطة شاشة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطة شاشة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطة شاشة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطتي شاشة محددتين إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld لقطة شاشة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -577,6 +661,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "模糊照片清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف الصور الضبابية"
           }
         }
       }
@@ -655,6 +745,12 @@
             "state": "translated",
             "value": "模糊照片清理為進階功能"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف الصور الضبابية ميزة مميزة"
+          }
         }
       }
     },
@@ -731,6 +827,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "模糊照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور الضبابية"
           }
         }
       }
@@ -809,6 +911,12 @@
             "state": "translated",
             "value": "根據裝置端分析，這些照片品質可能偏低。請先檢視再刪除。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صور يُرجَّح أنها منخفضة الجودة بناءً على تحليل يجري على الجهاز. راجعها قبل الحذف."
+          }
         }
       }
     },
@@ -885,6 +993,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "找不到模糊照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتم العثور على صور ضبابية"
           }
         }
       }
@@ -963,6 +1077,12 @@
             "state": "translated",
             "value": "找不到螢幕快照"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتم العثور على لقطات شاشة"
+          }
         }
       }
     },
@@ -1039,6 +1159,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開模糊照片清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح تنظيف الصور الضبابية"
           }
         }
       }
@@ -1117,6 +1243,12 @@
             "state": "translated",
             "value": "打開螢幕快照清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح تنظيف لقطات الشاشة"
+          }
         }
       }
     },
@@ -1193,6 +1325,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "打開模糊照片清理的進階功能頁面"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح صفحة الاشتراك المميز لتنظيف الصور الضبابية"
           }
         }
       }
@@ -1271,6 +1409,12 @@
             "state": "translated",
             "value": "打開螢幕快照清理的進階功能頁面"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح صفحة الاشتراك المميز لتنظيف لقطات الشاشة"
+          }
         }
       }
     },
@@ -1347,6 +1491,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "圖庫有變動、或還有照片需要檢視時，請重新掃描。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أجرِ فحصًا جديدًا بعد تغيّر مكتبتك أو إذا كانت هناك صور أخرى بحاجة إلى مراجعة."
           }
         }
       }
@@ -1425,6 +1575,12 @@
             "state": "translated",
             "value": "螢幕快照清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف لقطات الشاشة"
+          }
         }
       }
     },
@@ -1501,6 +1657,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照清理為進階功能"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف لقطات الشاشة ميزة مميزة"
           }
         }
       }
@@ -1579,6 +1741,12 @@
             "state": "translated",
             "value": "螢幕快照"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات الشاشة"
+          }
         }
       }
     },
@@ -1655,6 +1823,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
         }
       }
@@ -1733,6 +1907,12 @@
             "state": "translated",
             "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
         }
       }
     },
@@ -1810,6 +1990,12 @@
             "state": "translated",
             "value": "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال لقطة الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
         }
       }
     },
@@ -1886,6 +2072,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال لقطات الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
         }
       }
@@ -2134,6 +2326,48 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "已選取 %1$lld 張，預估大小 %2$@。"
+                }
+              }
+            }
+          }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددة، الحجم التقديري %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددًا، الحجم التقديري %2$@."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددان، الحجم التقديري %2$@."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
                 }
               }
             }
@@ -2389,6 +2623,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صور يُحتمل أنها ضبابية متاحة للمراجعة."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة يُحتمل أنها ضبابية متاحة للمراجعة."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة يُحتمل أنها ضبابية متاحة للمراجعة."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة يُحتمل أنها ضبابية متاحة للمراجعة."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورتان يُحتمل أنهما ضبابيتان متاحتان للمراجعة."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld صورة يُحتمل أنها ضبابية متاحة للمراجعة."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2640,6 +2916,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطات شاشة متاحة للمراجعة."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطة شاشة متاحة للمراجعة."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطة شاشة متاحة للمراجعة."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطة شاشة متاحة للمراجعة."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطتا شاشة متاحتان للمراجعة."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld لقطة شاشة متاحة للمراجعة."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2716,6 +3034,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "圖庫更新後請再掃描一次。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جرّب إعادة الفحص بعد تحديث مكتبتك."
           }
         }
       }
@@ -2794,6 +3118,12 @@
             "state": "translated",
             "value": "解鎖模糊照片清理，透過同樣安全的確認流程，在刪除前先檢視可能品質不佳的照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح تنظيف الصور الضبابية لمراجعة اللقطات التي يُرجَّح أنها منخفضة الجودة قبل حذفها بالتأكيد الآمن نفسه."
+          }
         }
       }
     },
@@ -2870,6 +3200,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح تنظيف لقطات الشاشة لمراجعة لقطات الشاشة وحذفها بالتأكيد الآمن نفسه."
           }
         }
       }
@@ -2948,6 +3284,12 @@
             "state": "translated",
             "value": "高"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عالية"
+          }
         }
       }
     },
@@ -3025,6 +3367,12 @@
             "state": "translated",
             "value": "低"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "منخفضة"
+          }
         }
       }
     },
@@ -3101,6 +3449,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "中"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متوسطة"
           }
         }
       }

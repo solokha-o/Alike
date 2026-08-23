@@ -77,6 +77,34 @@ final class CleanupToastPluralTests: XCTestCase {
         }
     }
 
+    /// Arabic is the first shipped language with all six CLDR categories. 0, 1, 2, 3, 11 and 100
+    /// are the counts that separate them. Only `two` and `few` inflect the noun differently —
+    /// the other four share one form, which is correct Arabic, not a missing translation.
+    /// Matching on the noun alone keeps the assertion about category selection: `ar` renders
+    /// numbers with Arabic-Indic digits.
+    func testArabicToastCoversAllSixCategories() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "ar")
+        let ar = Locale(identifier: "ar")
+
+        func toast(_ count: Int) -> String {
+            CleanupL10n.Main.photosMovedToRecentlyDeleted(count, bundle: bundle, locale: ar)
+        }
+
+        for count in [0, 1, 2, 3, 11, 100] {
+            XCTAssertNotEqual(
+                toast(count),
+                "cleanup.main.photosMovedToRecentlyDeleted",
+                "count \(count) fell back to the key"
+            )
+        }
+
+        XCTAssertTrue(toast(2).contains("صورتان"), toast(2))
+        XCTAssertTrue(toast(3).contains("صور إلى"), toast(3))
+        for count in [0, 1, 11, 100] {
+            XCTAssertTrue(toast(count).contains("صورة إلى"), toast(count))
+        }
+    }
+
     /// The history caption sits directly under a count that can be 1, and carries no number
     /// of its own — so it cannot be a plural variation. The Romance languages therefore use a
     /// noun phrase rather than a participle that would have to agree.

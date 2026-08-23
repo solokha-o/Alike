@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "Alike 為最佳照片喝采"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike يحتفي بأفضل لقطة"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "預估可省空間"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التوفير التقديري"
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "正在整理照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تنظيم الصور"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已選取的照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور المحددة"
           }
         }
       }
@@ -384,6 +408,12 @@
             "state": "translated",
             "value": "Alike 正在比較相似照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike يقارن بين الصور المتشابهة"
+          }
         }
       }
     },
@@ -460,6 +490,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "群組詳細資訊可在 iOS 上使用。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تفاصيل المجموعة متاحة على iOS."
           }
         }
       }
@@ -538,6 +574,12 @@
             "state": "translated",
             "value": "建立時間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاريخ الإنشاء"
+          }
         }
       }
     },
@@ -614,6 +656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "日期"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التواريخ"
           }
         }
       }
@@ -866,6 +914,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صور محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورتين محددتين إلى «المحذوفة مؤخرًا»؟"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة محددة إلى «المحذوفة مؤخرًا»؟"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -942,6 +1032,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "景深效果"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تأثير العمق"
           }
         }
       }
@@ -1020,6 +1116,12 @@
             "state": "translated",
             "value": "詳細資訊"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التفاصيل"
+          }
         }
       }
     },
@@ -1096,6 +1198,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "完成"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم"
           }
         }
       }
@@ -1174,6 +1282,12 @@
             "state": "translated",
             "value": "點兩下以將這張照片移出清理選取範圍"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر نقرًا مزدوجًا لإزالة هذه الصورة من تحديد التنظيف"
+          }
         }
       }
     },
@@ -1250,6 +1364,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "點兩下以重新打開這個群組進行檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر نقرًا مزدوجًا لإعادة فتح هذه المجموعة للمراجعة"
           }
         }
       }
@@ -1328,6 +1448,12 @@
             "state": "translated",
             "value": "點兩下以選取這張照片進行清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر نقرًا مزدوجًا لتحديد هذه الصورة للتنظيف"
+          }
         }
       }
     },
@@ -1404,6 +1530,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最愛"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مفضلة"
           }
         }
       }
@@ -1482,6 +1614,12 @@
             "state": "translated",
             "value": "結束檢視，並保留這個群組中的所有照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ينهي المراجعة ويحتفظ بكل صورة في هذه المجموعة"
+          }
         }
       }
     },
@@ -1559,6 +1697,12 @@
             "state": "translated",
             "value": "結束檢視，並保留你未選取的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ينهي المراجعة ويحتفظ بالصور التي لم تحددها"
+          }
         }
       }
     },
@@ -1632,6 +1776,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "ar": {
           "stringUnit": {
             "state": "translated",
             "value": "HDR"
@@ -1713,6 +1863,12 @@
             "state": "translated",
             "value": "保留 %2$d 張中的 %1$d 張"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاحتفاظ بـ %1$d من %2$d"
+          }
         }
       }
     },
@@ -1789,6 +1945,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Live Photo"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صورة حية"
           }
         }
       }
@@ -1867,6 +2029,12 @@
             "state": "translated",
             "value": "位置"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الموقع"
+          }
         }
       }
     },
@@ -1943,6 +2111,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "設為最佳照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جعلها أفضل لقطة"
           }
         }
       }
@@ -2021,6 +2195,12 @@
             "state": "translated",
             "value": "顯示照片拍攝地點的地圖"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خريطة تُظهر مكان التقاط الصورة"
+          }
         }
       }
     },
@@ -2097,6 +2277,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "標示為已檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وضع علامة تمت المراجعة"
           }
         }
       }
@@ -2175,6 +2361,12 @@
             "state": "translated",
             "value": "百萬像素"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ميغابكسل"
+          }
         }
       }
     },
@@ -2251,6 +2443,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "修改時間"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاريخ التعديل"
           }
         }
       }
@@ -2329,6 +2527,12 @@
             "state": "translated",
             "value": "更多選項"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خيارات أخرى"
+          }
         }
       }
     },
@@ -2405,6 +2609,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ MP"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ميجابكسل"
           }
         }
       }
@@ -2483,6 +2693,12 @@
             "state": "translated",
             "value": "否"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا"
+          }
         }
       }
     },
@@ -2559,6 +2775,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒有可用的照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد صور متاحة"
           }
         }
       }
@@ -2637,6 +2859,12 @@
             "state": "translated",
             "value": "未選取"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "غير محددة"
+          }
         }
       }
     },
@@ -2713,6 +2941,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "在「地圖」中打開"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الفتح في الخرائط"
           }
         }
       }
@@ -2791,6 +3025,12 @@
             "state": "translated",
             "value": "打開原始檔"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الأصل"
+          }
         }
       }
     },
@@ -2867,6 +3107,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "在「地圖」中打開照片位置"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يفتح موقع الصورة في الخرائط"
           }
         }
       }
@@ -2945,6 +3191,12 @@
             "state": "translated",
             "value": "全景"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بانوراما"
+          }
         }
       }
     },
@@ -3021,6 +3273,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صورة"
           }
         }
       }
@@ -3099,6 +3357,12 @@
             "state": "translated",
             "value": "照片資訊"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معلومات الصورة"
+          }
         }
       }
     },
@@ -3175,6 +3439,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片位置"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موقع الصورة"
           }
         }
       }
@@ -3253,6 +3523,12 @@
             "state": "translated",
             "value": "解析度"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الدقة"
+          }
         }
       }
     },
@@ -3329,6 +3605,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطة شاشة"
           }
         }
       }
@@ -3407,6 +3689,12 @@
             "state": "translated",
             "value": "選取除最佳照片外的全部"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديد الكل ما عدا الأفضل"
+          }
         }
       }
     },
@@ -3483,6 +3771,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已選取"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محددة"
           }
         }
       }
@@ -3561,6 +3855,12 @@
             "state": "translated",
             "value": "已選取以進行清理檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محددة لمراجعة التنظيف"
+          }
         }
       }
     },
@@ -3637,6 +3937,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
         }
       }
@@ -3715,6 +4021,12 @@
             "state": "translated",
             "value": "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
         }
       }
     },
@@ -3791,6 +4103,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選取項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التحديد"
           }
         }
       }
@@ -3869,6 +4187,12 @@
             "state": "translated",
             "value": "選取快捷鍵與格線版面"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختصارات التحديد وتخطيط الشبكة"
+          }
         }
       }
     },
@@ -3945,6 +4269,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "顯示資訊"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض المعلومات"
           }
         }
       }
@@ -4023,6 +4353,12 @@
             "state": "translated",
             "value": "相似照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصور المتشابهة"
+          }
         }
       }
     },
@@ -4099,6 +4435,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "這張照片會保留為最佳照片。長按其他照片即可改設為最佳照片。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُحتفظ بهذه الصورة بوصفها أفضل لقطة. اضغط مطولًا على صورة أخرى لجعلها أفضل لقطة بدلًا منها."
           }
         }
       }
@@ -4177,6 +4519,12 @@
             "state": "translated",
             "value": "類型"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النوع"
+          }
         }
       }
     },
@@ -4254,6 +4602,12 @@
             "state": "translated",
             "value": "顯示方式"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض"
+          }
         }
       }
     },
@@ -4330,6 +4684,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "是"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نعم"
           }
         }
       }
@@ -4582,6 +4942,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صور"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورتين"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "نقل %1$lld صورة"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -4658,6 +5060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在移動…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ النقل..."
           }
         }
       }
@@ -4736,6 +5144,12 @@
             "state": "translated",
             "value": "目前的清理檢視狀態"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حالة مراجعة التنظيف الحالية"
+          }
         }
       }
     },
@@ -4812,6 +5226,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視中"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قيد المراجعة"
           }
         }
       }
@@ -4890,6 +5310,12 @@
             "state": "translated",
             "value": "保留 %2$d 張中的 %1$d 張，預估大小 %3$@。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاحتفاظ بـ %1$d من %2$d، الحجم التقديري %3$@."
+          }
         }
       }
     },
@@ -4966,6 +5392,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 張相似照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صورة متشابهة واحدة"
           }
         }
       }
@@ -5044,6 +5476,12 @@
             "state": "translated",
             "value": "待檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بحاجة إلى مراجعة"
+          }
         }
       }
     },
@@ -5120,6 +5558,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "未檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم تُراجَع"
           }
         }
       }
@@ -5372,6 +5816,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددة، الحجم التقديري %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددًا، الحجم التقديري %2$@."
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محددان، الحجم التقديري %2$@."
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -5448,6 +5934,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d 張相似照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d صور متشابهة"
           }
         }
       }
@@ -5526,6 +6018,12 @@
             "state": "translated",
             "value": "點一下照片即可選取以進行清理"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على الصور لتحديدها للتنظيف"
+          }
         }
       }
     },
@@ -5602,6 +6100,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 需要取用照片圖庫才能刪除照片。請打開「設定」以繼續。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور قبل أن يتمكن من حذف الصور. افتح الإعدادات للمتابعة."
           }
         }
       }
@@ -5680,6 +6184,12 @@
             "state": "translated",
             "value": "Alike 正在整理已選取的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike ينظّم الصور المحددة"
+          }
         }
       }
     },
@@ -5756,6 +6266,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "最佳照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أفضل لقطة"
           }
         }
       }
@@ -5834,6 +6350,12 @@
             "state": "translated",
             "value": "取消"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إلغاء"
+          }
         }
       }
     },
@@ -5910,6 +6432,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法進行清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنظيف غير متاح"
           }
         }
       }
@@ -5988,6 +6516,12 @@
             "state": "translated",
             "value": "清除選取"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح التحديد"
+          }
         }
       }
     },
@@ -6064,6 +6598,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "關閉"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إغلاق"
           }
         }
       }
@@ -6142,6 +6682,12 @@
             "state": "translated",
             "value": "無法移動所選的照片。請再試一次。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر نقل الصور المحددة. يُرجى المحاولة مرة أخرى."
+          }
         }
       }
     },
@@ -6218,6 +6764,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "保留全部 %d 張照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاحتفاظ بجميع الصور البالغ عددها %d"
           }
         }
       }
@@ -6296,6 +6848,12 @@
             "state": "translated",
             "value": "正在載入照片預覽"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تحميل معاينة الصورة"
+          }
         }
       }
     },
@@ -6372,6 +6930,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "移動"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نقل"
           }
         }
       }
@@ -6450,6 +7014,12 @@
             "state": "translated",
             "value": "將目前已選取的照片移到「最近刪除」"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نقل الصور المحددة حاليًا إلى «المحذوفة مؤخرًا»"
+          }
         }
       }
     },
@@ -6526,6 +7096,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موافق"
           }
         }
       }
@@ -6604,6 +7180,12 @@
             "state": "translated",
             "value": "打開「設定」"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الإعدادات"
+          }
         }
       }
     },
@@ -6680,6 +7262,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片預覽"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معاينة الصورة"
           }
         }
       }
@@ -6758,6 +7346,12 @@
             "state": "translated",
             "value": "無法預覽照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معاينة الصورة غير متوفرة"
+          }
         }
       }
     },
@@ -6834,6 +7428,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已檢視"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت مراجعتها"
           }
         }
       }
@@ -6912,6 +7512,12 @@
             "state": "translated",
             "value": "刪除前請至少選取一張照片。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حدد صورة واحدة على الأقل قبل الحذف."
+          }
         }
       }
     },
@@ -6988,6 +7594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "部分已選取的照片已無法取得。你的圖庫取用權可能受限，或圖庫在上次掃描後有變動。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم تعد بعض الصور المحددة متاحة. قد يكون وصولك إلى المكتبة محدودًا، أو أن المكتبة تغيّرت منذ آخر فحص."
           }
         }
       }
@@ -7066,6 +7678,12 @@
             "state": "translated",
             "value": "重試"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة المحاولة"
+          }
         }
       }
     },
@@ -7142,6 +7760,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "再次嘗試載入照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حاول تحميل الصورة مرة أخرى"
           }
         }
       }
@@ -7220,6 +7844,12 @@
             "state": "translated",
             "value": "螢幕快照清理可在 iOS 上使用。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظيف لقطات الشاشة متاح على iOS."
+          }
         }
       }
     },
@@ -7296,6 +7926,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕快照"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقطات الشاشة"
           }
         }
       }
@@ -7374,6 +8010,12 @@
             "state": "translated",
             "value": "選擇要清理的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر الصور المحددة للتنظيف"
+          }
         }
       }
     },
@@ -7450,6 +8092,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "移動已選取項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نقل المحدد"
           }
         }
       }
@@ -7528,6 +8176,12 @@
             "state": "translated",
             "value": "正在移動…"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ النقل..."
+          }
         }
       }
     },
@@ -7604,6 +8258,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "全選"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديد الكل"
           }
         }
       }
