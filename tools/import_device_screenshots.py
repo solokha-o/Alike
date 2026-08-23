@@ -78,7 +78,9 @@ MANIFEST_NAME = "capture-manifest.json"
 # outside this set would import captures into a directory the renderer never
 # reads: the import would succeed and the deck would silently ship without them.
 # App Store Connect codes are the likely typo, hence the suggestions.
-SUPPORTED_LOCALES = ("en", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant")
+SUPPORTED_LOCALES = (
+    "en", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant", "ar",
+)
 LOCALE_SUGGESTIONS = {
     "es-MX": "es-419",
     "en-US": "en",
@@ -90,6 +92,11 @@ LOCALE_SUGGESTIONS = {
     "zh": "zh-Hant",
     "zh-TW": "zh-Hant",
     "zh-Hant-TW": "zh-Hant",
+    # Arabic has one deck. The App Store locale is ar-SA, and a device set to any
+    # Arabic region reports its own; all of them import into the same directory.
+    "ar-SA": "ar",
+    "ar-AE": "ar",
+    "ar-EG": "ar",
     "it-IT": "it",
     "nl-NL": "nl",
     "pl-PL": "pl",

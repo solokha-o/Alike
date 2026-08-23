@@ -52,7 +52,7 @@ build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
 The venv is created once, because Pillow is not in the system Python:
 
 ```sh
-python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow
+python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow arabic-reshaper python-bidi
 ```
 
 Slides, copy and layout live in `SLIDES` and `COPY` in that script. Four

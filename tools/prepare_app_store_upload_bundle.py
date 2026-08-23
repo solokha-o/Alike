@@ -64,6 +64,7 @@ LOCALE_LEGAL_LABELS = {
     "pl": ("Polityka prywatności", "Warunki korzystania"),
     "tr": ("Gizlilik Politikası", "Kullanım Koşulları"),
     "zh-Hant": ("隱私權政策", "使用條款"),
+    "ar-SA": ("سياسة الخصوصية", "شروط الاستخدام"),
 }
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
@@ -127,6 +128,7 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="pl", apple="pl"),
     LocaleMapping(source="tr", apple="tr"),
     LocaleMapping(source="zh-Hant", apple="zh-Hant"),
+    LocaleMapping(source="ar", apple="ar-SA"),
 )
 
 # DELIVER_ACCEPTED_LOCALES guards UPLOAD_SAFE_LOCALES against a regression of
@@ -151,6 +153,7 @@ DELIVER_ACCEPTED_LOCALES = frozenset(
         "pl",
         "tr",
         "zh-Hant",
+        "ar-SA",
     }
 )
 
@@ -172,6 +175,7 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "pl_PL": "pl",
     "tr_TR": "tr",
     "zh_TW": "zh-Hant",
+    "ar_SA": "ar-SA",
 }
 
 REQUIRED_LOCALIZED_FILES = (
@@ -218,7 +222,7 @@ BUILT FOR REAL LIBRARIES
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
-- Twelve languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish and Traditional Chinese. Full Dark Mode support.
+- Thirteen languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
 
 YOU STAY IN CONTROL
 - Photos you clear go to Recently Deleted, recoverable for about 30 days.
@@ -269,7 +273,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
-- Дванадцять мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська, бразильська португальська, італійська, нідерландська, польська, турецька та традиційна китайська. Повна темна тема.
+- Тринадцять мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська, бразильська португальська, італійська, нідерландська, польська, турецька, традиційна китайська та арабська. Повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
 - Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
@@ -326,7 +330,7 @@ FÜR ECHTE MEDIATHEKEN GEBAUT
 - Ein großzügiges einspaltiges Layout oder ein dichteres Raster, jederzeit umschaltbar und gemerkt.
 - Eine durchsuchbare Anleitung in der App, einen Tipp vom Scanner entfernt.
 - Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem eigenen Zeitplan.
-- Zwölf Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch, Brasilianisches Portugiesisch, Italienisch, Niederländisch, Polnisch, Türkisch und Traditionelles Chinesisch. Voller Dark Mode.
+- Dreizehn Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch, Brasilianisches Portugiesisch, Italienisch, Niederländisch, Polnisch, Türkisch, Traditionelles Chinesisch und Arabisch. Voller Dark Mode.
 
 DU BEHÄLTST DIE KONTROLLE
 - Aufgeräumte Fotos landen bei „Zuletzt gelöscht“ und bleiben rund 30 Tage wiederherstellbar.
@@ -377,7 +381,7 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Une mise en page aérée sur une colonne ou une grille plus dense, permutables à tout moment et mémorisées.
 - Un mode d'emploi consultable dans l'app, à un geste du Scanner.
 - Rappels de nettoyage facultatifs, en notifications locales, à votre rythme.
-- Douze langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine, portugais brésilien, italien, néerlandais, polonais, turc et chinois traditionnel. Mode sombre complet.
+- Treize langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine, portugais brésilien, italien, néerlandais, polonais, turc, chinois traditionnel et arabe. Mode sombre complet.
 
 VOUS GARDEZ LA MAIN
 - Les photos nettoyées rejoignent « Supprimés récemment » et restent récupérables environ 30 jours.
@@ -428,7 +432,7 @@ HECHO PARA FOTOTECAS REALES
 - Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
-- Doce idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco y chino tradicional. Modo oscuro completo.
+- Trece idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco, chino tradicional y árabe. Modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
@@ -479,7 +483,7 @@ HECHO PARA FOTOTECAS REALES
 - Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
-- Doce idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco y chino tradicional. Modo oscuro completo.
+- Trece idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco, chino tradicional y árabe. Modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
@@ -530,7 +534,7 @@ FEITO PARA FOTOTECAS DE VERDADE
 - Um layout espaçoso de uma coluna ou uma grade mais densa, alternáveis a qualquer momento e memorizados.
 - Instruções de uso com busca dentro do app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
-- Doze idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina, português do Brasil, italiano, neerlandês, polonês, turco e chinês tradicional. Modo escuro completo.
+- Treze idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina, português do Brasil, italiano, neerlandês, polonês, turco, chinês tradicional e árabe. Modo escuro completo.
 
 VOCÊ NO CONTROLE
 - As fotos limpas vão para «Apagados recentemente» e continuam recuperáveis por cerca de 30 dias.
@@ -586,7 +590,7 @@ PENSATA PER LIBRERIE VERE
 - Un layout ampio a una colonna o una griglia più fitta, alternabili quando vuoi e ricordati.
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
-- Dodici lingue: inglese, ucraino, tedesco, francese, spagnolo, spagnolo latinoamericano, portoghese brasiliano, italiano, olandese, polacco, turco e cinese tradizionale. Modalità scura completa.
+- Tredici lingue: inglese, ucraino, tedesco, francese, spagnolo, spagnolo latinoamericano, portoghese brasiliano, italiano, olandese, polacco, turco, cinese tradizionale e arabo. Modalità scura completa.
 
 SEI TU A DECIDERE
 - Le foto che elimini vanno in «Eliminati di recente» e restano recuperabili per circa 30 giorni.
@@ -637,7 +641,7 @@ GEMAAKT VOOR ECHTE BIBLIOTHEKEN
 - Een ruime indeling met één kolom of een dichter raster, altijd om te wisselen en onthouden.
 - Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.
 - Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.
-- Twaalf talen: Engels, Oekraïens, Duits, Frans, Spaans, Latijns-Amerikaans Spaans, Braziliaans Portugees, Italiaans, Nederlands, Pools, Turks en traditioneel Chinees. Volledige donkere modus.
+- Dertien talen: Engels, Oekraïens, Duits, Frans, Spaans, Latijns-Amerikaans Spaans, Braziliaans Portugees, Italiaans, Nederlands, Pools, Turks, traditioneel Chinees en Arabisch. Volledige donkere modus.
 
 JIJ HOUDT DE CONTROLE
 - Opgeruimde foto's gaan naar 'Recent verwijderd' en blijven ongeveer 30 dagen terug te halen.
@@ -688,7 +692,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili i zapamiętywane.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
-- Dwanaście języków: angielski, ukraiński, niemiecki, francuski, hiszpański, hiszpański latynoamerykański, portugalski brazylijski, włoski, niderlandzki, polski, turecki i chiński tradycyjny. Pełny tryb ciemny.
+- Trzynaście języków: angielski, ukraiński, niemiecki, francuski, hiszpański, hiszpański latynoamerykański, portugalski brazylijski, włoski, niderlandzki, polski, turecki, chiński tradycyjny i arabski. Pełny tryb ciemny.
 
 TO TY DECYDUJESZ
 - Uporządkowane zdjęcia trafiają do albumu „Ostatnio usunięte” i można je odzyskać przez około 30 dni.
@@ -739,7 +743,7 @@ GERÇEK KİTAPLIKLAR İÇİN
 - Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve hatırlanır.
 - Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.
 - İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.
-- On iki dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe ve Geleneksel Çince. Tam Koyu Mod desteği.
+- On üç dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe, Geleneksel Çince ve Arapça. Tam Koyu Mod desteği.
 
 KONTROL SENDE
 - Temizlediğin fotoğraflar Son Silinenler'e gider ve yaklaşık 30 gün geri alınabilir.
@@ -790,7 +794,7 @@ Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成�
 - 寬鬆的單欄版面或更緊湊的格狀版面，隨時切換並自動記住。
 - App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。
 - 選用的清理提醒，以本地通知依你自己的時間送達。
-- 十二種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文與繁體中文。完整支援深色模式。
+- 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
 
 一切由你決定
 - 清理掉的照片會進入「最近刪除」，約 30 天內都還能還原。
@@ -813,6 +817,58 @@ ALIKE PRO
 - 自訂清理提醒
 
 Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用，試用結束時即開始計費。除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"""
+
+
+AR_DESCRIPTION = """\
+يعثر Alike على الصور شبه المكررة المختبئة في مكتبتك، ويجمّعها، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي — دون أن تغادر صورة واحدة جهازك.
+
+كيف يعمل
+افحص. يقارن Alike مكتبتك باستخدام إطار عمل Vision من Apple، بالكامل على جهاز iPhone. تُقارن الصور المتقاربة في الزمان والمكان، وتبقى لقطات الشاشة خارج النتائج ما لم تطلبها.
+راجع. تُفتح كل مجموعة وقد اختير فيها «أفضل لقطة» سلفًا، فتقرر في ثوانٍ. احتفظ بالأفضل فقط، أو حدد الكل ما عدا الأفضل، أو اختر يدويًا.
+نظّف. أكّد، فتنتقل الصور التي اخترتها إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS نحو 30 يومًا.
+
+الخصوصية هي الفكرة كلها
+- يجري التحليل كله على الجهاز بإطار عمل Vision من Apple.
+- لا تُرفع أي صورة أو صورة مصغّرة أو بصمة سمات إلى أي مكان.
+- لا حساب، ولا تسجيل دخول، ولا خادم خاص بـ Alike.
+- لا تحليلات، ولا تتبّع، ولا معرّفات إعلانية.
+- لا إعلانات في أي مكان داخل التطبيق.
+- لا يحتاج الفحص والتنظيف إلى اتصال إطلاقًا — يعمل Alike في وضع الطيران.
+- لا يُحذف أي شيء دون تأكيدك الصريح.
+
+مصمَّم لمكتبات حقيقية
+- ثلاثة مستويات حساسية، من اللقطات شبه المتطابقة إلى نطاق أوسع.
+- كشف أفضل لقطة، فلكل مجموعة خيار افتراضي معقول للاحتفاظ به.
+- شارات المراجعة: جديدة، قيد المراجعة، تمت مراجعتها، وبحاجة إلى مراجعة بعد إعادة الفحص.
+- أضف صورًا أو احذفها فيلاحظ Alike ذلك، ثم يعيد إظهار المجموعات التي تغيّرت وحدها — دون إعادة فحص كاملة لتبقى محدَّثًا.
+- التقدّم والمحدد والتوفير التقديري أمام عينيك أثناء العمل.
+- سجل تنظيف مجمَّع حسب الشهر، لترى ما استرجعته حتى الآن.
+- تخطيط فسيح بعمود واحد أو شبكة أكثر كثافة، يمكن تبديله في أي وقت ويُحفظ اختيارك.
+- دليل قابل للبحث داخل التطبيق، على بُعد نقرة واحدة من شاشة الفحص.
+- تذكيرات تنظيف اختيارية، تصل كإشعارات محلية وفق جدولك أنت.
+- ثلاث عشرة لغة: الإنجليزية والأوكرانية والألمانية والفرنسية والإسبانية وإسبانية أمريكا اللاتينية والبرتغالية البرازيلية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ودعم كامل للوضع الداكن.
+
+تبقى أنت المتحكم
+- تنتقل الصور التي تنظّفها إلى «المحذوفة مؤخرًا»، ويمكن استعادتها نحو 30 يومًا.
+- الإعدادات، ثم البيانات والخصوصية، ثم حذف بيانات Alike يمحو كل نتيجة فحص وسجل تنظيف وتفضيل خزّنه التطبيق — ولا يمس مكتبة صورك أبدًا.
+- امنح وصولًا كاملًا أو وصولًا محدودًا؛ يعمل Alike مع ما تختار مشاركته.
+
+‏ALIKE المجاني
+- 3 فحوصات شهريًا
+- مراجعة موجَّهة مع أفضل لقطة
+- الترتيب وسجل التنظيف
+- تنظيف صورة واحدة في كل مرة
+
+‏ALIKE PRO
+- 7 أيام مجانًا في الخطة السنوية، للمشتركين الجدد المؤهلين
+- فحوصات غير محدودة
+- تنظيف تحديدات كاملة دفعة واحدة
+- تنظيف لقطات الشاشة
+- تنظيف الصور الضبابية
+- مرشّحات متقدمة
+- تذكيرات تنظيف مخصصة
+
+‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين، وتبدأ الفوترة عند انتهاء التجربة. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS."""
 
 
 METADATA = {
@@ -920,6 +976,15 @@ METADATA = {
         "keywords": "重複,重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理",
         "promotional_text": "Alike 會把看起來相像的照片分成一組組，挑出每一組的最佳照片，並幫你清理其餘的，全程在 iPhone 上完成。Alike Pro：年繳方案 7 天免費。",
         "release_notes": "多了十種語言，而且是整個 App 都會說。\n\n- 德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文與繁體中文加入英文和烏克蘭文：每一個畫面，還有 App Store 頁面以及隱私權政策、使用條款和支援頁面。\n- 一開始的照片步驟現在以單純的「繼續」結束，取用權限改由 iOS 用自己的說法詢問。\n\n修正：\n- 敏感度選項不論使用哪種語言都顯示英文。\n- 「圖庫狀態」那一列在繁體中文下會跑版。\n- 免費提醒那一行顯示的是時鐘時間，而不是你設定的排程。\n- 有幾個按鈕和訊息寫成「刪除」，但 Alike 實際上是把照片移到「最近刪除」。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+    },
+    "ar-SA": {
+        "subtitle": "اعثر على الصور المتشابهة",
+        "description": AR_DESCRIPTION,
+        # Same rule as every other locale: the name and subtitle already carry
+        # "صور" and "متشابهة", so the keyword field spends its characters elsewhere.
+        "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,تفريغ,أرشيف",
+        "promotional_text": "يجمّع Alike الصور المتشابهة، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي. كل ذلك على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
+        "release_notes": "العربية تنضم إلى Alike، والتطبيق كله يقرأ من اليمين إلى اليسار.\n\n- كل شاشة، وصفحة App Store، وصفحات الخصوصية والشروط والدعم، صارت متاحة بالعربية.\n- تنعكس الواجهة بالكامل: الأسهم والشارات وأشرطة الأدوات تتبع اتجاه القراءة.\n- الأعداد وأحجام الملفات وتواريخ الفحص صارت متسقة في التطبيق كله بعد أن كانت تُعرض بأكثر من صيغة على الشاشة الواحدة.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
