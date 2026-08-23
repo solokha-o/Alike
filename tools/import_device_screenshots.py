@@ -113,9 +113,10 @@ LANGUAGE_DIRECTORIES = {"en": "en-US"}
 SITE_SHOTS = [1, 3, 4, 5, 7]
 
 
-def languages_of(spec: dict[str, str]) -> list[str]:
+def languages_of(spec: dict[str, str], only: set[str] | None = None) -> list[str]:
     """Every language key in a shot spec, in a stable order. "name" is not one."""
-    return sorted(key for key in spec if key != "name")
+    languages = sorted(key for key in spec if key != "name")
+    return [language for language in languages if only is None or language in only]
 
 
 def confined_source_path(source: Path, filename: str, manifest_path: Path) -> Path:
@@ -196,7 +197,26 @@ def main() -> None:
         default="../alikeapp.github.io",
         help="checkout of alikeapp/alikeapp.github.io; website renders are skipped when it is absent",
     )
+    # A capture session covers one locale, and the camera roll it came from holds
+    # that locale's shots only. Without this the run resolves every language in
+    # SHOTS plus the manifest and stops on the ones whose files were imported
+    # sessions ago and long since deleted — which made adding a thirteenth
+    # language impossible through the tool that exists to add languages.
+    ap.add_argument(
+        "--locales",
+        help="comma-separated source locales to import; default is every locale in the table",
+    )
     args = ap.parse_args()
+
+    only = None
+    if args.locales:
+        only = {code.strip() for code in args.locales.split(",") if code.strip()}
+        unknown = sorted(only - set(SUPPORTED_LOCALES))
+        if unknown:
+            raise SystemExit(
+                f"--locales: {', '.join(unknown)} is not a source locale. "
+                f"Known: {', '.join(SUPPORTED_LOCALES)}"
+            )
 
     source = Path(args.source).expanduser()
     repo = Path(args.repo).resolve()
@@ -222,7 +242,7 @@ def main() -> None:
     resolved_sources: dict[tuple[int, str], Path] = {}
     missing = []
     for shot, spec in shots.items():
-        for lang in languages_of(spec):
+        for lang in languages_of(spec, only):
             resolved = confined_source_path(source, spec[lang], manifest_path)
             resolved_sources[(shot, lang)] = resolved
             if not resolved.exists():
@@ -234,7 +254,7 @@ def main() -> None:
     store_count = site_count = 0
     for shot in sorted(shots):
         spec = shots[shot]
-        for lang in languages_of(spec):
+        for lang in languages_of(spec, only):
             src = resolved_sources[(shot, lang)]
             size = png_size(src)
             if size != SOURCE_SIZE:
