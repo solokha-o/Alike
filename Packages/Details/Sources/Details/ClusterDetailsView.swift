@@ -487,7 +487,7 @@ struct SelectablePhotoThumbnail: View {
                 Label {
                     Text(DetailsL10n.ClusterDetails.openOriginal)
                 } icon: {
-                    Image(systemName: "arrow.up.right.square")
+                    Image(systemName: "arrow.up.forward.square")
                 }
             }
         } preview: {
