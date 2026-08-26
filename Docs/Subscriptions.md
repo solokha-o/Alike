@@ -32,11 +32,13 @@ to 45.
 
 Locales below are the App Store Connect codes the generated JSON carries; the
 StoreKit file spells the same ones `en_US`, `uk`, `de_DE`, `fr_FR`, `es_ES`,
-`es_MX`, `pt_BR`, `it_IT`, `nl_NL`, `pl_PL`, `tr_TR` and `zh_TW`. The two codes
-that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
-`zh-Hant`, and `it_IT`/`pl_PL`/`tr_TR`, which it calls bare `it`, `pl` and
-`tr`; `STOREKIT_TO_APP_STORE_LOCALE` in
-`tools/prepare_app_store_upload_bundle.py` holds the mapping.
+`es_MX`, `pt_BR`, `it_IT`, `nl_NL`, `pl_PL`, `tr_TR`, `zh_TW` and `ar_SA`. The
+two codes that are not a plain underscore swap are `zh_TW`, which App Store
+Connect calls `zh-Hant`, and `it_IT`/`pl_PL`/`tr_TR`, which it calls bare `it`,
+`pl` and `tr`; `STOREKIT_TO_APP_STORE_LOCALE` in
+`tools/prepare_app_store_upload_bundle.py` holds the mapping, and
+`validate_storekit_locale_coverage` fails generation when the StoreKit file is
+missing a locale the listing ships.
 
 | Product | Locale | Display name | Description |
 | --- | --- | --- | --- |
@@ -52,6 +54,7 @@ that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
 | Group | pl | Alike Pro | — |
 | Group | tr | Alike Pro | — |
 | Group | zh-Hant | Alike Pro | — |
+| Group | ar-SA | Alike Pro | — |
 | Yearly | en-US | Alike Pro Yearly | Unlock every Pro tool, billed once a year. |
 | Yearly | uk | Alike Pro на рік | Усі функції Alike Pro, оплата раз на рік. |
 | Yearly | de-DE | Alike Pro Jahresplan | Alle Pro-Funktionen, einmal jährlich. |
@@ -64,6 +67,7 @@ that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
 | Yearly | pl | Alike Pro rocznie | Wszystkie funkcje Pro, płatność roczna. |
 | Yearly | tr | Alike Pro yıllık | Tüm Pro araçları, yıllık ödeme. |
 | Yearly | zh-Hant | Alike Pro 年繳 | 解鎖所有 Pro 功能，年繳一次。 |
+| Yearly | ar-SA | ‏Alike Pro سنويًا | كل أدوات Pro بفاتورة سنوية واحدة. |
 | Monthly | en-US | Alike Pro Monthly | Unlock all Alike Pro photo cleanup features. |
 | Monthly | uk | Alike Pro на місяць | Усі функції очищення фото Alike Pro. |
 | Monthly | de-DE | Alike Pro Monatsplan | Alle Aufräumfunktionen von Alike Pro. |
@@ -76,6 +80,7 @@ that are not a plain underscore swap are `zh_TW`, which App Store Connect calls
 | Monthly | pl | Alike Pro miesięcznie | Wszystkie porządki w zdjęciach Alike Pro. |
 | Monthly | tr | Alike Pro aylık | Alike Pro'nun tüm fotoğraf temizliği. |
 | Monthly | zh-Hant | Alike Pro 月繳 | Alike Pro 的完整照片清理功能。 |
+| Monthly | ar-SA | ‏Alike Pro شهريًا | تنظيف صور Alike Pro بالكامل، شهريًا. |
 
 The paywall shows StoreKit's localized `displayName`, so a missing locale means
 that storefront falls back to English plan names in the paywall and in
@@ -89,9 +94,10 @@ that already exist; it never creates the group or the products. It also
 tolerates HTTP 400/409/422 for any locale other than `en-US` by counting it as
 skipped rather than failing, so a run that skipped every localization still
 exits successfully. Read the `skipped` line in its output before assuming the
-eleven non-English locales — `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`,
-`it`, `nl-NL`, `pl`, `tr`, `zh-Hant` — landed, then confirm with `status`: it
-prints `localizations=11/12 missing=zh-Hant` rather than a bare count, with the
+twelve non-English locales — `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`,
+`it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` — landed, then confirm with
+`status`: it prints `localizations=12/13 missing=ar-SA` rather than a bare
+count, with the
 expectation taken from the payload, so a locale added to the StoreKit file
 moves the check with it. Re-run or add by hand anything it names.
 
@@ -136,7 +142,8 @@ description at 45 characters and "Unlock every Pro tool. First 7 days free."
 already spends 41. The trial is promised only where eligibility is known — the
 paywall, hedged per `Docs/legal/subscription-disclosure.md`.
 `validate_iap_product_localizations` fails generation if a trial claim
-reappears in any of the twelve locales.
+reappears in any of the thirteen locales, Arabic included:
+`IAP_TRIAL_CLAIM_TOKENS` carries the مجان and تجرب stems.
 
 ## App Store Connect setup
 
@@ -144,9 +151,9 @@ reappears in any of the twelve locales.
 2. Create the yearly and monthly products with the exact identifiers above.
 3. Set yearly above monthly in the subscription level order.
 4. Configure the intended US prices and localize each storefront in App Store
-   Connect as release markets are added. Add all twelve product localizations
-   from the table above — en-US, uk, de-DE, fr-FR, es-ES, es-MX, pt-BR, it,
-   nl-NL, pl, tr and zh-Hant — either by hand or with
+   Connect as release markets are added. Add all thirteen product
+   localizations from the table above — en-US, uk, de-DE, fr-FR, es-ES, es-MX,
+   pt-BR, it, nl-NL, pl, tr, zh-Hant and ar-SA — either by hand or with
    `tools/app_store_iap_metadata.rb upload-localizations` once the products
    exist, then confirm with `status`, which reports `localizations=N/12` and
    names any missing locale, because skipped locales do not fail the upload

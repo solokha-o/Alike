@@ -6,16 +6,16 @@ disclosure.
 ```
 Docs/legal/
 ├── README.md                     this file — the runbook
-└── subscription-disclosure.md    paywall disclosure copy, all twelve locales
+└── subscription-disclosure.md    paywall disclosure copy, all thirteen locales
 
 alikeapp/alikeapp.github.io       the published pages themselves (separate repo)
 ├── privacy.md  terms.md  support.md  index.md        en, at the root
-├── uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/   the same four per locale
+├── uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/  the same four per locale
 └── scripts/check-site.sh                             the build gate
 ```
 
-The site publishes eleven locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR`, `it`,
-`nl`, `pl`, `tr`, `zh-Hant` — against twelve App Store listings. `es` is one page
+The site publishes twelve locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR`, `it`,
+`nl`, `pl`, `tr`, `zh-Hant`, `ar` — against thirteen App Store listings. `es` is one page
 serving both `es-ES` and `es-MX`: the legal copy does not need the regional
 vocabulary split, so `/es/` carries the Spain wording and advertises
 `hreflang="es-419"` for the Latin American storefront.
@@ -153,7 +153,7 @@ its `check_terms` row.
    links, hreflang, the Terms guardrails below, and that no third-party host is
    referenced. Merging deploys it; no manual copying is involved, and this does
    not wait on the app's release merge.
-5. Confirm all 44 URLs load publicly with no sign-in — the loop is in
+5. Confirm all 48 URLs load publicly with no sign-in — the loop is in
    `Docs/release-checklist.md` step 6.
 6. Confirm `SubscriptionConfiguration.privacyPolicyURL` matches the live URL.
    The in-app links stay English for every locale: they are the app's own
@@ -161,8 +161,8 @@ its `check_terms` row.
    language.
 7. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
    the metadata bundle, and set the per-locale overrides
-   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}`)
-   so each listing points at its own pages. All thirty-three are required —
+   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT,AR_SA}`)
+   so each listing points at its own pages. All thirty-six are required —
    strict generation fails on an unset override instead of falling back to
    English. The full list with values is in `Docs/release-checklist.md` step
    0.

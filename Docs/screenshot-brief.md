@@ -273,9 +273,10 @@ are App Review evidence and deliberately stay out of the listing.
 
 ## Before upload
 
-- All twelve locales rendered and eyeballed, not just generated. Type size in
+- All thirteen locales rendered and eyeballed, not just generated. Type size in
   the long languages — uk, de, pt-BR, pl — is the usual casualty, and zh-Hant
-  needs its own look because it is the one deck in a different typeface.
+  and ar each need their own look: one is a different typeface, the other is
+  laid out right to left in SF Arabic.
 - Headline and supporting line legible at App Store thumbnail scale.
 - No status-bar noise: full signal, full battery, no notifications.
 - Privacy sweep on any *new* capture — recognisable faces, location giveaways,
