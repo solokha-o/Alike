@@ -112,9 +112,12 @@ class LocaleMapping:
 # region-qualified it-IT, pl-PL and tr-TR as unsupported directory names, while
 # nl-NL and zh-Hant are accepted as-is.
 #
-# Adding a locale means four things, and a missing one is a validation error
+# Adding a locale means five things, and a missing one is a validation error
 # rather than a silent gap: a mapping here, an entry in METADATA, a row in
-# LOCALE_LEGAL_LABELS, and a deck in Docs/images/<source>/.
+# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, and a localization in
+# Alike.storekit for the subscription group and every product in it. Arabic
+# arrived with the first four and without the fifth, which is what
+# validate_storekit_locale_coverage() now refuses to let happen again.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
     LocaleMapping(source="uk", apple="uk"),
@@ -177,6 +180,8 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "zh_TW": "zh-Hant",
     "ar_SA": "ar-SA",
 }
+
+APP_STORE_TO_STOREKIT_LOCALE = {apple: storekit for storekit, apple in STOREKIT_TO_APP_STORE_LOCALE.items()}
 
 REQUIRED_LOCALIZED_FILES = (
     "name.txt",
@@ -1615,6 +1620,52 @@ def validate_placeholder_copy(allow_placeholders: bool) -> list[str]:
     return errors
 
 
+def storekit_expected_locales() -> list[str]:
+    """The Alike.storekit spellings of every locale the listing ships.
+
+    The IAP payload is derived from Alike.storekit, so a listing locale missing
+    there is a locale whose subscription name and description never reach App
+    Store Connect. Nothing said so: the payload carried whatever the file held,
+    and validate_iap_localizations() checked the shape of the localizations
+    present rather than which ones were.
+    """
+    missing_mapping = [
+        mapping.apple for mapping in UPLOAD_SAFE_LOCALES if mapping.apple not in APP_STORE_TO_STOREKIT_LOCALE
+    ]
+    if missing_mapping:
+        raise SystemExit(
+            f"STOREKIT_TO_APP_STORE_LOCALE has no StoreKit spelling for {', '.join(missing_mapping)}"
+        )
+    return [APP_STORE_TO_STOREKIT_LOCALE[mapping.apple] for mapping in UPLOAD_SAFE_LOCALES]
+
+
+def validate_storekit_locale_coverage(label: str, localizations: list[dict]) -> list[str]:
+    """Every listing locale is localized here, and nothing else is."""
+    expected = storekit_expected_locales()
+    present = [localization.get("locale", "") for localization in localizations]
+    errors: list[str] = []
+
+    missing = [locale for locale in expected if locale not in present]
+    if missing:
+        errors.append(
+            f"{label} is missing localizations for {', '.join(missing)}; the listing ships "
+            f"{len(expected)} locales, {STOREKIT_PATH.name} carries {len(present)}"
+        )
+
+    unexpected = sorted({locale for locale in present if locale not in expected})
+    if unexpected:
+        errors.append(
+            f"{label} localizes {', '.join(unexpected)}, which the listing does not ship; "
+            "add the locale to UPLOAD_SAFE_LOCALES or remove it here"
+        )
+
+    duplicates = sorted({locale for locale in present if present.count(locale) > 1})
+    if duplicates:
+        errors.append(f"{label} localizes {', '.join(duplicates)} more than once")
+
+    return errors
+
+
 def validate_iap_localizations() -> list[str]:
     errors: list[str] = []
     storekit = load_storekit()
@@ -1626,6 +1677,12 @@ def validate_iap_localizations() -> list[str]:
         localizations = group.get("localizations", [])
         if not localizations:
             errors.append(f"Subscription group {group.get('name')} has no localizations")
+        errors.extend(
+            validate_storekit_locale_coverage(
+                label=f"Subscription group {group.get('name')}",
+                localizations=localizations,
+            )
+        )
         for localization in localizations:
             display_name = localization.get("displayName", "")
             locale = localization.get("locale", "<unknown>")
@@ -1671,14 +1728,17 @@ def validate_iap_localizations() -> list[str]:
 # Connect caps the description at 45 characters, and "Unlock every Pro tool.
 # First 7 days free." already spends 41 of them. So the trial is promised only
 # where eligibility is known — the paywall — and these descriptions must not
-# claim it. The tokens below are the trial vocabulary of the twelve shipped
-# locales; the copy that replaced the claims avoids all of them.
+# claim it. The tokens below are the trial vocabulary of the thirteen shipped
+# locales; the copy that replaced the claims avoids all of them. The Arabic pair
+# are stems rather than words: مجاني/مجانية and تجربة/تجريبية all start there,
+# and casefold() leaves Arabic unchanged, so the stem is the whole match.
 IAP_TRIAL_CLAIM_TOKENS = (
     "free", "trial",
     "gratis", "gratuit", "gratuita", "gratuito", "grátis", "offert",
     "darmo", "bezpłat", "ücretsiz", "deneme",
     "безкоштов", "безплат",
     "免費", "試用",
+    "مجان", "تجرب",
 )
 
 
@@ -1691,6 +1751,8 @@ def validate_iap_product_localizations(product_id: str, localizations: list[dict
     errors: list[str] = []
     if not localizations:
         return [f"{product_id} has no localizations"]
+
+    errors.extend(validate_storekit_locale_coverage(label=product_id, localizations=localizations))
 
     for localization in localizations:
         locale = localization.get("locale", "<unknown>")
