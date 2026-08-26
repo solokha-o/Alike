@@ -6,18 +6,24 @@
 into the renditions `alikeapp/alikeapp.github.io` serves:
 
     Docs/images/raw/<locale>/0N-<name>.png  ->  assets/img/screens/<lang>/<name>.avif
+                                            ->  assets/img/screens/<lang>/<name>.jpg
 
 The site used to show the English captures in every language, because the frames
 were keyed by shot alone. They are keyed by locale now — the same contract the
 site already uses for `assets/img/og/<lang>.jpg` and the App Store badge — so an
 Arabic reader sees the Arabic build, right to left, rather than an English one.
 
-Format: AVIF at 520px wide, which is 2x the ~260px the frames render at. Twelve
-locales of PNG would be ~17MB of image in a repository whose history is 5MB;
-the same matrix in AVIF is ~2.5MB, and a visitor downloads one locale of it
-(~200KB) instead of the 1.4MB of PNG the page shipped before. English keeps a
-PNG rendition as the `<picture>` fallback for browsers without AVIF — they are
-few, and giving each of them their own locale's PNG is what costs the 17MB.
+Two formats, both per locale, following tools/build_site_assets.sh: AVIF at
+520px — 2x the ~260px the frames render at — and a 1x JPEG the `<picture>` falls
+back to on browsers without AVIF. `<picture>` downloads exactly one of them, so
+the fallback is served only to that minority and does not need to be retina.
+
+A locale-matched fallback is the point. A shared English one would put those
+browsers back on the English screens for every other language, which is the bug
+this pipeline exists to fix, and it would be invisible to anyone testing in a
+browser that does have AVIF. PNG is what makes the matrix unaffordable — twelve
+locales of it is ~17MB in a repository whose whole history is 5MB. AVIF plus 1x
+JPEG is ~5MB, and a visitor downloads ~200KB of it.
 
 The locale list is read from the site's own `_config.yml`, so a language added
 there without captures fails this run instead of shipping a broken <img>. The
@@ -44,6 +50,12 @@ CAPTURE_SIZE = (1320, 2868)
 # The frames render at roughly 260px wide, so 520 covers 2x displays exactly.
 SITE_WIDTH = 520
 
+# The fallback is 1x, and JPEG rather than PNG: at 330px it is ~55KB against
+# ~190KB, which is the difference between a fallback set that fits in this
+# repository twelve times over and one that does not.
+FALLBACK_WIDTH = 330
+FALLBACK_QUALITY = 80
+
 # sips' AVIF quality. 70 holds the app's UI text crisp at 520px and lands each
 # shot between 25KB and 60KB; the same pixels as PNG are 130KB to 470KB.
 AVIF_QUALITY = 70
@@ -55,10 +67,6 @@ SITE_SHOTS = (1, 3, 4, 5, 7)
 # site lang -> capture directory. Only English differs, for the same reason
 # Docs/images/en-US/ is spelled that way: the App Store locale is en-US.
 CAPTURE_DIRECTORIES = {"en": "en-US"}
-
-# The English renditions double as the <picture> fallback, so they are the one
-# locale that also gets a PNG.
-PNG_FALLBACK_LANG = "en"
 
 
 def site_languages(site_root: Path) -> list[str]:
@@ -172,21 +180,24 @@ def main() -> None:
                 )
 
             name = source.stem.split("-", 1)[1]
+
             run("sips", "--resampleWidth", str(SITE_WIDTH), str(source), "--out", str(scratch))
             avif = out_dir / f"{name}.avif"
             run("sips", "-s", "format", "avif", "-s", "formatOptions", str(AVIF_QUALITY),
                 str(scratch), "--out", str(avif))
-            sizes.append(avif.stat().st_size)
-            written += 1
 
-            if lang == PNG_FALLBACK_LANG:
-                run("sips", "-s", "format", "png", str(scratch), "--out", str(out_dir / f"{name}.png"))
-                written += 1
+            run("sips", "--resampleWidth", str(FALLBACK_WIDTH), str(source), "--out", str(scratch))
+            jpeg = out_dir / f"{name}.jpg"
+            run("sips", "-s", "format", "jpeg", "-s", "formatOptions", str(FALLBACK_QUALITY),
+                str(scratch), "--out", str(jpeg))
 
-        print(f"  {lang:<8} {len(SITE_SHOTS)} shots  {sum(sizes) / 1024:5.0f}KB avif")
+            sizes.append(avif.stat().st_size + jpeg.stat().st_size)
+            written += 2
+
+        print(f"  {lang:<8} {len(SITE_SHOTS)} shots  {sum(sizes) / 1024:5.0f}KB avif + jpeg")
 
     scratch.unlink(missing_ok=True)
-    print(f"\n{written} files in {screens_dir}/  at {SITE_WIDTH}px wide")
+    print(f"\n{written} files in {screens_dir}/  at {SITE_WIDTH}px (avif) and {FALLBACK_WIDTH}px (jpeg)")
     print("Commit them in the site repository; _data/screens.yml keys the captions by the same langs.")
 
 
