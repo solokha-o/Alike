@@ -29,7 +29,8 @@ final class SubscriptionDisclosureTests: XCTestCase {
         "nl": "die daarvoor in aanmerking komen",
         "pl": "uprawnionych nowych subskrybentów",
         "tr": "uygun yeni aboneler",
-        "zh-Hant": "符合資格的新訂閱者"
+        "zh-Hant": "符合資格的新訂閱者",
+        "ar": "الجدد المؤهلين"
     ]
 
     /// Compares each catalog value against the value parsed from *that locale's* documented

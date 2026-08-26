@@ -69,7 +69,7 @@ public struct PhotoGridColumnsMenu: View {
         Menu {
             Picker(selection: $columns) {
                 ForEach(_columns.layoutPolicy.columnCounts, id: \.self) { count in
-                    Text(count, format: .number).tag(count)
+                    Text(count, format: .alikeNumber).tag(count)
                 }
             } label: {
                 Text(DesignSystemL10n.PhotoGridColumnPreference.columns2)

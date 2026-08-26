@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "Alike 為你完成的清理喝采"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتفي Alike بإتمام عملية التنظيف"
+          }
         }
       }
     },
@@ -152,6 +158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 找到可清理的項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عثر Alike على فرص للتنظيف"
           }
         }
       }
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "Alike 已備妥可清理的項目供你檢視"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لدى Alike فرص تنظيف جاهزة للمراجعة"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 已準備好開始清理"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike جاهز للتنظيف"
           }
         }
       }
@@ -384,6 +408,12 @@
             "state": "translated",
             "value": "Alike 需要取用照片圖庫才能繼續"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور للمتابعة"
+          }
         }
       }
     },
@@ -460,6 +490,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 發現你的圖庫有新照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لاحظ Alike وجود صور جديدة في مكتبتك"
           }
         }
       }
@@ -538,6 +574,12 @@
             "state": "translated",
             "value": "Alike 掃描時發生問題"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "واجه Alike مشكلة أثناء الفحص"
+          }
         }
       }
     },
@@ -614,6 +656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 已準備好協助你整理照片圖庫"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike جاهز لمساعدتك في تنظيم مكتبة صورك"
           }
         }
       }
@@ -692,6 +740,12 @@
             "state": "translated",
             "value": "Alike 表示你的照片圖庫都整理好了"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يقول Alike إن مكتبة صورك مرتّبة بالكامل"
+          }
         }
       }
     },
@@ -769,6 +823,12 @@
             "state": "translated",
             "value": "Alike 正在尋找相似的照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبحث Alike عن الصور المتشابهة"
+          }
         }
       }
     },
@@ -845,6 +905,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "選擇顯示照片時要使用幾欄"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر عدد الأعمدة المستخدمة لعرض الصور"
           }
         }
       }
@@ -1097,6 +1163,48 @@
               }
             }
           }
+        },
+        "ar": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld أعمدة"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عمودًا"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عمود"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عمود"
+                }
+              },
+              "two": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "عمودان"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld عمود"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1173,6 +1281,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "欄數"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأعمدة"
           }
         }
       }
@@ -1251,6 +1365,12 @@
             "state": "translated",
             "value": "格線欄數"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أعمدة الشبكة"
+          }
         }
       }
     },
@@ -1327,6 +1447,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法預覽照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معاينة الصورة غير متوفرة"
           }
         }
       }
@@ -1405,6 +1531,12 @@
             "state": "translated",
             "value": "重試"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة المحاولة"
+          }
         }
       }
     },
@@ -1481,6 +1613,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "再次嘗試載入照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حاول تحميل الصورة مرة أخرى"
           }
         }
       }

@@ -86,7 +86,7 @@ public enum CoreL10n {
 
     /// Resolves a key that is chosen at runtime against this package's catalog.
     static func string(_ key: String.LocalizationValue, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
-        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .current)
+        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .alikeFormatting)
     }
 
     /// Resolves a key whose catalog entry carries plural variations.
@@ -104,7 +104,7 @@ public enum CoreL10n {
         let bundle = bundle ?? .module
         return String(
             format: bundle.localizedString(forKey: key, value: nil, table: nil),
-            locale: locale ?? .current,
+            locale: locale ?? .alikeFormatting,
             arguments: arguments
         )
     }

@@ -113,7 +113,7 @@ final class ClusterDetailsViewModel {
     }
 
     var estimatedSavingsText: String {
-        ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
+        String.alikeByteCount(estimatedSavingsBytes)
     }
 
     var maximumEstimatedSavingsText: String {
@@ -122,7 +122,7 @@ final class ClusterDetailsViewModel {
             .reduce(into: Int64(0)) { partialResult, snapshot in
                 partialResult += snapshot.estimatedCleanupBytes
             }
-        return ByteCountFormatter.string(fromByteCount: maximumEstimatedSavingsBytes, countStyle: .file)
+        return String.alikeByteCount(maximumEstimatedSavingsBytes)
     }
 
     var isBestShotCelebrationVisible: Bool {
@@ -662,7 +662,7 @@ private extension ClusterDetailsViewModel {
         else {
             return DetailsL10n.Common.bestShot
         }
-        return creationDate.formatted(date: .abbreviated, time: .shortened)
+        return creationDate.alikeFormatted(date: .abbreviated, time: .shortened)
     }
 
     nonisolated static func prepareAssetSnapshots(

@@ -180,6 +180,6 @@ public enum SettingsL10n {
     /// Same lookup, but with the bundle/locale exposed so tests can resolve against a compiled
     /// fixture and a fixed locale instead of the live device state.
     static func string(_ key: String.LocalizationValue, bundle: Bundle?, locale: Locale?) -> String {
-        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .current)
+        String(localized: key, bundle: bundle ?? .module, locale: locale ?? .alikeFormatting)
     }
 }

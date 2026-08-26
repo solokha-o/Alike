@@ -31,6 +31,29 @@ A command-line launch has no StoreKit configuration, so use the scheme for the p
 a string that never reached a catalog, which after the task 39 split usually means a
 key that failed to move into its package.
 
+### The right-to-left pass
+
+Scheme **`Alike-RTL`** (shared, Debug) is the mirror image of the same idea: it launches
+with
+
+```text
+-AppleTextDirection YES                  # the system reports a right-to-left interface
+-NSForceRightToLeftWritingDirection YES  # every layout container mirrors
+```
+
+and no language change, so an English reader can check mirroring without also having to
+read Arabic. It keeps the same `Configuration/Alike.storekit` reference for the same
+reason — an unconfigured paywall renders none of its plan cards.
+
+`-NSDoubleLocalizedStrings` is present but **disabled** in the scheme: doubling and
+mirroring are separate passes, and running both at once makes it impossible to say which
+one broke a layout. Enable it in the scheme editor for a deliberate combined run.
+
+Watch for three things the double-length pass cannot show: a chevron or arrow still
+pointing the wrong way, composited art whose surrounding layout failed to mirror
+(`AnimatedImageOverlay` and the two Details overlays it drives), and gesture maths that
+assumes a positive drag means "forward".
+
 ## Screens to walk
 
 **Run the full pass from the `Alike-Pseudolocale` scheme.** The command line above is a
@@ -363,6 +386,119 @@ back into the sentence.
 reader's *region*, not the app language, so a Traditional Chinese build on a device set to a
 comma region correctly shows `22,9 MB` — including in history entries recorded earlier. This
 is Apple's behaviour and matches the Photos app.
+
+## Findings — 2026-08-23 (task 45): right-to-left and Arabic
+
+Walked on iPhone 17 Pro (iOS 26 simulator) twice: once under the new `Alike-RTL` scheme
+with English strings, to isolate mirroring, and once launched with
+`-AppleLanguages '(ar)' -AppleLocale ar_SA` for the real thing. Screens covered: Welcome
+pages 1–3, Scanner home (idle and post-scan), Cleanup queue, Settings (both halves,
+including the reminder rows), the subscription paywall including the disclosure block, and
+the User Guide hub.
+
+| Screen | Locale | Status |
+|---|---|---|
+| Welcome, pages 1–3 | RTL, `ar` | **Pass** — pager, Back/Next, page dots all mirror |
+| Scanner home, idle | `ar` | **Pass** |
+| Scanner home, after a scan | `ar` | **Fail** — see "Three numbering systems" and "The last-scan date" |
+| Cleanup queue, smart category row | `ar` | **Pass** — `lock.fill` correctly does *not* mirror, the row's trailing edge moves to the left |
+| Settings, subscription + language + analysis | `ar` | **Pass** |
+| Settings, reminder rows | `ar` | **Pass after a fix** — see "A doubled preposition" |
+| Settings, debug overrides | `ar` | **Pass** |
+| Paywall, both plan cards | `ar` | **Pass** |
+| Paywall, disclosure block and legal links | `ar` | **Pass** — the eligibility hedge survives |
+| User Guide hub | `ar` | **Pass after a fix** — see "A conjunction fused onto Latin" |
+
+Mirroring itself came out clean, which the audit predicted: the layout had no physical
+left/right anywhere, so flipping the writing direction was enough. The direction-relative
+symbols from step 2 of this task all point the right way, and `lock.fill` — the one symbol
+in the set that must *not* mirror — does not.
+
+### Three numbering systems on one screen
+
+Scanner's Library Status card renders, side by side:
+
+- `آخر فحص` — an Arabic-Indic **Hijri** date, from `Date.formatted`
+- `الفرص` — **36**, Western digits, from `"\(summary.totalOpportunityCount)"`
+- `قابل للاسترجاع` — **٥١٫٣ م.ب.**, Arabic-Indic, from `ByteCountFormatter`
+- the free-scan footer — `بقي 2 من 3`, Western again, from `String(format:)`
+
+and the Cleanup queue one tab over renders the same 36 as **٣٦**, because that string is a
+catalog plural resolved by `String(localized:)`.
+
+The rule underneath it: **`String(localized:)` and the Foundation formatters follow
+`Locale.current` and so use the Arabic-Indic digits `ar_SA` asks for; `String(format:)`
+without a `locale:` argument does not, and neither do digits typed literally into
+translated copy.** Every `String(format:)` call in the app omits `locale:` —
+`ScannerHomeComponents.swift:308`, `CleanupView.swift:293` and `:644`,
+`ClusterDetailsViewModel.swift:153` and `:155`, `ClusterReviewSummaryCard.swift:101` and
+`:148`, `CleanupCategory.swift:96`, `ClusterDetailsView.swift:690`. That was invisible in
+the twelve existing locales, all of which use Western digits.
+
+**Resolved: Western digits everywhere.** Alike's numbers are technical rather than prose
+— a file size, a photo count, the moment a scan finished — and the disclosure paragraphs
+have to stay byte-identical to `Docs/legal/subscription-disclosure.md` and to the landing
+site, so their `24` and `7` are load-bearing as typed. `Locale.alikeFormatting` in
+`Packages/Core/Sources/Core/Extensions/Locale+AlikeFormatting.swift` pins the numbering
+system to `latn`, and every plural helper, byte count and timestamp now goes through it.
+The pin is unconditional rather than an `ar` special case: the twelve Latin-digit locales
+are unaffected, and the next non-Latin-digit language arrives already consistent.
+
+### The last-scan date is Hijri, and it is truncated
+
+`ar_SA` uses the Umm al-Qura calendar, so `آخر فحص` read `١٠ ربيع الأول، ١٤٤...` — a Hijri
+date, clipped mid-year in the three-column metric row.
+
+**Resolved: Gregorian.** The same `Locale.alikeFormatting` pins the calendar, for the same
+reason it pins the digits — these timestamps say when the app last did something, not what
+today's date is. The truncation went with it: the Gregorian string is short enough for the
+metric column, so `metric(value:label:)` keeps the `lineLimit(1)` + `minimumScaleFactor`
+pair it already had for Traditional Chinese.
+
+### A doubled preposition — fixed
+
+`settings.main.freeRemindersUseSundayAt` took `%@` already carrying its own preposition
+(`الأحد في ٦:٠٠ م`) and put another `في` in front of it: *`في الأحد في ٦:٠٠ م`*. Changed
+the string's own `في` to `يوم`, which is what an Arabic reader expects in front of a
+weekday.
+
+### A conjunction fused onto Latin — fixed
+
+`userGuide.deletingSafely.summary` ended `...، وiCloud.` — an Arabic waw attached directly
+to a Latin word with no space, which reads badly at the script boundary. Changed to
+`وخدمة iCloud`, giving the conjunction an Arabic word to attach to.
+
+### The dual printed its own number — fixed
+
+Device screenshots of a real library, on screens the simulator's empty library could not
+reach, caught what no test could: the cluster action bar read `نقل 2 صورتين` — "move 2
+two-photos" — and the selection summary `2 محددان` the same way. Arabic's dual *is* the
+count, so the digit in front of it is redundant to the point of being wrong.
+
+All sixteen `two` variations now drop the count specifier and let the noun carry it.
+`xcstringstool` compiles that as long as another variation of the key still references the
+number, and `testFormatSpecifiersSurviveEveryTranslation` was narrowed to allow it — for
+plural categories only, and only for the count. `%2$@` and every other argument still have
+to survive translation, which the two-argument keys (`selectionSummary`,
+`itemsEstimatedReclaimable`, `postFirstScan.withSavings`) prove against compiled bundles.
+
+### Observation, not a defect: `صفر كيلوبايت`
+
+The cleanup queue shows `صفر كيلوبايت` where the count beside it is a digit. That is
+Foundation's own spelling of zero for `ar_SA` — English renders the same field as
+`Zero kB`, German as `0 kB`. Changing it would be a product decision affecting all
+thirteen locales, not an Arabic fix. **Decided: left as Foundation renders it.**
+
+### Not Arabic's problem, but found here: the permission prompt is English in every locale
+
+The photo-library prompt renders `"Alike" would like full access to your Photo Library.` /
+`Alike analyzes your photo library to find visually similar images.` under `ar` — and
+under all twelve other locales too. The purpose strings are set as
+`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` build settings in
+`Alike/Alike.xcodeproj/project.pbxproj:419` and `:457`, and there is no
+`InfoPlist.xcstrings` anywhere in the project, so they cannot localize. It is the first
+sentence a new user reads. **Pre-existing and outside task 45's scope; recorded here so it
+is not found a third time.**
 
 ## Still owed
 

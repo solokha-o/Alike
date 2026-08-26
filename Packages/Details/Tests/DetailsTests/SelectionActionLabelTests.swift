@@ -28,7 +28,8 @@ final class SelectionActionLabelTests: XCTestCase {
         "nl": ("Wis selectie", "Verplaats selectie"),
         "pl": ("Wyczyść wybór", "Przenieś wybrane"),
         "tr": ("Seçimi Temizle", "Seçilenleri Taşı"),
-        "zh-Hant": ("清除選取", "移動已選取項目")
+        "zh-Hant": ("清除選取", "移動已選取項目"),
+        "ar": ("مسح التحديد", "نقل المحدد")
     ]
 
     func testTheClearAndMoveButtonsStayDistinguishable() throws {

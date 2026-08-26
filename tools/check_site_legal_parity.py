@@ -60,6 +60,7 @@ SITE_TO_DOC = {
     "pl": "PL",
     "tr": "TR",
     "zh-Hant": "ZH-HANT",
+    "ar": "AR",
 }
 DOC_ONLY = {
     "ES-419": "/es/ serves both Spanish listings",

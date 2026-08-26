@@ -269,7 +269,7 @@ public struct WelcomeView: View {
     private var standardWelcomeNavigation: some View {
         HStack(spacing: Spacing.medium) {
             if let previousPage = selectedWelcomePage.previous {
-                SecondaryButton(WelcomeL10n.Main.back, icon: "chevron.left") {
+                SecondaryButton(WelcomeL10n.Main.back, icon: "chevron.backward") {
                     selectWelcomePage(previousPage)
                 }
             }
@@ -290,7 +290,7 @@ public struct WelcomeView: View {
         } label: {
             HStack(spacing: Spacing.small) {
                 Text(WelcomeL10n.Main.next)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
             }
             .font(.appHeadline)
             .frame(maxWidth: .infinity)
@@ -311,7 +311,7 @@ public struct WelcomeView: View {
                 Button {
                     selectWelcomePage(previousPage)
                 } label: {
-                    Label(WelcomeL10n.Main.back, systemImage: "chevron.left")
+                    Label(WelcomeL10n.Main.back, systemImage: "chevron.backward")
                         .font(.appHeadline)
                         .frame(maxWidth: .infinity)
                 }
@@ -325,7 +325,7 @@ public struct WelcomeView: View {
                 } label: {
                     HStack(spacing: Spacing.small) {
                         Text(WelcomeL10n.Main.next)
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                     }
                     .font(.appHeadline)
                     .frame(maxWidth: .infinity)
