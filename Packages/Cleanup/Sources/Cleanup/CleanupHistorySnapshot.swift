@@ -5,7 +5,17 @@ struct CleanupHistorySnapshot: Equatable, Sendable {
     let insights: CleanupInsights
     let sections: [CleanupHistorySection]
 
-    init(entries: [CleanupCompletionRecord], calendar: Calendar = .current) {
+    /// The calendar the history is cut into months on.
+    ///
+    /// The pinned Gregorian one, not `.current`, because `CleanupHistoryView` spells the section
+    /// header with `.alikePinned`: under `ar-SA` the device calendar is Umm al-Qura, so grouping
+    /// by `.current` cut the entries on Hijri months and then labelled each bucket with the
+    /// Gregorian month its first day happened to fall in — an entry under a header naming a
+    /// month it did not happen in. Named rather than inlined so a test can assert the default
+    /// on any device, including the Latin-digit ones where reverting it looks harmless.
+    static var groupingCalendar: Calendar { .alikeFormattingCalendar }
+
+    init(entries: [CleanupCompletionRecord], calendar: Calendar = CleanupHistorySnapshot.groupingCalendar) {
         let sortedEntries = entries.sorted { lhs, rhs in
             if lhs.completedAt == rhs.completedAt {
                 return lhs.id.uuidString > rhs.id.uuidString

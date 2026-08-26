@@ -2,7 +2,7 @@
 
 Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
 1125 x 2436. The five deck shots are captured in the five Tier 1 languages too,
-so all twelve decks are complete; one shot is open in English, one is optional
+so all thirteen decks are complete; one shot is open in English, one is optional
 and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), filling the
@@ -78,7 +78,7 @@ rules behind it.
 - **Format:** PNG. Files must be named with a leading two-digit number
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
-- **Languages:** the listing has twelve localizations, and each needs its own
+- **Languages:** the listing has thirteen localizations, and each needs its own
   captures — a translated app behind English screenshots reads as an English
   app. The capture directory is the app's own language code:
   `Docs/images/raw/{en-US,uk,de,fr,es,es-419,pt-BR}/`. Only the five deck shots
@@ -86,7 +86,7 @@ rules behind it.
   for App Review and stay EN/UK, as the status table says. The device or
   simulator has to be *running* in that language — Settings, General, Language &
   Region, or launch with `-AppleLanguages` / `-AppleLocale`. Keep the same
-  library content across languages so the twelve decks read as one set.
+  library content across languages so the thirteen decks read as one set.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become
@@ -129,8 +129,8 @@ tier 3 captures below. A shot with no consumer is not a gap.
 
 **Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
 `pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
-in `capture-manifest.json`, exactly as Tier 1 was. All twelve listing locales now
-have a deck.
+in `capture-manifest.json`, exactly as Tier 1 was. With the Arabic deck that
+followed, all thirteen listing locales have one.
 
 Polish shot 1 is the one frame that did not arrive as a 1125 × 2436 PNG: it came
 off the device as a 1119 × 2436 JPEG, so it was resampled to 1320 wide and centre-
@@ -148,8 +148,8 @@ same session so its frame matches the five new decks.
 
 Ukrainian shot 5 is still the older capture, so `uk` is the one deck whose
 comparison-review frame shows different photos from the other six. Not wrong —
-the deck reads fine on its own — but recapturing it is what would make all twelve
-decks a single set.
+the deck reads fine on its own — but recapturing it is what would make all
+thirteen decks a single set.
 
 **Open — one shot:**
 
