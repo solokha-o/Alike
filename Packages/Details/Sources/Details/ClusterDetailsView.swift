@@ -685,7 +685,7 @@ struct MetadataView: View {
 
     private var formattedMegapixels: String {
         let value = metadata.megapixelCount.formatted(
-            .number.precision(.fractionLength(0...1))
+            FloatingPointFormatStyle<Double>.alikeDecimal.precision(.fractionLength(0...1))
         )
         return String(format: DetailsL10n.ClusterDetails.mp, value)
     }

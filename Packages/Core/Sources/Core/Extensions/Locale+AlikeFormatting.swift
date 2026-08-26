@@ -21,8 +21,15 @@ public extension Locale {
     /// twelve other shipped locales already use Western digits and the Gregorian calendar, so it
     /// changes nothing for them, and it means the next right-to-left or non-Gregorian language
     /// arrives already consistent instead of reopening this decision.
-    static var alikeFormatting: Locale {
-        var components = Locale.Components(locale: .current)
+    static var alikeFormatting: Locale { alikeFormatting(basedOn: .current) }
+
+    /// `alikeFormatting` derived from an explicit base rather than from `Locale.current`.
+    ///
+    /// The device locale is not settable from a test, and the whole point of the pin is what it
+    /// does to `ar_SA`, so the derivation is exposed as a function and the property is the
+    /// `Locale.current` call of it.
+    static func alikeFormatting(basedOn base: Locale) -> Locale {
+        var components = Locale.Components(locale: base)
         components.numberingSystem = Locale.NumberingSystem("latn")
         components.calendar = .gregorian
         return Locale(components: components)
@@ -34,9 +41,13 @@ public extension Calendar {
     ///
     /// The time zone still comes from the device: pinning the calendar is about which era and
     /// month names a date is spelled in, not about pretending the user is somewhere else.
-    static var alikeFormattingCalendar: Calendar {
+    static var alikeFormattingCalendar: Calendar { alikeFormattingCalendar(basedOn: .current) }
+
+    /// `alikeFormattingCalendar` derived from an explicit base locale — the test seam that
+    /// `Locale.alikeFormatting(basedOn:)` is.
+    static func alikeFormattingCalendar(basedOn base: Locale) -> Calendar {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = .alikeFormatting
+        calendar.locale = .alikeFormatting(basedOn: base)
         calendar.timeZone = Calendar.current.timeZone
         return calendar
     }
@@ -58,10 +69,45 @@ public extension Date {
         date: Date.FormatStyle.DateStyle,
         time: Date.FormatStyle.TimeStyle
     ) -> String {
-        var style = Date.FormatStyle(date: date, time: time)
-            .locale(.alikeFormatting)
+        formatted(Date.FormatStyle(date: date, time: time).alikePinned)
+    }
+}
+
+public extension Date.FormatStyle {
+    /// The same style, pinned to `Locale.alikeFormatting` and its calendar.
+    ///
+    /// `alikeFormatted(date:time:)` covers the two canned styles Alike shows most often. A
+    /// screen that needs its own field list — "March 4, 2026" on the paywall, "March 2026" as
+    /// a history header — builds the style itself and pins it here, so it does not have to
+    /// remember the calendar and time-zone half of the pinning.
+    var alikePinned: Date.FormatStyle {
+        var style = locale(.alikeFormatting)
         style.calendar = .alikeFormattingCalendar
         style.timeZone = Calendar.alikeFormattingCalendar.timeZone
-        return formatted(style)
+        return style
+    }
+}
+
+public extension FormatStyle where Self == FloatingPointFormatStyle<Double>.Percent {
+    /// A whole-number percentage formatted the way the whole app formats percentages.
+    static var alikePercent: FloatingPointFormatStyle<Double>.Percent {
+        .percent.precision(.fractionLength(0)).locale(.alikeFormatting)
+    }
+}
+
+public extension FormatStyle where Self == IntegerFormatStyle<Int> {
+    /// A whole number formatted the way the whole app formats whole numbers.
+    ///
+    /// `.number` reads `Locale.current`, so a bare `Text(count, format: .number)` prints
+    /// `٣٦` under `ar_SA` next to a `36` that came from a pinned formatter.
+    static var alikeNumber: IntegerFormatStyle<Int> {
+        .number.locale(.alikeFormatting)
+    }
+}
+
+public extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
+    /// A decimal number formatted the way the whole app formats decimal numbers.
+    static var alikeDecimal: FloatingPointFormatStyle<Double> {
+        .number.locale(.alikeFormatting)
     }
 }

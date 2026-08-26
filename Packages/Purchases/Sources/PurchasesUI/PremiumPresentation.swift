@@ -117,7 +117,7 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
             format: PurchasesL10n.Premium.freeIncludesScansPerCalendar,
             PremiumAccessPolicy.monthlyFreeScanLimit,
             remaining,
-            resetDate.formatted(.dateTime.month(.wide).day().year())
+            resetDate.formatted(.dateTime.month(.wide).day().year().alikePinned)
         )
     }
 }

@@ -15,6 +15,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(path: "../Core"),
         .package(path: "../DesignSystem"),
         .package(path: "../NavigationKit"),
         .package(path: "../Purchases")
@@ -23,7 +24,7 @@ let package = Package(
         .target(
             name: "UserGuide",
             dependencies: [
-                "DesignSystem", "NavigationKit",
+                "Core", "DesignSystem", "NavigationKit",
                 .product(name: "PurchasesUI", package: "Purchases")
             ],
             resources: [
@@ -35,7 +36,7 @@ let package = Package(
         ),
         .testTarget(
             name: "UserGuideTests",
-            dependencies: ["UserGuide"]
+            dependencies: ["UserGuide", "Core"]
         ),
     ]
 )

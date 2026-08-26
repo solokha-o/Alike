@@ -62,7 +62,7 @@ struct CleanupHistoryView: View {
                             .listRowBackground(Color.clear)
                     }
                 } header: {
-                    Text(section.month.formatted(.dateTime.month(.wide).year()))
+                    Text(section.month.formatted(.dateTime.month(.wide).year().alikePinned))
                         .font(.appHeadline)
                         .foregroundStyle(.primary)
                         .textCase(nil)

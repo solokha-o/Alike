@@ -1,4 +1,5 @@
 import SwiftUI
+import Core
 import DesignSystem
 import PurchasesUI
 
@@ -100,7 +101,7 @@ struct GuideItemRow: View {
     @ViewBuilder
     private var leading: some View {
         if case .step(let number, _) = item.kind {
-            Text(number.formatted())
+            Text(number.formatted(.alikeNumber))
                 .font(.appHeadline)
                 .foregroundStyle(Color.accent)
                 .frame(minWidth: stepBadgeSize, minHeight: stepBadgeSize)

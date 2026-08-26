@@ -1,4 +1,5 @@
 import Cleanup
+import Core
 import DesignSystem
 import SwiftUI
 
@@ -74,7 +75,7 @@ struct ScannerHomeHero: View {
             ProgressView(value: progress)
                 .tint(Color.accent)
 
-            Text(progress, format: .percent.precision(.fractionLength(0)))
+            Text(progress, format: .alikePercent)
                 .font(.appSubheadline)
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
@@ -86,7 +87,7 @@ struct ScannerHomeHero: View {
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(ScannerL10n.ScannerHomeComponents.scanningProgress))
-        .accessibilityValue(Text(progress.formatted(.percent.precision(.fractionLength(0)))))
+        .accessibilityValue(Text(progress.formatted(.alikePercent)))
     }
 
     @ViewBuilder

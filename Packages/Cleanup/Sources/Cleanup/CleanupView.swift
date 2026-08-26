@@ -900,7 +900,7 @@ private struct CleanupClusterSection: View {
             HStack {
                 Text(title)
                     .font(.appHeadline)
-                Text(clusters.count, format: .number)
+                Text(clusters.count, format: .alikeNumber)
                     .font(.caption.bold())
                     .padding(.horizontal, 7)
                     .padding(.vertical, 2)
@@ -961,7 +961,7 @@ private struct CleanupClusterCard: View {
             Button(action: open) {
                 ZStack(alignment: .bottomTrailing) {
                     thumbnail
-                    Text(cluster.count, format: .number)
+                    Text(cluster.count, format: .alikeNumber)
                         .font(.caption.bold())
                         .foregroundStyle(.primary)
                         .lineLimit(1)
