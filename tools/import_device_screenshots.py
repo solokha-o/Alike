@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Turn native iPhone screenshots into the two renditions the project needs.
+"""Turn native iPhone screenshots into the capture store every deck is built from.
 
-Source captures are 1125 x 2436 (the 5.8" iPhone size). Two consumers:
+Source captures are 1125 x 2436 (the 5.8" iPhone size).
 
   App Store  `Docs/images/raw/` holds the bare captures at exactly
              1320 x 2868. 1125 -> 1320 is a 1.17x upscale landing at
@@ -11,10 +11,9 @@ Source captures are 1125 x 2436 (the 5.8" iPhone size). Two consumers:
              turns these into the marketing renders in `Docs/images/<locale>/`
              that `tools/prepare_app_store_upload_bundle.py` uploads.
 
-  Website    `assets/img/screens/` in the alikeapp/alikeapp.github.io repository
-             renders in ~260px frames, so a 520px wide copy covers 2x with room
-             to spare and keeps the page light. Skipped when that checkout is
-             not next to this one.
+The landing page's frames are built from that raw store rather than from
+`--source`, by `tools/build_site_screenshots.py`, so re-rendering the site does
+not need the camera roll of a capture session from months ago.
 
 Languages beyond en and uk come from an optional
 `Docs/images/raw/capture-manifest.json`, which maps each locale's shot numbers
@@ -34,8 +33,7 @@ produces that natively — need no conversion and can be dropped straight into
 
 Usage:
     python3 tools/import_device_screenshots.py --source ~/Downloads
-    python3 tools/import_device_screenshots.py --source ~/Downloads \
-        --site-repo ../alikeapp.github.io
+    python3 tools/import_device_screenshots.py --source ~/Downloads --locales ar
 """
 from __future__ import annotations
 
@@ -49,7 +47,6 @@ from pathlib import Path
 
 SOURCE_SIZE = (1125, 2436)
 APP_STORE_SIZE = (1320, 2868)
-SITE_WIDTH = 520
 
 # shot number -> {lang: source filename}
 # Shot numbers refer to the table in Docs/screenshot-shot-list.md.
@@ -108,10 +105,6 @@ LOCALE_SUGGESTIONS = {
 # is en-US. Everything else — uk, de, fr, es, es-419, pt-BR, it, nl, pl, tr and
 # zh-Hant — is verbatim.
 LANGUAGE_DIRECTORIES = {"en": "en-US"}
-
-# Which shots the landing page shows, matching _data/screens.yml in the site repo.
-SITE_SHOTS = [1, 3, 4, 5, 7]
-
 
 def languages_of(spec: dict[str, str], only: set[str] | None = None) -> list[str]:
     """Every language key in a shot spec, in a stable order. "name" is not one."""
@@ -192,11 +185,6 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--source", default="~/Downloads", help="folder holding the IMG_*.PNG captures")
     ap.add_argument("--repo", default=".", help="repository root")
-    ap.add_argument(
-        "--site-repo",
-        default="../alikeapp.github.io",
-        help="checkout of alikeapp/alikeapp.github.io; website renders are skipped when it is absent",
-    )
     # A capture session covers one locale, and the camera roll it came from holds
     # that locale's shots only. Without this the run resolves every language in
     # SHOTS plus the manifest and stops on the ones whose files were imported
@@ -222,16 +210,7 @@ def main() -> None:
     repo = Path(args.repo).resolve()
     store_dir = repo / "Docs" / "images" / "raw"
 
-    # The site lives in its own repository now, so its image directory is not
-    # ours to create — an unconditional mkdir would quietly produce a dead
-    # folder here and the renders would never reach the published page. Write
-    # only into a checkout that already exists, and say so when there isn't one.
-    site_root = Path(args.site_repo).expanduser()
-    site_dir = (site_root / "assets" / "img" / "screens").resolve() if site_root.is_dir() else None
-
     store_dir.mkdir(parents=True, exist_ok=True)
-    if site_dir is not None:
-        site_dir.mkdir(parents=True, exist_ok=True)
 
     shots = load_shots(store_dir / MANIFEST_NAME)
 
@@ -251,7 +230,7 @@ def main() -> None:
         print("Missing source files:", *missing, sep="\n  ", file=sys.stderr)
         raise SystemExit(66)
 
-    store_count = site_count = 0
+    store_count = 0
     for shot in sorted(shots):
         spec = shots[shot]
         for lang in languages_of(spec, only):
@@ -275,23 +254,12 @@ def main() -> None:
             assert png_size(target) == APP_STORE_SIZE, f"{target} wrong size"
             store_count += 1
 
-            # Website: only the shots the page actually frames, English only —
-            # the site swaps language by text, not by screenshot.
-            if site_dir is not None and shot in SITE_SHOTS and lang == "en":
-                site_target = site_dir / f"{spec['name']}.png"
-                shutil.copy2(src, site_target)
-                run("sips", "--resampleWidth", str(SITE_WIDTH), str(site_target), "--out", str(site_target))
-                site_count += 1
-
         print(f"  shot {shot:2d}  {spec['name']}")
 
     print(f"\nApp Store: {store_count} files in {store_dir.relative_to(repo)}/  at "
           f"{APP_STORE_SIZE[0]}x{APP_STORE_SIZE[1]}")
-    if site_dir is None:
-        print(f"Website:   skipped — no checkout at {args.site_repo}; "
-              f"pass --site-repo <path to alikeapp.github.io> to render the page images")
-    else:
-        print(f"Website:   {site_count} files in {site_dir}/  at {SITE_WIDTH}px wide")
+    print("Website:   run tools/build_site_screenshots.py --site-repo <path to alikeapp.github.io> "
+          "to re-render the landing page's frames from these captures")
 
 
 if __name__ == "__main__":

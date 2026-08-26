@@ -207,17 +207,20 @@ listing with room for one more.
 
 ## Wiring a screenshot into the site
 
-These two steps happen in the `alikeapp/alikeapp.github.io` repository, not
-here. `tools/import_device_screenshots.py --site-repo <path>` writes step 1 for
-you when that checkout is available.
+The page frames shots 1, 3, 4, 5 and 7, in every language it publishes. Render
+them from the captures already committed here:
 
-1. Put the PNG at `assets/img/screens/<name>.png`.
-2. Add `image: <name>` to the matching entry in `_data/screens.yml`.
+```sh
+python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
+```
 
-The frame swaps from the pending placeholder to the screenshot with no layout
-or CSS change. Entries carry EN and UK `caption` and `alt` text already.
+That writes `assets/img/screens/<lang>/<name>.avif` for each of the site's
+languages — the lang list comes from the site's own `_config.yml`, so a locale
+published without captures fails the run instead of shipping a broken frame —
+plus the English PNG the `<picture>` falls back to. AVIF at 520px is what keeps
+twelve locales of screenshot to ~2.5MB; the same matrix as PNG is ~17MB.
 
-Landing-page captures do not need to be 1320 × 2868 — the frames render at
-roughly 260px wide, so a downscaled copy keeps the page light. Run them through
-`tools/build_site_assets.sh` conventions (AVIF plus a PNG fallback) if the set
-grows large.
+The one remaining step happens in the `alikeapp/alikeapp.github.io` repository:
+add `image: <name>` to the matching entry in `_data/screens.yml`. The frame
+swaps from the pending placeholder to the screenshot with no layout or CSS
+change, and each entry already carries `caption` and `alt` text per locale.

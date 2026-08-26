@@ -23,6 +23,10 @@ physical iPhone capture (1125 x 2436)
   → tools/prepare_app_store_upload_bundle.py
                                             → build/generated/store_upload/screenshots/<apple locale>/
   → fastlane deliver
+
+Docs/images/raw/<locale>/
+  → tools/build_site_screenshots.py         → alikeapp.github.io
+                                              assets/img/screens/<lang>/  (520px AVIF)
 ```
 
 `numbered_pngs()` in the bundle script only picks up `*.png` whose name starts
