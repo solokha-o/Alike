@@ -40,9 +40,11 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
 import struct
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 CAPTURE_SIZE = (1320, 2868)
@@ -150,9 +152,12 @@ def main() -> None:
 
     screens_dir = site_root / "assets" / "img" / "screens"
 
-    # Resolve every capture before writing anything, so a locale captured only
-    # halfway stops the run instead of leaving the site with three of its five
-    # frames in the new language and two in the old.
+    # Resolve and check every capture before writing anything, so a locale
+    # captured only halfway stops the run instead of leaving the site with three
+    # of its five frames in the new language and two in the old. The dimension
+    # check belongs here rather than in the write loop below for the same
+    # reason: a late locale imported at the wrong size used to abort the run
+    # after the earlier languages had already been rewritten.
     captures: dict[tuple[str, int], Path] = {}
     for lang in languages:
         capture_dir = store_dir / CAPTURE_DIRECTORIES.get(lang, lang)
@@ -162,9 +167,20 @@ def main() -> None:
                 f"locale and import it before building the page images."
             )
         for shot in SITE_SHOTS:
-            captures[(lang, shot)] = capture_for(capture_dir, shot)
+            source = capture_for(capture_dir, shot)
+            size = png_size(source)
+            if size != CAPTURE_SIZE:
+                raise SystemExit(
+                    f"{source} is {size[0]}x{size[1]}, expected {CAPTURE_SIZE[0]}x{CAPTURE_SIZE[1]}; "
+                    f"run it through tools/import_device_screenshots.py first"
+                )
+            captures[(lang, shot)] = source
 
-    scratch = screens_dir / "scratch.png"
+    # The intermediate resample lives in a temporary directory rather than in the
+    # site checkout: a failed run used to leave scratch.png sitting in
+    # assets/img/screens/ for the next `git status` to find.
+    scratch_dir = tempfile.mkdtemp(prefix="alike-site-screens-")
+    scratch = Path(scratch_dir) / "scratch.png"
     written = 0
     for lang in languages:
         out_dir = screens_dir / lang
@@ -172,13 +188,6 @@ def main() -> None:
         sizes = []
         for shot in SITE_SHOTS:
             source = captures[(lang, shot)]
-            size = png_size(source)
-            if size != CAPTURE_SIZE:
-                raise SystemExit(
-                    f"{source} is {size[0]}x{size[1]}, expected {CAPTURE_SIZE[0]}x{CAPTURE_SIZE[1]}; "
-                    f"run it through tools/import_device_screenshots.py first"
-                )
-
             name = source.stem.split("-", 1)[1]
 
             run("sips", "--resampleWidth", str(SITE_WIDTH), str(source), "--out", str(scratch))
@@ -196,7 +205,7 @@ def main() -> None:
 
         print(f"  {lang:<8} {len(SITE_SHOTS)} shots  {sum(sizes) / 1024:5.0f}KB avif + jpeg")
 
-    scratch.unlink(missing_ok=True)
+    shutil.rmtree(scratch_dir, ignore_errors=True)
     print(f"\n{written} files in {screens_dir}/  at {SITE_WIDTH}px (avif) and {FALLBACK_WIDTH}px (jpeg)")
     print("Commit them in the site repository; _data/screens.yml keys the captions by the same langs.")
 
