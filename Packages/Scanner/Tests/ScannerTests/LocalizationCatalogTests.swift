@@ -329,9 +329,11 @@ final class LocalizationCatalogTests: XCTestCase {
                         ? "\(key) [\(language)]"
                         : "\(key) [\(language).\(category)]"
                     let shape = LocalizationCatalog.formatShape(translation)
-                    // A plural variation may drop the count and spell it into the noun
-                    // instead — see `shapeWithoutCount`. Nothing else may go missing.
-                    let countMayBeLexical = !category.isEmpty
+                    // Arabic's dual is the one form allowed to drop the count and spell it
+                    // into the noun instead — see `shapeWithoutCount`. Every other language
+                    // and every other category of Arabic must keep the format exact, or an
+                    // accidental deletion from `en.one` or `pl.many` would pass unnoticed.
+                    let countMayBeLexical = language == "ar" && category == "two"
                     let allowed = countMayBeLexical ? LocalizationCatalog.shapeWithoutCount(englishShape) : nil
                     if shape != englishShape, shape.specifiers != allowed?.specifiers || shape.literalPercents != englishShape.literalPercents {
                         mismatched.append("\(label) has \(shape) where en has \(englishShape)")
