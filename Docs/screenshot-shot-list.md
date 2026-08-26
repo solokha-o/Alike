@@ -5,17 +5,19 @@ Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
 so all twelve decks are complete; one shot is open in English, one is optional
 and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
-app's screens are black at both edges, so the padding is invisible), and emits
-520px copies for the landing-page device frames.
+app's screens are black at both edges, so the padding is invisible), filling the
+capture store every deck and the landing page are built from.
 
-Re-run after adding captures:
+Re-run both steps after adding captures — the import fills the store, and the
+site's device frames are a separate render off that store:
 
 ```sh
 python3 tools/import_device_screenshots.py --source ~/Downloads
+python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
 ```
 
-The mapping from source filename to shot lives in `SHOTS` in that script, for
-EN and UK. Other languages come from an optional
+The mapping from source filename to shot lives in `SHOTS` in the import
+script, for EN and UK. Other languages come from an optional
 `Docs/images/raw/capture-manifest.json`, which the script merges over `SHOTS`:
 
 ```json
@@ -207,17 +209,26 @@ listing with room for one more.
 
 ## Wiring a screenshot into the site
 
-These two steps happen in the `alikeapp/alikeapp.github.io` repository, not
-here. `tools/import_device_screenshots.py --site-repo <path>` writes step 1 for
-you when that checkout is available.
+The page frames shots 1, 3, 4, 5 and 7, in every language it publishes. Render
+them from the captures already committed here:
 
-1. Put the PNG at `assets/img/screens/<name>.png`.
-2. Add `image: <name>` to the matching entry in `_data/screens.yml`.
+```sh
+python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
+```
 
-The frame swaps from the pending placeholder to the screenshot with no layout
-or CSS change. Entries carry EN and UK `caption` and `alt` text already.
+That writes two renditions per shot per language — `<name>.avif` at 520px and
+the 1x `<name>.jpg` the `<picture>` falls back to on browsers without AVIF, both
+under `assets/img/screens/<lang>/`. The lang list comes from the site's own
+`_config.yml`, so a locale published without captures fails the run instead of
+shipping a broken frame.
 
-Landing-page captures do not need to be 1320 × 2868 — the frames render at
-roughly 260px wide, so a downscaled copy keeps the page light. Run them through
-`tools/build_site_assets.sh` conventions (AVIF plus a PNG fallback) if the set
-grows large.
+The fallback is per locale too, deliberately: a shared English one would put
+those browsers back on English screens for every other language — the bug this
+whole pipeline exists to fix, and an invisible one to anyone testing in a
+browser that does have AVIF. PNG is what the matrix cannot afford: twelve
+locales of it is ~17MB against ~5MB for AVIF plus 1x JPEG.
+
+The one remaining step happens in the `alikeapp/alikeapp.github.io` repository:
+add `image: <name>` to the matching entry in `_data/screens.yml`. The frame
+swaps from the pending placeholder to the screenshot with no layout or CSS
+change, and each entry already carries `caption` and `alt` text per locale.
