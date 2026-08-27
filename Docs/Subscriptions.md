@@ -155,7 +155,7 @@ reappears in any of the thirteen locales, Arabic included:
    localizations from the table above — en-US, uk, de-DE, fr-FR, es-ES, es-MX,
    pt-BR, it, nl-NL, pl, tr, zh-Hant and ar-SA — either by hand or with
    `tools/app_store_iap_metadata.rb upload-localizations` once the products
-   exist, then confirm with `status`, which reports `localizations=N/12` and
+   exist, then confirm with `status`, which reports `localizations=N/13` and
    names any missing locale, because skipped locales do not fail the upload
    run.
 5. Add a seven-day free-trial introductory offer to yearly only. Eligibility is

@@ -24,7 +24,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
-- 🌍 **Twelve languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish and Traditional Chinese
+- 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
 ## 🆕 What ships in 1.0.0
@@ -155,8 +155,8 @@ There are five shared schemes:
 - `Alike` — builds and runs **Release** with no debugger attached and no local StoreKit configuration, so ⌘R gives the same build the App Store gets. Normal logging (info/errors only). Its Test action stays on Debug, because the test targets need the `#if DEBUG` mocks in `Packages/Core/Sources/Core/Mocks`.
 - `Alike-VerboseLogs` — Debug build with verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
 - `Alike-DebugVerboseLogs` — Debug build with verbose logging, profiled and analyzed in Debug too.
-- `Alike-Pseudolocale` — Debug build launched with `-NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings [[]]`, so every string renders doubled and bracketed and anything unlocalized shows in capitals. It is the layout-and-coverage pass for twelve languages without reading twelve languages; see `Docs/Localization/pseudo-locale-qa.md`.
-- `Alike-RTL` — Debug build launched with `-AppleTextDirection YES -NSForceRightToLeftWritingDirection YES`, which flips the whole interface right-to-left without shipping a right-to-left language. It is how mirroring, directional symbols and composited art get checked before Arabic lands; see `Docs/Localization/pseudo-locale-qa.md`.
+- `Alike-Pseudolocale` — Debug build launched with `-NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings [[]]`, so every string renders doubled and bracketed and anything unlocalized shows in capitals. It is the layout-and-coverage pass for thirteen languages without reading thirteen languages; see `Docs/Localization/pseudo-locale-qa.md`.
+- `Alike-RTL` — Debug build launched with `-AppleTextDirection YES -NSForceRightToLeftWritingDirection YES`, which flips the whole interface right-to-left for Arabic layout checks. It is how mirroring, directional symbols and composited art get checked; see `Docs/Localization/pseudo-locale-qa.md`.
 
 Use one of the verbose schemes for anything that needs a debugger, the debug menu, the premium overrides, or local StoreKit transactions — all of those are compiled out of `Alike`.
 
@@ -222,13 +222,13 @@ variables, and the safety rules that keep uploads deliberate.
 
 ## 📝 Localization
 
-Twelve languages, each in per-package `Localizable.xcstrings` catalogs:
+Thirteen languages, each in per-package `Localizable.xcstrings` catalogs:
 
 | Tier | Locales |
 |---|---|
 | Base | 🇬🇧 `en` · 🇺🇦 `uk` |
 | Tier 1 | 🇲🇽 `es-419` · 🇪🇸 `es` · 🇧🇷 `pt-BR` · 🇩🇪 `de` · 🇫🇷 `fr` |
-| Tier 3 | 🇮🇹 `it` · 🇳🇱 `nl` · 🇵🇱 `pl` · 🇹🇷 `tr` · 🇹🇼 `zh-Hant` |
+| Tier 3 | 🇮🇹 `it` · 🇳🇱 `nl` · 🇵🇱 `pl` · 🇹🇷 `tr` · 🇹🇼 `zh-Hant` · 🇸🇦 `ar` |
 
 A package that renders text owns its own catalog and typed `L10n` accessors; the app
 target's catalog holds app-level strings only. Every package has a `LocalizationCatalogTests`

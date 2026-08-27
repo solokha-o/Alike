@@ -56,11 +56,11 @@ any conflict.
 
 LANGUAGES
 The app, the App Store listing and the Privacy Policy, Terms of Use and
-Support pages are localized into twelve languages: English, Ukrainian, German,
+Support pages are localized into thirteen languages: English, Ukrainian, German,
 French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch,
-Polish, Turkish and Traditional Chinese. The iOS photo library permission
-alert itself stays in English; its text is a build setting rather than a
-localized string, and that is a known gap.
+Polish, Turkish, Traditional Chinese and Arabic. The iOS photo library permission
+alert itself stays in English; its text is a build setting rather than a localized
+string, and that is a known gap.
 
 DATA DELETION
 Settings, then Data & Privacy, then Delete Alike Data erases all scan results,
