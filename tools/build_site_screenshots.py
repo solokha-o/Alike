@@ -40,7 +40,6 @@ from __future__ import annotations
 
 import argparse
 import re
-import shutil
 import struct
 import subprocess
 import sys
@@ -179,33 +178,32 @@ def main() -> None:
     # The intermediate resample lives in a temporary directory rather than in the
     # site checkout: a failed run used to leave scratch.png sitting in
     # assets/img/screens/ for the next `git status` to find.
-    scratch_dir = tempfile.mkdtemp(prefix="alike-site-screens-")
-    scratch = Path(scratch_dir) / "scratch.png"
-    written = 0
-    for lang in languages:
-        out_dir = screens_dir / lang
-        out_dir.mkdir(parents=True, exist_ok=True)
-        sizes = []
-        for shot in SITE_SHOTS:
-            source = captures[(lang, shot)]
-            name = source.stem.split("-", 1)[1]
+    with tempfile.TemporaryDirectory(prefix="alike-site-screens-") as scratch_dir:
+        scratch = Path(scratch_dir) / "scratch.png"
+        written = 0
+        for lang in languages:
+            out_dir = screens_dir / lang
+            out_dir.mkdir(parents=True, exist_ok=True)
+            sizes = []
+            for shot in SITE_SHOTS:
+                source = captures[(lang, shot)]
+                name = source.stem.split("-", 1)[1]
 
-            run("sips", "--resampleWidth", str(SITE_WIDTH), str(source), "--out", str(scratch))
-            avif = out_dir / f"{name}.avif"
-            run("sips", "-s", "format", "avif", "-s", "formatOptions", str(AVIF_QUALITY),
-                str(scratch), "--out", str(avif))
+                run("sips", "--resampleWidth", str(SITE_WIDTH), str(source), "--out", str(scratch))
+                avif = out_dir / f"{name}.avif"
+                run("sips", "-s", "format", "avif", "-s", "formatOptions", str(AVIF_QUALITY),
+                    str(scratch), "--out", str(avif))
 
-            run("sips", "--resampleWidth", str(FALLBACK_WIDTH), str(source), "--out", str(scratch))
-            jpeg = out_dir / f"{name}.jpg"
-            run("sips", "-s", "format", "jpeg", "-s", "formatOptions", str(FALLBACK_QUALITY),
-                str(scratch), "--out", str(jpeg))
+                run("sips", "--resampleWidth", str(FALLBACK_WIDTH), str(source), "--out", str(scratch))
+                jpeg = out_dir / f"{name}.jpg"
+                run("sips", "-s", "format", "jpeg", "-s", "formatOptions", str(FALLBACK_QUALITY),
+                    str(scratch), "--out", str(jpeg))
 
-            sizes.append(avif.stat().st_size + jpeg.stat().st_size)
-            written += 2
+                sizes.append(avif.stat().st_size + jpeg.stat().st_size)
+                written += 2
 
-        print(f"  {lang:<8} {len(SITE_SHOTS)} shots  {sum(sizes) / 1024:5.0f}KB avif + jpeg")
+            print(f"  {lang:<8} {len(SITE_SHOTS)} shots  {sum(sizes) / 1024:5.0f}KB avif + jpeg")
 
-    shutil.rmtree(scratch_dir, ignore_errors=True)
     print(f"\n{written} files in {screens_dir}/  at {SITE_WIDTH}px (avif) and {FALLBACK_WIDTH}px (jpeg)")
     print("Commit them in the site repository; _data/screens.yml keys the captions by the same langs.")
 
