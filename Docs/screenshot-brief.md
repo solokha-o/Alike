@@ -216,7 +216,7 @@ The five `ar` source captures are taken the same way every other locale's are â€
 on device, then imported with `tools/import_device_screenshots.py`, which now
 accepts `ar` and maps `ar-SA`/`ar-AE`/`ar-EG` onto it.
 
-Twelve decks, one per listing localization. The directory names are the app's own
+Thirteen decks, one per listing localization. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` â€” `tools/prepare_app_store_upload_bundle.py`
 maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
 the one code that is spelled identically on both sides.

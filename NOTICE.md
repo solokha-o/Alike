@@ -33,7 +33,7 @@ organization's source of funding) — requires a separate written license.
   that are all rights reserved and excluded from the source-code license,
   subject to the prospective-effect note below:
   - `Alike/Alike/Assets.xcassets/AppIcon.appiconset/` (app icon images)
-  - `Docs/images/` (marketing, raw, and review screenshots, all twelve
+  - `Docs/images/` (marketing, raw, and review screenshots, all thirteen
     listing locales)
   - `tools/assets/iphone-mockup.png` (device mockup used by screenshot tooling)
   - `Packages/DesignSystem/Sources/DesignSystem/Resources/` (PNG
