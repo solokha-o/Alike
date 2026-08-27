@@ -84,6 +84,10 @@ Rendered by `disclosure` in
 
 > 除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂。款項將向你的 Apple 帳戶收取。
 
+**AR**
+
+> تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. تُخصم قيمة الدفع من حساب Apple الخاص بك.
+
 ### Paragraph 2 — trial and cancellation
 
 **EN**
@@ -134,12 +138,17 @@ Rendered by `disclosure` in
 
 > 年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。你可以隨時在 iOS「設定」中管理或取消訂閱項目。
 
+**AR**
+
+> تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ قبل ذلك بـ 24 ساعة على الأقل. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS.
+
 The phrase "for eligible new subscribers" is load-bearing. Trial eligibility is
 decided by StoreKit per subscription group, and a customer who already used the
 Alike Pro trial will not get another one. The copy must not promise a trial that
 StoreKit will refuse. Every locale above carries the same hedge — "que cumplan los
 requisitos", "qualificados", "berechtigte", "éligibles", "idonei", "die daarvoor in
-aanmerking komen", "uprawnionych", "uygun", "符合資格的" — and a translation pass
+aanmerking komen", "uprawnionych", "uygun", "符合資格的", "الجدد المؤهلين" — and a
+translation pass
 must not smooth it away.
 
 ### Link row
@@ -158,6 +167,7 @@ must not smooth it away.
 | `pl` | Polityka prywatności | Warunki korzystania |
 | `tr` | Gizlilik Politikası | Kullanım Koşulları |
 | `zh-Hant` | 隱私權政策 | 使用條款 |
+| `ar` | سياسة الخصوصية | شروط الاستخدام |
 
 Destinations are `SubscriptionConfiguration.legalLinks.privacyPolicy` and
 `.termsOfUse`. Both point at the same English URLs in every locale. The linked

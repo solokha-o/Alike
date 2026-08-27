@@ -567,9 +567,9 @@ public struct SettingsView: View {
     }
 
     private var weekdayOptions: [(value: Int, title: String)] {
-        let calendar = Calendar.current
+        let calendar = Calendar.alikeFormattingCalendar
         let formatter = DateFormatter()
-        formatter.locale = .current
+        formatter.locale = .alikeFormatting
         let weekdaySymbols = formatter.standaloneWeekdaySymbols ?? formatter.weekdaySymbols ?? []
         let firstWeekdayIndex = max(1, min(calendar.firstWeekday, weekdaySymbols.count)) - 1
 
@@ -582,17 +582,21 @@ public struct SettingsView: View {
     private var cleanupReminderFooterText: String {
         CleanupReminderCopy.footerText(
             hasPremiumAccess: hasCleanupReminderAccess,
-            calendar: .current,
-            locale: .current
+            calendar: .alikeFormattingCalendar,
+            locale: .alikeFormatting
         )
     }
 
     private func reminderTimeDate(for schedule: CleanupReminderSchedule) -> Date {
-        CleanupReminderCopy.reminderTimeDate(for: schedule, calendar: .current)
+        CleanupReminderCopy.reminderTimeDate(for: schedule, calendar: .alikeFormattingCalendar)
     }
 
     private func scheduleDescription(_ schedule: CleanupReminderSchedule) -> String {
-        CleanupReminderCopy.scheduleDescription(schedule, calendar: .current, locale: .current)
+        CleanupReminderCopy.scheduleDescription(
+            schedule,
+            calendar: .alikeFormattingCalendar,
+            locale: .alikeFormatting
+        )
     }
 
     #if canImport(UIKit)

@@ -117,7 +117,7 @@ public enum PremiumSurfaceContext: Equatable, Sendable {
             format: PurchasesL10n.Premium.freeIncludesScansPerCalendar,
             PremiumAccessPolicy.monthlyFreeScanLimit,
             remaining,
-            resetDate.formatted(.dateTime.month(.wide).day().year())
+            resetDate.formatted(.dateTime.month(.wide).day().year().alikePinned)
         )
     }
 }
@@ -174,7 +174,7 @@ enum PaywallL10n {
     static func postFirstScanMessage(
         opportunityCount: Int,
         estimatedSavings: String?,
-        locale: Locale = .current,
+        locale: Locale = .alikeFormatting,
         bundle: Bundle = .module
     ) -> String {
         if let estimatedSavings {
@@ -197,7 +197,7 @@ enum PaywallL10n {
     static func batchCleanupMessage(
         selectedCount: Int,
         estimatedSavings: String,
-        locale: Locale = .current,
+        locale: Locale = .alikeFormatting,
         bundle: Bundle = .module
     ) -> String {
         String(

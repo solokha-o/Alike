@@ -177,7 +177,46 @@ otherwise come out as empty boxes and pass every other check.
 Chinese also has no spaces to wrap on, so `break_long_word()` splits between
 characters, holding closing punctuation back from the start of a line.
 
-Twelve decks, one per listing localization. The directory names are the app's own
+### Arabic — the mirrored deck
+
+Arabic is the one deck that is composed the other way round. `RTL_LOCALES` sends
+it through `mirrored_layout()`, which flips the caption and subtitle alignment
+**and** moves the device to the opposite margin with its tilt reversed: mirroring
+the copy alone would leave the phone leaning into the text instead of away from
+it, and the lean is what makes these compositions read. The capture inside the
+mockup is left alone — it is already a right-to-left screen.
+
+Two things Pillow will not do on its own:
+
+- **Shaping.** The wheel this venv installs is built without libraqm, so Arabic
+  drawn raw comes out as isolated letterforms in logical order. `shaped()` runs
+  `arabic_reshaper` and `python-bidi` over each line — per line, never per
+  paragraph, because wrapping has to happen on the logical string. Harakat are
+  kept: the copy uses them deliberately.
+- **Font fallback.** SF Arabic is the family that matches SF Pro and carries no
+  Latin at all, so "Alike", "Apple Vision" and "iPhone" would come out of it as
+  .notdef boxes. `script_runs()` splits each shaped line and draws the Arabic in
+  SF Arabic and everything else in SF Pro, run by run. The dual-script system
+  fonts that would avoid this — Arial, Tahoma — would set the whole deck in a
+  face nothing else in the project uses.
+
+`draws_glyph()` compares a character's bitmap against a private-use code point's
+.notdef, rather than only testing for an empty bounding box: SF Arabic answers
+"A" with a visible rectangle, which the older check accepted.
+
+| # | Label | Headline | Supporting line |
+| --- | --- | --- | --- |
+| 1 | على الجهاز | اعثر على الصور / المتشابهة | يفحص Alike مكتبتك بتقنية Apple Vision، والعملية كلها على جهاز iPhone. |
+| 2 | قائمة واحدة | كل مجموعة / جاهزة للمراجعة | تصل المجموعات بشاراتها، فتعرف دائمًا ما الذي بقي. |
+| 3 | أفضل لقطة | اللقطة التي تبقى / مختارة سلفًا | يبرز Alike أفضل لقطة في كل مجموعة، وما عليك سوى التأكيد. |
+| 4 | قارن أولًا | راجع كل صورة / قبل أن تختفي | مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك. |
+| 5 | مساحة حرة | استرجع مساحتك / جيجابايت تلو الآخر | الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف. |
+
+The five `ar` source captures are taken the same way every other locale's are —
+on device, then imported with `tools/import_device_screenshots.py`, which now
+accepts `ar` and maps `ar-SA`/`ar-AE`/`ar-EG` onto it.
+
+Thirteen decks, one per listing localization. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`
 maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
 the one code that is spelled identically on both sides.
@@ -212,7 +251,7 @@ into `Docs/images/`, and a one-line change here.
 ## Rendering
 
 ```sh
-python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow
+python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow arabic-reshaper python-bidi
 build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
 ```
 
@@ -234,9 +273,10 @@ are App Review evidence and deliberately stay out of the listing.
 
 ## Before upload
 
-- All twelve locales rendered and eyeballed, not just generated. Type size in
+- All thirteen locales rendered and eyeballed, not just generated. Type size in
   the long languages — uk, de, pt-BR, pl — is the usual casualty, and zh-Hant
-  needs its own look because it is the one deck in a different typeface.
+  and ar each need their own look: one is a different typeface, the other is
+  laid out right to left in SF Arabic.
 - Headline and supporting line legible at App Store thumbnail scale.
 - No status-bar noise: full signal, full battery, no notifications.
 - Privacy sweep on any *new* capture — recognisable faces, location giveaways,

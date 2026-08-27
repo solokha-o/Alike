@@ -1,9 +1,10 @@
 # Localization
 
-Alike ships `en`, `uk`, `es-419`, `es`, `pt-BR`, `de`, `fr`, `it`, `nl`, `pl`, `tr` and
-`zh-Hant` — twelve languages. This document is the convention every future language
-follows; it was written as part of the Phase 6 localization foundation (task 39) and
-extended when the Tier 1 (task 40) and Tier 3 (task 43) languages landed.
+Alike ships `en`, `uk`, `es-419`, `es`, `pt-BR`, `de`, `fr`, `it`, `nl`, `pl`, `tr`,
+`zh-Hant` and `ar` — thirteen languages. This document is the convention every future
+language follows; it was written as part of the Phase 6 localization foundation (task 39)
+and extended when the Tier 1 (task 40), Tier 3 (task 43) and Arabic (task 45) languages
+landed.
 
 `zh-Hans` is deliberately absent. Mainland China requires an ICP filing and a separate
 release track, which is a project rather than a translation pass. Russian is excluded by
@@ -92,7 +93,7 @@ and that every key carries every shipped language. The app target has the same t
 
 `LocalizationCatalog.untranslated` in each package is an allowlist for keys deliberately
 left English-only. Task 40 emptied the last one. Keep it empty: a key parked there ships
-as English in eleven languages without anything failing.
+as English in twelve languages without anything failing.
 
 These tests read the catalog file directly rather than calling `String(localized:)`,
 because **SwiftPM copies `.xcstrings` verbatim instead of compiling it** — under
@@ -114,8 +115,8 @@ bundle from the shipped catalog at test time, so it cannot drift from it.
 3. Add the localization to every package catalog plus the app catalog.
 
 No code changes should be needed. If a language forces one, the convention above has
-been broken somewhere. Task 43 added five languages and changed no production Swift —
-what it did change is copy that names the shipped languages
+been broken somewhere. Task 43 added five languages and task 45 added Arabic, neither
+changing production Swift — what they did change is copy that names the shipped languages
 (`userGuide.settingsAndReminders.analysis.language.body`), the per-locale expectation
 tables in `SelectionActionLabelTests` and `SubscriptionDisclosureTests`, and
 `Docs/legal/subscription-disclosure.md`. Budget for those four every time.
@@ -127,8 +128,8 @@ Two things a translation pass has to get right, both of which the tests now catc
   silently render the wrong argument.
 - **Plural categories.** `es-419`, `es`, `de`, `it`, `nl` and `tr` use `one`/`other`;
   `pt-BR` and `fr` add `many` for compact large numbers; `uk` and `pl` need all four;
-  `zh-Hant` has a single `other`. A missing category does not fail the build — it falls
-  back, which reads correctly right up until it doesn't.
+  `ar` needs all six; `zh-Hant` has a single `other`. A missing category does not fail the
+  build — it falls back, which reads correctly right up until it doesn't.
 
   Two of these are worth stating plainly, because they are where a "just add a column"
   translation pass goes wrong:
@@ -141,6 +142,43 @@ Two things a translation pass has to get right, both of which the tests now catc
     the same sentence, and the completeness test fails it. The single-category shape is also
     the one most likely to fall back to the raw key, so it is resolved for real in tests
     rather than only asserted in JSON.
+  - **`ar`'s dual is the number.** "صورتان" already means "two photos", so printing the
+    count in front of it renders as "2 two-photos". The `two` variation therefore drops the
+    count specifier and lets the noun carry it — `xcstringstool` accepts that as long as
+    another variation of the key still references the number, and
+    `testFormatSpecifiersSurviveEveryTranslation` allows it for plural categories only, and
+    only for the count. Every other argument must still survive translation.
+  - **`ar` has all six, and four of them legitimately coincide.** `zero`, `one`, `many` and
+    `other` share one wording; only `two` and `few` inflect the noun. Do not "fix" that by
+    inventing six distinct spellings — the categories must all be declared, but their text
+    is allowed to repeat. The counts that separate them are 0, 1, 2, 3, 11 and 100, and the
+    same four compiled-bundle suites pin them.
+
+## Numbers, dates and the formatting locale
+
+Counts, byte sizes and scan timestamps do **not** follow `Locale.current`. They go through
+`Locale.alikeFormatting` (`Packages/Core/Sources/Core/Extensions/Locale+AlikeFormatting.swift`),
+which is the current locale with the numbering system pinned to `latn` and the calendar to
+Gregorian, plus the `String.alikeByteCount(_:)` and `Date.alikeFormatted(date:time:)`
+helpers that carry it into the two Foundation formatters that would otherwise read the
+current locale directly.
+
+Arabic is why. `ar_SA` asks for Arabic-Indic digits and the Umm al-Qura calendar, and
+Foundation obliges — but only for some of the paths a number can take to the screen.
+`String(localized:)` and the formatters follow the locale; `String(format:)` without a
+`locale:` argument does not; digits typed into translated copy stay as typed. Before the
+pin, one Scanner card showed a Hijri date next to `36` next to `٥١٫٣ م.ب.`, and the same
+count rendered as `٣٦` one tab over.
+
+Alike's numbers are technical rather than prose, and the subscription disclosure has to
+stay byte-identical to `Docs/legal/subscription-disclosure.md` and the landing site, so the
+whole app is pinned to Western digits and Gregorian dates. **A new language needs nothing
+here** — the pin is unconditional, so a non-Latin-digit or non-Gregorian locale arrives
+already consistent. What a translation pass must not do is type Arabic-Indic (or any other)
+digits into catalog copy, because those are the one path the pin cannot reach.
+
+Plural *category* selection is unaffected: the numbering system changes how a number is
+spelled, not which CLDR bucket it falls into. `36` still selects `many` in Arabic.
 
 ## Not in the catalogs
 

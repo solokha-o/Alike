@@ -487,7 +487,7 @@ struct SelectablePhotoThumbnail: View {
                 Label {
                     Text(DetailsL10n.ClusterDetails.openOriginal)
                 } icon: {
-                    Image(systemName: "arrow.up.right.square")
+                    Image(systemName: "arrow.up.forward.square")
                 }
             }
         } preview: {
@@ -685,7 +685,7 @@ struct MetadataView: View {
 
     private var formattedMegapixels: String {
         let value = metadata.megapixelCount.formatted(
-            .number.precision(.fractionLength(0...1))
+            FloatingPointFormatStyle<Double>.alikeDecimal.precision(.fractionLength(0...1))
         )
         return String(format: DetailsL10n.ClusterDetails.mp, value)
     }

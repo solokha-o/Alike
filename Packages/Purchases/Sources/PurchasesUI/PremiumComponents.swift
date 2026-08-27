@@ -133,7 +133,7 @@ public struct PremiumStatusCard: View {
             return String(
                 format: PurchasesL10n.PremiumComponents.activeThrough,
                 plan,
-                expirationDate.formatted(date: .abbreviated, time: .omitted)
+                expirationDate.alikeFormatted(date: .abbreviated, time: .omitted)
             )
         }
     }

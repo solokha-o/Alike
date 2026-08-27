@@ -91,11 +91,11 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT}` —
-    thirty-three per-locale overrides, one per non-English listing, and all of
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT,AR_SA}` —
+    thirty-six per-locale overrides, one per non-English listing, and all of
     them are required. Strict generation fails on an unset override rather than
     quietly reusing the three URLs above, which point at the English pages even
-    though the site publishes all eleven locales. `--allow-shared-urls` takes
+    though the site publishes all twelve locales. `--allow-shared-urls` takes
     the fallback deliberately, and only the generator accepts it: `tools/text`
     and the Fastlane lanes have no such flag, so an upload path cannot silence
     the check. The suffix is the App Store locale, uppercased, with `-` replaced
@@ -307,8 +307,9 @@ It does not:
 | `Alike-VerboseLogs` | Debug | manual debugging with verbose scan/vision/storage logging |
 | `Alike-DebugVerboseLogs` | Debug | manual debugging with verbose logging in Debug builds |
 | `Alike-Pseudolocale` | Debug | localization QA — doubled, bracketed strings and capitalized unlocalized ones (`Docs/Localization/pseudo-locale-qa.md`) |
+| `Alike-RTL` | Debug | right-to-left layout QA — the interface mirrored without a right-to-left language installed (`Docs/Localization/pseudo-locale-qa.md`) |
 
-Only `Alike` is used by CI/CD. The other three are for interactive debugging
+Only `Alike` is used by CI/CD. The other four are for interactive debugging
 and localization QA.
 
 `Alike` runs Release with no debugger attached and no local StoreKit
@@ -385,15 +386,15 @@ The practical consequence for releases: the site no longer rides along with the 
 release merge. It can be deployed and its URLs verified at any time, independently of
 this repository.
 
-| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` | `it` | `nl` | `pl` | `tr` | `zh-Hant` |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` | `/it/` | `/nl/` | `/pl/` | `/tr/` | `/zh-hant/` |
-| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` | `/it/privacy/` | `/nl/privacy/` | `/pl/privacy/` | `/tr/privacy/` | `/zh-hant/privacy/` |
-| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` | `/it/terms/` | `/nl/terms/` | `/pl/terms/` | `/tr/terms/` | `/zh-hant/terms/` |
-| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` | `/it/support/` | `/nl/support/` | `/pl/support/` | `/tr/support/` | `/zh-hant/support/` |
+| Page | `en` | `uk` | `de` | `fr` | `es` | `pt-BR` | `it` | `nl` | `pl` | `tr` | `zh-Hant` | `ar` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Home | `/` | `/uk/` | `/de/` | `/fr/` | `/es/` | `/pt-br/` | `/it/` | `/nl/` | `/pl/` | `/tr/` | `/zh-hant/` | `/ar/` |
+| Privacy Policy | `/privacy/` | `/uk/privacy/` | `/de/privacy/` | `/fr/privacy/` | `/es/privacy/` | `/pt-br/privacy/` | `/it/privacy/` | `/nl/privacy/` | `/pl/privacy/` | `/tr/privacy/` | `/zh-hant/privacy/` | `/ar/privacy/` |
+| Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` | `/it/terms/` | `/nl/terms/` | `/pl/terms/` | `/tr/terms/` | `/zh-hant/terms/` | `/ar/terms/` |
+| Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` | `/it/support/` | `/nl/support/` | `/pl/support/` | `/tr/support/` | `/zh-hant/support/` | `/ar/support/` |
 
-Eleven locales against twelve listings: the `es` column serves both `es-ES` and
-`es-MX`.
+Twelve locales against thirteen listings: the `es` column serves both `es-ES`
+and `es-MX`.
 
 That repository's `scripts/check-site.sh` is the build gate. It runs on every
 pull request there and again before each deploy, and asserts the locale matrix,

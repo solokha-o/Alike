@@ -60,7 +60,7 @@ final class ScreenshotCleanupViewModel {
     }
 
     var estimatedSavingsText: String {
-        ByteCountFormatter.string(fromByteCount: estimatedSavingsBytes, countStyle: .file)
+        String.alikeByteCount(estimatedSavingsBytes)
     }
 
     var maximumEstimatedSavingsBytes: Int64 {
@@ -70,7 +70,7 @@ final class ScreenshotCleanupViewModel {
     }
 
     var maximumEstimatedSavingsText: String {
-        ByteCountFormatter.string(fromByteCount: maximumEstimatedSavingsBytes, countStyle: .file)
+        String.alikeByteCount(maximumEstimatedSavingsBytes)
     }
 
     var isDeleteActionVisible: Bool {

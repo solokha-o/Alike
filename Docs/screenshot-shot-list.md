@@ -2,20 +2,22 @@
 
 Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
 1125 x 2436. The five deck shots are captured in the five Tier 1 languages too,
-so all twelve decks are complete; one shot is open in English, one is optional
+so all thirteen decks are complete; one shot is open in English, one is optional
 and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
-app's screens are black at both edges, so the padding is invisible), and emits
-520px copies for the landing-page device frames.
+app's screens are black at both edges, so the padding is invisible), filling the
+capture store every deck and the landing page are built from.
 
-Re-run after adding captures:
+Re-run both steps after adding captures — the import fills the store, and the
+site's device frames are a separate render off that store:
 
 ```sh
 python3 tools/import_device_screenshots.py --source ~/Downloads
+python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
 ```
 
-The mapping from source filename to shot lives in `SHOTS` in that script, for
-EN and UK. Other languages come from an optional
+The mapping from source filename to shot lives in `SHOTS` in the import
+script, for EN and UK. Other languages come from an optional
 `Docs/images/raw/capture-manifest.json`, which the script merges over `SHOTS`:
 
 ```json
@@ -52,7 +54,7 @@ build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
 The venv is created once, because Pillow is not in the system Python:
 
 ```sh
-python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow
+python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow arabic-reshaper python-bidi
 ```
 
 Slides, copy and layout live in `SLIDES` and `COPY` in that script. Four
@@ -76,7 +78,7 @@ rules behind it.
 - **Format:** PNG. Files must be named with a leading two-digit number
   (`01-scanner.png`), because `numbered_pngs()` only picks up names starting
   with two digits.
-- **Languages:** the listing has twelve localizations, and each needs its own
+- **Languages:** the listing has thirteen localizations, and each needs its own
   captures — a translated app behind English screenshots reads as an English
   app. The capture directory is the app's own language code:
   `Docs/images/raw/{en-US,uk,de,fr,es,es-419,pt-BR}/`. Only the five deck shots
@@ -84,7 +86,7 @@ rules behind it.
   for App Review and stay EN/UK, as the status table says. The device or
   simulator has to be *running* in that language — Settings, General, Language &
   Region, or launch with `-AppleLanguages` / `-AppleLocale`. Keep the same
-  library content across languages so the twelve decks read as one set.
+  library content across languages so the thirteen decks read as one set.
 - **Appearance:** light for the App Store set. Dark is optional and only for
   the site.
 - **Content:** the current captures use a real photo library. These become
@@ -127,8 +129,8 @@ tier 3 captures below. A shot with no consumer is not a gap.
 
 **Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
 `pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
-in `capture-manifest.json`, exactly as Tier 1 was. All twelve listing locales now
-have a deck.
+in `capture-manifest.json`, exactly as Tier 1 was. With the Arabic deck that
+followed, all thirteen listing locales have one.
 
 Polish shot 1 is the one frame that did not arrive as a 1125 × 2436 PNG: it came
 off the device as a 1119 × 2436 JPEG, so it was resampled to 1320 wide and centre-
@@ -146,8 +148,8 @@ same session so its frame matches the five new decks.
 
 Ukrainian shot 5 is still the older capture, so `uk` is the one deck whose
 comparison-review frame shows different photos from the other six. Not wrong —
-the deck reads fine on its own — but recapturing it is what would make all twelve
-decks a single set.
+the deck reads fine on its own — but recapturing it is what would make all
+thirteen decks a single set.
 
 **Open — one shot:**
 
@@ -207,17 +209,26 @@ listing with room for one more.
 
 ## Wiring a screenshot into the site
 
-These two steps happen in the `alikeapp/alikeapp.github.io` repository, not
-here. `tools/import_device_screenshots.py --site-repo <path>` writes step 1 for
-you when that checkout is available.
+The page frames shots 1, 3, 4, 5 and 7, in every language it publishes. Render
+them from the captures already committed here:
 
-1. Put the PNG at `assets/img/screens/<name>.png`.
-2. Add `image: <name>` to the matching entry in `_data/screens.yml`.
+```sh
+python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
+```
 
-The frame swaps from the pending placeholder to the screenshot with no layout
-or CSS change. Entries carry EN and UK `caption` and `alt` text already.
+That writes two renditions per shot per language — `<name>.avif` at 520px and
+the 1x `<name>.jpg` the `<picture>` falls back to on browsers without AVIF, both
+under `assets/img/screens/<lang>/`. The lang list comes from the site's own
+`_config.yml`, so a locale published without captures fails the run instead of
+shipping a broken frame.
 
-Landing-page captures do not need to be 1320 × 2868 — the frames render at
-roughly 260px wide, so a downscaled copy keeps the page light. Run them through
-`tools/build_site_assets.sh` conventions (AVIF plus a PNG fallback) if the set
-grows large.
+The fallback is per locale too, deliberately: a shared English one would put
+those browsers back on English screens for every other language — the bug this
+whole pipeline exists to fix, and an invisible one to anyone testing in a
+browser that does have AVIF. PNG is what the matrix cannot afford: twelve
+locales of it is ~17MB against ~5MB for AVIF plus 1x JPEG.
+
+The one remaining step happens in the `alikeapp/alikeapp.github.io` repository:
+add `image: <name>` to the matching entry in `_data/screens.yml`. The frame
+swaps from the pending placeholder to the screenshot with no layout or CSS
+change, and each entry already carries `caption` and `alt` text per locale.

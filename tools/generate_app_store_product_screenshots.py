@@ -28,17 +28,20 @@ from __future__ import annotations
 
 import argparse
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import lru_cache
 from pathlib import Path
 
 try:
+    import arabic_reshaper
+    from bidi.algorithm import get_display as bidi_display
     from PIL import Image, ImageDraw, ImageFilter, ImageFont
 except ModuleNotFoundError:  # pragma: no cover - setup guidance
     sys.exit(
-        "Pillow is missing. Create the tools venv once:\n"
+        "A rendering dependency is missing. Create the tools venv once:\n"
         "  python3 -m venv build/tools-venv && "
-        "build/tools-venv/bin/pip install --upgrade pip Pillow\n"
+        "build/tools-venv/bin/pip install --upgrade pip Pillow "
+        "arabic-reshaper python-bidi\n"
         "then run this script with build/tools-venv/bin/python."
     )
 
@@ -56,7 +59,7 @@ PHONE_SCREEN_RECT = (52, 46, 970, 2036)
 # not the App Store Connect ones. UPLOAD_SAFE_LOCALES in
 # tools/prepare_app_store_upload_bundle.py maps es-419 onto App Store Connect's
 # es-MX slot; nothing here needs to know that.
-LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant")
+LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant", "ar")
 
 # Han glyphs carry far more meaning per square than Latin ones, so a headline
 # set at the shared 112 start size reads as a wall rather than a line. Starting
@@ -98,7 +101,17 @@ CJK_FONT_FILES = {
     "Medium": ("/System/Library/Fonts/STHeiti Light.ttc", 0),
     "Regular": ("/System/Library/Fonts/STHeiti Light.ttc", 0),
 }
-LOCALE_FONT_FAMILY = {"zh-Hant": HEITI_TC}
+# SF Pro has no Arabic either, and the family that matches it is SF Arabic — a
+# variable font like SF Pro, so its weights are instances rather than separate
+# files the way Heiti's are.
+SF_ARABIC = "sf-arabic"
+ARABIC_FONT_PATH = "/System/Library/Fonts/SFArabic.ttf"
+LOCALE_FONT_FAMILY = {"zh-Hant": HEITI_TC, "ar": SF_ARABIC}
+
+# Locales whose caption plate is mirrored rather than merely translated: the
+# copy sets to the opposite edge, and the device tilts the other way so the
+# composition still leans away from the text.
+RTL_LOCALES = frozenset({"ar"})
 
 # Characters that may not open a line. Breaking Chinese between characters is
 # normal; breaking it directly before closing punctuation is not.
@@ -546,6 +559,33 @@ COPY = {
             "清理過程中隨時顯示已選取與預估可省空間。",
         ),
     ],
+    "ar": [
+        (
+            "على الجهاز",
+            "اعثر على الصور\nالمتشابهة",
+            "يفحص Alike مكتبتك بتقنية Apple Vision، والعملية كلها على جهاز iPhone.",
+        ),
+        (
+            "قائمة واحدة",
+            "كل مجموعة\nجاهزة للمراجعة",
+            "تصل المجموعات بشاراتها، فتعرف دائمًا ما الذي بقي.",
+        ),
+        (
+            "أفضل لقطة",
+            "اللقطة التي تبقى\nمختارة سلفًا",
+            "يبرز Alike أفضل لقطة في كل مجموعة، وما عليك سوى التأكيد.",
+        ),
+        (
+            "قارن أولًا",
+            "راجع كل صورة\nقبل أن تختفي",
+            "مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك.",
+        ),
+        (
+            "مساحة حرة",
+            "استرجع مساحتك\nجيجابايت تلو الآخر",
+            "الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف.",
+        ),
+    ],
 }
 
 
@@ -624,8 +664,9 @@ def font(size: int, weight: str = "Regular", family: str = SF_PRO) -> ImageFont.
     if family == HEITI_TC:
         path, index = CJK_FONT_FILES.get(weight, CJK_FONT_FILES["Regular"])
         return ImageFont.truetype(path, size=size, index=index)
+    path = ARABIC_FONT_PATH if family == SF_ARABIC else FONT_PATH
     try:
-        face = ImageFont.truetype(FONT_PATH, size=size)
+        face = ImageFont.truetype(path, size=size)
         face.set_variation_by_name(weight)
         return face
     except (OSError, AttributeError):
@@ -786,12 +827,120 @@ def aligned_x(x: int, width: int, content_width: int, align: str) -> int:
     return x
 
 
-def text_width(draw: ImageDraw.ImageDraw, text: str, font_obj: ImageFont.FreeTypeFont) -> int:
-    bbox = draw.textbbox((0, 0), text, font=font_obj)
+def shaped(text: str, family: str) -> str:
+    """Arabic, pre-joined and reordered for a Pillow that cannot do it itself.
+
+    Pillow only shapes complex scripts when it is built against libraqm, and the
+    wheel this venv installs is not — `features.check("raqm")` is False. Drawn
+    raw, Arabic comes out as isolated letterforms in logical order, which is not
+    a font problem and not obviously wrong to someone who does not read it.
+
+    `arabic_reshaper` substitutes the initial/medial/final forms and
+    `python-bidi` reorders the result visually, so what reaches `draw.text` is a
+    string whose glyph order is already the order it should appear in. Harakat
+    are kept: the copy uses them deliberately (نظّف), and dropping them is the
+    reshaper's default.
+
+    Shape per line, never per paragraph — wrapping has to happen on the logical
+    string, and reordering a whole paragraph before splitting it would put the
+    lines in the wrong order.
+    """
+    if family != SF_ARABIC:
+        return text
+    configuration = arabic_reshaper.ArabicReshaper({"delete_harakat": False})
+    return bidi_display(configuration.reshape(text))
+
+
+# The Arabic blocks a shaped string can contain: the source range, plus the two
+# presentation-forms blocks the reshaper substitutes into.
+ARABIC_RANGES = ((0x0600, 0x06FF), (0x0750, 0x077F), (0xFB50, 0xFDFF), (0xFE70, 0xFEFF))
+
+
+def is_arabic(character: str) -> bool:
+    code = ord(character)
+    return any(low <= code <= high for low, high in ARABIC_RANGES)
+
+
+def script_runs(text: str, font_obj: ImageFont.FreeTypeFont, size: int, weight: str) -> list[tuple[str, ImageFont.FreeTypeFont]]:
+    """Split a shaped Arabic string into runs, each with the face that can draw it.
+
+    SF Arabic is the family that matches SF Pro, and it carries no Latin at all —
+    "Alike", "Apple Vision" and "iPhone" come out of it as .notdef boxes. The
+    dual-script system fonts that would avoid this (Arial, Tahoma) would set the
+    whole deck in a face nothing else in the project uses.
+
+    So each script gets the face built for it: Arabic in SF Arabic, everything
+    else — Latin, digits, punctuation — in SF Pro, drawn run by run. The string
+    is already in visual order by the time it arrives here, so runs can simply be
+    laid down left to right. Whitespace stays with the run it follows, which
+    keeps the spacing on either side of a Latin word even.
+    """
+    runs: list[tuple[str, ImageFont.FreeTypeFont]] = []
+    latin_font = font(size, weight, SF_PRO)
+    current = ""
+    current_is_arabic: bool | None = None
+    for character in text:
+        if character.isspace() and current:
+            current += character
+            continue
+        arabic = is_arabic(character)
+        if current_is_arabic is None or arabic == current_is_arabic:
+            current += character
+            current_is_arabic = arabic
+            continue
+        runs.append((current, font_obj if current_is_arabic else latin_font))
+        current = character
+        current_is_arabic = arabic
+    if current:
+        runs.append((current, font_obj if current_is_arabic else latin_font))
+    return runs
+
+
+def text_width(
+    draw: ImageDraw.ImageDraw,
+    text: str,
+    font_obj: ImageFont.FreeTypeFont,
+    family: str = SF_PRO,
+    size: int | None = None,
+    weight: str = "Regular",
+) -> int:
+    if family == SF_ARABIC and size is not None:
+        return sum(
+            draw.textlength(run, font=run_font)
+            for run, run_font in script_runs(shaped(text, family), font_obj, size, weight)
+        ).__ceil__()
+    bbox = draw.textbbox((0, 0), shaped(text, family), font=font_obj)
     return bbox[2] - bbox[0]
 
 
-def break_long_word(word: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
+def draw_line(
+    draw: ImageDraw.ImageDraw,
+    xy: tuple[int, int],
+    text: str,
+    font_obj: ImageFont.FreeTypeFont,
+    fill: tuple[int, int, int, int],
+    family: str = SF_PRO,
+    size: int | None = None,
+    weight: str = "Regular",
+) -> None:
+    if family != SF_ARABIC or size is None:
+        draw.text(xy, shaped(text, family), font=font_obj, fill=fill)
+        return
+    x, y = xy
+    for run, run_font in script_runs(shaped(text, family), font_obj, size, weight):
+        draw.text((x, y), run, font=run_font, fill=fill)
+        x += draw.textlength(run, font=run_font)
+
+
+def break_long_word(
+    word: str,
+    draw: ImageDraw.ImageDraw,
+    font_obj: ImageFont.FreeTypeFont,
+    max_width: int,
+    family: str = SF_PRO,
+    size: int | None = None,
+    weight: str = "Regular",
+) -> list[str]:
     """Split one over-wide token between characters.
 
     Word wrapping assumes spaces, and Chinese has none: a whole zh-Hant subtitle
@@ -803,7 +952,7 @@ def break_long_word(word: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.Fr
     current = ""
     for character in word:
         candidate = current + character
-        if text_width(draw, candidate, font_obj) <= max_width or not current:
+        if text_width(draw, candidate, font_obj, family, size, weight) <= max_width or not current:
             current = candidate
         elif character in CJK_NO_BREAK_BEFORE:
             # Punctuation may not open a line, so it overhangs by one character
@@ -817,7 +966,15 @@ def break_long_word(word: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.Fr
     return pieces
 
 
-def fit_text_lines(text: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
+def fit_text_lines(
+    text: str,
+    draw: ImageDraw.ImageDraw,
+    font_obj: ImageFont.FreeTypeFont,
+    max_width: int,
+    family: str = SF_PRO,
+    size: int | None = None,
+    weight: str = "Regular",
+) -> list[str]:
     lines: list[str] = []
     for source_line in text.splitlines():
         words = source_line.split()
@@ -827,12 +984,12 @@ def fit_text_lines(text: str, draw: ImageDraw.ImageDraw, font_obj: ImageFont.Fre
         current = ""
         for word in words:
             candidate = word if not current else f"{current} {word}"
-            if text_width(draw, candidate, font_obj) <= max_width:
+            if text_width(draw, candidate, font_obj, family, size, weight) <= max_width:
                 current = candidate
                 continue
             if current:
                 lines.append(current)
-            *full, current = break_long_word(word, draw, font_obj, max_width)
+            *full, current = break_long_word(word, draw, font_obj, max_width, family, size, weight)
             lines.extend(full)
         if current:
             lines.append(current)
@@ -855,12 +1012,12 @@ def fit_font_size(
     size = start_size
     while size > min_size:
         font_obj = font(size, weight, family)
-        lines = fit_text_lines(text, draw, font_obj, max_width)
+        lines = fit_text_lines(text, draw, font_obj, max_width, family, size, weight)
         fits_height = max_height is None or len(lines) * int(size * line_ratio) <= max_height
         if (
             len(lines) <= max_lines
             and fits_height
-            and all(text_width(draw, line, font_obj) <= max_width for line in lines)
+            and all(text_width(draw, line, font_obj, family, size, weight) <= max_width for line in lines)
         ):
             return size
         size -= 4
@@ -873,16 +1030,24 @@ def draw_label(canvas: Image.Image, layout: SlideLayout, variant: Variant, label
     label_font = font(30, "Bold", family)
     layer, draw = new_layer()
 
+    # The rule and the dot are reading-order ornaments, not decoration that
+    # happens to sit on one side: they lead into the label. In a mirrored plate
+    # they lead from the other edge, so their side flips with the text.
+    mirrored = family == SF_ARABIC
+    label_width = text_width(draw, label, label_font, family, 30, "Bold")
+
     if variant.label_style == "rule":
         rule_width = 96
-        content_width = rule_width + 24 + text_width(draw, label, label_font)
+        content_width = rule_width + 24 + label_width
         x = aligned_x(caption.x, caption.width, content_width, caption.align)
-        draw.rounded_rectangle((x, caption.y - 4, x + rule_width, caption.y + 4), radius=4, fill=accent + (255,))
-        draw.text((x + rule_width + 24, caption.y - 22), label, font=label_font, fill=accent + (255,))
+        rule_x = x + content_width - rule_width if mirrored else x
+        text_x = x if mirrored else x + rule_width + 24
+        draw.rounded_rectangle((rule_x, caption.y - 4, rule_x + rule_width, caption.y + 4), radius=4, fill=accent + (255,))
+        draw_line(draw, (text_x, caption.y - 22), label, label_font, accent + (255,), family, 30, "Bold")
         canvas.alpha_composite(layer)
         return
 
-    pill_width = text_width(draw, label, label_font) + 76
+    pill_width = label_width + 76
     pill_x = aligned_x(caption.x, caption.width, pill_width, caption.align)
     pill_y = caption.y - 44
     box = (pill_x, pill_y, pill_x + pill_width, pill_y + 62)
@@ -897,8 +1062,10 @@ def draw_label(canvas: Image.Image, layout: SlideLayout, variant: Variant, label
         dot_fill = accent + (255,)
 
     dot_y = pill_y + 31
-    draw.ellipse((pill_x + 24, dot_y - 8, pill_x + 40, dot_y + 8), fill=dot_fill)
-    draw.text((pill_x + 54, pill_y + 15), label, font=label_font, fill=text_fill)
+    dot_left = pill_x + pill_width - 40 if mirrored else pill_x + 24
+    draw.ellipse((dot_left, dot_y - 8, dot_left + 16, dot_y + 8), fill=dot_fill)
+    label_x = pill_x + 22 if mirrored else pill_x + 54
+    draw_line(draw, (label_x, pill_y + 15), label, label_font, text_fill, family, 30, "Bold")
     canvas.alpha_composite(layer)
 
 
@@ -931,13 +1098,17 @@ def draw_caption(
     headline_font = font(headline_size, "Bold", family)
     line_height = int(headline_size * 1.08)
     text_y = headline_y
-    for line in fit_text_lines(headline, draw, headline_font, caption.width):
-        line_width = text_width(draw, line, headline_font)
-        draw.text(
+    for line in fit_text_lines(headline, draw, headline_font, caption.width, family, headline_size, "Bold"):
+        line_width = text_width(draw, line, headline_font, family, headline_size, "Bold")
+        draw_line(
+            draw,
             (aligned_x(caption.x, caption.width, line_width, caption.align), text_y),
             line,
-            font=headline_font,
-            fill=THEME["fg"] + (255,),
+            headline_font,
+            THEME["fg"] + (255,),
+            family,
+            headline_size,
+            "Bold",
         )
         text_y += line_height
 
@@ -947,13 +1118,17 @@ def draw_caption(
     )
     subtitle_font = font(subtitle_size, "Medium", family)
     subtitle_y = subtitle_transform.y
-    for line in fit_text_lines(subtitle, draw, subtitle_font, subtitle_transform.width):
-        line_width = text_width(draw, line, subtitle_font)
-        draw.text(
+    for line in fit_text_lines(subtitle, draw, subtitle_font, subtitle_transform.width, family, subtitle_size, "Medium"):
+        line_width = text_width(draw, line, subtitle_font, family, subtitle_size, "Medium")
+        draw_line(
+            draw,
             (aligned_x(subtitle_transform.x, subtitle_transform.width, line_width, subtitle_transform.align), subtitle_y),
             line,
-            font=subtitle_font,
-            fill=THEME["muted"] + (255,),
+            subtitle_font,
+            THEME["muted"] + (255,),
+            family,
+            subtitle_size,
+            "Medium",
         )
         subtitle_y += int(subtitle_size * 1.3)
     canvas.alpha_composite(layer)
@@ -1025,6 +1200,31 @@ def paste_phone(canvas: Image.Image, layout: SlideLayout, variant: Variant, scre
     composite_clipped(canvas, phone, x, y)
 
 
+MIRRORED_ALIGN = {"left": "right", "right": "left", "center": "center"}
+
+
+def mirrored_layout(layout: SlideLayout) -> SlideLayout:
+    """The same composition, flipped across the canvas.
+
+    Mirroring the caption alone would leave the phone leaning into the copy
+    instead of away from it, which is what makes these compositions read. The
+    device therefore moves to the opposite margin and tilts the other way; only
+    the capture inside it is left alone, because it is already a right-to-left
+    screen and flipping it would reverse the interface a second time.
+    """
+    device = layout.device
+    return replace(
+        layout,
+        caption=replace(layout.caption, align=MIRRORED_ALIGN[layout.caption.align]),
+        subtitle=replace(layout.subtitle, align=MIRRORED_ALIGN[layout.subtitle.align]),
+        device=replace(
+            device,
+            x=CANVAS[0] - device.x - device.width,
+            rotation=-device.rotation,
+        ),
+    )
+
+
 def render_slide(
     index: int,
     layout: SlideLayout,
@@ -1033,6 +1233,8 @@ def render_slide(
     screenshot_path: Path,
     locale: str,
 ) -> Image.Image:
+    if locale in RTL_LOCALES:
+        layout = mirrored_layout(layout)
     canvas = base_canvas(index, layout.band, variant.background, layout.caption_zone).copy()
     draw_caption(
         canvas,
@@ -1064,6 +1266,22 @@ def validate_sources(locales: list[str]) -> None:
         raise SystemExit("Missing source captures:\n" + "\n".join(str(path) for path in missing))
 
 
+def draws_glyph(face: ImageFont.FreeTypeFont, character: str) -> bool:
+    """Whether a face has a real glyph for a character, rather than .notdef.
+
+    An empty bounding box catches a face with no glyph *and* no fallback box,
+    which is what the zh-Hant check needed. SF Arabic is the other case: asked
+    for "A" it returns a visible .notdef rectangle, so the bbox test passes and
+    the render ships tofu. Comparing against a private-use code point — which no
+    face has a real glyph for — tells the two apart.
+    """
+    mask = face.getmask(character)
+    if mask.getbbox() is None:
+        return False
+    notdef = face.getmask("\ue000")
+    return mask.size != notdef.size or bytes(mask) != bytes(notdef)
+
+
 def validate_glyph_coverage(locale: str) -> None:
     """Refuse to render copy the locale's font cannot draw.
 
@@ -1074,11 +1292,20 @@ def validate_glyph_coverage(locale: str) -> None:
     """
     family = LOCALE_FONT_FAMILY.get(locale, SF_PRO)
     face = font(48, "Bold", family)
-    text = "".join("".join(entry) for entry in COPY[locale])
+    # Check what is actually drawn. Arabic reaches `draw.text` as presentation
+    # forms, not as the code points the copy is written in, so proving the
+    # source characters exist would prove the wrong thing — and each run is drawn
+    # by the face `script_runs` picks for it, not by one face for the line.
+    text = shaped("".join("".join(entry) for entry in COPY[locale]), family)
+    faces = (
+        {character: run_font for run, run_font in script_runs(text, face, 48, "Bold") for character in run}
+        if family == SF_ARABIC
+        else {character: face for character in text}
+    )
     missing = sorted({
         character
         for character in text
-        if not character.isspace() and face.getmask(character).getbbox() is None
+        if not character.isspace() and not draws_glyph(faces[character], character)
     })
     if missing:
         raise SystemExit(

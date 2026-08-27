@@ -64,6 +64,7 @@ LOCALE_LEGAL_LABELS = {
     "pl": ("Polityka prywatności", "Warunki korzystania"),
     "tr": ("Gizlilik Politikası", "Kullanım Koşulları"),
     "zh-Hant": ("隱私權政策", "使用條款"),
+    "ar-SA": ("سياسة الخصوصية", "شروط الاستخدام"),
 }
 TODO_MARKER = "TODO:"
 APP_SUBTITLE_MAX_LENGTH = 30
@@ -100,7 +101,7 @@ class LocaleMapping:
     apple: str
 
 
-# The listing ships the same twelve languages the app itself is translated into.
+# The listing ships the same thirteen languages the app itself is translated into.
 # `source` is the app's own language code, which is also the directory name
 # under Docs/images/; `apple` is the App Store Connect locale, which is not the
 # same string. es-419 is the app's Latin American Spanish and maps onto App
@@ -111,9 +112,12 @@ class LocaleMapping:
 # region-qualified it-IT, pl-PL and tr-TR as unsupported directory names, while
 # nl-NL and zh-Hant are accepted as-is.
 #
-# Adding a locale means four things, and a missing one is a validation error
+# Adding a locale means five things, and a missing one is a validation error
 # rather than a silent gap: a mapping here, an entry in METADATA, a row in
-# LOCALE_LEGAL_LABELS, and a deck in Docs/images/<source>/.
+# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, and a localization in
+# Alike.storekit for the subscription group and every product in it. Arabic
+# arrived with the first four and without the fifth, which is what
+# validate_storekit_locale_coverage() now refuses to let happen again.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
     LocaleMapping(source="uk", apple="uk"),
@@ -127,6 +131,7 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="pl", apple="pl"),
     LocaleMapping(source="tr", apple="tr"),
     LocaleMapping(source="zh-Hant", apple="zh-Hant"),
+    LocaleMapping(source="ar", apple="ar-SA"),
 )
 
 # DELIVER_ACCEPTED_LOCALES guards UPLOAD_SAFE_LOCALES against a regression of
@@ -151,6 +156,7 @@ DELIVER_ACCEPTED_LOCALES = frozenset(
         "pl",
         "tr",
         "zh-Hant",
+        "ar-SA",
     }
 )
 
@@ -172,7 +178,10 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "pl_PL": "pl",
     "tr_TR": "tr",
     "zh_TW": "zh-Hant",
+    "ar_SA": "ar-SA",
 }
+
+APP_STORE_TO_STOREKIT_LOCALE = {apple: storekit for storekit, apple in STOREKIT_TO_APP_STORE_LOCALE.items()}
 
 REQUIRED_LOCALIZED_FILES = (
     "name.txt",
@@ -218,7 +227,7 @@ BUILT FOR REAL LIBRARIES
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
-- Twelve languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish and Traditional Chinese. Full Dark Mode support.
+- Thirteen languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
 
 YOU STAY IN CONTROL
 - Photos you clear go to Recently Deleted, recoverable for about 30 days.
@@ -269,7 +278,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
-- Дванадцять мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська, бразильська португальська, італійська, нідерландська, польська, турецька та традиційна китайська. Повна темна тема.
+- Тринадцять мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська, бразильська португальська, італійська, нідерландська, польська, турецька, традиційна китайська та арабська. Повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
 - Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
@@ -326,7 +335,7 @@ FÜR ECHTE MEDIATHEKEN GEBAUT
 - Ein großzügiges einspaltiges Layout oder ein dichteres Raster, jederzeit umschaltbar und gemerkt.
 - Eine durchsuchbare Anleitung in der App, einen Tipp vom Scanner entfernt.
 - Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem eigenen Zeitplan.
-- Zwölf Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch, Brasilianisches Portugiesisch, Italienisch, Niederländisch, Polnisch, Türkisch und Traditionelles Chinesisch. Voller Dark Mode.
+- Dreizehn Sprachen: Englisch, Ukrainisch, Deutsch, Französisch, Spanisch, Lateinamerikanisches Spanisch, Brasilianisches Portugiesisch, Italienisch, Niederländisch, Polnisch, Türkisch, Traditionelles Chinesisch und Arabisch. Voller Dark Mode.
 
 DU BEHÄLTST DIE KONTROLLE
 - Aufgeräumte Fotos landen bei „Zuletzt gelöscht“ und bleiben rund 30 Tage wiederherstellbar.
@@ -377,7 +386,7 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Une mise en page aérée sur une colonne ou une grille plus dense, permutables à tout moment et mémorisées.
 - Un mode d'emploi consultable dans l'app, à un geste du Scanner.
 - Rappels de nettoyage facultatifs, en notifications locales, à votre rythme.
-- Douze langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine, portugais brésilien, italien, néerlandais, polonais, turc et chinois traditionnel. Mode sombre complet.
+- Treize langues : anglais, ukrainien, allemand, français, espagnol, espagnol d'Amérique latine, portugais brésilien, italien, néerlandais, polonais, turc, chinois traditionnel et arabe. Mode sombre complet.
 
 VOUS GARDEZ LA MAIN
 - Les photos nettoyées rejoignent « Supprimés récemment » et restent récupérables environ 30 jours.
@@ -428,7 +437,7 @@ HECHO PARA FOTOTECAS REALES
 - Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
-- Doce idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco y chino tradicional. Modo oscuro completo.
+- Trece idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco, chino tradicional y árabe. Modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
@@ -479,7 +488,7 @@ HECHO PARA FOTOTECAS REALES
 - Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
-- Doce idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco y chino tradicional. Modo oscuro completo.
+- Trece idiomas: inglés, ucraniano, alemán, francés, español, español de Latinoamérica, portugués de Brasil, italiano, neerlandés, polaco, turco, chino tradicional y árabe. Modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
@@ -530,7 +539,7 @@ FEITO PARA FOTOTECAS DE VERDADE
 - Um layout espaçoso de uma coluna ou uma grade mais densa, alternáveis a qualquer momento e memorizados.
 - Instruções de uso com busca dentro do app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
-- Doze idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina, português do Brasil, italiano, neerlandês, polonês, turco e chinês tradicional. Modo escuro completo.
+- Treze idiomas: inglês, ucraniano, alemão, francês, espanhol, espanhol da América Latina, português do Brasil, italiano, neerlandês, polonês, turco, chinês tradicional e árabe. Modo escuro completo.
 
 VOCÊ NO CONTROLE
 - As fotos limpas vão para «Apagados recentemente» e continuam recuperáveis por cerca de 30 dias.
@@ -586,7 +595,7 @@ PENSATA PER LIBRERIE VERE
 - Un layout ampio a una colonna o una griglia più fitta, alternabili quando vuoi e ricordati.
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
-- Dodici lingue: inglese, ucraino, tedesco, francese, spagnolo, spagnolo latinoamericano, portoghese brasiliano, italiano, olandese, polacco, turco e cinese tradizionale. Modalità scura completa.
+- Tredici lingue: inglese, ucraino, tedesco, francese, spagnolo, spagnolo latinoamericano, portoghese brasiliano, italiano, olandese, polacco, turco, cinese tradizionale e arabo. Modalità scura completa.
 
 SEI TU A DECIDERE
 - Le foto che elimini vanno in «Eliminati di recente» e restano recuperabili per circa 30 giorni.
@@ -637,7 +646,7 @@ GEMAAKT VOOR ECHTE BIBLIOTHEKEN
 - Een ruime indeling met één kolom of een dichter raster, altijd om te wisselen en onthouden.
 - Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.
 - Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.
-- Twaalf talen: Engels, Oekraïens, Duits, Frans, Spaans, Latijns-Amerikaans Spaans, Braziliaans Portugees, Italiaans, Nederlands, Pools, Turks en traditioneel Chinees. Volledige donkere modus.
+- Dertien talen: Engels, Oekraïens, Duits, Frans, Spaans, Latijns-Amerikaans Spaans, Braziliaans Portugees, Italiaans, Nederlands, Pools, Turks, traditioneel Chinees en Arabisch. Volledige donkere modus.
 
 JIJ HOUDT DE CONTROLE
 - Opgeruimde foto's gaan naar 'Recent verwijderd' en blijven ongeveer 30 dagen terug te halen.
@@ -688,7 +697,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili i zapamiętywane.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
-- Dwanaście języków: angielski, ukraiński, niemiecki, francuski, hiszpański, hiszpański latynoamerykański, portugalski brazylijski, włoski, niderlandzki, polski, turecki i chiński tradycyjny. Pełny tryb ciemny.
+- Trzynaście języków: angielski, ukraiński, niemiecki, francuski, hiszpański, hiszpański latynoamerykański, portugalski brazylijski, włoski, niderlandzki, polski, turecki, chiński tradycyjny i arabski. Pełny tryb ciemny.
 
 TO TY DECYDUJESZ
 - Uporządkowane zdjęcia trafiają do albumu „Ostatnio usunięte” i można je odzyskać przez około 30 dni.
@@ -739,7 +748,7 @@ GERÇEK KİTAPLIKLAR İÇİN
 - Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve hatırlanır.
 - Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.
 - İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.
-- On iki dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe ve Geleneksel Çince. Tam Koyu Mod desteği.
+- On üç dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe, Geleneksel Çince ve Arapça. Tam Koyu Mod desteği.
 
 KONTROL SENDE
 - Temizlediğin fotoğraflar Son Silinenler'e gider ve yaklaşık 30 gün geri alınabilir.
@@ -790,7 +799,7 @@ Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成�
 - 寬鬆的單欄版面或更緊湊的格狀版面，隨時切換並自動記住。
 - App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。
 - 選用的清理提醒，以本地通知依你自己的時間送達。
-- 十二種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文與繁體中文。完整支援深色模式。
+- 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
 
 一切由你決定
 - 清理掉的照片會進入「最近刪除」，約 30 天內都還能還原。
@@ -813,6 +822,58 @@ ALIKE PRO
 - 自訂清理提醒
 
 Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用，試用結束時即開始計費。除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"""
+
+
+AR_DESCRIPTION = """\
+يعثر Alike على الصور شبه المكررة المختبئة في مكتبتك، ويجمّعها، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي — دون أن تغادر صورة واحدة جهازك.
+
+كيف يعمل
+افحص. يقارن Alike مكتبتك باستخدام إطار عمل Vision من Apple، بالكامل على جهاز iPhone. تُقارن الصور المتقاربة في الزمان والمكان، وتبقى لقطات الشاشة خارج النتائج ما لم تطلبها.
+راجع. تُفتح كل مجموعة وقد اختير فيها «أفضل لقطة» سلفًا، فتقرر في ثوانٍ. احتفظ بالأفضل فقط، أو حدد الكل ما عدا الأفضل، أو اختر يدويًا.
+نظّف. أكّد، فتنتقل الصور التي اخترتها إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS نحو 30 يومًا.
+
+الخصوصية هي الفكرة كلها
+- يجري التحليل كله على الجهاز بإطار عمل Vision من Apple.
+- لا تُرفع أي صورة أو صورة مصغّرة أو بصمة سمات إلى أي مكان.
+- لا حساب، ولا تسجيل دخول، ولا خادم خاص بـ Alike.
+- لا تحليلات، ولا تتبّع، ولا معرّفات إعلانية.
+- لا إعلانات في أي مكان داخل التطبيق.
+- لا يحتاج الفحص والتنظيف إلى اتصال إطلاقًا — يعمل Alike في وضع الطيران.
+- لا يُحذف أي شيء دون تأكيدك الصريح.
+
+مصمَّم لمكتبات حقيقية
+- ثلاثة مستويات حساسية، من اللقطات شبه المتطابقة إلى نطاق أوسع.
+- كشف أفضل لقطة، فلكل مجموعة خيار افتراضي معقول للاحتفاظ به.
+- شارات المراجعة: جديدة، قيد المراجعة، تمت مراجعتها، وبحاجة إلى مراجعة بعد إعادة الفحص.
+- أضف صورًا أو احذفها فيلاحظ Alike ذلك، ثم يعيد إظهار المجموعات التي تغيّرت وحدها — دون إعادة فحص كاملة لتبقى محدَّثًا.
+- التقدّم والمحدد والتوفير التقديري أمام عينيك أثناء العمل.
+- سجل تنظيف مجمَّع حسب الشهر، لترى ما استرجعته حتى الآن.
+- تخطيط فسيح بعمود واحد أو شبكة أكثر كثافة، يمكن تبديله في أي وقت ويُحفظ اختيارك.
+- دليل قابل للبحث داخل التطبيق، على بُعد نقرة واحدة من شاشة الفحص.
+- تذكيرات تنظيف اختيارية، تصل كإشعارات محلية وفق جدولك أنت.
+- ثلاث عشرة لغة: الإنجليزية والأوكرانية والألمانية والفرنسية والإسبانية وإسبانية أمريكا اللاتينية والبرتغالية البرازيلية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ودعم كامل للوضع الداكن.
+
+تبقى أنت المتحكم
+- تنتقل الصور التي تنظّفها إلى «المحذوفة مؤخرًا»، ويمكن استعادتها نحو 30 يومًا.
+- الإعدادات، ثم البيانات والخصوصية، ثم حذف بيانات Alike يمحو كل نتيجة فحص وسجل تنظيف وتفضيل خزّنه التطبيق — ولا يمس مكتبة صورك أبدًا.
+- امنح وصولًا كاملًا أو وصولًا محدودًا؛ يعمل Alike مع ما تختار مشاركته.
+
+‏ALIKE المجاني
+- 3 فحوصات شهريًا
+- مراجعة موجَّهة مع أفضل لقطة
+- الترتيب وسجل التنظيف
+- تنظيف صورة واحدة في كل مرة
+
+‏ALIKE PRO
+- 7 أيام مجانًا في الخطة السنوية، للمشتركين الجدد المؤهلين
+- فحوصات غير محدودة
+- تنظيف تحديدات كاملة دفعة واحدة
+- تنظيف لقطات الشاشة
+- تنظيف الصور الضبابية
+- مرشّحات متقدمة
+- تذكيرات تنظيف مخصصة
+
+‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين، وتبدأ الفوترة عند انتهاء التجربة. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS."""
 
 
 METADATA = {
@@ -920,6 +981,15 @@ METADATA = {
         "keywords": "重複,重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理",
         "promotional_text": "Alike 會把看起來相像的照片分成一組組，挑出每一組的最佳照片，並幫你清理其餘的，全程在 iPhone 上完成。Alike Pro：年繳方案 7 天免費。",
         "release_notes": "多了十種語言，而且是整個 App 都會說。\n\n- 德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文與繁體中文加入英文和烏克蘭文：每一個畫面，還有 App Store 頁面以及隱私權政策、使用條款和支援頁面。\n- 一開始的照片步驟現在以單純的「繼續」結束，取用權限改由 iOS 用自己的說法詢問。\n\n修正：\n- 敏感度選項不論使用哪種語言都顯示英文。\n- 「圖庫狀態」那一列在繁體中文下會跑版。\n- 免費提醒那一行顯示的是時鐘時間，而不是你設定的排程。\n- 有幾個按鈕和訊息寫成「刪除」，但 Alike 實際上是把照片移到「最近刪除」。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+    },
+    "ar-SA": {
+        "subtitle": "اعثر على الصور المتشابهة",
+        "description": AR_DESCRIPTION,
+        # Same rule as every other locale: the name and subtitle already carry
+        # "صور" and "متشابهة", so the keyword field spends its characters elsewhere.
+        "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,تفريغ,أرشيف",
+        "promotional_text": "يجمّع Alike الصور المتشابهة، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي. كل ذلك على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
+        "release_notes": "العربية تنضم إلى Alike، والتطبيق كله يقرأ من اليمين إلى اليسار.\n\n- كل شاشة، وصفحة App Store، وصفحات الخصوصية والشروط والدعم، صارت متاحة بالعربية.\n- تنعكس الواجهة بالكامل: الأسهم والشارات وأشرطة الأدوات تتبع اتجاه القراءة.\n- الأعداد وأحجام الملفات وتواريخ الفحص صارت متسقة في التطبيق كله بعد أن كانت تُعرض بأكثر من صيغة على الشاشة الواحدة.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
@@ -1046,12 +1116,12 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     because this function has no way to tell which run it is in; on every other
     run `validate_localized_urls` fails before the bundle is used, naming the
     unset variable. An unconfigured `.env` therefore does not quietly produce
-    English URLs for eleven listings any more — it produces a hard failure.
+    English URLs for twelve listings any more — it produces a hard failure.
 
     The site publishes each locale's own pages — /uk/, /de/, /fr/, /es/,
-    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/ — and all eleven non-English
+    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all twelve non-English
     listings must point at them through their own
-    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, thirty-three in all.
+    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, thirty-six in all.
     _ES_MX points at the same /es/ pages as _ES_ES on purpose: one Spanish page
     serves both listings, said explicitly rather than by falling through to
     English.
@@ -1328,12 +1398,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for all twelve listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all thirteen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`. The site publishes all eleven of those locales, so all thirty-three are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`. The site publishes all twelve of those locales, so all thirty-six are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1550,6 +1620,52 @@ def validate_placeholder_copy(allow_placeholders: bool) -> list[str]:
     return errors
 
 
+def storekit_expected_locales() -> list[str]:
+    """The Alike.storekit spellings of every locale the listing ships.
+
+    The IAP payload is derived from Alike.storekit, so a listing locale missing
+    there is a locale whose subscription name and description never reach App
+    Store Connect. Nothing said so: the payload carried whatever the file held,
+    and validate_iap_localizations() checked the shape of the localizations
+    present rather than which ones were.
+    """
+    missing_mapping = [
+        mapping.apple for mapping in UPLOAD_SAFE_LOCALES if mapping.apple not in APP_STORE_TO_STOREKIT_LOCALE
+    ]
+    if missing_mapping:
+        raise SystemExit(
+            f"STOREKIT_TO_APP_STORE_LOCALE has no StoreKit spelling for {', '.join(missing_mapping)}"
+        )
+    return [APP_STORE_TO_STOREKIT_LOCALE[mapping.apple] for mapping in UPLOAD_SAFE_LOCALES]
+
+
+def validate_storekit_locale_coverage(label: str, localizations: list[dict]) -> list[str]:
+    """Every listing locale is localized here, and nothing else is."""
+    expected = storekit_expected_locales()
+    present = [localization.get("locale", "") for localization in localizations]
+    errors: list[str] = []
+
+    missing = [locale for locale in expected if locale not in present]
+    if missing:
+        errors.append(
+            f"{label} is missing localizations for {', '.join(missing)}; the listing ships "
+            f"{len(expected)} locales, {STOREKIT_PATH.name} carries {len(present)}"
+        )
+
+    unexpected = sorted({locale for locale in present if locale not in expected})
+    if unexpected:
+        errors.append(
+            f"{label} localizes {', '.join(unexpected)}, which the listing does not ship; "
+            "add the locale to UPLOAD_SAFE_LOCALES or remove it here"
+        )
+
+    duplicates = sorted({locale for locale in present if present.count(locale) > 1})
+    if duplicates:
+        errors.append(f"{label} localizes {', '.join(duplicates)} more than once")
+
+    return errors
+
+
 def validate_iap_localizations() -> list[str]:
     errors: list[str] = []
     storekit = load_storekit()
@@ -1561,6 +1677,12 @@ def validate_iap_localizations() -> list[str]:
         localizations = group.get("localizations", [])
         if not localizations:
             errors.append(f"Subscription group {group.get('name')} has no localizations")
+        errors.extend(
+            validate_storekit_locale_coverage(
+                label=f"Subscription group {group.get('name')}",
+                localizations=localizations,
+            )
+        )
         for localization in localizations:
             display_name = localization.get("displayName", "")
             locale = localization.get("locale", "<unknown>")
@@ -1606,14 +1728,17 @@ def validate_iap_localizations() -> list[str]:
 # Connect caps the description at 45 characters, and "Unlock every Pro tool.
 # First 7 days free." already spends 41 of them. So the trial is promised only
 # where eligibility is known — the paywall — and these descriptions must not
-# claim it. The tokens below are the trial vocabulary of the twelve shipped
-# locales; the copy that replaced the claims avoids all of them.
+# claim it. The tokens below are the trial vocabulary of the thirteen shipped
+# locales; the copy that replaced the claims avoids all of them. The Arabic pair
+# are stems rather than words: مجاني/مجانية and تجربة/تجريبية all start there,
+# and casefold() leaves Arabic unchanged, so the stem is the whole match.
 IAP_TRIAL_CLAIM_TOKENS = (
     "free", "trial",
     "gratis", "gratuit", "gratuita", "gratuito", "grátis", "offert",
     "darmo", "bezpłat", "ücretsiz", "deneme",
     "безкоштов", "безплат",
     "免費", "試用",
+    "مجان", "تجرب",
 )
 
 
@@ -1626,6 +1751,8 @@ def validate_iap_product_localizations(product_id: str, localizations: list[dict
     errors: list[str] = []
     if not localizations:
         return [f"{product_id} has no localizations"]
+
+    errors.extend(validate_storekit_locale_coverage(label=product_id, localizations=localizations))
 
     for localization in localizations:
         locale = localization.get("locale", "<unknown>")

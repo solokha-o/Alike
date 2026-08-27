@@ -25,7 +25,7 @@ validate whenever you like; upload when nothing is in review.
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
 - [ ] The per-locale URL overrides set for every non-English listing. All
-      thirty-three are **required**: strict generation fails on an unset
+      thirty-six are **required**: strict generation fails on an unset
       override, naming the variable, rather than falling back to the shared
       English URL and sending readers to legal text they were not reading a
       moment ago. `--allow-shared-urls` opts out, and only the generator accepts
@@ -81,6 +81,13 @@ ALIKE_SUPPORT_URL_TR="https://alikeapp.github.io/tr/support/"
 ALIKE_PRIVACY_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/privacy/"
 ALIKE_TERMS_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/terms/"
 ALIKE_SUPPORT_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/support/"
+
+# Arabic: /ar/ pages, ALIKE_*_URL_AR_SA overrides, ar-SA listing. The site path
+# is the language alone while the listing is region-qualified, the same shape as
+# uk and pl above.
+ALIKE_PRIVACY_URL_AR_SA="https://alikeapp.github.io/ar/privacy/"
+ALIKE_TERMS_URL_AR_SA="https://alikeapp.github.io/ar/terms/"
+ALIKE_SUPPORT_URL_AR_SA="https://alikeapp.github.io/ar/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
@@ -135,10 +142,11 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`), for all twelve
+      (`tools/prepare_app_store_upload_bundle.py`), for all thirteen
       localizations the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`,
-      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`. Validation fails
-      if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift apart.
+      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`.
+      Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift
+      apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
 
 ```sh
@@ -172,7 +180,9 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 - [ ] `bundle exec ruby tools/app_store_iap_metadata.rb status` reflects the
       Alike Pro group and both plans.
 - [ ] `upload-localizations` for the display names and descriptions in all
-      twelve localizations. Only `en-US` failures are fatal; App Store Connect
+      thirteen localizations. `Alike.storekit` is the source of that copy, and
+      `validate_storekit_locale_coverage` fails generation when a shipped
+      locale is missing from it. Only `en-US` failures are fatal; App Store Connect
       rejecting another locale is reported as a warning and skipped.
 - [ ] `upload-introductory-offers` for the yearly free trial.
 - [ ] `upload-review-screenshots` — `ALIKE_IAP_REVIEW_SCREENSHOT_PATH` points at
@@ -193,11 +203,11 @@ App Review rejection, and there is no longer any reason to discover that late.
       internal links, hreflang, the Terms guardrails and — deliberately — that
       the rendered site references no third-party host, because the privacy
       policy claims Alike makes no network requests.
-- [ ] All 44 published URLs return 200. The build already checked that each page
+- [ ] All 48 published URLs return 200. The build already checked that each page
       exists in the rendered output; this checks the deployed site:
 
 ```sh
-for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
+for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/; do for p in "" privacy/ terms/ support/; do u="$l$p"; printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' https://alikeapp.github.io/$u)" "/$u"; done; done
 ```
 
 - [ ] In a **Release** build, the legal links open from all four entry points:

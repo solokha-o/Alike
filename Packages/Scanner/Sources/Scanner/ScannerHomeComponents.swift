@@ -1,4 +1,5 @@
 import Cleanup
+import Core
 import DesignSystem
 import SwiftUI
 
@@ -74,7 +75,7 @@ struct ScannerHomeHero: View {
             ProgressView(value: progress)
                 .tint(Color.accent)
 
-            Text(progress, format: .percent.precision(.fractionLength(0)))
+            Text(progress, format: .alikePercent)
                 .font(.appSubheadline)
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
@@ -86,7 +87,7 @@ struct ScannerHomeHero: View {
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(ScannerL10n.ScannerHomeComponents.scanningProgress))
-        .accessibilityValue(Text(progress.formatted(.percent.precision(.fractionLength(0)))))
+        .accessibilityValue(Text(progress.formatted(.alikePercent)))
     }
 
     @ViewBuilder
@@ -146,7 +147,7 @@ struct ScannerLibraryStatusCard: View {
 
             metricLayout {
                 metric(
-                    value: summary.completedAt.formatted(date: .abbreviated, time: .omitted),
+                    value: summary.completedAt.alikeFormatted(date: .abbreviated, time: .omitted),
                     label: ScannerL10n.ScannerHomeComponents.lastScan
                 )
                 metric(
@@ -154,10 +155,7 @@ struct ScannerLibraryStatusCard: View {
                     label: ScannerL10n.ScannerHomeComponents.opportunities
                 )
                 metric(
-                    value: ByteCountFormatter.string(
-                        fromByteCount: summary.estimatedSavingsBytes,
-                        countStyle: .file
-                    ),
+                    value: String.alikeByteCount(summary.estimatedSavingsBytes),
                     label: ScannerL10n.ScannerHomeComponents.reclaimable
                 )
             }
@@ -281,7 +279,7 @@ struct ScannerPremiumOfferCard: View {
                 }
 
                 Spacer(minLength: Spacing.small)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.caption.bold())
                     .foregroundStyle(.secondary)
             }

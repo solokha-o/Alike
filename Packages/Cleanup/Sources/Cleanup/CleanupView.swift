@@ -550,7 +550,7 @@ public struct CleanupView: View {
             return .smartCategory(
                 feature: feature,
                 title: kind.presentation.title,
-                estimatedSavings: ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+                estimatedSavings: String.alikeByteCount(category.estimatedSavingsBytes)
             )
         }
         return .feature(feature)
@@ -740,7 +740,7 @@ private struct CleanupProgressCard: View {
                 metric("\(progress.reviewedCount)/\(progress.totalClusters)", CleanupL10n.Main.reviewed)
                 metric("\(progress.remainingClusters)", CleanupL10n.Main.remaining)
                 metric("\(progress.totalSelectedItems)", CleanupL10n.Main.selected)
-                metric(ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file), CleanupL10n.Main.estimatedSavings)
+                metric(String.alikeByteCount(progress.reviewedSavingsBytes), CleanupL10n.Main.estimatedSavings)
             }
         }
         .padding(Spacing.medium)
@@ -754,7 +754,7 @@ private struct CleanupProgressCard: View {
                 summary(
                     title: CleanupL10n.Main.continueReview,
                     subtitle: CleanupL10n.Main.pickUpWhereLeftOff,
-                    iconName: "arrow.right.circle.fill",
+                    iconName: "arrow.forward.circle.fill",
                     iconColor: Color.accent
                 )
                 .contentShape(Rectangle())
@@ -802,7 +802,7 @@ private struct CleanupProgressCard: View {
             progress.totalClusters,
             progress.remainingClusters,
             progress.totalSelectedItems,
-            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(progress.reviewedSavingsBytes)
         )
     }
 
@@ -812,7 +812,7 @@ private struct CleanupProgressCard: View {
             progress.reviewedCount,
             progress.totalClusters,
             progress.totalSelectedItems,
-            ByteCountFormatter.string(fromByteCount: progress.reviewedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(progress.reviewedSavingsBytes)
         )
     }
 
@@ -850,7 +850,7 @@ private struct CleanupCategoriesCard: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Image(systemName: isLocked(category.kind) ? "lock.fill" : "chevron.right")
+                        Image(systemName: isLocked(category.kind) ? "lock.fill" : "chevron.forward")
                             .foregroundStyle(.secondary)
                     }
                     .padding(Spacing.small)
@@ -877,7 +877,7 @@ private struct CleanupCategoriesCard: View {
     private func categoryDetail(_ category: CleanupCategorySummary) -> String {
         CleanupL10n.Main.itemsEstimatedReclaimable(
             category.assetCount,
-            ByteCountFormatter.string(fromByteCount: category.estimatedSavingsBytes, countStyle: .file)
+            String.alikeByteCount(category.estimatedSavingsBytes)
         )
     }
 
@@ -900,7 +900,7 @@ private struct CleanupClusterSection: View {
             HStack {
                 Text(title)
                     .font(.appHeadline)
-                Text(clusters.count, format: .number)
+                Text(clusters.count, format: .alikeNumber)
                     .font(.caption.bold())
                     .padding(.horizontal, 7)
                     .padding(.vertical, 2)
@@ -961,7 +961,7 @@ private struct CleanupClusterCard: View {
             Button(action: open) {
                 ZStack(alignment: .bottomTrailing) {
                     thumbnail
-                    Text(cluster.count, format: .number)
+                    Text(cluster.count, format: .alikeNumber)
                         .font(.caption.bold())
                         .foregroundStyle(.primary)
                         .lineLimit(1)

@@ -54,6 +54,36 @@ final class ClusterDetailsPluralTests: XCTestCase {
         }
     }
 
+    /// Arabic is the first shipped language with all six CLDR categories, and the counts below
+    /// are the ones that separate them: 0 → zero, 1 → one, 2 → two, 3 → few, 11 → many,
+    /// 100 → other. Only `two` and `few` inflect the noun differently; the other four share
+    /// "صورة محددة", which is correct Arabic rather than a missing translation — so the
+    /// assertion is that every count resolves and that the two distinct forms appear where
+    /// they should, not that six spellings differ.
+    ///
+    /// The assertions match on the noun alone. `ar` numbers format with Arabic-Indic digits,
+    /// so spelling the count into the expected string would test digit shaping, not category
+    /// selection.
+    func testArabicDeleteAlertTitleCoversAllSixCategories() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "ar")
+        let ar = Locale(identifier: "ar")
+        let key = "details.clusterDetails.deleteAlertTitle"
+
+        func title(_ count: Int) -> String {
+            DetailsL10n.ClusterDetails.deleteAlertTitle(count, bundle: bundle, locale: ar)
+        }
+
+        for count in [0, 1, 2, 3, 11, 100] {
+            XCTAssertNotEqual(title(count), key, "count \(count) fell back to the key")
+        }
+
+        XCTAssertTrue(title(2).contains("صورتين محددتين"), title(2))
+        XCTAssertTrue(title(3).contains("صور محددة"), title(3))
+        for count in [0, 1, 11, 100] {
+            XCTAssertTrue(title(count).contains("صورة محددة"), title(count))
+        }
+    }
+
     func testEnglishDeleteAlertTitleSelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")

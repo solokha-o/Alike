@@ -138,10 +138,7 @@ public struct ScannerView: View {
         paywall = PresentedPaywall(context: .postFirstScan(
             similarClusterCount: offer.similarClusterCount,
             candidateCount: offer.cleanupCategoryCandidateCount,
-            estimatedSavings: ByteCountFormatter.string(
-                fromByteCount: offer.estimatedSavingsBytes,
-                countStyle: .file
-            )
+            estimatedSavings: String.alikeByteCount(offer.estimatedSavingsBytes)
         ))
         viewModel.consumePostScanPremiumOffer()
     }

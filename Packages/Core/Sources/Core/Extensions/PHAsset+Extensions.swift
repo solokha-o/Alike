@@ -349,6 +349,8 @@ public struct AssetMetadata: Sendable {
     public var formattedCreationDate: String {
         guard let date = creationDate else { return "Unknown" }
         let formatter = DateFormatter()
+        formatter.locale = .alikeFormatting
+        formatter.calendar = .alikeFormattingCalendar
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: date)
@@ -357,6 +359,8 @@ public struct AssetMetadata: Sendable {
     public var formattedModificationDate: String? {
         guard let date = modificationDate else { return nil }
         let formatter = DateFormatter()
+        formatter.locale = .alikeFormatting
+        formatter.calendar = .alikeFormattingCalendar
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: date)

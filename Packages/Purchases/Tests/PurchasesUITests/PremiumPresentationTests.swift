@@ -139,6 +139,35 @@ final class PremiumPresentationTests: XCTestCase {
         }
     }
 
+    /// Arabic is the first shipped language with all six CLDR categories. 0, 1, 2, 3, 11 and 100
+    /// are the counts that separate them. Only `two` and `few` inflect the noun differently —
+    /// the other four share one form, which is correct Arabic, not a missing translation.
+    /// Matching on the noun alone keeps the assertion about category selection: `ar` renders
+    /// numbers with Arabic-Indic digits.
+    func testArabicPaywallCopyCoversAllSixCategories() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "ar")
+        let ar = Locale(identifier: "ar")
+
+        func message(_ count: Int) -> String {
+            PaywallL10n.postFirstScanMessage(
+                opportunityCount: count,
+                estimatedSavings: "120 MB",
+                locale: ar,
+                bundle: bundle
+            )
+        }
+
+        for count in [0, 1, 2, 3, 11, 100] {
+            XCTAssertTrue(message(count).contains("120 MB"), message(count))
+        }
+
+        XCTAssertTrue(message(2).contains("فرصتين"), message(2))
+        XCTAssertTrue(message(3).contains("فرص للتنظيف"), message(3))
+        for count in [0, 1, 11, 100] {
+            XCTAssertTrue(message(count).contains("فرصة للتنظيف"), message(count))
+        }
+    }
+
     func testEnglishPaywallCopySelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")

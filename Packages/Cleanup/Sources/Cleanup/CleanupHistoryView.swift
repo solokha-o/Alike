@@ -62,7 +62,7 @@ struct CleanupHistoryView: View {
                             .listRowBackground(Color.clear)
                     }
                 } header: {
-                    Text(section.month.formatted(.dateTime.month(.wide).year()))
+                    Text(section.month.formatted(.dateTime.month(.wide).year().alikePinned))
                         .font(.appHeadline)
                         .foregroundStyle(.primary)
                         .textCase(nil)
@@ -265,7 +265,7 @@ private struct CleanupHistoryTimelineRow: View {
                 Text(CleanupL10n.CleanupHistory.movedToRecentlyDeleted)
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
-                Text(entry.completedAt.formatted(date: .abbreviated, time: .shortened))
+                Text(entry.completedAt.alikeFormatted(date: .abbreviated, time: .shortened))
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
             }
@@ -283,7 +283,7 @@ private struct CleanupHistoryTimelineRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibilityLabel))
         .accessibilityValue(
-            Text(entry.completedAt.formatted(date: .complete, time: .shortened))
+            Text(entry.completedAt.alikeFormatted(date: .complete, time: .shortened))
         )
     }
 
@@ -300,7 +300,7 @@ private struct CleanupHistoryTimelineRow: View {
 }
 
 private func byteCount(_ bytes: Int64) -> String {
-    ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+    String.alikeByteCount(bytes)
 }
 
 private extension CleanupInsights {

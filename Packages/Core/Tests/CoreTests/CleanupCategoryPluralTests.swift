@@ -111,6 +111,38 @@ final class CleanupCategoryPluralTests: XCTestCase {
         )
     }
 
+    /// Arabic is the first shipped language with all six CLDR categories. 0, 1, 2, 3, 11 and 100
+    /// are the counts that separate them. Only `two` and `few` inflect the noun differently —
+    /// the other four share one form, which is correct Arabic, not a missing translation.
+    /// Matching on the noun alone keeps the assertion about category selection: `ar` renders
+    /// numbers with Arabic-Indic digits.
+    func testArabicCopyCoversAllSixCategories() throws {
+        let bundle = try CompiledCatalogFixture.bundle(language: "ar")
+        let ar = Locale(identifier: "ar")
+
+        func summary(_ count: Int) -> String {
+            CoreL10n.CleanupCategory.summaryScreenshots(count, bundle: bundle, locale: ar)
+        }
+
+        for count in [0, 1, 2, 3, 11, 100] {
+            XCTAssertNotEqual(
+                summary(count),
+                "core.cleanupCategory.summaryScreenshots",
+                "count \(count) fell back to the key"
+            )
+        }
+
+        XCTAssertTrue(summary(2).contains("لقطتا شاشة"), summary(2))
+        XCTAssertTrue(summary(3).contains("لقطات شاشة"), summary(3))
+        for count in [0, 1, 11, 100] {
+            XCTAssertTrue(summary(count).contains("لقطة شاشة"), summary(count))
+        }
+
+        let selection = CoreL10n.CleanupCategory.selectionSummary(2, "120 MB", bundle: bundle, locale: ar)
+        XCTAssertTrue(selection.contains("محددان"), selection)
+        XCTAssertTrue(selection.contains("120 MB"), selection)
+    }
+
     func testEnglishCopySelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")

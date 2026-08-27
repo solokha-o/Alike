@@ -76,6 +76,12 @@
             "state": "translated",
             "value": "已授予取用權"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم منح الإذن"
+          }
         }
       }
     },
@@ -149,6 +155,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "ar": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -230,6 +242,12 @@
             "state": "translated",
             "value": "已刪除 Alike 資料"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم حذف بيانات Alike"
+          }
         }
       }
     },
@@ -306,6 +324,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 需要取用照片，才能掃描你的圖庫並準備清理建議。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتاج Alike إلى إذن الوصول إلى الصور لفحص مكتبتك وإعداد اقتراحات التنظيف."
           }
         }
       }
@@ -384,6 +408,12 @@
             "state": "translated",
             "value": "Alike 絕不會自動刪除照片。你會先檢視建議，並確認每一項清理操作。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يحذف Alike الصور تلقائيًا أبدًا. أنت تراجع الاقتراحات أولًا وتؤكد كل إجراء تنظيف."
+          }
         }
       }
     },
@@ -460,6 +490,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike，你的照片偵探"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Alike، محقق صورك"
           }
         }
       }
@@ -538,6 +574,12 @@
             "state": "translated",
             "value": "分析全程留在你的裝置上，也不會自動刪除任何內容。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبقى التحليل على جهازك، ولا يُحذف أي شيء تلقائيًا."
+          }
         }
       }
     },
@@ -614,6 +656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "返回"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رجوع"
           }
         }
       }
@@ -692,6 +740,12 @@
             "state": "translated",
             "value": "你之後可以在「設定」中更改取用權；未經你確認，Alike 不會刪除任何內容。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك تغيير الإذن لاحقًا من الإعدادات، ولا يحذف Alike أي شيء دون تأكيدك."
+          }
         }
       }
     },
@@ -768,6 +822,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你可以現在授予取用權，等準備好時再回來清理。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكنك منح الإذن الآن والعودة إلى التنظيف متى كنت مستعدًا."
           }
         }
       }
@@ -846,6 +906,12 @@
             "state": "translated",
             "value": "安心整理你的圖庫"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نظّف مكتبتك بثقة"
+          }
         }
       }
     },
@@ -922,6 +988,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "比較照片，留下對你有意義的那幾張。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قارن بين الصور واحتفظ باللقطات التي تهمك."
           }
         }
       }
@@ -1000,6 +1072,12 @@
             "state": "translated",
             "value": "繼續"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متابعة"
+          }
         }
       }
     },
@@ -1076,6 +1154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "準備好繼續時，請到「設定」中開啟照片取用權。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فعّل إذن الوصول إلى الصور من الإعدادات عندما تكون مستعدًا للمتابعة."
           }
         }
       }
@@ -1154,6 +1238,12 @@
             "state": "translated",
             "value": "每一次刪除都經過確認、清楚可見，完全由你作主。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبقى كل حذف مؤكَّدًا وظاهرًا وبين يديك بالكامل."
+          }
         }
       }
     },
@@ -1230,6 +1320,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "找出可清理的項目"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اعثر على فرص التنظيف"
           }
         }
       }
@@ -1308,6 +1404,12 @@
             "state": "translated",
             "value": "將外觀相似的照片和其他值得檢視的項目分組。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جمّع الصور المتشابهة بصريًا وغيرها من العناصر التي تستحق المراجعة."
+          }
         }
       }
     },
@@ -1384,6 +1486,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 如何幫上忙"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كيف يساعدك Alike"
           }
         }
       }
@@ -1462,6 +1570,12 @@
             "state": "translated",
             "value": "在清理之前，先了解你能釋出多少空間。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اعرف حجم المساحة التي يمكنك استرجاعها قبل أن تبدأ التنظيف."
+          }
         }
       }
     },
@@ -1538,6 +1652,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已刪除本機的 Alike 資料。你的照片與訂閱項目不受影響。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم حذف بيانات Alike المحفوظة على جهازك. أما صورك واشتراكك فلم يطرأ عليهما أي تغيير."
           }
         }
       }
@@ -1616,6 +1736,12 @@
             "state": "translated",
             "value": "下一步"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التالي"
+          }
         }
       }
     },
@@ -1692,6 +1818,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "不會自動刪除任何內容"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يُحذف أي شيء تلقائيًا"
           }
         }
       }
@@ -1770,6 +1902,12 @@
             "state": "translated",
             "value": "打開「設定」"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الإعدادات"
+          }
         }
       }
     },
@@ -1846,6 +1984,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "第 %1$lld 頁，共 %2$lld 頁"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصفحة %1$lld من %2$lld"
           }
         }
       }
@@ -1924,6 +2068,12 @@
             "state": "translated",
             "value": "取用照片後，Alike 就能掃描你的圖庫、將相似照片分組，並準備清理建議供你檢視。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتيح إذن الوصول إلى الصور لـ Alike فحص مكتبتك وتجميع الصور المتشابهة وإعداد اقتراحات تنظيف لتراجعها."
+          }
         }
       }
     },
@@ -2000,6 +2150,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "須取用照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يلزم إذن الوصول إلى الصور"
           }
         }
       }
@@ -2078,6 +2234,12 @@
             "state": "translated",
             "value": "你的照片分析全程留在這部裝置上，並提供逐步的清理建議。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبقى تحليل صورك على هذا الجهاز ويمنحك اقتراحات تنظيف موجَّهة."
+          }
         }
       }
     },
@@ -2154,6 +2316,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的照片保持私密；在移除任何內容之前，每次清理都由你確認。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تبقى صورك خاصة، وستؤكد كل عملية تنظيف قبل إزالة أي شيء."
           }
         }
       }
@@ -2232,6 +2400,12 @@
             "state": "translated",
             "value": "私密，且始終由你掌控"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خاص ودائمًا تحت سيطرتك"
+          }
         }
       }
     },
@@ -2308,6 +2482,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "在裝置上進行的私密分析"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحليل خاص على الجهاز"
           }
         }
       }
@@ -2386,6 +2566,12 @@
             "state": "translated",
             "value": "檢視每一項建議"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع كل اقتراح"
+          }
         }
       }
     },
@@ -2462,6 +2648,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "檢視相似照片、釋出儲存空間，並掌控每一次刪除。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راجع الصور المتشابهة، وحرّر مساحة التخزين، وابقَ متحكمًا في كل عملية حذف."
           }
         }
       }
@@ -2540,6 +2732,12 @@
             "state": "translated",
             "value": "你會先檢視建議，並親自確認每一項清理操作。"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أنت تراجع الاقتراحات أولًا وتؤكد بنفسك كل إجراء تنظيف."
+          }
         }
       }
     },
@@ -2616,6 +2814,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "安全的清理流程"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسار تنظيف آمن"
           }
         }
       }
@@ -2694,6 +2898,12 @@
             "state": "translated",
             "value": "查看可省下的空間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اطّلع على التوفير المحتمل"
+          }
         }
       }
     },
@@ -2770,6 +2980,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "找出相似照片；當你決定要移除哪些後，就能釋出空間。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتشف الصور المتشابهة التي يمكنها تحرير مساحة بمجرد أن تقرر ما تريد إزالته."
           }
         }
       }
@@ -2848,6 +3064,12 @@
             "state": "translated",
             "value": "節省的儲存空間"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توفير مساحة التخزين"
+          }
         }
       }
     },
@@ -2924,6 +3146,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "把擁擠的圖庫變成一場有引導的清理。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حوّل مكتبة مزدحمة إلى تنظيف موجَّه."
           }
         }
       }
@@ -3002,6 +3230,12 @@
             "state": "translated",
             "value": "Alike 為何要取用照片"
           }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لماذا يطلب Alike إذن الوصول إلى الصور"
+          }
         }
       }
     },
@@ -3078,6 +3312,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的圖庫始終由你掌控"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تبقى مكتبتك تحت سيطرتك"
           }
         }
       }
