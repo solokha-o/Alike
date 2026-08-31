@@ -72,6 +72,8 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     /// Minimum face box side, in analysis-image pixels.
     public var minimumFacePixelSize: Double
     public var blinkConfidenceFloor: Double
+    /// Eye aspect ratio (height / width) below which the eye reads as closed.
+    public var closedEyeAspectRatio: Double
     /// Weight of the worst face in a group shot, so one badly blurred face is
     /// not averaged away.
     public var worstFaceWeight: Double
@@ -158,6 +160,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         minimumFaceDetectionConfidence: Double = 0.70,
         minimumFacePixelSize: Double = 64,
         blinkConfidenceFloor: Double = 0.80,
+        closedEyeAspectRatio: Double = 0.18,
         worstFaceWeight: Double = 0.60,
         croppedOrBlurredFacePenalty: Double = 0.20,
         closedEyesPenalty: Double = 0.15,
@@ -212,6 +215,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.minimumFaceDetectionConfidence = minimumFaceDetectionConfidence
         self.minimumFacePixelSize = minimumFacePixelSize
         self.blinkConfidenceFloor = blinkConfidenceFloor
+        self.closedEyeAspectRatio = closedEyeAspectRatio
         self.worstFaceWeight = worstFaceWeight
         self.croppedOrBlurredFacePenalty = croppedOrBlurredFacePenalty
         self.closedEyesPenalty = closedEyesPenalty
