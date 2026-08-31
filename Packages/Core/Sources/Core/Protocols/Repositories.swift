@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import Photos
 
@@ -218,6 +219,27 @@ public protocol PhotoQualityAnalyzing: Sendable {
     /// handle. A single unreadable photo is reported through
     /// `PhotoQualitySignals.analysisFailure`, never by throwing.
     func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore]
+}
+
+/// Non-destructive auto-enhancement of a single photo.
+///
+/// Every implementation must keep the original recoverable: the library stores
+/// it, the app never writes a duplicate, and a revert is one step.
+public protocol PhotoEnhancementService: Sendable {
+    /// Whether this asset can be enhanced at all (write access, editable asset).
+    func canEnhance(localIdentifier: String) async -> Bool
+
+    /// Renders a preview at screen size. Nothing is written to the library.
+    func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage
+
+    /// Applies the enhancement as a non-destructive edit and returns the recipe.
+    func applyEnhancement(localIdentifier: String) async throws -> PhotoEnhancementAdjustment
+
+    /// Restores the original, refusing edits that were not made by Alike.
+    func revertToOriginal(localIdentifier: String) async throws
+
+    /// Whether the asset currently carries Alike's own adjustment data.
+    func isEnhancedByAlike(localIdentifier: String) async -> Bool
 }
 
 /// Service for analyzing photos using Vision framework
