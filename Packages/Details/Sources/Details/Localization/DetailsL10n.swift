@@ -46,6 +46,24 @@ public enum DetailsL10n {
         public static var doubleTapReopenThisCluster: String { DetailsL10n.string("details.clusterDetails.doubleTapReopenThisCluster") }
         /// Double tap to select this photo for cleanup
         public static var doubleTapSelectThisPhoto: String { DetailsL10n.string("details.clusterDetails.doubleTapSelectThisPhoto") }
+        /// Apply
+        public static var applyEnhancement: String { DetailsL10n.string("details.clusterDetails.applyEnhancement") }
+        /// Enhance
+        public static var enhance: String { DetailsL10n.string("details.clusterDetails.enhance") }
+        /// Enhanced
+        public static var enhanced: String { DetailsL10n.string("details.clusterDetails.enhanced") }
+        /// Couldn't enhance this photo. Please try again in a moment.
+        public static var enhancementFailed: String { DetailsL10n.string("details.clusterDetails.enhancementFailed") }
+        /// Photos shared through limited access can't be enhanced.
+        public static var enhancementLimitedAccess: String { DetailsL10n.string("details.clusterDetails.enhancementLimitedAccess") }
+        /// This photo was edited outside Alike, so Alike won't undo that edit.
+        public static var enhancementNotOurs: String { DetailsL10n.string("details.clusterDetails.enhancementNotOurs") }
+        /// The original photo isn't available right now.
+        public static var enhancementOriginalUnavailable: String { DetailsL10n.string("details.clusterDetails.enhancementOriginalUnavailable") }
+        /// Enhanced preview
+        public static var enhancementPreviewTitle: String { DetailsL10n.string("details.clusterDetails.enhancementPreviewTitle") }
+        /// Revert to original
+        public static var revertToOriginal: String { DetailsL10n.string("details.clusterDetails.revertToOriginal") }
         /// Favorite
         public static var favorite: String { DetailsL10n.string("details.clusterDetails.favorite") }
         /// Finishes the review and keeps every photo in this cluster
@@ -72,6 +90,8 @@ public enum DetailsL10n {
         public static var reasonOpenEyes: String { DetailsL10n.string("details.clusterDetails.reasonOpenEyes") }
         /// Sharper
         public static var reasonSharper: String { DetailsL10n.string("details.clusterDetails.reasonSharper") }
+        /// Touch and hold to see the original
+        public static var holdToCompare: String { DetailsL10n.string("details.clusterDetails.holdToCompare") }
         /// Live Photo
         public static var livePhoto: String { DetailsL10n.string("details.clusterDetails.livePhoto") }
         /// Location

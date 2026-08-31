@@ -802,14 +802,14 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))
         )
         XCTAssertFalse(viewModel.isDeleting)
 
-        viewModel.clearDeleteError()
+        viewModel.clearActionError()
 
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
@@ -830,7 +830,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
         XCTAssertFalse(cleanupDidRun)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
     }
 
     func testDismissingDeleteErrorClearsErrorState() async {
@@ -844,12 +844,12 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
         await viewModel.confirmDelete()
 
-        XCTAssertTrue(viewModel.isDeleteErrorPresented)
+        XCTAssertTrue(viewModel.isActionErrorPresented)
 
-        viewModel.isDeleteErrorPresented = false
+        viewModel.isActionErrorPresented = false
 
-        XCTAssertFalse(viewModel.isDeleteErrorPresented)
-        XCTAssertNil(viewModel.deleteErrorMessage)
+        XCTAssertFalse(viewModel.isActionErrorPresented)
+        XCTAssertNil(viewModel.actionErrorMessage)
         XCTAssertFalse(viewModel.shouldOfferOpenSettings)
     }
 

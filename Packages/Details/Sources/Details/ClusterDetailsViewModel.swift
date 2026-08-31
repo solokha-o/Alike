@@ -28,6 +28,9 @@ final class ClusterDetailsViewModel {
     private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshotLoader: AssetSnapshotLoader
     private let qualityAnalyzer: any PhotoQualityAnalyzing
+    /// `nil` hides the enhancement action entirely, which is what previews and
+    /// hosts without photo-library editing get.
+    private let enhancementService: (any PhotoEnhancementService)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
     private var persistenceTask: Task<Void, Never>?
     private var alikeReactionResolver = AlikeReactionResolver()
@@ -40,6 +43,15 @@ final class ClusterDetailsViewModel {
     /// always `.automatic`: the user is the authority.
     private(set) var bestShotConfidence: BestShotConfidence = .automatic
     private(set) var bestShotReasonCodes: [BestShotReasonCode] = []
+    private(set) var enhancementState: PhotoEnhancementState = .unavailable
+    /// The rendered "after" image. It lives only in memory: nothing is written
+    /// to the library until the user applies the enhancement.
+    private(set) var enhancementPreview: CGImage?
+    /// Photos this screen enhanced. The badge follows the photo, so changing
+    /// the Best Shot does not cancel or move an applied enhancement.
+    private(set) var enhancedAssetIDs: Set<String> = []
+    /// Where the enhancement returns once the user dismisses the error alert.
+    private var enhancementRecoveryState: PhotoEnhancementState = .idle
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
     /// Set by the user finishing the review, never derived from how many photos
@@ -50,7 +62,7 @@ final class ClusterDetailsViewModel {
     private(set) var hasLoadedReviewState = false
     var isDeleteConfirmationPresented = false
     private(set) var isDeleting = false
-    private(set) var deleteErrorMessage: String?
+    private(set) var actionErrorMessage: String?
     private(set) var shouldOfferOpenSettings = false
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentAlikeReaction: AlikeReactionCue?
@@ -68,6 +80,7 @@ final class ClusterDetailsViewModel {
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        enhancementService: (any PhotoEnhancementService)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
@@ -85,6 +98,7 @@ final class ClusterDetailsViewModel {
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
         self.qualityAnalyzer = qualityAnalyzer
+        self.enhancementService = enhancementService
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
@@ -192,11 +206,11 @@ final class ClusterDetailsViewModel {
         return String(format: format, estimatedSavingsText)
     }
 
-    var isDeleteErrorPresented: Bool {
-        get { deleteErrorMessage != nil }
+    var isActionErrorPresented: Bool {
+        get { actionErrorMessage != nil }
         set {
             if !newValue {
-                clearDeleteError()
+                clearActionError()
             }
         }
     }
@@ -215,6 +229,7 @@ final class ClusterDetailsViewModel {
                 savedState: persistedState,
                 qualityScores: qualityScores
             )
+            await refreshEnhancementAvailability()
             hasLoadedReviewState = true
         } catch is CancellationError {
             return
@@ -287,6 +302,7 @@ final class ClusterDetailsViewModel {
             refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
+        Task { await refreshEnhancementAvailability() }
     }
 
     func selectAllExceptBest() {
@@ -354,7 +370,7 @@ final class ClusterDetailsViewModel {
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
-            applyDeleteFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
+            applyActionFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
             return
         }
         guard premiumAccess.access(
@@ -368,7 +384,7 @@ final class ClusterDetailsViewModel {
         await persistenceTask?.value
 
         isDeleteConfirmationPresented = false
-        deleteErrorMessage = nil
+        actionErrorMessage = nil
         shouldOfferOpenSettings = false
         pendingCompletionRecord = nil
         isDeleting = true
@@ -408,8 +424,11 @@ final class ClusterDetailsViewModel {
         isDeleting = false
     }
 
-    func clearDeleteError() {
-        deleteErrorMessage = nil
+    func clearActionError() {
+        if case .failed = enhancementState {
+            enhancementState = enhancementRecoveryState
+        }
+        actionErrorMessage = nil
         shouldOfferOpenSettings = false
         if let currentAlikeReaction,
            currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
@@ -429,6 +448,150 @@ final class ClusterDetailsViewModel {
     func consumeBestShotCelebration(id: AlikeReviewReactionCue.ID) {
         guard bestShotCelebrationCue?.id == id else { return }
         bestShotCelebrationCue = nil
+    }
+}
+
+// MARK: - Reversible auto-enhancement
+
+extension ClusterDetailsViewModel {
+    /// Hidden entirely when no service is injected or the asset cannot be
+    /// edited, so the UI never offers an action that would fail.
+    var isEnhancementActionVisible: Bool {
+        enhancementService != nil
+            && !bestShotAssetID.isEmpty
+            && enhancementState != .unavailable
+    }
+
+    /// The live asset behind the current Best Shot, for previews and edits.
+    var bestShotAsset: PHAsset? {
+        assets.first { $0.localIdentifier == bestShotAssetID }
+    }
+
+    var isBestShotEnhanced: Bool {
+        isEnhanced(bestShotAssetID)
+    }
+
+    func isEnhanced(_ localIdentifier: String) -> Bool {
+        !localIdentifier.isEmpty && enhancedAssetIDs.contains(localIdentifier)
+    }
+
+    /// Re-reads what the library says about the current Best Shot: whether it
+    /// can be edited at all, and whether it already carries Alike's edit.
+    func refreshEnhancementAvailability() async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else {
+            enhancementState = .unavailable
+            enhancementPreview = nil
+            return
+        }
+
+        let localIdentifier = bestShotAssetID
+        guard await enhancementService.canEnhance(localIdentifier: localIdentifier) else {
+            enhancementState = .unavailable
+            enhancementPreview = nil
+            return
+        }
+
+        let isEnhanced = await enhancementService.isEnhancedByAlike(localIdentifier: localIdentifier)
+        guard localIdentifier == bestShotAssetID else { return }
+        if isEnhanced {
+            enhancedAssetIDs.insert(localIdentifier)
+        } else {
+            enhancedAssetIDs.remove(localIdentifier)
+        }
+        enhancementPreview = nil
+        enhancementState = isEnhanced ? .applied : .idle
+    }
+
+    /// Renders the "after" image. Nothing is written to the library yet.
+    func enhance(previewSize: CGSize) async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .idle || enhancementState == .previewing else { return }
+
+        let localIdentifier = bestShotAssetID
+        enhancementState = .preparingPreview
+        do {
+            let preview = try await enhancementService.renderPreview(
+                localIdentifier: localIdentifier,
+                targetSize: previewSize
+            )
+            guard localIdentifier == bestShotAssetID else { return }
+            enhancementPreview = preview
+            enhancementState = .previewing
+        } catch {
+            handleEnhancementError(error, fallbackState: .idle)
+        }
+    }
+
+    func dismissEnhancementPreview() {
+        guard enhancementState == .previewing else { return }
+        enhancementPreview = nil
+        enhancementState = .idle
+    }
+
+    func applyEnhancement() async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .idle || enhancementState == .previewing else { return }
+
+        let localIdentifier = bestShotAssetID
+        let previousState = enhancementState
+        enhancementState = .applying
+        do {
+            _ = try await enhancementService.applyEnhancement(localIdentifier: localIdentifier)
+            enhancedAssetIDs.insert(localIdentifier)
+            enhancementPreview = nil
+            enhancementState = .applied
+        } catch {
+            // A failed edit leaves the photo, the selection and the review
+            // exactly as they were; only the enhancement state moves.
+            handleEnhancementError(error, fallbackState: previousState)
+        }
+    }
+
+    func revertEnhancement() async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .applied else { return }
+
+        let localIdentifier = bestShotAssetID
+        enhancementState = .reverting
+        do {
+            try await enhancementService.revertToOriginal(localIdentifier: localIdentifier)
+            enhancedAssetIDs.remove(localIdentifier)
+            enhancementPreview = nil
+            enhancementState = .idle
+        } catch {
+            handleEnhancementError(error, fallbackState: .applied)
+        }
+    }
+
+    func handleEnhancementError(_ error: Error, fallbackState: PhotoEnhancementState) {
+        let enhancementError = (error as? PhotoEnhancementError) ?? .saveFailed
+        enhancementPreview = nil
+        enhancementState = .failed(enhancementError)
+        enhancementRecoveryState = fallbackState
+        publishAlikeEvent(.recoverableFailure(
+            id: AlikeEventID.cleanup(cleanupSelectionID),
+            context: AlikeErrorContext(operation: .cleanup)
+        ))
+        applyActionFailure(
+            message: Self.enhancementErrorMessage(for: enhancementError),
+            offersOpenSettings: enhancementError == .notAuthorized
+                || enhancementError == .limitedAccessNotEditable
+        )
+    }
+
+    static func enhancementErrorMessage(for error: PhotoEnhancementError) -> String {
+        switch error {
+        case .notAuthorized:
+            return DetailsL10n.Common.alikeNeedsPhotoLibraryAccess
+        case .limitedAccessNotEditable:
+            return DetailsL10n.ClusterDetails.enhancementLimitedAccess
+        case .originalUnavailable:
+            return DetailsL10n.ClusterDetails.enhancementOriginalUnavailable
+        case .renderFailed, .saveFailed:
+            return DetailsL10n.ClusterDetails.enhancementFailed
+        case .notEnhancedByAlike:
+            return DetailsL10n.ClusterDetails.enhancementNotOurs
+        }
     }
 }
 
@@ -560,30 +723,30 @@ private extension ClusterDetailsViewModel {
 
         switch error {
         case .nothingSelected:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.selectAtLeastOnePhoto,
                 offersOpenSettings: false
             )
         case .notAuthorized:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.alikeNeedsPhotoLibraryAccess,
                 offersOpenSettings: true
             )
         case .selectedAssetsUnavailable:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.someSelectedPhotosNoLonger,
                 offersOpenSettings: true
             )
         case .deleteFailed:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.couldntMoveSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }
     }
 
-    func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
-        deleteErrorMessage = message
+    func applyActionFailure(message: String, offersOpenSettings: Bool) {
+        actionErrorMessage = message
         shouldOfferOpenSettings = offersOpenSettings
         pendingCompletionRecord = nil
     }
