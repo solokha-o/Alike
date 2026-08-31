@@ -223,6 +223,7 @@ public struct CleanupView: View {
                 openSettingsAction: {
                     PhotoPermissionManagerImpl().openSettings()
                 },
+                qualityAnalyzer: workspace.qualityAnalyzer,
                 onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
                 onCleanupCompleted: reconcile
             )

@@ -27,6 +27,7 @@ final class ClusterDetailsViewModel {
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshotLoader: AssetSnapshotLoader
+    private let qualityAnalyzer: any PhotoQualityAnalyzing
     private var assetSnapshots: [ReviewAssetSnapshot] = []
     private var persistenceTask: Task<Void, Never>?
     private var alikeReactionResolver = AlikeReactionResolver()
@@ -35,6 +36,10 @@ final class ClusterDetailsViewModel {
     private(set) var bestShotAssetID: String
     private(set) var bestShotLabel: String
     private(set) var isBestShotUserSelected = false
+    /// How much the measured ranking trusts its own pick. A manual choice is
+    /// always `.automatic`: the user is the authority.
+    private(set) var bestShotConfidence: BestShotConfidence = .automatic
+    private(set) var bestShotReasonCodes: [BestShotReasonCode] = []
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
     /// Set by the user finishing the review, never derived from how many photos
@@ -62,6 +67,7 @@ final class ClusterDetailsViewModel {
         cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
@@ -78,6 +84,7 @@ final class ClusterDetailsViewModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
+        self.qualityAnalyzer = qualityAnalyzer
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
@@ -134,7 +141,7 @@ final class ClusterDetailsViewModel {
     }
 
     var isActionBarVisible: Bool {
-        assetSnapshots.count > 1 && !bestShotAssetID.isEmpty
+        assetSnapshots.count > 1 && (!bestShotAssetID.isEmpty || bestShotConfidence == .unresolved)
     }
 
     var isDeleteActionVisible: Bool {
@@ -200,10 +207,13 @@ final class ClusterDetailsViewModel {
             let preparedSnapshots = try await assetSnapshotLoader()
             let persistedState = await savedState
             try Task.checkCancellation()
+            let qualityScores = await loadQualityScores()
+            try Task.checkCancellation()
 
             applyLoadedState(
                 assetSnapshots: preparedSnapshots,
-                savedState: persistedState
+                savedState: persistedState,
+                qualityScores: qualityScores
             )
             hasLoadedReviewState = true
         } catch is CancellationError {
@@ -238,7 +248,10 @@ final class ClusterDetailsViewModel {
     /// is what marks the cluster reviewed — including the "keep everything,
     /// nothing to clean here" case where no photo is selected at all.
     func toggleReviewConfirmation() {
-        guard !bestShotAssetID.isEmpty, !assetSnapshots.isEmpty else { return }
+        // With no obvious Best Shot there is nothing to protect, but finishing
+        // the review is still the user's call, so it stays available.
+        guard !assetSnapshots.isEmpty else { return }
+        guard !bestShotAssetID.isEmpty || bestShotConfidence == .unresolved else { return }
 
         withAnimation(.appInteractive) {
             isReviewConfirmed.toggle()
@@ -268,6 +281,8 @@ final class ClusterDetailsViewModel {
             bestShotAssetID = localIdentifier
             bestShotLabel = Self.bestShotLabel(for: localIdentifier, in: assetSnapshots)
             isBestShotUserSelected = true
+            bestShotConfidence = .automatic
+            bestShotReasonCodes = []
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
@@ -429,6 +444,22 @@ extension ClusterDetailsViewModel {
 }
 
 private extension ClusterDetailsViewModel {
+    func loadQualityScores() async -> [String: PhotoQualityScore] {
+        do {
+            let scores = try await qualityAnalyzer.scores(for: cluster.assets)
+            return Dictionary(scores.map { ($0.localIdentifier, $0) }, uniquingKeysWith: { _, latest in latest })
+        } catch is CancellationError {
+            return [:]
+        } catch {
+            // Quality scoring is an improvement, not a requirement: without it
+            // the metadata ranking still names a Best Shot.
+            AppLog.ui.error(
+                "\(AppLog.tag(.error, "Failed to score cluster photo quality: \(error.localizedDescription)"))"
+            )
+            return [:]
+        }
+    }
+
     func loadPersistedReviewState() async -> ClusterReviewState? {
         do {
             return try await reviewRepository.loadReviewState(clusterID: cluster.id)
@@ -440,7 +471,8 @@ private extension ClusterDetailsViewModel {
 
     func applyLoadedState(
         assetSnapshots: [ReviewAssetSnapshot],
-        savedState: ClusterReviewState?
+        savedState: ClusterReviewState?,
+        qualityScores: [String: PhotoQualityScore] = [:]
     ) {
         self.assetSnapshots = assetSnapshots
 
@@ -448,6 +480,8 @@ private extension ClusterDetailsViewModel {
             bestShotAssetID = ""
             bestShotLabel = DetailsL10n.Common.bestShot
             isBestShotUserSelected = false
+            bestShotConfidence = .automatic
+            bestShotReasonCodes = []
             selectedAssetIDs = []
             isReviewConfirmed = false
             reviewMode = .selection
@@ -456,10 +490,19 @@ private extension ClusterDetailsViewModel {
             return
         }
 
-        let fallbackBestShotID = Self.bestShotLocalIdentifier(from: assetSnapshots) ?? ""
+        // The measured decision; with no signals it degrades to exactly the
+        // metadata-only ranking the app shipped before.
+        let decision = BestShotRanker.decide(
+            snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
+            scores: qualityScores
+        )
+        bestShotConfidence = decision.confidence
+        bestShotReasonCodes = decision.reasonCodes
+        let rankedBestShotID = decision.localIdentifier ?? ""
+
         guard let savedState else {
             applyState(
-                bestShotAssetID: fallbackBestShotID,
+                bestShotAssetID: rankedBestShotID,
                 isBestShotUserSelected: false,
                 selectedAssetIDs: [],
                 isReviewConfirmed: false,
@@ -473,16 +516,27 @@ private extension ClusterDetailsViewModel {
         // A manual pick only survives while its photo does; once the photo is
         // gone the computed best shot takes over and stops being an override.
         let isPersistedBestShotAvailable = validIDs.contains(savedState.bestShotLocalIdentifier)
-        let persistedBestShotID = isPersistedBestShotAvailable
-            ? savedState.bestShotLocalIdentifier
-            : fallbackBestShotID
+        let isManualOverride = isPersistedBestShotAvailable && savedState.isBestShotUserSelected
+        let persistedBestShotID: String
+        if isManualOverride {
+            persistedBestShotID = savedState.bestShotLocalIdentifier
+            // The user decided; the ranking does not get to hedge about it.
+            bestShotConfidence = .automatic
+            bestShotReasonCodes = []
+        } else if isPersistedBestShotAvailable, savedState.isReviewConfirmed {
+            // A finished review keeps the photo it was finished with, so a
+            // rescan cannot silently move the Best Shot under a done cluster.
+            persistedBestShotID = savedState.bestShotLocalIdentifier
+        } else {
+            persistedBestShotID = rankedBestShotID
+        }
         let filteredSelection = savedState.selectedLocalIdentifiers
             .intersection(validIDs)
             .subtracting([persistedBestShotID])
 
         applyState(
             bestShotAssetID: persistedBestShotID,
-            isBestShotUserSelected: isPersistedBestShotAvailable && savedState.isBestShotUserSelected,
+            isBestShotUserSelected: isManualOverride,
             selectedAssetIDs: filteredSelection,
             isReviewConfirmed: savedState.isReviewConfirmed,
             reviewMode: savedState.mode,
@@ -572,7 +626,8 @@ private extension ClusterDetailsViewModel {
             isReviewConfirmed: isReviewConfirmed,
             selectedAssetIDs: selectedAssetIDs,
             assetCount: assetSnapshots.count,
-            bestShotAssetID: bestShotAssetID
+            bestShotAssetID: bestShotAssetID,
+            isBestShotUnresolved: bestShotConfidence == .unresolved
         )
 
         if emitsReviewCompletion, previousStatus != .reviewed, reviewStatus == .reviewed {
@@ -608,7 +663,9 @@ private extension ClusterDetailsViewModel {
 
     @discardableResult
     func enqueueCurrentStatePersistence() -> Task<Void, Never>? {
-        guard !bestShotAssetID.isEmpty else { return nil }
+        // An unresolved cluster still has review progress worth keeping; it
+        // stores an empty best shot, which loads back as "not chosen yet".
+        guard !bestShotAssetID.isEmpty || bestShotConfidence == .unresolved else { return nil }
         let state = ClusterReviewState(
             clusterID: cluster.id,
             bestShotLocalIdentifier: bestShotAssetID,
@@ -642,9 +699,11 @@ private extension ClusterDetailsViewModel {
         isReviewConfirmed: Bool,
         selectedAssetIDs: Set<String>,
         assetCount: Int,
-        bestShotAssetID: String
+        bestShotAssetID: String,
+        isBestShotUnresolved: Bool = false
     ) -> ClusterReviewStatus {
-        guard assetCount > 0, !bestShotAssetID.isEmpty else { return .notReviewed }
+        guard assetCount > 0 else { return .notReviewed }
+        guard !bestShotAssetID.isEmpty || isBestShotUnresolved else { return .notReviewed }
         guard !isReviewConfirmed else { return .reviewed }
         return selectedAssetIDs.isEmpty ? .notReviewed : .inReview
     }

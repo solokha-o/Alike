@@ -19,6 +19,8 @@ struct ClusterReviewSummaryCard: View {
 
     let assetCount: Int
     let bestShotLabel: String
+    let bestShotConfidence: BestShotConfidence
+    let bestShotReasonCodes: [BestShotReasonCode]
     let selectedCount: Int
     let estimatedSavingsText: String
     let maximumEstimatedSavingsText: String
@@ -70,15 +72,7 @@ struct ClusterReviewSummaryCard: View {
                 }
             }
 
-            Label {
-                Text(bestShotLabel)
-                    .fixedSize(horizontal: false, vertical: true)
-            } icon: {
-                Image(systemName: "star.fill")
-                    .foregroundStyle(Color.heroGold)
-            }
-            .font(.appCallout.weight(.semibold))
-            .accessibilityLabel(Text(verbatim: "\(DetailsL10n.Common.bestShot): \(bestShotLabel)"))
+            bestShotSummary
 
             selectionSummaryLabel
         }
@@ -86,6 +80,55 @@ struct ClusterReviewSummaryCard: View {
         .frame(minHeight: Self.summaryContentMinimumHeight, alignment: .leading)
         .animation(nil, value: selectedCount)
         .animation(nil, value: reviewStatus)
+    }
+
+    /// Three states in one place: a confident pick, a hedged one, and the
+    /// honest "nothing stands out here, you choose".
+    @ViewBuilder
+    private var bestShotSummary: some View {
+        if bestShotConfidence == .unresolved {
+            Label {
+                Text(DetailsL10n.ClusterDetails.noObviousBestShot)
+                    .fixedSize(horizontal: false, vertical: true)
+            } icon: {
+                Image(systemName: bestShotConfidence.badgeSymbolName)
+                    .foregroundStyle(.secondary)
+            }
+            .font(.appCallout.weight(.semibold))
+            .foregroundStyle(.secondary)
+        } else {
+            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                Label {
+                    Text(bestShotTitle)
+                        .fixedSize(horizontal: false, vertical: true)
+                } icon: {
+                    Image(systemName: bestShotConfidence.badgeSymbolName)
+                        .foregroundStyle(Color.heroGold)
+                }
+                .font(.appCallout.weight(.semibold))
+
+                if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
+                    Text(reasons)
+                        .font(.appCaption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Text(verbatim: bestShotAccessibilityLabel))
+        }
+    }
+
+    private var bestShotTitle: String {
+        bestShotConfidence == .lowConfidence
+            ? "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
+            : bestShotLabel
+    }
+
+    private var bestShotAccessibilityLabel: String {
+        let base = "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
+        guard let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) else { return base }
+        return "\(base). \(reasons)"
     }
 
     private var assetCountLabel: some View {

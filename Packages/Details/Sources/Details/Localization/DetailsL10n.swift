@@ -56,6 +56,22 @@ public enum DetailsL10n {
         public static var hdr: String { DetailsL10n.string("details.clusterDetails.hdr") }
         /// Keeping %d of %d
         public static var keepingOf: String { DetailsL10n.string("details.clusterDetails.keepingOf") }
+        /// No obvious Best Shot — choose one yourself
+        public static var noObviousBestShot: String { DetailsL10n.string("details.clusterDetails.noObviousBestShot") }
+        /// Probably best
+        public static var probablyBestShot: String { DetailsL10n.string("details.clusterDetails.probablyBestShot") }
+        /// Better exposure
+        public static var reasonBetterExposure: String { DetailsL10n.string("details.clusterDetails.reasonBetterExposure") }
+        /// Face in focus
+        public static var reasonFaceInFocus: String { DetailsL10n.string("details.clusterDetails.reasonFaceInFocus") }
+        /// Higher resolution
+        public static var reasonHigherResolution: String { DetailsL10n.string("details.clusterDetails.reasonHigherResolution") }
+        /// Less noise
+        public static var reasonLessNoise: String { DetailsL10n.string("details.clusterDetails.reasonLessNoise") }
+        /// Eyes open
+        public static var reasonOpenEyes: String { DetailsL10n.string("details.clusterDetails.reasonOpenEyes") }
+        /// Sharper
+        public static var reasonSharper: String { DetailsL10n.string("details.clusterDetails.reasonSharper") }
         /// Live Photo
         public static var livePhoto: String { DetailsL10n.string("details.clusterDetails.livePhoto") }
         /// Location
