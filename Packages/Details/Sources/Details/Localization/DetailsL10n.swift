@@ -76,6 +76,8 @@ public enum DetailsL10n {
         public static var keepingOf: String { DetailsL10n.string("details.clusterDetails.keepingOf") }
         /// No obvious Best Shot — choose one yourself
         public static var noObviousBestShot: String { DetailsL10n.string("details.clusterDetails.noObviousBestShot") }
+        /// Original
+        public static var originalPhoto: String { DetailsL10n.string("details.clusterDetails.originalPhoto") }
         /// Probably best
         public static var probablyBestShot: String { DetailsL10n.string("details.clusterDetails.probablyBestShot") }
         /// Better exposure

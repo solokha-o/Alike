@@ -5,7 +5,8 @@ import SwiftUI
 
 #if os(iOS)
 
-/// Before/after preview of the auto-enhancement.
+/// Before/after preview of the auto-enhancement, in the same fullscreen viewer
+/// the rest of the screen uses — same zoom, same pan, same black canvas.
 ///
 /// Nothing here writes to the photo library: the user sees the result first and
 /// only then applies it, and can always leave without changing anything.
@@ -18,83 +19,89 @@ struct EnhancementPreviewView: View {
     let onApply: () -> Void
     let onCancel: () -> Void
 
-    @State private var originalImage: UIImage?
     @GestureState private var isShowingOriginal = false
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: Spacing.medium) {
-                comparison
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        ZStack(alignment: .top) {
+            Color.black.ignoresSafeArea()
 
-                Text(isShowingOriginal
-                     ? DetailsL10n.Common.bestShot
-                     : DetailsL10n.ClusterDetails.enhancementPreviewTitle)
-                    .font(.appCallout.weight(.semibold))
-                    .accessibilityHidden(true)
+            FullscreenZoomablePhotoView(
+                asset: asset,
+                overrideImage: isShowingOriginal ? nil : enhancedImage
+            )
+            .ignoresSafeArea()
 
-                Text(DetailsL10n.ClusterDetails.holdToCompare)
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(Spacing.medium)
-            .navigationTitle(Text(DetailsL10n.ClusterDetails.enhancementPreviewTitle))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(DetailsL10n.Common.cancel) {
-                        onCancel()
-                        dismiss()
-                    }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(DetailsL10n.ClusterDetails.applyEnhancement) {
-                        onApply()
-                        dismiss()
-                    }
-                    .disabled(enhancedImage == nil || state.isBusy)
-                }
-            }
+            stateLabel
         }
-        .task(id: asset.localIdentifier) {
-            originalImage = try? await asset.loadImage(targetSize: CGSize(width: 1_200, height: 1_200))
+        .safeAreaInset(edge: .bottom) { actions }
+        .overlay {
+            if state.isBusy && enhancedImage == nil {
+                ProgressView()
+                    .tint(.white)
+                    .accessibilityLabel(Text(DetailsL10n.ClusterDetails.enhancementPreviewTitle))
+            }
         }
     }
 
-    @ViewBuilder
-    private var comparison: some View {
-        ZStack {
-            Color.secondary.opacity(ColorOpacity.placeholderFill)
-                .clipShape(RoundedRectangle(cornerRadius: CornerRadius.medium))
+    private var stateLabel: some View {
+        Text(isShowingOriginal
+             ? DetailsL10n.ClusterDetails.originalPhoto
+             : DetailsL10n.ClusterDetails.enhancementPreviewTitle)
+            .font(.appCallout.weight(.semibold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, Spacing.small)
+            .padding(.vertical, Spacing.xxSmall)
+            .background(.ultraThinMaterial, in: Capsule())
+            .padding(.top, Spacing.small)
+            .animation(.appInteractiveFast, value: isShowingOriginal)
+    }
 
-            if isShowingOriginal, let originalImage {
-                Image(uiImage: originalImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else if let enhancedImage {
-                Image(decorative: enhancedImage, scale: 1)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                ProgressView()
+    private var actions: some View {
+        HStack(spacing: Spacing.medium) {
+            Button(DetailsL10n.Common.cancel) {
+                onCancel()
+                dismiss()
             }
+            .buttonStyle(.bordered)
+
+            compareButton
+
+            Button(DetailsL10n.ClusterDetails.applyEnhancement) {
+                onApply()
+                dismiss()
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(enhancedImage == nil || state.isBusy)
         }
-        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .tint(.white)
+        .padding(Spacing.medium)
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+    }
+
+    /// Held rather than toggled: comparing is a glance, not a mode. The gesture
+    /// lives on the button so it never fights the viewer's zoom and pan.
+    private var compareButton: some View {
+        Label {
+            Text(DetailsL10n.ClusterDetails.holdToCompare)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+        } icon: {
+            Image(systemName: "arrow.left.arrow.right.circle")
+        }
+        .font(.appCaption)
+        .foregroundStyle(.white)
+        .padding(.horizontal, Spacing.small)
+        .padding(.vertical, Spacing.xxSmall)
+        .contentShape(Capsule())
         .gesture(
-            LongPressGesture(minimumDuration: 0.05)
-                .sequenced(before: DragGesture(minimumDistance: 0))
-                .updating($isShowingOriginal) { value, state, _ in
-                    switch value {
-                    case .second(true, _):
-                        state = true
-                    default:
-                        state = false
-                    }
+            DragGesture(minimumDistance: 0)
+                .updating($isShowingOriginal) { _, state, _ in
+                    state = true
                 }
         )
-        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.enhancementPreviewTitle))
+        .accessibilityAddTraits(.isButton)
+        .disabled(enhancedImage == nil)
     }
 }
 

@@ -44,6 +44,10 @@ struct FullscreenPhotoPagerView: View {
 /// Zoomable fullscreen photo shared by the Similar Photos and category cleanup pagers.
 struct FullscreenZoomablePhotoView: View {
     let asset: PHAsset
+    /// Shown in place of the asset's own image while it is set — how the
+    /// enhancement preview reuses this viewer, zoom and pan included. The
+    /// asset keeps loading underneath, so comparing is instant.
+    var overrideImage: CGImage?
 
     @Environment(\.displayScale) private var displayScale
 
@@ -67,7 +71,20 @@ struct FullscreenZoomablePhotoView: View {
             )
 
             ZStack {
-                if let image {
+                if let overrideImage {
+                    Image(decorative: overrideImage, scale: 1)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .scaleEffect(scale)
+                        .offset(offset)
+                        .gesture(zoomGesture)
+                        .gesture(
+                            panGesture(in: proxy.size),
+                            including: scale > 1 ? .all : .subviews
+                        )
+                        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.enhancementPreviewTitle))
+                } else if let image {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)

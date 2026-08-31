@@ -121,7 +121,7 @@ public struct ClusterDetailsView: View {
                 }
             }
         }
-        .sheet(item: $enhancementRequest) { _ in
+        .fullScreenCover(item: $enhancementRequest) { _ in
             if let bestShotAsset = viewModel.bestShotAsset {
                 EnhancementPreviewView(
                     asset: bestShotAsset,
