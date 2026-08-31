@@ -26,6 +26,9 @@ public final class CleanupWorkspaceModel {
     /// Non-destructive Best Shot enhancement, backed by PhotoKit content
     /// editing; it shares the score cache so our own edit is never re-scored.
     public let enhancementService: any PhotoEnhancementService
+    /// On-device counters that say how often the ranking gets replaced; the
+    /// calibration signal, with nothing leaving the device.
+    public let bestShotOverrideMetrics: any BestShotOverrideMetricsRepository
 
     public var content: CleanupWorkspaceContent? {
         guard lastGoodContent.hasCompletedScanBaseline else { return nil }
@@ -87,6 +90,8 @@ public final class CleanupWorkspaceModel {
         enhancementService: any PhotoEnhancementService = PhotoKitEnhancementService(
             qualityScoreRepository: CoreDataPhotoQualityScoreRepository()
         ),
+        bestShotOverrideMetrics: any BestShotOverrideMetricsRepository =
+            UserDefaultsBestShotOverrideMetricsRepository(),
         cleanupManager: (any CleanupSessionManaging)? = nil,
         now: @escaping @Sendable () -> Date = Date.init
     ) {
@@ -97,6 +102,7 @@ public final class CleanupWorkspaceModel {
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.qualityAnalyzer = qualityAnalyzer
         self.enhancementService = enhancementService
+        self.bestShotOverrideMetrics = bestShotOverrideMetrics
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.now = now

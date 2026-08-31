@@ -1179,6 +1179,105 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
     }
 
+    // MARK: - Anonymous override metrics
+
+    func testOpeningAClusterWithARecommendationCountsIt() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("blurred", 20)],
+            overrideMetrics: metrics
+        )
+
+        await viewModel.load()
+
+        let recorded = await metrics.recordedRecommendations
+        XCTAssertEqual(recorded, [.automatic])
+    }
+
+    func testReplacingTheRecommendationIsCountedAsAnOverride() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("blurred", 20)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("blurred")
+        await waitForRecordedManualPicks(1, on: metrics)
+
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks, [.automatic])
+        let stored = await metrics.metrics
+        XCTAssertEqual(stored.manualOverrideCount, 1)
+    }
+
+    /// Switching between the user's own picks says nothing about the ranking.
+    func testSwitchingBetweenOwnPicksIsNotCountedTwice() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+            ],
+            qualityScores: [("a", 60), ("b", 20), ("c", 25)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedManualPicks(1, on: metrics)
+        viewModel.setBestShot("c")
+        await Task.yield()
+
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks, [.automatic])
+    }
+
+    func testAnUnresolvedClusterRecordsNeitherRecommendationNorOverride() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedManualPicks(1, on: metrics)
+
+        let recommendations = await metrics.recordedRecommendations
+        let picks = await metrics.recordedManualPicks
+        let stored = await metrics.metrics
+        XCTAssertTrue(recommendations.isEmpty)
+        XCTAssertEqual(picks, [.unresolved])
+        XCTAssertEqual(stored.manualOverrideCount, 0)
+        XCTAssertEqual(stored.unresolvedManualPickCount, 1)
+    }
+
+    private func waitForRecordedManualPicks(
+        _ expected: Int,
+        on metrics: MockBestShotOverrideMetricsRepository,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        for _ in 0..<1_000 {
+            let picks = await metrics.recordedManualPicks
+            if picks.count >= expected { return }
+            await Task.yield()
+        }
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks.count, expected, file: file, line: line)
+    }
+
     private var weakClusterSnapshots: [ReviewAssetSnapshot] {
         [
             snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -1193,6 +1292,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         qualityScores: [(String, Double)] = [],
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
@@ -1202,6 +1302,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
             qualityAnalyzer: StubPhotoQualityAnalyzer(sharpnessByIdentifier: qualityScores),
+            overrideMetrics: overrideMetrics,
             assetSnapshots: snapshots,
             completionDelay: completionDelay
         )

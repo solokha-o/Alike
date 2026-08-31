@@ -18,7 +18,8 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
 
     /// Long side of the global analysis thumbnail, in pixels.
     public var analysisImageLongSide: Int
-    /// Square side of the subject/face crop, in pixels.
+    /// Square side of the subject/face crop, in pixels. Face signals are
+    /// measured on this grid, the whole frame on `sharpnessGridSide`.
     public var faceCropSide: Int
     /// Below this long side a score is not trustworthy enough to rank on.
     public var minimumAnalysisLongSide: Int

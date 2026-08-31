@@ -41,6 +41,7 @@ public struct ClusterDetailsView: View {
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
         enhancementService: (any PhotoEnhancementService)? = nil,
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
@@ -54,7 +55,8 @@ public struct ClusterDetailsView: View {
             premiumAccess: premiumAccess,
             openSettingsAction: openSettingsAction,
             qualityAnalyzer: qualityAnalyzer,
-            enhancementService: enhancementService
+            enhancementService: enhancementService,
+            overrideMetrics: overrideMetrics
         ))
     }
 
