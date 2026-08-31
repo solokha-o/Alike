@@ -200,6 +200,26 @@ public protocol CleanupReminderManaging: Sendable {
     func resync(isPremiumUnlocked: Bool) async throws
 }
 
+/// Repository for cached per-photo technical quality measurements.
+public protocol PhotoQualityScoreRepository: Sendable {
+    /// Load cached scores for the requested assets, keyed by local identifier.
+    func loadScores(localIdentifiers: [String]) async throws -> [String: PhotoQualityScore]
+
+    /// Insert or replace the supplied scores.
+    func saveScores(_ scores: [PhotoQualityScore]) async throws
+
+    /// Drop every cached score.
+    func deleteAllScores() async throws
+}
+
+/// Service that measures the technical quality of photos.
+public protocol PhotoQualityAnalyzing: Sendable {
+    /// Measure the supplied assets, returning one score per asset it could
+    /// handle. A single unreadable photo is reported through
+    /// `PhotoQualitySignals.analysisFailure`, never by throwing.
+    func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore]
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
