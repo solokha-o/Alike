@@ -400,7 +400,8 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
     }
 }
 
-private extension Array {
+// Shared by every repository that batches an `IN` predicate.
+extension Array {
     func chunked(into size: Int) -> [[Element]] {
         guard size > 0 else { return [self] }
         guard !isEmpty else { return [] }

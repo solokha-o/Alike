@@ -9,11 +9,17 @@
     <entity name="PhotoEntity" representedClassName="PhotoEntity" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="featurePrintData" optional="YES" attributeType="Binary"/>
+        <attribute name="isAlikeEnhanced" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="localIdentifier" attributeType="String"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="pixelHeight" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pixelWidth" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="qualityScoredAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="qualitySignalsData" optional="YES" attributeType="Binary"/>
+        <attribute name="qualitySourceModificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="scoringModelVersion" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="thumbnailConfigVersion" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="cluster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ClusterEntity" inverseName="photos" inverseEntity="ClusterEntity"/>
     </entity>
     <entity name="ScanMetadataEntity" representedClassName="ScanMetadataEntity" syncable="YES">
