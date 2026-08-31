@@ -28,6 +28,8 @@ final class ClusterDetailsViewModel {
     private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshotLoader: AssetSnapshotLoader
     private let qualityAnalyzer: any PhotoQualityAnalyzing
+    /// Anonymous, on-device tally of how often our recommendation is replaced.
+    private let overrideMetrics: (any BestShotOverrideMetricsRepository)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
     private var persistenceTask: Task<Void, Never>?
     private var alikeReactionResolver = AlikeReactionResolver()
@@ -68,6 +70,7 @@ final class ClusterDetailsViewModel {
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
@@ -85,6 +88,7 @@ final class ClusterDetailsViewModel {
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
         self.qualityAnalyzer = qualityAnalyzer
+        self.overrideMetrics = overrideMetrics
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
@@ -215,6 +219,7 @@ final class ClusterDetailsViewModel {
                 savedState: persistedState,
                 qualityScores: qualityScores
             )
+            await recordBestShotRecommendation()
             hasLoadedReviewState = true
         } catch is CancellationError {
             return
@@ -270,6 +275,9 @@ final class ClusterDetailsViewModel {
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
         let previousBestShotID = bestShotAssetID
+        // Only a pick that replaces *our* recommendation is a calibration
+        // signal; the user switching between their own picks is not.
+        let replacedConfidence = isBestShotUserSelected ? nil : bestShotConfidence
         let keptBestShotOnly = isReviewConfirmed
             && selectedAssetIDs.count == assetSnapshots.count - 1
 
@@ -287,6 +295,9 @@ final class ClusterDetailsViewModel {
             refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
+        if let replacedConfidence, let overrideMetrics {
+            Task { await overrideMetrics.recordManualPick(replacing: replacedConfidence) }
+        }
     }
 
     func selectAllExceptBest() {
@@ -444,6 +455,13 @@ extension ClusterDetailsViewModel {
 }
 
 private extension ClusterDetailsViewModel {
+    /// Counts one recommendation per cluster opening, and only when the
+    /// ranking actually recommended something the user had not already chosen.
+    func recordBestShotRecommendation() async {
+        guard let overrideMetrics, !isBestShotUserSelected, !bestShotAssetID.isEmpty else { return }
+        await overrideMetrics.recordRecommendation(confidence: bestShotConfidence)
+    }
+
     func loadQualityScores() async -> [String: PhotoQualityScore] {
         do {
             let scores = try await qualityAnalyzer.scores(for: cluster.assets)

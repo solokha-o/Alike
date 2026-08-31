@@ -220,6 +220,22 @@ public protocol PhotoQualityAnalyzing: Sendable {
     func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore]
 }
 
+/// Repository for the installation-local, anonymous Best Shot override tally.
+public protocol BestShotOverrideMetricsRepository: Sendable {
+    /// Loads the current counters.
+    func loadMetrics() async -> BestShotOverrideMetrics
+
+    /// Records that a cluster was opened with a recommended Best Shot.
+    func recordRecommendation(confidence: BestShotConfidence) async
+
+    /// Records that the user picked a Best Shot themselves, replacing whatever
+    /// the ranking had offered — including nothing at all.
+    func recordManualPick(replacing confidence: BestShotConfidence) async
+
+    /// Clears the counters, e.g. when the user deletes local app data.
+    func resetMetrics() async
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters

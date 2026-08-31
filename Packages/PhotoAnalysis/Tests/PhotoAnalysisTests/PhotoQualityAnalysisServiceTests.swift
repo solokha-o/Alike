@@ -1,6 +1,7 @@
 import Core
 import CoreGraphics
 import Foundation
+import Photos
 import XCTest
 @testable import PhotoAnalysis
 
@@ -79,6 +80,97 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertFalse(signals.hasFaces)
     }
 
+    // MARK: - Batch behaviour
+
+    func testBatchAnalysisStaysWithinTheConfiguredConcurrencyLimit() async throws {
+        let tracker = AnalysisConcurrencyTracker()
+        let image = try XCTUnwrap(makeCheckerboardImage())
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { _, _ in
+                await tracker.start()
+                try? await Task.sleep(for: .milliseconds(20))
+                await tracker.finish()
+                return image
+            },
+            faceDetector: { _ in [] }
+        )
+        let assets = (0..<16).map { TestPHAsset(identifier: "asset-\($0)") }
+
+        let scores = try await service.scores(for: assets)
+
+        XCTAssertEqual(scores.count, assets.count)
+        let maximumConcurrentCount = await tracker.maximumConcurrentCount
+        XCTAssertLessThanOrEqual(
+            maximumConcurrentCount,
+            PhotoQualityScoringConfig.current.maxConcurrentAnalysisTasks
+        )
+    }
+
+    func testBatchAnalysisPropagatesCancellation() async {
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { _, _ in
+                try await Task.sleep(for: .seconds(5))
+                return nil
+            },
+            faceDetector: { _ in [] }
+        )
+        let assets = (0..<8).map { TestPHAsset(identifier: "asset-\($0)") }
+
+        let task = Task { try await service.scores(for: assets) }
+        task.cancel()
+
+        do {
+            _ = try await task.value
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testOneUnreadablePhotoIsRecordedAsAFailureWithoutFailingTheBatch() async throws {
+        let image = try XCTUnwrap(makeCheckerboardImage())
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { asset, _ in
+                asset.localIdentifier == "broken" ? nil : image
+            },
+            faceDetector: { _ in [] }
+        )
+        let assets = [
+            TestPHAsset(identifier: "good"),
+            TestPHAsset(identifier: "broken"),
+            TestPHAsset(identifier: "also-good")
+        ]
+
+        let scores = try await service.scores(for: assets)
+        let byIdentifier = Dictionary(uniqueKeysWithValues: scores.map { ($0.localIdentifier, $0) })
+
+        XCTAssertEqual(scores.count, 3)
+        XCTAssertEqual(byIdentifier["broken"]?.signals.analysisFailure, .assetUnavailable)
+        XCTAssertEqual(byIdentifier["good"]?.signals.isUsable, true)
+        XCTAssertEqual(byIdentifier["also-good"]?.signals.isUsable, true)
+    }
+
+    func testScoresCarryTheAssetIdentityAndConfigVersions() async throws {
+        let image = try XCTUnwrap(makeCheckerboardImage())
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { _, _ in image },
+            faceDetector: { _ in [] }
+        )
+        let asset = TestPHAsset(identifier: "one", modificationDate: Date(timeIntervalSince1970: 77))
+
+        let scores = try await service.scores(for: [asset])
+        let score = try XCTUnwrap(scores.first)
+
+        XCTAssertEqual(score.localIdentifier, "one")
+        XCTAssertEqual(score.sourceModificationDate, Date(timeIntervalSince1970: 77))
+        XCTAssertEqual(score.scoringModelVersion, PhotoQualityScoringConfig.current.scoringModelVersion)
+        XCTAssertEqual(score.thumbnailConfigVersion, PhotoQualityScoringConfig.current.thumbnailConfigVersion)
+        XCTAssertEqual(score.signals.pixelArea, 12_000_000)
+        XCTAssertFalse(score.isAlikeEnhanced)
+    }
+
     // MARK: - Helpers
 
     private func makeCheckerboardImage(side: Int = 256) -> CGImage? {
@@ -129,5 +221,19 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             shouldInterpolate: false,
             intent: .defaultIntent
         )
+    }
+}
+
+private actor AnalysisConcurrencyTracker {
+    private var currentConcurrentCount = 0
+    private(set) var maximumConcurrentCount = 0
+
+    func start() {
+        currentConcurrentCount += 1
+        maximumConcurrentCount = max(maximumConcurrentCount, currentConcurrentCount)
+    }
+
+    func finish() {
+        currentConcurrentCount -= 1
     }
 }

@@ -108,7 +108,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             let subjectSharpness = mainFace?.signal.sharpness
             let subjectContrast = mainFace.flatMap { face in
                 image.cropping(to: face.rect)
-                    .flatMap { GrayscaleImageSampler.sample($0, dimension: config.sharpnessGridSide) }
+                    .flatMap { GrayscaleImageSampler.sample($0, dimension: config.faceCropSide) }
                     .map { ExposureMeasurement(pixels: $0, config: config).lumaStdDev }
             } ?? exposure.lumaStdDev
 
@@ -157,8 +157,11 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             let rect = imageRect(for: observation.boundingBox, in: image)
             let side = max(rect.width, rect.height)
             guard side >= config.minimumFacePixelSize else { return nil }
+            // The face is measured on its own crop, at the ROI resolution from
+            // the config: a face judged on the full frame is a face judged on a
+            // handful of pixels.
             guard let crop = image.cropping(to: rect),
-                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.sharpnessGridSide) else {
+                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide) else {
                 return nil
             }
 

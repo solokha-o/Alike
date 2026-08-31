@@ -23,6 +23,9 @@ public final class CleanupWorkspaceModel {
     /// Best Shot quality scoring, cached in Core Data so reopening a cluster
     /// does not decode its photos again.
     public let qualityAnalyzer: any PhotoQualityAnalyzing
+    /// On-device counters that say how often the ranking gets replaced; the
+    /// calibration signal, with nothing leaving the device.
+    public let bestShotOverrideMetrics: any BestShotOverrideMetricsRepository
 
     public var content: CleanupWorkspaceContent? {
         guard lastGoodContent.hasCompletedScanBaseline else { return nil }
@@ -81,6 +84,8 @@ public final class CleanupWorkspaceModel {
         qualityAnalyzer: any PhotoQualityAnalyzing = CachingPhotoQualityAnalyzer(
             repository: CoreDataPhotoQualityScoreRepository()
         ),
+        bestShotOverrideMetrics: any BestShotOverrideMetricsRepository =
+            UserDefaultsBestShotOverrideMetricsRepository(),
         cleanupManager: (any CleanupSessionManaging)? = nil,
         now: @escaping @Sendable () -> Date = Date.init
     ) {
@@ -90,6 +95,7 @@ public final class CleanupWorkspaceModel {
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
         self.qualityAnalyzer = qualityAnalyzer
+        self.bestShotOverrideMetrics = bestShotOverrideMetrics
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.now = now
