@@ -33,7 +33,7 @@ public struct BestShotOverrideMetrics: Codable, Equatable, Sendable {
     /// "< 15 % manual replacements" is measured against.
     public var overrideRate: Double {
         guard recommendationCount > 0 else { return 0 }
-        return Double(manualOverrideCount) / Double(recommendationCount)
+        return min(1, Double(manualOverrideCount) / Double(recommendationCount))
     }
 
     public static let empty = BestShotOverrideMetrics()

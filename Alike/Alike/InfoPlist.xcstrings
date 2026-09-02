@@ -1,0 +1,90 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSPhotoLibraryUsageDescription": {
+      "comment": "System permission prompt. The app edits a photo the user picks, so the copy has to say so in the user's own language.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike аналізує вашу фотобібліотеку, щоб знаходити візуально схожі знімки, і може покращити обране вами фото — оригінал завжди зберігається, тож зміну можна скасувати."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analiza tu fototeca para encontrar fotos visualmente similares y puede mejorar la foto que elijas; el original siempre se conserva, así que puedes revertir el cambio."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analiza tu fototeca para encontrar fotos visualmente similares y puede mejorar la foto que elijas; el original siempre se conserva, así que puedes revertir el cambio."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike analisa sua fototeca para encontrar fotos visualmente semelhantes e pode aprimorar a foto que você escolher — o original é sempre mantido, então dá para reverter."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analysiert deine Mediathek, um visuell ähnliche Fotos zu finden, und kann ein von dir gewähltes Foto verbessern — das Original bleibt immer erhalten, du kannst es also zurücksetzen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analyse votre photothèque pour trouver les photos qui se ressemblent et peut améliorer la photo de votre choix : l’original est toujours conservé, vous pouvez donc revenir en arrière."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analizza la tua libreria per trovare foto visivamente simili e può migliorare la foto che scegli: l’originale viene sempre conservato, così puoi tornare indietro."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analyseert je fotobibliotheek om visueel gelijkende foto’s te vinden en kan een foto die je kiest verbeteren — het origineel blijft altijd bewaard, dus je kunt het terugdraaien."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analizuje Twoją bibliotekę zdjęć, aby znaleźć wizualnie podobne ujęcia, i może poprawić wybrane przez Ciebie zdjęcie — oryginał zawsze zostaje zachowany, więc zmianę można cofnąć."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, görsel olarak benzer fotoğrafları bulmak için fotoğraf kitaplığını analiz eder ve seçtiğin fotoğrafı iyileştirebilir — orijinal her zaman saklanır, böylece geri alabilirsin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 會分析你的照片圖庫以找出外觀相似的照片，並可優化你選擇的照片；原始照片一律保留，隨時都能還原。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحلّل Alike مكتبة صورك للعثور على الصور المتشابهة بصريًا، ويمكنه تحسين صورة تختارها — يُحتفظ بالأصل دائمًا حتى يمكنك التراجع."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.1"
+}

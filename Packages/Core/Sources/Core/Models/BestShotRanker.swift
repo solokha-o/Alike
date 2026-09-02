@@ -137,8 +137,12 @@ public enum BestShotRanker {
         let runnerUpScore = order.dropFirst().first.flatMap { components[$0.localIdentifier]?.score } ?? 0
         let margin = order.count > 1 ? max(0, topScore - runnerUpScore) : 1
 
-        // 5. Confidence gate. Incomplete coverage never claims certainty.
-        let hasCompleteCoverage = snapshots.allSatisfy { scores[$0.localIdentifier] != nil }
+        // 5. Confidence gate. Incomplete coverage never claims certainty, and a
+        // candidate whose analysis failed is not covered just because a row
+        // exists for it — the row says "unknown", not "measured".
+        let hasCompleteCoverage = snapshots.allSatisfy {
+            scores[$0.localIdentifier]?.signals.isUsable == true
+        }
         // An absolute floor on top of the relative ranking: when every frame is
         // weak, the least blurred one is still not a Best Shot.
         //
@@ -198,9 +202,17 @@ public enum BestShotRanker {
         let ordered = snapshots.sorted { lhs, rhs in
             PhotoClusterBestShot.isPreferredAsset(rhs, lhs)
         }
+        // Metadata alone is what the app always did, so a cluster nobody has
+        // measured yet keeps its confident badge. A cluster where measuring was
+        // *attempted* and failed is a different story: the ranking has partial
+        // knowledge it could not use, and it says so.
+        let hasFailedMeasurement = snapshots.contains { snapshot in
+            guard let score = scores[snapshot.localIdentifier] else { return false }
+            return !score.signals.isUsable
+        }
         return BestShotDecision(
             localIdentifier: ordered.first?.localIdentifier,
-            confidence: .automatic,
+            confidence: hasFailedMeasurement ? .lowConfidence : .automatic,
             topScore: 0,
             margin: 0,
             reasonCodes: [],

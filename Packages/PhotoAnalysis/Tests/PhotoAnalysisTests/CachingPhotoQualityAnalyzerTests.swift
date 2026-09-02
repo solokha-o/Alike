@@ -90,6 +90,36 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         XCTAssertEqual(scores.first?.isAlikeEnhanced, true)
     }
 
+    /// A failed measurement is a moment, not a fact about the photo: caching it
+    /// as fresh would mean one offline moment removes the asset from ranking
+    /// for good.
+    func testATransientFailureIsRetriedOnTheNextRun() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        let failing = FixedQualityAnalyzer(signals: .failed(.assetUnavailable))
+        let asset = TestPHAsset(identifier: "offline")
+
+        let firstRun = try await CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: failing,
+            config: config
+        ).scores(for: [asset])
+        XCTAssertEqual(firstRun.first?.signals.analysisFailure, .assetUnavailable)
+
+        let cached = try await repository.loadScores(localIdentifiers: ["offline"])
+        XCTAssertTrue(cached.isEmpty, "A failure must not occupy the cache")
+
+        let succeeding = RecordingQualityAnalyzer()
+        let secondRun = try await CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: succeeding,
+            config: config
+        ).scores(for: [asset])
+
+        let measured = await succeeding.receivedIdentifiers
+        XCTAssertEqual(measured, ["offline"])
+        XCTAssertEqual(secondRun.first?.signals.isUsable, true)
+    }
+
     func testAFailingCacheStillProducesScores() async throws {
         struct CacheError: Error {}
         let repository = MockPhotoQualityScoreRepository()
@@ -118,6 +148,28 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
             signals: PhotoQualitySignals(globalSharpness: globalSharpness, pixelArea: 12_000_000),
             isAlikeEnhanced: isAlikeEnhanced
         )
+    }
+}
+
+/// Always answers with the same signals, whatever it is handed.
+private actor FixedQualityAnalyzer: PhotoQualityAnalyzing {
+    private let signals: PhotoQualitySignals
+
+    init(signals: PhotoQualitySignals) {
+        self.signals = signals
+    }
+
+    func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore] {
+        let config = PhotoQualityScoringConfig.current
+        return assets.map { asset in
+            PhotoQualityScore(
+                localIdentifier: asset.localIdentifier,
+                sourceModificationDate: asset.modificationDate,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: signals
+            )
+        }
     }
 }
 

@@ -118,10 +118,16 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         case PhotoEnhancementAdjustment.formatIdentifier:
             return .enhanced
         case .none:
+            // Our edit is gone — reverted in Photos, or never there. The cached
+            // marker has to go with it, or the score cache would keep serving
+            // pre-edit signals for a photo that no longer carries our edit.
+            await setEnhancedFlag(false, localIdentifier: localIdentifier)
             return .available
         default:
             // Someone else's edit is on this photo. The action stays available,
-            // but the UI has to say what applying it would replace.
+            // but the UI has to say what applying it would replace — and our
+            // marker is stale for the same reason as above.
+            await setEnhancedFlag(false, localIdentifier: localIdentifier)
             return .editedElsewhere
         }
     }

@@ -66,9 +66,13 @@ public struct CachingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
         }
 
         let measured = try await analyzer.scores(for: misses)
-        if !measured.isEmpty {
+        // A failure is a moment, not a measurement: an asset that was offline,
+        // still downloading, or timed out must be retried next time rather than
+        // cached as a fresh "unknown" forever.
+        let usableScores = measured.filter { $0.signals.isUsable }
+        if !usableScores.isEmpty {
             do {
-                try await repository.saveScores(measured)
+                try await repository.saveScores(usableScores)
             } catch {
                 AppLog.storage.error(
                     "\(AppLog.tag(.error, "Failed to cache quality scores: \(error.localizedDescription)"))"

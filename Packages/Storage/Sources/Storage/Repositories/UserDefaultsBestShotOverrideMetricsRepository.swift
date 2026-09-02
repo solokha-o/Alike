@@ -46,7 +46,13 @@ public actor UserDefaultsBestShotOverrideMetricsRepository: BestShotOverrideMetr
         }
     }
 
-    public func recordManualPick(replacing confidence: BestShotConfidence) {
+    public func recordManualPick(replacing confidence: BestShotConfidence, clusterID: UUID) {
+        // Only clusters whose recommendation was counted may count an override,
+        // or the rate would keep growing past 1 once the cap stops the
+        // denominator.
+        guard confidence == .unresolved || countedClusters().contains(clusterID.uuidString) else {
+            return
+        }
         update { metrics in
             switch confidence {
             case .automatic:

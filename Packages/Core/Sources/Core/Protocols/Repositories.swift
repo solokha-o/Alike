@@ -259,7 +259,10 @@ public protocol BestShotOverrideMetricsRepository: Sendable {
 
     /// Records that the user picked a Best Shot themselves, replacing whatever
     /// the ranking had offered — including nothing at all.
-    func recordManualPick(replacing confidence: BestShotConfidence) async
+    ///
+    /// Counted only for a cluster whose recommendation was counted, so the rate
+    /// keeps a numerator and a denominator that describe the same clusters.
+    func recordManualPick(replacing confidence: BestShotConfidence, clusterID: UUID) async
 
     /// Clears the counters, e.g. when the user deletes local app data.
     func resetMetrics() async

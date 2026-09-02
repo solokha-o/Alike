@@ -22,7 +22,14 @@ struct EnhancementPreviewView: View {
     let onApply: () -> Void
     let onCancel: () -> Void
 
-    @GestureState private var isShowingOriginal = false
+    @GestureState private var isHoldingToCompare = false
+    /// VoiceOver cannot hold a gesture, so the same comparison is also a plain
+    /// toggle that assistive technology can activate.
+    @State private var isComparingWithAssistiveTechnology = false
+
+    private var isShowingOriginal: Bool {
+        isHoldingToCompare || isComparingWithAssistiveTechnology
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -105,28 +112,41 @@ struct EnhancementPreviewView: View {
         .background(.ultraThinMaterial)
     }
 
-    /// Held rather than toggled: comparing is a glance, not a mode. The gesture
-    /// lives on the button so it never fights the viewer's zoom and pan.
+    /// Held rather than toggled for touch: comparing is a glance, not a mode,
+    /// and the gesture lives on the control so it never fights the viewer's
+    /// zoom and pan. Activating it — which is all VoiceOver can do — toggles
+    /// the same comparison instead.
     private var compareButton: some View {
-        Label {
-            Text(DetailsL10n.ClusterDetails.holdToCompare)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
-        } icon: {
-            Image(systemName: "arrow.left.arrow.right.circle")
+        Button {
+            isComparingWithAssistiveTechnology.toggle()
+        } label: {
+            Label {
+                Text(DetailsL10n.ClusterDetails.holdToCompare)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+            } icon: {
+                Image(systemName: "arrow.left.arrow.right.circle")
+            }
+            .font(.appCaption)
+            .foregroundStyle(.white)
+            .padding(.horizontal, Spacing.small)
+            .padding(.vertical, Spacing.xxSmall)
+            .contentShape(Capsule())
         }
-        .font(.appCaption)
-        .foregroundStyle(.white)
-        .padding(.horizontal, Spacing.small)
-        .padding(.vertical, Spacing.xxSmall)
-        .contentShape(Capsule())
-        .gesture(
+        .buttonStyle(.plain)
+        .simultaneousGesture(
             DragGesture(minimumDistance: 0)
-                .updating($isShowingOriginal) { _, state, _ in
+                .updating($isHoldingToCompare) { _, state, _ in
                     state = true
                 }
         )
-        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.compareWithOriginal))
+        .accessibilityValue(Text(
+            isShowingOriginal
+                ? DetailsL10n.ClusterDetails.originalPhoto
+                : DetailsL10n.ClusterDetails.enhancementPreviewTitle
+        ))
+        .accessibilityHint(Text(DetailsL10n.ClusterDetails.compareWithOriginalHint))
         .disabled(enhancedImage == nil)
     }
 }

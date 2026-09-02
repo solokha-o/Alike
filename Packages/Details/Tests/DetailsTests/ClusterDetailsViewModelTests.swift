@@ -1364,6 +1364,83 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isEnhanced("sharp"))
     }
 
+    /// Scoring can decode photos and fetch originals from iCloud. The screen
+    /// must not wait for it: it appears on the metadata ranking and refines
+    /// itself when the measurements land.
+    func testTheScreenAppearsBeforeQualityScoringFinishes() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
+
+        await analyzer.finish(with: [])
+        await loading.value
+    }
+
+    /// A ranking that arrives after the user has acted must not overwrite them.
+    func testALateRankingDoesNotOverwriteTheUsersOwnPick() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        viewModel.setBestShot("plain")
+
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "plain",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 5, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "favorite",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
     private var weakClusterSnapshots: [ReviewAssetSnapshot] {
         [
             snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -1464,6 +1541,31 @@ private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
                 ),
                 isAlikeEnhanced: enhancedIdentifiers.contains(identifier)
             )
+        }
+    }
+}
+
+/// Holds the scoring call open until the test decides to answer it.
+private actor StallingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    private var continuation: CheckedContinuation<[PhotoQualityScore], Never>?
+    private var pending: [PhotoQualityScore]?
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        if let pending {
+            self.pending = nil
+            return pending
+        }
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func finish(with scores: [PhotoQualityScore]) {
+        if let continuation {
+            self.continuation = nil
+            continuation.resume(returning: scores)
+        } else {
+            pending = scores
         }
     }
 }

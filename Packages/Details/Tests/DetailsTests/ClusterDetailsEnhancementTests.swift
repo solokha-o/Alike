@@ -129,6 +129,43 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertFalse(didReplace)
     }
 
+    /// Apply dismisses the preview at once and the grid stays interactive, so
+    /// the edit can finish after the user has moved the Best Shot elsewhere.
+    func testApplyingFinishesOnThePhotoItStartedOn() async {
+        let service = FakeEnhancementService(applyDelay: true)
+        let viewModel = makeViewModel(service: service)
+        await viewModel.load()
+
+        let applying = Task { await viewModel.applyEnhancement() }
+        await Task.yield()
+        viewModel.setBestShot("other")
+        await service.releaseApply()
+        await applying.value
+
+        // The badge belongs to the photo that was edited …
+        XCTAssertTrue(viewModel.isEnhanced("best"))
+        // … and the shared state describes the photo now on the tile, which
+        // nobody has enhanced.
+        XCTAssertFalse(viewModel.isEnhanced("other"))
+        XCTAssertNotEqual(viewModel.enhancementState, PhotoEnhancementState.applied)
+    }
+
+    func testRevertingFinishesOnThePhotoItStartedOn() async {
+        let service = FakeEnhancementService(isEnhanced: true, revertDelay: true)
+        let viewModel = makeViewModel(service: service)
+        await viewModel.load()
+        XCTAssertTrue(viewModel.isEnhanced("best"))
+
+        let reverting = Task { await viewModel.revertEnhancement() }
+        await Task.yield()
+        viewModel.setBestShot("other")
+        await service.releaseRevert()
+        await reverting.value
+
+        XCTAssertFalse(viewModel.isEnhanced("best"))
+        XCTAssertNotEqual(viewModel.enhancementState, PhotoEnhancementState.reverting)
+    }
+
     // MARK: - Failures
 
     func testPreviewFailureLeavesTheReviewUntouched() async {
@@ -268,7 +305,11 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 private actor FakeEnhancementService: PhotoEnhancementService {
     private let canEnhanceAsset: Bool
     private let isEditedElsewhere: Bool
-    private var isEnhanced: Bool
+    private var enhancedIdentifiers: Set<String>
+    private let applyDelay: Bool
+    private let revertDelay: Bool
+    private var applyContinuation: CheckedContinuation<Void, Never>?
+    private var revertContinuation: CheckedContinuation<Void, Never>?
     private let previewError: PhotoEnhancementError?
     private let applyError: PhotoEnhancementError?
     private let revertError: PhotoEnhancementError?
@@ -284,20 +325,25 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         isEnhanced: Bool = false,
         previewError: PhotoEnhancementError? = nil,
         applyError: PhotoEnhancementError? = nil,
-        revertError: PhotoEnhancementError? = nil
+        revertError: PhotoEnhancementError? = nil,
+        applyDelay: Bool = false,
+        revertDelay: Bool = false
     ) {
         self.canEnhanceAsset = canEnhance
         self.isEditedElsewhere = isEditedElsewhere
-        self.isEnhanced = isEnhanced
+        // Enhancement belongs to a photo, so the double tracks it per photo.
+        self.enhancedIdentifiers = isEnhanced ? ["best"] : []
+        self.applyDelay = applyDelay
+        self.revertDelay = revertDelay
         self.previewError = previewError
         self.applyError = applyError
         self.revertError = revertError
     }
 
-    func availability(localIdentifier _: String) async -> PhotoEnhancementAvailability {
+    func availability(localIdentifier: String) async -> PhotoEnhancementAvailability {
         availabilityCallCount += 1
         guard canEnhanceAsset else { return .unavailable }
-        if isEnhanced { return .enhanced }
+        if enhancedIdentifiers.contains(localIdentifier) { return .enhanced }
         return isEditedElsewhere ? .editedElsewhere : .available
     }
 
@@ -306,21 +352,41 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         return Self.makeImage(size: targetSize)
     }
 
+    func releaseApply() {
+        applyContinuation?.resume()
+        applyContinuation = nil
+    }
+
+    func releaseRevert() {
+        revertContinuation?.resume()
+        revertContinuation = nil
+    }
+
     func applyEnhancement(
-        localIdentifier _: String,
+        localIdentifier: String,
         replacingOtherEdits: Bool
     ) async throws -> PhotoEnhancementAdjustment {
+        if applyDelay {
+            await withCheckedContinuation { continuation in
+                applyContinuation = continuation
+            }
+        }
         if let applyError { throw applyError }
         didApply = true
         didReplaceOtherEdits = replacingOtherEdits
-        isEnhanced = true
+        enhancedIdentifiers.insert(localIdentifier)
         return PhotoEnhancementAdjustment(steps: [])
     }
 
-    func revertToOriginal(localIdentifier _: String) async throws {
+    func revertToOriginal(localIdentifier: String) async throws {
+        if revertDelay {
+            await withCheckedContinuation { continuation in
+                revertContinuation = continuation
+            }
+        }
         if let revertError { throw revertError }
         didRevert = true
-        isEnhanced = false
+        enhancedIdentifiers.remove(localIdentifier)
     }
 
     private static func makeImage(size: CGSize) -> CGImage {

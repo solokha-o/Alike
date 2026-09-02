@@ -44,13 +44,17 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
         scoringModelVersion: Int,
         thumbnailConfigVersion: Int
     ) -> Bool {
+        // Checked before the versions on purpose. Once Alike's own enhancement
+        // is on the asset, these signals are the only surviving measurement of
+        // the original; a model or thumbnail version bump cannot recover them,
+        // it can only cause the enhanced pixels to be measured instead. The
+        // weights are applied at ranking time, so a newer model still scores
+        // this photo with today's formula.
+        if isAlikeEnhanced { return true }
         guard self.scoringModelVersion == scoringModelVersion,
               self.thumbnailConfigVersion == thumbnailConfigVersion else {
             return false
         }
-        // Our own enhancement rewrites `modificationDate`; re-scoring then would
-        // measure the enhanced pixels, which is exactly what must not happen.
-        if isAlikeEnhanced { return true }
         return Self.isSameDate(sourceModificationDate, modificationDate)
     }
 

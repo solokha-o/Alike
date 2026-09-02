@@ -140,9 +140,17 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var bestShotAccessibilityLabel: String {
-        let base = "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
-        guard let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) else { return base }
-        return "\(base). \(reasons)"
+        var spoken = "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
+        if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
+            spoken += ". \(reasons)"
+        }
+        // The explicit label replaces the spoken content of the combined
+        // children, so the warning has to be repeated here or VoiceOver users
+        // never hear that enhancing would replace another app's edit.
+        if isBestShotEditedElsewhere {
+            spoken += ". \(DetailsL10n.ClusterDetails.editedInAnotherAppNote)"
+        }
+        return spoken
     }
 
     private var assetCountLabel: some View {

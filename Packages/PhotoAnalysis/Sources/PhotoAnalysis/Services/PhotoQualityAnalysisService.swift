@@ -104,7 +104,17 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             let faces = detectedFaces.map(\.signal)
             // The main face is the subject: measuring sharpness and contrast on
             // it is what stops a sharp background from masking a blurred person.
-            let mainFace = detectedFaces.max { $0.signal.sharpness < $1.signal.sharpness }
+            //
+            // Chosen by how much of the frame it occupies, never by how sharp it
+            // is — picking the sharpest face would let a small, crisp bystander
+            // in the background speak for a blurred subject in front, which is
+            // precisely the case this scoring exists to catch.
+            let mainFace = detectedFaces.max { lhs, rhs in
+                let lhsArea = lhs.rect.width * lhs.rect.height
+                let rhsArea = rhs.rect.width * rhs.rect.height
+                if lhsArea != rhsArea { return lhsArea < rhsArea }
+                return lhs.signal.detectionConfidence < rhs.signal.detectionConfidence
+            }
             let subjectSharpness = mainFace?.signal.sharpness
             let subjectContrast = mainFace.flatMap { face in
                 image.cropping(to: face.rect)

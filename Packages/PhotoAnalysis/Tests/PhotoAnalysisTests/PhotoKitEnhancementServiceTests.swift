@@ -244,6 +244,36 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertNil(score.signals.analysisFailure)
     }
 
+    /// Another app replacing our edit must clear the cached marker, or the
+    /// score cache keeps serving pre-edit signals for a photo that no longer
+    /// carries Alike's enhancement.
+    func testAForeignEditClearsTheCachedAlikeMarker() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([makeScore(isAlikeEnhanced: true)])
+        let service = makeService(
+            library: FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor"),
+            repository: repository
+        )
+
+        let availability = await service.availability(localIdentifier: identifier)
+
+        XCTAssertEqual(availability, .editedElsewhere)
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+    }
+
+    func testAnEditRevertedOutsideAlikeClearsTheCachedMarker() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([makeScore(isAlikeEnhanced: true)])
+        let service = makeService(library: FakePhotoLibrary(), repository: repository)
+
+        let availability = await service.availability(localIdentifier: identifier)
+
+        XCTAssertEqual(availability, .available)
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+    }
+
     // MARK: - Preview
 
     func testPreviewRendersWithoutTouchingTheLibrary() async throws {
