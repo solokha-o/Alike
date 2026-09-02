@@ -1263,6 +1263,42 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(stored.unresolvedManualPickCount, 1)
     }
 
+    /// The screen shows a Best Shot before scoring finishes, so an override can
+    /// arrive first. Both sides of the rate have to survive that.
+    func testAnOverrideBeforeScoringFinishesStillCountsBothSides() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            overrideMetrics: metrics,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        viewModel.setBestShot("plain")
+        await waitForRecordedManualPicks(1, on: metrics)
+        await analyzer.finish(with: [])
+        await loading.value
+
+        let stored = await metrics.metrics
+        XCTAssertEqual(stored.recommendationCount, 1)
+        XCTAssertEqual(stored.manualOverrideCount, 1)
+        XCTAssertEqual(stored.overrideRate, 1, accuracy: 0.000_1)
+    }
+
     private func waitForRecordedManualPicks(
         _ expected: Int,
         on metrics: MockBestShotOverrideMetricsRepository,

@@ -312,10 +312,20 @@ final class ClusterDetailsViewModel {
         }
         enqueueCurrentStatePersistence()
         if let replacedConfidence, let overrideMetrics {
+            let clusterID = cluster.id
             Task {
+                // The recommendation goes in first. The screen is interactive
+                // before scoring finishes, so this override can be the thing
+                // that happens before the recommendation was ever recorded —
+                // and then neither side of the rate would exist. Recording is
+                // deduped per cluster, so this is a no-op once it is counted.
+                await overrideMetrics.recordRecommendation(
+                    confidence: replacedConfidence,
+                    clusterID: clusterID
+                )
                 await overrideMetrics.recordManualPick(
                     replacing: replacedConfidence,
-                    clusterID: cluster.id
+                    clusterID: clusterID
                 )
             }
         }
