@@ -944,9 +944,12 @@ METADATA = {
     #
     # The limits are characters, not bytes, which is what makes zh-Hant the
     # roomiest listing here rather than the tightest: a 100-character keyword
-    # field holds far more Chinese terms than Latin ones, and the subtitle says
-    # in eleven characters what English needs twenty-nine for. The constraint
-    # there is editorial — say less, not fit less.
+    # field holds far more Chinese terms than Latin ones, and a subtitle says in
+    # sixteen characters what English needs twenty-nine for. Brevity is still
+    # the rule, but the earlier eleven-character subtitle left the single
+    # heaviest indexed field after the name two-thirds empty, so it now also
+    # carries 相片 — the spelling Traditional Chinese searches use at least as
+    # often as 照片, which no field held before — and 一鍵.
     "it": {
         "subtitle": "Trova e pulisci i doppioni",
         "description": IT_DESCRIPTION,
@@ -976,9 +979,9 @@ METADATA = {
         "release_notes": "يفحص Alike الآن الصور نفسها عند اختيار أفضل لقطة، ويمكنه تحسين تلك الصورة مع إمكانية التراجع في أي وقت.\n\n- تُختار أفضل لقطة حسب الحدة والإضاءة والوجوه والضوضاء، فلم تعد الصورة المفضّلة الضبابية تتفوّق على لقطة حادة.\n- ملاحظة قصيرة تشرح سبب فوزها: أكثر حدة، إضاءة أفضل، الوجه واضح.\n- وعندما لا تبرز أي لقطة بوضوح، يقول Alike ذلك ويطلب منك الاختيار بدلًا من التخمين.\n- حسّن أفضل لقطة بلمسة واحدة، والمس مع الاستمرار لمقارنتها بالأصل، وعُد إلى الأصل متى شئت — بما في ذلك صور Live Photos.\n- يحتفظ النظام بالأصل، ولا تُنشأ أي نسخة، ويظهر التعديل في «الصور» مثل أي تعديل آخر.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
-        "subtitle": "找出相似照片，清出空間",
+        "subtitle": "找出相似與重複相片，一鍵清出空間",
         "description": ZH_HANT_DESCRIPTION,
-        "keywords": "重複,重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理",
+        "keywords": "重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理,記憶體,瘦身,掃描,批次,手機,離線,隱私,一模一樣,圖片,檔案,免費,智慧,清空,選片",
         "promotional_text": "Alike 會把看起來相像的照片分成一組組，挑出每一組的最佳照片，並幫你清理其餘的，全程在 iPhone 上完成。Alike Pro：年繳方案 7 天免費。",
         "release_notes": "阿拉伯文加入 Alike，而且整個 App 都改為由右至左閱讀。\n\n- 每一個畫面，還有 App Store 頁面以及隱私權政策、使用條款和支援頁面，現在都有阿拉伯文。\n- 介面完整鏡像：箭頭、標記和工具列都跟著閱讀方向走。\n- 數量、檔案大小和掃描日期現在在整個 App 裡一致，先前同一個畫面可能出現不只一種格式。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
