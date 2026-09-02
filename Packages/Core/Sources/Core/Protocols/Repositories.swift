@@ -248,7 +248,10 @@ public protocol BestShotOverrideMetricsRepository: Sendable {
     func loadMetrics() async -> BestShotOverrideMetrics
 
     /// Records that a cluster was opened with a recommended Best Shot.
-    func recordRecommendation(confidence: BestShotConfidence) async
+    ///
+    /// Counted once per cluster: reopening the same cluster must not inflate the
+    /// denominator that manual replacements are measured against.
+    func recordRecommendation(confidence: BestShotConfidence, clusterID: UUID) async
 
     /// Records that the user picked a Best Shot themselves, replacing whatever
     /// the ranking had offered — including nothing at all.

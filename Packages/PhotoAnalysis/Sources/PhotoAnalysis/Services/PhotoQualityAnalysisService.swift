@@ -21,7 +21,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         config: PhotoQualityScoringConfig = .current,
         scorer: BlurSharpnessScorer = BlurSharpnessScorer(),
         imageProvider: @escaping @Sendable (PHAsset, CGSize) async throws -> CGImage?
-            = AnalysisImageProvider.requestImage,
+            = AnalysisImageProvider.requestPreciseImage,
         faceDetector: @escaping @Sendable (CGImage) throws -> [VNFaceObservation]
             = PhotoQualityAnalysisService.detectFaces
     ) {

@@ -106,7 +106,7 @@ struct BlurAnalysisService: Sendable {
 
     init(
         scorer: BlurSharpnessScorer = BlurSharpnessScorer(),
-        imageProvider: @escaping @Sendable (PHAsset, CGSize) async throws -> CGImage? = AnalysisImageProvider.requestImage
+        imageProvider: @escaping @Sendable (PHAsset, CGSize) async throws -> CGImage? = AnalysisImageProvider.requestFastImage
     ) {
         self.scorer = scorer
         self.imageProvider = imageProvider

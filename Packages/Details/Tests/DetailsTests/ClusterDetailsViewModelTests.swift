@@ -1278,6 +1278,73 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(picks.count, expected, file: file, line: line)
     }
 
+    func testAnUnresolvedClusterCannotBeEmptied() async {
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+        await viewModel.load()
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+
+        for identifier in ["a", "b", "c"] {
+            viewModel.toggleSelection(for: identifier)
+        }
+
+        // Nothing is protected while no Best Shot exists, so nothing may be
+        // selected for deletion either.
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertFalse(viewModel.isDeleteActionVisible)
+
+        viewModel.setBestShot("b")
+        viewModel.toggleSelection(for: "a")
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["a"])
+    }
+
+    func testAStoredSelectionIsDroppedWhileNoBestShotExists() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: ["a", "b", "c"],
+            status: .inReview,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertFalse(viewModel.isDeleteActionVisible)
+    }
+
+    /// A cluster the user already finished keeps its Best Shot, so the badge and
+    /// the summary card must not disagree about whether one exists.
+    func testAFinishedReviewKeepsAConfidentBestShotEvenWhenScoresTurnAmbiguous() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "b",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: [],
+            isReviewConfirmed: true,
+            status: .reviewed,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "b")
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
+    }
+
     private var weakClusterSnapshots: [ReviewAssetSnapshot] {
         [
             snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),

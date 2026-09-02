@@ -198,6 +198,59 @@ final class BestShotRankerTests: XCTestCase {
         XCTAssertEqual(first.confidence, second.confidence)
     }
 
+    /// The face ROI is sampled on its own, larger grid, so its Laplacian is far
+    /// smaller than the frame's. The absolute floor must be judged on the frame,
+    /// or every portrait cluster is declared weak.
+    func testPortraitClusterIsNotDeclaredWeakBecauseOfTheFaceCropScale() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("sharp-face"), makeSnapshot("soft-face")],
+            scores: makeScores([
+                makeScore(
+                    "sharp-face",
+                    globalSharpness: 40,
+                    subjectSharpness: 6,
+                    faces: [makeFace(sharpness: 6)]
+                ),
+                makeScore(
+                    "soft-face",
+                    globalSharpness: 30,
+                    subjectSharpness: 2,
+                    faces: [makeFace(sharpness: 2)]
+                )
+            ])
+        )
+
+        XCTAssertEqual(decision.localIdentifier, "sharp-face")
+        XCTAssertNotEqual(decision.confidence, .unresolved)
+    }
+
+    func testClosedEyesAreExplainedAsOpenEyesRatherThanSharpness() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("open"), makeSnapshot("closed")],
+            scores: makeScores([
+                makeScore(
+                    "open",
+                    globalSharpness: 50,
+                    subjectSharpness: 50,
+                    faces: [makeFace(sharpness: 50, hasClosedEyes: false)]
+                ),
+                makeScore(
+                    "closed",
+                    globalSharpness: 50,
+                    subjectSharpness: 50,
+                    faces: [makeFace(sharpness: 50, hasClosedEyes: true)]
+                )
+            ])
+        )
+
+        XCTAssertEqual(decision.localIdentifier, "open")
+        XCTAssertEqual(decision.reasonCodes.first, .openEyes)
+        XCTAssertFalse(
+            decision.reasonCodes.contains(.sharper),
+            "Both frames are equally sharp — the eyes are the reason"
+        )
+    }
+
     // MARK: - Fallbacks
 
     func testMissingSignalsFallBackToMetadataRanking() {

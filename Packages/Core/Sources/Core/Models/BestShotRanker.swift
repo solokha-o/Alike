@@ -17,13 +17,22 @@ public enum BestShotRanker {
         var noise: Double
         var faceQuality: Double
         var resolution: Double
-        var penalty: Double
+        /// Penalty from the sharpness bands alone.
+        var sharpnessPenalty: Double
+        /// Penalty from a cropped or soft main face.
+        var facePenalty: Double
+        /// Penalty from confirmed closed eyes.
+        var closedEyesPenalty: Double
+        /// Penalty from a flat, contrastless subject.
+        var contrastPenalty: Double
         var favoriteBonus: Double
         var hasCriticalBlur: Bool
         var hasCriticalExposure: Bool
         var hasClosedEyes: Bool
         var isFavorite: Bool
         var score: Double
+
+        var penalty: Double { sharpnessPenalty + facePenalty + closedEyesPenalty + contrastPenalty }
     }
 
     public static func decide(
@@ -132,8 +141,13 @@ public enum BestShotRanker {
         let hasCompleteCoverage = snapshots.allSatisfy { scores[$0.localIdentifier] != nil }
         // An absolute floor on top of the relative ranking: when every frame is
         // weak, the least blurred one is still not a Best Shot.
+        //
+        // Measured on the whole frame, never on the subject blend: the ROI is
+        // sampled on its own, larger grid, so a face crop's Laplacian is on a
+        // different scale than the floor was calibrated for — comparing the
+        // blend against it would call every portrait cluster weak.
         let reachesAbsoluteFloor = ranked.contains { snapshot in
-            (effectiveSharpness[snapshot.localIdentifier] ?? 0) >= config.absoluteSharpnessFloor
+            (signals[snapshot.localIdentifier]?.globalSharpness ?? 0) >= config.absoluteSharpnessFloor
         }
         let confidence: BestShotConfidence
         if !reachesAbsoluteFloor {
@@ -260,13 +274,17 @@ public enum BestShotRanker {
             faceQuality = config.worstFaceWeight * worst + (1 - config.worstFaceWeight) * average
         }
 
-        var penalty = sharpnessPenalty(ratio: sharpnessRatio, config: config)
-        if clusterHasFaces {
-            penalty += facePenalty(faces: faces, faceSharpnessScale: faceSharpnessScale, config: config)
-        }
-        if signals.subjectLumaStdDev < config.lowContrastStdDev {
-            penalty += config.lowContrastPenalty
-        }
+        let sharpnessBandPenalty = sharpnessPenalty(ratio: sharpnessRatio, config: config)
+        let facePenalties = clusterHasFaces
+            ? facePenalty(faces: faces, faceSharpnessScale: faceSharpnessScale, config: config)
+            : (face: 0, closedEyes: 0)
+        let contrastPenaltyValue = signals.subjectLumaStdDev < config.lowContrastStdDev
+            ? config.lowContrastPenalty
+            : 0
+        let penalty = sharpnessBandPenalty
+            + facePenalties.face
+            + facePenalties.closedEyes
+            + contrastPenaltyValue
 
         let hasCriticalBlur = sharpnessRatio < config.criticalSharpnessRatio
         let hasCriticalExposure = signals.clippedFraction > config.clippingCriticalFraction
@@ -286,7 +304,10 @@ public enum BestShotRanker {
             noise: noise,
             faceQuality: faceQuality,
             resolution: resolution,
-            penalty: penalty,
+            sharpnessPenalty: sharpnessBandPenalty,
+            facePenalty: facePenalties.face,
+            closedEyesPenalty: facePenalties.closedEyes,
+            contrastPenalty: contrastPenaltyValue,
             favoriteBonus: favoriteBonus,
             hasCriticalBlur: hasCriticalBlur,
             hasCriticalExposure: hasCriticalExposure,
@@ -317,23 +338,20 @@ public enum BestShotRanker {
         return 0
     }
 
+    /// Split apart, because each half explains a different reason code.
     private static func facePenalty(
         faces: [FaceQualitySignal],
         faceSharpnessScale: NormalizationScale,
         config: PhotoQualityScoringConfig
-    ) -> Double {
-        guard !faces.isEmpty else { return 0 }
-        var penalty: Double = 0
+    ) -> (face: Double, closedEyes: Double) {
+        guard !faces.isEmpty else { return (0, 0) }
         let isMainFaceUnusable = faces.contains { face in
             face.isCroppedByFrame || faceSharpnessScale.normalize(face.sharpness) < 0.5
         }
-        if isMainFaceUnusable {
-            penalty += config.croppedOrBlurredFacePenalty
-        }
-        if faces.contains(where: { $0.hasClosedEyes == true }) {
-            penalty += config.closedEyesPenalty
-        }
-        return penalty
+        return (
+            isMainFaceUnusable ? config.croppedOrBlurredFacePenalty : 0,
+            faces.contains { $0.hasClosedEyes == true } ? config.closedEyesPenalty : 0
+        )
     }
 
     // MARK: - Ordering
@@ -373,16 +391,20 @@ public enum BestShotRanker {
         guard let runnerUp else { return [] }
 
         var weighted: [(BestShotReasonCode, Double)] = [
+            // Each code carries only its own component and its own penalty, so
+            // "Sharper" never ends up explaining a rival's closed eyes.
             (.sharper, weights.sharpness * (winner.sharpness - runnerUp.sharpness)
-                + (runnerUp.penalty - winner.penalty)),
-            (.betterExposure, weights.exposure * (winner.exposure - runnerUp.exposure)),
-            (.faceInFocus, weights.faceQuality * (winner.faceQuality - runnerUp.faceQuality)),
+                + (runnerUp.sharpnessPenalty - winner.sharpnessPenalty)),
+            (.betterExposure, weights.exposure * (winner.exposure - runnerUp.exposure)
+                + (runnerUp.contrastPenalty - winner.contrastPenalty)),
+            (.faceInFocus, weights.faceQuality * (winner.faceQuality - runnerUp.faceQuality)
+                + (runnerUp.facePenalty - winner.facePenalty)),
             (.lessNoise, weights.noiseArtifacts * (winner.noise - runnerUp.noise)),
             (.higherResolution, min(weights.resolution, config.resolutionWeightCap)
                 * (winner.resolution - runnerUp.resolution))
         ]
         if !winner.hasClosedEyes, runnerUp.hasClosedEyes {
-            weighted.append((.openEyes, config.closedEyesPenalty))
+            weighted.append((.openEyes, runnerUp.closedEyesPenalty - winner.closedEyesPenalty))
         }
         if winner.isFavorite, !runnerUp.isFavorite, winner.favoriteBonus > 0 {
             weighted.append((.favorite, winner.favoriteBonus))
