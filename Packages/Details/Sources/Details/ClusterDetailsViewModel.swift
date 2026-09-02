@@ -494,8 +494,9 @@ extension ClusterDetailsViewModel {
         !localIdentifier.isEmpty && enhancedAssetIDs.contains(localIdentifier)
     }
 
-    /// Re-reads what the library says about the current Best Shot: whether it
-    /// can be edited at all, and whether it already carries Alike's edit.
+    /// Re-reads what the library says about the current Best Shot — whether it
+    /// can be edited and whether it already carries Alike's edit — in a single
+    /// question, because resolving a photo for editing is expensive.
     func refreshEnhancementAvailability() async {
         guard let enhancementService, !bestShotAssetID.isEmpty else {
             enhancementState = .unavailable
@@ -504,21 +505,20 @@ extension ClusterDetailsViewModel {
         }
 
         let localIdentifier = bestShotAssetID
-        guard await enhancementService.canEnhance(localIdentifier: localIdentifier) else {
-            enhancementState = .unavailable
-            enhancementPreview = nil
-            return
-        }
-
-        let isEnhanced = await enhancementService.isEnhancedByAlike(localIdentifier: localIdentifier)
+        let availability = await enhancementService.availability(localIdentifier: localIdentifier)
         guard localIdentifier == bestShotAssetID else { return }
-        if isEnhanced {
-            enhancedAssetIDs.insert(localIdentifier)
-        } else {
+
+        switch availability {
+        case .unavailable:
+            enhancementState = .unavailable
+        case .available:
             enhancedAssetIDs.remove(localIdentifier)
+            enhancementState = .idle
+        case .enhanced:
+            enhancedAssetIDs.insert(localIdentifier)
+            enhancementState = .applied
         }
         enhancementPreview = nil
-        enhancementState = isEnhanced ? .applied : .idle
     }
 
     /// Renders the "after" image. Nothing is written to the library yet.
@@ -589,7 +589,7 @@ extension ClusterDetailsViewModel {
         enhancementRecoveryState = fallbackState
         publishAlikeEvent(.recoverableFailure(
             id: AlikeEventID.cleanup(cleanupSelectionID),
-            context: AlikeErrorContext(operation: .cleanup)
+            context: AlikeErrorContext(operation: .enhancement)
         ))
         applyActionFailure(
             message: Self.enhancementErrorMessage(for: enhancementError),
@@ -615,6 +615,8 @@ extension ClusterDetailsViewModel {
             return DetailsL10n.ClusterDetails.enhancementNotOurs
         case .unsupportedAsset:
             return DetailsL10n.ClusterDetails.enhancementUnsupportedAsset
+        case .editedInAnotherApp:
+            return DetailsL10n.ClusterDetails.enhancementEditedElsewhere
         }
     }
 }
@@ -690,6 +692,13 @@ private extension ClusterDetailsViewModel {
 
         // The measured decision; with no signals it degrades to exactly the
         // metadata-only ranking the app shipped before.
+        // The badge belongs to the photo, not to this screen's lifetime: the
+        // score cache remembers which photos Alike enhanced, so a photo that is
+        // no longer the Best Shot keeps its badge after a reopen.
+        enhancedAssetIDs = Set(
+            qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
+        )
+
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
             scores: qualityScores

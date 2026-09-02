@@ -226,8 +226,9 @@ public protocol PhotoQualityAnalyzing: Sendable {
 /// Every implementation must keep the original recoverable: the library stores
 /// it, the app never writes a duplicate, and a revert is one step.
 public protocol PhotoEnhancementService: Sendable {
-    /// Whether this asset can be enhanced at all (write access, editable asset).
-    func canEnhance(localIdentifier: String) async -> Bool
+    /// Whether the asset can be enhanced, and whether it already is, in one
+    /// question: asking PhotoKit twice means resolving the photo twice.
+    func availability(localIdentifier: String) async -> PhotoEnhancementAvailability
 
     /// Renders a preview at screen size. Nothing is written to the library.
     func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage
@@ -237,9 +238,6 @@ public protocol PhotoEnhancementService: Sendable {
 
     /// Restores the original, refusing edits that were not made by Alike.
     func revertToOriginal(localIdentifier: String) async throws
-
-    /// Whether the asset currently carries Alike's own adjustment data.
-    func isEnhancedByAlike(localIdentifier: String) async -> Bool
 }
 
 /// Repository for the installation-local, anonymous Best Shot override tally.

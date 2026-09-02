@@ -42,6 +42,8 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
     /// Nothing Alike can edit: a video, or a live asset the library refuses to
     /// hand over as an editable Live Photo.
     case unsupportedAsset
+    /// Another app's edit is on this photo; enhancing would silently replace it.
+    case editedInAnotherApp
 
     public var errorDescription: String? {
         switch self {
@@ -59,6 +61,8 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
             "This photo was edited outside Alike, so Alike won't undo that edit."
         case .unsupportedAsset:
             "Alike can only enhance photos for now."
+        case .editedInAnotherApp:
+            "This photo was edited in another app, so Alike won't replace that edit."
         }
     }
 
@@ -76,8 +80,23 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
             "Use the Photos app to revert edits made by another app."
         case .unsupportedAsset:
             "Pick a photo instead, or edit this one in the Photos app."
+        case .editedInAnotherApp:
+            "Revert the other app's edit in Photos first, then try again."
         }
     }
+}
+
+/// What the library allows for one photo right now.
+///
+/// Answered in a single pass so the UI never has to ask twice — resolving a
+/// photo for editing is an expensive question to put to PhotoKit.
+public enum PhotoEnhancementAvailability: String, Codable, Sendable, Equatable {
+    /// Not editable, not an image, or already carrying another app's edit.
+    case unavailable
+    /// Editable and untouched by Alike.
+    case available
+    /// Editable and currently showing Alike's enhancement.
+    case enhanced
 }
 
 /// The recipe that was actually applied, stored in the asset's

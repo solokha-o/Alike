@@ -1345,6 +1345,25 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
     }
 
+    /// The badge belongs to the photo: a photo enhanced earlier keeps it after
+    /// the screen is reopened, even once it is no longer the Best Shot.
+    func testEnhancedBadgesAreRestoredFromTheScoreCache() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "enhanced", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("enhanced", 20)],
+            enhancedIdentifiers: ["enhanced"]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharp")
+        XCTAssertTrue(viewModel.isEnhanced("enhanced"))
+        XCTAssertFalse(viewModel.isEnhanced("sharp"))
+    }
+
     private var weakClusterSnapshots: [ReviewAssetSnapshot] {
         [
             snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -1359,6 +1378,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         qualityScores: [(String, Double)] = [],
+        enhancedIdentifiers: Set<String> = [],
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
@@ -1368,7 +1388,10 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            qualityAnalyzer: StubPhotoQualityAnalyzer(sharpnessByIdentifier: qualityScores),
+            qualityAnalyzer: StubPhotoQualityAnalyzer(
+                sharpnessByIdentifier: qualityScores,
+                enhancedIdentifiers: enhancedIdentifiers
+            ),
             overrideMetrics: overrideMetrics,
             assetSnapshots: snapshots,
             completionDelay: completionDelay
@@ -1423,6 +1446,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 /// under test has snapshots, not live `PHAsset`s.
 private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
     let sharpnessByIdentifier: [(String, Double)]
+    var enhancedIdentifiers: Set<String> = []
 
     func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
         let config = PhotoQualityScoringConfig.current
@@ -1437,7 +1461,8 @@ private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
                     subjectLumaStdDev: 0.25,
                     noiseEstimate: 0.1,
                     pixelArea: 1_000
-                )
+                ),
+                isAlikeEnhanced: enhancedIdentifiers.contains(identifier)
             )
         }
     }

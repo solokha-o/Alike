@@ -139,25 +139,37 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
     func testEnhancementIsUnavailableForAnUnsupportedAsset() async {
         let service = makeService(library: FakePhotoLibrary(isSupported: false))
 
-        let canEnhance = await service.canEnhance(localIdentifier: identifier)
+        let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertFalse(canEnhance)
+        XCTAssertEqual(availability, .unavailable)
     }
 
     func testEnhancementIsUnavailableForANonEditableAsset() async {
         let service = makeService(library: FakePhotoLibrary(isEditable: false))
 
-        let canEnhance = await service.canEnhance(localIdentifier: identifier)
+        let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertFalse(canEnhance)
+        XCTAssertEqual(availability, .unavailable)
     }
 
     func testEnhancementIsUnavailableForAMissingAsset() async {
         let service = makeService(library: FakePhotoLibrary(isMissing: true))
 
-        let canEnhance = await service.canEnhance(localIdentifier: identifier)
+        let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertFalse(canEnhance)
+        XCTAssertEqual(availability, .unavailable)
+    }
+
+    func testAvailabilityIsAnsweredWithOneCheapResolution() async {
+        let library = FakePhotoLibrary()
+        let service = makeService(library: library)
+
+        _ = await service.availability(localIdentifier: identifier)
+
+        // Asking twice would resolve the photo twice, and resolving can pull a
+        // full-size original down from iCloud.
+        let purposes = await library.requestedPurposes
+        XCTAssertEqual(purposes, [.availability])
     }
 
     func testOnlyAlikesOwnEditIsRecognizedAsEnhanced() async {
@@ -167,12 +179,55 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         let theirs = makeService(library: FakePhotoLibrary(
             existingAdjustmentFormatIdentifier: "com.example.otherEditor"
         ))
+        let untouched = makeService(library: FakePhotoLibrary())
 
-        let isOurs = await ours.isEnhancedByAlike(localIdentifier: identifier)
-        let isTheirs = await theirs.isEnhancedByAlike(localIdentifier: identifier)
+        let oursAvailability = await ours.availability(localIdentifier: identifier)
+        let theirsAvailability = await theirs.availability(localIdentifier: identifier)
+        let untouchedAvailability = await untouched.availability(localIdentifier: identifier)
 
-        XCTAssertTrue(isOurs)
-        XCTAssertFalse(isTheirs)
+        XCTAssertEqual(oursAvailability, .enhanced)
+        // Another app's edit is not ours to replace, so the action is hidden.
+        XCTAssertEqual(theirsAvailability, .unavailable)
+        XCTAssertEqual(untouchedAvailability, .available)
+    }
+
+    func testApplyingRefusesToReplaceAnotherAppsEdit() async {
+        let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
+        let service = makeService(library: library)
+
+        await assertThrows(.editedInAnotherApp) {
+            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+        }
+
+        let saved = await library.savedAdjustmentData
+        XCTAssertNil(saved)
+    }
+
+    func testRevertingWorksForAnAssetAlikeCanNoLongerEnhance() async throws {
+        // The Live Photo's video part is gone, so the asset is unsupported for
+        // rendering — but putting the original back needs no rendering at all.
+        let library = FakePhotoLibrary(
+            isSupported: false,
+            existingAdjustmentFormatIdentifier: PhotoEnhancementAdjustment.formatIdentifier
+        )
+        let service = makeService(library: library)
+
+        try await service.revertToOriginal(localIdentifier: identifier)
+
+        let didRevert = await library.didRevert
+        XCTAssertTrue(didRevert)
+    }
+
+    func testApplyingCachesThePreEnhancementSignalsWhenNothingWasScored() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        let service = makeService(library: FakePhotoLibrary(), repository: repository)
+
+        _ = try await service.applyEnhancement(localIdentifier: identifier)
+
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        let score = try XCTUnwrap(stored[identifier])
+        XCTAssertTrue(score.isAlikeEnhanced)
+        XCTAssertNil(score.signals.analysisFailure)
     }
 
     // MARK: - Preview
@@ -202,7 +257,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
     ) -> PhotoKitEnhancementService {
         PhotoKitEnhancementService(
             authorizationStatusProvider: { authorization },
-            requestBuilder: { _ in await library.makeRequest() },
+            requestBuilder: { _, purpose in await library.makeRequest(purpose: purpose) },
             qualityScoreRepository: repository
         )
     }
@@ -245,6 +300,7 @@ private actor FakePhotoLibrary {
     private let originalError: Error?
     private let saveError: Error?
 
+    private(set) var requestedPurposes: [PhotoEnhancementRequestPurpose] = []
     private(set) var savedAdjustmentData: Data?
     private(set) var savedRecipeStepCount: Int?
     private(set) var didRevert = false
@@ -265,7 +321,8 @@ private actor FakePhotoLibrary {
         self.saveError = saveError
     }
 
-    func makeRequest() -> ResolvedPhotoEnhancementRequest? {
+    func makeRequest(purpose: PhotoEnhancementRequestPurpose) -> ResolvedPhotoEnhancementRequest? {
+        requestedPurposes.append(purpose)
         guard !isMissing else { return nil }
         return ResolvedPhotoEnhancementRequest(
             isEditable: isEditable,

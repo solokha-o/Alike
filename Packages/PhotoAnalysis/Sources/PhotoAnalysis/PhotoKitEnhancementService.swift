@@ -4,6 +4,13 @@ import CoreImage
 import Foundation
 @preconcurrency import Photos
 
+/// Why the asset is being resolved. Checking whether the action can be offered
+/// must stay cheap and local; only a real edit may reach for the network.
+enum PhotoEnhancementRequestPurpose: Sendable {
+    case availability
+    case editing
+}
+
 /// One resolved photo-library edit, so the service can be tested without a real
 /// photo library: everything PhotoKit does sits behind these closures.
 struct ResolvedPhotoEnhancementRequest: Sendable {
@@ -14,6 +21,10 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
     let isSupported: Bool
     /// Format identifier of the adjustment already on the asset, if any.
     let existingAdjustmentFormatIdentifier: String?
+    /// The asset's own modification date and pixel count, so a score can be
+    /// cached for a photo that was never analyzed before it is enhanced.
+    let sourceModificationDate: Date?
+    let pixelArea: Int64
     /// The unedited original still, as the library hands it back.
     let loadOriginal: @Sendable () async throws -> CIImage
     /// Writes the edit as one change: the rendered still, the recipe to replay
@@ -29,6 +40,8 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
         isEditable: Bool,
         isSupported: Bool = true,
         existingAdjustmentFormatIdentifier: String?,
+        sourceModificationDate: Date? = nil,
+        pixelArea: Int64 = 0,
         loadOriginal: @escaping @Sendable () async throws -> CIImage,
         saveEnhanced: @escaping @Sendable (
             CIImage,
@@ -40,6 +53,8 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
         self.isEditable = isEditable
         self.isSupported = isSupported
         self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
+        self.sourceModificationDate = sourceModificationDate
+        self.pixelArea = pixelArea
         self.loadOriginal = loadOriginal
         self.saveEnhanced = saveEnhanced
         self.revertToOriginal = revertToOriginal
@@ -53,7 +68,10 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
 /// is the one-step undo the requirements ask for.
 public actor PhotoKitEnhancementService: PhotoEnhancementService {
     typealias AuthorizationStatusProvider = @Sendable () -> PHAuthorizationStatus
-    typealias RequestBuilder = @Sendable (String) async -> ResolvedPhotoEnhancementRequest?
+    typealias RequestBuilder = @Sendable (
+        String,
+        PhotoEnhancementRequestPurpose
+    ) async -> ResolvedPhotoEnhancementRequest?
 
     private let authorizationStatusProvider: AuthorizationStatusProvider
     private let requestBuilder: RequestBuilder
@@ -89,10 +107,23 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
 
     // MARK: - PhotoEnhancementService
 
-    public func canEnhance(localIdentifier: String) async -> Bool {
-        guard (try? authorize()) != nil else { return false }
-        guard let request = await requestBuilder(localIdentifier) else { return false }
-        return request.isEditable && request.isSupported
+    public func availability(localIdentifier: String) async -> PhotoEnhancementAvailability {
+        guard (try? authorize()) != nil else { return .unavailable }
+        guard let request = await requestBuilder(localIdentifier, .availability) else {
+            return .unavailable
+        }
+        guard request.isEditable, request.isSupported else { return .unavailable }
+
+        switch request.existingAdjustmentFormatIdentifier {
+        case PhotoEnhancementAdjustment.formatIdentifier:
+            return .enhanced
+        case .none:
+            return .available
+        default:
+            // Someone else's edit is on this photo; enhancing would replace it,
+            // so the action is not offered at all.
+            return .unavailable
+        }
     }
 
     public func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage {
@@ -110,6 +141,13 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
 
     public func applyEnhancement(localIdentifier: String) async throws -> PhotoEnhancementAdjustment {
         let request = try await editableRequest(for: localIdentifier)
+        if let existing = request.existingAdjustmentFormatIdentifier,
+           existing != PhotoEnhancementAdjustment.formatIdentifier {
+            // PhotoKit hands back the untouched original for any adjustment we
+            // claim to understand, so applying here would drop the other app's
+            // work without a trace.
+            throw PhotoEnhancementError.editedInAnotherApp
+        }
         let original = try await loadOriginal(with: request)
         let rendered = renderer.render(
             original,
@@ -122,6 +160,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         } catch {
             throw PhotoEnhancementError.renderFailed
         }
+
+        // Measure the untouched original first when nothing is cached: after
+        // the edit there is no way back to the pre-enhancement signals, and the
+        // flag below is what stops the enhanced pixels from being scored.
+        await cachePreEnhancementScoreIfMissing(
+            localIdentifier: localIdentifier,
+            original: original,
+            request: request
+        )
 
         do {
             try await request.saveEnhanced(rendered.image, rendered.recipe, encodedAdjustment)
@@ -144,7 +191,10 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     }
 
     public func revertToOriginal(localIdentifier: String) async throws {
-        let request = try await editableRequest(for: localIdentifier)
+        // Reverting is the library's own operation: it needs no Live Photo
+        // input and no renderer, so an asset Alike can no longer enhance can
+        // still be put back the way it was.
+        let request = try await editableRequest(for: localIdentifier, requiresRenderSupport: false)
         guard request.existingAdjustmentFormatIdentifier == PhotoEnhancementAdjustment.formatIdentifier else {
             throw PhotoEnhancementError.notEnhancedByAlike
         }
@@ -163,19 +213,19 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         await setEnhancedFlag(false, localIdentifier: localIdentifier)
     }
 
-    public func isEnhancedByAlike(localIdentifier: String) async -> Bool {
-        guard let request = await requestBuilder(localIdentifier) else { return false }
-        return request.existingAdjustmentFormatIdentifier == PhotoEnhancementAdjustment.formatIdentifier
-    }
-
     // MARK: - Helpers
 
-    private func editableRequest(for localIdentifier: String) async throws -> ResolvedPhotoEnhancementRequest {
+    /// Resolves for an edit. `requiresRenderSupport` is false for reverting,
+    /// which needs nothing but the library's own undo.
+    private func editableRequest(
+        for localIdentifier: String,
+        requiresRenderSupport: Bool = true
+    ) async throws -> ResolvedPhotoEnhancementRequest {
         try authorize()
-        guard let request = await requestBuilder(localIdentifier) else {
+        guard let request = await requestBuilder(localIdentifier, .editing) else {
             throw PhotoEnhancementError.originalUnavailable
         }
-        guard request.isSupported else {
+        guard !requiresRenderSupport || request.isSupported else {
             throw PhotoEnhancementError.unsupportedAsset
         }
         guard request.isEditable else {
@@ -227,8 +277,51 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             return false
         }
         guard score.signals.isUsable else { return false }
-        let sharpness = score.signals.subjectSharpness ?? score.signals.globalSharpness
-        return sharpness >= config.absoluteSharpnessFloor
+        // The frame-level value, never the subject blend: the ROI is sampled on
+        // its own, larger grid, so comparing it against a frame-calibrated
+        // floor would refuse sharpening to every portrait.
+        return score.signals.globalSharpness >= config.absoluteSharpnessFloor
+    }
+
+    /// Writes the signals of the original into the score cache when the asset
+    /// was never analyzed, so `setEnhancedFlag` has a row to mark and the
+    /// analyzer keeps comparing pre-enhancement measurements.
+    private func cachePreEnhancementScoreIfMissing(
+        localIdentifier: String,
+        original: CIImage,
+        request: ResolvedPhotoEnhancementRequest
+    ) async {
+        guard let qualityScoreRepository else { return }
+        let stored = try? await qualityScoreRepository.loadScores(localIdentifiers: [localIdentifier])
+        guard stored?[localIdentifier] == nil else { return }
+
+        guard let analysisImage = renderer.makePreview(
+            of: original,
+            targetSize: CGSize(
+                width: config.analysisImageLongSide,
+                height: config.analysisImageLongSide
+            )
+        ) else {
+            return
+        }
+
+        let signals = PhotoQualityAnalysisService(config: config)
+            .signals(for: analysisImage, pixelArea: request.pixelArea)
+        do {
+            try await qualityScoreRepository.saveScores([
+                PhotoQualityScore(
+                    localIdentifier: localIdentifier,
+                    sourceModificationDate: request.sourceModificationDate,
+                    scoringModelVersion: config.scoringModelVersion,
+                    thumbnailConfigVersion: config.thumbnailConfigVersion,
+                    signals: signals
+                )
+            ])
+        } catch {
+            AppLog.storage.error(
+                "\(AppLog.tag(.error, "Failed to cache pre-enhancement signals: \(Self.describe(error))"))"
+            )
+        }
     }
 
     private func setEnhancedFlag(_ isEnhanced: Bool, localIdentifier: String) async {
@@ -266,7 +359,10 @@ private extension PhotoKitEnhancementService {
     /// Resolves one asset into the closures the service works with. Requesting
     /// the content editing input is also how the existing adjustment data — and
     /// therefore "who edited this photo" — becomes known.
-    static func defaultRequestBuilder(localIdentifier: String) async -> ResolvedPhotoEnhancementRequest? {
+    static func defaultRequestBuilder(
+        localIdentifier: String,
+        purpose: PhotoEnhancementRequestPurpose
+    ) async -> ResolvedPhotoEnhancementRequest? {
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil)
         guard let asset = fetchResult.firstObject else { return nil }
 
@@ -274,12 +370,28 @@ private extension PhotoKitEnhancementService {
         // Accepting any adjustment data is what makes the library hand back the
         // untouched original plus whatever edit is currently applied.
         options.canHandleAdjustmentData = { _ in true }
-        options.isNetworkAccessAllowed = true
+        // Merely deciding whether to offer the action must never pull a
+        // full-size original down from iCloud; only a real edit may.
+        options.isNetworkAccessAllowed = purpose == .editing
 
         // PhotoKit's editing input is not Sendable, but it is only ever touched
         // inside these closures, one at a time, on the caller's task.
-        guard let editingInput = await requestContentEditingInput(for: asset, options: options) else {
-            return nil
+        let requested = await requestContentEditingInput(for: asset, options: options)
+        guard let editingInput = requested.input else {
+            // The photo lives in iCloud and this pass may not fetch it. For the
+            // availability question that is not a "no": the action stays
+            // offered, and the edit itself downloads what it needs.
+            guard purpose == .availability, requested.isInCloud else { return nil }
+            return ResolvedPhotoEnhancementRequest(
+                isEditable: asset.canPerform(.content),
+                isSupported: asset.mediaType == .image,
+                existingAdjustmentFormatIdentifier: nil,
+                sourceModificationDate: asset.modificationDate,
+                pixelArea: Int64(asset.pixelWidth) * Int64(asset.pixelHeight),
+                loadOriginal: { throw PhotoEnhancementError.originalUnavailable },
+                saveEnhanced: { _, _, _ in throw PhotoEnhancementError.originalUnavailable },
+                revertToOriginal: { throw PhotoEnhancementError.originalUnavailable }
+            )
         }
 
         let renderer = AutoEnhancementRenderer()
@@ -303,6 +415,8 @@ private extension PhotoKitEnhancementService {
             isEditable: asset.canPerform(.content),
             isSupported: isSupported,
             existingAdjustmentFormatIdentifier: editingInput.value.adjustmentData?.formatIdentifier,
+            sourceModificationDate: asset.modificationDate,
+            pixelArea: Int64(asset.pixelWidth) * Int64(asset.pixelHeight),
             loadOriginal: {
                 let input = editingInput.value
                 guard let url = input.fullSizeImageURL,
@@ -391,10 +505,13 @@ private extension PhotoKitEnhancementService {
     static func requestContentEditingInput(
         for asset: PHAsset,
         options: PHContentEditingInputRequestOptions
-    ) async -> UncheckedSendableBox<PHContentEditingInput>? {
+    ) async -> (input: UncheckedSendableBox<PHContentEditingInput>?, isInCloud: Bool) {
         await withCheckedContinuation { continuation in
-            asset.requestContentEditingInput(with: options) { input, _ in
-                continuation.resume(returning: input.map(UncheckedSendableBox.init))
+            asset.requestContentEditingInput(with: options) { input, info in
+                let isInCloud = (info[PHContentEditingInputResultIsInCloudKey] as? Bool) ?? false
+                continuation.resume(
+                    returning: (input.map(UncheckedSendableBox.init), isInCloud)
+                )
             }
         }
     }

@@ -27,13 +27,26 @@ struct AutoEnhancementRenderer: Sendable {
     /// silently drop a step. Each application copies the prototype instead.
     ///
     /// `@unchecked Sendable`: the prototypes are never mutated after they are
-    /// captured — every use works on a copy.
+    /// captured, and copying them is serialized — `CIFilter` is not documented
+    /// as thread-safe, and a Live Photo edit processes frames concurrently.
     struct AppliedRecipe: @unchecked Sendable {
         struct Step {
             let prototype: CIFilter
         }
 
         let steps: [Step]
+        private let copyLock = NSLock()
+
+        init(steps: [Step]) {
+            self.steps = steps
+        }
+
+        /// One independent filter chain, safe to use on the calling thread.
+        func makeFilterChain() -> [CIFilter] {
+            copyLock.lock()
+            defer { copyLock.unlock() }
+            return steps.compactMap { $0.prototype.copy() as? CIFilter }
+        }
 
         static let empty = AppliedRecipe(steps: [])
     }
@@ -146,8 +159,7 @@ struct AutoEnhancementRenderer: Sendable {
     /// frames can be processed concurrently without sharing filter state.
     func apply(_ recipe: AppliedRecipe, to image: CIImage) -> CIImage {
         var output = image
-        for step in recipe.steps {
-            guard let filter = step.prototype.copy() as? CIFilter else { continue }
+        for filter in recipe.makeFilterChain() {
             filter.setValue(output, forKey: kCIInputImageKey)
             guard let filtered = filter.outputImage else { continue }
             output = filtered

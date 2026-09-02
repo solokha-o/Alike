@@ -1706,6 +1706,89 @@
         }
       }
     },
+    "details.clusterDetails.enhancementEditedElsewhere": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo was edited in another app, so Alike won't replace that edit."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це фото редагували в іншому застосунку, тому Alike не замінює ту правку."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta foto se editó en otra app, así que Alike no reemplazará esa edición."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta foto se editó en otra app, así que Alike no reemplazará esa edición."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta foto foi editada em outro app, então o Alike não substituirá essa edição."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Foto wurde in einer anderen App bearbeitet – Alike ersetzt diese Bearbeitung nicht."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette photo a été modifiée dans une autre app ; Alike ne remplacera pas cette modification."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa foto è stata modificata in un'altra app, quindi Alike non sostituirà quella modifica."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze foto is in een andere app bewerkt, dus Alike vervangt die bewerking niet."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To zdjęcie edytowano w innej aplikacji, więc Alike nie zastąpi tamtej zmiany."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu fotoğraf başka bir uygulamada düzenlendi; Alike o düzenlemeyi değiştirmez."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這張照片是在其他 App 中編輯的，Alike 不會取代該編輯。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حُرِّرت هذه الصورة في تطبيق آخر، لذا لن يستبدل Alike ذلك التعديل."
+          }
+        }
+      }
+    },
     "details.clusterDetails.enhancementLimitedAccess": {
       "extractionState": "manual",
       "localizations": {

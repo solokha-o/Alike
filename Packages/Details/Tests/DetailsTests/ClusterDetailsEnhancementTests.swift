@@ -39,6 +39,18 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertTrue(viewModel.isBestShotEnhanced)
     }
 
+    func testAvailabilityIsAskedOnceWhenOpeningTheCluster() async {
+        let service = FakeEnhancementService()
+        let viewModel = makeViewModel(service: service)
+
+        await viewModel.load()
+
+        // Each question to the library resolves the photo, which can download a
+        // full-size original; opening a cluster asks once.
+        let callCount = await service.availabilityCallCount
+        XCTAssertEqual(callCount, 1)
+    }
+
     // MARK: - Happy path
 
     func testPreviewThenApplyThenRevertWalksTheWholeStateMachine() async {
@@ -226,6 +238,7 @@ private actor FakeEnhancementService: PhotoEnhancementService {
 
     private(set) var didApply = false
     private(set) var didRevert = false
+    private(set) var availabilityCallCount = 0
 
     init(
         canEnhance: Bool = true,
@@ -241,9 +254,11 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         self.revertError = revertError
     }
 
-    func canEnhance(localIdentifier _: String) async -> Bool { canEnhanceAsset }
-
-    func isEnhancedByAlike(localIdentifier _: String) async -> Bool { isEnhanced }
+    func availability(localIdentifier _: String) async -> PhotoEnhancementAvailability {
+        availabilityCallCount += 1
+        guard canEnhanceAsset else { return .unavailable }
+        return isEnhanced ? .enhanced : .available
+    }
 
     func renderPreview(localIdentifier _: String, targetSize: CGSize) async throws -> CGImage {
         if let previewError { throw previewError }

@@ -52,6 +52,8 @@ public enum DetailsL10n {
         public static var enhance: String { DetailsL10n.string("details.clusterDetails.enhance") }
         /// Enhanced
         public static var enhanced: String { DetailsL10n.string("details.clusterDetails.enhanced") }
+        /// This photo was edited in another app, so Alike won't replace that edit.
+        public static var enhancementEditedElsewhere: String { DetailsL10n.string("details.clusterDetails.enhancementEditedElsewhere") }
         /// Couldn't prepare the enhanced version of this photo.
         public static var enhancementRenderFailed: String { DetailsL10n.string("details.clusterDetails.enhancementRenderFailed") }
         /// Couldn't save the enhanced photo to your library.
