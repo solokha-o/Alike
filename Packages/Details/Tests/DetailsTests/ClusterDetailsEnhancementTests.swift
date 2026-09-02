@@ -166,6 +166,47 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertNotEqual(viewModel.enhancementState, PhotoEnhancementState.reverting)
     }
 
+    /// The screen is interactive before scoring finishes, so a refinement can
+    /// land while the preview cover is open. It must not move the Best Shot
+    /// under a preview the user is looking at.
+    func testOpeningThePreviewFreezesALateRanking() async {
+        let analyzer = StallingQualityAnalyzer()
+        let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        XCTAssertEqual(viewModel.enhancementState, .previewing)
+
+        // Scoring finishes now and would have crowned the other photo.
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "best",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 5, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "other",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        XCTAssertEqual(viewModel.enhancementState, .previewing)
+        XCTAssertNotNil(viewModel.enhancementPreview)
+    }
+
     // MARK: - Failures
 
     func testPreviewFailureLeavesTheReviewUntouched() async {
@@ -271,13 +312,17 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func makeViewModel(service: FakeEnhancementService?) -> ClusterDetailsViewModel {
+    private func makeViewModel(
+        service: FakeEnhancementService?,
+        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer()
+    ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupService: MockPhotoCleanupService(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
             premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: qualityAnalyzer,
             enhancementService: service,
             assetSnapshots: [
                 ReviewAssetSnapshot(
@@ -297,6 +342,31 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
             ],
             completionDelay: {}
         )
+    }
+}
+
+/// Holds scoring open until the test decides to answer it.
+private actor StallingQualityAnalyzer: PhotoQualityAnalyzing {
+    private var continuation: CheckedContinuation<[PhotoQualityScore], Never>?
+    private var pending: [PhotoQualityScore]?
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        if let pending {
+            self.pending = nil
+            return pending
+        }
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func finish(with scores: [PhotoQualityScore]) {
+        if let continuation {
+            self.continuation = nil
+            continuation.resume(returning: scores)
+        } else {
+            pending = scores
+        }
     }
 }
 

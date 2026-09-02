@@ -552,6 +552,11 @@ extension ClusterDetailsViewModel {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
 
+        // Opening the preview is the user acting on this photo: a ranking that
+        // lands afterwards must not move the Best Shot while the cover is up,
+        // or the preview would belong to a photo that is no longer on screen.
+        interactionGeneration &+= 1
+
         let localIdentifier = bestShotAssetID
         enhancementState = .preparingPreview
         do {
@@ -577,6 +582,8 @@ extension ClusterDetailsViewModel {
     func applyEnhancement() async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
+
+        interactionGeneration &+= 1
 
         let localIdentifier = bestShotAssetID
         let previousState = enhancementState
@@ -610,6 +617,8 @@ extension ClusterDetailsViewModel {
     func revertEnhancement() async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .applied else { return }
+
+        interactionGeneration &+= 1
 
         let localIdentifier = bestShotAssetID
         enhancementState = .reverting

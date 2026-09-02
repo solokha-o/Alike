@@ -114,32 +114,34 @@ struct EnhancementPreviewView: View {
 
     /// Held rather than toggled for touch: comparing is a glance, not a mode,
     /// and the gesture lives on the control so it never fights the viewer's
-    /// zoom and pan. Activating it — which is all VoiceOver can do — toggles
-    /// the same comparison instead.
+    /// zoom and pan. VoiceOver cannot hold a gesture, so it gets an
+    /// accessibility action that toggles the same comparison — deliberately not
+    /// a `Button`, whose action would also fire on an ordinary tap and leave
+    /// the original stuck on screen.
     private var compareButton: some View {
-        Button {
-            isComparingWithAssistiveTechnology.toggle()
-        } label: {
-            Label {
-                Text(DetailsL10n.ClusterDetails.holdToCompare)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
-            } icon: {
-                Image(systemName: "arrow.left.arrow.right.circle")
-            }
-            .font(.appCaption)
-            .foregroundStyle(.white)
-            .padding(.horizontal, Spacing.small)
-            .padding(.vertical, Spacing.xxSmall)
-            .contentShape(Capsule())
+        Label {
+            Text(DetailsL10n.ClusterDetails.holdToCompare)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+        } icon: {
+            Image(systemName: "arrow.left.arrow.right.circle")
         }
-        .buttonStyle(.plain)
-        .simultaneousGesture(
+        .font(.appCaption)
+        .foregroundStyle(.white)
+        .padding(.horizontal, Spacing.small)
+        .padding(.vertical, Spacing.xxSmall)
+        .contentShape(Capsule())
+        .gesture(
             DragGesture(minimumDistance: 0)
                 .updating($isHoldingToCompare) { _, state, _ in
                     state = true
                 }
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction {
+            isComparingWithAssistiveTechnology.toggle()
+        }
         .accessibilityLabel(Text(DetailsL10n.ClusterDetails.compareWithOriginal))
         .accessibilityValue(Text(
             isShowingOriginal
