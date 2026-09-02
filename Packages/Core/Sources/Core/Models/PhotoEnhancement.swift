@@ -42,7 +42,8 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
     /// Nothing Alike can edit: a video, or a live asset the library refuses to
     /// hand over as an editable Live Photo.
     case unsupportedAsset
-    /// Another app's edit is on this photo; enhancing would silently replace it.
+    /// Another app's edit is on this photo and the user has not agreed to
+    /// replace it.
     case editedInAnotherApp
 
     public var errorDescription: String? {
@@ -62,7 +63,7 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
         case .unsupportedAsset:
             "Alike can only enhance photos for now."
         case .editedInAnotherApp:
-            "This photo was edited in another app, so Alike won't replace that edit."
+            "This photo was edited in another app. Enhancing it replaces that edit."
         }
     }
 
@@ -81,7 +82,7 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
         case .unsupportedAsset:
             "Pick a photo instead, or edit this one in the Photos app."
         case .editedInAnotherApp:
-            "Revert the other app's edit in Photos first, then try again."
+            "Confirm the replacement in Alike, or revert the other app's edit in Photos first."
         }
     }
 }
@@ -91,10 +92,13 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
 /// Answered in a single pass so the UI never has to ask twice — resolving a
 /// photo for editing is an expensive question to put to PhotoKit.
 public enum PhotoEnhancementAvailability: String, Codable, Sendable, Equatable {
-    /// Not editable, not an image, or already carrying another app's edit.
+    /// Not editable, or not an image.
     case unavailable
     /// Editable and untouched by Alike.
     case available
+    /// Editable, but another app's edit is on it: Alike may enhance it only
+    /// after saying so, because doing it replaces that app's work.
+    case editedElsewhere
     /// Editable and currently showing Alike's enhancement.
     case enhanced
 }

@@ -52,6 +52,10 @@ public enum DetailsL10n {
         public static var enhance: String { DetailsL10n.string("details.clusterDetails.enhance") }
         /// Enhanced
         public static var enhanced: String { DetailsL10n.string("details.clusterDetails.enhanced") }
+        /// Edited in another app
+        public static var editedInAnotherAppNote: String { DetailsL10n.string("details.clusterDetails.editedInAnotherAppNote") }
+        /// Applying replaces the edit made in another app. The original stays recoverable.
+        public static var enhancementReplacesOtherEdit: String { DetailsL10n.string("details.clusterDetails.enhancementReplacesOtherEdit") }
         /// This photo was edited in another app, so Alike won't replace that edit.
         public static var enhancementEditedElsewhere: String { DetailsL10n.string("details.clusterDetails.enhancementEditedElsewhere") }
         /// Couldn't prepare the enhanced version of this photo.

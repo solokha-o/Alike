@@ -1540,6 +1540,89 @@
         }
       }
     },
+    "details.clusterDetails.editedInAnotherAppNote": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edited in another app"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Редаговано в іншому застосунку"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editada en otra app"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editada en otra app"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editada em outro app"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In einer anderen App bearbeitet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifiée dans une autre app"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modificata in un'altra app"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewerkt in een andere app"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edytowane w innej aplikacji"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başka bir uygulamada düzenlendi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在其他 App 中編輯"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حُرِّرت في تطبيق آخر"
+          }
+        }
+      }
+    },
     "details.clusterDetails.enhance": {
       "extractionState": "manual",
       "localizations": {
@@ -2200,6 +2283,89 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تجهيز النسخة المحسّنة من هذه الصورة."
+          }
+        }
+      }
+    },
+    "details.clusterDetails.enhancementReplacesOtherEdit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applying replaces the edit made in another app. The original stays recoverable."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Застосування замінить правку з іншого застосунку. Оригінал лишається можливим повернути."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al aplicar se reemplaza la edición hecha en otra app. El original sigue recuperable."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al aplicar se reemplaza la edición hecha en otra app. El original sigue recuperable."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicar substitui a edição feita em outro app. O original continua recuperável."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anwenden ersetzt die Bearbeitung aus einer anderen App. Das Original bleibt wiederherstellbar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appliquer remplace la modification faite dans une autre app. L’original reste récupérable."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applicando sostituisci la modifica fatta in un'altra app. L'originale resta recuperabile."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toepassen vervangt de bewerking uit een andere app. Het origineel blijft herstelbaar."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zastosowanie zastąpi zmianę z innej aplikacji. Oryginał nadal można przywrócić."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamak, başka bir uygulamada yapılan düzenlemeyi değiştirir. Orijinal geri alınabilir kalır."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "套用會取代在其他 App 中所做的編輯，原始照片仍可還原。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سيؤدي التطبيق إلى استبدال التعديل الذي أُجري في تطبيق آخر. يبقى بالإمكان استعادة الأصل."
           }
         }
       }

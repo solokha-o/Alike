@@ -16,6 +16,9 @@ struct EnhancementPreviewView: View {
     let asset: PHAsset
     let enhancedImage: CGImage?
     let state: PhotoEnhancementState
+    /// `true` when applying would replace an edit made in another app, which
+    /// the user has to be told before the Apply button, not after it.
+    var replacesOtherAppEdit = false
     let onApply: () -> Void
     let onCancel: () -> Void
 
@@ -31,7 +34,21 @@ struct EnhancementPreviewView: View {
             )
             .ignoresSafeArea()
 
-            stateLabel
+            VStack(spacing: Spacing.xSmall) {
+                stateLabel
+
+                if replacesOtherAppEdit {
+                    Text(DetailsL10n.ClusterDetails.enhancementReplacesOtherEdit)
+                        .font(.appCaption)
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, Spacing.small)
+                        .padding(.vertical, Spacing.xxSmall)
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: CornerRadius.small))
+                        .padding(.horizontal, Spacing.medium)
+                }
+            }
         }
         .safeAreaInset(edge: .bottom) { actions }
         .overlay {

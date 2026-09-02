@@ -186,12 +186,13 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         let untouchedAvailability = await untouched.availability(localIdentifier: identifier)
 
         XCTAssertEqual(oursAvailability, .enhanced)
-        // Another app's edit is not ours to replace, so the action is hidden.
-        XCTAssertEqual(theirsAvailability, .unavailable)
+        // Another app's edit is not ours to replace silently — the action stays
+        // available, and the UI says what applying it would do.
+        XCTAssertEqual(theirsAvailability, .editedElsewhere)
         XCTAssertEqual(untouchedAvailability, .available)
     }
 
-    func testApplyingRefusesToReplaceAnotherAppsEdit() async {
+    func testApplyingRefusesToReplaceAnotherAppsEditWithoutConsent() async {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -201,6 +202,19 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let saved = await library.savedAdjustmentData
         XCTAssertNil(saved)
+    }
+
+    func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
+        let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
+        let service = makeService(library: library)
+
+        _ = try await service.applyEnhancement(
+            localIdentifier: identifier,
+            replacingOtherEdits: true
+        )
+
+        let saved = await library.savedAdjustmentData
+        XCTAssertNotNil(saved)
     }
 
     func testRevertingWorksForAnAssetAlikeCanNoLongerEnhance() async throws {

@@ -21,6 +21,7 @@ struct ClusterReviewSummaryCard: View {
     let bestShotLabel: String
     let bestShotConfidence: BestShotConfidence
     let bestShotReasonCodes: [BestShotReasonCode]
+    var isBestShotEditedElsewhere = false
     let selectedCount: Int
     let estimatedSavingsText: String
     let maximumEstimatedSavingsText: String
@@ -112,6 +113,19 @@ struct ClusterReviewSummaryCard: View {
                         .font(.appCaption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
+                }
+
+                if isBestShotEditedElsewhere {
+                    // Says where the photo's current look came from, so
+                    // enhancing it is never a surprise.
+                    Label {
+                        Text(DetailsL10n.ClusterDetails.editedInAnotherAppNote)
+                    } icon: {
+                        Image(systemName: "square.and.pencil")
+                    }
+                    .font(.appCaption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .accessibilityElement(children: .combine)

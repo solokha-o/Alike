@@ -127,6 +127,7 @@ public struct ClusterDetailsView: View {
                     asset: bestShotAsset,
                     enhancedImage: viewModel.enhancementPreview,
                     state: viewModel.enhancementState,
+                    replacesOtherAppEdit: viewModel.isBestShotEditedElsewhere,
                     onApply: { Task { await viewModel.applyEnhancement() } },
                     onCancel: viewModel.dismissEnhancementPreview
                 )
@@ -283,6 +284,7 @@ public struct ClusterDetailsView: View {
                         bestShotLabel: viewModel.bestShotLabel,
                         bestShotConfidence: viewModel.bestShotConfidence,
                         bestShotReasonCodes: viewModel.bestShotReasonCodes,
+                        isBestShotEditedElsewhere: viewModel.isBestShotEditedElsewhere,
                         selectedCount: viewModel.selectedCount,
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,

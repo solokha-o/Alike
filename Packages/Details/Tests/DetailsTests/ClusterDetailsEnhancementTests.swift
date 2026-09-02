@@ -93,6 +93,42 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertFalse(viewModel.isBestShotEnhanced)
     }
 
+    func testAPhotoEditedElsewhereKeepsTheActionAndCarriesTheNote() async {
+        let service = FakeEnhancementService(isEditedElsewhere: true)
+        let viewModel = makeViewModel(service: service)
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.enhancementState, .idle)
+        XCTAssertTrue(viewModel.isEnhancementActionVisible)
+        XCTAssertTrue(viewModel.isBestShotEditedElsewhere)
+        XCTAssertFalse(viewModel.isBestShotEnhanced)
+    }
+
+    func testApplyingToAPhotoEditedElsewhereCarriesTheUsersAgreement() async {
+        let service = FakeEnhancementService(isEditedElsewhere: true)
+        let viewModel = makeViewModel(service: service)
+        await viewModel.load()
+
+        await viewModel.applyEnhancement()
+
+        let didReplace = await service.didReplaceOtherEdits
+        XCTAssertTrue(didReplace)
+        XCTAssertEqual(viewModel.enhancementState, .applied)
+        XCTAssertFalse(viewModel.isBestShotEditedElsewhere)
+    }
+
+    func testApplyingToAnUntouchedPhotoDoesNotClaimToReplaceAnything() async {
+        let service = FakeEnhancementService()
+        let viewModel = makeViewModel(service: service)
+        await viewModel.load()
+
+        await viewModel.applyEnhancement()
+
+        let didReplace = await service.didReplaceOtherEdits
+        XCTAssertFalse(didReplace)
+    }
+
     // MARK: - Failures
 
     func testPreviewFailureLeavesTheReviewUntouched() async {
@@ -231,23 +267,27 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 /// asked of it and fails exactly where a test wants it to.
 private actor FakeEnhancementService: PhotoEnhancementService {
     private let canEnhanceAsset: Bool
+    private let isEditedElsewhere: Bool
     private var isEnhanced: Bool
     private let previewError: PhotoEnhancementError?
     private let applyError: PhotoEnhancementError?
     private let revertError: PhotoEnhancementError?
 
+    private(set) var didReplaceOtherEdits = false
     private(set) var didApply = false
     private(set) var didRevert = false
     private(set) var availabilityCallCount = 0
 
     init(
         canEnhance: Bool = true,
+        isEditedElsewhere: Bool = false,
         isEnhanced: Bool = false,
         previewError: PhotoEnhancementError? = nil,
         applyError: PhotoEnhancementError? = nil,
         revertError: PhotoEnhancementError? = nil
     ) {
         self.canEnhanceAsset = canEnhance
+        self.isEditedElsewhere = isEditedElsewhere
         self.isEnhanced = isEnhanced
         self.previewError = previewError
         self.applyError = applyError
@@ -257,7 +297,8 @@ private actor FakeEnhancementService: PhotoEnhancementService {
     func availability(localIdentifier _: String) async -> PhotoEnhancementAvailability {
         availabilityCallCount += 1
         guard canEnhanceAsset else { return .unavailable }
-        return isEnhanced ? .enhanced : .available
+        if isEnhanced { return .enhanced }
+        return isEditedElsewhere ? .editedElsewhere : .available
     }
 
     func renderPreview(localIdentifier _: String, targetSize: CGSize) async throws -> CGImage {
@@ -265,9 +306,13 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         return Self.makeImage(size: targetSize)
     }
 
-    func applyEnhancement(localIdentifier _: String) async throws -> PhotoEnhancementAdjustment {
+    func applyEnhancement(
+        localIdentifier _: String,
+        replacingOtherEdits: Bool
+    ) async throws -> PhotoEnhancementAdjustment {
         if let applyError { throw applyError }
         didApply = true
+        didReplaceOtherEdits = replacingOtherEdits
         isEnhanced = true
         return PhotoEnhancementAdjustment(steps: [])
     }

@@ -120,9 +120,9 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         case .none:
             return .available
         default:
-            // Someone else's edit is on this photo; enhancing would replace it,
-            // so the action is not offered at all.
-            return .unavailable
+            // Someone else's edit is on this photo. The action stays available,
+            // but the UI has to say what applying it would replace.
+            return .editedElsewhere
         }
     }
 
@@ -139,13 +139,17 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         return preview
     }
 
-    public func applyEnhancement(localIdentifier: String) async throws -> PhotoEnhancementAdjustment {
+    public func applyEnhancement(
+        localIdentifier: String,
+        replacingOtherEdits: Bool = false
+    ) async throws -> PhotoEnhancementAdjustment {
         let request = try await editableRequest(for: localIdentifier)
-        if let existing = request.existingAdjustmentFormatIdentifier,
+        if !replacingOtherEdits,
+           let existing = request.existingAdjustmentFormatIdentifier,
            existing != PhotoEnhancementAdjustment.formatIdentifier {
             // PhotoKit hands back the untouched original for any adjustment we
-            // claim to understand, so applying here would drop the other app's
-            // work without a trace.
+            // claim to understand, so applying here drops the other app's work.
+            // That is the user's call to make, not ours to make silently.
             throw PhotoEnhancementError.editedInAnotherApp
         }
         let original = try await loadOriginal(with: request)

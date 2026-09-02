@@ -234,7 +234,13 @@ public protocol PhotoEnhancementService: Sendable {
     func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage
 
     /// Applies the enhancement as a non-destructive edit and returns the recipe.
-    func applyEnhancement(localIdentifier: String) async throws -> PhotoEnhancementAdjustment
+    ///
+    /// `replacingOtherEdits` is the user's explicit agreement to replace an edit
+    /// made by another app; without it such a photo is refused.
+    func applyEnhancement(
+        localIdentifier: String,
+        replacingOtherEdits: Bool
+    ) async throws -> PhotoEnhancementAdjustment
 
     /// Restores the original, refusing edits that were not made by Alike.
     func revertToOriginal(localIdentifier: String) async throws

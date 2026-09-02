@@ -52,6 +52,9 @@ final class ClusterDetailsViewModel {
     /// Photos this screen enhanced. The badge follows the photo, so changing
     /// the Best Shot does not cancel or move an applied enhancement.
     private(set) var enhancedAssetIDs: Set<String> = []
+    /// `true` when the Best Shot carries another app's edit: the action stays
+    /// available, but the UI has to say what applying it would replace.
+    private(set) var isBestShotEditedElsewhere = false
     /// Where the enhancement returns once the user dismisses the error alert.
     private var enhancementRecoveryState: PhotoEnhancementState = .idle
     var selectedAssetIDs: Set<String>
@@ -501,6 +504,7 @@ extension ClusterDetailsViewModel {
         guard let enhancementService, !bestShotAssetID.isEmpty else {
             enhancementState = .unavailable
             enhancementPreview = nil
+            isBestShotEditedElsewhere = false
             return
         }
 
@@ -508,10 +512,11 @@ extension ClusterDetailsViewModel {
         let availability = await enhancementService.availability(localIdentifier: localIdentifier)
         guard localIdentifier == bestShotAssetID else { return }
 
+        isBestShotEditedElsewhere = availability == .editedElsewhere
         switch availability {
         case .unavailable:
             enhancementState = .unavailable
-        case .available:
+        case .available, .editedElsewhere:
             enhancedAssetIDs.remove(localIdentifier)
             enhancementState = .idle
         case .enhanced:
@@ -555,8 +560,14 @@ extension ClusterDetailsViewModel {
         let previousState = enhancementState
         enhancementState = .applying
         do {
-            _ = try await enhancementService.applyEnhancement(localIdentifier: localIdentifier)
+            _ = try await enhancementService.applyEnhancement(
+                localIdentifier: localIdentifier,
+                // The preview screen stated what this replaces before the user
+                // reached this button.
+                replacingOtherEdits: isBestShotEditedElsewhere
+            )
             enhancedAssetIDs.insert(localIdentifier)
+            isBestShotEditedElsewhere = false
             enhancementPreview = nil
             enhancementState = .applied
         } catch {
