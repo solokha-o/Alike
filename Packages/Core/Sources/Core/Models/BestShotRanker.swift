@@ -203,16 +203,17 @@ public enum BestShotRanker {
             PhotoClusterBestShot.isPreferredAsset(rhs, lhs)
         }
         // Metadata alone is what the app always did, so a cluster nobody has
-        // measured yet keeps its confident badge. A cluster where measuring was
-        // *attempted* and failed is a different story: the ranking has partial
-        // knowledge it could not use, and it says so.
-        let hasFailedMeasurement = snapshots.contains { snapshot in
-            guard let score = scores[snapshot.localIdentifier] else { return false }
-            return !score.signals.isUsable
-        }
+        // measured yet keeps its confident badge, and a lone photo is trivially
+        // its own Best Shot. Anything in between — some photos measured, some
+        // failed, some missing — is partial knowledge the ranking could not
+        // use, and the badge says so rather than pretending.
+        let isMetadataOnly = snapshots.allSatisfy { scores[$0.localIdentifier] == nil }
+        let confidence: BestShotConfidence = snapshots.count == 1 || isMetadataOnly
+            ? .automatic
+            : .lowConfidence
         return BestShotDecision(
             localIdentifier: ordered.first?.localIdentifier,
-            confidence: hasFailedMeasurement ? .lowConfidence : .automatic,
+            confidence: confidence,
             topScore: 0,
             margin: 0,
             reasonCodes: [],

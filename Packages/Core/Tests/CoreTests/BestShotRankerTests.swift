@@ -312,6 +312,29 @@ final class BestShotRankerTests: XCTestCase {
         XCTAssertEqual(decision.confidence, .lowConfidence)
     }
 
+    func testOneMeasuredPhotoAndOneUnmeasuredOneIsNotConfident() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("measured"), makeSnapshot("never-measured")],
+            scores: makeScores([makeScore("measured", globalSharpness: 60)])
+        )
+
+        // Only one photo is usable, so this lands in the metadata fallback. The
+        // missing row is not a failure and not coverage either: nothing is known
+        // about the second photo, so the badge cannot claim the first one wins.
+        XCTAssertEqual(decision.confidence, .lowConfidence)
+    }
+
+    func testUnmeasuredClusterKeepsTheConfidentMetadataBadge() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("a"), makeSnapshot("b")],
+            scores: [:]
+        )
+
+        // Nobody has measured this cluster yet. Metadata ranking is what the app
+        // always shipped, so it keeps behaving exactly as before.
+        XCTAssertEqual(decision.confidence, .automatic)
+    }
+
     func testPartialCoverageNeverClaimsFullConfidence() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("a"), makeSnapshot("b"), makeSnapshot("unscored")],
@@ -325,6 +348,19 @@ final class BestShotRankerTests: XCTestCase {
         XCTAssertEqual(decision.confidence, .lowConfidence)
     }
 
+    /// One measured photo next to one the analyzer never returned is partial
+    /// knowledge, not a metadata-only cluster: the ranking cannot know whether
+    /// the unmeasured photo was the better one.
+    func testOneUsableScoreBesideAMissingOneIsNotConfident() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("measured"), makeSnapshot("never-analyzed")],
+            scores: makeScores([makeScore("measured", globalSharpness: 60)])
+        )
+
+        XCTAssertEqual(decision.confidence, .lowConfidence)
+        XCTAssertNotNil(decision.localIdentifier)
+    }
+
     func testSinglePhotoClusterKeepsItsOnlyPhoto() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("only")],
@@ -332,6 +368,9 @@ final class BestShotRankerTests: XCTestCase {
         )
 
         XCTAssertEqual(decision.localIdentifier, "only")
+        // Nothing is unknown about a cluster of one measured photo, so partial
+        // coverage does not apply and the badge stays confident.
+        XCTAssertEqual(decision.confidence, .automatic)
     }
 
     func testEmptyClusterDecidesNothing() {
