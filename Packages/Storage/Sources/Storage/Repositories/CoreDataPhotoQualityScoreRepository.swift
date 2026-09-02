@@ -95,6 +95,13 @@ public final class CoreDataPhotoQualityScoreRepository: PhotoQualityScoreReposit
             let request = PhotoEntity.fetchRequest()
             request.predicate = NSPredicate(format: "qualitySignalsData != nil")
             for photo in try context.fetch(request) {
+                // A row this repository created for a photo that never made it
+                // into a stored cluster has nothing left once its score is
+                // gone, and no other cleanup path would ever remove it.
+                if photo.cluster == nil {
+                    context.delete(photo)
+                    continue
+                }
                 photo.qualitySignalsData = nil
                 photo.qualitySourceModificationDate = nil
                 photo.scoringModelVersion = 0

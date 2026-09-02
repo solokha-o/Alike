@@ -232,6 +232,10 @@ final class ClusterDetailsViewModel {
     }
 
     func toggleSelection(for localIdentifier: String) {
+        // One photo of a cluster is always kept, and that photo is the Best
+        // Shot. Until there is one, nothing here can be selected for deletion —
+        // otherwise an unresolved cluster could be emptied completely.
+        guard !bestShotAssetID.isEmpty else { return }
         guard localIdentifier != bestShotAssetID else { return }
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
@@ -455,11 +459,15 @@ extension ClusterDetailsViewModel {
 }
 
 private extension ClusterDetailsViewModel {
-    /// Counts one recommendation per cluster opening, and only when the
-    /// ranking actually recommended something the user had not already chosen.
+    /// Counts one recommendation per cluster — the repository dedupes revisits —
+    /// and only when the ranking recommended something the user had not already
+    /// chosen for themselves.
     func recordBestShotRecommendation() async {
         guard let overrideMetrics, !isBestShotUserSelected, !bestShotAssetID.isEmpty else { return }
-        await overrideMetrics.recordRecommendation(confidence: bestShotConfidence)
+        await overrideMetrics.recordRecommendation(
+            confidence: bestShotConfidence,
+            clusterID: cluster.id
+        )
     }
 
     func loadQualityScores() async -> [String: PhotoQualityScore] {
@@ -544,13 +552,22 @@ private extension ClusterDetailsViewModel {
         } else if isPersistedBestShotAvailable, savedState.isReviewConfirmed {
             // A finished review keeps the photo it was finished with, so a
             // rescan cannot silently move the Best Shot under a done cluster.
+            // The badge and the summary card must then agree: this cluster has
+            // a Best Shot, whatever the fresh ranking would have hedged.
             persistedBestShotID = savedState.bestShotLocalIdentifier
+            bestShotConfidence = .automatic
+            bestShotReasonCodes = []
         } else {
             persistedBestShotID = rankedBestShotID
         }
-        let filteredSelection = savedState.selectedLocalIdentifiers
-            .intersection(validIDs)
-            .subtracting([persistedBestShotID])
+        // With no Best Shot there is no protected photo, so a stored selection
+        // would be a ready-made way to delete every copy. It waits until the
+        // user picks one.
+        let filteredSelection = persistedBestShotID.isEmpty
+            ? []
+            : savedState.selectedLocalIdentifiers
+                .intersection(validIDs)
+                .subtracting([persistedBestShotID])
 
         applyState(
             bestShotAssetID: persistedBestShotID,

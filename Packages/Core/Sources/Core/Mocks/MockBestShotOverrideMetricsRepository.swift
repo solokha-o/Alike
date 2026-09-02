@@ -7,6 +7,7 @@ public actor MockBestShotOverrideMetricsRepository: BestShotOverrideMetricsRepos
     public private(set) var metrics = BestShotOverrideMetrics.empty
     public private(set) var recordedRecommendations: [BestShotConfidence] = []
     public private(set) var recordedManualPicks: [BestShotConfidence] = []
+    public private(set) var countedClusterIDs: Set<UUID> = []
     public private(set) var didReset = false
 
     public init() {}
@@ -17,8 +18,9 @@ public actor MockBestShotOverrideMetricsRepository: BestShotOverrideMetricsRepos
 
     public func loadMetrics() async -> BestShotOverrideMetrics { metrics }
 
-    public func recordRecommendation(confidence: BestShotConfidence) async {
+    public func recordRecommendation(confidence: BestShotConfidence, clusterID: UUID) async {
         guard confidence != .unresolved else { return }
+        guard countedClusterIDs.insert(clusterID).inserted else { return }
         recordedRecommendations.append(confidence)
         metrics.recommendationCount += 1
     }
@@ -39,6 +41,7 @@ public actor MockBestShotOverrideMetricsRepository: BestShotOverrideMetricsRepos
     public func resetMetrics() async {
         didReset = true
         metrics = .empty
+        countedClusterIDs = []
     }
 }
 

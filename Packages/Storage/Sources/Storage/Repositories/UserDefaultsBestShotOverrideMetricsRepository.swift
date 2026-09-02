@@ -9,25 +9,40 @@ import os
 public actor UserDefaultsBestShotOverrideMetricsRepository: BestShotOverrideMetricsRepository {
     private static let writeLock = OSAllocatedUnfairLock<Void>()
 
+    /// Enough clusters to calibrate on, and small enough to keep out of the
+    /// way in `UserDefaults`; past it the denominator simply stops growing.
+    private static let maximumCountedClusters = 2_000
+
     private let defaults: UserDefaults
     private let key: String
+    private let countedClustersKey: String
 
     public init(
         defaults: UserDefaults = .standard,
-        key: String = AppPreferenceKey.BestShot.overrideMetrics
+        key: String = AppPreferenceKey.BestShot.overrideMetrics,
+        countedClustersKey: String = AppPreferenceKey.BestShot.countedRecommendationClusters
     ) {
         self.defaults = defaults
         self.key = key
+        self.countedClustersKey = countedClustersKey
     }
 
     public func loadMetrics() -> BestShotOverrideMetrics {
         Self.writeLock.withLockUnchecked { storedMetrics() }
     }
 
-    public func recordRecommendation(confidence: BestShotConfidence) {
+    public func recordRecommendation(confidence: BestShotConfidence, clusterID: UUID) {
         guard confidence != .unresolved else { return }
-        update { metrics in
+        Self.writeLock.withLockUnchecked {
+            var counted = countedClusters()
+            guard counted.count < Self.maximumCountedClusters else { return }
+            guard counted.insert(clusterID.uuidString).inserted else { return }
+            defaults.set(Array(counted), forKey: countedClustersKey)
+
+            var metrics = storedMetrics()
             metrics.recommendationCount += 1
+            guard let data = try? JSONEncoder().encode(metrics) else { return }
+            defaults.set(data, forKey: key)
         }
     }
 
@@ -48,6 +63,7 @@ public actor UserDefaultsBestShotOverrideMetricsRepository: BestShotOverrideMetr
     public func resetMetrics() {
         Self.writeLock.withLockUnchecked {
             defaults.removeObject(forKey: key)
+            defaults.removeObject(forKey: countedClustersKey)
         }
     }
 
@@ -58,6 +74,10 @@ public actor UserDefaultsBestShotOverrideMetricsRepository: BestShotOverrideMetr
             guard let data = try? JSONEncoder().encode(metrics) else { return }
             defaults.set(data, forKey: key)
         }
+    }
+
+    private func countedClusters() -> Set<String> {
+        Set(defaults.stringArray(forKey: countedClustersKey) ?? [])
     }
 
     private func storedMetrics() -> BestShotOverrideMetrics {

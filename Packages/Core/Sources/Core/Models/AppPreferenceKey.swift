@@ -19,6 +19,9 @@ public enum AppPreferenceKey {
     /// describe app behaviour, not an entitlement.
     public enum BestShot {
         public static let overrideMetrics = "bestShot.overrideMetrics.v1"
+        /// Clusters already counted as "a recommendation was shown", so a
+        /// revisit does not count twice.
+        public static let countedRecommendationClusters = "bestShot.countedRecommendationClusters.v1"
     }
 
     public enum Premium {
@@ -49,6 +52,7 @@ public enum AppPreferenceKey {
 
     public static let resettable: [String] = [
         BestShot.overrideMetrics,
+        BestShot.countedRecommendationClusters,
         PhotoGrid.compactColumns,
         PhotoGrid.regularColumns,
         legacyGridColumns,

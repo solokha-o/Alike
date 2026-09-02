@@ -8,20 +8,59 @@ import UIKit
 #endif
 
 enum AnalysisImageProvider {
+    /// What the caller needs from the image, which is not the same thing for
+    /// both analyses.
+    enum Fidelity {
+        /// Blur detection's first pass: whatever PhotoKit already has cached is
+        /// good enough, and it must never wait on the network.
+        case fastPass
+        /// Best Shot scoring: the score is a comparison between photos, so it
+        /// needs the real pixels at the requested size. A cached 60 px preview
+        /// would make sharpness a measurement of PhotoKit's cache, not of the
+        /// photo.
+        case precise
+
+        var requestOptions: PHImageRequestOptions {
+            let options = PHImageRequestOptions()
+            options.isSynchronous = false
+            switch self {
+            case .fastPass:
+                options.deliveryMode = .fastFormat
+                options.resizeMode = .fast
+                options.isNetworkAccessAllowed = false
+            case .precise:
+                options.deliveryMode = .highQualityFormat
+                options.resizeMode = .exact
+                options.isNetworkAccessAllowed = true
+            }
+            return options
+        }
+    }
+
+    /// Blur detection's image request.
+    static func requestFastImage(asset: PHAsset, targetSize: CGSize) async throws -> CGImage? {
+        try await requestImage(asset: asset, targetSize: targetSize, fidelity: .fastPass)
+    }
+
+    /// Best Shot scoring's image request.
+    static func requestPreciseImage(asset: PHAsset, targetSize: CGSize) async throws -> CGImage? {
+        try await requestImage(asset: asset, targetSize: targetSize, fidelity: .precise)
+    }
+
     /// One PhotoKit thumbnail request path, shared by blur detection and quality
     /// scoring, so both get the same timeout and cancellation behaviour.
-    static func requestImage(asset: PHAsset, targetSize: CGSize) async throws -> CGImage? {
+    static func requestImage(
+        asset: PHAsset,
+        targetSize: CGSize,
+        fidelity: Fidelity
+    ) async throws -> CGImage? {
         #if canImport(UIKit)
         let requestState = AnalysisThumbnailRequestState()
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 guard requestState.install(continuation) else { return }
 
-                let options = PHImageRequestOptions()
-                options.deliveryMode = .fastFormat
-                options.resizeMode = .fast
-                options.isNetworkAccessAllowed = false
-                options.isSynchronous = false
+                let options = fidelity.requestOptions
 
                 requestState.startTimeout()
                 let requestID = PHImageManager.default().requestImage(
