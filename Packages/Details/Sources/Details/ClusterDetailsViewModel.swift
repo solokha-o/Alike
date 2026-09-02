@@ -336,10 +336,20 @@ final class ClusterDetailsViewModel {
         enqueueCurrentStatePersistence()
         Task { await refreshEnhancementAvailability() }
         if let replacedConfidence, let overrideMetrics {
+            let clusterID = cluster.id
             Task {
+                // The recommendation goes in first. The screen is interactive
+                // before scoring finishes, so this override can be the thing
+                // that happens before the recommendation was ever recorded —
+                // and then neither side of the rate would exist. Recording is
+                // deduped per cluster, so this is a no-op once it is counted.
+                await overrideMetrics.recordRecommendation(
+                    confidence: replacedConfidence,
+                    clusterID: clusterID
+                )
                 await overrideMetrics.recordManualPick(
                     replacing: replacedConfidence,
-                    clusterID: cluster.id
+                    clusterID: clusterID
                 )
             }
         }
@@ -510,6 +520,11 @@ extension ClusterDetailsViewModel {
         assets.first { $0.localIdentifier == bestShotAssetID }
     }
 
+    /// The live asset an enhancement request was frozen on.
+    func asset(withIdentifier localIdentifier: String) -> PHAsset? {
+        assets.first { $0.localIdentifier == localIdentifier }
+    }
+
     var isBestShotEnhanced: Bool {
         isEnhanced(bestShotAssetID)
     }
@@ -548,16 +563,28 @@ extension ClusterDetailsViewModel {
     }
 
     /// Renders the "after" image. Nothing is written to the library yet.
-    func enhance(previewSize: CGSize) async {
+    /// Claims the current Best Shot for an enhancement the user just asked for.
+    ///
+    /// Called when the action is tapped rather than when the preview task
+    /// starts: between those two moments a late ranking could otherwise move
+    /// the Best Shot, and the cover would open on a different photo than the
+    /// one the user tapped. Returns the frozen identifier, or `nil` when there
+    /// is nothing to enhance.
+    func beginEnhancementRequest() -> String? {
+        guard enhancementService != nil, !bestShotAssetID.isEmpty else { return nil }
+        guard enhancementState != .unavailable else { return nil }
+        interactionGeneration &+= 1
+        return bestShotAssetID
+    }
+
+    func enhance(previewSize: CGSize, for requestedIdentifier: String? = nil) async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
 
-        // Opening the preview is the user acting on this photo: a ranking that
-        // lands afterwards must not move the Best Shot while the cover is up,
-        // or the preview would belong to a photo that is no longer on screen.
+        let localIdentifier = requestedIdentifier ?? bestShotAssetID
+        // The photo the user tapped is the photo this preview is for.
+        guard localIdentifier == bestShotAssetID else { return }
         interactionGeneration &+= 1
-
-        let localIdentifier = bestShotAssetID
         enhancementState = .preparingPreview
         do {
             let preview = try await enhancementService.renderPreview(
@@ -579,13 +606,13 @@ extension ClusterDetailsViewModel {
         enhancementState = .idle
     }
 
-    func applyEnhancement() async {
+    func applyEnhancement(for requestedIdentifier: String? = nil) async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
 
+        let localIdentifier = requestedIdentifier ?? bestShotAssetID
+        guard localIdentifier == bestShotAssetID else { return }
         interactionGeneration &+= 1
-
-        let localIdentifier = bestShotAssetID
         let previousState = enhancementState
         enhancementState = .applying
         do {

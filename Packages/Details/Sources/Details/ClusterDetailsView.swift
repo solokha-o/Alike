@@ -346,7 +346,13 @@ public struct ClusterDetailsView: View {
                                     : .unavailable,
                                 onEnhance: viewModel.isBestShot(asset.localIdentifier)
                                     && viewModel.isEnhancementActionVisible
-                                    ? { enhancementRequest = EnhancementRequest() }
+                                    ? {
+                                        // Freeze the photo at the tap, so a late
+                                        // ranking cannot retarget the cover.
+                                        if let assetID = viewModel.beginEnhancementRequest() {
+                                            enhancementRequest = EnhancementRequest(assetID: assetID)
+                                        }
+                                    }
                                     : nil,
                                 onRevertEnhancement: viewModel.isBestShot(asset.localIdentifier)
                                     && viewModel.isEnhancementActionVisible
@@ -900,6 +906,8 @@ private struct PhotoInfoLocationSection: View {
 /// Identifies one presentation of the enhancement preview sheet.
 private struct EnhancementRequest: Identifiable {
     let id = UUID()
+    /// The photo this preview belongs to, frozen when the action was tapped.
+    let assetID: String
 }
 
 #else

@@ -179,7 +179,11 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         }
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
 
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        // The action is tapped: the photo is frozen here, before the cover's
+        // task ever runs.
+        let requestedID = viewModel.beginEnhancementRequest()
+        XCTAssertEqual(requestedID, "best")
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
         XCTAssertEqual(viewModel.enhancementState, .previewing)
 
         // Scoring finishes now and would have crowned the other photo.
@@ -205,6 +209,57 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertEqual(viewModel.bestShotAssetID, "best")
         XCTAssertEqual(viewModel.enhancementState, .previewing)
         XCTAssertNotNil(viewModel.enhancementPreview)
+    }
+
+    /// The tap and the cover's task are two moments; the ranking must be frozen
+    /// at the first of them, or the cover opens on a different photo.
+    func testTheAssetIsFrozenWhenTheActionIsTappedNotWhenThePreviewStarts() async {
+        let analyzer = StallingQualityAnalyzer()
+        let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        let requestedID = viewModel.beginEnhancementRequest()
+
+        // Scoring lands in the gap between the tap and the preview task.
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "best",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 5, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "other",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
+
+        XCTAssertEqual(requestedID, "best")
+        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        XCTAssertEqual(viewModel.enhancementState, .previewing)
+        XCTAssertNotNil(viewModel.enhancementPreview)
+    }
+
+    /// A preview for a photo that is no longer the Best Shot renders nothing.
+    func testAStalePreviewRequestIsIgnored() async {
+        let viewModel = makeViewModel(service: FakeEnhancementService())
+        await viewModel.load()
+
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "other")
+
+        XCTAssertNil(viewModel.enhancementPreview)
+        XCTAssertEqual(viewModel.enhancementState, .idle)
     }
 
     // MARK: - Failures
