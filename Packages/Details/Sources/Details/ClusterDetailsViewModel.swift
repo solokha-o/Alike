@@ -65,6 +65,9 @@ final class ClusterDetailsViewModel {
     var isDeleteConfirmationPresented = false
     private(set) var isDeleting = false
     private(set) var actionErrorMessage: String?
+    /// Which action failed — the alert must not call a failed enhancement a
+    /// failed cleanup.
+    private(set) var actionErrorTitle: String = DetailsL10n.Common.cleanupUnavailable
     private(set) var shouldOfferOpenSettings = false
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentAlikeReaction: AlikeReactionCue?
@@ -440,6 +443,7 @@ final class ClusterDetailsViewModel {
             enhancementState = enhancementRecoveryState
         }
         actionErrorMessage = nil
+        actionErrorTitle = DetailsL10n.Common.cleanupUnavailable
         shouldOfferOpenSettings = false
         if let currentAlikeReaction,
            currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
@@ -586,7 +590,8 @@ extension ClusterDetailsViewModel {
         applyActionFailure(
             message: Self.enhancementErrorMessage(for: enhancementError),
             offersOpenSettings: enhancementError == .notAuthorized
-                || enhancementError == .limitedAccessNotEditable
+                || enhancementError == .limitedAccessNotEditable,
+            title: DetailsL10n.ClusterDetails.enhancementUnavailableTitle
         )
     }
 
@@ -598,10 +603,14 @@ extension ClusterDetailsViewModel {
             return DetailsL10n.ClusterDetails.enhancementLimitedAccess
         case .originalUnavailable:
             return DetailsL10n.ClusterDetails.enhancementOriginalUnavailable
-        case .renderFailed, .saveFailed:
-            return DetailsL10n.ClusterDetails.enhancementFailed
+        case .renderFailed:
+            return DetailsL10n.ClusterDetails.enhancementRenderFailed
+        case .saveFailed:
+            return DetailsL10n.ClusterDetails.enhancementSaveFailed
         case .notEnhancedByAlike:
             return DetailsL10n.ClusterDetails.enhancementNotOurs
+        case .unsupportedAsset:
+            return DetailsL10n.ClusterDetails.enhancementUnsupportedAsset
         }
     }
 }
@@ -763,8 +772,13 @@ private extension ClusterDetailsViewModel {
         }
     }
 
-    func applyActionFailure(message: String, offersOpenSettings: Bool) {
+    func applyActionFailure(
+        message: String,
+        offersOpenSettings: Bool,
+        title: String = DetailsL10n.Common.cleanupUnavailable
+    ) {
         actionErrorMessage = message
+        actionErrorTitle = title
         shouldOfferOpenSettings = offersOpenSettings
         pendingCompletionRecord = nil
     }

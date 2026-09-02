@@ -110,7 +110,39 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
+    func testApplyingPassesTheRenderedRecipeToTheSaveStep() async throws {
+        let library = FakePhotoLibrary()
+        let service = makeService(library: library)
+
+        let adjustment = try await service.applyEnhancement(localIdentifier: identifier)
+
+        // The recipe replayed on a Live Photo's frames must describe the same
+        // steps that were stamped into the adjustment data.
+        let recipeStepCount = await library.savedRecipeStepCount
+        XCTAssertEqual(recipeStepCount, adjustment.steps.count)
+    }
+
+    func testAnUnsupportedAssetIsRefusedBeforeAnythingIsWritten() async {
+        let library = FakePhotoLibrary(isSupported: false)
+        let service = makeService(library: library)
+
+        await assertThrows(.unsupportedAsset) {
+            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+        }
+
+        let saved = await library.savedAdjustmentData
+        XCTAssertNil(saved)
+    }
+
     // MARK: - Availability
+
+    func testEnhancementIsUnavailableForAnUnsupportedAsset() async {
+        let service = makeService(library: FakePhotoLibrary(isSupported: false))
+
+        let canEnhance = await service.canEnhance(localIdentifier: identifier)
+
+        XCTAssertFalse(canEnhance)
+    }
 
     func testEnhancementIsUnavailableForANonEditableAsset() async {
         let service = makeService(library: FakePhotoLibrary(isEditable: false))
@@ -208,22 +240,26 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 private actor FakePhotoLibrary {
     private let isMissing: Bool
     private let isEditable: Bool
+    private let isSupported: Bool
     private let existingAdjustmentFormatIdentifier: String?
     private let originalError: Error?
     private let saveError: Error?
 
     private(set) var savedAdjustmentData: Data?
+    private(set) var savedRecipeStepCount: Int?
     private(set) var didRevert = false
 
     init(
         isMissing: Bool = false,
         isEditable: Bool = true,
+        isSupported: Bool = true,
         existingAdjustmentFormatIdentifier: String? = nil,
         originalError: Error? = nil,
         saveError: Error? = nil
     ) {
         self.isMissing = isMissing
         self.isEditable = isEditable
+        self.isSupported = isSupported
         self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
         self.originalError = originalError
         self.saveError = saveError
@@ -233,14 +269,15 @@ private actor FakePhotoLibrary {
         guard !isMissing else { return nil }
         return ResolvedPhotoEnhancementRequest(
             isEditable: isEditable,
+            isSupported: isSupported,
             existingAdjustmentFormatIdentifier: existingAdjustmentFormatIdentifier,
             loadOriginal: { [self] in
                 if let originalError = await self.originalError { throw originalError }
                 return CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 256, height: 256))
             },
-            saveEnhanced: { [self] _, adjustmentData in
+            saveEnhanced: { [self] _, recipe, adjustmentData in
                 if let saveError = await self.saveError { throw saveError }
-                await self.recordSave(adjustmentData)
+                await self.recordSave(adjustmentData, recipeStepCount: recipe.steps.count)
             },
             revertToOriginal: { [self] in
                 await self.recordRevert()
@@ -248,8 +285,9 @@ private actor FakePhotoLibrary {
         )
     }
 
-    private func recordSave(_ adjustmentData: Data) {
+    private func recordSave(_ adjustmentData: Data, recipeStepCount: Int) {
         savedAdjustmentData = adjustmentData
+        savedRecipeStepCount = recipeStepCount
     }
 
     private func recordRevert() {

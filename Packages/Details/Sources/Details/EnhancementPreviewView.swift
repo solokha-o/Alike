@@ -63,17 +63,26 @@ struct EnhancementPreviewView: View {
                 dismiss()
             }
             .buttonStyle(.bordered)
+            // Only the plain controls take the white tint. A prominent button
+            // tinted white paints a white label on a white background.
+            .tint(.white)
 
             compareButton
+                .layoutPriority(-1)
 
-            Button(DetailsL10n.ClusterDetails.applyEnhancement) {
+            Button {
                 onApply()
                 dismiss()
+            } label: {
+                Text(DetailsL10n.ClusterDetails.applyEnhancement)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
             }
             .buttonStyle(.borderedProminent)
+            .tint(Color.accent)
             .disabled(enhancedImage == nil || state.isBusy)
+            .opacity(enhancedImage == nil || state.isBusy ? 0.6 : 1)
         }
-        .tint(.white)
         .padding(Spacing.medium)
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial)

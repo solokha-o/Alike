@@ -39,6 +39,9 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
     /// The asset carries someone else's edit; reverting would throw away work
     /// Alike did not do.
     case notEnhancedByAlike
+    /// Nothing Alike can edit: a video, or a live asset the library refuses to
+    /// hand over as an editable Live Photo.
+    case unsupportedAsset
 
     public var errorDescription: String? {
         switch self {
@@ -54,6 +57,8 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
             "Couldn't save the enhanced photo to your library."
         case .notEnhancedByAlike:
             "This photo was edited outside Alike, so Alike won't undo that edit."
+        case .unsupportedAsset:
+            "Alike can only enhance photos for now."
         }
     }
 
@@ -69,6 +74,8 @@ public enum PhotoEnhancementError: LocalizedError, Equatable, Sendable {
             "Try again in a moment."
         case .notEnhancedByAlike:
             "Use the Photos app to revert edits made by another app."
+        case .unsupportedAsset:
+            "Pick a photo instead, or edit this one in the Photos app."
         }
     }
 }

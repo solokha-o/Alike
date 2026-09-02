@@ -9,13 +9,41 @@ import Foundation
 struct ResolvedPhotoEnhancementRequest: Sendable {
     /// `false` for assets the user may not edit (shared, iCloud-restricted…).
     let isEditable: Bool
+    /// `false` for anything Alike cannot render at all — a video, or a live
+    /// asset the library refuses to hand over as an editable Live Photo.
+    let isSupported: Bool
     /// Format identifier of the adjustment already on the asset, if any.
     let existingAdjustmentFormatIdentifier: String?
-    /// The unedited original, as the library hands it back.
+    /// The unedited original still, as the library hands it back.
     let loadOriginal: @Sendable () async throws -> CIImage
-    /// Writes the rendered image and the adjustment data as one edit.
-    let saveEnhanced: @Sendable (CIImage, Data) async throws -> Void
+    /// Writes the edit as one change: the rendered still, the recipe to replay
+    /// on a Live Photo's video frames, and the adjustment data to stamp it with.
+    let saveEnhanced: @Sendable (
+        CIImage,
+        AutoEnhancementRenderer.AppliedRecipe,
+        Data
+    ) async throws -> Void
     let revertToOriginal: @Sendable () async throws -> Void
+
+    init(
+        isEditable: Bool,
+        isSupported: Bool = true,
+        existingAdjustmentFormatIdentifier: String?,
+        loadOriginal: @escaping @Sendable () async throws -> CIImage,
+        saveEnhanced: @escaping @Sendable (
+            CIImage,
+            AutoEnhancementRenderer.AppliedRecipe,
+            Data
+        ) async throws -> Void,
+        revertToOriginal: @escaping @Sendable () async throws -> Void
+    ) {
+        self.isEditable = isEditable
+        self.isSupported = isSupported
+        self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
+        self.loadOriginal = loadOriginal
+        self.saveEnhanced = saveEnhanced
+        self.revertToOriginal = revertToOriginal
+    }
 }
 
 /// Non-destructive auto-enhancement backed by PhotoKit content editing.
@@ -64,7 +92,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     public func canEnhance(localIdentifier: String) async -> Bool {
         guard (try? authorize()) != nil else { return false }
         guard let request = await requestBuilder(localIdentifier) else { return false }
-        return request.isEditable
+        return request.isEditable && request.isSupported
     }
 
     public func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage {
@@ -96,12 +124,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         }
 
         do {
-            try await request.saveEnhanced(rendered.image, encodedAdjustment)
+            try await request.saveEnhanced(rendered.image, rendered.recipe, encodedAdjustment)
         } catch let error as PhotoEnhancementError {
+            AppLog.photoKit.error(
+                "\(AppLog.tag(.error, "Enhancement save failed: \(Self.describe(error))"))"
+            )
             throw error
         } catch {
             AppLog.photoKit.error(
-                "\(AppLog.tag(.error, "Enhancement save failed: \(error.localizedDescription)"))"
+                "\(AppLog.tag(.error, "Enhancement save failed: \(Self.describe(error))"))"
             )
             throw PhotoEnhancementError.saveFailed
         }
@@ -124,7 +155,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             throw error
         } catch {
             AppLog.photoKit.error(
-                "\(AppLog.tag(.error, "Revert failed: \(error.localizedDescription)"))"
+                "\(AppLog.tag(.error, "Revert failed: \(Self.describe(error))"))"
             )
             throw PhotoEnhancementError.saveFailed
         }
@@ -144,6 +175,9 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         guard let request = await requestBuilder(localIdentifier) else {
             throw PhotoEnhancementError.originalUnavailable
         }
+        guard request.isSupported else {
+            throw PhotoEnhancementError.unsupportedAsset
+        }
         guard request.isEditable else {
             throw PhotoEnhancementError.limitedAccessNotEditable
         }
@@ -158,6 +192,17 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         } catch {
             throw PhotoEnhancementError.originalUnavailable
         }
+    }
+
+    /// Spells out the underlying failure — a `PhotoEnhancementError` alone
+    /// cannot say whether PhotoKit refused the save or the file could not be
+    /// written, and that difference is the whole diagnosis on a device.
+    static func describe(_ error: Error) -> String {
+        if let enhancementError = error as? PhotoEnhancementError {
+            return "\(enhancementError)"
+        }
+        let nsError = error as NSError
+        return "\(nsError.domain) code=\(nsError.code) \(nsError.localizedDescription)"
     }
 
     private func authorize() throws {
@@ -238,8 +283,25 @@ private extension PhotoKitEnhancementService {
         }
 
         let renderer = AutoEnhancementRenderer()
+        let isLivePhoto = asset.mediaSubtypes.contains(.photoLive)
+        // A live asset without a Live Photo input cannot be edited at all; a
+        // still one is supported whatever its format.
+        let isSupported = asset.mediaType == .image
+            && (!isLivePhoto || editingInput.value.livePhoto != nil)
+
+        AppLog.photoKit.debug(
+            """
+            \(AppLog.tag(.photokit, """
+            Enhancement input ready live=\(isLivePhoto) supported=\(isSupported) \
+            editable=\(asset.canPerform(.content)) \
+            source=\(editingInput.value.fullSizeImageURL?.pathExtension ?? "none")
+            """))
+            """
+        )
+
         return ResolvedPhotoEnhancementRequest(
             isEditable: asset.canPerform(.content),
+            isSupported: isSupported,
             existingAdjustmentFormatIdentifier: editingInput.value.adjustmentData?.formatIdentifier,
             loadOriginal: {
                 let input = editingInput.value
@@ -249,18 +311,36 @@ private extension PhotoKitEnhancementService {
                 }
                 return image.oriented(forExifOrientation: input.fullSizeImageOrientation)
             },
-            saveEnhanced: { image, adjustmentData in
-                let output = PHContentEditingOutput(contentEditingInput: editingInput.value)
+            saveEnhanced: { image, recipe, adjustmentData in
+                let input = editingInput.value
+                let output = PHContentEditingOutput(contentEditingInput: input)
                 output.adjustmentData = PHAdjustmentData(
                     formatIdentifier: PhotoEnhancementAdjustment.formatIdentifier,
                     formatVersion: PhotoEnhancementAdjustment.formatVersion,
                     data: adjustmentData
                 )
-                do {
-                    try renderer.writeJPEG(image, to: output.renderedContentURL)
-                } catch {
-                    throw PhotoEnhancementError.renderFailed
+
+                if input.livePhoto != nil {
+                    // A Live Photo has to be written through its own editing
+                    // context, so the still and every video frame carry the
+                    // same grade and the asset stays a Live Photo.
+                    try await saveLivePhoto(
+                        input: input,
+                        output: output,
+                        recipe: recipe,
+                        renderer: renderer
+                    )
+                } else {
+                    do {
+                        try renderer.writeJPEG(image, to: output.renderedContentURL)
+                    } catch {
+                        AppLog.photoKit.error(
+                            "\(AppLog.tag(.error, "Rendered file write failed: \(describe(error))"))"
+                        )
+                        throw PhotoEnhancementError.renderFailed
+                    }
                 }
+
                 try await performChanges {
                     let request = PHAssetChangeRequest(for: asset)
                     request.contentEditingOutput = output
@@ -272,6 +352,40 @@ private extension PhotoKitEnhancementService {
                 }
             }
         )
+    }
+
+    /// Applies the recipe to the still and to every video frame, then writes
+    /// the pair into `output` — the only way to keep a Live Photo alive through
+    /// an edit, and still revertible.
+    static func saveLivePhoto(
+        input: PHContentEditingInput,
+        output: PHContentEditingOutput,
+        recipe: AutoEnhancementRenderer.AppliedRecipe,
+        renderer: AutoEnhancementRenderer
+    ) async throws {
+        guard let context = PHLivePhotoEditingContext(livePhotoEditingInput: input) else {
+            throw PhotoEnhancementError.unsupportedAsset
+        }
+        context.frameProcessor = { frame, _ in
+            renderer.apply(recipe, to: frame.image)
+        }
+
+        let editingContext = UncheckedSendableBox(context)
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                editingContext.value.saveLivePhoto(to: output) { success, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else if success {
+                        continuation.resume(returning: ())
+                    } else {
+                        continuation.resume(throwing: PhotoEnhancementError.renderFailed)
+                    }
+                }
+            }
+        } onCancel: {
+            editingContext.value.cancel()
+        }
     }
 
     static func requestContentEditingInput(

@@ -52,8 +52,14 @@ public enum DetailsL10n {
         public static var enhance: String { DetailsL10n.string("details.clusterDetails.enhance") }
         /// Enhanced
         public static var enhanced: String { DetailsL10n.string("details.clusterDetails.enhanced") }
-        /// Couldn't enhance this photo. Please try again in a moment.
-        public static var enhancementFailed: String { DetailsL10n.string("details.clusterDetails.enhancementFailed") }
+        /// Couldn't prepare the enhanced version of this photo.
+        public static var enhancementRenderFailed: String { DetailsL10n.string("details.clusterDetails.enhancementRenderFailed") }
+        /// Couldn't save the enhanced photo to your library.
+        public static var enhancementSaveFailed: String { DetailsL10n.string("details.clusterDetails.enhancementSaveFailed") }
+        /// Enhancement Unavailable
+        public static var enhancementUnavailableTitle: String { DetailsL10n.string("details.clusterDetails.enhancementUnavailableTitle") }
+        /// Alike can only enhance photos for now.
+        public static var enhancementUnsupportedAsset: String { DetailsL10n.string("details.clusterDetails.enhancementUnsupportedAsset") }
         /// Photos shared through limited access can't be enhanced.
         public static var enhancementLimitedAccess: String { DetailsL10n.string("details.clusterDetails.enhancementLimitedAccess") }
         /// This photo was edited outside Alike, so Alike won't undo that edit.

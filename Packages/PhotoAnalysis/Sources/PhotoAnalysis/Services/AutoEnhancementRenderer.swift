@@ -11,7 +11,31 @@ import Foundation
 struct AutoEnhancementRenderer: Sendable {
     struct Output {
         let image: CIImage
+        /// The recipe as it is stored in the library's adjustment data: filter
+        /// names and their numeric parameters, readable by a future version.
         let adjustment: PhotoEnhancementAdjustment
+        /// The filters that produced `image`, ready to be replayed on another
+        /// frame and reproduce this exact rendering.
+        let recipe: AppliedRecipe
+    }
+
+    /// A rendering recipe holding the very filters that produced it.
+    ///
+    /// Rebuilding a filter from its name is not enough: `autoAdjustmentFilters`
+    /// hands back private filters (`CIFaceBalance` among them) that
+    /// `CIFilter(name:)` cannot recreate faithfully, and the replay would then
+    /// silently drop a step. Each application copies the prototype instead.
+    ///
+    /// `@unchecked Sendable`: the prototypes are never mutated after they are
+    /// captured — every use works on a copy.
+    struct AppliedRecipe: @unchecked Sendable {
+        struct Step {
+            let prototype: CIFilter
+        }
+
+        let steps: [Step]
+
+        static let empty = AppliedRecipe(steps: [])
     }
 
     private enum Constants {
@@ -31,6 +55,7 @@ struct AutoEnhancementRenderer: Sendable {
     func render(_ image: CIImage, allowsSharpening: Bool = false) -> Output {
         var output = image
         var steps: [PhotoEnhancementAdjustment.Step] = []
+        var recipeSteps: [AppliedRecipe.Step] = []
 
         // Apple's own auto adjustments: exposure, contrast, shadows, tone and
         // white balance, each already bounded by the analysis of this photo.
@@ -40,6 +65,7 @@ struct AutoEnhancementRenderer: Sendable {
             .level: false
         ])
         for filter in filters {
+            let prototype = (filter.copy() as? CIFilter) ?? filter
             filter.setValue(output, forKey: kCIInputImageKey)
             guard let filtered = filter.outputImage else { continue }
             output = filtered
@@ -49,14 +75,20 @@ struct AutoEnhancementRenderer: Sendable {
                     parameters: numericParameters(of: filter)
                 )
             )
+            recipeSteps.append(AppliedRecipe.Step(prototype: prototype))
         }
 
         if allowsSharpening, let sharpened = unsharpMask(output) {
             output = sharpened.image
             steps.append(sharpened.step)
+            recipeSteps.append(AppliedRecipe.Step(prototype: sharpened.prototype))
         }
 
-        return Output(image: output, adjustment: PhotoEnhancementAdjustment(steps: steps))
+        return Output(
+            image: output,
+            adjustment: PhotoEnhancementAdjustment(steps: steps),
+            recipe: AppliedRecipe(steps: recipeSteps)
+        )
     }
 
     /// Screen-sized preview. Nothing here touches the photo library.
@@ -75,11 +107,16 @@ struct AutoEnhancementRenderer: Sendable {
     }
 
     /// Writes the rendered image where the photo library expects it.
+    ///
+    /// Never in the source's own colour space: iPhone HDR captures carry an
+    /// HLG/PQ space that JPEG cannot represent and `writeJPEGRepresentation`
+    /// rejects outright, which is invisible on synthetic test images and fatal
+    /// on a real photo.
     func writeJPEG(_ image: CIImage, to url: URL) throws {
         try context.writeJPEGRepresentation(
-            of: image,
+            of: normalized(image),
             to: url,
-            colorSpace: image.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
+            colorSpace: Self.outputColorSpace,
             options: [
                 CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
                     Constants.jpegQuality
@@ -87,11 +124,45 @@ struct AutoEnhancementRenderer: Sendable {
         )
     }
 
-    private func unsharpMask(_ image: CIImage) -> (image: CIImage, step: PhotoEnhancementAdjustment.Step)? {
+    static let outputColorSpace: CGColorSpace = CGColorSpace(name: CGColorSpace.displayP3)
+        ?? CGColorSpaceCreateDeviceRGB()
+
+    /// Moves the image back to the origin when a filter or an orientation fix
+    /// shifted its extent; an infinite extent has nothing to write.
+    func normalized(_ image: CIImage) -> CIImage {
+        let extent = image.extent
+        guard extent.isInfinite == false else { return image }
+        guard extent.origin != .zero else { return image }
+        return image.transformed(
+            by: CGAffineTransform(translationX: -extent.origin.x, y: -extent.origin.y)
+        )
+    }
+
+    /// Replays a recipe on another image.
+    ///
+    /// The auto-adjustment parameters are measured once on the still frame and
+    /// then applied unchanged, which is what keeps every frame of a Live Photo
+    /// graded exactly like its still. A fresh `CIFilter` is built per call, so
+    /// frames can be processed concurrently without sharing filter state.
+    func apply(_ recipe: AppliedRecipe, to image: CIImage) -> CIImage {
+        var output = image
+        for step in recipe.steps {
+            guard let filter = step.prototype.copy() as? CIFilter else { continue }
+            filter.setValue(output, forKey: kCIInputImageKey)
+            guard let filtered = filter.outputImage else { continue }
+            output = filtered
+        }
+        return output
+    }
+
+    private func unsharpMask(
+        _ image: CIImage
+    ) -> (image: CIImage, step: PhotoEnhancementAdjustment.Step, prototype: CIFilter)? {
         guard let filter = CIFilter(name: "CIUnsharpMask") else { return nil }
-        filter.setValue(image, forKey: kCIInputImageKey)
         filter.setValue(Constants.unsharpRadius, forKey: kCIInputRadiusKey)
         filter.setValue(Constants.unsharpIntensity, forKey: kCIInputIntensityKey)
+        let prototype = (filter.copy() as? CIFilter) ?? filter
+        filter.setValue(image, forKey: kCIInputImageKey)
         guard let output = filter.outputImage else { return nil }
         return (
             output,
@@ -101,7 +172,8 @@ struct AutoEnhancementRenderer: Sendable {
                     kCIInputRadiusKey: Constants.unsharpRadius,
                     kCIInputIntensityKey: Constants.unsharpIntensity
                 ]
-            )
+            ),
+            prototype
         )
     }
 

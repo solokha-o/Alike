@@ -161,7 +161,7 @@ public struct ClusterDetailsView: View {
             Text(viewModel.deleteConfirmationMessage)
         }
         .alert(
-            DetailsL10n.Common.cleanupUnavailable,
+            viewModel.actionErrorTitle,
             isPresented: Bindable(viewModel).isActionErrorPresented
         ) {
             if viewModel.shouldOfferOpenSettings {

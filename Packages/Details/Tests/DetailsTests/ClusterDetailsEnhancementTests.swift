@@ -109,7 +109,8 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         XCTAssertEqual(viewModel.enhancementState, .failed(.saveFailed))
         XCTAssertFalse(viewModel.isBestShotEnhanced)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementFailed)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementSaveFailed)
+        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
 
         viewModel.clearActionError()
 
@@ -131,6 +132,45 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         viewModel.clearActionError()
 
         XCTAssertEqual(viewModel.enhancementState, .applied)
+    }
+
+    func testRenderAndSaveFailuresHaveTheirOwnCopy() async {
+        let renderFailure = makeViewModel(service: FakeEnhancementService(previewError: .renderFailed))
+        await renderFailure.load()
+        await renderFailure.enhance(previewSize: CGSize(width: 100, height: 100))
+
+        XCTAssertEqual(renderFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementRenderFailed)
+
+        let saveFailure = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
+        await saveFailure.load()
+        await saveFailure.applyEnhancement()
+
+        XCTAssertEqual(saveFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementSaveFailed)
+        XCTAssertNotEqual(
+            renderFailure.actionErrorMessage,
+            saveFailure.actionErrorMessage,
+            "The two steps must be distinguishable from the alert alone"
+        )
+    }
+
+    func testAnUnsupportedAssetExplainsItself() async {
+        let viewModel = makeViewModel(service: FakeEnhancementService(previewError: .unsupportedAsset))
+        await viewModel.load()
+
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementUnsupportedAsset)
+        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
+    }
+
+    func testDismissingAnEnhancementAlertRestoresTheCleanupTitle() async {
+        let viewModel = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
+        await viewModel.load()
+        await viewModel.applyEnhancement()
+
+        viewModel.clearActionError()
+
+        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.Common.cleanupUnavailable)
     }
 
     func testNotAuthorizedFailureOffersSettings() async {
