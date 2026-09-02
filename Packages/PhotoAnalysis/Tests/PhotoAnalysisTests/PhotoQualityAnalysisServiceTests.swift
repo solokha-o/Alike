@@ -2,6 +2,7 @@ import Core
 import CoreGraphics
 import Foundation
 import Photos
+import Vision
 import XCTest
 @testable import PhotoAnalysis
 
@@ -78,6 +79,31 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         XCTAssertTrue(signals.isUsable)
         XCTAssertFalse(signals.hasFaces)
+    }
+
+    /// The subject is the face that fills the frame, not the sharpest one: a
+    /// small crisp bystander must not speak for a blurred person in front.
+    func testTheLargestFaceProvidesTheSubjectSignals() throws {
+        // Left half flat (the big, soft subject), right half a fine checkerboard
+        // (the small, sharp bystander).
+        let image = try XCTUnwrap(makeImage(side: 256, value: { x, _ in
+            guard x >= 128 else { return 127 }
+            return x.isMultiple(of: 2) ? 0 : 255
+        }))
+        let service = PhotoQualityAnalysisService(faceDetector: { _ in
+            [
+                // Vision boxes are normalized with a bottom-left origin.
+                VNFaceObservation(boundingBox: CGRect(x: 0.05, y: 0.2, width: 0.4, height: 0.6)),
+                VNFaceObservation(boundingBox: CGRect(x: 0.6, y: 0.4, width: 0.3, height: 0.3))
+            ]
+        })
+
+        let signals = service.signals(for: image, pixelArea: 1_000)
+        let subjectSharpness = try XCTUnwrap(signals.subjectSharpness)
+        let sharpestFace = try XCTUnwrap(signals.usableFaceSignals.map(\.sharpness).max())
+
+        XCTAssertEqual(signals.usableFaceSignals.count, 2)
+        XCTAssertLessThan(subjectSharpness, sharpestFace)
     }
 
     // MARK: - Batch behaviour

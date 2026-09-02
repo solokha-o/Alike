@@ -287,6 +287,29 @@ final class BestShotRankerTests: XCTestCase {
 
         XCTAssertEqual(decision.localIdentifier, "sharp1")
         XCTAssertFalse(decision.rankedCandidates.contains { $0.localIdentifier == "broken" })
+        // A row that says "could not measure" is not coverage: the ranking has
+        // no idea whether the broken photo was the better one.
+        XCTAssertEqual(decision.confidence, .lowConfidence)
+    }
+
+    func testAFailedMeasurementDowngradesTheMetadataFallbackToo() {
+        let decision = BestShotRanker.decide(
+            snapshots: [makeSnapshot("broken"), makeSnapshot("only-good")],
+            scores: makeScores([
+                PhotoQualityScore(
+                    localIdentifier: "broken",
+                    sourceModificationDate: nil,
+                    scoringModelVersion: config.scoringModelVersion,
+                    thumbnailConfigVersion: config.thumbnailConfigVersion,
+                    signals: .failed(.assetUnavailable)
+                ),
+                makeScore("only-good", globalSharpness: 60)
+            ])
+        )
+
+        // One usable photo falls back to metadata ranking, but measuring was
+        // attempted and failed, so the badge must not claim certainty.
+        XCTAssertEqual(decision.confidence, .lowConfidence)
     }
 
     func testPartialCoverageNeverClaimsFullConfidence() {

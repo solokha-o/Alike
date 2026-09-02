@@ -78,4 +78,24 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
             thumbnailConfigVersion: 1
         ))
     }
+
+    /// After the edit these signals are the only surviving measurement of the
+    /// original, and no version bump can bring the original pixels back — a
+    /// re-score would measure Alike's own enhancement instead.
+    func testEnhancedAssetsSurviveAScoringModelVersionBump() {
+        let score = PhotoQualityScore(
+            localIdentifier: "a",
+            sourceModificationDate: Date(timeIntervalSince1970: 500),
+            scoringModelVersion: 1,
+            thumbnailConfigVersion: 1,
+            signals: PhotoQualitySignals(globalSharpness: 20),
+            isAlikeEnhanced: true
+        )
+
+        XCTAssertTrue(score.isFresh(
+            modificationDate: Date(timeIntervalSince1970: 9_000),
+            scoringModelVersion: 2,
+            thumbnailConfigVersion: 3
+        ))
+    }
 }

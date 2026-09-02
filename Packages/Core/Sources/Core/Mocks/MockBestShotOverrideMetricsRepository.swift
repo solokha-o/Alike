@@ -25,7 +25,8 @@ public actor MockBestShotOverrideMetricsRepository: BestShotOverrideMetricsRepos
         metrics.recommendationCount += 1
     }
 
-    public func recordManualPick(replacing confidence: BestShotConfidence) async {
+    public func recordManualPick(replacing confidence: BestShotConfidence, clusterID: UUID) async {
+        guard confidence == .unresolved || countedClusterIDs.contains(clusterID) else { return }
         recordedManualPicks.append(confidence)
         switch confidence {
         case .automatic:

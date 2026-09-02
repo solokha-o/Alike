@@ -35,10 +35,11 @@ final class UserDefaultsBestShotOverrideMetricsRepositoryTests: XCTestCase {
     }
 
     func testCountsRecommendationsAndOverrides() async {
-        await repository.recordRecommendation(confidence: .automatic, clusterID: UUID())
+        let overriddenCluster = UUID()
+        await repository.recordRecommendation(confidence: .automatic, clusterID: overriddenCluster)
         await repository.recordRecommendation(confidence: .automatic, clusterID: UUID())
         await repository.recordRecommendation(confidence: .lowConfidence, clusterID: UUID())
-        await repository.recordManualPick(replacing: .automatic)
+        await repository.recordManualPick(replacing: .automatic, clusterID: overriddenCluster)
 
         let metrics = await repository.loadMetrics()
 
@@ -51,7 +52,7 @@ final class UserDefaultsBestShotOverrideMetricsRepositoryTests: XCTestCase {
     /// recommendation — nor an override when the user finally picks.
     func testUnresolvedClustersAreCountedSeparately() async {
         await repository.recordRecommendation(confidence: .unresolved, clusterID: UUID())
-        await repository.recordManualPick(replacing: .unresolved)
+        await repository.recordManualPick(replacing: .unresolved, clusterID: UUID())
 
         let metrics = await repository.loadMetrics()
 
@@ -61,12 +62,26 @@ final class UserDefaultsBestShotOverrideMetricsRepositoryTests: XCTestCase {
     }
 
     func testLowConfidenceOverridesAreTrackedApart() async {
-        await repository.recordManualPick(replacing: .lowConfidence)
+        let cluster = UUID()
+        await repository.recordRecommendation(confidence: .lowConfidence, clusterID: cluster)
+        await repository.recordManualPick(replacing: .lowConfidence, clusterID: cluster)
 
         let metrics = await repository.loadMetrics()
 
         XCTAssertEqual(metrics.manualOverrideCount, 1)
         XCTAssertEqual(metrics.lowConfidenceOverrideCount, 1)
+    }
+
+    /// The rate must describe the same clusters on both sides: an override for a
+    /// cluster whose recommendation was never counted cannot push it past 1.
+    func testAnOverrideWithoutACountedRecommendationIsNotCounted() async {
+        await repository.recordManualPick(replacing: .automatic, clusterID: UUID())
+
+        let metrics = await repository.loadMetrics()
+
+        XCTAssertEqual(metrics.recommendationCount, 0)
+        XCTAssertEqual(metrics.manualOverrideCount, 0)
+        XCTAssertEqual(metrics.overrideRate, 0)
     }
 
     func testCountersSurviveANewRepositoryInstance() async {
@@ -89,7 +104,7 @@ final class UserDefaultsBestShotOverrideMetricsRepositoryTests: XCTestCase {
         await repository.recordRecommendation(confidence: .automatic, clusterID: clusterID)
         await repository.recordRecommendation(confidence: .automatic, clusterID: clusterID)
         await repository.recordRecommendation(confidence: .lowConfidence, clusterID: clusterID)
-        await repository.recordManualPick(replacing: .automatic)
+        await repository.recordManualPick(replacing: .automatic, clusterID: clusterID)
 
         let metrics = await repository.loadMetrics()
         XCTAssertEqual(metrics.recommendationCount, 1)
@@ -97,8 +112,9 @@ final class UserDefaultsBestShotOverrideMetricsRepositoryTests: XCTestCase {
     }
 
     func testResetClearsEverything() async {
-        await repository.recordRecommendation(confidence: .automatic, clusterID: UUID())
-        await repository.recordManualPick(replacing: .automatic)
+        let cluster = UUID()
+        await repository.recordRecommendation(confidence: .automatic, clusterID: cluster)
+        await repository.recordManualPick(replacing: .automatic, clusterID: cluster)
 
         await repository.resetMetrics()
 

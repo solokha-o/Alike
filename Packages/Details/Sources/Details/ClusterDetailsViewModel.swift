@@ -32,6 +32,9 @@ final class ClusterDetailsViewModel {
     private let overrideMetrics: (any BestShotOverrideMetricsRepository)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
     private var persistenceTask: Task<Void, Never>?
+    /// Bumped by every user action on this screen, so a slow ranking that
+    /// arrives afterwards knows not to overwrite what the user just did.
+    private var interactionGeneration = 0
     private var alikeReactionResolver = AlikeReactionResolver()
     private let cleanupSelectionID = UUID()
     private var reviewCompletionGeneration = 0
@@ -211,16 +214,22 @@ final class ClusterDetailsViewModel {
             let preparedSnapshots = try await assetSnapshotLoader()
             let persistedState = await savedState
             try Task.checkCancellation()
-            let qualityScores = await loadQualityScores()
-            try Task.checkCancellation()
 
+            // The screen appears on what is already known — the persisted review
+            // and the metadata ranking. Quality scoring can decode photos and
+            // fetch originals from iCloud; making the whole screen wait on that
+            // would leave a spinner up for as long as the library is slow.
             applyLoadedState(
                 assetSnapshots: preparedSnapshots,
                 savedState: persistedState,
-                qualityScores: qualityScores
+                qualityScores: [:]
             )
-            await recordBestShotRecommendation()
             hasLoadedReviewState = true
+
+            await refineWithQualityScores(
+                assetSnapshots: preparedSnapshots,
+                savedState: persistedState
+            )
         } catch is CancellationError {
             return
         } catch {
@@ -232,6 +241,7 @@ final class ClusterDetailsViewModel {
     }
 
     func toggleSelection(for localIdentifier: String) {
+        interactionGeneration &+= 1
         // One photo of a cluster is always kept, and that photo is the Best
         // Shot. Until there is one, nothing here can be selected for deletion —
         // otherwise an unresolved cluster could be emptied completely.
@@ -257,6 +267,7 @@ final class ClusterDetailsViewModel {
     /// is what marks the cluster reviewed — including the "keep everything,
     /// nothing to clean here" case where no photo is selected at all.
     func toggleReviewConfirmation() {
+        interactionGeneration &+= 1
         // With no obvious Best Shot there is nothing to protect, but finishing
         // the review is still the user's call, so it stays available.
         guard !assetSnapshots.isEmpty else { return }
@@ -275,6 +286,7 @@ final class ClusterDetailsViewModel {
     /// photo's place in the selection when the review kept nothing but the best
     /// shot; when the user deliberately kept several photos it stays kept.
     func setBestShot(_ localIdentifier: String) {
+        interactionGeneration &+= 1
         guard localIdentifier != bestShotAssetID else { return }
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
@@ -300,11 +312,17 @@ final class ClusterDetailsViewModel {
         }
         enqueueCurrentStatePersistence()
         if let replacedConfidence, let overrideMetrics {
-            Task { await overrideMetrics.recordManualPick(replacing: replacedConfidence) }
+            Task {
+                await overrideMetrics.recordManualPick(
+                    replacing: replacedConfidence,
+                    clusterID: cluster.id
+                )
+            }
         }
     }
 
     func selectAllExceptBest() {
+        interactionGeneration &+= 1
         guard !bestShotAssetID.isEmpty else { return }
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
@@ -316,6 +334,7 @@ final class ClusterDetailsViewModel {
     }
 
     func clearSelection() {
+        interactionGeneration &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
             isReviewConfirmed = false
@@ -459,6 +478,29 @@ extension ClusterDetailsViewModel {
 }
 
 private extension ClusterDetailsViewModel {
+    /// Re-applies the loaded state once the measured scores arrive, unless the
+    /// user has already acted on the screen — their choice outranks a ranking
+    /// that showed up late.
+    func refineWithQualityScores(
+        assetSnapshots: [ReviewAssetSnapshot],
+        savedState: ClusterReviewState?
+    ) async {
+        let generation = interactionGeneration
+        let qualityScores = await loadQualityScores()
+        guard !Task.isCancelled, generation == interactionGeneration else { return }
+        guard !qualityScores.isEmpty else {
+            await recordBestShotRecommendation()
+            return
+        }
+
+        applyLoadedState(
+            assetSnapshots: assetSnapshots,
+            savedState: savedState,
+            qualityScores: qualityScores
+        )
+        await recordBestShotRecommendation()
+    }
+
     /// Counts one recommendation per cluster — the repository dedupes revisits —
     /// and only when the ranking recommended something the user had not already
     /// chosen for themselves.
