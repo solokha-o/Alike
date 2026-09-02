@@ -378,10 +378,17 @@ private extension PhotoKitEnhancementService {
         // inside these closures, one at a time, on the caller's task.
         let requested = await requestContentEditingInput(for: asset, options: options)
         guard let editingInput = requested.input else {
-            // The photo lives in iCloud and this pass may not fetch it. For the
-            // availability question that is not a "no": the action stays
-            // offered, and the edit itself downloads what it needs.
-            guard purpose == .availability, requested.isInCloud else { return nil }
+            AppLog.photoKit.debug(
+                """
+                \(AppLog.tag(.photokit, """
+                Enhancement input unavailable purpose=\(purpose) inCloud=\(requested.isInCloud)
+                """))
+                """
+            )
+            // Deciding whether to offer the action must not depend on a photo
+            // being resolvable without the network: answer from the asset and
+            // let the edit itself fetch what it needs.
+            guard purpose == .availability else { return nil }
             return ResolvedPhotoEnhancementRequest(
                 isEditable: asset.canPerform(.content),
                 isSupported: asset.mediaType == .image,
@@ -396,10 +403,11 @@ private extension PhotoKitEnhancementService {
 
         let renderer = AutoEnhancementRenderer()
         let isLivePhoto = asset.mediaSubtypes.contains(.photoLive)
-        // A live asset without a Live Photo input cannot be edited at all; a
-        // still one is supported whatever its format.
+        // A live asset needs its Live Photo input to be *edited*, but that input
+        // is only delivered on the editing pass — judging availability by it
+        // would hide the action from every Live Photo.
         let isSupported = asset.mediaType == .image
-            && (!isLivePhoto || editingInput.value.livePhoto != nil)
+            && (purpose == .availability || !isLivePhoto || editingInput.value.livePhoto != nil)
 
         AppLog.photoKit.debug(
             """
