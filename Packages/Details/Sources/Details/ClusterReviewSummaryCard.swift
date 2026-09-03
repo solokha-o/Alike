@@ -4,6 +4,10 @@ import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
     static let summaryContentMinimumHeight: CGFloat = 88
+    /// Room for the pick and the line explaining it, held from the first frame.
+    /// The card sits above the photo grid, so growing it once scoring lands
+    /// would shove every thumbnail down the screen.
+    static let bestShotSummaryMinimumHeight: CGFloat = 44
 
     enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(AlikeReviewReactionCue.ID)
@@ -88,62 +92,81 @@ struct ClusterReviewSummaryCard: View {
     /// honest "nothing stands out here, you choose".
     @ViewBuilder
     private var bestShotSummary: some View {
-        if isChoosingBestShot {
-            // Says what is happening instead of showing a pick that is about to
-            // change under the user's eyes.
-            Label {
-                Text(DetailsL10n.ClusterDetails.choosingBestShot)
-                    .fixedSize(horizontal: false, vertical: true)
-            } icon: {
-                ProgressView()
-                    .controlSize(.small)
-            }
-            .font(.appCallout.weight(.semibold))
-            .foregroundStyle(.secondary)
-        } else if bestShotConfidence == .unresolved {
-            Label {
-                Text(DetailsL10n.ClusterDetails.noObviousBestShot)
-                    .fixedSize(horizontal: false, vertical: true)
-            } icon: {
-                Image(systemName: bestShotConfidence.badgeSymbolName)
-                    .foregroundStyle(.secondary)
-            }
-            .font(.appCallout.weight(.semibold))
-            .foregroundStyle(.secondary)
-        } else {
-            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+        Group {
+            if isChoosingBestShot {
+                // Says what is happening instead of showing a pick that is about to
+                // change under the user's eyes.
                 Label {
-                    Text(bestShotTitle)
+                    Text(DetailsL10n.ClusterDetails.choosingBestShot)
+                        .fixedSize(horizontal: false, vertical: true)
+                } icon: {
+                    ProgressView()
+                        .controlSize(.small)
+                }
+                .font(.appCallout.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+            } else if bestShotConfidence == .unresolved {
+                Label {
+                    Text(DetailsL10n.ClusterDetails.noObviousBestShot)
                         .fixedSize(horizontal: false, vertical: true)
                 } icon: {
                     Image(systemName: bestShotConfidence.badgeSymbolName)
-                        .foregroundStyle(Color.heroGold)
+                        .foregroundStyle(.secondary)
                 }
                 .font(.appCallout.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+            } else {
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Label {
+                        Text(bestShotTitle)
+                            .contentTransition(.opacity)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } icon: {
+                        Image(systemName: bestShotConfidence.badgeSymbolName)
+                            .foregroundStyle(Color.heroGold)
+                    }
+                    .font(.appCallout.weight(.semibold))
 
-                if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
-                    Text(reasons)
+                    if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
+                        Text(reasons)
+                            .font(.appCaption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .transition(.opacity)
+                    }
+
+                    if isBestShotEditedElsewhere {
+                        // Says where the photo's current look came from, so
+                        // enhancing it is never a surprise.
+                        Label {
+                            Text(DetailsL10n.ClusterDetails.editedInAnotherAppNote)
+                        } icon: {
+                            Image(systemName: "square.and.pencil")
+                        }
                         .font(.appCaption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
-                }
-
-                if isBestShotEditedElsewhere {
-                    // Says where the photo's current look came from, so
-                    // enhancing it is never a surprise.
-                    Label {
-                        Text(DetailsL10n.ClusterDetails.editedInAnotherAppNote)
-                    } icon: {
-                        Image(systemName: "square.and.pencil")
+                        .transition(.opacity)
                     }
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Text(verbatim: bestShotAccessibilityLabel))
+                .transition(.opacity)
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(verbatim: bestShotAccessibilityLabel))
         }
+        .frame(
+            minHeight: Self.bestShotSummaryMinimumHeight,
+            alignment: .topLeading
+        )
+        // A crossfade, not a pop, whichever of the three states changes: the
+        // choosing state settling into a pick, the reason line landing once
+        // scoring completes, or the foreign-edit note appearing.
+        .animation(reduceMotion ? nil : .appSmooth, value: isChoosingBestShot)
+        .animation(reduceMotion ? nil : .appSmooth, value: bestShotConfidence)
+        .animation(reduceMotion ? nil : .appSmooth, value: bestShotReasonCodes)
+        .animation(reduceMotion ? nil : .appSmooth, value: isBestShotEditedElsewhere)
     }
 
     private var bestShotTitle: String {

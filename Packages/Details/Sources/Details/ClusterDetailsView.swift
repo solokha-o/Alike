@@ -76,12 +76,17 @@ public struct ClusterDetailsView: View {
         ScrollView {
             if viewModel.hasLoadedReviewState {
                 loadedContent
+                    .transition(.opacity)
             } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, minHeight: 360)
+                    .transition(.opacity)
             }
         }
         .frame(maxWidth: .infinity)
+        // A crossfade instead of an instant swap, so the spinner does not get
+        // replaced by a wall of content the instant loading finishes.
+        .animation(.appSmooth, value: viewModel.hasLoadedReviewState)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
@@ -428,6 +433,8 @@ struct SelectablePhotoThumbnail: View {
     var onEnhance: (() -> Void)?
     var onRevertEnhancement: (() -> Void)?
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var image: UIImage?
     @State private var imageLoadState = PhotoImageLoadState()
     @State private var imageLoadAttempt = 0
@@ -483,7 +490,7 @@ struct SelectablePhotoThumbnail: View {
                                     .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
                             }
                             .padding(Spacing.xSmall)
-                            .transition(.scale(scale: 0.92).combined(with: .opacity))
+                            .transition(bestShotBadgeTransition)
                     }
                 }
                 .overlay(alignment: .bottomLeading) {
@@ -598,6 +605,12 @@ struct SelectablePhotoThumbnail: View {
 
     private var borderLineWidth: CGFloat {
         (isBestShot || isSelected) ? 2 : 0
+    }
+
+    /// A settle-in fade rather than a pop when the measured ranking lands;
+    /// under reduce motion the scale drops and only the fade remains.
+    private var bestShotBadgeTransition: AnyTransition {
+        reduceMotion ? .opacity : .scale(scale: 0.92).combined(with: .opacity)
     }
 
     private var thumbnailShape: RoundedRectangle {
