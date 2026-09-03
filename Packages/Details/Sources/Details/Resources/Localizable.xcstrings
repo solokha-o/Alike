@@ -2044,79 +2044,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This photo was edited in another app, so Alike won't replace that edit."
+            "value": "This photo was edited in another app, so Alike didn't change it without asking."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Це фото редагували в іншому застосунку, тому Alike не замінює ту правку."
+            "value": "Це фото редагували в іншому застосунку, тому Alike не змінює його без запиту."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta foto se editó en otra app, así que Alike no reemplazará esa edición."
+            "value": "Esta foto se editó en otra app, así que Alike no la cambió sin preguntar."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta foto se editó en otra app, así que Alike no reemplazará esa edición."
+            "value": "Esta foto se editó en otra app, así que Alike no la ha cambiado sin preguntar."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta foto foi editada em outro app, então o Alike não substituirá essa edição."
+            "value": "Esta foto foi editada em outro app, então o Alike não a alterou sem perguntar."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dieses Foto wurde in einer anderen App bearbeitet – Alike ersetzt diese Bearbeitung nicht."
+            "value": "Dieses Foto wurde in einer anderen App bearbeitet, deshalb hat Alike es nicht ungefragt verändert."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cette photo a été modifiée dans une autre app ; Alike ne remplacera pas cette modification."
+            "value": "Cette photo a été modifiée dans une autre app ; Alike ne l’a donc pas modifiée sans demander."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Questa foto è stata modificata in un'altra app, quindi Alike non sostituirà quella modifica."
+            "value": "Questa foto è stata modificata in un'altra app, quindi Alike non l'ha cambiata senza chiedere."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deze foto is in een andere app bewerkt, dus Alike vervangt die bewerking niet."
+            "value": "Deze foto is in een andere app bewerkt, dus Alike heeft hem niet zonder te vragen aangepast."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "To zdjęcie edytowano w innej aplikacji, więc Alike nie zastąpi tamtej zmiany."
+            "value": "To zdjęcie edytowano w innej aplikacji, więc Alike nie zmienił go bez pytania."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu fotoğraf başka bir uygulamada düzenlendi; Alike o düzenlemeyi değiştirmez."
+            "value": "Bu fotoğraf başka bir uygulamada düzenlendi; Alike onu sormadan değiştirmedi."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "這張照片是在其他 App 中編輯的，Alike 不會取代該編輯。"
+            "value": "這張照片曾在其他 App 中編輯，因此 Alike 沒有未經詢問就更動它。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "حُرِّرت هذه الصورة في تطبيق آخر، لذا لن يستبدل Alike ذلك التعديل."
+            "value": "حُرِّرت هذه الصورة في تطبيق آخر، لذا لم يغيّرها Alike دون سؤال."
           }
         }
       }
@@ -2542,79 +2542,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Applying replaces the edit made in another app. The original stays recoverable."
+            "value": "This photo was edited in another app. The enhancement is applied on top of that edit, and one revert takes the photo back to the original."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Застосування замінить правку з іншого застосунку. Оригінал лишається можливим повернути."
+            "value": "Це фото редагували в іншому застосунку. Покращення застосується поверх тієї правки, а повернення оригіналу скасує обидві."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Al aplicar se reemplaza la edición hecha en otra app. El original sigue recuperable."
+            "value": "Esta foto se editó en otra app. La mejora se aplica sobre esa edición, y volver al original deshace ambas."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Al aplicar se reemplaza la edición hecha en otra app. El original sigue recuperable."
+            "value": "Esta foto se editó en otra app. La mejora se aplica sobre esa edición, y volver al original deshace ambas."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aplicar substitui a edição feita em outro app. O original continua recuperável."
+            "value": "Esta foto foi editada em outro app. O aprimoramento é aplicado sobre essa edição, e voltar ao original desfaz as duas."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anwenden ersetzt die Bearbeitung aus einer anderen App. Das Original bleibt wiederherstellbar."
+            "value": "Dieses Foto wurde in einer anderen App bearbeitet. Die Verbesserung kommt auf diese Bearbeitung obendrauf, und ein Zurücksetzen macht beide rückgängig."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appliquer remplace la modification faite dans une autre app. L’original reste récupérable."
+            "value": "Cette photo a été modifiée dans une autre app. L’amélioration s’applique par-dessus cette modification, et revenir à l’original annule les deux."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Applicando sostituisci la modifica fatta in un'altra app. L'originale resta recuperabile."
+            "value": "Questa foto è stata modificata in un'altra app. Il miglioramento si applica sopra quella modifica e tornare all'originale annulla entrambe."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toepassen vervangt de bewerking uit een andere app. Het origineel blijft herstelbaar."
+            "value": "Deze foto is in een andere app bewerkt. De verbetering komt boven op die bewerking, en terug naar het origineel maakt beide ongedaan."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zastosowanie zastąpi zmianę z innej aplikacji. Oryginał nadal można przywrócić."
+            "value": "To zdjęcie edytowano w innej aplikacji. Poprawa nakłada się na tamtą zmianę, a powrót do oryginału cofa obie."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uygulamak, başka bir uygulamada yapılan düzenlemeyi değiştirir. Orijinal geri alınabilir kalır."
+            "value": "Bu fotoğraf başka bir uygulamada düzenlendi. İyileştirme o düzenlemenin üzerine uygulanır; orijinale dönmek ikisini birden geri alır."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "套用會取代在其他 App 中所做的編輯，原始照片仍可還原。"
+            "value": "這張照片曾在其他 App 中編輯。優化會疊加在該編輯之上，還原為原始照片會同時取消兩者。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "سيؤدي التطبيق إلى استبدال التعديل الذي أُجري في تطبيق آخر. يبقى بالإمكان استعادة الأصل."
+            "value": "حُرِّرت هذه الصورة في تطبيق آخر. يُطبَّق التحسين فوق ذلك التعديل، والعودة إلى الأصل تلغي كليهما."
           }
         }
       }

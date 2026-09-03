@@ -29,10 +29,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertEqual(stored[identifier]?.signals.globalSharpness ?? 0, 40, accuracy: 0.000_1)
     }
 
-    /// Layering our rendering on top of another app's adjustment is what Photos
-    /// rejects, so the foreign edit is cleared through the library's own undo
-    /// first — with the user's consent already given on the preview screen.
-    func testReplacingAForeignEditRevertsItBeforeWriting() async throws {
+    /// With consent given, the enhancement is written on top of the other app's
+    /// result — nothing of theirs is destroyed, and a single revert still takes
+    /// the photo back to the camera original.
+    func testEnhancingOnTopOfAForeignEditWritesWithoutRevertingIt() async throws {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -43,7 +43,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let didRevert = await library.didRevert
         let saved = await library.savedAdjustmentData
-        XCTAssertTrue(didRevert)
+        XCTAssertFalse(didRevert, "The other app's edit is built on, not undone")
         XCTAssertNotNil(saved)
     }
 

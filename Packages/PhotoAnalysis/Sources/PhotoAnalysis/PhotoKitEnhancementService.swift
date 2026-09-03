@@ -152,26 +152,18 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         localIdentifier: String,
         replacingOtherEdits: Bool = false
     ) async throws -> PhotoEnhancementAdjustment {
-        var request = try await editableRequest(for: localIdentifier)
-        if let existing = request.existingAdjustmentFormatIdentifier,
-           existing != PhotoEnhancementAdjustment.formatIdentifier {
-            // PhotoKit hands back the untouched original for any adjustment we
-            // claim to understand, so applying here drops the other app's work.
-            // That is the user's call to make, not ours to make silently.
-            guard replacingOtherEdits else {
+        // The editing pass deliberately does not claim a foreign adjustment, so
+        // it cannot see one either; the availability pass is what knows.
+        if !replacingOtherEdits {
+            guard await availability(localIdentifier: localIdentifier) != .editedElsewhere else {
+                // Building on someone else's edit is the user's call, because
+                // the result is their edit plus ours, and one revert undoes
+                // both of them together.
                 throw PhotoEnhancementError.editedInAnotherApp
             }
-            // Clear the other app's edit through the library's own undo before
-            // writing ours. Layering a rendering on top of a foreign adjustment
-            // is what Photos rejects as an invalid resource — and when that
-            // adjustment's rendering is missing entirely (a half-synced edit
-            // from another device), there is nothing to layer onto at all.
-            AppLog.photoKit.debug(
-                "\(AppLog.tag(.photokit, "Reverting a foreign edit before enhancing: \(existing)"))"
-            )
-            try await revert(with: request)
-            request = try await editableRequest(for: localIdentifier)
         }
+
+        let request = try await editableRequest(for: localIdentifier)
         let original = try await loadOriginal(with: request)
         let rendered = renderer.render(
             original.image,
@@ -409,9 +401,21 @@ private extension PhotoKitEnhancementService {
         guard let asset = fetchResult.firstObject else { return nil }
 
         let options = PHContentEditingInputRequestOptions()
-        // Accepting any adjustment data is what makes the library hand back the
-        // untouched original plus whatever edit is currently applied.
-        options.canHandleAdjustmentData = { _ in true }
+        switch purpose {
+        case .availability:
+            // Claiming to understand any adjustment is how the identifier of
+            // the current edit becomes readable, which is all this pass wants.
+            options.canHandleAdjustmentData = { _ in true }
+        case .editing:
+            // Only our own. For anyone else's edit the library then hands back
+            // its rendered result as the base image, so the enhancement is laid
+            // on top of their work instead of replacing it — and Photos accepts
+            // the write, which it does not when we claim an edit we did not
+            // make and hand back a rendering built from the untouched original.
+            options.canHandleAdjustmentData = { adjustmentData in
+                adjustmentData.formatIdentifier == PhotoEnhancementAdjustment.formatIdentifier
+            }
+        }
         // Merely deciding whether to offer the action must never pull a
         // full-size original down from iCloud; only a real edit may.
         options.isNetworkAccessAllowed = purpose == .editing
