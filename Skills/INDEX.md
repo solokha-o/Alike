@@ -7,6 +7,7 @@ request needs that extra depth.
 | Skill | Trigger | External pairing | Self-service possible |
 |---|---|---|---|
 | `Architecture/adaptive-ui-layout` | Responsive SwiftUI layout, iPhone/iPad adaptation, size classes, Dynamic Type | Rarely; use SwiftUI external only for platform API uncertainty | No |
+| `Architecture/change-safety` | Changing shipped code: public package APIs, persisted values, enum cases, user-visible flows; extension-vs-modification decisions, breaking-change gating | Rarely; pair with `Storage/persisted-data-evolution` when the change touches stored data | No |
 | `Architecture/SwiftUIModular` | New package/module, package boundaries, modular SwiftUI architecture | Rarely; use SwiftUI external only for broad platform API guidance | No |
 | `DesignConcept` | Native SwiftUI design concepts, colors, typography, SF Symbols | Rarely; use SwiftUI external only for API-specific design implementation | No |
 | `DesignConcept/app-store-screenshots` | App Store screenshots, product/marketing screenshots, screenshot copy, phone mockups, screenshot generator | No | No |
@@ -25,6 +26,7 @@ request needs that extra depth.
 | `Localization/spm-localization` | `.xcstrings`, package localization, typed wrappers, the twelve shipped locales, CLDR plurals | Pair with Core Data external only when localized model labels cross persistence boundaries | No |
 | `Meta/skill-authoring-governance` | Create, slim, decompose, or update skills | Pair with `project-skill-audit` for audits | No |
 | `project-skill-audit` | Audit project-local skills, suggest updates/new skills, reduce skill duplication | Pair with `Meta/skill-authoring-governance` for implementation | No |
+| `Storage/persisted-data-evolution` | Core Data model edits, `UserDefaults` keys, `Codable`/`Data` payload changes, migration safety for users with existing data | Pair with `External/core-data-expert` only for mapping models or heavyweight migration depth | No |
 | `SwiftConcurrency/app-store-changelog` | App Store “What’s New”, release notes from git history/tags | No | No |
 | `SwiftConcurrency/gh-issue-fix-flow` | Fix a GitHub issue end-to-end with `gh`, validation, commit, push | Pair with GitHub plugin/CLI only when issue access is needed | No |
 | `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state, or add debug-only app access such as premium overrides and feature flags | Pair with Build iOS tools when available | No |
