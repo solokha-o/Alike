@@ -29,6 +29,24 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertEqual(stored[identifier]?.signals.globalSharpness ?? 0, 40, accuracy: 0.000_1)
     }
 
+    /// Layering our rendering on top of another app's adjustment is what Photos
+    /// rejects, so the foreign edit is cleared through the library's own undo
+    /// first — with the user's consent already given on the preview screen.
+    func testReplacingAForeignEditRevertsItBeforeWriting() async throws {
+        let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
+        let service = makeService(library: library)
+
+        _ = try await service.applyEnhancement(
+            localIdentifier: identifier,
+            replacingOtherEdits: true
+        )
+
+        let didRevert = await library.didRevert
+        let saved = await library.savedAdjustmentData
+        XCTAssertTrue(didRevert)
+        XCTAssertNotNil(saved)
+    }
+
     func testApplyingMapsAnUnavailableOriginalToItsOwnError() async {
         let library = FakePhotoLibrary(originalError: PhotoEnhancementError.originalUnavailable)
         let service = makeService(library: library)

@@ -149,14 +149,25 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         localIdentifier: String,
         replacingOtherEdits: Bool = false
     ) async throws -> PhotoEnhancementAdjustment {
-        let request = try await editableRequest(for: localIdentifier)
-        if !replacingOtherEdits,
-           let existing = request.existingAdjustmentFormatIdentifier,
+        var request = try await editableRequest(for: localIdentifier)
+        if let existing = request.existingAdjustmentFormatIdentifier,
            existing != PhotoEnhancementAdjustment.formatIdentifier {
             // PhotoKit hands back the untouched original for any adjustment we
             // claim to understand, so applying here drops the other app's work.
             // That is the user's call to make, not ours to make silently.
-            throw PhotoEnhancementError.editedInAnotherApp
+            guard replacingOtherEdits else {
+                throw PhotoEnhancementError.editedInAnotherApp
+            }
+            // Clear the other app's edit through the library's own undo before
+            // writing ours. Layering a rendering on top of a foreign adjustment
+            // is what Photos rejects as an invalid resource — and when that
+            // adjustment's rendering is missing entirely (a half-synced edit
+            // from another device), there is nothing to layer onto at all.
+            AppLog.photoKit.debug(
+                "\(AppLog.tag(.photokit, "Reverting a foreign edit before enhancing: \(existing)"))"
+            )
+            try await revert(with: request)
+            request = try await editableRequest(for: localIdentifier)
         }
         let original = try await loadOriginal(with: request)
         let rendered = renderer.render(
@@ -209,17 +220,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             throw PhotoEnhancementError.notEnhancedByAlike
         }
 
-        do {
-            try await request.revertToOriginal()
-        } catch let error as PhotoEnhancementError {
-            throw error
-        } catch {
-            AppLog.photoKit.error(
-                "\(AppLog.tag(.error, "Revert failed: \(Self.describe(error))"))"
-            )
-            throw PhotoEnhancementError.saveFailed
-        }
-
+        try await revert(with: request)
         await setEnhancedFlag(false, localIdentifier: localIdentifier)
     }
 
@@ -242,6 +243,19 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             throw PhotoEnhancementError.limitedAccessNotEditable
         }
         return request
+    }
+
+    private func revert(with request: ResolvedPhotoEnhancementRequest) async throws {
+        do {
+            try await request.revertToOriginal()
+        } catch let error as PhotoEnhancementError {
+            throw error
+        } catch {
+            AppLog.photoKit.error(
+                "\(AppLog.tag(.error, "Revert failed: \(Self.describe(error))"))"
+            )
+            throw PhotoEnhancementError.saveFailed
+        }
     }
 
     private func loadOriginal(with request: ResolvedPhotoEnhancementRequest) async throws -> CIImage {
@@ -464,7 +478,7 @@ private extension PhotoKitEnhancementService {
                     )
                 } else {
                     do {
-                        try renderer.writeJPEG(image, to: output.renderedContentURL)
+                        try renderer.write(image, to: output.renderedContentURL)
                     } catch {
                         AppLog.photoKit.error(
                             "\(AppLog.tag(.error, "Rendered file write failed: \(describe(error))"))"

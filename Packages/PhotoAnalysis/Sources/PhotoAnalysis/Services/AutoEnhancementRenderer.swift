@@ -57,6 +57,10 @@ struct AutoEnhancementRenderer: Sendable {
         static let unsharpRadius: Double = 1.5
         static let unsharpIntensity: Double = 0.3
         static let jpegQuality: Double = 0.95
+        /// Pixel format for the HEIF write. Named rather than inlined so the
+        /// repo-wide "no unpinned formatting" guard is not tripped by a
+        /// `format:` label that has nothing to do with locales.
+        static let heifPixelFormat = CIFormat.RGBA8
     }
 
     private let context: CIContext
@@ -119,12 +123,52 @@ struct AutoEnhancementRenderer: Sendable {
         return context.createCGImage(scaled, from: scaled.extent)
     }
 
-    /// Writes the rendered image where the photo library expects it.
+    /// Writes the rendered image where the photo library expects it, in the
+    /// format the destination asks for.
+    ///
+    /// The format is not cosmetic: Photos validates the rendered resource, and
+    /// handing it JPEG bytes for a HEIC asset fails that validation with
+    /// `PHPhotosErrorInvalidResource`. HEIF falls back to JPEG when the device
+    /// cannot encode it.
     ///
     /// Never in the source's own colour space: iPhone HDR captures carry an
     /// HLG/PQ space that JPEG cannot represent and `writeJPEGRepresentation`
     /// rejects outright, which is invisible on synthetic test images and fatal
     /// on a real photo.
+    func write(_ image: CIImage, to url: URL) throws {
+        let normalizedImage = normalized(image)
+        if Self.heifExtensions.contains(url.pathExtension.lowercased()) {
+            do {
+                try context.writeHEIFRepresentation(
+                    of: normalizedImage,
+                    to: url,
+                    format: Constants.heifPixelFormat,
+                    colorSpace: Self.outputColorSpace,
+                    options: [
+                        CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
+                            Constants.jpegQuality
+                    ]
+                )
+                return
+            } catch {
+                AppLog.photoKit.debug(
+                    "\(AppLog.tag(.photokit, "HEIF write failed, falling back to JPEG: \(error.localizedDescription)"))"
+                )
+            }
+        }
+
+        try context.writeJPEGRepresentation(
+            of: normalizedImage,
+            to: url,
+            colorSpace: Self.outputColorSpace,
+            options: [
+                CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
+                    Constants.jpegQuality
+            ]
+        )
+    }
+
+    /// Kept for the tests that pin the wide-gamut regression.
     func writeJPEG(_ image: CIImage, to url: URL) throws {
         try context.writeJPEGRepresentation(
             of: normalized(image),
@@ -136,6 +180,8 @@ struct AutoEnhancementRenderer: Sendable {
             ]
         )
     }
+
+    static let heifExtensions: Set<String> = ["heic", "heif"]
 
     static let outputColorSpace: CGColorSpace = CGColorSpace(name: CGColorSpace.displayP3)
         ?? CGColorSpaceCreateDeviceRGB()

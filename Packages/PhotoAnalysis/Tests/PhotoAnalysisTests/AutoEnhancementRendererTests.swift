@@ -1,6 +1,7 @@
 import Core
 import CoreGraphics
 import CoreImage
+import ImageIO
 import Foundation
 import XCTest
 @testable import PhotoAnalysis
@@ -44,6 +45,28 @@ final class AutoEnhancementRendererTests: XCTestCase {
 
         let size = try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int
         XCTAssertGreaterThan(size ?? 0, 0)
+    }
+
+    /// Photos validates the rendered resource against the asset: JPEG bytes for
+    /// a HEIC asset come back as `PHPhotosErrorInvalidResource`.
+    func testWritesHEIFWhenTheDestinationIsHEIC() throws {
+        let url = temporaryDirectory.appendingPathComponent("rendered.heic")
+
+        try renderer.write(makeImage(), to: url)
+
+        let source = try XCTUnwrap(CGImageSourceCreateWithURL(url as CFURL, nil))
+        let type = try XCTUnwrap(CGImageSourceGetType(source) as String?)
+        XCTAssertTrue(type.contains("heic") || type.contains("heif"), "Unexpected type: \(type)")
+    }
+
+    func testWritesJPEGForEveryOtherDestination() throws {
+        let url = temporaryDirectory.appendingPathComponent("rendered.jpg")
+
+        try renderer.write(makeImage(), to: url)
+
+        let source = try XCTUnwrap(CGImageSourceCreateWithURL(url as CFURL, nil))
+        let type = try XCTUnwrap(CGImageSourceGetType(source) as String?)
+        XCTAssertTrue(type.contains("jpeg"), "Unexpected type: \(type)")
     }
 
     func testNormalizingMovesTheExtentBackToTheOrigin() {
