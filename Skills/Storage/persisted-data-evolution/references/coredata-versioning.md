@@ -37,9 +37,8 @@ resort — see `Skills/External/core-data-expert/references/migration.md`.
 
 ## Creating a new version
 
-The model is currently a single unversioned `.xcdatamodel`. Editing it in place
-is acceptable **only** for a change that has not shipped yet. Once a change is
-in a release, the next schema edit gets its own version:
+The model is versioned: `AlikeModel.xcdatamodel` is version 1 and is shipped, so
+it is frozen. Every schema edit from here gets its own version:
 
 1. In Xcode, select `AlikeModel.xcdatamodeld` → Editor → **Add Model Version**,
    based on the current version. Name it `AlikeModel 2` (then `3`, …).
