@@ -20,6 +20,7 @@ struct ClusterReviewSummaryCard: View {
     let assetCount: Int
     let bestShotLabel: String
     let bestShotConfidence: BestShotConfidence
+    var isChoosingBestShot = false
     let bestShotReasonCodes: [BestShotReasonCode]
     var isBestShotEditedElsewhere = false
     let selectedCount: Int
@@ -87,7 +88,19 @@ struct ClusterReviewSummaryCard: View {
     /// honest "nothing stands out here, you choose".
     @ViewBuilder
     private var bestShotSummary: some View {
-        if bestShotConfidence == .unresolved {
+        if isChoosingBestShot {
+            // Says what is happening instead of showing a pick that is about to
+            // change under the user's eyes.
+            Label {
+                Text(DetailsL10n.ClusterDetails.choosingBestShot)
+                    .fixedSize(horizontal: false, vertical: true)
+            } icon: {
+                ProgressView()
+                    .controlSize(.small)
+            }
+            .font(.appCallout.weight(.semibold))
+            .foregroundStyle(.secondary)
+        } else if bestShotConfidence == .unresolved {
             Label {
                 Text(DetailsL10n.ClusterDetails.noObviousBestShot)
                     .fixedSize(horizontal: false, vertical: true)

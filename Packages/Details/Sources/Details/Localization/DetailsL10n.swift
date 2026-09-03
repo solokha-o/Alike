@@ -30,6 +30,8 @@ public enum DetailsL10n {
         }
         /// Cluster details are available on iOS.
         public static var clusterDetailsAvailableIOS: String { DetailsL10n.string("details.clusterDetails.clusterDetailsAvailableIOS") }
+        /// Choosing the best shot…
+        public static var choosingBestShot: String { DetailsL10n.string("details.clusterDetails.choosingBestShot") }
         /// Compare with the original
         public static var compareWithOriginal: String { DetailsL10n.string("details.clusterDetails.compareWithOriginal") }
         /// Switches between the original and the enhanced version

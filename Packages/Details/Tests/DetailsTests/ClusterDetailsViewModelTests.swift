@@ -1431,6 +1431,84 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await loading.value
     }
 
+    /// The star must not appear on one photo and hop to another once scoring
+    /// lands: while the measured ranking is pending the badge stays hidden.
+    func testTheBestShotBadgeWaitsForTheMeasuredRanking() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        XCTAssertTrue(viewModel.isRankingQualityPending)
+        XCTAssertFalse(viewModel.isBestShotVisible)
+
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "plain",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "favorite",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 10, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+    }
+
+    func testAnEmptyMeasurementStopsWaitingAndShowsTheMetadataPick() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        await analyzer.finish(with: [])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
+    }
+
     /// A ranking that arrives after the user has acted must not overwrite them.
     func testALateRankingDoesNotOverwriteTheUsersOwnPick() async {
         let analyzer = StallingPhotoQualityAnalyzer()

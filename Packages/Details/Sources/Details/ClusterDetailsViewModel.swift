@@ -48,6 +48,10 @@ final class ClusterDetailsViewModel {
     /// always `.automatic`: the user is the authority.
     private(set) var bestShotConfidence: BestShotConfidence = .automatic
     private(set) var bestShotReasonCodes: [BestShotReasonCode] = []
+    /// `true` between the metadata ranking appearing and the measured one
+    /// landing. The badge waits it out: seeing the star jump from one photo to
+    /// another is worse than seeing it a moment later.
+    private(set) var isRankingQualityPending = false
     private(set) var enhancementState: PhotoEnhancementState = .unavailable
     /// The rendered "after" image. It lives only in memory: nothing is written
     /// to the library until the user applies the enhancement.
@@ -247,6 +251,7 @@ final class ClusterDetailsViewModel {
             // The enhancement action follows the Best Shot that is on screen
             // now; the refinement below re-asks if the ranking moves it.
             await refreshEnhancementAvailability()
+            isRankingQualityPending = true
             hasLoadedReviewState = true
 
             await refineWithQualityScores(
@@ -330,6 +335,7 @@ final class ClusterDetailsViewModel {
             isBestShotUserSelected = true
             bestShotConfidence = .automatic
             bestShotReasonCodes = []
+            isRankingQualityPending = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
@@ -711,6 +717,13 @@ extension ClusterDetailsViewModel {
         bestShotAssetID == localIdentifier
     }
 
+    /// Whether the Best Shot marking should be visible yet. While the measured
+    /// ranking is still landing the badge stays hidden, so it never appears on
+    /// one photo and then hops to another.
+    var isBestShotVisible: Bool {
+        !bestShotAssetID.isEmpty && !isRankingQualityPending
+    }
+
     func isSelected(_ localIdentifier: String) -> Bool {
         selectedAssetIDs.contains(localIdentifier)
     }
@@ -727,8 +740,13 @@ private extension ClusterDetailsViewModel {
     ) async {
         let generation = interactionGeneration
         let qualityScores = await loadQualityScores()
-        guard !Task.isCancelled, generation == interactionGeneration else { return }
+        guard !Task.isCancelled else { return }
+        guard generation == interactionGeneration else {
+            isRankingQualityPending = false
+            return
+        }
         guard !qualityScores.isEmpty else {
+            isRankingQualityPending = false
             await recordBestShotRecommendation()
             return
         }
@@ -738,6 +756,7 @@ private extension ClusterDetailsViewModel {
             savedState: savedState,
             qualityScores: qualityScores
         )
+        isRankingQualityPending = false
         await refreshEnhancementAvailability()
         await recordBestShotRecommendation()
     }

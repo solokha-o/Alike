@@ -25,8 +25,9 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
     /// cached for a photo that was never analyzed before it is enhanced.
     let sourceModificationDate: Date?
     let pixelArea: Int64
-    /// The unedited original still, as the library hands it back.
-    let loadOriginal: @Sendable () async throws -> CIImage
+    /// The unedited original still, in the library's own pixel geometry, with
+    /// the EXIF orientation Photos applies on top of it.
+    let loadOriginal: @Sendable () async throws -> (image: CIImage, exifOrientation: Int32)
     /// Writes the edit as one change: the rendered still, the recipe to replay
     /// on a Live Photo's video frames, and the adjustment data to stamp it with.
     let saveEnhanced: @Sendable (
@@ -42,7 +43,7 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
         existingAdjustmentFormatIdentifier: String?,
         sourceModificationDate: Date? = nil,
         pixelArea: Int64 = 0,
-        loadOriginal: @escaping @Sendable () async throws -> CIImage,
+        loadOriginal: @escaping @Sendable () async throws -> (image: CIImage, exifOrientation: Int32),
         saveEnhanced: @escaping @Sendable (
             CIImage,
             AutoEnhancementRenderer.AppliedRecipe,
@@ -136,7 +137,9 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         let request = try await editableRequest(for: localIdentifier)
         let original = try await loadOriginal(with: request)
         let enhanced = renderer.render(
-            original,
+            // The preview is for looking at, so it is rotated the way Photos
+            // would show it.
+            original.image.oriented(forExifOrientation: original.exifOrientation),
             allowsSharpening: await allowsSharpening(localIdentifier: localIdentifier)
         ).image
         guard let preview = renderer.makePreview(of: enhanced, targetSize: targetSize) else {
@@ -171,7 +174,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         }
         let original = try await loadOriginal(with: request)
         let rendered = renderer.render(
-            original,
+            original.image,
             allowsSharpening: await allowsSharpening(localIdentifier: localIdentifier)
         )
 
@@ -187,7 +190,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         // flag below is what stops the enhanced pixels from being scored.
         await cachePreEnhancementScoreIfMissing(
             localIdentifier: localIdentifier,
-            original: original,
+            original: original.image,
             request: request
         )
 
@@ -258,7 +261,9 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         }
     }
 
-    private func loadOriginal(with request: ResolvedPhotoEnhancementRequest) async throws -> CIImage {
+    private func loadOriginal(
+        with request: ResolvedPhotoEnhancementRequest
+    ) async throws -> (image: CIImage, exifOrientation: Int32) {
         do {
             return try await request.loadOriginal()
         } catch let error as PhotoEnhancementError {
@@ -276,7 +281,20 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             return "\(enhancementError)"
         }
         let nsError = error as NSError
-        return "\(nsError.domain) code=\(nsError.code) \(nsError.localizedDescription)"
+        var described = "\(nsError.domain) code=\(nsError.code) \(nsError.localizedDescription)"
+        if let debugDescription = nsError.userInfo[NSDebugDescriptionErrorKey] as? String {
+            described += " debug=\(debugDescription)"
+        }
+        if let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? NSError {
+            described += " underlying=\(underlying.domain)/\(underlying.code) \(underlying.localizedDescription)"
+        }
+        let extraKeys = nsError.userInfo.keys
+            .filter { $0 != NSDebugDescriptionErrorKey && $0 != NSUnderlyingErrorKey }
+            .sorted()
+        if !extraKeys.isEmpty {
+            described += " keys=\(extraKeys.joined(separator: ","))"
+        }
+        return described
     }
 
     private func authorize() throws {
@@ -455,7 +473,11 @@ private extension PhotoKitEnhancementService {
                       let image = CIImage(contentsOf: url) else {
                     throw PhotoEnhancementError.originalUnavailable
                 }
-                return image.oriented(forExifOrientation: input.fullSizeImageOrientation)
+                // Returned unrotated on purpose. Photos stores the rendered
+                // resource in the original's pixel geometry and applies the
+                // orientation itself; baking the rotation in swaps width and
+                // height, and the library rejects the resource as invalid.
+                return (image, input.fullSizeImageOrientation)
             },
             saveEnhanced: { image, recipe, adjustmentData in
                 let input = editingInput.value

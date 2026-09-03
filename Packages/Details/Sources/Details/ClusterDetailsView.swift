@@ -289,6 +289,7 @@ public struct ClusterDetailsView: View {
                         assetCount: viewModel.assetCount,
                         bestShotLabel: viewModel.bestShotLabel,
                         bestShotConfidence: viewModel.bestShotConfidence,
+                        isChoosingBestShot: viewModel.isRankingQualityPending,
                         bestShotReasonCodes: viewModel.bestShotReasonCodes,
                         isBestShotEditedElsewhere: viewModel.isBestShotEditedElsewhere,
                         selectedCount: viewModel.selectedCount,
@@ -332,7 +333,10 @@ public struct ClusterDetailsView: View {
                             SelectablePhotoThumbnail(
                                 asset: asset,
                                 thumbnailAspectRatio: 1,
-                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                // Hidden until the measured ranking settles, so
+                                // the star never hops between photos.
+                                isBestShot: viewModel.isBestShotVisible
+                                    && viewModel.isBestShot(asset.localIdentifier),
                                 bestShotConfidence: viewModel.bestShotConfidence,
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
                                 onToggleSelection: {

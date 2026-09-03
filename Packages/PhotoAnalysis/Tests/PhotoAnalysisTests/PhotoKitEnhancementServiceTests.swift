@@ -392,7 +392,12 @@ private actor FakePhotoLibrary {
             existingAdjustmentFormatIdentifier: existingAdjustmentFormatIdentifier,
             loadOriginal: { [self] in
                 if let originalError = await self.originalError { throw originalError }
-                return CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 256, height: 256))
+                return (
+                    CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 256, height: 256)),
+                    // A rotated source: the saved rendering must keep the
+                    // library's pixel geometry, not the display one.
+                    6
+                )
             },
             saveEnhanced: { [self] _, recipe, adjustmentData in
                 if let saveError = await self.saveError { throw saveError }
