@@ -377,6 +377,37 @@ final class BestShotRankerTests: XCTestCase {
         XCTAssertEqual(BestShotRanker.decide(snapshots: [], scores: [:]), .empty)
     }
 
+    // MARK: - sharpnessRatios
+
+    /// `sharpnessRatios` is the extracted computation `decide` itself uses to
+    /// exclude a critically blurred frame; this asserts the two never
+    /// disagree about which candidate that is.
+    func testSharpnessRatiosAgreeWithDecidesOwnExclusion() {
+        let blurred = makeSnapshot("blurred")
+        let referenceOne = makeSnapshot("reference1")
+        let referenceTwo = makeSnapshot("reference2")
+        let snapshots = [blurred, referenceOne, referenceTwo]
+        let scores = makeScores([
+            makeScore("blurred", globalSharpness: 5),
+            makeScore("reference1", globalSharpness: 60),
+            makeScore("reference2", globalSharpness: 58)
+        ])
+
+        let ratios = BestShotRanker.sharpnessRatios(snapshots: snapshots, scores: scores, config: config)
+        let excludedByRatio = Set(
+            snapshots
+                .filter { (ratios[$0.localIdentifier] ?? 1) < config.criticalSharpnessRatio }
+                .map(\.localIdentifier)
+        )
+        XCTAssertEqual(excludedByRatio, ["blurred"])
+
+        let decision = BestShotRanker.decide(snapshots: snapshots, scores: scores, config: config)
+        let excludedByDecide = Set(
+            decision.rankedCandidates.filter(\.isExcluded).map(\.localIdentifier)
+        )
+        XCTAssertEqual(excludedByDecide, excludedByRatio)
+    }
+
     // MARK: - Helpers
 
     private func makeSnapshot(
