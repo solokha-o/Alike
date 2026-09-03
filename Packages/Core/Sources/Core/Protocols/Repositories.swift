@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import Photos
 
@@ -218,6 +219,31 @@ public protocol PhotoQualityAnalyzing: Sendable {
     /// handle. A single unreadable photo is reported through
     /// `PhotoQualitySignals.analysisFailure`, never by throwing.
     func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore]
+}
+
+/// Non-destructive auto-enhancement of a single photo.
+///
+/// Every implementation must keep the original recoverable: the library stores
+/// it, the app never writes a duplicate, and a revert is one step.
+public protocol PhotoEnhancementService: Sendable {
+    /// Whether the asset can be enhanced, and whether it already is, in one
+    /// question: asking PhotoKit twice means resolving the photo twice.
+    func availability(localIdentifier: String) async -> PhotoEnhancementAvailability
+
+    /// Renders a preview at screen size. Nothing is written to the library.
+    func renderPreview(localIdentifier: String, targetSize: CGSize) async throws -> CGImage
+
+    /// Applies the enhancement as a non-destructive edit and returns the recipe.
+    ///
+    /// `replacingOtherEdits` is the user's explicit agreement to replace an edit
+    /// made by another app; without it such a photo is refused.
+    func applyEnhancement(
+        localIdentifier: String,
+        replacingOtherEdits: Bool
+    ) async throws -> PhotoEnhancementAdjustment
+
+    /// Restores the original, refusing edits that were not made by Alike.
+    func revertToOriginal(localIdentifier: String) async throws
 }
 
 /// Repository for the installation-local, anonymous Best Shot override tally.

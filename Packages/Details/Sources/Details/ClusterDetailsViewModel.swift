@@ -28,6 +28,9 @@ final class ClusterDetailsViewModel {
     private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshotLoader: AssetSnapshotLoader
     private let qualityAnalyzer: any PhotoQualityAnalyzing
+    /// `nil` hides the enhancement action entirely, which is what previews and
+    /// hosts without photo-library editing get.
+    private let enhancementService: (any PhotoEnhancementService)?
     /// Anonymous, on-device tally of how often our recommendation is replaced.
     private let overrideMetrics: (any BestShotOverrideMetricsRepository)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
@@ -45,6 +48,22 @@ final class ClusterDetailsViewModel {
     /// always `.automatic`: the user is the authority.
     private(set) var bestShotConfidence: BestShotConfidence = .automatic
     private(set) var bestShotReasonCodes: [BestShotReasonCode] = []
+    /// `true` between the metadata ranking appearing and the measured one
+    /// landing. The badge waits it out: seeing the star jump from one photo to
+    /// another is worse than seeing it a moment later.
+    private(set) var isRankingQualityPending = false
+    private(set) var enhancementState: PhotoEnhancementState = .unavailable
+    /// The rendered "after" image. It lives only in memory: nothing is written
+    /// to the library until the user applies the enhancement.
+    private(set) var enhancementPreview: CGImage?
+    /// Photos this screen enhanced. The badge follows the photo, so changing
+    /// the Best Shot does not cancel or move an applied enhancement.
+    private(set) var enhancedAssetIDs: Set<String> = []
+    /// `true` when the Best Shot carries another app's edit: the action stays
+    /// available, but the UI has to say what applying it would replace.
+    private(set) var isBestShotEditedElsewhere = false
+    /// Where the enhancement returns once the user dismisses the error alert.
+    private var enhancementRecoveryState: PhotoEnhancementState = .idle
     var selectedAssetIDs: Set<String>
     private(set) var reviewMode: ClusterReviewMode
     /// Set by the user finishing the review, never derived from how many photos
@@ -55,7 +74,10 @@ final class ClusterDetailsViewModel {
     private(set) var hasLoadedReviewState = false
     var isDeleteConfirmationPresented = false
     private(set) var isDeleting = false
-    private(set) var deleteErrorMessage: String?
+    private(set) var actionErrorMessage: String?
+    /// Which action failed — the alert must not call a failed enhancement a
+    /// failed cleanup.
+    private(set) var actionErrorTitle: String = DetailsL10n.Common.cleanupUnavailable
     private(set) var shouldOfferOpenSettings = false
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentAlikeReaction: AlikeReactionCue?
@@ -73,6 +95,7 @@ final class ClusterDetailsViewModel {
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        enhancementService: (any PhotoEnhancementService)? = nil,
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
@@ -91,6 +114,7 @@ final class ClusterDetailsViewModel {
         self.premiumAccess = premiumAccess
         self.openSettingsAction = openSettingsAction
         self.qualityAnalyzer = qualityAnalyzer
+        self.enhancementService = enhancementService
         self.overrideMetrics = overrideMetrics
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
@@ -199,11 +223,11 @@ final class ClusterDetailsViewModel {
         return String(format: format, estimatedSavingsText)
     }
 
-    var isDeleteErrorPresented: Bool {
-        get { deleteErrorMessage != nil }
+    var isActionErrorPresented: Bool {
+        get { actionErrorMessage != nil }
         set {
             if !newValue {
-                clearDeleteError()
+                clearActionError()
             }
         }
     }
@@ -224,6 +248,10 @@ final class ClusterDetailsViewModel {
                 savedState: persistedState,
                 qualityScores: [:]
             )
+            // The enhancement action follows the Best Shot that is on screen
+            // now; the refinement below re-asks if the ranking moves it.
+            await refreshEnhancementAvailability()
+            isRankingQualityPending = true
             hasLoadedReviewState = true
 
             await refineWithQualityScores(
@@ -307,10 +335,12 @@ final class ClusterDetailsViewModel {
             isBestShotUserSelected = true
             bestShotConfidence = .automatic
             bestShotReasonCodes = []
+            isRankingQualityPending = false
             reviewMode = .selection
             refreshDerivedState(emitsReviewCompletion: true)
         }
         enqueueCurrentStatePersistence()
+        Task { await refreshEnhancementAvailability() }
         if let replacedConfidence, let overrideMetrics {
             let clusterID = cluster.id
             Task {
@@ -398,7 +428,7 @@ final class ClusterDetailsViewModel {
     func confirmDelete() async {
         guard !isDeleting else { return }
         guard !selectedAssetIDs.isEmpty else {
-            applyDeleteFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
+            applyActionFailure(message: DetailsL10n.Common.selectAtLeastOnePhoto, offersOpenSettings: false)
             return
         }
         guard premiumAccess.access(
@@ -412,7 +442,7 @@ final class ClusterDetailsViewModel {
         await persistenceTask?.value
 
         isDeleteConfirmationPresented = false
-        deleteErrorMessage = nil
+        actionErrorMessage = nil
         shouldOfferOpenSettings = false
         pendingCompletionRecord = nil
         isDeleting = true
@@ -452,8 +482,12 @@ final class ClusterDetailsViewModel {
         isDeleting = false
     }
 
-    func clearDeleteError() {
-        deleteErrorMessage = nil
+    func clearActionError() {
+        if case .failed = enhancementState {
+            enhancementState = enhancementRecoveryState
+        }
+        actionErrorMessage = nil
+        actionErrorTitle = DetailsL10n.Common.cleanupUnavailable
         shouldOfferOpenSettings = false
         if let currentAlikeReaction,
            currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
@@ -476,9 +510,218 @@ final class ClusterDetailsViewModel {
     }
 }
 
+// MARK: - Reversible auto-enhancement
+
+extension ClusterDetailsViewModel {
+    /// Hidden entirely when no service is injected or the asset cannot be
+    /// edited, so the UI never offers an action that would fail.
+    var isEnhancementActionVisible: Bool {
+        enhancementService != nil
+            && !bestShotAssetID.isEmpty
+            && enhancementState != .unavailable
+    }
+
+    /// The live asset behind the current Best Shot, for previews and edits.
+    var bestShotAsset: PHAsset? {
+        assets.first { $0.localIdentifier == bestShotAssetID }
+    }
+
+    /// The live asset an enhancement request was frozen on.
+    func asset(withIdentifier localIdentifier: String) -> PHAsset? {
+        assets.first { $0.localIdentifier == localIdentifier }
+    }
+
+    var isBestShotEnhanced: Bool {
+        isEnhanced(bestShotAssetID)
+    }
+
+    func isEnhanced(_ localIdentifier: String) -> Bool {
+        !localIdentifier.isEmpty && enhancedAssetIDs.contains(localIdentifier)
+    }
+
+    /// Re-reads what the library says about the current Best Shot — whether it
+    /// can be edited and whether it already carries Alike's edit — in a single
+    /// question, because resolving a photo for editing is expensive.
+    func refreshEnhancementAvailability() async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else {
+            enhancementState = .unavailable
+            enhancementPreview = nil
+            isBestShotEditedElsewhere = false
+            return
+        }
+
+        let localIdentifier = bestShotAssetID
+        let availability = await enhancementService.availability(localIdentifier: localIdentifier)
+        guard localIdentifier == bestShotAssetID else { return }
+
+        isBestShotEditedElsewhere = availability == .editedElsewhere
+        switch availability {
+        case .unavailable:
+            enhancementState = .unavailable
+        case .available, .editedElsewhere:
+            enhancedAssetIDs.remove(localIdentifier)
+            enhancementState = .idle
+        case .enhanced:
+            enhancedAssetIDs.insert(localIdentifier)
+            enhancementState = .applied
+        }
+        enhancementPreview = nil
+    }
+
+    /// Renders the "after" image. Nothing is written to the library yet.
+    /// Claims the current Best Shot for an enhancement the user just asked for.
+    ///
+    /// Called when the action is tapped rather than when the preview task
+    /// starts: between those two moments a late ranking could otherwise move
+    /// the Best Shot, and the cover would open on a different photo than the
+    /// one the user tapped. Returns the frozen identifier, or `nil` when there
+    /// is nothing to enhance.
+    func beginEnhancementRequest() -> String? {
+        guard enhancementService != nil, !bestShotAssetID.isEmpty else { return nil }
+        guard enhancementState != .unavailable else { return nil }
+        interactionGeneration &+= 1
+        return bestShotAssetID
+    }
+
+    /// `requestedIdentifier` is required on purpose: the caller must say which
+    /// photo the user asked to enhance, so no presentation path can silently
+    /// fall back to whatever the Best Shot happens to be by now.
+    func enhance(previewSize: CGSize, for requestedIdentifier: String) async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .idle || enhancementState == .previewing else { return }
+
+        // The photo the user tapped is the photo this preview is for.
+        let localIdentifier = requestedIdentifier
+        guard localIdentifier == bestShotAssetID else { return }
+        interactionGeneration &+= 1
+        enhancementState = .preparingPreview
+        do {
+            let preview = try await enhancementService.renderPreview(
+                localIdentifier: localIdentifier,
+                targetSize: previewSize
+            )
+            guard localIdentifier == bestShotAssetID else { return }
+            enhancementPreview = preview
+            enhancementState = .previewing
+        } catch {
+            guard localIdentifier == bestShotAssetID else { return }
+            handleEnhancementError(error, fallbackState: .idle)
+        }
+    }
+
+    func dismissEnhancementPreview() {
+        guard enhancementState == .previewing else { return }
+        enhancementPreview = nil
+        enhancementState = .idle
+    }
+
+    func applyEnhancement(for requestedIdentifier: String) async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .idle || enhancementState == .previewing else { return }
+
+        let localIdentifier = requestedIdentifier
+        guard localIdentifier == bestShotAssetID else { return }
+        interactionGeneration &+= 1
+        let previousState = enhancementState
+        enhancementState = .applying
+        do {
+            _ = try await enhancementService.applyEnhancement(
+                localIdentifier: localIdentifier,
+                // The preview screen stated what this replaces before the user
+                // reached this button.
+                replacingOtherEdits: isBestShotEditedElsewhere
+            )
+            // The badge belongs to the photo that was edited, whatever is the
+            // Best Shot by now; the shared state only speaks for the photo
+            // currently on the tile.
+            enhancedAssetIDs.insert(localIdentifier)
+            guard localIdentifier == bestShotAssetID else {
+                await refreshEnhancementAvailability()
+                return
+            }
+            isBestShotEditedElsewhere = false
+            enhancementPreview = nil
+            enhancementState = .applied
+        } catch {
+            // A failed edit leaves the photo, the selection and the review
+            // exactly as they were; only the enhancement state moves.
+            guard localIdentifier == bestShotAssetID else { return }
+            handleEnhancementError(error, fallbackState: previousState)
+        }
+    }
+
+    func revertEnhancement() async {
+        guard let enhancementService, !bestShotAssetID.isEmpty else { return }
+        guard enhancementState == .applied else { return }
+
+        interactionGeneration &+= 1
+
+        let localIdentifier = bestShotAssetID
+        enhancementState = .reverting
+        do {
+            try await enhancementService.revertToOriginal(localIdentifier: localIdentifier)
+            enhancedAssetIDs.remove(localIdentifier)
+            guard localIdentifier == bestShotAssetID else {
+                await refreshEnhancementAvailability()
+                return
+            }
+            enhancementPreview = nil
+            enhancementState = .idle
+        } catch {
+            guard localIdentifier == bestShotAssetID else { return }
+            handleEnhancementError(error, fallbackState: .applied)
+        }
+    }
+
+    func handleEnhancementError(_ error: Error, fallbackState: PhotoEnhancementState) {
+        let enhancementError = (error as? PhotoEnhancementError) ?? .saveFailed
+        enhancementPreview = nil
+        enhancementState = .failed(enhancementError)
+        enhancementRecoveryState = fallbackState
+        publishAlikeEvent(.recoverableFailure(
+            id: AlikeEventID.cleanup(cleanupSelectionID),
+            context: AlikeErrorContext(operation: .enhancement)
+        ))
+        applyActionFailure(
+            message: Self.enhancementErrorMessage(for: enhancementError),
+            offersOpenSettings: enhancementError == .notAuthorized
+                || enhancementError == .limitedAccessNotEditable,
+            title: DetailsL10n.ClusterDetails.enhancementUnavailableTitle
+        )
+    }
+
+    static func enhancementErrorMessage(for error: PhotoEnhancementError) -> String {
+        switch error {
+        case .notAuthorized:
+            return DetailsL10n.Common.alikeNeedsPhotoLibraryAccess
+        case .limitedAccessNotEditable:
+            return DetailsL10n.ClusterDetails.enhancementLimitedAccess
+        case .originalUnavailable:
+            return DetailsL10n.ClusterDetails.enhancementOriginalUnavailable
+        case .renderFailed:
+            return DetailsL10n.ClusterDetails.enhancementRenderFailed
+        case .saveFailed:
+            return DetailsL10n.ClusterDetails.enhancementSaveFailed
+        case .notEnhancedByAlike:
+            return DetailsL10n.ClusterDetails.enhancementNotOurs
+        case .unsupportedAsset:
+            return DetailsL10n.ClusterDetails.enhancementUnsupportedAsset
+        case .editedInAnotherApp:
+            return DetailsL10n.ClusterDetails.enhancementEditedElsewhere
+        }
+    }
+}
+
 extension ClusterDetailsViewModel {
     func isBestShot(_ localIdentifier: String) -> Bool {
         bestShotAssetID == localIdentifier
+    }
+
+    /// Whether the Best Shot marking should be visible yet. While the measured
+    /// ranking is still landing the badge stays hidden, so it never appears on
+    /// one photo and then hops to another.
+    var isBestShotVisible: Bool {
+        !bestShotAssetID.isEmpty && !isRankingQualityPending
     }
 
     func isSelected(_ localIdentifier: String) -> Bool {
@@ -497,8 +740,13 @@ private extension ClusterDetailsViewModel {
     ) async {
         let generation = interactionGeneration
         let qualityScores = await loadQualityScores()
-        guard !Task.isCancelled, generation == interactionGeneration else { return }
+        guard !Task.isCancelled else { return }
+        guard generation == interactionGeneration else {
+            isRankingQualityPending = false
+            return
+        }
         guard !qualityScores.isEmpty else {
+            isRankingQualityPending = false
             await recordBestShotRecommendation()
             return
         }
@@ -508,6 +756,8 @@ private extension ClusterDetailsViewModel {
             savedState: savedState,
             qualityScores: qualityScores
         )
+        isRankingQualityPending = false
+        await refreshEnhancementAvailability()
         await recordBestShotRecommendation()
     }
 
@@ -570,6 +820,13 @@ private extension ClusterDetailsViewModel {
 
         // The measured decision; with no signals it degrades to exactly the
         // metadata-only ranking the app shipped before.
+        // The badge belongs to the photo, not to this screen's lifetime: the
+        // score cache remembers which photos Alike enhanced, so a photo that is
+        // no longer the Best Shot keeps its badge after a reopen.
+        enhancedAssetIDs = Set(
+            qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
+        )
+
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
             scores: qualityScores
@@ -647,30 +904,35 @@ private extension ClusterDetailsViewModel {
 
         switch error {
         case .nothingSelected:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.selectAtLeastOnePhoto,
                 offersOpenSettings: false
             )
         case .notAuthorized:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.alikeNeedsPhotoLibraryAccess,
                 offersOpenSettings: true
             )
         case .selectedAssetsUnavailable:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.someSelectedPhotosNoLonger,
                 offersOpenSettings: true
             )
         case .deleteFailed:
-            applyDeleteFailure(
+            applyActionFailure(
                 message: DetailsL10n.Common.couldntMoveSelectedPhotosPlease,
                 offersOpenSettings: false
             )
         }
     }
 
-    func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
-        deleteErrorMessage = message
+    func applyActionFailure(
+        message: String,
+        offersOpenSettings: Bool,
+        title: String = DetailsL10n.Common.cleanupUnavailable
+    ) {
+        actionErrorMessage = message
+        actionErrorTitle = title
         shouldOfferOpenSettings = offersOpenSettings
         pendingCompletionRecord = nil
     }

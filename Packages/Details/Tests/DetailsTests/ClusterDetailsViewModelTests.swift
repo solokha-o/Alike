@@ -802,14 +802,14 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))
         )
         XCTAssertFalse(viewModel.isDeleting)
 
-        viewModel.clearDeleteError()
+        viewModel.clearActionError()
 
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
@@ -830,7 +830,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
         XCTAssertFalse(cleanupDidRun)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
     }
 
     func testDismissingDeleteErrorClearsErrorState() async {
@@ -844,12 +844,12 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
         await viewModel.confirmDelete()
 
-        XCTAssertTrue(viewModel.isDeleteErrorPresented)
+        XCTAssertTrue(viewModel.isActionErrorPresented)
 
-        viewModel.isDeleteErrorPresented = false
+        viewModel.isActionErrorPresented = false
 
-        XCTAssertFalse(viewModel.isDeleteErrorPresented)
-        XCTAssertNil(viewModel.deleteErrorMessage)
+        XCTAssertFalse(viewModel.isActionErrorPresented)
+        XCTAssertNil(viewModel.actionErrorMessage)
         XCTAssertFalse(viewModel.shouldOfferOpenSettings)
     }
 
@@ -1381,6 +1381,25 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
     }
 
+    /// The badge belongs to the photo: a photo enhanced earlier keeps it after
+    /// the screen is reopened, even once it is no longer the Best Shot.
+    func testEnhancedBadgesAreRestoredFromTheScoreCache() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "enhanced", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("enhanced", 20)],
+            enhancedIdentifiers: ["enhanced"]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharp")
+        XCTAssertTrue(viewModel.isEnhanced("enhanced"))
+        XCTAssertFalse(viewModel.isEnhanced("sharp"))
+    }
+
     /// Scoring can decode photos and fetch originals from iCloud. The screen
     /// must not wait for it: it appears on the metadata ranking and refines
     /// itself when the measurements land.
@@ -1410,6 +1429,84 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         await analyzer.finish(with: [])
         await loading.value
+    }
+
+    /// The star must not appear on one photo and hop to another once scoring
+    /// lands: while the measured ranking is pending the badge stays hidden.
+    func testTheBestShotBadgeWaitsForTheMeasuredRanking() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        XCTAssertTrue(viewModel.isRankingQualityPending)
+        XCTAssertFalse(viewModel.isBestShotVisible)
+
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "plain",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "favorite",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 10, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+    }
+
+    func testAnEmptyMeasurementStopsWaitingAndShowsTheMetadataPick() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        await analyzer.finish(with: [])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
     }
 
     /// A ranking that arrives after the user has acted must not overwrite them.
@@ -1472,6 +1569,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         qualityScores: [(String, Double)] = [],
+        enhancedIdentifiers: Set<String> = [],
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
@@ -1481,7 +1579,10 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            qualityAnalyzer: StubPhotoQualityAnalyzer(sharpnessByIdentifier: qualityScores),
+            qualityAnalyzer: StubPhotoQualityAnalyzer(
+                sharpnessByIdentifier: qualityScores,
+                enhancedIdentifiers: enhancedIdentifiers
+            ),
             overrideMetrics: overrideMetrics,
             assetSnapshots: snapshots,
             completionDelay: completionDelay
@@ -1536,6 +1637,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 /// under test has snapshots, not live `PHAsset`s.
 private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
     let sharpnessByIdentifier: [(String, Double)]
+    var enhancedIdentifiers: Set<String> = []
 
     func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
         let config = PhotoQualityScoringConfig.current
@@ -1550,7 +1652,8 @@ private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
                     subjectLumaStdDev: 0.25,
                     noiseEstimate: 0.1,
                     pixelArea: 1_000
-                )
+                ),
+                isAlikeEnhanced: enhancedIdentifiers.contains(identifier)
             )
         }
     }

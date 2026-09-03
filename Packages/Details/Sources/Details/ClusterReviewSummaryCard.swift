@@ -4,6 +4,10 @@ import DesignSystem
 
 struct ClusterReviewSummaryCard: View {
     static let summaryContentMinimumHeight: CGFloat = 88
+    /// Longer than any real reason line, since it strings every code
+    /// together. Used only to reserve height, never shown, so the reason
+    /// line appearing or disappearing cannot change the card's size.
+    static let reservedBestShotReasonText = BestShotReasonSummary.text(for: BestShotReasonCode.allCases) ?? ""
 
     enum ArtworkIdentity: Equatable, Hashable {
         case bestShot(AlikeReviewReactionCue.ID)
@@ -14,13 +18,18 @@ struct ClusterReviewSummaryCard: View {
     }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Latches once the foreign-edit note has been shown, so the height it
+    /// takes stays reserved after the note itself goes away.
+    @State private var hasShownForeignEditNote = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let assetCount: Int
     let bestShotLabel: String
     let bestShotConfidence: BestShotConfidence
+    var isChoosingBestShot = false
     let bestShotReasonCodes: [BestShotReasonCode]
+    var isBestShotEditedElsewhere = false
     let selectedCount: Int
     let estimatedSavingsText: String
     let maximumEstimatedSavingsText: String
@@ -82,41 +91,133 @@ struct ClusterReviewSummaryCard: View {
         .animation(nil, value: reviewStatus)
     }
 
-    /// Three states in one place: a confident pick, a hedged one, and the
-    /// honest "nothing stands out here, you choose".
-    @ViewBuilder
+    /// The visible state sits over a hidden reservation of the tallest
+    /// layout the resolved state can produce, so choosing between the three
+    /// states below — or the resolved state gaining or losing its reason
+    /// line or foreign-edit note — never changes the card's height.
     private var bestShotSummary: some View {
-        if bestShotConfidence == .unresolved {
+        ZStack(alignment: .topLeading) {
+            bestShotSummaryReservation
+                .hidden()
+                .accessibilityHidden(true)
+
+            bestShotSummaryContent
+        }
+        .onAppear { hasShownForeignEditNote = isBestShotEditedElsewhere }
+        .onChange(of: isBestShotEditedElsewhere) { _, isEditedElsewhere in
+            if isEditedElsewhere { hasShownForeignEditNote = true }
+        }
+    }
+
+    /// Title, reason line and — only where it applies — the foreign-edit note,
+    /// all present at once, in the same fonts as the real content. Never shown:
+    /// `.hidden()` keeps it out of the accessibility tree while still
+    /// contributing its size to the enclosing `ZStack`.
+    ///
+    /// The note's slot is latched rather than mirrored: it disappears from the
+    /// real content once the photo carries Alike's own edit, and a cluster that
+    /// never had a foreign edit should not pay a line of height for one.
+    private var bestShotSummaryReservation: some View {
+        VStack(alignment: .leading, spacing: Spacing.xxSmall) {
             Label {
-                Text(DetailsL10n.ClusterDetails.noObviousBestShot)
+                Text(bestShotTitle)
                     .fixedSize(horizontal: false, vertical: true)
             } icon: {
                 Image(systemName: bestShotConfidence.badgeSymbolName)
-                    .foregroundStyle(.secondary)
             }
             .font(.appCallout.weight(.semibold))
-            .foregroundStyle(.secondary)
-        } else {
-            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+
+            Text(Self.reservedBestShotReasonText)
+                .font(.appCaption)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if hasShownForeignEditNote {
                 Label {
-                    Text(bestShotTitle)
+                    Text(DetailsL10n.ClusterDetails.editedInAnotherAppNote)
+                } icon: {
+                    Image(systemName: "square.and.pencil")
+                }
+                .font(.appCaption)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    /// Three states in one place: a confident pick, a hedged one, and the
+    /// honest "nothing stands out here, you choose".
+    @ViewBuilder
+    private var bestShotSummaryContent: some View {
+        Group {
+            if isChoosingBestShot {
+                // Says what is happening instead of showing a pick that is about to
+                // change under the user's eyes.
+                Label {
+                    Text(DetailsL10n.ClusterDetails.choosingBestShot)
+                        .fixedSize(horizontal: false, vertical: true)
+                } icon: {
+                    ProgressView()
+                        .controlSize(.small)
+                }
+                .font(.appCallout.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+            } else if bestShotConfidence == .unresolved {
+                Label {
+                    Text(DetailsL10n.ClusterDetails.noObviousBestShot)
                         .fixedSize(horizontal: false, vertical: true)
                 } icon: {
                     Image(systemName: bestShotConfidence.badgeSymbolName)
-                        .foregroundStyle(Color.heroGold)
+                        .foregroundStyle(.secondary)
                 }
                 .font(.appCallout.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+            } else {
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Label {
+                        Text(bestShotTitle)
+                            .contentTransition(.opacity)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } icon: {
+                        Image(systemName: bestShotConfidence.badgeSymbolName)
+                            .foregroundStyle(Color.heroGold)
+                    }
+                    .font(.appCallout.weight(.semibold))
 
-                if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
-                    Text(reasons)
+                    if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
+                        Text(reasons)
+                            .font(.appCaption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .transition(.opacity)
+                    }
+
+                    if isBestShotEditedElsewhere {
+                        // Says where the photo's current look came from, so
+                        // enhancing it is never a surprise.
+                        Label {
+                            Text(DetailsL10n.ClusterDetails.editedInAnotherAppNote)
+                        } icon: {
+                            Image(systemName: "square.and.pencil")
+                        }
                         .font(.appCaption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
+                        .transition(.opacity)
+                    }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Text(verbatim: bestShotAccessibilityLabel))
+                .transition(.opacity)
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(verbatim: bestShotAccessibilityLabel))
         }
+        // A crossfade, not a pop, whichever of the three states changes: the
+        // choosing state settling into a pick, the reason line landing once
+        // scoring completes, or the foreign-edit note appearing.
+        .animation(reduceMotion ? nil : .appSmooth, value: isChoosingBestShot)
+        .animation(reduceMotion ? nil : .appSmooth, value: bestShotConfidence)
+        .animation(reduceMotion ? nil : .appSmooth, value: bestShotReasonCodes)
+        .animation(reduceMotion ? nil : .appSmooth, value: isBestShotEditedElsewhere)
     }
 
     private var bestShotTitle: String {
@@ -126,9 +227,17 @@ struct ClusterReviewSummaryCard: View {
     }
 
     private var bestShotAccessibilityLabel: String {
-        let base = "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
-        guard let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) else { return base }
-        return "\(base). \(reasons)"
+        var spoken = "\(bestShotConfidence.badgeTitle): \(bestShotLabel)"
+        if let reasons = BestShotReasonSummary.text(for: bestShotReasonCodes) {
+            spoken += ". \(reasons)"
+        }
+        // The explicit label replaces the spoken content of the combined
+        // children, so the warning has to be repeated here or VoiceOver users
+        // never hear that enhancing would replace another app's edit.
+        if isBestShotEditedElsewhere {
+            spoken += ". \(DetailsL10n.ClusterDetails.editedInAnotherAppNote)"
+        }
+        return spoken
     }
 
     private var assetCountLabel: some View {

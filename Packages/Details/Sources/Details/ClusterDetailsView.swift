@@ -14,6 +14,9 @@ import PurchasesUI
 public struct ClusterDetailsView: View {
     fileprivate enum Constants {
         static let hostReviewStateRefreshDebounce = Duration.milliseconds(250)
+        /// Preview render size: large enough to judge the result on any iPhone,
+        /// small enough not to render the full-size image for a preview.
+        static let enhancementPreviewSize = CGSize(width: 1_600, height: 1_600)
     }
 
     @Environment(\.dismiss) private var dismiss
@@ -27,6 +30,7 @@ public struct ClusterDetailsView: View {
     @PhotoGridColumnPreference private var selectedGridColumnCount
     @State private var selectedAsset: SelectedAsset?
     @State private var presentedPremiumFeature: PremiumFeature?
+    @State private var enhancementRequest: EnhancementRequest?
 
     public init(
         cluster: PhotoCluster,
@@ -36,6 +40,7 @@ public struct ClusterDetailsView: View {
         subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        enhancementService: (any PhotoEnhancementService)? = nil,
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
@@ -50,6 +55,7 @@ public struct ClusterDetailsView: View {
             premiumAccess: premiumAccess,
             openSettingsAction: openSettingsAction,
             qualityAnalyzer: qualityAnalyzer,
+            enhancementService: enhancementService,
             overrideMetrics: overrideMetrics
         ))
     }
@@ -70,12 +76,17 @@ public struct ClusterDetailsView: View {
         ScrollView {
             if viewModel.hasLoadedReviewState {
                 loadedContent
+                    .transition(.opacity)
             } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, minHeight: 360)
+                    .transition(.opacity)
             }
         }
         .frame(maxWidth: .infinity)
+        // A crossfade instead of an instant swap, so the spinner does not get
+        // replaced by a wall of content the instant loading finishes.
+        .animation(.appSmooth, value: viewModel.hasLoadedReviewState)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
                 ClusterReviewActionBar(
@@ -115,6 +126,27 @@ public struct ClusterDetailsView: View {
                 }
             }
         }
+        .fullScreenCover(item: $enhancementRequest) { request in
+            // Everything here works on the photo frozen when the action was
+            // tapped, never on the live Best Shot: a ranking that lands while
+            // the cover opens must not retarget it.
+            if let requestedAsset = viewModel.asset(withIdentifier: request.assetID) {
+                EnhancementPreviewView(
+                    asset: requestedAsset,
+                    enhancedImage: viewModel.enhancementPreview,
+                    state: viewModel.enhancementState,
+                    replacesOtherAppEdit: viewModel.isBestShotEditedElsewhere,
+                    onApply: { Task { await viewModel.applyEnhancement(for: request.assetID) } },
+                    onCancel: viewModel.dismissEnhancementPreview
+                )
+                .task {
+                    await viewModel.enhance(
+                        previewSize: Constants.enhancementPreviewSize,
+                        for: request.assetID
+                    )
+                }
+            }
+        }
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: viewModel.assets, selectedIndex: selection.index)
         }
@@ -141,20 +173,20 @@ public struct ClusterDetailsView: View {
             Text(viewModel.deleteConfirmationMessage)
         }
         .alert(
-            DetailsL10n.Common.cleanupUnavailable,
-            isPresented: Bindable(viewModel).isDeleteErrorPresented
+            viewModel.actionErrorTitle,
+            isPresented: Bindable(viewModel).isActionErrorPresented
         ) {
             if viewModel.shouldOfferOpenSettings {
                 Button(DetailsL10n.Common.openSettings) {
                     viewModel.openSettings()
-                    viewModel.clearDeleteError()
+                    viewModel.clearActionError()
                 }
             }
             Button(DetailsL10n.Common.ok, role: .cancel) {
-                viewModel.clearDeleteError()
+                viewModel.clearActionError()
             }
         } message: {
-            Text(viewModel.deleteErrorMessage ?? "")
+            Text(viewModel.actionErrorMessage ?? "")
         }
         .task {
             await viewModel.load()
@@ -262,7 +294,9 @@ public struct ClusterDetailsView: View {
                         assetCount: viewModel.assetCount,
                         bestShotLabel: viewModel.bestShotLabel,
                         bestShotConfidence: viewModel.bestShotConfidence,
+                        isChoosingBestShot: viewModel.isRankingQualityPending,
                         bestShotReasonCodes: viewModel.bestShotReasonCodes,
+                        isBestShotEditedElsewhere: viewModel.isBestShotEditedElsewhere,
                         selectedCount: viewModel.selectedCount,
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
@@ -304,7 +338,10 @@ public struct ClusterDetailsView: View {
                             SelectablePhotoThumbnail(
                                 asset: asset,
                                 thumbnailAspectRatio: 1,
-                                isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                // Hidden until the measured ranking settles, so
+                                // the star never hops between photos.
+                                isBestShot: viewModel.isBestShotVisible
+                                    && viewModel.isBestShot(asset.localIdentifier),
                                 bestShotConfidence: viewModel.bestShotConfidence,
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
                                 onToggleSelection: {
@@ -317,7 +354,25 @@ public struct ClusterDetailsView: View {
                                 },
                                 onMakeBestShot: {
                                     viewModel.setBestShot(asset.localIdentifier)
-                                }
+                                },
+                                isEnhanced: viewModel.isEnhanced(asset.localIdentifier),
+                                enhancementState: viewModel.isBestShot(asset.localIdentifier)
+                                    ? viewModel.enhancementState
+                                    : .unavailable,
+                                onEnhance: viewModel.isBestShot(asset.localIdentifier)
+                                    && viewModel.isEnhancementActionVisible
+                                    ? {
+                                        // Freeze the photo at the tap, so a late
+                                        // ranking cannot retarget the cover.
+                                        if let assetID = viewModel.beginEnhancementRequest() {
+                                            enhancementRequest = EnhancementRequest(assetID: assetID)
+                                        }
+                                    }
+                                    : nil,
+                                onRevertEnhancement: viewModel.isBestShot(asset.localIdentifier)
+                                    && viewModel.isEnhancementActionVisible
+                                    ? { Task { await viewModel.revertEnhancement() } }
+                                    : nil
                             )
                             .transition(
                                 .asymmetric(
@@ -373,6 +428,12 @@ struct SelectablePhotoThumbnail: View {
     let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
     var onMakeBestShot: (() -> Void)?
+    var isEnhanced = false
+    var enhancementState: PhotoEnhancementState = .unavailable
+    var onEnhance: (() -> Void)?
+    var onRevertEnhancement: (() -> Void)?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var image: UIImage?
     @State private var imageLoadState = PhotoImageLoadState()
@@ -429,9 +490,24 @@ struct SelectablePhotoThumbnail: View {
                                     .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
                             }
                             .padding(Spacing.xSmall)
+                            .transition(bestShotBadgeTransition)
+                    }
+                }
+                .overlay(alignment: .bottomLeading) {
+                    if isEnhanced {
+                        enhancedBadge
+                            .padding(Spacing.xSmall)
                             .transition(.scale(scale: 0.92).combined(with: .opacity))
                     }
                 }
+                .overlay(alignment: .center) {
+                    if enhancementState.isBusy {
+                        ProgressView()
+                            .padding(Spacing.small)
+                            .background(.regularMaterial, in: Circle())
+                    }
+                }
+                .animation(.appInteractiveFast, value: isEnhanced)
                 .overlay(alignment: .topTrailing) {
                     if isSelected {
                         Image(systemName: "checkmark.circle.fill")
@@ -455,6 +531,11 @@ struct SelectablePhotoThumbnail: View {
                 if let onMakeBestShot, !isBestShot {
                     Button(DetailsL10n.ClusterDetails.makeBestShot, action: onMakeBestShot)
                 }
+                if isEnhanced, let onRevertEnhancement {
+                    Button(DetailsL10n.ClusterDetails.revertToOriginal, action: onRevertEnhancement)
+                } else if let onEnhance {
+                    Button(DetailsL10n.ClusterDetails.enhance, action: onEnhance)
+                }
             }
 
             if imageLoadState.phase == .failed {
@@ -467,6 +548,8 @@ struct SelectablePhotoThumbnail: View {
         .contentShape(.interaction, thumbnailShape)
         .contentShape(.contextMenuPreview, thumbnailShape)
         .contextMenu {
+            enhancementMenuItems
+
             if let onMakeBestShot, !isBestShot {
                 Button {
                     onMakeBestShot()
@@ -524,6 +607,12 @@ struct SelectablePhotoThumbnail: View {
         (isBestShot || isSelected) ? 2 : 0
     }
 
+    /// A settle-in fade rather than a pop when the measured ranking lands;
+    /// under reduce motion the scale drops and only the fade remains.
+    private var bestShotBadgeTransition: AnyTransition {
+        reduceMotion ? .opacity : .scale(scale: 0.92).combined(with: .opacity)
+    }
+
     private var thumbnailShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: CornerRadius.small, style: .continuous)
     }
@@ -579,6 +668,45 @@ struct SelectablePhotoThumbnail: View {
     }
 
     private var contextMenuPreviewWidth: CGFloat { 240 }
+
+    /// One step in each direction: enhance, or put the original back.
+    @ViewBuilder
+    private var enhancementMenuItems: some View {
+        if isEnhanced, let onRevertEnhancement {
+            Button(action: onRevertEnhancement) {
+                Label {
+                    Text(DetailsL10n.ClusterDetails.revertToOriginal)
+                } icon: {
+                    Image(systemName: "arrow.uturn.backward")
+                }
+            }
+            .disabled(enhancementState.isBusy)
+        } else if let onEnhance {
+            Button(action: onEnhance) {
+                Label {
+                    Text(DetailsL10n.ClusterDetails.enhance)
+                } icon: {
+                    Image(systemName: "wand.and.stars")
+                }
+            }
+            .disabled(enhancementState.isBusy)
+        }
+    }
+
+    /// Permanent marker that this photo is showing Alike's enhanced version.
+    private var enhancedBadge: some View {
+        Label {
+            Text(DetailsL10n.ClusterDetails.enhanced)
+                .foregroundStyle(.primary)
+        } icon: {
+            Image(systemName: "wand.and.stars")
+                .foregroundStyle(Color.accent)
+        }
+        .font(.caption2.bold())
+        .padding(.horizontal, Spacing.xSmall)
+        .padding(.vertical, Spacing.xxSmall)
+        .background(.regularMaterial, in: Capsule())
+    }
 
     private var accessibilityLabel: String {
         if isBestShot {
@@ -796,6 +924,13 @@ private struct PhotoInfoLocationSection: View {
         mapItem.name = DetailsL10n.ClusterDetails.photoLocation
         mapItem.openInMaps()
     }
+}
+
+/// Identifies one presentation of the enhancement preview sheet.
+private struct EnhancementRequest: Identifiable {
+    let id = UUID()
+    /// The photo this preview belongs to, frozen when the action was tapped.
+    let assetID: String
 }
 
 #else
