@@ -35,6 +35,8 @@ public struct ClusterDetailsView: View {
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         subscriptionStore: SubscriptionStore? = nil,
         openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
@@ -46,7 +48,9 @@ public struct ClusterDetailsView: View {
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
             premiumAccess: premiumAccess,
-            openSettingsAction: openSettingsAction
+            openSettingsAction: openSettingsAction,
+            qualityAnalyzer: qualityAnalyzer,
+            overrideMetrics: overrideMetrics
         ))
     }
 
@@ -257,6 +261,8 @@ public struct ClusterDetailsView: View {
                     ClusterReviewSummaryCard(
                         assetCount: viewModel.assetCount,
                         bestShotLabel: viewModel.bestShotLabel,
+                        bestShotConfidence: viewModel.bestShotConfidence,
+                        bestShotReasonCodes: viewModel.bestShotReasonCodes,
                         selectedCount: viewModel.selectedCount,
                         estimatedSavingsText: viewModel.estimatedSavingsText,
                         maximumEstimatedSavingsText: viewModel.maximumEstimatedSavingsText,
@@ -299,6 +305,7 @@ public struct ClusterDetailsView: View {
                                 asset: asset,
                                 thumbnailAspectRatio: 1,
                                 isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                bestShotConfidence: viewModel.bestShotConfidence,
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
                                 onToggleSelection: {
                                     viewModel.toggleSelection(for: asset.localIdentifier)
@@ -361,6 +368,7 @@ struct SelectablePhotoThumbnail: View {
     let asset: PHAsset
     let thumbnailAspectRatio: CGFloat
     let isBestShot: Bool
+    var bestShotConfidence: BestShotConfidence = .automatic
     let isSelected: Bool
     let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
@@ -403,13 +411,13 @@ struct SelectablePhotoThumbnail: View {
                 .overlay(alignment: .topLeading) {
                     if isBestShot {
                         Label {
-                            Text(DetailsL10n.Common.bestShot)
+                            Text(bestShotConfidence.badgeTitle)
                                 .foregroundStyle(.primary)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true)
                         } icon: {
-                            Image(systemName: "star.fill")
+                            Image(systemName: bestShotConfidence.badgeSymbolName)
                                 .foregroundStyle(Color.heroGold)
                         }
                             .font(.caption.bold())
@@ -574,7 +582,7 @@ struct SelectablePhotoThumbnail: View {
 
     private var accessibilityLabel: String {
         if isBestShot {
-            return DetailsL10n.Common.bestShot
+            return bestShotConfidence.badgeTitle
         }
         if isSelected {
             return DetailsL10n.ClusterDetails.selectedForCleanupReview
@@ -584,7 +592,7 @@ struct SelectablePhotoThumbnail: View {
 
     private var accessibilityValue: String {
         if isBestShot {
-            return DetailsL10n.Common.bestShot
+            return bestShotConfidence.badgeTitle
         }
         return isSelected ? DetailsL10n.ClusterDetails.selected : DetailsL10n.ClusterDetails.notSelected
     }

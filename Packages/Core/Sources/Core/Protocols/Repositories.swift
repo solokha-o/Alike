@@ -200,6 +200,48 @@ public protocol CleanupReminderManaging: Sendable {
     func resync(isPremiumUnlocked: Bool) async throws
 }
 
+/// Repository for cached per-photo technical quality measurements.
+public protocol PhotoQualityScoreRepository: Sendable {
+    /// Load cached scores for the requested assets, keyed by local identifier.
+    func loadScores(localIdentifiers: [String]) async throws -> [String: PhotoQualityScore]
+
+    /// Insert or replace the supplied scores.
+    func saveScores(_ scores: [PhotoQualityScore]) async throws
+
+    /// Drop every cached score.
+    func deleteAllScores() async throws
+}
+
+/// Service that measures the technical quality of photos.
+public protocol PhotoQualityAnalyzing: Sendable {
+    /// Measure the supplied assets, returning one score per asset it could
+    /// handle. A single unreadable photo is reported through
+    /// `PhotoQualitySignals.analysisFailure`, never by throwing.
+    func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore]
+}
+
+/// Repository for the installation-local, anonymous Best Shot override tally.
+public protocol BestShotOverrideMetricsRepository: Sendable {
+    /// Loads the current counters.
+    func loadMetrics() async -> BestShotOverrideMetrics
+
+    /// Records that a cluster was opened with a recommended Best Shot.
+    ///
+    /// Counted once per cluster: reopening the same cluster must not inflate the
+    /// denominator that manual replacements are measured against.
+    func recordRecommendation(confidence: BestShotConfidence, clusterID: UUID) async
+
+    /// Records that the user picked a Best Shot themselves, replacing whatever
+    /// the ranking had offered — including nothing at all.
+    ///
+    /// Counted only for a cluster whose recommendation was counted, so the rate
+    /// keeps a numerator and a denominator that describe the same clusters.
+    func recordManualPick(replacing confidence: BestShotConfidence, clusterID: UUID) async
+
+    /// Clears the counters, e.g. when the user deletes local app data.
+    func resetMetrics() async
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
