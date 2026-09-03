@@ -58,6 +58,8 @@ entity". Say the tier out loud in the PR body when it is R2 or R3.
 5. For R2, follow `Skills/Storage/persisted-data-evolution/SKILL.md` and add the
    migration test before the feature work is called done.
 6. State the tier and the compatibility decision in the commit message and PR body.
+7. Before merging anything R1 or higher, walk the pre-merge gate in
+   `references/release-compatibility-gate.md`. It is a checklist, not advice.
 
 ## Guardrails
 
@@ -83,6 +85,7 @@ entity". Say the tier out loud in the PR body when it is R2 or R3.
 |---|---|
 | `references/extension-first.md` | Choosing the additive shape: protocol, default parameter, new type, new case |
 | `references/breaking-change-checklist.md` | You decided modification is unavoidable |
+| `references/release-compatibility-gate.md` | The hard MUST/NEVER rules and the pre-merge gate — read before merging anything R1+ |
 
 ## Related Skills
 

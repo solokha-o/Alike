@@ -114,3 +114,6 @@ Gemfile.lock
 # Notion-mirrored progress notes; the board is the source of truth
 Docs/task*-plan.md
 Docs/phase*-handoff.md
+
+# Build benchmark artifacts from the Xcode build-optimization skills
+.build-benchmark/
