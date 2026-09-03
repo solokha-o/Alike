@@ -120,6 +120,82 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
         XCTAssertFalse(text.contains("another-local-id"))
     }
 
+    func testPersistedSessionRoundTripsLocalIdentifierMap() throws {
+        let defaults = makeEphemeralDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        let clusterID = UUID()
+        let prepared = makePreparedCluster(
+            clusterID: clusterID,
+            localIdentifiers: ["real-local-id-1", "real-local-id-2"]
+        )
+        viewModel.setPreparedClusterForTesting(prepared)
+        viewModel.recordLabel(clusterID: clusterID, bestShotAssetID: "real-local-id-2", category: nil)
+
+        let data = try viewModel.exportJSON()
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let entry = try XCTUnwrap(try decoder.decode(BestShotCalibrationCorpus.self, from: data).entries.first)
+
+        // Reload a fresh view model from the same UserDefaults suite, as the
+        // screen does across a relaunch, and confirm the localIdentifier map
+        // survived the round trip through the persisted session.
+        let resumedViewModel = makeViewModel(defaults: defaults)
+        let resumedMap = resumedViewModel.candidateLocalIdentifiersForTesting(clusterID: entry.clusterID)
+        XCTAssertEqual(resumedMap, [
+            entry.candidates[0].assetID: "real-local-id-1",
+            entry.candidates[1].assetID: "real-local-id-2",
+        ])
+    }
+
+    func testExportedBytesContainNoLocalIdentifierWhenTheResumeMapIsPopulated() throws {
+        let defaults = makeEphemeralDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        let clusterID = UUID()
+        let secretLocalIdentifier = "8F2C1A4B-0000-1111-2222-ABCDEF012345/L0/001"
+        let prepared = makePreparedCluster(
+            clusterID: clusterID,
+            localIdentifiers: [secretLocalIdentifier, "another-local-id"]
+        )
+        viewModel.setPreparedClusterForTesting(prepared)
+        viewModel.recordLabel(
+            clusterID: clusterID,
+            bestShotAssetID: secretLocalIdentifier,
+            category: .night
+        )
+
+        // The resume buffer now holds the localIdentifier map (asserted by
+        // testPersistedSessionRoundTripsLocalIdentifierMap); exportJSON()
+        // must still never surface it.
+        let data = try viewModel.exportJSON()
+        let text = String(decoding: data, as: UTF8.self)
+
+        XCTAssertFalse(text.contains(secretLocalIdentifier))
+        XCTAssertFalse(text.contains("another-local-id"))
+        XCTAssertFalse(text.contains("candidateLocalIdentifiers"))
+        XCTAssertFalse(text.contains("localIdentifier"))
+    }
+
+    func testRehashingAStoredLocalIdentifierReproducesTheSameAnonymizedAssetID() throws {
+        let defaults = makeEphemeralDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        let clusterID = UUID()
+        let localIdentifier = "real-local-id-for-rehash"
+        let prepared = makePreparedCluster(clusterID: clusterID, localIdentifiers: [localIdentifier])
+        viewModel.setPreparedClusterForTesting(prepared)
+        viewModel.recordLabel(clusterID: clusterID, bestShotAssetID: localIdentifier, category: nil)
+
+        let corpus = try JSONDecoder.calibration.decode(
+            BestShotCalibrationCorpus.self,
+            from: viewModel.exportJSON()
+        )
+        let recordedAssetID = try XCTUnwrap(corpus.entries.first?.humanBestShotID)
+
+        // Re-hashing the same localIdentifier with the session's persisted
+        // salt must reproduce the exact assetID recorded at label time —
+        // the property remeasureCorpus() relies on to keep assetIDs stable.
+        XCTAssertEqual(viewModel.anonymizedAssetIDForTesting(localIdentifier), recordedAssetID)
+    }
+
     func testResetClearsBufferAndProducesEmptyCorpus() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
@@ -132,6 +208,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
 
         viewModel.reset()
         XCTAssertEqual(viewModel.labelledCount, 0)
+        XCTAssertNil(viewModel.candidateLocalIdentifiersForTesting(clusterID: clusterID.uuidString))
 
         let corpus = try JSONDecoder.calibration.decode(
             BestShotCalibrationCorpus.self,

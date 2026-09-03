@@ -25,10 +25,28 @@ struct BestShotCalibrationPreparedCluster: Sendable, Equatable {
     let candidates: [BestShotCalibrationPreparedCandidate]
 }
 
+/// The outcome of `remeasureCorpus()`: how many labelled clusters were
+/// re-scored successfully versus dropped because their photos could no
+/// longer be resolved (deleted from the library since labelling).
+public struct BestShotCalibrationRemeasureResult: Sendable, Equatable {
+    public let remeasuredCount: Int
+    public let droppedCount: Int
+}
+
 /// Drives the DEBUG-only Best Shot labelling screen: walks real clusters one
 /// at a time, scores them through the same cache-first analyzer production
 /// uses, and accumulates human labels into a corpus that can be exported and
 /// resumed across relaunches without ever persisting PhotoKit identity.
+///
+/// WHY the resume buffer also keeps real `localIdentifier`s (never exported,
+/// see `PersistedSession` below): raw `PhotoQualitySignals` are only
+/// comparable to the analysis pipeline that produced them. A geometry change
+/// to the pipeline (e.g. the face-detection size gate) bumps
+/// `thumbnailConfigVersion` and makes every already-collected corpus's
+/// signals stale, even though the human's "which photo is best" label is
+/// still valid. Re-measuring needs the real photo back, and the exported
+/// corpus only ever carries anonymized `assetID`s — so the on-device DEBUG
+/// buffer keeps the mapping the export deliberately discards.
 @MainActor
 @Observable
 public final class BestShotCalibrationLabelingViewModel {
@@ -47,6 +65,17 @@ public final class BestShotCalibrationLabelingViewModel {
     /// the same photo always anonymizes to the same ID within one export.
     private var salt: String
     private var labelledClusters: [BestShotCalibrationCluster]
+    /// DEBUG-only, resume-buffer-only: real PhotoKit `localIdentifier`s for
+    /// every candidate in a labelled cluster, keyed by the cluster's
+    /// `clusterID` and then by the candidate's anonymized `assetID`. This is
+    /// what lets `remeasureCorpus()` find the photos again; it is never
+    /// written into `exportJSON()`'s output.
+    private var candidateLocalIdentifiers: [String: [String: String]]
+    /// `thumbnailConfigVersion` in effect the last time each cluster's
+    /// signals were actually measured (labelled, or re-measured). Lets the
+    /// UI tell a fresh corpus from one that predates a geometry change,
+    /// without changing the exported schema to carry it.
+    private var measuredThumbnailConfigVersions: [String: Int]
 
     public private(set) var currentCluster: PhotoCluster?
     /// `internal`, not `private`: the view drives selection off it, and tests
@@ -57,6 +86,10 @@ public final class BestShotCalibrationLabelingViewModel {
     public private(set) var loadErrorMessage: String?
     /// `true` once a `loadNextCluster()` found no unlabelled cluster left.
     public private(set) var isFinished = false
+    public private(set) var isRemeasuring = false
+    /// `(completed, total)` clusters processed so far in an in-flight
+    /// `remeasureCorpus()`, for a determinate progress indicator.
+    public private(set) var remeasureProgress: (completed: Int, total: Int) = (0, 0)
 
     public init(
         clusterRepository: (any PhotoClusterRepository)? = nil,
@@ -73,14 +106,34 @@ public final class BestShotCalibrationLabelingViewModel {
         if let session = Self.loadPersistedSession(defaults: defaults) {
             self.salt = session.salt
             self.labelledClusters = session.labelledClusters
+            self.candidateLocalIdentifiers = session.candidateLocalIdentifiers
+            self.measuredThumbnailConfigVersions = session.measuredThumbnailConfigVersions
         } else {
             self.salt = UUID().uuidString
             self.labelledClusters = []
+            self.candidateLocalIdentifiers = [:]
+            self.measuredThumbnailConfigVersions = [:]
         }
     }
 
     public var labelledCount: Int {
         labelledClusters.count
+    }
+
+    /// `thumbnailConfigVersion` production would stamp on a score measured
+    /// right now — the number to compare the corpus's own vintage against.
+    public var currentThumbnailConfigVersion: Int {
+        PhotoQualityScoringConfig.current.thumbnailConfigVersion
+    }
+
+    /// How many labelled clusters were last measured under a different
+    /// `thumbnailConfigVersion` than the current one (including clusters
+    /// from before this tracking existed, which count as unknown/stale).
+    /// Zero and non-empty means the corpus is current; a `Re-measure corpus`
+    /// pass is not needed.
+    public var clustersNeedingRemeasureCount: Int {
+        let current = currentThumbnailConfigVersion
+        return labelledClusters.filter { measuredThumbnailConfigVersions[$0.clusterID] != current }.count
     }
 
     /// Candidate local identifiers of the cluster on screen, in cluster order,
@@ -179,9 +232,12 @@ public final class BestShotCalibrationLabelingViewModel {
         guard let prepared = currentPreparedCluster, prepared.clusterID == clusterID else { return }
         guard prepared.candidates.contains(where: { $0.localIdentifier == bestShotAssetID }) else { return }
 
-        let candidates = prepared.candidates.map { candidate in
-            BestShotCalibrationCandidate(
-                assetID: anonymizedAssetID(for: candidate.localIdentifier),
+        var localIdentifiersByAssetID: [String: String] = [:]
+        let candidates = prepared.candidates.map { candidate -> BestShotCalibrationCandidate in
+            let assetID = anonymizedAssetID(for: candidate.localIdentifier)
+            localIdentifiersByAssetID[assetID] = candidate.localIdentifier
+            return BestShotCalibrationCandidate(
+                assetID: assetID,
                 signals: candidate.signals,
                 creationDate: candidate.creationDate,
                 modificationDate: candidate.modificationDate,
@@ -198,6 +254,8 @@ public final class BestShotCalibrationLabelingViewModel {
         )
 
         labelledClusters.append(entry)
+        candidateLocalIdentifiers[entry.clusterID] = localIdentifiersByAssetID
+        measuredThumbnailConfigVersions[entry.clusterID] = currentThumbnailConfigVersion
         persistSession()
         currentCluster = nil
         currentPreparedCluster = nil
@@ -233,11 +291,68 @@ public final class BestShotCalibrationLabelingViewModel {
     /// discarded corpus cannot be stitched back together with a later one.
     public func reset() {
         labelledClusters.removeAll()
+        candidateLocalIdentifiers.removeAll()
+        measuredThumbnailConfigVersions.removeAll()
         salt = UUID().uuidString
         currentCluster = nil
         currentPreparedCluster = nil
         isFinished = false
         defaults.removeObject(forKey: PreferenceKey.session)
+    }
+
+    /// Re-runs every labelled cluster through the same `PhotoQualityAnalyzing`
+    /// this screen already scores with, replacing each candidate's signals
+    /// with a fresh measurement while keeping `clusterID`, `category` and
+    /// `humanBestShotID` — and the same anonymized `assetID`s, since the same
+    /// `localIdentifier` re-hashed with the persisted salt reproduces them —
+    /// exactly as they were. The human label survives; only the signals move.
+    ///
+    /// This deliberately goes through `qualityAnalyzer.scores(for:)` rather
+    /// than reading anything cached: once `thumbnailConfigVersion` has been
+    /// bumped, `PhotoQualityScore.isFresh` already makes the cache a miss for
+    /// these assets, so the normal analyzer path re-measures on its own — but
+    /// nothing here special-cases version, and nothing here should ever be
+    /// changed to shortcut through a cached row.
+    ///
+    /// A cluster whose photo can no longer be resolved (deleted from the
+    /// library since labelling, or `qualityAnalyzer` fails on it) is dropped
+    /// from the corpus rather than exported with stale signals; the returned
+    /// result reports how many that was.
+    @discardableResult
+    public func remeasureCorpus() async -> BestShotCalibrationRemeasureResult {
+        isRemeasuring = true
+        remeasureProgress = (0, labelledClusters.count)
+        defer {
+            isRemeasuring = false
+            remeasureProgress = (0, 0)
+        }
+
+        var rebuiltClusters: [BestShotCalibrationCluster] = []
+        var rebuiltLocalIdentifiers: [String: [String: String]] = [:]
+        var rebuiltVersions: [String: Int] = [:]
+        var droppedCount = 0
+
+        for cluster in labelledClusters {
+            defer { remeasureProgress.completed += 1 }
+
+            if let fresh = await remeasuredCluster(cluster) {
+                rebuiltClusters.append(fresh)
+                rebuiltLocalIdentifiers[cluster.clusterID] = candidateLocalIdentifiers[cluster.clusterID]
+                rebuiltVersions[cluster.clusterID] = currentThumbnailConfigVersion
+            } else {
+                droppedCount += 1
+            }
+        }
+
+        labelledClusters = rebuiltClusters
+        candidateLocalIdentifiers = rebuiltLocalIdentifiers
+        measuredThumbnailConfigVersions = rebuiltVersions
+        persistSession()
+
+        return BestShotCalibrationRemeasureResult(
+            remeasuredCount: rebuiltClusters.count,
+            droppedCount: droppedCount
+        )
     }
 }
 
@@ -249,12 +364,66 @@ extension BestShotCalibrationLabelingViewModel {
         currentCluster = PhotoCluster(id: cluster.clusterID, assets: [])
         currentPreparedCluster = cluster
     }
+
+    /// Test seam: the `localIdentifier` map recorded for one labelled
+    /// cluster's resume buffer, so a test can assert it round-trips through
+    /// `PersistedSession` without reaching into `UserDefaults` itself.
+    func candidateLocalIdentifiersForTesting(clusterID: String) -> [String: String]? {
+        candidateLocalIdentifiers[clusterID]
+    }
+
+    /// Test seam: exposes the same salted hash `recordLabel` uses, so a test
+    /// can confirm that re-hashing a stored `localIdentifier` reproduces the
+    /// candidate's anonymized `assetID` — the property `remeasureCorpus()`
+    /// relies on to keep an `assetID` stable across a re-measure.
+    func anonymizedAssetIDForTesting(_ localIdentifier: String) -> String {
+        anonymizedAssetID(for: localIdentifier)
+    }
 }
 
 private extension BestShotCalibrationLabelingViewModel {
+    /// The DEBUG resume buffer, persisted in `UserDefaults`. Everything past
+    /// `labelledClusters` here is strictly on-device bookkeeping —
+    /// `candidateLocalIdentifiers` in particular must never appear in
+    /// `exportJSON()`'s output; see the class doc comment for why it exists.
+    /// `candidateLocalIdentifiers` and `measuredThumbnailConfigVersions`
+    /// default to empty on decode so a session persisted before this field
+    /// existed still loads.
     struct PersistedSession: Codable {
         var salt: String
         var labelledClusters: [BestShotCalibrationCluster]
+        var candidateLocalIdentifiers: [String: [String: String]]
+        var measuredThumbnailConfigVersions: [String: Int]
+
+        private enum CodingKeys: String, CodingKey {
+            case salt, labelledClusters, candidateLocalIdentifiers, measuredThumbnailConfigVersions
+        }
+
+        init(
+            salt: String,
+            labelledClusters: [BestShotCalibrationCluster],
+            candidateLocalIdentifiers: [String: [String: String]],
+            measuredThumbnailConfigVersions: [String: Int]
+        ) {
+            self.salt = salt
+            self.labelledClusters = labelledClusters
+            self.candidateLocalIdentifiers = candidateLocalIdentifiers
+            self.measuredThumbnailConfigVersions = measuredThumbnailConfigVersions
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            salt = try container.decode(String.self, forKey: .salt)
+            labelledClusters = try container.decode([BestShotCalibrationCluster].self, forKey: .labelledClusters)
+            candidateLocalIdentifiers = try container.decodeIfPresent(
+                [String: [String: String]].self,
+                forKey: .candidateLocalIdentifiers
+            ) ?? [:]
+            measuredThumbnailConfigVersions = try container.decodeIfPresent(
+                [String: Int].self,
+                forKey: .measuredThumbnailConfigVersions
+            ) ?? [:]
+        }
     }
 
     func anonymizedAssetID(for localIdentifier: String) -> String {
@@ -263,8 +432,73 @@ private extension BestShotCalibrationLabelingViewModel {
         return String(hex.prefix(16))
     }
 
+    /// Re-measures one cluster: resolves its stored `localIdentifier`s back
+    /// to `PHAsset`s, re-scores them, and rebuilds the cluster with fresh
+    /// signals — or returns `nil` if any candidate can no longer be
+    /// resolved or re-scored, signalling the caller to drop it.
+    func remeasuredCluster(_ cluster: BestShotCalibrationCluster) async -> BestShotCalibrationCluster? {
+        guard let localIdentifiersByAssetID = candidateLocalIdentifiers[cluster.clusterID] else { return nil }
+        let orderedLocalIdentifiers = cluster.candidates.map(\.assetID).compactMap {
+            localIdentifiersByAssetID[$0]
+        }
+        guard orderedLocalIdentifiers.count == cluster.candidates.count else { return nil }
+
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: orderedLocalIdentifiers, options: nil)
+        var assetsByLocalIdentifier: [String: PHAsset] = [:]
+        fetchResult.enumerateObjects { asset, _, _ in
+            assetsByLocalIdentifier[asset.localIdentifier] = asset
+        }
+        guard assetsByLocalIdentifier.count == orderedLocalIdentifiers.count else { return nil }
+
+        do {
+            let orderedAssets = orderedLocalIdentifiers.compactMap { assetsByLocalIdentifier[$0] }
+            let scores = try await qualityAnalyzer.scores(for: orderedAssets)
+            let scoresByLocalIdentifier = Dictionary(
+                scores.map { ($0.localIdentifier, $0) },
+                uniquingKeysWith: { _, latest in latest }
+            )
+
+            var freshCandidates: [BestShotCalibrationCandidate] = []
+            freshCandidates.reserveCapacity(cluster.candidates.count)
+            for candidate in cluster.candidates {
+                guard let localIdentifier = localIdentifiersByAssetID[candidate.assetID],
+                      let asset = assetsByLocalIdentifier[localIdentifier],
+                      let score = scoresByLocalIdentifier[localIdentifier]
+                else { return nil }
+                freshCandidates.append(
+                    BestShotCalibrationCandidate(
+                        assetID: candidate.assetID,
+                        signals: score.signals,
+                        creationDate: asset.creationDate,
+                        modificationDate: asset.modificationDate,
+                        pixelWidth: asset.pixelWidth,
+                        pixelHeight: asset.pixelHeight,
+                        isFavorite: asset.isFavorite
+                    )
+                )
+            }
+
+            return BestShotCalibrationCluster(
+                clusterID: cluster.clusterID,
+                category: cluster.category,
+                candidates: freshCandidates,
+                humanBestShotID: cluster.humanBestShotID
+            )
+        } catch {
+            AppLog.ui.error(
+                "\(AppLog.tag(.error, "Failed to remeasure calibration cluster \(cluster.clusterID): \(error.localizedDescription)"))"
+            )
+            return nil
+        }
+    }
+
     func persistSession() {
-        let session = PersistedSession(salt: salt, labelledClusters: labelledClusters)
+        let session = PersistedSession(
+            salt: salt,
+            labelledClusters: labelledClusters,
+            candidateLocalIdentifiers: candidateLocalIdentifiers,
+            measuredThumbnailConfigVersions: measuredThumbnailConfigVersions
+        )
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         guard let data = try? encoder.encode(session) else { return }

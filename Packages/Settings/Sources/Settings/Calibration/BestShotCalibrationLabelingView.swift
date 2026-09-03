@@ -37,6 +37,7 @@ public struct BestShotCalibrationLabelingView: View {
     @State private var isResetConfirmationPresented = false
     @State private var exportedFileURL: URL?
     @State private var exportErrorMessage: String?
+    @State private var remeasureResultMessage: String?
 
     public init(viewModel: BestShotCalibrationLabelingViewModel = BestShotCalibrationLabelingViewModel()) {
         self._viewModel = State(initialValue: viewModel)
@@ -61,6 +62,29 @@ public struct BestShotCalibrationLabelingView: View {
                             Label("Export", systemImage: "square.and.arrow.up")
                         }
                     }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        Task {
+                            let result = await viewModel.remeasureCorpus()
+                            remeasureResultMessage = remeasureSummary(for: result)
+                        }
+                    } label: {
+                        if viewModel.isRemeasuring {
+                            ProgressView(
+                                value: Double(viewModel.remeasureProgress.completed),
+                                total: Double(max(viewModel.remeasureProgress.total, 1))
+                            )
+                            .frame(width: Layout.filmstripTileSide * 0.4)
+                        } else {
+                            Label("Re-measure corpus", systemImage: "arrow.triangle.2.circlepath")
+                        }
+                    }
+                    .disabled(
+                        viewModel.isRemeasuring
+                            || viewModel.isLoadingCluster
+                            || viewModel.labelledCount == 0
+                    )
                 }
                 ToolbarItem(placement: .destructiveAction) {
                     Button(role: .destructive) {
@@ -103,6 +127,25 @@ public struct BestShotCalibrationLabelingView: View {
             } message: {
                 Text(exportErrorMessage ?? "")
             }
+            .alert(
+                "Re-measure corpus",
+                isPresented: Binding(
+                    get: { remeasureResultMessage != nil },
+                    set: { isPresented in if !isPresented { remeasureResultMessage = nil } }
+                )
+            ) {
+                Button("OK", role: .cancel) { remeasureResultMessage = nil }
+            } message: {
+                Text(remeasureResultMessage ?? "")
+            }
+    }
+
+    private func remeasureSummary(for result: BestShotCalibrationRemeasureResult) -> String {
+        if result.droppedCount == 0 {
+            return "Re-measured \(result.remeasuredCount) cluster(s)."
+        }
+        return "Re-measured \(result.remeasuredCount) cluster(s). Dropped \(result.droppedCount) "
+            + "whose photos could no longer be found in the library."
     }
 
     @ViewBuilder
@@ -137,15 +180,26 @@ public struct BestShotCalibrationLabelingView: View {
     }
 
     private var progressHeader: some View {
-        HStack {
-            Text("\(viewModel.labelledCount) labelled")
-                .font(.appFootnote)
-                .foregroundStyle(.secondary)
-            Spacer()
-            if let position = candidatePositionText {
-                Text(position)
+        VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+            HStack {
+                Text("\(viewModel.labelledCount) labelled")
                     .font(.appFootnote)
                     .foregroundStyle(.secondary)
+                Spacer()
+                if let position = candidatePositionText {
+                    Text(position)
+                        .font(.appFootnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            if viewModel.clustersNeedingRemeasureCount > 0 {
+                Text(
+                    "\(viewModel.clustersNeedingRemeasureCount) of \(viewModel.labelledCount) labelled "
+                        + "cluster(s) were measured under an older thumbnail config "
+                        + "(current v\(viewModel.currentThumbnailConfigVersion)) — re-measure recommended."
+                )
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
             }
         }
         .padding(.horizontal, Spacing.medium)
