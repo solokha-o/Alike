@@ -7,7 +7,7 @@ func printUsage() {
     bestshot-calibrate — offline calibration harness for Best Shot scoring weights.
 
     USAGE:
-      bestshot-calibrate report --corpus <path> [--output <path>] [--category <name>]
+      bestshot-calibrate report --corpus <path> [--output <path>] [--category <name>] [--config <path>]
       bestshot-calibrate sweep --corpus <path> [--output report.md] [--config-output candidate.json] [--blur-penalty 5.0]
 
     report   Computes agreement/blur metrics for the shipped scoring config against a labelled corpus.
@@ -18,6 +18,10 @@ func printUsage() {
       --output <path>          Where to write the Markdown report. Defaults to stdout.
       --category <name>        report only: restrict input clusters to one BestShotCalibrationCategory
                                 (people, kids, animals, night, motion, landscape, group, livePhoto).
+      --config <path>          report only: measure the corpus with this PhotoQualityScoringConfig JSON
+                                file instead of the shipped PhotoQualityScoringConfig.current. Same JSON
+                                shape `sweep --config-output` writes — use this to check a candidate
+                                config before hand-applying it to Packages/Core.
       --config-output <path>   sweep only: where to write the candidate config JSON. Defaults to stdout
                                 (appended after the report, separated by a marker line).
       --blur-penalty <double>  sweep only: weight of blurryWinnerRate in the search objective. Default 5.0.
@@ -35,6 +39,7 @@ struct Options {
     var corpusPath: String?
     var outputPath: String?
     var category: String?
+    var configPath: String?
     var configOutputPath: String?
     var blurPenalty: Double = WeightSweep.defaultBlurPenalty
 }
@@ -50,6 +55,8 @@ func parseOptions(_ args: [String]) -> Options {
             options.outputPath = iterator.next()
         case "--category":
             options.category = iterator.next()
+        case "--config":
+            options.configPath = iterator.next()
         case "--config-output":
             options.configOutputPath = iterator.next()
         case "--blur-penalty":
@@ -85,6 +92,16 @@ func loadCorpus(at path: String) -> CorpusLoader.LoadResult {
     }
 }
 
+func loadScoringConfig(at path: String) -> PhotoQualityScoringConfig {
+    let url = URL(fileURLWithPath: path)
+    do {
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(PhotoQualityScoringConfig.self, from: data)
+    } catch {
+        fail("Could not load scoring config at \(path): \(error)")
+    }
+}
+
 func runReport(_ args: [String]) {
     let options = parseOptions(args)
     guard let corpusPath = options.corpusPath else { fail("report requires --corpus <path>") }
@@ -100,7 +117,8 @@ func runReport(_ args: [String]) {
         corpus.entries = corpus.entries.filter { $0.category == category }
     }
 
-    let metrics = MetricsReport.compute(corpus: corpus, config: .current)
+    let scoringConfig = options.configPath.map(loadScoringConfig) ?? .current
+    let metrics = MetricsReport.compute(corpus: corpus, config: scoringConfig)
     let report = ReportWriter.render(metrics: metrics, corpus: corpus, warnings: loadResult.warnings)
     write(report, to: options.outputPath)
 }

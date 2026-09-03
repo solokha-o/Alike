@@ -40,8 +40,42 @@ public struct MetricsReport: Equatable {
 
         /// Fraction of non-unresolved clusters where the ranker's pick matches
         /// the human label. `nil` when there are no resolved clusters to score.
+        ///
+        /// COVERAGE-DEPENDENT — DO NOT OPTIMISE THIS ALONE. Raising the
+        /// resolution thresholds so more clusters become `.unresolved` can push
+        /// this number up even when the ranker gets the exact same absolute
+        /// number of clusters right, because the newly-unresolved clusters just
+        /// stop being counted rather than being counted as wrong. Measured on a
+        /// real 75-cluster corpus: bumping `absoluteSharpnessFloor` from 10 to
+        /// 14 pushed 3 more clusters to `.unresolved` and raised this figure
+        /// from 60.7% to 64.2% while `correctClusterCount` stayed at 34 of 75
+        /// the whole time. Use `topOneAgreementOverAllClusters` (and
+        /// `coverageRate`) as the optimisation target instead — see
+        /// `WeightSweep.score`. This field still answers a real question
+        /// ("when we do commit to a pick, how often are we right"), it just
+        /// must never be read as "how good is the ranker" on its own.
         public var topOneAgreement: Double?
         public var resolvedClusterCount: Int
+
+        /// Clusters where the ranker's pick equals `humanBestShotID`, counted
+        /// over ALL clusters (an `.unresolved` cluster is not a pick, so it
+        /// cannot be a match). The numerator behind
+        /// `topOneAgreementOverAllClusters`.
+        public var correctClusterCount: Int
+
+        /// `correctClusterCount / clusterCount`: the fraction of the WHOLE
+        /// corpus where the ranker both resolved and picked correctly. An
+        /// unresolved cluster counts as a miss here, because the user got no
+        /// recommendation at all — this is what makes the figure resistant to
+        /// the "just refuse more often" trick that makes `topOneAgreement`
+        /// unsafe to optimise directly. `nil` only when `clusterCount == 0`.
+        public var topOneAgreementOverAllClusters: Double?
+
+        /// Fraction of clusters that produced a recommendation at all
+        /// (`1 - unresolvedRate`). Reported alongside the agreement figures so
+        /// a trade-off between coverage and apparent accuracy is visible
+        /// rather than hidden inside `topOneAgreement`.
+        public var coverageRate: Double
 
         public var unresolvedRate: Double
 
@@ -67,6 +101,9 @@ public struct MetricsReport: Equatable {
             unresolvedCount: 0,
             topOneAgreement: nil,
             resolvedClusterCount: 0,
+            correctClusterCount: 0,
+            topOneAgreementOverAllClusters: nil,
+            coverageRate: 0,
             unresolvedRate: 0,
             blurryWinnerRate: nil,
             winnerClusterCount: 0,
@@ -139,6 +176,7 @@ public struct MetricsReport: Equatable {
         var unresolvedCount = 0
         var resolvedAgreements = 0
         var resolvedCount = 0
+        var correctCount = 0
         var winnerCount = 0
         var blurryWinnerCount = 0
         var overrideEligibleCount = 0
@@ -157,6 +195,10 @@ public struct MetricsReport: Equatable {
                 if decision.localIdentifier == outcome.cluster.humanBestShotID {
                     resolvedAgreements += 1
                 }
+            }
+
+            if decision.localIdentifier == outcome.cluster.humanBestShotID {
+                correctCount += 1
             }
 
             if let winner = decision.localIdentifier {
@@ -182,6 +224,9 @@ public struct MetricsReport: Equatable {
             unresolvedCount: unresolvedCount,
             topOneAgreement: resolvedCount > 0 ? Double(resolvedAgreements) / Double(resolvedCount) : nil,
             resolvedClusterCount: resolvedCount,
+            correctClusterCount: correctCount,
+            topOneAgreementOverAllClusters: total > 0 ? Double(correctCount) / Double(total) : nil,
+            coverageRate: 1 - Double(unresolvedCount) / Double(total),
             unresolvedRate: Double(unresolvedCount) / Double(total),
             blurryWinnerRate: winnerCount > 0 ? Double(blurryWinnerCount) / Double(winnerCount) : nil,
             winnerClusterCount: winnerCount,

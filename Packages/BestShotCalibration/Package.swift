@@ -13,6 +13,12 @@ let package = Package(
             name: "bestshot-calibrate",
             targets: ["BestShotCalibrationCLI"]
         ),
+        // The logic is a product of its own so a throwaway analysis script can
+        // measure a corpus without going through the CLI's argument parsing.
+        .library(
+            name: "BestShotCalibration",
+            targets: ["BestShotCalibration"]
+        ),
     ],
     dependencies: [
         .package(path: "../Core"),

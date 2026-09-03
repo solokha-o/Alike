@@ -112,7 +112,92 @@ final class WeightSweepTests: XCTestCase {
         XCTAssertEqual(result.blurPenalty, 3.5)
     }
 
+    /// Regression test for the "refuse to answer more often" trap: a synthetic
+    /// corpus of 4 clusters, 2 the ranker always gets right (well above any
+    /// sharpness floor in play) and 2 it always gets wrong (a close
+    /// disagreement, sharper candidate wins, human picked the softer one).
+    /// A stricter `absoluteSharpnessFloor` (14 vs. 10) pushes the 2
+    /// wrong-and-close clusters into `.unresolved` without the ranker having
+    /// gotten anything more right — `correctClusterCount` stays at 2 of 4
+    /// either way.
+    ///
+    /// `topOneAgreement` (over resolved clusters only) predictably rises,
+    /// since the clusters that leave its denominator were the wrong ones —
+    /// this is the trap `WeightSweep.score` must not fall into.
+    /// `topOneAgreementOverAllClusters`, and therefore `objective`, must NOT
+    /// improve, because refusing to answer never pays.
+    func testStricterFloorDoesNotImproveObjectiveEvenThoughResolvedOnlyAgreementRises() {
+        let lenientConfig = PhotoQualityScoringConfig(absoluteSharpnessFloor: 10)
+        let strictConfig = PhotoQualityScoringConfig(absoluteSharpnessFloor: 14)
+
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: lenientConfig.scoringModelVersion,
+            thumbnailConfigVersion: lenientConfig.thumbnailConfigVersion,
+            entries: [
+                makeCluster(id: "correct-1", sharp: 60, soft: 55, humanPicksSharp: true),
+                makeCluster(id: "correct-2", sharp: 62, soft: 58, humanPicksSharp: true),
+                // Winner (13) sits between the two floors: resolved and WRONG
+                // under the lenient floor, unresolved under the strict one.
+                makeCluster(id: "borderline-1", sharp: 13, soft: 11, humanPicksSharp: false),
+                makeCluster(id: "borderline-2", sharp: 13.5, soft: 11.5, humanPicksSharp: false),
+            ]
+        )
+
+        let lenientMetrics = MetricsReport.compute(corpus: corpus, config: lenientConfig).overall
+        let strictMetrics = MetricsReport.compute(corpus: corpus, config: strictConfig).overall
+
+        // Sanity check on the setup: the strict config really does resolve
+        // fewer clusters while getting the exact same number right.
+        XCTAssertEqual(lenientMetrics.resolvedClusterCount, 4)
+        XCTAssertEqual(strictMetrics.resolvedClusterCount, 2)
+        XCTAssertEqual(lenientMetrics.correctClusterCount, 2)
+        XCTAssertEqual(strictMetrics.correctClusterCount, 2)
+
+        // The trap: naively scoring on the resolved-only figure would call the
+        // stricter config a strict improvement.
+        XCTAssertGreaterThan(
+            strictMetrics.topOneAgreement ?? -1,
+            lenientMetrics.topOneAgreement ?? -1,
+            "resolved-only agreement rises purely from shrinking the denominator"
+        )
+
+        let lenientScore = WeightSweep.score(config: lenientConfig, corpus: corpus)
+        let strictScore = WeightSweep.score(config: strictConfig, corpus: corpus)
+
+        XCTAssertEqual(lenientScore.topOneAgreementOverAllClusters, 0.5, accuracy: 1e-9)
+        XCTAssertEqual(strictScore.topOneAgreementOverAllClusters, 0.5, accuracy: 1e-9)
+        XCTAssertLessThanOrEqual(
+            strictScore.objective,
+            lenientScore.objective + 1e-9,
+            "refusing to answer more often must never raise the sweep objective"
+        )
+    }
+
     // MARK: - Helpers
+
+    /// A 2-candidate cluster: one sharper photo, one softer one. `humanPicksSharp`
+    /// controls whether the human label agrees with what the ranker (which
+    /// always prefers the sharper photo here) will pick, so the cluster is
+    /// either an easy agreement or a guaranteed disagreement.
+    private func makeCluster(
+        id: String,
+        sharp: Double,
+        soft: Double,
+        humanPicksSharp: Bool
+    ) -> BestShotCalibrationCluster {
+        let sharpID = "\(id)-sharp"
+        let softID = "\(id)-soft"
+        return BestShotCalibrationCluster(
+            clusterID: id,
+            category: nil,
+            candidates: [
+                makeCandidate(sharpID, globalSharpness: sharp),
+                makeCandidate(softID, globalSharpness: soft),
+            ],
+            humanBestShotID: humanPicksSharp ? sharpID : softID
+        )
+    }
 
     private func makeCandidate(
         _ assetID: String,

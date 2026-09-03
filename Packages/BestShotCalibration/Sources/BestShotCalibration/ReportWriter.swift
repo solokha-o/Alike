@@ -51,12 +51,17 @@ public enum ReportWriter {
 
     private static func metricsTable(rows: [(label: String, bucket: MetricsReport.Bucket)]) -> [String] {
         var lines: [String] = []
-        lines.append("| Slice | Clusters | Automatic | LowConf | Unresolved | Top-1 agreement | Blurry winner rate | Offline override proxy |")
-        lines.append("|---|---:|---:|---:|---:|---:|---:|---:|")
+        lines.append(
+            "| Slice | Clusters | Automatic | LowConf | Unresolved | Top-1 (resolved) | Top-1 (all) | Coverage "
+                + "| Blurry winner rate | Offline override proxy |"
+        )
+        lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
         for (label, bucket) in rows {
             lines.append(
                 "| \(label) | \(bucket.clusterCount) | \(bucket.automaticCount) | \(bucket.lowConfidenceCount) "
                     + "| \(bucket.unresolvedCount) | \(percentOrDash(bucket.topOneAgreement, of: bucket.resolvedClusterCount)) "
+                    + "| \(percentOrDash(bucket.topOneAgreementOverAllClusters, of: bucket.clusterCount)) "
+                    + "| \(percent(bucket.coverageRate)) "
                     + "| \(percentOrDash(bucket.blurryWinnerRate, of: bucket.winnerClusterCount)) "
                     + "| \(percentOrDash(bucket.offlineOverrideProxy, of: bucket.overrideEligibleClusterCount)) |"
             )
@@ -80,16 +85,22 @@ public enum ReportWriter {
 
         lines.append("## Baseline vs candidate")
         lines.append("")
-        lines.append("| | Objective | Top-1 agreement | Blurry winner rate |")
-        lines.append("|---|---:|---:|---:|")
+        lines.append(
+            "| | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate |"
+        )
+        lines.append("|---|---:|---:|---:|---:|---:|")
         lines.append(
             "| Baseline | \(number(sweep.baselineScore.objective)) "
+                + "| \(percent(sweep.baselineScore.topOneAgreementOverAllClusters)) "
                 + "| \(percent(sweep.baselineScore.topOneAgreement)) "
+                + "| \(percent(sweep.baselineScore.coverageRate)) "
                 + "| \(percent(sweep.baselineScore.blurryWinnerRate)) |"
         )
         lines.append(
             "| Candidate | \(number(sweep.candidateScore.objective)) "
+                + "| \(percent(sweep.candidateScore.topOneAgreementOverAllClusters)) "
                 + "| \(percent(sweep.candidateScore.topOneAgreement)) "
+                + "| \(percent(sweep.candidateScore.coverageRate)) "
                 + "| \(percent(sweep.candidateScore.blurryWinnerRate)) |"
         )
         lines.append("")
@@ -113,12 +124,14 @@ public enum ReportWriter {
         for parameter in sweep.sensitivity {
             lines.append("### \(parameter.parameterName)")
             lines.append("")
-            lines.append("| Value | Objective | Top-1 agreement | Blurry winner rate |")
-            lines.append("|---:|---:|---:|---:|")
+            lines.append("| Value | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate |")
+            lines.append("|---:|---:|---:|---:|---:|---:|")
             for sample in parameter.samples {
                 lines.append(
                     "| \(number(sample.value)) | \(number(sample.score.objective)) "
+                        + "| \(percent(sample.score.topOneAgreementOverAllClusters)) "
                         + "| \(percent(sample.score.topOneAgreement)) "
+                        + "| \(percent(sample.score.coverageRate)) "
                         + "| \(percent(sample.score.blurryWinnerRate)) |"
                 )
             }

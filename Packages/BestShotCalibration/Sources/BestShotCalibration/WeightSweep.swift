@@ -13,27 +13,53 @@ public enum WeightSweep {
 
     public struct Score: Equatable {
         public var objective: Double
+        /// The all-clusters figure the objective is actually built from. An
+        /// unresolved cluster counts as a miss here, so refusing to answer can
+        /// never raise this number the way it can raise `topOneAgreement`.
+        public var topOneAgreementOverAllClusters: Double
+        /// Reported for visibility only — coverage-dependent, see the doc
+        /// comment on `MetricsReport.Bucket.topOneAgreement`. Never part of
+        /// `objective`.
         public var topOneAgreement: Double
+        public var coverageRate: Double
         public var blurryWinnerRate: Double
     }
 
     public static let defaultBlurPenalty = 5.0
 
-    /// `objective = topOneAgreement - blurPenalty * blurryWinnerRate`, over the
-    /// whole corpus. A cluster contributing `nil` to either metric (no resolved
-    /// clusters, or no cluster produced a winner) counts as 0 for that metric
-    /// rather than excluding the corpus from scoring entirely.
+    /// `objective = topOneAgreementOverAllClusters - blurPenalty *
+    /// blurryWinnerRate`, over the whole corpus.
+    ///
+    /// The objective is built on `topOneAgreementOverAllClusters`, NOT the
+    /// coverage-dependent `topOneAgreement` (over resolved clusters only).
+    /// `topOneAgreement` can be raised simply by making the ranker refuse to
+    /// answer more often — pushing clusters into `.unresolved` removes them
+    /// from its denominator without the ranker having gotten anything more
+    /// right. Measured on a real 75-cluster corpus, raising
+    /// `absoluteSharpnessFloor` from 10 to 14 pushed `topOneAgreement` from
+    /// 60.7% to 64.2% while the ranker got the exact same 34 of 75 clusters
+    /// right the whole time — the search would have "improved" on pure
+    /// avoidance. Scoring on `topOneAgreementOverAllClusters` instead counts an
+    /// unresolved cluster as a miss (no recommendation reached the user), so
+    /// refusing to answer never pays.
+    ///
+    /// A cluster contributing `nil` to either metric (no clusters at all, or
+    /// no cluster produced a winner) counts as 0 for that metric rather than
+    /// excluding the corpus from scoring entirely.
     public static func score(
         config: PhotoQualityScoringConfig,
         corpus: BestShotCalibrationCorpus,
         blurPenalty: Double = defaultBlurPenalty
     ) -> Score {
         let overall = MetricsReport.compute(corpus: corpus, config: config).overall
+        let topOneAllClusters = overall.topOneAgreementOverAllClusters ?? 0
         let topOne = overall.topOneAgreement ?? 0
         let blurry = overall.blurryWinnerRate ?? 0
         return Score(
-            objective: topOne - blurPenalty * blurry,
+            objective: topOneAllClusters - blurPenalty * blurry,
+            topOneAgreementOverAllClusters: topOneAllClusters,
             topOneAgreement: topOne,
+            coverageRate: overall.coverageRate,
             blurryWinnerRate: blurry
         )
     }

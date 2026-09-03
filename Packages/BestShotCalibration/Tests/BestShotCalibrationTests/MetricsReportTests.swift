@@ -69,6 +69,12 @@ final class MetricsReportTests: XCTestCase {
         XCTAssertEqual(overall.resolvedClusterCount, 3)
         XCTAssertEqual(overall.topOneAgreement ?? -1, 2.0 / 3.0, accuracy: 1e-9)
 
+        // Over ALL 4 clusters, correct picks are still obvious + single = 2; the
+        // unresolved "weak" cluster counts as a miss rather than being excluded.
+        XCTAssertEqual(overall.correctClusterCount, 2)
+        XCTAssertEqual(overall.topOneAgreementOverAllClusters ?? -1, 2.0 / 4.0, accuracy: 1e-9)
+        XCTAssertEqual(overall.coverageRate, 0.75, accuracy: 1e-9)
+
         // No winner is clearly blurry by the ranker's own definition here.
         XCTAssertEqual(overall.winnerClusterCount, 3)
         XCTAssertEqual(overall.blurryWinnerRate ?? -1, 0, accuracy: 1e-9)
