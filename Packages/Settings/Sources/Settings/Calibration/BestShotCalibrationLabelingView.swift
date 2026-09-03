@@ -29,7 +29,7 @@ public struct BestShotCalibrationLabelingView: View {
 
     public var body: some View {
         content
-            .navigationTitle("Best Shot Calibration")
+            .navigationTitle("Calibration")
 #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
@@ -48,9 +48,12 @@ public struct BestShotCalibrationLabelingView: View {
                     }
                 }
                 ToolbarItem(placement: .destructiveAction) {
-                    Button("Reset corpus", role: .destructive) {
+                    Button(role: .destructive) {
                         isResetConfirmationPresented = true
+                    } label: {
+                        Label("Reset corpus", systemImage: "trash")
                     }
+                    .labelStyle(.iconOnly)
                 }
             }
             .task {
@@ -141,6 +144,9 @@ public struct BestShotCalibrationLabelingView: View {
                         category: selectedCategory
                     )
                     resetSelection()
+                    // A prepared export is a snapshot of the corpus as it was;
+                    // once a new label lands it would share a stale file.
+                    exportedFileURL = nil
                     Task { await viewModel.loadNextCluster() }
                 } label: {
                     Text("Save & Next")
@@ -163,6 +169,7 @@ public struct BestShotCalibrationLabelingView: View {
                     asset: asset,
                     isSelected: selectedBestShotID == asset.localIdentifier
                 )
+                .contentShape(Rectangle())
                 .onTapGesture {
                     selectedBestShotID = asset.localIdentifier
                 }
@@ -171,13 +178,18 @@ public struct BestShotCalibrationLabelingView: View {
     }
 
     private var categoryPicker: some View {
-        Picker("Category", selection: $selectedCategory) {
-            Text("None").tag(BestShotCalibrationCategory?.none)
-            ForEach(BestShotCalibrationCategory.allCases, id: \.self) { category in
-                Text(category.rawValue.capitalized).tag(BestShotCalibrationCategory?.some(category))
+        HStack {
+            Text("Category")
+            Spacer()
+            Picker("Category", selection: $selectedCategory) {
+                Text("None").tag(BestShotCalibrationCategory?.none)
+                ForEach(BestShotCalibrationCategory.allCases, id: \.self) { category in
+                    Text(category.rawValue.capitalized).tag(BestShotCalibrationCategory?.some(category))
+                }
             }
+            .labelsHidden()
+            .pickerStyle(.menu)
         }
-        .pickerStyle(.menu)
     }
 
     private func resetSelection() {
@@ -213,10 +225,12 @@ private struct CalibrationCandidateThumbnail: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
+                    .clipped()
             }
 #endif
         }
-        .aspectRatio(1, contentMode: .fill)
+        .frame(maxWidth: .infinity)
+        .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.small)
