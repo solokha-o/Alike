@@ -121,18 +121,24 @@ public struct ClusterDetailsView: View {
                 }
             }
         }
-        .fullScreenCover(item: $enhancementRequest) { _ in
-            if let bestShotAsset = viewModel.bestShotAsset {
+        .fullScreenCover(item: $enhancementRequest) { request in
+            // Everything here works on the photo frozen when the action was
+            // tapped, never on the live Best Shot: a ranking that lands while
+            // the cover opens must not retarget it.
+            if let requestedAsset = viewModel.asset(withIdentifier: request.assetID) {
                 EnhancementPreviewView(
-                    asset: bestShotAsset,
+                    asset: requestedAsset,
                     enhancedImage: viewModel.enhancementPreview,
                     state: viewModel.enhancementState,
                     replacesOtherAppEdit: viewModel.isBestShotEditedElsewhere,
-                    onApply: { Task { await viewModel.applyEnhancement() } },
+                    onApply: { Task { await viewModel.applyEnhancement(for: request.assetID) } },
                     onCancel: viewModel.dismissEnhancementPreview
                 )
                 .task {
-                    await viewModel.enhance(previewSize: Constants.enhancementPreviewSize)
+                    await viewModel.enhance(
+                        previewSize: Constants.enhancementPreviewSize,
+                        for: request.assetID
+                    )
                 }
             }
         }

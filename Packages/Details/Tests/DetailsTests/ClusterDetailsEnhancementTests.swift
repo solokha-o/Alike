@@ -59,12 +59,12 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await viewModel.load()
         XCTAssertEqual(viewModel.enhancementState, .idle)
 
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         XCTAssertEqual(viewModel.enhancementState, .previewing)
         XCTAssertNotNil(viewModel.enhancementPreview)
 
-        await viewModel.applyEnhancement()
+        await viewModel.applyEnhancement(for: "best")
 
         XCTAssertEqual(viewModel.enhancementState, .applied)
         XCTAssertTrue(viewModel.isBestShotEnhanced)
@@ -82,7 +82,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let service = FakeEnhancementService()
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         viewModel.dismissEnhancementPreview()
 
@@ -110,7 +110,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
-        await viewModel.applyEnhancement()
+        await viewModel.applyEnhancement(for: "best")
 
         let didReplace = await service.didReplaceOtherEdits
         XCTAssertTrue(didReplace)
@@ -123,7 +123,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
-        await viewModel.applyEnhancement()
+        await viewModel.applyEnhancement(for: "best")
 
         let didReplace = await service.didReplaceOtherEdits
         XCTAssertFalse(didReplace)
@@ -136,7 +136,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
-        let applying = Task { await viewModel.applyEnhancement() }
+        let applying = Task { await viewModel.applyEnhancement(for: "best") }
         await Task.yield()
         viewModel.setBestShot("other")
         await service.releaseApply()
@@ -169,7 +169,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
     /// The screen is interactive before scoring finishes, so a refinement can
     /// land while the preview cover is open. It must not move the Best Shot
     /// under a preview the user is looking at.
-    func testOpeningThePreviewFreezesALateRanking() async {
+    func testOpeningThePreviewFreezesALateRanking() async throws {
         let analyzer = StallingQualityAnalyzer()
         let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
 
@@ -181,7 +181,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         // The action is tapped: the photo is frozen here, before the cover's
         // task ever runs.
-        let requestedID = viewModel.beginEnhancementRequest()
+        let requestedID = try XCTUnwrap(viewModel.beginEnhancementRequest())
         XCTAssertEqual(requestedID, "best")
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
         XCTAssertEqual(viewModel.enhancementState, .previewing)
@@ -213,7 +213,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
     /// The tap and the cover's task are two moments; the ranking must be frozen
     /// at the first of them, or the cover opens on a different photo.
-    func testTheAssetIsFrozenWhenTheActionIsTappedNotWhenThePreviewStarts() async {
+    func testTheAssetIsFrozenWhenTheActionIsTappedNotWhenThePreviewStarts() async throws {
         let analyzer = StallingQualityAnalyzer()
         let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
 
@@ -222,7 +222,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
             await Task.yield()
         }
 
-        let requestedID = viewModel.beginEnhancementRequest()
+        let requestedID = try XCTUnwrap(viewModel.beginEnhancementRequest())
 
         // Scoring lands in the gap between the tap and the preview task.
         let config = PhotoQualityScoringConfig.current
@@ -271,7 +271,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let bestShotBefore = viewModel.bestShotAssetID
         let statusBefore = viewModel.reviewStatus
 
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         XCTAssertEqual(viewModel.enhancementState, .failed(.originalUnavailable))
         XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementOriginalUnavailable)
@@ -284,9 +284,9 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let service = FakeEnhancementService(applyError: .saveFailed)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        await viewModel.applyEnhancement()
+        await viewModel.applyEnhancement(for: "best")
 
         XCTAssertEqual(viewModel.enhancementState, .failed(.saveFailed))
         XCTAssertFalse(viewModel.isBestShotEnhanced)
@@ -318,13 +318,13 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
     func testRenderAndSaveFailuresHaveTheirOwnCopy() async {
         let renderFailure = makeViewModel(service: FakeEnhancementService(previewError: .renderFailed))
         await renderFailure.load()
-        await renderFailure.enhance(previewSize: CGSize(width: 100, height: 100))
+        await renderFailure.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         XCTAssertEqual(renderFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementRenderFailed)
 
         let saveFailure = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
         await saveFailure.load()
-        await saveFailure.applyEnhancement()
+        await saveFailure.applyEnhancement(for: "best")
 
         XCTAssertEqual(saveFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementSaveFailed)
         XCTAssertNotEqual(
@@ -338,7 +338,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let viewModel = makeViewModel(service: FakeEnhancementService(previewError: .unsupportedAsset))
         await viewModel.load()
 
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementUnsupportedAsset)
         XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
@@ -347,7 +347,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
     func testDismissingAnEnhancementAlertRestoresTheCleanupTitle() async {
         let viewModel = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
         await viewModel.load()
-        await viewModel.applyEnhancement()
+        await viewModel.applyEnhancement(for: "best")
 
         viewModel.clearActionError()
 
@@ -359,7 +359,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
-        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100))
+        await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
         XCTAssertTrue(viewModel.shouldOfferOpenSettings)
         XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.alikeNeedsPhotoLibraryAccess)

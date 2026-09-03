@@ -577,12 +577,15 @@ extension ClusterDetailsViewModel {
         return bestShotAssetID
     }
 
-    func enhance(previewSize: CGSize, for requestedIdentifier: String? = nil) async {
+    /// `requestedIdentifier` is required on purpose: the caller must say which
+    /// photo the user asked to enhance, so no presentation path can silently
+    /// fall back to whatever the Best Shot happens to be by now.
+    func enhance(previewSize: CGSize, for requestedIdentifier: String) async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
 
-        let localIdentifier = requestedIdentifier ?? bestShotAssetID
         // The photo the user tapped is the photo this preview is for.
+        let localIdentifier = requestedIdentifier
         guard localIdentifier == bestShotAssetID else { return }
         interactionGeneration &+= 1
         enhancementState = .preparingPreview
@@ -606,11 +609,11 @@ extension ClusterDetailsViewModel {
         enhancementState = .idle
     }
 
-    func applyEnhancement(for requestedIdentifier: String? = nil) async {
+    func applyEnhancement(for requestedIdentifier: String) async {
         guard let enhancementService, !bestShotAssetID.isEmpty else { return }
         guard enhancementState == .idle || enhancementState == .previewing else { return }
 
-        let localIdentifier = requestedIdentifier ?? bestShotAssetID
+        let localIdentifier = requestedIdentifier
         guard localIdentifier == bestShotAssetID else { return }
         interactionGeneration &+= 1
         let previousState = enhancementState
