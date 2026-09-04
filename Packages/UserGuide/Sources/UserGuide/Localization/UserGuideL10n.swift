@@ -103,6 +103,22 @@ public enum UserGuideL10n {
         public static var inspectInfoBody: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.info.body") }
         /// Show Info
         public static var inspectInfoTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.info.title") }
+        /// What Alike learns stays on this device and is never uploaded.
+        public static var personalizationFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.footer") }
+        /// Learning your taste
+        public static var personalizationHeader: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.header") }
+        /// Every time you choose a different Best Shot than the one Alike suggested, it remembers what you p...
+        public static var personalizationLearnsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.learns.body") }
+        /// Alike learns from your picks
+        public static var personalizationLearnsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.learns.title") }
+        /// This only changes how much sharpness, exposure, noise, and faces count against each other. A blur...
+        public static var personalizationLimitsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.limits.body") }
+        /// What it won't do
+        public static var personalizationLimitsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.limits.title") }
+        /// In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the d...
+        public static var personalizationResetBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.reset.body") }
+        /// Starting over
+        public static var personalizationResetTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.reset.title") }
         /// Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen ...
         public static var reviewFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.review.footer") }
         /// Finishing a group

@@ -3405,6 +3405,670 @@
         }
       }
     },
+    "userGuide.comparingPhotos.personalization.header": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learning your taste"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعلّم ذوقك"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deinen Geschmack kennenlernen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conocer tus gustos"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conocer tus gustos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apprendre vos goûts"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conoscere i tuoi gusti"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je smaak leren kennen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poznawanie Twojego gustu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprendendo seu gosto"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zevkini öğrenmek"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Навчання ваших уподобань"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "了解你的喜好"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike learns stays on this device and is never uploaded."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما يتعلّمه Alike يظل على هذا الجهاز ولا يُرفع أبدًا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was Alike lernt, bleibt auf diesem Gerät und wird nie hochgeladen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que Alike aprende se queda en este dispositivo y nunca se sube."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que Alike aprende se queda en este dispositivo y nunca se sube."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qu'Alike apprend reste sur cet appareil et n'est jamais envoyé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quello che Alike impara resta su questo dispositivo e non viene mai caricato."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wat Alike leert, blijft op dit apparaat en wordt nooit geüpload."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To, czego uczy się Alike, pozostaje na tym urządzeniu i nigdy nie jest przesyłane."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que o Alike aprende fica neste dispositivo e nunca é enviado."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike'ın öğrendikleri bu cihazda kalır ve asla yüklenmez."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Те, чого навчається Alike, залишається на цьому пристрої і ніколи не завантажується."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 學到的內容只留在這部裝置上，絕不會被上傳。"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.learns.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike learns from your picks"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتعلّم Alike من اختياراتك"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike lernt aus deiner Auswahl"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike aprende de tus selecciones"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike aprende de tus selecciones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike apprend de vos choix"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike impara dalle tue scelte"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike leert van je keuzes"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike uczy się z Twoich wyborów"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike aprende com suas escolhas"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike seçimlerinden öğrenir"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike вчиться на ваших виборах"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 會從你的選擇中學習"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.learns.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every time you choose a different Best Shot than the one Alike suggested, it remembers what you preferred and leans that way a little more next time. It takes a handful of picks before you notice a difference."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "في كل مرة تختار فيها أفضل لقطة غير التي اقترحها Alike، يتذكر ما فضّلته فيها ويميل قليلاً أكثر إلى ذلك في المجموعات القادمة. يستغرق الأمر عدة اختيارات قبل أن تلاحظ فرقًا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jedes Mal, wenn du eine andere beste Aufnahme wählst als die von Alike vorgeschlagene, merkt sich Alike, was dir daran gefallen hat, und richtet sich beim nächsten Mal etwas mehr danach. Es dauert ein paar Auswahlen, bis du einen Unterschied merkst."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada vez que eliges una mejor toma distinta a la que Alike sugirió, recuerda lo que preferiste y se inclina un poco más hacia eso la próxima vez. Hacen falta varias elecciones antes de notar una diferencia."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada vez que eliges una mejor toma distinta a la que Alike sugirió, recuerda lo que preferiste y se inclina un poco más hacia eso la próxima vez. Hacen falta varias elecciones antes de notar una diferencia."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque fois que vous choisissez une meilleure photo différente de celle proposée par Alike, il se souvient de ce que vous avez préféré et penche un peu plus dans ce sens la fois suivante. Il faut plusieurs choix avant que vous remarquiez une différence."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogni volta che scegli uno scatto migliore diverso da quello suggerito da Alike, ricorda cosa hai preferito e la volta successiva pende un po' di più in quella direzione. Servono alcune scelte prima che tu noti una differenza."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elke keer dat je een andere beste opname kiest dan die Alike voorstelde, onthoudt het wat je fijner vond en helt de volgende keer iets meer die kant op. Het duurt een paar keuzes voordat je een verschil merkt."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za każdym razem, gdy wybierzesz inne najlepsze ujęcie niż to zaproponowane przez Alike, zapamiętuje on, co Ci się w nim podobało, i następnym razem nieco bardziej skłania się w tę stronę. Potrzeba kilku wyborów, zanim zauważysz różnicę."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toda vez que você escolhe uma melhor foto diferente da sugerida pelo Alike, ele lembra o que você preferiu e passa a pender um pouco mais nessa direção da próxima vez. São necessárias algumas escolhas antes que você note uma diferença."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike'ın önerdiğinden farklı bir en iyi kare seçtiğinde, neyi tercih ettiğini hatırlar ve bir sonraki sefer biraz daha o yöne kayar. Bir farkı fark etmen için birkaç seçim gerekir."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щоразу, коли ви обираєте інший найкращий кадр, ніж запропонував Alike, він запам'ятовує, що вам сподобалось, і наступного разу трохи більше схиляється в той бік. Потрібно кілька виборів, перш ніж ви помітите різницю."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每次你選擇的最佳照片和 Alike 建議的不同時，它會記住你偏好的地方，下次就會稍微多考慮這一點。要累積幾次選擇之後，你才會注意到差異。"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.limits.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What it won't do"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ما لا يفعله"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was es nicht tut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que no hace"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que no hace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qu'il ne fait pas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quello che non fa"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wat het niet doet"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Czego to nie robi"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que ele não faz"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yapmadığı şey"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чого це не робить"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "它不會做的事"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.limits.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This only changes how much sharpness, exposure, noise, and faces count against each other. A blurry or badly exposed photo is never promoted to Best Shot because of it."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا يغيّر فقط مدى تأثير الوضوح والإضاءة والضوضاء والوجوه على بعضها بعضًا. الصورة الضبابية أو سيئة الإضاءة لا تُختار أبدًا كأفضل لقطة بسبب ذلك."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ändert nur, wie stark Schärfe, Belichtung, Rauschen und Gesichter gegeneinander gewichtet werden. Ein unscharfes oder schlecht belichtetes Foto wird dadurch nie zur besten Aufnahme."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto solo cambia cuánto cuentan la nitidez, la exposición, el ruido y las caras entre sí. Una foto borrosa o mal expuesta nunca se convierte en la mejor toma por esto."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto solo cambia cuánto cuentan la nitidez, la exposición, el ruido y las caras entre sí. Una foto borrosa o mal expuesta nunca se convierte en la mejor toma por esto."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cela ne change que l'importance relative de la netteté, de l'exposition, du bruit et des visages. Une photo floue ou mal exposée n'est jamais désignée meilleure photo à cause de ça."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo cambia solo quanto contano tra loro nitidezza, esposizione, rumore e volti. Una foto sfocata o mal esposta non diventa mai lo scatto migliore per questo motivo."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dit verandert alleen hoe zwaar scherpte, belichting, ruis en gezichten tegenover elkaar meetellen. Een wazige of slecht belichte foto wordt hierdoor nooit de beste opname."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To zmienia tylko to, jak bardzo ostrość, ekspozycja, szum i twarze liczą się względem siebie. Rozmyte lub źle naświetlone zdjęcie nigdy nie zostanie przez to najlepszym ujęciem."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso só muda o quanto nitidez, exposição, ruído e rostos contam uns em relação aos outros. Uma foto desfocada ou mal exposta nunca se torna a melhor foto por causa disso."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu yalnızca netlik, pozlama, gürültü ve yüzlerin birbirine göre ne kadar önemli olduğunu değiştirir. Bulanık veya kötü pozlanmış bir fotoğraf bu yüzden asla en iyi kare olarak seçilmez."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це змінює лише те, наскільки різкість, експозиція, шум і обличчя враховуються одне відносно одного. Розмите або погано експоноване фото через це ніколи не стане найкращим кадром."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這只會改變銳利度、曝光、雜訊和臉孔彼此之間的權重。模糊或曝光不佳的照片絕不會因此被選為最佳照片。"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.reset.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting over"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "البدء من جديد"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu anfangen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar de nuevo"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar de nuevo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartir de zéro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricominciare da capo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opnieuw beginnen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaczynanie od nowa"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recomeçando"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden başlamak"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розпочати заново"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新開始"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.personalization.reset.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the default ranking."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "في الإعدادات، تؤدي «إعادة تعيين تعلّم أفضل لقطة» إلى نسيان كل ما تعلّمه Alike والعودة إلى الترتيب الافتراضي."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter Einstellungen setzt „Lernen für die beste Aufnahme zurücksetzen“ alles zurück, was Alike gelernt hat, und stellt das Standard-Ranking wieder her."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Ajustes, «Restablecer aprendizaje de Mejor Toma» olvida todo lo que Alike ha aprendido y vuelve a la clasificación predeterminada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Configuración, «Restablecer aprendizaje de Mejor Toma» olvida todo lo que Alike ha aprendido y vuelve a la clasificación predeterminada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dans Réglages, « Réinitialiser l'apprentissage de la Meilleure Photo » oublie tout ce qu'Alike a appris et revient au classement par défaut."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Impostazioni, «Ripristina apprendimento Scatto Migliore» dimentica tutto ciò che Alike ha imparato e torna alla classifica predefinita."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Instellingen zorgt 'Leren voor Beste Opname resetten' ervoor dat alles wat Alike heeft geleerd wordt vergeten en keert het terug naar de standaardrangschikking."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "W Ustawieniach opcja „Zresetuj naukę Najlepszego ujęcia” zapomina wszystko, czego nauczył się Alike, i przywraca domyślny ranking."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em Ajustes, “Redefinir aprendizado da Melhor Foto” esquece tudo o que o Alike aprendeu e volta à classificação padrão."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'da 'En İyi Kare Öğrenimini Sıfırla', Alike'ın öğrendiği her şeyi unutur ve varsayılan sıralamaya döner."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У Налаштуваннях пункт «Скинути навчання Найкращого кадру» забуває все, чого навчився Alike, і повертає стандартний рейтинг."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在設定中，重設「最佳照片」學習內容會忘記 Alike 學到的一切，並回到預設排序。"
+          }
+        }
+      }
+    },
     "userGuide.comparingPhotos.inspect.fullscreen.body": {
       "extractionState": "manual",
       "localizations": {
