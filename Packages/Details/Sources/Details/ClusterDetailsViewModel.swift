@@ -33,7 +33,24 @@ final class ClusterDetailsViewModel {
     private let enhancementService: (any PhotoEnhancementService)?
     /// Anonymous, on-device tally of how often our recommendation is replaced.
     private let overrideMetrics: (any BestShotOverrideMetricsRepository)?
+    /// The device's personalized Best Shot weights, applied on top of the
+    /// global scoring config. `nil` in previews and hosts without a
+    /// personalisation store, where ranking stays on the global config.
+    private let personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
+    /// The scores the last ranking decision was made from, retained so a
+    /// manual override afterwards can build its example from the same
+    /// numbers the ranker saw — a cluster's worth, small.
+    private var qualityScores: [String: PhotoQualityScore] = [:]
+    /// What the ranker recommended for the current `assetSnapshots`, before
+    /// any manual override. Empty when nothing was ranked (no signals, or an
+    /// unresolved decision).
+    private var rankedBestShotID = ""
+    /// The config the last ranking decision was made under. An override
+    /// example must be measured under the identical config, so this is
+    /// captured once per decision rather than re-read from the provider —
+    /// which could have moved on by the time the user overrides the pick.
+    private var rankedConfig: PhotoQualityScoringConfig = .current
     private var persistenceTask: Task<Void, Never>?
     /// Bumped by every user action on this screen, so a slow ranking that
     /// arrives afterwards knows not to overwrite what the user just did.
@@ -97,6 +114,7 @@ final class ClusterDetailsViewModel {
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
         enhancementService: (any PhotoEnhancementService)? = nil,
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
@@ -116,6 +134,7 @@ final class ClusterDetailsViewModel {
         self.qualityAnalyzer = qualityAnalyzer
         self.enhancementService = enhancementService
         self.overrideMetrics = overrideMetrics
+        self.personalizedConfigProvider = personalizedConfigProvider
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
@@ -243,7 +262,7 @@ final class ClusterDetailsViewModel {
             // and the metadata ranking. Quality scoring can decode photos and
             // fetch originals from iCloud; making the whole screen wait on that
             // would leave a spinner up for as long as the library is slow.
-            applyLoadedState(
+            await applyLoadedState(
                 assetSnapshots: preparedSnapshots,
                 savedState: persistedState,
                 qualityScores: [:]
@@ -263,7 +282,7 @@ final class ClusterDetailsViewModel {
         } catch {
             guard !Task.isCancelled else { return }
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to prepare cluster details: \(error.localizedDescription)"))")
-            applyLoadedState(assetSnapshots: [], savedState: nil)
+            await applyLoadedState(assetSnapshots: [], savedState: nil)
             hasLoadedReviewState = true
         }
     }
@@ -357,6 +376,29 @@ final class ClusterDetailsViewModel {
                     replacing: replacedConfidence,
                     clusterID: clusterID
                 )
+            }
+        }
+        // Same guard as the metrics tally above: only a pick that replaces
+        // our recommendation is training data. Built from the scores and the
+        // recommendation the ranking made this decision under, so a stale or
+        // never-loaded ranking (`rankedBestShotID` empty) yields no example —
+        // `overrideExample` requires `chosen != recommended` and refuses that
+        // case on its own, but scores never having loaded also means there is
+        // nothing meaningful to measure a delta from.
+        if replacedConfidence != nil, let personalizedConfigProvider, !qualityScores.isEmpty {
+            let snapshots = assetSnapshots.map(\.photoClusterAssetSnapshot)
+            let scores = qualityScores
+            let recommended = rankedBestShotID
+            let config = rankedConfig
+            Task {
+                guard let example = BestShotRanker.overrideExample(
+                    snapshots: snapshots,
+                    scores: scores,
+                    chosen: localIdentifier,
+                    recommended: recommended,
+                    config: config
+                ) else { return }
+                await personalizedConfigProvider.recordOverride(example)
             }
         }
     }
@@ -751,7 +793,7 @@ private extension ClusterDetailsViewModel {
             return
         }
 
-        applyLoadedState(
+        await applyLoadedState(
             assetSnapshots: assetSnapshots,
             savedState: savedState,
             qualityScores: qualityScores
@@ -801,8 +843,9 @@ private extension ClusterDetailsViewModel {
         assetSnapshots: [ReviewAssetSnapshot],
         savedState: ClusterReviewState?,
         qualityScores: [String: PhotoQualityScore] = [:]
-    ) {
+    ) async {
         self.assetSnapshots = assetSnapshots
+        self.qualityScores = qualityScores
 
         guard !assetSnapshots.isEmpty else {
             bestShotAssetID = ""
@@ -815,6 +858,8 @@ private extension ClusterDetailsViewModel {
             reviewMode = .selection
             reviewStatus = .notReviewed
             estimatedSavingsBytes = 0
+            rankedBestShotID = ""
+            rankedConfig = .current
             return
         }
 
@@ -827,13 +872,21 @@ private extension ClusterDetailsViewModel {
             qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
         )
 
+        // The personalized config, when there is one: the details screen and
+        // the grid must agree on which photo is the Best Shot, and an example
+        // recorded later must be measured under the same config this decision
+        // was made under.
+        let config = await personalizedConfigProvider?.config() ?? .current
+        self.rankedConfig = config
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
-            scores: qualityScores
+            scores: qualityScores,
+            config: config
         )
         bestShotConfidence = decision.confidence
         bestShotReasonCodes = decision.reasonCodes
         let rankedBestShotID = decision.localIdentifier ?? ""
+        self.rankedBestShotID = rankedBestShotID
 
         guard let savedState else {
             applyState(

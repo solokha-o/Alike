@@ -1314,6 +1314,163 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(picks.count, expected, file: file, line: line)
     }
 
+    private func waitForRecordedExamples(
+        _ expected: Int,
+        on personalizationRepository: MockBestShotPersonalizationRepository,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        for _ in 0..<1_000 {
+            let recorded = await personalizationRepository.recordedExamples
+            if recorded.count >= expected { return }
+            await Task.yield()
+        }
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, expected, file: file, line: line)
+    }
+
+    // MARK: - Personalisation
+
+    func testReplacingTheRecommendationRecordsAnOverrideExample() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "softer", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            // Close enough that neither candidate is excluded for critical
+            // blur (the ranker would then refuse to build an example from
+            // it), but still far enough apart to rank cleanly.
+            qualityScores: [("sharper", 60), ("softer", 50)],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharper")
+
+        viewModel.setBestShot("softer")
+        await waitForRecordedExamples(1, on: personalizationRepository)
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, 1)
+        XCTAssertEqual(recorded.first?.clusterHasFaces, false)
+    }
+
+    /// Switching between the user's own picks says nothing about the ranking,
+    /// same as the metrics tally above.
+    func testSwitchingBetweenOwnPicksRecordsNoOverrideExample() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+            ],
+            qualityScores: [("a", 60), ("b", 20), ("c", 25)],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedExamples(1, on: personalizationRepository)
+        viewModel.setBestShot("c")
+        await Task.yield()
+        await Task.yield()
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, 1)
+    }
+
+    func testNoOverrideExampleWhenScoresNeverLoaded() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("a")
+        await Task.yield()
+        await Task.yield()
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertTrue(recorded.isEmpty)
+    }
+
+    /// Proves the wiring is live: the same two candidates rank differently
+    /// once the provider's config is seeded with weights that favor a
+    /// different component than the global config does.
+    func testPersonalizedConfigProviderConfigDrivesTheRanking() async {
+        let signals: [String: PhotoQualitySignals] = [
+            "sharpButClipped": PhotoQualitySignals(
+                globalSharpness: 120,
+                darkClippedFraction: 0.10,
+                subjectLumaStdDev: 0.25,
+                noiseEstimate: 0.1,
+                pixelArea: 1_000
+            ),
+            "softButExposed": PhotoQualitySignals(
+                globalSharpness: 100,
+                subjectLumaStdDev: 0.25,
+                noiseEstimate: 0.1,
+                pixelArea: 1_000
+            )
+        ]
+        let snapshots = [
+            snapshot(id: "sharpButClipped", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+            snapshot(id: "softButExposed", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+        ]
+
+        let globalViewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubSignalsPhotoQualityAnalyzer(signalsByIdentifier: signals),
+            assetSnapshots: snapshots,
+            completionDelay: {}
+        )
+        await globalViewModel.load()
+        XCTAssertEqual(globalViewModel.bestShotAssetID, "sharpButClipped")
+
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let seededWeights = BestShotPersonalWeights(
+            withFaces: PhotoQualityScoringConfig.current.weightsWithFaces,
+            withoutFaces: PhotoQualityScoringConfig.Weights(
+                sharpness: 0.05,
+                faceQuality: 0,
+                exposure: 0.75,
+                noiseArtifacts: 0.15,
+                resolution: 0.05
+            ),
+            scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion,
+            withFacesExampleCount: 0,
+            withoutFacesExampleCount: 20
+        )
+        await personalizationRepository.setWeights(seededWeights)
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+
+        let personalizedViewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubSignalsPhotoQualityAnalyzer(signalsByIdentifier: signals),
+            personalizedConfigProvider: provider,
+            assetSnapshots: snapshots,
+            completionDelay: {}
+        )
+        await personalizedViewModel.load()
+        XCTAssertEqual(personalizedViewModel.bestShotAssetID, "softButExposed")
+    }
+
     func testAnUnresolvedClusterCannotBeEmptied() async {
         let viewModel = makeViewModel(
             snapshots: weakClusterSnapshots,
@@ -1571,6 +1728,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         qualityScores: [(String, Double)] = [],
         enhancedIdentifiers: Set<String> = [],
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
@@ -1584,6 +1742,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
                 enhancedIdentifiers: enhancedIdentifiers
             ),
             overrideMetrics: overrideMetrics,
+            personalizedConfigProvider: personalizedConfigProvider,
             assetSnapshots: snapshots,
             completionDelay: completionDelay
         )
@@ -1654,6 +1813,26 @@ private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
                     pixelArea: 1_000
                 ),
                 isAlikeEnhanced: enhancedIdentifiers.contains(identifier)
+            )
+        }
+    }
+}
+
+/// Returns caller-supplied signals verbatim, for tests that need control over
+/// more than just sharpness (exposure, noise, faces).
+private struct StubSignalsPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    let signalsByIdentifier: [String: PhotoQualitySignals]
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        let config = PhotoQualityScoringConfig.current
+        return signalsByIdentifier.map { identifier, signals in
+            PhotoQualityScore(
+                localIdentifier: identifier,
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: signals,
+                isAlikeEnhanced: false
             )
         }
     }
