@@ -9,15 +9,24 @@ public enum SettingsL10n {
         public static var someDataMayAlreadyHave: String { SettingsL10n.string("settings.deleteAllDataModel.someDataMayAlreadyHave") }
     }
 
+    public enum ResetBestShotPersonalizationModel {
+        /// Best Shot personalization may not have fully reset. Please try again.
+        public static var bestShotPersonalizationMayNotHave: String { SettingsL10n.string("settings.resetBestShotPersonalizationModel.bestShotPersonalizationMayNotHave") }
+    }
+
     public enum Main {
         /// Your cleanup reminder couldn't be updated. Please try again.
         public static var cleanupReminderCouldntBeUpdated: String { SettingsL10n.string("settings.main.cleanupReminderCouldntBeUpdated") }
         /// Alike Pro is active
         public static var alikeProIsActive: String { SettingsL10n.string("settings.main.alikeProIsActive") }
+        /// Alike learns which photos you pick as Best Shot to improve future rankings. Resetting forgets...
+        public static var alikeLearnsWhichPhotosYouPick: String { SettingsL10n.string("settings.main.alikeLearnsWhichPhotosYouPick") }
         /// Your Alike Pro subscription was restored.
         public static var alikeProSubscriptionWasRestored: String { SettingsL10n.string("settings.main.alikeProSubscriptionWasRestored") }
         /// Analysis
         public static var analysis: String { SettingsL10n.string("settings.main.analysis") }
+        /// Best Shot personalization
+        public static var bestShotPersonalization: String { SettingsL10n.string("settings.main.bestShotPersonalization") }
         /// You can continue using Alike Free.
         public static var canContinueUsingAlikeFree: String { SettingsL10n.string("settings.main.canContinueUsingAlikeFree") }
         /// Cancel
@@ -34,6 +43,8 @@ public enum SettingsL10n {
         public static var couldntDeleteAlikeData: String { SettingsL10n.string("settings.main.couldntDeleteAlikeData") }
         /// Couldn't Restore Purchases
         public static var couldntRestorePurchases: String { SettingsL10n.string("settings.main.couldntRestorePurchases") }
+        /// Couldn't Reset Best Shot Learning
+        public static var couldntResetBestShotLearning: String { SettingsL10n.string("settings.main.couldntResetBestShotLearning") }
         /// Couldn't Update Reminder
         public static var couldntUpdateReminder: String { SettingsL10n.string("settings.main.couldntUpdateReminder") }
         /// Customize day & time
@@ -56,6 +67,8 @@ public enum SettingsL10n {
         public static var enablePremiumScreenshotCleanupAccess: String { SettingsL10n.string("settings.main.enablePremiumScreenshotCleanupAccess") }
         /// Enable a weekly reminder to come back and continue cleanup
         public static var enableWeeklyReminderComeBack: String { SettingsL10n.string("settings.main.enableWeeklyReminderComeBack") }
+        /// Forget what Alike learned from your Best Shot picks and return to the default ranking.
+        public static var forgetWhatAlikeLearnedFromYour: String { SettingsL10n.string("settings.main.forgetWhatAlikeLearnedFromYour") }
         /// Free reminders use Sunday at 6:00 PM. Unlock premium to choose your own day and time.
         public static var freeRemindersUseSundayAt: String { SettingsL10n.string("settings.main.freeRemindersUseSundayAt") }
         /// Free reminders use Sunday at 6:00 PM. — locale/bundle-injectable, see above.
@@ -124,6 +137,12 @@ public enum SettingsL10n {
         public static var reminderTime: String { SettingsL10n.string("settings.main.reminderTime") }
         /// Request the App Store rating prompt
         public static var requestAppStoreRatingPrompt: String { SettingsL10n.string("settings.main.requestAppStoreRatingPrompt") }
+        /// Reset Best Shot Learning
+        public static var resetBestShotLearning: String { SettingsL10n.string("settings.main.resetBestShotLearning") }
+        /// Reset Best Shot learning?
+        public static var resetBestShotLearningQuestion: String { SettingsL10n.string("settings.main.resetBestShotLearningQuestion") }
+        /// Resetting...
+        public static var resettingBestShotLearning: String { SettingsL10n.string("settings.main.resettingBestShotLearning") }
         /// Review and permanently delete data stored by Alike on this device
         public static var reviewPermanentlyDeleteDataStored: String { SettingsL10n.string("settings.main.reviewPermanentlyDeleteDataStored") }
         /// Scan results and analysis caches
@@ -144,6 +163,8 @@ public enum SettingsL10n {
         public static var termsOfUse: String { SettingsL10n.string("settings.main.termsOfUse") }
         /// This action can't be undone. Alike will replay onboarding when deletion finishes.
         public static var thisActionCantBeUndone: String { SettingsL10n.string("settings.main.thisActionCantBeUndone") }
+        /// This forgets what Alike learned from your Best Shot picks and returns to the default ranking.
+        public static var thisForgetsWhatAlikeLearnedFrom: String { SettingsL10n.string("settings.main.thisForgetsWhatAlikeLearnedFrom") }
         /// This override is available only in debug builds and affects local premium gating.
         public static var thisOverrideAvailableOnlyDebug: String { SettingsL10n.string("settings.main.thisOverrideAvailableOnlyDebug") }
         /// This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and...

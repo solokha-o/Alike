@@ -6392,6 +6392,753 @@
           }
         }
       }
+    },
+    "settings.main.alikeLearnsWhichPhotosYouPick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike learns which photos you pick as Best Shot to improve future rankings. Resetting forgets that and returns to the default ranking — nothing is ever sent off your device."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike запам'ятовує, які фото ви обираєте як Найкращий кадр, щоб покращувати майбутні рейтинги. Скидання забуває це та повертає стандартний рейтинг — дані ніколи не залишають ваш пристрій."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike aprende qué fotos eliges como Mejor Toma para mejorar las clasificaciones futuras. Restablecer olvida eso y vuelve a la clasificación predeterminada; nada sale nunca de tu dispositivo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike aprende qué fotos eliges como Mejor Toma para mejorar las clasificaciones futuras. Restablecer olvida eso y vuelve a la clasificación predeterminada; nada sale nunca de tu dispositivo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike aprende quais fotos você escolhe como Melhor Foto para melhorar as classificações futuras. Redefinir esquece isso e volta à classificação padrão — nada é enviado do seu dispositivo."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike lernt, welche Fotos du als beste Aufnahme auswählst, um künftige Rankings zu verbessern. Zurücksetzen vergisst das und kehrt zum Standard-Ranking zurück – nichts verlässt jemals dein Gerät."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike apprend quelles photos vous choisissez comme Meilleure Photo pour améliorer les classements futurs. La réinitialisation oublie cela et revient au classement par défaut — rien ne quitte jamais votre appareil."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike impara quali foto scegli come Scatto Migliore per migliorare le classifiche future. Il ripristino dimentica tutto ciò e torna alla classifica predefinita: nulla lascia mai il tuo dispositivo."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike leert welke foto's je als Beste Opname kiest om toekomstige rangschikkingen te verbeteren. Resetten vergeet dat en keert terug naar de standaardrangschikking — er verlaat nooit iets je apparaat."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike uczy się, które zdjęcia wybierasz jako Najlepsze ujęcie, aby poprawiać przyszłe rankingi. Zresetowanie zapomina to i przywraca domyślny ranking — nic nigdy nie opuszcza Twojego urządzenia."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, gelecekteki sıralamaları iyileştirmek için En İyi Kare olarak hangi fotoğrafları seçtiğinizi öğrenir. Sıfırlama bunu unutur ve varsayılan sıralamaya döner — hiçbir şey cihazınızdan asla gönderilmez."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 會學習你選為「最佳照片」的照片，藉此改善未來的排序。重設會忘記這些學習內容並回到預設排序—任何資料都不會離開你的裝置。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتعلم Alike الصور التي تختارها كأفضل لقطة لتحسين الترتيب المستقبلي. تؤدي إعادة التعيين إلى نسيان ذلك والعودة إلى الترتيب الافتراضي — لا يتم إرسال أي شيء مطلقًا خارج جهازك."
+          }
+        }
+      }
+    },
+    "settings.main.bestShotPersonalization": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Shot personalization"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Персоналізація Найкращого кадру"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalización de Mejor Toma"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalización de Mejor Toma"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalização da Melhor Foto"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalisierung der besten Aufnahme"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnalisation de la Meilleure Photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizzazione dello Scatto Migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalisatie van Beste Opname"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizacja Najlepszego ujęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare kişiselleştirmesi"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最佳照片個人化"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تخصيص أفضل لقطة"
+          }
+        }
+      }
+    },
+    "settings.main.couldntResetBestShotLearning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Reset Best Shot Learning"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося скинути навчання Найкращого кадру"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo restablecer el aprendizaje de Mejor Toma"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo restablecer el aprendizaje de Mejor Toma"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível redefinir o aprendizado da Melhor Foto"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lernen für die beste Aufnahme konnte nicht zurückgesetzt werden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de réinitialiser l'apprentissage de la Meilleure Photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossibile ripristinare l'apprendimento dello Scatto Migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kan leren voor Beste Opname niet resetten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie można zresetować nauki Najlepszego ujęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare öğrenimi sıfırlanamadı"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法重設「最佳照片」學習內容"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّرت إعادة تعيين تعلّم أفضل لقطة"
+          }
+        }
+      }
+    },
+    "settings.main.forgetWhatAlikeLearnedFromYour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forget what Alike learned from your Best Shot picks and return to the default ranking."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Забути те, що Alike дізнався з ваших виборів Найкращого кадру, і повернутися до стандартного рейтингу."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olvida lo que Alike aprendió de tus selecciones de Mejor Toma y vuelve a la clasificación predeterminada."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olvida lo que Alike aprendió de tus selecciones de Mejor Toma y vuelve a la clasificación predeterminada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esquece o que o Alike aprendeu com suas escolhas de Melhor Foto e volta à classificação padrão."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergisst, was Alike aus deinen Auswahlen für die beste Aufnahme gelernt hat, und kehrt zum Standard-Ranking zurück."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oublie ce qu'Alike a appris de vos choix de Meilleure Photo et revient au classement par défaut."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimentica ciò che Alike ha imparato dalle tue scelte di Scatto Migliore e torna alla classifica predefinita."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergeet wat Alike heeft geleerd van je Beste Opname-keuzes en keer terug naar de standaardrangschikking."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zapomina, czego Alike nauczył się z Twoich wyborów Najlepszego ujęcia, i przywraca domyślny ranking."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike'ın En İyi Kare seçimlerinizden öğrendiklerini unutur ve varsayılan sıralamaya döner."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "忘記 Alike 從你「最佳照片」選擇中學到的內容，並回到預設排序。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ينسى ما تعلّمه Alike من اختياراتك لأفضل لقطة ويعود إلى الترتيب الافتراضي."
+          }
+        }
+      }
+    },
+    "settings.main.resetBestShotLearning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Best Shot Learning"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скинути навчання Найкращого кадру"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restablecer aprendizaje de Mejor Toma"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restablecer aprendizaje de Mejor Toma"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redefinir aprendizado da Melhor Foto"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lernen für die beste Aufnahme zurücksetzen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser l'apprentissage de la Meilleure Photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristina apprendimento Scatto Migliore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leren voor Beste Opname resetten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zresetuj naukę Najlepszego ujęcia"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare Öğrenimini Sıfırla"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重設「最佳照片」學習內容"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة تعيين تعلّم أفضل لقطة"
+          }
+        }
+      }
+    },
+    "settings.main.resetBestShotLearningQuestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Best Shot learning?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скинути навчання Найкращого кадру?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Restablecer el aprendizaje de Mejor Toma?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Restablecer el aprendizaje de Mejor Toma?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redefinir o aprendizado da Melhor Foto?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lernen für die beste Aufnahme zurücksetzen?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser l'apprentissage de la Meilleure Photo ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristinare l'apprendimento dello Scatto Migliore?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leren voor Beste Opname resetten?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zresetować naukę Najlepszego ujęcia?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare öğrenimi sıfırlansın mı?"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要重設「最佳照片」學習內容嗎？"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل تريد إعادة تعيين تعلّم أفضل لقطة؟"
+          }
+        }
+      }
+    },
+    "settings.main.resettingBestShotLearning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resetting..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скидання..."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restableciendo..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restableciendo..."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redefinindo..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird zurückgesetzt …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialisation…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristino in corso..."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bezig met resetten..."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resetowanie..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıfırlanıyor..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重設中…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ إعادة التعيين..."
+          }
+        }
+      }
+    },
+    "settings.main.thisForgetsWhatAlikeLearnedFrom": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This forgets what Alike learned from your Best Shot picks and returns to the default ranking."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це забуде те, що Alike дізнався з ваших виборів Найкращого кадру, і поверне стандартний рейтинг."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto olvida lo que Alike aprendió de tus selecciones de Mejor Toma y vuelve a la clasificación predeterminada."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto olvida lo que Alike aprendió de tus selecciones de Mejor Toma y vuelve a la clasificación predeterminada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso esquece o que o Alike aprendeu com suas escolhas de Melhor Foto e volta à classificação padrão."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dadurch wird vergessen, was Alike aus deinen Auswahlen für die beste Aufnahme gelernt hat, und zum Standard-Ranking zurückgekehrt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cela oublie ce qu'Alike a appris de vos choix de Meilleure Photo et revient au classement par défaut."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo dimentica ciò che Alike ha imparato dalle tue scelte di Scatto Migliore e torna alla classifica predefinita."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hierdoor vergeet Alike wat het heeft geleerd van je Beste Opname-keuzes en keert het terug naar de standaardrangschikking."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To spowoduje zapomnienie tego, czego Alike nauczył się z Twoich wyborów Najlepszego ujęcia, i przywróci domyślny ranking."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu, Alike'ın En İyi Kare seçimlerinizden öğrendiklerini unutur ve varsayılan sıralamaya döner."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這會讓 Alike 忘記從你「最佳照片」選擇中學到的內容，並回到預設排序。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سيؤدي هذا إلى نسيان ما تعلّمه Alike من اختياراتك لأفضل لقطة والعودة إلى الترتيب الافتراضي."
+          }
+        }
+      }
+    },
+    "settings.resetBestShotPersonalizationModel.bestShotPersonalizationMayNotHave": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Shot personalization may not have fully reset. Please try again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Персоналізацію Найкращого кадру, можливо, не вдалося повністю скинути. Спробуйте ще раз."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es posible que la personalización de Mejor Toma no se haya restablecido por completo. Vuelve a intentarlo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es posible que la personalización de Mejor Toma no se haya restablecido por completo. Vuelve a intentarlo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A personalização da Melhor Foto pode não ter sido totalmente redefinida. Tente novamente."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Personalisierung für die beste Aufnahme wurde möglicherweise nicht vollständig zurückgesetzt. Bitte versuche es erneut."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La personnalisation de la Meilleure Photo n'a peut-être pas été entièrement réinitialisée. Veuillez réessayer."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La personalizzazione dello Scatto Migliore potrebbe non essere stata ripristinata completamente. Riprova."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De personalisatie van Beste Opname is mogelijk niet volledig gereset. Probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizacja Najlepszego ujęcia mogła nie zostać w pełni zresetowana. Spróbuj ponownie."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Kare kişiselleştirmesi tam olarak sıfırlanmamış olabilir. Lütfen tekrar deneyin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「最佳照片」個人化設定可能未完全重設，請再試一次。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قد لا تكون إعادة تعيين تخصيص أفضل لقطة قد اكتملت. يُرجى المحاولة مرة أخرى."
+          }
+        }
+      }
     }
   }
 }

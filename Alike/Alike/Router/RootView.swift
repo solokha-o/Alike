@@ -222,6 +222,9 @@ struct MainTabView: View {
                     try await localAppDataDeleter.deleteAllData()
                     onDataDeleted()
                 },
+                onResetBestShotPersonalization: {
+                    await cleanupWorkspace.bestShotPersonalizedConfigProvider.reset()
+                },
                 viewModel: SettingsViewModel(
                     cleanupReminderManager: cleanupReminderManager,
                     ratingPrompt: ratingPrompt

@@ -299,6 +299,12 @@ public final class CleanupWorkspaceModel {
     public func prepareForDataDeletion() async {
         scanMutationGeneration &+= 1
 
+        // `self` outlives the deletion — the workspace is never rebuilt after
+        // a full delete — so the provider's in-memory cache must be cleared
+        // explicitly here or a stale personalized config would survive the
+        // repository wipe underneath it.
+        await bestShotPersonalizedConfigProvider.reset()
+
         let cachedLoad = cachedContentLoadTask
         let activeScanTask = scanTask
         let activeReconciliationTask = reconciliationTask
