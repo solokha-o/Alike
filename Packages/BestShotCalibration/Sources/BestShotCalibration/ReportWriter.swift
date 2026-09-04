@@ -89,8 +89,8 @@ public enum ReportWriter {
         lines.append("|---|---|---|---|")
         lines.append(
             "| \(faces.candidateCount) "
-                + "| \(faces.withFacesCount) (\(percentOrDash(faces.withFacesRate, of: faces.candidateCount))) "
-                + "| \(faces.rejectedOnlyCount) (\(percentOrDash(faces.rejectedOnlyRate, of: faces.candidateCount))) "
+                + "| \(faces.withFacesCount) (\(percent(faces.withFacesRate ?? 0))) "
+                + "| \(faces.rejectedOnlyCount) (\(percent(faces.rejectedOnlyRate ?? 0))) "
                 + "| \(faces.unknownRejectionCount) |"
         )
         lines.append("")
