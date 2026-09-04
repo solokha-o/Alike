@@ -268,6 +268,28 @@ public protocol BestShotOverrideMetricsRepository: Sendable {
     func resetMetrics() async
 }
 
+/// Repository for the on-device Best Shot personalization data: the raw
+/// override examples and the weight vectors fitted from them.
+public protocol BestShotPersonalizationRepository: Sendable {
+    /// Loads the stored examples, filtering out any measured under a
+    /// different scoring formula.
+    func loadExamples() async -> [BestShotOverrideExample]
+
+    /// Appends an example, dropping the oldest once the cap is reached.
+    func record(_ example: BestShotOverrideExample) async
+
+    /// Loads the fitted weights, or `nil` if none are stored or they were
+    /// fitted under a different scoring formula.
+    func loadWeights() async -> BestShotPersonalWeights?
+
+    /// Persists the fitted weights, replacing whatever was stored before.
+    func saveWeights(_ weights: BestShotPersonalWeights) async
+
+    /// Clears both the examples and the weights, e.g. when the user deletes
+    /// local app data.
+    func reset() async
+}
+
 /// Service for analyzing photos using Vision framework
 public protocol PhotoAnalysisService: Sendable {
     /// Analyze all photos in the library and return clusters
