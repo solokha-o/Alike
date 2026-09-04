@@ -145,6 +145,9 @@ Do not create a new package when:
 - Features may depend on shared/core packages, but not on other features.
 - Keep navigation/routing in the app target or a dedicated routing package.
 - Avoid static global state unless it is explicitly isolated (actor or MainActor).
+- Once a symbol is `public` and shipped, prefer extending it over changing it; for
+  any change to a shipped `public` API or to persisted data, follow
+  `Skills/Architecture/change-safety/SKILL.md`.
 
 ## Dependency rules
 
