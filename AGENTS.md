@@ -62,6 +62,35 @@ Before using Grep, Glob, or Read for code exploration:
    Simulator destination and then run the same full compile.
 5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
+6. Package tests run against the package's own workspace, not the app project:
+   `xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<available simulator>' test`.
+   The app project's `<Name>` scheme is a library scheme with no test action, so
+   `-project Alike/Alike.xcodeproj -scheme <Name> test` fails by design. Packages
+   with several products use the generated `<Name>-Package` scheme instead, and
+   `tools/local_ci.sh` (`tools/quick`, `tools/full`) picks the right one and runs
+   the whole suite.
+
+## Change-Safety Gate
+
+Alike has real installed users, so every change to already-shipped surface is
+judged on what happens to *their* data and *their* flows, not only on whether it
+compiles.
+
+1. Before changing a `public` API of a package, a persisted value (Core Data
+   attribute, `UserDefaults` key, `Codable`/`Data` payload, cached file), a
+   shipped `enum`, or a known user flow, read
+   `Skills/Architecture/change-safety/SKILL.md` and classify the change R0-R3.
+2. Prefer extension over modification. New behaviour arrives as new code; an
+   in-place change to shipped surface needs a stated reason and a compatibility
+   plan in the commit message and PR body.
+3. Any change to stored data additionally follows
+   `Skills/Storage/persisted-data-evolution/SKILL.md` and is not done until its
+   migration or round-trip test passes.
+4. Before merging anything R1 or higher, walk the pre-merge gate in
+   `Skills/Architecture/change-safety/references/release-compatibility-gate.md`.
+5. Performance work follows `Skills/Performance/app-runtime-performance/SKILL.md`
+   (runtime) or `Skills/Performance/xcode-build-performance/SKILL.md` (build
+   time): measure before and after, on a realistic library, or do not claim it.
 
 ## Output style
 

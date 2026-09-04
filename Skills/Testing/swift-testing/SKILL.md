@@ -37,6 +37,26 @@ Open `references/migration-from-xctest.md`.
 4. Need full legacy examples and extended notes?
 Open `references/full-guide.md`.
 
+## Running Tests
+
+- One package: `xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<available simulator>' test`.
+  Use the package workspace, never `-project Alike/Alike.xcodeproj -scheme <Name>`:
+  the app project's package schemes are library schemes with no test action.
+- Prefix ad-hoc commands with `DEVELOPER_DIR=/Applications/Xcode-<version>.app/Contents/Developer`
+  when `xcode-select` points at the Command Line Tools. `Packages/<Name>` is a
+  plain directory, not a checked-in `.xcworkspace` — Xcode treats it as an
+  implicit workspace, which only works under full Xcode. With the Command Line
+  Tools selected, the command fails with exactly:
+  `xcodebuild: error: 'Packages/<Name>' is not a workspace file.` — that
+  signature means the toolchain is wrong, not the command.
+- A package with several products has no `<Name>` test action either; use the
+  generated aggregate `<Name>-Package` scheme.
+- Everything: `tools/quick` or `tools/full` (`tools/local_ci.sh`), which resolves
+  the scheme per package and falls back to `swift test` where that works.
+- `swift test --package-path Packages/<Name>` fails on this toolchain whenever the
+  package reaches `DesignSystem`, because `#Preview` needs a plugin that only
+  ships with full Xcode. Prefer `xcodebuild`.
+
 ## Guardrails
 
 - Prefer pure/unit boundaries over UI-hosted tests when possible.

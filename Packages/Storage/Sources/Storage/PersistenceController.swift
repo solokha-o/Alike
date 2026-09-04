@@ -11,13 +11,27 @@ public actor PersistenceController: Sendable {
         container.viewContext
     }
     
-    private init(inMemory: Bool = false) {
+    /// Compiled model this release ships, version 1 of `AlikeModel.xcdatamodeld`.
+    ///
+    /// Loaded once and shared by every container. Two `NSManagedObjectModel`
+    /// instances describing the same entities make `+[ClusterEntity entity]`
+    /// ambiguous, so each `preview()` used to add another instance and another
+    /// round of "Failed to find a unique match" errors. It is also what the
+    /// migration baseline test opens, so the test sees exactly what ships.
+    ///
+    /// `nonisolated(unsafe)` because `NSManagedObjectModel` is not `Sendable`:
+    /// the instance is built once here and never mutated afterwards, and Core
+    /// Data itself expects one model to back many coordinators.
+    nonisolated(unsafe) static let shippedModel: NSManagedObjectModel = {
         guard let modelURL = Bundle.module.url(forResource: "AlikeModel", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Failed to load Core Data model")
         }
-        
-        container = NSPersistentContainer(name: "AlikeModel", managedObjectModel: model)
+        return model
+    }()
+
+    private init(inMemory: Bool = false) {
+        container = NSPersistentContainer(name: "AlikeModel", managedObjectModel: Self.shippedModel)
 
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")

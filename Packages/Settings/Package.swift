@@ -21,13 +21,14 @@ let package = Package(
         .package(path: "../Cleanup"),
         .package(path: "../Storage"),
         .package(path: "../Purchases"),
-        .package(path: "../UserGuide")
+        .package(path: "../UserGuide"),
+        .package(path: "../PhotoAnalysis")
     ],
     targets: [
         .target(
             name: "Settings",
             dependencies: [
-                "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide",
+                "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide", "PhotoAnalysis",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
             ],
