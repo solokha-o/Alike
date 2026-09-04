@@ -22,7 +22,7 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
     /// keep serving scores computed by the previous model.
     func testShippedVersionsMatchTheDocumentedModel() {
         XCTAssertEqual(PhotoQualityScoringConfig.current.scoringModelVersion, 1)
-        XCTAssertEqual(PhotoQualityScoringConfig.current.thumbnailConfigVersion, 2)
+        XCTAssertEqual(PhotoQualityScoringConfig.current.thumbnailConfigVersion, 3)
     }
 
     // MARK: - Face gate
@@ -33,7 +33,8 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
     /// changes.
     func testTheFaceGateIsAFractionSmallEnoughForAnOrdinaryPortrait() {
         let config = PhotoQualityScoringConfig.current
-        let oldAbsoluteGateAsFraction = 64.0 / Double(config.analysisImageLongSide)
+        // The gate as it shipped: 64 absolute pixels of the 256-pixel frame.
+        let oldAbsoluteGateAsFraction = 64.0 / 256.0
 
         XCTAssertLessThan(config.minimumFaceFrameFraction, oldAbsoluteGateAsFraction / 4)
         XCTAssertGreaterThan(config.minimumFaceFrameFraction, 0)
@@ -56,7 +57,7 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
 
     func testFaceSourceStaysWithTheAnalysisImageWhenItAlreadySuffices() {
         let config = PhotoQualityScoringConfig.current
-        // A face filling half the frame already has 128 real pixels at 256.
+        // A face filling half the frame already clears the crop side outright.
         XCTAssertEqual(
             config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.5),
             config.analysisImageLongSide

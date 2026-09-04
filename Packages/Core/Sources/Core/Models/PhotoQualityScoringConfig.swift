@@ -17,6 +17,12 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     // MARK: - Image preparation
 
     /// Long side of the global analysis thumbnail, in pixels.
+    ///
+    /// Also the resolution faces are *detected* on, which is what sets the
+    /// floor. Measured on real group photos, Vision stops seeing a face at
+    /// roughly a 9-pixel box, and at 256 that lost every face in half the
+    /// group shots tested — no detection at all, so no gate and no second pass
+    /// could recover them. At 512 those same photos detect.
     public var analysisImageLongSide: Int
     /// Square side of the subject/face crop, in pixels. Face signals are
     /// measured on this grid, the whole frame on `sharpnessGridSide`.
@@ -155,8 +161,8 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
 
     public init(
         scoringModelVersion: Int = 1,
-        thumbnailConfigVersion: Int = 2,
-        analysisImageLongSide: Int = 256,
+        thumbnailConfigVersion: Int = 3,
+        analysisImageLongSide: Int = 512,
         faceCropSide: Int = 64,
         maxFaceSourceLongSide: Int = 1_600,
         minimumAnalysisLongSide: Int = 128,
