@@ -24,7 +24,8 @@ func printUsage() {
                                 config before hand-applying it to Packages/Core.
       --config-output <path>   sweep only: where to write the candidate config JSON. Defaults to stdout
                                 (appended after the report, separated by a marker line).
-      --blur-penalty <double>  sweep only: weight of blurryWinnerRate in the search objective. Default 5.0.
+      --blur-penalty <double>  sweep only: weight of the penalized blurry rate in the search
+                                objective. Must be finite and >= 0. Default 5.0.
     """
     FileHandle.standardError.write(Data((usage + "\n").utf8))
 }
@@ -62,6 +63,14 @@ func parseOptions(_ args: [String]) -> Options {
         case "--blur-penalty":
             guard let raw = iterator.next(), let value = Double(raw) else {
                 fail("--blur-penalty requires a numeric value")
+            }
+            // `Double("-5")` and `Double("nan")` both parse. A negative penalty
+            // turns the unresolved/blurry charge into a reward, which hands the
+            // search back the all-unresolved winner `WeightSweep.score` exists
+            // to rule out; a NaN makes every `>` comparison false, so the
+            // search silently keeps whatever it looked at first.
+            guard value.isFinite, value >= 0 else {
+                fail("--blur-penalty must be a finite value >= 0, got '\(raw)'")
             }
             options.blurPenalty = value
         default:

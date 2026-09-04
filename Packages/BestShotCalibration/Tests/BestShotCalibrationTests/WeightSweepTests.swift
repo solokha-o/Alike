@@ -281,6 +281,30 @@ final class WeightSweepTests: XCTestCase {
         XCTAssertEqual(score.objective, expectedObjective, accuracy: 1e-9)
     }
 
+    /// Pins the boundary of `score`'s precondition. Zero is a legitimate
+    /// penalty — "rank on agreement alone" — so the guard must be `>= 0`, not
+    /// `> 0`. A future tightening to `> 0` would reject this silently useful
+    /// mode; a loosening to allow negatives would turn the unresolved charge
+    /// into a reward and bring back the all-unresolved winner.
+    func testZeroBlurPenaltyIsAcceptedAndLeavesTheAgreementTermAlone() {
+        let corpus = makeCorpus()
+        let metrics = MetricsReport.compute(corpus: corpus, config: config).overall
+
+        let score = WeightSweep.score(config: config, corpus: corpus, blurPenalty: 0)
+
+        XCTAssertEqual(
+            score.objective,
+            metrics.topOneAgreementOverAllClusters ?? 0,
+            accuracy: 1e-9,
+            "With no blur penalty the objective is the all-clusters agreement, unmodified"
+        )
+        XCTAssertGreaterThanOrEqual(
+            score.penalizedBlurryRate,
+            0,
+            "The rate is still reported even when it is not charged"
+        )
+    }
+
     /// A cluster whose ranked winner ("clean-but-soft") sits below the
     /// default `absoluteSharpnessFloor` (10) while "sharp-but-dirty" (which
     /// clears the floor) loses on the weighted score despite being sharper,

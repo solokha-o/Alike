@@ -65,11 +65,23 @@ public enum WeightSweep {
     /// no cluster produced a winner) counts as 0 for that metric rather than
     /// excluding the corpus from scoring entirely. An empty corpus
     /// (`clusterCount == 0`) scores an objective of 0.
+    ///
+    /// - Precondition: `blurPenalty` is finite and `>= 0`. A negative penalty
+    ///   would turn the unresolved/blurry charge into a reward and hand the
+    ///   search back exactly the all-unresolved winner this objective is built
+    ///   to rule out; a NaN penalty makes every `>` comparison in the search
+    ///   false, so it would silently keep whichever candidate it saw first.
+    ///   Both are programmer error, not input to be tolerated — the CLI
+    ///   rejects them at the argument boundary with a readable message.
     public static func score(
         config: PhotoQualityScoringConfig,
         corpus: BestShotCalibrationCorpus,
         blurPenalty: Double = defaultBlurPenalty
     ) -> Score {
+        precondition(
+            blurPenalty.isFinite && blurPenalty >= 0,
+            "blurPenalty must be finite and >= 0, got \(blurPenalty)"
+        )
         let overall = MetricsReport.compute(corpus: corpus, config: config).overall
         let topOneAllClusters = overall.topOneAgreementOverAllClusters ?? 0
         let topOne = overall.topOneAgreement ?? 0
