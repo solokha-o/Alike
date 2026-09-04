@@ -47,71 +47,12 @@ public enum BestShotRanker {
             return singleOrMetadataDecision(snapshots: snapshots, scores: scores)
         }
 
-        let signals = usable.reduce(into: [String: PhotoQualitySignals]()) { partial, snapshot in
-            partial[snapshot.localIdentifier] = scores[snapshot.localIdentifier]?.signals
-        }
-
-        // 1. Sharpness relative to the cluster, then the exclusion rule.
-        let effectiveSharpness = usable.reduce(into: [String: Double]()) { partial, snapshot in
-            partial[snapshot.localIdentifier] = self.effectiveSharpness(
-                of: signals[snapshot.localIdentifier] ?? PhotoQualitySignals(),
-                config: config
-            )
-        }
-        let sharpnessRatios = self.sharpnessRatios(snapshots: usable, scores: scores, config: config)
-        let hasSharpReference = sharpnessRatios.values.contains { $0 >= config.referenceSharpnessRatio }
-        var excluded = Set<String>()
-        if hasSharpReference {
-            for snapshot in usable
-            where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio {
-                excluded.insert(snapshot.localIdentifier)
-            }
-        }
-        // Never empty the cluster: if everything is weak, keep them all and let
-        // the confidence gate say so instead of hiding photos.
-        if excluded.count == usable.count { excluded.removeAll() }
-
-        let ranked = usable.filter { !excluded.contains($0.localIdentifier) }
-
-        // 2. Robust normalization inside the cluster.
-        let sharpnessScale = NormalizationScale(
-            values: ranked.compactMap { effectiveSharpness[$0.localIdentifier] },
-            config: config
-        )
-        let noiseScale = NormalizationScale(
-            values: ranked.compactMap { signals[$0.localIdentifier]?.noiseEstimate },
-            config: config
-        )
-        let faceSharpnessScale = NormalizationScale(
-            values: ranked.flatMap { snapshot in
-                (signals[snapshot.localIdentifier]?.usableFaceSignals ?? []).map(\.sharpness)
-            },
-            config: config
-        )
-        let resolutionScale = NormalizationScale(
-            values: ranked.map { Double($0.pixelArea) }.map { area in area > 0 ? log(area) : 0 },
-            config: config
-        )
-        let clusterHasFaces = ranked.contains { signals[$0.localIdentifier]?.hasFaces == true }
-        let weights = clusterHasFaces ? config.weightsWithFaces : config.weightsWithoutFaces
-
-        // 3. Components and the weighted sum.
-        var components: [String: Components] = [:]
-        for snapshot in ranked {
-            let signal = signals[snapshot.localIdentifier] ?? PhotoQualitySignals()
-            components[snapshot.localIdentifier] = makeComponents(
-                snapshot: snapshot,
-                signals: signal,
-                sharpnessRatio: sharpnessRatios[snapshot.localIdentifier] ?? 1,
-                sharpnessScale: sharpnessScale,
-                noiseScale: noiseScale,
-                faceSharpnessScale: faceSharpnessScale,
-                resolutionScale: resolutionScale,
-                clusterHasFaces: clusterHasFaces,
-                weights: weights,
-                config: config
-            )
-        }
+        let built = rankedComponents(snapshots: snapshots, scores: scores, config: config)
+        let signals = built.signals
+        let excluded = built.excluded
+        let ranked = built.ranked
+        let components = built.components
+        let weights = built.weights
 
         // 4. Deterministic order.
         let order = ranked.sorted { lhs, rhs in
@@ -212,6 +153,148 @@ public enum BestShotRanker {
             guard medianSharpness > 0 else { return 1 }
             return value / medianSharpness
         }
+    }
+
+    /// One "chosen vs. recommended" pair from a single cluster, broken down
+    /// into the per-component gap between the two frames.
+    ///
+    /// `decide` only ever surfaces the winner and its reason codes; fitting
+    /// personal weights later needs the raw components underneath that
+    /// decision, for exactly the two candidates a user compared. This runs
+    /// the same normalization and component build `decide` uses — an example
+    /// is only meaningful if it was measured on the identical scale the live
+    /// ranking used — and reduces it to a delta plus the fixed offset no
+    /// weight can move.
+    public static func overrideExample(
+        snapshots: [PhotoClusterAssetSnapshot],
+        scores: [String: PhotoQualityScore],
+        chosen: String,
+        recommended: String,
+        now: Date = Date(),
+        config: PhotoQualityScoringConfig = .current
+    ) -> BestShotOverrideExample? {
+        guard chosen != recommended else { return nil }
+
+        let usable = snapshots.filter { scores[$0.localIdentifier]?.signals.isUsable == true }
+        guard usable.count > 1 else { return nil }
+
+        let built = rankedComponents(snapshots: snapshots, scores: scores, config: config)
+        // Absent from the snapshots, excluded for critical blur, or simply
+        // never measured: `components` only holds an entry for a ranked
+        // candidate, so a missing key covers all three at once.
+        guard let chosenComponents = built.components[chosen],
+              let recommendedComponents = built.components[recommended]
+        else { return nil }
+        // A score pinned at 0 or 1 no longer obeys `weighted - penalty +
+        // bonus`; the pair would teach the fit a relationship that only holds
+        // away from the clamp.
+        guard chosenComponents.score > 0, chosenComponents.score < 1,
+              recommendedComponents.score > 0, recommendedComponents.score < 1
+        else { return nil }
+
+        let componentDelta = PhotoQualityScoringConfig.Weights(
+            sharpness: chosenComponents.sharpness - recommendedComponents.sharpness,
+            faceQuality: chosenComponents.faceQuality - recommendedComponents.faceQuality,
+            exposure: chosenComponents.exposure - recommendedComponents.exposure,
+            noiseArtifacts: chosenComponents.noise - recommendedComponents.noise,
+            resolution: chosenComponents.resolution - recommendedComponents.resolution
+        )
+        let offsetDelta = (chosenComponents.favoriteBonus - chosenComponents.penalty)
+            - (recommendedComponents.favoriteBonus - recommendedComponents.penalty)
+
+        return BestShotOverrideExample(
+            recordedAt: now,
+            clusterHasFaces: built.clusterHasFaces,
+            componentDelta: componentDelta,
+            offsetDelta: offsetDelta,
+            scoringModelVersion: config.scoringModelVersion
+        )
+    }
+
+    /// The shared build `decide` and `overrideExample` both need: the
+    /// cluster-relative normalization scales, the ranked/excluded split, and
+    /// the resulting per-candidate `Components`. Kept as one path so the two
+    /// callers can never quietly drift onto different scales.
+    private static func rankedComponents(
+        snapshots: [PhotoClusterAssetSnapshot],
+        scores: [String: PhotoQualityScore],
+        config: PhotoQualityScoringConfig
+    ) -> (
+        signals: [String: PhotoQualitySignals],
+        ranked: [PhotoClusterAssetSnapshot],
+        excluded: Set<String>,
+        clusterHasFaces: Bool,
+        weights: PhotoQualityScoringConfig.Weights,
+        components: [String: Components]
+    ) {
+        let usable = snapshots.filter { scores[$0.localIdentifier]?.signals.isUsable == true }
+        let signals = usable.reduce(into: [String: PhotoQualitySignals]()) { partial, snapshot in
+            partial[snapshot.localIdentifier] = scores[snapshot.localIdentifier]?.signals
+        }
+
+        // 1. Sharpness relative to the cluster, then the exclusion rule.
+        let effectiveSharpness = usable.reduce(into: [String: Double]()) { partial, snapshot in
+            partial[snapshot.localIdentifier] = self.effectiveSharpness(
+                of: signals[snapshot.localIdentifier] ?? PhotoQualitySignals(),
+                config: config
+            )
+        }
+        let sharpnessRatios = self.sharpnessRatios(snapshots: usable, scores: scores, config: config)
+        let hasSharpReference = sharpnessRatios.values.contains { $0 >= config.referenceSharpnessRatio }
+        var excluded = Set<String>()
+        if hasSharpReference {
+            for snapshot in usable
+            where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio {
+                excluded.insert(snapshot.localIdentifier)
+            }
+        }
+        // Never empty the cluster: if everything is weak, keep them all and let
+        // the confidence gate say so instead of hiding photos.
+        if excluded.count == usable.count { excluded.removeAll() }
+
+        let ranked = usable.filter { !excluded.contains($0.localIdentifier) }
+
+        // 2. Robust normalization inside the cluster.
+        let sharpnessScale = NormalizationScale(
+            values: ranked.compactMap { effectiveSharpness[$0.localIdentifier] },
+            config: config
+        )
+        let noiseScale = NormalizationScale(
+            values: ranked.compactMap { signals[$0.localIdentifier]?.noiseEstimate },
+            config: config
+        )
+        let faceSharpnessScale = NormalizationScale(
+            values: ranked.flatMap { snapshot in
+                (signals[snapshot.localIdentifier]?.usableFaceSignals ?? []).map(\.sharpness)
+            },
+            config: config
+        )
+        let resolutionScale = NormalizationScale(
+            values: ranked.map { Double($0.pixelArea) }.map { area in area > 0 ? log(area) : 0 },
+            config: config
+        )
+        let clusterHasFaces = ranked.contains { signals[$0.localIdentifier]?.hasFaces == true }
+        let weights = clusterHasFaces ? config.weightsWithFaces : config.weightsWithoutFaces
+
+        // 3. Components and the weighted sum.
+        var components: [String: Components] = [:]
+        for snapshot in ranked {
+            let signal = signals[snapshot.localIdentifier] ?? PhotoQualitySignals()
+            components[snapshot.localIdentifier] = makeComponents(
+                snapshot: snapshot,
+                signals: signal,
+                sharpnessRatio: sharpnessRatios[snapshot.localIdentifier] ?? 1,
+                sharpnessScale: sharpnessScale,
+                noiseScale: noiseScale,
+                faceSharpnessScale: faceSharpnessScale,
+                resolutionScale: resolutionScale,
+                clusterHasFaces: clusterHasFaces,
+                weights: weights,
+                config: config
+            )
+        }
+
+        return (signals, ranked, excluded, clusterHasFaces, weights, components)
     }
 
     // MARK: - Fallbacks
