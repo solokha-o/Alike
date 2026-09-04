@@ -373,6 +373,39 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertTrue(signals.hasFaces)
     }
 
+    /// Cancelling during the *second* request must cancel the item, not be
+    /// downgraded to "no face source".
+    ///
+    /// Asserted on the outcome rather than on a call count: when the face
+    /// source comes back nil there is no re-detection to count, so swallowing
+    /// the cancellation is invisible in Vision calls. What it actually produced
+    /// was a finished score — the sampling and face-crop work ran, and the
+    /// asset was logged as unavailable — for a scan nobody was waiting for.
+    func testCancellationDuringTheFaceSourceRequestCancelsInsteadOfScoring() async {
+        let analysisSide = PhotoQualityScoringConfig.current.analysisImageLongSide
+        let analysisImage = makeCheckerboardImage(side: analysisSide)
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { _, size in
+                guard Int(size.width) == analysisSide else {
+                    throw CancellationError()
+                }
+                return analysisImage
+            },
+            faceDetector: { _ in
+                [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08))]
+            }
+        )
+
+        do {
+            let scores = try await service.scores(for: [TestPHAsset(identifier: "one")])
+            XCTFail("Expected cancellation, got \(scores.count) score(s)")
+        } catch is CancellationError {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
     private static func faceBox(fraction: Double, x: Double = 0.2) -> CGRect {
         // Vision boxes are normalized with a bottom-left origin; a square box
         // of this fraction has exactly `fraction` of the long side.

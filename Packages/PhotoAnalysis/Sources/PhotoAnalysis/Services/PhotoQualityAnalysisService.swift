@@ -67,7 +67,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                 let probe = Self.isLargeEnoughToAnalyze(image, config: config)
                     ? Self.probeFaces(in: image, detector: faceDetector, config: config)
                     : .empty
-                let faceSource = await Self.faceSource(
+                let faceSource = try await Self.faceSource(
                     for: workItem.asset,
                     probe: probe,
                     imageProvider: imageProvider,
@@ -275,18 +275,24 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         probe: FaceProbe,
         imageProvider: @Sendable (PHAsset, CGSize) async throws -> CGImage?,
         config: PhotoQualityScoringConfig
-    ) async -> CGImage? {
+    ) async throws -> CGImage? {
         guard let fraction = probe.smallestAcceptedFraction else { return nil }
         let side = config.faceSourceLongSide(smallestAcceptedFaceFraction: fraction)
         guard side > config.analysisImageLongSide else { return nil }
 
-        let image = try? await imageProvider(asset, squareSize(side))
-        if image == nil {
+        do {
+            return try await imageProvider(asset, squareSize(side))
+        } catch is CancellationError {
+            // A cancelled scan is not a missing image. Swallowing this would
+            // spend a Vision pass and a sampling pass on work nobody is waiting
+            // for, and log it as an unavailable asset.
+            throw CancellationError()
+        } catch {
             AppLog.photoKit.debug(
-                "\(AppLog.tag(.photokit, "Face source image at \(side) px unavailable, measuring faces on the analysis image"))"
+                "\(AppLog.tag(.photokit, "Face source image at \(side) px unavailable, measuring faces on the analysis image: \(error.localizedDescription)"))"
             )
+            return nil
         }
-        return image
     }
 
     /// Pass 2: measure the accepted faces on real pixels.
