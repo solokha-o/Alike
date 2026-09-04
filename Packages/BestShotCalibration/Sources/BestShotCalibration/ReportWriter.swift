@@ -86,22 +86,31 @@ public enum ReportWriter {
         lines.append("## Baseline vs candidate")
         lines.append("")
         lines.append(
-            "| | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate |"
+            "| | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate | Penalized blurry rate |"
         )
-        lines.append("|---|---:|---:|---:|---:|---:|")
+        lines.append("|---|---:|---:|---:|---:|---:|---:|")
         lines.append(
             "| Baseline | \(number(sweep.baselineScore.objective)) "
                 + "| \(percent(sweep.baselineScore.topOneAgreementOverAllClusters)) "
                 + "| \(percent(sweep.baselineScore.topOneAgreement)) "
                 + "| \(percent(sweep.baselineScore.coverageRate)) "
-                + "| \(percent(sweep.baselineScore.blurryWinnerRate)) |"
+                + "| \(percent(sweep.baselineScore.blurryWinnerRate)) "
+                + "| \(percent(sweep.baselineScore.penalizedBlurryRate)) |"
         )
         lines.append(
             "| Candidate | \(number(sweep.candidateScore.objective)) "
                 + "| \(percent(sweep.candidateScore.topOneAgreementOverAllClusters)) "
                 + "| \(percent(sweep.candidateScore.topOneAgreement)) "
                 + "| \(percent(sweep.candidateScore.coverageRate)) "
-                + "| \(percent(sweep.candidateScore.blurryWinnerRate)) |"
+                + "| \(percent(sweep.candidateScore.blurryWinnerRate)) "
+                + "| \(percent(sweep.candidateScore.penalizedBlurryRate)) |"
+        )
+        lines.append("")
+        lines.append(
+            "_Penalized blurry rate charges an unresolved cluster at the same "
+                + "per-cluster rate as a blurry winner — refusing to answer never "
+                + "beats answering correctly and unblurred. See the doc comment "
+                + "on `WeightSweep.score`._"
         )
         lines.append("")
 
@@ -124,15 +133,19 @@ public enum ReportWriter {
         for parameter in sweep.sensitivity {
             lines.append("### \(parameter.parameterName)")
             lines.append("")
-            lines.append("| Value | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate |")
-            lines.append("|---:|---:|---:|---:|---:|---:|")
+            lines.append(
+                "| Value | Objective | Top-1 (all) | Top-1 (resolved) | Coverage | Blurry winner rate "
+                    + "| Penalized blurry rate |"
+            )
+            lines.append("|---:|---:|---:|---:|---:|---:|---:|")
             for sample in parameter.samples {
                 lines.append(
                     "| \(number(sample.value)) | \(number(sample.score.objective)) "
                         + "| \(percent(sample.score.topOneAgreementOverAllClusters)) "
                         + "| \(percent(sample.score.topOneAgreement)) "
                         + "| \(percent(sample.score.coverageRate)) "
-                        + "| \(percent(sample.score.blurryWinnerRate)) |"
+                        + "| \(percent(sample.score.blurryWinnerRate)) "
+                        + "| \(percent(sample.score.penalizedBlurryRate)) |"
                 )
             }
             lines.append("")

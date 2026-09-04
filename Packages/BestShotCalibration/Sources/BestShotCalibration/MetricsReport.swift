@@ -85,6 +85,10 @@ public struct MetricsReport: Equatable {
         /// produced a winner.
         public var blurryWinnerRate: Double?
         public var winnerClusterCount: Int
+        /// Raw count behind `blurryWinnerRate` — the numerator, kept alongside
+        /// the rate so callers that need to combine it with other counts (see
+        /// `WeightSweep.score`) never have to reconstruct it from a `Double`.
+        public var blurryWinnerCount: Int
 
         /// Over `.automatic` + `.lowConfidence` clusters, the fraction where the
         /// winner disagrees with the human label. This is an OFFLINE PROXY for
@@ -107,6 +111,7 @@ public struct MetricsReport: Equatable {
             unresolvedRate: 0,
             blurryWinnerRate: nil,
             winnerClusterCount: 0,
+            blurryWinnerCount: 0,
             offlineOverrideProxy: nil,
             overrideEligibleClusterCount: 0
         )
@@ -230,6 +235,7 @@ public struct MetricsReport: Equatable {
             unresolvedRate: Double(unresolvedCount) / Double(total),
             blurryWinnerRate: winnerCount > 0 ? Double(blurryWinnerCount) / Double(winnerCount) : nil,
             winnerClusterCount: winnerCount,
+            blurryWinnerCount: blurryWinnerCount,
             offlineOverrideProxy: overrideEligibleCount > 0
                 ? Double(overrideDisagreementCount) / Double(overrideEligibleCount)
                 : nil,

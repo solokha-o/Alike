@@ -55,12 +55,14 @@ public struct BestShotCalibrationLabelingView: View {
                         ShareLink(item: exportedFileURL) {
                             Label("Export", systemImage: "square.and.arrow.up")
                         }
+                        .disabled(viewModel.clustersNeedingRemeasureCount > 0)
                     } else {
                         Button {
                             prepareExport()
                         } label: {
                             Label("Export", systemImage: "square.and.arrow.up")
                         }
+                        .disabled(viewModel.clustersNeedingRemeasureCount > 0)
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
@@ -93,6 +95,7 @@ public struct BestShotCalibrationLabelingView: View {
                         Label("Reset corpus", systemImage: "trash")
                     }
                     .labelStyle(.iconOnly)
+                    .disabled(viewModel.isRemeasuring)
                 }
             }
             .task {
@@ -196,7 +199,8 @@ public struct BestShotCalibrationLabelingView: View {
                 Text(
                     "\(viewModel.clustersNeedingRemeasureCount) of \(viewModel.labelledCount) labelled "
                         + "cluster(s) were measured under an older thumbnail config "
-                        + "(current v\(viewModel.currentThumbnailConfigVersion)) — re-measure recommended."
+                        + "(current v\(viewModel.currentThumbnailConfigVersion)) — export is disabled "
+                        + "until you tap \u{201c}Re-measure corpus\u{201d}."
                 )
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
@@ -308,7 +312,7 @@ public struct BestShotCalibrationLabelingView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(selectedBestShotID == nil)
+            .disabled(selectedBestShotID == nil || viewModel.isRemeasuring)
         }
         .padding(Spacing.medium)
         .background(.bar)

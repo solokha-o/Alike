@@ -23,12 +23,22 @@ public enum WeightSweep {
         public var topOneAgreement: Double
         public var coverageRate: Double
         public var blurryWinnerRate: Double
+        /// The rate actually charged into `objective`:
+        /// `(blurryWinnerCount + unresolvedCount) / clusterCount`. Unlike
+        /// `blurryWinnerRate` (blurry winners over winners only), this treats
+        /// an unresolved cluster as if it were a blurry winner, so it is
+        /// always >= `blurryWinnerRate`. Reported separately so a report can
+        /// show both the plain blurry-winner figure and the penalized one the
+        /// objective is built from.
+        public var penalizedBlurryRate: Double
     }
 
     public static let defaultBlurPenalty = 5.0
 
     /// `objective = topOneAgreementOverAllClusters - blurPenalty *
-    /// blurryWinnerRate`, over the whole corpus.
+    /// penalizedBlurryRate`, over the whole corpus, where
+    /// `penalizedBlurryRate = (blurryWinnerCount + unresolvedCount) /
+    /// clusterCount`.
     ///
     /// The objective is built on `topOneAgreementOverAllClusters`, NOT the
     /// coverage-dependent `topOneAgreement` (over resolved clusters only).
@@ -39,13 +49,22 @@ public enum WeightSweep {
     /// `absoluteSharpnessFloor` from 10 to 14 pushed `topOneAgreement` from
     /// 60.7% to 64.2% while the ranker got the exact same 34 of 75 clusters
     /// right the whole time — the search would have "improved" on pure
-    /// avoidance. Scoring on `topOneAgreementOverAllClusters` instead counts an
-    /// unresolved cluster as a miss (no recommendation reached the user), so
-    /// refusing to answer never pays.
+    /// avoidance. Scoring on `topOneAgreementOverAllClusters` counts an
+    /// unresolved cluster as a miss in the agreement term.
+    ///
+    /// That alone is not enough: with `topOneAgreementOverAllClusters` as the
+    /// only term, a config that resolves nothing scores exactly 0, and any
+    /// config with a negative objective (from a costly blurry-winner penalty)
+    /// would lose to it. So an unresolved cluster is ALSO charged into the
+    /// penalty term, at the same per-cluster rate as a blurry winner
+    /// (`penalizedBlurryRate` above). That is what makes refusing to answer
+    /// strictly unprofitable: it can only ever cost objective, never gain it,
+    /// relative to answering correctly and unblurred.
     ///
     /// A cluster contributing `nil` to either metric (no clusters at all, or
     /// no cluster produced a winner) counts as 0 for that metric rather than
-    /// excluding the corpus from scoring entirely.
+    /// excluding the corpus from scoring entirely. An empty corpus
+    /// (`clusterCount == 0`) scores an objective of 0.
     public static func score(
         config: PhotoQualityScoringConfig,
         corpus: BestShotCalibrationCorpus,
@@ -55,12 +74,16 @@ public enum WeightSweep {
         let topOneAllClusters = overall.topOneAgreementOverAllClusters ?? 0
         let topOne = overall.topOneAgreement ?? 0
         let blurry = overall.blurryWinnerRate ?? 0
+        let penalizedBlurryRate = overall.clusterCount > 0
+            ? Double(overall.blurryWinnerCount + overall.unresolvedCount) / Double(overall.clusterCount)
+            : 0
         return Score(
-            objective: topOneAllClusters - blurPenalty * blurry,
+            objective: topOneAllClusters - blurPenalty * penalizedBlurryRate,
             topOneAgreementOverAllClusters: topOneAllClusters,
             topOneAgreement: topOne,
             coverageRate: overall.coverageRate,
-            blurryWinnerRate: blurry
+            blurryWinnerRate: blurry,
+            penalizedBlurryRate: penalizedBlurryRate
         )
     }
 

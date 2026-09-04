@@ -174,6 +174,159 @@ final class WeightSweepTests: XCTestCase {
         )
     }
 
+    /// Regression test for A1: an all-`.unresolved` config must never beat a
+    /// config that actually answers, even when some of its winners are
+    /// blurry. Under the old formula (`objective = topOneAgreementOverAllClusters
+    /// - blurPenalty * blurryWinnerRate`), the refusing config scores exactly
+    /// 0 (both terms coerce `nil` to 0), while the answering config's
+    /// objective goes negative once the blur penalty on its blurry winners
+    /// outweighs its agreement — so refusal would "win". The fix charges an
+    /// unresolved cluster into the penalty term at the same rate as a blurry
+    /// winner, so refusing can never come out ahead of answering.
+    func testAllUnresolvedConfigScoresStrictlyBelowAnAnsweringConfigWithBlurryWinners() {
+        // Every candidate sits under both this config's critical sharpness
+        // ratio and its absolute floor, so BestShotRanker.decide refuses
+        // every cluster: every winner it would otherwise pick is disqualified
+        // as blurry, leaving `.unresolved`.
+        let refusingConfig = PhotoQualityScoringConfig(
+            absoluteSharpnessFloor: 1_000,
+            criticalSharpnessRatio: 0.99
+        )
+        // The shipped default resolves and correctly picks every cluster
+        // below, with no blurry winners — a zero-penalty, full-agreement
+        // score. Even that must still beat outright refusal.
+        let answeringConfig = config
+
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: answeringConfig.scoringModelVersion,
+            thumbnailConfigVersion: answeringConfig.thumbnailConfigVersion,
+            entries: [
+                makeCluster(id: "c1", sharp: 60, soft: 55, humanPicksSharp: true),
+                makeCluster(id: "c2", sharp: 62, soft: 58, humanPicksSharp: true),
+                makeCluster(id: "c3", sharp: 70, soft: 65, humanPicksSharp: true),
+                makeCluster(id: "c4", sharp: 80, soft: 75, humanPicksSharp: true),
+            ]
+        )
+
+        let refusingMetrics = MetricsReport.compute(corpus: corpus, config: refusingConfig).overall
+        XCTAssertEqual(refusingMetrics.unresolvedCount, refusingMetrics.clusterCount, "setup: every cluster must refuse")
+
+        let refusingScore = WeightSweep.score(config: refusingConfig, corpus: corpus, blurPenalty: 5.0)
+        let answeringScore = WeightSweep.score(config: answeringConfig, corpus: corpus, blurPenalty: 5.0)
+
+        // Under the OLD formula this would be exactly 0 (both `nil`-coerced
+        // terms vanish). Under the fix, an all-unresolved config is charged
+        // the full blur penalty on every cluster: 0 agreement -
+        // blurPenalty * (0 blurry winners + 4 unresolved) / 4 clusters == -blurPenalty.
+        XCTAssertEqual(refusingScore.objective, -5.0, accuracy: 1e-9, "refusing every cluster is charged the full blur penalty")
+        XCTAssertGreaterThan(
+            answeringScore.objective,
+            refusingScore.objective,
+            "a config that answers correctly and unblurred must strictly beat one that refuses everything"
+        )
+    }
+
+    /// Pins the exact arithmetic of the new objective on a mixed corpus: 2
+    /// correct-and-sharp clusters, 1 cluster whose winner is clearly blurry
+    /// by the ranker's own definition (below `absoluteSharpnessFloor`) yet
+    /// still resolved because a sharper sibling in the same cluster clears
+    /// the floor, and 1 cluster where nothing clears the floor at all
+    /// (`.unresolved`).
+    ///
+    /// `topOneAgreementOverAllClusters = correctClusterCount / clusterCount`;
+    /// `penalizedBlurryRate = (blurryWinnerCount + unresolvedCount) /
+    /// clusterCount`. The exact counts are read off the real
+    /// `MetricsReport.Bucket` (with sanity assertions that the corpus really
+    /// is mixed — 1 blurry winner, 1 unresolved, neither zero) rather than
+    /// hand-guessed, since `BestShotRanker`'s winner selection is not a
+    /// simple function of a single candidate's sharpness value.
+    func testObjectivePinsExactArithmeticOnAMixedCorpus() {
+        let mixedConfig = config
+
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: mixedConfig.scoringModelVersion,
+            thumbnailConfigVersion: mixedConfig.thumbnailConfigVersion,
+            entries: [
+                // Correct, sharp, resolved.
+                makeCluster(id: "correct-1", sharp: 60, soft: 55, humanPicksSharp: true),
+                makeCluster(id: "correct-2", sharp: 62, soft: 58, humanPicksSharp: true),
+                // 3-candidate cluster designed so the winner sits below the
+                // absolute sharpness floor (10) while a sharper sibling
+                // clears it — resolved, but a blurry winner. The winner's
+                // clean exposure and low noise outweigh its sharpness
+                // deficit against the sharper-but-noisy, badly-exposed
+                // sibling; the human agrees with the (blurry) winner.
+                makeBlurryWinnerCluster(),
+                // Both candidates well under the floor: BestShotRanker
+                // refuses outright (`.unresolved`).
+                makeCluster(id: "unresolved", sharp: 5, soft: 4, humanPicksSharp: true),
+            ]
+        )
+
+        let metrics = MetricsReport.compute(corpus: corpus, config: mixedConfig).overall
+        XCTAssertEqual(metrics.clusterCount, 4)
+        XCTAssertGreaterThan(metrics.blurryWinnerCount, 0, "setup: the designed cluster must produce a blurry winner")
+        XCTAssertGreaterThan(metrics.unresolvedCount, 0, "setup: the last cluster must refuse outright")
+
+        let score = WeightSweep.score(config: mixedConfig, corpus: corpus, blurPenalty: 5.0)
+
+        let expectedAgreement = Double(metrics.correctClusterCount) / Double(metrics.clusterCount)
+        let expectedPenalizedRate = Double(metrics.blurryWinnerCount + metrics.unresolvedCount) / Double(metrics.clusterCount)
+        let expectedObjective = expectedAgreement - 5.0 * expectedPenalizedRate
+
+        XCTAssertEqual(score.topOneAgreementOverAllClusters, expectedAgreement, accuracy: 1e-9)
+        XCTAssertEqual(score.penalizedBlurryRate, expectedPenalizedRate, accuracy: 1e-9)
+        XCTAssertEqual(score.objective, expectedObjective, accuracy: 1e-9)
+    }
+
+    /// A cluster whose ranked winner ("clean-but-soft") sits below the
+    /// default `absoluteSharpnessFloor` (10) while "sharp-but-dirty" (which
+    /// clears the floor) loses on the weighted score despite being sharper,
+    /// because its heavy clipping, noise, and low resolution outweigh
+    /// `sharpness`'s 0.55 weight once a third candidate ("filler") softens
+    /// the sharpness normalization range. Verified against the live
+    /// `BestShotRanker`: this resolves to `winnerID` with `.automatic`
+    /// confidence (topScore 0.633, margin 0.083). The human label agrees
+    /// with the ranker's actual (blurry) pick, so this cluster counts as
+    /// "correct" for `topOneAgreementOverAllClusters` while still counting
+    /// as a blurry winner.
+    private func makeBlurryWinnerCluster() -> BestShotCalibrationCluster {
+        let winnerID = "blurry-winner-clean-but-soft"
+        let rivalID = "blurry-winner-sharp-but-dirty"
+        let fillerID = "blurry-winner-filler"
+        return BestShotCalibrationCluster(
+            clusterID: "blurry-winner",
+            category: nil,
+            candidates: [
+                makeCandidate(
+                    rivalID,
+                    globalSharpness: 11,
+                    darkClippedFraction: 0.20,
+                    noiseEstimate: 0.9,
+                    pixelWidth: 2000,
+                    pixelHeight: 1500
+                ),
+                makeCandidate(
+                    winnerID,
+                    globalSharpness: 9,
+                    darkClippedFraction: 0,
+                    noiseEstimate: 0.01,
+                    pixelWidth: 8000,
+                    pixelHeight: 6000
+                ),
+                makeCandidate(
+                    fillerID,
+                    globalSharpness: 8,
+                    darkClippedFraction: 0,
+                    noiseEstimate: 0.5
+                ),
+            ],
+            humanBestShotID: winnerID
+        )
+    }
+
     // MARK: - Helpers
 
     /// A 2-candidate cluster: one sharper photo, one softer one. `humanPicksSharp`
@@ -204,6 +357,8 @@ final class WeightSweepTests: XCTestCase {
         globalSharpness: Double,
         subjectSharpness: Double? = nil,
         faceSharpness: Double? = nil,
+        darkClippedFraction: Double = 0,
+        noiseEstimate: Double = 0.1,
         pixelWidth: Int = 4000,
         pixelHeight: Int = 3000
     ) -> BestShotCalibrationCandidate {
@@ -221,8 +376,9 @@ final class WeightSweepTests: XCTestCase {
             signals: PhotoQualitySignals(
                 globalSharpness: globalSharpness,
                 subjectSharpness: subjectSharpness,
+                darkClippedFraction: darkClippedFraction,
                 subjectLumaStdDev: 0.25,
-                noiseEstimate: 0.1,
+                noiseEstimate: noiseEstimate,
                 faceSignals: faces,
                 pixelArea: Int64(pixelWidth * pixelHeight)
             ),

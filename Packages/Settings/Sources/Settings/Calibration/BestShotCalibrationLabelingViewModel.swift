@@ -33,6 +33,28 @@ public struct BestShotCalibrationRemeasureResult: Sendable, Equatable {
     public let droppedCount: Int
 }
 
+/// Thrown by `exportJSON()` (and therefore `exportedCorpusFileURL()`) when the
+/// corpus is not safe to export as-is.
+public enum BestShotCalibrationExportError: Error, Equatable {
+    /// At least one labelled cluster's signals were measured under an older
+    /// `thumbnailConfigVersion` than the one `exportJSON()` is about to stamp
+    /// the whole corpus with. Exporting anyway would let `CorpusLoader` trust
+    /// stale signals as current — run `remeasureCorpus()` first.
+    case staleMeasurements(count: Int)
+}
+
+extension BestShotCalibrationExportError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case let .staleMeasurements(count):
+            let clusterWord = count == 1 ? "cluster" : "clusters"
+            return "\(count) labelled \(clusterWord) still hold signals measured under an older "
+                + "thumbnail geometry. Re-measure the corpus before exporting so every stamped "
+                + "version matches what was actually measured."
+        }
+    }
+}
+
 /// Drives the DEBUG-only Best Shot labelling screen: walks real clusters one
 /// at a time, scores them through the same cache-first analyzer production
 /// uses, and accumulates human labels into a corpus that can be exported and
@@ -90,6 +112,8 @@ public final class BestShotCalibrationLabelingViewModel {
     /// `(completed, total)` clusters processed so far in an in-flight
     /// `remeasureCorpus()`, for a determinate progress indicator.
     public private(set) var remeasureProgress: (completed: Int, total: Int) = (0, 0)
+    /// Test seam only, see `remeasureCorpus()`. `nil` (a no-op) in production.
+    var remeasureStepHookForTesting: (@Sendable () async -> Void)?
 
     public init(
         clusterRepository: (any PhotoClusterRepository)? = nil,
@@ -229,6 +253,12 @@ public final class BestShotCalibrationLabelingViewModel {
         bestShotAssetID: String,
         category: BestShotCalibrationCategory?
     ) {
+        // `remeasureCorpus()` suspends once per cluster and rebuilds
+        // `labelledClusters` wholesale from what it started with when it
+        // resumes; a label recorded during one of those suspensions would be
+        // silently overwritten by that rebuild. Reject it instead of losing
+        // it quietly.
+        guard !isRemeasuring else { return }
         guard let prepared = currentPreparedCluster, prepared.clusterID == clusterID else { return }
         guard prepared.candidates.contains(where: { $0.localIdentifier == bestShotAssetID }) else { return }
 
@@ -264,7 +294,17 @@ public final class BestShotCalibrationLabelingViewModel {
     /// A `BestShotCalibrationCorpus` covering every label recorded so far,
     /// with the schema's current versions. Never carries the session salt or
     /// any PhotoKit `localIdentifier`.
+    ///
+    /// Throws `BestShotCalibrationExportError.staleMeasurements` when
+    /// `clustersNeedingRemeasureCount > 0`: stamping the whole corpus with the
+    /// current `thumbnailConfigVersion` while some entries' signals were
+    /// actually measured under an older one would make `CorpusLoader` trust
+    /// stale signals as current. Run `remeasureCorpus()` first.
     public func exportJSON() throws -> Data {
+        let staleCount = clustersNeedingRemeasureCount
+        guard staleCount == 0 else {
+            throw BestShotCalibrationExportError.staleMeasurements(count: staleCount)
+        }
         let corpus = BestShotCalibrationCorpus(
             exportedAt: Date(),
             scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion,
@@ -290,6 +330,9 @@ public final class BestShotCalibrationLabelingViewModel {
     /// Clears every recorded label and starts a fresh anonymization salt, so a
     /// discarded corpus cannot be stitched back together with a later one.
     public func reset() {
+        // Same reasoning as the guard in `recordLabel`: a reset mid-remeasure
+        // would be clobbered by the in-flight rebuild's final assignment.
+        guard !isRemeasuring else { return }
         labelledClusters.removeAll()
         candidateLocalIdentifiers.removeAll()
         measuredThumbnailConfigVersions.removeAll()
@@ -335,6 +378,13 @@ public final class BestShotCalibrationLabelingViewModel {
         for cluster in labelledClusters {
             defer { remeasureProgress.completed += 1 }
 
+            // Test seam only: `nil` in production, so this never adds a
+            // suspension point beyond the real ones below. Lets a test hold
+            // this loop open at a genuine `await` to exercise what happens
+            // when `recordLabel`/`reset` are called while `isRemeasuring` is
+            // true — see `remeasureStepHookForTesting`.
+            if let hook = remeasureStepHookForTesting { await hook() }
+
             if let fresh = await remeasuredCluster(cluster) {
                 rebuiltClusters.append(fresh)
                 rebuiltLocalIdentifiers[cluster.clusterID] = candidateLocalIdentifiers[cluster.clusterID]
@@ -378,6 +428,15 @@ extension BestShotCalibrationLabelingViewModel {
     /// relies on to keep an `assetID` stable across a re-measure.
     func anonymizedAssetIDForTesting(_ localIdentifier: String) -> String {
         anonymizedAssetID(for: localIdentifier)
+    }
+
+    /// Test seam: overrides the recorded "last measured under this
+    /// `thumbnailConfigVersion`" value for one already-labelled cluster, so a
+    /// test can simulate a geometry change having happened since labelling
+    /// (`clustersNeedingRemeasureCount` > 0) without needing a real analyzer
+    /// re-run or a way to mutate `PhotoQualityScoringConfig.current`.
+    func setMeasuredThumbnailConfigVersionForTesting(clusterID: String, version: Int) {
+        measuredThumbnailConfigVersions[clusterID] = version
     }
 }
 
