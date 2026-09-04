@@ -284,6 +284,43 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertTrue(sizes.allSatisfy { $0 > 128 }, "expected face-source pixels, got \(sizes)")
     }
 
+    /// The 2 -> 0 case, which the first attempt at this fix missed: when the
+    /// re-detection finds nobody at all, the faces must still be measured on
+    /// the face source. Falling back to the analysis image rejects them as
+    /// `insufficientResolution` — a face at 8 % of a 512-pixel frame is 41 real
+    /// pixels, below `faceCropSide` — even though the image fetched to measure
+    /// them has the pixels to spare.
+    func testFacesAreMeasuredOnTheFaceSourceEvenWhenTheReDetectionFindsNobody() throws {
+        let config = PhotoQualityScoringConfig.current
+        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: config.analysisImageLongSide))
+        // The size production would actually request for a face this small.
+        let sourceSide = config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.08)
+        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: sourceSide))
+        let service = PhotoQualityAnalysisService(faceDetector: { image in
+            image.width == config.analysisImageLongSide
+                ? [
+                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.05)),
+                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.60))
+                ]
+                : []
+        })
+
+        let signals = service.signals(
+            for: analysisImage,
+            faceSource: faceSource,
+            pixelArea: 12_000_000
+        )
+
+        XCTAssertEqual(signals.usableFaceSignals.count, 2)
+        XCTAssertEqual(signals.rejectedFaceCounts?.insufficientResolution, 0)
+        let sizes = signals.usableFaceSignals.compactMap(\.sourcePixelSize)
+        XCTAssertEqual(sizes.count, 2)
+        XCTAssertTrue(
+            sizes.allSatisfy { $0 >= Double(config.faceCropSide) },
+            "expected face-source pixels at or above the crop side, got \(sizes)"
+        )
+    }
+
     /// The merge must not turn one person into two when both passes see them.
     func testAFaceBothPassesSeeIsCountedOnce() throws {
         let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 512))

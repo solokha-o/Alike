@@ -322,14 +322,21 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         var rejections = probe.rejections
 
         if let faceSource {
+            // The face source exists precisely because the analysis image
+            // cannot supply enough real pixels, so it is the measurement image
+            // whatever the re-detection returns — including when it returns
+            // nobody, which is the non-monotonic case this merge is for.
+            // Falling back to the analysis image there would reject the very
+            // faces the second request was made to measure.
             let reprobe = probeFaces(in: faceSource, detector: detector, config: config)
-            if !reprobe.accepted.isEmpty {
-                image = faceSource
-                observations = reprobe.accepted + probe.accepted.filter { candidate in
-                    !reprobe.accepted.contains { overlaps($0, candidate, config: config) }
-                }
-                rejections = reprobe.rejections
+            image = faceSource
+            observations = reprobe.accepted + probe.accepted.filter { candidate in
+                !reprobe.accepted.contains { overlaps($0, candidate, config: config) }
             }
+            // Rejections report the gate's decisions from whichever pass
+            // actually saw somebody; a re-detection that found nothing at all
+            // has no decisions to report.
+            rejections = reprobe.hasDetections ? reprobe.rejections : probe.rejections
         }
 
         guard !observations.isEmpty else { return ([], rejections, image) }
@@ -529,6 +536,10 @@ struct FaceProbe: @unchecked Sendable {
 
     /// Nobody was looked for, so nobody was found or turned away.
     static let empty = FaceProbe(accepted: [], rejections: .empty, smallestAcceptedFraction: nil)
+
+    /// The detector returned somebody, whether or not the gates kept them.
+    /// Distinct from "it ran and saw nothing", which reports no decisions.
+    var hasDetections: Bool { !accepted.isEmpty || !rejections.isEmpty }
 }
 // `VNFaceObservation` is an immutable Vision result object that is never
 // mutated after detection, which is why the probe crosses the concurrency
