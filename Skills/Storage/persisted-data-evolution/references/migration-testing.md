@@ -8,22 +8,42 @@ launch-crash class of bug, because `loadPersistentStores` calls `fatalError` in
 Tests live inside `Packages/Storage/Tests`; follow
 `Skills/Testing/swift-testing/SKILL.md` for structure and naming.
 
+## 0. How to run these tests
+
+`xcodebuild -workspace Packages/Storage -scheme Storage -destination 'id=<available simulator>' test`
+
+Against the **package workspace**, not the app project — the app project's
+`Storage` scheme is a library scheme with no test action. `tools/quick` and
+`tools/full` run every package the same way.
+
 ## 1. Fixture store test (Core Data schema changes)
 
-Check a small store file, written by the previous model version, into the test
-resources and open it with the current model.
+This already exists: `Packages/Storage/Tests/StorageTests/ModelVersionMigrationTests.swift`
+opens `Fixtures/AlikeModelV1.sqlite` — a real store written by model version 1 —
+with the model the app currently ships, and asserts the rows survive. Once a
+version 2 model lands, that same test becomes a genuine v1 → v2 migration test
+with no edits.
 
-1. Produce the fixture: run the **previous** release (or a checkout of it) on a
-   simulator, seed a few clusters/photos, then copy the `.sqlite`, `.sqlite-wal`
-   and `.sqlite-shm` files out of the app container.
-2. Add them as test resources in `Packages/Storage/Package.swift`.
-3. In the test: copy the fixture to a temporary directory (never open the
+When a new model version ships, add a fixture for it:
+
+1. Produce the fixture with a temporary test that builds a store from the
+   **shipped** model version and seeds a couple of rows, then copy the resulting
+   `.sqlite` into `Packages/Storage/Tests/StorageTests/Fixtures/AlikeModelV<N>.sqlite`
+   and delete the generator. (Running the previous release on a simulator and
+   copying its container works too, and is closer to real data.)
+2. Ship only the `.sqlite`; the `-wal` and `-shm` files are checkpoint state and
+   are recreated on open.
+3. Resources are already declared: the `StorageTests` target processes `Fixtures`.
+4. In the test: copy the fixture to a temporary directory (never open the
    resource in place — migration mutates the file), point an
    `NSPersistentContainer` at the copy with the same
    `shouldMigrateStoreAutomatically` / `shouldInferMappingModelAutomatically`
    settings as production, and load it.
-4. Assert that loading produced **no error**, and that the expected row counts
+5. Assert that loading produced **no error**, and that the expected row counts
    and a couple of representative attribute values survived.
+6. Fetch through `NSManagedObject` and KVC rather than the generated subclasses,
+   and never load a second copy of the model in-process: two `NSManagedObjectModel`
+   instances claiming the same entity make `+[Entity entity]` ambiguous.
 
 Keep fixtures tiny (a handful of rows). One fixture per shipped model version
 that is still plausibly in the field.

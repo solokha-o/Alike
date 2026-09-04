@@ -37,6 +37,21 @@ Open `references/migration-from-xctest.md`.
 4. Need full legacy examples and extended notes?
 Open `references/full-guide.md`.
 
+## Running Tests
+
+- One package: `xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<available simulator>' test`.
+  Use the package workspace, never `-project Alike/Alike.xcodeproj -scheme <Name>`:
+  the app project's package schemes are library schemes with no test action.
+- A package with several products has no `<Name>` test action either; use the
+  generated aggregate `<Name>-Package` scheme.
+- Everything: `tools/quick` or `tools/full` (`tools/local_ci.sh`), which resolves
+  the scheme per package and falls back to `swift test` where that works.
+- `swift test --package-path Packages/<Name>` fails on this toolchain whenever the
+  package reaches `DesignSystem`, because `#Preview` needs a plugin that only
+  ships with full Xcode. Prefer `xcodebuild`.
+- Prefix ad-hoc commands with `DEVELOPER_DIR=/Applications/Xcode-<version>.app/Contents/Developer`
+  when `xcode-select` points at the Command Line Tools.
+
 ## Guardrails
 
 - Prefer pure/unit boundaries over UI-hosted tests when possible.

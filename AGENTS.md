@@ -62,6 +62,13 @@ Before using Grep, Glob, or Read for code exploration:
    Simulator destination and then run the same full compile.
 5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
+6. Package tests run against the package's own workspace, not the app project:
+   `xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<available simulator>' test`.
+   The app project's `<Name>` scheme is a library scheme with no test action, so
+   `-project Alike/Alike.xcodeproj -scheme <Name> test` fails by design. Packages
+   with several products use the generated `<Name>-Package` scheme instead, and
+   `tools/local_ci.sh` (`tools/quick`, `tools/full`) picks the right one and runs
+   the whole suite.
 
 ## Change-Safety Gate
 

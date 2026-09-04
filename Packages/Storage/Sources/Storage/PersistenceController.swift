@@ -11,8 +11,16 @@ public actor PersistenceController: Sendable {
         container.viewContext
     }
     
+    /// Compiled model this release ships, version 1 of `AlikeModel.xcdatamodeld`.
+    ///
+    /// Exposed so the migration baseline test can open a store written by an
+    /// older model version against exactly the model production loads.
+    static var shippedModelURL: URL? {
+        Bundle.module.url(forResource: "AlikeModel", withExtension: "momd")
+    }
+
     private init(inMemory: Bool = false) {
-        guard let modelURL = Bundle.module.url(forResource: "AlikeModel", withExtension: "momd"),
+        guard let modelURL = Self.shippedModelURL,
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Failed to load Core Data model")
         }
