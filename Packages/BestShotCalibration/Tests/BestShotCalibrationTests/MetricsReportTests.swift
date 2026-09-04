@@ -127,13 +127,124 @@ final class MetricsReportTests: XCTestCase {
         XCTAssertEqual(first.byCategory.map(\.key), second.byCategory.map(\.key))
     }
 
+    // MARK: - Face coverage
+
+    /// The report has to be able to say "we found faces and rejected every one
+    /// of them". Without that, a corpus where face scoring never engages reads
+    /// exactly like a corpus of landscapes.
+    func testFaceCoverageSeparatesRejectedFacesFromPhotosWithNobodyInThem() {
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: config.scoringModelVersion,
+            thumbnailConfigVersion: config.thumbnailConfigVersion,
+            entries: [
+                BestShotCalibrationCluster(
+                    clusterID: "mixed",
+                    category: .people,
+                    candidates: [
+                        makeCandidate("measured", globalSharpness: 40, faces: [Self.face()], rejections: .empty),
+                        makeCandidate(
+                            "all-rejected",
+                            globalSharpness: 38,
+                            faces: [],
+                            rejections: FaceRejectionCounts(tooSmallInFrame: 2, insufficientResolution: 1)
+                        ),
+                        makeCandidate("nobody", globalSharpness: 36, faces: [], rejections: .empty)
+                    ],
+                    humanBestShotID: "measured"
+                )
+            ]
+        )
+
+        let faces = MetricsReport.compute(corpus: corpus, config: config).overall.faces
+
+        XCTAssertEqual(faces.candidateCount, 3)
+        XCTAssertEqual(faces.withFacesCount, 1)
+        XCTAssertEqual(faces.rejectedOnlyCount, 1)
+        XCTAssertEqual(faces.unknownRejectionCount, 0)
+        XCTAssertEqual(faces.rejections.tooSmallInFrame, 2)
+        XCTAssertEqual(faces.rejections.insufficientResolution, 1)
+        XCTAssertEqual(faces.rejections.total, 3)
+    }
+
+    /// A corpus exported before the counts existed cannot answer the question,
+    /// and the report has to say so rather than reporting zero rejections.
+    func testCandidatesWithoutRejectionCountsAreReportedAsUnknown() {
+        let faces = MetricsReport.compute(corpus: makeCorpus(), config: config).overall.faces
+
+        XCTAssertGreaterThan(faces.candidateCount, 0)
+        XCTAssertEqual(faces.unknownRejectionCount, faces.candidateCount)
+        XCTAssertEqual(faces.rejectedOnlyCount, 0)
+        XCTAssertTrue(faces.rejections.isEmpty)
+    }
+
+    /// A failed analysis leaves `rejectedFaceCounts` nil for the same reason a
+    /// legacy payload does. Reading the two as one told a current corpus it had
+    /// been measured before the counts existed, and padded the denominator that
+    /// every face rate is taken over.
+    func testCandidatesWhoseAnalysisFailedAreNotCountedAsUnknownOrAsMeasured() {
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: config.scoringModelVersion,
+            thumbnailConfigVersion: config.thumbnailConfigVersion,
+            entries: [
+                BestShotCalibrationCluster(
+                    clusterID: "mixed",
+                    category: .people,
+                    candidates: [
+                        makeCandidate("measured", globalSharpness: 40, faces: [Self.face()], rejections: .empty),
+                        makeFailedCandidate("offline", failure: .assetUnavailable),
+                        makeFailedCandidate("tiny", failure: .tooSmallToAnalyze),
+                        makeFailedCandidate("broken", failure: .renderFailed)
+                    ],
+                    humanBestShotID: "measured"
+                )
+            ]
+        )
+
+        let faces = MetricsReport.compute(corpus: corpus, config: config).overall.faces
+
+        XCTAssertEqual(faces.failedCount, 3)
+        XCTAssertEqual(faces.candidateCount, 1, "failures must not pad the denominator")
+        XCTAssertEqual(faces.unknownRejectionCount, 0, "a failure is not a legacy payload")
+        XCTAssertEqual(faces.withFacesCount, 1)
+        XCTAssertEqual(faces.withFacesRate ?? 0, 1, accuracy: 1e-9)
+    }
+
+    private func makeFailedCandidate(
+        _ assetID: String,
+        failure: PhotoQualityAnalysisFailure
+    ) -> BestShotCalibrationCandidate {
+        BestShotCalibrationCandidate(
+            assetID: assetID,
+            signals: .failed(failure, pixelArea: 12_000_000),
+            creationDate: Date(timeIntervalSince1970: 1_000),
+            modificationDate: Date(timeIntervalSince1970: 1_000),
+            pixelWidth: 4000,
+            pixelHeight: 3000
+        )
+    }
+
+    private static func face() -> FaceQualitySignal {
+        FaceQualitySignal(
+            detectionConfidence: 0.95,
+            boxPixelSize: 20,
+            sourcePixelSize: 96,
+            sharpness: 30,
+            hasClosedEyes: false,
+            isCroppedByFrame: false
+        )
+    }
+
     // MARK: - Helpers
 
     private func makeCandidate(
         _ assetID: String,
         globalSharpness: Double,
         pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000
+        pixelHeight: Int = 3000,
+        faces: [FaceQualitySignal]? = nil,
+        rejections: FaceRejectionCounts? = nil
     ) -> BestShotCalibrationCandidate {
         BestShotCalibrationCandidate(
             assetID: assetID,
@@ -141,6 +252,8 @@ final class MetricsReportTests: XCTestCase {
                 globalSharpness: globalSharpness,
                 subjectLumaStdDev: 0.25,
                 noiseEstimate: 0.1,
+                faceSignals: faces,
+                rejectedFaceCounts: rejections,
                 pixelArea: Int64(pixelWidth * pixelHeight)
             ),
             creationDate: Date(timeIntervalSince1970: 1_000),

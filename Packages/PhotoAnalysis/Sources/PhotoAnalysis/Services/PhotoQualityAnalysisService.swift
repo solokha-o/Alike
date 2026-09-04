@@ -44,6 +44,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
 
         let config = self.config
         let imageProvider = self.imageProvider
+        let faceDetector = self.faceDetector
         let analyze = makeAnalyzer()
 
         return try await ImageAnalysisTaskPool.compactMap(
@@ -51,14 +52,28 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             maxConcurrentTasks: config.maxConcurrentAnalysisTasks
         ) { workItem in
             try Task.checkCancellation()
-            let targetSide = CGFloat(config.analysisImageLongSide)
             let image = try? await imageProvider(
                 workItem.asset,
-                CGSize(width: targetSide, height: targetSide)
+                Self.squareSize(config.analysisImageLongSide)
             )
             let signals: PhotoQualitySignals
             if let image {
-                signals = analyze(image, workItem.pixelArea)
+                // Two passes. The first is a probe on the thumbnail everything
+                // else is measured on: who is in this photo, and how much of
+                // the frame does the smallest of them take. Only if somebody
+                // survives that gate does the second pass pay for a larger
+                // image — a landscape with nobody in it costs exactly what it
+                // cost before.
+                let probe = Self.isLargeEnoughToAnalyze(image, config: config)
+                    ? Self.probeFaces(in: image, detector: faceDetector, config: config)
+                    : .empty
+                let faceSource = try await Self.faceSource(
+                    for: workItem.asset,
+                    probe: probe,
+                    imageProvider: imageProvider,
+                    config: config
+                )
+                signals = analyze(image, faceSource, probe, workItem.pixelArea)
             } else {
                 signals = .failed(.assetUnavailable, pixelArea: workItem.pixelArea)
             }
@@ -75,16 +90,38 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
     /// Measures one already-decoded image. Exposed for tests, which feed it
     /// synthesized `CGImage`s instead of a photo library.
     func signals(for image: CGImage, pixelArea: Int64) -> PhotoQualitySignals {
-        makeAnalyzer()(image, pixelArea)
+        signals(for: image, faceSource: nil, pixelArea: pixelArea)
     }
 
-    private func makeAnalyzer() -> @Sendable (CGImage, Int64) -> PhotoQualitySignals {
+    /// Same, with an explicit face-measurement image. `nil` means "measure the
+    /// faces on the analysis image itself", which is both the fallback used
+    /// when the second image request fails and the seam the tests drive.
+    func signals(for image: CGImage, faceSource: CGImage?, pixelArea: Int64) -> PhotoQualitySignals {
+        let probe = Self.probeFaces(in: image, detector: faceDetector, config: config)
+        return makeAnalyzer()(image, faceSource, probe, pixelArea)
+    }
+
+    private static func squareSize(_ side: Int) -> CGSize {
+        CGSize(width: CGFloat(side), height: CGFloat(side))
+    }
+
+    /// The gate `makeAnalyzer` fails on, checked before the probe as well: a
+    /// photo that is about to be recorded as `tooSmallToAnalyze` must not pay
+    /// for face detection or a face-source request first.
+    private static func isLargeEnoughToAnalyze(
+        _ image: CGImage,
+        config: PhotoQualityScoringConfig
+    ) -> Bool {
+        max(image.width, image.height) >= config.minimumAnalysisLongSide
+    }
+
+    private func makeAnalyzer() -> @Sendable (CGImage, CGImage?, FaceProbe, Int64) -> PhotoQualitySignals {
         let config = self.config
         let scorer = self.scorer
         let faceDetector = self.faceDetector
 
-        return { image, pixelArea in
-            guard max(image.width, image.height) >= config.minimumAnalysisLongSide else {
+        return { image, faceSource, probe, pixelArea in
+            guard Self.isLargeEnoughToAnalyze(image, config: config) else {
                 return .failed(.tooSmallToAnalyze, pixelArea: pixelArea)
             }
             guard let pixels = GrayscaleImageSampler.sample(image, dimension: config.sharpnessGridSide) else {
@@ -95,12 +132,15 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             let exposure = ExposureMeasurement(pixels: pixels, config: config)
             let noise = Self.noiseEstimate(pixels: pixels)
 
-            let detectedFaces = Self.detectedFaces(
-                in: image,
+            let measurement = Self.measureFaces(
+                analysisImage: image,
+                faceSource: faceSource,
+                probe: probe,
                 detector: faceDetector,
                 scorer: scorer,
                 config: config
             )
+            let detectedFaces = measurement.faces
             let faces = detectedFaces.map(\.signal)
             // The main face is the subject: measuring sharpness and contrast on
             // it is what stops a sharp background from masking a blurred person.
@@ -117,7 +157,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             }
             let subjectSharpness = mainFace?.signal.sharpness
             let subjectContrast = mainFace.flatMap { face in
-                image.cropping(to: face.rect)
+                measurement.image.cropping(to: face.rect)
                     .flatMap { GrayscaleImageSampler.sample($0, dimension: config.faceCropSide) }
                     .map { ExposureMeasurement(pixels: $0, config: config).lumaStdDev }
             } ?? exposure.lumaStdDev
@@ -130,6 +170,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                 subjectLumaStdDev: subjectContrast,
                 noiseEstimate: noise,
                 faceSignals: faces,
+                rejectedFaceCounts: measurement.rejections,
                 pixelArea: pixelArea
             )
         }
@@ -146,12 +187,19 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         return request.results ?? []
     }
 
-    private static func detectedFaces(
+    /// Pass 1: who is in this photo, which of them are worth measuring, and how
+    /// much of the frame the smallest of those takes.
+    ///
+    /// The gate is a fraction of the long side rather than a pixel count. The
+    /// old absolute gate of 64 pixels was applied to a 256-pixel analysis
+    /// image, so it demanded a quarter of the frame and rejected essentially
+    /// every real face; a fraction says the same thing about relevance without
+    /// silently depending on the thumbnail size.
+    static func probeFaces(
         in image: CGImage,
         detector: @Sendable (CGImage) throws -> [VNFaceObservation],
-        scorer: BlurSharpnessScorer,
         config: PhotoQualityScoringConfig
-    ) -> [DetectedFace] {
+    ) -> FaceProbe {
         let observations: [VNFaceObservation]
         do {
             observations = try detector(image)
@@ -159,34 +207,183 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             AppLog.photoKit.debug(
                 "\(AppLog.tag(.error, "Face detection failed, scoring without faces: \(error.localizedDescription)"))"
             )
-            return []
+            // A detector that threw measured nothing, so it rejected nothing
+            // either. That is a different state from "we looked and said no".
+            return .empty
         }
 
-        return observations.compactMap { observation -> DetectedFace? in
-            guard Double(observation.confidence) >= config.minimumFaceDetectionConfidence else { return nil }
+        var accepted: [VNFaceObservation] = []
+        var lowConfidence = 0
+        var tooSmall = 0
+        var smallestFraction: Double?
+
+        for observation in observations {
+            guard Double(observation.confidence) >= config.minimumFaceDetectionConfidence else {
+                lowConfidence += 1
+                continue
+            }
+            let fraction = frameFraction(of: observation.boundingBox, in: image)
+            guard fraction >= config.minimumFaceFrameFraction else {
+                tooSmall += 1
+                continue
+            }
+            accepted.append(observation)
+            smallestFraction = min(smallestFraction ?? fraction, fraction)
+        }
+
+        return FaceProbe(
+            accepted: accepted,
+            rejections: FaceRejectionCounts(lowConfidence: lowConfidence, tooSmallInFrame: tooSmall),
+            smallestAcceptedFraction: smallestFraction
+        )
+    }
+
+    /// Whether two detections describe the same face, by intersection over
+    /// union of their normalized boxes. Used to merge the two passes without
+    /// counting one person twice.
+    private static func overlaps(
+        _ lhs: VNFaceObservation,
+        _ rhs: VNFaceObservation,
+        config: PhotoQualityScoringConfig
+    ) -> Bool {
+        let intersection = lhs.boundingBox.intersection(rhs.boundingBox)
+        guard !intersection.isNull, !intersection.isEmpty else { return false }
+        let intersectionArea = intersection.width * intersection.height
+        let unionArea = lhs.boundingBox.width * lhs.boundingBox.height
+            + rhs.boundingBox.width * rhs.boundingBox.height
+            - intersectionArea
+        guard unionArea > 0 else { return false }
+        return Double(intersectionArea / unionArea) >= config.faceMatchMinimumIoU
+    }
+
+    /// Long side of the face box as a fraction of the image's long side.
+    private static func frameFraction(of boundingBox: CGRect, in image: CGImage) -> Double {
+        let width = Double(image.width)
+        let height = Double(image.height)
+        let longSide = max(width, height)
+        guard longSide > 0 else { return 0 }
+        let boxLongSide = max(Double(boundingBox.width) * width, Double(boundingBox.height) * height)
+        return boxLongSide / longSide
+    }
+
+    /// Pass 2's image: large enough that the smallest accepted face still has
+    /// `faceCropSide` real pixels to be measured on. `nil` whenever the
+    /// analysis image already suffices, nobody survived the probe, or the
+    /// request failed — all three mean "measure on what we already have".
+    private static func faceSource(
+        for asset: PHAsset,
+        probe: FaceProbe,
+        imageProvider: @Sendable (PHAsset, CGSize) async throws -> CGImage?,
+        config: PhotoQualityScoringConfig
+    ) async throws -> CGImage? {
+        guard let fraction = probe.smallestAcceptedFraction else { return nil }
+        let side = config.faceSourceLongSide(smallestAcceptedFaceFraction: fraction)
+        guard side > config.analysisImageLongSide else { return nil }
+
+        do {
+            return try await imageProvider(asset, squareSize(side))
+        } catch is CancellationError {
+            // A cancelled scan is not a missing image. Swallowing this would
+            // spend a Vision pass and a sampling pass on work nobody is waiting
+            // for, and log it as an unavailable asset.
+            throw CancellationError()
+        } catch {
+            AppLog.photoKit.debug(
+                "\(AppLog.tag(.photokit, "Face source image at \(side) px unavailable, measuring faces on the analysis image: \(error.localizedDescription)"))"
+            )
+            return nil
+        }
+    }
+
+    /// Pass 2: measure the accepted faces on real pixels.
+    ///
+    /// When a face source was fetched, detection is re-run on it — landmarks
+    /// read off a 12-pixel face decide blinks about as well as sharpness does —
+    /// and the two passes are then *merged*, not swapped. Vision is not
+    /// monotonic in resolution: the larger image can return fewer faces than
+    /// the thumbnail did. Taking the re-detection wholesale would then drop a
+    /// face the first pass had already accepted, and with it the subject
+    /// sharpness, the blink and crop penalties, and that photo's standing in
+    /// the ranking — silently, on exactly the group shots this exists for.
+    ///
+    /// So a first-pass face survives unless the re-detection covered it. Both
+    /// are measured on the face source either way: the bounding boxes are
+    /// normalized, so a first-pass box maps onto the larger image unchanged.
+    private static func measureFaces(
+        analysisImage: CGImage,
+        faceSource: CGImage?,
+        probe: FaceProbe,
+        detector: @Sendable (CGImage) throws -> [VNFaceObservation],
+        scorer: BlurSharpnessScorer,
+        config: PhotoQualityScoringConfig
+    ) -> (faces: [DetectedFace], rejections: FaceRejectionCounts, image: CGImage) {
+        var image = analysisImage
+        var observations = probe.accepted
+        var rejections = probe.rejections
+
+        if let faceSource {
+            // The face source exists precisely because the analysis image
+            // cannot supply enough real pixels, so it is the measurement image
+            // whatever the re-detection returns — including when it returns
+            // nobody, which is the non-monotonic case this merge is for.
+            // Falling back to the analysis image there would reject the very
+            // faces the second request was made to measure.
+            let reprobe = probeFaces(in: faceSource, detector: detector, config: config)
+            image = faceSource
+            observations = reprobe.accepted + probe.accepted.filter { candidate in
+                !reprobe.accepted.contains { overlaps($0, candidate, config: config) }
+            }
+            // Rejections report the gate's decisions from whichever pass
+            // actually saw somebody; a re-detection that found nothing at all
+            // has no decisions to report.
+            rejections = reprobe.hasDetections ? reprobe.rejections : probe.rejections
+        }
+
+        guard !observations.isEmpty else { return ([], rejections, image) }
+
+        let analysisLongSide = Double(max(analysisImage.width, analysisImage.height))
+        var faces: [DetectedFace] = []
+        var insufficientResolution = 0
+        var cropFailed = 0
+
+        for observation in observations {
             let rect = imageRect(for: observation.boundingBox, in: image)
-            let side = max(rect.width, rect.height)
-            guard side >= config.minimumFacePixelSize else { return nil }
-            // The face is measured on its own crop, at the ROI resolution from
-            // the config: a face judged on the full frame is a face judged on a
-            // handful of pixels.
+            let sourceSide = max(rect.width, rect.height)
+            // Never interpolate a face up to the grid: a crop stretched from 12
+            // pixels to the sampling side measures the interpolator, not the
+            // face, which is exactly the reading that made lowering the old
+            // gate pointless.
+            guard Double(sourceSide) >= Double(config.faceCropSide) else {
+                insufficientResolution += 1
+                continue
+            }
             guard let crop = image.cropping(to: rect),
                   let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide) else {
-                return nil
+                cropFailed += 1
+                continue
             }
 
             let sharpness = scorer.score(pixels: pixels)
-            return DetectedFace(
-                signal: FaceQualitySignal(
-                    detectionConfidence: Double(observation.confidence),
-                    boxPixelSize: Double(side),
-                    sharpness: sharpness.isFinite ? sharpness : 0,
-                    hasClosedEyes: closedEyes(in: observation, config: config),
-                    isCroppedByFrame: isCroppedByFrame(rect: rect, in: image)
-                ),
-                rect: rect
+            faces.append(
+                DetectedFace(
+                    signal: FaceQualitySignal(
+                        detectionConfidence: Double(observation.confidence),
+                        boxPixelSize: frameFraction(of: observation.boundingBox, in: image) * analysisLongSide,
+                        sourcePixelSize: Double(sourceSide),
+                        sharpness: sharpness.isFinite ? sharpness : 0,
+                        hasClosedEyes: closedEyes(in: observation, config: config),
+                        isCroppedByFrame: isCroppedByFrame(rect: rect, in: image)
+                    ),
+                    rect: rect
+                )
             )
         }
+
+        rejections = rejections + FaceRejectionCounts(
+            insufficientResolution: insufficientResolution,
+            cropFailed: cropFailed
+        )
+        return (faces, rejections, image)
     }
 
     private static func imageRect(for boundingBox: CGRect, in image: CGImage) -> CGRect {
@@ -328,6 +525,25 @@ private struct DetectedFace {
     let signal: FaceQualitySignal
     let rect: CGRect
 }
+
+/// What pass 1 learned: who is worth measuring, who was turned away and why,
+/// and how large the measurement image has to be for the smallest survivor.
+struct FaceProbe: @unchecked Sendable {
+    let accepted: [VNFaceObservation]
+    let rejections: FaceRejectionCounts
+    /// Long-side fraction of the smallest accepted face; `nil` when none was.
+    let smallestAcceptedFraction: Double?
+
+    /// Nobody was looked for, so nobody was found or turned away.
+    static let empty = FaceProbe(accepted: [], rejections: .empty, smallestAcceptedFraction: nil)
+
+    /// The detector returned somebody, whether or not the gates kept them.
+    /// Distinct from "it ran and saw nothing", which reports no decisions.
+    var hasDetections: Bool { !accepted.isEmpty || !rejections.isEmpty }
+}
+// `VNFaceObservation` is an immutable Vision result object that is never
+// mutated after detection, which is why the probe crosses the concurrency
+// boundary unchecked — the same reason `QualityWorkItem` carries a `PHAsset`.
 
 private struct QualityWorkItem: @unchecked Sendable {
     let asset: PHAsset

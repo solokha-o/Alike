@@ -98,6 +98,15 @@ public struct MetricsReport: Equatable {
         public var offlineOverrideProxy: Double?
         public var overrideEligibleClusterCount: Int
 
+        /// Whether the face branch of the model engages on this slice at all.
+        ///
+        /// Reported because its absence is what let a face gate that rejected
+        /// every real face ship unnoticed: an empty `faceSignals` array looked
+        /// exactly like a photo with nobody in it, so the corpus said "no faces
+        /// here" rather than "we threw them all away", and the hole had to be
+        /// found by hand instead of read off this report.
+        public var faces: FaceCoverage
+
         static let empty = Bucket(
             clusterCount: 0,
             automaticCount: 0,
@@ -113,7 +122,50 @@ public struct MetricsReport: Equatable {
             winnerClusterCount: 0,
             blurryWinnerCount: 0,
             offlineOverrideProxy: nil,
-            overrideEligibleClusterCount: 0
+            overrideEligibleClusterCount: 0,
+            faces: .empty
+        )
+    }
+
+    /// How many candidates carried a usable face signal, and how many had their
+    /// faces rejected instead — with the per-reason breakdown, so a gate that
+    /// is too strict is visible as a reason rather than as a silence.
+    public struct FaceCoverage: Equatable, Sendable {
+        public var candidateCount: Int
+        /// Candidates with at least one measured face.
+        public var withFacesCount: Int
+        /// Candidates where faces were found and every one of them was
+        /// rejected. The number the missing face branch shows up in.
+        public var rejectedOnlyCount: Int
+        /// Candidates measured before the reject counts existed, which cannot
+        /// tell the two states apart. A corpus exported at an older
+        /// `thumbnailConfigVersion` is entirely made of these.
+        ///
+        /// Counts only *measured* candidates: a failed analysis also leaves the
+        /// counts nil, and reading those as "measured before the counts
+        /// existed" would blame a current corpus for a legacy export while
+        /// inflating the denominator every rate here is taken over.
+        public var unknownRejectionCount: Int
+        /// Candidates whose analysis failed outright, so they say nothing about
+        /// faces either way. Excluded from `candidateCount`.
+        public var failedCount: Int
+        public var rejections: FaceRejectionCounts
+
+        public var withFacesRate: Double? {
+            candidateCount > 0 ? Double(withFacesCount) / Double(candidateCount) : nil
+        }
+
+        public var rejectedOnlyRate: Double? {
+            candidateCount > 0 ? Double(rejectedOnlyCount) / Double(candidateCount) : nil
+        }
+
+        static let empty = FaceCoverage(
+            candidateCount: 0,
+            withFacesCount: 0,
+            rejectedOnlyCount: 0,
+            unknownRejectionCount: 0,
+            failedCount: 0,
+            rejections: .empty
         )
     }
 
@@ -186,8 +238,30 @@ public struct MetricsReport: Equatable {
         var blurryWinnerCount = 0
         var overrideEligibleCount = 0
         var overrideDisagreementCount = 0
+        var faces = FaceCoverage.empty
 
         for outcome in outcomes {
+            for candidate in outcome.cluster.candidates {
+                // An unmeasurable photo is not evidence about faces. Counting
+                // it would both blame it for a missing rejection tally and
+                // shrink every rate below by padding the denominator.
+                guard candidate.signals.analysisFailure == nil else {
+                    faces.failedCount += 1
+                    continue
+                }
+                faces.candidateCount += 1
+                if candidate.signals.hasFaces {
+                    faces.withFacesCount += 1
+                } else if candidate.signals.hasOnlyRejectedFaces {
+                    faces.rejectedOnlyCount += 1
+                }
+                if let rejections = candidate.signals.rejectedFaceCounts {
+                    faces.rejections = faces.rejections + rejections
+                } else {
+                    faces.unknownRejectionCount += 1
+                }
+            }
+
             let decision = outcome.decision
             switch decision.confidence {
             case .automatic: automaticCount += 1
@@ -239,7 +313,8 @@ public struct MetricsReport: Equatable {
             offlineOverrideProxy: overrideEligibleCount > 0
                 ? Double(overrideDisagreementCount) / Double(overrideEligibleCount)
                 : nil,
-            overrideEligibleClusterCount: overrideEligibleCount
+            overrideEligibleClusterCount: overrideEligibleCount,
+            faces: faces
         )
     }
 
