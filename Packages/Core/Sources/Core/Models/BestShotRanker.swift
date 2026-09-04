@@ -58,11 +58,7 @@ public enum BestShotRanker {
                 config: config
             )
         }
-        let medianSharpness = median(effectiveSharpness.values.sorted())
-        let sharpnessRatios = effectiveSharpness.mapValues { value -> Double in
-            guard medianSharpness > 0 else { return 1 }
-            return value / medianSharpness
-        }
+        let sharpnessRatios = self.sharpnessRatios(snapshots: usable, scores: scores, config: config)
         let hasSharpReference = sharpnessRatios.values.contains { $0 >= config.referenceSharpnessRatio }
         var excluded = Set<String>()
         if hasSharpReference {
@@ -188,6 +184,34 @@ public enum BestShotRanker {
             reasonCodes: reasonCodes,
             rankedCandidates: rankedCandidates
         )
+    }
+
+    /// Each candidate's sharpness relative to the cluster median, the same
+    /// computation `decide` uses to drop a critically blurred frame.
+    ///
+    /// Public so the offline calibration harness can judge "clearly blurry
+    /// winner" against the ranker's own definition instead of a hand-rolled
+    /// copy that could quietly drift from it. Unusable candidates (failed
+    /// analysis, or anything `scores` has no row for) are filtered out first,
+    /// exactly as `decide` filters them before this computation runs, so the
+    /// median is never dragged around by a photo that could not be measured.
+    public static func sharpnessRatios(
+        snapshots: [PhotoClusterAssetSnapshot],
+        scores: [String: PhotoQualityScore],
+        config: PhotoQualityScoringConfig = .current
+    ) -> [String: Double] {
+        let usable = snapshots.filter { scores[$0.localIdentifier]?.signals.isUsable == true }
+        let effectiveSharpness = usable.reduce(into: [String: Double]()) { partial, snapshot in
+            partial[snapshot.localIdentifier] = self.effectiveSharpness(
+                of: scores[snapshot.localIdentifier]?.signals ?? PhotoQualitySignals(),
+                config: config
+            )
+        }
+        let medianSharpness = median(effectiveSharpness.values.sorted())
+        return effectiveSharpness.mapValues { value -> Double in
+            guard medianSharpness > 0 else { return 1 }
+            return value / medianSharpness
+        }
     }
 
     // MARK: - Fallbacks

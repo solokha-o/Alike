@@ -14,6 +14,9 @@ enum SettingsRoute: Hashable {
     case userGuide
     case userGuideTopic(GuideTopicID)
     case deleteAllData
+#if DEBUG
+    case bestShotCalibration
+#endif
 }
 
 private enum RestorePurchasesFeedback: String, Identifiable {
@@ -132,7 +135,7 @@ public struct SettingsView: View {
             analysisSection
             cleanupReminderSection
 #if DEBUG
-            debugSection
+            debugSection(router: router)
 #endif
             supportSection(router: router)
             dataPrivacySection(router: router)
@@ -154,6 +157,10 @@ public struct SettingsView: View {
             UserGuideTopicView(topicID: topicID)
         case .deleteAllData:
             DeleteAllDataView(model: deleteAllDataModel)
+#if DEBUG
+        case .bestShotCalibration:
+            BestShotCalibrationLabelingView()
+#endif
         }
     }
 
@@ -369,8 +376,20 @@ public struct SettingsView: View {
     }
 
 #if DEBUG
-    private var debugSection: some View {
+    private func debugSection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
+            Button {
+                router.push(.bestShotCalibration)
+            } label: {
+                Label {
+                    // Developer tooling only, never shipped, so the label is
+                    // a plain literal instead of a localized entry.
+                    Text("Best Shot Calibration")
+                } icon: {
+                    Image(systemName: "star.square.on.square")
+                }
+            }
+
             Toggle(
                 SettingsL10n.Main.unlockUnlimitedScansPremiumFeature,
                 isOn: $debugUnlockUnlimitedRescans
