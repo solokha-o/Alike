@@ -16,6 +16,25 @@ Against the **package workspace**, not the app project — the app project's
 `Storage` scheme is a library scheme with no test action. `tools/quick` and
 `tools/full` run every package the same way.
 
+The `-workspace` argument here is the `Packages/Storage` **directory itself**,
+not a checked-in `.xcworkspace` — there isn't one; Xcode treats an SPM package
+directory as an implicit workspace and generates the scheme on the fly. That
+only works under full Xcode, so this requires `xcode-select` to point at a full
+Xcode install, not the Command Line Tools. If it points at the Command Line
+Tools, prefix the command inline instead of changing the global selection:
+
+`DEVELOPER_DIR=/Applications/Xcode-<version>.app/Contents/Developer xcodebuild -workspace Packages/Storage -scheme Storage -destination 'id=<available simulator>' test`
+
+With the Command Line Tools selected (no `DEVELOPER_DIR` override), the exact
+failure is:
+
+```
+xcodebuild: error: 'Packages/Storage' is not a workspace file.
+```
+
+That signature means the toolchain, not the command, is wrong — the workspace
+argument is correct.
+
 ## 1. Fixture store test (Core Data schema changes)
 
 This already exists: `Packages/Storage/Tests/StorageTests/ModelVersionMigrationTests.swift`
@@ -31,8 +50,20 @@ When a new model version ships, add a fixture for it:
    `.sqlite` into `Packages/Storage/Tests/StorageTests/Fixtures/AlikeModelV<N>.sqlite`
    and delete the generator. (Running the previous release on a simulator and
    copying its container works too, and is closer to real data.)
-2. Ship only the `.sqlite`; the `-wal` and `-shm` files are checkpoint state and
-   are recreated on open.
+2. Close the store before copying anything: remove it from the
+   `NSPersistentStoreCoordinator` (`remove(_:)` checkpoints a WAL-mode store on
+   close, folding `-wal` back into the main file). A WAL-mode store can hold
+   committed rows **only** in `-wal` — they are not reconstructed from the
+   `.sqlite` file alone, so copying while the store is still open, or open in
+   another process, silently ships an empty or truncated fixture. Then verify
+   the standalone `.sqlite` actually holds the seeded rows before discarding the
+   sidecars:
+
+   `sqlite3 Fixtures/AlikeModelV<N>.sqlite "select count(*) from ZPHOTOENTITY;"`
+
+   Only once that count matches what you seeded, ship the `.sqlite` alone and
+   discard the `-wal` / `-shm` sidecars — they must never be committed next to
+   a fixture.
 3. Resources are already declared: the `StorageTests` target processes `Fixtures`.
 4. In the test: copy the fixture to a temporary directory (never open the
    resource in place — migration mutates the file), point an
