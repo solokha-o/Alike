@@ -20,7 +20,21 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     public var analysisImageLongSide: Int
     /// Square side of the subject/face crop, in pixels. Face signals are
     /// measured on this grid, the whole frame on `sharpnessGridSide`.
+    ///
+    /// It is also the floor on *real* pixels: a face crop that cannot supply
+    /// this many is rejected rather than interpolated up to the grid, because
+    /// stretching 12 pixels to 256 measures the interpolator, not the face.
     public var faceCropSide: Int
+    /// Ceiling on the face-source image request, in pixels. Faces are detected
+    /// on the `analysisImageLongSide` frame; measuring them then asks for a
+    /// larger image, and this is how large it is ever allowed to get.
+    ///
+    /// Tied to the other two face numbers rather than picked freely: the
+    /// smallest face the frame-fraction gate accepts must still yield
+    /// `faceCropSide` real pixels here, so `minimumFaceFrameFraction` ×
+    /// `maxFaceSourceLongSide` >= `faceCropSide`. Change one of the three and
+    /// `PhotoQualityScoringConfigTests` will say which.
+    public var maxFaceSourceLongSide: Int
     /// Below this long side a score is not trustworthy enough to rank on.
     public var minimumAnalysisLongSide: Int
     /// Sharpness is measured on a square grid of this size.
@@ -70,8 +84,15 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     // MARK: - Faces
 
     public var minimumFaceDetectionConfidence: Double
-    /// Minimum face box side, in analysis-image pixels.
-    public var minimumFacePixelSize: Double
+    /// Minimum face box long side as a fraction of the analysis image's long
+    /// side.
+    ///
+    /// A fraction rather than a pixel count: the gate used to be 64 pixels of a
+    /// 256-pixel frame, which is a quarter of the long side — a selfie or a
+    /// tight portrait. Every group shot, full-length frame and person a couple
+    /// of metres away was discarded, so face scoring never engaged in
+    /// production at all.
+    public var minimumFaceFrameFraction: Double
     public var blinkConfidenceFloor: Double
     /// Eye aspect ratio (height / width) below which the eye reads as closed.
     public var closedEyeAspectRatio: Double
@@ -134,9 +155,10 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
 
     public init(
         scoringModelVersion: Int = 1,
-        thumbnailConfigVersion: Int = 1,
+        thumbnailConfigVersion: Int = 2,
         analysisImageLongSide: Int = 256,
-        faceCropSide: Int = 256,
+        faceCropSide: Int = 64,
+        maxFaceSourceLongSide: Int = 1_600,
         minimumAnalysisLongSide: Int = 128,
         sharpnessGridSide: Int = 128,
         maxConcurrentAnalysisTasks: Int = 4,
@@ -159,7 +181,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         lowContrastStdDev: Double = 0.06,
         lowContrastPenalty: Double = 0.10,
         minimumFaceDetectionConfidence: Double = 0.70,
-        minimumFacePixelSize: Double = 64,
+        minimumFaceFrameFraction: Double = 0.04,
         blinkConfidenceFloor: Double = 0.80,
         closedEyeAspectRatio: Double = 0.18,
         worstFaceWeight: Double = 0.60,
@@ -192,6 +214,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.thumbnailConfigVersion = thumbnailConfigVersion
         self.analysisImageLongSide = analysisImageLongSide
         self.faceCropSide = faceCropSide
+        self.maxFaceSourceLongSide = maxFaceSourceLongSide
         self.minimumAnalysisLongSide = minimumAnalysisLongSide
         self.sharpnessGridSide = sharpnessGridSide
         self.maxConcurrentAnalysisTasks = maxConcurrentAnalysisTasks
@@ -214,7 +237,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.lowContrastStdDev = lowContrastStdDev
         self.lowContrastPenalty = lowContrastPenalty
         self.minimumFaceDetectionConfidence = minimumFaceDetectionConfidence
-        self.minimumFacePixelSize = minimumFacePixelSize
+        self.minimumFaceFrameFraction = minimumFaceFrameFraction
         self.blinkConfidenceFloor = blinkConfidenceFloor
         self.closedEyeAspectRatio = closedEyeAspectRatio
         self.worstFaceWeight = worstFaceWeight
@@ -238,5 +261,19 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     /// Long side in points for the analysis image request.
     public var analysisTargetSize: (width: Int, height: Int) {
         (analysisImageLongSide, analysisImageLongSide)
+    }
+
+    /// Long side of the image the faces should be *measured* on, given the
+    /// smallest face that passed the frame-fraction gate.
+    ///
+    /// Large enough that this face still yields `faceCropSide` real pixels,
+    /// never below the analysis image already in hand, and never above
+    /// `maxFaceSourceLongSide`. Returns `analysisImageLongSide` when the frame
+    /// already suffices, which is the caller's signal to skip the second image
+    /// request entirely.
+    public func faceSourceLongSide(smallestAcceptedFaceFraction fraction: Double) -> Int {
+        guard fraction > 0 else { return maxFaceSourceLongSide }
+        let needed = Int((Double(faceCropSide) / fraction).rounded(.up))
+        return min(max(needed, analysisImageLongSide), maxFaceSourceLongSide)
     }
 }

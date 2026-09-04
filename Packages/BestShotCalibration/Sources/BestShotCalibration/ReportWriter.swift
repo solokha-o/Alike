@@ -34,6 +34,8 @@ public enum ReportWriter {
         lines.append(contentsOf: metricsTable(rows: [("overall", metrics.overall)]))
         lines.append("")
 
+        lines.append(contentsOf: faceCoverageSection(metrics.overall.faces))
+
         lines.append("## Per-category metrics")
         lines.append("")
         if metrics.byCategory.isEmpty {
@@ -66,6 +68,54 @@ public enum ReportWriter {
                     + "| \(percentOrDash(bucket.offlineOverrideProxy, of: bucket.overrideEligibleClusterCount)) |"
             )
         }
+        return lines
+    }
+
+    /// Whether the face branch of the model engages on this corpus at all.
+    ///
+    /// A `faceQuality` weight of 0.25 that never fires is not visible in any
+    /// agreement figure — the ranker simply takes the without-faces weights and
+    /// reports a perfectly plausible number. This section is where "we found
+    /// faces and threw them all away" becomes readable.
+    private static func faceCoverageSection(_ faces: MetricsReport.FaceCoverage) -> [String] {
+        var lines: [String] = ["## Face coverage", ""]
+        guard faces.candidateCount > 0 else {
+            lines.append("_No candidates._")
+            lines.append("")
+            return lines
+        }
+
+        lines.append("| candidates | with faces | faces rejected only | rejection counts unknown |")
+        lines.append("|---|---|---|---|")
+        lines.append(
+            "| \(faces.candidateCount) "
+                + "| \(faces.withFacesCount) (\(percentOrDash(faces.withFacesRate, of: faces.candidateCount))) "
+                + "| \(faces.rejectedOnlyCount) (\(percentOrDash(faces.rejectedOnlyRate, of: faces.candidateCount))) "
+                + "| \(faces.unknownRejectionCount) |"
+        )
+        lines.append("")
+
+        if faces.unknownRejectionCount > 0 {
+            lines.append(
+                "> \(faces.unknownRejectionCount) candidate(s) were measured before rejected faces were "
+                    + "counted, so \"no faces\" and \"all faces rejected\" cannot be told apart for them. "
+                    + "Re-measure the corpus to get this number to zero."
+            )
+            lines.append("")
+        }
+
+        let rejections = faces.rejections
+        if rejections.isEmpty {
+            lines.append("_No face was rejected._")
+        } else {
+            lines.append("| rejection reason | faces |")
+            lines.append("|---|---|")
+            lines.append("| below the confidence floor | \(rejections.lowConfidence) |")
+            lines.append("| too small a share of the frame | \(rejections.tooSmallInFrame) |")
+            lines.append("| too few real pixels to measure | \(rejections.insufficientResolution) |")
+            lines.append("| crop or sampling failed | \(rejections.cropFailed) |")
+        }
+        lines.append("")
         return lines
     }
 

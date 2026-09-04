@@ -22,7 +22,64 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
     /// keep serving scores computed by the previous model.
     func testShippedVersionsMatchTheDocumentedModel() {
         XCTAssertEqual(PhotoQualityScoringConfig.current.scoringModelVersion, 1)
-        XCTAssertEqual(PhotoQualityScoringConfig.current.thumbnailConfigVersion, 1)
+        XCTAssertEqual(PhotoQualityScoringConfig.current.thumbnailConfigVersion, 2)
+    }
+
+    // MARK: - Face gate
+
+    /// The gate that made face scoring dead code: 64 pixels of a 256-pixel
+    /// analysis image is a quarter of the long side, so only a selfie passed.
+    /// A fraction cannot silently mean something else when the thumbnail size
+    /// changes.
+    func testTheFaceGateIsAFractionSmallEnoughForAnOrdinaryPortrait() {
+        let config = PhotoQualityScoringConfig.current
+        let oldAbsoluteGateAsFraction = 64.0 / Double(config.analysisImageLongSide)
+
+        XCTAssertLessThan(config.minimumFaceFrameFraction, oldAbsoluteGateAsFraction / 4)
+        XCTAssertGreaterThan(config.minimumFaceFrameFraction, 0)
+    }
+
+    /// The two gates have to agree: a face the frame-fraction gate accepts must
+    /// be able to reach `faceCropSide` real pixels within the source ceiling,
+    /// or it would pass the first gate only to be thrown away by the second.
+    func testEveryAcceptedFaceCanReachTheCropSideWithinTheSourceCeiling() {
+        let config = PhotoQualityScoringConfig.current
+        let smallestAcceptable = config.minimumFaceFrameFraction
+        let side = config.faceSourceLongSide(smallestAcceptedFaceFraction: smallestAcceptable)
+
+        XCTAssertLessThanOrEqual(side, config.maxFaceSourceLongSide)
+        XCTAssertGreaterThanOrEqual(
+            Double(side) * smallestAcceptable,
+            Double(config.faceCropSide)
+        )
+    }
+
+    func testFaceSourceStaysWithTheAnalysisImageWhenItAlreadySuffices() {
+        let config = PhotoQualityScoringConfig.current
+        // A face filling half the frame already has 128 real pixels at 256.
+        XCTAssertEqual(
+            config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.5),
+            config.analysisImageLongSide
+        )
+    }
+
+    func testFaceSourceIsCappedRatherThanGrowingWithoutBound() {
+        let config = PhotoQualityScoringConfig.current
+        XCTAssertEqual(
+            config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.0001),
+            config.maxFaceSourceLongSide
+        )
+        XCTAssertEqual(
+            config.faceSourceLongSide(smallestAcceptedFaceFraction: 0),
+            config.maxFaceSourceLongSide
+        )
+    }
+
+    func testFaceSourceIsSizedSoTheSmallestFaceFillsTheCropGrid() {
+        let config = PhotoQualityScoringConfig.current
+        let side = config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.1)
+
+        XCTAssertEqual(side, config.faceCropSide * 10)
     }
 
     func testFavoriteCannotOutweighAQualityDefect() {
