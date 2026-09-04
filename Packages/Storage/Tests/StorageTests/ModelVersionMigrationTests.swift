@@ -64,13 +64,9 @@ final class ModelVersionMigrationTests: XCTestCase {
     /// identifier would put the model back to being unversioned, which is the
     /// state this baseline exists to prevent.
     func testShippedModelDeclaresItsVersionIdentifier() throws {
-        let modelURL = try XCTUnwrap(
-            PersistenceController.shippedModelURL,
-            "Shipped model is missing from the Storage bundle"
-        )
-        let model = try XCTUnwrap(NSManagedObjectModel(contentsOf: modelURL))
-
-        let identifiers = model.versionIdentifiers.compactMap { $0 as? String }
+        let identifiers = PersistenceController.shippedModel
+            .versionIdentifiers
+            .compactMap { $0 as? String }
         XCTAssertFalse(
             identifiers.isEmpty,
             "The shipped model declares no version identifier; every model version must set one"
@@ -90,10 +86,12 @@ final class ModelVersionMigrationTests: XCTestCase {
     }
 
     private func loadContainer(at url: URL) throws -> NSPersistentContainer {
-        let modelURL = try XCTUnwrap(PersistenceController.shippedModelURL)
-        let model = try XCTUnwrap(NSManagedObjectModel(contentsOf: modelURL))
-
-        let container = NSPersistentContainer(name: "AlikeModel", managedObjectModel: model)
+        // The shared instance on purpose: a second copy of the same model makes
+        // `+[ClusterEntity entity]` ambiguous for every other test in the suite.
+        let container = NSPersistentContainer(
+            name: "AlikeModel",
+            managedObjectModel: PersistenceController.shippedModel
+        )
         let description = NSPersistentStoreDescription(url: url)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
