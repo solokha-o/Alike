@@ -15,7 +15,10 @@ opening it.
 
 - Store: Core Data, `Packages/Storage/Sources/Storage/PersistenceController.swift`.
 - Model: `Packages/Storage/Sources/Storage/Resources/AlikeModel.xcdatamodeld`,
-  currently a **single, unversioned** `.xcdatamodel` edited in place.
+  versioned since 2026-09-03: version 1 is `AlikeModel.xcdatamodel`, marked
+  current by `.xccurrentversion`, with `userDefinedModelVersionIdentifier="1"`.
+  The next schema change adds `AlikeModel 2.xcdatamodel` — version 1 is shipped
+  and is never edited again.
 - Migration is fully automatic: `shouldMigrateStoreAutomatically` and
   `shouldInferMappingModelAutomatically` are both `true`.
 - `loadPersistentStores` calls `fatalError` on failure — a migration the
@@ -44,8 +47,8 @@ opening it.
 1. Classify the change with `references/coredata-versioning.md` — **free**,
    **lightweight**, or **not inferable**.
 2. If it is not "free", create a **new model version** rather than editing the
-   current `.xcdatamodel` in place, and mark it current. Editing in place is
-   only acceptable while a change is unreleased.
+   current `.xcdatamodel` in place, and mark it current. Editing a shipped
+   version in place is never acceptable.
 3. Prefer the lazy-invalidation pattern (a version marker plus re-measure) over
    deleting rows. See `references/coredata-versioning.md`.
 4. For `Codable` blobs and `UserDefaults`, follow
