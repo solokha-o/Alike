@@ -178,6 +178,53 @@ final class MetricsReportTests: XCTestCase {
         XCTAssertTrue(faces.rejections.isEmpty)
     }
 
+    /// A failed analysis leaves `rejectedFaceCounts` nil for the same reason a
+    /// legacy payload does. Reading the two as one told a current corpus it had
+    /// been measured before the counts existed, and padded the denominator that
+    /// every face rate is taken over.
+    func testCandidatesWhoseAnalysisFailedAreNotCountedAsUnknownOrAsMeasured() {
+        let corpus = BestShotCalibrationCorpus(
+            exportedAt: Date(timeIntervalSince1970: 0),
+            scoringModelVersion: config.scoringModelVersion,
+            thumbnailConfigVersion: config.thumbnailConfigVersion,
+            entries: [
+                BestShotCalibrationCluster(
+                    clusterID: "mixed",
+                    category: .people,
+                    candidates: [
+                        makeCandidate("measured", globalSharpness: 40, faces: [Self.face()], rejections: .empty),
+                        makeFailedCandidate("offline", failure: .assetUnavailable),
+                        makeFailedCandidate("tiny", failure: .tooSmallToAnalyze),
+                        makeFailedCandidate("broken", failure: .renderFailed)
+                    ],
+                    humanBestShotID: "measured"
+                )
+            ]
+        )
+
+        let faces = MetricsReport.compute(corpus: corpus, config: config).overall.faces
+
+        XCTAssertEqual(faces.failedCount, 3)
+        XCTAssertEqual(faces.candidateCount, 1, "failures must not pad the denominator")
+        XCTAssertEqual(faces.unknownRejectionCount, 0, "a failure is not a legacy payload")
+        XCTAssertEqual(faces.withFacesCount, 1)
+        XCTAssertEqual(faces.withFacesRate ?? 0, 1, accuracy: 1e-9)
+    }
+
+    private func makeFailedCandidate(
+        _ assetID: String,
+        failure: PhotoQualityAnalysisFailure
+    ) -> BestShotCalibrationCandidate {
+        BestShotCalibrationCandidate(
+            assetID: assetID,
+            signals: .failed(failure, pixelArea: 12_000_000),
+            creationDate: Date(timeIntervalSince1970: 1_000),
+            modificationDate: Date(timeIntervalSince1970: 1_000),
+            pixelWidth: 4000,
+            pixelHeight: 3000
+        )
+    }
+
     private static func face() -> FaceQualitySignal {
         FaceQualitySignal(
             detectionConfidence: 0.95,

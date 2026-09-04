@@ -140,7 +140,15 @@ public struct MetricsReport: Equatable {
         /// Candidates measured before the reject counts existed, which cannot
         /// tell the two states apart. A corpus exported at an older
         /// `thumbnailConfigVersion` is entirely made of these.
+        ///
+        /// Counts only *measured* candidates: a failed analysis also leaves the
+        /// counts nil, and reading those as "measured before the counts
+        /// existed" would blame a current corpus for a legacy export while
+        /// inflating the denominator every rate here is taken over.
         public var unknownRejectionCount: Int
+        /// Candidates whose analysis failed outright, so they say nothing about
+        /// faces either way. Excluded from `candidateCount`.
+        public var failedCount: Int
         public var rejections: FaceRejectionCounts
 
         public var withFacesRate: Double? {
@@ -156,6 +164,7 @@ public struct MetricsReport: Equatable {
             withFacesCount: 0,
             rejectedOnlyCount: 0,
             unknownRejectionCount: 0,
+            failedCount: 0,
             rejections: .empty
         )
     }
@@ -233,6 +242,13 @@ public struct MetricsReport: Equatable {
 
         for outcome in outcomes {
             for candidate in outcome.cluster.candidates {
+                // An unmeasurable photo is not evidence about faces. Counting
+                // it would both blame it for a missing rejection tally and
+                // shrink every rate below by padding the denominator.
+                guard candidate.signals.analysisFailure == nil else {
+                    faces.failedCount += 1
+                    continue
+                }
                 faces.candidateCount += 1
                 if candidate.signals.hasFaces {
                     faces.withFacesCount += 1

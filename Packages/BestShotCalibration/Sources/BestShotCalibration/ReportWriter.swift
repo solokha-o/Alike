@@ -80,18 +80,21 @@ public enum ReportWriter {
     private static func faceCoverageSection(_ faces: MetricsReport.FaceCoverage) -> [String] {
         var lines: [String] = ["## Face coverage", ""]
         guard faces.candidateCount > 0 else {
-            lines.append("_No candidates._")
+            lines.append(faces.failedCount > 0
+                ? "_No candidate could be measured (\(faces.failedCount) failed)._"
+                : "_No candidates._")
             lines.append("")
             return lines
         }
 
-        lines.append("| candidates | with faces | faces rejected only | rejection counts unknown |")
-        lines.append("|---|---|---|---|")
+        lines.append("| measured candidates | with faces | faces rejected only | rejection counts unknown | analysis failed |")
+        lines.append("|---|---|---|---|---|")
         lines.append(
             "| \(faces.candidateCount) "
                 + "| \(faces.withFacesCount) (\(percent(faces.withFacesRate ?? 0))) "
                 + "| \(faces.rejectedOnlyCount) (\(percent(faces.rejectedOnlyRate ?? 0))) "
-                + "| \(faces.unknownRejectionCount) |"
+                + "| \(faces.unknownRejectionCount) "
+                + "| \(faces.failedCount) |"
         )
         lines.append("")
 
