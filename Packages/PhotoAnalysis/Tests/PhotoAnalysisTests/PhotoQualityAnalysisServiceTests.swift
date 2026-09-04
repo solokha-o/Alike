@@ -254,6 +254,57 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertEqual(detectorCalls.count, 0)
     }
 
+    /// Vision is not monotonic in resolution — this PR's own measurements show
+    /// a group photo yielding 2 faces at 512 px and none at 768. So a
+    /// re-detection that comes back with fewer faces must not be taken
+    /// wholesale: the face it dropped was already accepted, and losing it takes
+    /// the subject sharpness and the blink/crop penalties with it.
+    func testAFaceTheReDetectionMissesIsKeptFromTheFirstPass() throws {
+        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 512))
+        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+        let left = Self.faceBox(fraction: 0.20, x: 0.05)
+        let right = Self.faceBox(fraction: 0.20, x: 0.60)
+        let service = PhotoQualityAnalysisService(faceDetector: { image in
+            // The thumbnail sees both; the larger source sees only the left one.
+            image.width == 512
+                ? [VNFaceObservation(boundingBox: left), VNFaceObservation(boundingBox: right)]
+                : [VNFaceObservation(boundingBox: left)]
+        })
+
+        let signals = service.signals(
+            for: analysisImage,
+            faceSource: faceSource,
+            pixelArea: 12_000_000
+        )
+
+        XCTAssertEqual(signals.usableFaceSignals.count, 2, "the dropped face must survive the merge")
+        // Both are measured on the face source, not one on each image.
+        let sizes = signals.usableFaceSignals.compactMap(\.sourcePixelSize)
+        XCTAssertEqual(sizes.count, 2)
+        XCTAssertTrue(sizes.allSatisfy { $0 > 128 }, "expected face-source pixels, got \(sizes)")
+    }
+
+    /// The merge must not turn one person into two when both passes see them.
+    func testAFaceBothPassesSeeIsCountedOnce() throws {
+        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 512))
+        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+        let box = Self.faceBox(fraction: 0.20, x: 0.05)
+        let service = PhotoQualityAnalysisService(faceDetector: { image in
+            // The same face, detected a shade differently at the two sizes.
+            image.width == 512
+                ? [VNFaceObservation(boundingBox: box)]
+                : [VNFaceObservation(boundingBox: box.insetBy(dx: 0.005, dy: 0.005))]
+        })
+
+        let signals = service.signals(
+            for: analysisImage,
+            faceSource: faceSource,
+            pixelArea: 12_000_000
+        )
+
+        XCTAssertEqual(signals.usableFaceSignals.count, 1)
+    }
+
     // MARK: - The face source request
 
     func testTheFaceSourceIsRequestedOnlyForPhotosThatHaveAFace() async throws {
@@ -322,10 +373,10 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertTrue(signals.hasFaces)
     }
 
-    private static func faceBox(fraction: Double) -> CGRect {
+    private static func faceBox(fraction: Double, x: Double = 0.2) -> CGRect {
         // Vision boxes are normalized with a bottom-left origin; a square box
         // of this fraction has exactly `fraction` of the long side.
-        CGRect(x: 0.2, y: 0.2, width: fraction, height: fraction)
+        CGRect(x: x, y: 0.2, width: fraction, height: fraction)
     }
 
     // MARK: - Batch behaviour

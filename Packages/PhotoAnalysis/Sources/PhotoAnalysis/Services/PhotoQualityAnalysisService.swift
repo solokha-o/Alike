@@ -238,6 +238,24 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         )
     }
 
+    /// Whether two detections describe the same face, by intersection over
+    /// union of their normalized boxes. Used to merge the two passes without
+    /// counting one person twice.
+    private static func overlaps(
+        _ lhs: VNFaceObservation,
+        _ rhs: VNFaceObservation,
+        config: PhotoQualityScoringConfig
+    ) -> Bool {
+        let intersection = lhs.boundingBox.intersection(rhs.boundingBox)
+        guard !intersection.isNull, !intersection.isEmpty else { return false }
+        let intersectionArea = intersection.width * intersection.height
+        let unionArea = lhs.boundingBox.width * lhs.boundingBox.height
+            + rhs.boundingBox.width * rhs.boundingBox.height
+            - intersectionArea
+        guard unionArea > 0 else { return false }
+        return Double(intersectionArea / unionArea) >= config.faceMatchMinimumIoU
+    }
+
     /// Long side of the face box as a fraction of the image's long side.
     private static func frameFraction(of boundingBox: CGRect, in image: CGImage) -> Double {
         let width = Double(image.width)
@@ -275,8 +293,16 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
     ///
     /// When a face source was fetched, detection is re-run on it — landmarks
     /// read off a 12-pixel face decide blinks about as well as sharpness does —
-    /// and its result is used whenever it still finds somebody. Otherwise the
-    /// probe's own observations stand, measured on the analysis image.
+    /// and the two passes are then *merged*, not swapped. Vision is not
+    /// monotonic in resolution: the larger image can return fewer faces than
+    /// the thumbnail did. Taking the re-detection wholesale would then drop a
+    /// face the first pass had already accepted, and with it the subject
+    /// sharpness, the blink and crop penalties, and that photo's standing in
+    /// the ranking — silently, on exactly the group shots this exists for.
+    ///
+    /// So a first-pass face survives unless the re-detection covered it. Both
+    /// are measured on the face source either way: the bounding boxes are
+    /// normalized, so a first-pass box maps onto the larger image unchanged.
     private static func measureFaces(
         analysisImage: CGImage,
         faceSource: CGImage?,
@@ -293,7 +319,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             let reprobe = probeFaces(in: faceSource, detector: detector, config: config)
             if !reprobe.accepted.isEmpty {
                 image = faceSource
-                observations = reprobe.accepted
+                observations = reprobe.accepted + probe.accepted.filter { candidate in
+                    !reprobe.accepted.contains { overlaps($0, candidate, config: config) }
+                }
                 rejections = reprobe.rejections
             }
         }

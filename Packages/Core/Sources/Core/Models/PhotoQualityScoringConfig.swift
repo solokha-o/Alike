@@ -99,6 +99,11 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
     /// of metres away was discarded, so face scoring never engaged in
     /// production at all.
     public var minimumFaceFrameFraction: Double
+    /// Intersection-over-union above which two detections of the same photo are
+    /// taken to be the same face. Used to merge the detection pass on the
+    /// analysis image with the re-detection on the larger face source, which
+    /// can legitimately return a different number of faces.
+    public var faceMatchMinimumIoU: Double
     public var blinkConfidenceFloor: Double
     /// Eye aspect ratio (height / width) below which the eye reads as closed.
     public var closedEyeAspectRatio: Double
@@ -188,6 +193,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         lowContrastPenalty: Double = 0.10,
         minimumFaceDetectionConfidence: Double = 0.70,
         minimumFaceFrameFraction: Double = 0.04,
+        faceMatchMinimumIoU: Double = 0.30,
         blinkConfidenceFloor: Double = 0.80,
         closedEyeAspectRatio: Double = 0.18,
         worstFaceWeight: Double = 0.60,
@@ -244,6 +250,7 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.lowContrastPenalty = lowContrastPenalty
         self.minimumFaceDetectionConfidence = minimumFaceDetectionConfidence
         self.minimumFaceFrameFraction = minimumFaceFrameFraction
+        self.faceMatchMinimumIoU = faceMatchMinimumIoU
         self.blinkConfidenceFloor = blinkConfidenceFloor
         self.closedEyeAspectRatio = closedEyeAspectRatio
         self.worstFaceWeight = worstFaceWeight
