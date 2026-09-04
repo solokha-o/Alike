@@ -25,6 +25,52 @@ final class PhotoQualityScoringConfigTests: XCTestCase {
         XCTAssertEqual(PhotoQualityScoringConfig.current.thumbnailConfigVersion, 3)
     }
 
+    // MARK: - Wire format
+
+    /// A candidate config written by `bestshot-calibrate sweep` before the face
+    /// gate changed. It carries the retired `minimumFacePixelSize` and lacks
+    /// `minimumFaceFrameFraction`, `maxFaceSourceLongSide` and
+    /// `faceMatchMinimumIoU`. Synthesized decoding failed it with `keyNotFound`,
+    /// which broke `report --config` on files already on disk.
+    func testACandidateConfigWrittenBeforeTheFaceGateChangedStillDecodes() throws {
+        let legacy = """
+        {
+          "scoringModelVersion": 1,
+          "thumbnailConfigVersion": 1,
+          "analysisImageLongSide": 256,
+          "faceCropSide": 256,
+          "minimumAnalysisLongSide": 128,
+          "sharpnessGridSide": 128,
+          "maxConcurrentAnalysisTasks": 4,
+          "absoluteSharpnessFloor": 14,
+          "criticalSharpnessRatio": 0.6,
+          "minimumFacePixelSize": 64,
+          "minimumFaceDetectionConfidence": 0.7
+        }
+        """
+
+        let decoded = try JSONDecoder().decode(
+            PhotoQualityScoringConfig.self,
+            from: Data(legacy.utf8)
+        )
+        let defaults = PhotoQualityScoringConfig()
+
+        // What the file actually said is kept — this is a swept candidate.
+        XCTAssertEqual(decoded.absoluteSharpnessFloor, 14)
+        XCTAssertEqual(decoded.criticalSharpnessRatio, 0.6)
+        XCTAssertEqual(decoded.analysisImageLongSide, 256)
+
+        // What it could not say takes today's value.
+        XCTAssertEqual(decoded.minimumFaceFrameFraction, defaults.minimumFaceFrameFraction)
+        XCTAssertEqual(decoded.maxFaceSourceLongSide, defaults.maxFaceSourceLongSide)
+        XCTAssertEqual(decoded.faceMatchMinimumIoU, defaults.faceMatchMinimumIoU)
+        XCTAssertEqual(decoded.weightsWithFaces, defaults.weightsWithFaces)
+
+        // The retired pixel gate is discarded, not translated: 64 / 256 = 0.25
+        // is the gate this release removed for rejecting almost every real face.
+        XCTAssertNotEqual(decoded.minimumFaceFrameFraction, 64.0 / 256.0)
+    }
+
     // MARK: - Face gate
 
     /// The gate that made face scoring dead code: 64 pixels of a 256-pixel

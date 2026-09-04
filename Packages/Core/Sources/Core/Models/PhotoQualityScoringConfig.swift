@@ -268,6 +268,73 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.reasonCodeMinimumDelta = reasonCodeMinimumDelta
     }
 
+
+    /// Tolerant decoding, because this type is a wire format.
+    ///
+    /// `bestshot-calibrate sweep` writes candidate configs as JSON and `report
+    /// --config` reads them back, so files generated before a property existed
+    /// are still lying in people's working directories. Synthesized decoding
+    /// would fail them with `keyNotFound`; a missing key now takes today's
+    /// default instead.
+    ///
+    /// The retired `minimumFacePixelSize` is read and discarded rather than
+    /// translated into `minimumFaceFrameFraction`. Translating it faithfully
+    /// would mean 64 / 256 = 0.25, which is the very gate this release removed
+    /// for rejecting almost every real face — and the sweep never varied it, so
+    /// every such file carries the untuned default and no information worth
+    /// preserving.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let defaults = PhotoQualityScoringConfig()
+        func value<T: Decodable>(_ key: CodingKeys, _ fallback: T) throws -> T {
+            try container.decodeIfPresent(T.self, forKey: key) ?? fallback
+        }
+        self.scoringModelVersion = try value(.scoringModelVersion, defaults.scoringModelVersion)
+        self.thumbnailConfigVersion = try value(.thumbnailConfigVersion, defaults.thumbnailConfigVersion)
+        self.analysisImageLongSide = try value(.analysisImageLongSide, defaults.analysisImageLongSide)
+        self.faceCropSide = try value(.faceCropSide, defaults.faceCropSide)
+        self.maxFaceSourceLongSide = try value(.maxFaceSourceLongSide, defaults.maxFaceSourceLongSide)
+        self.minimumAnalysisLongSide = try value(.minimumAnalysisLongSide, defaults.minimumAnalysisLongSide)
+        self.sharpnessGridSide = try value(.sharpnessGridSide, defaults.sharpnessGridSide)
+        self.maxConcurrentAnalysisTasks = try value(.maxConcurrentAnalysisTasks, defaults.maxConcurrentAnalysisTasks)
+        self.absoluteSharpnessFloor = try value(.absoluteSharpnessFloor, defaults.absoluteSharpnessFloor)
+        self.criticalSharpnessRatio = try value(.criticalSharpnessRatio, defaults.criticalSharpnessRatio)
+        self.strongPenaltySharpnessRatio = try value(.strongPenaltySharpnessRatio, defaults.strongPenaltySharpnessRatio)
+        self.weakPenaltySharpnessRatio = try value(.weakPenaltySharpnessRatio, defaults.weakPenaltySharpnessRatio)
+        self.referenceSharpnessRatio = try value(.referenceSharpnessRatio, defaults.referenceSharpnessRatio)
+        self.criticalSharpnessPenalty = try value(.criticalSharpnessPenalty, defaults.criticalSharpnessPenalty)
+        self.strongSharpnessPenalty = try value(.strongSharpnessPenalty, defaults.strongSharpnessPenalty)
+        self.weakSharpnessPenalty = try value(.weakSharpnessPenalty, defaults.weakSharpnessPenalty)
+        self.subjectSharpnessWeight = try value(.subjectSharpnessWeight, defaults.subjectSharpnessWeight)
+        self.normalizationLowPercentile = try value(.normalizationLowPercentile, defaults.normalizationLowPercentile)
+        self.normalizationHighPercentile = try value(.normalizationHighPercentile, defaults.normalizationHighPercentile)
+        self.darkClippingLuma = try value(.darkClippingLuma, defaults.darkClippingLuma)
+        self.brightClippingLuma = try value(.brightClippingLuma, defaults.brightClippingLuma)
+        self.clippingFreeFraction = try value(.clippingFreeFraction, defaults.clippingFreeFraction)
+        self.clippingFullPenaltyFraction = try value(.clippingFullPenaltyFraction, defaults.clippingFullPenaltyFraction)
+        self.clippingCriticalFraction = try value(.clippingCriticalFraction, defaults.clippingCriticalFraction)
+        self.lowContrastStdDev = try value(.lowContrastStdDev, defaults.lowContrastStdDev)
+        self.lowContrastPenalty = try value(.lowContrastPenalty, defaults.lowContrastPenalty)
+        self.minimumFaceDetectionConfidence = try value(.minimumFaceDetectionConfidence, defaults.minimumFaceDetectionConfidence)
+        self.minimumFaceFrameFraction = try value(.minimumFaceFrameFraction, defaults.minimumFaceFrameFraction)
+        self.faceMatchMinimumIoU = try value(.faceMatchMinimumIoU, defaults.faceMatchMinimumIoU)
+        self.blinkConfidenceFloor = try value(.blinkConfidenceFloor, defaults.blinkConfidenceFloor)
+        self.closedEyeAspectRatio = try value(.closedEyeAspectRatio, defaults.closedEyeAspectRatio)
+        self.worstFaceWeight = try value(.worstFaceWeight, defaults.worstFaceWeight)
+        self.croppedOrBlurredFacePenalty = try value(.croppedOrBlurredFacePenalty, defaults.croppedOrBlurredFacePenalty)
+        self.closedEyesPenalty = try value(.closedEyesPenalty, defaults.closedEyesPenalty)
+        self.weightsWithoutFaces = try value(.weightsWithoutFaces, defaults.weightsWithoutFaces)
+        self.weightsWithFaces = try value(.weightsWithFaces, defaults.weightsWithFaces)
+        self.favoriteBonus = try value(.favoriteBonus, defaults.favoriteBonus)
+        self.resolutionWeightCap = try value(.resolutionWeightCap, defaults.resolutionWeightCap)
+        self.automaticSelectionMinimumScore = try value(.automaticSelectionMinimumScore, defaults.automaticSelectionMinimumScore)
+        self.automaticSelectionMinimumMargin = try value(.automaticSelectionMinimumMargin, defaults.automaticSelectionMinimumMargin)
+        self.lowConfidenceMinimumMargin = try value(.lowConfidenceMinimumMargin, defaults.lowConfidenceMinimumMargin)
+        self.scoreEqualityTolerance = try value(.scoreEqualityTolerance, defaults.scoreEqualityTolerance)
+        self.neutralComponentScore = try value(.neutralComponentScore, defaults.neutralComponentScore)
+        self.reasonCodeMinimumDelta = try value(.reasonCodeMinimumDelta, defaults.reasonCodeMinimumDelta)
+    }
+
     /// The configuration the app ships with.
     public static let current = PhotoQualityScoringConfig()
 
