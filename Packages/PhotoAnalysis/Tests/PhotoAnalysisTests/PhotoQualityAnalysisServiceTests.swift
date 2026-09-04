@@ -228,6 +228,32 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         XCTAssertFalse(signals.hasOnlyRejectedFaces)
     }
 
+    /// A photo about to be recorded as `tooSmallToAnalyze` must not pay for
+    /// face detection, nor for a second image request, before that verdict.
+    func testAnImageTooSmallToAnalyzeIsNotProbedForFaces() async throws {
+        let tiny = try XCTUnwrap(makeCheckerboardImage(side: 32))
+        let requestedSides = RequestedSideRecorder()
+        let detectorCalls = CallCounter()
+        let service = PhotoQualityAnalysisService(
+            imageProvider: { asset, size in
+                await requestedSides.record(identifier: asset.localIdentifier, side: Int(size.width))
+                return tiny
+            },
+            faceDetector: { _ in
+                CallCounter.recordSynchronously(detectorCalls)
+                return [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.5))]
+            }
+        )
+
+        let scores = try await service.scores(for: [TestPHAsset(identifier: "tiny")])
+
+        let sides = await requestedSides.sides(for: "tiny")
+
+        XCTAssertEqual(scores.first?.signals.analysisFailure, .tooSmallToAnalyze)
+        XCTAssertEqual(sides.count, 1)
+        XCTAssertEqual(detectorCalls.count, 0)
+    }
+
     // MARK: - The face source request
 
     func testTheFaceSourceIsRequestedOnlyForPhotosThatHaveAFace() async throws {
@@ -443,6 +469,20 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             shouldInterpolate: false,
             intent: .defaultIntent
         )
+    }
+}
+
+/// Counts detector invocations from a `@Sendable` closure.
+private final class CallCounter: @unchecked Sendable {
+    private let lock = NSLock()
+    private var value = 0
+
+    var count: Int {
+        lock.withLock { value }
+    }
+
+    static func recordSynchronously(_ counter: CallCounter) {
+        counter.lock.withLock { counter.value += 1 }
     }
 }
 

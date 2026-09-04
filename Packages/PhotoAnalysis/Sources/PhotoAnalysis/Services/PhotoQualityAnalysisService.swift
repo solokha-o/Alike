@@ -64,7 +64,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                 // survives that gate does the second pass pay for a larger
                 // image — a landscape with nobody in it costs exactly what it
                 // cost before.
-                let probe = Self.probeFaces(in: image, detector: faceDetector, config: config)
+                let probe = Self.isLargeEnoughToAnalyze(image, config: config)
+                    ? Self.probeFaces(in: image, detector: faceDetector, config: config)
+                    : .empty
                 let faceSource = await Self.faceSource(
                     for: workItem.asset,
                     probe: probe,
@@ -103,13 +105,23 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         CGSize(width: CGFloat(side), height: CGFloat(side))
     }
 
+    /// The gate `makeAnalyzer` fails on, checked before the probe as well: a
+    /// photo that is about to be recorded as `tooSmallToAnalyze` must not pay
+    /// for face detection or a face-source request first.
+    private static func isLargeEnoughToAnalyze(
+        _ image: CGImage,
+        config: PhotoQualityScoringConfig
+    ) -> Bool {
+        max(image.width, image.height) >= config.minimumAnalysisLongSide
+    }
+
     private func makeAnalyzer() -> @Sendable (CGImage, CGImage?, FaceProbe, Int64) -> PhotoQualitySignals {
         let config = self.config
         let scorer = self.scorer
         let faceDetector = self.faceDetector
 
         return { image, faceSource, probe, pixelArea in
-            guard max(image.width, image.height) >= config.minimumAnalysisLongSide else {
+            guard Self.isLargeEnoughToAnalyze(image, config: config) else {
                 return .failed(.tooSmallToAnalyze, pixelArea: pixelArea)
             }
             guard let pixels = GrayscaleImageSampler.sample(image, dimension: config.sharpnessGridSide) else {
@@ -197,7 +209,7 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
             )
             // A detector that threw measured nothing, so it rejected nothing
             // either. That is a different state from "we looked and said no".
-            return FaceProbe(accepted: [], rejections: .empty, smallestAcceptedFraction: nil)
+            return .empty
         }
 
         var accepted: [VNFaceObservation] = []
@@ -480,6 +492,9 @@ struct FaceProbe: @unchecked Sendable {
     let rejections: FaceRejectionCounts
     /// Long-side fraction of the smallest accepted face; `nil` when none was.
     let smallestAcceptedFraction: Double?
+
+    /// Nobody was looked for, so nobody was found or turned away.
+    static let empty = FaceProbe(accepted: [], rejections: .empty, smallestAcceptedFraction: nil)
 }
 // `VNFaceObservation` is an immutable Vision result object that is never
 // mutated after detection, which is why the probe crosses the concurrency
