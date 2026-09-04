@@ -81,7 +81,7 @@ public enum UserGuideL10n {
     }
 
     public enum ComparingPhotos {
-        /// Favourites come first, then the highest resolution, then the most recent shot.
+        /// Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favou...
         public static var bestshotAutoBody: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.auto.body") }
         /// How Alike picks it
         public static var bestshotAutoTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.auto.title") }

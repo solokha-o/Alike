@@ -2913,79 +2913,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Favourites come first, then the highest resolution, then the most recent shot."
+            "value": "Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favourite gets a small nudge — none at all if it's blurry or badly exposed. When nothing stands out clearly, Alike leaves the choice to you instead of guessing."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Спершу обрані, потім найвища роздільна здатність, далі — найновіший знімок."
+            "value": "Alike порівнює різкість, експозицію, шум і те, чи обличчя у фокусі й очі розплющені. Улюблене фото отримує невелику перевагу — жодної, якщо воно розмите або погано експоноване. Коли жодне фото явно не краще, Alike залишає вибір вам, а не вгадує."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Primero van las favoritas, luego la mayor resolución y después la toma más reciente."
+            "value": "Alike compara la nitidez, la exposición, el ruido y si los rostros están enfocados con los ojos abiertos. Una foto favorita recibe un pequeño empujón, ninguno si está borrosa o mal expuesta. Cuando ninguna destaca con claridad, Alike te deja elegir a ti en vez de adivinar."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Primero van las favoritas, luego la mayor resolución y después la toma más reciente."
+            "value": "Alike compara la nitidez, la exposición, el ruido y si los rostros están enfocados con los ojos abiertos. Una foto favorita recibe un pequeño empujón, ninguno si está borrosa o mal expuesta. Cuando ninguna destaca con claridad, Alike te deja elegir a ti en vez de adivinar."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As favoritas vêm primeiro, depois a maior resolução e então a foto mais recente."
+            "value": "O Alike compara nitidez, exposição, ruído e se os rostos estão em foco com os olhos abertos. Uma foto favorita recebe um pequeno empurrão — nenhum se estiver desfocada ou mal exposta. Quando nada se destaca claramente, o Alike deixa a escolha para você em vez de adivinhar."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Favoriten kommen zuerst, dann die höchste Auflösung, dann die neueste Aufnahme."
+            "value": "Alike vergleicht Schärfe, Belichtung, Rauschen und ob Gesichter im Fokus sind und die Augen offen sind. Ein Favorit bekommt einen kleinen Bonus – keinen, wenn das Foto unscharf oder schlecht belichtet ist. Ist nichts eindeutig besser, überlässt dir Alike die Wahl, statt zu raten."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les favoris d’abord, puis la plus haute résolution, puis le cliché le plus récent."
+            "value": "Alike compare la netteté, l'exposition, le bruit et si les visages sont nets avec les yeux ouverts. Une photo favorite reçoit un petit coup de pouce, aucun si elle est floue ou mal exposée. Quand rien ne se détache clairement, Alike vous laisse choisir plutôt que de deviner."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prima i preferiti, poi la risoluzione più alta, poi lo scatto più recente."
+            "value": "Alike confronta nitidezza, esposizione, rumore e se i volti sono a fuoco con gli occhi aperti. Una foto preferita riceve un piccolo vantaggio, nessuno se è sfocata o mal esposta. Quando nulla spicca chiaramente, Alike lascia scegliere a te invece di indovinare."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Favorieten eerst, dan de hoogste resolutie, dan de meest recente opname."
+            "value": "Alike vergelijkt scherpte, belichting, ruis en of gezichten scherp zijn met open ogen. Een favoriet krijgt een klein duwtje — geen enkel als de foto wazig of slecht belicht is. Als niets duidelijk beter is, laat Alike de keuze aan jou over in plaats van te gokken."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Najpierw ulubione, potem najwyższa rozdzielczość, a potem najnowsze ujęcie."
+            "value": "Alike porównuje ostrość, ekspozycję, szum oraz to, czy twarze są ostre i oczy otwarte. Ulubione zdjęcie dostaje małą premię — żadnej, jeśli jest rozmyte lub źle naświetlone. Gdy nic wyraźnie się nie wyróżnia, Alike zostawia wybór Tobie zamiast zgadywać."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Önce favoriler, sonra en yüksek çözünürlük, sonra en yeni kare."
+            "value": "Alike; netlik, pozlama, gürültü ve yüzlerin net olup olmadığını, gözlerin açık olup olmadığını karşılaştırır. Favori bir fotoğraf küçük bir avantaj kazanır — bulanık veya kötü pozlanmışsa hiç kazanmaz. Hiçbiri açıkça öne çıkmadığında Alike, tahmin etmek yerine seçimi sana bırakır."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "最愛優先，其次是解析度最高者，再其次是最新拍攝的。"
+            "value": "Alike 會比較銳利度、曝光、雜訊，以及臉孔是否清晰、眼睛是否張開。最愛照片會得到一點加分——如果照片模糊或曝光不佳，就完全沒有加分。當沒有照片明顯勝出時，Alike 會把選擇權交給你，而不是用猜的。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "تأتي المفضلة أولًا، ثم الأعلى دقة، ثم أحدث لقطة."
+            "value": "يقارن Alike الوضوح والإضاءة والضوضاء، ومدى وضوح الوجوه وانفتاح العينين. تحصل الصورة المفضلة على دفعة صغيرة — ولا شيء إن كانت ضبابية أو سيئة الإضاءة. وعندما لا تتفوق أي صورة بوضوح، يترك لك Alike الاختيار بدلاً من التخمين."
           }
         }
       }
