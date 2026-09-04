@@ -63,6 +63,28 @@ Before using Grep, Glob, or Read for code exploration:
 5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
 
+## Change-Safety Gate
+
+Alike has real installed users, so every change to already-shipped surface is
+judged on what happens to *their* data and *their* flows, not only on whether it
+compiles.
+
+1. Before changing a `public` API of a package, a persisted value (Core Data
+   attribute, `UserDefaults` key, `Codable`/`Data` payload, cached file), a
+   shipped `enum`, or a known user flow, read
+   `Skills/Architecture/change-safety/SKILL.md` and classify the change R0-R3.
+2. Prefer extension over modification. New behaviour arrives as new code; an
+   in-place change to shipped surface needs a stated reason and a compatibility
+   plan in the commit message and PR body.
+3. Any change to stored data additionally follows
+   `Skills/Storage/persisted-data-evolution/SKILL.md` and is not done until its
+   migration or round-trip test passes.
+4. Before merging anything R1 or higher, walk the pre-merge gate in
+   `Skills/Architecture/change-safety/references/release-compatibility-gate.md`.
+5. Performance work follows `Skills/Performance/app-runtime-performance/SKILL.md`
+   (runtime) or `Skills/Performance/xcode-build-performance/SKILL.md` (build
+   time): measure before and after, on a realistic library, or do not claim it.
+
 ## Output style
 
 - Reply in unified diff form. No full-file rewrites unless asked.
