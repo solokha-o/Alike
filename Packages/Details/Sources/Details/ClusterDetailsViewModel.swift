@@ -104,6 +104,14 @@ final class ClusterDetailsViewModel {
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentAlikeReaction: AlikeReactionCue?
     private(set) var bestShotCelebrationCue: AlikeReviewReactionCue?
+    /// Haptics are driven by these two counters, never by the values they
+    /// describe. Opening a cluster restores the saved review and then refines
+    /// the ranking in the background, so `selectedAssetIDs`, `bestShotAssetID`
+    /// and `reviewStatus` all move without the user touching anything — the
+    /// empty ID → metadata pick → measured pick sequence fired the confirmation
+    /// pattern twice on a plain open. Only an explicit action bumps these.
+    private(set) var selectionFeedbackTrigger = 0
+    private(set) var successFeedbackTrigger = 0
     /// Increments once every persisted review-state write lands, so hosts can
     /// refresh their own snapshot of the review state while this screen is
     /// still visible instead of waiting for it to close.
@@ -306,6 +314,7 @@ final class ClusterDetailsViewModel {
         } else {
             selectedAssetIDs.insert(localIdentifier)
         }
+        selectionFeedbackTrigger &+= 1
 
         withAnimation(.appInteractive) {
             isReviewConfirmed = false
@@ -342,6 +351,7 @@ final class ClusterDetailsViewModel {
         guard localIdentifier != bestShotAssetID else { return }
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
+        successFeedbackTrigger &+= 1
         let previousBestShotID = bestShotAssetID
         // Only a pick that replaces *our* recommendation is a calibration
         // signal; the user switching between their own picks is not.
@@ -411,6 +421,7 @@ final class ClusterDetailsViewModel {
     func selectAllExceptBest() {
         interactionGeneration &+= 1
         guard !bestShotAssetID.isEmpty else { return }
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             isReviewConfirmed = false
@@ -422,6 +433,7 @@ final class ClusterDetailsViewModel {
 
     func clearSelection() {
         interactionGeneration &+= 1
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
             isReviewConfirmed = false
@@ -438,6 +450,7 @@ final class ClusterDetailsViewModel {
                 .first(where: selectedAssetIDs.contains)
         else { return }
 
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs = [retainedID]
             isReviewConfirmed = false
@@ -1068,6 +1081,7 @@ private extension ClusterDetailsViewModel {
 
         if emitsReviewCompletion, previousStatus != .reviewed, reviewStatus == .reviewed {
             reviewCompletionGeneration &+= 1
+            successFeedbackTrigger &+= 1
             bestShotCelebrationCue = AlikeReviewReactionCue(
                 id: .init(clusterID: cluster.id, generation: reviewCompletionGeneration)
             )
