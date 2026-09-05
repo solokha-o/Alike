@@ -226,6 +226,7 @@ public struct CleanupView: View {
                 qualityAnalyzer: workspace.qualityAnalyzer,
                 enhancementService: workspace.enhancementService,
                 overrideMetrics: workspace.bestShotOverrideMetrics,
+                personalizedConfigProvider: workspace.bestShotPersonalizedConfigProvider,
                 onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
                 onCleanupCompleted: reconcile
             )

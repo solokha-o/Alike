@@ -248,6 +248,243 @@ public enum ReportWriter {
         return changes
     }
 
+    // MARK: - Personalization report
+
+    /// Renders both personalisation views and the one verdict built from
+    /// whichever measurement can actually back it up.
+    ///
+    /// The prefix table (`personalization`) is a shrinkage curve: useful for
+    /// seeing how the fit moves as more clusters feed it, but on a corpus
+    /// this size personalisation may not even engage until the prefix
+    /// consumes the whole corpus — leaving nothing to evaluate on. The
+    /// k-fold view (`kfold`) is what the verdict is keyed on instead: every
+    /// fold fits on the *other* folds and evaluates on clusters the fit
+    /// never saw, so it is the only measurement that can both engage
+    /// personalisation and hold out real eval data.
+    public static func render(
+        personalization: PersonalizationReport.Result,
+        kfold: PersonalizationReport.KFoldResult,
+        corpusClusterCount: Int
+    ) -> String {
+        var lines: [String] = []
+        lines.append("# Best Shot Personalisation Regression Guard")
+        lines.append("")
+        lines.append("- Corpus clusters: \(corpusClusterCount)")
+        lines.append(
+            "- Both views order clusters by `clusterID`, sorted ascending — not chronologically. This "
+                + "corpus was labelled in one sitting, so a per-cluster `recordedAt` would be fiction; "
+                + "synthesised examples all carry a fixed timestamp instead."
+        )
+        lines.append(
+            "- Personalisation only engages once a branch (with-faces / without-faces) has enough "
+                + "examples; below that threshold a branch's weights come back identical to the global "
+                + "config, and both tables below say so rather than implying a bug."
+        )
+        lines.append("")
+
+        lines.append(personalizationPrefixSection(personalization))
+        lines.append(personalizationKFoldSection(kfold, corpusClusterCount: corpusClusterCount))
+
+        lines.append("## Verdict")
+        lines.append("")
+        for line in kfoldVerdict(kfold) {
+            lines.append(line)
+        }
+        lines.append("")
+
+        lines.append(reportFooter)
+        return lines.joined(separator: "\n") + "\n"
+    }
+
+    /// The shrinkage-curve view: how the fit changes as the prefix grows.
+    /// Carries no verdict of its own — see `render(personalization:kfold:corpusClusterCount:)`.
+    private static func personalizationPrefixSection(_ personalization: PersonalizationReport.Result) -> String {
+        var lines: [String] = []
+        lines.append("## Personalisation vs baseline (prefix shrinkage curve)")
+        lines.append("")
+        lines.append(
+            "| Prefix | Fit clusters | Examples (faces/no-faces) | Agreed | Unresolved | Refused "
+                + "| Eval clusters | Engaged (faces/no-faces) | Top-1 (all) baseline "
+                + "| Top-1 (all) personalized | Coverage baseline | Coverage personalized "
+                + "| Blurry winner baseline | Blurry winner personalized |"
+        )
+        lines.append("|---:|---:|---:|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|")
+
+        for result in personalization.prefixResults {
+            let fit = result.fit
+            let examplesLabel = "\(fit.withFacesExampleCount)/\(fit.withoutFacesExampleCount)"
+            let engagedLabel = "\(result.withFacesEngaged ? "yes" : "no")/\(result.withoutFacesEngaged ? "yes" : "no")"
+            let row: String
+            if let baseline = result.baseline, let personalized = result.personalized {
+                row = "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
+                    + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
+                    + "| \(result.evalClusterCount) | \(engagedLabel) "
+                    + "| \(rateWithCorrectCount(baseline.topOneAgreementOverAllClusters, correct: baseline.correctClusterCount, of: baseline.clusterCount)) "
+                    + "| \(rateWithCorrectCount(personalized.topOneAgreementOverAllClusters, correct: personalized.correctClusterCount, of: personalized.clusterCount)) "
+                    + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
+                    + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
+                    + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
+            } else {
+                row = "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
+                    + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
+                    + "| 0 | \(engagedLabel) | _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
+            }
+            lines.append(row)
+        }
+        lines.append("")
+        return lines.joined(separator: "\n")
+    }
+
+    /// The held-out view the verdict is keyed on: fit on k-1 folds, evaluate
+    /// on the one left out, repeated for every fold, then summed.
+    private static func personalizationKFoldSection(
+        _ kfold: PersonalizationReport.KFoldResult,
+        corpusClusterCount: Int
+    ) -> String {
+        var lines: [String] = []
+        lines.append("## K-fold cross-validation (k=\(kfold.folds))")
+        lines.append("")
+        lines.append(
+            "Fold membership is deterministic: clusters sorted by `clusterID`, fold = index % k. Each "
+                + "fold fits on the other k-1 folds and evaluates on the held-out fold, so — unlike the "
+                + "prefix curve above — every row here can both engage personalisation and measure it on "
+                + "clusters the fit never saw."
+        )
+        lines.append("")
+        lines.append(
+            "| Fold | Fit clusters | Examples (faces/no-faces) | Eval clusters | Engaged (faces/no-faces) "
+                + "| Correct baseline | Correct personalized | Coverage baseline | Coverage personalized "
+                + "| Blurry winner baseline | Blurry winner personalized |"
+        )
+        lines.append("|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|")
+
+        for fold in kfold.foldResults {
+            let examplesLabel = "\(fold.fit.withFacesExampleCount)/\(fold.fit.withoutFacesExampleCount)"
+            let engagedLabel = "\(fold.withFacesEngaged ? "yes" : "no")/\(fold.withoutFacesEngaged ? "yes" : "no")"
+            let row: String
+            if let baseline = fold.baseline, let personalized = fold.personalized {
+                row = "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) "
+                    + "| \(fold.evalClusterCount) | \(engagedLabel) "
+                    + "| \(baseline.correctClusterCount)/\(baseline.clusterCount) "
+                    + "| \(personalized.correctClusterCount)/\(personalized.clusterCount) "
+                    + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
+                    + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
+                    + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
+            } else {
+                row = "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) | 0 | \(engagedLabel) "
+                    + "| _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
+            }
+            lines.append(row)
+        }
+        lines.append("")
+
+        lines.append("### Aggregate over folds")
+        lines.append("")
+        lines.append("| | Correct (sum) | Top-1 (all) | Coverage | Blurry winner |")
+        lines.append("|---|---:|---:|---:|---:|")
+        lines.append(aggregateRow(label: "Baseline", bucket: kfold.aggregateBaseline))
+        lines.append(aggregateRow(label: "Personalized", bucket: kfold.aggregatePersonalized))
+        lines.append("")
+
+        for line in engagementSummary(kfold, corpusClusterCount: corpusClusterCount) {
+            lines.append(line)
+        }
+        lines.append("")
+
+        return lines.joined(separator: "\n")
+    }
+
+    private static func aggregateRow(label: String, bucket: PersonalizationReport.AggregateBucket) -> String {
+        "| \(label) | \(bucket.correctClusterCount)/\(bucket.clusterCount) "
+            + "| \(rateWithCorrectCount(bucket.topOneAgreementOverAllClusters, correct: bucket.correctClusterCount, of: bucket.clusterCount)) "
+            + "| \(percentOrDash(bucket.coverageRate, of: bucket.clusterCount)) "
+            + "| \(percentOrDash(bucket.blurryWinnerRate, of: bucket.winnerClusterCount)) |"
+    }
+
+    /// Spells out per-branch engagement in words rather than leaving a
+    /// reader to infer "never engaged" from a zero somewhere in the table.
+    private static func engagementSummary(
+        _ kfold: PersonalizationReport.KFoldResult,
+        corpusClusterCount: Int
+    ) -> [String] {
+        var lines: [String] = []
+
+        if kfold.withFacesEngagedAnyFold {
+            let folds = kfold.foldResults.filter(\.withFacesEngaged).map { String($0.foldIndex) }
+            lines.append("- with-faces branch: engaged in fold(s) \(folds.joined(separator: ", ")).")
+        } else {
+            lines.append(
+                "- with-faces branch: **not engaged in any of the \(kfold.folds) folds** — only "
+                    + "\(kfold.faceBearingClusterCount) of \(corpusClusterCount) corpus clusters carry a "
+                    + "measured face, too few for this branch to reach the fit minimum on any fold."
+            )
+        }
+
+        if kfold.withoutFacesEngagedAnyFold {
+            let folds = kfold.foldResults.filter(\.withoutFacesEngaged).map { String($0.foldIndex) }
+            lines.append("- without-faces branch: engaged in fold(s) \(folds.joined(separator: ", ")).")
+        } else {
+            lines.append("- without-faces branch: **not engaged in any of the \(kfold.folds) folds.**")
+        }
+
+        return lines
+    }
+
+    private static func rateWithCorrectCount(_ value: Double?, correct: Int, of total: Int) -> String {
+        guard let value else { return "n/a" }
+        return "\(percent(value)) (\(correct)/\(total))"
+    }
+
+    /// The verdict the CLI reports: keyed on the k-fold aggregate, since
+    /// that is the only measurement that both engaged personalisation and
+    /// held out real eval data. A tiny epsilon absorbs floating-point noise
+    /// rather than flagging a difference that is really zero.
+    private static func kfoldVerdict(_ kfold: PersonalizationReport.KFoldResult) -> [String] {
+        guard kfold.withFacesEngagedAnyFold || kfold.withoutFacesEngagedAnyFold else {
+            return [
+                "Personalisation never engaged in any of the \(kfold.folds) folds, so this run measured "
+                    + "nothing — there is no verdict to give on this corpus. See the engagement notes "
+                    + "above for why.",
+            ]
+        }
+
+        let epsilon = 1e-9
+        let baseline = kfold.aggregateBaseline
+        let personalized = kfold.aggregatePersonalized
+
+        let baselineTopOne = baseline.topOneAgreementOverAllClusters ?? 0
+        let personalizedTopOne = personalized.topOneAgreementOverAllClusters ?? 0
+        let baselineCoverage = baseline.coverageRate ?? 0
+        let personalizedCoverage = personalized.coverageRate ?? 0
+        let baselineBlurry = baseline.blurryWinnerRate ?? 0
+        let personalizedBlurry = personalized.blurryWinnerRate ?? 0
+
+        var reasons: [String] = []
+        if personalizedTopOne < baselineTopOne - epsilon {
+            reasons.append(
+                "aggregate top-1 (all) dropped from \(percent(baselineTopOne)) to \(percent(personalizedTopOne)) "
+                    + "(\(baseline.correctClusterCount) -> \(personalized.correctClusterCount) correct of "
+                    + "\(baseline.clusterCount))"
+            )
+        }
+        if personalizedCoverage < baselineCoverage - epsilon {
+            reasons.append("aggregate coverage dropped from \(percent(baselineCoverage)) to \(percent(personalizedCoverage))")
+        }
+        if personalizedBlurry > baselineBlurry + epsilon {
+            reasons.append("aggregate blurry winner rate rose from \(percent(baselineBlurry)) to \(percent(personalizedBlurry))")
+        }
+
+        if reasons.isEmpty {
+            return [
+                "Personalisation did not regress the k-fold aggregate: top-1 (all) "
+                    + "\(percent(baselineTopOne)) -> \(percent(personalizedTopOne)), coverage "
+                    + "\(percent(baselineCoverage)) -> \(percent(personalizedCoverage)), blurry winner "
+                    + "\(percent(baselineBlurry)) -> \(percent(personalizedBlurry)).",
+            ]
+        }
+        return ["**Personalisation regressed the k-fold aggregate:** " + reasons.joined(separator: "; ") + "."]
+    }
+
     // MARK: - Candidate config JSON
 
     /// Pretty-printed, key-sorted JSON. Deliberately does NOT bump

@@ -29,6 +29,10 @@ public final class CleanupWorkspaceModel {
     /// On-device counters that say how often the ranking gets replaced; the
     /// calibration signal, with nothing leaving the device.
     public let bestShotOverrideMetrics: any BestShotOverrideMetricsRepository
+    /// Applies the device's personalized Best Shot weights on top of the
+    /// global scoring config, and records every override that replaces our
+    /// recommendation so the fit keeps improving.
+    public let bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider
 
     public var content: CleanupWorkspaceContent? {
         guard lastGoodContent.hasCompletedScanBaseline else { return nil }
@@ -92,6 +96,10 @@ public final class CleanupWorkspaceModel {
         ),
         bestShotOverrideMetrics: any BestShotOverrideMetricsRepository =
             UserDefaultsBestShotOverrideMetricsRepository(),
+        bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider =
+            BestShotPersonalizedScoringConfigProvider(
+                repository: UserDefaultsBestShotPersonalizationRepository()
+            ),
         cleanupManager: (any CleanupSessionManaging)? = nil,
         now: @escaping @Sendable () -> Date = Date.init
     ) {
@@ -103,6 +111,7 @@ public final class CleanupWorkspaceModel {
         self.qualityAnalyzer = qualityAnalyzer
         self.enhancementService = enhancementService
         self.bestShotOverrideMetrics = bestShotOverrideMetrics
+        self.bestShotPersonalizedConfigProvider = bestShotPersonalizedConfigProvider
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.now = now
@@ -289,6 +298,12 @@ public final class CleanupWorkspaceModel {
     /// data after the deletion service has finished.
     public func prepareForDataDeletion() async {
         scanMutationGeneration &+= 1
+
+        // `self` outlives the deletion — the workspace is never rebuilt after
+        // a full delete — so the provider's in-memory cache must be cleared
+        // explicitly here or a stale personalized config would survive the
+        // repository wipe underneath it.
+        await bestShotPersonalizedConfigProvider.reset()
 
         let cachedLoad = cachedContentLoadTask
         let activeScanTask = scanTask

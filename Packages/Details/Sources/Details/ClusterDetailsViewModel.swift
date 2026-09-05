@@ -33,7 +33,29 @@ final class ClusterDetailsViewModel {
     private let enhancementService: (any PhotoEnhancementService)?
     /// Anonymous, on-device tally of how often our recommendation is replaced.
     private let overrideMetrics: (any BestShotOverrideMetricsRepository)?
+    /// The device's personalized Best Shot weights, applied on top of the
+    /// global scoring config. `nil` in previews and hosts without a
+    /// personalisation store, where ranking stays on the global config.
+    /// Typed as the protocol, not the concrete
+    /// `BestShotPersonalizedScoringConfigProvider`, so tests can substitute a
+    /// double whose `config()` suspends on demand — the concrete actor caches
+    /// for good after its first successful load, so it cannot be held open a
+    /// second time the way a manual-pick-during-refine regression test needs.
+    private let personalizedConfigProvider: (any BestShotConfigProviding)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
+    /// The scores the last ranking decision was made from, retained so a
+    /// manual override afterwards can build its example from the same
+    /// numbers the ranker saw — a cluster's worth, small.
+    private var qualityScores: [String: PhotoQualityScore] = [:]
+    /// What the ranker recommended for the current `assetSnapshots`, before
+    /// any manual override. Empty when nothing was ranked (no signals, or an
+    /// unresolved decision).
+    private var rankedBestShotID = ""
+    /// The config the last ranking decision was made under. An override
+    /// example must be measured under the identical config, so this is
+    /// captured once per decision rather than re-read from the provider —
+    /// which could have moved on by the time the user overrides the pick.
+    private var rankedConfig: PhotoQualityScoringConfig = .current
     private var persistenceTask: Task<Void, Never>?
     /// Bumped by every user action on this screen, so a slow ranking that
     /// arrives afterwards knows not to overwrite what the user just did.
@@ -82,6 +104,14 @@ final class ClusterDetailsViewModel {
     private(set) var pendingCompletionRecord: CleanupCompletionRecord?
     private(set) var currentAlikeReaction: AlikeReactionCue?
     private(set) var bestShotCelebrationCue: AlikeReviewReactionCue?
+    /// Haptics are driven by these two counters, never by the values they
+    /// describe. Opening a cluster restores the saved review and then refines
+    /// the ranking in the background, so `selectedAssetIDs`, `bestShotAssetID`
+    /// and `reviewStatus` all move without the user touching anything — the
+    /// empty ID → metadata pick → measured pick sequence fired the confirmation
+    /// pattern twice on a plain open. Only an explicit action bumps these.
+    private(set) var selectionFeedbackTrigger = 0
+    private(set) var successFeedbackTrigger = 0
     /// Increments once every persisted review-state write lands, so hosts can
     /// refresh their own snapshot of the review state while this screen is
     /// still visible instead of waiting for it to close.
@@ -97,6 +127,7 @@ final class ClusterDetailsViewModel {
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
         enhancementService: (any PhotoEnhancementService)? = nil,
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: (any BestShotConfigProviding)? = nil,
         assetSnapshots: [ReviewAssetSnapshot]? = nil,
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
@@ -116,6 +147,7 @@ final class ClusterDetailsViewModel {
         self.qualityAnalyzer = qualityAnalyzer
         self.enhancementService = enhancementService
         self.overrideMetrics = overrideMetrics
+        self.personalizedConfigProvider = personalizedConfigProvider
         self.completionDelay = completionDelay
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
@@ -243,7 +275,7 @@ final class ClusterDetailsViewModel {
             // and the metadata ranking. Quality scoring can decode photos and
             // fetch originals from iCloud; making the whole screen wait on that
             // would leave a spinner up for as long as the library is slow.
-            applyLoadedState(
+            await applyLoadedState(
                 assetSnapshots: preparedSnapshots,
                 savedState: persistedState,
                 qualityScores: [:]
@@ -263,7 +295,7 @@ final class ClusterDetailsViewModel {
         } catch {
             guard !Task.isCancelled else { return }
             AppLog.ui.error("\(AppLog.tag(.error, "Failed to prepare cluster details: \(error.localizedDescription)"))")
-            applyLoadedState(assetSnapshots: [], savedState: nil)
+            await applyLoadedState(assetSnapshots: [], savedState: nil)
             hasLoadedReviewState = true
         }
     }
@@ -282,6 +314,7 @@ final class ClusterDetailsViewModel {
         } else {
             selectedAssetIDs.insert(localIdentifier)
         }
+        selectionFeedbackTrigger &+= 1
 
         withAnimation(.appInteractive) {
             isReviewConfirmed = false
@@ -318,6 +351,7 @@ final class ClusterDetailsViewModel {
         guard localIdentifier != bestShotAssetID else { return }
         guard assetSnapshots.contains(where: { $0.localIdentifier == localIdentifier }) else { return }
 
+        successFeedbackTrigger &+= 1
         let previousBestShotID = bestShotAssetID
         // Only a pick that replaces *our* recommendation is a calibration
         // signal; the user switching between their own picks is not.
@@ -359,11 +393,35 @@ final class ClusterDetailsViewModel {
                 )
             }
         }
+        // Same guard as the metrics tally above: only a pick that replaces
+        // our recommendation is training data. Built from the scores and the
+        // recommendation the ranking made this decision under, so a stale or
+        // never-loaded ranking (`rankedBestShotID` empty) yields no example —
+        // `overrideExample` requires `chosen != recommended` and refuses that
+        // case on its own, but scores never having loaded also means there is
+        // nothing meaningful to measure a delta from.
+        if replacedConfidence != nil, let personalizedConfigProvider, !qualityScores.isEmpty {
+            let snapshots = assetSnapshots.map(\.photoClusterAssetSnapshot)
+            let scores = qualityScores
+            let recommended = rankedBestShotID
+            let config = rankedConfig
+            Task {
+                guard let example = BestShotRanker.overrideExample(
+                    snapshots: snapshots,
+                    scores: scores,
+                    chosen: localIdentifier,
+                    recommended: recommended,
+                    config: config
+                ) else { return }
+                await personalizedConfigProvider.recordOverride(example)
+            }
+        }
     }
 
     func selectAllExceptBest() {
         interactionGeneration &+= 1
         guard !bestShotAssetID.isEmpty else { return }
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs = Set(assetSnapshots.map(\.localIdentifier)).subtracting([bestShotAssetID])
             isReviewConfirmed = false
@@ -375,6 +433,7 @@ final class ClusterDetailsViewModel {
 
     func clearSelection() {
         interactionGeneration &+= 1
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs.removeAll()
             isReviewConfirmed = false
@@ -391,6 +450,7 @@ final class ClusterDetailsViewModel {
                 .first(where: selectedAssetIDs.contains)
         else { return }
 
+        selectionFeedbackTrigger &+= 1
         withAnimation(.appInteractive) {
             selectedAssetIDs = [retainedID]
             isReviewConfirmed = false
@@ -751,11 +811,16 @@ private extension ClusterDetailsViewModel {
             return
         }
 
-        applyLoadedState(
+        let didApply = await applyLoadedState(
             assetSnapshots: assetSnapshots,
             savedState: savedState,
-            qualityScores: qualityScores
+            qualityScores: qualityScores,
+            expectedGeneration: generation
         )
+        // `applyLoadedState` itself suspends (the personalized config load);
+        // a manual pick made during that suspension must win the same way one
+        // made during `loadQualityScores` above already does.
+        guard didApply else { return }
         isRankingQualityPending = false
         await refreshEnhancementAvailability()
         await recordBestShotRecommendation()
@@ -797,14 +862,24 @@ private extension ClusterDetailsViewModel {
         }
     }
 
+    /// - Parameter expectedGeneration: When non-`nil`, the `interactionGeneration`
+    ///   the caller observed before starting the work that led here. Checked
+    ///   again after this method's own suspension (the personalized config
+    ///   load below) so a manual pick made while that was in flight is not
+    ///   overwritten by the ranking this call is about to apply. `nil` (the
+    ///   initial load, before the user can have acted yet) skips the check.
+    /// - Returns: Whether the state was actually applied, `false` when a
+    ///   newer interaction or cancellation won the race.
+    @discardableResult
     func applyLoadedState(
         assetSnapshots: [ReviewAssetSnapshot],
         savedState: ClusterReviewState?,
-        qualityScores: [String: PhotoQualityScore] = [:]
-    ) {
-        self.assetSnapshots = assetSnapshots
-
+        qualityScores: [String: PhotoQualityScore] = [:],
+        expectedGeneration: Int? = nil
+    ) async -> Bool {
         guard !assetSnapshots.isEmpty else {
+            self.assetSnapshots = assetSnapshots
+            self.qualityScores = qualityScores
             bestShotAssetID = ""
             bestShotLabel = DetailsL10n.Common.bestShot
             isBestShotUserSelected = false
@@ -815,9 +890,31 @@ private extension ClusterDetailsViewModel {
             reviewMode = .selection
             reviewStatus = .notReviewed
             estimatedSavingsBytes = 0
-            return
+            rankedBestShotID = ""
+            rankedConfig = .current
+            return true
         }
 
+        // The personalized config, when there is one: the details screen and
+        // the grid must agree on which photo is the Best Shot, and an example
+        // recorded later must be measured under the same config this decision
+        // was made under.
+        let config = await personalizedConfigProvider?.config() ?? .current
+        guard !Task.isCancelled else { return false }
+        // The config load above is itself a suspension point: a manual pick
+        // made while it was in flight outranks the ranking this call is
+        // about to apply, same as the `interactionGeneration` guard the
+        // caller already made before starting this work. Nothing observable
+        // (`assetSnapshots`, `qualityScores`, `enhancedAssetIDs`) is written
+        // until this check passes, so `setBestShot`'s override example — built
+        // from those same properties — never sees a ranking that is half this
+        // call's and half the state the user actually picked against.
+        if let expectedGeneration, expectedGeneration != interactionGeneration {
+            isRankingQualityPending = false
+            return false
+        }
+        self.assetSnapshots = assetSnapshots
+        self.qualityScores = qualityScores
         // The measured decision; with no signals it degrades to exactly the
         // metadata-only ranking the app shipped before.
         // The badge belongs to the photo, not to this screen's lifetime: the
@@ -826,14 +923,16 @@ private extension ClusterDetailsViewModel {
         enhancedAssetIDs = Set(
             qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
         )
-
+        self.rankedConfig = config
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
-            scores: qualityScores
+            scores: qualityScores,
+            config: config
         )
         bestShotConfidence = decision.confidence
         bestShotReasonCodes = decision.reasonCodes
         let rankedBestShotID = decision.localIdentifier ?? ""
+        self.rankedBestShotID = rankedBestShotID
 
         guard let savedState else {
             applyState(
@@ -844,7 +943,7 @@ private extension ClusterDetailsViewModel {
                 reviewMode: .selection,
                 persistedStatus: nil
             )
-            return
+            return true
         }
 
         let validIDs = Set(assetSnapshots.map(\.localIdentifier))
@@ -886,6 +985,7 @@ private extension ClusterDetailsViewModel {
             reviewMode: savedState.mode,
             persistedStatus: savedState.status
         )
+        return true
     }
 
     func handleDeleteError(_ error: PhotoCleanupError) {
@@ -981,6 +1081,7 @@ private extension ClusterDetailsViewModel {
 
         if emitsReviewCompletion, previousStatus != .reviewed, reviewStatus == .reviewed {
             reviewCompletionGeneration &+= 1
+            successFeedbackTrigger &+= 1
             bestShotCelebrationCue = AlikeReviewReactionCue(
                 id: .init(clusterID: cluster.id, generation: reviewCompletionGeneration)
             )

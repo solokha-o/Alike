@@ -42,6 +42,7 @@ public struct ClusterDetailsView: View {
         qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
         enhancementService: (any PhotoEnhancementService)? = nil,
         overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
@@ -56,7 +57,8 @@ public struct ClusterDetailsView: View {
             openSettingsAction: openSettingsAction,
             qualityAnalyzer: qualityAnalyzer,
             enhancementService: enhancementService,
-            overrideMetrics: overrideMetrics
+            overrideMetrics: overrideMetrics,
+            personalizedConfigProvider: personalizedConfigProvider
         ))
     }
 
@@ -104,9 +106,8 @@ public struct ClusterDetailsView: View {
         )
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.selectedAssetIDs)
         .animation(viewModel.hasLoadedReviewState ? .appInteractive : nil, value: viewModel.reviewStatus)
-        .sensoryFeedback(.selection, trigger: viewModel.selectedAssetIDs.count)
-        .sensoryFeedback(.success, trigger: viewModel.bestShotAssetID)
-        .sensoryFeedback(.success, trigger: viewModel.reviewStatus == .reviewed)
+        .sensoryFeedback(.selection, trigger: viewModel.selectionFeedbackTrigger)
+        .sensoryFeedback(.success, trigger: viewModel.successFeedbackTrigger)
         .navigationTitle(Text(DetailsL10n.ClusterDetails.similarPhotos))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.isDeleting)

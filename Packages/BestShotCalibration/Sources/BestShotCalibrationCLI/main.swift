@@ -9,9 +9,17 @@ func printUsage() {
     USAGE:
       bestshot-calibrate report --corpus <path> [--output <path>] [--category <name>] [--config <path>]
       bestshot-calibrate sweep --corpus <path> [--output report.md] [--config-output candidate.json] [--blur-penalty 5.0]
+      bestshot-calibrate personalize --corpus <path> [--output <path>] [--prefix 10,30,100] [--folds 5]
 
-    report   Computes agreement/blur metrics for the shipped scoring config against a labelled corpus.
-    sweep    Runs a deterministic search for candidate weights/thresholds and reports baseline vs candidate.
+    report        Computes agreement/blur metrics for the shipped scoring config against a labelled corpus.
+    sweep         Runs a deterministic search for candidate weights/thresholds and reports baseline vs candidate.
+    personalize   Fits personal weights from a prefix of clusters (ordered by clusterID) and,
+                  separately, via k-fold cross-validation, and checks whether personalisation ever
+                  makes the held-out ranking worse than the global config. The verdict is keyed on
+                  the k-fold aggregate, since that is the only view that both engages personalisation
+                  and measures it on clusters the fit never saw; the prefix table is a shrinkage
+                  curve alongside it. A regression guard, not a demonstration of gain — exits 0
+                  either way.
 
     Options:
       --corpus <path>          Path to a BestShotCalibrationCorpus JSON export. Required.
@@ -26,6 +34,13 @@ func printUsage() {
                                 (appended after the report, separated by a marker line).
       --blur-penalty <double>  sweep only: weight of the penalized blurry rate in the search
                                 objective. Must be finite and >= 0. Default 5.0.
+      --prefix <sizes>         personalize only: comma-separated fit-set prefix sizes, each a
+                                non-negative integer or the literal "all" (the whole corpus).
+                                Duplicates collapse and every size clamps to the corpus size.
+                                Default "10,30,100,all".
+      --folds <k>              personalize only: number of cross-validation folds. Must be an
+                                integer between 2 and the corpus size (rejected otherwise, same as
+                                a malformed --prefix). Default 5.
     """
     FileHandle.standardError.write(Data((usage + "\n").utf8))
 }
@@ -43,6 +58,8 @@ struct Options {
     var configPath: String?
     var configOutputPath: String?
     var blurPenalty: Double = WeightSweep.defaultBlurPenalty
+    var prefix: String?
+    var folds: String?
 }
 
 func parseOptions(_ args: [String]) -> Options {
@@ -73,6 +90,10 @@ func parseOptions(_ args: [String]) -> Options {
                 fail("--blur-penalty must be a finite value >= 0, got '\(raw)'")
             }
             options.blurPenalty = value
+        case "--prefix":
+            options.prefix = iterator.next()
+        case "--folds":
+            options.folds = iterator.next()
         default:
             fail("Unrecognized argument: \(arg)")
         }
@@ -164,6 +185,44 @@ func runSweep(_ args: [String]) {
     }
 }
 
+func runPersonalize(_ args: [String]) {
+    let options = parseOptions(args)
+    guard let corpusPath = options.corpusPath else { fail("personalize requires --corpus <path>") }
+
+    let loadResult = loadCorpus(at: corpusPath)
+    let corpus = loadResult.corpus
+
+    let prefixSpec = options.prefix ?? PersonalizationReport.defaultPrefixSpec
+    let prefixSizes: [Int]
+    do {
+        prefixSizes = try PersonalizationReport.parsePrefixes(prefixSpec, corpusSize: corpus.entries.count)
+    } catch {
+        fail("Could not parse --prefix '\(prefixSpec)': \(error)")
+    }
+
+    let foldsSpec = options.folds ?? String(PersonalizationReport.defaultFolds)
+    let folds: Int
+    do {
+        folds = try PersonalizationReport.parseFolds(foldsSpec, corpusSize: corpus.entries.count)
+    } catch {
+        fail("Could not parse --folds '\(foldsSpec)': \(error)")
+    }
+
+    let result = PersonalizationReport.run(corpus: corpus, prefixSizes: prefixSizes, global: .current)
+    let kfoldResult = PersonalizationReport.runKFold(corpus: corpus, folds: folds, global: .current)
+    var report = ReportWriter.render(
+        personalization: result,
+        kfold: kfoldResult,
+        corpusClusterCount: corpus.entries.count
+    )
+    if !loadResult.warnings.isEmpty {
+        let warningBlock = loadResult.warnings.map { "> \($0.replacingOccurrences(of: "\n", with: " "))" }
+            .joined(separator: "\n")
+        report = "## Warnings\n\n\(warningBlock)\n\n" + report
+    }
+    write(report, to: options.outputPath)
+}
+
 let arguments = Array(CommandLine.arguments.dropFirst())
 guard let command = arguments.first else {
     printUsage()
@@ -175,6 +234,8 @@ case "report":
     runReport(Array(arguments.dropFirst()))
 case "sweep":
     runSweep(Array(arguments.dropFirst()))
+case "personalize":
+    runPersonalize(Array(arguments.dropFirst()))
 case "-h", "--help", "help":
     printUsage()
 default:
