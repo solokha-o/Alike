@@ -2082,6 +2082,8 @@ private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonali
 
     func saveWeights(_ weights: BestShotPersonalWeights) async {}
 
+    func clearWeights() async {}
+
     func reset() async {}
 
     func waitUntilLoadStarted() async {

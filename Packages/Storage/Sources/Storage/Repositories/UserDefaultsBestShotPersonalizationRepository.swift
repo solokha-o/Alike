@@ -63,6 +63,12 @@ public actor UserDefaultsBestShotPersonalizationRepository: BestShotPersonalizat
         }
     }
 
+    public func clearWeights() {
+        Self.writeLock.withLockUnchecked {
+            defaults.removeObject(forKey: weightsKey)
+        }
+    }
+
     public func reset() {
         Self.writeLock.withLockUnchecked {
             defaults.removeObject(forKey: examplesKey)

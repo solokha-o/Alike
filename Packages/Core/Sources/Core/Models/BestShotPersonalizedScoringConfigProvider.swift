@@ -32,7 +32,7 @@ public actor BestShotPersonalizedScoringConfigProvider {
     /// personalisation yet" — both look like `nil` otherwise, and the
     /// difference is exactly what decides whether `config()` needs to hit the
     /// repository.
-    private enum CacheState {
+    private enum CacheState: Equatable {
         case notLoaded
         case loaded(BestShotPersonalWeights?)
     }
@@ -108,30 +108,47 @@ public actor BestShotPersonalizedScoringConfigProvider {
             // A reset() — or another recordOverride that started after this
             // one and already ran to completion — landed while `saveWeights`
             // above was in flight, so that write just persisted stale
-            // weights on top of whatever is now current. Wiping the
-            // repository here (the old fix) would be just as wrong as
-            // leaving the stale write in place: it would also erase a
-            // legitimately newer reset or override. `cache` is always the
-            // last thing a non-stale caller touches, so it holds that newer
-            // truth; write it straight back instead.
+            // weights on top of whatever is now current. `repository.reset()`
+            // (the old fix) was just as wrong as leaving the stale write in
+            // place: `reset()` also deletes examples, and by the time this
+            // runs a newer `recordOverride` may already have recorded one
+            // that has every right to still be there. `cache` only ever
+            // tracks weights, so it is repaired with the weights-only
+            // `clearWeights()` / `saveWeights()` instead — never with
+            // `reset()`, which would risk the examples it doesn't track.
             await repairRepositoryFromCache()
             return
         }
         cache = .loaded(weights)
     }
 
-    /// Restores the repository to whatever `cache` currently says is true.
-    /// Only reached from `recordOverride`, after its own `saveWeights` write
-    /// already landed but turned out to be stale (`reset()`, or a newer
-    /// `recordOverride`, committed while it was in flight) — the write
-    /// itself can't be taken back, so this puts the repository back in sync
-    /// with the more recent state `cache` is already holding.
+    /// Restores the repository's weights to whatever `cache` currently says
+    /// is true. Only reached from `recordOverride`, after its own
+    /// `saveWeights` write already landed but turned out to be stale
+    /// (`reset()`, or a newer `recordOverride`, committed while it was in
+    /// flight) — the write itself can't be taken back, so this puts the
+    /// weights back in sync with the more recent state `cache` is already
+    /// holding. Deliberately never touches examples: `cache` isn't an
+    /// authoritative snapshot of them, so `saveWeights`/`clearWeights` are
+    /// used here instead of `reset()`.
+    ///
+    /// `cache` is also the last thing any non-stale caller touches, and
+    /// always synchronously, right before its own repository call — so if it
+    /// moved again while the write below was in flight, a still-newer
+    /// `reset()` or `recordOverride` already landed and this write is now
+    /// itself the stale one. The loop repeats against that fresher snapshot
+    /// instead of leaving a superseded write in place, which is what keeps a
+    /// repair from clobbering a generation newer than the one it read.
     private func repairRepositoryFromCache() async {
-        guard case .loaded(let authoritative) = cache else { return }
-        if let authoritative {
-            await repository.saveWeights(authoritative)
-        } else {
-            await repository.reset()
+        while true {
+            guard case .loaded(let authoritative) = cache else { return }
+            let cacheBeforeRepair = cache
+            if let authoritative {
+                await repository.saveWeights(authoritative)
+            } else {
+                await repository.clearWeights()
+            }
+            if cache == cacheBeforeRepair { return }
         }
     }
 

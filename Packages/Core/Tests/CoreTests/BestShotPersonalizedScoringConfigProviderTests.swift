@@ -224,6 +224,7 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         // this asserts the new override survives instead.
         let repository = GatedBestShotPersonalizationRepository()
         await repository.loadExamplesGate.open() // Only `saveWeights` is gated.
+        await repository.recordGate.open() // The 20 new-override `record()` calls below must not gate.
         let provider = BestShotPersonalizedScoringConfigProvider(repository: repository, global: global)
         let staleExampleValue = staleExample(index: 0)
 
@@ -264,6 +265,54 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
             configAfterRace, expectedConfig,
             "config()/resolvedWeights() must also keep reflecting the newer override"
         )
+    }
+
+    /// The reviewer's exact reproduction on PR #58: a stale `recordOverride`
+    /// A finishes its `saveWeights` but is delayed before it can react to
+    /// that; a `reset()` lands in between; a brand-new `recordOverride` B
+    /// records its own example but hasn't fitted or published yet; only then
+    /// does A resume, see the generation mismatch, and repair. With the old
+    /// repair (`repository.reset()` on a nil cache) that repair step deletes
+    /// B's just-recorded example even though B started after the reset the
+    /// user actually asked for. `clearWeights()` must leave it alone.
+    func testAStaleRepairAfterResetDoesNotDeleteAnExampleRecordedAfterTheReset() async {
+        let repository = GatedBestShotPersonalizationRepository()
+        await repository.loadExamplesGate.open() // Not the resumption point under test here.
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: repository, global: global)
+        let exampleA = staleExample(index: 0)
+        let exampleB = staleExample(index: 1)
+
+        // 1. Old `recordOverride` A fits and reaches `saveWeights`, then is
+        // held there — modelling its continuation being delayed rather than
+        // resuming immediately.
+        let taskA = Task {
+            await provider.recordOverride(exampleA)
+        }
+        await repository.saveWeightsGate.waitUntilArrived()
+
+        // 2. `reset()` completes, bumping `generation` and clearing the
+        // (currently empty) repository.
+        await provider.reset()
+
+        // 3. New `recordOverride` B appends its example via `record(_:)` and
+        // is held right there — it has not yet fitted or published weights.
+        let taskB = Task {
+            await provider.recordOverride(exampleB)
+        }
+        await repository.recordGate.waitUntilArrived()
+
+        // 4. A resumes, sees the generation mismatch, and repairs. The old
+        // repair called `repository.reset()` here, which would delete B's
+        // already-recorded example.
+        await repository.saveWeightsGate.open()
+        await taskA.value
+
+        // 5. B resumes and loads whatever the repository has now.
+        await repository.recordGate.open()
+        await taskB.value
+
+        let survivingExamples = await repository.loadExamples()
+        XCTAssertEqual(survivingExamples.count, 1, "B's post-reset example must survive A's stale repair")
     }
 
     private func staleExample(index: Int) -> BestShotOverrideExample {
@@ -318,6 +367,11 @@ private actor GatedBestShotPersonalizationRepository: BestShotPersonalizationRep
     let loadExamplesGate = SuspensionGate()
     let loadWeightsGate = SuspensionGate()
     let saveWeightsGate = SuspensionGate()
+    /// Gates the *second* `record(_:)` call, so a test can park a second,
+    /// later `recordOverride` right after it has appended its example — the
+    /// exact resumption point the reviewer's five-step schedule needs — while
+    /// a first `recordOverride` is free to run straight through this method.
+    let recordGate = SuspensionGate()
 
     private var examples: [BestShotOverrideExample] = []
     private(set) var weights: BestShotPersonalWeights?
@@ -327,6 +381,7 @@ private actor GatedBestShotPersonalizationRepository: BestShotPersonalizationRep
     /// stale `recordOverride` mid-save while a second, later one completes
     /// and persists normally in the meantime.
     private var saveWeightsCallCount = 0
+    private var recordCallCount = 0
 
     func setExamples(_ examples: [BestShotOverrideExample]) {
         self.examples = examples
@@ -343,6 +398,10 @@ private actor GatedBestShotPersonalizationRepository: BestShotPersonalizationRep
 
     func record(_ example: BestShotOverrideExample) async {
         examples.append(example)
+        recordCallCount += 1
+        if recordCallCount == 2 {
+            await recordGate.wait()
+        }
     }
 
     func loadWeights() async -> BestShotPersonalWeights? {
@@ -356,6 +415,10 @@ private actor GatedBestShotPersonalizationRepository: BestShotPersonalizationRep
             await saveWeightsGate.wait()
         }
         self.weights = weights
+    }
+
+    func clearWeights() async {
+        weights = nil
     }
 
     func reset() async {
