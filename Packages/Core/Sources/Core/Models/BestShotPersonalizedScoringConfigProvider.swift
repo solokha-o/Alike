@@ -1,5 +1,22 @@
 import Foundation
 
+/// The seam callers depend on instead of the concrete
+/// `BestShotPersonalizedScoringConfigProvider`, so a test can substitute a
+/// double whose `config()` suspends on demand. The concrete actor caches for
+/// good after its first successful load (see its `cache` documentation), so
+/// it cannot itself be held open more than once — a protocol double is the
+/// only way to pin a caller inside a second, later `config()` await.
+public protocol BestShotConfigProviding: Sendable {
+    /// The global config with the device's personalized weights applied on
+    /// top, when there are any. Mirrors
+    /// `BestShotPersonalizedScoringConfigProvider.config()`.
+    func config() async -> PhotoQualityScoringConfig
+
+    /// Records one manual-override example for on-device fitting. Mirrors
+    /// `BestShotPersonalizedScoringConfigProvider.recordOverride(_:)`.
+    func recordOverride(_ example: BestShotOverrideExample) async
+}
+
 /// Mediates between the global Best Shot scoring config and the device's
 /// personalized weights, so every ranking call site sees the same
 /// personalisation without duplicating the load/fit/cache logic.
@@ -23,6 +40,22 @@ public actor BestShotPersonalizedScoringConfigProvider {
     private let repository: any BestShotPersonalizationRepository
     private let global: PhotoQualityScoringConfig
     private var cache: CacheState = .notLoaded
+
+    /// Bumped by `reset()`, and only by `reset()`. `recordOverride` and
+    /// `resolvedWeights` each capture this before their first suspension
+    /// point and compare again after every subsequent `await`; a mismatch
+    /// means a `reset()` ran while they were suspended, so whatever they
+    /// were about to persist or publish is stale. Before the write to the
+    /// repository, that is a plain drop. After it — `recordOverride`'s
+    /// `saveWeights` call itself already completed by the time the mismatch
+    /// is observed — the write already landed, possibly on top of a
+    /// legitimately newer `reset()` or `recordOverride`, so it is repaired
+    /// from `cache` (see `repairRepositoryFromCache()`) instead of dropped.
+    /// This is what lets `recordOverride` run from an untracked `Task` (as
+    /// Details does) without a slow, in-flight fit resurrecting weights or
+    /// cache the user just asked to delete — and without a stale fit's
+    /// eventual write being able to clobber a newer one either.
+    private var generation = 0
 
     public init(
         repository: any BestShotPersonalizationRepository,
@@ -49,9 +82,18 @@ public actor BestShotPersonalizedScoringConfigProvider {
     /// fire this from a detached `Task` (the same convention the rest of this
     /// screen uses for `BestShotOverrideMetricsRepository`), so a slow refit
     /// never blocks the pick the user just made.
+    ///
+    /// That also makes this reentrant at every `await` below: `reset()` can
+    /// run to completion while this call is suspended. `generation` is the
+    /// guard against the fit finishing after such a reset and repopulating
+    /// what the user just cleared — the fit and the write below still
+    /// happen, but the result is discarded instead of persisted or cached if
+    /// a `reset()` was observed in between.
     public func recordOverride(_ example: BestShotOverrideExample) async {
+        let generationAtStart = generation
         await repository.record(example)
         let examples = await repository.loadExamples()
+        guard generation == generationAtStart else { return }
         let fitted = PersonalWeightModel.personalWeights(from: examples, global: global)
         let withFacesCount = examples.filter { $0.clusterHasFaces }.count
         let weights = BestShotPersonalWeights(
@@ -62,14 +104,51 @@ public actor BestShotPersonalizedScoringConfigProvider {
             withoutFacesExampleCount: examples.count - withFacesCount
         )
         await repository.saveWeights(weights)
+        guard generation == generationAtStart else {
+            // A reset() — or another recordOverride that started after this
+            // one and already ran to completion — landed while `saveWeights`
+            // above was in flight, so that write just persisted stale
+            // weights on top of whatever is now current. Wiping the
+            // repository here (the old fix) would be just as wrong as
+            // leaving the stale write in place: it would also erase a
+            // legitimately newer reset or override. `cache` is always the
+            // last thing a non-stale caller touches, so it holds that newer
+            // truth; write it straight back instead.
+            await repairRepositoryFromCache()
+            return
+        }
         cache = .loaded(weights)
+    }
+
+    /// Restores the repository to whatever `cache` currently says is true.
+    /// Only reached from `recordOverride`, after its own `saveWeights` write
+    /// already landed but turned out to be stale (`reset()`, or a newer
+    /// `recordOverride`, committed while it was in flight) — the write
+    /// itself can't be taken back, so this puts the repository back in sync
+    /// with the more recent state `cache` is already holding.
+    private func repairRepositoryFromCache() async {
+        guard case .loaded(let authoritative) = cache else { return }
+        if let authoritative {
+            await repository.saveWeights(authoritative)
+        } else {
+            await repository.reset()
+        }
     }
 
     /// Clears both the stored and the in-memory personalisation, so the very
     /// next `config()` is the global config again without an app relaunch.
+    ///
+    /// Bumps `generation` and updates `cache` before the repository round
+    /// trip — both synchronously, with no `await` between them — so any
+    /// `recordOverride`/`resolvedWeights` call already in flight sees the
+    /// mismatch once it resumes and either drops its stale result or, in
+    /// `recordOverride`'s post-save case, repairs from `cache`. Setting
+    /// `cache` here rather than after the repository call closes the window
+    /// where a repair would otherwise read a not-yet-updated `cache`.
     public func reset() async {
-        await repository.reset()
+        generation += 1
         cache = .loaded(nil)
+        await repository.reset()
     }
 
     private func resolvedWeights() async -> BestShotPersonalWeights? {
@@ -77,9 +156,19 @@ public actor BestShotPersonalizedScoringConfigProvider {
         case .loaded(let weights):
             return weights
         case .notLoaded:
+            let generationAtStart = generation
             let weights = await repository.loadWeights()
+            guard generation == generationAtStart else {
+                // A reset() landed while this load was in flight; trust its
+                // result (already committed to `cache`) instead of the
+                // pre-reset value this load just fetched.
+                if case .loaded(let current) = cache { return current }
+                return nil
+            }
             cache = .loaded(weights)
             return weights
         }
     }
 }
+
+extension BestShotPersonalizedScoringConfigProvider: BestShotConfigProviding {}
