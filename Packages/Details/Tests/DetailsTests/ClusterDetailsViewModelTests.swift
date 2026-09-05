@@ -1712,6 +1712,133 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.isBestShotUserSelected)
     }
 
+    /// `applyLoadedState`'s personalized config load (`await
+    /// personalizedConfigProvider?.config()`) is itself a suspension point,
+    /// and every observable property it is about to derive a ranking from —
+    /// `assetSnapshots` included — must stay untouched until that load
+    /// resolves. Before the fix these properties were written *before* the
+    /// config await; a screen read landing in that window would have seen a
+    /// half-applied ranking. This drives a real, suspendable
+    /// `BestShotPersonalizedScoringConfigProvider` to pin the screen inside
+    /// that exact window and checks nothing has leaked out yet.
+    ///
+    /// This exercises the *initial* `load()` call, where `expectedGeneration`
+    /// is `nil` and the `interactionGeneration` guard is skipped entirely —
+    /// the `setBestShot` below has nothing to act on yet (`assetSnapshots` is
+    /// still empty) and simply no-ops. It does not prove that a manual pick
+    /// survives a config load that resumes *after* the pick: that needs the
+    /// generation guard to be live, which needs a second, independently
+    /// suspendable config load — not reproducible here, because the concrete
+    /// `BestShotPersonalizedScoringConfigProvider` caches for good after its
+    /// first successful load, and that first load is the one this test is
+    /// already holding open.
+    func testNothingIsPublishedWhileThePersonalizedConfigIsStillLoading() async {
+        let personalizationRepository = SuspendableLoadWeightsPersonalizationRepository()
+        let personalizedConfigProvider = BestShotPersonalizedScoringConfigProvider(
+            repository: personalizationRepository
+        )
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            personalizedConfigProvider: personalizedConfigProvider,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+
+        // `applyLoadedState` is suspended awaiting the personalized config —
+        // before the fix, `assetSnapshots`/`bestShotAssetID` would already be
+        // populated at this point.
+        await personalizationRepository.waitUntilLoadStarted()
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 0)
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+
+        // A pick attempted in this window has nothing to act on yet — the
+        // screen has not published anything an interaction could target —
+        // and must not crash or leave the view model in a broken state.
+        viewModel.setBestShot("plain")
+        XCTAssertFalse(viewModel.isBestShotUserSelected)
+
+        await personalizationRepository.resumeLoad()
+        await loading.value
+
+        // Once the config resolves, the ranking publishes normally, and
+        // interactions work exactly as they would have without a
+        // personalized config provider at all.
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 2)
+        XCTAssertFalse(viewModel.bestShotAssetID.isEmpty)
+
+        viewModel.setBestShot("plain")
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
+    /// The race the seam above exists for: a manual pick made while a
+    /// *second*, later `config()` await is in flight — the one inside
+    /// `refineWithQualityScores`'s call to `applyLoadedState` — must still
+    /// win. This cannot be reproduced with the real
+    /// `BestShotPersonalizedScoringConfigProvider`, whose cache is warm by
+    /// the time a second call happens (see the test above); it needs a
+    /// double whose first call passes straight through, so the initial,
+    /// metadata-only ranking can land on screen, and whose second call parks
+    /// on demand.
+    func testAManualPickDuringARefiningConfigLoadIsNotOverwritten() async {
+        let configProvider = SecondCallSuspendingConfigProvider()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubPhotoQualityAnalyzer(
+                sharpnessByIdentifier: [("plain", 5), ("favorite", 80)]
+            ),
+            personalizedConfigProvider: configProvider,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+
+        // The initial `applyLoadedState`'s `config()` call (#1) passes
+        // straight through, so the metadata-only ranking lands on screen...
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        XCTAssertFalse(viewModel.bestShotAssetID.isEmpty)
+
+        // ...and the refine's `applyLoadedState` reaches its own `config()`
+        // (call #2), which this double parks.
+        await configProvider.waitUntilSecondCallStarted()
+
+        // The user's manual pick, made while that second config load is
+        // still in flight. `setBestShot` bumps `interactionGeneration`
+        // synchronously, before this call resumes.
+        viewModel.setBestShot("plain")
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+
+        await configProvider.resumeSecondCall()
+        await loading.value
+
+        // "favorite" is the sharper photo, so a refined ranking that ignored
+        // the race would have promoted it here instead. It must not have.
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
     private var weakClusterSnapshots: [ReviewAssetSnapshot] {
         [
             snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -1930,6 +2057,77 @@ private actor SuspendedClusterCleanupCompletionDelay {
     }
 
     func finish() {
+        continuation?.resume()
+        continuation = nil
+    }
+}
+
+/// A `BestShotPersonalizationRepository` whose `loadWeights()` suspends until
+/// `resumeLoad()` is called, so tests can drive the personalized config load
+/// inside `applyLoadedState` open at an exact point.
+private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonalizationRepository {
+    private var loadStarted = false
+    private var continuation: CheckedContinuation<BestShotPersonalWeights?, Never>?
+
+    func loadExamples() async -> [BestShotOverrideExample] { [] }
+
+    func record(_ example: BestShotOverrideExample) async {}
+
+    func loadWeights() async -> BestShotPersonalWeights? {
+        loadStarted = true
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func saveWeights(_ weights: BestShotPersonalWeights) async {}
+
+    func reset() async {}
+
+    func waitUntilLoadStarted() async {
+        while !loadStarted {
+            await Task.yield()
+        }
+    }
+
+    func resumeLoad(with weights: BestShotPersonalWeights? = nil) {
+        continuation?.resume(returning: weights)
+        continuation = nil
+    }
+}
+
+/// A `BestShotConfigProviding` whose `config()` passes straight through on
+/// its first call — so an initial, metadata-only ranking can land on screen —
+/// and suspends on every call after that until `resumeSecondCall()` runs.
+/// The concrete `BestShotPersonalizedScoringConfigProvider` cannot stand in
+/// for this: its cache is warm by the time a second `config()` call happens,
+/// so it can only ever be held open on its *first* call, before there is
+/// anything on screen for a manual pick to act on. This double is the only
+/// way to pin a caller inside a *later* `config()` await.
+private actor SecondCallSuspendingConfigProvider: BestShotConfigProviding {
+    private var callCount = 0
+    private(set) var secondCallStarted = false
+    private var continuation: CheckedContinuation<Void, Never>?
+
+    func config() async -> PhotoQualityScoringConfig {
+        callCount += 1
+        guard callCount > 1 else { return .current }
+        secondCallStarted = true
+        await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+        return .current
+    }
+
+    func recordOverride(_ example: BestShotOverrideExample) async {}
+
+    func waitUntilSecondCallStarted() async {
+        while !secondCallStarted {
+            await Task.yield()
+        }
+    }
+
+    func resumeSecondCall() {
         continuation?.resume()
         continuation = nil
     }
