@@ -41,32 +41,41 @@ public actor BestShotPersonalizedScoringConfigProvider {
     private let global: PhotoQualityScoringConfig
     private var cache: CacheState = .notLoaded
 
-    /// Bumped by `reset()`, and only by `reset()`. `recordOverride` and
-    /// `resolvedWeights` each capture this before their first suspension
-    /// point and compare again after every subsequent `await`; a mismatch
-    /// means a `reset()` ran while they were suspended, so whatever they
-    /// were about to persist or publish is stale and gets dropped instead.
-    /// `recordOverride`'s own recheck happens inside `commitLock` (see
-    /// below), immediately before its write, so there is no window left
-    /// between that check and the write for a `reset()` to land in — the
-    /// old failure mode, where the check passed but a concurrent `reset()`'s
-    /// write still ended up sandwiched underneath this one's, can no longer
-    /// happen. This is what lets `recordOverride` run from an untracked
-    /// `Task` (as Details does) without a slow, in-flight fit resurrecting
-    /// weights or cache the user just asked to delete — and without a stale
-    /// fit's eventual write being able to clobber a newer one either.
+    /// Bumped by `reset()`, and only by `reset()` — synchronously at its
+    /// entry, *before* it waits for `commitLock`, so an override that is
+    /// already queued behind an in-flight commit is invalidated the moment
+    /// the user asks for a reset rather than only once the reset's own turn
+    /// comes round. `recordOverride` captures this before its first
+    /// suspension point and rechecks it inside the lock; `resolvedWeights`
+    /// does the same across its load. A mismatch means a `reset()` has
+    /// happened or is guaranteed to happen next, so whatever the caller was
+    /// about to persist or publish is stale and gets dropped instead. This
+    /// is what lets `recordOverride` run from an untracked `Task` (as
+    /// Details does) without a slow, in-flight fit resurrecting weights the
+    /// user just asked to delete.
     private var generation = 0
 
-    /// Guards the *commit* half of `recordOverride` — its generation
-    /// recheck, `saveWeights`, and publishing `cache` — and all of
-    /// `reset()`, so at most one of them is ever writing to the repository
-    /// or `cache` at a time. `record`, `loadExamples`, and the synchronous
-    /// fit in `recordOverride` all happen before this is acquired: only the
-    /// part that could otherwise interleave with a concurrent `reset()` or
-    /// `recordOverride` needs the lock. Whichever caller is already inside
-    /// the section when a second one asks for it makes the second one wait,
-    /// so a commit's own generation recheck is never stale by the time its
-    /// write actually happens — see `acquireCommitLock()`.
+    /// Serialises the whole of `recordOverride` — `record`, `loadExamples`,
+    /// the fit, `saveWeights`, and publishing `cache` — against every other
+    /// `recordOverride` and against `reset()`'s own clearing, so at most one
+    /// of them is ever reading or writing the personalisation at a time.
+    ///
+    /// The snapshot has to be inside the section, not just the write: two
+    /// overrides in the same generation both pass the generation guard, so
+    /// if only the write were serialised, an older `loadExamples` snapshot
+    /// could still be fitted and committed after a newer one had already
+    /// landed, silently discarding the newer example's learning until the
+    /// next refit. Nothing outside this actor can order two snapshots
+    /// after the fact — the repository hands back an array with no
+    /// revision, and the example count is not a version because the store
+    /// is a ring buffer — so the only sound fix is to stop the second
+    /// snapshot from being taken while the first transaction is open.
+    ///
+    /// The cost, deliberately accepted: `reset()` waits for an in-flight
+    /// override transaction (one `UserDefaults` append, one read, a bounded
+    /// fit over at most the ring buffer's worth of examples, one write)
+    /// rather than racing it. `config()`/`resolvedWeights` never take this
+    /// lock, so ranking is never blocked by a fit.
     private var commitLocked = false
     private var commitWaiters: [CheckedContinuation<Void, Never>] = []
 
@@ -80,6 +89,15 @@ public actor BestShotPersonalizedScoringConfigProvider {
         }
         await withCheckedContinuation { commitWaiters.append($0) }
     }
+
+    /// Test seam: how many callers are currently parked waiting for
+    /// `commitLock`. A caller only becomes a waiter after it has entered the
+    /// actor and run everything synchronous ahead of the wait — for
+    /// `reset()` that includes bumping `generation` — so a concurrency test
+    /// can observe "the reset has landed and is now queued behind the open
+    /// transaction" deterministically instead of guessing with
+    /// `Task.yield()`. Internal, so it adds no shipped surface.
+    var commitWaiterCount: Int { commitWaiters.count }
 
     /// Hands the lock to the next waiter, if any, or marks it free.
     private func releaseCommitLock() {
@@ -116,18 +134,20 @@ public actor BestShotPersonalizedScoringConfigProvider {
     /// screen uses for `BestShotOverrideMetricsRepository`), so a slow refit
     /// never blocks the pick the user just made.
     ///
-    /// `record`, `loadExamples`, and the fit all happen outside
-    /// `commitLock`, so they can run concurrently with another commit; nothing
-    /// here yet needs to be persisted or published. Only the recheck of
-    /// `generation`, `saveWeights`, and updating `cache` run inside the lock,
-    /// as one unit, so a `reset()` (or a newer `recordOverride`) that lands
-    /// in between is impossible — whichever of them gets the lock first runs
-    /// its check-then-write without any other commit able to interleave.
-    /// `generation` is what tells a stale commit apart from a current one:
-    /// if it moved since this call started, `reset()` already ran, so the
-    /// fit above is discarded instead of persisted or cached.
+    /// The entire transaction runs inside `commitLock`, so a second override
+    /// cannot take its snapshot until this one has committed and can never
+    /// fit an example set older than what is already persisted. `generation`
+    /// is checked twice: once on acquiring the lock, so an override the user
+    /// has already invalidated by resetting never even records its example,
+    /// and once after the snapshot, to catch a `reset()` that arrived while
+    /// this transaction was open. Either way the fit is discarded rather
+    /// than persisted or cached, and `reset()` — which is waiting on the
+    /// same lock — clears whatever this call did record.
     public func recordOverride(_ example: BestShotOverrideExample) async {
         let generationAtStart = generation
+        await acquireCommitLock()
+        defer { releaseCommitLock() }
+        guard generation == generationAtStart else { return }
         await repository.record(example)
         let examples = await repository.loadExamples()
         guard generation == generationAtStart else { return }
@@ -140,9 +160,6 @@ public actor BestShotPersonalizedScoringConfigProvider {
             withFacesExampleCount: withFacesCount,
             withoutFacesExampleCount: examples.count - withFacesCount
         )
-        await acquireCommitLock()
-        defer { releaseCommitLock() }
-        guard generation == generationAtStart else { return }
         await repository.saveWeights(weights)
         cache = .loaded(weights)
     }
@@ -150,15 +167,17 @@ public actor BestShotPersonalizedScoringConfigProvider {
     /// Clears both the stored and the in-memory personalisation, so the very
     /// next `config()` is the global config again without an app relaunch.
     ///
-    /// Runs inside `commitLock`, the same section `recordOverride` commits
-    /// through: if a `recordOverride` is already mid-commit, `reset()` waits
-    /// for it to finish rather than racing it, so `generation` and `cache`
-    /// only ever change between one commit finishing and the next one
-    /// starting — never in the middle of one.
+    /// `generation` moves first, synchronously and outside `commitLock`, so
+    /// an override already queued behind an in-flight transaction is
+    /// invalidated immediately instead of getting its turn and committing a
+    /// fit the user has just discarded. The clearing itself runs inside the
+    /// lock, so it lands after any transaction already in progress rather
+    /// than in the middle of one — `cache` and the repository always end up
+    /// agreeing.
     public func reset() async {
+        generation += 1
         await acquireCommitLock()
         defer { releaseCommitLock() }
-        generation += 1
         cache = .loaded(nil)
         await repository.reset()
     }
