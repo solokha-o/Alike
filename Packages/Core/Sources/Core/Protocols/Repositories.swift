@@ -285,14 +285,6 @@ public protocol BestShotPersonalizationRepository: Sendable {
     /// Persists the fitted weights, replacing whatever was stored before.
     func saveWeights(_ weights: BestShotPersonalWeights) async
 
-    /// Clears only the fitted weights, leaving every stored example in
-    /// place. The weights-only counterpart to `reset()`, for callers that
-    /// need to correct a stale weights write without touching examples —
-    /// notably `BestShotPersonalizedScoringConfigProvider`'s stale-write
-    /// repair, which has no authoritative view of the examples and must
-    /// never risk deleting one it doesn't know about.
-    func clearWeights() async
-
     /// Clears both the examples and the weights, e.g. when the user deletes
     /// local app data.
     func reset() async

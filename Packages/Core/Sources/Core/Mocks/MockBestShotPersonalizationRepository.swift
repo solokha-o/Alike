@@ -48,10 +48,6 @@ public actor MockBestShotPersonalizationRepository: BestShotPersonalizationRepos
         self.weights = weights
     }
 
-    public func clearWeights() async {
-        weights = nil
-    }
-
     public func reset() async {
         didReset = true
         examples = []
