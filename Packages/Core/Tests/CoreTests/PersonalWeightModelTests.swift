@@ -452,6 +452,190 @@ final class PersonalWeightModelTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(weights.resolution, global.resolution - 0.15 - tolerance, file: file, line: line)
     }
 
+    // MARK: - Projection regression coverage (Euclidean box projection)
+    //
+    // The old two-pass clamp+renormalize could push a component back outside
+    // its box on the renormalize step (the sharpness/resolution fixtures
+    // below are the reviewer's own repro for that), and separately had no
+    // notion of `resolutionWeightCap` at all, so a fitted `resolution` above
+    // the cap the ranker actually applies was mathematically "valid" (summed
+    // to 1, non-negative) while silently wasting normalization mass the
+    // ranker would never spend. These tests pin both down against the exact
+    // per-component box the new `project` solves for, not just the generic
+    // `+-0.15` used by `assertWithinBox` above.
+
+    /// The exact `[lower, upper]` box `project` solves within for one
+    /// branch: `+-0.15` around `global`, floored at 0, with `resolution`'s
+    /// upper bound additionally capped at `resolutionWeightCap` and
+    /// `faceQuality` collapsed to the point 0 when `pinFaceQualityToZero`.
+    private func exactBounds(
+        global: PhotoQualityScoringConfig.Weights,
+        resolutionWeightCap: Double,
+        pinFaceQualityToZero: Bool
+    ) -> (lower: PhotoQualityScoringConfig.Weights, upper: PhotoQualityScoringConfig.Weights) {
+        func lower(_ g: Double) -> Double { max(g - 0.15, 0) }
+        func upper(_ g: Double) -> Double { g + 0.15 }
+        let lo = PhotoQualityScoringConfig.Weights(
+            sharpness: lower(global.sharpness),
+            faceQuality: pinFaceQualityToZero ? 0 : lower(global.faceQuality),
+            exposure: lower(global.exposure),
+            noiseArtifacts: lower(global.noiseArtifacts),
+            resolution: lower(global.resolution)
+        )
+        let hi = PhotoQualityScoringConfig.Weights(
+            sharpness: upper(global.sharpness),
+            faceQuality: pinFaceQualityToZero ? 0 : upper(global.faceQuality),
+            exposure: upper(global.exposure),
+            noiseArtifacts: upper(global.noiseArtifacts),
+            resolution: min(upper(global.resolution), resolutionWeightCap)
+        )
+        return (lo, hi)
+    }
+
+    private func assertExactlyWithinBounds(
+        _ weights: PhotoQualityScoringConfig.Weights,
+        lower: PhotoQualityScoringConfig.Weights,
+        upper: PhotoQualityScoringConfig.Weights,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let tolerance = 1e-9
+        XCTAssertGreaterThanOrEqual(weights.sharpness, lower.sharpness - tolerance, "sharpness", file: file, line: line)
+        XCTAssertLessThanOrEqual(weights.sharpness, upper.sharpness + tolerance, "sharpness", file: file, line: line)
+        XCTAssertGreaterThanOrEqual(weights.faceQuality, lower.faceQuality - tolerance, "faceQuality", file: file, line: line)
+        XCTAssertLessThanOrEqual(weights.faceQuality, upper.faceQuality + tolerance, "faceQuality", file: file, line: line)
+        XCTAssertGreaterThanOrEqual(weights.exposure, lower.exposure - tolerance, "exposure", file: file, line: line)
+        XCTAssertLessThanOrEqual(weights.exposure, upper.exposure + tolerance, "exposure", file: file, line: line)
+        XCTAssertGreaterThanOrEqual(
+            weights.noiseArtifacts, lower.noiseArtifacts - tolerance, "noiseArtifacts", file: file, line: line
+        )
+        XCTAssertLessThanOrEqual(
+            weights.noiseArtifacts, upper.noiseArtifacts + tolerance, "noiseArtifacts", file: file, line: line
+        )
+        XCTAssertGreaterThanOrEqual(weights.resolution, lower.resolution - tolerance, "resolution", file: file, line: line)
+        XCTAssertLessThanOrEqual(weights.resolution, upper.resolution + tolerance, "resolution", file: file, line: line)
+        XCTAssertEqual(weights.total, 1, accuracy: tolerance, "sum-to-one", file: file, line: line)
+    }
+
+    /// Reviewer's exact repro for the clamp+renormalize regression: 30
+    /// identical faceless deltas that push `noiseArtifacts` and `resolution`
+    /// down hard enough that renormalizing the old two-pass clamp pushed
+    /// `sharpness` back out past its own box (~0.71927 against an allowed
+    /// 0.70). The real Euclidean projection must not do that.
+    func testIdenticalNegativeDeltasKeepEveryComponentInsideItsExactBox() {
+        let examples = (0..<30).map { index -> BestShotOverrideExample in
+            BestShotOverrideExample(
+                recordedAt: Date(timeIntervalSince1970: Double(index)),
+                clusterHasFaces: false,
+                componentDelta: PhotoQualityScoringConfig.Weights(
+                    sharpness: 0, faceQuality: 0, exposure: 0, noiseArtifacts: -1, resolution: -0.5
+                ),
+                offsetDelta: 0,
+                scoringModelVersion: global.scoringModelVersion
+            )
+        }
+
+        let result = PersonalWeightModel.personalWeights(from: examples, global: global).withoutFaces
+        let (lower, upper) = exactBounds(
+            global: global.weightsWithoutFaces,
+            resolutionWeightCap: global.resolutionWeightCap,
+            pinFaceQualityToZero: true
+        )
+
+        XCTAssertLessThanOrEqual(result.sharpness, upper.sharpness + 1e-9, "regression: sharpness escaped its box")
+        assertExactlyWithinBounds(result, lower: lower, upper: upper)
+        XCTAssertEqual(result.faceQuality, 0, "faceless branch must keep faceQuality pinned to zero")
+    }
+
+    /// Reviewer's second repro: a resolution-only delta used to fit a raw
+    /// `resolution` (~0.12409) far past what `BestShotRanker` will ever
+    /// spend, since it applies `min(weights.resolution,
+    /// config.resolutionWeightCap)` before multiplying. What must hold is
+    /// the *effective* weight the ranker consumes, not just the raw fitted
+    /// vector — asserted here by recomputing that same `min(...)` the ranker
+    /// applies at `BestShotRanker.swift:419`.
+    func testResolutionOnlyDeltaStaysWithinTheRankersEffectiveCap() {
+        let examples = (0..<30).map { index -> BestShotOverrideExample in
+            BestShotOverrideExample(
+                recordedAt: Date(timeIntervalSince1970: Double(index)),
+                clusterHasFaces: true,
+                componentDelta: PhotoQualityScoringConfig.Weights(
+                    sharpness: 0, faceQuality: 0, exposure: 0, noiseArtifacts: 0, resolution: 0.8
+                ),
+                offsetDelta: 0,
+                scoringModelVersion: global.scoringModelVersion
+            )
+        }
+
+        let result = PersonalWeightModel.personalWeights(from: examples, global: global).withFaces
+        let (lower, upper) = exactBounds(
+            global: global.weightsWithFaces,
+            resolutionWeightCap: global.resolutionWeightCap,
+            pinFaceQualityToZero: false
+        )
+        assertExactlyWithinBounds(result, lower: lower, upper: upper)
+
+        // The value `BestShotRanker` actually multiplies `resolution` by.
+        let effectiveResolutionWeight = min(result.resolution, global.resolutionWeightCap)
+        XCTAssertEqual(
+            effectiveResolutionWeight, result.resolution, accuracy: 1e-9,
+            "the raw fitted weight should already be at or under the cap, not rely on the ranker's min() to save it"
+        )
+        XCTAssertLessThanOrEqual(effectiveResolutionWeight, global.resolutionWeightCap + 1e-9)
+    }
+
+    /// A small sweep of varied delta directions (not just the two repros
+    /// above), so a future change to the projection cannot silently regress
+    /// bounds or sum-to-one for some other direction than the ones already
+    /// pinned down as named tests.
+    func testProjectionHoldsBoundsAndSumAcrossVariedDeltaDirections() {
+        let directions: [PhotoQualityScoringConfig.Weights] = [
+            .init(sharpness: 1, faceQuality: 0, exposure: -1, noiseArtifacts: 1, resolution: -1),
+            .init(sharpness: -1, faceQuality: 1, exposure: 1, noiseArtifacts: -1, resolution: 0),
+            .init(sharpness: 0.3, faceQuality: -0.3, exposure: 0.3, noiseArtifacts: 0.3, resolution: 0.3),
+            .init(sharpness: -0.6, faceQuality: 0.6, exposure: -0.6, noiseArtifacts: 0.6, resolution: 0.6),
+            .init(sharpness: 1, faceQuality: 1, exposure: 1, noiseArtifacts: 1, resolution: 1),
+            .init(sharpness: -1, faceQuality: -1, exposure: -1, noiseArtifacts: -1, resolution: -1)
+        ]
+
+        for direction in directions {
+            let examples = (0..<40).map { index -> BestShotOverrideExample in
+                BestShotOverrideExample(
+                    recordedAt: Date(timeIntervalSince1970: Double(index)),
+                    clusterHasFaces: true,
+                    componentDelta: direction,
+                    offsetDelta: 0,
+                    scoringModelVersion: global.scoringModelVersion
+                )
+            }
+            let facelessExamples = (0..<40).map { index -> BestShotOverrideExample in
+                BestShotOverrideExample(
+                    recordedAt: Date(timeIntervalSince1970: Double(index)),
+                    clusterHasFaces: false,
+                    componentDelta: direction,
+                    offsetDelta: 0,
+                    scoringModelVersion: global.scoringModelVersion
+                )
+            }
+
+            let withFacesResult = PersonalWeightModel.personalWeights(from: examples, global: global).withFaces
+            let (withFacesLower, withFacesUpper) = exactBounds(
+                global: global.weightsWithFaces,
+                resolutionWeightCap: global.resolutionWeightCap,
+                pinFaceQualityToZero: false
+            )
+            assertExactlyWithinBounds(withFacesResult, lower: withFacesLower, upper: withFacesUpper)
+
+            let withoutFacesResult = PersonalWeightModel.personalWeights(from: facelessExamples, global: global).withoutFaces
+            let (withoutFacesLower, withoutFacesUpper) = exactBounds(
+                global: global.weightsWithoutFaces,
+                resolutionWeightCap: global.resolutionWeightCap,
+                pinFaceQualityToZero: true
+            )
+            assertExactlyWithinBounds(withoutFacesResult, lower: withoutFacesLower, upper: withoutFacesUpper)
+        }
+    }
+
     private func distance(
         _ lhs: PhotoQualityScoringConfig.Weights,
         _ rhs: PhotoQualityScoringConfig.Weights

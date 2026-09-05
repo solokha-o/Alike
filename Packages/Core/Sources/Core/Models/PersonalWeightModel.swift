@@ -47,6 +47,21 @@ public enum PersonalWeightModel {
     /// independent of n.
     private static let ridgeLambda = 1.0
 
+    /// Half-width of the box a personalized component may move within,
+    /// around the matching global component.
+    private static let boxRadius = 0.15
+
+    /// Fixed bisection step count for `project`. `components(shift:).total`
+    /// is continuous and non-increasing in the shift (each clipped component
+    /// is individually non-increasing), so bisection on a bracket where it
+    /// changes sign converges monotonically toward the unique root; the
+    /// bracket built from the box bounds is at most a few units wide (weights
+    /// and the box radius are all O(1)), so 60 halvings already lands past
+    /// `Double`'s ~52 bits of mantissa precision. Fixed like `iterationCount`
+    /// above, for the same reason: reproducible from the input alone, no
+    /// convergence check.
+    private static let projectionBisectionSteps = 60
+
     /// Fits `withFaces` and `withoutFaces` independently from the matching
     /// branch of `examples`, then shrinks and projects each result back onto
     /// the allowed weight simplex around the global vector.
@@ -65,11 +80,13 @@ public enum PersonalWeightModel {
         let withFaces = fitBranch(
             examples: withFacesExamples,
             global: global.weightsWithFaces,
+            resolutionWeightCap: global.resolutionWeightCap,
             pinFaceQualityToZero: false
         )
         let withoutFaces = fitBranch(
             examples: withoutFacesExamples,
             global: global.weightsWithoutFaces,
+            resolutionWeightCap: global.resolutionWeightCap,
             pinFaceQualityToZero: true
         )
         return (withFaces, withoutFaces)
@@ -80,6 +97,7 @@ public enum PersonalWeightModel {
     private static func fitBranch(
         examples: [BestShotOverrideExample],
         global: PhotoQualityScoringConfig.Weights,
+        resolutionWeightCap: Double,
         pinFaceQualityToZero: Bool
     ) -> PhotoQualityScoringConfig.Weights {
         let n = examples.count
@@ -102,11 +120,12 @@ public enum PersonalWeightModel {
         let alpha = shrinkageFactor(n: usable.count)
         let shrunk = interpolate(global, fitted, alpha: alpha)
 
-        guard var projected = project(shrunk, global: global) else { return global }
-
-        if pinFaceQualityToZero {
-            projected = pinFaceQualityToZeroAndRenormalize(projected)
-        }
+        guard let projected = project(
+            shrunk,
+            global: global,
+            resolutionWeightCap: resolutionWeightCap,
+            pinFaceQualityToZero: pinFaceQualityToZero
+        ) else { return global }
         return projected
     }
 
@@ -164,73 +183,120 @@ public enum PersonalWeightModel {
         )
     }
 
-    /// Projects onto the allowed set: clamp into `[g - 0.15, g + 0.15]`,
-    /// clamp to >= 0, renormalise to sum to 1 — twice, because renormalising
-    /// can push a component back out of the box the first pass just
-    /// enforced. Two passes settle it for five components.
+    /// Projects `weights` onto the feasible set for a personalized vector: a
+    /// genuine Euclidean projection onto the intersection of a box and the
+    /// sum-to-one hyperplane, not the old clamp-then-renormalize
+    /// approximation. Clamping into `[g - 0.15, g + 0.15]` and then
+    /// renormalizing to sum to 1 can push a component back outside the box
+    /// the clamp just enforced — renormalizing rescales every component,
+    /// including ones already sitting on their boundary — and two such
+    /// passes still do not guarantee both constraints hold simultaneously.
+    ///
+    /// The box for each component is `[max(g - 0.15, 0), g + 0.15]`, except
+    /// `resolution`'s upper bound is additionally capped at
+    /// `resolutionWeightCap`: `BestShotRanker` always scores with
+    /// `min(weights.resolution, config.resolutionWeightCap)`, so a fitted
+    /// weight above the cap would only take normalization mass away from the
+    /// other components without the ranker ever spending it — the deployed
+    /// score would differ from the fitted one for no benefit. Capping it
+    /// here means the raw fitted weight already is the effective weight the
+    /// ranker consumes.
+    ///
+    /// `pinFaceQualityToZero` folds the "faceless cluster" constraint into
+    /// the same solve by collapsing that component's box to the single point
+    /// 0, rather than pinning and renormalizing afterward — which could push
+    /// `resolution` back over its cap the same way clamp-then-renormalize
+    /// did, since renormalizing after removing `faceQuality`'s mass scales
+    /// every remaining component up.
+    ///
+    /// The projection itself solves for a single shift `tau`, applied before
+    /// clamping, such that `x_i = clip(v_i - tau, lower_i, upper_i)` sums to
+    /// 1. `components(shift:).total` is continuous and, in `tau`,
+    /// non-increasing (each clipped component is individually non-increasing
+    /// in `tau`), and the bracket below is built so the sum is >= 1 at its low end and <= 1
+    /// at its high end whenever the box itself is feasible (`lower.total <=
+    /// 1 <= upper.total`). Bisection on that bracket therefore converges
+    /// monotonically to the unique root — see `projectionBisectionSteps` for
+    /// why a fixed count suffices.
     private static func project(
         _ weights: PhotoQualityScoringConfig.Weights,
-        global: PhotoQualityScoringConfig.Weights
+        global: PhotoQualityScoringConfig.Weights,
+        resolutionWeightCap: Double,
+        pinFaceQualityToZero: Bool
     ) -> PhotoQualityScoringConfig.Weights? {
-        var current = weights
-        for _ in 0..<2 {
-            guard let normalized = clampAndRenormalize(current, global: global) else { return nil }
-            current = normalized
-        }
-        return current
-    }
+        func lowerBound(_ globalValue: Double) -> Double { max(globalValue - boxRadius, 0) }
+        func upperBound(_ globalValue: Double) -> Double { globalValue + boxRadius }
 
-    private static func clampAndRenormalize(
-        _ weights: PhotoQualityScoringConfig.Weights,
-        global: PhotoQualityScoringConfig.Weights
-    ) -> PhotoQualityScoringConfig.Weights? {
-        func clamp(_ value: Double, _ globalValue: Double) -> Double {
-            let boxed = min(max(value, globalValue - 0.15), globalValue + 0.15)
-            return max(boxed, 0)
-        }
-
-        let clamped = PhotoQualityScoringConfig.Weights(
-            sharpness: clamp(weights.sharpness, global.sharpness),
-            faceQuality: clamp(weights.faceQuality, global.faceQuality),
-            exposure: clamp(weights.exposure, global.exposure),
-            noiseArtifacts: clamp(weights.noiseArtifacts, global.noiseArtifacts),
-            resolution: clamp(weights.resolution, global.resolution)
+        let lower = Vector5(
+            sharpness: lowerBound(global.sharpness),
+            faceQuality: pinFaceQualityToZero ? 0 : lowerBound(global.faceQuality),
+            exposure: lowerBound(global.exposure),
+            noiseArtifacts: lowerBound(global.noiseArtifacts),
+            resolution: lowerBound(global.resolution)
+        )
+        let upper = Vector5(
+            sharpness: upperBound(global.sharpness),
+            faceQuality: pinFaceQualityToZero ? 0 : upperBound(global.faceQuality),
+            exposure: upperBound(global.exposure),
+            noiseArtifacts: upperBound(global.noiseArtifacts),
+            resolution: min(upperBound(global.resolution), resolutionWeightCap)
         )
 
-        let sum = clamped.total
-        guard sum.isFinite, sum > 0 else { return nil }
-        return PhotoQualityScoringConfig.Weights(
-            sharpness: clamped.sharpness / sum,
-            faceQuality: clamped.faceQuality / sum,
-            exposure: clamped.exposure / sum,
-            noiseArtifacts: clamped.noiseArtifacts / sum,
-            resolution: clamped.resolution / sum
-        )
-    }
+        let v = Vector5(weights)
+        guard v.isFinite else { return nil }
 
-    /// `faceQuality` is structurally 0 in a faceless cluster, so any weight
-    /// the fit put on it is fitting noise, not signal. Pin it to exactly 0
-    /// and renormalise the remaining four components to sum to 1.
-    private static func pinFaceQualityToZeroAndRenormalize(
-        _ weights: PhotoQualityScoringConfig.Weights
-    ) -> PhotoQualityScoringConfig.Weights {
-        let remainder = weights.sharpness + weights.exposure + weights.noiseArtifacts + weights.resolution
-        guard remainder.isFinite, remainder > 0 else {
-            return PhotoQualityScoringConfig.Weights(
-                sharpness: weights.sharpness,
-                faceQuality: 0,
-                exposure: weights.exposure,
-                noiseArtifacts: weights.noiseArtifacts,
-                resolution: weights.resolution
+        let lowerTotal = lower.total
+        let upperTotal = upper.total
+        // An infeasible box (the sum-to-one plane misses the box entirely)
+        // has no projection; the caller falls back to the global vector.
+        guard lowerTotal.isFinite, upperTotal.isFinite, lowerTotal <= 1, upperTotal >= 1 else { return nil }
+
+        func clip(_ value: Double, shift tau: Double, _ lower: Double, _ upper: Double) -> Double {
+            min(max(value - tau, lower), upper)
+        }
+
+        func components(shift tau: Double) -> Vector5 {
+            Vector5(
+                sharpness: clip(v.sharpness, shift: tau, lower.sharpness, upper.sharpness),
+                faceQuality: clip(v.faceQuality, shift: tau, lower.faceQuality, upper.faceQuality),
+                exposure: clip(v.exposure, shift: tau, lower.exposure, upper.exposure),
+                noiseArtifacts: clip(v.noiseArtifacts, shift: tau, lower.noiseArtifacts, upper.noiseArtifacts),
+                resolution: clip(v.resolution, shift: tau, lower.resolution, upper.resolution)
             )
         }
-        return PhotoQualityScoringConfig.Weights(
-            sharpness: weights.sharpness / remainder,
-            faceQuality: 0,
-            exposure: weights.exposure / remainder,
-            noiseArtifacts: weights.noiseArtifacts / remainder,
-            resolution: weights.resolution / remainder
+
+        // At `loTau` every component is still pinned to its upper bound (so
+        // the sum is `upperTotal >= 1`); at `hiTau` every component is
+        // pinned to its lower bound (so the sum is `lowerTotal <= 1`).
+        let loTau = min(
+            v.sharpness - upper.sharpness,
+            v.faceQuality - upper.faceQuality,
+            v.exposure - upper.exposure,
+            v.noiseArtifacts - upper.noiseArtifacts,
+            v.resolution - upper.resolution
         )
+        let hiTau = max(
+            v.sharpness - lower.sharpness,
+            v.faceQuality - lower.faceQuality,
+            v.exposure - lower.exposure,
+            v.noiseArtifacts - lower.noiseArtifacts,
+            v.resolution - lower.resolution
+        )
+
+        var low = loTau
+        var high = hiTau
+        for _ in 0..<projectionBisectionSteps {
+            let mid = low + (high - low) / 2
+            if components(shift: mid).total >= 1 {
+                low = mid
+            } else {
+                high = mid
+            }
+        }
+
+        let projected = components(shift: low + (high - low) / 2)
+        guard projected.isFinite else { return nil }
+        return projected.asWeights
     }
 
     // MARK: - Small vector helper
@@ -268,6 +334,10 @@ public enum PersonalWeightModel {
         var isFinite: Bool {
             sharpness.isFinite && faceQuality.isFinite && exposure.isFinite
                 && noiseArtifacts.isFinite && resolution.isFinite
+        }
+
+        var total: Double {
+            sharpness + faceQuality + exposure + noiseArtifacts + resolution
         }
 
         var asWeights: PhotoQualityScoringConfig.Weights {
