@@ -57,6 +57,8 @@ public struct SettingsView: View {
     @Binding var needsRescan: Bool
     @State private var viewModel: SettingsViewModel
     @State private var deleteAllDataModel: DeleteAllDataModel
+    @State private var resetBestShotPersonalizationModel: ResetBestShotPersonalizationModel
+    @State private var isResetBestShotConfirmationPresented = false
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var isRestoringPurchases = false
     @State private var restorePurchasesFeedback: RestorePurchasesFeedback?
@@ -83,6 +85,7 @@ public struct SettingsView: View {
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
         subscriptionStore: SubscriptionStore? = nil,
         onDeleteAllData: @escaping @MainActor @Sendable () async throws -> Void = {},
+        onResetBestShotPersonalization: @escaping @MainActor @Sendable () async throws -> Void = {},
         viewModel: SettingsViewModel = SettingsViewModel()
     ) {
         self._sensitivity = sensitivity
@@ -92,6 +95,9 @@ public struct SettingsView: View {
         self._viewModel = State(initialValue: viewModel)
         self._deleteAllDataModel = State(
             initialValue: DeleteAllDataModel(operation: onDeleteAllData)
+        )
+        self._resetBestShotPersonalizationModel = State(
+            initialValue: ResetBestShotPersonalizationModel(operation: onResetBestShotPersonalization)
         )
     }
     
@@ -368,10 +374,77 @@ public struct SettingsView: View {
             .onChange(of: sensitivity) { _, _ in
                 needsRescan = viewModel.rescanRequiredAfterSensitivityChange()
             }
+
+            Button(role: .destructive) {
+                isResetBestShotConfirmationPresented = true
+            } label: {
+                HStack {
+                    if resetBestShotPersonalizationModel.isResetting {
+                        ProgressView()
+                            .controlSize(.small)
+                    }
+                    Label {
+                        Text(
+                            resetBestShotPersonalizationModel.isResetting
+                                ? SettingsL10n.Main.resettingBestShotLearning
+                                : SettingsL10n.Main.resetBestShotLearning
+                        )
+                    } icon: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                }
+            }
+            .disabled(resetBestShotPersonalizationModel.isResetting)
+            .accessibilityHint(Text(SettingsL10n.Main.forgetWhatAlikeLearnedFromYour))
         } header: {
             Text(SettingsL10n.Main.analysis)
         } footer: {
-            Text(SettingsL10n.Main.higherSensitivityFindsMoreSimilar)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(SettingsL10n.Main.higherSensitivityFindsMoreSimilar)
+                Text(SettingsL10n.Main.alikeLearnsWhichPhotosYouPick)
+            }
+        }
+        .confirmationDialog(
+            SettingsL10n.Main.resetBestShotLearningQuestion,
+            isPresented: $isResetBestShotConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button(SettingsL10n.Main.resetBestShotLearning, role: .destructive) {
+                startResetBestShotPersonalization()
+            }
+            Button(SettingsL10n.Main.cancel, role: .cancel) {}
+        } message: {
+            Text(SettingsL10n.Main.thisForgetsWhatAlikeLearnedFrom)
+        }
+        .alert(
+            SettingsL10n.Main.couldntResetBestShotLearning,
+            isPresented: isResetBestShotErrorPresented
+        ) {
+            Button(SettingsL10n.Main.tryAgain) {
+                startResetBestShotPersonalization()
+            }
+            Button(SettingsL10n.Main.cancel, role: .cancel) {
+                resetBestShotPersonalizationModel.dismissError()
+            }
+        } message: {
+            Text(resetBestShotPersonalizationModel.errorMessage ?? "")
+        }
+    }
+
+    private var isResetBestShotErrorPresented: Binding<Bool> {
+        Binding(
+            get: { resetBestShotPersonalizationModel.errorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    resetBestShotPersonalizationModel.dismissError()
+                }
+            }
+        )
+    }
+
+    private func startResetBestShotPersonalization() {
+        Task {
+            await resetBestShotPersonalizationModel.reset()
         }
     }
 
@@ -650,6 +723,10 @@ private struct DeleteAllDataView: View {
                 dataRow(
                     SettingsL10n.Main.gridSensitivityAndReminderPreferences,
                     systemImage: "slider.horizontal.3"
+                )
+                dataRow(
+                    SettingsL10n.Main.bestShotPersonalization,
+                    systemImage: "arrow.counterclockwise"
                 )
             } header: {
                 Text(SettingsL10n.Main.whatWillBeDeleted)

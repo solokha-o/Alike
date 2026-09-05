@@ -408,6 +408,194 @@ final class BestShotRankerTests: XCTestCase {
         XCTAssertEqual(excludedByDecide, excludedByRatio)
     }
 
+    // MARK: - overrideExample
+
+    func testChosenSharperFrameProducesAPositiveSharpnessDelta() throws {
+        let sharp = makeSnapshot("sharp")
+        let blurry = makeSnapshot("blurry")
+        let snapshots = [sharp, blurry]
+        let scores = makeScores([
+            makeScore("sharp", globalSharpness: 60),
+            makeScore("blurry", globalSharpness: 30)
+        ])
+        let decision = BestShotRanker.decide(snapshots: snapshots, scores: scores)
+        XCTAssertEqual(decision.localIdentifier, "sharp")
+
+        let example = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "sharp",
+            recommended: "blurry"
+        )
+
+        let example2 = try XCTUnwrap(example)
+        XCTAssertGreaterThan(example2.componentDelta.sharpness, 0)
+        // The chosen frame is strictly better and carries no penalty gap in
+        // the other direction, so noise/exposure/resolution should not go
+        // negative for it here (both frames share identical inputs there).
+        XCTAssertGreaterThanOrEqual(example2.componentDelta.exposure, 0)
+        XCTAssertGreaterThanOrEqual(example2.componentDelta.noiseArtifacts, 0)
+    }
+
+    func testOverrideExampleIsNilWhenChosenEqualsRecommended() {
+        let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
+        let scores = makeScores([
+            makeScore("a", globalSharpness: 60),
+            makeScore("b", globalSharpness: 30)
+        ])
+
+        let example = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "a",
+            recommended: "a"
+        )
+
+        XCTAssertNil(example)
+    }
+
+    func testOverrideExampleIsNilWhenAnIdentifierIsNotInTheCluster() {
+        let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
+        let scores = makeScores([
+            makeScore("a", globalSharpness: 60),
+            makeScore("b", globalSharpness: 30)
+        ])
+
+        let example = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "a",
+            recommended: "not-in-cluster"
+        )
+
+        XCTAssertNil(example)
+    }
+
+    func testOverrideExampleIsNilWhenEitherSideWasExcludedForCriticalBlur() {
+        let blurred = makeSnapshot("blurred")
+        let referenceOne = makeSnapshot("reference1")
+        let referenceTwo = makeSnapshot("reference2")
+        let snapshots = [blurred, referenceOne, referenceTwo]
+        let scores = makeScores([
+            makeScore("blurred", globalSharpness: 5),
+            makeScore("reference1", globalSharpness: 60),
+            makeScore("reference2", globalSharpness: 58)
+        ])
+
+        let exampleChosenExcluded = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "blurred",
+            recommended: "reference1"
+        )
+        let exampleRecommendedExcluded = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "reference1",
+            recommended: "blurred"
+        )
+
+        XCTAssertNil(exampleChosenExcluded)
+        XCTAssertNil(exampleRecommendedExcluded)
+    }
+
+    func testClusterHasFacesReflectsWhetherTheClusterHasUsableFaceSignals() throws {
+        let withFaces = [makeSnapshot("a"), makeSnapshot("b")]
+        let facedScores = makeScores([
+            makeScore("a", globalSharpness: 50, subjectSharpness: 50, faces: [makeFace(sharpness: 50)]),
+            makeScore("b", globalSharpness: 40, subjectSharpness: 40, faces: [makeFace(sharpness: 40)])
+        ])
+        let faced = try XCTUnwrap(BestShotRanker.overrideExample(
+            snapshots: withFaces,
+            scores: facedScores,
+            chosen: "a",
+            recommended: "b"
+        ))
+        XCTAssertTrue(faced.clusterHasFaces)
+
+        let withoutFaces = [makeSnapshot("c"), makeSnapshot("d")]
+        let facelessScores = makeScores([
+            makeScore("c", globalSharpness: 50),
+            makeScore("d", globalSharpness: 40)
+        ])
+        let faceless = try XCTUnwrap(BestShotRanker.overrideExample(
+            snapshots: withoutFaces,
+            scores: facelessScores,
+            chosen: "c",
+            recommended: "d"
+        ))
+        XCTAssertFalse(faceless.clusterHasFaces)
+    }
+
+    func testOffsetDeltaIsSignedTowardTheFavoriteFrame() throws {
+        // Keep both frames far from the critical-blur exclusion band and from
+        // score clamping, differing only in favorite status.
+        let favorite = makeSnapshot("favorite", isFavorite: true)
+        let other = makeSnapshot("other")
+        let snapshots = [favorite, other]
+        let scores = makeScores([
+            makeScore("favorite", globalSharpness: 50),
+            makeScore("other", globalSharpness: 50)
+        ])
+
+        let favoriteChosen = try XCTUnwrap(BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "favorite",
+            recommended: "other"
+        ))
+        let favoriteRecommended = try XCTUnwrap(BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "other",
+            recommended: "favorite"
+        ))
+
+        XCTAssertGreaterThan(favoriteChosen.offsetDelta, 0)
+        XCTAssertLessThan(favoriteRecommended.offsetDelta, 0)
+    }
+
+    func testScoringModelVersionIsCarriedFromThePassedConfig() {
+        var customConfig = PhotoQualityScoringConfig.current
+        customConfig.scoringModelVersion = 999
+        let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
+        let scores = makeScores([
+            makeScore("a", globalSharpness: 60),
+            makeScore("b", globalSharpness: 30)
+        ])
+
+        let example = BestShotRanker.overrideExample(
+            snapshots: snapshots,
+            scores: scores,
+            chosen: "a",
+            recommended: "b",
+            config: customConfig
+        )
+
+        XCTAssertEqual(example?.scoringModelVersion, 999)
+    }
+
+    func testBestShotOverrideExampleRoundTripsThroughCodable() throws {
+        let example = BestShotOverrideExample(
+            recordedAt: Date(timeIntervalSince1970: 12_345),
+            clusterHasFaces: true,
+            componentDelta: PhotoQualityScoringConfig.Weights(
+                sharpness: 0.1,
+                faceQuality: -0.2,
+                exposure: 0.3,
+                noiseArtifacts: -0.4,
+                resolution: 0.5
+            ),
+            offsetDelta: -0.05,
+            scoringModelVersion: 3
+        )
+
+        let data = try JSONEncoder().encode(example)
+        let decoded = try JSONDecoder().decode(BestShotOverrideExample.self, from: data)
+
+        XCTAssertEqual(decoded, example)
+    }
+
     // MARK: - Helpers
 
     private func makeSnapshot(
