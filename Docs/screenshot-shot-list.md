@@ -130,7 +130,7 @@ rules behind it.
 | 11 | Paywall with disclosure | ✅ | n/a | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
 | 12 | User Guide | retired | retired | n/a | n/a | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
-| 14 | Cluster details, enhanced | open | open | open | open | — | `14-best-shot-enhanced` |
+| 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | — | `14-best-shot-enhanced` |
 
 The table has no `ar` column — Arabic was added to the listing after it was
 written, and the existing rows were never re-cut. For shot 14, read the four
@@ -168,44 +168,23 @@ comparison-review frame shows different photos from the other six. Not wrong —
 the deck reads fine on its own — but recapturing it is what would make all
 thirteen decks a single set.
 
-**Open — the sixth deck shot, thirteen files:**
+**Captured — the sixth deck shot, thirteen files.** `14-best-shot-enhanced` in
+all thirteen listing locales, taken in one session on a physical iPhone on
+6 September 2026 and recorded in `capture-manifest.json`. Cluster details after
+Apply: the Best Shot carries both badges, the gold "Best Shot" and the
+"Enhanced" capsule. The revert action is deliberately *not* in frame — it lives
+in the photo's context menu, so showing it would mean shooting a half-open menu,
+which the deck does not do. The slide's headline carries "keep the original"
+instead.
 
-- **14. Cluster details with the best shot enhanced.** `14-best-shot-enhanced`,
-  in all thirteen listing locales. This is the capture the sixth deck slide is
-  waiting on, and the whole reason the copy for it is already parked in
-  `Docs/screenshot-brief.md`.
-
-  **What the frame has to show.** Cluster details *after* Apply, with the
-  Enhanced badge visible on the best shot and "Revert to original" reachable in
-  the same frame. Those two together are the slide's entire argument: the photo
-  got better, and the way back is right there. No alerts, no spinners, no
-  half-open context menu, nothing caught mid-animation.
-
-  **What has to be identical across the thirteen.** The same group, the same
-  photos, the same Best Shot and the same scroll position in every frame, shot
-  on the **same photo library** as the shipped shots 1, 3, 4, 5 and 7. A sixth
-  slide from a different library stops the deck reading as one set, and that is
-  visible at thumbnail size. Portrait, light appearance, full signal, full
-  battery, no notifications.
-
-  **Size and format.** 1320 × 2868 straight from an iPhone 17 Pro Max simulator,
-  or 1125 × 2436 PNG from a device and then `tools/import_device_screenshots.py`.
-  **PNG, never JPEG.** A JPEG off the device is what cost the Polish shot 1 its
-  pristine source — see above — and it is not detectable by eye afterwards, only
-  from the file.
-
-  **Do it once, on one photo.** The enhancement is written into the photo
-  library, not held inside the app, so applying it thirteen times means thirteen
-  edits to live assets. Apply it once, on one photo; shoot all thirteen
-  languages on that same photo, switching the device language between frames;
-  revert to original when the session is over.
-
-  **`es-419` is a real thirteenth frame.** Latin-American Spanish, captured on a
-  device set to a Latin-American region — not a copy of the `es` file under a new
-  name. The deck's `es` and `es-419` copy is deliberately different, so the
-  frames are two captures, not one. A missing or duplicated `es-419` capture is
-  the likeliest way `validate_sources()` fails after the capture device has been
-  put away, and the fix at that point is another whole session.
+**Known weakness, accepted.** The captured cluster holds two photos, so the grid
+fills only the upper part of the screen and the lower half renders as empty
+black. Against shot 4's full 2 × 2 grid and its cleanup button, slide 6 reads as
+the emptiest frame in the deck, and it is visible at thumbnail width. Recapturing
+on a four-photo cluster is what would fix it; the owner chose to ship this
+capture rather than hold the release for another session. If the deck is ever
+reshot, this is the first frame to redo — and a cluster where the enhanced photo
+visibly beats its neighbour would sell the slide better than this one does.
 
 **Open — one more shot, unrelated to the deck:**
 
