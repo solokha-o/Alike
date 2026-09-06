@@ -115,9 +115,14 @@ struct FullscreenZoomablePhotoView: View {
         }
     }
 
-    /// Rebuilds the load when the asset, the requested size, or a manual retry changes.
+    /// Rebuilds the load when the asset, its edit, the requested size, or a
+    /// manual retry changes. The modification date is what the thumbnail cache
+    /// is keyed on, so an asset re-read after an edit has to re-run the load.
     private func imageLoadTaskID(for targetSize: CGSize) -> String {
-        "\(asset.localIdentifier)#\(Int(targetSize.width))x\(Int(targetSize.height))#\(imageLoadAttempt)"
+        """
+        \(asset.localIdentifier)#\(asset.modificationDate?.timeIntervalSinceReferenceDate ?? 0)\
+        #\(Int(targetSize.width))x\(Int(targetSize.height))#\(imageLoadAttempt)
+        """
     }
 
     @MainActor

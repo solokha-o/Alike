@@ -7,29 +7,41 @@ import Foundation
 /// This is what the app injects: decoding photos is the expensive part, and a
 /// cluster reopened without changes must not pay for it twice.
 public struct CachingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    /// Answers what edit is on an asset right now. Only the rows the cache
+    /// serves pre-enhancement signals for ever ask.
+    typealias EnhancementAvailabilityProvider = @Sendable (String) async -> PhotoEnhancementAvailability
+
     private let repository: any PhotoQualityScoreRepository
     private let analyzer: any PhotoQualityAnalyzing
     private let config: PhotoQualityScoringConfig
+    private let enhancementAvailability: EnhancementAvailabilityProvider?
 
     public init(
         repository: any PhotoQualityScoreRepository,
         config: PhotoQualityScoringConfig = .current
     ) {
+        let enhancementService = PhotoKitEnhancementService(
+            qualityScoreRepository: repository,
+            config: config
+        )
         self.init(
             repository: repository,
             analyzer: PhotoQualityAnalysisService(config: config),
-            config: config
+            config: config,
+            enhancementAvailability: { await enhancementService.availability(localIdentifier: $0) }
         )
     }
 
     init(
         repository: any PhotoQualityScoreRepository,
         analyzer: any PhotoQualityAnalyzing,
-        config: PhotoQualityScoringConfig = .current
+        config: PhotoQualityScoringConfig = .current,
+        enhancementAvailability: EnhancementAvailabilityProvider? = nil
     ) {
         self.repository = repository
         self.analyzer = analyzer
         self.config = config
+        self.enhancementAvailability = enhancementAvailability
     }
 
     public func scores(for assets: [PHAsset]) async throws -> [PhotoQualityScore] {
@@ -50,15 +62,19 @@ public struct CachingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
         var fresh: [String: PhotoQualityScore] = [:]
         var misses: [PHAsset] = []
         for asset in assets {
-            if let score = cached[asset.localIdentifier], score.isFresh(
+            guard let score = cached[asset.localIdentifier], score.isFresh(
                 modificationDate: asset.modificationDate,
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion
-            ) {
-                fresh[asset.localIdentifier] = score
-            } else {
+            ) else {
                 misses.append(asset)
+                continue
             }
+            if score.isAlikeEnhanced, await hasLostOurEdit(asset.localIdentifier) {
+                misses.append(asset)
+                continue
+            }
+            fresh[asset.localIdentifier] = score
         }
 
         guard !misses.isEmpty else {
@@ -84,5 +100,26 @@ public struct CachingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
             fresh[score.localIdentifier] = score
         }
         return identifiers.compactMap { fresh[$0] }
+    }
+
+    /// `PhotoQualityScore.isFresh` keeps an Alike-enhanced row for good, because
+    /// its signals are the only surviving measurement of the original. That
+    /// holds only for as long as our edit is the edit on the photo: once the
+    /// user edits it in another app, or reverts it in Photos, those signals
+    /// describe pixels nobody will see again and the ranker has to measure what
+    /// is actually there.
+    private func hasLostOurEdit(_ localIdentifier: String) async -> Bool {
+        guard let enhancementAvailability else { return false }
+        switch await enhancementAvailability(localIdentifier) {
+        case .available, .editedElsewhere:
+            // Asking also clears the stale marker in the cache, so this costs
+            // one resolve per photo that changed, not one per ranking.
+            return true
+        case .enhanced, .unavailable:
+            // `.unavailable` is "cannot tell", not "the edit is gone": an
+            // unreadable or non-editable asset is no reason to throw away the
+            // only measurement of the original that exists.
+            return false
+        }
     }
 }
