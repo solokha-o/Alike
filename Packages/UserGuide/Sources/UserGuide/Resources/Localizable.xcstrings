@@ -3405,6 +3405,836 @@
         }
       }
     },
+    "userGuide.comparingPhotos.enhance.apply.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Apply."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike готує покращену версію й показує її як попередній перегляд. Нічого не записується, доки ви не торкнетеся «Застосувати»."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prepara una versión mejorada y te la muestra como vista previa. No se guarda nada hasta que tocas «Aplicar»."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prepara una versión mejorada y te la muestra como vista previa. No se guarda nada hasta que tocas «Aplicar»."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike prepara uma versão aprimorada e a mostra como prévia. Nada é gravado até você tocar em “Aplicar”."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike bereitet eine verbesserte Version vor und zeigt sie als Vorschau. Geschrieben wird erst, wenn du auf „Anwenden“ tippst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prépare une version améliorée et vous la montre en aperçu. Rien n’est enregistré tant que vous n’avez pas touché « Appliquer »."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prepara una versione migliorata e te la mostra in anteprima. Non viene scritto nulla finché non tocchi «Applica»."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike maakt een verbeterde versie en toont die als voorbeeld. Er wordt niets bewaard totdat je op 'Toepassen' tikt."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike przygotowuje poprawioną wersję i pokazuje ją jako podgląd. Nic nie zostaje zapisane, dopóki nie dotkniesz „Zastosuj”."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike iyileştirilmiş bir sürüm hazırlar ve önizleme olarak gösterir. Sen 'Uygula'ya dokunmadan hiçbir şey yazılmaz."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike 會準備一個優化版本，並以預覽方式顯示。在你點一下「套用」之前，不會寫入任何東西。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يجهّز Alike نسخة محسّنة ويعرضها كمعاينة. ولا يُكتب أي شيء حتى تضغط «تطبيق»."
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.apply.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See it before you keep it"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спершу подивіться результат"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Míralo antes de quedártelo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Míralo antes de quedártelo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veja antes de ficar com ela"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erst ansehen, dann behalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyez le résultat avant de le garder"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardala prima di tenerla"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk het voordat je het houdt"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz, zanim zatwierdzisz"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saklamadan önce gör"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先看過再決定保留"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شاهدها قبل أن تحتفظ بها"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.compare.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced version again."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У повноекранному перегляді утримуйте фото, щоб побачити оригінал, і відпустіть, щоб знову побачити покращену версію."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En la vista a pantalla completa, mantén pulsada la foto para ver el original y suelta para volver a la versión mejorada."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En la vista a pantalla completa, mantén pulsada la foto para ver el original y suelta para volver a la versión mejorada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Na visualização em tela cheia, mantenha a foto pressionada para ver o original e solte para voltar à versão aprimorada."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halte das Foto in der Vollbildansicht gedrückt, um das Original zu sehen, und lass los, um wieder die verbesserte Version zu sehen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En plein écran, maintenez la photo pour voir l’original, puis relâchez pour revoir la version améliorée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nella vista a schermo intero, tieni premuta la foto per vedere l’originale e rilascia per tornare alla versione migliorata."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Houd de foto in de schermvullende weergave ingedrukt om het origineel te zien, en laat los om weer de verbeterde versie te zien."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "W widoku pełnoekranowym przytrzymaj zdjęcie, aby zobaczyć oryginał, i puść, aby wrócić do poprawionej wersji."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam ekran görünümde orijinali görmek için fotoğrafa uzun bas, iyileştirilmiş sürüme dönmek için parmağını kaldır."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在全螢幕檢視中長按照片可看到原始照片，放開就會回到優化版本。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "في العرض بملء الشاشة، اضغط مطولًا على الصورة لرؤية الأصل، وارفع إصبعك لتعود إلى النسخة المحسّنة."
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.compare.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touch and hold to compare"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Утримуйте, щоб порівняти"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén pulsado para comparar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén pulsado para comparar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantenha pressionado para comparar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Vergleichen gedrückt halten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenez pour comparer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni premuto per confrontare"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Houd ingedrukt om te vergelijken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przytrzymaj, aby porównać"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karşılaştırmak için uzun bas"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "長按即可比較"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اضغط مطولًا للمقارنة"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The original never leaves your library. Alike writes the change the way Photos does, so either app can undo it."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оригінал ніколи не залишає вашу фототеку. Alike записує зміну так само, як застосунок «Фото», тож скасувати її можна в будь-якому з них."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El original nunca sale de tu fototeca. Alike guarda el cambio igual que la app Fotos, así que puedes deshacerlo desde cualquiera de las dos."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El original nunca sale de tu fototeca. Alike guarda el cambio igual que la app Fotos, así que puedes deshacerlo desde cualquiera de las dos."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O original nunca sai da sua fototeca. O Alike grava a alteração do mesmo jeito que o app Fotos, então dá para desfazer em qualquer um dos dois."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Original verlässt deine Mediathek nie. Alike schreibt die Änderung so, wie die Fotos-App es tut – rückgängig machen kannst du sie in beiden Apps."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’original ne quitte jamais votre photothèque. Alike enregistre la modification comme le fait l’app Photos, vous pouvez donc l’annuler depuis l’une ou l’autre."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’originale non lascia mai la tua libreria. Alike scrive la modifica come fa l’app Foto, quindi puoi annullarla da entrambe."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het origineel verlaat je bibliotheek nooit. Alike schrijft de wijziging zoals de Foto's-app dat doet, dus je kunt hem in beide apps ongedaan maken."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oryginał nigdy nie opuszcza Twojej biblioteki. Alike zapisuje zmianę tak samo jak aplikacja Zdjęcia, więc możesz ją cofnąć w każdej z nich."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orijinal, kitaplığından hiç çıkmaz. Alike değişikliği Fotoğraflar uygulamasının yaptığı gibi yazar; böylece iki uygulamadan da geri alabilirsin."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原始照片絕不會離開你的圖庫。Alike 以「照片」App 相同的方式寫入這項變更，所以在任一個 App 都能取消。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يغادر الأصل مكتبتك أبدًا. يكتب Alike التغيير بالطريقة نفسها التي يستخدمها تطبيق الصور، فيمكنك التراجع عنه من أي من التطبيقين."
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.header": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhance the one you keep"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покращте фото, яке залишаєте"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mejorar la foto que conservas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mejorar la foto que conservas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprimorar a foto que você guarda"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Foto verbessern, das du behältst"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Améliorer la photo que vous gardez"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Migliorare la foto che tieni"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De foto die je houdt verbeteren"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poprawianie zdjęcia, które zostaje"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sakladığın fotoğrafı iyileştirmek"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "優化你要保留的那張"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحسين الصورة التي تحتفظ بها"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.limits.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhancement is not available for video, in Limited Access, or for photos the system marks as non-editable. If a photo already carries another app's edit, Alike asks before replacing it."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покращення недоступне для відео, за обмеженого доступу та для фото, які система позначає як нередаговувані. Якщо фото вже містить правку з іншого застосунку, Alike запитає, перш ніж її замінити."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La mejora no está disponible para videos, con acceso limitado ni para fotos que el sistema marca como no editables. Si una foto ya tiene una edición de otra app, Alike pregunta antes de reemplazarla."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La mejora no está disponible para vídeos, con acceso limitado ni para fotos que el sistema marca como no editables. Si una foto ya tiene una edición de otra app, Alike pregunta antes de reemplazarla."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O aprimoramento não está disponível para vídeos, com acesso limitado nem para fotos que o sistema marca como não editáveis. Se uma foto já tem uma edição de outro app, o Alike pergunta antes de substituí-la."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbessern ist nicht möglich bei Videos, bei eingeschränktem Zugriff und bei Fotos, die das System als nicht bearbeitbar markiert. Trägt ein Foto schon die Bearbeitung einer anderen App, fragt Alike, bevor es sie ersetzt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’amélioration n’est pas proposée pour les vidéos, en accès limité, ni pour les photos que le système marque comme non modifiables. Si une photo porte déjà la modification d’une autre app, Alike demande avant de la remplacer."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il miglioramento non è disponibile per i video, con accesso limitato o per le foto che il sistema segna come non modificabili. Se una foto ha già la modifica di un’altra app, Alike chiede prima di sostituirla."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbeteren is niet beschikbaar voor video's, bij beperkte toegang en voor foto's die het systeem als niet-bewerkbaar markeert. Draagt een foto al de bewerking van een andere app, dan vraagt Alike het eerst voordat die wordt vervangen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poprawa nie jest dostępna dla filmów, przy ograniczonym dostępie ani dla zdjęć, które system oznacza jako nieedytowalne. Jeśli zdjęcie ma już zmianę z innej aplikacji, Alike zapyta, zanim ją zastąpi."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İyileştirme; videolarda, sınırlı erişimde ve sistemin düzenlenemez olarak işaretlediği fotoğraflarda sunulmaz. Bir fotoğrafta başka bir uygulamanın düzenlemesi varsa Alike, onu değiştirmeden önce sorar."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "影片、受限取用的情況，以及系統標示為無法編輯的照片，都不會提供優化。如果照片上已有其他 App 的編輯，Alike 會先詢問再取代。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التحسين غير متاح لمقاطع الفيديو، ولا مع الوصول المحدود، ولا للصور التي يعتبرها النظام غير قابلة للتحرير. وإذا كانت الصورة تحمل تعديلاً من تطبيق آخر، يسأل Alike قبل استبداله."
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.limits.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When it is not offered"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Коли покращення недоступне"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuándo no se ofrece"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuándo no se ofrece"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando não é oferecido"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann es nicht angeboten wird"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand ce n’est pas proposé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando non è disponibile"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wanneer het niet wordt aangeboden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiedy nie jest dostępne"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne zaman sunulmaz"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "什麼時候不會提供"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متى لا يكون متاحًا"
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.revert.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Photos can undo the change too — Edit, then Revert."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Один крок повертає оригінал. iOS зберігає його за вас, тож дубліката не створюється, а скасувати зміну можна й у застосунку «Фото» — «Редагувати», потім «Повернути»."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un paso devuelve el original. iOS lo conserva por ti, así que no se crea ningún duplicado, y la app Fotos también puede deshacer el cambio: «Editar» y luego «Revertir»."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un paso devuelve el original. iOS lo conserva por ti, así que no se crea ningún duplicado, y la app Fotos también puede deshacer el cambio: «Editar» y luego «Revertir»."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um passo traz o original de volta. O iOS o mantém para você, então nenhuma cópia é criada, e o app Fotos também desfaz a alteração: “Editar” e depois “Reverter”."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Schritt holt das Original zurück. iOS bewahrt es für dich auf, es entsteht also kein Duplikat, und auch die Fotos-App kann die Änderung rückgängig machen – „Bearbeiten“, dann „Zurücksetzen“."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une étape suffit pour retrouver l’original. iOS le conserve pour vous, donc aucun doublon n’est créé, et l’app Photos peut aussi annuler la modification : « Modifier », puis « Rétablir »."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un passaggio riporta l’originale. iOS lo conserva per te, quindi non viene creato nessun duplicato, e anche l’app Foto può annullare la modifica: «Modifica», poi «Ripristina»."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eén stap zet het origineel terug. iOS bewaart het voor je, dus er ontstaat geen duplicaat, en ook de Foto's-app kan de wijziging ongedaan maken: 'Wijzig' en dan 'Herstel'."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden krok przywraca oryginał. iOS przechowuje go za Ciebie, więc nie powstaje żaden duplikat, a zmianę cofniesz też w aplikacji Zdjęcia — „Edytuj”, a potem „Przywróć”."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek adım orijinali geri getirir. iOS onu senin için saklar, yani kopya oluşmaz; değişikliği Fotoğraflar uygulamasından da geri alabilirsin — 'Düzenle', sonra 'Orijinale Döndür'."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一個步驟就能把原始照片放回去。iOS 會替你保留原始照片，因此不會產生副本，「照片」App 也能取消這項變更——「編輯」，然後「還原」。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خطوة واحدة تُعيد الأصل. يحتفظ به iOS نيابةً عنك، فلا تُنشأ أي نسخة مكررة، ويمكن لتطبيق الصور أيضًا التراجع عن التغيير — «تحرير» ثم «العودة إلى الأصل»."
+          }
+        }
+      }
+    },
+    "userGuide.comparingPhotos.enhance.revert.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revert to original"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повернути оригінал"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver al original"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver al original"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltar ao original"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Original wiederherstellen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rétablir l’original"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristina l’originale"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Origineel herstellen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przywróć oryginał"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orijinale dön"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "還原為原始照片"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "العودة إلى الأصل"
+          }
+        }
+      }
+    },
     "userGuide.comparingPhotos.personalization.header": {
       "extractionState": "manual",
       "localizations": {
@@ -13620,79 +14450,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Requested once at the start. You can change or limit it any time in iOS Settings."
+            "value": "Requested once at the start, and used to read your library and — only when you enhance a photo yourself — to save that change. You can change or limit it any time in iOS Settings."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Запитується один раз на початку. Ви можете змінити або обмежити доступ будь-коли в Налаштуваннях iOS."
+            "value": "Запитується один раз на початку й використовується, щоб читати вашу фототеку і — лише коли ви самі покращуєте фото — зберігати цю зміну. Ви можете змінити або обмежити доступ будь-коли в Налаштуваннях iOS."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se pide una vez al principio. Puedes cambiarlo o limitarlo cuando quieras en Configuración de iOS."
+            "value": "Se pide una vez al principio y sirve para leer tu fototeca y —solo cuando mejoras una foto tú mismo— guardar ese cambio. Puedes cambiarlo o limitarlo cuando quieras en Configuración de iOS."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se pide una vez al principio. Puedes cambiarlo o limitarlo cuando quieras en Ajustes de iOS."
+            "value": "Se pide una vez al principio y sirve para leer tu fototeca y —solo cuando mejoras una foto tú mismo— guardar ese cambio. Puedes cambiarlo o limitarlo cuando quieras en Ajustes de iOS."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pedido uma vez, no início. Você pode mudar ou limitar isso quando quiser nos Ajustes do iOS."
+            "value": "Pedido uma vez, no início, e usado para ler sua fototeca e — só quando você mesmo aprimora uma foto — salvar essa alteração. Você pode mudar ou limitar isso quando quiser nos Ajustes do iOS."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wird einmal zu Beginn angefragt. Du kannst das jederzeit in den iOS-Einstellungen ändern oder einschränken."
+            "value": "Wird einmal zu Beginn angefragt und dient dazu, deine Mediathek zu lesen und – nur wenn du selbst ein Foto verbesserst – diese Änderung zu sichern. Du kannst das jederzeit in den iOS-Einstellungen ändern oder einschränken."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Demandé une fois au début. Vous pouvez le modifier ou le limiter à tout moment dans les Réglages iOS."
+            "value": "Demandé une fois au début, il sert à lire votre photothèque et — uniquement quand vous améliorez vous-même une photo — à enregistrer cette modification. Vous pouvez le modifier ou le limiter à tout moment dans les Réglages iOS."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Richiesto una volta all'inizio. Puoi modificarlo o limitarlo quando vuoi in Impostazioni di iOS."
+            "value": "Richiesto una volta all'inizio, serve a leggere la tua libreria e — solo quando sei tu a migliorare una foto — a salvare quella modifica. Puoi modificarlo o limitarlo quando vuoi in Impostazioni di iOS."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eén keer aan het begin gevraagd. Je kunt dit altijd wijzigen of beperken in de iOS-instellingen."
+            "value": "Eén keer aan het begin gevraagd, en gebruikt om je bibliotheek te lezen en — alleen wanneer je zelf een foto verbetert — die wijziging te bewaren. Je kunt dit altijd wijzigen of beperken in de iOS-instellingen."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wymagany raz na początku. Możesz go zmienić lub ograniczyć w każdej chwili w Ustawieniach iOS."
+            "value": "Wymagany raz na początku; służy do odczytu Twojej biblioteki i — tylko wtedy, gdy samodzielnie poprawisz zdjęcie — do zapisania tej zmiany. Możesz go zmienić lub ograniczyć w każdej chwili w Ustawieniach iOS."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Başlangıçta bir kez istenir. İstediğin zaman iOS Ayarları'ndan değiştirebilir ya da sınırlayabilirsin."
+            "value": "Başlangıçta bir kez istenir; kitaplığını okumak ve — yalnızca bir fotoğrafı kendin iyileştirdiğinde — bu değişikliği kaydetmek için kullanılır. İstediğin zaman iOS Ayarları'ndan değiştirebilir ya da sınırlayabilirsin."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "只在一開始要求一次。你隨時可以在 iOS「設定」中更改或限制。"
+            "value": "只在一開始要求一次，用來讀取你的圖庫，並且只有在你自己優化照片時，才會儲存那項變更。你隨時可以在 iOS「設定」中更改或限制。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يُطلب مرة واحدة في البداية. ويمكنك تغييره أو تقييده في أي وقت من إعدادات iOS."
+            "value": "يُطلب مرة واحدة في البداية، ويُستخدم لقراءة مكتبتك و — فقط عندما تحسّن صورة بنفسك — لحفظ ذلك التغيير. ويمكنك تغييره أو تقييده في أي وقت من إعدادات iOS."
           }
         }
       }
