@@ -121,18 +121,21 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     // MARK: - PhotoEnhancementService
 
     public func availability(localIdentifier: String) async -> PhotoEnhancementAvailability {
-        await availability(localIdentifier: localIdentifier, purpose: .availability)
+        await resolveAvailability(localIdentifier: localIdentifier, purpose: .availability).availability
     }
 
-    private func availability(
+    /// The answer, plus whether the library itself said what edit is on the
+    /// photo. A caller that would otherwise pay for the network has to be able
+    /// to tell the library's answer from one read off Alike's own marker.
+    private func resolveAvailability(
         localIdentifier: String,
         purpose: PhotoEnhancementRequestPurpose
-    ) async -> PhotoEnhancementAvailability {
-        guard (try? authorize()) != nil else { return .unavailable }
+    ) async -> (availability: PhotoEnhancementAvailability, didReadAdjustment: Bool) {
+        guard (try? authorize()) != nil else { return (.unavailable, false) }
         guard let request = await requestBuilder(localIdentifier, purpose) else {
-            return .unavailable
+            return (.unavailable, false)
         }
-        guard request.isEditable, request.isSupported else { return .unavailable }
+        guard request.isEditable, request.isSupported else { return (.unavailable, false) }
 
         guard request.isAdjustmentDataReadable else {
             // The library would not say what edit is on this photo — it is not
@@ -142,24 +145,24 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             // re-scored against its enhanced pixels, which is the one thing the
             // marker exists to prevent. Answer from what we last recorded, and
             // change nothing.
-            return await isMarkedEnhanced(localIdentifier: localIdentifier) ? .enhanced : .available
+            return (await isMarkedEnhanced(localIdentifier: localIdentifier) ? .enhanced : .available, false)
         }
 
         switch request.existingAdjustmentFormatIdentifier {
         case PhotoEnhancementAdjustment.formatIdentifier:
-            return .enhanced
+            return (.enhanced, true)
         case .none:
             // Our edit is gone — reverted in Photos, or never there. The cached
             // marker has to go with it, or the score cache would keep serving
             // pre-edit signals for a photo that no longer carries our edit.
             await setEnhancedFlag(false, localIdentifier: localIdentifier)
-            return .available
+            return (.available, true)
         default:
             // Someone else's edit is on this photo. The action stays available,
             // but the UI has to say what applying it would replace — and our
             // marker is stale for the same reason as above.
             await setEnhancedFlag(false, localIdentifier: localIdentifier)
-            return .editedElsewhere
+            return (.editedElsewhere, true)
         }
     }
 
@@ -183,16 +186,27 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         replacingOtherEdits: Bool = false
     ) async throws -> PhotoEnhancementAdjustment {
         // The editing pass deliberately does not claim a foreign adjustment, so
-        // it cannot see one either; the availability pass is what knows. It is
-        // asked here with the network allowed: the cheap pass cannot read a
-        // photo that is not local, and an edit that answers "nobody would say"
-        // would go on to lay Alike's work over someone else's without a word.
+        // it cannot see one either; the availability pass is what knows. Ask it
+        // cheaply first: for a photo that is on the device the local pass reads
+        // the same adjustment the network-allowed one would, and resolving the
+        // asset twice with the network allowed is what this avoids.
         if !replacingOtherEdits {
-            let existingEdit = await availability(
+            var existingEdit = await resolveAvailability(
                 localIdentifier: localIdentifier,
-                purpose: .availabilityAllowingNetwork
+                purpose: .availability
             )
-            guard existingEdit != .editedElsewhere else {
+            if !existingEdit.didReadAdjustment {
+                // Nothing was read, so the answer above came from Alike's own
+                // marker. Only now is the network worth it: a photo that is not
+                // local would otherwise answer "nobody would say" about an edit
+                // that is really there, and Alike's work would go on top of
+                // someone else's without a word.
+                existingEdit = await resolveAvailability(
+                    localIdentifier: localIdentifier,
+                    purpose: .availabilityAllowingNetwork
+                )
+            }
+            guard existingEdit.availability != .editedElsewhere else {
                 // Building on someone else's edit is the user's call, because
                 // the result is their edit plus ours, and one revert undoes
                 // both of them together.

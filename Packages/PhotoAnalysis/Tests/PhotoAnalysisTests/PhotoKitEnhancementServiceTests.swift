@@ -292,9 +292,25 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let saved = await library.savedAdjustmentData
         XCTAssertNil(saved)
-        // Offering the action stays local: only the edit itself may reach out.
+        // The cheap pass is asked first and reads nothing; only then is the
+        // photo resolved again with the network allowed.
         let purposes = await library.requestedPurposes
-        XCTAssertEqual(purposes, [.availabilityAllowingNetwork])
+        XCTAssertEqual(purposes, [.availability, .availabilityAllowingNetwork])
+    }
+
+    /// A photo that is on the device is read by the cheap pass, and the answer
+    /// it gives is the library's own — resolving the asset a second time with
+    /// the network allowed would only repeat a question already answered.
+    func testApplyingAsksTheNetworkOnlyForAPhotoTheCheapPassCannotRead() async {
+        let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
+        let service = makeService(library: library)
+
+        await assertThrows(.editedInAnotherApp) {
+            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+        }
+
+        let purposes = await library.requestedPurposes
+        XCTAssertEqual(purposes, [.availability])
     }
 
     func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
