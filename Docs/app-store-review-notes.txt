@@ -69,8 +69,8 @@ Use are on the paywall and under Settings, then Legal. The Terms of Use name
 Apple's Standard EULA as the governing licence.
 
 LANGUAGES
-The app, listing, legal and support pages and the iOS photo permission alert
-are localized into thirteen languages.
+The app, its legal and support pages and the permission alert are localized
+into twelve languages, the listing into thirteen.
 
 DATA DELETION
 Settings, then Data & Privacy, then Delete Alike Data erases all scan
