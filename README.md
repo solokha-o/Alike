@@ -11,7 +11,8 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🔍 **Vision-based analysis** — uses `VNFeaturePrintObservation` for accurate comparisons
 - 🎯 **Sensitivity levels** — 3 accuracy modes (Low/Medium/High)
 - 🧭 **Guided cleanup review** — review each cluster with clear, step-by-step actions
-- ⭐ **Best Shot detection** — deterministic pick of the strongest photo in each cluster
+- ⭐ **Best Shot detection** — the strongest photo in each cluster, picked from measured sharpness, exposure, faces and noise, and nudged by the picks you make yourself
+- ✨ **Reversible enhancement** — improve the photo you keep with one tap; the edit is written non-destructively through PhotoKit, iOS keeps the original, and one step puts it back
 - ✅ **Quick cleanup actions** — Keep Best Only, Select All Except Best, and Clear Selection
 - 🏷️ **Review badges and states** — Not reviewed, In review, Reviewed, and Needs review after rescans
 - 🧹 **Smart categories** — screenshot cleanup and blurred-photo cleanup alongside similar-photo clusters *(Pro)*
@@ -27,25 +28,25 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.0.0
+## 🆕 What ships in 1.3.0
 
-The first public release, now live on the App Store. What it includes:
+Best Shot stops guessing from metadata. What this release adds:
 
-- Similar-photo scanning with Vision feature prints, three sensitivity levels, and complete-link clustering.
-- Guided Cleanup Review in cluster details, with Best Shot picked for you and a selection-first flow.
-- Quick bulk actions: Keep Best Only, Select All Except Best, and Clear Selection.
-- Persistent cluster review states, so progress is restored after relaunch.
-- Cleanup session progress summary with selected count and estimated storage savings.
-- Scanner badges and the "Needs review" resurfacing flow after library changes and rescans.
-- Cleanup history, monthly insights, and optional cleanup reminders.
-- **Alike Free**: 3 scans per month. **Alike Pro**: unlimited scans, batch cleanup, screenshot and blurred-photo cleanup, advanced filters, and custom cleanup reminders.
+- **Measured Best Shot.** The pick comes from the image itself — sharpness on the subject as well as the frame, exposure clipping, face size and focus, noise — with resolution capped as a minor signal and Favorite reduced to a tie-break. When nothing clearly wins, Alike says so and asks rather than pretending confidence.
+- **Reversible enhancement.** One tap improves the photo you keep, shown as a preview before anything is written. The change goes into the library as a non-destructive PhotoKit edit stamped `com.alike.autoEnhance`, so iOS keeps the original, no duplicate is created, and either Alike or Apple Photos can undo it. Live Photos included.
+- **On-device personalisation.** Every time you override the suggestion, Alike learns from the difference and ranks later groups closer to your taste. Ridge-regularised, shrunk towards the shipped weights, bounded to ±0.15, and never allowed to touch the sharpness floor that keeps a blurred frame from winning. One button in Settings resets it.
+- **A versioned Core Data baseline**, so the first schema change after 1.3.0 has a migration to test against.
+
+Earlier releases: 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
 
 ## 🔒 Privacy
 
 Alike makes no network requests. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
 
+The one thing Alike writes back is an enhancement you asked for: a non-destructive PhotoKit adjustment on a single photo, applied only after you confirm the preview, with the original kept by iOS and restorable from either Alike or Apple Photos. The weights Best Shot learns from your own picks are derived numbers in `UserDefaults` — never photos, never uploaded — resettable from Settings and erased along with everything else by Delete Alike Data.
+
 - [Privacy Policy](https://alikeapp.github.io/privacy/) · [Terms of Use](https://alikeapp.github.io/terms/) · [Support](https://alikeapp.github.io/support/)
-- Also published in [Українська](https://alikeapp.github.io/uk/privacy/) · [Deutsch](https://alikeapp.github.io/de/privacy/) · [Français](https://alikeapp.github.io/fr/privacy/) · [Español](https://alikeapp.github.io/es/privacy/) · [Português (Brasil)](https://alikeapp.github.io/pt-br/privacy/), each with its own Terms and support page.
+- Also published in [Українська](https://alikeapp.github.io/uk/privacy/) · [Deutsch](https://alikeapp.github.io/de/privacy/) · [Français](https://alikeapp.github.io/fr/privacy/) · [Español](https://alikeapp.github.io/es/privacy/) · [Português (Brasil)](https://alikeapp.github.io/pt-br/privacy/) · [Italiano](https://alikeapp.github.io/it/privacy/) · [Nederlands](https://alikeapp.github.io/nl/privacy/) · [Polski](https://alikeapp.github.io/pl/privacy/) · [Türkçe](https://alikeapp.github.io/tr/privacy/) · [繁體中文](https://alikeapp.github.io/zh-hant/privacy/) · [العربية](https://alikeapp.github.io/ar/privacy/), each with its own Terms and support page.
 - The runbook for all of it lives in [`Docs/legal/`](Docs/legal/); the pages themselves are in [`alikeapp/alikeapp.github.io`](https://github.com/alikeapp/alikeapp.github.io).
 
 ## 🧠 Similarity algorithm
