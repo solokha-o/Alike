@@ -8,6 +8,10 @@ import Foundation
 /// must stay cheap and local; only a real edit may reach for the network.
 enum PhotoEnhancementRequestPurpose: Sendable {
     case availability
+    /// The same question as `availability`, asked before writing an edit: it
+    /// may reach the network, because a photo that is not local would otherwise
+    /// answer "nobody would say" about an edit that is really there.
+    case availabilityAllowingNetwork
     case editing
 }
 
@@ -117,8 +121,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     // MARK: - PhotoEnhancementService
 
     public func availability(localIdentifier: String) async -> PhotoEnhancementAvailability {
+        await availability(localIdentifier: localIdentifier, purpose: .availability)
+    }
+
+    private func availability(
+        localIdentifier: String,
+        purpose: PhotoEnhancementRequestPurpose
+    ) async -> PhotoEnhancementAvailability {
         guard (try? authorize()) != nil else { return .unavailable }
-        guard let request = await requestBuilder(localIdentifier, .availability) else {
+        guard let request = await requestBuilder(localIdentifier, purpose) else {
             return .unavailable
         }
         guard request.isEditable, request.isSupported else { return .unavailable }
@@ -172,9 +183,16 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         replacingOtherEdits: Bool = false
     ) async throws -> PhotoEnhancementAdjustment {
         // The editing pass deliberately does not claim a foreign adjustment, so
-        // it cannot see one either; the availability pass is what knows.
+        // it cannot see one either; the availability pass is what knows. It is
+        // asked here with the network allowed: the cheap pass cannot read a
+        // photo that is not local, and an edit that answers "nobody would say"
+        // would go on to lay Alike's work over someone else's without a word.
         if !replacingOtherEdits {
-            guard await availability(localIdentifier: localIdentifier) != .editedElsewhere else {
+            let existingEdit = await availability(
+                localIdentifier: localIdentifier,
+                purpose: .availabilityAllowingNetwork
+            )
+            guard existingEdit != .editedElsewhere else {
                 // Building on someone else's edit is the user's call, because
                 // the result is their edit plus ours, and one revert undoes
                 // both of them together.
@@ -430,7 +448,7 @@ private extension PhotoKitEnhancementService {
 
         let options = PHContentEditingInputRequestOptions()
         switch purpose {
-        case .availability:
+        case .availability, .availabilityAllowingNetwork:
             // Claiming to understand any adjustment is how the identifier of
             // the current edit becomes readable, which is all this pass wants.
             options.canHandleAdjustmentData = { _ in true }
@@ -445,8 +463,9 @@ private extension PhotoKitEnhancementService {
             }
         }
         // Merely deciding whether to offer the action must never pull a
-        // full-size original down from iCloud; only a real edit may.
-        options.isNetworkAccessAllowed = purpose == .editing
+        // full-size original down from iCloud; only a real edit may — and the
+        // question an edit asks first is allowed the same reach as the edit.
+        options.isNetworkAccessAllowed = purpose != .availability
 
         // PhotoKit's editing input is not Sendable, but it is only ever touched
         // inside these closures, one at a time, on the caller's task.
@@ -461,7 +480,9 @@ private extension PhotoKitEnhancementService {
             )
             // Deciding whether to offer the action must not depend on a photo
             // being resolvable without the network: answer from the asset and
-            // let the edit itself fetch what it needs.
+            // let the edit itself fetch what it needs. Once the network was
+            // allowed there is nothing left to fall back on — the edit that
+            // asked is about to fail on this same input.
             guard purpose == .availability else { return nil }
             return ResolvedPhotoEnhancementRequest(
                 isEditable: asset.canPerform(.content),
@@ -484,7 +505,7 @@ private extension PhotoKitEnhancementService {
         // is only delivered on the editing pass — judging availability by it
         // would hide the action from every Live Photo.
         let isSupported = asset.mediaType == .image
-            && (purpose == .availability || !isLivePhoto || editingInput.value.livePhoto != nil)
+            && (purpose != .editing || !isLivePhoto || editingInput.value.livePhoto != nil)
 
         AppLog.photoKit.debug(
             """

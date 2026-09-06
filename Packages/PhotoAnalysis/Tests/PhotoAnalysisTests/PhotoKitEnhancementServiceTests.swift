@@ -275,6 +275,28 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertNil(saved)
     }
 
+    /// The consent question is what stands between another app's edit and ours.
+    /// Asked on the cheap pass alone it cannot be answered for a photo that is
+    /// not local, and the edit — which does reach the network — would then lay
+    /// Alike's work over someone else's without ever saying so.
+    func testApplyingRefusesAnotherAppsEditThatOnlyTheNetworkCanSee() async {
+        let library = FakePhotoLibrary(
+            existingAdjustmentFormatIdentifier: "com.example.otherEditor",
+            isLocallyReadable: false
+        )
+        let service = makeService(library: library)
+
+        await assertThrows(.editedInAnotherApp) {
+            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+        }
+
+        let saved = await library.savedAdjustmentData
+        XCTAssertNil(saved)
+        // Offering the action stays local: only the edit itself may reach out.
+        let purposes = await library.requestedPurposes
+        XCTAssertEqual(purposes, [.availabilityAllowingNetwork])
+    }
+
     func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
@@ -413,6 +435,9 @@ private actor FakePhotoLibrary {
     private let isSupported: Bool
     private let existingAdjustmentFormatIdentifier: String?
     private let isAdjustmentDataReadable: Bool
+    /// `false` for a photo that is not on the device: the cheap availability
+    /// pass reads nothing, while the passes that may use the network do.
+    private let isLocallyReadable: Bool
     private let originalError: Error?
     private let saveError: Error?
 
@@ -427,6 +452,7 @@ private actor FakePhotoLibrary {
         isSupported: Bool = true,
         existingAdjustmentFormatIdentifier: String? = nil,
         isAdjustmentDataReadable: Bool = true,
+        isLocallyReadable: Bool = true,
         originalError: Error? = nil,
         saveError: Error? = nil
     ) {
@@ -435,6 +461,7 @@ private actor FakePhotoLibrary {
         self.isSupported = isSupported
         self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
         self.isAdjustmentDataReadable = isAdjustmentDataReadable
+        self.isLocallyReadable = isLocallyReadable
         self.originalError = originalError
         self.saveError = saveError
     }
@@ -442,11 +469,13 @@ private actor FakePhotoLibrary {
     func makeRequest(purpose: PhotoEnhancementRequestPurpose) -> ResolvedPhotoEnhancementRequest? {
         requestedPurposes.append(purpose)
         guard !isMissing else { return nil }
+        let isReadable = isAdjustmentDataReadable
+            && (isLocallyReadable || purpose != .availability)
         return ResolvedPhotoEnhancementRequest(
             isEditable: isEditable,
             isSupported: isSupported,
-            existingAdjustmentFormatIdentifier: existingAdjustmentFormatIdentifier,
-            isAdjustmentDataReadable: isAdjustmentDataReadable,
+            existingAdjustmentFormatIdentifier: isReadable ? existingAdjustmentFormatIdentifier : nil,
+            isAdjustmentDataReadable: isReadable,
             loadOriginal: { [self] in
                 if let originalError = await self.originalError { throw originalError }
                 return (
