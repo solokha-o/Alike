@@ -27,15 +27,15 @@ tilted iPhone carrying the capture.
 | 5 | `07-cleanup-progress` | caption top, centre, phone bleeding off the bottom | green | The payoff — space comes back |
 | 6 | `14-best-shot-enhanced` | caption bottom, right, complete device above | accent | The photo you keep can be improved, and put back |
 
-Slide 6 is approved and parked, not shipping. Its capture — shot 14 — has not
-been taken, so `SLIDES` and `COPY` in the generator still hold five entries and
-the listing still renders five slides. Everything about slide 6 below is here so
-that the capture session has a target and the render, when the frames land, is a
-paste rather than a translation job. `Docs/screenshot-shot-list.md` has the shot
-14 capture spec.
+Slide 6 ships as of 6 September 2026: shot 14 is captured in all thirteen
+locales and `SLIDES` and `COPY` hold six entries. One caveat carried over from
+the capture and recorded in `Docs/screenshot-shot-list.md`: its cluster holds two
+photos, so the lower half of the screen renders empty and slide 6 is the least
+dense frame in the deck. It was shipped knowingly; a four-photo cluster is what
+would fix it.
 
 Two compositions alternate so the deck reads as a rhythm rather than six of the
-same frame, and neither one shows the empty lower half of a capture. Slide 6
+same frame. Slide 6
 follows from that rule rather than from taste: slide 5 is
 `caption_top("center")`, so the sixth has to be `caption_bottom`, and it is
 aligned right because the previous `caption_bottom` — slide 4 — is left.
@@ -253,8 +253,8 @@ The five `ar` source captures are taken the same way every other locale's are �
 on device, then imported with `tools/import_device_screenshots.py`, which now
 accepts `ar` and maps `ar-SA`/`ar-AE`/`ar-EG` onto it.
 
-Thirteen decks, one per listing localization, six slides each: seventy-eight
-renders once shot 14 is captured, sixty-five until then. The directory names are the app's own
+Thirteen decks, one per listing localization, six slides each — seventy-eight
+renders. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`
 maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
 the one code that is spelled identically on both sides.
@@ -308,7 +308,7 @@ Pillow is not in the system Python, so the venv is created once.
 
 ## Adding a slide
 
-The App Store allows ten screenshots; six ship once shot 14 is captured, so the
+The App Store allows ten screenshots; six ship, so the
 ceiling is not the constraint — what a slide has to earn is a shopper's
 attention. Adding one means, in `tools/generate_app_store_product_screenshots.py`:
 
@@ -324,19 +324,22 @@ attention. Adding one means, in `tools/generate_app_store_product_screenshots.py
 raises `SystemExit` when `SLIDES` and a locale's `COPY` disagree, or when a slide
 has no capture to render. So a `SLIDES` entry pushed ahead of its frames does not
 degrade the deck by one slide — it stops the generator, and with it
-`tools/upload-screenshots`, for every locale on the branch. Slide 6 is parked in
-this document instead of half-landed in the generator for exactly that reason.
+`tools/upload-screenshots`, for every locale on the branch. Slide 6 was parked in
+this document rather than half-landed in the generator for exactly that reason,
+and only moved into `SLIDES` and `COPY` once its thirteen frames existed.
 
-The next slide is shot 14, `14-best-shot-enhanced`: composition and band are
-settled above, the copy is written for all thirteen locales above, and the
-capture spec is in `Docs/screenshot-shot-list.md`. Only the frames are missing.
+A capture session that adds a *shot* rather than a language needs
+`tools/import_device_screenshots.py --shots <n>`. Without it the run resolves
+every shot for the chosen locales and stops on the ones whose source files were
+imported sessions ago and deleted since — the same trap `--locales` was added to
+escape, one dimension over.
 Captured-but-unused shots — 2, 6, 8, 13 — are the candidates after it. Shots 10
 and 11 are App Review evidence and deliberately stay out of the listing.
 
 ## Before upload
 
 - All thirteen locales rendered and eyeballed, not just generated — every slide
-  of every deck, so six frames a locale once shot 14 lands, seventy-eight in
+  of every deck, so six frames a locale, seventy-eight in
   total. Type size in the long languages — uk, de, pt-BR, pl — is the usual
   casualty, and zh-Hant and ar each need their own look: one is a different
   typeface, the other is laid out right to left in SF Arabic.

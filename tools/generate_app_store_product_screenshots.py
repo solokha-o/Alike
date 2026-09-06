@@ -218,6 +218,20 @@ SLIDES = (
         device=DeviceTransform(x=100, y=920, width=1120, rotation=2.4),
         band="green",
     ),
+    # Slide 5 is caption_top("center") on green, so the sixth has to be
+    # caption_bottom to keep the two compositions alternating, and right because
+    # the previous caption_bottom — slide 4 — is left. accent rather than green,
+    # which would repeat back to back, or purple, which belongs to the mascot:
+    # teal is the colour of the app's own tappable controls, and this slide is
+    # about a control you can press and unpress.
+    SlideLayout(
+        source="14-best-shot-enhanced.png",
+        caption=caption_bottom("right"),
+        subtitle=subtitle_bottom("right"),
+        subtitle_size=44,
+        device=DeviceTransform(x=220, y=96, width=880, rotation=3.6),
+        band="accent",
+    ),
 )
 
 # (label, headline, subtitle) per slide, in SLIDES order. Wording follows the
@@ -249,6 +263,11 @@ COPY = {
             "Watch the gigabytes\ncome back",
             "Selected photos and estimated savings, tracked as you clean up.",
         ),
+        (
+            "RESTORE ANYTIME",
+            "Improve the keeper,\nkeep the original",
+            "One tap makes the best shot better. One tap puts it back — the original never leaves your library.",
+        ),
     ],
     "uk": [
         (
@@ -275,6 +294,11 @@ COPY = {
             "ВІЛЬНЕ МІСЦЕ",
             "Поверніть\nгігабайти",
             "«Обрано» й «Орієнтовна економія» — просто під час прибирання.",
+        ),
+        (
+            "ОРИГІНАЛ ПОРУЧ",
+            "Покращте кадр,\nзбережіть оригінал",
+            "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки.",
         ),
     ],
     # The line break in each headline is chosen for that language, not carried
@@ -308,6 +332,11 @@ COPY = {
             "Hol dir die\nGigabyte zurück",
             "Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst.",
         ),
+        (
+            "JEDERZEIT ZURÜCK",
+            "Aufnahme verbessern,\nOriginal behalten",
+            "Ein Tippen macht die beste Aufnahme besser. Ein Tippen holt das Original zurück — es bleibt in deiner Mediathek.",
+        ),
     ],
     "fr": [
         (
@@ -334,6 +363,11 @@ COPY = {
             "ESPACE LIBRE",
             "Récupérez\nvos gigaoctets",
             "Photos sélectionnées et économie estimée, suivies pendant le nettoyage.",
+        ),
+        (
+            "TOUJOURS RÉVERSIBLE",
+            "Améliorez la photo,\ngardez l’original",
+            "Une touche améliore la meilleure photo. Une autre la remet comme avant — l’original reste dans votre photothèque.",
         ),
     ],
     # es and es-419 diverge only where the wording, not the vocabulary, differs:
@@ -366,6 +400,11 @@ COPY = {
             "Recupera los\ngigabytes",
             "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
         ),
+        (
+            "SIEMPRE REVERSIBLE",
+            "Realza tu mejor toma,\nconserva el original",
+            "Un toque mejora la mejor toma. Otro la deja como estaba — el original nunca sale de tu fototeca.",
+        ),
     ],
     "es-419": [
         (
@@ -392,6 +431,11 @@ COPY = {
             "ESPACIO LIBRE",
             "Recupera los\ngigabytes",
             "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
+        ),
+        (
+            "REGRESA AL ORIGINAL",
+            "Mejora la que conservas,\nel original sigue ahí",
+            "Un toque mejora la mejor toma. Otro la regresa a como estaba — el original nunca se va de tu fototeca.",
         ),
     ],
     "pt-BR": [
@@ -420,6 +464,11 @@ COPY = {
             "Recupere os\ngigabytes",
             "Fotos selecionadas e economia estimada, enquanto você limpa.",
         ),
+        (
+            "SEMPRE REVERSÍVEL",
+            "Melhore a que fica,\nmantenha o original",
+            "Um toque melhora a melhor foto. Outro toque devolve o original — ele nunca sai da sua fototeca.",
+        ),
     ],
     "it": [
         (
@@ -446,6 +495,11 @@ COPY = {
             "SPAZIO LIBERO",
             "Guarda tornare\ni gigabyte",
             "Foto selezionate e risparmio stimato, mentre fai pulizia.",
+        ),
+        (
+            "SEMPRE REVERSIBILE",
+            "Migliora lo scatto,\ntieni l’originale",
+            "Un tocco migliora lo scatto migliore. Un altro lo riporta com’era — l’originale non lascia mai la tua libreria.",
         ),
     ],
     "nl": [
@@ -474,6 +528,11 @@ COPY = {
             "Zie de gigabytes\nterugkomen",
             "Geselecteerde foto's en geschatte besparing, terwijl je opruimt.",
         ),
+        (
+            "ALTIJD OMKEERBAAR",
+            "Maak de blijver beter,\nhoud het origineel",
+            "Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek.",
+        ),
     ],
     "pl": [
         (
@@ -501,6 +560,11 @@ COPY = {
             "Odzyskaj\ngigabajty",
             "Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków.",
         ),
+        (
+            "ZAWSZE ODWRACALNE",
+            "Popraw ujęcie,\nzachowaj oryginał",
+            "Jedno dotknięcie poprawia najlepsze ujęcie. Drugie przywraca oryginał — nigdy nie znika on z biblioteki.",
+        ),
     ],
     "tr": [
         (
@@ -527,6 +591,11 @@ COPY = {
             "BOŞ ALAN",
             "Gigabaytların\ngeri gelişini gör",
             "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
+        ),
+        (
+            "GERİ ALINABİLİR",
+            "Kareyi iyileştir,\nözgünü sakla",
+            "Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz.",
         ),
     ],
     # Chinese headlines carry the same idea in about half the characters, so the
@@ -558,6 +627,11 @@ COPY = {
             "看著空間\n一點一點回來",
             "清理過程中隨時顯示已選取與預估可省空間。",
         ),
+        (
+            "隨時還原",
+            "讓最佳照片更好\n原始檔一直都在",
+            "輕點一下讓最佳照片更出色，再輕點一下就還原；原始檔從未離開你的圖庫。",
+        ),
     ],
     "ar": [
         (
@@ -584,6 +658,11 @@ COPY = {
             "مساحة حرة",
             "استرجع مساحتك\nجيجابايت تلو الآخر",
             "الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف.",
+        ),
+        (
+            "الرجوع في أي وقت",
+            "حسّن اللقطة التي تبقى\nواحتفظ بالأصل",
+            "لمسة واحدة تحسّن أفضل لقطة، ولمسة أخرى تعيد الأصل — وهو لا يغادر مكتبتك أبدًا.",
         ),
     ],
 }
