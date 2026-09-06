@@ -60,6 +60,12 @@ SHOTS = {
     7:  {"name": "cleanup-progress",   "en": "IMG_3242.PNG", "uk": "IMG_3251.PNG"},
     8:  {"name": "screenshot-cleanup", "en": "IMG_3243.PNG"},
     13: {"name": "welcome-privacy",    "en": "IMG_3236.PNG", "uk": "IMG_3245.PNG"},
+    # Shot 14 carries no filename column on purpose. It is a 1.3.0 capture in
+    # thirteen locales, so every one of them arrives through the manifest; a
+    # spec holding only "name" resolves zero languages and imports nothing until
+    # then. The entry has to exist here regardless, because the manifest merges
+    # into SHOTS and cannot introduce a shot number of its own.
+    14: {"name": "best-shot-enhanced"},
 }
 
 # Camera-roll filenames are not something a table in this file can predict for a
