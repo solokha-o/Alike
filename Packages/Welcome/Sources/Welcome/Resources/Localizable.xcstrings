@@ -257,79 +257,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike needs photo access to scan your library and prepare cleanup suggestions."
+            "value": "Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhancement when you choose to apply one."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike потрібен доступ до фото, щоб сканувати вашу фототеку та підготувати рекомендації для очищення."
+            "value": "Alike потрібен доступ до фото, щоб сканувати вашу фототеку, підготувати рекомендації для очищення та зберегти покращення, коли ви вирішите його застосувати."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca y preparar sugerencias de limpieza."
+            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca, preparar sugerencias de limpieza y guardar una mejora cuando decidas aplicarla."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca y preparar sugerencias de limpieza."
+            "value": "Alike necesita acceso a tus fotos para analizar tu fototeca, preparar sugerencias de limpieza y guardar una mejora cuando decidas aplicarla."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O Alike precisa de acesso às fotos para analisar sua fototeca e preparar sugestões de limpeza."
+            "value": "O Alike precisa de acesso às fotos para analisar sua fototeca, preparar sugestões de limpeza e salvar um aprimoramento quando você optar por aplicá-lo."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike benötigt Zugriff auf deine Fotos, um deine Mediathek zu scannen und Aufräumvorschläge vorzubereiten."
+            "value": "Alike benötigt Zugriff auf deine Fotos, um deine Mediathek zu scannen, Aufräumvorschläge vorzubereiten und eine Verbesserung zu sichern, wenn du sie anwendest."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike a besoin d’accéder à vos photos pour analyser votre photothèque et préparer des suggestions de nettoyage."
+            "value": "Alike a besoin d’accéder à vos photos pour analyser votre photothèque, préparer des suggestions de nettoyage et enregistrer une amélioration lorsque vous choisissez de l’appliquer."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike ha bisogno dell'accesso alle foto per analizzare la libreria e preparare i suggerimenti di pulizia."
+            "value": "Alike ha bisogno dell'accesso alle foto per analizzare la libreria, preparare i suggerimenti di pulizia e salvare un miglioramento quando scegli di applicarlo."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike heeft toegang tot je foto's nodig om je bibliotheek te scannen en opruimsuggesties voor te bereiden."
+            "value": "Alike heeft toegang tot je foto's nodig om je bibliotheek te scannen, opruimsuggesties voor te bereiden en een verbetering te bewaren wanneer je die toepast."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike potrzebuje dostępu do zdjęć, aby przeskanować bibliotekę i przygotować propozycje porządków."
+            "value": "Alike potrzebuje dostępu do zdjęć, aby przeskanować bibliotekę, przygotować propozycje porządków i zapisać poprawkę, gdy zdecydujesz się ją zastosować."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike'ın kitaplığını tarayıp temizlik önerileri hazırlayabilmesi için fotoğraf erişimi gerekiyor."
+            "value": "Alike'ın kitaplığını taraması, temizlik önerileri hazırlaması ve sen uygulamayı seçtiğinde iyileştirmeyi kaydedebilmesi için fotoğraf erişimi gerekiyor."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike 需要取用照片，才能掃描你的圖庫並準備清理建議。"
+            "value": "Alike 需要取用照片，才能掃描你的圖庫、準備清理建議，並在你選擇套用時儲存優化結果。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يحتاج Alike إلى إذن الوصول إلى الصور لفحص مكتبتك وإعداد اقتراحات التنظيف."
+            "value": "يحتاج Alike إلى إذن الوصول إلى الصور لفحص مكتبتك وإعداد اقتراحات التنظيف وحفظ التحسين عندما تختار تطبيقه."
           }
         }
       }
@@ -2000,79 +2000,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review."
+            "value": "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review — and, only when you ask for it, save an enhanced version of a photo you keep."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Доступ до фото дозволяє Alike сканувати фототеку, групувати схожі фото та готувати рекомендації для перегляду."
+            "value": "Доступ до фото дозволяє Alike сканувати фототеку, групувати схожі фото та готувати рекомендації для перегляду — і, лише коли ви самі про це попросите, зберігати покращену версію фото, яке ви залишаєте."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises."
+            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises y, solo cuando tú lo pidas, guarde una versión mejorada de la foto que conservas."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises."
+            "value": "El acceso a las fotos permite que Alike analice tu fototeca, agrupe fotos similares y prepare sugerencias de limpieza para que las revises y, solo cuando tú lo pidas, guarde una versión mejorada de la foto que conservas."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O acesso às fotos permite que o Alike analise sua fototeca, agrupe fotos semelhantes e prepare sugestões de limpeza para você revisar."
+            "value": "O acesso às fotos permite que o Alike analise sua fototeca, agrupe fotos semelhantes e prepare sugestões de limpeza para você revisar — e, somente quando você pedir, salve uma versão aprimorada de uma foto que você mantém."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mit dem Fotozugriff kann Alike deine Mediathek scannen, ähnliche Fotos gruppieren und Aufräumvorschläge für dich vorbereiten."
+            "value": "Mit dem Fotozugriff kann Alike deine Mediathek scannen, ähnliche Fotos gruppieren und Aufräumvorschläge für dich vorbereiten — und, nur wenn du es verlangst, eine verbesserte Version eines Fotos sichern, das du behältst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L’accès aux photos permet à Alike d’analyser votre photothèque, de regrouper les photos similaires et de préparer des suggestions de nettoyage à examiner."
+            "value": "L’accès aux photos permet à Alike d’analyser votre photothèque, de regrouper les photos similaires et de préparer des suggestions de nettoyage à examiner — et, uniquement à votre demande, d’enregistrer une version améliorée d’une photo que vous gardez."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "L'accesso alle foto permette ad Alike di analizzare la libreria, raggruppare le foto simili e preparare suggerimenti di pulizia da controllare."
+            "value": "L'accesso alle foto permette ad Alike di analizzare la libreria, raggruppare le foto simili e preparare suggerimenti di pulizia da controllare — e, solo se lo chiedi tu, di salvare una versione migliorata di una foto che tieni."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Met fototoegang kan Alike je bibliotheek scannen, vergelijkbare foto's groeperen en opruimsuggesties voorbereiden die jij kunt bekijken."
+            "value": "Met fototoegang kan Alike je bibliotheek scannen, vergelijkbare foto's groeperen en opruimsuggesties voorbereiden die jij kunt bekijken — en, alleen als jij daarom vraagt, een verbeterde versie bewaren van een foto die je houdt."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dostęp do zdjęć pozwala Alike przeskanować bibliotekę, pogrupować podobne zdjęcia i przygotować propozycje porządków do Twojego przejrzenia."
+            "value": "Dostęp do zdjęć pozwala Alike przeskanować bibliotekę, pogrupować podobne zdjęcia i przygotować propozycje porządków do Twojego przejrzenia — a także, tylko na Twoje żądanie, zapisać poprawioną wersję zdjęcia, które zostawiasz."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fotoğraf erişimi, Alike'ın kitaplığını taramasını, benzer fotoğrafları gruplamasını ve senin gözden geçirmen için temizlik önerileri hazırlamasını sağlar."
+            "value": "Fotoğraf erişimi, Alike'ın kitaplığını taramasını, benzer fotoğrafları gruplamasını ve senin gözden geçirmen için temizlik önerileri hazırlamasını sağlar — ayrıca, yalnızca sen istediğinde, sakladığın bir fotoğrafın iyileştirilmiş sürümünü kaydeder."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "取用照片後，Alike 就能掃描你的圖庫、將相似照片分組，並準備清理建議供你檢視。"
+            "value": "取用照片後，Alike 就能掃描你的圖庫、將相似照片分組，並準備清理建議供你檢視；也只有在你要求時，才會儲存你所保留照片的優化版本。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يتيح إذن الوصول إلى الصور لـ Alike فحص مكتبتك وتجميع الصور المتشابهة وإعداد اقتراحات تنظيف لتراجعها."
+            "value": "يتيح إذن الوصول إلى الصور لـ Alike فحص مكتبتك وتجميع الصور المتشابهة وإعداد اقتراحات تنظيف لتراجعها — وكذلك، عندما تطلب ذلك بنفسك فقط، حفظ نسخة محسّنة من صورة تحتفظ بها."
           }
         }
       }
