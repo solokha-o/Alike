@@ -195,12 +195,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
                 localIdentifier: localIdentifier,
                 purpose: .availability
             )
-            if !existingEdit.didReadAdjustment {
-                // Nothing was read, so the answer above came from Alike's own
-                // marker. Only now is the network worth it: a photo that is not
-                // local would otherwise answer "nobody would say" about an edit
-                // that is really there, and Alike's work would go on top of
-                // someone else's without a word.
+            if existingEdit.availability != .unavailable, !existingEdit.didReadAdjustment {
+                // Nothing was read, and the photo is one Alike could edit, so
+                // the answer above came from Alike's own marker. A photo the
+                // library will not hand over at all answers the same way over
+                // the network, and the edit below fails on it either way. Only
+                // here is the network worth it: a photo that is not local would
+                // otherwise answer "nobody would say" about an edit that is
+                // really there, and Alike's work would go on top of someone
+                // else's without a word.
                 existingEdit = await resolveAvailability(
                     localIdentifier: localIdentifier,
                     purpose: .availabilityAllowingNetwork

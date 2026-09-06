@@ -313,6 +313,21 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertEqual(purposes, [.availability])
     }
 
+    /// A photo the library refuses outright is refused by the edit too, so
+    /// asking again with the network allowed buys nothing and can pull a
+    /// full-size original down from iCloud for an answer already given.
+    func testApplyingDoesNotAskTheNetworkAboutAPhotoTheLibraryRefuses() async {
+        let library = FakePhotoLibrary(isEditable: false)
+        let service = makeService(library: library)
+
+        await assertThrows(.limitedAccessNotEditable) {
+            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+        }
+
+        let purposes = await library.requestedPurposes
+        XCTAssertEqual(purposes, [.availability, .editing])
+    }
+
     func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
