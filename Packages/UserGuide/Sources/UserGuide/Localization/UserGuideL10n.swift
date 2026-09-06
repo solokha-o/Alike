@@ -93,6 +93,26 @@ public enum UserGuideL10n {
         public static var bestshotOverrideBody: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.override.body") }
         /// Make Best Shot
         public static var bestshotOverrideTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.override.title") }
+        /// Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Ap...
+        public static var enhanceApplyBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.apply.body") }
+        /// See it before you keep it
+        public static var enhanceApplyTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.apply.title") }
+        /// In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced ver...
+        public static var enhanceCompareBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.compare.body") }
+        /// Touch and hold to compare
+        public static var enhanceCompareTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.compare.title") }
+        /// The original never leaves your library. Alike writes the change the way Photos does, so either ap...
+        public static var enhanceFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.footer") }
+        /// Enhance the one you keep
+        public static var enhanceHeader: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.header") }
+        /// Enhancement is not available for video, in Limited Access, or for photos the system marks as non-...
+        public static var enhanceLimitsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.limits.body") }
+        /// When it is not offered
+        public static var enhanceLimitsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.limits.title") }
+        /// One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Phot...
+        public static var enhanceRevertBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.revert.body") }
+        /// Revert to original
+        public static var enhanceRevertTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.revert.title") }
         /// Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the de...
         public static var inspectFullscreenBody: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.fullscreen.body") }
         /// Open Original
@@ -354,7 +374,7 @@ public enum UserGuideL10n {
         public static var permissionsNotificationsBody: String { UserGuideL10n.string("userGuide.privacy.permissions.notifications.body") }
         /// Notifications
         public static var permissionsNotificationsTitle: String { UserGuideL10n.string("userGuide.privacy.permissions.notifications.title") }
-        /// Requested once at the start. You can change or limit it any time in iOS Settings.
+        /// Requested once at the start, and used to read your library and — only when you enhance a photo yo...
         public static var permissionsPhotosBody: String { UserGuideL10n.string("userGuide.privacy.permissions.photos.body") }
         /// Photo library
         public static var permissionsPhotosTitle: String { UserGuideL10n.string("userGuide.privacy.permissions.photos.title") }
