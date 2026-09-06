@@ -93,6 +93,59 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         XCTAssertFalse(viewModel.isBestShotEnhanced)
     }
 
+    /// Cancel is offered while the original is still coming down from iCloud.
+    /// Leaving `.preparingPreview` behind there kept the action disabled for
+    /// the rest of the screen's life.
+    func testCancellingWhileThePreviewIsStillPreparingReturnsToIdle() async {
+        let service = FakeEnhancementService(previewDelay: true)
+        let viewModel = makeViewModel(service: service)
+        await viewModel.load()
+
+        let previewing = Task {
+            await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
+        }
+        await Task.yield()
+        XCTAssertEqual(viewModel.enhancementState, .preparingPreview)
+
+        viewModel.dismissEnhancementPreview()
+
+        XCTAssertEqual(viewModel.enhancementState, .idle)
+        XCTAssertNil(viewModel.enhancementPreview)
+
+        // The render the user walked away from lands afterwards and must not
+        // re-open the preview it belonged to.
+        await service.releasePreview()
+        await previewing.value
+
+        XCTAssertEqual(viewModel.enhancementState, .idle)
+        XCTAssertNil(viewModel.enhancementPreview)
+    }
+
+    /// Thumbnails are cached under the asset's modification date, so a photo
+    /// Alike just wrote to has to be re-read or the tile keeps showing the
+    /// picture from before the edit.
+    func testApplyingRereadsTheEditedPhoto() async {
+        let service = FakeEnhancementService()
+        let refreshed = RefreshedAssetRecorder()
+        let viewModel = makeViewModel(service: service, refreshedAssetIdentifiers: refreshed)
+        await viewModel.load()
+
+        await viewModel.applyEnhancement(for: "best")
+
+        XCTAssertEqual(refreshed.identifiers, ["best"])
+    }
+
+    func testRevertingRereadsTheRestoredPhoto() async {
+        let service = FakeEnhancementService(isEnhanced: true)
+        let refreshed = RefreshedAssetRecorder()
+        let viewModel = makeViewModel(service: service, refreshedAssetIdentifiers: refreshed)
+        await viewModel.load()
+
+        await viewModel.revertEnhancement()
+
+        XCTAssertEqual(refreshed.identifiers, ["best"])
+    }
+
     func testAPhotoEditedElsewhereKeepsTheActionAndCarriesTheNote() async {
         let service = FakeEnhancementService(isEditedElsewhere: true)
         let viewModel = makeViewModel(service: service)
@@ -369,7 +422,8 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
     private func makeViewModel(
         service: FakeEnhancementService?,
-        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer()
+        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        refreshedAssetIdentifiers: RefreshedAssetRecorder? = nil
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
             cluster: PhotoCluster(id: clusterID, assets: []),
@@ -395,8 +449,24 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
                     creationDate: Date(timeIntervalSince1970: 10)
                 )
             ],
-            completionDelay: {}
+            completionDelay: {},
+            // A test has no photo library to re-read from; recording the ask is
+            // what says the grid was told to reload that photo.
+            assetRefresher: { identifier in
+                refreshedAssetIdentifiers?.record(identifier)
+                return nil
+            }
         )
+    }
+}
+
+/// Records which assets the view model asked the library to re-read.
+@MainActor
+final class RefreshedAssetRecorder {
+    private(set) var identifiers: [String] = []
+
+    func record(_ identifier: String) {
+        identifiers.append(identifier)
     }
 }
 
@@ -433,8 +503,10 @@ private actor FakeEnhancementService: PhotoEnhancementService {
     private var enhancedIdentifiers: Set<String>
     private let applyDelay: Bool
     private let revertDelay: Bool
+    private let previewDelay: Bool
     private var applyContinuation: CheckedContinuation<Void, Never>?
     private var revertContinuation: CheckedContinuation<Void, Never>?
+    private var previewContinuation: CheckedContinuation<Void, Never>?
     private let previewError: PhotoEnhancementError?
     private let applyError: PhotoEnhancementError?
     private let revertError: PhotoEnhancementError?
@@ -452,7 +524,8 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         applyError: PhotoEnhancementError? = nil,
         revertError: PhotoEnhancementError? = nil,
         applyDelay: Bool = false,
-        revertDelay: Bool = false
+        revertDelay: Bool = false,
+        previewDelay: Bool = false
     ) {
         self.canEnhanceAsset = canEnhance
         self.isEditedElsewhere = isEditedElsewhere
@@ -460,6 +533,7 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         self.enhancedIdentifiers = isEnhanced ? ["best"] : []
         self.applyDelay = applyDelay
         self.revertDelay = revertDelay
+        self.previewDelay = previewDelay
         self.previewError = previewError
         self.applyError = applyError
         self.revertError = revertError
@@ -473,8 +547,18 @@ private actor FakeEnhancementService: PhotoEnhancementService {
     }
 
     func renderPreview(localIdentifier _: String, targetSize: CGSize) async throws -> CGImage {
+        if previewDelay {
+            await withCheckedContinuation { continuation in
+                previewContinuation = continuation
+            }
+        }
         if let previewError { throw previewError }
         return Self.makeImage(size: targetSize)
+    }
+
+    func releasePreview() {
+        previewContinuation?.resume()
+        previewContinuation = nil
     }
 
     func releaseApply() {

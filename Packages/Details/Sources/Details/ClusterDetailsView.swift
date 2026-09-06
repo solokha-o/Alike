@@ -624,8 +624,12 @@ struct SelectablePhotoThumbnail: View {
             : CGSize(width: 300, height: 300)
     }
 
+    /// The modification date is part of the key because it is part of the
+    /// thumbnail cache key: after Apply or Revert the view model hands over a
+    /// re-read asset, and only a changed key re-runs the load instead of
+    /// leaving the pre-edit picture on the tile.
     private var imageLoadTaskID: String {
-        "\(asset.localIdentifier)#\(imageLoadAttempt)"
+        "\(asset.localIdentifier)#\(asset.modificationDate?.timeIntervalSinceReferenceDate ?? 0)#\(imageLoadAttempt)"
     }
 
     @MainActor

@@ -17,6 +17,7 @@ struct AlikeReviewReactionCue: Identifiable, Equatable, Sendable {
 @Observable
 final class ClusterDetailsViewModel {
     typealias AssetSnapshotLoader = @Sendable () async throws -> [ReviewAssetSnapshot]
+    typealias AssetRefresher = @MainActor @Sendable (String) -> PHAsset?
 
     let cluster: PhotoCluster
 
@@ -27,6 +28,10 @@ final class ClusterDetailsViewModel {
     private let openSettingsAction: (@MainActor @Sendable () -> Void)?
     private let completionDelay: @MainActor @Sendable () async -> Void
     private let assetSnapshotLoader: AssetSnapshotLoader
+    /// Re-reads one asset from the library. `PHAsset` is a snapshot: after an
+    /// edit lands, the copy the cluster was built from still reports the old
+    /// `modificationDate`, which is what every image cache key is derived from.
+    private let assetRefresher: AssetRefresher
     private let qualityAnalyzer: any PhotoQualityAnalyzing
     /// `nil` hides the enhancement action entirely, which is what previews and
     /// hosts without photo-library editing get.
@@ -43,6 +48,9 @@ final class ClusterDetailsViewModel {
     /// second time the way a manual-pick-during-refine regression test needs.
     private let personalizedConfigProvider: (any BestShotConfigProviding)?
     private var assetSnapshots: [ReviewAssetSnapshot] = []
+    /// Assets re-read after Alike edited them, by identifier. Keeping them here
+    /// rather than mutating `cluster` leaves the cluster the value type it is.
+    private var refreshedAssets: [String: PHAsset] = [:]
     /// The scores the last ranking decision was made from, retained so a
     /// manual override afterwards can build its example from the same
     /// numbers the ranker saw — a cluster's worth, small.
@@ -132,6 +140,9 @@ final class ClusterDetailsViewModel {
         assetSnapshotLoader: AssetSnapshotLoader? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {
             try? await Task.sleep(for: .seconds(2))
+        },
+        assetRefresher: @escaping AssetRefresher = { localIdentifier in
+            PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil).firstObject
         }
     ) {
         precondition(
@@ -149,6 +160,7 @@ final class ClusterDetailsViewModel {
         self.overrideMetrics = overrideMetrics
         self.personalizedConfigProvider = personalizedConfigProvider
         self.completionDelay = completionDelay
+        self.assetRefresher = assetRefresher
         if let assetSnapshotLoader {
             self.assetSnapshotLoader = assetSnapshotLoader
         } else if let assetSnapshots {
@@ -175,7 +187,8 @@ final class ClusterDetailsViewModel {
     }
 
     var assets: [PHAsset] {
-        cluster.assets
+        guard !refreshedAssets.isEmpty else { return cluster.assets }
+        return cluster.assets.map { refreshedAssets[$0.localIdentifier] ?? $0 }
     }
 
     var hasAssets: Bool {
@@ -591,6 +604,15 @@ extension ClusterDetailsViewModel {
         assets.first { $0.localIdentifier == localIdentifier }
     }
 
+    /// Re-reads one asset after Alike wrote to it, so the grid stops showing
+    /// the pre-edit picture. Thumbnails are cached under the asset's
+    /// `modificationDate`; without a fresh snapshot the cache answers with the
+    /// image the user was looking at before Apply or Revert.
+    func refreshAsset(withIdentifier localIdentifier: String) {
+        guard !localIdentifier.isEmpty, let refreshed = assetRefresher(localIdentifier) else { return }
+        refreshedAssets[localIdentifier] = refreshed
+    }
+
     var isBestShotEnhanced: Bool {
         isEnhanced(bestShotAssetID)
     }
@@ -654,23 +676,31 @@ extension ClusterDetailsViewModel {
         let localIdentifier = requestedIdentifier
         guard localIdentifier == bestShotAssetID else { return }
         interactionGeneration &+= 1
+        // Cancelling while the original is still coming down from iCloud bumps
+        // this, so the render that lands afterwards cannot re-open a preview
+        // the user already dismissed — or leave the action stuck busy.
+        let generation = interactionGeneration
         enhancementState = .preparingPreview
         do {
             let preview = try await enhancementService.renderPreview(
                 localIdentifier: localIdentifier,
                 targetSize: previewSize
             )
-            guard localIdentifier == bestShotAssetID else { return }
+            guard localIdentifier == bestShotAssetID, generation == interactionGeneration else { return }
             enhancementPreview = preview
             enhancementState = .previewing
         } catch {
-            guard localIdentifier == bestShotAssetID else { return }
+            guard localIdentifier == bestShotAssetID, generation == interactionGeneration else { return }
             handleEnhancementError(error, fallbackState: .idle)
         }
     }
 
+    /// Cancelling is offered while the preview is still being prepared, so it
+    /// has to end that wait too: leaving `.preparingPreview` behind keeps the
+    /// enhance action disabled for as long as the screen is open.
     func dismissEnhancementPreview() {
-        guard enhancementState == .previewing else { return }
+        guard enhancementState == .previewing || enhancementState == .preparingPreview else { return }
+        interactionGeneration &+= 1
         enhancementPreview = nil
         enhancementState = .idle
     }
@@ -695,6 +725,7 @@ extension ClusterDetailsViewModel {
             // Best Shot by now; the shared state only speaks for the photo
             // currently on the tile.
             enhancedAssetIDs.insert(localIdentifier)
+            refreshAsset(withIdentifier: localIdentifier)
             guard localIdentifier == bestShotAssetID else {
                 await refreshEnhancementAvailability()
                 return
@@ -721,6 +752,7 @@ extension ClusterDetailsViewModel {
         do {
             try await enhancementService.revertToOriginal(localIdentifier: localIdentifier)
             enhancedAssetIDs.remove(localIdentifier)
+            refreshAsset(withIdentifier: localIdentifier)
             guard localIdentifier == bestShotAssetID else {
                 await refreshEnhancementAvailability()
                 return
