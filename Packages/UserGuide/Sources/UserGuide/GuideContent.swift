@@ -388,7 +388,7 @@ enum GuideContent {
                     ),
                     GuideItem(
                         id: "comparingPhotos.enhance.revert",
-                        symbol: "arrow.uturn.left",
+                        symbol: "arrow.uturn.backward",
                         title: "userGuide.comparingPhotos.enhance.revert.title",
                         body: "userGuide.comparingPhotos.enhance.revert.body"
                     ),
