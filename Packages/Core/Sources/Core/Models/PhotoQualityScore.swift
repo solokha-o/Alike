@@ -50,6 +50,11 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
         // it can only cause the enhanced pixels to be measured instead. The
         // weights are applied at ranking time, so a newer model still scores
         // this photo with today's formula.
+        //
+        // This says nothing about whether our edit is still the edit on the
+        // photo — a modification date cannot tell our own edit from the one the
+        // user made afterwards in another app. Only the library knows, so the
+        // caller re-checks it: see `CachingPhotoQualityAnalyzer`.
         if isAlikeEnhanced { return true }
         guard self.scoringModelVersion == scoringModelVersion,
               self.thumbnailConfigVersion == thumbnailConfigVersion else {

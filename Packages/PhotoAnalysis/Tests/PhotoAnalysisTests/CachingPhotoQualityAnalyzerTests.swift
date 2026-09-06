@@ -90,6 +90,124 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         XCTAssertEqual(scores.first?.isAlikeEnhanced, true)
     }
 
+    /// The pre-enhancement signals survive only while our edit is the edit on
+    /// the photo. It still is here, so nothing is re-measured.
+    func testAnEnhancedPhotoStillCarryingOurEditKeepsItsSignals() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+        ])
+        let inner = RecordingQualityAnalyzer()
+        let analyzer = CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: inner,
+            config: config,
+            enhancementAvailability: { _ in .enhanced }
+        )
+
+        let scores = try await analyzer.scores(for: [
+            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600))
+        ])
+
+        let measured = await inner.receivedIdentifiers
+        XCTAssertTrue(measured.isEmpty)
+        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 21, accuracy: 0.000_1)
+    }
+
+    /// The user edited the photo in another app afterwards. The cached signals
+    /// describe pixels nobody will see again, so the ranker measures what is
+    /// there now instead of ranking on a stale original for good.
+    func testAnEnhancedPhotoEditedElsewhereIsMeasuredAgain() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+        ])
+        let inner = RecordingQualityAnalyzer()
+        let analyzer = CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: inner,
+            config: config,
+            enhancementAvailability: { _ in .editedElsewhere }
+        )
+
+        let scores = try await analyzer.scores(for: [
+            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600))
+        ])
+
+        let measured = await inner.receivedIdentifiers
+        XCTAssertEqual(measured, ["enhanced"])
+        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 50, accuracy: 0.000_1)
+    }
+
+    /// Our edit was undone in Photos, so the photo is back to its original and
+    /// the flagged row no longer describes anything special.
+    func testAnEnhancedPhotoRevertedInPhotosIsMeasuredAgain() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+        ])
+        let inner = RecordingQualityAnalyzer()
+        let analyzer = CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: inner,
+            config: config,
+            enhancementAvailability: { _ in .available }
+        )
+
+        _ = try await analyzer.scores(for: [TestPHAsset(identifier: "enhanced")])
+
+        let measured = await inner.receivedIdentifiers
+        XCTAssertEqual(measured, ["enhanced"])
+    }
+
+    /// An asset the library will not answer for is "cannot tell", not "the edit
+    /// is gone": throwing away the only measurement of the original over a
+    /// temporary read failure is worse than keeping it.
+    func testAnUnreadableEnhancedPhotoKeepsItsSignals() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+        ])
+        let inner = RecordingQualityAnalyzer()
+        let analyzer = CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: inner,
+            config: config,
+            enhancementAvailability: { _ in .unavailable }
+        )
+
+        let scores = try await analyzer.scores(for: [TestPHAsset(identifier: "enhanced")])
+
+        let measured = await inner.receivedIdentifiers
+        XCTAssertTrue(measured.isEmpty)
+        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 21, accuracy: 0.000_1)
+    }
+
+    /// Only the flagged rows pay for the extra question.
+    func testAnOrdinaryCachedPhotoIsNotAskedAboutItsEdit() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        await repository.setStoredScores([makeCachedScore("cached", globalSharpness: 33)])
+        let inner = RecordingQualityAnalyzer()
+        let asked = AskedIdentifiers()
+        let analyzer = CachingPhotoQualityAnalyzer(
+            repository: repository,
+            analyzer: inner,
+            config: config,
+            enhancementAvailability: { identifier in
+                await asked.record(identifier)
+                return .available
+            }
+        )
+
+        _ = try await analyzer.scores(for: [
+            TestPHAsset(identifier: "cached"),
+            TestPHAsset(identifier: "fresh")
+        ])
+
+        let identifiers = await asked.identifiers
+        XCTAssertTrue(identifiers.isEmpty)
+    }
+
     /// A failed measurement is a moment, not a fact about the photo: caching it
     /// as fresh would mean one offline moment removes the asset from ranking
     /// for good.
@@ -189,5 +307,14 @@ private actor RecordingQualityAnalyzer: PhotoQualityAnalyzing {
                 signals: PhotoQualitySignals(globalSharpness: 50, pixelArea: 12_000_000)
             )
         }
+    }
+}
+
+/// Records which assets the analyzer asked the library about.
+private actor AskedIdentifiers {
+    private(set) var identifiers: [String] = []
+
+    func record(_ identifier: String) {
+        identifiers.append(identifier)
     }
 }
