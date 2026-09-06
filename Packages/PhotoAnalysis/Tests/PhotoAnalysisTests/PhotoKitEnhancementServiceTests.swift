@@ -210,6 +210,59 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         XCTAssertEqual(untouchedAvailability, .available)
     }
 
+    // MARK: - An unreadable editing input
+
+    /// A photo that is not local cannot be read for its adjustment: judging
+    /// availability may not pull a full-size original down from iCloud. Calling
+    /// that "no edit" cleared Alike's marker, and the score cache then sent the
+    /// photo back to be measured against its own enhanced pixels.
+    func testAnUnreadableInputKeepsTheEnhancedMarkerAndAnswersFromIt() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        try await repository.saveScores([makeScore(isAlikeEnhanced: true)])
+        let service = makeService(
+            library: FakePhotoLibrary(isAdjustmentDataReadable: false),
+            repository: repository
+        )
+
+        let availability = await service.availability(localIdentifier: identifier)
+
+        XCTAssertEqual(availability, .enhanced)
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, true)
+    }
+
+    /// The same unreadable photo with nothing recorded about it keeps offering
+    /// the action, exactly as before: the action must not depend on a photo
+    /// being resolvable without the network.
+    func testAnUnreadableInputWithNoMarkerStillOffersTheAction() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        try await repository.saveScores([makeScore(isAlikeEnhanced: false)])
+        let service = makeService(
+            library: FakePhotoLibrary(isAdjustmentDataReadable: false),
+            repository: repository
+        )
+
+        let availability = await service.availability(localIdentifier: identifier)
+
+        XCTAssertEqual(availability, .available)
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+    }
+
+    /// A readable photo that genuinely carries no edit still clears the marker.
+    /// That is the path the unknown state was wrongly sharing.
+    func testAReadableInputWithNoEditStillClearsTheMarker() async throws {
+        let repository = MockPhotoQualityScoreRepository()
+        try await repository.saveScores([makeScore(isAlikeEnhanced: true)])
+        let service = makeService(library: FakePhotoLibrary(), repository: repository)
+
+        let availability = await service.availability(localIdentifier: identifier)
+
+        XCTAssertEqual(availability, .available)
+        let stored = try await repository.loadScores(localIdentifiers: [identifier])
+        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+    }
+
     func testApplyingRefusesToReplaceAnotherAppsEditWithoutConsent() async {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
@@ -359,6 +412,7 @@ private actor FakePhotoLibrary {
     private let isEditable: Bool
     private let isSupported: Bool
     private let existingAdjustmentFormatIdentifier: String?
+    private let isAdjustmentDataReadable: Bool
     private let originalError: Error?
     private let saveError: Error?
 
@@ -372,6 +426,7 @@ private actor FakePhotoLibrary {
         isEditable: Bool = true,
         isSupported: Bool = true,
         existingAdjustmentFormatIdentifier: String? = nil,
+        isAdjustmentDataReadable: Bool = true,
         originalError: Error? = nil,
         saveError: Error? = nil
     ) {
@@ -379,6 +434,7 @@ private actor FakePhotoLibrary {
         self.isEditable = isEditable
         self.isSupported = isSupported
         self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
+        self.isAdjustmentDataReadable = isAdjustmentDataReadable
         self.originalError = originalError
         self.saveError = saveError
     }
@@ -390,6 +446,7 @@ private actor FakePhotoLibrary {
             isEditable: isEditable,
             isSupported: isSupported,
             existingAdjustmentFormatIdentifier: existingAdjustmentFormatIdentifier,
+            isAdjustmentDataReadable: isAdjustmentDataReadable,
             loadOriginal: { [self] in
                 if let originalError = await self.originalError { throw originalError }
                 return (

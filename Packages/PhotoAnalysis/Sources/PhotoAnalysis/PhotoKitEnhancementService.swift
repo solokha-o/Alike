@@ -19,8 +19,14 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
     /// `false` for anything Alike cannot render at all — a video, or a live
     /// asset the library refuses to hand over as an editable Live Photo.
     let isSupported: Bool
-    /// Format identifier of the adjustment already on the asset, if any.
+    /// Format identifier of the adjustment already on the asset, if any. Only
+    /// meaningful when `isAdjustmentDataReadable`.
     let existingAdjustmentFormatIdentifier: String?
+    /// `false` when the library would not hand over the editing input at all,
+    /// so what edit is on the photo could not be read. "There is no edit" and
+    /// "nobody would say" are different answers, and only the first of them may
+    /// move Alike's own marker.
+    let isAdjustmentDataReadable: Bool
     /// The asset's own modification date and pixel count, so a score can be
     /// cached for a photo that was never analyzed before it is enhanced.
     let sourceModificationDate: Date?
@@ -41,6 +47,7 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
         isEditable: Bool,
         isSupported: Bool = true,
         existingAdjustmentFormatIdentifier: String?,
+        isAdjustmentDataReadable: Bool = true,
         sourceModificationDate: Date? = nil,
         pixelArea: Int64 = 0,
         loadOriginal: @escaping @Sendable () async throws -> (image: CIImage, exifOrientation: Int32),
@@ -54,6 +61,7 @@ struct ResolvedPhotoEnhancementRequest: Sendable {
         self.isEditable = isEditable
         self.isSupported = isSupported
         self.existingAdjustmentFormatIdentifier = existingAdjustmentFormatIdentifier
+        self.isAdjustmentDataReadable = isAdjustmentDataReadable
         self.sourceModificationDate = sourceModificationDate
         self.pixelArea = pixelArea
         self.loadOriginal = loadOriginal
@@ -114,6 +122,17 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
             return .unavailable
         }
         guard request.isEditable, request.isSupported else { return .unavailable }
+
+        guard request.isAdjustmentDataReadable else {
+            // The library would not say what edit is on this photo — it is not
+            // local, and deciding whether to offer the action may not pull a
+            // full-size original down from iCloud. Answering "no edit" here
+            // cleared Alike's own marker and sent an enhanced photo back to be
+            // re-scored against its enhanced pixels, which is the one thing the
+            // marker exists to prevent. Answer from what we last recorded, and
+            // change nothing.
+            return await isMarkedEnhanced(localIdentifier: localIdentifier) ? .enhanced : .available
+        }
 
         switch request.existingAdjustmentFormatIdentifier {
         case PhotoEnhancementAdjustment.formatIdentifier:
@@ -358,6 +377,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
         }
     }
 
+    /// What the score cache last recorded about Alike's edit on this photo.
+    /// It is only a record, not evidence — but when the library declines to
+    /// answer it is the better of the two available guesses.
+    private func isMarkedEnhanced(localIdentifier: String) async -> Bool {
+        guard let qualityScoreRepository else { return false }
+        let stored = try? await qualityScoreRepository.loadScores(localIdentifiers: [localIdentifier])
+        return stored?[localIdentifier]?.isAlikeEnhanced == true
+    }
+
     private func setEnhancedFlag(_ isEnhanced: Bool, localIdentifier: String) async {
         guard let qualityScoreRepository else { return }
         do {
@@ -438,7 +466,10 @@ private extension PhotoKitEnhancementService {
             return ResolvedPhotoEnhancementRequest(
                 isEditable: asset.canPerform(.content),
                 isSupported: asset.mediaType == .image,
+                // Nothing was read, so nothing is claimed: `nil` here would
+                // read as "this photo carries no edit".
                 existingAdjustmentFormatIdentifier: nil,
+                isAdjustmentDataReadable: false,
                 sourceModificationDate: asset.modificationDate,
                 pixelArea: Int64(asset.pixelWidth) * Int64(asset.pixelHeight),
                 loadOriginal: { throw PhotoEnhancementError.originalUnavailable },
