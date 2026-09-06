@@ -11,7 +11,7 @@ public enum WelcomeL10n {
         public static var alike: String { WelcomeL10n.string("welcome.main.alike") }
         /// Alike data deleted
         public static var alikeDataDeleted: String { WelcomeL10n.string("welcome.main.alikeDataDeleted") }
-        /// Alike needs photo access to scan your library and prepare cleanup suggestions.
+        /// Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhanceme...
         public static var alikeNeedsPhotoAccessScan: String { WelcomeL10n.string("welcome.main.alikeNeedsPhotoAccessScan") }
         /// Alike never deletes photos automatically. You review the suggestions first and confirm every clea...
         public static var alikeNeverDeletesPhotosAutomatically: String { WelcomeL10n.string("welcome.main.alikeNeverDeletesPhotosAutomatically") }
@@ -51,7 +51,7 @@ public enum WelcomeL10n {
         public static var nothingIsDeletedAutomatically: String { WelcomeL10n.string("welcome.main.nothingIsDeletedAutomatically") }
         /// Open Settings
         public static var openSettings: String { WelcomeL10n.string("welcome.main.openSettings") }
-        /// Page %lld of %lld
+        /// Page %1$lld of %2$lld
         public static var pageOf: String { WelcomeL10n.string("welcome.main.pageOf") }
         /// Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions ...
         public static var photoAccessLetsAlikeScan: String { WelcomeL10n.string("welcome.main.photoAccessLetsAlikeScan") }
