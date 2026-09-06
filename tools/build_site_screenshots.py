@@ -63,7 +63,7 @@ AVIF_QUALITY = 70
 
 # Which shots the landing page frames, matching _data/screens.yml in the site
 # repository. Names come from the capture filenames, not a second table here.
-SITE_SHOTS = (1, 3, 4, 5, 7)
+SITE_SHOTS = (1, 3, 4, 5, 7, 14)
 
 # site lang -> capture directory. Only English differs, for the same reason
 # Docs/images/en-US/ is spelled that way: the App Store locale is en-US.
