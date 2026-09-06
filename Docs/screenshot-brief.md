@@ -14,7 +14,7 @@ intent; the script is what actually renders.
 
 ## The deck
 
-Five slides, in listing order. Each is 1320 × 2868 on a dark canvas that matches
+Six slides, in listing order. Each is 1320 × 2868 on a dark canvas that matches
 the app's own appearance: one label, one headline, one supporting line, and a
 tilted iPhone carrying the capture.
 
@@ -25,13 +25,29 @@ tilted iPhone carrying the capture.
 | 3 | `04-cluster-details` | caption top, right, phone bleeding off the bottom | accent | The keeper is chosen for you |
 | 4 | `05-comparison-review` | caption bottom, left, complete device above | purple | Nothing is deleted without review |
 | 5 | `07-cleanup-progress` | caption top, centre, phone bleeding off the bottom | green | The payoff — space comes back |
+| 6 | `14-best-shot-enhanced` | caption bottom, right, complete device above | accent | The photo you keep can be improved, and put back |
 
-Two compositions alternate so the deck reads as a rhythm rather than five of the
-same frame, and neither one shows the empty lower half of a capture.
+Slide 6 is approved and parked, not shipping. Its capture — shot 14 — has not
+been taken, so `SLIDES` and `COPY` in the generator still hold five entries and
+the listing still renders five slides. Everything about slide 6 below is here so
+that the capture session has a target and the render, when the frames land, is a
+paste rather than a translation job. `Docs/screenshot-shot-list.md` has the shot
+14 capture spec.
+
+Two compositions alternate so the deck reads as a rhythm rather than six of the
+same frame, and neither one shows the empty lower half of a capture. Slide 6
+follows from that rule rather than from taste: slide 5 is
+`caption_top("center")`, so the sixth has to be `caption_bottom`, and it is
+aligned right because the previous `caption_bottom` — slide 4 — is left.
 
 The three band colours are the app's own: `accent` is the teal of the Start
 Scanning button, `purple` is the mascot, `green` is freed space. The green lands
-on the last slide because that is the one about storage returned.
+on the freed-space slide because that is the one about storage returned. Slide 6
+takes `accent`: `green` is spoken for and would repeat back to back with slide 5,
+`purple` belongs to the mascot, and teal is the colour of the app's own tappable
+controls — the right band for a slide whose subject is a control you can press
+and unpress. So neither composition nor band repeats across the 5–6 join, and the
+deck closes on the colour it opened with.
 
 ## Copy
 
@@ -49,6 +65,7 @@ change with it.
 | 3 | BEST SHOT | The keeper is / already picked | Alike highlights the best frame in each group. You just confirm. |
 | 4 | COMPARE | Check before / anything goes | Review at full size. Nothing is deleted without your confirmation. |
 | 5 | FREE SPACE | Watch the gigabytes / come back | Selected photos and estimated savings, tracked as you clean up. |
+| 6 | RESTORE ANYTIME | Improve the keeper, / keep the original | One tap makes the best shot better. One tap puts it back — the original never leaves your library. |
 
 ### uk
 
@@ -59,6 +76,7 @@ change with it.
 | 3 | НАЙКРАЩИЙ ЗНІМОК | Найкраще фото / вже обрано | Alike виділяє найвдаліший кадр у групі. Вам лишається підтвердити. |
 | 4 | ПОРІВНЯННЯ | Перевірте перед / видаленням | Перегляд у повний розмір. Нічого не видаляється без підтвердження. |
 | 5 | ВІЛЬНЕ МІСЦЕ | Поверніть / гігабайти | «Обрано» й «Орієнтовна економія» — просто під час прибирання. |
+| 6 | ОРИГІНАЛ ПОРУЧ | Покращте кадр, / збережіть оригінал | Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки. |
 
 ### de
 
@@ -69,6 +87,7 @@ change with it.
 | 3 | BESTE AUFNAHME | Die beste ist / schon gewählt | Alike hebt die beste Aufnahme jeder Gruppe hervor. Du bestätigst nur. |
 | 4 | VERGLEICHEN | Erst prüfen, / dann aufräumen | Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht. |
 | 5 | FREIER PLATZ | Hol dir die / Gigabyte zurück | Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst. |
+| 6 | JEDERZEIT ZURÜCK | Aufnahme verbessern, / Original behalten | Ein Tippen macht die beste Aufnahme besser. Ein Tippen holt das Original zurück — es bleibt in deiner Mediathek. |
 
 ### fr
 
@@ -79,6 +98,7 @@ change with it.
 | 3 | MEILLEURE PHOTO | La photo à garder / est déjà choisie | Alike met en avant la meilleure de chaque groupe. Vous confirmez. |
 | 4 | COMPARER | Vérifiez avant / de nettoyer | Examen en plein écran. Rien n’est supprimé sans votre confirmation. |
 | 5 | ESPACE LIBRE | Récupérez / vos gigaoctets | Photos sélectionnées et économie estimée, suivies pendant le nettoyage. |
+| 6 | TOUJOURS RÉVERSIBLE | Améliorez la photo, / gardez l’original | Une touche améliore la meilleure photo. Une autre la remet comme avant — l’original reste dans votre photothèque. |
 
 ### es
 
@@ -89,6 +109,7 @@ change with it.
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Comprueba antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
 | 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 6 | SIEMPRE REVERSIBLE | Realza tu mejor toma, / conserva el original | Un toque mejora la mejor toma. Otro la deja como estaba — el original nunca sale de tu fototeca. |
 
 ### es-419
 
@@ -99,11 +120,16 @@ change with it.
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Revisa antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
 | 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 6 | REGRESA AL ORIGINAL | Mejora la que conservas, / el original sigue ahí | Un toque mejora la mejor toma. Otro la regresa a como estaba — el original nunca se va de tu fototeca. |
 
 `es` and `es-419` are deliberately not identical, but the queue is "cola" in
 both: the app's own catalog says "cola de limpieza" in `es` and `es-419` alike,
 so the decks say it too. What differs is the phrasing around it — "qué queda"
-against "qué falta", "Comprueba antes" against "Revisa antes".
+against "qué falta", "Comprueba antes" against "Revisa antes". Slide 6 keeps that
+split: both say "mejor toma", because `details.common.bestShot` does in both, and
+they diverge on everything else — "Realza tu mejor toma" against "Mejora la que
+conservas", "la deja como estaba" against "la regresa a como estaba", "nunca sale
+de tu fototeca" against "nunca se va de tu fototeca".
 
 ### pt-BR
 
@@ -114,6 +140,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | MELHOR FOTO | A que fica / já está escolhida | O Alike destaca a melhor foto de cada grupo. Você só confirma. |
 | 4 | COMPARAR | Confira antes / de limpar | Revisão em tamanho real. Nada é apagado sem a sua confirmação. |
 | 5 | ESPAÇO LIVRE | Recupere os / gigabytes | Fotos selecionadas e economia estimada, enquanto você limpa. |
+| 6 | SEMPRE REVERSÍVEL | Melhore a que fica, / mantenha o original | Um toque melhora a melhor foto. Outro toque devolve o original — ele nunca sai da sua fototeca. |
 
 
 ### it
@@ -125,6 +152,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | SCATTO MIGLIORE | La foto da tenere / è già scelta | Alike evidenzia lo scatto migliore del gruppo. A te la conferma. |
 | 4 | CONFRONTA | Controlla prima / di eliminare | Revisione a dimensione piena. Niente sparisce senza conferma. |
 | 5 | SPAZIO LIBERO | Guarda tornare / i gigabyte | Foto selezionate e risparmio stimato, mentre fai pulizia. |
+| 6 | SEMPRE REVERSIBILE | Migliora lo scatto, / tieni l’originale | Un tocco migliora lo scatto migliore. Un altro lo riporta com’era — l’originale non lascia mai la tua libreria. |
 
 ### nl
 
@@ -135,6 +163,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | BESTE OPNAME | De blijver is / al gekozen | Alike licht de beste opname uit. Jij hoeft alleen te bevestigen. |
 | 4 | VERGELIJK | Kijk eerst, / ruim daarna op | Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging. |
 | 5 | VRIJE RUIMTE | Zie de gigabytes / terugkomen | Geselecteerde foto's en geschatte besparing, terwijl je opruimt. |
+| 6 | ALTIJD OMKEERBAAR | Maak de blijver beter, / houd het origineel | Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek. |
 
 ### pl
 
@@ -145,6 +174,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | NAJLEPSZE UJĘCIE | Zdjęcie do zostawienia / jest już wybrane | Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz. |
 | 4 | PORÓWNAJ | Sprawdź, zanim / cokolwiek zniknie | Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia. |
 | 5 | WOLNE MIEJSCE | Odzyskaj / gigabajty | Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków. |
+| 6 | ZAWSZE ODWRACALNE | Popraw ujęcie, / zachowaj oryginał | Jedno dotknięcie poprawia najlepsze ujęcie. Drugie przywraca oryginał — nigdy nie znika on z biblioteki. |
 
 ### tr
 
@@ -155,6 +185,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | EN İYİ KARE | Saklanacak kare / zaten seçili | Alike gruptaki en iyi kareyi öne çıkarır. Sen yalnızca onaylarsın. |
 | 4 | KARŞILAŞTIR | Silmeden önce / kontrol et | Tam boyutta incele. Onayın olmadan hiçbir şey silinmez. |
 | 5 | BOŞ ALAN | Gigabaytların / geri gelişini gör | Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir. |
+| 6 | GERİ ALINABİLİR | Kareyi iyileştir, / özgünü sakla | Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz. |
 
 ### zh-Hant
 
@@ -165,6 +196,7 @@ against "qué falta", "Comprueba antes" against "Revisa antes".
 | 3 | 最佳照片 | 要留下的那張 / 已經選好 | Alike 會標出每組最好的一張，你只需要確認。 |
 | 4 | 先比對 | 任何照片消失前 / 都先看過 | 以原尺寸檢視。未經你確認，不會刪除任何東西。 |
 | 5 | 騰出空間 | 看著空間 / 一點一點回來 | 清理過程中隨時顯示已選取與預估可省空間。 |
+| 6 | 隨時還原 | 讓最佳照片更好 / 原始檔一直都在 | 輕點一下讓最佳照片更出色，再輕點一下就還原；原始檔從未離開你的圖庫。 |
 
 Traditional Chinese is the one deck that does not use SF Pro. SF has no Han
 glyphs and Pillow does no font fallback, so zh-Hant is set in Heiti TC —
@@ -175,7 +207,11 @@ proves every character against the face before rendering; missing glyphs would
 otherwise come out as empty boxes and pass every other check.
 
 Chinese also has no spaces to wrap on, so `break_long_word()` splits between
-characters, holding closing punctuation back from the start of a line.
+characters, holding closing punctuation back from the start of a line. Slide 6's
+headline therefore carries an explicit break rather than leaving that to the
+fallback: 讓最佳照片更好 / 原始檔一直都在, seven characters against seven, with the
+split landing between two complete clauses. At 92pt the fallback would otherwise
+have to guess a point inside one of them.
 
 ### Arabic — the mirrored deck
 
@@ -211,12 +247,14 @@ Two things Pillow will not do on its own:
 | 3 | أفضل لقطة | اللقطة التي تبقى / مختارة سلفًا | يبرز Alike أفضل لقطة في كل مجموعة، وما عليك سوى التأكيد. |
 | 4 | قارن أولًا | راجع كل صورة / قبل أن تختفي | مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك. |
 | 5 | مساحة حرة | استرجع مساحتك / جيجابايت تلو الآخر | الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف. |
+| 6 | الرجوع في أي وقت | حسّن اللقطة التي تبقى / واحتفظ بالأصل | لمسة واحدة تحسّن أفضل لقطة، ولمسة أخرى تعيد الأصل — وهو لا يغادر مكتبتك أبدًا. |
 
 The five `ar` source captures are taken the same way every other locale's are —
 on device, then imported with `tools/import_device_screenshots.py`, which now
 accepts `ar` and maps `ar-SA`/`ar-AE`/`ar-EG` onto it.
 
-Thirteen decks, one per listing localization. The directory names are the app's own
+Thirteen decks, one per listing localization, six slides each: seventy-eight
+renders once shot 14 is captured, sixty-five until then. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`
 maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
 the one code that is spelled identically on both sides.
@@ -234,7 +272,18 @@ Copy rules that the renderer will not catch for you:
   output for every locale, not just the exit code and not just `en-US`.
 - The `\n` in a headline is a per-language decision. German does not break where
   "Find the photos / that look alike" breaks; pick the point that keeps both
-  lines balanced in that language.
+  lines balanced in that language. Slide 6 is the clearest case: English breaks
+  between two parallel clauses, German splits an infinitive pair, Polish keeps
+  both lines to three words because Polish runs long, and zh-Hant breaks between
+  two seven-character clauses because it has no spaces at all.
+- The feature's name in each language comes from the app, not from the deck.
+  `details.common.bestShot` in
+  `Packages/Details/Sources/Details/Resources/Localizable.xcstrings` is the term
+  the user has already read on screen — "Beste Aufnahme", "Mejor toma", "Beste
+  opname", "最佳照片" — and `details.clusterDetails.openOriginal` supplies the
+  word for the original in the same voice. Inventing a second name for a feature
+  the app already names is a localisation bug that renders cleanly and passes
+  every check.
 
 ## Background variant
 
@@ -259,24 +308,44 @@ Pillow is not in the system Python, so the venv is created once.
 
 ## Adding a slide
 
-The App Store allows ten screenshots; five ship, so there is room. Adding one
-means, in `tools/generate_app_store_product_screenshots.py`:
+The App Store allows ten screenshots; six ship once shot 14 is captured, so the
+ceiling is not the constraint — what a slide has to earn is a shopper's
+attention. Adding one means, in `tools/generate_app_store_product_screenshots.py`:
 
 1. A `SlideLayout` in `SLIDES` — pick the composition that continues the
    alternation, and a band colour that matches what the slide is about.
 2. One `(label, headline, subtitle)` tuple per locale in `COPY`, at the same
    index. The generator refuses to run if any locale is short an entry.
-3. The capture itself, at 1320 × 2868 in `Docs/images/raw/<locale>/`.
+3. The capture itself, at 1320 × 2868 in `Docs/images/raw/<locale>/`, in **every**
+   locale — thirteen files, `ar` and `es-419` included.
 
-Captured-but-unused shots — 2, 6, 8, 13 — are the candidates. Shots 10 and 11
-are App Review evidence and deliberately stay out of the listing.
+**All three land in one commit, with the frames already present.**
+`validate_sources()` runs before `--drafts` and `--dry-run` are dispatched and
+raises `SystemExit` when `SLIDES` and a locale's `COPY` disagree, or when a slide
+has no capture to render. So a `SLIDES` entry pushed ahead of its frames does not
+degrade the deck by one slide — it stops the generator, and with it
+`tools/upload-screenshots`, for every locale on the branch. Slide 6 is parked in
+this document instead of half-landed in the generator for exactly that reason.
+
+The next slide is shot 14, `14-best-shot-enhanced`: composition and band are
+settled above, the copy is written for all thirteen locales above, and the
+capture spec is in `Docs/screenshot-shot-list.md`. Only the frames are missing.
+Captured-but-unused shots — 2, 6, 8, 13 — are the candidates after it. Shots 10
+and 11 are App Review evidence and deliberately stay out of the listing.
 
 ## Before upload
 
-- All thirteen locales rendered and eyeballed, not just generated. Type size in
-  the long languages — uk, de, pt-BR, pl — is the usual casualty, and zh-Hant
-  and ar each need their own look: one is a different typeface, the other is
-  laid out right to left in SF Arabic.
+- All thirteen locales rendered and eyeballed, not just generated — every slide
+  of every deck, so six frames a locale once shot 14 lands, seventy-eight in
+  total. Type size in the long languages — uk, de, pt-BR, pl — is the usual
+  casualty, and zh-Hant and ar each need their own look: one is a different
+  typeface, the other is laid out right to left in SF Arabic.
+- Slide 6 present in all thirteen, or absent from all thirteen. A deck that is
+  six slides in English and five in Arabic is worse than a five-slide deck.
+- Slide 6's frame still shows both halves of its promise — the Enhanced badge
+  and a reachable "Revert to original" — after the phone mockup crops the
+  capture. The slide's headline is a claim about something visible in the
+  screenshot.
 - Headline and supporting line legible at App Store thumbnail scale.
 - No status-bar noise: full signal, full battery, no notifications.
 - Privacy sweep on any *new* capture — recognisable faces, location giveaways,

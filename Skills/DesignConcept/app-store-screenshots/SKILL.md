@@ -50,8 +50,19 @@ build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py --va
 
 ## Product Order
 
-Lead with the scan (what the app does), then the review queue, then Best Shot,
-then the safety of confirming before deleting, then the space that comes back.
+Six beats, in order: scan → queue → Best Shot → comparison → freed space →
+reversibility. Lead with the scan (what the app does), then the review queue,
+then Best Shot, then the safety of confirming before deleting, then the space
+that comes back, and close on the fact that the photo you keep can be improved
+and put back.
+
+The sixth beat sells the undo, not the edit. Alike is not a photo editor and the
+slide must not read like one: the message is that the original always comes back,
+because that is the objection that stops somebody letting an app touch their
+photos at all. No "filter", no "AI", no before/after grid that implies a
+retouching tool — the frame carries the Enhanced state and the way out of it in
+the same shot.
+
 Do not lead with the paywall, onboarding, or settings.
 
 ## Copy Rules

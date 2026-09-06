@@ -1,9 +1,10 @@
 # Alike Screenshot Shot List
 
-Ten of the thirteen shots are captured in EN and UK, from a physical iPhone at
-1125 x 2436. The five deck shots are captured in the five Tier 1 languages too,
-so all thirteen decks are complete; one shot is open in English, one is optional
-and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
+Ten of the fourteen shots are captured in EN and UK, from a physical iPhone at
+1125 x 2436. Five of the six deck shots are captured in the Tier 1 and Tier 3
+languages too, so all thirteen decks are complete at five slides. The sixth deck
+shot, 14, is open in all thirteen; one more shot is open in English, one is
+optional and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), filling the
 capture store every deck and the landing page are built from.
@@ -44,8 +45,8 @@ Three consumers, one set of captures:
 ## From captures to product screenshots
 
 The listing does not ship bare captures. `tools/generate_app_store_product_screenshots.py`
-renders five marketing slides per locale — headline, supporting line, tilted
-iPhone — onto a dark canvas that matches the app's own appearance:
+renders the deck — headline, supporting line, tilted iPhone — onto a dark canvas
+that matches the app's own appearance, one slide per entry in `SLIDES`:
 
 ```sh
 build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py
@@ -57,15 +58,23 @@ The venv is created once, because Pillow is not in the system Python:
 python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow arabic-reshaper python-bidi
 ```
 
-Slides, copy and layout live in `SLIDES` and `COPY` in that script. Four
-background variants share the same concept; `--drafts` renders all of them into
+Slides, copy and layout live in `SLIDES` and `COPY` in that script. The deck is
+six slides in listing order; `SLIDES` and `COPY` still hold five, because the
+sixth slide's capture — shot 14 — has not been taken. The sixth entry and its
+frames land in the same commit, for the reason spelled out under "Adding a
+slide" in the brief: `validate_sources()` refuses to render a slide with no
+capture, and refuses a locale whose `COPY` is short an entry, so a half-landed
+sixth slide breaks the deck for every locale at once. Four background variants
+share the same concept; `--drafts` renders all of them into
 `build/generated/product_screenshot_drafts/` with a comparison contact sheet, and
 `--variant <name>` renders the chosen one into `Docs/images/`. The listing
 currently ships `spotlight`.
 
-`Docs/screenshot-brief.md` is the production brief for that deck: the five
+`Docs/screenshot-brief.md` is the production brief for that deck: the six
 slides in listing order, their copy per locale, the composition and band colour
-of each, and what to check before upload. See
+of each, and what to check before upload. The sixth slide's copy is approved and
+parked there in all thirteen locales, so the capture session is the only thing
+standing between it and a render. See
 `Skills/DesignConcept/app-store-screenshots/SKILL.md` for the copy and visual
 rules behind it.
 
@@ -81,8 +90,8 @@ rules behind it.
 - **Languages:** the listing has thirteen localizations, and each needs its own
   captures — a translated app behind English screenshots reads as an English
   app. The capture directory is the app's own language code:
-  `Docs/images/raw/{en-US,uk,de,fr,es,es-419,pt-BR}/`. Only the five deck shots
-  (1, 3, 4, 5, 7) are needed in every language; the rest exist for the site or
+  `Docs/images/raw/{en-US,uk,de,fr,es,es-419,pt-BR}/`. Only the six deck shots
+  (1, 3, 4, 5, 7, 14) are needed in every language; the rest exist for the site or
   for App Review and stay EN/UK, as the status table says. The device or
   simulator has to be *running* in that language — Settings, General, Language &
   Region, or launch with `-AppleLanguages` / `-AppleLocale`. Keep the same
@@ -121,11 +130,19 @@ rules behind it.
 | 11 | Paywall with disclosure | ✅ | n/a | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
 | 12 | User Guide | retired | retired | n/a | n/a | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
+| 14 | Cluster details, enhanced | open | open | open | open | — | `14-best-shot-enhanced` |
+
+The table has no `ar` column — Arabic was added to the listing after it was
+written, and the existing rows were never re-cut. For shot 14, read the four
+status columns as thirteen: it is open in `en-US`, `uk`, the five Tier 1
+languages, the five Tier 3 languages **and** `ar`. Twelve of thirteen is a
+failing deck, not a partial one.
 
 ### What is actually outstanding
 
-Every shot is either captured, has a reason it is not, or is one of the twenty-five
-tier 3 captures below. A shot with no consumer is not a gap.
+Every shot is either captured, has a reason it is not, or is one of the thirteen
+shot-14 captures below. A shot with no consumer is not a gap; shot 14 has a
+consumer waiting for it.
 
 **Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
 `pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
@@ -151,7 +168,46 @@ comparison-review frame shows different photos from the other six. Not wrong —
 the deck reads fine on its own — but recapturing it is what would make all
 thirteen decks a single set.
 
-**Open — one shot:**
+**Open — the sixth deck shot, thirteen files:**
+
+- **14. Cluster details with the best shot enhanced.** `14-best-shot-enhanced`,
+  in all thirteen listing locales. This is the capture the sixth deck slide is
+  waiting on, and the whole reason the copy for it is already parked in
+  `Docs/screenshot-brief.md`.
+
+  **What the frame has to show.** Cluster details *after* Apply, with the
+  Enhanced badge visible on the best shot and "Revert to original" reachable in
+  the same frame. Those two together are the slide's entire argument: the photo
+  got better, and the way back is right there. No alerts, no spinners, no
+  half-open context menu, nothing caught mid-animation.
+
+  **What has to be identical across the thirteen.** The same group, the same
+  photos, the same Best Shot and the same scroll position in every frame, shot
+  on the **same photo library** as the shipped shots 1, 3, 4, 5 and 7. A sixth
+  slide from a different library stops the deck reading as one set, and that is
+  visible at thumbnail size. Portrait, light appearance, full signal, full
+  battery, no notifications.
+
+  **Size and format.** 1320 × 2868 straight from an iPhone 17 Pro Max simulator,
+  or 1125 × 2436 PNG from a device and then `tools/import_device_screenshots.py`.
+  **PNG, never JPEG.** A JPEG off the device is what cost the Polish shot 1 its
+  pristine source — see above — and it is not detectable by eye afterwards, only
+  from the file.
+
+  **Do it once, on one photo.** The enhancement is written into the photo
+  library, not held inside the app, so applying it thirteen times means thirteen
+  edits to live assets. Apply it once, on one photo; shoot all thirteen
+  languages on that same photo, switching the device language between frames;
+  revert to original when the session is over.
+
+  **`es-419` is a real thirteenth frame.** Latin-American Spanish, captured on a
+  device set to a Latin-American region — not a copy of the `es` file under a new
+  name. The deck's `es` and `es-419` copy is deliberately different, so the
+  frames are two captures, not one. A missing or duplicated `es-419` capture is
+  the likeliest way `validate_sources()` fails after the capture device has been
+  put away, and the fix at that point is another whole session.
+
+**Open — one more shot, unrelated to the deck:**
 
 - **10. Settings with the Legal section.** App Review evidence that the legal
   links are in the app. English only; App Review reads one language. Cheap to
@@ -160,15 +216,28 @@ thirteen decks a single set.
 **Optional — capture only if you decide to grow a surface:**
 
 - **9. History.** Earlier notes called this "the last landing-page frame". That
-  is no longer true: `_data/screens.yml` in the site repo holds five slots and all five have
-  images. Adding History means adding a sixth entry there, or a sixth deck
-  slide — a deliberate choice about the surface, not a hole to plug.
+  is no longer true: `_data/screens.yml` in the site repo holds five slots, one
+  per framed shot, and all five have images. Adding History means adding a sixth
+  entry there — a deliberate choice about the site's surface, not a hole to plug.
+  It is no longer a candidate for the deck either: the sixth deck slot is spoken
+  for by shot 14, so History would have to argue its way into a seventh.
 
 **Retired — with the reason, so nobody re-opens them:**
 
-- **12. User Guide.** Always "optional, listing only". The deck is five slides
-  with a deliberate alternating rhythm and no room for a sixth that says nothing
-  new.
+- **12. User Guide.** Always "optional, listing only". A screenshot of the help
+  text is a picture of documentation: a shopper reads it, learns that the app
+  explains itself, and acts on nothing. The App Store's ceiling is ten
+  screenshots and the deck is nowhere near it, so the constraint was never
+  room — it is that a slide has to move somebody who has not installed the app
+  yet, and this one does not.
+
+  That is also why shot 14 *does* earn the sixth slot instead of contradicting
+  this entry. Reversibility is the objection that stops people letting an app
+  touch their photos at all, and none of the five existing frames can answer it:
+  1 is the scan, 3 the queue, 4 the pick, 5 the comparison before a deletion, 7
+  the space returned. Not one of them shows a change made to a photo and then
+  undone. Shot 14 is the only frame that carries "one tap puts it back" — a
+  reason to trust the app, not a picture of its manual.
 - **Ukrainian 6 and 8.** Shots 6 and 8 are not in the deck or on the site in
   *either* locale, so a Ukrainian twin has no consumer.
 - **Ukrainian 11.** App Store Connect takes one review screenshot per in-app
@@ -180,10 +249,11 @@ thirteen decks a single set.
 
 `n/a` in the table means the same thing: not missing, not wanted.
 
-Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES`; the others are
-captured but unused on the listing. Adding one to the deck means adding a
-`SlideLayout` and a copy line per locale in
-`tools/generate_app_store_product_screenshots.py`.
+Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES` as it stands, and
+shot 14 is the sixth slide once its frames exist; the others are captured but
+unused on the listing. Adding one to the deck means adding a `SlideLayout` and a
+copy line per locale in `tools/generate_app_store_product_screenshots.py` — in
+the same commit as the captures, never ahead of them.
 
 Shots 10 and 11 do not ship on the listing but are App Review evidence that the
 Legal section and the subscription disclosure exist. They live in
@@ -204,8 +274,9 @@ sips -c 2868 1320 tmp.png --out out.png
 The crop trims one pixel from the top and bottom, inside the status-bar and
 home-indicator margins.
 
-The App Store allows up to 10 screenshots, so the nine captured cover the
-listing with room for one more.
+The App Store allows up to 10 screenshots. The deck ships five today and six
+once shot 14 is captured, so the ceiling has never been the binding constraint:
+what a slide has to earn is a shopper's attention, not a free slot.
 
 ## Wiring a screenshot into the site
 
@@ -225,8 +296,9 @@ shipping a broken frame.
 The fallback is per locale too, deliberately: a shared English one would put
 those browsers back on English screens for every other language — the bug this
 whole pipeline exists to fix, and an invisible one to anyone testing in a
-browser that does have AVIF. PNG is what the matrix cannot afford: twelve
-locales of it is ~17MB against ~5MB for AVIF plus 1x JPEG.
+browser that does have AVIF. PNG is what the matrix cannot afford: it measured
+~17MB back when the matrix was twelve locales wide, and the listing is thirteen
+now, against ~5MB for AVIF plus 1x JPEG.
 
 The one remaining step happens in the `alikeapp/alikeapp.github.io` repository:
 add `image: <name>` to the matching entry in `_data/screens.yml`. The frame
