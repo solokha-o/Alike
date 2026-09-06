@@ -158,8 +158,18 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
       release notes 4000 chars. The generator enforces these; a pass means they
       hold.
 - [ ] `Docs/app-store-review-notes.txt` still describes the build being shipped:
-      no account, why photo access is needed, on-device Vision, confirmed
-      deletion into Recently Deleted, the three paywall entry points.
+      no account, why photo access is needed **including the write** — a photo
+      the user enhances is saved back through PhotoKit — on-device Vision,
+      what Best Shot learns and where it is reset, confirmed deletion into
+      Recently Deleted, and the three paywall entry points.
+- [ ] Anything the release adds that is **free** says so in `ALIKE FREE`, in all
+      thirteen locales. Without that line a reader, and App Review, can
+      reasonably read a new feature as being behind the paywall.
+- [ ] Descriptions measured in **strict** mode, not with
+      `--allow-placeholder-urls`. The placeholder run understates every locale
+      by roughly 34 characters, because the real legal URLs are longer than the
+      placeholders they stand in for — a description can pass the placeholder
+      run and fail the real one.
 - [ ] `tools/meta` green.
 - [ ] No price hardcoded in any copy. StoreKit supplies localized pricing.
 - [ ] Listing copy does not contradict the published legal text in `Docs/legal/`.
@@ -167,7 +177,19 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ## 4. Screenshots
 
 - [ ] Deck rendered and eyeballed per locale — see `Docs/screenshot-brief.md`.
+      Six slides in thirteen locales as of 1.3.0, so seventy-eight renders;
+      `--dry-run` prints the count and is the cheapest way to catch a locale
+      short an entry.
 - [ ] Capture status table in `Docs/screenshot-shot-list.md` current.
+- [ ] A new slide lands in one commit with its captures — `SLIDES`, `COPY` in
+      every locale, and the frames. `validate_sources()` raises before
+      `--drafts` and `--dry-run` are dispatched, so a half-landed slide does not
+      degrade the deck by one frame, it stops the renderer and
+      `tools/upload-screenshots` for every locale on the branch.
+- [ ] A capture session that adds a *shot* rather than a language runs
+      `tools/import_device_screenshots.py --shots <n>`; without it the run
+      resolves every shot for those locales and stops on the ones whose sources
+      were imported sessions ago and deleted since.
 - [ ] Privacy sweep on any new capture: faces, location giveaways, readable
       personal data, anything legible on a screen inside a photo.
 - [ ] `tools/upload-screenshots`. Watch for at least one
@@ -200,9 +222,12 @@ App Review rejection, and there is no longer any reason to discover that late.
 - [ ] Pages source set to **GitHub Actions** (that repo's Settings → Pages).
 - [ ] The workflow run succeeded. `scripts/check-site.sh` runs there on every
       pull request and again before each deploy, and asserts the locale matrix,
-      internal links, hreflang, the Terms guardrails and — deliberately — that
-      the rendered site references no third-party host, because the privacy
-      policy claims Alike makes no network requests.
+      internal links, hreflang, the Terms **and Privacy** guardrails, and —
+      deliberately — that the rendered site references no third-party host,
+      because the privacy policy claims Alike makes no network requests. Both
+      guardrail tables are hand-kept per locale: a release that changes what the
+      legal pages promise adds its sentinels there, or nothing will notice a
+      locale left behind.
 - [ ] All 48 published URLs return 200. The build already checked that each page
       exists in the rendered output; this checks the deployed site:
 
@@ -213,6 +238,20 @@ for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/; do for p in "" 
 - [ ] In a **Release** build, the legal links open from all four entry points:
       the Scanner paywall, the cluster Details paywall, the Settings paywall,
       and Settings → Legal.
+- [ ] Cross-repo parity is green from *this* repository, which is also the gate
+      proving the pages are actually published:
+
+```sh
+python3 tools/check_site_legal_parity.py --require --site-repo ../alikeapp.github.io
+```
+
+- [ ] If the release changes what the app does to a user's photos or what it
+      stores, the legal pages say so **before** the build is submitted. App
+      Review opens the Privacy and Terms URLs straight from the listing, and a
+      listing describing behaviour the policy does not cover is the avoidable
+      kind of rejection. 1.3.0 is the first release where this matters: it
+      writes a reversible edit into the photo library and keeps weights learned
+      from the user's own picks.
 
 ## 7. Text metadata upload
 
@@ -290,6 +329,11 @@ Manual, in App Store Connect:
       dSYMs, or any other build artifact** — the shipping binary is distributed
       by Apple, and an artifact here is unusable, unsigned for anyone else, and
       only invites confusion.
+
+- [ ] Notes name every user-visible change the version carries, not just the
+      headline one. 1.3.0 ships three: Best Shot picked from measured image
+      quality, the reversible one-tap enhancement, and the on-device
+      personalisation that learns from the user's own picks.
 
 ```sh
 gh release create vX.Y.Z --title "Alike X.Y.Z" --verify-tag --notes "$(cat <<'EOF'
