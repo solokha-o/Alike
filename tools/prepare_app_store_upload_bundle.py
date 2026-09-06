@@ -290,7 +290,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
 - Покращення не змінює оригінал: він залишається у вашій медіатеці, і один дотик повертає його.
 - Alike вчиться на найкращих знімках, які ви обираєте самі, — на вашому пристрої, і це можна будь-коли скинути в налаштуваннях.
-- «Дані та приватність» → «Видалити дані Alike» стирає все, що зберіг застосунок, — і не торкається вашої медіатеки.
+- «Дані та приватність» → «Видалити дані Alike» стирає всі результати сканувань, записи прибирання й налаштування — і не торкається вашої медіатеки.
 - Надайте повний або обмежений доступ: Alike працює з тим, чим ви вирішили поділитися.
 
 ALIKE FREE
@@ -352,7 +352,7 @@ DU BEHÄLTST DIE KONTROLLE
 - Aufgeräumte Fotos landen bei „Zuletzt gelöscht“ und bleiben rund 30 Tage wiederherstellbar.
 - Die Verbesserung ist nicht zerstörend: Das Original bleibt in deiner Mediathek, und ein Tippen stellt es wieder her.
 - Alike lernt aus den besten Aufnahmen, die du selbst wählst — auf deinem Gerät, und du kannst es jederzeit in den Einstellungen zurücksetzen.
-- Einstellungen, dann Daten & Datenschutz, dann Alike-Daten löschen entfernt alles, was die App gespeichert hat — und rührt deine Mediathek nicht an.
+- Einstellungen, dann Daten & Datenschutz, dann Alike-Daten löschen entfernt alle Scan-Ergebnisse, Aufräum-Einträge und Einstellungen — und rührt deine Mediathek nicht an.
 - Erteile vollen oder eingeschränkten Zugriff: Alike arbeitet mit dem, was du teilen möchtest.
 
 ALIKE FREE
@@ -394,9 +394,9 @@ LA CONFIDENTIALITÉ EST TOUT L'INTÉRÊT
 CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Trois niveaux de sensibilité, des photos presque identiques à un filet plus large.
 - Détection de la meilleure photo, mesurée sur les photos elles-mêmes — netteté, exposition, visages et bruit — pour que chaque groupe s'ouvre sur un choix raisonnable à garder.
-- Amélioration facultative en une touche pour la photo que vous gardez, l'originale toujours à une touche.
+- Amélioration facultative en une touche pour la photo que vous gardez, l'originale à une touche.
 - Badges d'examen : Nouveau, En cours, Examiné, À revoir.
-- Vous ajoutez ou supprimez des photos et Alike ne remet en avant que les groupes modifiés — sans analyse complète.
+- Ajoutez ou supprimez des photos : Alike ne remet en avant que les groupes modifiés.
 - Progression, Sélectionnées et Économie estimée pendant le travail.
 - Historique de nettoyage par mois.
 - Une mise en page sur une colonne ou une grille plus dense, permutable à tout moment.
@@ -407,8 +407,8 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 VOUS GARDEZ LA MAIN
 - Les photos nettoyées rejoignent « Supprimés récemment » et restent récupérables environ 30 jours.
 - L'amélioration ne détruit rien : l'originale reste dans votre photothèque et une touche la rétablit.
-- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, et vous pouvez le réinitialiser à tout moment dans les Réglages.
-- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface tout ce que l'app a enregistré — et ne touche jamais à votre photothèque.
+- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, réinitialisable à tout moment dans les Réglages.
+- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface les résultats d'analyse, l'historique de nettoyage et les préférences — et ne touche jamais à votre photothèque.
 - Accordez un accès complet ou limité : Alike travaille avec ce que vous partagez.
 
 ALIKE FREE
@@ -457,14 +457,14 @@ HECHO PARA FOTOTECAS REALES
 - Historial de limpieza agrupado por meses, para ver cuánto espacio has recuperado ya.
 - Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
-- Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
+- Recordatorios de limpieza opcionales, como notificaciones locales.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
 - Alike aprende de las mejores tomas que eliges tú — en tu dispositivo, y puedes reiniciarlo cuando quieras en Ajustes.
-- Ajustes, luego Datos y privacidad, luego Eliminar datos de Alike borra todo lo que la app haya guardado, y nunca toca tu fototeca.
+- Ajustes, luego Datos y privacidad, luego Eliminar datos de Alike borra los resultados de análisis, el historial de limpieza y las preferencias, y nunca toca tu fototeca.
 - Concede acceso completo o limitado: Alike trabaja con lo que decidas compartir.
 
 ALIKE FREE
@@ -513,14 +513,14 @@ HECHO PARA FOTOTECAS REALES
 - Historial de limpieza agrupado por meses, para ver cuánto espacio ya recuperaste.
 - Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
-- Recordatorios de limpieza opcionales, como notificaciones locales, con tu propio horario.
+- Recordatorios de limpieza opcionales, como notificaciones locales.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
 - Alike aprende de las mejores tomas que eliges tú — en tu dispositivo, y puedes reiniciarlo cuando quieras en Configuración.
-- Configuración, luego Datos y privacidad, luego Eliminar datos de Alike borra todo lo que la app haya guardado, y nunca toca tu fototeca.
+- Configuración, luego Datos y privacidad, luego Eliminar datos de Alike borra los resultados de análisis, el historial de limpieza y las preferencias, y nunca toca tu fototeca.
 - Otorga acceso completo o limitado: Alike trabaja con lo que decidas compartir.
 
 ALIKE FREE
@@ -623,11 +623,11 @@ LA PRIVACY È TUTTO IL PUNTO
 PENSATA PER LIBRERIE VERE
 - Tre livelli di sensibilità, dagli scatti quasi identici a una rete più ampia.
 - Riconoscimento dello scatto migliore misurato sulle foto stesse — nitidezza, esposizione, volti e rumore — così ogni gruppo ha già una scelta sensata da tenere.
-- Miglioramento facoltativo con un tocco per la foto che tieni, con l'originale sempre a un tocco.
+- Miglioramento facoltativo con un tocco per la foto che tieni, l'originale sempre a un tocco.
 - Indicatori di controllo: Nuovo, In controllo, Controllato e Da controllare dopo una nuova scansione.
 - Aggiungi o elimini foto e Alike se ne accorge, riproponendo solo i gruppi cambiati — senza rifare tutta la scansione.
 - Avanzamento, Selezionate e Risparmio stimato mentre lavori.
-- Cronologia pulizia raggruppata per mese, per vedere quanto spazio hai già recuperato.
+- Cronologia pulizia raggruppata per mese.
 - Un layout ampio a una colonna o una griglia più fitta, alternabili quando vuoi e ricordati.
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
@@ -637,7 +637,7 @@ SEI TU A DECIDERE
 - Le foto che elimini vanno in «Eliminati di recente» e restano recuperabili per circa 30 giorni.
 - Il miglioramento non distrugge nulla: l'originale resta nella tua libreria e un tocco lo ripristina.
 - Alike impara dagli scatti migliori che scegli tu — sul tuo dispositivo, e puoi azzerarlo quando vuoi in Impostazioni.
-- Impostazioni, poi Dati e privacy, poi Elimina i dati di Alike cancella tutto ciò che l'app ha salvato — e non tocca mai la tua libreria.
+- Impostazioni, poi Dati e privacy, poi Elimina i dati di Alike cancella i risultati delle scansioni, la cronologia della pulizia e le preferenze — e non tocca mai la tua libreria.
 - Concedi accesso completo o limitato: Alike lavora con quello che scegli di condividere.
 
 ALIKE FREE
@@ -693,7 +693,7 @@ JIJ HOUDT DE CONTROLE
 - Opgeruimde foto's gaan naar 'Recent verwijderd' en blijven ongeveer 30 dagen terug te halen.
 - Verbeteren is niet destructief: het origineel blijft in je bibliotheek en één tik zet het terug.
 - Alike leert van de beste opnamen die je zelf kiest — op je apparaat, en je kunt dat altijd resetten in Instellingen.
-- Instellingen, dan Gegevens en privacy, dan Verwijder Alike-gegevens wist alles wat de app heeft bewaard — en raakt je fotobibliotheek nooit aan.
+- Instellingen, dan Gegevens en privacy, dan Verwijder Alike-gegevens wist scanresultaten, opruimgeschiedenis en voorkeuren — en raakt je fotobibliotheek nooit aan.
 - Geef volledige of beperkte toegang: Alike werkt met wat jij besluit te delen.
 
 ALIKE FREE
@@ -739,7 +739,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Znaczniki przeglądu: Nowe, W trakcie przeglądu, Przejrzane, Wymaga przeglądu.
 - Dodajesz albo usuwasz zdjęcia, a Alike przywraca tylko zmienione grupy — bez pełnego skanowania.
 - Postęp, Wybrane i Szacowana oszczędność w trakcie pracy.
-- Historia porządków pogrupowana według miesięcy, żeby było widać, ile miejsca już odzyskałeś.
+- Historia porządków pogrupowana według miesięcy.
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
@@ -749,7 +749,7 @@ TO TY DECYDUJESZ
 - Uporządkowane zdjęcia trafiają do albumu „Ostatnio usunięte” i można je odzyskać przez około 30 dni.
 - Poprawa niczego nie niszczy: oryginał zostaje w bibliotece, a jedno dotknięcie go przywraca.
 - Alike uczy się z najlepszych ujęć, które wybierasz sam — na Twoim urządzeniu, i możesz to w każdej chwili wyzerować w Ustawieniach.
-- Ustawienia, potem Dane i prywatność, potem Usuń dane Alike kasuje wszystko, co zapisała aplikacja — i nigdy nie rusza Twojej biblioteki zdjęć.
+- Ustawienia, potem Dane i prywatność, potem Usuń dane Alike kasuje wyniki skanowania, historię porządków i ustawienia — i nigdy nie rusza Twojej biblioteki zdjęć.
 - Przyznaj pełny albo ograniczony dostęp: Alike pracuje z tym, czym zdecydujesz się podzielić.
 
 ALIKE FREE
