@@ -26,11 +26,13 @@ QUICK_PACKAGES=(
   "Packages/Cleanup"
   "Packages/Scanner"
   "Packages/Settings"
+  "Packages/Storage"
   "Packages/UserGuide"
 )
 
-# Packages whose tests cannot run under a plain `swift test` on macOS. They are
-# still compiled and tested by the app compile gate and in Xcode.
+# Packages that cannot run under a plain `swift test` on macOS: not skipped,
+# routed to `xcodebuild test` instead (or `xcodebuild build` if the package has
+# no Tests/ directory to run).
 # Storage: SwiftPM does not compile the `.xcdatamodeld`, so
 # `PersistenceController` traps with "Failed to load Core Data model".
 SWIFTPM_UNSUPPORTED_PACKAGES=(
@@ -366,7 +368,7 @@ run_xcodebuild_package_step() {
 run_package_tests() {
   local package_path
   for package_path in "$@"; do
-    if needs_xcodebuild_tests "$(basename "$package_path")"; then
+    if needs_xcodebuild_tests "$(basename "$package_path")" || swiftpm_unsupported "$(basename "$package_path")"; then
       run_xcodebuild_package_step "$package_path" test
       continue
     fi
@@ -391,7 +393,11 @@ run_package_validation() {
   for package_path in "$@"; do
     relative_path="${package_path#$ROOT_DIR/}"
     if swiftpm_unsupported "$(basename "$package_path")"; then
-      skip_step "swift test $relative_path" "not runnable under plain swift test on macOS; covered by the app compile gate"
+      if [[ -d "$package_path/Tests" ]]; then
+        run_xcodebuild_package_step "$package_path" test
+      else
+        skip_step "swift test $relative_path" "not runnable under plain swift test on macOS; no Tests/ directory to route to xcodebuild"
+      fi
       continue
     fi
     if needs_xcodebuild_tests "$(basename "$package_path")"; then

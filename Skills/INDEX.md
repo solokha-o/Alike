@@ -7,10 +7,12 @@ request needs that extra depth.
 | Skill | Trigger | External pairing | Self-service possible |
 |---|---|---|---|
 | `Architecture/adaptive-ui-layout` | Responsive SwiftUI layout, iPhone/iPad adaptation, size classes, Dynamic Type | Rarely; use SwiftUI external only for platform API uncertainty | No |
+| `Architecture/change-safety` | Changing shipped code: public package APIs, persisted values, enum cases, user-visible flows; extension-vs-modification decisions, breaking-change gating | Rarely; pair with `Storage/persisted-data-evolution` when the change touches stored data | No |
 | `Architecture/SwiftUIModular` | New package/module, package boundaries, modular SwiftUI architecture | Rarely; use SwiftUI external only for broad platform API guidance | No |
 | `DesignConcept` | Native SwiftUI design concepts, colors, typography, SF Symbols | Rarely; use SwiftUI external only for API-specific design implementation | No |
 | `DesignConcept/app-store-screenshots` | App Store screenshots, product/marketing screenshots, screenshot copy, phone mockups, screenshot generator | No | No |
 | `External/core-data-expert` | Core Data, migrations, persistent history, fetch/context issues | This is already external depth; use directly only for Core Data tasks | No |
+| `External/xcode-build-optimization` | Vendored AvdLee build-optimization pack: benchmarking, compilation, project settings, SPM graph, applying fixes | Enter through local `Performance/xcode-build-performance`; load exactly one sub-skill | Yes (`benchmark`) |
 | `External/emilkowalski-skills/animation-vocabulary` | Name or disambiguate an animation/motion effect from a visual description | This is external terminology depth; use directly for naming, not implementation | Yes |
 | `External/emilkowalski-skills/apple-design` | Apple-style fluid motion, gesture physics, interruptibility, feedback, and spatial consistency | Pair with the narrowest local SwiftUI/design skill; translate web examples to native SwiftUI and keep local guidance authoritative | No |
 | `External/emilkowalski-skills/emil-design-eng` | UI polish, component design judgment, animation decisions, and interaction details | Pair with `DesignConcept` or the narrowest local SwiftUI skill; adapt web-specific recipes to native APIs | No |
@@ -20,11 +22,14 @@ request needs that extra depth.
 | `External/swift-concurrency` | Deep Swift concurrency migration or Sendable/isolation diagnostics beyond the local skill | This is external depth; do not use for routine async fixes | No |
 | `External/swift-testing-expert` | Swift Testing API depth, traits/tags, parameterization, XCTest modernization | This is external depth; pair with local testing only when needed | No |
 | `External/swiftui-expert-skill` | Broad/current SwiftUI APIs, Instruments trace recording/analysis, platform guidance | This is external depth; do not use for routine local SwiftUI refactors | No |
+| `Performance/app-runtime-performance` | App is slow at scale: launch, scan/analysis throughput, memory, thermals, Core Data query cost | Pair with `External/core-data-expert` for deep fetch diagnostics | No |
+| `Performance/xcode-build-performance` | Build or compile time, benchmarking builds, slow type-checking, project/package build settings | Pair with `External/xcode-build-optimization` for the analysis depth | No |
 | `GitFlow/ios-git-flow` | Branching, commits, version/build numbers, release tags, develop/main merge | No | No |
 | `GitFlow/pr-agent-flow` | Pull request preparation, self-review, PR descriptions, and review-comment response with separate coding/review passes | No | No |
 | `Localization/spm-localization` | `.xcstrings`, package localization, typed wrappers, the twelve shipped locales, CLDR plurals | Pair with Core Data external only when localized model labels cross persistence boundaries | No |
 | `Meta/skill-authoring-governance` | Create, slim, decompose, or update skills | Pair with `project-skill-audit` for audits | No |
 | `project-skill-audit` | Audit project-local skills, suggest updates/new skills, reduce skill duplication | Pair with `Meta/skill-authoring-governance` for implementation | No |
+| `Storage/persisted-data-evolution` | Core Data model edits, `UserDefaults` keys, `Codable`/`Data` payload changes, migration safety for users with existing data | Pair with `External/core-data-expert` only for mapping models or heavyweight migration depth | No |
 | `SwiftConcurrency/app-store-changelog` | App Store “What’s New”, release notes from git history/tags | No | No |
 | `SwiftConcurrency/gh-issue-fix-flow` | Fix a GitHub issue end-to-end with `gh`, validation, commit, push | Pair with GitHub plugin/CLI only when issue access is needed | No |
 | `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state, or add debug-only app access such as premium overrides and feature flags | Pair with Build iOS tools when available | No |

@@ -30,6 +30,12 @@ public enum DetailsL10n {
         }
         /// Cluster details are available on iOS.
         public static var clusterDetailsAvailableIOS: String { DetailsL10n.string("details.clusterDetails.clusterDetailsAvailableIOS") }
+        /// Choosing the best shot…
+        public static var choosingBestShot: String { DetailsL10n.string("details.clusterDetails.choosingBestShot") }
+        /// Compare with the original
+        public static var compareWithOriginal: String { DetailsL10n.string("details.clusterDetails.compareWithOriginal") }
+        /// Switches between the original and the enhanced version
+        public static var compareWithOriginalHint: String { DetailsL10n.string("details.clusterDetails.compareWithOriginalHint") }
         /// Created
         public static var created: String { DetailsL10n.string("details.clusterDetails.created") }
         /// Dates
@@ -46,6 +52,36 @@ public enum DetailsL10n {
         public static var doubleTapReopenThisCluster: String { DetailsL10n.string("details.clusterDetails.doubleTapReopenThisCluster") }
         /// Double tap to select this photo for cleanup
         public static var doubleTapSelectThisPhoto: String { DetailsL10n.string("details.clusterDetails.doubleTapSelectThisPhoto") }
+        /// Apply
+        public static var applyEnhancement: String { DetailsL10n.string("details.clusterDetails.applyEnhancement") }
+        /// Enhance
+        public static var enhance: String { DetailsL10n.string("details.clusterDetails.enhance") }
+        /// Enhanced
+        public static var enhanced: String { DetailsL10n.string("details.clusterDetails.enhanced") }
+        /// Edited in another app
+        public static var editedInAnotherAppNote: String { DetailsL10n.string("details.clusterDetails.editedInAnotherAppNote") }
+        /// Applying replaces the edit made in another app. The original stays recoverable.
+        public static var enhancementReplacesOtherEdit: String { DetailsL10n.string("details.clusterDetails.enhancementReplacesOtherEdit") }
+        /// This photo was edited in another app, so Alike won't replace that edit.
+        public static var enhancementEditedElsewhere: String { DetailsL10n.string("details.clusterDetails.enhancementEditedElsewhere") }
+        /// Couldn't prepare the enhanced version of this photo.
+        public static var enhancementRenderFailed: String { DetailsL10n.string("details.clusterDetails.enhancementRenderFailed") }
+        /// Couldn't save the enhanced photo to your library.
+        public static var enhancementSaveFailed: String { DetailsL10n.string("details.clusterDetails.enhancementSaveFailed") }
+        /// Enhancement Unavailable
+        public static var enhancementUnavailableTitle: String { DetailsL10n.string("details.clusterDetails.enhancementUnavailableTitle") }
+        /// Alike can only enhance photos for now.
+        public static var enhancementUnsupportedAsset: String { DetailsL10n.string("details.clusterDetails.enhancementUnsupportedAsset") }
+        /// Photos shared through limited access can't be enhanced.
+        public static var enhancementLimitedAccess: String { DetailsL10n.string("details.clusterDetails.enhancementLimitedAccess") }
+        /// This photo was edited outside Alike, so Alike won't undo that edit.
+        public static var enhancementNotOurs: String { DetailsL10n.string("details.clusterDetails.enhancementNotOurs") }
+        /// The original photo isn't available right now.
+        public static var enhancementOriginalUnavailable: String { DetailsL10n.string("details.clusterDetails.enhancementOriginalUnavailable") }
+        /// Enhanced preview
+        public static var enhancementPreviewTitle: String { DetailsL10n.string("details.clusterDetails.enhancementPreviewTitle") }
+        /// Revert to original
+        public static var revertToOriginal: String { DetailsL10n.string("details.clusterDetails.revertToOriginal") }
         /// Favorite
         public static var favorite: String { DetailsL10n.string("details.clusterDetails.favorite") }
         /// Finishes the review and keeps every photo in this cluster
@@ -56,6 +92,26 @@ public enum DetailsL10n {
         public static var hdr: String { DetailsL10n.string("details.clusterDetails.hdr") }
         /// Keeping %d of %d
         public static var keepingOf: String { DetailsL10n.string("details.clusterDetails.keepingOf") }
+        /// No obvious Best Shot — choose one yourself
+        public static var noObviousBestShot: String { DetailsL10n.string("details.clusterDetails.noObviousBestShot") }
+        /// Original
+        public static var originalPhoto: String { DetailsL10n.string("details.clusterDetails.originalPhoto") }
+        /// Probably best
+        public static var probablyBestShot: String { DetailsL10n.string("details.clusterDetails.probablyBestShot") }
+        /// Better exposure
+        public static var reasonBetterExposure: String { DetailsL10n.string("details.clusterDetails.reasonBetterExposure") }
+        /// Face in focus
+        public static var reasonFaceInFocus: String { DetailsL10n.string("details.clusterDetails.reasonFaceInFocus") }
+        /// Higher resolution
+        public static var reasonHigherResolution: String { DetailsL10n.string("details.clusterDetails.reasonHigherResolution") }
+        /// Less noise
+        public static var reasonLessNoise: String { DetailsL10n.string("details.clusterDetails.reasonLessNoise") }
+        /// Eyes open
+        public static var reasonOpenEyes: String { DetailsL10n.string("details.clusterDetails.reasonOpenEyes") }
+        /// Sharper
+        public static var reasonSharper: String { DetailsL10n.string("details.clusterDetails.reasonSharper") }
+        /// Touch and hold to see the original
+        public static var holdToCompare: String { DetailsL10n.string("details.clusterDetails.holdToCompare") }
         /// Live Photo
         public static var livePhoto: String { DetailsL10n.string("details.clusterDetails.livePhoto") }
         /// Location

@@ -369,6 +369,64 @@ enum GuideContent {
                 ]
             ),
             GuideSection(
+                id: "comparingPhotos.enhance",
+                header: "userGuide.comparingPhotos.enhance.header",
+                footer: "userGuide.comparingPhotos.enhance.footer",
+                items: [
+                    GuideItem(
+                        id: "comparingPhotos.enhance.apply",
+                        symbol: "wand.and.stars",
+                        title: "userGuide.comparingPhotos.enhance.apply.title",
+                        body: "userGuide.comparingPhotos.enhance.apply.body"
+                    ),
+                    GuideItem(
+                        id: "comparingPhotos.enhance.compare",
+                        kind: .tip,
+                        symbol: "hand.tap",
+                        title: "userGuide.comparingPhotos.enhance.compare.title",
+                        body: "userGuide.comparingPhotos.enhance.compare.body"
+                    ),
+                    GuideItem(
+                        id: "comparingPhotos.enhance.revert",
+                        symbol: "arrow.uturn.backward",
+                        title: "userGuide.comparingPhotos.enhance.revert.title",
+                        body: "userGuide.comparingPhotos.enhance.revert.body"
+                    ),
+                    GuideItem(
+                        id: "comparingPhotos.enhance.limits",
+                        kind: .caution,
+                        symbol: "exclamationmark.triangle",
+                        title: "userGuide.comparingPhotos.enhance.limits.title",
+                        body: "userGuide.comparingPhotos.enhance.limits.body"
+                    )
+                ]
+            ),
+            GuideSection(
+                id: "comparingPhotos.personalization",
+                header: "userGuide.comparingPhotos.personalization.header",
+                footer: "userGuide.comparingPhotos.personalization.footer",
+                items: [
+                    GuideItem(
+                        id: "comparingPhotos.personalization.learns",
+                        symbol: "wand.and.sparkles",
+                        title: "userGuide.comparingPhotos.personalization.learns.title",
+                        body: "userGuide.comparingPhotos.personalization.learns.body"
+                    ),
+                    GuideItem(
+                        id: "comparingPhotos.personalization.limits",
+                        symbol: "checkmark.shield",
+                        title: "userGuide.comparingPhotos.personalization.limits.title",
+                        body: "userGuide.comparingPhotos.personalization.limits.body"
+                    ),
+                    GuideItem(
+                        id: "comparingPhotos.personalization.reset",
+                        symbol: "arrow.uturn.backward",
+                        title: "userGuide.comparingPhotos.personalization.reset.title",
+                        body: "userGuide.comparingPhotos.personalization.reset.body"
+                    )
+                ]
+            ),
+            GuideSection(
                 id: "comparingPhotos.inspect",
                 header: "userGuide.comparingPhotos.inspect.header",
                 items: [

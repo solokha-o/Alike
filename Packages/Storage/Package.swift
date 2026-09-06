@@ -29,7 +29,10 @@ let package = Package(
         ),
         .testTarget(
             name: "StorageTests",
-            dependencies: ["Storage"]
+            dependencies: ["Storage"],
+            resources: [
+                .process("Fixtures")
+            ]
         ),
     ]
 )

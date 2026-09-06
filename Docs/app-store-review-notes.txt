@@ -1,68 +1,78 @@
 Thank you for reviewing Alike.
 
 NO ACCOUNT IS NEEDED
-Alike has no account, no sign-in and no server, so there is nothing to log in
-to. The demo credential fields are intentionally empty and a demo account is
-not required. The app opens into a short introduction; its last page explains
-why photo access is needed and ends with a neutral "Continue" button that hands
-off to the iOS permission alert, which asks in its own words.
+Alike has no account, no sign-in and no server, so there is nothing to log
+in to; the demo credential fields are intentionally empty. The app opens
+into a short introduction that hands off to the iOS photo permission alert.
 
 PHOTO LIBRARY ACCESS
-Alike compares the photos in the library to find visually similar ones, so
-photo library access is the app's core permission. Please grant "Full Access"
-when prompted. If you prefer "Limited Access", select several visually similar
-photos (for example three or four shots of the same subject taken in a row),
-otherwise the scan will correctly report that it found no groups.
+Alike compares library photos to find visually similar ones, so photo access
+is the core permission. Please grant "Full Access". With "Limited Access",
+select several similar photos (three or four shots of one subject in a row),
+or the scan correctly reports no groups.
 
-Notification permission is requested only if you turn on the cleanup reminder
-in Settings; it is not needed to review the app.
+The same permission is now also used to write. Enhancing a best shot writes
+a non-destructive adjustment through PHContentEditingOutput, stamped
+com.alike.autoEnhance: iOS keeps the original, no copy is created, and the
+edit appears in Apple Photos like any other and can be reverted from either
+app — in Alike with Revert to original, in Photos with Edit then Revert. It
+is never automatic: it is offered as a preview and written only after you
+tap Apply. It is not offered for video, in Limited Access, or for assets
+marked non-editable, and a photo that already carries another app's edit is
+replaced only after you agree.
+
+Notification permission is requested only for the optional cleanup reminder.
 
 HOW TO EXERCISE THE APP
-1. Step through the introduction and tap "Continue" on its last page, then
-   grant photo library access in the iOS alert.
-2. Tap Scan on the Scanner tab. Analysis runs locally and progress is shown.
-3. Open any group. A Best Shot is preselected; use Keep Best Only, Select All
-   Except Best, or select photos by hand.
+1. Step through the introduction and grant photo access in the iOS alert.
+2. Tap Scan on the Scanner tab. Analysis runs locally.
+3. Open any group. A Best Shot is preselected; use Keep Best Only, Select
+   All Except Best, or select by hand. For the enhancement, tap Enhance on
+   the Best Shot, hold the preview to compare it with the original, tap
+   Apply, then tap Revert to original.
 4. Tap the delete action and confirm. iOS then shows its own confirmation.
 
 ON-DEVICE ANALYSIS
 All similarity analysis runs on device with the Apple Vision framework. No
-photo, thumbnail, feature print or analysis result leaves the device, and the
-app makes no network requests of its own. The only outbound activity is
-handled by StoreKit when a subscription is purchased or restored.
+photo, thumbnail, feature print or analysis result leaves the device, and
+the app makes no network requests except StoreKit's, for purchases and
+restores.
+
+BEST SHOT LEARNS FROM YOUR OWN PICKS
+When you override the suggested best shot, Alike stores the difference
+between the two photos' quality signals — derived numbers, not the photos —
+and uses it to nudge the ranking towards what you pick. It learns only from
+your own actions in the app; nothing is collected or sent, and the values
+live in UserDefaults on device. Settings resets the learning, and Delete
+Alike Data erases it too. App Privacy stays "Data Not Collected".
 
 DELETION IS ALWAYS CONFIRMED
-Alike never deletes anything on its own. Every cleanup requires explicit
-confirmation in the app, iOS presents its own system confirmation, and the
-photos are moved to the iOS Recently Deleted album, where they remain
-recoverable for about 30 days. The app never erases photos permanently.
+Alike never deletes anything on its own. Every cleanup needs explicit
+confirmation in the app, iOS then presents its own, and the photos move to
+Recently Deleted, recoverable for about 30 days; nothing is erased
+permanently.
 
 SUBSCRIPTION
 Alike Pro is an auto-renewable subscription with yearly and monthly plans.
-The free tier allows 3 scans per month and cleanup of one photo at a time.
-Alike Pro adds unlimited scans, batch cleanup, screenshot cleanup, blurred
-photo cleanup, advanced filters and custom cleanup reminders.
+The free tier allows 3 scans per month, cleanup of one photo at a time,
+guided review with Best Shot, one-tap enhancement and the Best Shot
+learning: neither new 1.3.0 feature is behind the paywall. Pro adds
+unlimited scans, batch, screenshot and blurred cleanup, advanced filters and
+custom reminders.
 
-The paywall is reachable from three places: the Scanner tab, the Details view
-of a group, and Settings. It states the subscription length, that renewal is
-automatic unless cancelled at least 24 hours before the end of the current
-period, that payment is charged to the Apple Account, and that the yearly plan
-includes a 7-day free trial for eligible new subscribers with billing starting
-when the trial ends. Restore Purchases is available on the paywall and in
-Settings. Links to the Privacy Policy and to the Terms of Use are shown on the
-paywall and under Settings, then Legal. The Terms of Use page names Apple's
-Standard EULA as the licence that governs use of the app and defers to it on
-any conflict.
+The paywall is reachable from the Scanner tab, a group's Details view and
+Settings. It states the plan length, automatic renewal unless cancelled at
+least 24 hours before the current period ends, payment charged to the Apple
+Account, and the yearly plan's 7-day free trial for eligible new
+subscribers. Restore Purchases and links to the Privacy Policy and Terms of
+Use are on the paywall and under Settings, then Legal. The Terms of Use name
+Apple's Standard EULA as the governing licence.
 
 LANGUAGES
-The app, the App Store listing and the Privacy Policy, Terms of Use and
-Support pages are localized into thirteen languages: English, Ukrainian, German,
-French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch,
-Polish, Turkish, Traditional Chinese and Arabic. The iOS photo library permission
-alert itself stays in English; its text is a build setting rather than a localized
-string, and that is a known gap.
+The app, its legal and support pages and the permission alert are localized
+into twelve languages, the listing into thirteen.
 
 DATA DELETION
-Settings, then Data & Privacy, then Delete Alike Data erases all scan results,
-cleanup history and preferences stored on the device. It does not touch the
-photo library, the photo permission or the subscription.
+Settings, then Data & Privacy, then Delete Alike Data erases all scan
+results, cleanup history, Best Shot learning and preferences on the device.
+It does not touch the photo library, the permission or the subscription.

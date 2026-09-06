@@ -60,6 +60,12 @@ SHOTS = {
     7:  {"name": "cleanup-progress",   "en": "IMG_3242.PNG", "uk": "IMG_3251.PNG"},
     8:  {"name": "screenshot-cleanup", "en": "IMG_3243.PNG"},
     13: {"name": "welcome-privacy",    "en": "IMG_3236.PNG", "uk": "IMG_3245.PNG"},
+    # Shot 14 carries no filename column on purpose. It is a 1.3.0 capture in
+    # thirteen locales, so every one of them arrives through the manifest; a
+    # spec holding only "name" resolves zero languages and imports nothing until
+    # then. The entry has to exist here regardless, because the manifest merges
+    # into SHOTS and cannot introduce a shot number of its own.
+    14: {"name": "best-shot-enhanced"},
 }
 
 # Camera-roll filenames are not something a table in this file can predict for a
@@ -194,6 +200,15 @@ def main() -> None:
         "--locales",
         help="comma-separated source locales to import; default is every locale in the table",
     )
+    # The same argument one dimension over. A session that adds a *shot* to every
+    # locale — as the 1.3.0 deck's shot 14 did — has a camera roll holding that
+    # shot only, and without this the run stops on shots 1 through 13, whose
+    # files were imported sessions ago and deleted long since. --locales made
+    # adding a language possible; this makes adding a shot possible.
+    ap.add_argument(
+        "--shots",
+        help="comma-separated shot numbers to import; default is every shot in the table",
+    )
     args = ap.parse_args()
 
     only = None
@@ -204,6 +219,19 @@ def main() -> None:
             raise SystemExit(
                 f"--locales: {', '.join(unknown)} is not a source locale. "
                 f"Known: {', '.join(SUPPORTED_LOCALES)}"
+            )
+
+    only_shots = None
+    if args.shots:
+        try:
+            only_shots = {int(number.strip()) for number in args.shots.split(",") if number.strip()}
+        except ValueError:
+            raise SystemExit(f"--shots: {args.shots!r} is not a comma-separated list of numbers")
+        unknown_shots = sorted(only_shots - set(SHOTS))
+        if unknown_shots:
+            raise SystemExit(
+                f"--shots: {', '.join(str(shot) for shot in unknown_shots)} is not in the shot list. "
+                f"Known: {', '.join(str(shot) for shot in sorted(SHOTS))}"
             )
 
     source = Path(args.source).expanduser()
@@ -221,6 +249,8 @@ def main() -> None:
     resolved_sources: dict[tuple[int, str], Path] = {}
     missing = []
     for shot, spec in shots.items():
+        if only_shots is not None and shot not in only_shots:
+            continue
         for lang in languages_of(spec, only):
             resolved = confined_source_path(source, spec[lang], manifest_path)
             resolved_sources[(shot, lang)] = resolved
@@ -232,6 +262,8 @@ def main() -> None:
 
     store_count = 0
     for shot in sorted(shots):
+        if only_shots is not None and shot not in only_shots:
+            continue
         spec = shots[shot]
         for lang in languages_of(spec, only):
             src = resolved_sources[(shot, lang)]

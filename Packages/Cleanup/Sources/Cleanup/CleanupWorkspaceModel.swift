@@ -20,6 +20,19 @@ public final class CleanupWorkspaceModel {
     public private(set) var lastCompletedScanDate: Date?
     public let cleanupService: any PhotoCleanupService
     public let cleanupHistoryRepository: any CleanupHistoryRepository
+    /// Best Shot quality scoring, cached in Core Data so reopening a cluster
+    /// does not decode its photos again.
+    public let qualityAnalyzer: any PhotoQualityAnalyzing
+    /// Non-destructive Best Shot enhancement, backed by PhotoKit content
+    /// editing; it shares the score cache so our own edit is never re-scored.
+    public let enhancementService: any PhotoEnhancementService
+    /// On-device counters that say how often the ranking gets replaced; the
+    /// calibration signal, with nothing leaving the device.
+    public let bestShotOverrideMetrics: any BestShotOverrideMetricsRepository
+    /// Applies the device's personalized Best Shot weights on top of the
+    /// global scoring config, and records every override that replaces our
+    /// recommendation so the fit keeps improving.
+    public let bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider
 
     public var content: CleanupWorkspaceContent? {
         guard lastGoodContent.hasCompletedScanBaseline else { return nil }
@@ -75,6 +88,18 @@ public final class CleanupWorkspaceModel {
         cleanupSessionRepository: any CleanupSessionRepository = FileCleanupSessionRepository(),
         cleanupService: any PhotoCleanupService = PhotoKitCleanupService(),
         cleanupHistoryRepository: any CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        qualityAnalyzer: any PhotoQualityAnalyzing = CachingPhotoQualityAnalyzer(
+            repository: CoreDataPhotoQualityScoreRepository()
+        ),
+        enhancementService: any PhotoEnhancementService = PhotoKitEnhancementService(
+            qualityScoreRepository: CoreDataPhotoQualityScoreRepository()
+        ),
+        bestShotOverrideMetrics: any BestShotOverrideMetricsRepository =
+            UserDefaultsBestShotOverrideMetricsRepository(),
+        bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider =
+            BestShotPersonalizedScoringConfigProvider(
+                repository: UserDefaultsBestShotPersonalizationRepository()
+            ),
         cleanupManager: (any CleanupSessionManaging)? = nil,
         now: @escaping @Sendable () -> Date = Date.init
     ) {
@@ -83,6 +108,10 @@ public final class CleanupWorkspaceModel {
         self.cleanupCategoryRepository = cleanupCategoryRepository
         self.cleanupService = cleanupService
         self.cleanupHistoryRepository = cleanupHistoryRepository
+        self.qualityAnalyzer = qualityAnalyzer
+        self.enhancementService = enhancementService
+        self.bestShotOverrideMetrics = bestShotOverrideMetrics
+        self.bestShotPersonalizedConfigProvider = bestShotPersonalizedConfigProvider
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.now = now
@@ -269,6 +298,12 @@ public final class CleanupWorkspaceModel {
     /// data after the deletion service has finished.
     public func prepareForDataDeletion() async {
         scanMutationGeneration &+= 1
+
+        // `self` outlives the deletion — the workspace is never rebuilt after
+        // a full delete — so the provider's in-memory cache must be cleared
+        // explicitly here or a stale personalized config would survive the
+        // repository wipe underneath it.
+        await bestShotPersonalizedConfigProvider.reset()
 
         let cachedLoad = cachedContentLoadTask
         let activeScanTask = scanTask

@@ -81,7 +81,7 @@ public enum UserGuideL10n {
     }
 
     public enum ComparingPhotos {
-        /// Favourites come first, then the highest resolution, then the most recent shot.
+        /// Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favou...
         public static var bestshotAutoBody: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.auto.body") }
         /// How Alike picks it
         public static var bestshotAutoTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.auto.title") }
@@ -93,6 +93,26 @@ public enum UserGuideL10n {
         public static var bestshotOverrideBody: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.override.body") }
         /// Make Best Shot
         public static var bestshotOverrideTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.bestShot.override.title") }
+        /// Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Ap...
+        public static var enhanceApplyBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.apply.body") }
+        /// See it before you keep it
+        public static var enhanceApplyTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.apply.title") }
+        /// In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced ver...
+        public static var enhanceCompareBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.compare.body") }
+        /// Touch and hold to compare
+        public static var enhanceCompareTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.compare.title") }
+        /// The original never leaves your library. Alike writes the change the way Photos does, so either ap...
+        public static var enhanceFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.footer") }
+        /// Enhance the one you keep
+        public static var enhanceHeader: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.header") }
+        /// Enhancement is not available for video, in Limited Access, or for photos the system marks as non-...
+        public static var enhanceLimitsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.limits.body") }
+        /// When it is not offered
+        public static var enhanceLimitsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.limits.title") }
+        /// One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Phot...
+        public static var enhanceRevertBody: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.revert.body") }
+        /// Revert to original
+        public static var enhanceRevertTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.enhance.revert.title") }
         /// Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the de...
         public static var inspectFullscreenBody: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.fullscreen.body") }
         /// Open Original
@@ -103,6 +123,22 @@ public enum UserGuideL10n {
         public static var inspectInfoBody: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.info.body") }
         /// Show Info
         public static var inspectInfoTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.inspect.info.title") }
+        /// What Alike learns stays on this device and is never uploaded.
+        public static var personalizationFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.footer") }
+        /// Learning your taste
+        public static var personalizationHeader: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.header") }
+        /// Every time you choose a different Best Shot than the one Alike suggested, it remembers what you p...
+        public static var personalizationLearnsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.learns.body") }
+        /// Alike learns from your picks
+        public static var personalizationLearnsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.learns.title") }
+        /// This only changes how much sharpness, exposure, noise, and faces count against each other. A blur...
+        public static var personalizationLimitsBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.limits.body") }
+        /// What it won't do
+        public static var personalizationLimitsTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.limits.title") }
+        /// In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the d...
+        public static var personalizationResetBody: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.reset.body") }
+        /// Starting over
+        public static var personalizationResetTitle: String { UserGuideL10n.string("userGuide.comparingPhotos.personalization.reset.title") }
         /// Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen ...
         public static var reviewFooter: String { UserGuideL10n.string("userGuide.comparingPhotos.review.footer") }
         /// Finishing a group
@@ -338,7 +374,7 @@ public enum UserGuideL10n {
         public static var permissionsNotificationsBody: String { UserGuideL10n.string("userGuide.privacy.permissions.notifications.body") }
         /// Notifications
         public static var permissionsNotificationsTitle: String { UserGuideL10n.string("userGuide.privacy.permissions.notifications.title") }
-        /// Requested once at the start. You can change or limit it any time in iOS Settings.
+        /// Requested once at the start, and used to read your library and — only when you enhance a photo yo...
         public static var permissionsPhotosBody: String { UserGuideL10n.string("userGuide.privacy.permissions.photos.body") }
         /// Photo library
         public static var permissionsPhotosTitle: String { UserGuideL10n.string("userGuide.privacy.permissions.photos.title") }

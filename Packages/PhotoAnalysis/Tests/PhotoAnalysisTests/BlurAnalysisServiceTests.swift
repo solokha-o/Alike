@@ -9,7 +9,7 @@ final class BlurAnalysisServiceTests: XCTestCase {
     func testTaskPoolLimitsConcurrencyToFourAndPreservesOrder() async throws {
         let tracker = ConcurrencyTracker()
 
-        let results: [Int] = try await BlurAnalysisTaskPool.compactMap(
+        let results: [Int] = try await ImageAnalysisTaskPool.compactMap(
             Array(0..<20),
             maxConcurrentTasks: 4
         ) { value in
@@ -34,7 +34,7 @@ final class BlurAnalysisServiceTests: XCTestCase {
             case unavailable
         }
 
-        let results: [Int] = try await BlurAnalysisTaskPool.compactMap(
+        let results: [Int] = try await ImageAnalysisTaskPool.compactMap(
             [1, 2, 3],
             maxConcurrentTasks: 2
         ) { value in
@@ -49,7 +49,7 @@ final class BlurAnalysisServiceTests: XCTestCase {
 
     func testTaskPoolPropagatesCancellation() async {
         let task = Task {
-            try await BlurAnalysisTaskPool.compactMap(
+            try await ImageAnalysisTaskPool.compactMap(
                 Array(0..<8),
                 maxConcurrentTasks: 4
             ) { value in
@@ -131,7 +131,7 @@ final class BlurAnalysisServiceTests: XCTestCase {
 
     #if canImport(UIKit)
     func testThumbnailRequestStateCancellationBeforeInstallResumesExactlyOnce() async {
-        let state = BlurThumbnailRequestState()
+        let state = AnalysisThumbnailRequestState()
         state.cancel()
 
         do {
@@ -148,7 +148,7 @@ final class BlurAnalysisServiceTests: XCTestCase {
     }
 
     func testThumbnailRequestStateTimeoutReturnsNilExactlyOnce() async throws {
-        let state = BlurThumbnailRequestState()
+        let state = AnalysisThumbnailRequestState()
 
         let image = try await withCheckedThrowingContinuation { continuation in
             XCTAssertTrue(state.install(continuation))

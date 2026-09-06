@@ -33,6 +33,7 @@ public enum AlikeOperation: String, Equatable, Sendable {
     case scan
     case review
     case cleanup
+    case enhancement
     case reconciliation
 }
 

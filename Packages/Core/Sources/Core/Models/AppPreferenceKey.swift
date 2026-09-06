@@ -15,6 +15,20 @@ public enum AppPreferenceKey {
         public static let minute = "cleanup.reminder.minute"
     }
 
+    /// Anonymous calibration counters for Best Shot ranking. Resettable: they
+    /// describe app behaviour, not an entitlement.
+    public enum BestShot {
+        public static let overrideMetrics = "bestShot.overrideMetrics.v1"
+        /// Clusters already counted as "a recommendation was shown", so a
+        /// revisit does not count twice.
+        public static let countedRecommendationClusters = "bestShot.countedRecommendationClusters.v1"
+        /// The raw "user chose A, we recommended B" examples personalization
+        /// fits against.
+        public static let overrideExamples = "bestShot.overrideExamples.v1"
+        /// The weight vectors fitted from `overrideExamples`.
+        public static let personalWeights = "bestShot.personalWeights.v1"
+    }
+
     public enum Premium {
         public static let monthlyScanUsage = "premium.monthlyScanUsage.v2"
         public static let legacyCompletedScanCount = "premium.completedScanCount.v1"
@@ -42,6 +56,10 @@ public enum AppPreferenceKey {
     private static let legacyGridColumns = "gridColumns"
 
     public static let resettable: [String] = [
+        BestShot.overrideMetrics,
+        BestShot.countedRecommendationClusters,
+        BestShot.overrideExamples,
+        BestShot.personalWeights,
         PhotoGrid.compactColumns,
         PhotoGrid.regularColumns,
         legacyGridColumns,

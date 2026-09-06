@@ -1,5 +1,6 @@
 import XCTest
 import Core
+import Photos
 @testable import Details
 
 @MainActor
@@ -801,14 +802,14 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
         XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
             .recoverableError(AlikeErrorContext(operation: .cleanup))
         )
         XCTAssertFalse(viewModel.isDeleting)
 
-        viewModel.clearDeleteError()
+        viewModel.clearActionError()
 
         XCTAssertEqual(
             viewModel.currentAlikeReaction?.state,
@@ -829,7 +830,7 @@ final class ClusterDetailsViewModelTests: XCTestCase {
 
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
         XCTAssertFalse(cleanupDidRun)
-        XCTAssertEqual(viewModel.deleteErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
+        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
     }
 
     func testDismissingDeleteErrorClearsErrorState() async {
@@ -843,12 +844,12 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         await viewModel.load()
         await viewModel.confirmDelete()
 
-        XCTAssertTrue(viewModel.isDeleteErrorPresented)
+        XCTAssertTrue(viewModel.isActionErrorPresented)
 
-        viewModel.isDeleteErrorPresented = false
+        viewModel.isActionErrorPresented = false
 
-        XCTAssertFalse(viewModel.isDeleteErrorPresented)
-        XCTAssertNil(viewModel.deleteErrorMessage)
+        XCTAssertFalse(viewModel.isActionErrorPresented)
+        XCTAssertNil(viewModel.actionErrorMessage)
         XCTAssertFalse(viewModel.shouldOfferOpenSettings)
     }
 
@@ -1041,11 +1042,923 @@ final class ClusterDetailsViewModelTests: XCTestCase {
         XCTAssertNil(stateAfterDelete)
     }
 
+    // MARK: - Best Shot quality scoring
+
+    func testScoredBestShotBeatsTheMetadataChoice() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10))
+            ],
+            qualityScores: [("blurred-favorite", 12), ("sharp", 60)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharp")
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        XCTAssertTrue(viewModel.bestShotReasonCodes.contains(.sharper))
+    }
+
+    func testPersistedManualOverrideSurvivesARescanWithDifferentScores() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "chosen",
+            isBestShotUserSelected: true,
+            selectedLocalIdentifiers: [],
+            status: .inReview,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "chosen", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("chosen", 12), ("sharper", 70)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "chosen")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
+    }
+
+    func testUnconfirmedAutomaticBestShotIsReplacedByTheFreshRanking() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "old-pick",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: [],
+            status: .notReviewed,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "old-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("old-pick", 12), ("sharper", 70)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharper")
+        XCTAssertFalse(viewModel.isBestShotUserSelected)
+    }
+
+    func testFinishedReviewKeepsItsBestShotEvenWhenScoresDisagree() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "reviewed-pick",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: ["sharper"],
+            isReviewConfirmed: true,
+            status: .reviewed,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "reviewed-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("reviewed-pick", 12), ("sharper", 70)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "reviewed-pick")
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+    }
+
+    func testUnresolvedClusterShowsNoBestShotButKeepsReviewAvailable() async {
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotConfidence, .unresolved)
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
+        XCTAssertTrue(viewModel.isActionBarVisible)
+
+        viewModel.toggleReviewConfirmation()
+
+        XCTAssertTrue(viewModel.isReviewConfirmed)
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+    }
+
+    func testChoosingABestShotInAnUnresolvedClusterMakesItCertain() async {
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "b")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+    }
+
+    func testMissingQualityScoresKeepTheMetadataBestShot() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+    }
+
+    // MARK: - Anonymous override metrics
+
+    func testOpeningAClusterWithARecommendationCountsIt() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("blurred", 20)],
+            overrideMetrics: metrics
+        )
+
+        await viewModel.load()
+
+        let recorded = await metrics.recordedRecommendations
+        XCTAssertEqual(recorded, [.automatic])
+    }
+
+    func testReplacingTheRecommendationIsCountedAsAnOverride() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("blurred", 20)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("blurred")
+        await waitForRecordedManualPicks(1, on: metrics)
+
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks, [.automatic])
+        let stored = await metrics.metrics
+        XCTAssertEqual(stored.manualOverrideCount, 1)
+    }
+
+    /// Switching between the user's own picks says nothing about the ranking.
+    func testSwitchingBetweenOwnPicksIsNotCountedTwice() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+            ],
+            qualityScores: [("a", 60), ("b", 20), ("c", 25)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedManualPicks(1, on: metrics)
+        viewModel.setBestShot("c")
+        await Task.yield()
+
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks, [.automatic])
+    }
+
+    func testAnUnresolvedClusterRecordsNeitherRecommendationNorOverride() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)],
+            overrideMetrics: metrics
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedManualPicks(1, on: metrics)
+
+        let recommendations = await metrics.recordedRecommendations
+        let picks = await metrics.recordedManualPicks
+        let stored = await metrics.metrics
+        XCTAssertTrue(recommendations.isEmpty)
+        XCTAssertEqual(picks, [.unresolved])
+        XCTAssertEqual(stored.manualOverrideCount, 0)
+        XCTAssertEqual(stored.unresolvedManualPickCount, 1)
+    }
+
+    /// The screen shows a Best Shot before scoring finishes, so an override can
+    /// arrive first. Both sides of the rate have to survive that.
+    func testAnOverrideBeforeScoringFinishesStillCountsBothSides() async {
+        let metrics = MockBestShotOverrideMetricsRepository()
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            overrideMetrics: metrics,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        viewModel.setBestShot("plain")
+        await waitForRecordedManualPicks(1, on: metrics)
+        await analyzer.finish(with: [])
+        await loading.value
+
+        let stored = await metrics.metrics
+        XCTAssertEqual(stored.recommendationCount, 1)
+        XCTAssertEqual(stored.manualOverrideCount, 1)
+        XCTAssertEqual(stored.overrideRate, 1, accuracy: 0.000_1)
+    }
+
+    private func waitForRecordedManualPicks(
+        _ expected: Int,
+        on metrics: MockBestShotOverrideMetricsRepository,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        for _ in 0..<1_000 {
+            let picks = await metrics.recordedManualPicks
+            if picks.count >= expected { return }
+            await Task.yield()
+        }
+        let picks = await metrics.recordedManualPicks
+        XCTAssertEqual(picks.count, expected, file: file, line: line)
+    }
+
+    private func waitForRecordedExamples(
+        _ expected: Int,
+        on personalizationRepository: MockBestShotPersonalizationRepository,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        for _ in 0..<1_000 {
+            let recorded = await personalizationRepository.recordedExamples
+            if recorded.count >= expected { return }
+            await Task.yield()
+        }
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, expected, file: file, line: line)
+    }
+
+    // MARK: - Personalisation
+
+    func testReplacingTheRecommendationRecordsAnOverrideExample() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "softer", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            // Close enough that neither candidate is excluded for critical
+            // blur (the ranker would then refuse to build an example from
+            // it), but still far enough apart to rank cleanly.
+            qualityScores: [("sharper", 60), ("softer", 50)],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharper")
+
+        viewModel.setBestShot("softer")
+        await waitForRecordedExamples(1, on: personalizationRepository)
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, 1)
+        XCTAssertEqual(recorded.first?.clusterHasFaces, false)
+    }
+
+    /// Switching between the user's own picks says nothing about the ranking,
+    /// same as the metrics tally above.
+    func testSwitchingBetweenOwnPicksRecordsNoOverrideExample() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+            ],
+            qualityScores: [("a", 60), ("b", 20), ("c", 25)],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+        await waitForRecordedExamples(1, on: personalizationRepository)
+        viewModel.setBestShot("c")
+        await Task.yield()
+        await Task.yield()
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertEqual(recorded.count, 1)
+    }
+
+    func testNoOverrideExampleWhenScoresNeverLoaded() async {
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            personalizedConfigProvider: provider
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("a")
+        await Task.yield()
+        await Task.yield()
+
+        let recorded = await personalizationRepository.recordedExamples
+        XCTAssertTrue(recorded.isEmpty)
+    }
+
+    /// Proves the wiring is live: the same two candidates rank differently
+    /// once the provider's config is seeded with weights that favor a
+    /// different component than the global config does.
+    func testPersonalizedConfigProviderConfigDrivesTheRanking() async {
+        let signals: [String: PhotoQualitySignals] = [
+            "sharpButClipped": PhotoQualitySignals(
+                globalSharpness: 120,
+                darkClippedFraction: 0.10,
+                subjectLumaStdDev: 0.25,
+                noiseEstimate: 0.1,
+                pixelArea: 1_000
+            ),
+            "softButExposed": PhotoQualitySignals(
+                globalSharpness: 100,
+                subjectLumaStdDev: 0.25,
+                noiseEstimate: 0.1,
+                pixelArea: 1_000
+            )
+        ]
+        let snapshots = [
+            snapshot(id: "sharpButClipped", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+            snapshot(id: "softButExposed", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+        ]
+
+        let globalViewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubSignalsPhotoQualityAnalyzer(signalsByIdentifier: signals),
+            assetSnapshots: snapshots,
+            completionDelay: {}
+        )
+        await globalViewModel.load()
+        XCTAssertEqual(globalViewModel.bestShotAssetID, "sharpButClipped")
+
+        let personalizationRepository = MockBestShotPersonalizationRepository()
+        let seededWeights = BestShotPersonalWeights(
+            withFaces: PhotoQualityScoringConfig.current.weightsWithFaces,
+            withoutFaces: PhotoQualityScoringConfig.Weights(
+                sharpness: 0.05,
+                faceQuality: 0,
+                exposure: 0.75,
+                noiseArtifacts: 0.15,
+                resolution: 0.05
+            ),
+            scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion,
+            withFacesExampleCount: 0,
+            withoutFacesExampleCount: 20
+        )
+        await personalizationRepository.setWeights(seededWeights)
+        let provider = BestShotPersonalizedScoringConfigProvider(repository: personalizationRepository)
+
+        let personalizedViewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubSignalsPhotoQualityAnalyzer(signalsByIdentifier: signals),
+            personalizedConfigProvider: provider,
+            assetSnapshots: snapshots,
+            completionDelay: {}
+        )
+        await personalizedViewModel.load()
+        XCTAssertEqual(personalizedViewModel.bestShotAssetID, "softButExposed")
+    }
+
+    func testAnUnresolvedClusterCannotBeEmptied() async {
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+        await viewModel.load()
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+
+        for identifier in ["a", "b", "c"] {
+            viewModel.toggleSelection(for: identifier)
+        }
+
+        // Nothing is protected while no Best Shot exists, so nothing may be
+        // selected for deletion either.
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertFalse(viewModel.isDeleteActionVisible)
+
+        viewModel.setBestShot("b")
+        viewModel.toggleSelection(for: "a")
+
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["a"])
+    }
+
+    func testAStoredSelectionIsDroppedWhileNoBestShotExists() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: ["a", "b", "c"],
+            status: .inReview,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
+        XCTAssertFalse(viewModel.isDeleteActionVisible)
+    }
+
+    /// A cluster the user already finished keeps its Best Shot, so the badge and
+    /// the summary card must not disagree about whether one exists.
+    func testAFinishedReviewKeepsAConfidentBestShotEvenWhenScoresTurnAmbiguous() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "b",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: [],
+            isReviewConfirmed: true,
+            status: .reviewed,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: weakClusterSnapshots,
+            qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "b")
+        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
+    }
+
+    /// The badge belongs to the photo: a photo enhanced earlier keeps it after
+    /// the screen is reopened, even once it is no longer the Best Shot.
+    func testEnhancedBadgesAreRestoredFromTheScoreCache() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "enhanced", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("sharp", 60), ("enhanced", 20)],
+            enhancedIdentifiers: ["enhanced"]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharp")
+        XCTAssertTrue(viewModel.isEnhanced("enhanced"))
+        XCTAssertFalse(viewModel.isEnhanced("sharp"))
+    }
+
+    /// Scoring can decode photos and fetch originals from iCloud. The screen
+    /// must not wait for it: it appears on the metadata ranking and refines
+    /// itself when the measurements land.
+    func testTheScreenAppearsBeforeQualityScoringFinishes() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
+
+        await analyzer.finish(with: [])
+        await loading.value
+    }
+
+    /// The star must not appear on one photo and hop to another once scoring
+    /// lands: while the measured ranking is pending the badge stays hidden.
+    func testTheBestShotBadgeWaitsForTheMeasuredRanking() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+
+        XCTAssertTrue(viewModel.isRankingQualityPending)
+        XCTAssertFalse(viewModel.isBestShotVisible)
+
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "plain",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "favorite",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 10, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+    }
+
+    func testAnEmptyMeasurementStopsWaitingAndShowsTheMetadataPick() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        await analyzer.finish(with: [])
+        await loading.value
+
+        XCTAssertFalse(viewModel.isRankingQualityPending)
+        XCTAssertTrue(viewModel.isBestShotVisible)
+        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
+    }
+
+    /// A ranking that arrives after the user has acted must not overwrite them.
+    func testALateRankingDoesNotOverwriteTheUsersOwnPick() async {
+        let analyzer = StallingPhotoQualityAnalyzer()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: analyzer,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        viewModel.setBestShot("plain")
+
+        let config = PhotoQualityScoringConfig.current
+        await analyzer.finish(with: [
+            PhotoQualityScore(
+                localIdentifier: "plain",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 5, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            ),
+            PhotoQualityScore(
+                localIdentifier: "favorite",
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
+            )
+        ])
+        await loading.value
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
+    /// `applyLoadedState`'s personalized config load (`await
+    /// personalizedConfigProvider?.config()`) is itself a suspension point,
+    /// and every observable property it is about to derive a ranking from —
+    /// `assetSnapshots` included — must stay untouched until that load
+    /// resolves. Before the fix these properties were written *before* the
+    /// config await; a screen read landing in that window would have seen a
+    /// half-applied ranking. This drives a real, suspendable
+    /// `BestShotPersonalizedScoringConfigProvider` to pin the screen inside
+    /// that exact window and checks nothing has leaked out yet.
+    ///
+    /// This exercises the *initial* `load()` call, where `expectedGeneration`
+    /// is `nil` and the `interactionGeneration` guard is skipped entirely —
+    /// the `setBestShot` below has nothing to act on yet (`assetSnapshots` is
+    /// still empty) and simply no-ops. It does not prove that a manual pick
+    /// survives a config load that resumes *after* the pick: that needs the
+    /// generation guard to be live, which needs a second, independently
+    /// suspendable config load — not reproducible here, because the concrete
+    /// `BestShotPersonalizedScoringConfigProvider` caches for good after its
+    /// first successful load, and that first load is the one this test is
+    /// already holding open.
+    func testNothingIsPublishedWhileThePersonalizedConfigIsStillLoading() async {
+        let personalizationRepository = SuspendableLoadWeightsPersonalizationRepository()
+        let personalizedConfigProvider = BestShotPersonalizedScoringConfigProvider(
+            repository: personalizationRepository
+        )
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            personalizedConfigProvider: personalizedConfigProvider,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+
+        // `applyLoadedState` is suspended awaiting the personalized config —
+        // before the fix, `assetSnapshots`/`bestShotAssetID` would already be
+        // populated at this point.
+        await personalizationRepository.waitUntilLoadStarted()
+        XCTAssertFalse(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 0)
+        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+
+        // A pick attempted in this window has nothing to act on yet — the
+        // screen has not published anything an interaction could target —
+        // and must not crash or leave the view model in a broken state.
+        viewModel.setBestShot("plain")
+        XCTAssertFalse(viewModel.isBestShotUserSelected)
+
+        await personalizationRepository.resumeLoad()
+        await loading.value
+
+        // Once the config resolves, the ranking publishes normally, and
+        // interactions work exactly as they would have without a
+        // personalized config provider at all.
+        XCTAssertTrue(viewModel.hasLoadedReviewState)
+        XCTAssertEqual(viewModel.assetCount, 2)
+        XCTAssertFalse(viewModel.bestShotAssetID.isEmpty)
+
+        viewModel.setBestShot("plain")
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
+    /// The race the seam above exists for: a manual pick made while a
+    /// *second*, later `config()` await is in flight — the one inside
+    /// `refineWithQualityScores`'s call to `applyLoadedState` — must still
+    /// win. This cannot be reproduced with the real
+    /// `BestShotPersonalizedScoringConfigProvider`, whose cache is warm by
+    /// the time a second call happens (see the test above); it needs a
+    /// double whose first call passes straight through, so the initial,
+    /// metadata-only ranking can land on screen, and whose second call parks
+    /// on demand.
+    func testAManualPickDuringARefiningConfigLoadIsNotOverwritten() async {
+        let configProvider = SecondCallSuspendingConfigProvider()
+        let viewModel = ClusterDetailsViewModel(
+            cluster: PhotoCluster(id: clusterID, assets: []),
+            reviewRepository: repository,
+            cleanupService: cleanupService,
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: PremiumAccessController(),
+            qualityAnalyzer: StubPhotoQualityAnalyzer(
+                sharpnessByIdentifier: [("plain", 5), ("favorite", 80)]
+            ),
+            personalizedConfigProvider: configProvider,
+            assetSnapshots: [
+                snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            completionDelay: {}
+        )
+
+        let loading = Task { await viewModel.load() }
+
+        // The initial `applyLoadedState`'s `config()` call (#1) passes
+        // straight through, so the metadata-only ranking lands on screen...
+        for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
+            await Task.yield()
+        }
+        XCTAssertFalse(viewModel.bestShotAssetID.isEmpty)
+
+        // ...and the refine's `applyLoadedState` reaches its own `config()`
+        // (call #2), which this double parks.
+        await configProvider.waitUntilSecondCallStarted()
+
+        // The user's manual pick, made while that second config load is
+        // still in flight. `setBestShot` bumps `interactionGeneration`
+        // synchronously, before this call resumes.
+        viewModel.setBestShot("plain")
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+
+        await configProvider.resumeSecondCall()
+        await loading.value
+
+        // "favorite" is the sharper photo, so a refined ranking that ignored
+        // the race would have promoted it here instead. It must not have.
+        XCTAssertEqual(viewModel.bestShotAssetID, "plain")
+        XCTAssertTrue(viewModel.isBestShotUserSelected)
+    }
+
+    // MARK: - Haptic feedback triggers
+
+    /// The double haptic on open: the metadata ranking named one photo, the
+    /// measured one named another, and the feedback followed the value rather
+    /// than the user.
+    func testOpeningAClusterWhoseRankingMovesTheBestShotFiresNoFeedback() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10))
+            ],
+            qualityScores: [("blurred-favorite", 12), ("sharp", 60)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.bestShotAssetID, "sharp", "the ranking must still move the pick")
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
+        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0)
+    }
+
+    func testOpeningAReviewedClusterWithARestoredSelectionFiresNoFeedback() async {
+        await repository.setStoredStates([clusterID: ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: "reviewed-pick",
+            isBestShotUserSelected: false,
+            selectedLocalIdentifiers: ["sharper"],
+            isReviewConfirmed: true,
+            status: .reviewed,
+            estimatedSavingsBytes: 0
+        )])
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "reviewed-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ],
+            qualityScores: [("reviewed-pick", 12), ("sharper", 70)]
+        )
+
+        await viewModel.load()
+
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertEqual(viewModel.selectedAssetIDs, ["sharper"])
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
+        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0)
+    }
+
+    func testChoosingTheBestShotFiresOneSuccessFeedbackOnly() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "a", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ]
+        )
+        await viewModel.load()
+
+        viewModel.setBestShot("b")
+
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
+        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0, "a Best Shot pick is one action, not two patterns")
+
+        // Re-picking the photo that is already the Best Shot changes nothing.
+        viewModel.setBestShot("b")
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
+    }
+
+    func testSelectingAPhotoFiresOneSelectionFeedbackOnly() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ]
+        )
+        await viewModel.load()
+
+        viewModel.toggleSelection(for: "other")
+
+        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 1)
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
+
+        // A rejected toggle — the Best Shot is always kept — is not an action.
+        viewModel.toggleSelection(for: viewModel.bestShotAssetID)
+        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 1)
+    }
+
+    func testFinishingTheReviewFiresOneSuccessFeedbackAndReopeningItFiresNone() async {
+        let viewModel = makeViewModel(
+            snapshots: [
+                snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            ]
+        )
+        await viewModel.load()
+
+        viewModel.toggleReviewConfirmation()
+        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
+
+        viewModel.toggleReviewConfirmation()
+        XCTAssertNotEqual(viewModel.reviewStatus, .reviewed)
+        XCTAssertEqual(viewModel.successFeedbackTrigger, 1, "reopening a review is not a confirmation")
+    }
+
+    private var weakClusterSnapshots: [ReviewAssetSnapshot] {
+        [
+            snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
+            snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
+            snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+        ]
+    }
+
     private func makeViewModel(
         snapshots: [ReviewAssetSnapshot],
         reviewRepository: (any ClusterReviewStateRepository)? = nil,
         cleanupHistoryRepository: (any CleanupHistoryRepository)? = nil,
         premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        qualityScores: [(String, Double)] = [],
+        enhancedIdentifiers: Set<String> = [],
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
         completionDelay: @escaping @MainActor @Sendable () async -> Void = {}
     ) -> ClusterDetailsViewModel {
         ClusterDetailsViewModel(
@@ -1054,6 +1967,12 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             cleanupService: cleanupService,
             cleanupHistoryRepository: cleanupHistoryRepository ?? self.cleanupHistoryRepository,
             premiumAccess: premiumAccess,
+            qualityAnalyzer: StubPhotoQualityAnalyzer(
+                sharpnessByIdentifier: qualityScores,
+                enhancedIdentifiers: enhancedIdentifiers
+            ),
+            overrideMetrics: overrideMetrics,
+            personalizedConfigProvider: personalizedConfigProvider,
             assetSnapshots: snapshots,
             completionDelay: completionDelay
         )
@@ -1100,6 +2019,77 @@ final class ClusterDetailsViewModelTests: XCTestCase {
             creationDate: createdAt,
             modificationDate: modifiedAt
         )
+    }
+}
+
+/// Returns fixed signals regardless of the assets it is handed: the cluster
+/// under test has snapshots, not live `PHAsset`s.
+private struct StubPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    let sharpnessByIdentifier: [(String, Double)]
+    var enhancedIdentifiers: Set<String> = []
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        let config = PhotoQualityScoringConfig.current
+        return sharpnessByIdentifier.map { identifier, sharpness in
+            PhotoQualityScore(
+                localIdentifier: identifier,
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: PhotoQualitySignals(
+                    globalSharpness: sharpness,
+                    subjectLumaStdDev: 0.25,
+                    noiseEstimate: 0.1,
+                    pixelArea: 1_000
+                ),
+                isAlikeEnhanced: enhancedIdentifiers.contains(identifier)
+            )
+        }
+    }
+}
+
+/// Returns caller-supplied signals verbatim, for tests that need control over
+/// more than just sharpness (exposure, noise, faces).
+private struct StubSignalsPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    let signalsByIdentifier: [String: PhotoQualitySignals]
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        let config = PhotoQualityScoringConfig.current
+        return signalsByIdentifier.map { identifier, signals in
+            PhotoQualityScore(
+                localIdentifier: identifier,
+                sourceModificationDate: nil,
+                scoringModelVersion: config.scoringModelVersion,
+                thumbnailConfigVersion: config.thumbnailConfigVersion,
+                signals: signals,
+                isAlikeEnhanced: false
+            )
+        }
+    }
+}
+
+/// Holds the scoring call open until the test decides to answer it.
+private actor StallingPhotoQualityAnalyzer: PhotoQualityAnalyzing {
+    private var continuation: CheckedContinuation<[PhotoQualityScore], Never>?
+    private var pending: [PhotoQualityScore]?
+
+    func scores(for _: [PHAsset]) async throws -> [PhotoQualityScore] {
+        if let pending {
+            self.pending = nil
+            return pending
+        }
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func finish(with scores: [PhotoQualityScore]) {
+        if let continuation {
+            self.continuation = nil
+            continuation.resume(returning: scores)
+        } else {
+            pending = scores
+        }
     }
 }
 
@@ -1170,6 +2160,77 @@ private actor SuspendedClusterCleanupCompletionDelay {
     }
 
     func finish() {
+        continuation?.resume()
+        continuation = nil
+    }
+}
+
+/// A `BestShotPersonalizationRepository` whose `loadWeights()` suspends until
+/// `resumeLoad()` is called, so tests can drive the personalized config load
+/// inside `applyLoadedState` open at an exact point.
+private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonalizationRepository {
+    private var loadStarted = false
+    private var continuation: CheckedContinuation<BestShotPersonalWeights?, Never>?
+
+    func loadExamples() async -> [BestShotOverrideExample] { [] }
+
+    func record(_ example: BestShotOverrideExample) async {}
+
+    func loadWeights() async -> BestShotPersonalWeights? {
+        loadStarted = true
+        return await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+    }
+
+    func saveWeights(_ weights: BestShotPersonalWeights) async {}
+
+    func reset() async {}
+
+    func waitUntilLoadStarted() async {
+        while !loadStarted {
+            await Task.yield()
+        }
+    }
+
+    func resumeLoad(with weights: BestShotPersonalWeights? = nil) {
+        continuation?.resume(returning: weights)
+        continuation = nil
+    }
+}
+
+/// A `BestShotConfigProviding` whose `config()` passes straight through on
+/// its first call — so an initial, metadata-only ranking can land on screen —
+/// and suspends on every call after that until `resumeSecondCall()` runs.
+/// The concrete `BestShotPersonalizedScoringConfigProvider` cannot stand in
+/// for this: its cache is warm by the time a second `config()` call happens,
+/// so it can only ever be held open on its *first* call, before there is
+/// anything on screen for a manual pick to act on. This double is the only
+/// way to pin a caller inside a *later* `config()` await.
+private actor SecondCallSuspendingConfigProvider: BestShotConfigProviding {
+    private var callCount = 0
+    private(set) var secondCallStarted = false
+    private var continuation: CheckedContinuation<Void, Never>?
+
+    func config() async -> PhotoQualityScoringConfig {
+        callCount += 1
+        guard callCount > 1 else { return .current }
+        secondCallStarted = true
+        await withCheckedContinuation { continuation in
+            self.continuation = continuation
+        }
+        return .current
+    }
+
+    func recordOverride(_ example: BestShotOverrideExample) async {}
+
+    func waitUntilSecondCallStarted() async {
+        while !secondCallStarted {
+            await Task.yield()
+        }
+    }
+
+    func resumeSecondCall() {
         continuation?.resume()
         continuation = nil
     }
