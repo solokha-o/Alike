@@ -47,6 +47,14 @@ Upload only localized App Store text metadata (descriptions, keywords, review in
 
 Upload only App Store screenshots without text metadata, binary, or review submission.
 
+### ios dsyms
+
+```sh
+[bundle exec] fastlane ios dsyms
+```
+
+Download the dSYMs for a released version so Xcode Organizer can symbolicate its crash reports.
+
 ### ios testflight_upload
 
 ```sh
