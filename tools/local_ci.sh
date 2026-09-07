@@ -21,6 +21,7 @@ BUILD_DESTINATION="${ALIKE_BUILD_DESTINATION:-}"
 RELEASE_ARCHIVE_PATH="$REPORT_DIR/Alike.xcarchive"
 RELEASE_EXPORT_PATH="$REPORT_DIR/export"
 RELEASE_EXPORT_OPTIONS="$REPORT_DIR/ExportOptions.plist"
+XCODE_ARCHIVES_ROOT="${ALIKE_XCODE_ARCHIVES_ROOT:-$HOME/Library/Developer/Xcode/Archives}"
 
 QUICK_PACKAGES=(
   "Packages/Cleanup"
@@ -76,7 +77,10 @@ Environment:
                                   Pass -allowProvisioningUpdates to release archive/export.
   ALIKE_XCODE_AUTHENTICATION_KEY_PATH
                                   Optional override for xcodebuild App Store Connect auth key path.
-  ALIKE_UPLOAD_SYMBOLS=1         Include App Store symbols during Release export. Default: 0.
+  ALIKE_UPLOAD_SYMBOLS=0         Omit App Store symbols during Release export. Default: 1,
+                                 so Xcode Organizer can symbolicate released crashes.
+  ALIKE_PRESERVE_ARCHIVE=0       Skip copying the release archive into Xcode's Archives folder. Default: 1.
+  ALIKE_XCODE_ARCHIVES_ROOT      Override the Xcode Archives folder. Default: ~/Library/Developer/Xcode/Archives.
   ALIKE_PRIVACY_URL              Enables strict metadata generation when set with ALIKE_SUPPORT_URL.
   ALIKE_SUPPORT_URL              Enables strict metadata generation when set with ALIKE_PRIVACY_URL.
 
@@ -529,7 +533,7 @@ run_release_archive() {
 
 write_release_export_options() {
   local upload_symbols="false"
-  if [[ "${ALIKE_UPLOAD_SYMBOLS:-0}" == "1" ]]; then
+  if [[ "${ALIKE_UPLOAD_SYMBOLS:-1}" != "0" ]]; then
     upload_symbols="true"
   fi
 
@@ -549,6 +553,49 @@ write_release_export_options() {
 </dict>
 </plist>
 PLIST
+}
+
+# App Store Connect keeps no dSYM for a build that was exported without symbols,
+# and Xcode Organizer can only symbolicate a crash when a matching archive or
+# dSYM is on disk. The release archive lives under build/reports/, which gets
+# pruned, so releases 1.2.0 and 1.3.0 became permanently unsymbolicatable. Copy
+# the archive into the folder Organizer actually scans, and never fail a release
+# over the copy.
+preserve_release_archive() {
+  local dated_dir archive_name
+
+  if [[ "${ALIKE_PRESERVE_ARCHIVE:-1}" == "0" ]]; then
+    printf "\n==> preserve release archive\nSkipped: ALIKE_PRESERVE_ARCHIVE=0\n"
+    return 0
+  fi
+
+  dated_dir="$XCODE_ARCHIVES_ROOT/$(date +%Y-%m-%d)"
+  archive_name="Alike $RELEASE_VERSION ($RELEASE_BUILD).xcarchive"
+
+  printf "\n==> preserve release archive\n"
+
+  if [[ ! -d "$RELEASE_ARCHIVE_PATH" ]]; then
+    printf "No archive at %s, nothing to preserve.\n" "$RELEASE_ARCHIVE_PATH"
+    return 0
+  fi
+
+  if ! mkdir -p "$dated_dir"; then
+    printf "Could not create %s, archive not preserved.\n" "$dated_dir" >&2
+    return 0
+  fi
+
+  if [[ -e "$dated_dir/$archive_name" ]]; then
+    printf "Already preserved: %s\n" "$dated_dir/$archive_name"
+    return 0
+  fi
+
+  if cp -R "$RELEASE_ARCHIVE_PATH" "$dated_dir/$archive_name"; then
+    printf "Preserved for Xcode Organizer: %s\n" "$dated_dir/$archive_name"
+  else
+    printf "Could not copy the archive to %s.\n" "$dated_dir" >&2
+  fi
+
+  return 0
 }
 
 run_release_export() {
@@ -652,6 +699,7 @@ main() {
       run_metadata_validation
       run_release_archive
       run_release_export
+      preserve_release_archive
       ;;
     -h|--help|help)
       usage
