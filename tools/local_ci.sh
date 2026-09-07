@@ -76,7 +76,8 @@ Environment:
                                   Pass -allowProvisioningUpdates to release archive/export.
   ALIKE_XCODE_AUTHENTICATION_KEY_PATH
                                   Optional override for xcodebuild App Store Connect auth key path.
-  ALIKE_UPLOAD_SYMBOLS=1         Include App Store symbols during Release export. Default: 0.
+  ALIKE_UPLOAD_SYMBOLS=0         Omit App Store symbols during Release export. Default: 1,
+                                 so Xcode Organizer can symbolicate released crashes.
   ALIKE_PRIVACY_URL              Enables strict metadata generation when set with ALIKE_SUPPORT_URL.
   ALIKE_SUPPORT_URL              Enables strict metadata generation when set with ALIKE_PRIVACY_URL.
 
@@ -529,7 +530,7 @@ run_release_archive() {
 
 write_release_export_options() {
   local upload_symbols="false"
-  if [[ "${ALIKE_UPLOAD_SYMBOLS:-0}" == "1" ]]; then
+  if [[ "${ALIKE_UPLOAD_SYMBOLS:-1}" != "0" ]]; then
     upload_symbols="true"
   fi
 
