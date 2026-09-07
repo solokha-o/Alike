@@ -145,6 +145,12 @@ run_upload_build() {
   exec "$ROOT_DIR/tools/local_cd.sh" upload-testflight --version "$RESOLVED_VERSION" --build "$RESOLVED_BUILD"
 }
 
+run_dsyms() {
+  load_env_if_present
+  resolve_version_build "${1:-}" "${2:-}"
+  exec bundle exec fastlane ios dsyms version:"$RESOLVED_VERSION" build_number:"$RESOLVED_BUILD"
+}
+
 run_upload_screenshots() {
   load_env_if_present
   confirm_upload "Upload screenshots to App Store Connect."
@@ -181,6 +187,10 @@ main() {
       ;;
     upload-screenshots)
       run_upload_screenshots
+      ;;
+    dsyms)
+      shift
+      run_dsyms "${1:-}" "${2:-}"
       ;;
     -h|--help|help|"")
       usage
