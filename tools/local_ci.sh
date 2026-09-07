@@ -79,7 +79,7 @@ Environment:
                                   Optional override for xcodebuild App Store Connect auth key path.
   ALIKE_UPLOAD_SYMBOLS=0         Omit App Store symbols during Release export. Default: 1,
                                  so Xcode Organizer can symbolicate released crashes.
-  ALIKE_PRESERVE_ARCHIVE=0       Skip copying the release archive into Xcode's Archives folder. Default: 1.
+  ALIKE_PRESERVE_ARCHIVE=0       Skip copying the release archive and IPA into Xcode's Archives folder. Default: 1.
   ALIKE_XCODE_ARCHIVES_ROOT      Override the Xcode Archives folder. Default: ~/Library/Developer/Xcode/Archives.
   ALIKE_PRIVACY_URL              Enables strict metadata generation when set with ALIKE_SUPPORT_URL.
   ALIKE_SUPPORT_URL              Enables strict metadata generation when set with ALIKE_PRIVACY_URL.
@@ -557,43 +557,54 @@ PLIST
 
 # App Store Connect keeps no dSYM for a build that was exported without symbols,
 # and Xcode Organizer can only symbolicate a crash when a matching archive or
-# dSYM is on disk. The release archive lives under build/reports/, which gets
+# dSYM is on disk. The archive and the IPA live under build/reports/, which gets
 # pruned, so releases 1.2.0 and 1.3.0 became permanently unsymbolicatable. Copy
-# the archive into the folder Organizer actually scans, and never fail a release
-# over the copy.
-preserve_release_archive() {
-  local dated_dir archive_name
+# both into the folder Organizer actually scans — Organizer enumerates
+# .xcarchive bundles and ignores the loose .ipa, which is kept because it is the
+# exact binary tools/upload-build uploads. Never fail a release over a copy.
+preserve_release_artifact() {
+  local source="$1"
+  local destination="$2"
+
+  if [[ ! -e "$source" ]]; then
+    printf "No artifact at %s, nothing to preserve.\n" "$source"
+    return 0
+  fi
+
+  if [[ -e "$destination" ]]; then
+    printf "Already preserved: %s\n" "$destination"
+    return 0
+  fi
+
+  if cp -R "$source" "$destination"; then
+    printf "Preserved: %s\n" "$destination"
+  else
+    printf "Could not copy %s to %s.\n" "$source" "$destination" >&2
+  fi
+
+  return 0
+}
+
+preserve_release_artifacts() {
+  local dated_dir base_name
 
   if [[ "${ALIKE_PRESERVE_ARCHIVE:-1}" == "0" ]]; then
-    printf "\n==> preserve release archive\nSkipped: ALIKE_PRESERVE_ARCHIVE=0\n"
+    printf "\n==> preserve release artifacts\nSkipped: ALIKE_PRESERVE_ARCHIVE=0\n"
     return 0
   fi
 
   dated_dir="$XCODE_ARCHIVES_ROOT/$(date +%Y-%m-%d)"
-  archive_name="Alike $RELEASE_VERSION ($RELEASE_BUILD).xcarchive"
+  base_name="Alike $RELEASE_VERSION ($RELEASE_BUILD)"
 
-  printf "\n==> preserve release archive\n"
-
-  if [[ ! -d "$RELEASE_ARCHIVE_PATH" ]]; then
-    printf "No archive at %s, nothing to preserve.\n" "$RELEASE_ARCHIVE_PATH"
-    return 0
-  fi
+  printf "\n==> preserve release artifacts\n"
 
   if ! mkdir -p "$dated_dir"; then
-    printf "Could not create %s, archive not preserved.\n" "$dated_dir" >&2
+    printf "Could not create %s, nothing preserved.\n" "$dated_dir" >&2
     return 0
   fi
 
-  if [[ -e "$dated_dir/$archive_name" ]]; then
-    printf "Already preserved: %s\n" "$dated_dir/$archive_name"
-    return 0
-  fi
-
-  if cp -R "$RELEASE_ARCHIVE_PATH" "$dated_dir/$archive_name"; then
-    printf "Preserved for Xcode Organizer: %s\n" "$dated_dir/$archive_name"
-  else
-    printf "Could not copy the archive to %s.\n" "$dated_dir" >&2
-  fi
+  preserve_release_artifact "$RELEASE_ARCHIVE_PATH" "$dated_dir/$base_name.xcarchive"
+  preserve_release_artifact "$RELEASE_EXPORT_PATH/Alike.ipa" "$dated_dir/$base_name.ipa"
 
   return 0
 }
@@ -699,7 +710,7 @@ main() {
       run_metadata_validation
       run_release_archive
       run_release_export
-      preserve_release_archive
+      preserve_release_artifacts
       ;;
     -h|--help|help)
       usage
