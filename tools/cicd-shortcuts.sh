@@ -21,6 +21,7 @@ Usage:
 
 Behavior:
   - Loads .env automatically when present. Disable with ALIKE_NO_ENV=1.
+  - Defaults LANG/LC_ALL to en_US.UTF-8 when neither is already UTF-8; fastlane requires it.
   - Uses CLANG_MODULE_CACHE_PATH=/private/tmp/alike-local-ci-clang-cache by default.
   - Upload shortcuts ask for interactive confirmation unless ALIKE_ASSUME_YES=1.
   - release-check and upload-build infer version/build from project.pbxproj when omitted.
@@ -38,6 +39,21 @@ load_env_if_present() {
     source "$DEFAULT_ENV_FILE"
     set +a
   fi
+}
+
+# Fastlane's Spaceship serializes metadata as JSON, and without a UTF-8 locale
+# that dies with "source sequence is illegal/malformed utf-8" — which is how the
+# 1.1.0 metadata upload failed. A non-interactive shell does not inherit the
+# login profile's locale. Only an already-UTF-8 locale is left alone: a shell
+# that reached here with LANG=C is exactly the case this needs to override, and
+# .env still wins because it is sourced after this runs.
+ensure_utf8_locale() {
+  if [[ "${LC_ALL:-${LANG:-}}" == *UTF-8* ]]; then
+    return
+  fi
+
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
 }
 
 ensure_clang_cache() {
@@ -160,6 +176,7 @@ run_upload_screenshots() {
 
 main() {
   cd "$ROOT_DIR"
+  ensure_utf8_locale
 
   case "$SHORTCUT" in
     quick)
