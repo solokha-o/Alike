@@ -22,6 +22,8 @@ final class WidgetSnapshotPublisher {
     private let store: (any WidgetSnapshotWriting)?
     private let reloadTimelines: @Sendable () -> Void
     private let now: () -> Date
+    /// The last payload written, so an unchanged republish costs nothing.
+    private var lastWritten: WidgetSnapshot?
 
     private static let logger = Logger(subsystem: "com.alike.app", category: "WidgetSnapshot")
 
@@ -59,7 +61,9 @@ final class WidgetSnapshotPublisher {
             // Taken from the scan summary rather than recomputed, so the widget cannot
             // report a different figure from the scanner screen.
             estimatedSavingsBytes: summary?.estimatedSavingsBytes,
-            clusterCount: summary.map { _ in workspace.clusters.count },
+            // Only meaningful once a scan has produced a summary; before that the
+            // count is unknown rather than zero, and the widget says so.
+            clusterCount: summary == nil ? nil : workspace.clusters.count,
             screenshotAssetCount: categories.first { $0.kind == .screenshots }?.assetCount,
             blurredPhotoAssetCount: categories.first { $0.kind == .blurredPhotos }?.assetCount,
             isPremium: isPremium,
@@ -72,7 +76,13 @@ final class WidgetSnapshotPublisher {
             }
         )
 
+        // Driven by a `task(id:)` carrying the scene phase, so this runs on every
+        // foreground and background transition — see `hasSameContent(as:)` for why an
+        // unchanged payload is not republished.
+        if let lastWritten, lastWritten.hasSameContent(as: snapshot) { return }
+
         write { try $0.write(snapshot) }
+        lastWritten = snapshot
     }
 
     /// Called after the user deletes their local data. Removing the payload is not
@@ -80,6 +90,7 @@ final class WidgetSnapshotPublisher {
     /// the app to forget on their home screen.
     func clear() {
         write { try $0.clear() }
+        lastWritten = nil
     }
 
     private func write(_ operation: (any WidgetSnapshotWriting) throws -> Void) {

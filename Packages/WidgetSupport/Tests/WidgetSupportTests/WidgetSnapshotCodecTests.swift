@@ -52,6 +52,49 @@ struct WidgetSnapshotCodecTests {
         #expect(decoded.photoAuthorization == .notDetermined)
     }
 
+    @Test("Two payloads differing only in when they were generated say the same thing")
+    func contentComparisonIgnoresGeneratedAt() {
+        let later = WidgetSnapshot(
+            generatedAt: Self.reference.generatedAt.addingTimeInterval(3600),
+            photoAuthorization: Self.reference.photoAuthorization,
+            hasCompletedScan: Self.reference.hasCompletedScan,
+            lastScanDate: Self.reference.lastScanDate,
+            libraryChangedSinceScan: Self.reference.libraryChangedSinceScan,
+            estimatedSavingsBytes: Self.reference.estimatedSavingsBytes,
+            clusterCount: Self.reference.clusterCount,
+            screenshotAssetCount: Self.reference.screenshotAssetCount,
+            blurredPhotoAssetCount: Self.reference.blurredPhotoAssetCount,
+            isPremium: Self.reference.isPremium,
+            sessionProgress: Self.reference.sessionProgress
+        )
+
+        #expect(Self.reference.hasSameContent(as: later))
+        #expect(Self.reference != later)
+    }
+
+    @Test("Every field that changes what the widget shows is compared")
+    func contentComparisonCoversEveryField() {
+        // Each of these is a state the user would see on the home screen, so none of
+        // them may be skipped when deciding not to republish.
+        let base = Self.reference
+        let variants: [WidgetSnapshot] = [
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: .denied, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: false, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: nil, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: false, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: 1, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: 1, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: 1, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: 1, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: false, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: nil)
+        ]
+
+        for variant in variants {
+            #expect(!base.hasSameContent(as: variant))
+        }
+    }
+
     @Test("The payload carries no per-asset identifiers")
     func carriesNoPII() throws {
         let encoder = JSONEncoder()

@@ -144,10 +144,13 @@ struct MainTabView: View {
         .onDisappear {
             subscriptionStore.stop()
         }
-        // One observer for the four publish points that are state changes: a saved
-        // scan, a review that moved the session on, a finished cleanup, and a change
-        // in photo access. The fifth — deleting local data — is an explicit call in
-        // `onDeleteAllData` below, because there is no state left to observe by then.
+        // One observer for four of the five publish points: a saved scan, a review
+        // that moved the session on, and a finished cleanup all show up in the
+        // workspace's observable state. Photo access does not — `PhotoPermissionManager`
+        // is not observable and the change happens in Settings, outside the app — so it
+        // is caught by `scenePhase` in the signature instead, on the return trip. The
+        // fifth point, deleting local data, is an explicit call in `onDeleteAllData`
+        // below, because by then there is no state left to observe.
         .task(id: widgetSnapshotSignature) {
             widgetSnapshotPublisher.publish(
                 workspace: cleanupWorkspace,

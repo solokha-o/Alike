@@ -121,6 +121,30 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         self.sessionProgress = sessionProgress
     }
 
+    /// Whether two payloads say the same thing, ignoring when they were generated.
+    ///
+    /// The app republishes on every scene transition — that is how it notices a
+    /// photo-access change made in Settings — and most of those produce a payload
+    /// identical to the one already on disk. Writing it again and reloading the
+    /// timeline would spend one of WidgetKit's limited refresh budgets to redraw the
+    /// same pixels, so the publisher skips a republish this returns `true` for.
+    ///
+    /// `generatedAt` is excluded because it differs on every call by construction and
+    /// would make the check always report a difference.
+    public func hasSameContent(as other: WidgetSnapshot) -> Bool {
+        schemaVersion == other.schemaVersion
+            && photoAuthorization == other.photoAuthorization
+            && hasCompletedScan == other.hasCompletedScan
+            && lastScanDate == other.lastScanDate
+            && libraryChangedSinceScan == other.libraryChangedSinceScan
+            && estimatedSavingsBytes == other.estimatedSavingsBytes
+            && clusterCount == other.clusterCount
+            && screenshotAssetCount == other.screenshotAssetCount
+            && blurredPhotoAssetCount == other.blurredPhotoAssetCount
+            && isPremium == other.isPremium
+            && sessionProgress == other.sessionProgress
+    }
+
     /// The placeholder WidgetKit renders before any real data exists, and the value
     /// SwiftUI previews use.
     public static func placeholder(now: Date = Date()) -> WidgetSnapshot {
