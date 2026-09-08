@@ -29,6 +29,7 @@ QUICK_PACKAGES=(
   "Packages/Settings"
   "Packages/Storage"
   "Packages/UserGuide"
+  "Packages/WidgetSupport"
 )
 
 # Packages that cannot run under a plain `swift test` on macOS: not skipped,
