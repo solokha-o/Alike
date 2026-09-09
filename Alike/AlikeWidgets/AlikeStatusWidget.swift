@@ -53,8 +53,8 @@ struct AlikeStatusWidgetView: View {
         // home screen at all.
         .containerBackground(.fill.tertiary, for: .widget)
         .widgetURL(WidgetPresentation.destination(for: state).url)
-        // VoiceOver reads one sentence — the figure, what it is, and what tapping does —
-        // rather than walking three separate labels.
+        // VoiceOver reads one sentence — the figure, what it is, when it was measured,
+        // and what tapping does — rather than walking four separate labels.
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityAddTraits(.isButton)
@@ -124,8 +124,10 @@ struct AlikeStatusWidgetView: View {
         }
     }
 
+    /// Includes the footnote: it carries the scan date on a stale reading, and dropping
+    /// it left VoiceOver presenting an old figure as the current one.
     private var accessibilityLabel: String {
-        [headline, caption].compactMap { $0 }.joined(separator: ", ")
+        [headline, caption, footnote].compactMap { $0 }.joined(separator: ", ")
     }
 }
 
