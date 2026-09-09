@@ -40,6 +40,31 @@ public enum WidgetPresentation {
         snapshot.generatedAt.addingTimeInterval(staleAfter)
     }
 
+    /// The whole timeline for a snapshot: what to show now, plus the switch to the
+    /// stale wording when there is one still ahead.
+    ///
+    /// The provider lives in the extension target, which has no test action, so the
+    /// decision about how many entries there are and what each says is made here.
+    /// The second entry is omitted when the state reads the same either side of the
+    /// threshold — the states that carry no `isStale` do — because an entry that
+    /// redraws identical pixels is not worth scheduling.
+    public static func timeline(
+        for snapshot: WidgetSnapshot?,
+        now: Date = Date()
+    ) -> [WidgetTimelineStep] {
+        var steps = [WidgetTimelineStep(date: now, state: displayState(for: snapshot, now: now))]
+
+        if let snapshot {
+            let staleDate = staleDate(for: snapshot)
+            let staleState = displayState(for: snapshot, now: staleDate)
+            if staleDate > now, staleState != steps[0].state {
+                steps.append(WidgetTimelineStep(date: staleDate, state: staleState))
+            }
+        }
+
+        return steps
+    }
+
     public static func displayState(
         for snapshot: WidgetSnapshot?,
         now: Date = Date()
@@ -89,5 +114,16 @@ public enum WidgetPresentation {
         case .resumeReview: .resumeReview
         default: .cleanup
         }
+    }
+}
+
+/// One rendering of the widget and the moment WidgetKit should switch to it.
+public struct WidgetTimelineStep: Equatable, Sendable {
+    public let date: Date
+    public let state: WidgetDisplayState
+
+    public init(date: Date, state: WidgetDisplayState) {
+        self.date = date
+        self.state = state
     }
 }

@@ -48,23 +48,8 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSnapshotEntry>) -> Void) {
-        let now = Date()
-        let snapshot = store?.read()
-        var entries = [WidgetSnapshotEntry(
-            date: now,
-            state: WidgetPresentation.displayState(for: snapshot, now: now)
-        )]
-
-        // Only when the wording actually changes at the threshold — the states that
-        // carry no `isStale` render identically either side of it.
-        if let snapshot {
-            let staleDate = WidgetPresentation.staleDate(for: snapshot)
-            let staleState = WidgetPresentation.displayState(for: snapshot, now: staleDate)
-            if staleDate > now, staleState != entries[0].state {
-                entries.append(WidgetSnapshotEntry(date: staleDate, state: staleState))
-            }
-        }
-
+        let entries = WidgetPresentation.timeline(for: store?.read())
+            .map { WidgetSnapshotEntry(date: $0.date, state: $0.state) }
         completion(Timeline(entries: entries, policy: .never))
     }
 }

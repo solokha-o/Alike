@@ -101,6 +101,66 @@ struct WidgetPresentationTests {
         }
     }
 
+    @Test("The timeline carries the switch to the stale wording, since nothing else can trigger it")
+    func timelineSchedulesTheStaleTransition() {
+        let payload = snapshot(age: 0)
+        let steps = WidgetPresentation.timeline(for: payload, now: now)
+
+        #expect(steps.count == 2)
+        #expect(steps[0] == WidgetTimelineStep(
+            date: now,
+            state: .hasSuggestions(bytes: 1_932_735_283, clusterCount: 24, scannedAt: now, isStale: false)
+        ))
+        #expect(steps[1] == WidgetTimelineStep(
+            date: WidgetPresentation.staleDate(for: payload),
+            state: .hasSuggestions(bytes: 1_932_735_283, clusterCount: 24, scannedAt: now, isStale: true)
+        ))
+    }
+
+    @Test("An already-stale snapshot gets one entry; the threshold is behind it")
+    func timelineForAnAlreadyStaleSnapshot() {
+        let steps = WidgetPresentation.timeline(
+            for: snapshot(age: WidgetPresentation.staleAfter + 60),
+            now: now
+        )
+
+        #expect(steps.count == 1)
+        if case let .hasSuggestions(_, _, _, isStale) = steps[0].state {
+            #expect(isStale)
+        } else {
+            Issue.record("expected suggestions, got \(steps[0].state)")
+        }
+    }
+
+    @Test(
+        "States that read the same either side of the threshold get no second entry",
+        arguments: [
+            WidgetSnapshot(
+                generatedAt: Date(timeIntervalSince1970: 1_770_000_000),
+                photoAuthorization: .authorized,
+                hasCompletedScan: true,
+                lastScanDate: Date(timeIntervalSince1970: 1_770_000_000),
+                estimatedSavingsBytes: 0,
+                clusterCount: 0
+            ),
+            WidgetSnapshot(
+                generatedAt: Date(timeIntervalSince1970: 1_770_000_000),
+                photoAuthorization: .denied,
+                hasCompletedScan: true
+            )
+        ]
+    )
+    func timelineWithoutAStaleTransition(payload: WidgetSnapshot) {
+        // Scheduling an entry that redraws identical pixels would be pure waste.
+        #expect(WidgetPresentation.timeline(for: payload, now: now).count == 1)
+    }
+
+    @Test("No snapshot means one entry and nothing scheduled")
+    func timelineWithoutASnapshot() {
+        let steps = WidgetPresentation.timeline(for: nil, now: now)
+        #expect(steps == [WidgetTimelineStep(date: now, state: .unavailable)])
+    }
+
     @Test("A changed library outranks the old totals")
     func libraryChanged() {
         let state = WidgetPresentation.displayState(for: snapshot(libraryChanged: true), now: now)
