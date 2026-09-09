@@ -48,15 +48,6 @@ public enum WidgetHeroScale: String, CaseIterable, Sendable {
         }
     }
 
-    /// What the export is worth when the decoded pixels are handed back to SwiftUI.
-    public var factor: CGFloat {
-        switch self {
-        case .oneX: 1
-        case .twoX: 2
-        case .threeX: 3
-        }
-    }
-
     var filenameSuffix: String {
         switch self {
         case .oneX: ""
