@@ -269,9 +269,15 @@ struct MainTabView: View {
             scenePhase: scenePhase,
             authorization: photoPermissionManager.authorizationStatus,
             isPremium: subscriptionStore.entitlementState.isPremium,
+            // The baseline and its date, not just the in-memory summary: after a cold
+            // launch the cached content arrives without a summary, and that restore is
+            // exactly when the widget needs republishing.
+            hasCompletedScanBaseline: cleanupWorkspace.hasCompletedScanBaseline,
+            lastCompletedScanDate: cleanupWorkspace.lastCompletedScanDate,
             lastScanCompletedAt: cleanupWorkspace.lastScanSummary?.completedAt,
             estimatedSavingsBytes: cleanupWorkspace.lastScanSummary?.estimatedSavingsBytes,
             clusterCount: cleanupWorkspace.clusters.count,
+            categoryAssetCount: cleanupWorkspace.cleanupCategories.reduce(0) { $0 + $1.assetCount },
             reviewedClusters: cleanupWorkspace.activeCleanupSession?.reviewedClusters,
             sessionUpdatedAt: cleanupWorkspace.activeCleanupSession?.updatedAt,
             shouldShowRescanPrompt: cleanupWorkspace.shouldShowRescanPrompt
@@ -307,9 +313,12 @@ private struct WidgetSnapshotSignature: Equatable {
     let scenePhase: ScenePhase
     let authorization: PHAuthorizationStatus
     let isPremium: Bool
+    let hasCompletedScanBaseline: Bool
+    let lastCompletedScanDate: Date?
     let lastScanCompletedAt: Date?
     let estimatedSavingsBytes: Int64?
     let clusterCount: Int
+    let categoryAssetCount: Int
     let reviewedClusters: Int?
     let sessionUpdatedAt: Date?
     let shouldShowRescanPrompt: Bool

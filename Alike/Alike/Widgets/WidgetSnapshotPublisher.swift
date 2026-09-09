@@ -51,19 +51,29 @@ final class WidgetSnapshotPublisher {
     ) {
         let summary = workspace.lastScanSummary
         let categories = workspace.cleanupCategories
+        let clusters = workspace.clusters
+        let hasCompletedScan = workspace.hasCompletedScanBaseline
+
+        // `lastScanSummary` only survives for a scan this process ran. After a cold
+        // launch the workspace restores its clusters and categories from the cache but
+        // not the summary, so reading the aggregates straight off `summary` would put
+        // "all caught up" on the home screen over candidates that are still there.
+        let restoredSavingsBytes: Int64? = summary == nil && hasCompletedScan
+            ? Self.estimatedSavingsBytes(clusters: clusters, categories: categories)
+            : nil
 
         let snapshot = WidgetSnapshot(
             generatedAt: now(),
             photoAuthorization: WidgetPhotoAuthorization(authorization),
-            hasCompletedScan: workspace.hasCompletedScanBaseline,
-            lastScanDate: summary?.completedAt,
+            hasCompletedScan: hasCompletedScan,
+            lastScanDate: summary?.completedAt ?? workspace.lastCompletedScanDate,
             libraryChangedSinceScan: workspace.shouldShowRescanPrompt,
             // Taken from the scan summary rather than recomputed, so the widget cannot
             // report a different figure from the scanner screen.
-            estimatedSavingsBytes: summary?.estimatedSavingsBytes,
-            // Only meaningful once a scan has produced a summary; before that the
-            // count is unknown rather than zero, and the widget says so.
-            clusterCount: summary == nil ? nil : workspace.clusters.count,
+            estimatedSavingsBytes: summary?.estimatedSavingsBytes ?? restoredSavingsBytes,
+            // Only meaningful once a scan baseline exists; before that the count is
+            // unknown rather than zero, and the widget says so.
+            clusterCount: hasCompletedScan ? clusters.count : nil,
             screenshotAssetCount: categories.first { $0.kind == .screenshots }?.assetCount,
             blurredPhotoAssetCount: categories.first { $0.kind == .blurredPhotos }?.assetCount,
             isPremium: isPremium,
@@ -81,33 +91,56 @@ final class WidgetSnapshotPublisher {
         // unchanged payload is not republished.
         if let lastWritten, lastWritten.hasSameContent(as: snapshot) { return }
 
-        write { try $0.write(snapshot) }
-        lastWritten = snapshot
+        // Only what actually reached disk is remembered: moving `lastWritten` on after
+        // a failed write would make the next identical publish a skipped no-op and
+        // strand the widget on the old payload.
+        if write({ try $0.write(snapshot) }) {
+            lastWritten = snapshot
+        }
     }
 
     /// Called after the user deletes their local data. Removing the payload is not
     /// optional: leaving it behind would keep a count of the photos they just asked
     /// the app to forget on their home screen.
     func clear() {
-        write { try $0.clear() }
-        lastWritten = nil
+        if write({ try $0.clear() }) {
+            lastWritten = nil
+        }
     }
 
-    private func write(_ operation: (any WidgetSnapshotWriting) throws -> Void) {
+    /// Mirrors `ScanSummary.estimatedSavingsBytes` — the same clusters-plus-categories
+    /// sum `ScanPostProcessor.scanAggregates` makes — for the cold-launch case where
+    /// the summary was not restored alongside the content it was computed from. Same
+    /// inputs, same figure, so the widget still cannot disagree with the scanner screen.
+    private static func estimatedSavingsBytes(
+        clusters: [PhotoCluster],
+        categories: [CleanupCategorySummary]
+    ) -> Int64 {
+        let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
+            total += cluster.assets.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
+        }
+        return categories.reduce(into: clusterSavings) { $0 += $1.estimatedSavingsBytes }
+    }
+
+    /// Whether the payload reached the shared container.
+    @discardableResult
+    private func write(_ operation: (any WidgetSnapshotWriting) throws -> Void) -> Bool {
         guard let store else {
             // No App Group container — the entitlement is missing or the group is not
             // provisioned on this build. The widget shows "open the app"; nothing else
             // in the app is affected, so this is a log, not an error path.
             Self.logger.notice("No shared container; skipping widget snapshot publish.")
-            return
+            return false
         }
         do {
             try operation(store)
             reloadTimelines()
+            return true
         } catch {
             Self.logger.error(
                 "\(AppLog.tag(.error, "Failed to publish widget snapshot: \(error.localizedDescription)"))"
             )
+            return false
         }
     }
 }
