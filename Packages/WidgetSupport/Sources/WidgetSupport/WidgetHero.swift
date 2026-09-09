@@ -74,6 +74,15 @@ public enum WidgetHeroScale: String, CaseIterable, Sendable {
 /// be. A missing file here yields `nil`, and the composition simply renders without a
 /// hero.
 public enum WidgetHeroAssets {
+    /// Both lookups are load-bearing, not one plus a defensive fallback.
+    ///
+    /// `.process("Resources")` flattens the scene directories into the root of the
+    /// generated bundle, so today the *second* lookup is the one that resolves; the
+    /// per-scene directories exist on disk to keep the copied artwork separable and
+    /// attributable. The subdirectory lookup is kept first because SwiftPM has
+    /// preserved that structure before and may again, and because the flat names are
+    /// only unique as long as every scene keeps a distinct stem.
+    /// `WidgetHeroAssetsTests` asserts the result rather than the route.
     public static func url(for scene: WidgetHeroScene, scale: WidgetHeroScale) -> URL? {
         let name = scene.resourceStem + scale.filenameSuffix
         return Bundle.module.url(

@@ -25,6 +25,14 @@ struct WidgetHeroAssetsTests {
         }
     }
 
+    /// `.process` flattens the scene directories into the bundle root, so the stems have
+    /// to stay unique across scenes or two scenes resolve to one file.
+    @Test("scene stems do not collide once the bundle is flattened")
+    func stemsAreUnique() {
+        let stems = WidgetHeroScene.allCases.map(\.resourceStem)
+        #expect(Set(stems).count == stems.count)
+    }
+
     /// The @2x/@3x fallback in `url(for:scale:)` would hand back the @1x file if the
     /// larger export were missing, which is exactly the silent degradation this catches.
     @Test("the filename carries the scale suffix")
