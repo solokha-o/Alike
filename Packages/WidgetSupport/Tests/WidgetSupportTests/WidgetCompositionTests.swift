@@ -73,15 +73,35 @@ struct WidgetCompositionTests {
         #expect(footnote.contains(expectedDate))
     }
 
-    @Test("a fresh reading shows the group count instead of a date", arguments: families)
-    func freshShowsGroups(family: WidgetLayoutFamily) throws {
+    /// The count is medium's line. Small carries the figure, what it is, and the way in;
+    /// a second number beside the first is what makes a small widget unreadable.
+    @Test("a fresh medium shows the group count; a fresh small shows the action instead")
+    func freshFootnotePerFamily() throws {
         let state = WidgetDisplayState.hasSuggestions(
             bytes: 1_000, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false
         )
-        let footnote = try #require(composition(state, family).footnote)
 
-        #expect(footnote.contains("24"))
-        #expect(!footnote.contains(WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)))
+        let medium = try #require(composition(state, .medium).footnote)
+        #expect(medium.contains("24"))
+        #expect(!medium.contains(WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)))
+
+        #expect(composition(state, .small).footnote == nil)
+        #expect(composition(state, .small).actionTitle != nil)
+    }
+
+    /// Every state a user can act on has to name where a tap goes; the states that can
+    /// only say "open the app" have nothing to offer beyond the caption.
+    @Test("actionable states carry an action title, dead ends do not", arguments: families)
+    func actionTitles(family: WidgetLayoutFamily) {
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
+
+        #expect(composition(.hasSuggestions(bytes: 1, clusterCount: 1, scannedAt: nil, isStale: false), family).actionTitle != nil)
+        #expect(composition(.libraryChanged(bytes: 1, scannedAt: nil), family).actionTitle != nil)
+        #expect(composition(.neverScanned, family).actionTitle != nil)
+        #expect(composition(.resumeReview(progress: progress, isStale: false), family).actionTitle != nil)
+
+        #expect(composition(.unavailable, family).actionTitle == nil)
+        #expect(composition(.noAccess(.denied), family).actionTitle == nil)
     }
 
     /// A library that changed since the scan makes its figures historical whatever the
@@ -117,12 +137,14 @@ struct WidgetCompositionTests {
         #expect(resolved.footnote == nil)
     }
 
-    @Test("the footnote counts groups left to review", arguments: families)
-    func remainingGroups(family: WidgetLayoutFamily) throws {
+    @Test("medium counts the groups left to review; small keeps the bar and the way in")
+    func remainingGroups() throws {
         let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
-        let footnote = try #require(composition(.resumeReview(progress: progress, isStale: false), family).footnote)
+        let state = WidgetDisplayState.resumeReview(progress: progress, isStale: false)
 
-        #expect(footnote.contains("12"))
+        #expect(try #require(composition(state, .medium).footnote).contains("12"))
+        #expect(composition(state, .small).footnote == nil)
+        #expect(composition(state, .small).progress != nil)
     }
 
     @Test("a stale session shows when it was last touched instead of what is left", arguments: families)
@@ -261,7 +283,8 @@ struct WidgetCompositionTests {
         let suggestions = WidgetDisplayState.hasSuggestions(
             bytes: 1_000, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false
         )
-        #expect(composition(suggestions, .medium).footnote != composition(suggestions, .small).footnote)
+        #expect(composition(suggestions, .medium).footnote != nil)
+        #expect(composition(suggestions, .small).footnote == nil)
 
         let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
         let resume = WidgetDisplayState.resumeReview(progress: progress, isStale: false)

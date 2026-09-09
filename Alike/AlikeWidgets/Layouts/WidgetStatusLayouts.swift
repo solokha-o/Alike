@@ -51,10 +51,20 @@ struct WidgetSmallLayout: View {
                 WidgetProgressBar(value: progress)
             }
 
+            // One trailing line, not two. The footnote only ever appears here to date a
+            // stale figure, and when it does it outranks the action: the widget is
+            // tappable as a whole, so naming the destination again matters less than
+            // not letting an old number pass for today's.
             if let footnote = composition.footnote {
                 Text(footnote)
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+            } else if let action = composition.actionTitle {
+                Text(action)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(Color.widgetAccent)
+                    .widgetAccentable()
                     .lineLimit(1)
             }
         }

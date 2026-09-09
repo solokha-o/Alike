@@ -175,22 +175,22 @@ private extension WidgetPresentation {
 
     /// The group count while the figures are current, the scan date once they are not.
     ///
-    /// Stale wins over the count on both sizes: a number presented without saying when
-    /// it was measured reads as today's, and it is not. Medium has room for both, and
-    /// says both.
+    /// The count is medium's: the small composition is the figure, what it is, and where
+    /// a tap goes, and a second number competing with the first is what makes a small
+    /// widget unreadable. Staleness is the one thing small does not get to drop — a
+    /// figure shown without saying when it was measured reads as today's — so on small
+    /// the date replaces the action line, and on medium it joins the count.
     static func suggestionsFootnote(
         clusterCount: Int?,
         scannedAt: Date?,
         isStale: Bool,
         family: WidgetLayoutFamily
     ) -> String? {
-        let groups = clusterCount.map { count in
-            family == .medium ? WidgetL10n.Status.similarGroups(count) : WidgetL10n.Status.groups(count)
-        }
-        guard isStale, let scannedAt else { return groups }
+        let scanned = isStale ? scannedAt.map(scannedFootnote) : nil
+        guard family == .medium else { return scanned }
 
-        let scanned = scannedFootnote(scannedAt)
-        guard family == .medium, let groups else { return scanned }
+        guard let groups = clusterCount.map({ WidgetL10n.Status.similarGroups($0) }) else { return scanned }
+        guard let scanned else { return groups }
         return "\(groups) · \(scanned)"
     }
 
@@ -209,13 +209,14 @@ private extension WidgetPresentation {
             ? "\(WidgetFormatting.number(progress.reviewedClusters))/\(WidgetFormatting.number(progress.totalClusters))"
             : nil
 
-        let remaining = progress.totalClusters > 0
-            ? WidgetL10n.Status.groupsRemaining(progress.remainingClusters)
-            : nil
+        // Same split as the cleanup footnote: how many groups are left is medium's line,
+        // small keeps the bar and the way back in. Staleness overrides on both.
         let footnote: String? = if isStale {
             scannedFootnote(progress.updatedAt)
+        } else if family == .medium, progress.totalClusters > 0 {
+            WidgetL10n.Status.groupsRemaining(progress.remainingClusters)
         } else {
-            remaining
+            nil
         }
 
         return composition(
