@@ -83,6 +83,16 @@ final class AlikeFormattingTests: XCTestCase {
     ///
     /// `String(format:)` without a `locale:` argument is deliberately not covered: it is
     /// non-localized already, which is why the pinned digits and its digits agree.
+    /// The files that *define* the pin, and so necessarily call the unpinned styles to
+    /// build it. `Locale+AlikeFormatting.swift` is the original; `WidgetFormatting.swift`
+    /// restates it inside `WidgetSupport`, which cannot import `Core` because the widget
+    /// extension links that package and nothing else. Both are covered by their own tests
+    /// asserting Western digits and a Gregorian calendar under `ar_SA`.
+    static let pinDefiningFiles: Set<String> = [
+        "Locale+AlikeFormatting.swift",
+        "WidgetFormatting.swift"
+    ]
+
     func testNoPackageSourceFormatsAValueOutsideThePinnedLocale() throws {
         var offenders: [String] = []
 
@@ -93,7 +103,7 @@ final class AlikeFormattingTests: XCTestCase {
                 FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil)
             )
             for case let url as URL in enumerator where url.pathExtension == "swift" {
-                if url.lastPathComponent == "Locale+AlikeFormatting.swift" { continue }
+                if Self.pinDefiningFiles.contains(url.lastPathComponent) { continue }
                 let source = try String(contentsOf: url, encoding: .utf8)
                 for (line, statement) in Self.statements(in: source) {
                     guard statement.contains(".formatted(") || statement.contains("format: .") else { continue }

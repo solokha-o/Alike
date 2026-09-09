@@ -14,8 +14,11 @@ import Settings
 import Core
 import Cleanup
 import Storage
+import Photos
+import PhotoAnalysis
 import Purchases
 import PurchasesUI
+import WidgetSupport
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -56,6 +59,9 @@ struct MainTabView: View {
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @State private var cleanupWorkspace = CleanupWorkspaceModel()
     private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
+    private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
+    private let photoPermissionManager: any PhotoPermissionManager = PhotoPermissionManagerImpl()
+    @Environment(PendingWidgetDestination.self) private var pendingWidgetDestination
     private let onDataDeleted: @MainActor @Sendable () -> Void
     @AppStorage(AppPreferenceKey.sensitivity)
     private var sensitivityRaw = SensitivityLevel.medium.rawValue
@@ -137,6 +143,23 @@ struct MainTabView: View {
         }
         .onDisappear {
             subscriptionStore.stop()
+        }
+        // One observer for four of the five publish points: a saved scan, a review
+        // that moved the session on, and a finished cleanup all show up in the
+        // workspace's observable state. Photo access does not — `PhotoPermissionManager`
+        // is not observable and the change happens in Settings, outside the app — so it
+        // is caught by `scenePhase` in the signature instead, on the return trip. The
+        // fifth point, deleting local data, is an explicit call in `onDeleteAllData`
+        // below, because by then there is no state left to observe.
+        .task(id: widgetSnapshotSignature) {
+            widgetSnapshotPublisher.publish(
+                workspace: cleanupWorkspace,
+                authorization: photoPermissionManager.authorizationStatus,
+                isPremium: subscriptionStore.entitlementState.isPremium
+            )
+        }
+        .onChange(of: pendingWidgetDestination.destination, initial: true) {
+            followPendingWidgetDestination()
         }
         .alert(AlikeL10n.Rescan.title, isPresented: Bindable(tabManager).needsRescan) {
             Button(AlikeL10n.Rescan.later, role: .cancel) {
@@ -220,6 +243,9 @@ struct MainTabView: View {
                         isPremiumUnlocked: hasCleanupReminderCustomizationAccess
                     )
                     try await localAppDataDeleter.deleteAllData()
+                    // After the wipe, not before: a snapshot published in between would
+                    // put the counts the user just deleted back on their home screen.
+                    widgetSnapshotPublisher.clear()
                     onDataDeleted()
                 },
                 onResetBestShotPersonalization: {
@@ -233,6 +259,42 @@ struct MainTabView: View {
         }
     }
 
+    /// What has to change before the widget's copy of the aggregates is out of date.
+    ///
+    /// Recomputed from the observable state rather than pushed from inside
+    /// `CleanupWorkspaceModel`: the workspace is a shipped package API, and an
+    /// observer here keeps the widget additive to it.
+    private var widgetSnapshotSignature: WidgetSnapshotSignature {
+        WidgetSnapshotSignature(
+            scenePhase: scenePhase,
+            authorization: photoPermissionManager.authorizationStatus,
+            isPremium: subscriptionStore.entitlementState.isPremium,
+            // The baseline and its date, not just the in-memory summary: after a cold
+            // launch the cached content arrives without a summary, and that restore is
+            // exactly when the widget needs republishing.
+            hasCompletedScanBaseline: cleanupWorkspace.hasCompletedScanBaseline,
+            lastCompletedScanDate: cleanupWorkspace.lastCompletedScanDate,
+            lastScanCompletedAt: cleanupWorkspace.lastScanSummary?.completedAt,
+            estimatedSavingsBytes: cleanupWorkspace.lastScanSummary?.estimatedSavingsBytes,
+            clusterCount: cleanupWorkspace.clusters.count,
+            categoryAssetCount: cleanupWorkspace.cleanupCategories.reduce(0) { $0 + $1.assetCount },
+            reviewedClusters: cleanupWorkspace.activeCleanupSession?.reviewedClusters,
+            sessionUpdatedAt: cleanupWorkspace.activeCleanupSession?.updatedAt,
+            shouldShowRescanPrompt: cleanupWorkspace.shouldShowRescanPrompt
+        )
+    }
+
+    /// Acts on a widget tap once the main screen is the one on screen.
+    ///
+    /// Every destination lands on the cleanup tab. The category-specific ones do not
+    /// deep-link past the Premium gate on purpose: `CleanupView.openCategory` already
+    /// routes a locked category to its paywall, and the widget must not become a way
+    /// around it. Session-aware resume arrives with the review widget.
+    private func followPendingWidgetDestination() {
+        guard pendingWidgetDestination.consume() != nil else { return }
+        tabManager.navigateToCleanup()
+    }
+
     private func resyncCleanupReminder() async {
         do {
             try await cleanupReminderManager.resync(
@@ -244,6 +306,22 @@ struct MainTabView: View {
             )
         }
     }
+}
+
+/// The inputs that decide what the widget shows, as one value `task(id:)` can compare.
+private struct WidgetSnapshotSignature: Equatable {
+    let scenePhase: ScenePhase
+    let authorization: PHAuthorizationStatus
+    let isPremium: Bool
+    let hasCompletedScanBaseline: Bool
+    let lastCompletedScanDate: Date?
+    let lastScanCompletedAt: Date?
+    let estimatedSavingsBytes: Int64?
+    let clusterCount: Int
+    let categoryAssetCount: Int
+    let reviewedClusters: Int?
+    let sessionUpdatedAt: Date?
+    let shouldShowRescanPrompt: Bool
 }
 
 private struct CleanupReminderTaskID: Equatable {
