@@ -25,6 +25,12 @@ let package = Package(
         // imports them.
         .target(
             name: "WidgetSupport",
+            exclude: [
+                // Asset-licensing notice for the copied hero artwork, not a build
+                // input. Excluded the same way `DesignSystem` excludes its own, so the
+                // notice sits beside the files it covers without shipping in the bundle.
+                "Resources/Heroes/LICENSE"
+            ],
             resources: [.process("Resources")],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
