@@ -19,11 +19,11 @@ import WidgetSupport
 /// `Purchases`. The mapping meets in the middle, here.
 @MainActor
 final class WidgetSnapshotPublisher {
-    private let store: (any WidgetSnapshotWriting)?
+    /// Owns the "unchanged payloads are not republished, failed writes are not
+    /// remembered" rules, in the package where they are covered by tests.
+    private let writer: DeduplicatingWidgetSnapshotWriter?
     private let reloadTimelines: @Sendable () -> Void
     private let now: () -> Date
-    /// The last payload written, so an unchanged republish costs nothing.
-    private var lastWritten: WidgetSnapshot?
 
     private static let logger = Logger(subsystem: "com.alike.app", category: "WidgetSnapshot")
 
@@ -34,7 +34,7 @@ final class WidgetSnapshotPublisher {
         },
         now: @escaping () -> Date = Date.init
     ) {
-        self.store = store
+        self.writer = store.map(DeduplicatingWidgetSnapshotWriter.init(store:))
         self.reloadTimelines = reloadTimelines
         self.now = now
     }
@@ -89,22 +89,16 @@ final class WidgetSnapshotPublisher {
         // Driven by a `task(id:)` carrying the scene phase, so this runs on every
         // foreground and background transition — see `hasSameContent(as:)` for why an
         // unchanged payload is not republished.
-        if let lastWritten, lastWritten.hasSameContent(as: snapshot) { return }
-
-        // Only what actually reached disk is remembered: moving `lastWritten` on after
-        // a failed write would make the next identical publish a skipped no-op and
-        // strand the widget on the old payload.
-        if write({ try $0.write(snapshot) }) {
-            lastWritten = snapshot
-        }
+        write { try $0.write(snapshot) == .written }
     }
 
     /// Called after the user deletes their local data. Removing the payload is not
     /// optional: leaving it behind would keep a count of the photos they just asked
     /// the app to forget on their home screen.
     func clear() {
-        if write({ try $0.clear() }) {
-            lastWritten = nil
+        write {
+            try $0.clear()
+            return true
         }
     }
 
@@ -122,25 +116,23 @@ final class WidgetSnapshotPublisher {
         return categories.reduce(into: clusterSavings) { $0 += $1.estimatedSavingsBytes }
     }
 
-    /// Whether the payload reached the shared container.
-    @discardableResult
-    private func write(_ operation: (any WidgetSnapshotWriting) throws -> Void) -> Bool {
-        guard let store else {
+    /// Runs one store operation, reloading the timeline only when it says something
+    /// reached the shared container.
+    private func write(_ operation: (DeduplicatingWidgetSnapshotWriter) throws -> Bool) {
+        guard let writer else {
             // No App Group container — the entitlement is missing or the group is not
             // provisioned on this build. The widget shows "open the app"; nothing else
             // in the app is affected, so this is a log, not an error path.
             Self.logger.notice("No shared container; skipping widget snapshot publish.")
-            return false
+            return
         }
         do {
-            try operation(store)
+            guard try operation(writer) else { return }
             reloadTimelines()
-            return true
         } catch {
             Self.logger.error(
                 "\(AppLog.tag(.error, "Failed to publish widget snapshot: \(error.localizedDescription)"))"
             )
-            return false
         }
     }
 }
