@@ -19,6 +19,10 @@ struct WidgetSnapshotEntry: TimelineEntry {
 /// the system's limited refresh budgets for nothing. The app calls
 /// `WidgetCenter.reloadTimelines` whenever it publishes a new snapshot, which is the
 /// only moment there is anything new to show.
+///
+/// The one change that happens without new data is the snapshot going stale, so the
+/// timeline carries a second entry at that threshold. WidgetKit renders it from the
+/// data it already has; no refresh budget is spent.
 struct WidgetSnapshotTimelineProvider: TimelineProvider {
     private let store: (any WidgetSnapshotReading)?
 
@@ -44,10 +48,23 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSnapshotEntry>) -> Void) {
-        let entry = WidgetSnapshotEntry(
-            date: Date(),
-            state: WidgetPresentation.displayState(for: store?.read())
-        )
-        completion(Timeline(entries: [entry], policy: .never))
+        let now = Date()
+        let snapshot = store?.read()
+        var entries = [WidgetSnapshotEntry(
+            date: now,
+            state: WidgetPresentation.displayState(for: snapshot, now: now)
+        )]
+
+        // Only when the wording actually changes at the threshold — the states that
+        // carry no `isStale` render identically either side of it.
+        if let snapshot {
+            let staleDate = WidgetPresentation.staleDate(for: snapshot)
+            let staleState = WidgetPresentation.displayState(for: snapshot, now: staleDate)
+            if staleDate > now, staleState != entries[0].state {
+                entries.append(WidgetSnapshotEntry(date: staleDate, state: staleState))
+            }
+        }
+
+        completion(Timeline(entries: entries, policy: .never))
     }
 }

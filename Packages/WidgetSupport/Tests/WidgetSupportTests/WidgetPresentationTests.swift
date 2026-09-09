@@ -85,6 +85,22 @@ struct WidgetPresentationTests {
         }
     }
 
+    @Test("The scheduled stale entry renders as stale, so the threshold is never straddled")
+    func staleAtThreshold() {
+        // The extension cannot refresh itself; the timeline schedules one entry at
+        // exactly this date, and that entry is the whole staleness mechanism.
+        let payload = snapshot(age: 0)
+        let staleDate = WidgetPresentation.staleDate(for: payload)
+        #expect(staleDate == payload.generatedAt.addingTimeInterval(WidgetPresentation.staleAfter))
+
+        let state = WidgetPresentation.displayState(for: payload, now: staleDate)
+        if case let .hasSuggestions(_, _, _, isStale) = state {
+            #expect(isStale)
+        } else {
+            Issue.record("expected suggestions, got \(state)")
+        }
+    }
+
     @Test("A changed library outranks the old totals")
     func libraryChanged() {
         let state = WidgetPresentation.displayState(for: snapshot(libraryChanged: true), now: now)

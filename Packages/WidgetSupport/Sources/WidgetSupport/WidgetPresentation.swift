@@ -31,6 +31,15 @@ public enum WidgetPresentation {
     /// figures from the last time they did. Saying so is the honest option.
     public static let staleAfter: TimeInterval = 24 * 60 * 60
 
+    /// When a snapshot's figures stop being presentable as current.
+    ///
+    /// The extension has no way to notice the threshold passing on its own, so the
+    /// timeline schedules an entry here and the widget re-renders with the timestamp
+    /// instead of silently going on claiming the numbers are today's.
+    public static func staleDate(for snapshot: WidgetSnapshot) -> Date {
+        snapshot.generatedAt.addingTimeInterval(staleAfter)
+    }
+
     public static func displayState(
         for snapshot: WidgetSnapshot?,
         now: Date = Date()
@@ -43,7 +52,9 @@ public enum WidgetPresentation {
 
         guard snapshot.hasCompletedScan else { return .neverScanned }
 
-        let isStale = now.timeIntervalSince(snapshot.generatedAt) > staleAfter
+        // `>=`, not `>`: `staleDate(for:)` is the exact instant the timeline schedules
+        // its second entry on, and that entry has to render the stale wording.
+        let isStale = now.timeIntervalSince(snapshot.generatedAt) >= staleAfter
 
         // An unfinished session outranks the totals: someone mid-review wants the way
         // back into it more than they want a number they have already seen.
