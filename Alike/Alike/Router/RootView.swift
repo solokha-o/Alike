@@ -228,7 +228,8 @@ struct MainTabView: View {
                 },
                 onRequestScan: {
                     tabManager.navigateToScanner(andStartScan: true)
-                }
+                },
+                pendingWidgetEntry: Bindable(tabManager).pendingCleanupEntry
             )
         case .settings:
             SettingsView(
@@ -286,13 +287,28 @@ struct MainTabView: View {
 
     /// Acts on a widget tap once the main screen is the one on screen.
     ///
-    /// Every destination lands on the cleanup tab. The category-specific ones do not
-    /// deep-link past the Premium gate on purpose: `CleanupView.openCategory` already
-    /// routes a locked category to its paywall, and the widget must not become a way
-    /// around it. Session-aware resume arrives with the review widget.
+    /// Every destination still lands on the cleanup tab; the category-specific ones now
+    /// also say *where* in it. They do not deep-link past the Premium gate: the entry is
+    /// handed to `CleanupView`, which resolves it through `openCategory` — the one place
+    /// that checks entitlement and sends a locked category to its paywall. The widget
+    /// names a destination; it does not get to open one.
+    ///
+    /// `.resumeReview` is not routed here. Landing someone in a specific cluster is the
+    /// review widget's question, and answering it needs the session checked against the
+    /// live workspace rather than against a snapshot that may be a day old.
     private func followPendingWidgetDestination() {
-        guard pendingWidgetDestination.consume() != nil else { return }
-        tabManager.navigateToCleanup()
+        guard let destination = pendingWidgetDestination.consume() else { return }
+
+        switch destination {
+        case .cleanup, .resumeReview:
+            tabManager.navigateToCleanup()
+        case .similarPhotos:
+            tabManager.navigateToCleanup(entry: .similarPhotos)
+        case .screenshots:
+            tabManager.navigateToCleanup(entry: .category(.screenshots))
+        case .blurredPhotos:
+            tabManager.navigateToCleanup(entry: .category(.blurredPhotos))
+        }
     }
 
     private func resyncCleanupReminder() async {
