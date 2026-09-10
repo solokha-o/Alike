@@ -9,6 +9,9 @@ import Testing
 @Suite("Widget composition")
 struct WidgetCompositionTests {
     private static let scannedAt = Date(timeIntervalSince1970: 1_757_000_000)
+    /// Two days after `scannedAt`: the session outlives the scan it belongs to, and the
+    /// widget has to keep the two dates apart.
+    private static let reviewedAt = scannedAt.addingTimeInterval(2 * 24 * 60 * 60)
     private static let families = WidgetLayoutFamily.allCases
 
     private func composition(
@@ -149,10 +152,43 @@ struct WidgetCompositionTests {
 
     @Test("a stale session shows when it was last touched instead of what is left", arguments: families)
     func staleSessionIsDated(family: WidgetLayoutFamily) throws {
-        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.reviewedAt)
         let footnote = try #require(composition(.resumeReview(progress: progress, isStale: true), family).footnote)
 
-        #expect(footnote.contains(WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)))
+        #expect(footnote.contains(WidgetFormatting.timestamp(Self.reviewedAt, timeStyle: .omitted)))
+    }
+
+    /// A scan on the 1st, a review resumed on the 3rd, then the app left shut: the
+    /// session date is the only one the resume state carries, so it has to be worded as
+    /// a review. Dating it "Scanned" reported a scan that never happened on that day —
+    /// on screen and, because the footnote is part of the label, to VoiceOver too.
+    @Test("the stale session date is worded as a review, not as a scan", arguments: families)
+    func staleSessionIsNotDatedAsAScan(family: WidgetLayoutFamily) throws {
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.reviewedAt)
+        let snapshot = WidgetSnapshot(
+            generatedAt: Self.reviewedAt,
+            photoAuthorization: .authorized,
+            hasCompletedScan: true,
+            lastScanDate: Self.scannedAt,
+            estimatedSavingsBytes: 1_932_735_283,
+            clusterCount: 24,
+            sessionProgress: progress
+        )
+        let state = WidgetPresentation.displayState(
+            for: snapshot,
+            now: Self.reviewedAt.addingTimeInterval(WidgetPresentation.staleAfter)
+        )
+        let resolved = composition(state, family)
+        let footnote = try #require(resolved.footnote)
+
+        #expect(footnote == WidgetL10n.Status.lastReviewed(
+            WidgetFormatting.timestamp(Self.reviewedAt, timeStyle: .omitted)
+        ))
+        #expect(footnote != WidgetL10n.Status.lastScanned(
+            WidgetFormatting.timestamp(Self.reviewedAt, timeStyle: .omitted)
+        ))
+        #expect(!footnote.contains(WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)))
+        #expect(resolved.accessibilityLabel.contains(footnote))
     }
 
     // MARK: - Hero

@@ -30,6 +30,17 @@ public enum WidgetL10n {
             )
         }
 
+        /// "Last reviewed <date>" — when the *session* was last touched, which is not
+        /// when the library was scanned: a scan on the 1st can carry a review resumed on
+        /// the 3rd, and dating that "Scanned" would misreport both.
+        public static func lastReviewed(_ formattedDate: String) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.status.lastReviewed"),
+                locale: WidgetFormatting.locale,
+                formattedDate
+            )
+        }
+
         public static func groups(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             WidgetL10n.plural("widgetsupport.status.groups", count, bundle: bundle, locale: locale)
         }

@@ -29,7 +29,9 @@ public struct WidgetComposition: Equatable, Sendable {
     /// measured result.
     public let headline: String?
     public let caption: String
-    /// The group count when the figures are current, the scan date when they are not.
+    /// The group count when the figures are current, the date they were measured when
+    /// they are not — the scan date for the cleanup states, the session's own date for
+    /// a resumed review.
     public let footnote: String?
     /// What opening the app leads to, as a label rather than a control — a widget tap
     /// opens the app; nothing here is a button.
@@ -173,6 +175,16 @@ private extension WidgetPresentation {
         WidgetL10n.Status.lastScanned(WidgetFormatting.timestamp(date, timeStyle: .omitted))
     }
 
+    /// The session's own date, worded as a review rather than as a scan.
+    ///
+    /// `WidgetSessionProgress.updatedAt` is when the review was last touched, and the
+    /// scan it belongs to can be days older — `WidgetSnapshot.lastScanDate` carries
+    /// that separately. Labelling `updatedAt` "Scanned" would date the scan wrong and
+    /// the session right, in one line, to VoiceOver as well as on screen.
+    static func reviewedFootnote(_ date: Date) -> String {
+        WidgetL10n.Status.lastReviewed(WidgetFormatting.timestamp(date, timeStyle: .omitted))
+    }
+
     /// The group count while the figures are current, the scan date once they are not.
     ///
     /// The count is medium's: the small composition is the figure, what it is, and where
@@ -212,7 +224,7 @@ private extension WidgetPresentation {
         // Same split as the cleanup footnote: how many groups are left is medium's line,
         // small keeps the bar and the way back in. Staleness overrides on both.
         let footnote: String? = if isStale {
-            scannedFootnote(progress.updatedAt)
+            reviewedFootnote(progress.updatedAt)
         } else if family == .medium, progress.totalClusters > 0 {
             WidgetL10n.Status.groupsRemaining(progress.remainingClusters)
         } else {
