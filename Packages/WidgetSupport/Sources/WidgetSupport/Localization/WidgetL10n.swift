@@ -30,9 +30,45 @@ public enum WidgetL10n {
             )
         }
 
+        /// "Last reviewed <date>" — when the *session* was last touched, which is not
+        /// when the library was scanned: a scan on the 1st can carry a review resumed on
+        /// the 3rd, and dating that "Scanned" would misreport both.
+        public static func lastReviewed(_ formattedDate: String) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.status.lastReviewed"),
+                locale: WidgetFormatting.locale,
+                formattedDate
+            )
+        }
+
         public static func groups(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             WidgetL10n.plural("widgetsupport.status.groups", count, bundle: bundle, locale: locale)
         }
+
+        /// "24 groups of similar photos" — the medium layout, which has the room to say
+        /// what the groups are groups *of*.
+        public static func similarGroups(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            WidgetL10n.plural("widgetsupport.status.similarGroups", count, bundle: bundle, locale: locale)
+        }
+
+        /// The caption under "18/30".
+        ///
+        /// Deliberately not a plural key: the count already sits in the headline, and
+        /// `xcstringstool` rejects a plural variation that never references the number.
+        public static var groupsReviewed: String { WidgetL10n.string("widgetsupport.status.groupsReviewed") }
+
+        /// "12 groups left" — groups still to review, never photos deleted.
+        public static func groupsRemaining(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            WidgetL10n.plural("widgetsupport.status.groupsRemaining", count, bundle: bundle, locale: locale)
+        }
+    }
+
+    /// What the widget offers to do, shown as a label rather than a control: a widget
+    /// tap opens the app, so these name the destination instead of promising a button.
+    public enum Action {
+        public static var review: String { WidgetL10n.string("widgetsupport.action.review") }
+        public static var continueReview: String { WidgetL10n.string("widgetsupport.action.continueReview") }
+        public static var scan: String { WidgetL10n.string("widgetsupport.action.scan") }
     }
 
     public enum Widget {
@@ -42,6 +78,7 @@ public enum WidgetL10n {
 
     public enum Accessibility {
         public static var openCleanup: String { WidgetL10n.string("widgetsupport.accessibility.openCleanup") }
+        public static var resumeReview: String { WidgetL10n.string("widgetsupport.accessibility.resumeReview") }
     }
 }
 
