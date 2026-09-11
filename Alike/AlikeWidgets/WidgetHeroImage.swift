@@ -17,6 +17,8 @@ struct WidgetHeroImage: View {
     @Environment(\.widgetRenderingMode) private var renderingMode
 
     let scene: WidgetHeroScene
+    /// The square the scene is drawn into. The decode is sized to it, so it is also the
+    /// most pixels the extension will ever hold for one hero.
     let size: CGFloat
 
     var body: some View {
