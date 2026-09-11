@@ -16,10 +16,18 @@ import WidgetSupport
 enum WidgetLayoutMetrics {
     /// The illustration on the small layout, top-right beside the wordmark.
     static let smallHero: CGFloat = 62
+    /// The step down on a widget too short for the full hero — a mini's 155 pt.
+    static let smallHeroCompact: CGFloat = 44
+    /// The hero when it peeks over the header row's corner rather than sizing it.
+    static let smallHeroPeek: CGFloat = 40
+    /// How far the peeking hero reaches into the content margin, up and out.
+    static let heroPeekOffset: CGFloat = 6
     /// The illustration on the medium layout: what is left of the column after the
     /// container's own padding, the capsule and its inset — the column is 138 pt on a
     /// phone, and a hero that ignores the capsule pushes the wordmark into the top edge.
     static let mediumHero: CGFloat = 108
+    /// The medium hero when the capsule under it needs the height — a mini's 155 pt.
+    static let mediumHeroCompact: CGFloat = 84
     /// The layouts' own margin, in place of the container's: the concept sits its
     /// content closer to the edge than WidgetKit's default, and the hero needs the room.
     static let contentMargin: CGFloat = 12
@@ -35,6 +43,9 @@ enum WidgetLayoutMetrics {
     /// styles it scales with.
     static let smallHeadlineSize: CGFloat = 36
     static let mediumHeadlineSize: CGFloat = 44
+    /// The figure's last step on a short widget, once everything else has given way.
+    static let smallHeadlineCompactSize: CGFloat = 30
+    static let mediumHeadlineCompactSize: CGFloat = 36
     static let pillHorizontalPadding: CGFloat = 14
     static let pillVerticalPadding: CGFloat = 5
     /// The capsule under the hero sits this much above the container's own padding:
@@ -54,20 +65,68 @@ struct WidgetSmallLayout: View {
     let composition: WidgetComposition
 
     var body: some View {
+        // The small widget is 155 pt on a mini and 170 on a Pro Max, and what fills the
+        // one runs off both edges of the other. The first arrangement that fits wins: the
+        // hero shrinks, then goes, and only then does the figure step down.
+        ViewThatFits(in: .vertical) {
+            ForEach(arrangements, id: \.self) { arrangement in
+                content(arrangement)
+            }
+        }
+        .padding(WidgetLayoutMetrics.contentMargin)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+
+    private struct Arrangement: Hashable {
+        enum Hero: Hashable {
+            /// In the header row, which grows to its height.
+            case inline(CGFloat)
+            /// Over the header row's corner, into the margin: no height of its own.
+            case peek(CGFloat)
+            case none
+        }
+
+        let hero: Hero
+        let headline: CGFloat
+    }
+
+    private var arrangements: [Arrangement] {
+        let full = WidgetLayoutMetrics.smallHeadlineSize
+        let compact = WidgetLayoutMetrics.smallHeadlineCompactSize
+        // At accessibility sizes the text needs every point there is, so the
+        // decoration goes rather than the figure shrinking further.
+        guard composition.hero != nil, !dynamicTypeSize.isAccessibilitySize else {
+            return [Arrangement(hero: .none, headline: full), Arrangement(hero: .none, headline: compact)]
+        }
+        // On a mini the text alone fills the height, so the hero stops taking a row
+        // and peeks from the corner instead of leaving the widget.
+        return [
+            Arrangement(hero: .inline(WidgetLayoutMetrics.smallHero), headline: full),
+            Arrangement(hero: .inline(WidgetLayoutMetrics.smallHeroCompact), headline: full),
+            Arrangement(hero: .peek(WidgetLayoutMetrics.smallHeroPeek), headline: full),
+            Arrangement(hero: .peek(WidgetLayoutMetrics.smallHeroPeek), headline: compact),
+        ]
+    }
+
+    private func content(_ arrangement: Arrangement) -> some View {
         VStack(alignment: .leading, spacing: WidgetLayoutMetrics.spacing) {
             HStack(alignment: .top) {
                 WidgetHeader(symbolName: composition.headerSymbolName)
                 Spacer(minLength: 0)
-                // At accessibility sizes the text needs every point there is, so the
-                // decoration goes rather than the figure shrinking further.
-                if let hero = composition.hero, !dynamicTypeSize.isAccessibilitySize {
-                    WidgetHeroImage(scene: hero, size: WidgetLayoutMetrics.smallHero)
+                if let hero = composition.hero, case .inline(let size) = arrangement.hero {
+                    WidgetHeroImage(scene: hero, size: size)
+                }
+            }
+            .overlay(alignment: .topTrailing) {
+                if let hero = composition.hero, case .peek(let size) = arrangement.hero {
+                    WidgetHeroImage(scene: hero, size: size)
+                        .offset(x: WidgetLayoutMetrics.heroPeekOffset, y: -WidgetLayoutMetrics.heroPeekOffset)
                 }
             }
 
             Spacer(minLength: 0)
 
-            WidgetHeadline(composition.headlineParts, size: WidgetLayoutMetrics.smallHeadlineSize, relativeTo: .title)
+            WidgetHeadline(composition.headlineParts, size: arrangement.headline, relativeTo: .title)
             // One line: the small widget has no height for a second, and a wrapped
             // caption is what pushed the figure up into the hero.
             WidgetCaption(composition.caption, font: .footnote, lines: 1)
@@ -88,8 +147,6 @@ struct WidgetSmallLayout: View {
                 WidgetActionLabel(action, style: composition.actionStyle, fullWidth: true)
             }
         }
-        .padding(WidgetLayoutMetrics.contentMargin)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 }
 
@@ -102,57 +159,21 @@ struct WidgetMediumLayout: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: WidgetLayoutMetrics.mediumSpacing) {
-            VStack(alignment: .leading, spacing: WidgetLayoutMetrics.spacing) {
-                WidgetHeader(symbolName: composition.headerSymbolName)
-
-                WidgetHeadline(composition.headlineParts, size: WidgetLayoutMetrics.mediumHeadlineSize, relativeTo: .largeTitle)
-                WidgetCaption(composition.caption, font: .body, lines: 2)
-
-                if let detail = composition.detail {
-                    Label {
-                        Text(detail.text)
-                            .foregroundStyle(.secondary)
-                            .minimumScaleFactor(WidgetLayoutMetrics.lineScale)
-                            .lineLimit(1)
-                    } icon: {
-                        // Grey in the concept, not accent: the figure above it owns
-                        // the accent, and a second accent glyph would compete with it.
-                        Image(systemName: detail.symbolName)
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
-                    }
-                    .font(.subheadline)
-                }
-
-                if let progress = composition.progress {
-                    WidgetProgressBar(value: progress)
-                }
-
-                Spacer(minLength: 0)
-
-                if let footnote = composition.footnote {
-                    Divider()
-                    WidgetFootnote(footnote)
-                }
-
-                // Concept №3: the action is a line of its own under the bar, in the
-                // text column. The capsule of concept №1 lives under the hero instead.
-                if let action = composition.actionTitle, composition.actionStyle == .plain {
-                    WidgetActionLabel(action, style: .plain)
-                }
+            // 155 pt tall on a mini against 170 on a Pro Max: the column gives up the
+            // caption's second line, then the detail, then a step of the figure, before
+            // anything runs off an edge.
+            ViewThatFits(in: .vertical) {
+                textColumn(captionLines: 2, showsDetail: true, headline: WidgetLayoutMetrics.mediumHeadlineSize)
+                textColumn(captionLines: 1, showsDetail: true, headline: WidgetLayoutMetrics.mediumHeadlineSize)
+                textColumn(captionLines: 1, showsDetail: false, headline: WidgetLayoutMetrics.mediumHeadlineSize)
+                textColumn(captionLines: 1, showsDetail: false, headline: WidgetLayoutMetrics.mediumHeadlineCompactSize)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             if showsHero || showsPill {
-                VStack(alignment: .trailing, spacing: WidgetLayoutMetrics.spacing) {
-                    if showsHero, let hero = composition.hero {
-                        WidgetHeroImage(scene: hero, size: WidgetLayoutMetrics.mediumHero)
-                    }
-                    Spacer(minLength: 0)
-                    if showsPill, let action = composition.actionTitle {
-                        WidgetActionLabel(action, style: .pill)
-                            .padding(.bottom, WidgetLayoutMetrics.pillBottomInset)
-                    }
+                ViewThatFits(in: .vertical) {
+                    heroColumn(heroSize: WidgetLayoutMetrics.mediumHero)
+                    heroColumn(heroSize: WidgetLayoutMetrics.mediumHeroCompact)
                 }
                 // The column is the widget's full height, so the capsule lands at the
                 // bottom whatever the text column beside it measures.
@@ -161,6 +182,61 @@ struct WidgetMediumLayout: View {
         }
         .padding(WidgetLayoutMetrics.contentMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+
+    private func textColumn(captionLines: Int, showsDetail: Bool, headline: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: WidgetLayoutMetrics.spacing) {
+            WidgetHeader(symbolName: composition.headerSymbolName)
+
+            WidgetHeadline(composition.headlineParts, size: headline, relativeTo: .largeTitle)
+            WidgetCaption(composition.caption, font: .body, lines: captionLines)
+
+            if showsDetail, let detail = composition.detail {
+                Label {
+                    Text(detail.text)
+                        .foregroundStyle(.secondary)
+                        .minimumScaleFactor(WidgetLayoutMetrics.lineScale)
+                        .lineLimit(1)
+                } icon: {
+                    // Grey in the concept, not accent: the figure above it owns
+                    // the accent, and a second accent glyph would compete with it.
+                    Image(systemName: detail.symbolName)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                .font(.subheadline)
+            }
+
+            if let progress = composition.progress {
+                WidgetProgressBar(value: progress)
+            }
+
+            Spacer(minLength: 0)
+
+            if let footnote = composition.footnote {
+                Divider()
+                WidgetFootnote(footnote)
+            }
+
+            // Concept №3: the action is a line of its own under the bar, in the
+            // text column. The capsule of concept №1 lives under the hero instead.
+            if let action = composition.actionTitle, composition.actionStyle == .plain {
+                WidgetActionLabel(action, style: .plain)
+            }
+        }
+    }
+
+    private func heroColumn(heroSize: CGFloat) -> some View {
+        VStack(alignment: .trailing, spacing: WidgetLayoutMetrics.spacing) {
+            if showsHero, let hero = composition.hero {
+                WidgetHeroImage(scene: hero, size: heroSize)
+            }
+            Spacer(minLength: 0)
+            if showsPill, let action = composition.actionTitle {
+                WidgetActionLabel(action, style: .pill)
+                    .padding(.bottom, WidgetLayoutMetrics.pillBottomInset)
+            }
+        }
     }
 
     private var showsHero: Bool {
@@ -376,14 +452,24 @@ private struct WidgetProgressBar: View {
                 Capsule().fill(.fill.secondary)
                 Capsule()
                     .fill(Color.widgetAccent)
-                    .frame(width: proxy.size.width * min(max(value, 0), 1))
+                    .frame(width: fillWidth(in: proxy.size))
                     .widgetAccentable()
             }
+            .clipShape(Capsule())
         }
         .frame(height: WidgetLayoutMetrics.progressHeight)
         // The percentage is already spelled out as "18 of 30" in the headline and
         // named in the widget's own accessibility label.
         .accessibilityHidden(true)
+    }
+
+    /// Never narrower than the bar is tall once anything is reviewed: a capsule thinner
+    /// than its height pinches into a sliver — «2 of 76» is 3 pt of a 12 pt bar — where
+    /// the concept draws the track's own rounded end, filled.
+    private func fillWidth(in size: CGSize) -> CGFloat {
+        let fraction = min(max(value, 0), 1)
+        guard fraction > 0 else { return 0 }
+        return min(max(size.width * fraction, size.height), size.width)
     }
 }
 

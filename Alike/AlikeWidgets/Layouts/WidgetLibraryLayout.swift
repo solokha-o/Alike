@@ -18,6 +18,8 @@ enum WidgetLibraryMetrics {
     /// into the header from the top-right the way the concept has it.
     static let hero: CGFloat = 70
     static let heroPeek: CGFloat = 48
+    /// The whole illustration on a header that has dropped its wordmark to fit a mini.
+    static let heroCompact: CGFloat = 34
     static let rowSpacing: CGFloat = 8
     static let stackSpacing: CGFloat = 6
     static let symbolWidth: CGFloat = 32
@@ -33,8 +35,19 @@ struct WidgetLibraryLayout: View {
     let composition: WidgetLibraryComposition
 
     var body: some View {
+        // A mini's medium widget is 15 pt shorter than a Pro Max's; the header gives up
+        // the wordmark and some of the peek before the rows or the footer run off an edge.
+        ViewThatFits(in: .vertical) {
+            content(compactHeader: false)
+            content(compactHeader: true)
+        }
+        .padding(WidgetLayoutMetrics.contentMargin)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+
+    private func content(compactHeader: Bool) -> some View {
         VStack(alignment: .leading, spacing: WidgetLibraryMetrics.stackSpacing) {
-            header
+            header(compact: compactHeader)
 
             if let caption = composition.caption {
                 Divider()
@@ -66,18 +79,15 @@ struct WidgetLibraryLayout: View {
                 }
             }
         }
-        .padding(WidgetLayoutMetrics.contentMargin)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 
-    @ViewBuilder
-    private var header: some View {
+    private func header(compact: Bool) -> some View {
         HStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 0) {
                 // At accessibility sizes the three rows need every point there is, so
                 // the decoration goes rather than the figures shrinking further — same
                 // trade the status layouts make.
-                if !dynamicTypeSize.isAccessibilitySize {
+                if !compact, !dynamicTypeSize.isAccessibilitySize {
                     WidgetWordmark(style: .accent)
                 }
                 Text(WidgetL10n.Widget.libraryTitle)
@@ -88,11 +98,17 @@ struct WidgetLibraryLayout: View {
             }
             Spacer(minLength: 0)
             if let hero = composition.hero, !dynamicTypeSize.isAccessibilitySize {
-                // The scene is taller than the header; the header's bottom edge crops it,
-                // so the character leans in from the corner rather than sitting in a box.
-                WidgetHeroImage(scene: hero, size: WidgetLibraryMetrics.hero)
-                    .frame(height: WidgetLibraryMetrics.heroPeek, alignment: .top)
-                    .clipped()
+                if compact {
+                    // Too short a header to crop into: cropped this far the character is
+                    // only a head, so it is drawn whole at the header's height instead.
+                    WidgetHeroImage(scene: hero, size: WidgetLibraryMetrics.heroCompact)
+                } else {
+                    // The scene is taller than the header; the header's bottom edge crops it,
+                    // so the character leans in from the corner rather than sitting in a box.
+                    WidgetHeroImage(scene: hero, size: WidgetLibraryMetrics.hero)
+                        .frame(height: WidgetLibraryMetrics.heroPeek, alignment: .top)
+                        .clipped()
+                }
             }
         }
     }
