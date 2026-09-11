@@ -29,6 +29,9 @@ struct AlikeLibraryWidget: Widget {
         // Three rows with a figure and a chevron each need the width. There is no small
         // version of this composition — a small one would be the status widget.
         .supportedFamilies([.systemMedium])
+        // The layouts carry their own `WidgetLayoutMetrics.contentMargin`: the concept
+        // sits closer to the edge than WidgetKit's default margins allow.
+        .contentMarginsDisabled()
     }
 }
 

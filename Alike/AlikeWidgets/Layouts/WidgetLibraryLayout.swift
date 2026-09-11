@@ -66,6 +66,7 @@ struct WidgetLibraryLayout: View {
                 }
             }
         }
+        .padding(WidgetLayoutMetrics.contentMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 

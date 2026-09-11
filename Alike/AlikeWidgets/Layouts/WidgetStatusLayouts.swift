@@ -16,9 +16,13 @@ import WidgetSupport
 enum WidgetLayoutMetrics {
     /// The illustration on the small layout, top-right beside the wordmark.
     static let smallHero: CGFloat = 62
-    /// The illustration on the medium layout: the column height after the container's
-    /// own padding, which is what "fills the right column" comes to on a phone.
-    static let mediumHero: CGFloat = 134
+    /// The illustration on the medium layout: what is left of the column after the
+    /// container's own padding, the capsule and its inset — the column is 138 pt on a
+    /// phone, and a hero that ignores the capsule pushes the wordmark into the top edge.
+    static let mediumHero: CGFloat = 108
+    /// The layouts' own margin, in place of the container's: the concept sits its
+    /// content closer to the edge than WidgetKit's default, and the hero needs the room.
+    static let contentMargin: CGFloat = 12
     static let spacing: CGFloat = 4
     static let mediumSpacing: CGFloat = 12
     static let progressHeight: CGFloat = 12
@@ -33,6 +37,9 @@ enum WidgetLayoutMetrics {
     static let mediumHeadlineSize: CGFloat = 44
     static let pillHorizontalPadding: CGFloat = 14
     static let pillVerticalPadding: CGFloat = 5
+    /// The capsule under the hero sits this much above the container's own padding:
+    /// in the concept it floats clear of the bottom edge rather than resting on it.
+    static let pillBottomInset: CGFloat = 4
     /// The caption and the detail line may shrink this far before they truncate: the
     /// column beside the hero is narrow, and «24 групи схожих фото» has to fit on one line.
     static let lineScale: CGFloat = 0.8
@@ -81,6 +88,7 @@ struct WidgetSmallLayout: View {
                 WidgetActionLabel(action, style: composition.actionStyle, fullWidth: true)
             }
         }
+        .padding(WidgetLayoutMetrics.contentMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 }
@@ -143,10 +151,15 @@ struct WidgetMediumLayout: View {
                     Spacer(minLength: 0)
                     if showsPill, let action = composition.actionTitle {
                         WidgetActionLabel(action, style: .pill)
+                            .padding(.bottom, WidgetLayoutMetrics.pillBottomInset)
                     }
                 }
+                // The column is the widget's full height, so the capsule lands at the
+                // bottom whatever the text column beside it measures.
+                .frame(maxHeight: .infinity)
             }
         }
+        .padding(WidgetLayoutMetrics.contentMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 
