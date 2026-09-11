@@ -91,37 +91,47 @@ final class CleanupWidgetEntryTests: XCTestCase {
     private func mustDefer(
         _ resolution: CleanupWidgetEntry.Resolution,
         isScreenOwned: Bool = false,
-        source: PremiumEntitlementSource,
+        isSettled: Bool,
         hasAccess: Bool
     ) -> Bool {
         CleanupWidgetEntry.mustDefer(
             resolution,
             isScreenOwned: isScreenOwned,
-            entitlementSource: source,
+            isEntitlementSettled: isSettled,
             hasAccess: { _ in hasAccess }
         )
     }
 
-    /// Cold launch, no cache: a Premium account reads as locked until StoreKit answers.
-    /// Acting then would sell it a paywall for something it owns, and clear the intent.
-    func testALockedCategoryWaitsWhileEntitlementIsUnknown() {
-        XCTAssertTrue(mustDefer(.openCategory(summary(.screenshots)), source: .unknown, hasAccess: false))
+    /// Cold launch: whether the cache is empty or holds an expired record for a
+    /// subscription renewed since, a Premium account reads as locked until the first
+    /// check finishes. Acting then would sell it a paywall for something it owns.
+    func testALockedCategoryWaitsUntilTheFirstEntitlementCheckFinishes() {
+        XCTAssertTrue(mustDefer(.openCategory(summary(.screenshots)), isSettled: false, hasAccess: false))
     }
 
-    /// Once entitlement is known, locked means locked: the paywall is the right answer.
-    func testALockedCategoryOnAKnownEntitlementGoesToItsGate() {
-        for source in [PremiumEntitlementSource.cached, .verified, .stale] {
-            XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), source: source, hasAccess: false), "\(source)")
-        }
+    /// The sequence the review asked about: expired Premium cache, then StoreKit
+    /// confirms an active subscription. The entry waits through the cache and opens
+    /// the list — no paywall — once the check settles with access.
+    func testAnExpiredPremiumCacheThenVerifiedAccessOpensTheCategory() {
+        let resolution = CleanupWidgetEntry.Resolution.openCategory(summary(.screenshots))
+
+        XCTAssertTrue(mustDefer(resolution, isSettled: false, hasAccess: false), "acted on the expired cache")
+        XCTAssertFalse(mustDefer(resolution, isSettled: true, hasAccess: true))
     }
 
-    func testAnOpenCategoryDoesNotWaitForEntitlement() {
-        XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), source: .unknown, hasAccess: true))
+    /// Once the check is done — including a failed or offline one — locked means
+    /// locked, and the paywall is the right answer.
+    func testALockedCategoryAfterTheCheckGoesToItsGate() {
+        XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), isSettled: true, hasAccess: false))
     }
 
-    func testUngatedResolutionsDoNotWaitForEntitlement() {
-        XCTAssertFalse(mustDefer(.scrollTo("a"), source: .unknown, hasAccess: false))
-        XCTAssertFalse(mustDefer(.stayOnRoot, source: .unknown, hasAccess: false))
+    func testAnOpenCategoryDoesNotWaitForTheCheck() {
+        XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), isSettled: false, hasAccess: true))
+    }
+
+    func testUngatedResolutionsDoNotWaitForTheCheck() {
+        XCTAssertFalse(mustDefer(.scrollTo("a"), isSettled: false, hasAccess: false))
+        XCTAssertFalse(mustDefer(.stayOnRoot, isSettled: false, hasAccess: false))
     }
 
     /// Returning to the app with a list or paywall already up: the tap waits for the
@@ -132,7 +142,7 @@ final class CleanupWidgetEntryTests: XCTestCase {
         ]
         for resolution in resolutions {
             XCTAssertTrue(
-                mustDefer(resolution, isScreenOwned: true, source: .verified, hasAccess: true),
+                mustDefer(resolution, isScreenOwned: true, isSettled: true, hasAccess: true),
                 "\(resolution)"
             )
         }

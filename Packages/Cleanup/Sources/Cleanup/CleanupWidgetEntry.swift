@@ -55,18 +55,19 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
     /// - Another surface owns the screen. Acting under a sheet either does nothing
     ///   visible or fights the sheet already up; the entry is kept and followed once
     ///   that sheet closes.
-    /// - The category is locked *only because* entitlement is not known yet. On a cold
-    ///   launch with no cached state, a Premium account reads as free until StoreKit
-    ///   answers; acting then sends it to a paywall for something it already owns.
-    ///   A category that is open, or locked on a known entitlement, does not wait.
+    /// - The category is locked, and the launch's first entitlement check has not
+    ///   finished. Until it does, "locked" may be a cache StoreKit is about to overturn:
+    ///   nothing cached yet, or an expired record for a subscription renewed since.
+    ///   Acting then sends a Premium account to a paywall for something it owns.
+    ///   A category that is open, or locked after the check, does not wait.
     public static func mustDefer(
         _ resolution: Resolution,
         isScreenOwned: Bool,
-        entitlementSource: PremiumEntitlementSource,
+        isEntitlementSettled: Bool,
         hasAccess: (CleanupCategoryKind) -> Bool
     ) -> Bool {
         if isScreenOwned { return true }
         guard case let .openCategory(summary) = resolution else { return false }
-        return entitlementSource == .unknown && !hasAccess(summary.kind)
+        return !isEntitlementSettled && !hasAccess(summary.kind)
     }
 }

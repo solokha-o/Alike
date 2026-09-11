@@ -284,10 +284,9 @@ public struct CleanupView: View {
         // A deferred entry is picked back up when whatever held it resolves: the sheet
         // on screen closes, or StoreKit says what the account is entitled to.
         .onChange(of: isScreenOwned) { _, _ in followPendingWidgetEntry() }
-        .onChange(of: premiumAccess.entitlementState.source) { _, _ in followPendingWidgetEntry() }
-        // A deferred tap lives for one foreground session. Entitlement can stay unknown
-        // (offline, nothing cached), and a paywall surfacing on a later resume, long
-        // after the tap, would read as the app acting on its own.
+        .onChange(of: premiumAccess.isEntitlementSettled) { _, _ in followPendingWidgetEntry() }
+        // A deferred tap lives for one foreground session: a paywall surfacing on a
+        // later resume, long after the tap, would read as the app acting on its own.
         .onChange(of: scenePhase) { _, phase in
             if phase == .background { pendingWidgetEntry = nil }
         }
@@ -595,7 +594,7 @@ public struct CleanupView: View {
         guard !CleanupWidgetEntry.mustDefer(
             resolution,
             isScreenOwned: isScreenOwned,
-            entitlementSource: premiumAccess.entitlementState.source,
+            isEntitlementSettled: premiumAccess.isEntitlementSettled,
             hasAccess: { premiumAccess.hasAccess(to: $0.premiumFeature) }
         ) else { return }
 
