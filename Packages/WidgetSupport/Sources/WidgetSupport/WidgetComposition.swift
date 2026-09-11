@@ -45,6 +45,13 @@ public struct WidgetDetailLine: Equatable, Sendable {
     }
 }
 
+/// How the action line is drawn, which the concept settles per composition: a capsule under
+/// the hero for «Переглянути», a bare accent line under the progress bar for «Продовжити».
+public enum WidgetActionStyle: Sendable {
+    case pill
+    case plain
+}
+
 /// Everything a widget layout needs, already decided.
 ///
 /// The views live in the extension target, which has no test action, so they are kept
@@ -75,6 +82,7 @@ public struct WidgetComposition: Equatable, Sendable {
     /// What opening the app leads to, as a label rather than a control — a widget tap
     /// opens the app; nothing here is a button.
     public let actionTitle: String?
+    public let actionStyle: WidgetActionStyle
     /// Reviewed groups over total groups, or `nil` when there is no real fraction.
     public let progress: Double?
     public let destination: WidgetDestination
@@ -94,6 +102,7 @@ public struct WidgetComposition: Equatable, Sendable {
         detail: WidgetDetailLine? = nil,
         footnote: String?,
         actionTitle: String?,
+        actionStyle: WidgetActionStyle = .pill,
         progress: Double?,
         destination: WidgetDestination,
         accessibilityLabel: String,
@@ -108,6 +117,7 @@ public struct WidgetComposition: Equatable, Sendable {
         self.detail = detail
         self.footnote = footnote
         self.actionTitle = actionTitle
+        self.actionStyle = actionStyle
         self.progress = progress
         self.destination = destination
         self.accessibilityLabel = accessibilityLabel
@@ -279,6 +289,8 @@ private extension WidgetPresentation {
             caption: caption,
             footnote: footnote,
             action: WidgetL10n.Action.continueReview,
+            // Concept №3 draws this as a bare line under the bar, not as №1's capsule.
+            actionStyle: .plain,
             progress: fraction,
             destination: destination,
             hint: WidgetL10n.Accessibility.resumeReview
@@ -293,6 +305,7 @@ private extension WidgetPresentation {
         detail: WidgetDetailLine? = nil,
         footnote: String?,
         action: String?,
+        actionStyle: WidgetActionStyle = .pill,
         progress: Double? = nil,
         destination: WidgetDestination,
         hint: String = WidgetL10n.Accessibility.openCleanup
@@ -307,6 +320,7 @@ private extension WidgetPresentation {
             detail: detail,
             footnote: footnote,
             actionTitle: action,
+            actionStyle: actionStyle,
             progress: progress,
             destination: destination,
             accessibilityLabel: accessibilityLabel(

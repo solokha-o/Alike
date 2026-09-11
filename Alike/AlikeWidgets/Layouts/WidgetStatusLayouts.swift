@@ -78,7 +78,7 @@ struct WidgetSmallLayout: View {
             } else if let action = composition.actionTitle {
                 // Edge to edge on small, as the concept draws it: the capsule is the
                 // whole bottom row, not a chip in its corner.
-                WidgetActionLabel(action, fullWidth: true)
+                WidgetActionLabel(action, style: composition.actionStyle, fullWidth: true)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -126,17 +126,23 @@ struct WidgetMediumLayout: View {
                     Divider()
                     WidgetFootnote(footnote)
                 }
+
+                // Concept №3: the action is a line of its own under the bar, in the
+                // text column. The capsule of concept №1 lives under the hero instead.
+                if let action = composition.actionTitle, composition.actionStyle == .plain {
+                    WidgetActionLabel(action, style: .plain)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if showsHero || composition.actionTitle != nil {
+            if showsHero || showsPill {
                 VStack(alignment: .trailing, spacing: WidgetLayoutMetrics.spacing) {
                     if showsHero, let hero = composition.hero {
                         WidgetHeroImage(scene: hero, size: WidgetLayoutMetrics.mediumHero)
                     }
                     Spacer(minLength: 0)
-                    if let action = composition.actionTitle {
-                        WidgetActionLabel(action)
+                    if showsPill, let action = composition.actionTitle {
+                        WidgetActionLabel(action, style: .pill)
                     }
                 }
             }
@@ -146,6 +152,10 @@ struct WidgetMediumLayout: View {
 
     private var showsHero: Bool {
         composition.hero != nil && !dynamicTypeSize.isAccessibilitySize
+    }
+
+    private var showsPill: Bool {
+        composition.actionTitle != nil && composition.actionStyle == .pill
     }
 }
 
@@ -285,19 +295,22 @@ private struct WidgetFootnote: View {
     }
 }
 
-/// What a tap leads to, drawn as the concept's capsule — a label, not a control: the
-/// widget is tappable as a whole and nothing here is a button.
+/// What a tap leads to — a label, not a control: the widget is tappable as a whole and
+/// nothing here is a button. Drawn as concept №1's capsule or concept №3's bare line,
+/// whichever the composition decided.
 struct WidgetActionLabel: View {
     let title: String
+    let style: WidgetActionStyle
     let fullWidth: Bool
 
-    init(_ title: String, fullWidth: Bool = false) {
+    init(_ title: String, style: WidgetActionStyle, fullWidth: Bool = false) {
         self.title = title
+        self.style = style
         self.fullWidth = fullWidth
     }
 
     var body: some View {
-        HStack(spacing: WidgetLayoutMetrics.spacing) {
+        let line = HStack(spacing: WidgetLayoutMetrics.spacing) {
             Text(title)
                 .lineLimit(1)
             Image(systemName: "chevron.forward")
@@ -305,11 +318,19 @@ struct WidgetActionLabel: View {
         }
         .font(.callout.weight(.semibold))
         .foregroundStyle(Color.widgetAccent)
-        .frame(maxWidth: fullWidth ? .infinity : nil)
-        .padding(.horizontal, WidgetLayoutMetrics.pillHorizontalPadding)
-        .padding(.vertical, WidgetLayoutMetrics.pillVerticalPadding)
-        .background(Color.widgetAccent.opacity(WidgetLayoutMetrics.pillFillOpacity), in: Capsule())
-        .widgetAccentable()
+
+        switch style {
+        case .pill:
+            line
+                .frame(maxWidth: fullWidth ? .infinity : nil)
+                .padding(.horizontal, WidgetLayoutMetrics.pillHorizontalPadding)
+                .padding(.vertical, WidgetLayoutMetrics.pillVerticalPadding)
+                .background(Color.widgetAccent.opacity(WidgetLayoutMetrics.pillFillOpacity), in: Capsule())
+                .widgetAccentable()
+        case .plain:
+            line
+                .widgetAccentable()
+        }
     }
 }
 

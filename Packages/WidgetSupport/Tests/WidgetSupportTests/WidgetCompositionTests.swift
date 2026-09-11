@@ -151,6 +151,18 @@ struct WidgetCompositionTests {
         #expect(composition(.noAccess(.denied), family).actionTitle == nil)
     }
 
+    /// Concept №1 draws its action as a capsule, concept №3 as a bare line under the
+    /// progress bar; which one is the composition's call, not the layout's.
+    @Test("the resume action is a plain line; every other action is a pill", arguments: families)
+    func actionStylePerConcept(family: WidgetLayoutFamily) {
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
+
+        #expect(composition(.resumeReview(progress: progress, isStale: false), family).actionStyle == .plain)
+        #expect(composition(.hasSuggestions(bytes: 1, clusterCount: 1, scannedAt: nil, isStale: false), family).actionStyle == .pill)
+        #expect(composition(.libraryChanged(bytes: 1, scannedAt: nil), family).actionStyle == .pill)
+        #expect(composition(.neverScanned, family).actionStyle == .pill)
+    }
+
     /// A library that changed since the scan makes its figures historical whatever the
     /// staleness clock says, so the date travels with them regardless.
     @Test("a changed library dates its figures even when they are not yet stale", arguments: families)
