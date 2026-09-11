@@ -71,14 +71,41 @@ public enum WidgetL10n {
         public static var scan: String { WidgetL10n.string("widgetsupport.action.scan") }
     }
 
+    /// The three category lines of the library overview.
+    public enum Library {
+        /// Names the clusters, which are counted in groups — `Status.groups` supplies
+        /// the figure. There is no "similar" cleanup category to borrow a title from.
+        public static var similar: String { WidgetL10n.string("widgetsupport.library.similar") }
+        public static var screenshots: String { WidgetL10n.string("widgetsupport.library.screenshots") }
+        public static var blurred: String { WidgetL10n.string("widgetsupport.library.blurred") }
+
+        /// "86 photos" — individual photos, which is not the unit the similar row uses.
+        public static func photos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            WidgetL10n.plural("widgetsupport.library.photos", count, bundle: bundle, locale: locale)
+        }
+
+        /// Read out after a locked row's figure. The lock glyph carries this on screen;
+        /// without the word, VoiceOver would announce a row that opens a paywall exactly
+        /// like one that opens a list.
+        public static var locked: String { WidgetL10n.string("widgetsupport.library.locked") }
+    }
+
     public enum Widget {
         public static var displayName: String { WidgetL10n.string("widgetsupport.widget.displayName") }
         public static var description: String { WidgetL10n.string("widgetsupport.widget.description") }
+
+        /// The gallery lists both widgets side by side, so this cannot be "Alike" too.
+        public static var libraryDisplayName: String { WidgetL10n.string("widgetsupport.widget.libraryDisplayName") }
+        public static var libraryDescription: String { WidgetL10n.string("widgetsupport.widget.libraryDescription") }
     }
 
     public enum Accessibility {
         public static var openCleanup: String { WidgetL10n.string("widgetsupport.accessibility.openCleanup") }
         public static var resumeReview: String { WidgetL10n.string("widgetsupport.accessibility.resumeReview") }
+        public static var openList: String { WidgetL10n.string("widgetsupport.accessibility.openList") }
+        /// A locked row does not open the list its label names, and the hint is where
+        /// that is said before the tap rather than after it.
+        public static var unlockCategory: String { WidgetL10n.string("widgetsupport.accessibility.unlockCategory") }
     }
 }
 

@@ -95,6 +95,11 @@ public struct PremiumEntitlementState: Codable, Equatable, Sendable {
 @MainActor
 public protocol PremiumAccessControlling: Sendable {
     var entitlementState: PremiumEntitlementState { get }
+    /// Whether the first entitlement check of this launch has finished, successfully
+    /// or not. Until then `entitlementState` may be a cache that StoreKit is about to
+    /// overturn — an expired record for a subscription that has since renewed reads as
+    /// free — so a "locked" answer is provisional.
+    var isEntitlementSettled: Bool { get }
     func access(
         to feature: PremiumFeature,
         context: PremiumAccessContext
@@ -102,6 +107,9 @@ public protocol PremiumAccessControlling: Sendable {
 }
 
 public extension PremiumAccessControlling {
+    /// Controllers with fixed access have nothing to wait for.
+    var isEntitlementSettled: Bool { true }
+
     func access(to feature: PremiumFeature) -> PremiumAccessDecision {
         access(to: feature, context: .none)
     }

@@ -5,6 +5,7 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
+import Cleanup
 import SwiftUI
 
 /// Manages tab navigation and state
@@ -38,6 +39,10 @@ final class TabManager {
     var selectedTab: Tab = .scanner
     var shouldStartScan = false
     var needsRescan = false
+    /// Where inside cleanup something outside the app asked to land — the same shape of
+    /// carried intent as `shouldStartScan`, which `ScannerView` already consumes as a
+    /// binding. `CleanupView` clears it once it has acted on it.
+    var pendingCleanupEntry: CleanupWidgetEntry?
     
     // MARK: - Actions
     func navigateToScanner(andStartScan: Bool = false) {
@@ -47,8 +52,13 @@ final class TabManager {
         }
     }
 
-    func navigateToCleanup() {
+    /// `entry` defaults to `nil`, so the existing no-argument call sites are unchanged
+    /// and still mean "just show the tab".
+    func navigateToCleanup(entry: CleanupWidgetEntry? = nil) {
         selectedTab = .cleanup
+        if let entry {
+            pendingCleanupEntry = entry
+        }
     }
     
     func requestRescan() {

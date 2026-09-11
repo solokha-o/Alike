@@ -30,7 +30,9 @@ final class WidgetSnapshotPublisher {
     init(
         store: (any WidgetSnapshotWriting)? = WidgetSnapshotStore(),
         reloadTimelines: @escaping @Sendable () -> Void = {
-            WidgetCenter.shared.reloadTimelines(ofKind: WidgetSnapshotPublisher.widgetKind)
+            for kind in WidgetSnapshotPublisher.widgetKinds {
+                WidgetCenter.shared.reloadTimelines(ofKind: kind)
+            }
         },
         now: @escaping () -> Date = Date.init
     ) {
@@ -39,10 +41,16 @@ final class WidgetSnapshotPublisher {
         self.now = now
     }
 
-    /// Kept in sync by hand with `AlikeStatusWidget.kind` — the app target and the
-    /// extension target share no code that could hold it, since `WidgetSupport` has no
-    /// WidgetKit dependency.
+    /// Kept in sync by hand with `AlikeStatusWidget.kind` and `AlikeLibraryWidget.kind`
+    /// — the app target and the extension target share no code that could hold them,
+    /// since `WidgetSupport` has no WidgetKit dependency.
+    ///
+    /// Listed rather than reloaded with `reloadAllTimelines()`: both widgets read the
+    /// one snapshot this publisher writes, and naming them is what keeps adding a third
+    /// widget a decision instead of an accident.
     nonisolated static let widgetKind = "AlikeStatusWidget"
+    nonisolated static let libraryWidgetKind = "AlikeLibraryWidget"
+    nonisolated static let widgetKinds = [widgetKind, libraryWidgetKind]
 
     func publish(
         workspace: CleanupWorkspaceModel,

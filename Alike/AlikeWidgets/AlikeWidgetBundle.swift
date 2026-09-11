@@ -8,13 +8,16 @@ import WidgetKit
 
 /// The extension's entry point.
 ///
-/// One widget for now. The compositions from the design spec — "Можна очистити",
-/// "Продовжити перегляд" and "Огляд бібліотеки" — arrive as additional members of
-/// this bundle in the two follow-up cards; this one exists to prove the chain from
-/// the app's snapshot write through to a deep link that lands back in the app.
+/// Two widgets, which is the whole of the chosen set. `AlikeStatusWidget` answers "is
+/// there anything to do" — "Можна очистити" and "Продовжити перегляд", small and medium;
+/// `AlikeLibraryWidget` answers "what is in there" — "Огляд бібліотеки", medium only.
+/// They are separate entries in the gallery because they are separate questions, and
+/// because three per-row `Link`s cannot live under the status widget's single
+/// `widgetURL`.
 @main
 struct AlikeWidgetBundle: WidgetBundle {
     var body: some Widget {
         AlikeStatusWidget()
+        AlikeLibraryWidget()
     }
 }
