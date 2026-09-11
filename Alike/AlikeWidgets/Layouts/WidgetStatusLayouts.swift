@@ -15,27 +15,29 @@ import WidgetSupport
 /// style or relative to one, so Dynamic Type still moves it.
 enum WidgetLayoutMetrics {
     /// The illustration on the small layout, top-right beside the wordmark.
-    static let smallHero: CGFloat = 56
+    static let smallHero: CGFloat = 62
     /// The illustration on the medium layout: the column height after the container's
     /// own padding, which is what "fills the right column" comes to on a phone.
-    static let mediumHero: CGFloat = 120
+    static let mediumHero: CGFloat = 134
     static let spacing: CGFloat = 4
     static let mediumSpacing: CGFloat = 12
-    static let progressHeight: CGFloat = 8
+    static let progressHeight: CGFloat = 12
     /// The headline may shrink this far before it wraps or truncates. The number is the
     /// one thing on the widget that has to stay readable.
     static let headlineScale: CGFloat = 0.6
+    /// How much smaller each candidate headline size is than the one before it.
+    static let headlineStep: CGFloat = 2
     /// The figure's point size on each family; `.title` and `.largeTitle` are the text
     /// styles it scales with.
-    static let smallHeadlineSize: CGFloat = 32
-    static let mediumHeadlineSize: CGFloat = 40
-    static let pillHorizontalPadding: CGFloat = 12
-    static let pillVerticalPadding: CGFloat = 6
+    static let smallHeadlineSize: CGFloat = 36
+    static let mediumHeadlineSize: CGFloat = 44
+    static let pillHorizontalPadding: CGFloat = 14
+    static let pillVerticalPadding: CGFloat = 5
     /// The caption and the detail line may shrink this far before they truncate: the
     /// column beside the hero is narrow, and «24 групи схожих фото» has to fit on one line.
     static let lineScale: CGFloat = 0.8
     /// The tint behind the action pill — the accent at a whisper, as the concept fills it.
-    static let pillFillOpacity: Double = 0.12
+    static let pillFillOpacity: Double = 0.18
 }
 
 /// `systemSmall`: the wordmark, one figure, what it is, and the way in.
@@ -74,7 +76,9 @@ struct WidgetSmallLayout: View {
             if let footnote = composition.footnote {
                 WidgetFootnote(footnote)
             } else if let action = composition.actionTitle {
-                WidgetActionLabel(action)
+                // Edge to edge on small, as the concept draws it: the capsule is the
+                // whole bottom row, not a chip in its corner.
+                WidgetActionLabel(action, fullWidth: true)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -94,7 +98,7 @@ struct WidgetMediumLayout: View {
                 WidgetHeader(symbolName: composition.headerSymbolName)
 
                 WidgetHeadline(composition.headlineParts, size: WidgetLayoutMetrics.mediumHeadlineSize, relativeTo: .largeTitle)
-                WidgetCaption(composition.caption, font: .subheadline, lines: 2)
+                WidgetCaption(composition.caption, font: .body, lines: 2)
 
                 if let detail = composition.detail {
                     Label {
@@ -103,9 +107,11 @@ struct WidgetMediumLayout: View {
                             .minimumScaleFactor(WidgetLayoutMetrics.lineScale)
                             .lineLimit(1)
                     } icon: {
+                        // Grey in the concept, not accent: the figure above it owns
+                        // the accent, and a second accent glyph would compete with it.
                         Image(systemName: detail.symbolName)
-                            .foregroundStyle(Color.widgetAccent)
-                            .widgetAccentable()
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
                     }
                     .font(.subheadline)
                 }
@@ -183,7 +189,7 @@ struct WidgetWordmark: View {
                 .lineLimit(1)
         case .accent:
             Text(WidgetL10n.Widget.displayName)
-                .font(.caption.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.widgetAccent)
                 .widgetAccentable()
                 .lineLimit(1)
@@ -211,14 +217,38 @@ private struct WidgetHeadline: View {
 
     var body: some View {
         if let parts {
-            (Text(parts.accent).foregroundStyle(Color.widgetAccent)
-                + Text(parts.rest.map { " \($0)" } ?? "").foregroundStyle(.primary))
-                .font(.system(size: size, weight: .bold, design: .rounded))
-                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-                .minimumScaleFactor(WidgetLayoutMetrics.headlineScale)
-                .lineLimit(1)
-                .widgetAccentable()
+            // `minimumScaleFactor` does not shrink a line set in two colours — it
+            // truncates «18 of 30 groups» instead — so the step-down is explicit:
+            // the first size that fits on one line, down to `headlineScale`.
+            ViewThatFits(in: .horizontal) {
+                ForEach(candidateSizes, id: \.self) { candidate in
+                    line(parts, size: candidate)
+                }
+            }
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+            .widgetAccentable()
         }
+    }
+
+    private var candidateSizes: [CGFloat] {
+        let floor = (size * WidgetLayoutMetrics.headlineScale).rounded()
+        return stride(from: size, through: floor, by: -WidgetLayoutMetrics.headlineStep).map { $0 }
+    }
+
+    private func line(_ parts: WidgetHeadlineParts, size: CGFloat) -> some View {
+        Text(attributed(parts))
+            .font(.system(size: size, weight: .bold, design: .rounded))
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
+    }
+
+    private func attributed(_ parts: WidgetHeadlineParts) -> AttributedString {
+        var accent = AttributedString(parts.accent)
+        accent.foregroundColor = Color.widgetAccent
+        guard let rest = parts.rest else { return accent }
+        var tail = AttributedString(" \(rest)")
+        tail.foregroundColor = .primary
+        return accent + tail
     }
 }
 
@@ -259,8 +289,12 @@ private struct WidgetFootnote: View {
 /// widget is tappable as a whole and nothing here is a button.
 struct WidgetActionLabel: View {
     let title: String
+    let fullWidth: Bool
 
-    init(_ title: String) { self.title = title }
+    init(_ title: String, fullWidth: Bool = false) {
+        self.title = title
+        self.fullWidth = fullWidth
+    }
 
     var body: some View {
         HStack(spacing: WidgetLayoutMetrics.spacing) {
@@ -269,8 +303,9 @@ struct WidgetActionLabel: View {
             Image(systemName: "chevron.forward")
                 .imageScale(.small)
         }
-        .font(.subheadline.weight(.semibold))
+        .font(.callout.weight(.semibold))
         .foregroundStyle(Color.widgetAccent)
+        .frame(maxWidth: fullWidth ? .infinity : nil)
         .padding(.horizontal, WidgetLayoutMetrics.pillHorizontalPadding)
         .padding(.vertical, WidgetLayoutMetrics.pillVerticalPadding)
         .background(Color.widgetAccent.opacity(WidgetLayoutMetrics.pillFillOpacity), in: Capsule())
@@ -286,14 +321,21 @@ private struct WidgetProgressBar: View {
     let value: Double
 
     var body: some View {
-        ProgressView(value: value)
-            .progressViewStyle(.linear)
-            .tint(Color.widgetAccent)
-            .widgetAccentable()
-            .frame(height: WidgetLayoutMetrics.progressHeight)
-            // The percentage is already spelled out as "18 of 30" in the headline and
-            // named in the widget's own accessibility label.
-            .accessibilityHidden(true)
+        // Drawn by hand rather than `ProgressView(.linear)`: that one is a 4 pt hairline
+        // whatever frame it is given, and the concept's bar is a 12 pt capsule.
+        GeometryReader { proxy in
+            ZStack(alignment: .leading) {
+                Capsule().fill(.fill.secondary)
+                Capsule()
+                    .fill(Color.widgetAccent)
+                    .frame(width: proxy.size.width * min(max(value, 0), 1))
+                    .widgetAccentable()
+            }
+        }
+        .frame(height: WidgetLayoutMetrics.progressHeight)
+        // The percentage is already spelled out as "18 of 30" in the headline and
+        // named in the widget's own accessibility label.
+        .accessibilityHidden(true)
     }
 }
 

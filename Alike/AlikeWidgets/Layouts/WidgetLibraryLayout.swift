@@ -16,11 +16,11 @@ import WidgetSupport
 enum WidgetLibraryMetrics {
     /// The illustration is drawn at this size and cropped to `heroPeek`, so it peeks
     /// into the header from the top-right the way the concept has it.
-    static let hero: CGFloat = 56
-    static let heroPeek: CGFloat = 40
+    static let hero: CGFloat = 70
+    static let heroPeek: CGFloat = 48
     static let rowSpacing: CGFloat = 8
     static let stackSpacing: CGFloat = 6
-    static let symbolWidth: CGFloat = 28
+    static let symbolWidth: CGFloat = 32
     /// The figures may shrink this far before they wrap. A wrapped count on one row and
     /// not on the next is what makes three rows stop reading as a list.
     static let valueScale: CGFloat = 0.7
@@ -80,7 +80,8 @@ struct WidgetLibraryLayout: View {
                     WidgetWordmark(style: .accent)
                 }
                 Text(WidgetL10n.Widget.libraryTitle)
-                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .font(.title3.weight(.bold))
+                    .fontDesign(.rounded)
                     .foregroundStyle(.primary)
                     .lineLimit(1)
             }
@@ -103,14 +104,14 @@ private struct WidgetLibraryRowView: View {
     var body: some View {
         HStack(spacing: WidgetLibraryMetrics.rowSpacing) {
             Image(systemName: row.symbolName)
-                .font(.title3)
+                .font(.title2)
                 .foregroundStyle(Color.widgetAccent)
                 // The elements the tinted home screen should keep bright.
                 .widgetAccentable()
                 .frame(width: WidgetLibraryMetrics.symbolWidth, alignment: .leading)
 
             Text(row.title)
-                .font(.subheadline)
+                .font(.body)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
 
@@ -120,7 +121,7 @@ private struct WidgetLibraryRowView: View {
             // mean *unknown*, and a placeholder digit would read as a measured result.
             if let value = row.value {
                 Text(value)
-                    .font(.subheadline)
+                    .font(.body)
                     .foregroundStyle(.secondary)
                     .minimumScaleFactor(WidgetLibraryMetrics.valueScale)
                     .lineLimit(1)
@@ -130,7 +131,7 @@ private struct WidgetLibraryRowView: View {
             // the snapshot's copy of the entitlement, which is why it never decides the
             // route: the app re-checks the live one on arrival.
             Image(systemName: row.isLocked ? "lock.fill" : "chevron.forward")
-                .font(.caption.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.tertiary)
         }
         .contentShape(.rect)
