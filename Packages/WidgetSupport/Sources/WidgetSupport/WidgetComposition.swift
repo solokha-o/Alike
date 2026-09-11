@@ -11,6 +11,47 @@ public enum WidgetLayoutFamily: String, CaseIterable, Sendable {
     case medium
 }
 
+/// The big figure split the way the concept draws it: the number in the accent colour,
+/// the rest beside it in the text colour — «≈1,8 ГБ» alone, or «18» followed by «із 30».
+///
+/// `WidgetComposition.headline` stays the flat sentence VoiceOver reads; this is the same
+/// text in the two pieces the layout colours differently.
+public struct WidgetHeadlineParts: Equatable, Sendable {
+    public let accent: String
+    public let rest: String?
+
+    public init(accent: String, rest: String? = nil) {
+        self.accent = accent
+        self.rest = rest
+    }
+
+    /// The two pieces as one line, which is what the flat headline carries.
+    public var joined: String {
+        [accent, rest].compactMap { $0 }.joined(separator: " ")
+    }
+}
+
+/// One list line under the figure — «24 групи схожих фото» with its own glyph.
+///
+/// Only the medium layout has the room for it, and it is a line of its own rather than
+/// the footnote: the footnote is reserved for the date of a stale figure.
+public struct WidgetDetailLine: Equatable, Sendable {
+    public let symbolName: String
+    public let text: String
+
+    public init(symbolName: String, text: String) {
+        self.symbolName = symbolName
+        self.text = text
+    }
+}
+
+/// How the action line is drawn, which the concept settles per composition: a capsule under
+/// the hero for «Переглянути», a bare accent line under the progress bar for «Продовжити».
+public enum WidgetActionStyle: Sendable {
+    case pill
+    case plain
+}
+
 /// Everything a widget layout needs, already decided.
 ///
 /// The views live in the extension target, which has no test action, so they are kept
@@ -28,7 +69,12 @@ public struct WidgetComposition: Equatable, Sendable {
     /// snapshot's optionals mean *unknown*, and a fabricated zero would read as a
     /// measured result.
     public let headline: String?
+    /// `headline` in the pieces the layout colours differently, or `nil` when there is
+    /// no figure.
+    public let headlineParts: WidgetHeadlineParts?
     public let caption: String
+    /// The list line under the figure, medium only.
+    public let detail: WidgetDetailLine?
     /// The group count when the figures are current, the date they were measured when
     /// they are not — the scan date for the cleanup states, the session's own date for
     /// a resumed review.
@@ -36,34 +82,47 @@ public struct WidgetComposition: Equatable, Sendable {
     /// What opening the app leads to, as a label rather than a control — a widget tap
     /// opens the app; nothing here is a button.
     public let actionTitle: String?
+    public let actionStyle: WidgetActionStyle
     /// Reviewed groups over total groups, or `nil` when there is no real fraction.
     public let progress: Double?
     public let destination: WidgetDestination
     public let accessibilityLabel: String
     public let accessibilityHint: String
+    /// The glyph drawn beside the wordmark, only for the states that have no figure to
+    /// carry the widget. A state with a headline returns `nil`: the concept puts the
+    /// «Alike» wordmark there, and a glyph next to it would be a second brand mark.
+    public let headerSymbolName: String?
 
     public init(
         hero: WidgetHeroScene?,
         symbolName: String,
         headline: String?,
+        headlineParts: WidgetHeadlineParts? = nil,
         caption: String,
+        detail: WidgetDetailLine? = nil,
         footnote: String?,
         actionTitle: String?,
+        actionStyle: WidgetActionStyle = .pill,
         progress: Double?,
         destination: WidgetDestination,
         accessibilityLabel: String,
-        accessibilityHint: String
+        accessibilityHint: String,
+        headerSymbolName: String? = nil
     ) {
         self.hero = hero
         self.symbolName = symbolName
         self.headline = headline
+        self.headlineParts = headlineParts
         self.caption = caption
+        self.detail = detail
         self.footnote = footnote
         self.actionTitle = actionTitle
+        self.actionStyle = actionStyle
         self.progress = progress
         self.destination = destination
         self.accessibilityLabel = accessibilityLabel
         self.accessibilityHint = accessibilityHint
+        self.headerSymbolName = headerSymbolName
     }
 }
 
@@ -132,16 +191,15 @@ public extension WidgetPresentation {
             return composition(
                 hero: .hasReviews,
                 symbol: "photo.stack",
-                // Verbatim `WidgetSnapshot.estimatedSavingsBytes`. The widget has no
-                // estimate of its own, so it cannot disagree with the scanner screen.
-                headline: bytes.map { WidgetFormatting.byteCount($0) },
+                // Verbatim `WidgetSnapshot.estimatedSavingsBytes`, prefixed «≈» as the
+                // concept spells it. The widget has no estimate of its own, so it
+                // cannot disagree with the scanner screen.
+                headline: bytes.map { WidgetHeadlineParts(accent: WidgetFormatting.approximateByteCount($0)) },
                 caption: WidgetL10n.Status.reclaimable,
-                footnote: suggestionsFootnote(
-                    clusterCount: clusterCount,
-                    scannedAt: scannedAt,
-                    isStale: isStale,
-                    family: family
-                ),
+                detail: detail(clusterCount: clusterCount, family: family),
+                // The count has its own line now; the footnote is the date, and only
+                // once the figure is old enough to need one.
+                footnote: isStale ? scannedAt.map(scannedFootnote) : nil,
                 action: WidgetL10n.Action.review,
                 destination: destination
             )
@@ -150,7 +208,7 @@ public extension WidgetPresentation {
             return composition(
                 hero: .hasReviews,
                 symbol: "arrow.triangle.2.circlepath",
-                headline: bytes.map { WidgetFormatting.byteCount($0) },
+                headline: bytes.map { WidgetHeadlineParts(accent: WidgetFormatting.approximateByteCount($0)) },
                 caption: WidgetL10n.Status.libraryChanged,
                 // The figures are historical by definition here, so the date travels
                 // with them whatever the staleness threshold says.
@@ -185,25 +243,13 @@ private extension WidgetPresentation {
         WidgetL10n.Status.lastReviewed(WidgetFormatting.timestamp(date, timeStyle: .omitted))
     }
 
-    /// The group count while the figures are current, the scan date once they are not.
+    /// «24 групи схожих фото» as a line of its own, medium only.
     ///
-    /// The count is medium's: the small composition is the figure, what it is, and where
-    /// a tap goes, and a second number competing with the first is what makes a small
-    /// widget unreadable. Staleness is the one thing small does not get to drop — a
-    /// figure shown without saying when it was measured reads as today's — so on small
-    /// the date replaces the action line, and on medium it joins the count.
-    static func suggestionsFootnote(
-        clusterCount: Int?,
-        scannedAt: Date?,
-        isStale: Bool,
-        family: WidgetLayoutFamily
-    ) -> String? {
-        let scanned = isStale ? scannedAt.map(scannedFootnote) : nil
-        guard family == .medium else { return scanned }
-
-        guard let groups = clusterCount.map({ WidgetL10n.Status.similarGroups($0) }) else { return scanned }
-        guard let scanned else { return groups }
-        return "\(groups) · \(scanned)"
+    /// The small composition is the figure, what it is, and where a tap goes; a second
+    /// number competing with the first is what makes a small widget unreadable.
+    static func detail(clusterCount: Int?, family: WidgetLayoutFamily) -> WidgetDetailLine? {
+        guard family == .medium, let clusterCount else { return nil }
+        return WidgetDetailLine(symbolName: "photo.stack", text: WidgetL10n.Status.similarGroups(clusterCount))
     }
 
     static func resumeComposition(
@@ -217,27 +263,34 @@ private extension WidgetPresentation {
         // already guards the divide; `nil` here keeps the layout from drawing an empty
         // bar that would read as "nothing reviewed" when the truth is "not known".
         let fraction = progress.totalClusters > 0 ? progress.fraction : nil
-        let headline = progress.totalClusters > 0
-            ? "\(WidgetFormatting.number(progress.reviewedClusters))/\(WidgetFormatting.number(progress.totalClusters))"
+        // «18 із 30» on small, «18 із 30 груп» on medium — the reviewed count in the
+        // accent colour, the total beside it, as the concept draws it.
+        let headline: WidgetHeadlineParts? = progress.totalClusters > 0
+            ? WidgetHeadlineParts(
+                accent: WidgetFormatting.number(progress.reviewedClusters),
+                rest: family == .medium
+                    ? WidgetL10n.Status.ofGroups(progress.totalClusters)
+                    : WidgetL10n.Status.ofTotal(progress.totalClusters)
+            )
             : nil
 
-        // Same split as the cleanup footnote: how many groups are left is medium's line,
-        // small keeps the bar and the way back in. Staleness overrides on both.
-        let footnote: String? = if isStale {
-            reviewedFootnote(progress.updatedAt)
-        } else if family == .medium, progress.totalClusters > 0 {
-            WidgetL10n.Status.groupsRemaining(progress.remainingClusters)
-        } else {
-            nil
-        }
+        // Medium names the groups left under the figure; small, where the total is
+        // already in the headline, says what the figure counts. The footnote is the
+        // session date, and only once it is stale.
+        let caption = family == .medium && progress.totalClusters > 0
+            ? WidgetL10n.Status.groupsRemaining(progress.remainingClusters)
+            : WidgetL10n.Status.groupsReviewed
+        let footnote = isStale ? reviewedFootnote(progress.updatedAt) : nil
 
         return composition(
             hero: .comparisonReview,
             symbol: "rectangle.on.rectangle",
             headline: headline,
-            caption: family == .medium ? WidgetL10n.Status.continueReview : WidgetL10n.Status.groupsReviewed,
+            caption: caption,
             footnote: footnote,
             action: WidgetL10n.Action.continueReview,
+            // Concept №3 draws this as a bare line under the bar, not as №1's capsule.
+            actionStyle: .plain,
             progress: fraction,
             destination: destination,
             hint: WidgetL10n.Accessibility.resumeReview
@@ -247,25 +300,36 @@ private extension WidgetPresentation {
     static func composition(
         hero: WidgetHeroScene?,
         symbol: String,
-        headline: String?,
+        headline: WidgetHeadlineParts?,
         caption: String,
+        detail: WidgetDetailLine? = nil,
         footnote: String?,
         action: String?,
+        actionStyle: WidgetActionStyle = .pill,
         progress: Double? = nil,
         destination: WidgetDestination,
         hint: String = WidgetL10n.Accessibility.openCleanup
     ) -> WidgetComposition {
-        WidgetComposition(
+        let flatHeadline = headline?.joined
+        return WidgetComposition(
             hero: hero,
             symbolName: symbol,
-            headline: headline,
+            headline: flatHeadline,
+            headlineParts: headline,
             caption: caption,
+            detail: detail,
             footnote: footnote,
             actionTitle: action,
+            actionStyle: actionStyle,
             progress: progress,
             destination: destination,
-            accessibilityLabel: accessibilityLabel(headline: headline, caption: caption, footnote: footnote),
-            accessibilityHint: hint
+            accessibilityLabel: accessibilityLabel(
+                headline: flatHeadline, caption: caption, detail: detail?.text, footnote: footnote
+            ),
+            accessibilityHint: hint,
+            // The wordmark takes the header once there is a figure; the glyph is for
+            // the states that have only a sentence.
+            headerSymbolName: headline == nil ? symbol : nil
         )
     }
 
@@ -275,7 +339,7 @@ private extension WidgetPresentation {
     /// how VoiceOver ended up reading a day-old figure as the current one, which
     /// `46f405b` fixed for the one layout that existed then; building the label here
     /// keeps four layouts from each having to remember.
-    static func accessibilityLabel(headline: String?, caption: String, footnote: String?) -> String {
-        [headline, caption, footnote].compactMap { $0 }.joined(separator: ", ")
+    static func accessibilityLabel(headline: String?, caption: String, detail: String?, footnote: String?) -> String {
+        [headline, caption, detail, footnote].compactMap { $0 }.joined(separator: ", ")
     }
 }

@@ -22,6 +22,9 @@ struct AlikeStatusWidget: Widget {
         // were added at. The kind is unchanged, so the app's reload calls still address
         // this widget.
         .supportedFamilies([.systemSmall, .systemMedium])
+        // The layouts carry their own `WidgetLayoutMetrics.contentMargin`: the concept
+        // sits closer to the edge than WidgetKit's default margins allow.
+        .contentMarginsDisabled()
     }
 }
 

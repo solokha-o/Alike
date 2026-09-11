@@ -34,6 +34,14 @@ public enum WidgetFormatting {
         bytes.formatted(.byteCount(style: .file).locale(locale(basedOn: base)))
     }
 
+    /// The byte count prefixed with «≈», the way the concept spells the estimate.
+    ///
+    /// The estimate is a heuristic the scanner screen also shows as an estimate; the
+    /// sign says so on the widget, where there is no sentence around it to.
+    public static func approximateByteCount(_ bytes: Int64, basedOn base: Locale = .current) -> String {
+        "\u{2248}" + byteCount(bytes, basedOn: base)
+    }
+
     /// A whole number spelled the way the rest of the app spells whole numbers.
     public static func number(_ value: Int, basedOn base: Locale = .current) -> String {
         value.formatted(.number.locale(locale(basedOn: base)))
