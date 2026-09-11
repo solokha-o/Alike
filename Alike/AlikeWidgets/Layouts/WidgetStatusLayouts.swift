@@ -229,13 +229,12 @@ struct WidgetWordmark: View {
 /// rest — «із 30 груп» — in the text colour, on one line.
 private struct WidgetHeadline: View {
     let parts: WidgetHeadlineParts?
-    let size: CGFloat
-    let textStyle: Font.TextStyle
+    /// The concept's size at the default text size, scaled with Dynamic Type from there.
+    @ScaledMetric private var size: CGFloat
 
     init(_ parts: WidgetHeadlineParts?, size: CGFloat, relativeTo textStyle: Font.TextStyle) {
         self.parts = parts
-        self.size = size
-        self.textStyle = textStyle
+        _size = ScaledMetric(wrappedValue: size, relativeTo: textStyle)
     }
 
     var body: some View {
@@ -243,10 +242,14 @@ private struct WidgetHeadline: View {
             // `minimumScaleFactor` does not shrink a line set in two colours — it
             // truncates «18 of 30 groups» instead — so the step-down is explicit:
             // the first size that fits on one line, down to `headlineScale`.
+            // When even that is too wide («999 of 1,000 groups» in a medium column),
+            // the last candidate drops the tail and lets the number take the width
+            // it is offered, so nothing runs past the column into the illustration.
             ViewThatFits(in: .horizontal) {
                 ForEach(candidateSizes, id: \.self) { candidate in
                     line(parts, size: candidate)
                 }
+                compact(parts)
             }
             .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             .widgetAccentable()
@@ -263,6 +266,17 @@ private struct WidgetHeadline: View {
             .font(.system(size: size, weight: .bold, design: .rounded))
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: false)
+    }
+
+    /// The number alone, in one colour so `minimumScaleFactor` can shrink it into the
+    /// offered width. VoiceOver still reads the whole headline.
+    private func compact(_ parts: WidgetHeadlineParts) -> some View {
+        Text(parts.accent)
+            .font(.system(size: (size * WidgetLayoutMetrics.headlineScale).rounded(), weight: .bold, design: .rounded))
+            .foregroundStyle(Color.widgetAccent)
+            .lineLimit(1)
+            .minimumScaleFactor(WidgetLayoutMetrics.lineScale)
+            .accessibilityLabel(parts.rest.map { "\(parts.accent) \($0)" } ?? parts.accent)
     }
 
     private func attributed(_ parts: WidgetHeadlineParts) -> AttributedString {
