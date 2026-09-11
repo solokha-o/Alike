@@ -281,6 +281,16 @@ public struct CleanupView: View {
         // already current when the scroll anchor is read off it.
         .onChange(of: pendingWidgetEntry, initial: true) { _, _ in followPendingWidgetEntry() }
         .onChange(of: isContentLoaded) { _, _ in followPendingWidgetEntry() }
+        // A deferred entry is picked back up when whatever held it resolves: the sheet
+        // on screen closes, or StoreKit says what the account is entitled to.
+        .onChange(of: isScreenOwned) { _, _ in followPendingWidgetEntry() }
+        .onChange(of: premiumAccess.entitlementState.source) { _, _ in followPendingWidgetEntry() }
+        // A deferred tap lives for one foreground session. Entitlement can stay unknown
+        // (offline, nothing cached), and a paywall surfacing on a later resume, long
+        // after the tap, would read as the app acting on its own.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background { pendingWidgetEntry = nil }
+        }
     }
 
     private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
@@ -548,6 +558,18 @@ public struct CleanupView: View {
         workspace.contentState != .notLoaded
     }
 
+    /// Whether a sheet or alert of this screen is up, so a widget entry waits for it.
+    ///
+    /// Re-assigning an `Identifiable` sheet item while its sheet is up does not reliably
+    /// swap it, and a list or paywall the user is in is not something a home-screen tap
+    /// should replace.
+    private var isScreenOwned: Bool {
+        presentedCategory != nil
+            || presentedPaywall != nil
+            || isControlsPresented
+            || categoryError != nil
+    }
+
     /// Acts on a place a widget tap asked for, once there is something to act against.
     ///
     /// Deliberately routed through `openCategory` rather than presenting the category
@@ -561,17 +583,25 @@ public struct CleanupView: View {
         // us back here once the categories and clusters are actually loaded.
         guard isContentLoaded else { return }
 
-        pendingWidgetEntry = nil
-
-        // Something already owns the screen. Re-assigning an `Identifiable` sheet item
-        // while its sheet is up does not reliably swap it, and a paywall the user is
-        // reading is not something a stale home-screen tap should replace.
-        guard presentedCategory == nil, presentedPaywall == nil else { return }
-
-        switch entry.resolution(
+        // Resolved against the workspace as it is now, so an entry that waited out a
+        // sheet sees whatever that sheet changed.
+        let resolution = entry.resolution(
             categories: workspace.cleanupCategories,
             orderedClusterIDs: arrangement.orderedIDs
-        ) {
+        )
+
+        // Kept, not dropped: the `isScreenOwned` and entitlement observers bring us
+        // back once a sheet closes or StoreKit answers. See `mustDefer` for why each.
+        guard !CleanupWidgetEntry.mustDefer(
+            resolution,
+            isScreenOwned: isScreenOwned,
+            entitlementSource: premiumAccess.entitlementState.source,
+            hasAccess: { premiumAccess.hasAccess(to: $0.premiumFeature) }
+        ) else { return }
+
+        pendingWidgetEntry = nil
+
+        switch resolution {
         case let .openCategory(summary):
             openCategory(summary)
         case let .scrollTo(id):

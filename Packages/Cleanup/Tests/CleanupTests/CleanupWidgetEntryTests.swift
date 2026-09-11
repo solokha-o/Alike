@@ -85,4 +85,56 @@ final class CleanupWidgetEntryTests: XCTestCase {
 
         XCTAssertEqual(resolution, .stayOnRoot)
     }
+
+    // MARK: - Deferral
+
+    private func mustDefer(
+        _ resolution: CleanupWidgetEntry.Resolution,
+        isScreenOwned: Bool = false,
+        source: PremiumEntitlementSource,
+        hasAccess: Bool
+    ) -> Bool {
+        CleanupWidgetEntry.mustDefer(
+            resolution,
+            isScreenOwned: isScreenOwned,
+            entitlementSource: source,
+            hasAccess: { _ in hasAccess }
+        )
+    }
+
+    /// Cold launch, no cache: a Premium account reads as locked until StoreKit answers.
+    /// Acting then would sell it a paywall for something it owns, and clear the intent.
+    func testALockedCategoryWaitsWhileEntitlementIsUnknown() {
+        XCTAssertTrue(mustDefer(.openCategory(summary(.screenshots)), source: .unknown, hasAccess: false))
+    }
+
+    /// Once entitlement is known, locked means locked: the paywall is the right answer.
+    func testALockedCategoryOnAKnownEntitlementGoesToItsGate() {
+        for source in [PremiumEntitlementSource.cached, .verified, .stale] {
+            XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), source: source, hasAccess: false), "\(source)")
+        }
+    }
+
+    func testAnOpenCategoryDoesNotWaitForEntitlement() {
+        XCTAssertFalse(mustDefer(.openCategory(summary(.screenshots)), source: .unknown, hasAccess: true))
+    }
+
+    func testUngatedResolutionsDoNotWaitForEntitlement() {
+        XCTAssertFalse(mustDefer(.scrollTo("a"), source: .unknown, hasAccess: false))
+        XCTAssertFalse(mustDefer(.stayOnRoot, source: .unknown, hasAccess: false))
+    }
+
+    /// Returning to the app with a list or paywall already up: the tap waits for the
+    /// sheet to close instead of being dropped.
+    func testEveryResolutionWaitsWhileTheScreenIsOwned() {
+        let resolutions: [CleanupWidgetEntry.Resolution] = [
+            .openCategory(summary(.screenshots)), .scrollTo("a"), .stayOnRoot,
+        ]
+        for resolution in resolutions {
+            XCTAssertTrue(
+                mustDefer(resolution, isScreenOwned: true, source: .verified, hasAccess: true),
+                "\(resolution)"
+            )
+        }
+    }
 }

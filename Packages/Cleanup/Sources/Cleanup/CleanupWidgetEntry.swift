@@ -48,4 +48,25 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
             return .openCategory(summary)
         }
     }
+
+    /// Whether a resolved entry has to stay pending rather than be acted on now.
+    ///
+    /// Two reasons to wait, both of which would otherwise lose the tap:
+    /// - Another surface owns the screen. Acting under a sheet either does nothing
+    ///   visible or fights the sheet already up; the entry is kept and followed once
+    ///   that sheet closes.
+    /// - The category is locked *only because* entitlement is not known yet. On a cold
+    ///   launch with no cached state, a Premium account reads as free until StoreKit
+    ///   answers; acting then sends it to a paywall for something it already owns.
+    ///   A category that is open, or locked on a known entitlement, does not wait.
+    public static func mustDefer(
+        _ resolution: Resolution,
+        isScreenOwned: Bool,
+        entitlementSource: PremiumEntitlementSource,
+        hasAccess: (CleanupCategoryKind) -> Bool
+    ) -> Bool {
+        if isScreenOwned { return true }
+        guard case let .openCategory(summary) = resolution else { return false }
+        return entitlementSource == .unknown && !hasAccess(summary.kind)
+    }
 }
