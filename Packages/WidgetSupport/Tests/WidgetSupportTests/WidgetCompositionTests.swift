@@ -24,15 +24,55 @@ struct WidgetCompositionTests {
     // MARK: - The number
 
     /// The widget has no estimate of its own. It prints the snapshot's bytes and nothing
-    /// else, so it cannot end up disagreeing with the scanner screen.
+    /// else — behind the «≈» the concept draws — so it cannot end up disagreeing with the
+    /// scanner screen.
     @Test("the headline is the snapshot's byte count, formatted and not recomputed", arguments: families)
     func headlineEchoesBytes(family: WidgetLayoutFamily) {
         let bytes: Int64 = 1_932_735_283
         let state = WidgetDisplayState.hasSuggestions(
             bytes: bytes, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false
         )
+        let resolved = composition(state, family)
 
-        #expect(composition(state, family).headline == WidgetFormatting.byteCount(bytes))
+        #expect(resolved.headline == WidgetFormatting.approximateByteCount(bytes))
+        #expect(resolved.headline == "\u{2248}" + WidgetFormatting.byteCount(bytes))
+        #expect(resolved.headlineParts == WidgetHeadlineParts(accent: WidgetFormatting.approximateByteCount(bytes)))
+    }
+
+    /// The layout colours the two pieces differently; the flat headline VoiceOver reads
+    /// has to be those same pieces and nothing else.
+    @Test("the flat headline is the joined parts", arguments: families)
+    func headlineIsJoinedParts(family: WidgetLayoutFamily) throws {
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
+        for state in [
+            WidgetDisplayState.hasSuggestions(bytes: 1_000, clusterCount: 24, scannedAt: nil, isStale: false),
+            .libraryChanged(bytes: 1_000, scannedAt: nil),
+            .resumeReview(progress: progress, isStale: false)
+        ] {
+            let resolved = composition(state, family)
+            let parts = try #require(resolved.headlineParts)
+            #expect(resolved.headline == parts.joined, "\(state)")
+        }
+    }
+
+    /// The wordmark takes the header once there is a figure; only the states that have
+    /// nothing but a sentence keep a glyph beside it.
+    @Test("a figure displaces the header glyph; a sentence keeps it", arguments: families)
+    func headerSymbolOnlyWithoutFigure(family: WidgetLayoutFamily) {
+        let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
+        for state in [
+            WidgetDisplayState.hasSuggestions(bytes: 1_000, clusterCount: 24, scannedAt: nil, isStale: false),
+            .libraryChanged(bytes: 1_000, scannedAt: nil),
+            .resumeReview(progress: progress, isStale: false)
+        ] {
+            #expect(composition(state, family).headerSymbolName == nil, "\(state) kept a glyph beside the figure")
+        }
+        for state in [
+            WidgetDisplayState.unavailable, .noAccess(.denied), .neverScanned, .allCaughtUp(scannedAt: nil),
+            .hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false)
+        ] {
+            #expect(composition(state, family).headerSymbolName == composition(state, family).symbolName, "\(state) lost its glyph")
+        }
     }
 
     /// `nil` in the snapshot means unknown, and unknown is not zero. A "0 bytes"
@@ -44,6 +84,7 @@ struct WidgetCompositionTests {
         )
 
         #expect(composition(state, family).headline == nil)
+        #expect(composition(state, family).detail == nil)
         #expect(composition(state, family).footnote == nil)
     }
 
@@ -76,18 +117,21 @@ struct WidgetCompositionTests {
         #expect(footnote.contains(expectedDate))
     }
 
-    /// The count is medium's line. Small carries the figure, what it is, and the way in;
-    /// a second number beside the first is what makes a small widget unreadable.
-    @Test("a fresh medium shows the group count; a fresh small shows the action instead")
-    func freshFootnotePerFamily() throws {
+    /// The count is medium's line, with the glyph the concept gives it. Small carries
+    /// the figure, what it is, and the way in; a second number beside the first is what
+    /// makes a small widget unreadable. A fresh figure has no footnote on either.
+    @Test("a fresh medium lists the group count; a fresh small shows the action instead")
+    func freshDetailPerFamily() throws {
         let state = WidgetDisplayState.hasSuggestions(
             bytes: 1_000, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false
         )
 
-        let medium = try #require(composition(state, .medium).footnote)
-        #expect(medium.contains("24"))
-        #expect(!medium.contains(WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)))
+        let medium = try #require(composition(state, .medium).detail)
+        #expect(medium == WidgetDetailLine(symbolName: "photo.stack", text: WidgetL10n.Status.similarGroups(24)))
+        #expect(composition(state, .medium).footnote == nil)
+        #expect(composition(state, .medium).accessibilityLabel.contains(medium.text))
 
+        #expect(composition(state, .small).detail == nil)
         #expect(composition(state, .small).footnote == nil)
         #expect(composition(state, .small).actionTitle != nil)
     }
@@ -125,7 +169,11 @@ struct WidgetCompositionTests {
         let resolved = composition(.resumeReview(progress: progress, isStale: false), family)
 
         #expect(try #require(resolved.progress) == 0.6)
-        #expect(resolved.headline == "18/30")
+        let parts = try #require(resolved.headlineParts)
+        #expect(parts.accent == WidgetFormatting.number(18))
+        #expect(parts.rest == (family == .medium ? WidgetL10n.Status.ofGroups(30) : WidgetL10n.Status.ofTotal(30)))
+        let rest = try #require(parts.rest)
+        #expect(resolved.headline == "18 \(rest)")
     }
 
     /// A session that has not been sized yet has no fraction — not a zero one. A 0 %
@@ -140,12 +188,17 @@ struct WidgetCompositionTests {
         #expect(resolved.footnote == nil)
     }
 
-    @Test("medium counts the groups left to review; small keeps the bar and the way in")
+    /// The concept's second line on medium is the groups left, not a caption that
+    /// repeats the action; small names what the figure counts, because its total is
+    /// already in the headline.
+    @Test("medium captions the groups left to review; small keeps the bar and the way in")
     func remainingGroups() throws {
         let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
         let state = WidgetDisplayState.resumeReview(progress: progress, isStale: false)
 
-        #expect(try #require(composition(state, .medium).footnote).contains("12"))
+        #expect(composition(state, .medium).caption == WidgetL10n.Status.groupsRemaining(12))
+        #expect(composition(state, .medium).footnote == nil)
+        #expect(composition(state, .small).caption == WidgetL10n.Status.groupsReviewed)
         #expect(composition(state, .small).footnote == nil)
         #expect(composition(state, .small).progress != nil)
     }
@@ -319,29 +372,29 @@ struct WidgetCompositionTests {
         let suggestions = WidgetDisplayState.hasSuggestions(
             bytes: 1_000, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false
         )
-        #expect(composition(suggestions, .medium).footnote != nil)
-        #expect(composition(suggestions, .small).footnote == nil)
+        #expect(composition(suggestions, .medium).detail != nil)
+        #expect(composition(suggestions, .small).detail == nil)
 
         let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
         let resume = WidgetDisplayState.resumeReview(progress: progress, isStale: false)
         #expect(composition(resume, .medium).caption != composition(resume, .small).caption)
     }
 
-    /// Medium has room for both the count and the date; small has to choose, and chooses
-    /// the date, because an undated figure claims to be current.
-    @Test("a stale medium keeps the count and the date; a stale small keeps the date")
+    /// Medium has room for both the count and the date, on two lines; small has to
+    /// choose, and chooses the date, because an undated figure claims to be current.
+    @Test("a stale medium keeps the count line and dates it; a stale small keeps the date")
     func staleFootnotesPerFamily() throws {
         let state = WidgetDisplayState.hasSuggestions(
             bytes: 1_000, clusterCount: 24, scannedAt: Self.scannedAt, isStale: true
         )
         let date = WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)
 
-        let small = try #require(composition(state, .small).footnote)
-        #expect(small.contains(date))
-        #expect(!small.contains("24"))
+        let small = composition(state, .small)
+        #expect(try #require(small.footnote).contains(date))
+        #expect(small.detail == nil)
 
-        let medium = try #require(composition(state, .medium).footnote)
-        #expect(medium.contains(date))
-        #expect(medium.contains("24"))
+        let medium = composition(state, .medium)
+        #expect(medium.footnote == WidgetL10n.Status.lastScanned(date))
+        #expect(try #require(medium.detail).text.contains("24"))
     }
 }

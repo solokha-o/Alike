@@ -57,6 +57,20 @@ public enum WidgetL10n {
         /// `xcstringstool` rejects a plural variation that never references the number.
         public static var groupsReviewed: String { WidgetL10n.string("widgetsupport.status.groupsReviewed") }
 
+        /// "of 30" — the tail of the small headline «18 of 30».
+        public static func ofTotal(_ total: Int) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.status.ofTotal"),
+                locale: WidgetFormatting.locale,
+                total
+            )
+        }
+
+        /// "of 30 groups" — the tail of the medium headline «18 of 30 groups».
+        public static func ofGroups(_ total: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+            WidgetL10n.plural("widgetsupport.status.ofGroups", total, bundle: bundle, locale: locale)
+        }
+
         /// "12 groups left" — groups still to review, never photos deleted.
         public static func groupsRemaining(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             WidgetL10n.plural("widgetsupport.status.groupsRemaining", count, bundle: bundle, locale: locale)
@@ -97,6 +111,9 @@ public enum WidgetL10n {
         /// The gallery lists both widgets side by side, so this cannot be "Alike" too.
         public static var libraryDisplayName: String { WidgetL10n.string("widgetsupport.widget.libraryDisplayName") }
         public static var libraryDescription: String { WidgetL10n.string("widgetsupport.widget.libraryDescription") }
+        /// The title inside the library widget, under the «Alike» wordmark — not the
+        /// gallery name, which has to carry the brand on its own.
+        public static var libraryTitle: String { WidgetL10n.string("widgetsupport.widget.libraryTitle") }
     }
 
     public enum Accessibility {
