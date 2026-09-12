@@ -13,6 +13,12 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
     /// of their own. There is no "similar" `CleanupCategoryKind`.
     case similarPhotos
     case category(CleanupCategoryKind)
+    /// Carry on the review that was left unfinished — the status widget's own tap.
+    ///
+    /// Which group that is cannot be decided by the widget: its snapshot can be a day
+    /// old, and the answer is `CleanupWorkspaceModel.cleanupEntryCluster()` read from
+    /// the live workspace once it has loaded.
+    case resumeReview
 
     /// What acting on this entry means against the workspace as it currently stands.
     ///
@@ -22,10 +28,14 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
     public enum Resolution: Equatable, Sendable {
         /// Hand this to the existing category flow, gate included.
         case openCategory(CleanupCategorySummary)
+        /// Push this cluster's review screen — the same route the Continue button in
+        /// `CleanupProgressCard` pushes, so the widget cannot reach a screen the app
+        /// does not already offer.
+        case openCluster(PhotoCluster)
         /// Bring the cluster sections into view on the root.
         case scrollTo(String)
-        /// Nothing to open. The user lands on the cleanup root, which is the current
-        /// parent screen for all three destinations.
+        /// Nothing to open. The user lands on the cleanup root, which is the parent
+        /// screen every widget destination sits under.
         case stayOnRoot
     }
 
@@ -34,9 +44,15 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
     /// A category with no candidates has no summary, and there is nothing to show or to
     /// sell behind a paywall — so it resolves to the root rather than to an empty sheet.
     /// The counts on the widget can be a day old; the app's are not.
+    ///
+    /// `resumeCluster` is the workspace's own next-to-review answer, defaulted so the
+    /// two category call sites stay unchanged. A review that has since been finished
+    /// has no such cluster, and the tap lands on the root rather than reopening a
+    /// group the user is already done with.
     public func resolution(
         categories: [CleanupCategorySummary],
-        orderedClusterIDs: [String]
+        orderedClusterIDs: [String],
+        resumeCluster: PhotoCluster? = nil
     ) -> Resolution {
         switch self {
         case .similarPhotos:
@@ -46,6 +62,10 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
         case let .category(kind):
             guard let summary = categories.first(where: { $0.kind == kind }) else { return .stayOnRoot }
             return .openCategory(summary)
+
+        case .resumeReview:
+            guard let resumeCluster else { return .stayOnRoot }
+            return .openCluster(resumeCluster)
         }
     }
 

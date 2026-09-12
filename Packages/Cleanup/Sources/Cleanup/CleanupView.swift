@@ -279,12 +279,12 @@ public struct CleanupView: View {
         //
         // Applied after the `refreshArrangement` observers above so the arrangement is
         // already current when the scroll anchor is read off it.
-        .onChange(of: pendingWidgetEntry, initial: true) { _, _ in followPendingWidgetEntry() }
-        .onChange(of: isContentLoaded) { _, _ in followPendingWidgetEntry() }
+        .onChange(of: pendingWidgetEntry, initial: true) { _, _ in followPendingWidgetEntry(router: router) }
+        .onChange(of: isContentLoaded) { _, _ in followPendingWidgetEntry(router: router) }
         // A deferred entry is picked back up when whatever held it resolves: the sheet
         // on screen closes, or StoreKit says what the account is entitled to.
-        .onChange(of: isScreenOwned) { _, _ in followPendingWidgetEntry() }
-        .onChange(of: premiumAccess.isEntitlementSettled) { _, _ in followPendingWidgetEntry() }
+        .onChange(of: isScreenOwned) { _, _ in followPendingWidgetEntry(router: router) }
+        .onChange(of: premiumAccess.isEntitlementSettled) { _, _ in followPendingWidgetEntry(router: router) }
         // A deferred tap lives for one foreground session: a paywall surfacing on a
         // later resume, long after the tap, would read as the app acting on its own.
         .onChange(of: scenePhase) { _, phase in
@@ -575,7 +575,11 @@ public struct CleanupView: View {
     /// itself: that function holds the Premium gate, and a second way into a gated list
     /// would be a way around the paywall. A locked category reaches its paywall here by
     /// exactly the path an in-app tap takes.
-    private func followPendingWidgetEntry() {
+    ///
+    /// `router` is the stack this screen is hosted in, so a resume can push the group
+    /// the workspace says the review stopped at instead of leaving the user on the root
+    /// to press Continue a second time.
+    private func followPendingWidgetEntry(router: StackRouter<CleanupRoute>) {
         guard let entry = pendingWidgetEntry else { return }
 
         // Still restoring. The intent is kept, and the `isContentLoaded` observer brings
@@ -586,7 +590,8 @@ public struct CleanupView: View {
         // sheet sees whatever that sheet changed.
         let resolution = entry.resolution(
             categories: workspace.cleanupCategories,
-            orderedClusterIDs: arrangement.orderedIDs
+            orderedClusterIDs: arrangement.orderedIDs,
+            resumeCluster: workspace.cleanupEntryCluster()
         )
 
         // Kept, not dropped: the `isScreenOwned` and entitlement observers bring us
@@ -603,6 +608,10 @@ public struct CleanupView: View {
         switch resolution {
         case let .openCategory(summary):
             openCategory(summary)
+        case let .openCluster(cluster):
+            // The same push `CleanupProgressCard`'s Continue makes. The widget names the
+            // intent; the destination is still the app's own answer to "where was I".
+            router.push(.cluster(cluster))
         case let .scrollTo(id):
             scrollAnchorID = id
         case .stayOnRoot:

@@ -86,6 +86,36 @@ final class CleanupWidgetEntryTests: XCTestCase {
         XCTAssertEqual(resolution, .stayOnRoot)
     }
 
+    // MARK: - Resume review
+
+    /// The promise the status widget and the release notes make: the tap lands on the
+    /// group the review stopped at, not on the root with Continue still to press.
+    func testResumeReviewOpensTheClusterTheWorkspaceWouldContinueWith() {
+        let next = PhotoCluster(assets: [])
+
+        let resolution = CleanupWidgetEntry.resumeReview
+            .resolution(categories: [], orderedClusterIDs: ["a"], resumeCluster: next)
+
+        XCTAssertEqual(resolution, .openCluster(next))
+    }
+
+    /// The snapshot can be a day old: a review finished since the widget was drawn has
+    /// no next cluster, and reopening a reviewed group would be worse than the root.
+    func testResumeReviewWithNothingLeftToReviewStaysOnTheRoot() {
+        let resolution = CleanupWidgetEntry.resumeReview
+            .resolution(categories: [summary(.screenshots)], orderedClusterIDs: ["a"], resumeCluster: nil)
+
+        XCTAssertEqual(resolution, .stayOnRoot)
+    }
+
+    /// Nothing gated about a cluster the app already lists on its root, so a resume
+    /// does not wait on StoreKit the way a locked category does.
+    func testResumeReviewDoesNotWaitForTheEntitlementCheck() {
+        XCTAssertFalse(
+            mustDefer(.openCluster(PhotoCluster(assets: [])), isSettled: false, hasAccess: false)
+        )
+    }
+
     // MARK: - Deferral
 
     private func mustDefer(
@@ -138,7 +168,10 @@ final class CleanupWidgetEntryTests: XCTestCase {
     /// sheet to close instead of being dropped.
     func testEveryResolutionWaitsWhileTheScreenIsOwned() {
         let resolutions: [CleanupWidgetEntry.Resolution] = [
-            .openCategory(summary(.screenshots)), .scrollTo("a"), .stayOnRoot,
+            .openCategory(summary(.screenshots)),
+            .openCluster(PhotoCluster(assets: [])),
+            .scrollTo("a"),
+            .stayOnRoot,
         ]
         for resolution in resolutions {
             XCTAssertTrue(

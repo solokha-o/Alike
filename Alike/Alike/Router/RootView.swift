@@ -280,6 +280,9 @@ struct MainTabView: View {
             clusterCount: cleanupWorkspace.clusters.count,
             categoryAssetCount: cleanupWorkspace.cleanupCategories.reduce(0) { $0 + $1.assetCount },
             reviewedClusters: cleanupWorkspace.activeCleanupSession?.reviewedClusters,
+            // Opening a group without deciding on it is what turns "scanned" into
+            // "reviewing" on the widget, and it moves no other field here.
+            inReviewClusters: cleanupWorkspace.sessionProgress().inReviewCount,
             sessionUpdatedAt: cleanupWorkspace.activeCleanupSession?.updatedAt,
             shouldShowRescanPrompt: cleanupWorkspace.shouldShowRescanPrompt
         )
@@ -293,15 +296,18 @@ struct MainTabView: View {
     /// that checks entitlement and sends a locked category to its paywall. The widget
     /// names a destination; it does not get to open one.
     ///
-    /// `.resumeReview` is not routed here. Landing someone in a specific cluster is the
-    /// review widget's question, and answering it needs the session checked against the
-    /// live workspace rather than against a snapshot that may be a day old.
+    /// `.resumeReview` names the unfinished review, not a group: which group that is
+    /// gets decided against the live workspace, not against a snapshot that may be a
+    /// day old, and `CleanupView` answers it with `cleanupEntryCluster()` once the
+    /// content has loaded. A review finished since the tap lands on the root.
     private func followPendingWidgetDestination() {
         guard let destination = pendingWidgetDestination.consume() else { return }
 
         switch destination {
-        case .cleanup, .resumeReview:
+        case .cleanup:
             tabManager.navigateToCleanup()
+        case .resumeReview:
+            tabManager.navigateToCleanup(entry: .resumeReview)
         case .similarPhotos:
             tabManager.navigateToCleanup(entry: .similarPhotos)
         case .screenshots:
@@ -336,6 +342,7 @@ private struct WidgetSnapshotSignature: Equatable {
     let clusterCount: Int
     let categoryAssetCount: Int
     let reviewedClusters: Int?
+    let inReviewClusters: Int
     let sessionUpdatedAt: Date?
     let shouldShowRescanPrompt: Bool
 }
