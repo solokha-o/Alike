@@ -62,12 +62,11 @@ python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade p
 ```
 
 Slides, copy and layout live in `SLIDES` and `COPY` in that script. The deck is
-six slides in listing order; `SLIDES` and `COPY` still hold five, because the
-sixth slide's capture — shot 14 — has not been taken. The sixth entry and its
-frames land in the same commit, for the reason spelled out under "Adding a
-slide" in the brief: `validate_sources()` refuses to render a slide with no
-capture, and refuses a locale whose `COPY` is short an entry, so a half-landed
-sixth slide breaks the deck for every locale at once. Four background variants
+seven slides in listing order, and `SLIDES` and `COPY` hold seven. A new entry
+and its frames land in the same commit, for the reason spelled out under
+"Adding a slide" in the brief: `validate_sources()` refuses to render a slide
+with no capture, and refuses a locale whose `COPY` is short an entry, so a
+half-landed slide breaks the deck for every locale at once. Four background variants
 share the same concept; `--drafts` renders all of them into
 `build/generated/product_screenshot_drafts/` with a comparison contact sheet, and
 `--variant <name>` renders the chosen one into `Docs/images/`. The listing
@@ -133,8 +132,8 @@ rules behind it.
 | 11 | Paywall with disclosure | ✅ | n/a | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
 | 12 | User Guide | retired | retired | n/a | n/a | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
-| 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | — | `14-best-shot-enhanced` |
-| 15 | Home screen with both widgets | ✅ | ✅ | ✅ | ✅ | — | `15-widgets-home` |
+| 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | ✅ | `14-best-shot-enhanced` |
+| 15 | Home screen with both widgets | ✅ | ✅ | ✅ | ✅ | ✅ | `15-widgets-home` |
 
 The table has no `ar` column — Arabic was added to the listing after it was
 written, and the existing rows were never re-cut. For shot 14, read the four
@@ -144,9 +143,9 @@ failing deck, not a partial one.
 
 ### What is actually outstanding
 
-Every shot is either captured, has a reason it is not, or is one of the thirteen
-shot-14 captures below. A shot with no consumer is not a gap; shot 14 has a
-consumer waiting for it.
+Every shot is either captured or has a reason it is not. A shot with no
+consumer is not a gap. Shots 14 and 15 both ship in the deck, in all thirteen
+locales; shot 15 also reaches the landing page.
 
 **Captured — the Tier 3 decks, 25 files.** Shots 1, 3, 4, 5 and 7 in `it`, `nl`,
 `pl`, `tr` and `zh-Hant`, taken in one session on a physical iPhone and recorded
@@ -286,8 +285,10 @@ what a slide has to earn is a shopper's attention, not a free slot.
 
 ## Wiring a screenshot into the site
 
-The page frames shots 1, 3, 4, 5 and 7, in every language it publishes. Render
-them from the captures already committed here:
+The page frames shots 1, 3, 4, 5, 7, 14 and 15, in every language it publishes.
+`SITE_SHOTS` in `tools/build_site_screenshots.py` and the site's own
+`_data/screens.yml` name the same set, so the two change together. Render them
+from the captures already committed here:
 
 ```sh
 python3 tools/build_site_screenshots.py --site-repo ../alikeapp.github.io
