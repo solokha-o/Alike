@@ -1,10 +1,13 @@
 # Alike Screenshot Shot List
 
-Ten of the fourteen shots are captured in EN and UK, from a physical iPhone at
-1125 x 2436. Five of the six deck shots are captured in the Tier 1 and Tier 3
-languages too, so all thirteen decks are complete at five slides. The sixth deck
-shot, 14, is open in all thirteen; one more shot is open in English, one is
-optional and the rest are retired — see "What is actually outstanding" below. `tools/import_device_screenshots.py` upscales
+Eleven of the fifteen shots are captured in EN and UK. All seven deck shots are
+captured in the Tier 1 and Tier 3 languages and in `ar` too, so as of 1.4.0 every
+one of the thirteen decks is complete at seven slides. One more shot is open in
+English, one is optional and the rest are retired — see "What is actually
+outstanding" below.
+
+Shots 1–14 come from a physical iPhone at 1125 x 2436;
+`tools/import_device_screenshots.py` upscales
 them to the required 1320 x 2868 and pads the 10px remainder with black (the
 app's screens are black at both edges, so the padding is invisible), filling the
 capture store every deck and the landing page are built from.
@@ -131,6 +134,7 @@ rules behind it.
 | 12 | User Guide | retired | retired | n/a | n/a | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
 | 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | — | `14-best-shot-enhanced` |
+| 15 | Home screen with both widgets | ✅ | ✅ | ✅ | ✅ | — | `15-widgets-home` |
 
 The table has no `ar` column — Arabic was added to the listing after it was
 written, and the existing rows were never re-cut. For shot 14, read the four
@@ -167,6 +171,29 @@ Ukrainian shot 5 is still the older capture, so `uk` is the one deck whose
 comparison-review frame shows different photos from the other six. Not wrong —
 the deck reads fine on its own — but recapturing it is what would make all
 thirteen decks a single set.
+
+**Captured — the seventh deck shot, thirteen files, and the first one taken on a
+simulator.** `15-widgets-home` in all thirteen listing locales, shot for 1.4.0 on
+an iPhone 17 Pro Max simulator running iOS 26.5, which captures at 1320 × 2868
+natively — so these frames go straight into `Docs/images/raw/<locale>/` and need
+neither `import_device_screenshots.py` nor a `capture-manifest.json` entry.
+
+A device could not have produced this shot any more faithfully: the widget
+gallery always renders `WidgetSnapshot.placeholder()`, and a real library with
+24 groups, 86 screenshots and 12 blurred photos cannot be staged on demand. The
+frame is driven by a hand-written App Group snapshot instead — terminate the app,
+write `widget-snapshot.json`, reinstall **without launching** (launching makes
+the app republish from its own empty library and wipes the file). The home screen
+is a page carrying only the two Alike widgets, the app icon and the dock, with
+the other pages hidden in Edit Pages so a reboot lands on it; the locale loop
+switches `AppleLanguages`/`AppleLocale`, reboots, and screenshots via
+`simctl io`.
+
+This shot is what caught the extension's missing `CFBundleLocalizations`: with no
+localization list of its own the appex resolved `Locale.current` to English, so
+every non-English frame drew an English month and the English plural form
+("24 груп" for "24 групи"). Fixed in `Alike/AlikeWidgets-Info.plist`; the frames
+here are from the fixed build.
 
 **Captured — the sixth deck shot, thirteen files.** `14-best-shot-enhanced` in
 all thirteen listing locales, taken in one session on a physical iPhone on
