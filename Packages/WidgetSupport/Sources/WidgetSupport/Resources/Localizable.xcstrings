@@ -3169,13 +3169,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupo de fotos similares"
+                  "value": "%1$lld grupo similar"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupos de fotos similares"
+                  "value": "%1$lld grupos similares"
                 }
               }
             }
@@ -3187,13 +3187,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupo de fotos similares"
+                  "value": "%1$lld grupo similar"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupos de fotos similares"
+                  "value": "%1$lld grupos similares"
                 }
               }
             }
@@ -3205,19 +3205,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupo de fotos semelhantes"
+                  "value": "%1$lld grupo semelhante"
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupos de fotos semelhantes"
+                  "value": "%1$lld grupos semelhantes"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld grupos de fotos semelhantes"
+                  "value": "%1$lld grupos semelhantes"
                 }
               }
             }
@@ -3247,19 +3247,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld groupe de photos similaires"
+                  "value": "%1$lld groupe similaire"
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld groupes de photos similaires"
+                  "value": "%1$lld groupes similaires"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld groupes de photos similaires"
+                  "value": "%1$lld groupes similaires"
                 }
               }
             }
@@ -3289,13 +3289,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld groep vergelijkbare foto's"
+                  "value": "%1$lld vergelijkbare groep"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld groepen vergelijkbare foto's"
+                  "value": "%1$lld vergelijkbare groepen"
                 }
               }
             }
@@ -3349,7 +3349,7 @@
               "two": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld مجموعتان من الصور المتشابهة"
+                  "value": "%1$lld مجموعتان متشابهتان"
                 }
               },
               "few": {
