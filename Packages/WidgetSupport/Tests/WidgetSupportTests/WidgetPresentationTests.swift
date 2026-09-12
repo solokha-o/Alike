@@ -196,6 +196,46 @@ struct WidgetPresentationTests {
         }
     }
 
+    @Test("The session a finished scan opens is not a review the user started")
+    func sessionCreatedByAScan() {
+        // What `CleanupSessionManager.syncSession` writes at the end of the first scan
+        // that found something: one group per cluster, none of them touched.
+        let progress = WidgetSessionProgress(
+            reviewedClusters: 0,
+            inReviewClusters: 0,
+            totalClusters: 3,
+            updatedAt: now
+        )
+        let state = WidgetPresentation.displayState(
+            for: snapshot(bytes: 1_000_000, clusters: 3, session: progress),
+            now: now
+        )
+        #expect(
+            state == .hasSuggestions(
+                bytes: 1_000_000,
+                clusterCount: 3,
+                scannedAt: now,
+                isStale: false
+            )
+        )
+        #expect(WidgetPresentation.destination(for: state) == .cleanup)
+    }
+
+    @Test("A group opened but not decided on is a review under way")
+    func sessionWithAGroupOpen() {
+        let progress = WidgetSessionProgress(
+            reviewedClusters: 0,
+            inReviewClusters: 1,
+            totalClusters: 3,
+            updatedAt: now
+        )
+        let state = WidgetPresentation.displayState(
+            for: snapshot(bytes: 1_000_000, clusters: 3, session: progress),
+            now: now
+        )
+        #expect(state == .resumeReview(progress: progress, isStale: false))
+    }
+
     @Test("Every state that is not a resume sends the tap to cleanup")
     func destinations() {
         #expect(WidgetPresentation.destination(for: .unavailable) == .cleanup)

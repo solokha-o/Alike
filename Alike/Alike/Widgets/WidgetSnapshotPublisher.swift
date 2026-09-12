@@ -61,6 +61,9 @@ final class WidgetSnapshotPublisher {
         let categories = workspace.cleanupCategories
         let clusters = workspace.clusters
         let hasCompletedScan = workspace.hasCompletedScanBaseline
+        // The session itself only counts finished groups. Whether one is *open* is the
+        // other half of "a review is under way", and it lives on the derived progress.
+        let reviewProgress = workspace.sessionProgress()
 
         // `lastScanSummary` only survives for a scan this process ran. After a cold
         // launch the workspace restores its clusters and categories from the cache but
@@ -88,6 +91,7 @@ final class WidgetSnapshotPublisher {
             sessionProgress: workspace.activeCleanupSession.map {
                 WidgetSessionProgress(
                     reviewedClusters: $0.reviewedClusters,
+                    inReviewClusters: reviewProgress.inReviewCount,
                     totalClusters: $0.totalClusters,
                     updatedAt: $0.updatedAt
                 )

@@ -31,13 +31,44 @@ public enum WidgetPhotoAuthorization: String, Codable, Sendable, CaseIterable {
 /// Progress through the active cleanup session, mirrored from `CleanupSession`.
 public struct WidgetSessionProgress: Codable, Equatable, Sendable {
     public let reviewedClusters: Int
+    /// Groups opened but not decided on yet.
+    ///
+    /// Carried separately because a session exists before any review does:
+    /// `CleanupSessionManager.syncSession` creates one at the end of every scan that
+    /// found something, with `reviewedClusters == 0`. Without this the widget cannot
+    /// tell "the scan just finished" from "a review is under way", and hides the
+    /// reclaimable total behind a bar reading 0 of N.
+    public let inReviewClusters: Int
     public let totalClusters: Int
     public let updatedAt: Date
 
-    public init(reviewedClusters: Int, totalClusters: Int, updatedAt: Date) {
+    public init(
+        reviewedClusters: Int,
+        inReviewClusters: Int = 0,
+        totalClusters: Int,
+        updatedAt: Date
+    ) {
         self.reviewedClusters = reviewedClusters
+        self.inReviewClusters = inReviewClusters
         self.totalClusters = totalClusters
         self.updatedAt = updatedAt
+    }
+
+    /// Decoded leniently for `inReviewClusters` alone: a payload written before this
+    /// field existed is still a valid schema-1 snapshot, and must decode to "nothing
+    /// open" rather than throw and blank the widget.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        reviewedClusters = try container.decode(Int.self, forKey: .reviewedClusters)
+        inReviewClusters = try container.decodeIfPresent(Int.self, forKey: .inReviewClusters) ?? 0
+        totalClusters = try container.decode(Int.self, forKey: .totalClusters)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+    }
+
+    /// Whether the user has actually started reviewing, as opposed to the app having
+    /// opened a session for them when the scan finished.
+    public var hasStartedReview: Bool {
+        reviewedClusters > 0 || inReviewClusters > 0
     }
 
     /// Reviewed groups over total groups, clamped to `0...1`.

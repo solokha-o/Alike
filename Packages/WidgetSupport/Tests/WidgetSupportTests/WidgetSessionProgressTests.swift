@@ -44,4 +44,29 @@ struct WidgetSessionProgressTests {
         #expect(progress(40, 30).fraction == 1)
         #expect(progress(40, 30).remainingClusters == 0)
     }
+
+    @Test("A review has started once a group is finished or open, and not before")
+    func startedReview() {
+        #expect(progress(0, 3).hasStartedReview == false)
+        #expect(
+            WidgetSessionProgress(
+                reviewedClusters: 0,
+                inReviewClusters: 1,
+                totalClusters: 3,
+                updatedAt: .distantPast
+            ).hasStartedReview
+        )
+        #expect(progress(1, 3).hasStartedReview)
+    }
+
+    @Test("A payload written before the field existed decodes as nothing open")
+    func decodesWithoutTheInReviewField() throws {
+        let json = Data(
+            #"{"reviewedClusters":2,"totalClusters":5,"updatedAt":0}"#.utf8
+        )
+        let decoded = try JSONDecoder().decode(WidgetSessionProgress.self, from: json)
+        #expect(decoded.inReviewClusters == 0)
+        #expect(decoded.reviewedClusters == 2)
+        #expect(decoded.totalClusters == 5)
+    }
 }

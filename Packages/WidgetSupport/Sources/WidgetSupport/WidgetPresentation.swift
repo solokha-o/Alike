@@ -83,7 +83,14 @@ public enum WidgetPresentation {
 
         // An unfinished session outranks the totals: someone mid-review wants the way
         // back into it more than they want a number they have already seen.
-        if let progress = snapshot.sessionProgress, !progress.isComplete, progress.totalClusters > 0 {
+        //
+        // `hasStartedReview`, not merely "a session exists": the app opens one at the
+        // end of every scan that found something, and a user who has not touched a
+        // group yet is owed the reclaimable total, not a progress bar reading 0 of N.
+        if let progress = snapshot.sessionProgress,
+           progress.hasStartedReview,
+           !progress.isComplete,
+           progress.totalClusters > 0 {
             return .resumeReview(progress: progress, isStale: isStale)
         }
 
