@@ -37,8 +37,12 @@ QUICK_PACKAGES=(
 # no Tests/ directory to run).
 # Storage: SwiftPM does not compile the `.xcdatamodeld`, so
 # `PersistenceController` traps with "Failed to load Core Data model".
+# WidgetSupport: SwiftPM does not compile the `.xcstrings` catalog either, so
+# every lookup returns its own key and the composition suites fail on strings
+# that are in fact present — eleven issues that say nothing about the code.
 SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
+  "WidgetSupport"
 )
 
 # Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
