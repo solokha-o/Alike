@@ -132,7 +132,7 @@ rules behind it.
 | 11 | Paywall with disclosure | ✅ | n/a | n/a | n/a | — | `review/11-paywall-features`, `review/11-paywall-disclosure` |
 | 12 | User Guide | retired | retired | n/a | n/a | — | — |
 | 13 | Welcome / privacy | ✅ | ✅ | n/a | n/a | — | `13-welcome-privacy` |
-| 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | — | `14-best-shot-enhanced` |
+| 14 | Cluster details, enhanced | ✅ | ✅ | ✅ | ✅ | ✅ | `14-best-shot-enhanced` |
 | 15 | Home screen with both widgets | ✅ | ✅ | ✅ | ✅ | ✅ | `15-widgets-home` |
 
 The table has no `ar` column — Arabic was added to the listing after it was
@@ -285,7 +285,7 @@ what a slide has to earn is a shopper's attention, not a free slot.
 
 ## Wiring a screenshot into the site
 
-The page frames shots 1, 3, 4, 5, 7 and 15, in every language it publishes.
+The page frames shots 1, 3, 4, 5, 7, 14 and 15, in every language it publishes.
 `SITE_SHOTS` in `tools/build_site_screenshots.py` and the site's own
 `_data/screens.yml` name the same set, so the two change together. Render them
 from the captures already committed here:
