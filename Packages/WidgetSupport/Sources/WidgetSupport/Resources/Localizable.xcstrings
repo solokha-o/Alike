@@ -3381,79 +3381,79 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "مقدار المساحة التي يمكنك استعادتها، بنظرة واحدة."
+            "value": "مقدار المساحة التي يمكنك استعادتها، والمراجعة التي لم تُكملها."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auf einen Blick sehen, wie viel Speicher frei werden kann."
+            "value": "Wie viel Speicher frei werden kann – und die noch offene Prüfung."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "How much space you can reclaim, at a glance."
+            "value": "How much space you can reclaim, and the review you left unfinished."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cuánto espacio puedes recuperar, de un vistazo."
+            "value": "Cuánto espacio puedes recuperar y la revisión que dejaste a medias."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cuánto espacio puedes recuperar, de un vistazo."
+            "value": "Cuánto espacio puedes recuperar y la revisión que dejaste a medias."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L’espace que vous pouvez récupérer, en un coup d’œil."
+            "value": "L’espace que vous pouvez récupérer, et le tri resté inachevé."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quanto spazio puoi recuperare, in un colpo d’occhio."
+            "value": "Quanto spazio puoi recuperare e la revisione rimasta a metà."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoeveel ruimte je kunt vrijmaken, in één oogopslag."
+            "value": "Hoeveel ruimte je kunt vrijmaken, en je onafgemaakte beoordeling."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ile miejsca możesz odzyskać — na pierwszy rzut oka."
+            "value": "Ile miejsca możesz odzyskać — i nieukończony przegląd."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quanto espaço você pode recuperar, num relance."
+            "value": "Quanto espaço você pode recuperar e a revisão que ficou pela metade."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ne kadar alan kazanabileceğini bir bakışta gör."
+            "value": "Ne kadar alan kazanabileceğin ve yarım kalan incelemen."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Скільки місця можна звільнити — з одного погляду."
+            "value": "Скільки місця можна звільнити — і перегляд, який ви не завершили."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "一眼看見可以釋出多少空間。"
+            "value": "可以釋出多少空間，以及尚未完成的檢視。"
           }
         }
       }
