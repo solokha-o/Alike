@@ -9,6 +9,10 @@ public final class SubscriptionStore: PremiumAccessControlling {
     public private(set) var productLoadState: ProductLoadState = .idle
     public private(set) var entitlementState: PremiumEntitlementState = .unknown
     public private(set) var lastError: SubscriptionStoreError?
+    /// Set once the latest reconciliation attempt finishes — verified, failed or
+    /// offline alike — so a failed check falls back to the cached state rather than
+    /// holding callers forever. See `PremiumAccessControlling.isEntitlementSettled`.
+    public private(set) var isEntitlementSettled = false
 
     private let catalog: SubscriptionCatalog
     private let client: any StoreKitClient
@@ -97,7 +101,11 @@ public final class SubscriptionStore: PremiumAccessControlling {
     }
 
     public func refreshEntitlements() async {
-        guard catalog.isConfigured else { return }
+        guard catalog.isConfigured else {
+            // Nothing will ever be verified; the cache is the final answer.
+            isEntitlementSettled = true
+            return
+        }
         await reconcileEntitlements()
     }
 
@@ -168,6 +176,11 @@ public final class SubscriptionStore: PremiumAccessControlling {
 
         reconciliationGeneration &+= 1
         let generation = reconciliationGeneration
+        // Only the latest attempt settles: a superseded one returning first must not
+        // declare the cache final while a newer check is still in flight.
+        defer {
+            if generation == reconciliationGeneration { isEntitlementSettled = true }
+        }
 
         do {
             var entitlements = try await client.currentEntitlements()
@@ -257,6 +270,7 @@ public final class DebugPremiumAccessController: PremiumAccessControlling {
     }
 
     public var entitlementState: PremiumEntitlementState { base.entitlementState }
+    public var isEntitlementSettled: Bool { base.isEntitlementSettled }
 
     public func access(
         to feature: PremiumFeature,

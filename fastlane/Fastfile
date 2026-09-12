@@ -1,5 +1,6 @@
 default_platform(:ios)
 
+require "fileutils"
 require "shellwords"
 
 APP_IDENTIFIER = "com.alike.app"
@@ -199,7 +200,7 @@ def xcode_provisioning_args
 end
 
 def upload_symbols?
-  ENV["ALIKE_UPLOAD_SYMBOLS"] == "1"
+  ENV["ALIKE_UPLOAD_SYMBOLS"] != "0"
 end
 
 def deliver_store_bundle(skip_metadata:, skip_screenshots:)
@@ -246,6 +247,25 @@ platform :ios do
   desc "Upload only App Store screenshots without text metadata, binary, or review submission."
   lane :screenshots_upload do
     deliver_store_bundle(skip_metadata: true, skip_screenshots: false)
+  end
+
+  desc "Download the dSYMs for a released version so Xcode Organizer can symbolicate its crash reports."
+  lane :dsyms do |options|
+    version = options[:version].to_s
+    UI.user_error!("version is required, e.g. fastlane dsyms version:1.2.0") if version.empty?
+
+    output_directory = File.join(BUILD_OUTPUT_PATH, "dsyms", version)
+    FileUtils.mkdir_p(output_directory)
+
+    download_dsyms(
+      api_key: app_store_api_key,
+      app_identifier: APP_IDENTIFIER,
+      version: version,
+      build_number: options[:build_number],
+      output_directory: output_directory
+    )
+
+    UI.success("dSYMs written to #{output_directory}")
   end
 
   desc "Archive the release scheme and upload the build to TestFlight without review submission."

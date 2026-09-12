@@ -282,6 +282,71 @@ final class SubscriptionStoreTests: XCTestCase {
         XCTAssertNil(store.entitlementState.productID)
     }
 
+    /// An expired Premium cache for a subscription renewed since: until StoreKit answers
+    /// the store reads as free, so it must also read as *not settled* — that is what
+    /// lets a caller tell "free" from "free until the check finishes".
+    func testExpiredPremiumCacheIsNotSettledUntilDelayedVerificationGrantsAccess() async throws {
+        let defaults = UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!
+        let cacheKey = UUID().uuidString
+        let cached = PremiumEntitlementState(
+            isPremium: true,
+            source: .verified,
+            productID: "test.alike.yearly",
+            expirationDate: .distantPast
+        )
+        defaults.set(try JSONEncoder().encode(cached), forKey: cacheKey)
+        let entitlementRequests = ControlledRequest<[StoreKitEntitlement]>()
+        let store = SubscriptionStore(
+            catalog: catalog,
+            client: MockStoreKitClient(entitlementRequests: entitlementRequests),
+            defaults: defaults,
+            cacheKey: cacheKey
+        )
+
+        let start = Task { await store.start() }
+        await entitlementRequests.waitForRequestCount(1)
+
+        XCTAssertFalse(store.entitlementState.isPremium)
+        XCTAssertEqual(store.entitlementState.source, .cached)
+        XCTAssertFalse(store.isEntitlementSettled)
+
+        await entitlementRequests.resumeRequest(
+            at: 0,
+            returning: [entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture)]
+        )
+        await start.value
+
+        XCTAssertTrue(store.entitlementState.isPremium)
+        XCTAssertEqual(store.entitlementState.source, .verified)
+        XCTAssertTrue(store.isEntitlementSettled)
+    }
+
+    /// The fallback: a check that fails (offline) still settles, on the cached state,
+    /// so callers are not held forever.
+    func testAFailedEntitlementCheckSettlesOnTheCachedState() async {
+        let client = MockStoreKitClient()
+        client.entitlementError = TestFailure.expected
+        let store = makeStore(client: client)
+
+        await store.start()
+
+        XCTAssertFalse(store.entitlementState.isPremium)
+        XCTAssertTrue(store.isEntitlementSettled)
+    }
+
+    func testAnUnconfiguredCatalogSettlesImmediately() async {
+        let store = SubscriptionStore(
+            catalog: .unconfigured,
+            client: MockStoreKitClient(),
+            defaults: UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!,
+            cacheKey: UUID().uuidString
+        )
+
+        await store.start()
+
+        XCTAssertTrue(store.isEntitlementSettled)
+    }
+
     private func makeStore(client: MockStoreKitClient) -> SubscriptionStore {
         let defaults = UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!
         return SubscriptionStore(catalog: catalog, client: client, defaults: defaults, cacheKey: UUID().uuidString)
@@ -318,6 +383,7 @@ private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
     var didSync = false
     var purchaseError: Error?
     var syncError: Error?
+    var entitlementError: Error?
     var entitlementRequests: ControlledRequest<[StoreKitEntitlement]>?
     let productRequests: ControlledRequest<[StorefrontProduct]>?
 
@@ -352,6 +418,7 @@ private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
     }
 
     func currentEntitlements() async throws -> [StoreKitEntitlement] {
+        if let entitlementError { throw entitlementError }
         if let entitlementRequests { return await entitlementRequests.request() }
         return entitlements
     }

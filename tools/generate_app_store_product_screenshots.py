@@ -232,6 +232,23 @@ SLIDES = (
         device=DeviceTransform(x=220, y=96, width=880, rotation=3.6),
         band="accent",
     ),
+    # Slide 6 is caption_bottom, so the seventh is caption_top, and left because
+    # the previous two caption_tops were centre (slide 5) and right (slide 3).
+    # purple rather than accent, which slide 6 just used: this is the one capture
+    # the mascot appears in twice, drawn inside both widgets.
+    #
+    # The only shot taken on a simulator rather than a physical iPhone — the
+    # widget renders from a hand-written App Group snapshot, because the gallery
+    # always draws WidgetSnapshot.placeholder() and a real library cannot be
+    # staged. See Docs/screenshot-shot-list.md.
+    SlideLayout(
+        source="15-widgets-home.png",
+        caption=caption_top("left"),
+        subtitle=subtitle_top("left"),
+        subtitle_size=44,
+        device=DeviceTransform(x=100, y=900, width=1120, rotation=-2.8),
+        band="purple",
+    ),
 )
 
 # (label, headline, subtitle) per slide, in SLIDES order. Wording follows the
@@ -268,6 +285,11 @@ COPY = {
             "Improve the keeper,\nkeep the original",
             "One tap makes the best shot better. One tap puts it back — the original never leaves your library.",
         ),
+        (
+            "HOME SCREEN",
+            "See it without\nopening Alike",
+            "Two widgets: the space you can reclaim, and what your library still holds.",
+        ),
     ],
     "uk": [
         (
@@ -299,6 +321,11 @@ COPY = {
             "ОРИГІНАЛ ПОРУЧ",
             "Покращте кадр,\nзбережіть оригінал",
             "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки.",
+        ),
+        (
+            "ДОМАШНІЙ ЕКРАН",
+            "Видно, не\nвідкриваючи Alike",
+            "Два віджети: скільки місця можна звільнити і що лишилось у медіатеці.",
         ),
     ],
     # The line break in each headline is chosen for that language, not carried
@@ -337,6 +364,11 @@ COPY = {
             "Aufnahme verbessern,\nOriginal behalten",
             "Ein Tippen macht die beste Aufnahme besser. Ein Tippen holt das Original zurück — es bleibt in deiner Mediathek.",
         ),
+        (
+            "HOME-BILDSCHIRM",
+            "Sichtbar, ohne\nAlike zu öffnen",
+            "Zwei Widgets: der Speicher, der frei werden kann, und was die Mediathek noch hält.",
+        ),
     ],
     "fr": [
         (
@@ -368,6 +400,11 @@ COPY = {
             "TOUJOURS RÉVERSIBLE",
             "Améliorez la photo,\ngardez l’original",
             "Une touche améliore la meilleure photo. Une autre la remet comme avant — l’original reste dans votre photothèque.",
+        ),
+        (
+            "ÉCRAN D’ACCUEIL",
+            "Visible sans\nouvrir Alike",
+            "Deux widgets : l’espace récupérable et ce que contient encore votre photothèque.",
         ),
     ],
     # es and es-419 diverge only where the wording, not the vocabulary, differs:
@@ -405,6 +442,11 @@ COPY = {
             "Realza tu mejor toma,\nconserva el original",
             "Un toque mejora la mejor toma. Otro la deja como estaba — el original nunca sale de tu fototeca.",
         ),
+        (
+            "PANTALLA DE INICIO",
+            "A la vista sin\nabrir Alike",
+            "Dos widgets: el espacio que puedes recuperar y lo que aún guarda tu fototeca.",
+        ),
     ],
     "es-419": [
         (
@@ -436,6 +478,11 @@ COPY = {
             "REGRESA AL ORIGINAL",
             "Mejora la que conservas,\nel original sigue ahí",
             "Un toque mejora la mejor toma. Otro la regresa a como estaba — el original nunca se va de tu fototeca.",
+        ),
+        (
+            "PANTALLA DE INICIO",
+            "A la vista sin\nabrir Alike",
+            "Dos widgets: el espacio que puedes recuperar y lo que aún guarda tu fototeca.",
         ),
     ],
     "pt-BR": [
@@ -469,6 +516,11 @@ COPY = {
             "Melhore a que fica,\nmantenha o original",
             "Um toque melhora a melhor foto. Outro toque devolve o original — ele nunca sai da sua fototeca.",
         ),
+        (
+            "TELA DE INÍCIO",
+            "Visível sem\nabrir o Alike",
+            "Dois widgets: o espaço que dá para recuperar e o que a fototeca ainda guarda.",
+        ),
     ],
     "it": [
         (
@@ -500,6 +552,11 @@ COPY = {
             "SEMPRE REVERSIBILE",
             "Migliora lo scatto,\ntieni l’originale",
             "Un tocco migliora lo scatto migliore. Un altro lo riporta com’era — l’originale non lascia mai la tua libreria.",
+        ),
+        (
+            "SCHERMATA HOME",
+            "Lo vedi senza\naprire Alike",
+            "Due widget: lo spazio che puoi recuperare e cosa contiene ancora la libreria.",
         ),
     ],
     "nl": [
@@ -533,6 +590,11 @@ COPY = {
             "Maak de blijver beter,\nhoud het origineel",
             "Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek.",
         ),
+        (
+            "BEGINSCHERM",
+            "Zichtbaar zonder\nAlike te openen",
+            "Twee widgets: de ruimte die je kunt vrijmaken en wat je bibliotheek nog bevat.",
+        ),
     ],
     "pl": [
         (
@@ -565,6 +627,11 @@ COPY = {
             "Popraw ujęcie,\nzachowaj oryginał",
             "Jedno dotknięcie poprawia najlepsze ujęcie. Drugie przywraca oryginał — nigdy nie znika on z biblioteki.",
         ),
+        (
+            "EKRAN POCZĄTKOWY",
+            "Widać bez\notwierania Alike",
+            "Dwa widżety: miejsce do odzyskania i to, co wciąż jest w bibliotece.",
+        ),
     ],
     "tr": [
         (
@@ -596,6 +663,11 @@ COPY = {
             "GERİ ALINABİLİR",
             "Kareyi iyileştir,\nözgünü sakla",
             "Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz.",
+        ),
+        (
+            "ANA EKRAN",
+            "Alike’ı açmadan\ngörünür",
+            "İki widget: kazanabileceğin alan ve kitaplığında hâlâ duranlar.",
         ),
     ],
     # Chinese headlines carry the same idea in about half the characters, so the
@@ -632,6 +704,11 @@ COPY = {
             "讓最佳照片更好\n原始檔一直都在",
             "輕點一下讓最佳照片更出色，再輕點一下就還原；原始檔從未離開你的圖庫。",
         ),
+        (
+            "主畫面",
+            "不用打開 Alike\n就看得見",
+            "兩個小工具：可以釋出的空間，以及圖庫裡還留著什麼。",
+        ),
     ],
     "ar": [
         (
@@ -663,6 +740,11 @@ COPY = {
             "الرجوع في أي وقت",
             "حسّن اللقطة التي تبقى\nواحتفظ بالأصل",
             "لمسة واحدة تحسّن أفضل لقطة، ولمسة أخرى تعيد الأصل — وهو لا يغادر مكتبتك أبدًا.",
+        ),
+        (
+            "الشاشة الرئيسية",
+            "واضح دون\nفتح التطبيق",
+            "أداتان: المساحة التي يمكنك استعادتها، وما لا تزال مكتبتك تحتفظ به.",
         ),
     ],
 }

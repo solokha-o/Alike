@@ -2,7 +2,7 @@
 """Render the landing page's device frames from the committed captures, per locale.
 
 `tools/import_device_screenshots.py` fills `Docs/images/raw/<locale>/` with bare
-1320 x 2868 captures. This script turns the five shots the landing page frames
+1320 x 2868 captures. This script turns the shots the landing page frames
 into the renditions `alikeapp/alikeapp.github.io` serves:
 
     Docs/images/raw/<locale>/0N-<name>.png  ->  assets/img/screens/<lang>/<name>.avif
@@ -63,7 +63,7 @@ AVIF_QUALITY = 70
 
 # Which shots the landing page frames, matching _data/screens.yml in the site
 # repository. Names come from the capture filenames, not a second table here.
-SITE_SHOTS = (1, 3, 4, 5, 7, 14)
+SITE_SHOTS = (1, 3, 4, 5, 7, 14, 15)
 
 # site lang -> capture directory. Only English differs, for the same reason
 # Docs/images/en-US/ is spelled that way: the App Store locale is en-US.

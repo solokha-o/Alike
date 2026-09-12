@@ -228,10 +228,10 @@ BUILT FOR REAL LIBRARIES
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
+- Two home screen widgets: reclaimable space, and your library at a glance.
 - Thirteen languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
 
 YOU STAY IN CONTROL
-- Photos you clear go to Recently Deleted, recoverable for about 30 days.
 - Enhancement is non-destructive: the original stays in your library and one tap restores it.
 - Alike learns from the Best Shots you pick yourself — on your device, and you can reset it any time in Settings.
 - Settings, then Data & Privacy, then Delete Alike Data erases every scan result, cleanup record and preference the app has stored — and never touches your photo library.
@@ -244,6 +244,7 @@ ALIKE FREE
 - Best Shot that learns from your own picks
 - Sorting and cleanup history
 - Clean up one photo at a time
+- Home screen widgets
 
 ALIKE PRO
 - 7 days free on the yearly plan, for eligible new subscribers
@@ -284,10 +285,10 @@ Alike знаходить майже однакові знімки у вашій 
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
-- Тринадцять мов: англійська, українська, німецька, французька, іспанська, латиноамериканська іспанська, бразильська португальська, італійська, нідерландська, польська, турецька, традиційна китайська та арабська. Повна темна тема.
+- Два віджети на домашньому екрані: вільне місце й огляд медіатеки.
+- Тринадцять мов і повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
-- Прибрані фото потрапляють до «Нещодавно видалених» і залишаються доступними близько 30 днів.
 - Покращення не змінює оригінал: він залишається у вашій медіатеці, і один дотик повертає його.
 - Alike вчиться на найкращих знімках, які ви обираєте самі, — на вашому пристрої, і це можна будь-коли скинути в налаштуваннях.
 - «Дані та приватність» → «Видалити дані Alike» стирає всі результати сканувань, записи прибирання й налаштування — і не торкається вашої медіатеки.
@@ -300,6 +301,7 @@ ALIKE FREE
 - Найкращий знімок, що вчиться на ваших виборах
 - Сортування та історія прибирання
 - Прибирання по одному фото за раз
+- Віджети
 
 ALIKE PRO
 - 7 днів безкоштовно на річному плані, для нових підписників, які мають на це право
@@ -337,7 +339,7 @@ DATENSCHUTZ IST DER GANZE PUNKT
 
 FÜR ECHTE MEDIATHEKEN GEBAUT
 - Drei Empfindlichkeitsstufen, von fast identischen Aufnahmen bis zu einem weiteren Netz.
-- Erkennung der besten Aufnahme, die die Fotos selbst misst — Schärfe, Belichtung, Gesichter und Rauschen —, damit jede Gruppe eine sinnvolle Vorauswahl hat.
+- Erkennung der besten Aufnahme, die die Fotos selbst misst: Schärfe, Belichtung, Gesichter und Rauschen.
 - Optionale Verbesserung mit einem Tippen für das Foto, das du behältst; das Original ist immer einen Tipp entfernt.
 - Prüfstatus: Neu, In Prüfung, Geprüft, Erneut prüfen.
 - Kommen Fotos dazu oder fallen weg, merkt Alike das und zeigt nur die geänderten Gruppen erneut.
@@ -346,10 +348,10 @@ FÜR ECHTE MEDIATHEKEN GEBAUT
 - Ein einspaltiges Layout oder ein dichteres Raster, jederzeit umschaltbar.
 - Eine durchsuchbare Anleitung in der App.
 - Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem Zeitplan.
+- Zwei Widgets für den Home-Bildschirm: freier Speicher, Mediathek auf einen Blick.
 - Dreizehn Sprachen und voller Dark Mode.
 
 DU BEHÄLTST DIE KONTROLLE
-- Aufgeräumte Fotos landen bei „Zuletzt gelöscht“ und bleiben rund 30 Tage wiederherstellbar.
 - Die Verbesserung ist nicht zerstörend: Das Original bleibt in deiner Mediathek, und ein Tippen stellt es wieder her.
 - Alike lernt aus den besten Aufnahmen, die du selbst wählst — auf deinem Gerät, und du kannst es jederzeit in den Einstellungen zurücksetzen.
 - Einstellungen, dann Daten & Datenschutz, dann Alike-Daten löschen entfernt alle Scan-Ergebnisse, Aufräum-Einträge und Einstellungen — und rührt deine Mediathek nicht an.
@@ -362,6 +364,7 @@ ALIKE FREE
 - Beste Aufnahme, die aus deinen eigenen Wahlen lernt
 - Sortierung und Aufräum-Verlauf
 - Ein Foto nach dem anderen aufräumen
+- Widgets
 
 ALIKE PRO
 - 7 Tage gratis im Jahresplan, für berechtigte neue Abonnenten
@@ -402,10 +405,10 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Une mise en page sur une colonne ou une grille plus dense, permutable à tout moment.
 - Un mode d'emploi consultable dans l'app.
 - Rappels de nettoyage facultatifs, en notifications locales.
+- Deux widgets sur l'écran d'accueil : l'espace récupérable et la photothèque.
 - Treize langues et mode sombre complet.
 
 VOUS GARDEZ LA MAIN
-- Les photos nettoyées rejoignent « Supprimés récemment » et restent récupérables environ 30 jours.
 - L'amélioration ne détruit rien : l'originale reste dans votre photothèque et une touche la rétablit.
 - Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, réinitialisable à tout moment dans les Réglages.
 - Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface les résultats d'analyse, l'historique de nettoyage et les préférences — et ne touche jamais à votre photothèque.
@@ -418,6 +421,7 @@ ALIKE FREE
 - Meilleure photo qui apprend de vos propres choix
 - Tri et historique de nettoyage
 - Nettoyage photo par photo
+- Widgets
 
 ALIKE PRO
 - 7 jours offerts sur la formule annuelle, pour les nouveaux abonnés éligibles
@@ -458,10 +462,10 @@ HECHO PARA FOTOTECAS REALES
 - Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
+- Dos widgets en la pantalla de inicio: espacio recuperable y fototeca.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
-- Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
 - Alike aprende de las mejores tomas que eliges tú — en tu dispositivo, y puedes reiniciarlo cuando quieras en Ajustes.
 - Ajustes, luego Datos y privacidad, luego Eliminar datos de Alike borra los resultados de análisis, el historial de limpieza y las preferencias, y nunca toca tu fototeca.
@@ -474,6 +478,7 @@ ALIKE FREE
 - Mejor toma que aprende de tus propias elecciones
 - Ordenación e historial de limpieza
 - Limpieza de una foto cada vez
+- Widgets
 
 ALIKE PRO
 - 7 días gratis en el plan anual, para nuevos suscriptores que cumplan los requisitos
@@ -514,10 +519,10 @@ HECHO PARA FOTOTECAS REALES
 - Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
+- Dos widgets en la pantalla de inicio: espacio recuperable y fototeca.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
-- Las fotos limpiadas pasan a «Eliminados recientemente» y se pueden recuperar durante unos 30 días.
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
 - Alike aprende de las mejores tomas que eliges tú — en tu dispositivo, y puedes reiniciarlo cuando quieras en Configuración.
 - Configuración, luego Datos y privacidad, luego Eliminar datos de Alike borra los resultados de análisis, el historial de limpieza y las preferencias, y nunca toca tu fototeca.
@@ -530,6 +535,7 @@ ALIKE FREE
 - Mejor toma que aprende de tus propias elecciones
 - Ordenamiento e historial de limpieza
 - Limpieza de una foto a la vez
+- Widgets
 
 ALIKE PRO
 - 7 días gratis en el plan anual, para nuevos suscriptores que cumplan los requisitos
@@ -570,10 +576,10 @@ FEITO PARA FOTOTECAS DE VERDADE
 - Um layout espaçoso de uma coluna ou uma grade mais densa, alternáveis a qualquer momento e memorizados.
 - Instruções de uso com busca dentro do app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
+- Dois widgets na tela de início: o espaço recuperável e a fototeca.
 - Treze idiomas e modo escuro completo.
 
 VOCÊ NO CONTROLE
-- As fotos limpas vão para «Apagados recentemente» e continuam recuperáveis por cerca de 30 dias.
 - O aprimoramento não destrói nada: o original continua na sua fototeca e um toque o restaura.
 - O Alike aprende com as melhores fotos que você mesmo escolhe — no seu dispositivo, e você pode redefinir isso quando quiser nos Ajustes.
 - Ajustes, depois Dados e privacidade, depois Apagar dados do Alike remove todos os resultados de análise, o histórico de limpeza e as preferências que o app guardou — e nunca encosta na sua fototeca.
@@ -586,6 +592,7 @@ ALIKE FREE
 - Melhor foto que aprende com as suas escolhas
 - Ordenação e histórico de limpeza
 - Limpeza de uma foto por vez
+- Widgets
 
 ALIKE PRO
 - 7 dias grátis no plano anual, para novos assinantes elegíveis
@@ -631,10 +638,10 @@ PENSATA PER LIBRERIE VERE
 - Un layout ampio a una colonna o una griglia più fitta, alternabili quando vuoi e ricordati.
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
+- Due widget nella schermata home: spazio recuperabile e libreria.
 - Tredici lingue e modalità scura completa.
 
 SEI TU A DECIDERE
-- Le foto che elimini vanno in «Eliminati di recente» e restano recuperabili per circa 30 giorni.
 - Il miglioramento non distrugge nulla: l'originale resta nella tua libreria e un tocco lo ripristina.
 - Alike impara dagli scatti migliori che scegli tu — sul tuo dispositivo, e puoi azzerarlo quando vuoi in Impostazioni.
 - Impostazioni, poi Dati e privacy, poi Elimina i dati di Alike cancella i risultati delle scansioni, la cronologia della pulizia e le preferenze — e non tocca mai la tua libreria.
@@ -647,6 +654,7 @@ ALIKE FREE
 - Scatto migliore che impara dalle tue scelte
 - Ordinamento e cronologia pulizia
 - Pulizia di una foto alla volta
+- Widget
 
 ALIKE PRO
 - 7 giorni gratis sul piano annuale, per i nuovi abbonati idonei
@@ -687,10 +695,10 @@ GEMAAKT VOOR ECHTE BIBLIOTHEKEN
 - Een ruime indeling met één kolom of een dichter raster, altijd om te wisselen en onthouden.
 - Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.
 - Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.
+- Twee widgets op je beginscherm: vrij te maken ruimte en je bibliotheek.
 - Dertien talen en volledige donkere modus.
 
 JIJ HOUDT DE CONTROLE
-- Opgeruimde foto's gaan naar 'Recent verwijderd' en blijven ongeveer 30 dagen terug te halen.
 - Verbeteren is niet destructief: het origineel blijft in je bibliotheek en één tik zet het terug.
 - Alike leert van de beste opnamen die je zelf kiest — op je apparaat, en je kunt dat altijd resetten in Instellingen.
 - Instellingen, dan Gegevens en privacy, dan Verwijder Alike-gegevens wist scanresultaten, opruimgeschiedenis en voorkeuren — en raakt je fotobibliotheek nooit aan.
@@ -703,6 +711,7 @@ ALIKE FREE
 - Beste opname die leert van je eigen keuzes
 - Sorteren en opruimgeschiedenis
 - Eén foto tegelijk opruimen
+- Widgets
 
 ALIKE PRO
 - 7 dagen gratis op het jaarabonnement, voor nieuwe abonnees die daarvoor in aanmerking komen
@@ -743,10 +752,10 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
+- Dwa widgety na ekranie początkowym: odzyskiwalne miejsce i biblioteka.
 - Trzynaście języków i pełny tryb ciemny.
 
 TO TY DECYDUJESZ
-- Uporządkowane zdjęcia trafiają do albumu „Ostatnio usunięte” i można je odzyskać przez około 30 dni.
 - Poprawa niczego nie niszczy: oryginał zostaje w bibliotece, a jedno dotknięcie go przywraca.
 - Alike uczy się z najlepszych ujęć, które wybierasz sam — na Twoim urządzeniu, i możesz to w każdej chwili wyzerować w Ustawieniach.
 - Ustawienia, potem Dane i prywatność, potem Usuń dane Alike kasuje wyniki skanowania, historię porządków i ustawienia — i nigdy nie rusza Twojej biblioteki zdjęć.
@@ -759,6 +768,7 @@ ALIKE FREE
 - Najlepsze ujęcie, które uczy się z Twoich wyborów
 - Sortowanie i historia porządków
 - Porządki po jednym zdjęciu
+- Widgety
 
 ALIKE PRO
 - 7 dni za darmo w planie rocznym, dla uprawnionych nowych subskrybentów
@@ -799,10 +809,10 @@ GERÇEK KİTAPLIKLAR İÇİN
 - Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve hatırlanır.
 - Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.
 - İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.
-- On üç dil: İngilizce, Ukraynaca, Almanca, Fransızca, İspanyolca, Latin Amerika İspanyolcası, Brezilya Portekizcesi, İtalyanca, Felemenkçe, Lehçe, Türkçe, Geleneksel Çince ve Arapça. Tam Koyu Mod desteği.
+- Ana ekranda iki widget: kazanılabilir alan ve kitaplığa bir bakış.
+- On üç dil ve tam Koyu Mod desteği.
 
 KONTROL SENDE
-- Temizlediğin fotoğraflar Son Silinenler'e gider ve yaklaşık 30 gün geri alınabilir.
 - İyileştirme hiçbir şeyi bozmaz: orijinal kitaplığında kalır ve tek dokunuş onu geri getirir.
 - Alike kendi seçtiğin en iyi karelerden öğrenir — hem de cihazında; istediğin an Ayarlar'dan sıfırlayabilirsin.
 - Ayarlar, sonra Veriler ve Gizlilik, sonra Alike Verilerini Sil; uygulamanın sakladığı her tarama sonucunu, temizlik kaydını ve tercihi siler — fotoğraf kitaplığına ise hiç dokunmaz.
@@ -815,6 +825,7 @@ ALIKE FREE
 - Kendi seçimlerinden öğrenen En İyi Kare
 - Sıralama ve temizlik geçmişi
 - Fotoğrafları teker teker temizleme
+- Widget'lar
 
 ALIKE PRO
 - Yıllık planda 7 gün ücretsiz, uygun yeni aboneler için
@@ -855,10 +866,10 @@ Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成�
 - 寬鬆的單欄版面或更緊湊的格狀版面，隨時切換並自動記住。
 - App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。
 - 選用的清理提醒，以本地通知依你自己的時間送達。
+- 兩個主畫面小工具：可以釋出的空間，以及一眼掌握的圖庫。
 - 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
 
 一切由你決定
-- 清理掉的照片會進入「最近刪除」，約 30 天內都還能還原。
 - 優化不會破壞原檔：原始照片留在你的照片圖庫裡，點一下就能還原。
 - Alike 會從你自己挑選的最佳照片學習——全程在你的裝置上，隨時可以在「設定」中重置。
 - 「設定」→「資料與隱私權」→「刪除 Alike 資料」會清除 App 儲存的所有掃描結果、清理記錄與偏好設定——完全不會動到你的照片圖庫。
@@ -871,6 +882,7 @@ ALIKE FREE
 - 會從你自己的挑選中學習的最佳照片
 - 排序與清理歷史記錄
 - 一次清理一張照片
+- 主畫面小工具
 
 ALIKE PRO
 - 年繳方案 7 天免費，適用於符合資格的新訂閱者
@@ -912,10 +924,10 @@ AR_DESCRIPTION = """\
 - تخطيط فسيح بعمود واحد أو شبكة أكثر كثافة، يمكن تبديله في أي وقت ويُحفظ اختيارك.
 - دليل قابل للبحث داخل التطبيق، على بُعد نقرة واحدة من شاشة الفحص.
 - تذكيرات تنظيف اختيارية، تصل كإشعارات محلية وفق جدولك أنت.
+- عنصران على الشاشة الرئيسية: المساحة التي يمكن استعادتها، والمكتبة في لمحة.
 - ثلاث عشرة لغة: الإنجليزية والأوكرانية والألمانية والفرنسية والإسبانية وإسبانية أمريكا اللاتينية والبرتغالية البرازيلية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ودعم كامل للوضع الداكن.
 
 تبقى أنت المتحكم
-- تنتقل الصور التي تنظّفها إلى «المحذوفة مؤخرًا»، ويمكن استعادتها نحو 30 يومًا.
 - التحسين لا يتلف شيئًا: يبقى الأصل في مكتبتك، ولمسة واحدة تعيده.
 - يتعلّم Alike من أفضل اللقطات التي تختارها بنفسك — على جهازك، ويمكنك تصفير ذلك في أي وقت من الإعدادات.
 - الإعدادات، ثم البيانات والخصوصية، ثم حذف بيانات Alike يمحو كل نتيجة فحص وسجل تنظيف وتفضيل خزّنه التطبيق — ولا يمس مكتبة صورك أبدًا.
@@ -928,6 +940,7 @@ AR_DESCRIPTION = """\
 - أفضل لقطة تتعلّم من اختياراتك
 - الترتيب وسجل التنظيف
 - تنظيف صورة واحدة في كل مرة
+- عناصر الشاشة الرئيسية
 
 ‏ALIKE PRO
 - 7 أيام مجانًا في الخطة السنوية، للمشتركين الجدد المؤهلين
@@ -952,7 +965,7 @@ METADATA = {
         # Promotional text is the one field App Store Connect accepts without a
         # new build, so the trial lives here as well as in the description.
         "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
-        "release_notes": "Alike now looks at the photos themselves when it picks the best shot — and it can enhance that one photo for you, reversibly.\n\n- The best shot is chosen from sharpness, exposure, faces and noise, so a blurred favourite no longer beats a sharp frame.\n- A short note says why it won: sharper, better exposure, face in focus.\n- When nothing clearly stands out, Alike says so and asks you to choose, instead of guessing.\n- Enhance the best shot with one tap, touch and hold to compare it with the original, and go back to the original whenever you want — Live Photos included.\n- The original is kept by the system, no copy is created, and the change shows up in Photos like any other edit.\n- And the more often you pick your own best shot, the closer Alike gets to what you look for — learned on your device, and resettable in Settings.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "release_notes": "Alike comes to the home screen. Two widgets, so the state of your library is one glance away instead of one launch away.\n\n- How much space you can reclaim, on the home screen, without opening the app.\n- Left a review half-finished? The widget shows how far you got and takes you straight back to it.\n- A second widget lists what your library still holds — similar groups, screenshots and blurred photos — and each row opens its own list.\n- The status widget comes in two sizes, the library list in one, and both follow the light, dark and tinted looks of your wallpaper.\n- The figures are dated: a reading from yesterday says when it was taken instead of presenting itself as current.\n- The widgets are free, in all thirteen languages, and readable with VoiceOver and at accessibility text sizes.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
@@ -960,7 +973,7 @@ METADATA = {
         # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
         "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,видалити",
         "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок і допомагає прибрати решту — усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
-        "release_notes": "Alike тепер дивиться на самі фотографії, коли обирає найкращий кадр, — і може покращити цей кадр так, що це завжди можна скасувати.\n\n- Найкращий кадр обирається за різкістю, експозицією, обличчями й шумом, тож розмите улюблене фото більше не виграє в різкого.\n- Короткий підпис пояснює, чому переміг саме цей кадр: різкіше, краща експозиція, обличчя у фокусі.\n- Коли жоден кадр не виділяється, Alike так і каже й просить обрати самому, замість вгадувати.\n- Покращення застосовується одним дотиком, утримування показує оригінал для порівняння, а повернути оригінал можна будь-коли — включно з Live Photos.\n- Оригінал зберігає сама система, копія не створюється, а зміна видно у «Фото», як будь-яке інше редагування.\n- А що частіше ви обираєте найкращий кадр самі, то ближче Alike підходить до того, що ви шукаєте, — навчання відбувається на вашому пристрої, і його можна скинути в налаштуваннях.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Alike тепер на домашньому екрані. Два віджети — і стан медіатеки видно одразу, а не після запуску застосунку.\n\n- Скільки місця можна звільнити — просто на домашньому екрані, не відкриваючи застосунок.\n- Не завершили перегляд? Віджет показує, скільки вже пройдено, і повертає вас точно туди.\n- Другий віджет показує, що ще зберігає медіатека: групи схожих, скриншоти й розмиті фото — кожен рядок відкриває свій список.\n- Віджет стану — у двох розмірах, список бібліотеки — в одному, і обидва підхоплюють світлий, темний і тонований вигляд ваших шпалер.\n- Показники датовані: вчорашні дані кажуть, коли їх зняли, а не вдають, що вони свіжі.\n- Віджети безкоштовні, усіма тринадцятьма мовами, читаються VoiceOver і на збільшених розмірах тексту.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Keywords below are researched per market rather than translated. Each set
     # skips whatever the localized subtitle already indexes — "ähnliche Fotos",
@@ -972,35 +985,35 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "doppelte,duplikate,bilder,speicherplatz,galerie,bildschirmfoto,unscharf,löschen,kamera",
         "promotional_text": "Alike gruppiert ähnliche Fotos, wählt die beste Aufnahme und hilft dir, den Rest aufzuräumen — alles auf deinem iPhone. Alike Pro: 7 Tage gratis im Jahresplan.",
-        "release_notes": "Alike schaut jetzt in die Fotos selbst, wenn es die beste Aufnahme wählt — und kann genau dieses Foto verbessern, jederzeit umkehrbar.\n\n- Die beste Aufnahme ergibt sich aus Schärfe, Belichtung, Gesichtern und Rauschen: Ein unscharfer Favorit gewinnt nicht mehr gegen ein scharfes Bild.\n- Eine kurze Notiz sagt, warum sie gewonnen hat: schärfer, bessere Belichtung, Gesicht im Fokus.\n- Wenn nichts klar heraussticht, sagt Alike das und bittet dich zu wählen, statt zu raten.\n- Verbessere die beste Aufnahme mit einem Tippen, halte gedrückt für den Vergleich mit dem Original, und kehre jederzeit zum Original zurück — auch bei Live Photos.\n- Das Original behält das System, es entsteht keine Kopie, und die Änderung ist in Fotos wie jede andere Bearbeitung sichtbar.\n- Und je öfter du die beste Aufnahme selbst wählst, desto näher kommt Alike dem, worauf du achtest — gelernt auf deinem Gerät und in den Einstellungen zurücksetzbar.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "release_notes": "Alike kommt auf den Home-Bildschirm. Zwei Widgets — der Zustand deiner Mediathek ist einen Blick entfernt, nicht einen Start.\n\n- Wie viel Speicher frei werden kann, direkt auf dem Home-Bildschirm, ohne die App zu öffnen.\n- Eine Prüfung offen geblieben? Das Widget zeigt, wie weit du gekommen bist, und bringt dich genau dorthin zurück.\n- Ein zweites Widget zeigt, was die Mediathek noch enthält: ähnliche Gruppen, Screenshots und unscharfe Fotos — jede Zeile öffnet ihre eigene Liste.\n- Das Status-Widget in zwei Größen, die Mediathek-Liste in einer — beide passend zum hellen, dunklen und getönten Look deines Hintergrundbilds.\n- Die Zahlen sind datiert: Ein Wert von gestern sagt, wann er entstand, statt sich als aktuell auszugeben.\n- Die Widgets sind kostenlos, in allen dreizehn Sprachen, mit VoiceOver und in den Textgrößen der Bedienungshilfen lesbar.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Nettoyer les photos similaires",
         "description": FR_FR_DESCRIPTION,
         "keywords": "doublons,double,images,stockage,espace,galerie,capture,flou,supprimer,pellicule,ranger",
         "promotional_text": "Alike regroupe les photos qui se ressemblent, choisit la meilleure et vous aide à nettoyer le reste, sur votre iPhone. Alike Pro : 7 jours offerts en formule annuelle.",
-        "release_notes": "Alike regarde désormais les photos elles-mêmes pour choisir la meilleure prise — et peut améliorer cette photo, de façon réversible.\n\n- La meilleure prise est choisie selon la netteté, l'exposition, les visages et le bruit : une favorite floue ne l'emporte plus sur une image nette.\n- Une courte note indique pourquoi elle a gagné : plus nette, meilleure exposition, visage net.\n- Quand rien ne se détache clairement, Alike le dit et vous laisse choisir au lieu de deviner.\n- Améliorez la meilleure prise d'une seule touche, touchez et maintenez pour la comparer à l'originale, et revenez à l'originale quand vous voulez — Live Photos comprises.\n- L'originale est conservée par le système, aucune copie n'est créée, et la modification apparaît dans Photos comme toute autre retouche.\n- Et plus vous choisissez vous-même la meilleure prise, plus Alike se rapproche de ce que vous cherchez — appris sur votre appareil, et réinitialisable dans les Réglages.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "release_notes": "Alike arrive sur l'écran d'accueil. Deux widgets : l'état de votre photothèque est à un regard, plus à un lancement.\n\n- L'espace que vous pouvez récupérer, sur l'écran d'accueil, sans ouvrir l'app.\n- Un tri resté inachevé ? Le widget montre où vous en étiez et vous y ramène directement.\n- Un second widget indique ce que contient encore votre photothèque : groupes de photos similaires, captures d'écran et photos floues — chaque ligne ouvre sa propre liste.\n- Le widget d'état existe en deux tailles, la liste de la photothèque en une seule, et les deux suivent les apparences claire, sombre et teintée de votre fond d'écran.\n- Les chiffres sont datés : une valeur de la veille dit quand elle a été relevée au lieu de se présenter comme actuelle.\n- Les widgets sont gratuits, dans les treize langues, et lisibles avec VoiceOver et aux tailles de texte d'accessibilité.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
         "subtitle": "Encuentra y limpia duplicados",
         "description": ES_ES_DESCRIPTION,
         "keywords": "fotos,repetidas,similares,almacenamiento,espacio,galería,captura,borrosas,borrar,carrete",
         "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Alike ahora mira las fotos en sí para elegir la mejor toma, y puede mejorar esa foto de forma reversible.\n\n- La mejor toma se elige por nitidez, exposición, rostros y ruido: una favorita movida ya no gana a una imagen nítida.\n- Una nota breve dice por qué ha ganado: más nítida, mejor exposición, rostro enfocado.\n- Cuando ninguna destaca con claridad, Alike lo dice y te pide elegir, en lugar de adivinar.\n- Mejora la mejor toma con un toque, mantén pulsado para compararla con el original y vuelve al original cuando quieras, también en Live Photos.\n- El original lo guarda el sistema, no se crea ninguna copia y el cambio se ve en Fotos como cualquier otra edición.\n- Y cuanto más elijas tú la mejor toma, más se acerca Alike a lo que buscas: se aprende en tu dispositivo y se puede reiniciar en Ajustes.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Alike llega a la pantalla de inicio. Dos widgets: el estado de tu fototeca queda a un vistazo, y no a un arranque.\n\n- Cuánto espacio puedes recuperar, en la pantalla de inicio, sin abrir la app.\n- ¿Dejaste una revisión a medias? El widget muestra por dónde ibas y te lleva justo ahí.\n- Un segundo widget enseña lo que aún guarda tu fototeca: grupos de similares, capturas y fotos borrosas, y cada fila abre su propia lista.\n- El widget de estado viene en dos tamaños y el de la fototeca en uno, y ambos se adaptan a los estilos claro, oscuro y con tinte de tu fondo de pantalla.\n- Las cifras van fechadas: un dato de ayer dice cuándo se tomó en lugar de presentarse como actual.\n- Los widgets son gratis, en los trece idiomas, y se leen con VoiceOver y en los tamaños de texto de accesibilidad.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Encuentra y limpia duplicados",
         "description": ES_MX_DESCRIPTION,
         "keywords": "fotos,iguales,liberar espacio,almacenamiento,celular,galería,capturas,borrosas,eliminar",
         "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Alike ahora mira las fotos en sí para elegir la mejor toma, y puede mejorar esa foto de forma reversible.\n\n- La mejor toma se elige por nitidez, exposición, rostros y ruido: una favorita movida ya no le gana a una imagen nítida.\n- Una nota breve dice por qué ganó: más nítida, mejor exposición, rostro enfocado.\n- Cuando ninguna destaca con claridad, Alike lo dice y te pide elegir, en lugar de adivinar.\n- Mejora la mejor toma con un toque, mantén presionado para compararla con el original y vuelve al original cuando quieras, también en Live Photos.\n- El original lo guarda el sistema, no se crea ninguna copia y el cambio se ve en Fotos como cualquier otra edición.\n- Y cuanto más elijas tú la mejor toma, más se acerca Alike a lo que buscas: se aprende en tu dispositivo y se puede reiniciar en Configuración.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Alike llega a la pantalla de inicio. Dos widgets: el estado de tu fototeca queda a un vistazo, y no a un arranque.\n\n- Cuánto espacio puedes recuperar, en la pantalla de inicio, sin abrir la app.\n- ¿Dejaste una revisión a medias? El widget muestra por dónde ibas y te lleva justo ahí.\n- Un segundo widget muestra lo que aún guarda tu fototeca: grupos de similares, capturas y fotos borrosas, y cada fila abre su propia lista.\n- El widget de estado viene en dos tamaños y el de la fototeca en uno, y ambos se adaptan a los estilos claro, oscuro y con tinte de tu fondo de pantalla.\n- Las cifras van fechadas: un dato de ayer dice cuándo se tomó en lugar de presentarse como actual.\n- Los widgets son gratis, en los trece idiomas, y se leen con VoiceOver y en los tamaños de texto de accesibilidad.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Encontre e limpe duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "fotos,repetidas,iguais,armazenamento,liberar espaço,galeria,captura,desfocadas,apagar",
         "promotional_text": "O Alike agrupa as fotos parecidas, escolhe a melhor de cada grupo e ajuda você a limpar o resto, no seu iPhone. Alike Pro: 7 dias grátis no plano anual.",
-        "release_notes": "O Alike agora olha para as próprias fotos ao escolher a melhor — e pode aprimorar essa foto de forma reversível.\n\n- A melhor foto é escolhida por nitidez, exposição, rostos e ruído: uma favorita tremida não vence mais uma imagem nítida.\n- Uma nota curta diz por que ela venceu: mais nítida, melhor exposição, rosto em foco.\n- Quando nada se destaca com clareza, o Alike diz isso e pede que você escolha, em vez de adivinhar.\n- Aprimore a melhor foto com um toque, mantenha pressionado para comparar com o original e volte ao original quando quiser — inclusive em Live Photos.\n- O original fica guardado pelo sistema, nenhuma cópia é criada, e a mudança aparece em Fotos como qualquer outra edição.\n- E quanto mais você escolhe a melhor foto por conta própria, mais o Alike se aproxima do que você procura — aprendido no seu dispositivo e redefinível nos Ajustes.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "release_notes": "O Alike chega à tela de início. Dois widgets: o estado da sua fototeca fica a um relance, e não a um toque para abrir.\n\n- Quanto espaço dá para recuperar, na tela de início, sem abrir o app.\n- Deixou uma revisão pela metade? O widget mostra até onde você foi e leva você de volta exatamente ali.\n- Um segundo widget mostra o que a fototeca ainda guarda: grupos de semelhantes, capturas de tela e fotos desfocadas — cada linha abre a sua própria lista.\n- O widget de status vem em dois tamanhos e o da fototeca em um, e os dois acompanham os estilos claro, escuro e colorido do seu papel de parede.\n- Os números têm data: um dado de ontem diz quando foi medido, em vez de se passar por atual.\n- Os widgets são gratuitos, nos treze idiomas, e podem ser lidos com o VoiceOver e nos tamanhos de texto de acessibilidade.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
     # Tier 3 keywords follow the same market-research rule as Tier 1: they skip
     # whatever the localized subtitle already indexes — "doppioni", "dubbels",
@@ -1020,35 +1033,35 @@ METADATA = {
         "description": IT_DESCRIPTION,
         "keywords": "foto,simili,duplicate,spazio,archiviazione,galleria,screenshot,sfocate,eliminare,rullino",
         "promotional_text": "Alike raggruppa le foto simili, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto, sul tuo iPhone. Alike Pro: 7 giorni gratis sul piano annuale.",
-        "release_notes": "Alike ora guarda le foto stesse quando sceglie lo scatto migliore — e può migliorare quella foto, in modo reversibile.\n\n- Lo scatto migliore viene scelto in base a nitidezza, esposizione, volti e rumore: una preferita mossa non batte più un'immagine nitida.\n- Una breve nota dice perché ha vinto: più nitida, esposizione migliore, volto a fuoco.\n- Quando non emerge nulla di chiaro, Alike lo dice e ti chiede di scegliere, invece di tirare a indovinare.\n- Migliora lo scatto migliore con un tocco, tieni premuto per confrontarlo con l'originale e torna all'originale quando vuoi — Live Photos comprese.\n- L'originale lo conserva il sistema, non viene creata alcuna copia e la modifica compare in Foto come qualsiasi altra.\n- E più scegli tu lo scatto migliore, più Alike si avvicina a ciò che cerchi: impara sul tuo dispositivo e si azzera in Impostazioni.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "release_notes": "Alike arriva nella schermata home. Due widget: lo stato della libreria è a un'occhiata, non a un avvio.\n\n- Quanto spazio puoi recuperare, nella schermata home, senza aprire l'app.\n- Una revisione rimasta a metà? Il widget mostra a che punto eri e ti riporta esattamente lì.\n- Un secondo widget mostra cosa contiene ancora la libreria: gruppi di foto simili, screenshot e foto sfocate — ogni riga apre il proprio elenco.\n- Il widget di stato in due dimensioni, l'elenco della libreria in una, ed entrambi seguono gli stili chiaro, scuro e colorato del tuo sfondo.\n- I numeri sono datati: un dato di ieri dice quando è stato rilevato, invece di spacciarsi per attuale.\n- I widget sono gratuiti, in tutte e tredici le lingue, e leggibili con VoiceOver e nelle dimensioni di testo per l'accessibilità.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Vind en ruim dubbels op",
         "description": NL_NL_DESCRIPTION,
         "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,verwijderen,album",
         "promotional_text": "Alike groepeert de foto's die op elkaar lijken, kiest de beste opname van elke groep en helpt je de rest op te ruimen. Alike Pro: 7 dagen gratis op het jaarplan.",
-        "release_notes": "Alike kijkt nu naar de foto's zelf bij het kiezen van de beste foto — en kan die ene foto verbeteren, altijd terug te draaien.\n\n- De beste foto wordt gekozen op scherpte, belichting, gezichten en ruis: een onscherpe favoriet wint niet meer van een scherpe opname.\n- Een korte notitie zegt waarom die won: scherper, betere belichting, gezicht scherp.\n- Als er niets duidelijk uitspringt, zegt Alike dat en laat het jou kiezen in plaats van te gokken.\n- Verbeter de beste foto met één tik, houd vast om te vergelijken met het origineel en ga wanneer je wilt terug naar het origineel — ook bij Live Photos.\n- Het origineel bewaart het systeem, er komt geen kopie bij, en de wijziging is in Foto's te zien als elke andere bewerking.\n- En hoe vaker je zelf de beste foto kiest, hoe dichter Alike komt bij wat jij zoekt — geleerd op je apparaat en te resetten in Instellingen.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "release_notes": "Alike komt op je beginscherm. Twee widgets: de staat van je bibliotheek is één blik weg, niet één keer starten.\n\n- Hoeveel ruimte je kunt vrijmaken, op je beginscherm, zonder de app te openen.\n- Een beoordeling onafgemaakt gelaten? De widget laat zien hoe ver je was en brengt je er precies terug.\n- Een tweede widget toont wat je bibliotheek nog bevat: vergelijkbare groepen, schermafbeeldingen en onscherpe foto's — elke regel opent zijn eigen lijst.\n- De statuswidget in twee formaten, de bibliotheeklijst in één, en beide volgen de lichte, donkere en getinte stijlen van je achtergrond.\n- De cijfers zijn gedateerd: een waarde van gisteren zegt wanneer die is gemeten in plaats van zich als actueel voor te doen.\n- De widgets zijn gratis, in alle dertien talen, en leesbaar met VoiceOver en bij tekstgrootten voor toegankelijkheid.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Znajdź i usuń podobne zdjęcia",
         "description": PL_DESCRIPTION,
         "keywords": "duplikaty,kopie,porządki,pamięć,miejsce,galeria,zrzut ekranu,rozmyte,usuwanie,album",
         "promotional_text": "Alike grupuje podobnie wyglądające zdjęcia, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę. Alike Pro: 7 dni za darmo w planie rocznym.",
-        "release_notes": "Alike patrzy teraz na same zdjęcia, gdy wybiera najlepsze ujęcie — i potrafi je poprawić w sposób odwracalny.\n\n- Najlepsze ujęcie wybierane jest na podstawie ostrości, ekspozycji, twarzy i szumu: poruszone zdjęcie z ulubionych nie wygrywa już z ostrym.\n- Krótka notka mówi, dlaczego wygrało: ostrzejsze, lepsza ekspozycja, twarz w ostrości.\n- Gdy nic wyraźnie się nie wyróżnia, Alike to mówi i prosi o wybór, zamiast zgadywać.\n- Popraw najlepsze ujęcie jednym dotknięciem, przytrzymaj, aby porównać je z oryginałem, i wróć do oryginału, kiedy zechcesz — także w Live Photos.\n- Oryginał przechowuje system, nie powstaje żadna kopia, a zmianę widać w Zdjęciach jak każdą inną edycję.\n- A im częściej sam wybierasz najlepsze ujęcie, tym bliżej Alike jest tego, czego szukasz — uczy się na Twoim urządzeniu i można to wyzerować w Ustawieniach.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "release_notes": "Alike trafia na ekran początkowy. Dwa widgety: stan biblioteki widać od razu, bez uruchamiania aplikacji.\n\n- Ile miejsca możesz odzyskać, na ekranie początkowym, bez otwierania aplikacji.\n- Przegląd został nieukończony? Widget pokazuje, jak daleko zaszedłeś, i wraca dokładnie tam.\n- Drugi widget pokazuje, co jeszcze jest w bibliotece: grupy podobnych, zrzuty ekranu i rozmyte zdjęcia — każdy wiersz otwiera własną listę.\n- Widget stanu w dwóch rozmiarach, lista biblioteki w jednym, i oba dopasowują się do jasnego, ciemnego i barwionego wyglądu tapety.\n- Liczby mają datę: wynik z wczoraj mówi, kiedy powstał, a nie udaje aktualnego.\n- Widgety są bezpłatne, we wszystkich trzynastu językach, czytane przez VoiceOver i w rozmiarach tekstu dla dostępności.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Benzer fotoğrafları temizle",
         "description": TR_DESCRIPTION,
         "keywords": "kopya,yinelenen,depolama,alan,galeri,ekran görüntüsü,bulanık,silme,albüm,yer açma",
         "promotional_text": "Alike benzeyen fotoğrafları gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder. Alike Pro: yıllık planda 7 gün ücretsiz.",
-        "release_notes": "Alike artık en iyi kareyi seçerken fotoğrafların kendisine bakıyor — ve o fotoğrafı geri alınabilir şekilde iyileştirebiliyor.\n\n- En iyi kare netlik, pozlama, yüzler ve gürültüye göre seçiliyor: bulanık bir favori artık net bir kareyi geçemiyor.\n- Kısa bir not neden kazandığını söylüyor: daha net, daha iyi pozlama, yüz net.\n- Hiçbiri açıkça öne çıkmıyorsa Alike bunu söylüyor ve tahmin etmek yerine seçmeni istiyor.\n- En iyi kareyi tek dokunuşla iyileştir, orijinaliyle karşılaştırmak için basılı tut ve istediğin an orijinaline dön — Live Photos dahil.\n- Orijinali sistem saklıyor, kopya oluşmuyor ve değişiklik Fotoğraflar'da diğer düzenlemeler gibi görünüyor.\n- Üstelik en iyi kareyi ne kadar çok kendin seçersen, Alike aradığın şeye o kadar yaklaşır — öğrenme cihazında kalır ve Ayarlar'dan sıfırlanabilir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "release_notes": "Alike ana ekrana geliyor. İki widget: kitaplığının durumu artık bir açılış değil, bir bakış kadar uzakta.\n\n- Ne kadar alan kazanabileceğin, ana ekranda, uygulamayı açmadan.\n- İnceleme yarım mı kaldı? Widget nereye kadar geldiğini gösterir ve seni tam oraya geri götürür.\n- İkinci widget kitaplığında hâlâ ne durduğunu gösterir: benzer gruplar, ekran görüntüleri ve bulanık fotoğraflar — her satır kendi listesini açar.\n- Durum widget'ı iki boyutta, kitaplık listesi tek boyutta; ikisi de duvar kâğıdının açık, koyu ve renk tonlu görünümlerine uyar.\n- Sayılar tarihli: dünkü bir ölçüm, güncelmiş gibi davranmak yerine ne zaman alındığını söyler.\n- Widget'lar ücretsiz, on üç dilin tamamında, VoiceOver ile ve erişilebilirlik metin boyutlarında okunabilir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
         "subtitle": "找出相似與重複相片，一鍵清出空間",
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理,記憶體,瘦身,掃描,批次,手機,離線,隱私,一模一樣,圖片,檔案,免費,智慧,清空,選片",
         "promotional_text": "Alike 會把看起來相像的照片分成一組組，挑出每一組的最佳照片，並幫你清理其餘的，全程在 iPhone 上完成。Alike Pro：年繳方案 7 天免費。",
-        "release_notes": "Alike 現在會看照片本身來挑選最佳照片，而且可以優化那張照片，隨時都能還原。\n\n- 最佳照片依清晰度、曝光、人臉與雜訊挑選：模糊的最愛照片不再勝過清晰的一張。\n- 一行簡短說明會告訴你它為何勝出：更清晰、曝光更佳、人臉清晰。\n- 若沒有明顯勝出的一張，Alike 會直說並請你自行挑選，而不是亂猜。\n- 輕點一下就能優化最佳照片，按住可與原始照片比較，隨時都能還原為原始照片，Live Photo 也適用。\n- 原始照片由系統保留，不會產生副本，變更會像其他編輯一樣顯示在「照片」中。\n- 而且你越常自己挑選最佳照片，Alike 就越接近你要的標準——學習只在你的裝置上進行，也可以在「設定」中重置。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "release_notes": "Alike 來到主畫面。兩個小工具，照片圖庫的狀態看一眼就知道，不必先打開 App。\n\n- 可以釋出多少空間，就在主畫面上，不用打開 App。\n- 檢視只做了一半？小工具會顯示你的進度，並直接帶你回到那裡。\n- 第二個小工具列出圖庫裡還有什麼：相似群組、螢幕截圖與模糊照片，每一列都會打開自己的清單。\n- 狀態小工具有兩種尺寸，圖庫清單只有一種，兩者都會跟著你桌布的淺色、深色與色調外觀。\n- 數字都標了日期：昨天的讀數會說明它是何時取得的，而不是假裝是最新的。\n- 小工具免費，支援全部十三種語言，可用 VoiceOver 朗讀，也能在輔助使用的文字大小下閱讀。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
         "subtitle": "اعثر على الصور المتشابهة",
@@ -1057,7 +1070,7 @@ METADATA = {
         # "صور" and "متشابهة", so the keyword field spends its characters elsewhere.
         "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,تفريغ,أرشيف",
         "promotional_text": "يجمّع Alike الصور المتشابهة، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي. كل ذلك على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
-        "release_notes": "يفحص Alike الآن الصور نفسها عند اختيار أفضل لقطة، ويمكنه تحسين تلك الصورة مع إمكانية التراجع في أي وقت.\n\n- تُختار أفضل لقطة حسب الحدة والإضاءة والوجوه والضوضاء، فلم تعد الصورة المفضّلة الضبابية تتفوّق على لقطة حادة.\n- ملاحظة قصيرة تشرح سبب فوزها: أكثر حدة، إضاءة أفضل، الوجه واضح.\n- وعندما لا تبرز أي لقطة بوضوح، يقول Alike ذلك ويطلب منك الاختيار بدلًا من التخمين.\n- حسّن أفضل لقطة بلمسة واحدة، والمس مع الاستمرار لمقارنتها بالأصل، وعُد إلى الأصل متى شئت — بما في ذلك صور Live Photos.\n- يحتفظ النظام بالأصل، ولا تُنشأ أي نسخة، ويظهر التعديل في «الصور» مثل أي تعديل آخر.\n- وكلما اخترت أفضل لقطة بنفسك أكثر، اقترب Alike مما تبحث عنه — يتعلّم على جهازك، ويمكن تصفيره من الإعدادات.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "release_notes": "يصل Alike إلى الشاشة الرئيسية. عنصران، فتعرف حالة مكتبتك بنظرة واحدة بدلًا من فتح التطبيق.\n\n- مقدار المساحة التي يمكنك استعادتها، على الشاشة الرئيسية، دون فتح التطبيق.\n- تركت مراجعة في منتصفها؟ يعرض العنصر إلى أين وصلت ويعيدك إليها مباشرة.\n- عنصر ثانٍ يعرض ما تحتفظ به مكتبتك: مجموعات الصور المتشابهة ولقطات الشاشة والصور الضبابية، وكل صف يفتح قائمته الخاصة.\n- عنصر الحالة بحجمين، وقائمة المكتبة بحجم واحد، وكلاهما يتبع المظهر الفاتح والداكن والملوّن لخلفية شاشتك.\n- الأرقام مؤرّخة: قراءة الأمس تقول متى أُخذت بدلًا من أن تظهر كأنها حالية.\n- العنصران مجانيان، بجميع اللغات الثلاث عشرة، ويمكن قراءتهما مع VoiceOver وبأحجام نص تسهيلات الاستخدام.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 

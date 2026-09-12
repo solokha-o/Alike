@@ -127,6 +127,7 @@ public struct CleanupView: View {
     private let ratingPrompt: RatingPromptCoordinator
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
+    @Binding private var pendingWidgetEntry: CleanupWidgetEntry?
 
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @Environment(\.requestReview) private var requestReview
@@ -148,7 +149,10 @@ public struct CleanupView: View {
         subscriptionStore: SubscriptionStore? = nil,
         ratingPrompt: RatingPromptCoordinator,
         onOpenScanner: @escaping @MainActor @Sendable () -> Void,
-        onRequestScan: @escaping @MainActor @Sendable () -> Void
+        onRequestScan: @escaping @MainActor @Sendable () -> Void,
+        // Defaulted: every existing call site stays valid, and a host that has no
+        // widget routing to feed in does not have to know this parameter exists.
+        pendingWidgetEntry: Binding<CleanupWidgetEntry?> = .constant(nil)
     ) {
         self.workspace = workspace
         self._sensitivity = sensitivity
@@ -157,6 +161,7 @@ public struct CleanupView: View {
         self.ratingPrompt = ratingPrompt
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
+        self._pendingWidgetEntry = pendingWidgetEntry
     }
 
     public var body: some View {
@@ -268,6 +273,23 @@ public struct CleanupView: View {
         .onChange(of: controls) { _, _ in refreshArrangement() }
         .onChange(of: workspace.clusterIdentityKey) { _, _ in refreshArrangement() }
         .onChange(of: premiumAccess.hasAccess(to: .advancedFilters)) { _, _ in refreshArrangement() }
+        // Both, not just the first: on a cold launch the widget's intent is already set
+        // before `loadCachedContent()` returns, and acting on it then would look up a
+        // category in an empty list. The second observer is what picks it back up.
+        //
+        // Applied after the `refreshArrangement` observers above so the arrangement is
+        // already current when the scroll anchor is read off it.
+        .onChange(of: pendingWidgetEntry, initial: true) { _, _ in followPendingWidgetEntry(router: router) }
+        .onChange(of: isContentLoaded) { _, _ in followPendingWidgetEntry(router: router) }
+        // A deferred entry is picked back up when whatever held it resolves: the sheet
+        // on screen closes, or StoreKit says what the account is entitled to.
+        .onChange(of: isScreenOwned) { _, _ in followPendingWidgetEntry(router: router) }
+        .onChange(of: premiumAccess.isEntitlementSettled) { _, _ in followPendingWidgetEntry(router: router) }
+        // A deferred tap lives for one foreground session: a paywall surfacing on a
+        // later resume, long after the tap, would read as the app acting on its own.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background { pendingWidgetEntry = nil }
+        }
     }
 
     private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
@@ -523,6 +545,78 @@ public struct CleanupView: View {
     private var rescanButton: some View {
         Button(action: onRequestScan) { Image(systemName: "arrow.clockwise") }
             .accessibilityLabel(Text(CleanupL10n.Main.rescanPhotos))
+    }
+
+    /// Whether there is anything loaded to route a widget tap against.
+    ///
+    /// A `Bool` rather than `contentState` itself: that value carries the whole
+    /// `CleanupWorkspaceContent`, and an `onChange` on it would deep-compare a full
+    /// library on every workspace mutation. `refreshArrangement` keeps its distance
+    /// from it for the same reason.
+    private var isContentLoaded: Bool {
+        workspace.contentState != .notLoaded
+    }
+
+    /// Whether a sheet or alert of this screen is up, so a widget entry waits for it.
+    ///
+    /// Re-assigning an `Identifiable` sheet item while its sheet is up does not reliably
+    /// swap it, and a list or paywall the user is in is not something a home-screen tap
+    /// should replace.
+    private var isScreenOwned: Bool {
+        presentedCategory != nil
+            || presentedPaywall != nil
+            || isControlsPresented
+            || categoryError != nil
+    }
+
+    /// Acts on a place a widget tap asked for, once there is something to act against.
+    ///
+    /// Deliberately routed through `openCategory` rather than presenting the category
+    /// itself: that function holds the Premium gate, and a second way into a gated list
+    /// would be a way around the paywall. A locked category reaches its paywall here by
+    /// exactly the path an in-app tap takes.
+    ///
+    /// `router` is the stack this screen is hosted in, so a resume can push the group
+    /// the workspace says the review stopped at instead of leaving the user on the root
+    /// to press Continue a second time.
+    private func followPendingWidgetEntry(router: StackRouter<CleanupRoute>) {
+        guard let entry = pendingWidgetEntry else { return }
+
+        // Still restoring. The intent is kept, and the `isContentLoaded` observer brings
+        // us back here once the categories and clusters are actually loaded.
+        guard isContentLoaded else { return }
+
+        // Resolved against the workspace as it is now, so an entry that waited out a
+        // sheet sees whatever that sheet changed.
+        let resolution = entry.resolution(
+            categories: workspace.cleanupCategories,
+            orderedClusterIDs: arrangement.orderedIDs,
+            resumeCluster: workspace.cleanupEntryCluster()
+        )
+
+        // Kept, not dropped: the `isScreenOwned` and entitlement observers bring us
+        // back once a sheet closes or StoreKit answers. See `mustDefer` for why each.
+        guard !CleanupWidgetEntry.mustDefer(
+            resolution,
+            isScreenOwned: isScreenOwned,
+            isEntitlementSettled: premiumAccess.isEntitlementSettled,
+            hasAccess: { premiumAccess.hasAccess(to: $0.premiumFeature) }
+        ) else { return }
+
+        pendingWidgetEntry = nil
+
+        switch resolution {
+        case let .openCategory(summary):
+            openCategory(summary)
+        case let .openCluster(cluster):
+            // The same push `CleanupProgressCard`'s Continue makes. The widget names the
+            // intent; the destination is still the app's own answer to "where was I".
+            router.push(.cluster(cluster))
+        case let .scrollTo(id):
+            scrollAnchorID = id
+        case .stayOnRoot:
+            break
+        }
     }
 
     private func openCategory(_ category: CleanupCategorySummary) {

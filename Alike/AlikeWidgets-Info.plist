@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- The extension ships no .lproj of its own: every string it draws comes from
+	     the WidgetSupport package bundle, which carries all thirteen. Without this
+	     list the loader sees a bundle that supports only the development region, so
+	     `Locale.current` inside the extension resolves its *language* to English
+	     while taking the region from the device — and the widget renders Ukrainian
+	     labels beside an English month ("12 Sep 2026" instead of "12 вер. 2026").
+	     Declaring the localizations here fixes the resolution without adding
+	     resources the extension does not otherwise need. -->
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>uk</string>
+		<string>de</string>
+		<string>fr</string>
+		<string>es</string>
+		<string>es-419</string>
+		<string>pt-BR</string>
+		<string>it</string>
+		<string>nl</string>
+		<string>pl</string>
+		<string>tr</string>
+		<string>zh-Hant</string>
+		<string>ar</string>
+	</array>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
+</dict>
+</plist>

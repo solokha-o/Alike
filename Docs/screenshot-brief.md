@@ -14,7 +14,7 @@ intent; the script is what actually renders.
 
 ## The deck
 
-Six slides, in listing order. Each is 1320 × 2868 on a dark canvas that matches
+Seven slides, in listing order. Each is 1320 × 2868 on a dark canvas that matches
 the app's own appearance: one label, one headline, one supporting line, and a
 tilted iPhone carrying the capture.
 
@@ -26,6 +26,7 @@ tilted iPhone carrying the capture.
 | 4 | `05-comparison-review` | caption bottom, left, complete device above | purple | Nothing is deleted without review |
 | 5 | `07-cleanup-progress` | caption top, centre, phone bleeding off the bottom | green | The payoff — space comes back |
 | 6 | `14-best-shot-enhanced` | caption bottom, right, complete device above | accent | The photo you keep can be improved, and put back |
+| 7 | `15-widgets-home` | caption top, left, complete device above | purple | The app is useful without being opened |
 
 Slide 6 ships as of 6 September 2026: shot 14 is captured in all thirteen
 locales and `SLIDES` and `COPY` hold six entries. One caveat carried over from
@@ -34,8 +35,16 @@ photos, so the lower half of the screen renders empty and slide 6 is the least
 dense frame in the deck. It was shipped knowingly; a four-photo cluster is what
 would fix it.
 
-Two compositions alternate so the deck reads as a rhythm rather than six of the
-same frame. Slide 6
+Slide 7 ships as of 1.4.0: shot 15 is captured in all thirteen locales and
+`SLIDES` and `COPY` hold seven entries. It takes `purple` rather than the
+`accent` slide 6 just used, and it is the one capture the mascot appears in
+twice, drawn inside both widgets. It is also the only frame in the deck shot on
+a simulator rather than a physical iPhone: the widget gallery always draws
+`WidgetSnapshot.placeholder()`, so the states come from a hand-written App Group
+snapshot — see `Docs/screenshot-shot-list.md`.
+
+Two compositions alternate so the deck reads as a rhythm rather than seven of
+the same frame. Slide 6
 follows from that rule rather than from taste: slide 5 is
 `caption_top("center")`, so the sixth has to be `caption_bottom`, and it is
 aligned right because the previous `caption_bottom` — slide 4 — is left.
@@ -253,7 +262,7 @@ The five `ar` source captures are taken the same way every other locale's are �
 on device, then imported with `tools/import_device_screenshots.py`, which now
 accepts `ar` and maps `ar-SA`/`ar-AE`/`ar-EG` onto it.
 
-Thirteen decks, one per listing localization, six slides each — seventy-eight
+Thirteen decks, one per listing localization, seven slides each — ninety-one
 renders. The directory names are the app's own
 language codes, so `es-419` and `pt-BR` — `tools/prepare_app_store_upload_bundle.py`
 maps `es-419` onto App Store Connect's `es-MX` slot on the way out. `zh-Hant` is
@@ -308,7 +317,7 @@ Pillow is not in the system Python, so the venv is created once.
 
 ## Adding a slide
 
-The App Store allows ten screenshots; six ship, so the
+The App Store allows ten screenshots; seven ship, so the
 ceiling is not the constraint — what a slide has to earn is a shopper's
 attention. Adding one means, in `tools/generate_app_store_product_screenshots.py`:
 
@@ -339,12 +348,16 @@ and 11 are App Review evidence and deliberately stay out of the listing.
 ## Before upload
 
 - All thirteen locales rendered and eyeballed, not just generated — every slide
-  of every deck, so six frames a locale, seventy-eight in
+  of every deck, so seven frames a locale, ninety-one in
   total. Type size in the long languages — uk, de, pt-BR, pl — is the usual
   casualty, and zh-Hant and ar each need their own look: one is a different
   typeface, the other is laid out right to left in SF Arabic.
-- Slide 6 present in all thirteen, or absent from all thirteen. A deck that is
-  six slides in English and five in Arabic is worse than a five-slide deck.
+- Slides 6 and 7 present in all thirteen, or absent from all thirteen. A deck
+  that is seven slides in English and six in Arabic is worse than a six-slide
+  deck.
+- Slide 7's widgets are legible at thumbnail scale: the figure, the category
+  rows and the lock glyphs survive the tilt and the crop. It is the densest
+  frame in the deck and the one most likely to turn to mush when scaled down.
 - Slide 6's frame still shows both halves of its promise — the Enhanced badge
   and a reachable "Revert to original" — after the phone mockup crops the
   capture. The slide's headline is a claim about something visible in the
