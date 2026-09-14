@@ -29,6 +29,7 @@ skills.
   - `xcode-project-analyzer`
   - `spm-build-analysis`
   - `xcode-build-fixer`
+- `xcode-disk-cleanup` from `AvdLee/Xcode-Disk-Cleanup-Agent-Skill`
 - `emilkowalski-skills` from `emilkowalski/skills`, containing:
   - `animation-vocabulary`
   - `apple-design`
@@ -51,6 +52,11 @@ skills.
   artifact-hygiene rules and overrides the pack's generic defaults. The same pack
   is also installed globally in `~/.claude/skills`; the vendored, pinned copy is
   the one this repo is validated against. Load exactly one sub-skill per task.
+- `xcode-disk-cleanup` has no local equivalent. Use it for Xcode developer
+  storage audits (DerivedData, simulators, runtimes, archives, dSYMs, caches).
+  It measures first and mutates nothing without itemized approval; keep
+  `.build-benchmark/`, release evidence under `tools/dsyms` and archives that
+  back a shipped build out of any approved cleanup list.
 - `core-data-expert` has no local Core Data equivalent.
   Use it when Core Data, migrations, persistent history, CloudKit sync, fetches, or context/threading issues are involved.
 - `emilkowalski-skills` overlaps with local `Skills/DesignConcept` and

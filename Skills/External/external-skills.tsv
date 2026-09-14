@@ -5,3 +5,4 @@ core-data-expert	AvdLee/Core-Data-Agent-Skill	core-data-expert	main	855ca7d0df50
 swift-testing-expert	AvdLee/Swift-Testing-Agent-Skill	swift-testing-expert	main	798e9b1a2bcac164d4f0c781908199e754f0bab6
 emilkowalski-skills	emilkowalski/skills	skills	main	d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7
 xcode-build-optimization	AvdLee/Xcode-Build-Optimization-Agent-Skill	skills	main	6bd7b596cd688b1127ded00e812b1b6937ec35d6
+xcode-disk-cleanup	AvdLee/Xcode-Disk-Cleanup-Agent-Skill	xcode-disk-cleanup	main	304e86e619ac49cb12cb69969a0588400b17d64f
