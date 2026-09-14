@@ -72,6 +72,11 @@ actor ScanProgressRelay {
 public struct CleanupWorkspaceContent: Equatable, @unchecked Sendable {
     public let clusters: [PhotoCluster]
     public let categories: [CleanupCategorySummary]
+    /// The same categories with their asset identifiers, so the reclaimable
+    /// estimate can tell a screenshot inside a cluster from a second screenshot.
+    /// Empty when the repository could not be read; the estimate then falls back
+    /// to the cluster half alone rather than guessing.
+    public let categorySnapshots: [CleanupCategorySnapshot]
     public let reviewStates: [UUID: ClusterReviewState]
     public let resurfacingStates: [UUID: ClusterResurfacingState]
     public let activeSession: CleanupSession?
@@ -87,10 +92,12 @@ public struct CleanupWorkspaceContent: Equatable, @unchecked Sendable {
         activeSession: CleanupSession?,
         insights: CleanupInsights,
         hasCompletedScanBaseline: Bool,
-        shouldShowRescanPrompt: Bool
+        shouldShowRescanPrompt: Bool,
+        categorySnapshots: [CleanupCategorySnapshot] = []
     ) {
         self.clusters = clusters
         self.categories = categories
+        self.categorySnapshots = categorySnapshots
         self.reviewStates = reviewStates
         self.resurfacingStates = resurfacingStates
         self.activeSession = activeSession
@@ -109,6 +116,19 @@ public struct CleanupWorkspaceContent: Equatable, @unchecked Sendable {
         hasCompletedScanBaseline: false,
         shouldShowRescanPrompt: false
     )
+
+    /// The reclaimable figure for this content — the one number the scanner card,
+    /// the post-scan offer and the widget show. Computed by
+    /// ``ReclaimableEstimateCalculator``; a user's reviewed best shot is the keeper
+    /// where one exists, otherwise the computed one.
+    public func reclaimableEstimate() -> ReclaimableEstimate {
+        ReclaimableEstimateCalculator.estimate(
+            clusters: clusters.map { cluster in
+                cluster.reclaimableCluster(keeping: reviewStates[cluster.id]?.bestShotLocalIdentifier)
+            },
+            categories: categorySnapshots.map(\.reclaimableCategory)
+        )
+    }
 }
 
 /// The availability of persisted Cleanup content. Scan failures are described

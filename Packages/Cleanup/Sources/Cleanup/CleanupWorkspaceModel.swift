@@ -49,6 +49,10 @@ public final class CleanupWorkspaceModel {
     public var cleanupInsights: CleanupInsights { lastGoodContent.insights }
     public var hasCompletedScanBaseline: Bool { lastGoodContent.hasCompletedScanBaseline }
     public var shouldShowRescanPrompt: Bool { lastGoodContent.shouldShowRescanPrompt }
+    /// The reclaimable figure for the current content. Every surface that shows
+    /// "reclaimable" reads this; it is refreshed once per published content, not
+    /// on every read, because resolving each cluster's keeper is not free.
+    public private(set) var reclaimableEstimate: ReclaimableEstimate = .zero
 
     private let analysisService: any PhotoAnalysisService
     private let repository: any PhotoClusterRepository
@@ -161,7 +165,7 @@ public final class CleanupWorkspaceModel {
 
         do {
             let loadedClusters = try await repository.loadClusters()
-            let categories = await fetchCleanupCategories()
+            let categorySnapshots = await fetchCleanupCategorySnapshots()
             let reviewData = await makeReviewData(for: loadedClusters)
 
             guard canCommitCachedLoad(expectedGeneration) else { return }
@@ -169,13 +173,14 @@ public final class CleanupWorkspaceModel {
             let sortedClusters = await postProcessor.canonicalSortedClusters(loadedClusters)
             let content = CleanupWorkspaceContent(
                 clusters: sortedClusters,
-                categories: categories,
+                categories: categorySnapshots.map(\.summary),
                 reviewStates: reviewData.states,
                 resurfacingStates: reviewData.resurfacingStates,
                 activeSession: reviewData.session,
                 insights: insights,
                 hasCompletedScanBaseline: baselineDate != nil,
-                shouldShowRescanPrompt: false
+                shouldShowRescanPrompt: false,
+                categorySnapshots: categorySnapshots
             )
             lastGoodContent = content
             refreshDerivedContentSnapshots()
@@ -524,6 +529,15 @@ private extension CleanupWorkspaceModel {
             reviewStates: reviewData.states
         )
         let insights = await fetchCleanupInsights()
+        // The refresh above persisted the categories with their identifiers; the
+        // estimate needs those identifiers to count a screenshot inside a cluster once.
+        // A category the refresh reported but the repository cannot hand back keeps
+        // its summary figure, so the estimate never silently drops a category.
+        let categorySnapshots = await postProcessor.categorySnapshots(
+            persisted: fetchCleanupCategorySnapshots(),
+            refreshed: refreshedCategories,
+            refreshedAt: completedAt
+        )
         let content = CleanupWorkspaceContent(
             clusters: sortedClusters,
             categories: refreshedCategories,
@@ -532,18 +546,17 @@ private extension CleanupWorkspaceModel {
             activeSession: session,
             insights: insights,
             hasCompletedScanBaseline: true,
-            shouldShowRescanPrompt: false
+            shouldShowRescanPrompt: false,
+            categorySnapshots: categorySnapshots
         )
         publish(content)
 
-        let aggregates = await postProcessor.scanAggregates(
-            clusters: sortedClusters,
-            categories: refreshedCategories
-        )
         let summary = ScanSummary(
             clusterCount: sortedClusters.count,
-            cleanupCategoryCandidateCount: aggregates.categoryCandidateCount,
-            estimatedSavingsBytes: aggregates.estimatedSavingsBytes,
+            cleanupCategoryCandidateCount: refreshedCategories.reduce(0) { $0 + max($1.assetCount, 0) },
+            // The same figure `reclaimableEstimate` now holds for this content, so the
+            // scanner card and a later cold launch cannot disagree.
+            estimatedSavingsBytes: reclaimableEstimate.totalBytes,
             completedAt: completedAt
         )
         lastScanSummary = summary
@@ -644,10 +657,12 @@ private extension CleanupWorkspaceModel {
         }
     }
 
-    func fetchCleanupCategories() async -> [CleanupCategorySummary] {
+    /// Categories in `CleanupCategoryKind.allCases` order, with their identifiers.
+    /// A repository failure degrades to an empty section, never to a failed load.
+    func fetchCleanupCategorySnapshots() async -> [CleanupCategorySnapshot] {
         do {
             let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
-            return CleanupCategoryKind.allCases.compactMap { snapshots[$0]?.summary }
+            return CleanupCategoryKind.allCases.compactMap { snapshots[$0] }
         } catch {
             AppLog.storage.error("Failed to load cleanup categories: \(error.localizedDescription)")
             return []
@@ -677,6 +692,7 @@ private extension CleanupWorkspaceModel {
     func refreshDerivedContentSnapshots() {
         let content = lastGoodContent
         clusterIdentityKey = content.clusters.map(\.id)
+        reclaimableEstimate = content.reclaimableEstimate()
         sessionProgressSnapshot = cleanupManager.progress(
             for: content.clusters,
             reviewStates: content.reviewStates,
@@ -704,7 +720,8 @@ private extension CleanupWorkspaceModel {
             activeSession: activeSession ?? content.activeSession,
             insights: insights ?? content.insights,
             hasCompletedScanBaseline: content.hasCompletedScanBaseline,
-            shouldShowRescanPrompt: shouldShowRescanPrompt ?? content.shouldShowRescanPrompt
+            shouldShowRescanPrompt: shouldShowRescanPrompt ?? content.shouldShowRescanPrompt,
+            categorySnapshots: content.categorySnapshots
         )
     }
 }
@@ -743,18 +760,21 @@ private actor ScanPostProcessor {
         )
     }
 
-    func scanAggregates(
-        clusters: [PhotoCluster],
-        categories: [CleanupCategorySummary]
-    ) -> (categoryCandidateCount: Int, estimatedSavingsBytes: Int64) {
-        let categoryCandidateCount = categories.reduce(0) { $0 + max($1.assetCount, 0) }
-        let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
-            total += cluster.assets.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
+    func categorySnapshots(
+        persisted: [CleanupCategorySnapshot],
+        refreshed: [CleanupCategorySummary],
+        refreshedAt: Date
+    ) -> [CleanupCategorySnapshot] {
+        let persistedByKind = Dictionary(uniqueKeysWithValues: persisted.map { ($0.kind, $0) })
+        return refreshed.map { summary in
+            persistedByKind[summary.kind] ?? CleanupCategorySnapshot(
+                kind: summary.kind,
+                localIdentifiers: [],
+                assetCount: summary.assetCount,
+                estimatedSavingsBytes: summary.estimatedSavingsBytes,
+                refreshedAt: refreshedAt
+            )
         }
-        let categorySavings = categories.reduce(into: Int64(0)) {
-            $0 += $1.estimatedSavingsBytes
-        }
-        return (categoryCandidateCount, clusterSavings + categorySavings)
     }
 
     func resurfacingStates(

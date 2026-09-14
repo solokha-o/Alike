@@ -111,12 +111,12 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
     public let hasCompletedScan: Bool
     public let lastScanDate: Date?
     public let libraryChangedSinceScan: Bool
-    /// Copied verbatim from `ScanSummary.estimatedSavingsBytes`.
+    /// Copied verbatim from `ScanSummary.estimatedSavingsBytes`, which the app derives
+    /// from `CleanupWorkspaceModel.reclaimableEstimate` (`ReclaimableEstimateCalculator`
+    /// in `Core`: each asset once, cluster keepers excluded).
     ///
-    /// The widget never recomputes this. The app's own estimate double-counts a
-    /// screenshot that also sits inside a cluster (`CleanupWorkspaceModel.scanAggregates`),
-    /// which is a known defect tracked separately; inheriting it on purpose is the only
-    /// way the widget and the scanner screen cannot disagree.
+    /// The widget never recomputes this; reading the app's figure is the only way the
+    /// widget and the scanner screen cannot disagree.
     public let estimatedSavingsBytes: Int64?
     public let clusterCount: Int?
     public let screenshotAssetCount: Int?
