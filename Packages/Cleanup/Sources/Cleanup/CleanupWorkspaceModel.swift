@@ -692,7 +692,13 @@ private extension CleanupWorkspaceModel {
     func refreshDerivedContentSnapshots() {
         let content = lastGoodContent
         clusterIdentityKey = content.clusters.map(\.id)
-        reclaimableEstimate = content.reclaimableEstimate()
+        // Observation fires on every write, so an unchanged figure is not rewritten:
+        // a review-state or session change that leaves the estimate alone must not
+        // re-derive the scanner summary or republish the widget snapshot.
+        let estimate = content.reclaimableEstimate()
+        if reclaimableEstimate != estimate {
+            reclaimableEstimate = estimate
+        }
         sessionProgressSnapshot = cleanupManager.progress(
             for: content.clusters,
             reviewStates: content.reviewStates,
