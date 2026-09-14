@@ -18,7 +18,7 @@ skills.
 
 ## Vendored Skills
 
-- `swiftui-expert-skill` from `solokha-o/SwiftUI-Agent-Skill`
+- `swiftui-expert-skill` from `AvdLee/SwiftUI-Agent-Skill` (`skills/swiftui-expert-skill`)
 - `swift-concurrency` from `AvdLee/Swift-Concurrency-Agent-Skill`
 - `core-data-expert` from `AvdLee/Core-Data-Agent-Skill`
 - `swift-testing-expert` from `AvdLee/Swift-Testing-Agent-Skill`
