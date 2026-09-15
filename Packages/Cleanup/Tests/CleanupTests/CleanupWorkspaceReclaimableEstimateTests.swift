@@ -87,6 +87,45 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [600_000])
     }
 
+    /// The widget publisher reads `lastScanSummary` before the estimate, so a keeper
+    /// change after a scan must reach the summary without a restart.
+    func testKeeperChangeAfterScanUpdatesTheScanSummarySavings() async throws {
+        // 2 000 000 and 1 000 000 bytes.
+        let large = FakePhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000)
+        let small = FakePhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000)
+        let cluster = PhotoCluster(assets: [large, small])
+        let analysis = MockPhotoAnalysisService()
+        await analysis.setAnalyzePhotoLibraryResult(.success([cluster]))
+        let reviewRepository = MockClusterReviewStateRepository()
+        let workspace = makeWorkspace(analysisService: analysis, reviewRepository: reviewRepository)
+
+        let scanned = try await workspace.scan(sensitivity: .medium)
+        let keeper = try XCTUnwrap(cluster.bestShotAsset()?.localIdentifier)
+        let newKeeper = keeper == "large" ? "small" : "large"
+        let expectedBytes: Int64 = newKeeper == "large" ? 1_000_000 : 2_000_000
+        XCTAssertNotEqual(scanned.estimatedSavingsBytes, expectedBytes)
+
+        await reviewRepository.setStoredStates([
+            cluster.id: ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: newKeeper,
+                isBestShotUserSelected: true,
+                selectedLocalIdentifiers: [],
+                status: .inReview,
+                estimatedSavingsBytes: 0
+            )
+        ])
+        await workspace.reloadReviewState()
+
+        XCTAssertEqual(workspace.reclaimableEstimate.totalBytes, expectedBytes)
+        XCTAssertEqual(workspace.lastScanSummary, ScanSummary(
+            clusterCount: scanned.clusterCount,
+            cleanupCategoryCandidateCount: scanned.cleanupCategoryCandidateCount,
+            estimatedSavingsBytes: expectedBytes,
+            completedAt: scanned.completedAt
+        ))
+    }
+
     func testCategoryRepositoryFailureLeavesTheClusterHalfOfTheEstimate() async {
         let keep = FakePhotoAsset(localIdentifier: "keep", pixelWidth: 2_000, pixelHeight: 1_000)
         let other = FakePhotoAsset(localIdentifier: "other", pixelWidth: 2_000, pixelHeight: 1_000)

@@ -698,6 +698,16 @@ private extension CleanupWorkspaceModel {
         let estimate = content.reclaimableEstimate()
         if reclaimableEstimate != estimate {
             reclaimableEstimate = estimate
+            // A keeper change moves the estimate without a scan; the scanner card and
+            // the widget read the summary first, so it must carry the same figure.
+            if let summary = lastScanSummary, summary.estimatedSavingsBytes != estimate.totalBytes {
+                lastScanSummary = ScanSummary(
+                    clusterCount: summary.clusterCount,
+                    cleanupCategoryCandidateCount: summary.cleanupCategoryCandidateCount,
+                    estimatedSavingsBytes: estimate.totalBytes,
+                    completedAt: summary.completedAt
+                )
+            }
         }
         sessionProgressSnapshot = cleanupManager.progress(
             for: content.clusters,
