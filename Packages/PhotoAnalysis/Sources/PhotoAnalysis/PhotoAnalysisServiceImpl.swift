@@ -121,6 +121,9 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             photosWithFeaturePrints,
             threshold: sensitivity
         )
+        // Warm byte sizes here, off the main actor: the workspace reads them for
+        // every cluster asset each time it republishes the reclaimable figure.
+        AssetByteSize.prewarm(clusters.lazy.flatMap(\.assets))
         let duration = startTime.duration(to: ContinuousClock().now)
         AppLog.scan.info("\(AppLog.tag(.finish, "Clustering done. clusters=\(clusters.count) duration=\(duration)"))")
         
@@ -166,16 +169,21 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
            let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category) {
             let resolved = snapshot.localIdentifiers.compactMap { byIdentifier[$0] }
             if !resolved.isEmpty {
+                // The review screen reads bytes on the main actor; measure them here.
+                AssetByteSize.prewarm(resolved)
                 return resolved
             }
         }
 
+        let fallback: [PHAsset]
         switch category {
         case .screenshots:
-            return assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+            fallback = assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
         case .blurredPhotos:
-            return []
+            fallback = []
         }
+        AssetByteSize.prewarm(fallback)
+        return fallback
     }
     
     /// Calculate similarity between two specific assets
@@ -220,7 +228,14 @@ private extension PhotoAnalysisServiceImpl {
         from assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [CleanupCategorySnapshot] {
-        let assetSnapshots = assets.map(CleanupCategoryAssetSnapshot.init)
+        // Only screenshots need their bytes here; resource lookups over the whole
+        // library would cost a PhotoKit call per photo.
+        let startTime = ContinuousClock().now
+        let assetSnapshots = assets
+            .filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+            .map(CleanupCategoryAssetSnapshot.init)
+        let byteDuration = startTime.duration(to: ContinuousClock().now)
+        AppLog.scan.info("\(AppLog.tag(.progress, "Screenshot byte sizes measured. screenshots=\(assetSnapshots.count) duration=\(byteDuration)"))")
         var snapshots: [CleanupCategorySnapshot] = []
 
         if let screenshotSnapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: assetSnapshots) {

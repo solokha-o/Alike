@@ -77,7 +77,7 @@ public final class ScannerViewModel {
             cleanupCategoryCandidateCount: workspace.cleanupCategories.reduce(0) {
                 $0 + max($1.assetCount, 0)
             },
-            estimatedSavingsBytes: estimatedSavings(),
+            estimatedSavingsBytes: workspace.reclaimableEstimate.totalBytes,
             completedAt: completedAt
         )
     }
@@ -183,7 +183,7 @@ public final class ScannerViewModel {
                 state = .completed(ScanSummary(
                     clusterCount: workspace.clusters.count,
                     cleanupCategoryCandidateCount: workspace.cleanupCategories.reduce(0) { $0 + max($1.assetCount, 0) },
-                    estimatedSavingsBytes: estimatedSavings(),
+                    estimatedSavingsBytes: workspace.reclaimableEstimate.totalBytes,
                     completedAt: workspace.lastCompletedScanDate ?? now()
                 ))
             } else {
@@ -198,11 +198,6 @@ public final class ScannerViewModel {
         guard state != nextState else { return false }
         state = nextState
         return true
-    }
-
-    private func estimatedSavings() -> Int64 {
-        let clusterSavings = workspace.clusters.flatMap(\.assets).reduce(Int64(0)) { $0 + $1.estimatedCleanupBytes }
-        return clusterSavings + workspace.cleanupCategories.reduce(Int64(0)) { $0 + $1.estimatedSavingsBytes }
     }
 
     private func publishPostScanPremiumOfferIfEligible(_ summary: ScanSummary) async {

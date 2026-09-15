@@ -279,8 +279,9 @@ extension PHAsset {
         )
     }
 
+    /// Bytes deleting this asset frees. See ``AssetByteSize``.
     public var estimatedCleanupBytes: Int64 {
-        displayMetadata.estimatedCleanupBytes
+        AssetByteSize.bytes(for: self)
     }
 }
 
@@ -341,9 +342,10 @@ public struct AssetMetadata: Sendable {
         Double(pixelWidth) * Double(pixelHeight) / 1_000_000
     }
 
+    /// The pixel heuristic only; metadata has no file to measure.
+    /// Cleanup figures use `PHAsset.estimatedCleanupBytes`.
     public var estimatedCleanupBytes: Int64 {
-        let pixelArea = Int64(pixelWidth) * Int64(pixelHeight)
-        return max(1, pixelArea / 2)
+        AssetByteSize.heuristicBytes(pixelWidth: pixelWidth, pixelHeight: pixelHeight)
     }
 
     public var formattedCreationDate: String {

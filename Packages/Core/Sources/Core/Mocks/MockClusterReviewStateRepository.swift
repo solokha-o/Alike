@@ -17,7 +17,26 @@ public actor MockClusterReviewStateRepository: ClusterReviewStateRepository {
     public var didCallDeleteReviewState = false
     public var didCallDeleteAllReviewStates = false
 
+    private var shouldSuspendNextLoadAllReviewStates = false
+    private var suspendedLoadAllReviewStates: CheckedContinuation<Void, Never>?
+
     public init() {}
+
+    /// The next `loadAllReviewStates()` reads the store, then waits for
+    /// ``resumeLoadAllReviewStates()`` before returning what it read — the
+    /// window in which a concurrent writer can change the store underneath a reader.
+    public func suspendNextLoadAllReviewStates() {
+        shouldSuspendNextLoadAllReviewStates = true
+    }
+
+    public var isLoadAllReviewStatesSuspended: Bool {
+        suspendedLoadAllReviewStates != nil
+    }
+
+    public func resumeLoadAllReviewStates() {
+        suspendedLoadAllReviewStates?.resume()
+        suspendedLoadAllReviewStates = nil
+    }
 
     public func setStoredStates(_ states: [UUID: ClusterReviewState]) {
         storedStates = states
@@ -40,7 +59,12 @@ public actor MockClusterReviewStateRepository: ClusterReviewStateRepository {
         if let loadAllReviewStatesError {
             throw loadAllReviewStatesError
         }
-        return storedStates
+        let states = storedStates
+        if shouldSuspendNextLoadAllReviewStates {
+            shouldSuspendNextLoadAllReviewStates = false
+            await withCheckedContinuation { suspendedLoadAllReviewStates = $0 }
+        }
+        return states
     }
 
     public func saveReviewState(_ state: ClusterReviewState) async throws {

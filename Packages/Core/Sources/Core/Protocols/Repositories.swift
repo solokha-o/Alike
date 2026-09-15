@@ -137,6 +137,18 @@ public protocol CleanupCategorySnapshotRepository: Sendable {
     func deleteAllSnapshots() async throws
 }
 
+/// Repository for measured asset byte sizes, so a cold launch does not ask
+/// PhotoKit for resources it already measured. A disposable cache: losing it only
+/// costs a re-measure.
+public protocol AssetByteSizeRepository: Sendable {
+    /// Every stored record; empty when the store is missing, unreadable or was
+    /// written in another unit.
+    func loadAll() async -> [AssetByteSizeRecord]
+
+    /// Atomically replace every stored record.
+    func replaceAll(_ records: [AssetByteSizeRecord]) async throws
+}
+
 /// Repository for the active cleanup session aggregate state.
 public protocol CleanupSessionRepository: Sendable {
     /// Load currently active cleanup session.

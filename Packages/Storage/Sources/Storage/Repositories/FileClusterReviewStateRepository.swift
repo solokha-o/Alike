@@ -20,15 +20,11 @@ public final class FileClusterReviewStateRepository: ClusterReviewStateRepositor
     }
 
     public func saveReviewState(_ state: ClusterReviewState) async throws {
-        var states = try await store.loadAllStates()
-        states[state.clusterID] = state
-        try await store.saveAllStates(states)
+        try await store.update { $0[state.clusterID] = state }
     }
 
     public func deleteReviewState(clusterID: UUID) async throws {
-        var states = try await store.loadAllStates()
-        states.removeValue(forKey: clusterID)
-        try await store.saveAllStates(states)
+        try await store.update { $0.removeValue(forKey: clusterID) }
     }
 
     public func deleteAllReviewStates() async throws {
@@ -72,6 +68,14 @@ actor ClusterReviewStateStore {
             )
             return [:]
         }
+    }
+
+    /// Read-modify-write in one actor turn, so two callers cannot interleave
+    /// their reads and have the second write drop the first one's change.
+    func update(_ change: (inout [UUID: ClusterReviewState]) -> Void) throws {
+        var states = try loadAllStates()
+        change(&states)
+        try saveAllStates(states)
     }
 
     func saveAllStates(_ states: [UUID: ClusterReviewState]) throws {

@@ -123,7 +123,8 @@ struct BlurAnalysisService: Sendable {
             return BlurAnalysisWorkItem(
                 asset: asset,
                 localIdentifier: asset.localIdentifier,
-                estimatedCleanupBytes: asset.estimatedCleanupBytes
+                pixelWidth: asset.pixelWidth,
+                pixelHeight: asset.pixelHeight
             )
         }
 
@@ -144,18 +145,30 @@ struct BlurAnalysisService: Sendable {
             return BlurAnalysisCandidate(
                 localIdentifier: workItem.localIdentifier,
                 sharpnessScore: sharpness,
-                estimatedCleanupBytes: workItem.estimatedCleanupBytes
+                // The selector only breaks exact sharpness ties with this, so the
+                // cheap pixel figure keeps its order; real sizes are measured below
+                // for the few photos it keeps.
+                estimatedCleanupBytes: AssetByteSize.heuristicBytes(
+                    pixelWidth: workItem.pixelWidth,
+                    pixelHeight: workItem.pixelHeight
+                )
             )
         }
 
         let selected = BlurCandidateSelector.selectCandidates(from: candidates)
         guard !selected.isEmpty else { return nil }
+        let assetsByIdentifier = Dictionary(
+            workItems.map { ($0.localIdentifier, $0.asset) },
+            uniquingKeysWith: { first, _ in first }
+        )
 
         return CleanupCategorySnapshot(
             kind: .blurredPhotos,
             localIdentifiers: selected.map(\.localIdentifier),
             assetCount: selected.count,
-            estimatedSavingsBytes: selected.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
+            estimatedSavingsBytes: selected.reduce(into: Int64(0)) { total, candidate in
+                total += assetsByIdentifier[candidate.localIdentifier]?.estimatedCleanupBytes ?? 0
+            }
         )
     }
 }
@@ -163,7 +176,8 @@ struct BlurAnalysisService: Sendable {
 private struct BlurAnalysisWorkItem: @unchecked Sendable {
     let asset: PHAsset
     let localIdentifier: String
-    let estimatedCleanupBytes: Int64
+    let pixelWidth: Int
+    let pixelHeight: Int
 }
 
 
