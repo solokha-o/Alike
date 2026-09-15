@@ -59,8 +59,8 @@ SUBSCRIPTION
 Alike Pro is an auto-renewable subscription with yearly and monthly plans.
 The free tier allows 3 scans per month, cleanup of one photo at a time,
 guided review with Best Shot, one-tap enhancement, the Best Shot learning and
-both widgets: the new 1.4.0 feature is not behind the paywall. Pro adds
-unlimited scans, batch, screenshot and blurred cleanup, filters and
+both widgets: the widgets added in 1.4.0 are not behind the paywall. Pro
+adds unlimited scans, batch, screenshot and blurred cleanup, filters and
 reminders.
 
 The paywall is reachable from the Scanner tab, a group's Details view and
