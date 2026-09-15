@@ -224,11 +224,32 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
     }
 
+    /// The size store is read once per workspace — a scan after the launch load
+    /// reuses it — and is not rewritten when nothing new was measured.
+    func testColdLoadSeedsByteSizesOnceAndSkipsAnUnchangedSave() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([
+            PhotoCluster(assets: [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")])
+        ]))
+        let byteSizeRepository = MockAssetByteSizeRepository()
+        let workspace = makeWorkspace(repository: repository, byteSizeRepository: byteSizeRepository)
+
+        await workspace.loadCachedContent()
+        _ = try await workspace.scan(sensitivity: .medium)
+
+        let loadCount = await byteSizeRepository.loadAllCallCount
+        let saveCount = await byteSizeRepository.replaceAllCallCount
+        XCTAssertEqual(loadCount, 1)
+        XCTAssertEqual(saveCount, 0)
+    }
+
     private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
         categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository(),
+        byteSizeRepository: any AssetByteSizeRepository = MockAssetByteSizeRepository(),
         assetBytesByIdentifier: @escaping @Sendable ([String]) -> [String: Int64] = { _ in [:] }
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
@@ -238,6 +259,7 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            assetByteSizeRepository: byteSizeRepository,
             assetBytesByIdentifier: assetBytesByIdentifier
         )
     }

@@ -63,6 +63,9 @@ public final class CleanupWorkspaceModel {
     private let now: @Sendable () -> Date
     /// Re-measures persisted category sums written with the pixel heuristic.
     private let assetBytesByIdentifier: @Sendable ([String]) -> [String: Int64]
+    private let assetByteSizeRepository: any AssetByteSizeRepository
+    /// `AssetByteSize.generation` at the last load or save of the size store.
+    private var persistedByteSizeGeneration: Int?
     private let postProcessor = ScanPostProcessor()
 
     private var lastGoodContent = CleanupWorkspaceContent.empty
@@ -107,6 +110,7 @@ public final class CleanupWorkspaceModel {
                 repository: UserDefaultsBestShotPersonalizationRepository()
             ),
         cleanupManager: (any CleanupSessionManaging)? = nil,
+        assetByteSizeRepository: any AssetByteSizeRepository = FileAssetByteSizeRepository(),
         assetBytesByIdentifier: @escaping @Sendable ([String]) -> [String: Int64] =
             AssetByteSize.bytes(forLocalIdentifiers:),
         now: @escaping @Sendable () -> Date = Date.init
@@ -123,6 +127,7 @@ public final class CleanupWorkspaceModel {
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.assetBytesByIdentifier = assetBytesByIdentifier
+        self.assetByteSizeRepository = assetByteSizeRepository
         self.now = now
 
         if let analysisService {
@@ -176,7 +181,10 @@ public final class CleanupWorkspaceModel {
             guard canCommitCachedLoad(expectedGeneration) else { return }
 
             let sortedClusters = await postProcessor.canonicalSortedClusters(loadedClusters)
-            // Publishing reads bytes for every cluster asset on the main actor.
+            // Publishing reads bytes for every cluster asset on the main actor. Sizes
+            // measured by an earlier launch come from disk, so PhotoKit is asked only
+            // about photos that are new or changed since.
+            await seedByteSizesIfNeeded()
             await postProcessor.prewarmByteSizes(for: sortedClusters)
             let content = CleanupWorkspaceContent(
                 clusters: sortedClusters,
@@ -193,6 +201,7 @@ public final class CleanupWorkspaceModel {
             refreshDerivedContentSnapshots()
             lastCompletedScanDate = baselineDate
             contentState = baselineDate == nil ? .neverScanned : .content(content)
+            await persistByteSizesIfNeeded(for: content)
         } catch {
             guard canCommitCachedLoad(expectedGeneration) else { return }
             lastCompletedScanDate = baselineDate
@@ -475,6 +484,8 @@ private extension CleanupWorkspaceModel {
         let scanMetadataBeforeScan = await repository.loadScanMetadata()
         let previousSnapshots = try await repository.loadClusterSnapshots()
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
+        // Analysis warms sizes for every cluster photo; reuse what a launch measured.
+        await seedByteSizesIfNeeded()
 
         guard let progressRelay else { throw CancellationError() }
         // Captured now, immediately before analysis takes its own snapshot of
@@ -557,6 +568,7 @@ private extension CleanupWorkspaceModel {
             categorySnapshots: categorySnapshots
         )
         publish(content)
+        await persistByteSizesIfNeeded(for: content)
 
         let summary = ScanSummary(
             clusterCount: sortedClusters.count,
@@ -677,6 +689,28 @@ private extension CleanupWorkspaceModel {
             try await cleanupCategoryRepository.replaceAllSnapshots(Array(categorySnapshots.values))
         } catch {
             AppLog.storage.error("Failed to restore cleanup categories after scan failure: \(error.localizedDescription)")
+        }
+    }
+
+    func seedByteSizesIfNeeded() async {
+        guard persistedByteSizeGeneration == nil else { return }
+        AssetByteSize.seed(await assetByteSizeRepository.loadAll())
+        persistedByteSizeGeneration = AssetByteSize.generation
+    }
+
+    /// Writes the sizes of every photo the content refers to, and only those, so
+    /// deleted photos drop out of the store. Skipped when nothing was measured.
+    func persistByteSizesIfNeeded(for content: CleanupWorkspaceContent) async {
+        let generation = AssetByteSize.generation
+        guard generation != persistedByteSizeGeneration else { return }
+        let identifiers = content.clusters.flatMap { $0.assets.map(\.localIdentifier) }
+            + content.categorySnapshots.flatMap(\.localIdentifiers)
+        let records = AssetByteSize.records(for: identifiers)
+        do {
+            try await assetByteSizeRepository.replaceAll(records)
+            persistedByteSizeGeneration = generation
+        } catch {
+            AppLog.storage.error("Failed to persist asset byte sizes: \(error.localizedDescription)")
         }
     }
 

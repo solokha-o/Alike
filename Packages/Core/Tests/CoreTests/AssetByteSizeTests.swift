@@ -156,3 +156,51 @@ private final class SizedAsset: PHAsset, @unchecked Sendable {
     override var pixelWidth: Int { widthOverride }
     override var pixelHeight: Int { heightOverride }
 }
+
+final class AssetByteSizeSeedTests: XCTestCase {
+    func testSeededRecordsComeBackWithoutChangingTheGeneration() {
+        let identifier = "seed-\(UUID().uuidString)"
+        let record = AssetByteSizeRecord(
+            localIdentifier: identifier,
+            modificationDate: Date(timeIntervalSince1970: 1_000),
+            bytes: 3_210
+        )
+        let generation = AssetByteSize.generation
+
+        AssetByteSize.seed([record])
+
+        XCTAssertEqual(AssetByteSize.records(for: [identifier, "unknown-\(UUID().uuidString)"]), [record])
+        XCTAssertEqual(AssetByteSize.generation, generation)
+    }
+
+    func testSeedDoesNotReplaceASizeAlreadyInTheCache() {
+        let identifier = "seed-\(UUID().uuidString)"
+        let first = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 1)
+        let second = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 2)
+
+        AssetByteSize.seed([first])
+        AssetByteSize.seed([second])
+
+        XCTAssertEqual(AssetByteSize.records(for: [identifier]), [first])
+    }
+
+    /// A test double never reads a seeded size: only PhotoKit assets use the cache.
+    func testTestDoubleIgnoresASeededSize() {
+        AssetByteSize.seed([AssetByteSizeRecord(localIdentifier: "double", modificationDate: nil, bytes: 9_999)])
+
+        XCTAssertEqual(AssetByteSize.bytes(for: SeedSizedAsset(localIdentifier: "double")), 50)
+    }
+}
+
+private final class SeedSizedAsset: PHAsset, @unchecked Sendable {
+    private let identifierOverride: String
+
+    init(localIdentifier: String) {
+        identifierOverride = localIdentifier
+        super.init()
+    }
+
+    override var localIdentifier: String { identifierOverride }
+    override var pixelWidth: Int { 10 }
+    override var pixelHeight: Int { 10 }
+}
