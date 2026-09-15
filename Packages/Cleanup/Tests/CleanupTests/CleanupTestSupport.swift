@@ -5,13 +5,26 @@ import Photos
 final class FakePhotoAsset: PHAsset, @unchecked Sendable {
     private let identifierOverride: String
     private let favoriteOverride: Bool
+    private let pixelWidthOverride: Int
+    private let pixelHeightOverride: Int
 
-    init(localIdentifier: String = UUID().uuidString, isFavorite: Bool = false) {
+    /// `pixelWidth`/`pixelHeight` drive `estimatedCleanupBytes` (`max(1, w * h / 2)`),
+    /// so a test that cares about bytes sets them; the default keeps every asset at 1.
+    init(
+        localIdentifier: String = UUID().uuidString,
+        isFavorite: Bool = false,
+        pixelWidth: Int = 0,
+        pixelHeight: Int = 0
+    ) {
         identifierOverride = localIdentifier
         favoriteOverride = isFavorite
+        pixelWidthOverride = pixelWidth
+        pixelHeightOverride = pixelHeight
         super.init()
     }
 
     override var localIdentifier: String { identifierOverride }
     override var isFavorite: Bool { favoriteOverride }
+    override var pixelWidth: Int { pixelWidthOverride }
+    override var pixelHeight: Int { pixelHeightOverride }
 }

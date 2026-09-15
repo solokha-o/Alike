@@ -276,7 +276,9 @@ struct MainTabView: View {
             hasCompletedScanBaseline: cleanupWorkspace.hasCompletedScanBaseline,
             lastCompletedScanDate: cleanupWorkspace.lastCompletedScanDate,
             lastScanCompletedAt: cleanupWorkspace.lastScanSummary?.completedAt,
-            estimatedSavingsBytes: cleanupWorkspace.lastScanSummary?.estimatedSavingsBytes,
+            // The estimate rather than the summary's copy: after a cold launch there is no
+            // summary, and a keeper change must still republish the widget.
+            estimatedSavingsBytes: cleanupWorkspace.reclaimableEstimate.totalBytes,
             clusterCount: cleanupWorkspace.clusters.count,
             categoryAssetCount: cleanupWorkspace.cleanupCategories.reduce(0) { $0 + $1.assetCount },
             reviewedClusters: cleanupWorkspace.activeCleanupSession?.reviewedClusters,

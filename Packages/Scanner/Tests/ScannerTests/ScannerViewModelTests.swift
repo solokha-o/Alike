@@ -43,6 +43,71 @@ final class ScannerViewModelTests: XCTestCase {
         )))
     }
 
+    /// After a cold launch the workspace has no `lastScanSummary`, so the view
+    /// model synthesizes one; its figure must be the workspace's own estimate,
+    /// not a second formula.
+    func testColdLaunchSummaryReadsTheWorkspaceReclaimableEstimate() async {
+        let date = makeDate(year: 2026, month: 7, day: 15)
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(date)
+        let categoryRepository = MockCleanupCategorySnapshotRepository()
+        await categoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["s1", "s2"],
+                assetCount: 2,
+                estimatedSavingsBytes: 700
+            )
+        ])
+        let workspace = makeWorkspace(repository: repository, categoryRepository: categoryRepository)
+        let viewModel = makeViewModel(workspace: workspace, now: { date })
+
+        await viewModel.load()
+
+        XCTAssertEqual(workspace.reclaimableEstimate.totalBytes, 700)
+        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+            clusterCount: 0,
+            cleanupCategoryCandidateCount: 2,
+            estimatedSavingsBytes: 700,
+            completedAt: date
+        )))
+    }
+
+    /// Choosing another best shot after a scan moves the estimate with no new scan;
+    /// the library card must show the new figure before any restart.
+    func testKeeperChangeAfterScanUpdatesTheLibrarySummarySavings() async throws {
+        // 2 000 000 and 1 000 000 bytes.
+        let cluster = PhotoCluster(assets: [
+            SizedPhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000),
+            SizedPhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000)
+        ])
+        let analysis = MockPhotoAnalysisService()
+        await analysis.setAnalyzePhotoLibraryResult(.success([cluster]))
+        let reviewRepository = MockClusterReviewStateRepository()
+        let workspace = makeWorkspace(analysis: analysis, reviewRepository: reviewRepository)
+        let viewModel = makeViewModel(workspace: workspace)
+
+        _ = await viewModel.startScanning()
+        let keeper = try XCTUnwrap(cluster.bestShotAsset()?.localIdentifier)
+        let newKeeper = keeper == "large" ? "small" : "large"
+        let expectedBytes: Int64 = newKeeper == "large" ? 1_000_000 : 2_000_000
+        XCTAssertNotEqual(viewModel.librarySummary?.estimatedSavingsBytes, expectedBytes)
+
+        await reviewRepository.setStoredStates([
+            cluster.id: ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: newKeeper,
+                isBestShotUserSelected: true,
+                selectedLocalIdentifiers: [],
+                status: .inReview,
+                estimatedSavingsBytes: 0
+            )
+        ])
+        await workspace.reloadReviewState()
+
+        XCTAssertEqual(viewModel.librarySummary?.estimatedSavingsBytes, expectedBytes)
+    }
+
     func testLoadResetsStaleMonthlyUsage() async {
         let july = makeDate(year: 2026, month: 7, day: 31)
         let august = makeDate(year: 2026, month: 8, day: 1)
@@ -396,13 +461,15 @@ private extension ScannerViewModelTests {
     func makeWorkspace(
         analysis: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
+        reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
+        categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository(),
         now: @escaping @Sendable () -> Date = Date.init
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
             analysisService: analysis,
             repository: repository,
-            reviewRepository: MockClusterReviewStateRepository(),
-            cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
+            reviewRepository: reviewRepository,
+            cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
             now: now
@@ -506,6 +573,24 @@ private struct TestPremiumAccess: PremiumAccessControlling {
     func access(to feature: PremiumFeature, context: PremiumAccessContext) -> PremiumAccessDecision {
         PremiumAccessPolicy.decision(for: feature, context: context, isPremium: entitlementState.isPremium)
     }
+}
+
+/// `estimatedCleanupBytes` is `max(1, pixelWidth * pixelHeight / 2)`.
+private final class SizedPhotoAsset: PHAsset, @unchecked Sendable {
+    private let identifierOverride: String
+    private let pixelWidthOverride: Int
+    private let pixelHeightOverride: Int
+
+    init(localIdentifier: String, pixelWidth: Int, pixelHeight: Int) {
+        identifierOverride = localIdentifier
+        pixelWidthOverride = pixelWidth
+        pixelHeightOverride = pixelHeight
+        super.init()
+    }
+
+    override var localIdentifier: String { identifierOverride }
+    override var pixelWidth: Int { pixelWidthOverride }
+    override var pixelHeight: Int { pixelHeightOverride }
 }
 
 private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {

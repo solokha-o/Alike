@@ -69,8 +69,10 @@ final class WidgetSnapshotPublisher {
         // launch the workspace restores its clusters and categories from the cache but
         // not the summary, so reading the aggregates straight off `summary` would put
         // "all caught up" on the home screen over candidates that are still there.
+        // The workspace's own estimate is the figure the summary was built from, so
+        // the widget still cannot disagree with the scanner screen.
         let restoredSavingsBytes: Int64? = summary == nil && hasCompletedScan
-            ? Self.estimatedSavingsBytes(clusters: clusters, categories: categories)
+            ? workspace.reclaimableEstimate.totalBytes
             : nil
 
         let snapshot = WidgetSnapshot(
@@ -112,20 +114,6 @@ final class WidgetSnapshotPublisher {
             try $0.clear()
             return true
         }
-    }
-
-    /// Mirrors `ScanSummary.estimatedSavingsBytes` — the same clusters-plus-categories
-    /// sum `ScanPostProcessor.scanAggregates` makes — for the cold-launch case where
-    /// the summary was not restored alongside the content it was computed from. Same
-    /// inputs, same figure, so the widget still cannot disagree with the scanner screen.
-    private static func estimatedSavingsBytes(
-        clusters: [PhotoCluster],
-        categories: [CleanupCategorySummary]
-    ) -> Int64 {
-        let clusterSavings = clusters.reduce(into: Int64(0)) { total, cluster in
-            total += cluster.assets.reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes }
-        }
-        return categories.reduce(into: clusterSavings) { $0 += $1.estimatedSavingsBytes }
     }
 
     /// Runs one store operation, reloading the timeline only when it says something
