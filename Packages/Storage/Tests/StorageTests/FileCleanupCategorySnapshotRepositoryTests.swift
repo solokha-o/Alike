@@ -57,6 +57,31 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         XCTAssertEqual(loaded, updated)
     }
 
+    /// Snapshots written before `byteSizeVersion` existed still load, marked as
+    /// heuristic so the workspace re-measures them instead of dropping them.
+    func testLoadsSnapshotsPersistedBeforeByteSizeVersion() async throws {
+        let legacyJSON = """
+        {
+          "snapshots": [
+            {
+              "kind": "screenshots",
+              "localIdentifiers": ["one", "two"],
+              "assetCount": 2,
+              "estimatedSavingsBytes": 2048,
+              "refreshedAt": 1000
+            }
+          ]
+        }
+        """
+        try Data(legacyJSON.utf8).write(to: fileURL)
+
+        let loaded = try await repository.loadSnapshot(for: .screenshots)
+
+        XCTAssertEqual(loaded?.localIdentifiers, ["one", "two"])
+        XCTAssertEqual(loaded?.estimatedSavingsBytes, 2048)
+        XCTAssertNil(loaded?.byteSizeVersion)
+    }
+
     func testCorruptedJSONReturnsEmptySnapshots() async throws {
         try Data("not-json".utf8).write(to: fileURL)
 

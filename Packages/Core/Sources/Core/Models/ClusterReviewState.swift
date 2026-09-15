@@ -31,6 +31,9 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
     public let estimatedSavingsBytes: Int64
     public let updatedAt: Date
     public let resurfacingState: ClusterResurfacingState?
+    /// Unit of `estimatedSavingsBytes`: ``AssetByteSize/currentVersion`` for file
+    /// sizes, `nil` for a state written with the pixel heuristic.
+    public let byteSizeVersion: Int?
 
     public var id: UUID { clusterID }
 
@@ -44,7 +47,8 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         status: ClusterReviewStatus,
         estimatedSavingsBytes: Int64,
         updatedAt: Date = Date(),
-        resurfacingState: ClusterResurfacingState? = nil
+        resurfacingState: ClusterResurfacingState? = nil,
+        byteSizeVersion: Int? = AssetByteSize.currentVersion
     ) {
         self.clusterID = clusterID
         self.bestShotLocalIdentifier = bestShotLocalIdentifier
@@ -58,10 +62,11 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
         self.estimatedSavingsBytes = estimatedSavingsBytes
         self.updatedAt = updatedAt
         self.resurfacingState = resurfacingState
+        self.byteSizeVersion = byteSizeVersion
     }
 
-    /// Decoded by hand so states persisted before `isBestShotUserSelected` and
-    /// `isReviewConfirmed` existed still load instead of failing the whole
+    /// Decoded by hand so states persisted before `isBestShotUserSelected`,
+    /// `isReviewConfirmed` and `byteSizeVersion` existed still load instead of failing the whole
     /// payload.
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -88,6 +93,7 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
             ClusterResurfacingState.self,
             forKey: .resurfacingState
         )
+        byteSizeVersion = try container.decodeIfPresent(Int.self, forKey: .byteSizeVersion)
     }
 }
 
@@ -114,7 +120,39 @@ public extension ClusterReviewState {
             status: status ?? self.status,
             estimatedSavingsBytes: estimatedSavingsBytes ?? self.estimatedSavingsBytes,
             updatedAt: updatedAt,
-            resurfacingState: resurfacingState
+            resurfacingState: resurfacingState,
+            // Kept bytes keep their unit; new bytes are measured in the current one.
+            byteSizeVersion: estimatedSavingsBytes == nil ? byteSizeVersion : AssetByteSize.currentVersion
+        )
+    }
+
+    var hasCurrentByteSizes: Bool {
+        byteSizeVersion == AssetByteSize.currentVersion
+    }
+
+    /// The state with `estimatedSavingsBytes` re-measured in the current unit from
+    /// the cluster's assets, or `self` when it is already current or belongs to
+    /// another cluster. Selected identifiers no longer in the cluster count as 0.
+    func upgradingByteSizes(in cluster: PhotoCluster) -> ClusterReviewState {
+        guard !hasCurrentByteSizes, cluster.id == clusterID else { return self }
+        let bytes = cluster.assets.reduce(into: Int64(0)) { total, asset in
+            if selectedLocalIdentifiers.contains(asset.localIdentifier) {
+                total += asset.estimatedCleanupBytes
+            }
+        }
+        return ClusterReviewState(
+            clusterID: clusterID,
+            bestShotLocalIdentifier: bestShotLocalIdentifier,
+            isBestShotUserSelected: isBestShotUserSelected,
+            selectedLocalIdentifiers: selectedLocalIdentifiers,
+            isReviewConfirmed: isReviewConfirmed,
+            mode: mode,
+            status: status,
+            // A state waiting for re-review carries 0 on purpose.
+            estimatedSavingsBytes: status == .needsReReview ? estimatedSavingsBytes : bytes,
+            updatedAt: updatedAt,
+            resurfacingState: resurfacingState,
+            byteSizeVersion: AssetByteSize.currentVersion
         )
     }
 }

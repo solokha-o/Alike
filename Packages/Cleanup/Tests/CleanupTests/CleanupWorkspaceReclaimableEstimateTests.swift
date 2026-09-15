@@ -160,11 +160,190 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         XCTAssertEqual(workspace.reclaimableEstimate, .zero)
     }
 
+    /// A category persisted with the pixel heuristic is re-measured on load and
+    /// written back, so its overlap with a cluster is subtracted in one unit.
+    func testColdLoadRemeasuresAHeuristicCategoryAndPersistsIt() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([]))
+        let categoryRepository = MockCleanupCategorySnapshotRepository()
+        await categoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["shot", "gone"],
+                assetCount: 2,
+                estimatedSavingsBytes: 9_999_999,
+                byteSizeVersion: nil
+            )
+        ])
+        let workspace = makeWorkspace(
+            repository: repository,
+            categoryRepository: categoryRepository,
+            assetBytesByIdentifier: { identifiers in
+                identifiers.contains("shot") ? ["shot": 4_321] : [:]
+            }
+        )
+
+        await workspace.loadCachedContent()
+
+        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [4_321])
+        XCTAssertEqual(workspace.reclaimableEstimate.categoryBytes, 4_321)
+        let storedSnapshots = await categoryRepository.storedSnapshots
+        let persisted = try XCTUnwrap(storedSnapshots[.screenshots])
+        XCTAssertEqual(persisted.estimatedSavingsBytes, 4_321)
+        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+    }
+
+    /// A scan that lands while the launch load is still reading legacy categories
+    /// has already stored fresh ones; the load must not write its re-measured
+    /// legacy copies over them.
+    func testLegacyMigrationDoesNotOverwriteCategoriesStoredByAConcurrentScan() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([]))
+        let categoryRepository = MockCleanupCategorySnapshotRepository()
+        await categoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["old"],
+                assetCount: 1,
+                estimatedSavingsBytes: 9_999_999,
+                refreshedAt: Date(timeIntervalSince1970: 1),
+                byteSizeVersion: nil
+            )
+        ])
+        let analysisService = MockPhotoAnalysisService()
+        await analysisService.setRefreshCleanupCategoriesResult(.success([
+            CleanupCategorySummary(kind: .screenshots, assetCount: 1, estimatedSavingsBytes: 7)
+        ]))
+        let workspace = makeWorkspace(
+            analysisService: analysisService,
+            repository: repository,
+            categoryRepository: categoryRepository,
+            assetBytesByIdentifier: { _ in ["old": 4_321] }
+        )
+
+        await categoryRepository.suspendNextLoadAllSnapshots()
+        let load = Task { await workspace.loadCachedContent() }
+        while await !categoryRepository.isLoadAllSnapshotsSuspended {
+            await Task.yield()
+        }
+
+        // The scan's refresh stores current categories while the load is paused.
+        let fresh = CleanupCategorySnapshot(
+            kind: .screenshots,
+            localIdentifiers: ["new"],
+            assetCount: 1,
+            estimatedSavingsBytes: 7,
+            refreshedAt: Date(timeIntervalSince1970: 2)
+        )
+        await categoryRepository.setStoredSnapshots([.screenshots: fresh])
+        _ = try await workspace.scan(sensitivity: .medium)
+
+        await categoryRepository.resumeLoadAllSnapshots()
+        await load.value
+
+        let storedSnapshots = await categoryRepository.storedSnapshots
+        XCTAssertEqual(storedSnapshots[.screenshots], fresh)
+        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [7])
+    }
+
+    /// The first launch on a library with categories but no clusters measures
+    /// only during the legacy migration; those sizes still reach the store, so
+    /// opening a category later does not ask PhotoKit again.
+    func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([]))
+        let identifier = "shot-\(UUID().uuidString)"
+        let categoryRepository = MockCleanupCategorySnapshotRepository()
+        await categoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: [identifier],
+                assetCount: 1,
+                estimatedSavingsBytes: 9_999_999,
+                byteSizeVersion: nil
+            )
+        ])
+        let byteSizeRepository = MockAssetByteSizeRepository()
+        let measured = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 4_321)
+        let workspace = makeWorkspace(
+            repository: repository,
+            categoryRepository: categoryRepository,
+            byteSizeRepository: byteSizeRepository,
+            assetBytesByIdentifier: { identifiers in
+                guard identifiers.contains(identifier) else { return [:] }
+                AssetByteSize.record(measured)
+                return [identifier: measured.bytes]
+            }
+        )
+
+        await workspace.loadCachedContent()
+
+        let saveCount = await byteSizeRepository.replaceAllCallCount
+        let storedRecords = await byteSizeRepository.storedRecords
+        XCTAssertEqual(saveCount, 1)
+        XCTAssertEqual(storedRecords, [measured])
+    }
+
+    func testColdLoadRemeasuresAHeuristicReviewStateAndPersistsIt() async throws {
+        let keeper = FakePhotoAsset(localIdentifier: "keeper", pixelWidth: 4_000, pixelHeight: 1_000)
+        let selected = FakePhotoAsset(localIdentifier: "selected", pixelWidth: 2_000, pixelHeight: 1_000)
+        let cluster = PhotoCluster(assets: [keeper, selected])
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([cluster]))
+        let reviewRepository = MockClusterReviewStateRepository()
+        await reviewRepository.setStoredStates([
+            cluster.id: ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: "keeper",
+                selectedLocalIdentifiers: ["selected"],
+                status: .reviewed,
+                estimatedSavingsBytes: 1,
+                byteSizeVersion: nil
+            )
+        ])
+        let workspace = makeWorkspace(repository: repository, reviewRepository: reviewRepository)
+
+        await workspace.loadCachedContent()
+
+        // Fake assets have no PhotoKit resources, so the source falls back to 2 000 × 1 000 / 2.
+        XCTAssertEqual(workspace.reviewState(for: cluster.id)?.estimatedSavingsBytes, 1_000_000)
+        let storedStates = await reviewRepository.storedStates
+        let persisted = try XCTUnwrap(storedStates[cluster.id])
+        XCTAssertEqual(persisted.estimatedSavingsBytes, 1_000_000)
+        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+    }
+
+    /// The size store is read once per workspace — a scan after the launch load
+    /// reuses it — and is not rewritten when nothing new was measured.
+    func testColdLoadSeedsByteSizesOnceAndSkipsAnUnchangedSave() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([
+            PhotoCluster(assets: [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")])
+        ]))
+        let byteSizeRepository = MockAssetByteSizeRepository()
+        let workspace = makeWorkspace(repository: repository, byteSizeRepository: byteSizeRepository)
+
+        await workspace.loadCachedContent()
+        _ = try await workspace.scan(sensitivity: .medium)
+
+        let loadCount = await byteSizeRepository.loadAllCallCount
+        let saveCount = await byteSizeRepository.replaceAllCallCount
+        XCTAssertEqual(loadCount, 1)
+        XCTAssertEqual(saveCount, 0)
+    }
+
     private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
-        categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository()
+        categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository(),
+        byteSizeRepository: any AssetByteSizeRepository = MockAssetByteSizeRepository(),
+        assetBytesByIdentifier: @escaping @Sendable ([String]) -> [String: Int64] = { _ in [:] }
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
             analysisService: analysisService,
@@ -172,7 +351,9 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
             reviewRepository: reviewRepository,
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            assetByteSizeRepository: byteSizeRepository,
+            assetBytesByIdentifier: assetBytesByIdentifier
         )
     }
 }

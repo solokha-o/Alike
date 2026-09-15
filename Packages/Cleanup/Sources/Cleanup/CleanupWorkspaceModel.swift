@@ -61,6 +61,11 @@ public final class CleanupWorkspaceModel {
     private let cleanupManager: any CleanupSessionManaging
     private let cleanupInsightsProvider: any CleanupInsightsProviding
     private let now: @Sendable () -> Date
+    /// Re-measures persisted category sums written with the pixel heuristic.
+    private let assetBytesByIdentifier: @Sendable ([String]) -> [String: Int64]
+    private let assetByteSizeRepository: any AssetByteSizeRepository
+    /// `AssetByteSize.generation` at the last load or save of the size store.
+    private var persistedByteSizeGeneration: Int?
     private let postProcessor = ScanPostProcessor()
 
     private var lastGoodContent = CleanupWorkspaceContent.empty
@@ -105,6 +110,9 @@ public final class CleanupWorkspaceModel {
                 repository: UserDefaultsBestShotPersonalizationRepository()
             ),
         cleanupManager: (any CleanupSessionManaging)? = nil,
+        assetByteSizeRepository: any AssetByteSizeRepository = FileAssetByteSizeRepository(),
+        assetBytesByIdentifier: @escaping @Sendable ([String]) -> [String: Int64] =
+            AssetByteSize.bytes(forLocalIdentifiers:),
         now: @escaping @Sendable () -> Date = Date.init
     ) {
         self.repository = repository
@@ -118,6 +126,8 @@ public final class CleanupWorkspaceModel {
         self.bestShotPersonalizedConfigProvider = bestShotPersonalizedConfigProvider
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
         self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
+        self.assetBytesByIdentifier = assetBytesByIdentifier
+        self.assetByteSizeRepository = assetByteSizeRepository
         self.now = now
 
         if let analysisService {
@@ -164,13 +174,23 @@ public final class CleanupWorkspaceModel {
         let insights = await fetchCleanupInsights()
 
         do {
+            // Seeded before anything is measured: the legacy re-measurements below
+            // must count as newer than the store, or a load that measures nothing
+            // else afterwards would never write them to disk.
+            await seedByteSizesIfNeeded()
             let loadedClusters = try await repository.loadClusters()
-            let categorySnapshots = await fetchCleanupCategorySnapshots()
+            let categorySnapshots = await fetchCleanupCategorySnapshots(
+                persistingRemeasurementsFor: expectedGeneration
+            )
             let reviewData = await makeReviewData(for: loadedClusters)
 
             guard canCommitCachedLoad(expectedGeneration) else { return }
 
             let sortedClusters = await postProcessor.canonicalSortedClusters(loadedClusters)
+            // Publishing reads bytes for every cluster asset on the main actor. Sizes
+            // measured by an earlier launch come from disk, so PhotoKit is asked only
+            // about photos that are new or changed since.
+            await postProcessor.prewarmByteSizes(for: sortedClusters)
             let content = CleanupWorkspaceContent(
                 clusters: sortedClusters,
                 categories: categorySnapshots.map(\.summary),
@@ -186,6 +206,7 @@ public final class CleanupWorkspaceModel {
             refreshDerivedContentSnapshots()
             lastCompletedScanDate = baselineDate
             contentState = baselineDate == nil ? .neverScanned : .content(content)
+            await persistByteSizesIfNeeded(for: content)
         } catch {
             guard canCommitCachedLoad(expectedGeneration) else { return }
             lastCompletedScanDate = baselineDate
@@ -468,6 +489,8 @@ private extension CleanupWorkspaceModel {
         let scanMetadataBeforeScan = await repository.loadScanMetadata()
         let previousSnapshots = try await repository.loadClusterSnapshots()
         let previousReviewStates = try await reviewRepository.loadAllReviewStates()
+        // Analysis warms sizes for every cluster photo; reuse what a launch measured.
+        await seedByteSizesIfNeeded()
 
         guard let progressRelay else { throw CancellationError() }
         // Captured now, immediately before analysis takes its own snapshot of
@@ -523,7 +546,7 @@ private extension CleanupWorkspaceModel {
             previousReviewStates: previousReviewStates,
             newClusters: sortedClusters
         )
-        let reviewData = await persistMigratedReviewData(migratedStates)
+        let reviewData = await persistMigratedReviewData(migratedStates, clusters: sortedClusters)
         let session = await cleanupManager.syncSession(
             for: sortedClusters,
             reviewStates: reviewData.states
@@ -550,6 +573,7 @@ private extension CleanupWorkspaceModel {
             categorySnapshots: categorySnapshots
         )
         publish(content)
+        await persistByteSizesIfNeeded(for: content)
 
         let summary = ScanSummary(
             clusterCount: sortedClusters.count,
@@ -575,19 +599,24 @@ private extension CleanupWorkspaceModel {
     }
 
     func persistMigratedReviewData(
-        _ result: ClusterReviewResurfacingResult
+        _ result: ClusterReviewResurfacingResult,
+        clusters: [PhotoCluster]
     ) async -> (
         states: [UUID: ClusterReviewState],
         resurfacingStates: [UUID: ClusterResurfacingState]
     ) {
+        let states = await postProcessor.upgradingByteSizes(
+            of: result.migratedReviewStates,
+            clusters: clusters
+        ).states
         do {
-            try await persistReviewStates(result.migratedReviewStates)
+            try await persistReviewStates(states)
         } catch {
             AppLog.storage.error(
                 "Failed to persist migrated review states: \(error.localizedDescription)"
             )
         }
-        return (result.migratedReviewStates, result.resurfacingStates)
+        return (states, result.resurfacingStates)
     }
 
     func makeReviewData(for clusters: [PhotoCluster]) async -> (
@@ -615,6 +644,17 @@ private extension CleanupWorkspaceModel {
         resurfacingStates: [UUID: ClusterResurfacingState],
         session: CleanupSession?
     ) {
+        let upgrade = await postProcessor.upgradingByteSizes(of: states, clusters: clusters)
+        for state in upgrade.upgraded {
+            do {
+                try await reviewRepository.saveReviewState(state)
+            } catch {
+                AppLog.storage.error(
+                    "Failed to persist re-measured review state: \(error.localizedDescription)"
+                )
+            }
+        }
+        let states = upgrade.states
         let resurfacingStates = await postProcessor.resurfacingStates(
             for: clusters,
             reviewStates: states
@@ -657,12 +697,56 @@ private extension CleanupWorkspaceModel {
         }
     }
 
+    func seedByteSizesIfNeeded() async {
+        guard persistedByteSizeGeneration == nil else { return }
+        AssetByteSize.seed(await assetByteSizeRepository.loadAll())
+        persistedByteSizeGeneration = AssetByteSize.generation
+    }
+
+    /// Writes the sizes of every photo the content refers to, and only those, so
+    /// deleted photos drop out of the store. Skipped when nothing was measured.
+    func persistByteSizesIfNeeded(for content: CleanupWorkspaceContent) async {
+        let generation = AssetByteSize.generation
+        guard generation != persistedByteSizeGeneration else { return }
+        let identifiers = content.clusters.flatMap { $0.assets.map(\.localIdentifier) }
+            + content.categorySnapshots.flatMap(\.localIdentifiers)
+        let records = AssetByteSize.records(for: identifiers)
+        do {
+            try await assetByteSizeRepository.replaceAll(records)
+            persistedByteSizeGeneration = generation
+        } catch {
+            AppLog.storage.error("Failed to persist asset byte sizes: \(error.localizedDescription)")
+        }
+    }
+
     /// Categories in `CleanupCategoryKind.allCases` order, with their identifiers.
     /// A repository failure degrades to an empty section, never to a failed load.
-    func fetchCleanupCategorySnapshots() async -> [CleanupCategorySnapshot] {
+    ///
+    /// Legacy sums are re-measured and written back. A cached load passes the
+    /// generation it started at: a scan that began meanwhile has already stored
+    /// fresh categories, and writing the re-measured legacy ones over them would
+    /// resurrect stale identifiers, so the write is skipped and the load's result
+    /// is discarded by its own commit check.
+    func fetchCleanupCategorySnapshots(
+        persistingRemeasurementsFor expectedGeneration: Int? = nil
+    ) async -> [CleanupCategorySnapshot] {
         do {
-            let snapshots = try await cleanupCategoryRepository.loadAllSnapshots()
-            return CleanupCategoryKind.allCases.compactMap { snapshots[$0] }
+            let loaded = try await cleanupCategoryRepository.loadAllSnapshots()
+            let snapshots = CleanupCategoryKind.allCases.compactMap { loaded[$0] }
+            guard snapshots.contains(where: { !$0.hasCurrentByteSizes }) else { return snapshots }
+            let remeasured = await postProcessor.remeasuringByteSizes(
+                of: snapshots,
+                using: assetBytesByIdentifier
+            )
+            if let expectedGeneration, !canCommitCachedLoad(expectedGeneration) {
+                return remeasured
+            }
+            do {
+                try await cleanupCategoryRepository.replaceAllSnapshots(remeasured)
+            } catch {
+                AppLog.storage.error("Failed to persist re-measured cleanup categories: \(error.localizedDescription)")
+            }
+            return remeasured
         } catch {
             AppLog.storage.error("Failed to load cleanup categories: \(error.localizedDescription)")
             return []
@@ -743,6 +827,39 @@ private extension CleanupWorkspaceModel {
 }
 
 private actor ScanPostProcessor {
+    func prewarmByteSizes(for clusters: [PhotoCluster]) {
+        AssetByteSize.prewarm(clusters.lazy.flatMap(\.assets))
+    }
+
+    /// Review states written with the pixel heuristic, re-measured against their
+    /// cluster. States whose cluster is not loaded stay as they are until it is.
+    func upgradingByteSizes(
+        of states: [UUID: ClusterReviewState],
+        clusters: [PhotoCluster]
+    ) -> (states: [UUID: ClusterReviewState], upgraded: [ClusterReviewState]) {
+        guard states.values.contains(where: { !$0.hasCurrentByteSizes }) else { return (states, []) }
+        let clustersByID = Dictionary(clusters.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        var result = states
+        var upgraded: [ClusterReviewState] = []
+        for (id, state) in states where !state.hasCurrentByteSizes {
+            guard let cluster = clustersByID[id] else { continue }
+            let upgradedState = state.upgradingByteSizes(in: cluster)
+            result[id] = upgradedState
+            upgraded.append(upgradedState)
+        }
+        return (result, upgraded)
+    }
+
+    func remeasuringByteSizes(
+        of snapshots: [CleanupCategorySnapshot],
+        using bytesByIdentifier: @Sendable ([String]) -> [String: Int64]
+    ) -> [CleanupCategorySnapshot] {
+        snapshots.map { snapshot in
+            guard !snapshot.hasCurrentByteSizes else { return snapshot }
+            return snapshot.remeasured(bytesByIdentifier: bytesByIdentifier(snapshot.localIdentifiers))
+        }
+    }
+
     func canonicalSortedClusters(
         _ clusters: [PhotoCluster]
     ) -> [PhotoCluster] {

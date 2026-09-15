@@ -65,8 +65,9 @@ public struct ReclaimableEstimate: Equatable, Sendable {
 /// 2. Categories contribute their own recorded sum, minus the bytes of any of their
 ///    identifiers a cluster already counted. A screenshot that also sits in a cluster
 ///    is therefore one screenshot, not two. The subtraction uses the cluster's bytes
-///    for that asset — the same per-asset heuristic the category sum was built from —
-///    and a category never goes below zero.
+///    for that asset — the same ``AssetByteSize`` source the category sum was built
+///    from (a heuristic snapshot is re-measured on load) — and a category never goes
+///    below zero.
 /// 3. A keeper that is also a category candidate stays in the category: the cluster
 ///    does not count it, the category does, so it is still counted exactly once.
 public enum ReclaimableEstimateCalculator {
