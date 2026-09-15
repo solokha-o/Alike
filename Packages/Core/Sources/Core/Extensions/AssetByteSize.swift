@@ -75,6 +75,18 @@ public enum AssetByteSize {
         }
     }
 
+    /// Caches a size measured outside ``bytes(for:)`` — a test double standing in
+    /// for PhotoKit — and advances ``generation`` like any other measurement.
+    public static func record(_ measured: AssetByteSizeRecord) {
+        cache.withLock { state in
+            state.entries[measured.localIdentifier] = CacheEntry(
+                modificationDate: measured.modificationDate,
+                bytes: measured.bytes
+            )
+            state.generation += 1
+        }
+    }
+
     /// Cached sizes for `identifiers`, in identifier order, ready to persist.
     /// Identifiers without a measured size are left out.
     public static func records(for identifiers: some Sequence<String>) -> [AssetByteSizeRecord] {

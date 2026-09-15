@@ -174,8 +174,14 @@ public final class CleanupWorkspaceModel {
         let insights = await fetchCleanupInsights()
 
         do {
+            // Seeded before anything is measured: the legacy re-measurements below
+            // must count as newer than the store, or a load that measures nothing
+            // else afterwards would never write them to disk.
+            await seedByteSizesIfNeeded()
             let loadedClusters = try await repository.loadClusters()
-            let categorySnapshots = await fetchCleanupCategorySnapshots()
+            let categorySnapshots = await fetchCleanupCategorySnapshots(
+                persistingRemeasurementsFor: expectedGeneration
+            )
             let reviewData = await makeReviewData(for: loadedClusters)
 
             guard canCommitCachedLoad(expectedGeneration) else { return }
@@ -184,7 +190,6 @@ public final class CleanupWorkspaceModel {
             // Publishing reads bytes for every cluster asset on the main actor. Sizes
             // measured by an earlier launch come from disk, so PhotoKit is asked only
             // about photos that are new or changed since.
-            await seedByteSizesIfNeeded()
             await postProcessor.prewarmByteSizes(for: sortedClusters)
             let content = CleanupWorkspaceContent(
                 clusters: sortedClusters,
@@ -716,7 +721,15 @@ private extension CleanupWorkspaceModel {
 
     /// Categories in `CleanupCategoryKind.allCases` order, with their identifiers.
     /// A repository failure degrades to an empty section, never to a failed load.
-    func fetchCleanupCategorySnapshots() async -> [CleanupCategorySnapshot] {
+    ///
+    /// Legacy sums are re-measured and written back. A cached load passes the
+    /// generation it started at: a scan that began meanwhile has already stored
+    /// fresh categories, and writing the re-measured legacy ones over them would
+    /// resurrect stale identifiers, so the write is skipped and the load's result
+    /// is discarded by its own commit check.
+    func fetchCleanupCategorySnapshots(
+        persistingRemeasurementsFor expectedGeneration: Int? = nil
+    ) async -> [CleanupCategorySnapshot] {
         do {
             let loaded = try await cleanupCategoryRepository.loadAllSnapshots()
             let snapshots = CleanupCategoryKind.allCases.compactMap { loaded[$0] }
@@ -725,6 +738,9 @@ private extension CleanupWorkspaceModel {
                 of: snapshots,
                 using: assetBytesByIdentifier
             )
+            if let expectedGeneration, !canCommitCachedLoad(expectedGeneration) {
+                return remeasured
+            }
             do {
                 try await cleanupCategoryRepository.replaceAllSnapshots(remeasured)
             } catch {
