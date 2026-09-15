@@ -317,6 +317,60 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
     }
 
+    /// A scan that lands while the launch load is still reading legacy review
+    /// states has already replaced them with states for its own clusters; the
+    /// load must not write its re-measured legacy copies back.
+    func testLegacyMigrationDoesNotOverwriteReviewStatesStoredByAConcurrentScan() async throws {
+        let oldCluster = PhotoCluster(assets: [
+            FakePhotoAsset(localIdentifier: "old-keeper", pixelWidth: 4_000, pixelHeight: 1_000),
+            FakePhotoAsset(localIdentifier: "old-selected", pixelWidth: 2_000, pixelHeight: 1_000)
+        ])
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([oldCluster]))
+        let reviewRepository = MockClusterReviewStateRepository()
+        await reviewRepository.setStoredStates([
+            oldCluster.id: ClusterReviewState(
+                clusterID: oldCluster.id,
+                bestShotLocalIdentifier: "old-keeper",
+                selectedLocalIdentifiers: ["old-selected"],
+                status: .reviewed,
+                estimatedSavingsBytes: 1,
+                byteSizeVersion: nil
+            )
+        ])
+        let newCluster = PhotoCluster(assets: [
+            FakePhotoAsset(localIdentifier: "new-a", pixelWidth: 2_000, pixelHeight: 1_000),
+            FakePhotoAsset(localIdentifier: "new-b", pixelWidth: 2_000, pixelHeight: 1_000)
+        ])
+        let analysisService = MockPhotoAnalysisService()
+        await analysisService.setAnalyzePhotoLibraryResult(.success([newCluster]))
+        let workspace = makeWorkspace(
+            analysisService: analysisService,
+            repository: repository,
+            reviewRepository: reviewRepository
+        )
+
+        await reviewRepository.suspendNextLoadAllReviewStates()
+        let load = Task { await workspace.loadCachedContent() }
+        while await !reviewRepository.isLoadAllReviewStatesSuspended {
+            await Task.yield()
+        }
+
+        // The scan finds none of the old clusters, so it stores no state for them.
+        _ = try await workspace.scan(sensitivity: .medium)
+        let storedByScan = await reviewRepository.storedStates
+        XCTAssertNil(storedByScan[oldCluster.id])
+
+        await reviewRepository.resumeLoadAllReviewStates()
+        await load.value
+
+        let storedStates = await reviewRepository.storedStates
+        XCTAssertEqual(storedStates, storedByScan)
+        XCTAssertNil(workspace.reviewState(for: oldCluster.id))
+        XCTAssertEqual(workspace.content?.clusters.map(\.id), [newCluster.id])
+    }
+
     /// The size store is read once per workspace — a scan after the launch load
     /// reuses it — and is not rewritten when nothing new was measured.
     func testColdLoadSeedsByteSizesOnceAndSkipsAnUnchangedSave() async throws {

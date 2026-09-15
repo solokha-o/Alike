@@ -4,9 +4,11 @@ import Photos
 
 /// The single source of «bytes per asset» for every cleanup and reclaimable figure.
 ///
-/// Bytes are the sum of the asset's resource file sizes — original, edits and a
-/// paired Live Photo video — which is what deleting the asset frees. When PhotoKit
-/// reports no readable size, the pixel heuristic stands in so a figure is never 0.
+/// Bytes are the sum of the asset's resource sizes — original, edits and a
+/// paired Live Photo video — which is what deleting the asset frees. PhotoKit
+/// publishes a resource's size only from iOS 27 (`PHAssetResource.dataSize`); on
+/// earlier systems, and whenever a size is not yet known, the pixel heuristic
+/// stands in so a figure is never 0. No private API is read on any system.
 ///
 /// Resource lookups are not free on a large library, so results are cached in
 /// memory per `localIdentifier` and dropped when the asset's `modificationDate`
@@ -29,7 +31,6 @@ public enum AssetByteSize {
     }
 
     private static let photosBundle = Bundle(for: PHAsset.self)
-    private static let fileSizeSelector = NSSelectorFromString("fileSize")
     private static let cache = OSAllocatedUnfairLock(initialState: CacheState())
 
     public static func bytes(for asset: PHAsset) -> Int64 {
@@ -149,13 +150,14 @@ public enum AssetByteSize {
         }
     }
 
+    /// Sum of the public `dataSize` of the asset's resources. `nil` below iOS 27,
+    /// where PhotoKit exposes no supported size, and when no resource reports one
+    /// yet (a resource still downloading or processing) — the heuristic applies.
     private static func resourceBytes(for asset: PHAsset) -> Int64? {
-        // `fileSize` is not a declared property of PHAssetResource; it is read
-        // through KVC and treated as absent when PhotoKit does not provide it.
+        guard #available(iOS 27, macOS 27, *) else { return nil }
         let total = PHAssetResource.assetResources(for: asset).reduce(into: Int64(0)) { total, resource in
-            if resource.responds(to: fileSizeSelector),
-               let size = resource.value(forKey: "fileSize") as? NSNumber {
-                total += max(0, size.int64Value)
+            if let size = resource.dataSize {
+                total += Int64(max(0, size))
             }
         }
         return total > 0 ? total : nil

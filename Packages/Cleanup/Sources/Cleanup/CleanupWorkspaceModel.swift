@@ -182,7 +182,10 @@ public final class CleanupWorkspaceModel {
             let categorySnapshots = await fetchCleanupCategorySnapshots(
                 persistingRemeasurementsFor: expectedGeneration
             )
-            let reviewData = await makeReviewData(for: loadedClusters)
+            let reviewData = await makeReviewData(
+                for: loadedClusters,
+                persistingRemeasurementsFor: expectedGeneration
+            )
 
             guard canCommitCachedLoad(expectedGeneration) else { return }
 
@@ -272,7 +275,8 @@ public final class CleanupWorkspaceModel {
 
         let reviewData = await makeReviewData(
             for: lastGoodContent.clusters,
-            reviewStates: reviewStates
+            reviewStates: reviewStates,
+            persistingRemeasurementsFor: expectedGeneration
         )
         guard canCommitCachedLoad(expectedGeneration) else { return }
 
@@ -619,13 +623,20 @@ private extension CleanupWorkspaceModel {
         return (states, result.resurfacingStates)
     }
 
-    func makeReviewData(for clusters: [PhotoCluster]) async -> (
+    func makeReviewData(
+        for clusters: [PhotoCluster],
+        persistingRemeasurementsFor expectedGeneration: Int? = nil
+    ) async -> (
         states: [UUID: ClusterReviewState],
         resurfacingStates: [UUID: ClusterResurfacingState],
         session: CleanupSession?
     ) {
         let states = await loadReviewStates()
-        return await makeReviewData(for: clusters, reviewStates: states)
+        return await makeReviewData(
+            for: clusters,
+            reviewStates: states,
+            persistingRemeasurementsFor: expectedGeneration
+        )
     }
 
     func loadReviewStates() async -> [UUID: ClusterReviewState] {
@@ -636,9 +647,15 @@ private extension CleanupWorkspaceModel {
         }
     }
 
+    /// Legacy sums are re-measured and written back one state at a time. A cached
+    /// load passes the generation it started at: once a scan has begun, the states
+    /// it read belong to clusters the scan is replacing, and writing them back —
+    /// even between the scan's own delete and save — would resurrect stale cluster
+    /// IDs. Each write is re-checked, since a scan can start between two of them.
     func makeReviewData(
         for clusters: [PhotoCluster],
-        reviewStates states: [UUID: ClusterReviewState]
+        reviewStates states: [UUID: ClusterReviewState],
+        persistingRemeasurementsFor expectedGeneration: Int? = nil
     ) async -> (
         states: [UUID: ClusterReviewState],
         resurfacingStates: [UUID: ClusterResurfacingState],
@@ -646,6 +663,7 @@ private extension CleanupWorkspaceModel {
     ) {
         let upgrade = await postProcessor.upgradingByteSizes(of: states, clusters: clusters)
         for state in upgrade.upgraded {
+            if let expectedGeneration, !canCommitCachedLoad(expectedGeneration) { break }
             do {
                 try await reviewRepository.saveReviewState(state)
             } catch {
