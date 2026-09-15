@@ -163,6 +163,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         XCTAssertEqual(loaded?.selectedLocalIdentifiers, ["candidate"])
         XCTAssertEqual(loaded?.status, .reviewed)
         XCTAssertEqual(loaded?.isBestShotUserSelected, false)
+        XCTAssertNil(loaded?.byteSizeVersion)
     }
 
     /// Reviews finished before the explicit confirmation existed were stored as

@@ -1242,6 +1242,8 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
     let pixelHeight: Int
     let creationDate: Date?
     let modificationDate: Date?
+    /// Measured once, off the main actor where possible. See `AssetByteSize`.
+    let estimatedCleanupBytes: Int64
 
     init(asset: PHAsset) {
         self.localIdentifier = asset.localIdentifier
@@ -1250,6 +1252,7 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
         self.pixelHeight = asset.pixelHeight
         self.creationDate = asset.creationDate
         self.modificationDate = asset.modificationDate
+        self.estimatedCleanupBytes = asset.estimatedCleanupBytes
     }
 
     init(
@@ -1258,7 +1261,8 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
         pixelWidth: Int,
         pixelHeight: Int,
         creationDate: Date?,
-        modificationDate: Date? = nil
+        modificationDate: Date? = nil,
+        estimatedCleanupBytes: Int64? = nil
     ) {
         self.localIdentifier = localIdentifier
         self.isFavorite = isFavorite
@@ -1266,14 +1270,8 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
         self.pixelHeight = pixelHeight
         self.creationDate = creationDate
         self.modificationDate = modificationDate
-    }
-
-    var pixelArea: Int64 {
-        Int64(pixelWidth) * Int64(pixelHeight)
-    }
-
-    var estimatedCleanupBytes: Int64 {
-        max(1, pixelArea / 2)
+        self.estimatedCleanupBytes = estimatedCleanupBytes
+            ?? AssetByteSize.heuristicBytes(pixelWidth: pixelWidth, pixelHeight: pixelHeight)
     }
 
     var photoClusterAssetSnapshot: PhotoClusterAssetSnapshot {

@@ -167,19 +167,55 @@ public struct CleanupCategorySnapshot: Equatable, Sendable, Codable {
     public let assetCount: Int
     public let estimatedSavingsBytes: Int64
     public let refreshedAt: Date
+    /// Unit of `estimatedSavingsBytes`: ``AssetByteSize/currentVersion`` for file
+    /// sizes, `nil` for a snapshot written with the pixel heuristic.
+    public let byteSizeVersion: Int?
 
     public init(
         kind: CleanupCategoryKind,
         localIdentifiers: [String],
         assetCount: Int,
         estimatedSavingsBytes: Int64,
-        refreshedAt: Date = Date()
+        refreshedAt: Date = Date(),
+        byteSizeVersion: Int? = AssetByteSize.currentVersion
     ) {
         self.kind = kind
         self.localIdentifiers = localIdentifiers
         self.assetCount = assetCount
         self.estimatedSavingsBytes = estimatedSavingsBytes
         self.refreshedAt = refreshedAt
+        self.byteSizeVersion = byteSizeVersion
+    }
+
+    /// Decoded by hand so snapshots persisted before `byteSizeVersion` existed
+    /// still load, marked as heuristic.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        kind = try container.decode(CleanupCategoryKind.self, forKey: .kind)
+        localIdentifiers = try container.decode([String].self, forKey: .localIdentifiers)
+        assetCount = try container.decode(Int.self, forKey: .assetCount)
+        estimatedSavingsBytes = try container.decode(Int64.self, forKey: .estimatedSavingsBytes)
+        refreshedAt = try container.decode(Date.self, forKey: .refreshedAt)
+        byteSizeVersion = try container.decodeIfPresent(Int.self, forKey: .byteSizeVersion)
+    }
+
+    public var hasCurrentByteSizes: Bool {
+        byteSizeVersion == AssetByteSize.currentVersion
+    }
+
+    /// The same snapshot with its sum re-measured in the current unit.
+    /// Identifiers missing from `bytesByIdentifier` count as 0.
+    public func remeasured(bytesByIdentifier: [String: Int64]) -> CleanupCategorySnapshot {
+        CleanupCategorySnapshot(
+            kind: kind,
+            localIdentifiers: localIdentifiers,
+            assetCount: assetCount,
+            estimatedSavingsBytes: localIdentifiers.reduce(into: Int64(0)) { total, identifier in
+                total += bytesByIdentifier[identifier] ?? 0
+            },
+            refreshedAt: refreshedAt,
+            byteSizeVersion: AssetByteSize.currentVersion
+        )
     }
 
     public var summary: CleanupCategorySummary {

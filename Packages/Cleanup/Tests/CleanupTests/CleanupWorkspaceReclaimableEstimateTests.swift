@@ -160,11 +160,76 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         XCTAssertEqual(workspace.reclaimableEstimate, .zero)
     }
 
+    /// A category persisted with the pixel heuristic is re-measured on load and
+    /// written back, so its overlap with a cluster is subtracted in one unit.
+    func testColdLoadRemeasuresAHeuristicCategoryAndPersistsIt() async throws {
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([]))
+        let categoryRepository = MockCleanupCategorySnapshotRepository()
+        await categoryRepository.setStoredSnapshots([
+            .screenshots: CleanupCategorySnapshot(
+                kind: .screenshots,
+                localIdentifiers: ["shot", "gone"],
+                assetCount: 2,
+                estimatedSavingsBytes: 9_999_999,
+                byteSizeVersion: nil
+            )
+        ])
+        let workspace = makeWorkspace(
+            repository: repository,
+            categoryRepository: categoryRepository,
+            assetBytesByIdentifier: { identifiers in
+                identifiers.contains("shot") ? ["shot": 4_321] : [:]
+            }
+        )
+
+        await workspace.loadCachedContent()
+
+        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [4_321])
+        XCTAssertEqual(workspace.reclaimableEstimate.categoryBytes, 4_321)
+        let storedSnapshots = await categoryRepository.storedSnapshots
+        let persisted = try XCTUnwrap(storedSnapshots[.screenshots])
+        XCTAssertEqual(persisted.estimatedSavingsBytes, 4_321)
+        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+    }
+
+    func testColdLoadRemeasuresAHeuristicReviewStateAndPersistsIt() async throws {
+        let keeper = FakePhotoAsset(localIdentifier: "keeper", pixelWidth: 4_000, pixelHeight: 1_000)
+        let selected = FakePhotoAsset(localIdentifier: "selected", pixelWidth: 2_000, pixelHeight: 1_000)
+        let cluster = PhotoCluster(assets: [keeper, selected])
+        let repository = MockPhotoClusterRepository()
+        await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
+        await repository.setLoadClustersResult(.success([cluster]))
+        let reviewRepository = MockClusterReviewStateRepository()
+        await reviewRepository.setStoredStates([
+            cluster.id: ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: "keeper",
+                selectedLocalIdentifiers: ["selected"],
+                status: .reviewed,
+                estimatedSavingsBytes: 1,
+                byteSizeVersion: nil
+            )
+        ])
+        let workspace = makeWorkspace(repository: repository, reviewRepository: reviewRepository)
+
+        await workspace.loadCachedContent()
+
+        // Fake assets have no PhotoKit resources, so the source falls back to 2 000 × 1 000 / 2.
+        XCTAssertEqual(workspace.reviewState(for: cluster.id)?.estimatedSavingsBytes, 1_000_000)
+        let storedStates = await reviewRepository.storedStates
+        let persisted = try XCTUnwrap(storedStates[cluster.id])
+        XCTAssertEqual(persisted.estimatedSavingsBytes, 1_000_000)
+        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+    }
+
     private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
-        categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository()
+        categoryRepository: any CleanupCategorySnapshotRepository = MockCleanupCategorySnapshotRepository(),
+        assetBytesByIdentifier: @escaping @Sendable ([String]) -> [String: Int64] = { _ in [:] }
     ) -> CleanupWorkspaceModel {
         CleanupWorkspaceModel(
             analysisService: analysisService,
@@ -172,7 +237,8 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
             reviewRepository: reviewRepository,
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            assetBytesByIdentifier: assetBytesByIdentifier
         )
     }
 }
