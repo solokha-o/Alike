@@ -118,6 +118,11 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
     /// The widget never recomputes this; reading the app's figure is the only way the
     /// widget and the scanner screen cannot disagree.
     public let estimatedSavingsBytes: Int64?
+    /// The whole library's size, so the Lock Screen ring can draw `estimatedSavingsBytes`
+    /// as a share of it. Optional and absent from every payload written before 1.5.0:
+    /// the synthesized decoder reads a missing key as `nil`, `schemaVersion` stays 1,
+    /// and a reader without the figure draws no ring rather than a wrong one.
+    public let libraryTotalBytes: Int64?
     public let clusterCount: Int?
     public let screenshotAssetCount: Int?
     public let blurredPhotoAssetCount: Int?
@@ -132,6 +137,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         lastScanDate: Date? = nil,
         libraryChangedSinceScan: Bool = false,
         estimatedSavingsBytes: Int64? = nil,
+        libraryTotalBytes: Int64? = nil,
         clusterCount: Int? = nil,
         screenshotAssetCount: Int? = nil,
         blurredPhotoAssetCount: Int? = nil,
@@ -145,6 +151,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         self.lastScanDate = lastScanDate
         self.libraryChangedSinceScan = libraryChangedSinceScan
         self.estimatedSavingsBytes = estimatedSavingsBytes
+        self.libraryTotalBytes = libraryTotalBytes
         self.clusterCount = clusterCount
         self.screenshotAssetCount = screenshotAssetCount
         self.blurredPhotoAssetCount = blurredPhotoAssetCount
@@ -169,6 +176,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
             && lastScanDate == other.lastScanDate
             && libraryChangedSinceScan == other.libraryChangedSinceScan
             && estimatedSavingsBytes == other.estimatedSavingsBytes
+            && libraryTotalBytes == other.libraryTotalBytes
             && clusterCount == other.clusterCount
             && screenshotAssetCount == other.screenshotAssetCount
             && blurredPhotoAssetCount == other.blurredPhotoAssetCount
@@ -185,6 +193,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
             hasCompletedScan: true,
             lastScanDate: now,
             estimatedSavingsBytes: 1_932_735_283,
+            libraryTotalBytes: 27_917_287_424,
             clusterCount: 24,
             screenshotAssetCount: 86,
             blurredPhotoAssetCount: 12

@@ -169,11 +169,13 @@ Does not:
 - export an IPA
 - upload anything
 
-The compile gate is the same one required by `AGENTS.md`. To run it by hand against the pinned simulator:
+The compile gate is the same one required by `AGENTS.md`. To run it by hand (no simulator needed):
 
 ```sh
-xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=66E5E039-9C66-4878-B211-923932320166' build
+xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/platform=iOS Simulator' build
 ```
+
+Tests need a concrete device; `tools/local_ci.sh` picks one, and `ALIKE_BUILD_DESTINATION='id=<udid>'` overrides it.
 
 ### `tools/release-check [version] [build]`
 

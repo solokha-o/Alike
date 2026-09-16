@@ -219,6 +219,34 @@ struct LocalizationCatalog {
 }
 
 final class LocalizationCatalogTests: XCTestCase {
+    /// The inline Lock Screen slot is one short line above the clock, and the system
+    /// truncates whatever does not fit — silently, per locale. The budget is what the
+    /// narrowest phone shows beside the glyph; the longest translation has to stay under it
+    /// with the longest byte figure the estimate can print.
+    func testInlineAccessoryLinesFitTheSlotInEveryLanguage() throws {
+        let catalog = try LocalizationCatalog.load()
+        let budget = 26
+        let sample: [String: [CVarArg]] = [
+            "widgetsupport.accessory.reclaimable": ["\u{2248}999,9 GB"],
+            "widgetsupport.accessory.review": [999, 999],
+            "widgetsupport.accessory.allCaughtUp": []
+        ]
+        var overflowing: [String] = []
+
+        for (key, arguments) in sample.sorted(by: { $0.key < $1.key }) {
+            for (language, unit) in try catalog.localizations(of: key) {
+                for (_, format) in LocalizationCatalog.values(of: unit) {
+                    let rendered = String(format: format, arguments: arguments)
+                    if rendered.count > budget {
+                        overflowing.append("\(key) [\(language)] = \(rendered) (\(rendered.count))")
+                    }
+                }
+            }
+        }
+
+        XCTAssertTrue(overflowing.isEmpty, "inline lines over \(budget) characters: \(overflowing)")
+    }
+
     func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)
