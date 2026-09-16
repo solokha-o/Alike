@@ -192,6 +192,24 @@ struct WidgetAccessoryCompositionTests {
         #expect(composition(.resumeReview(progress: Self.progress, isStale: true), .accessoryRectangular).footnote == nil)
     }
 
+    @Test("rectangular shows «all caught up» on screen, dated or not", arguments: [scannedAt, nil] as [Date?])
+    func rectangularAllCaughtUpIsVisible(scannedAt: Date?) {
+        let resolved = composition(.allCaughtUp(scannedAt: scannedAt), .accessoryRectangular)
+        #expect(resolved.headline == WidgetL10n.Accessory.allCaughtUp)
+        #expect(resolved.headlineParts?.accent == WidgetL10n.Accessory.allCaughtUp)
+        #expect(resolved.caption == WidgetL10n.Accessory.title)
+        #expect(resolved.actionTitle == WidgetL10n.Status.openApp)
+        #expect((resolved.footnote != nil) == (scannedAt != nil))
+        #expect(resolved.accessibilityLabel.components(separatedBy: WidgetL10n.Accessory.allCaughtUp).count == 2)
+    }
+
+    @Test("rectangular does not repeat the action as a headline")
+    func rectangularNoEchoedAction() {
+        #expect(composition(.neverScanned, .accessoryRectangular).headline == nil)
+        #expect(composition(.unavailable, .accessoryRectangular).headline == nil)
+        #expect(composition(.hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false), .accessoryRectangular).headline == nil)
+    }
+
     @Test("rectangular reads the fact to VoiceOver, not the app name twice")
     func rectangularLabel() {
         let resolved = composition(.hasSuggestions(bytes: Self.bytes, clusterCount: 24, scannedAt: nil, isStale: false), .accessoryRectangular)

@@ -340,7 +340,8 @@ private extension WidgetPresentation {
     /// between facts across timeline entries. What differs is the shape of each fact:
     ///
     /// - **Rectangular** — `caption` is the «Alike» title beside the brand glyph
-    ///   (`headerSymbolName`), `headline` the fact, `actionTitle` always what a tap does,
+    ///   (`headerSymbolName`), `headline` the fact (the status sentence when there is no
+    ///   figure and the action does not already say it), `actionTitle` always what a tap does,
     ///   `footnote` the date only when the fact is stale or there is nothing else to say.
     /// - **Circular** — `headline` is the bare figure under the glyph, `progress` the share
     ///   it is of (reclaimable of the library, reviewed of total), `nil` when unknown so
@@ -518,11 +519,14 @@ private extension WidgetPresentation {
         case .accessoryRectangular, .small, .medium:
             let title = WidgetL10n.Accessory.title
             let flatFigure = figure?.joined
+            // A state without a figure still shows its sentence, unless the action
+            // already says the same words: «All caught up» must be seen, not only heard.
+            let shown = figure ?? (inline == action ? nil : WidgetHeadlineParts(accent: inline))
             return WidgetComposition(
                 hero: nil,
                 symbolName: symbol,
-                headline: flatFigure,
-                headlineParts: figure,
+                headline: shown?.joined,
+                headlineParts: shown,
                 caption: title,
                 detail: nil,
                 footnote: footnote,
