@@ -1,14 +1,34 @@
 import Foundation
 
-/// Which of the two widget sizes is being drawn.
+/// Which widget size is being drawn.
 ///
 /// The package's own enum rather than WidgetKit's `WidgetFamily`: `WidgetSupport`
 /// links nothing, which is what lets it be tested in its own workspace, and the
-/// extension does the one-line mapping. Only the two families the widget supports
-/// appear here — an unsupported family is a case that cannot arrive.
+/// extension does the one-line mapping. Only the families the widget supports appear
+/// here — an unsupported family is a case that cannot arrive.
+///
+/// The accessory cases are the Lock Screen: rendered monochrome, with no room for a
+/// hero and a fraction of the text. They were added after `small`/`medium` shipped,
+/// so a `switch` in the extension keeps a default path for them.
 public enum WidgetLayoutFamily: String, CaseIterable, Sendable {
     case small
     case medium
+    /// The ring under the clock: one figure, a share of it as a ring, the brand glyph.
+    case accessoryCircular
+    /// The Lock Screen's main slot: a title, a fact, and what a tap does.
+    case accessoryRectangular
+    /// One line above the clock: a single fact and nothing else.
+    case accessoryInline
+
+    /// The Home Screen sizes, as shipped in 1.4.0.
+    public static let homeScreen: [WidgetLayoutFamily] = [.small, .medium]
+
+    /// The Lock Screen sizes, added in 1.5.0.
+    public static let accessory: [WidgetLayoutFamily] = [.accessoryCircular, .accessoryRectangular, .accessoryInline]
+
+    public var isAccessory: Bool {
+        Self.accessory.contains(self)
+    }
 }
 
 /// The big figure split the way the concept draws it: the number in the accent colour,
@@ -133,11 +153,24 @@ public extension WidgetPresentation {
     /// groups are groups of, to keep the group count *and* the scan date side by side,
     /// and to show an illustration for states the small layout gives all its space to
     /// text. Those differences are decided here rather than by two views drifting apart.
+    ///
+    /// `libraryTotalBytes` is the whole library's size, from
+    /// `WidgetSnapshot.libraryTotalBytes`; only the circular Lock Screen family reads it,
+    /// to draw the reclaimable estimate as a share of the library. It defaults to `nil`
+    /// so every 1.4.0 call site and every 1.4.0 payload keep working — without it the
+    /// ring is simply not drawn.
     static func composition(
         for state: WidgetDisplayState,
-        family: WidgetLayoutFamily
+        family: WidgetLayoutFamily,
+        libraryTotalBytes: Int64? = nil
     ) -> WidgetComposition {
         let destination = destination(for: state)
+
+        if family.isAccessory {
+            return accessoryComposition(
+                for: state, family: family, libraryTotalBytes: libraryTotalBytes, destination: destination
+            )
+        }
 
         switch state {
         case .unavailable:
@@ -295,6 +328,217 @@ private extension WidgetPresentation {
             destination: destination,
             hint: WidgetL10n.Accessibility.resumeReview
         )
+    }
+
+    // MARK: - Lock Screen
+
+    /// The three accessory families, resolved from the same seven states.
+    ///
+    /// The priority between states is `displayState`'s and is not revisited here: an
+    /// unfinished review beats a changed library beats a reclaimable estimate, on the
+    /// Lock Screen exactly as on the Home Screen, and the widget never alternates
+    /// between facts across timeline entries. What differs is the shape of each fact:
+    ///
+    /// - **Rectangular** — `caption` is the «Alike» title beside the brand glyph
+    ///   (`headerSymbolName`), `headline` the fact, `actionTitle` always what a tap does,
+    ///   `footnote` the date only when the fact is stale or there is nothing else to say.
+    /// - **Circular** — `headline` is the bare figure under the glyph, `progress` the share
+    ///   it is of (reclaimable of the library, reviewed of total), `nil` when unknown so
+    ///   the layout draws no ring rather than an empty one. «All caught up» swaps the
+    ///   figure for `checkmark`.
+    /// - **Inline** — `caption` is the whole line; nothing else is set, because the
+    ///   system draws nothing else.
+    ///
+    /// No hero anywhere: `.accessory` rendering is monochrome, and `WidgetHeroImage`
+    /// already steps aside outside `.fullColor`.
+    static func accessoryComposition(
+        for state: WidgetDisplayState,
+        family: WidgetLayoutFamily,
+        libraryTotalBytes: Int64?,
+        destination: WidgetDestination
+    ) -> WidgetComposition {
+        let brand = "photo.stack"
+
+        switch state {
+        case .unavailable, .noAccess:
+            return accessory(
+                family: family,
+                symbol: "lock.fill",
+                figure: nil,
+                inline: WidgetL10n.Status.openApp,
+                footnote: nil,
+                action: WidgetL10n.Status.openApp,
+                destination: destination
+            )
+
+        case .neverScanned:
+            return accessory(
+                family: family,
+                symbol: brand,
+                figure: nil,
+                inline: WidgetL10n.Action.scan,
+                footnote: nil,
+                action: WidgetL10n.Action.scan,
+                destination: destination
+            )
+
+        case let .allCaughtUp(scannedAt):
+            return accessory(
+                family: family,
+                // The ring's centre becomes the tick; the brand glyph stays above it.
+                symbol: family == .accessoryCircular ? "checkmark" : brand,
+                figure: nil,
+                inline: WidgetL10n.Accessory.allCaughtUp,
+                // Nothing to act on, so the date is the one thing worth the line.
+                footnote: family == .accessoryRectangular ? scannedAt.map(scannedFootnote) : nil,
+                action: WidgetL10n.Status.openApp,
+                destination: destination
+            )
+
+        case let .hasSuggestions(bytes, _, scannedAt, isStale):
+            return accessory(
+                family: family,
+                symbol: brand,
+                figure: bytes.map { byteFigure($0, family: family) },
+                inline: bytes.map { WidgetL10n.Accessory.reclaimable(WidgetFormatting.approximateByteCount($0)) }
+                    ?? WidgetL10n.Action.review,
+                footnote: family == .accessoryRectangular && isStale ? scannedAt.map(scannedFootnote) : nil,
+                action: WidgetL10n.Action.review,
+                progress: family == .accessoryCircular ? share(of: bytes, in: libraryTotalBytes) : nil,
+                destination: destination
+            )
+
+        case let .libraryChanged(bytes, _):
+            return accessory(
+                family: family,
+                symbol: brand,
+                figure: bytes.map { byteFigure($0, family: family) },
+                inline: bytes.map { WidgetL10n.Accessory.reclaimable(WidgetFormatting.approximateByteCount($0)) }
+                    ?? WidgetL10n.Action.review,
+                footnote: nil,
+                action: WidgetL10n.Action.review,
+                progress: family == .accessoryCircular ? share(of: bytes, in: libraryTotalBytes) : nil,
+                destination: destination
+            )
+
+        case let .resumeReview(progress, _):
+            let sized = progress.totalClusters > 0
+            let reviewed = WidgetFormatting.number(progress.reviewedClusters)
+            let figure: WidgetHeadlineParts? = sized
+                ? WidgetHeadlineParts(
+                    accent: reviewed,
+                    rest: family == .accessoryCircular
+                        ? "/" + WidgetFormatting.number(progress.totalClusters)
+                        : WidgetL10n.Status.ofTotal(progress.totalClusters)
+                )
+                : nil
+            return accessory(
+                family: family,
+                symbol: "rectangle.on.rectangle",
+                figure: figure,
+                inline: sized
+                    ? WidgetL10n.Accessory.review(progress.reviewedClusters, progress.totalClusters)
+                    : WidgetL10n.Action.continueReview,
+                footnote: nil,
+                action: WidgetL10n.Action.continueReview,
+                progress: sized ? progress.fraction : nil,
+                destination: destination,
+                hint: WidgetL10n.Accessibility.resumeReview
+            )
+        }
+    }
+
+    /// «≈1,8 ГБ» on the rectangular slot, «1,8 ГБ» inside the ring, where the sign
+    /// would cost the digits their size.
+    static func byteFigure(_ bytes: Int64, family: WidgetLayoutFamily) -> WidgetHeadlineParts {
+        WidgetHeadlineParts(
+            accent: family == .accessoryCircular
+                ? WidgetFormatting.byteCount(bytes)
+                : WidgetFormatting.approximateByteCount(bytes)
+        )
+    }
+
+    /// The reclaimable estimate as a share of the library, or `nil` when either side is
+    /// unknown. A 1.4.0 payload has no library size, and a ring drawn at zero would read
+    /// as "nothing to clean" when the truth is "not measured".
+    static func share(of bytes: Int64?, in total: Int64?) -> Double? {
+        guard let bytes, let total, total > 0 else { return nil }
+        return min(max(Double(bytes) / Double(total), 0), 1)
+    }
+
+    /// Distributes one fact across the three accessory shapes.
+    static func accessory(
+        family: WidgetLayoutFamily,
+        symbol: String,
+        figure: WidgetHeadlineParts?,
+        inline: String,
+        footnote: String?,
+        action: String,
+        progress: Double? = nil,
+        destination: WidgetDestination,
+        hint: String = WidgetL10n.Accessibility.openCleanup
+    ) -> WidgetComposition {
+        switch family {
+        case .accessoryInline:
+            return WidgetComposition(
+                hero: nil,
+                symbolName: symbol,
+                headline: nil,
+                headlineParts: nil,
+                caption: inline,
+                detail: nil,
+                footnote: nil,
+                actionTitle: nil,
+                actionStyle: .plain,
+                progress: nil,
+                destination: destination,
+                accessibilityLabel: inline,
+                accessibilityHint: hint,
+                headerSymbolName: symbol
+            )
+
+        case .accessoryCircular:
+            return WidgetComposition(
+                hero: nil,
+                symbolName: symbol,
+                headline: figure?.joined,
+                headlineParts: figure,
+                caption: inline,
+                detail: nil,
+                footnote: nil,
+                actionTitle: nil,
+                actionStyle: .plain,
+                progress: progress,
+                destination: destination,
+                accessibilityLabel: inline,
+                accessibilityHint: hint,
+                headerSymbolName: symbol
+            )
+
+        case .accessoryRectangular, .small, .medium:
+            let title = WidgetL10n.Accessory.title
+            let flatFigure = figure?.joined
+            return WidgetComposition(
+                hero: nil,
+                symbolName: symbol,
+                headline: flatFigure,
+                headlineParts: figure,
+                caption: title,
+                detail: nil,
+                footnote: footnote,
+                actionTitle: action,
+                actionStyle: .plain,
+                progress: progress,
+                destination: destination,
+                // The title is the app's name, which VoiceOver already announced; the
+                // fact and its date are what the line has to say.
+                accessibilityLabel: accessibilityLabel(
+                    headline: flatFigure, caption: inline, detail: nil, footnote: footnote
+                ),
+                accessibilityHint: hint,
+                headerSymbolName: symbol
+            )
+        }
     }
 
     static func composition(

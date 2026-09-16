@@ -12,7 +12,9 @@ struct WidgetCompositionTests {
     /// Two days after `scannedAt`: the session outlives the scan it belongs to, and the
     /// widget has to keep the two dates apart.
     private static let reviewedAt = scannedAt.addingTimeInterval(2 * 24 * 60 * 60)
-    private static let families = WidgetLayoutFamily.allCases
+    /// The Home Screen sizes only; the Lock Screen families have their own suite,
+    /// `WidgetAccessoryCompositionTests`, because they share none of these shapes.
+    private static let families = WidgetLayoutFamily.homeScreen
 
     private func composition(
         _ state: WidgetDisplayState,

@@ -47,6 +47,11 @@ struct AlikeStatusWidgetView: View {
                 WidgetSmallLayout(composition: composition)
             case .medium:
                 WidgetMediumLayout(composition: composition)
+            // The accessory families arrive with the Lock Screen layouts (1.5.0, stage
+            // 2); until then `layoutFamily` never yields them, and the small layout is
+            // the safe reading of any family this switch has not been taught.
+            default:
+                WidgetSmallLayout(composition: composition)
             }
         }
         // Mandatory on iOS 17: without it the widget does not render on the
