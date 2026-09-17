@@ -14,14 +14,18 @@ struct AlikeStatusWidget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: WidgetSnapshotTimelineProvider()) { entry in
-            AlikeStatusWidgetView(state: entry.state)
+            AlikeStatusWidgetView(state: entry.state, libraryTotalBytes: entry.libraryTotalBytes)
         }
         .configurationDisplayName(WidgetL10n.Widget.displayName)
         .description(WidgetL10n.Widget.description)
         // Additive: `systemSmall` placements already on a home screen keep the size they
         // were added at. The kind is unchanged, so the app's reload calls still address
-        // this widget.
-        .supportedFamilies([.systemSmall, .systemMedium])
+        // this widget. The Lock Screen families (1.5.0) join the same kind for the same
+        // reason: one reload reaches every placement.
+        .supportedFamilies([
+            .systemSmall, .systemMedium,
+            .accessoryCircular, .accessoryRectangular, .accessoryInline
+        ])
         // The layouts carry their own `WidgetLayoutMetrics.contentMargin`: the concept
         // sits closer to the edge than WidgetKit's default margins allow.
         .contentMarginsDisabled()
@@ -37,9 +41,14 @@ struct AlikeStatusWidgetView: View {
     @Environment(\.widgetFamily) private var widgetFamily
 
     let state: WidgetDisplayState
+    var libraryTotalBytes: Int64? = nil
 
     var body: some View {
-        let composition = WidgetPresentation.composition(for: state, family: layoutFamily)
+        let composition = WidgetPresentation.composition(
+            for: state,
+            family: layoutFamily,
+            libraryTotalBytes: libraryTotalBytes
+        )
 
         Group {
             switch layoutFamily {
@@ -47,16 +56,25 @@ struct AlikeStatusWidgetView: View {
                 WidgetSmallLayout(composition: composition)
             case .medium:
                 WidgetMediumLayout(composition: composition)
-            // The accessory families arrive with the Lock Screen layouts (1.5.0, stage
-            // 2); until then `layoutFamily` never yields them, and the small layout is
-            // the safe reading of any family this switch has not been taught.
+            case .accessoryCircular:
+                WidgetCircularLayout(composition: composition)
+            case .accessoryRectangular:
+                WidgetRectangularLayout(composition: composition)
+            case .accessoryInline:
+                WidgetInlineLayout(composition: composition)
+            // The small layout is the safe reading of any family this switch has not
+            // been taught.
             default:
                 WidgetSmallLayout(composition: composition)
             }
         }
         // Mandatory on iOS 17: without it the widget does not render on the
-        // home screen at all.
-        .containerBackground(.fill.tertiary, for: .widget)
+        // home screen at all. The Lock Screen slots bring their own
+        // `AccessoryWidgetBackground`, so the container stays clear there.
+        .containerBackground(
+            layoutFamily.isAccessory ? AnyShapeStyle(.clear) : AnyShapeStyle(.fill.tertiary),
+            for: .widget
+        )
         .widgetURL(composition.destination.url)
         // VoiceOver reads one sentence — the figure, what it is, when it was measured,
         // and what tapping does — rather than walking four separate labels.
@@ -66,11 +84,17 @@ struct AlikeStatusWidgetView: View {
         .accessibilityHint(composition.accessibilityHint)
     }
 
-    /// `supportedFamilies` admits exactly these two, so anything else would be a family
+    /// `supportedFamilies` admits exactly these five, so anything else would be a family
     /// WidgetKit was never told this widget renders; the small layout is the safe
     /// reading of one if it ever arrives.
     private var layoutFamily: WidgetLayoutFamily {
-        widgetFamily == .systemMedium ? .medium : .small
+        switch widgetFamily {
+        case .systemMedium: .medium
+        case .accessoryCircular: .accessoryCircular
+        case .accessoryRectangular: .accessoryRectangular
+        case .accessoryInline: .accessoryInline
+        default: .small
+        }
     }
 }
 
@@ -101,7 +125,11 @@ private extension WidgetSnapshot {
 }
 
 private func entry(_ snapshot: WidgetSnapshot?) -> WidgetSnapshotEntry {
-    WidgetSnapshotEntry(date: .now, state: WidgetPresentation.displayState(for: snapshot))
+    WidgetSnapshotEntry(
+        date: .now,
+        state: WidgetPresentation.displayState(for: snapshot),
+        libraryTotalBytes: snapshot?.libraryTotalBytes
+    )
 }
 
 // Light and dark are the same four compositions under a different appearance, which is
@@ -164,4 +192,40 @@ private func entry(_ snapshot: WidgetSnapshot?) -> WidgetSnapshotEntry {
     AlikeStatusWidget()
 } timeline: {
     entry(.suggestions(now: .now.addingTimeInterval(-WidgetPresentation.staleAfter - 60)))
+}
+
+// MARK: - Lock Screen
+
+// One timeline per family walks the four states the slot has to survive: a figure with
+// its ring, a review in progress, nothing to do, and no data at all. The fifth entry is
+// a 1.4.x payload — the figure without a library size, so no ring.
+
+#Preview("Lock Screen · circular", as: .accessoryCircular) {
+    AlikeStatusWidget()
+} timeline: {
+    entry(.suggestions())
+    entry(.partialReview())
+    WidgetSnapshotEntry(date: .now, state: .allCaughtUp(scannedAt: .now))
+    WidgetSnapshotEntry(date: .now, state: .unavailable)
+    WidgetSnapshotEntry(date: .now, state: WidgetPresentation.displayState(for: .suggestions()))
+}
+
+#Preview("Lock Screen · rectangular", as: .accessoryRectangular) {
+    AlikeStatusWidget()
+} timeline: {
+    entry(.suggestions())
+    entry(.partialReview())
+    WidgetSnapshotEntry(date: .now, state: .allCaughtUp(scannedAt: .now))
+    WidgetSnapshotEntry(date: .now, state: .unavailable)
+    WidgetSnapshotEntry(date: .now, state: WidgetPresentation.displayState(for: .suggestions()))
+}
+
+#Preview("Lock Screen · inline", as: .accessoryInline) {
+    AlikeStatusWidget()
+} timeline: {
+    entry(.suggestions())
+    entry(.partialReview())
+    WidgetSnapshotEntry(date: .now, state: .allCaughtUp(scannedAt: .now))
+    WidgetSnapshotEntry(date: .now, state: .unavailable)
+    WidgetSnapshotEntry(date: .now, state: WidgetPresentation.displayState(for: .suggestions()))
 }
