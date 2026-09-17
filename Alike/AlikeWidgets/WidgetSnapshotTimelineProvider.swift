@@ -9,6 +9,9 @@ import WidgetSupport
 struct WidgetSnapshotEntry: TimelineEntry {
     let date: Date
     let state: WidgetDisplayState
+    /// What the circular ring measures the reclaimable estimate against. `nil` for a
+    /// 1.4.x payload, which draws the figure without a ring.
+    var libraryTotalBytes: Int64? = nil
 }
 
 /// Reads the shared snapshot and hands WidgetKit a single entry.
@@ -31,9 +34,11 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
     }
 
     func placeholder(in context: Context) -> WidgetSnapshotEntry {
-        WidgetSnapshotEntry(
+        let snapshot = WidgetSnapshot.placeholder()
+        return WidgetSnapshotEntry(
             date: Date(),
-            state: WidgetPresentation.displayState(for: .placeholder())
+            state: WidgetPresentation.displayState(for: snapshot),
+            libraryTotalBytes: snapshot.libraryTotalBytes
         )
     }
 
@@ -43,13 +48,20 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
         let snapshot = context.isPreview ? WidgetSnapshot.placeholder() : store?.read()
         completion(WidgetSnapshotEntry(
             date: Date(),
-            state: WidgetPresentation.displayState(for: snapshot)
+            state: WidgetPresentation.displayState(for: snapshot),
+            libraryTotalBytes: snapshot?.libraryTotalBytes
         ))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSnapshotEntry>) -> Void) {
-        let entries = WidgetPresentation.timeline(for: store?.read())
-            .map { WidgetSnapshotEntry(date: $0.date, state: $0.state) }
+        let snapshot = store?.read()
+        let entries = WidgetPresentation.timeline(for: snapshot).map {
+            WidgetSnapshotEntry(
+                date: $0.date,
+                state: $0.state,
+                libraryTotalBytes: snapshot?.libraryTotalBytes
+            )
+        }
         completion(Timeline(entries: entries, policy: .never))
     }
 }
