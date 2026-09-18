@@ -10,6 +10,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var refreshCleanupCategoriesResult: Result<[CleanupCategorySummary], Error> = .success([])
     public var loadAssetsResult: Result<[PHAsset], Error> = .success([])
     public var calculateSimilarityResult: Result<Float, Error> = .success(0.95)
+    public var libraryTotalBytesResult: Int64?
     public var didCallAnalyzePhotoLibrary = false
     public var didCallSummarizeCleanupCategories = false
     public var didCallRefreshCleanupCategories = false
@@ -27,6 +28,14 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         analyzePhotoLibraryResult = result
     }
     
+    public func setLibraryTotalBytesResult(_ bytes: Int64?) {
+        libraryTotalBytesResult = bytes
+    }
+
+    public func libraryTotalBytes() async -> Int64? {
+        libraryTotalBytesResult
+    }
+
     public func setCalculateSimilarityResult(_ result: Result<Float, Error>) {
         calculateSimilarityResult = result
     }

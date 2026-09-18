@@ -35,6 +35,40 @@ final class FileAssetByteSizeRepositoryTests: XCTestCase {
         XCTAssertEqual(loadedOne, [second])
     }
 
+    func testLibraryTotalRoundTripsAndSurvivesReplacingRecords() async throws {
+        let repository = FileAssetByteSizeRepository(fileURL: fileURL)
+        let record = AssetByteSizeRecord(localIdentifier: "a", modificationDate: nil, bytes: 1_024)
+        try await repository.replaceAll([record])
+
+        try await repository.saveLibraryTotalBytes(6_400_000_000)
+        try await repository.replaceAll([record, record])
+
+        let reopened = FileAssetByteSizeRepository(fileURL: fileURL)
+        let total = await reopened.loadLibraryTotalBytes()
+        XCTAssertEqual(total, 6_400_000_000)
+        let records = await reopened.loadAll()
+        XCTAssertEqual(records.count, 2)
+
+        try await repository.saveLibraryTotalBytes(nil)
+        let cleared = await reopened.loadLibraryTotalBytes()
+        XCTAssertNil(cleared)
+    }
+
+    /// The file as 1.4.1 wrote it: no `libraryTotalBytes` key.
+    func testFileWithoutLibraryTotalKeepsItsRecords() async throws {
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+        let json = """
+        {"byteSizeVersion": \(AssetByteSize.currentVersion), "records": [{"localIdentifier": "a", "bytes": 1}]}
+        """
+        try Data(json.utf8).write(to: fileURL)
+
+        let repository = FileAssetByteSizeRepository(fileURL: fileURL)
+        let total = await repository.loadLibraryTotalBytes()
+        XCTAssertNil(total)
+        let records = await repository.loadAll()
+        XCTAssertEqual(records.map(\.localIdentifier), ["a"])
+    }
+
     func testCorruptedFileLoadsEmpty() async throws {
         try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         try Data("not json".utf8).write(to: fileURL)

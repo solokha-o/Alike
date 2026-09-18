@@ -84,6 +84,9 @@ final class WidgetSnapshotPublisher {
             // Taken from the scan summary rather than recomputed, so the widget cannot
             // report a different figure from the scanner screen.
             estimatedSavingsBytes: summary?.estimatedSavingsBytes ?? restoredSavingsBytes,
+            // Unknown until a scan has summed the library: the ring is then left out
+            // rather than drawn against a made-up total.
+            libraryTotalBytes: hasCompletedScan ? workspace.libraryTotalBytes : nil,
             // Only meaningful once a scan baseline exists; before that the count is
             // unknown rather than zero, and the widget says so.
             clusterCount: hasCompletedScan ? clusters.count : nil,

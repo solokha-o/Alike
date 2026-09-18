@@ -33,15 +33,31 @@ struct DeduplicatingWidgetSnapshotWriterTests {
         }
     }
 
-    private func snapshot(generatedAt: TimeInterval, bytes: Int64 = 1_932_735_283) -> WidgetSnapshot {
+    private func snapshot(
+        generatedAt: TimeInterval,
+        bytes: Int64 = 1_932_735_283,
+        libraryTotalBytes: Int64? = nil
+    ) -> WidgetSnapshot {
         WidgetSnapshot(
             generatedAt: Date(timeIntervalSince1970: generatedAt),
             photoAuthorization: .authorized,
             hasCompletedScan: true,
             lastScanDate: Date(timeIntervalSince1970: 1_769_900_000),
             estimatedSavingsBytes: bytes,
+            libraryTotalBytes: libraryTotalBytes,
             clusterCount: 24
         )
+    }
+
+    @Test("An unchanged library total is not rewritten on every foreground; a changed one is")
+    func deduplicatesLibraryTotal() throws {
+        let store = ThrowOnceStore(failuresRemaining: 0)
+        let writer = DeduplicatingWidgetSnapshotWriter(store: store)
+
+        #expect(try writer.write(snapshot(generatedAt: 1_770_000_000, libraryTotalBytes: 6_400_000_000)) == .written)
+        #expect(try writer.write(snapshot(generatedAt: 1_770_000_060, libraryTotalBytes: 6_400_000_000)) != .written)
+        #expect(try writer.write(snapshot(generatedAt: 1_770_000_120, libraryTotalBytes: 6_500_000_000)) == .written)
+        #expect(store.writes.count == 2)
     }
 
     @Test("A failed write is not remembered, so the next equal publish retries instead of deduplicating")
