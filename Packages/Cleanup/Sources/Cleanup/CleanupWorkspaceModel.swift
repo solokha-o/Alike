@@ -18,6 +18,9 @@ public final class CleanupWorkspaceModel {
     public private(set) var reconciliationState: CleanupReconciliationState?
     public private(set) var lastScanSummary: ScanSummary?
     public private(set) var lastCompletedScanDate: Date?
+    /// The whole library's size as the last saved scan summed it — the widget
+    /// ring's denominator. `nil` until a scan has measured it, never 0.
+    public private(set) var libraryTotalBytes: Int64?
     public let cleanupService: any PhotoCleanupService
     public let cleanupHistoryRepository: any CleanupHistoryRepository
     /// Best Shot quality scoring, cached in Core Data so reopening a cluster
@@ -208,6 +211,7 @@ public final class CleanupWorkspaceModel {
             lastGoodContent = content
             refreshDerivedContentSnapshots()
             lastCompletedScanDate = baselineDate
+            libraryTotalBytes = baselineDate == nil ? nil : await assetByteSizeRepository.loadLibraryTotalBytes()
             contentState = baselineDate == nil ? .neverScanned : .content(content)
             await persistByteSizesIfNeeded(for: content)
         } catch {
@@ -362,6 +366,8 @@ public final class CleanupWorkspaceModel {
         reconciliationState = nil
         lastScanSummary = nil
         lastCompletedScanDate = nil
+        libraryTotalBytes = nil
+        try? await assetByteSizeRepository.saveLibraryTotalBytes(nil)
     }
 }
 
@@ -589,6 +595,7 @@ private extension CleanupWorkspaceModel {
         )
         lastScanSummary = summary
         lastCompletedScanDate = summary.completedAt
+        await adoptLibraryTotalBytes(await analysisService.libraryTotalBytes())
         await progressRelay.submit(ScanProgressStages.completed, force: true)
         return summary
     }
@@ -712,6 +719,17 @@ private extension CleanupWorkspaceModel {
             try await cleanupCategoryRepository.replaceAllSnapshots(Array(categorySnapshots.values))
         } catch {
             AppLog.storage.error("Failed to restore cleanup categories after scan failure: \(error.localizedDescription)")
+        }
+    }
+
+    /// A scan that could not measure the library keeps the previous total.
+    func adoptLibraryTotalBytes(_ bytes: Int64?) async {
+        guard let bytes, bytes != libraryTotalBytes else { return }
+        libraryTotalBytes = bytes
+        do {
+            try await assetByteSizeRepository.saveLibraryTotalBytes(bytes)
+        } catch {
+            AppLog.storage.error("Failed to persist library total bytes: \(error.localizedDescription)")
         }
     }
 

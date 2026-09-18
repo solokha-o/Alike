@@ -147,6 +147,17 @@ public protocol AssetByteSizeRepository: Sendable {
 
     /// Atomically replace every stored record.
     func replaceAll(_ records: [AssetByteSizeRecord]) async throws
+
+    /// The whole library's size as the last scan summed it; `nil` when none was stored.
+    func loadLibraryTotalBytes() async -> Int64?
+
+    /// Store the whole library's size, or clear it with `nil`.
+    func saveLibraryTotalBytes(_ bytes: Int64?) async throws
+}
+
+public extension AssetByteSizeRepository {
+    func loadLibraryTotalBytes() async -> Int64? { nil }
+    func saveLibraryTotalBytes(_ bytes: Int64?) async throws {}
 }
 
 /// Repository for the active cleanup session aggregate state.
@@ -320,9 +331,15 @@ public protocol PhotoAnalysisService: Sendable {
     
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float
+
+    /// Bytes of every photo the last category refresh saw, on the same
+    /// `AssetByteSize` basis as the reclaimable estimate. `nil` until one ran.
+    func libraryTotalBytes() async -> Int64?
 }
 
 public extension PhotoAnalysisService {
+    func libraryTotalBytes() async -> Int64? { nil }
+
     /// Recompute cleanup categories without observing intermediate progress.
     func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
         try await refreshCleanupCategories(progress: { _ in })
