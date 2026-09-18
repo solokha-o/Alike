@@ -271,6 +271,87 @@ struct WidgetAccessoryCompositionTests {
         #expect(composition(.allCaughtUp(scannedAt: Self.scannedAt), .accessoryRectangular).headerSymbolName == "photo.stack")
     }
 
+    // MARK: - Stale
+
+    @Test("the day-old estimate dates itself on the rectangular slot and nowhere else")
+    func staleTransitionShowsTheDate() throws {
+        let snapshot = WidgetSnapshot(
+            generatedAt: Self.scannedAt,
+            photoAuthorization: .authorized,
+            hasCompletedScan: true,
+            lastScanDate: Self.scannedAt,
+            libraryChangedSinceScan: false,
+            estimatedSavingsBytes: Self.bytes,
+            libraryTotalBytes: Self.libraryBytes,
+            clusterCount: 24,
+            sessionProgress: nil
+        )
+        let staleDate = WidgetPresentation.staleDate(for: snapshot)
+        let fresh = WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt)
+        let stale = WidgetPresentation.displayState(for: snapshot, now: staleDate)
+        #expect(fresh != stale)
+
+        let stamp = WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)
+        let rectangular = composition(stale, .accessoryRectangular, libraryTotalBytes: Self.libraryBytes)
+        #expect(composition(fresh, .accessoryRectangular, libraryTotalBytes: Self.libraryBytes).footnote == nil)
+        #expect(try #require(rectangular.footnote).contains(stamp))
+
+        // The other two slots have no line to spare, so they say the same thing either side
+        // of the threshold — only the rectangular one admits the figures are a day old.
+        for family in [WidgetLayoutFamily.accessoryCircular, .accessoryInline] {
+            #expect(
+                composition(fresh, family, libraryTotalBytes: Self.libraryBytes)
+                    == composition(stale, family, libraryTotalBytes: Self.libraryBytes),
+                "\(family) changed at the stale threshold"
+            )
+        }
+    }
+
+    // MARK: - Routes
+
+    @Test("every accessory tap survives the round trip through its alike:// URL", arguments: families)
+    func destinationRoundTrips(family: WidgetLayoutFamily) {
+        for state in Self.everyState {
+            let destination = composition(state, family).destination
+            #expect(
+                WidgetDestination(url: destination.url) == destination,
+                "\(state) on \(family) produced a URL the app parses as something else"
+            )
+        }
+    }
+
+    // MARK: - Circular budget
+
+    @Test("circular never carries a line the ring has no room for")
+    func circularCarriesOnlyTheFigure() {
+        for state in Self.everyState {
+            let resolved = composition(state, .accessoryCircular, libraryTotalBytes: Self.libraryBytes)
+            #expect(resolved.actionTitle == nil, "\(state) set an action inside the ring")
+            #expect(resolved.footnote == nil, "\(state) set a footnote inside the ring")
+            #expect(resolved.detail == nil)
+        }
+    }
+
+    /// The figure is drawn at 13 pt inside a 4 pt ring with `minimumScaleFactor` 0.5, so a
+    /// formatter change that adds a character or two shrinks it past reading size rather
+    /// than overflowing visibly. The largest figures the app can reach are pinned here.
+    @Test("the figure inside the ring stays within the characters the ring can hold")
+    func circularFigureBudget() throws {
+        let budget = 8
+
+        for bytes: Int64 in [999_000_000_000, 1_099_511_627_776, Self.bytes] {
+            let figure = try #require(
+                composition(.hasSuggestions(bytes: bytes, clusterCount: 24, scannedAt: nil, isStale: false), .accessoryCircular).headline
+            )
+            #expect(figure.count <= budget, "«\(figure)» does not fit the ring (\(figure.count) characters)")
+        }
+
+        let crowded = WidgetSessionProgress(reviewedClusters: 999, totalClusters: 999, updatedAt: Self.scannedAt)
+        let review = try #require(composition(.resumeReview(progress: crowded, isStale: false), .accessoryCircular).headlineParts)
+        let line = review.accent + (review.rest ?? "")
+        #expect(line.count <= budget, "«\(line)» does not fit the ring (\(line.count) characters)")
+    }
+
     @Test("states without a figure draw no ring and no number", arguments: families)
     func noFigureNoRing(family: WidgetLayoutFamily) {
         for state in [WidgetDisplayState.unavailable, .noAccess(.denied), .noAccess(.limited), .neverScanned] {
