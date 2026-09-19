@@ -147,13 +147,38 @@ pass/fail, and any finding written out in §6.
 
 ## 6. Device findings
 
-_Not yet run._ Fill in as §5 is walked; the stage is not done until this section
-carries the scan-duration comparison against 1.4.1 and the extension's memory
-peak.
+Walked on an **iPhone 13 mini, iOS 27**, 19 September 2026. Every functional row
+of §5 passed: the three families render each state, the ring follows the real
+`libraryTotalBytes` through a scan, a cold launch and a delete of local data, the
+taps land on their `alike://` screens cold and warm on both a Premium and a free
+account, tinted/vibrant and light/dark are legible, StandBy draws the circular and
+rectangular slots, VoiceOver reads the figure, unit, action and date, the four
+locales are not truncated and Arabic mirrors, the 24-hour stale transition happens
+on its own, and an install upgraded from 1.4.1 kept its home widgets and its
+snapshot.
 
-| Step | Device / iOS | Result | Finding |
-|---|---|---|---|
-| | | | |
+| Step | Result | Note |
+|---|---|---|
+| 1. Upgrade from 1.4.1, data kept | pass | home widgets unchanged, snapshot read, no ring until the next scan — the expected 1.4.1 payload behaviour |
+| 2. All five widgets placed | pass | |
+| 3. Scan cost vs 1.4.1 | **not measured** | see below |
+| 4. Ring after scan / cold launch / delete local data | pass | ring appears, survives, disappears; no crash |
+| 5. Every reachable state × three families | pass | |
+| 6. Tinted, vibrant, light, dark, StandBy | pass | |
+| 7. de, fr, pl, ar + RTL | pass | |
+| 8. Taps, cold and warm, Premium and free | pass | |
+| 9. VoiceOver | pass | |
+| 10. Extension memory, all widgets placed | **not measured** | see below |
+| 11. Stale after 24 h | pass | |
+
+**Two rows carry no number.** The scan was not timed against a 1.4.1 baseline and
+the extension was not profiled, so this release makes **no claim** about what
+summing the library costs a scan or what the extension peaks at with five widgets
+placed — per `AGENTS.md` §5, a performance statement without a measurement is not
+made. Nothing observed suggested a regression; that is an absence of evidence, not
+evidence. If the figures matter before 1.5.0 ships, step 3 wants
+`Library total bytes measured. assets=… duration=…` from Console on both builds,
+and step 10 wants Instruments (Allocations) attached to `AlikeWidgets`.
 
 ## 7. Release-compatibility gate
 
@@ -176,8 +201,9 @@ retyped or repurposed, and no schema change rides along with a feature change.
   is unknown. A zero ring would read as "nothing to clean" when the truth is "not
   measured". That is what every 1.4.1 install has today, and `circularShare`
   pins it.
-- **Manual pass over pre-existing data.** §5 step 1, on a device upgraded from
-  1.4.1 without deleting the app. The gate is not signed off on a fresh install.
+- **Manual pass over pre-existing data.** Done: an iPhone 13 mini on iOS 27
+  upgraded from 1.4.1 without deleting the app kept its home widgets and read the
+  snapshot 1.4.1 had written (§6 step 1). Not a fresh install.
 - **Rollback.** A user who goes back to 1.4.1 has a snapshot carrying one extra
   JSON key, which that release's decoder ignores; the accessory placements
   disappear with the extension that drew them. No data is lost either way.
