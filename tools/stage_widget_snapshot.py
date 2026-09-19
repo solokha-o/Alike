@@ -20,8 +20,9 @@ The widget gallery is not a preview of any of this: `getSnapshot` returns
 visible once the widget is placed on a screen.
 
 Usage:
-    python3 tools/stage_widget_snapshot.py hasSuggestions
-    python3 tools/stage_widget_snapshot.py legacy141 --appearance dark --screenshot out.png
+    python3 tools/stage_widget_snapshot.py hasSuggestions --app build/Alike.app
+    python3 tools/stage_widget_snapshot.py legacy141 --app build/Alike.app --appearance dark --screenshot out.png
+    python3 tools/stage_widget_snapshot.py --appearance dark
     python3 tools/stage_widget_snapshot.py --list
 """
 from __future__ import annotations
@@ -135,8 +136,25 @@ def main() -> int:
     parser.add_argument("--list", action="store_true", help="print the states and exit")
     arguments = parser.parse_args()
 
-    if arguments.list or not arguments.state:
+    if arguments.list:
         print("\n".join(sorted(STATES)))
+        return 0
+
+    # A capture without a reinstall shows whatever the timelines still hold, which
+    # is the state staged before this one. Refuse rather than hand back a lie.
+    if arguments.screenshot and not arguments.app:
+        sys.exit("--screenshot needs --app: without the reinstall the timelines are not "
+                 "reloaded and the capture still shows the previous state")
+
+    # These are device settings, not part of a state, so they apply on their own too.
+    if arguments.appearance:
+        run("xcrun", "simctl", "ui", arguments.udid, "appearance", arguments.appearance)
+    if arguments.content_size:
+        run("xcrun", "simctl", "ui", arguments.udid, "content_size", arguments.content_size)
+
+    if not arguments.state:
+        if not (arguments.appearance or arguments.content_size):
+            print("\n".join(sorted(STATES)))
         return 0
 
     payload = STATES[arguments.state]
@@ -156,11 +174,6 @@ def main() -> int:
     else:
         print("no --app given: reload the timelines yourself (reinstall or re-place the widget)",
               file=sys.stderr)
-
-    if arguments.appearance:
-        run("xcrun", "simctl", "ui", arguments.udid, "appearance", arguments.appearance)
-    if arguments.content_size:
-        run("xcrun", "simctl", "ui", arguments.udid, "content_size", arguments.content_size)
 
     print(f"staged {arguments.state} at {target}")
 

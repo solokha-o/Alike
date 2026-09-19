@@ -34,7 +34,10 @@ The order is terminate → write the file → `simctl install` → **never launc
 launch makes `WidgetSnapshotPublisher` republish from the simulator's own empty
 library, and the hand-written state is gone before it is seen. The reinstall is
 what reloads the timelines; accessory widgets then take about 25 seconds to
-redraw, so the script waits 30 before it captures.
+redraw, so the script waits 30 before it captures. `--screenshot` therefore
+requires `--app`: without the reinstall the capture would still show the state
+staged before it. `--appearance` and `--content-size` can be passed on their own,
+with no state, to change the simulator between captures.
 
 The widget gallery is not a preview of any of this — `getSnapshot` returns
 `WidgetSnapshot.placeholder()` whenever `context.isPreview` — so a state is only
