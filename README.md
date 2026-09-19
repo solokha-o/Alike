@@ -19,6 +19,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 📈 **Cleanup session progress** — track reviewed clusters, selected items, and estimated savings
 - 🕓 **History and insights** — every completed cleanup recorded locally, grouped by month
 - ⏰ **Cleanup reminders** — optional local notifications, on your own schedule *(custom schedules are Pro)*
+- 🧩 **Widgets** — reclaimable space and a library overview on the home screen, and three Lock Screen sizes — a line above the clock, a card, and a ring — all reading the same App Group snapshot, all free
 - 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
 - 📊 **Adaptive grid** — 1 to 2 columns on iPhone, remembered between screens and launches
@@ -28,16 +29,14 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.3.0
+## 🆕 What ships in 1.5.0
 
-Best Shot stops guessing from metadata. What this release adds:
+The widget leaves the home screen. What this release adds:
 
-- **Measured Best Shot.** The pick comes from the image itself — sharpness on the subject as well as the frame, exposure clipping, face size and focus, noise — with resolution capped as a minor signal and Favorite reduced to a tie-break. When nothing clearly wins, Alike says so and asks rather than pretending confidence.
-- **Reversible enhancement.** One tap improves the photo you keep, shown as a preview before anything is written. The change goes into the library as a non-destructive PhotoKit edit stamped `com.alike.autoEnhance`, so iOS keeps the original, no duplicate is created, and either Alike or Apple Photos can undo it. Live Photos included.
-- **On-device personalisation.** Every time you override the suggestion, Alike learns from the difference and ranks later groups closer to your taste. Ridge-regularised, shrunk towards the shipped weights, bounded to ±0.15, and never allowed to touch the sharpness floor that keeps a blurred frame from winning. One button in Settings resets it.
-- **A versioned Core Data baseline**, so the first schema change after 1.3.0 has a migration to test against.
+- **Lock Screen widgets.** `AlikeStatusWidget` gains all three accessory families: `accessoryInline` puts one fact above the clock, `accessoryRectangular` carries the figure and the next step, and `accessoryCircular` draws the share of the library you can clear — or the share of the review already done — as a ring. Same widget kind, same snapshot, same `alike://` routes; StandBy shows them too, and they are free.
+- **`libraryTotalBytes` in the snapshot.** The ring needs a denominator, so a scan's category refresh now sums the whole library on the same `AssetByteSize` basis as the reclaimable estimate. The field is optional and the snapshot's schema version is unchanged: a payload written by 1.4.x still decodes, and its circular widget simply draws no ring.
 
-Earlier releases: 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
+Earlier releases: 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
 
 ## 🔒 Privacy
 

@@ -11,6 +11,7 @@ struct WidgetSnapshotCodecTests {
         lastScanDate: Date(timeIntervalSince1970: 1_769_900_000),
         libraryChangedSinceScan: true,
         estimatedSavingsBytes: 1_932_735_283,
+        libraryTotalBytes: 27_917_287_424,
         clusterCount: 24,
         screenshotAssetCount: 86,
         blurredPhotoAssetCount: 12,
@@ -61,6 +62,7 @@ struct WidgetSnapshotCodecTests {
             lastScanDate: Self.reference.lastScanDate,
             libraryChangedSinceScan: Self.reference.libraryChangedSinceScan,
             estimatedSavingsBytes: Self.reference.estimatedSavingsBytes,
+            libraryTotalBytes: Self.reference.libraryTotalBytes,
             clusterCount: Self.reference.clusterCount,
             screenshotAssetCount: Self.reference.screenshotAssetCount,
             blurredPhotoAssetCount: Self.reference.blurredPhotoAssetCount,
@@ -78,21 +80,39 @@ struct WidgetSnapshotCodecTests {
         // them may be skipped when deciding not to republish.
         let base = Self.reference
         let variants: [WidgetSnapshot] = [
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: .denied, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: false, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: nil, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: false, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: 1, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: 1, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: 1, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: 1, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: false, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: nil)
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: .denied, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: false, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: nil, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: false, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: 1, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: nil, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: 1, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: 1, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: 1, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: false, sessionProgress: base.sessionProgress),
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: nil)
         ]
 
         for variant in variants {
             #expect(!base.hasSameContent(as: variant))
         }
+    }
+
+    /// The 1.4.0 payload, byte for byte: no `libraryTotalBytes`, `schemaVersion` 1. It
+    /// has to keep decoding after 1.5.0 ships, with the new field absent rather than the
+    /// whole snapshot discarded — that is what "R2 without a migration" means here.
+    @Test("A payload written before libraryTotalBytes existed decodes with it absent")
+    func legacyPayloadWithoutLibraryTotalBytes() throws {
+        let json = Data(#"{"schemaVersion":1,"generatedAt":"2026-02-02T00:00:00Z","photoAuthorization":"authorized","hasCompletedScan":true,"lastScanDate":"2026-02-01T00:00:00Z","libraryChangedSinceScan":false,"estimatedSavingsBytes":1932735283,"clusterCount":24,"isPremium":false}"#.utf8)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        let decoded = try decoder.decode(WidgetSnapshot.self, from: json)
+
+        #expect(decoded.schemaVersion == WidgetSnapshot.currentSchemaVersion)
+        #expect(decoded.libraryTotalBytes == nil)
+        #expect(decoded.estimatedSavingsBytes == 1_932_735_283)
+        #expect(decoded.clusterCount == 24)
     }
 
     @Test("The payload carries no per-asset identifiers")

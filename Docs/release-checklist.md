@@ -138,6 +138,12 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 - [ ] `tools/release-check X.Y.Z N` green — version check, bundle validation,
       Release archive, no-upload IPA export.
 - [ ] No leftover debug flags, premium overrides or test endpoints.
+- [ ] Widget work: the QA record in `Docs/lock-screen-widget-qa.md` carries this
+      release's pass, including the device rows the simulator cannot answer.
+- [ ] A release that adds a feature has decided, in writing, whether the deck
+      grows for it. 1.5.0 decided it does not — the Lock Screen ships in the
+      text, and `Docs/screenshot-shot-list.md` records why under shot 16. A
+      feature is not automatically a slide.
 
 ## 3. Metadata
 
@@ -177,7 +183,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ## 4. Screenshots
 
 - [ ] Deck rendered and eyeballed per locale — see `Docs/screenshot-brief.md`.
-      Six slides in thirteen locales as of 1.3.0, so seventy-eight renders;
+      Seven slides in thirteen locales as of 1.4.0, so ninety-one renders;
       `--dry-run` prints the count and is the cheapest way to catch a locale
       short an entry.
 - [ ] Capture status table in `Docs/screenshot-shot-list.md` current.

@@ -56,10 +56,21 @@ Before using Grep, Glob, or Read for code exploration:
 2. Do not require a full app compile for documentation, skill files, comments,
    copy-only edits, or other non-compilable changes unless there is specific
    reason to doubt the change or the user asks for validation anyway.
-3. Full compile command:
-   `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=66E5E039-9C66-4878-B211-923932320166' build`.
-4. If the fixed simulator ID is unavailable, first select an available iOS
-   Simulator destination and then run the same full compile.
+3. Full compile command — no device needed, so no simulator ID to go stale:
+   `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/platform=iOS Simulator' build`.
+   If `xcodebuild` says it "requires Xcode", `xcode-select` points at the
+   Command Line Tools: prefix the command with
+   `DEVELOPER_DIR=/Applications/<Xcode>.app/Contents/Developer`
+   (`tools/xcode-env.sh` does this for the repo's own wrappers).
+4. Pick the destination for the job, never from a pinned ID:
+   - compile only: the generic destination above;
+   - package or app tests: any available iPhone on a runtime the active Xcode
+     can boot — read it from `xcrun simctl list devices available`, or let
+     `tools/local_ci.sh` resolve it (override with `ALIKE_BUILD_DESTINATION`);
+   - layout, widget, or screenshot checks: the device class the check is about
+     (an iPad for iPad layout, the App Store screenshot size for store captures);
+   - photo-library clustering (Best Shot): a real device — the simulator
+     cannot form clusters.
 5. Report completion only after `BUILD SUCCEEDED`; otherwise continue fixing
    until success or report a concrete blocker.
 6. Package tests run against the package's own workspace, not the app project:

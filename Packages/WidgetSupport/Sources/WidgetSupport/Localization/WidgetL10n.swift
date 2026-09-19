@@ -85,6 +85,37 @@ public enum WidgetL10n {
         public static var scan: String { WidgetL10n.string("widgetsupport.action.scan") }
     }
 
+    /// The Lock Screen's vocabulary: the same facts as `Status`, in the fewest characters
+    /// the accessory slots can hold. The inline slot is one short line above the clock
+    /// and the rectangular slot three, so these never exceed a handful of words.
+    public enum Accessory {
+        /// «Alike» — the rectangular slot's title, beside the brand glyph.
+        public static var title: String { WidgetL10n.string("widgetsupport.accessory.title") }
+
+        /// "≈1.8 GB to clean up" — the whole inline line for a reclaimable estimate.
+        public static func reclaimable(_ formattedBytes: String) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.accessory.reclaimable"),
+                locale: WidgetFormatting.locale,
+                formattedBytes
+            )
+        }
+
+        /// "Review: 18 of 30" — the whole inline line for an unfinished review. Not a
+        /// plural key: no noun in it changes with either number.
+        public static func review(_ reviewed: Int, _ total: Int) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.accessory.review"),
+                locale: WidgetFormatting.locale,
+                reviewed, total
+            )
+        }
+
+        /// "All clean" — shorter than `Status.allCaughtUp`, which the inline slot cannot
+        /// afford in every language.
+        public static var allCaughtUp: String { WidgetL10n.string("widgetsupport.accessory.allCaughtUp") }
+    }
+
     /// The three category lines of the library overview.
     public enum Library {
         /// Names the clusters, which are counted in groups — `Status.groups` supplies

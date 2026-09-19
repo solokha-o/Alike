@@ -1,4 +1,5 @@
 import XCTest
+@testable import WidgetSupport
 
 /// This package owns its own string catalog: the widget extension cannot reach the app's.
 ///
@@ -219,6 +220,115 @@ struct LocalizationCatalog {
 }
 
 final class LocalizationCatalogTests: XCTestCase {
+    /// What the narrowest phone shows beside the glyph in the inline slot. The system
+    /// truncates silently and per locale, so the longest translation has to stay under this
+    /// with the longest figure the estimate can print.
+    static let inlineBudget = 26
+
+    /// Every key the inline slot can render, with the worst-case arguments. Kept beside
+    /// `inlineRenderings`, which pins the same list to the compositions.
+    static var inlineSample: [String: [CVarArg]] {
+        [
+            "widgetsupport.accessory.reclaimable": ["\u{2248}999,9 GB"],
+            "widgetsupport.accessory.review": [999, 999],
+            "widgetsupport.accessory.allCaughtUp": [],
+            "widgetsupport.status.openApp": [],
+            "widgetsupport.action.scan": [],
+            "widgetsupport.action.review": [],
+            "widgetsupport.action.continueReview": []
+        ]
+    }
+
+    /// The same keys, rendered through the wrapper the compositions call.
+    static var inlineRenderings: [String: String] {
+        [
+            "widgetsupport.accessory.reclaimable": WidgetL10n.Accessory.reclaimable(
+                WidgetFormatting.approximateByteCount(sampleBytes)
+            ),
+            "widgetsupport.accessory.review": WidgetL10n.Accessory.review(18, 30),
+            "widgetsupport.accessory.allCaughtUp": WidgetL10n.Accessory.allCaughtUp,
+            "widgetsupport.status.openApp": WidgetL10n.Status.openApp,
+            "widgetsupport.action.scan": WidgetL10n.Action.scan,
+            "widgetsupport.action.review": WidgetL10n.Action.review,
+            "widgetsupport.action.continueReview": WidgetL10n.Action.continueReview
+        ]
+    }
+
+    private static let sampleBytes: Int64 = 1_932_735_283
+    private static let sampleDate = Date(timeIntervalSince1970: 1_757_000_000)
+    private static let sampleProgress = WidgetSessionProgress(
+        reviewedClusters: 18,
+        totalClusters: 30,
+        updatedAt: sampleDate
+    )
+    private static let unsizedProgress = WidgetSessionProgress(
+        reviewedClusters: 0,
+        totalClusters: 0,
+        updatedAt: sampleDate
+    )
+
+    /// Every shape `displayState` can return, including the figure-less variants that fall
+    /// back to an action line.
+    static let everyDisplayState: [WidgetDisplayState] = [
+        .unavailable,
+        .noAccess(.limited),
+        .noAccess(.denied),
+        .neverScanned,
+        .allCaughtUp(scannedAt: sampleDate),
+        .allCaughtUp(scannedAt: nil),
+        .hasSuggestions(bytes: sampleBytes, clusterCount: 24, scannedAt: sampleDate, isStale: false),
+        .hasSuggestions(bytes: sampleBytes, clusterCount: 24, scannedAt: sampleDate, isStale: true),
+        .hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false),
+        .libraryChanged(bytes: sampleBytes, scannedAt: sampleDate),
+        .libraryChanged(bytes: nil, scannedAt: nil),
+        .resumeReview(progress: sampleProgress, isStale: false),
+        .resumeReview(progress: sampleProgress, isStale: true),
+        .resumeReview(progress: unsizedProgress, isStale: false)
+    ]
+
+    /// The inline Lock Screen slot is one short line above the clock, and the system
+    /// truncates whatever does not fit — silently, per locale. The budget is what the
+    /// narrowest phone shows beside the glyph; the longest translation has to stay under it
+    /// with the longest byte figure the estimate can print.
+    func testInlineAccessoryLinesFitTheSlotInEveryLanguage() throws {
+        let catalog = try LocalizationCatalog.load()
+        var overflowing: [String] = []
+
+        for (key, arguments) in Self.inlineSample.sorted(by: { $0.key < $1.key }) {
+            for (language, unit) in try catalog.localizations(of: key) {
+                for (_, format) in LocalizationCatalog.values(of: unit) {
+                    let rendered = String(format: format, arguments: arguments)
+                    if rendered.count > Self.inlineBudget {
+                        overflowing.append("\(key) [\(language)] = \(rendered) (\(rendered.count))")
+                    }
+                }
+            }
+        }
+
+        XCTAssertTrue(overflowing.isEmpty, "inline lines over \(Self.inlineBudget) characters: \(overflowing)")
+    }
+
+    /// The budget above is only worth its runtime if it samples every line the inline slot
+    /// can actually show. Four of the seven states fall through to `Status.openApp`,
+    /// `Action.scan` or the two review actions, so a state added without a short key of its
+    /// own would ship an untested line. This walks the compositions and fails here first.
+    func testEveryInlineAccessoryCaptionIsSampledByTheBudget() throws {
+        let sampled = Set(Self.inlineRenderings.values)
+        var unsampled: [String] = []
+
+        for state in Self.everyDisplayState {
+            let caption = WidgetPresentation.composition(for: state, family: .accessoryInline).caption
+            if !sampled.contains(caption) {
+                unsampled.append("\(state) shows «\(caption)»")
+            }
+        }
+
+        XCTAssertTrue(
+            unsampled.isEmpty,
+            "inline captions outside the budget sample: \(unsampled). Add the key to inlineSample."
+        )
+    }
+
     func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)

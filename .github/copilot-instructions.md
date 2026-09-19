@@ -74,6 +74,6 @@ This repository contains specialized skills and reference materials for iOS/macO
 
 - For any code modification, do not finish the task until a full app compile has been executed.
 - Preferred full compile command:
-  `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=66E5E039-9C66-4878-B211-923932320166' build`
-- If that simulator ID is unavailable, choose an available iOS Simulator destination and run the same full compile.
+  `xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/platform=iOS Simulator' build`
+- Tests need a concrete device: pick an available simulator the active Xcode can boot (`xcrun simctl list devices available`), matching the device class the change is about. See `AGENTS.md` for the full rules.
 - Only mark the task done after `BUILD SUCCEEDED`; otherwise continue fixing errors or report a concrete blocker.

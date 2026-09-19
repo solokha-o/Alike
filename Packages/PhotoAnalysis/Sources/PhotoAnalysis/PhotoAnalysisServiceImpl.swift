@@ -11,6 +11,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private let cleanupCategoryRepository: (any CleanupCategorySnapshotRepository)?
     private let blurAnalysisService: BlurAnalysisService
     private let assetsProvider: @Sendable () -> [PHAsset]
+    private var measuredLibraryTotalBytes: Int64?
     
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
@@ -147,6 +148,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         progress(0)
 
         let assets = assetsProvider()
+        measuredLibraryTotalBytes = Self.totalBytes(of: assets)
         progress(0.05)
         let snapshots = try await buildCleanupCategorySnapshots(from: assets) { categoryProgress in
             progress(0.05 + (categoryProgress * 0.85))
@@ -159,6 +161,10 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         try Task.checkCancellation()
         progress(1)
         return CleanupCategorySummaryBuilder.summaries(from: snapshots)
+    }
+
+    public func libraryTotalBytes() async -> Int64? {
+        measuredLibraryTotalBytes
     }
 
     public func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] {
@@ -204,6 +210,16 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     
     // MARK: - Private Helpers
     
+    /// `nil` for an empty library: a zero total would draw a ring around nothing.
+    nonisolated private static func totalBytes(of assets: [PHAsset]) -> Int64? {
+        guard !assets.isEmpty else { return nil }
+        let startTime = ContinuousClock().now
+        let total = assets.reduce(into: Int64(0)) { $0 += AssetByteSize.bytes(for: $1) }
+        let duration = startTime.duration(to: ContinuousClock().now)
+        AppLog.scan.info("\(AppLog.tag(.progress, "Library total bytes measured. assets=\(assets.count) duration=\(duration)"))")
+        return total
+    }
+
     nonisolated private static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [

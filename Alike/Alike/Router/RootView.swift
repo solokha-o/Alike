@@ -279,6 +279,8 @@ struct MainTabView: View {
             // The estimate rather than the summary's copy: after a cold launch there is no
             // summary, and a keeper change must still republish the widget.
             estimatedSavingsBytes: cleanupWorkspace.reclaimableEstimate.totalBytes,
+            // Arrives after the scan date, from disk on a cold launch.
+            libraryTotalBytes: cleanupWorkspace.libraryTotalBytes,
             clusterCount: cleanupWorkspace.clusters.count,
             categoryAssetCount: cleanupWorkspace.cleanupCategories.reduce(0) { $0 + $1.assetCount },
             reviewedClusters: cleanupWorkspace.activeCleanupSession?.reviewedClusters,
@@ -341,6 +343,7 @@ private struct WidgetSnapshotSignature: Equatable {
     let lastCompletedScanDate: Date?
     let lastScanCompletedAt: Date?
     let estimatedSavingsBytes: Int64?
+    let libraryTotalBytes: Int64?
     let clusterCount: Int
     let categoryAssetCount: Int
     let reviewedClusters: Int?
