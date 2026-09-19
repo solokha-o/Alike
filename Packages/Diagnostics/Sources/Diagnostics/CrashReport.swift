@@ -68,6 +68,14 @@ public struct CrashReport: Codable, Sendable, Identifiable, Equatable {
     }
 }
 
+/// Just enough of `index.json` to learn which build wrote it.
+///
+/// Read before the records: an index whose shape this build cannot decode at all is
+/// then recognized as newer rather than corrupt, and is left alone instead of rewritten.
+struct CrashReportIndexHeader: Decodable {
+    var schemaVersion: Int
+}
+
 /// The on-disk envelope of `index.json`.
 struct CrashReportIndex: Codable, Equatable {
     static let currentSchemaVersion = 1

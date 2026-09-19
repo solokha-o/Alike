@@ -133,14 +133,20 @@ public actor CrashReportStore {
         guard fileManager.fileExists(atPath: indexURL.path) else { return .missing }
         guard
             let data = try? Data(contentsOf: indexURL),
-            let index = try? Self.decoder.decode(CrashReportIndex.self, from: data)
+            let header = try? Self.decoder.decode(CrashReportIndexHeader.self, from: data)
         else {
             AppLog.diagnostics.error("\(AppLog.tag(.error, "Crash report index could not be decoded."))")
             return .corrupt
         }
-        guard index.schemaVersion <= CrashReportIndex.currentSchemaVersion else {
-            AppLog.diagnostics.notice("Crash report index schema \(index.schemaVersion) is newer than this build.")
+        // The version decides before the records do: a newer schema may have reshaped
+        // everything below it, and failing to decode that is not corruption.
+        guard header.schemaVersion <= CrashReportIndex.currentSchemaVersion else {
+            AppLog.diagnostics.notice("Crash report index schema \(header.schemaVersion) is newer than this build.")
             return .newerSchema
+        }
+        guard let index = try? Self.decoder.decode(CrashReportIndex.self, from: data) else {
+            AppLog.diagnostics.error("\(AppLog.tag(.error, "Crash report index could not be decoded."))")
+            return .corrupt
         }
         return .loaded(index)
     }

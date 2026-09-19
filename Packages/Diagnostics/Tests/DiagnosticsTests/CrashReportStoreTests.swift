@@ -252,6 +252,20 @@ final class CrashReportStoreTests: XCTestCase {
         XCTAssertEqual(payloadFileNames(), [])
     }
 
+    /// A newer schema is free to reshape the records too, so the version has to be read
+    /// before them — otherwise this index looks corrupt and gets rewritten as schema 1.
+    func testNewerSchemaWithAnUnreadableShapeIsStillLeftUntouched() async throws {
+        let newer = #"{"reports":{"newShape":true},"schemaVersion":99}"#
+        try writeIndex(newer)
+
+        await store.ingest([CrashPayloadFixture.data()])
+        let reports = await store.reports()
+
+        XCTAssertEqual(reports, [])
+        XCTAssertEqual(try String(contentsOf: indexURL, encoding: .utf8), newer)
+        XCTAssertEqual(payloadFileNames(), [])
+    }
+
     func testCorruptIndexIsRebuiltFromThePayloadFilesWithoutPromptingAgain() async throws {
         await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 10))
         let original = try await XCTUnwrapAsync(await store.reports().first)
