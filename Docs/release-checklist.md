@@ -138,6 +138,8 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 - [ ] `tools/release-check X.Y.Z N` green — version check, bundle validation,
       Release archive, no-upload IPA export.
 - [ ] No leftover debug flags, premium overrides or test endpoints.
+- [ ] Widget work: the QA record in `Docs/lock-screen-widget-qa.md` carries this
+      release's pass, including the device rows the simulator cannot answer.
 
 ## 3. Metadata
 
