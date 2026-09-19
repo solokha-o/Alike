@@ -2,6 +2,7 @@ import SwiftUI
 import StoreKit
 import Core
 import DesignSystem
+import Diagnostics
 import NavigationKit
 import Purchases
 import PurchasesUI
@@ -16,6 +17,7 @@ enum SettingsRoute: Hashable {
     case deleteAllData
 #if DEBUG
     case bestShotCalibration
+    case crashReports
 #endif
 }
 
@@ -166,6 +168,8 @@ public struct SettingsView: View {
 #if DEBUG
         case .bestShotCalibration:
             BestShotCalibrationLabelingView()
+        case .crashReports:
+            CrashReportDebugListView()
 #endif
         }
     }
@@ -463,6 +467,16 @@ public struct SettingsView: View {
                 }
             }
 
+            Button {
+                router.push(.crashReports)
+            } label: {
+                Label {
+                    Text("Crash Reports")
+                } icon: {
+                    Image(systemName: "ladybug")
+                }
+            }
+
             Toggle(
                 SettingsL10n.Main.unlockUnlimitedScansPremiumFeature,
                 isOn: $debugUnlockUnlimitedRescans
@@ -542,7 +556,7 @@ public struct SettingsView: View {
             // URL(string:), which only accepts the raw space because it defaults to
             // encodingInvalidCharacters: true. Encoding it here keeps the force
             // unwrap valid under strict RFC 3986 parsing too.
-            Link(destination: URL(string: "mailto:oleksandr.solokha@gmail.com?subject=Alike%20Feedback")!) {
+            Link(destination: URL(string: "mailto:\(CrashReportSupport.email)?subject=Alike%20Feedback")!) {
                 Label {
                     Text(SettingsL10n.Main.contactDeveloper)
                 } icon: {
