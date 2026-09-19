@@ -228,7 +228,7 @@ BUILT FOR REAL LIBRARIES
 - A roomy one-column layout or a denser grid, switchable any time and remembered.
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
-- Two home screen widgets: reclaimable space, and your library at a glance.
+- Widgets on the home screen and the Lock Screen: reclaimable space, and your library at a glance.
 - Thirteen languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
 
 YOU STAY IN CONTROL
@@ -244,7 +244,7 @@ ALIKE FREE
 - Best Shot that learns from your own picks
 - Sorting and cleanup history
 - Clean up one photo at a time
-- Home screen widgets
+- Home Screen and Lock Screen widgets
 
 ALIKE PRO
 - 7 days free on the yearly plan, for eligible new subscribers
@@ -285,7 +285,7 @@ Alike знаходить майже однакові знімки у вашій 
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
-- Два віджети на домашньому екрані: вільне місце й огляд медіатеки.
+- Віджети на домашньому й замкненому екрані: вільне місце й огляд медіатеки.
 - Тринадцять мов і повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
@@ -348,7 +348,7 @@ FÜR ECHTE MEDIATHEKEN GEBAUT
 - Ein einspaltiges Layout oder ein dichteres Raster, jederzeit umschaltbar.
 - Eine durchsuchbare Anleitung in der App.
 - Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem Zeitplan.
-- Zwei Widgets für den Home-Bildschirm: freier Speicher, Mediathek auf einen Blick.
+- Widgets für Home- und Sperrbildschirm: freier Speicher, Mediathek auf einen Blick.
 - Dreizehn Sprachen und voller Dark Mode.
 
 DU BEHÄLTST DIE KONTROLLE
@@ -405,7 +405,7 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Une mise en page sur une colonne ou une grille plus dense, permutable à tout moment.
 - Un mode d'emploi consultable dans l'app.
 - Rappels de nettoyage facultatifs, en notifications locales.
-- Deux widgets sur l'écran d'accueil : l'espace récupérable et la photothèque.
+- Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la photothèque.
 - Treize langues et mode sombre complet.
 
 VOUS GARDEZ LA MAIN
@@ -462,7 +462,7 @@ HECHO PARA FOTOTECAS REALES
 - Una disposición amplia de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordadas.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
-- Dos widgets en la pantalla de inicio: espacio recuperable y fototeca.
+- Widgets en la pantalla de inicio y en la de bloqueo: espacio recuperable y fototeca.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
@@ -519,7 +519,7 @@ HECHO PARA FOTOTECAS REALES
 - Un diseño amplio de una columna o una cuadrícula más densa, intercambiables cuando quieras y recordados.
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
-- Dos widgets en la pantalla de inicio: espacio recuperable y fototeca.
+- Widgets en la pantalla de inicio y en la bloqueada: espacio recuperable y fototeca.
 - Trece idiomas y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
@@ -576,7 +576,7 @@ FEITO PARA FOTOTECAS DE VERDADE
 - Um layout espaçoso de uma coluna ou uma grade mais densa, alternáveis a qualquer momento e memorizados.
 - Instruções de uso com busca dentro do app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
-- Dois widgets na tela de início: o espaço recuperável e a fototeca.
+- Widgets na tela de início e na tela bloqueada: o espaço recuperável e a fototeca.
 - Treze idiomas e modo escuro completo.
 
 VOCÊ NO CONTROLE
@@ -638,7 +638,7 @@ PENSATA PER LIBRERIE VERE
 - Un layout ampio a una colonna o una griglia più fitta, alternabili quando vuoi e ricordati.
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
-- Due widget nella schermata home: spazio recuperabile e libreria.
+- Widget nella schermata home e in quella di blocco: spazio recuperabile e libreria.
 - Tredici lingue e modalità scura completa.
 
 SEI TU A DECIDERE
@@ -695,7 +695,7 @@ GEMAAKT VOOR ECHTE BIBLIOTHEKEN
 - Een ruime indeling met één kolom of een dichter raster, altijd om te wisselen en onthouden.
 - Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.
 - Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.
-- Twee widgets op je beginscherm: vrij te maken ruimte en je bibliotheek.
+- Widgets op je beginscherm en je toegangsscherm: vrij te maken ruimte en je bibliotheek.
 - Dertien talen en volledige donkere modus.
 
 JIJ HOUDT DE CONTROLE
@@ -752,7 +752,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
-- Dwa widgety na ekranie początkowym: odzyskiwalne miejsce i biblioteka.
+- Widgety na ekranie początkowym i na ekranie blokady: odzyskiwalne miejsce i biblioteka.
 - Trzynaście języków i pełny tryb ciemny.
 
 TO TY DECYDUJESZ
@@ -809,7 +809,7 @@ GERÇEK KİTAPLIKLAR İÇİN
 - Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve hatırlanır.
 - Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.
 - İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.
-- Ana ekranda iki widget: kazanılabilir alan ve kitaplığa bir bakış.
+- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve kitaplığa bir bakış.
 - On üç dil ve tam Koyu Mod desteği.
 
 KONTROL SENDE
@@ -866,7 +866,7 @@ Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成�
 - 寬鬆的單欄版面或更緊湊的格狀版面，隨時切換並自動記住。
 - App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。
 - 選用的清理提醒，以本地通知依你自己的時間送達。
-- 兩個主畫面小工具：可以釋出的空間，以及一眼掌握的圖庫。
+- 主畫面與鎖定畫面小工具：可以釋出的空間，以及一眼掌握的圖庫。
 - 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
 
 一切由你決定
@@ -882,7 +882,7 @@ ALIKE FREE
 - 會從你自己的挑選中學習的最佳照片
 - 排序與清理歷史記錄
 - 一次清理一張照片
-- 主畫面小工具
+- 主畫面與鎖定畫面小工具
 
 ALIKE PRO
 - 年繳方案 7 天免費，適用於符合資格的新訂閱者
@@ -924,7 +924,7 @@ AR_DESCRIPTION = """\
 - تخطيط فسيح بعمود واحد أو شبكة أكثر كثافة، يمكن تبديله في أي وقت ويُحفظ اختيارك.
 - دليل قابل للبحث داخل التطبيق، على بُعد نقرة واحدة من شاشة الفحص.
 - تذكيرات تنظيف اختيارية، تصل كإشعارات محلية وفق جدولك أنت.
-- عنصران على الشاشة الرئيسية: المساحة التي يمكن استعادتها، والمكتبة في لمحة.
+- عناصر على الشاشة الرئيسية وشاشة القفل: المساحة التي يمكن استعادتها، والمكتبة في لمحة.
 - ثلاث عشرة لغة: الإنجليزية والأوكرانية والألمانية والفرنسية والإسبانية وإسبانية أمريكا اللاتينية والبرتغالية البرازيلية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ودعم كامل للوضع الداكن.
 
 تبقى أنت المتحكم
@@ -940,7 +940,7 @@ AR_DESCRIPTION = """\
 - أفضل لقطة تتعلّم من اختياراتك
 - الترتيب وسجل التنظيف
 - تنظيف صورة واحدة في كل مرة
-- عناصر الشاشة الرئيسية
+- عناصر الشاشة الرئيسية وشاشة القفل
 
 ‏ALIKE PRO
 - 7 أيام مجانًا في الخطة السنوية، للمشتركين الجدد المؤهلين
@@ -961,19 +961,19 @@ METADATA = {
         # App Store Connect indexes the app name and subtitle on top of this
         # field, so "similar", "photo" and "cleaner" are deliberately absent —
         # repeating them here would spend characters on terms already covered.
-        "keywords": "duplicate,cleanup,camera roll,storage,space,declutter,gallery,screenshot,blurry,album,delete",
+        "keywords": "duplicate,cleanup,camera roll,storage,space,gallery,screenshot,blurry,album,delete,lock screen",
         # Promotional text is the one field App Store Connect accepts without a
         # new build, so the trial lives here as well as in the description.
-        "promotional_text": "Alike groups the photos that look alike, picks the best shot in each group, and helps you clear the rest. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
-        "release_notes": "A fix for the number that matters most: how much space you can actually get back.\n\n- “Reclaimable” now counts each photo once, and never the shot Alike keeps from a group.\n- The figure uses the real size of each file, so it matches what you actually free up.\n- Changing the best shot in a group updates the figure on the Scanner and in the widget right away, without restarting the app.\n- Alike gets to that figure faster after a restart: file sizes it has already measured are remembered on your device.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "promotional_text": "Alike now shows what you can clear on the Lock Screen too — a line, a card or a ring. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
+        "release_notes": "Alike's widget now lives on the Lock Screen as well.\n\n- A single line above the clock: how much you can clear, or how far through a review you are.\n- A rectangular card carrying the same figure and the next step — Review, or Continue.\n- A circular ring drawing the share of the library you can clear, or the share of the review already done.\n- Add them from the Lock Screen's own Customize. Same widget, same numbers as on the home screen.\n- Free, exactly like the home screen widgets.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Знайти й прибрати схожі фото",
         "description": UK_DESCRIPTION,
         # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
-        "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,видалити",
-        "promotional_text": "Alike групує схожі фотографії, обирає найкращий знімок і допомагає прибрати решту — усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
-        "release_notes": "Виправлення для найважливішого числа: скільки місця ви справді можете звільнити.\n\n- «Можна звільнити» тепер рахує кожне фото один раз і ніколи не враховує знімок, який Alike залишає з групи.\n- Число спирається на реальний розмір кожного файлу, тож збігається з тим, що ви справді звільняєте.\n- Зміна найкращого знімка в групі одразу оновлює число на Сканері й у віджеті — без перезапуску застосунку.\n- Після перезапуску Alike показує це число швидше: вже виміряні розміри файлів зберігаються на вашому пристрої.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,екран блокування",
+        "promotional_text": "Alike тепер показує, скільки можна звільнити, і на замкненому екрані — рядком, карткою або кільцем. Усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на рік.",
+        "release_notes": "Віджет Alike тепер живе й на замкненому екрані.\n\n- Один рядок над годинником: скільки можна звільнити або наскільки просунувся перегляд.\n- Прямокутна картка з тим самим числом і наступною дією — «Переглянути» або «Продовжити».\n- Кільце, що малює частку медіатеки, яку можна звільнити, або частку вже переглянутого.\n- Додаються з «Налаштування» на самому замкненому екрані. Той самий віджет і ті самі числа, що й на домашньому.\n- Безкоштовні — так само, як віджети на домашньому екрані.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Keywords below are researched per market rather than translated. Each set
     # skips whatever the localized subtitle already indexes — "ähnliche Fotos",
@@ -983,37 +983,37 @@ METADATA = {
     "de-DE": {
         "subtitle": "Ähnliche Fotos aufräumen",
         "description": DE_DE_DESCRIPTION,
-        "keywords": "doppelte,duplikate,bilder,speicherplatz,galerie,bildschirmfoto,unscharf,löschen,kamera",
-        "promotional_text": "Alike gruppiert ähnliche Fotos, wählt die beste Aufnahme und hilft dir, den Rest aufzuräumen — alles auf deinem iPhone. Alike Pro: 7 Tage gratis im Jahresplan.",
-        "release_notes": "Eine Korrektur für die wichtigste Zahl: wie viel Speicher du tatsächlich zurückbekommst.\n\n- „Freigebbar“ zählt jedes Foto jetzt nur einmal und nie die Aufnahme, die Alike aus einer Gruppe behält.\n- Die Zahl beruht auf der echten Größe jeder Datei und passt so zu dem, was du wirklich freigibst.\n- Wählst du in einer Gruppe eine andere beste Aufnahme, aktualisiert sich die Zahl im Tab „Scan“ und im Widget sofort, ohne Neustart der App.\n- Nach einem Neustart zeigt Alike die Zahl schneller: Bereits gemessene Dateigrößen bleiben auf deinem Gerät gespeichert.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "keywords": "doppelte,duplikate,bilder,speicherplatz,galerie,bildschirmfoto,unscharf,löschen,sperrbildschirm",
+        "promotional_text": "Alike zeigt den freigebbaren Speicher jetzt auch auf dem Sperrbildschirm — als Zeile, Karte oder Ring. Alles auf deinem iPhone. Alike Pro: 7 Tage gratis im Jahresplan.",
+        "release_notes": "Das Alike-Widget gibt es jetzt auch für den Sperrbildschirm.\n\n- Eine einzelne Zeile über der Uhr: wie viel du freigeben kannst oder wie weit du mit dem Prüfen bist.\n- Eine rechteckige Karte mit derselben Zahl und dem nächsten Schritt — „Ansehen“ oder „Fortsetzen“.\n- Ein Ring, der den Anteil der Mediathek zeigt, den du freigeben kannst, oder den bereits geprüften Anteil.\n- Hinzufügen über „Anpassen“ auf dem Sperrbildschirm selbst. Dasselbe Widget, dieselben Zahlen wie auf dem Home-Bildschirm.\n- Kostenlos, genau wie die Widgets für den Home-Bildschirm.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Nettoyer les photos similaires",
         "description": FR_FR_DESCRIPTION,
-        "keywords": "doublons,double,images,stockage,espace,galerie,capture,flou,supprimer,pellicule,ranger",
-        "promotional_text": "Alike regroupe les photos qui se ressemblent, choisit la meilleure et vous aide à nettoyer le reste, sur votre iPhone. Alike Pro : 7 jours offerts en formule annuelle.",
-        "release_notes": "Une correction pour le chiffre qui compte le plus : l'espace que vous pouvez vraiment récupérer.\n\n- « Récupérable » compte désormais chaque photo une seule fois, et jamais celle qu'Alike garde dans un groupe.\n- Le chiffre repose sur la taille réelle de chaque fichier et correspond donc à ce que vous libérez vraiment.\n- Changer la meilleure photo d'un groupe met à jour le chiffre dans Analyse et dans le widget aussitôt, sans relancer l'app.\n- Après un redémarrage, Alike affiche ce chiffre plus vite : les tailles de fichiers déjà mesurées sont conservées sur votre appareil.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "keywords": "doublons,double,images,stockage,espace,galerie,capture,flou,supprimer,écran verrouillé",
+        "promotional_text": "Alike affiche l'espace récupérable sur l'écran verrouillé aussi : ligne, carte ou anneau. Tout sur votre iPhone. Alike Pro : 7 jours offerts en formule annuelle.",
+        "release_notes": "Le widget Alike s'installe maintenant aussi sur l'écran verrouillé.\n\n- Une seule ligne au-dessus de l'heure : l'espace récupérable, ou l'avancement de votre examen.\n- Une carte rectangulaire avec le même chiffre et l'action suivante — « Trier » ou « Reprendre ».\n- Un anneau qui dessine la part de la photothèque récupérable, ou la part déjà examinée.\n- Ajoutez-les depuis « Personnaliser », sur l'écran verrouillé lui-même. Même widget, mêmes chiffres que sur l'écran d'accueil.\n- Gratuits, exactement comme les widgets de l'écran d'accueil.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
         "subtitle": "Encuentra y limpia duplicados",
         "description": ES_ES_DESCRIPTION,
-        "keywords": "fotos,repetidas,similares,almacenamiento,espacio,galería,captura,borrosas,borrar,carrete",
-        "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Una corrección para la cifra que más importa: cuánto espacio puedes recuperar de verdad.\n\n- «Recuperable» ahora cuenta cada foto una sola vez y nunca la toma que Alike conserva de un grupo.\n- La cifra usa el tamaño real de cada archivo, así que coincide con lo que de verdad liberas.\n- Cambiar la mejor toma de un grupo actualiza la cifra en Análisis y en el widget al momento, sin reiniciar la app.\n- Tras un reinicio, Alike muestra esa cifra antes: los tamaños de archivo ya medidos se guardan en tu dispositivo.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "keywords": "fotos,repetidas,similares,almacenamiento,espacio,galería,captura,borrosas,pantalla bloqueo",
+        "promotional_text": "Alike ya muestra el espacio recuperable en la pantalla de bloqueo: una línea, una tarjeta o un anillo. Todo en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
+        "release_notes": "El widget de Alike ya se puede poner también en la pantalla de bloqueo.\n\n- Una sola línea sobre la hora: cuánto puedes liberar, o por dónde va tu revisión.\n- Una tarjeta rectangular con la misma cifra y el siguiente paso: «Revisar» o «Continuar».\n- Un anillo que dibuja la parte de la fototeca que puedes liberar, o la parte ya revisada.\n- Se añaden desde «Personalizar», en la propia pantalla de bloqueo. El mismo widget y las mismas cifras que en la pantalla de inicio.\n- Gratis, igual que los widgets de la pantalla de inicio.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Encuentra y limpia duplicados",
         "description": ES_MX_DESCRIPTION,
-        "keywords": "fotos,iguales,liberar espacio,almacenamiento,celular,galería,capturas,borrosas,eliminar",
-        "promotional_text": "Alike agrupa las fotos que se parecen, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Una corrección para la cifra que más importa: cuánto espacio puedes recuperar de verdad.\n\n- «Recuperable» ahora cuenta cada foto una sola vez y nunca la toma que Alike conserva de un grupo.\n- La cifra usa el tamaño real de cada archivo, así que coincide con lo que de verdad liberas.\n- Cambiar la mejor toma de un grupo actualiza la cifra en Análisis y en el widget al instante, sin reiniciar la app.\n- Después de reiniciar, Alike muestra esa cifra más rápido: los tamaños de archivo ya medidos se guardan en tu dispositivo.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "keywords": "fotos,iguales,liberar espacio,almacenamiento,galería,capturas,borrosas,pantalla bloqueada",
+        "promotional_text": "Alike ya muestra el espacio recuperable en la pantalla bloqueada: una línea, una tarjeta o un anillo. Todo en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
+        "release_notes": "El widget de Alike ya se puede poner también en la pantalla bloqueada.\n\n- Una sola línea sobre la hora: cuánto puedes liberar, o por dónde va tu revisión.\n- Una tarjeta rectangular con la misma cifra y el siguiente paso: «Revisar» o «Continuar».\n- Un anillo que dibuja la parte de la fototeca que puedes liberar, o la parte ya revisada.\n- Se agregan desde «Personalizar», en la propia pantalla bloqueada. El mismo widget y las mismas cifras que en la pantalla de inicio.\n- Gratis, igual que los widgets de la pantalla de inicio.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Encontre e limpe duplicadas",
         "description": PT_BR_DESCRIPTION,
-        "keywords": "fotos,repetidas,iguais,armazenamento,liberar espaço,galeria,captura,desfocadas,apagar",
-        "promotional_text": "O Alike agrupa as fotos parecidas, escolhe a melhor de cada grupo e ajuda você a limpar o resto, no seu iPhone. Alike Pro: 7 dias grátis no plano anual.",
-        "release_notes": "Uma correção para o número que mais importa: quanto espaço você realmente consegue recuperar.\n\n- «Recuperável» agora conta cada foto uma única vez, e nunca a foto que o Alike mantém de um grupo.\n- O número usa o tamanho real de cada arquivo, então bate com o que você realmente libera.\n- Trocar a melhor foto de um grupo atualiza o número na aba Análise e no widget na hora, sem reiniciar o app.\n- Depois de reiniciar, o Alike mostra esse número mais rápido: os tamanhos de arquivo já medidos ficam guardados no seu dispositivo.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "keywords": "fotos,repetidas,iguais,armazenamento,liberar espaço,galeria,captura,apagar,tela bloqueada",
+        "promotional_text": "O Alike já mostra o espaço recuperável na tela bloqueada: uma linha, um cartão ou um anel. Tudo no seu iPhone. Alike Pro: 7 dias grátis no plano anual.",
+        "release_notes": "O widget do Alike agora também fica na tela bloqueada.\n\n- Uma única linha acima do relógio: quanto você pode liberar, ou até onde foi a sua revisão.\n- Um cartão retangular com o mesmo número e o próximo passo — «Revisar» ou «Continuar».\n- Um anel que desenha a parte da fototeca que dá para liberar, ou a parte já revisada.\n- Adicione pelo «Personalizar» da própria tela bloqueada. O mesmo widget e os mesmos números da tela de início.\n- Gratuitos, assim como os widgets da tela de início.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
     # Tier 3 keywords follow the same market-research rule as Tier 1: they skip
     # whatever the localized subtitle already indexes — "doppioni", "dubbels",
@@ -1031,46 +1031,46 @@ METADATA = {
     "it": {
         "subtitle": "Trova e pulisci i doppioni",
         "description": IT_DESCRIPTION,
-        "keywords": "foto,simili,duplicate,spazio,archiviazione,galleria,screenshot,sfocate,eliminare,rullino",
-        "promotional_text": "Alike raggruppa le foto simili, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto, sul tuo iPhone. Alike Pro: 7 giorni gratis sul piano annuale.",
-        "release_notes": "Una correzione per il numero che conta di più: quanto spazio puoi davvero recuperare.\n\n- «Recuperabile» ora conta ogni foto una sola volta, e mai lo scatto che Alike tiene di un gruppo.\n- Il numero usa la dimensione reale di ogni file, quindi corrisponde a ciò che liberi davvero.\n- Cambiare lo scatto migliore di un gruppo aggiorna subito il numero nello Scanner e nel widget, senza riavviare l'app.\n- Dopo un riavvio Alike mostra quel numero più in fretta: le dimensioni dei file già misurate restano sul tuo dispositivo.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "keywords": "foto,simili,duplicate,spazio,archiviazione,galleria,screenshot,sfocate,schermata blocco",
+        "promotional_text": "Alike mostra lo spazio recuperabile anche nella schermata di blocco: riga, scheda o anello. Tutto sul tuo iPhone. Alike Pro: 7 giorni gratis nel piano annuale.",
+        "release_notes": "Il widget di Alike ora sta anche nella schermata di blocco.\n\n- Una sola riga sopra l'orologio: quanto puoi liberare, o a che punto sei con la revisione.\n- Una scheda rettangolare con lo stesso numero e il passo successivo — «Rivedi» o «Continua».\n- Un anello che disegna la parte di libreria che puoi liberare, o la parte già rivista.\n- Si aggiungono da «Personalizza», nella schermata di blocco stessa. Stesso widget e stessi numeri della schermata home.\n- Gratuiti, esattamente come i widget della schermata home.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Vind en ruim dubbels op",
         "description": NL_NL_DESCRIPTION,
-        "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,verwijderen,album",
-        "promotional_text": "Alike groepeert de foto's die op elkaar lijken, kiest de beste opname van elke groep en helpt je de rest op te ruimen. Alike Pro: 7 dagen gratis op het jaarplan.",
-        "release_notes": "Een correctie voor het getal dat er het meest toe doet: hoeveel ruimte je echt terugkrijgt.\n\n- 'Vrij te maken' telt elke foto nu één keer, en nooit de opname die Alike uit een groep bewaart.\n- Het getal gebruikt de echte grootte van elk bestand, dus het klopt met wat je echt vrijmaakt.\n- Kies je een andere beste opname in een groep, dan werkt het getal in de Scanner en in de widget meteen bij, zonder de app opnieuw te starten.\n- Na een herstart toont Alike dat getal sneller: bestandsgrootten die al zijn gemeten, worden op je apparaat onthouden.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,album,toegangsscherm",
+        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, een kaart of een ring. Alles op je iPhone. Alike Pro: 7 dagen gratis per jaar.",
+        "release_notes": "De widget van Alike staat nu ook op je toegangsscherm.\n\n- Eén regel boven de klok: hoeveel je kunt vrijmaken, of hoe ver je met een controle bent.\n- Een rechthoekige kaart met hetzelfde getal en de volgende stap — 'Bekijken' of 'Verder'.\n- Een ring die het deel van je bibliotheek tekent dat je kunt vrijmaken, of het deel dat je al bekeken hebt.\n- Voeg ze toe via 'Pas aan' op het toegangsscherm zelf. Dezelfde widget, dezelfde getallen als op je beginscherm.\n- Gratis, net als de widgets op je beginscherm.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Znajdź i usuń podobne zdjęcia",
         "description": PL_DESCRIPTION,
-        "keywords": "duplikaty,kopie,porządki,pamięć,miejsce,galeria,zrzut ekranu,rozmyte,usuwanie,album",
-        "promotional_text": "Alike grupuje podobnie wyglądające zdjęcia, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę. Alike Pro: 7 dni za darmo w planie rocznym.",
-        "release_notes": "Poprawka liczby, która liczy się najbardziej: ile miejsca naprawdę możesz odzyskać.\n\n- „Do odzyskania” liczy teraz każde zdjęcie tylko raz i nigdy nie wlicza ujęcia, które Alike zostawia z grupy.\n- Liczba opiera się na rzeczywistym rozmiarze każdego pliku, więc zgadza się z tym, co naprawdę zwalniasz.\n- Zmiana najlepszego ujęcia w grupie od razu aktualizuje liczbę w Skanerze i w widgecie, bez ponownego uruchamiania aplikacji.\n- Po ponownym uruchomieniu Alike pokazuje tę liczbę szybciej: zmierzone już rozmiary plików są zapamiętywane na Twoim urządzeniu.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "keywords": "duplikaty,kopie,porządki,pamięć,miejsce,galeria,zrzut ekranu,rozmyte,ekran blokady",
+        "promotional_text": "Alike pokazuje odzyskiwalne miejsce także na ekranie blokady: wiersz, karta albo pierścień. Wszystko na Twoim iPhonie. Alike Pro: 7 dni gratis w planie rocznym.",
+        "release_notes": "Widget Alike trafia teraz także na ekran blokady.\n\n- Jeden wiersz nad zegarem: ile możesz odzyskać albo jak daleko jesteś w przeglądzie.\n- Prostokątna karta z tą samą liczbą i następnym krokiem — „Przejrzyj” lub „Kontynuuj”.\n- Pierścień rysujący część biblioteki, którą możesz odzyskać, albo część już przejrzaną.\n- Dodasz je z „Dostosuj” na samym ekranie blokady. Ten sam widget i te same liczby co na ekranie początkowym.\n- Bezpłatne, dokładnie tak jak widgety na ekranie początkowym.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Benzer fotoğrafları temizle",
         "description": TR_DESCRIPTION,
-        "keywords": "kopya,yinelenen,depolama,alan,galeri,ekran görüntüsü,bulanık,silme,albüm,yer açma",
-        "promotional_text": "Alike benzeyen fotoğrafları gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder. Alike Pro: yıllık planda 7 gün ücretsiz.",
-        "release_notes": "En önemli sayı için bir düzeltme: gerçekte ne kadar alan geri kazanabileceğin.\n\n- \"Geri Kazanılabilir\" artık her fotoğrafı yalnızca bir kez sayıyor ve Alike'ın bir gruptan sakladığı kareyi hiç saymıyor.\n- Sayı her dosyanın gerçek boyutunu kullanıyor; böylece gerçekten boşalttığın alanla örtüşüyor.\n- Bir grupta en iyi kareyi değiştirdiğinde sayı, Tarayıcı'da ve widget'ta uygulamayı yeniden başlatmadan hemen güncelleniyor.\n- Yeniden başlatmanın ardından Alike bu sayıyı daha hızlı gösteriyor: daha önce ölçülen dosya boyutları cihazında hatırlanıyor.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "keywords": "kopya,yinelenen,depolama,alan,galeri,ekran görüntüsü,bulanık,silme,albüm,kilit ekranı",
+        "promotional_text": "Alike kazanılabilir alanı artık kilitli ekranda da gösteriyor: satır, kart veya halka. Her şey iPhone'unda. Alike Pro: yıllık planda 7 gün ücretsiz.",
+        "release_notes": "Alike'ın widget'ı artık kilitli ekranda da duruyor.\n\n- Saatin üstünde tek bir satır: ne kadar yer açabileceğin ya da gözden geçirmenin ne kadarını bitirdiğin.\n- Aynı sayıyı ve sıradaki adımı taşıyan dikdörtgen bir kart — \"İncele\" ya da \"Devam et\".\n- Kitaplığının açabileceğin kısmını ya da gözden geçirdiğin kısmını çizen bir halka.\n- Kilitli ekranın kendi \"Özelleştir\" ekranından eklenir. Ana ekrandakiyle aynı widget, aynı sayılar.\n- Ücretsiz, tıpkı ana ekran widget'ları gibi.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
         "subtitle": "找出相似與重複相片，一鍵清出空間",
         "description": ZH_HANT_DESCRIPTION,
-        "keywords": "重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理,記憶體,瘦身,掃描,批次,手機,離線,隱私,一模一樣,圖片,檔案,免費,智慧,清空,選片",
-        "promotional_text": "Alike 會把看起來相像的照片分成一組組，挑出每一組的最佳照片，並幫你清理其餘的，全程在 iPhone 上完成。Alike Pro：年繳方案 7 天免費。",
-        "release_notes": "這次修正的是最重要的那個數字：你實際能釋出多少空間。\n\n- 「可回收空間」現在每張照片只計算一次，而且絕不計入 Alike 從群組中保留的那張照片。\n- 數字依據每個檔案的實際大小，所以會與你真正釋出的空間相符。\n- 在群組中更換最佳照片後，「掃描」與小工具上的數字會立即更新，不必重新啟動 App。\n- 重新啟動後，Alike 會更快顯示這個數字：已經量過的檔案大小會保存在你的裝置上。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "keywords": "重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理,記憶體,瘦身,掃描,批次,手機,離線,隱私,圖片,檔案,免費,鎖定畫面",
+        "promotional_text": "Alike 現在也在鎖定畫面顯示可以釋出的空間——單行、卡片或圓環。全程在你的 iPhone 上。Alike Pro：年繳方案 7 天免費。",
+        "release_notes": "Alike 的小工具現在也能放在鎖定畫面上。\n\n- 時鐘上方的一行字：可以釋出多少空間，或是檢視進行到哪裡。\n- 一張長方形卡片，帶著同樣的數字與下一步——「檢視」或「繼續」。\n- 一個圓環，畫出圖庫中可以釋出的比例，或是已經檢視完的比例。\n- 從鎖定畫面本身的「自訂」加入。與主畫面上的是同一個小工具、同樣的數字。\n- 免費，和主畫面小工具一樣。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
         "subtitle": "اعثر على الصور المتشابهة",
         "description": AR_DESCRIPTION,
         # Same rule as every other locale: the name and subtitle already carry
         # "صور" and "متشابهة", so the keyword field spends its characters elsewhere.
-        "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,تفريغ,أرشيف",
-        "promotional_text": "يجمّع Alike الصور المتشابهة، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي. كل ذلك على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
-        "release_notes": "إصلاح للرقم الأهم: مقدار المساحة التي يمكنك استعادتها فعلًا.\n\n- «قابل للاسترجاع» يحسب الآن كل صورة مرة واحدة فقط، ولا يحسب أبدًا اللقطة التي يحتفظ بها Alike من المجموعة.\n- يعتمد الرقم على الحجم الحقيقي لكل ملف، فيطابق ما تحرّره فعلًا.\n- تغيير أفضل لقطة في مجموعة يحدّث الرقم في «الفحص» وفي العنصر فورًا، دون إعادة تشغيل التطبيق.\n- بعد إعادة التشغيل يعرض Alike هذا الرقم أسرع: أحجام الملفات التي قيست من قبل تُحفظ على جهازك.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,شاشة القفل",
+        "promotional_text": "يعرض Alike الآن المساحة القابلة للاسترجاع على شاشة القفل أيضًا: سطر أو بطاقة أو حلقة. كل شيء على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
+        "release_notes": "أصبح عنصر Alike متاحًا على شاشة القفل أيضًا.\n\n- سطر واحد فوق الساعة: كم يمكنك تفريغه، أو إلى أين وصلت في المراجعة.\n- بطاقة مستطيلة تحمل الرقم نفسه والخطوة التالية — «مراجعة» أو «متابعة».\n- حلقة ترسم نسبة المكتبة التي يمكنك تفريغها، أو نسبة ما راجعته بالفعل.\n- تُضاف من «تخصيص» في شاشة القفل نفسها. العنصر نفسه والأرقام نفسها كما على الشاشة الرئيسية.\n- مجانية تمامًا كعناصر الشاشة الرئيسية.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
