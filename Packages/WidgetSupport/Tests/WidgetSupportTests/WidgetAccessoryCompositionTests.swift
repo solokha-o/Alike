@@ -177,7 +177,7 @@ struct WidgetAccessoryCompositionTests {
         #expect(review.rest == WidgetL10n.Status.ofTotal(30))
     }
 
-    @Test("rectangular dates only a stale estimate and «all caught up»")
+    @Test("rectangular dates every historical estimate, and «all caught up»")
     func rectangularDates() throws {
         let stamp = WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)
         let stale = composition(.hasSuggestions(bytes: Self.bytes, clusterCount: 24, scannedAt: Self.scannedAt, isStale: true), .accessoryRectangular)
@@ -188,8 +188,41 @@ struct WidgetAccessoryCompositionTests {
         #expect(try #require(caughtUp.footnote).contains(stamp))
 
         #expect(composition(.hasSuggestions(bytes: Self.bytes, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false), .accessoryRectangular).footnote == nil)
-        #expect(composition(.libraryChanged(bytes: Self.bytes, scannedAt: Self.scannedAt), .accessoryRectangular).footnote == nil)
         #expect(composition(.resumeReview(progress: Self.progress, isStale: true), .accessoryRectangular).footnote == nil)
+    }
+
+    /// A library change cannot make an estimate younger. The rectangular slot keeps
+    /// the date it already showed while the suggestions were stale, so the figure
+    /// never returns to looking like a fresh count — `.libraryChanged` carries no
+    /// `isStale` flag, so nothing later would put the date back.
+    @Test("stale suggestions keep their date once the library changes")
+    func rectangularKeepsDateAcrossLibraryChange() throws {
+        let stamp = WidgetFormatting.timestamp(Self.scannedAt, timeStyle: .omitted)
+        let stale = composition(
+            .hasSuggestions(bytes: Self.bytes, clusterCount: 24, scannedAt: Self.scannedAt, isStale: true),
+            .accessoryRectangular
+        )
+        let changed = composition(
+            .libraryChanged(bytes: Self.bytes, scannedAt: Self.scannedAt),
+            .accessoryRectangular
+        )
+
+        #expect(try #require(changed.footnote).contains(stamp))
+        #expect(changed.footnote == stale.footnote)
+        #expect(changed.accessibilityLabel.contains(stamp))
+
+        let fresh = composition(
+            .hasSuggestions(bytes: Self.bytes, clusterCount: 24, scannedAt: Self.scannedAt, isStale: false),
+            .accessoryRectangular
+        )
+        #expect(changed.accessibilityLabel != fresh.accessibilityLabel)
+    }
+
+    /// The date belongs to the one shape with a line for it: the ring and the inline
+    /// slot have no room, and the state still reads as an estimate there.
+    @Test("a changed library dates only the rectangular slot", arguments: [WidgetLayoutFamily.accessoryCircular, .accessoryInline])
+    func libraryChangedDatesOnlyRectangular(family: WidgetLayoutFamily) {
+        #expect(composition(.libraryChanged(bytes: Self.bytes, scannedAt: Self.scannedAt), family).footnote == nil)
     }
 
     @Test("rectangular shows «all caught up» on screen, dated or not", arguments: [scannedAt, nil] as [Date?])
