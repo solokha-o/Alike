@@ -145,6 +145,21 @@ final class CrashReportStoreTests: XCTestCase {
         XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
     }
 
+    /// A MetricKit batch arrives under one timestamp, so rotation has nothing but the
+    /// recorded order to go on — and must drop the first of them, not an arbitrary one.
+    func testAdoptingAPayloadDoesNotReorderABatchThatShareTheSameTimestamp() async throws {
+        let store = CrashReportStore(directoryURL: directoryURL, maxReports: 3)
+        let batch = (1...3).map { CrashPayloadFixture.data(build: "\($0)") }
+        await store.ingest(batch, receivedAt: Date(timeIntervalSince1970: 10))
+        try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 20))
+
+        let touched = try await XCTUnwrapAsync(await store.reports().last)
+        await store.setPromptState(.declined, for: touched.id)
+
+        let reports = await store.reports()
+        XCTAssertEqual(reports.map(\.appBuild), ["2", "3", "orphan"])
+    }
+
     func testDefaultLimitKeepsTwentyReports() async {
         let payloads = (1...21).map { CrashPayloadFixture.data(build: "\($0)") }
 
@@ -156,15 +171,69 @@ final class CrashReportStoreTests: XCTestCase {
         XCTAssertEqual(payloadFileNames().count, 20)
     }
 
-    func testOrphanedPayloadFileIsSweptOnTheNextWrite() async throws {
+    // MARK: - Interrupted writes
+
+    /// What an `ingest` killed between the payload write and the index write leaves
+    /// behind: the only copy of a crash report, on disk and unlisted.
+    @discardableResult
+    private func writeUnlistedPayload(receivedAt: Date) throws -> UUID {
+        let id = UUID()
+        let url = payloadsURL.appendingPathComponent("\(id.uuidString).json")
+        try FileManager.default.createDirectory(at: payloadsURL, withIntermediateDirectories: true)
+        try CrashPayloadFixture.data(build: "orphan").write(to: url)
+        try FileManager.default.setAttributes([.modificationDate: receivedAt], ofItemAtPath: url.path)
+        return id
+    }
+
+    func testPayloadLeftUnlistedByAnInterruptedIngestIsStillRead() async throws {
+        let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
+
+        let reports = await store.reports()
+
+        XCTAssertEqual(reports.map(\.id), [id])
+        XCTAssertEqual(reports.map(\.appBuild), ["orphan"])
+        XCTAssertEqual(reports.map(\.promptState), [.prompted])
+    }
+
+    func testPayloadLeftUnlistedByAnInterruptedIngestIsAdoptedByTheNextWrite() async throws {
+        await store.ingest([CrashPayloadFixture.data(build: "1")], receivedAt: Date(timeIntervalSince1970: 10))
+        let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
+
+        await store.ingest([CrashPayloadFixture.data(build: "2")], receivedAt: Date(timeIntervalSince1970: 20))
+
+        let reports = await store.reports()
+        XCTAssertEqual(reports.map(\.appBuild), ["1", "orphan", "2"])
+        XCTAssertTrue(reports.map(\.id).contains(id))
+        XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
+    }
+
+    /// An adopted payload takes part in rotation like any other: it goes when it is the
+    /// oldest, not because it was unlisted.
+    func testAnAdoptedPayloadIsRotatedOutOnlyWhenItIsTheOldest() async throws {
+        let store = CrashReportStore(directoryURL: directoryURL, maxReports: 2)
+        await store.ingest([CrashPayloadFixture.data(build: "1")], receivedAt: Date(timeIntervalSince1970: 10))
+        let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
+
+        await store.ingest([CrashPayloadFixture.data(build: "3")], receivedAt: Date(timeIntervalSince1970: 30))
+
+        let reports = await store.reports()
+        XCTAssertEqual(reports.map(\.appBuild), ["orphan", "3"])
+        XCTAssertTrue(reports.map(\.id).contains(id))
+        XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
+    }
+
+    /// A file this store never wrote is not its business either way: it is left alone
+    /// rather than deleted, because the sweep now only removes what rotation dropped.
+    func testAFileThatIsNotAPayloadIsLeftAlone() async throws {
+        try FileManager.default.createDirectory(at: payloadsURL, withIntermediateDirectories: true)
+        let stray = payloadsURL.appendingPathComponent("not-a-uuid.json")
+        try Data("{}".utf8).write(to: stray)
+
         await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 10))
-        let orphan = payloadsURL.appendingPathComponent("\(UUID().uuidString).json")
-        try Data("{}".utf8).write(to: orphan)
 
-        await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 20))
-
-        XCTAssertFalse(FileManager.default.fileExists(atPath: orphan.path))
-        XCTAssertEqual(payloadFileNames().count, 2)
+        let reports = await store.reports()
+        XCTAssertTrue(FileManager.default.fileExists(atPath: stray.path))
+        XCTAssertEqual(reports.count, 1)
     }
 
     // MARK: - Persisted shape

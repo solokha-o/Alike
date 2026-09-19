@@ -65,13 +65,14 @@ public actor CrashReportStore {
 
     // MARK: - Reading
 
-    /// Oldest first. Empty for a missing index and for one written by a newer schema;
-    /// a corrupt index is rebuilt from the payload files instead of being discarded.
+    /// Oldest first. Empty for an index written by a newer schema; a missing or corrupt
+    /// index is rebuilt from the payload files rather than read as "no reports", so a
+    /// payload that outlived its index entry is still visible.
     public func reports() -> [CrashReport] {
         switch loadIndex() {
         case .loaded(let index): index.reports
-        case .corrupt: rebuiltReports()
-        case .missing, .newerSchema: []
+        case .missing, .corrupt: rebuiltReports()
+        case .newerSchema: []
         }
     }
 
@@ -155,9 +156,8 @@ public actor CrashReportStore {
     /// cannot read, so it leaves the directory alone.
     private func reportsForWriting() -> [CrashReport]? {
         switch loadIndex() {
-        case .missing: []
         case .loaded(let index): index.reports
-        case .corrupt: rebuiltReports()
+        case .missing, .corrupt: rebuiltReports()
         case .newerSchema: nil
         }
     }
@@ -166,32 +166,75 @@ public actor CrashReportStore {
     /// records are `prompted`: whether the user was already asked is unknown, and
     /// asking twice is the worse mistake.
     private func rebuiltReports() -> [CrashReport] {
-        payloadFiles()
-            .compactMap { url -> CrashReport? in
-                guard let id = UUID(uuidString: url.deletingPathExtension().lastPathComponent) else {
-                    return nil
-                }
-                let modified = try? url.resourceValues(forKeys: [.contentModificationDateKey])
-                    .contentModificationDate
-                let metadata = (try? Data(contentsOf: url)).map(CrashPayloadMetadata.init(payload:))
-                return CrashReport(
-                    id: id,
-                    receivedAt: modified ?? .distantPast,
-                    appVersion: metadata?.appVersion,
-                    appBuild: metadata?.appBuild,
-                    osVersion: metadata?.osVersion,
-                    deviceModel: metadata?.deviceModel,
-                    promptState: .prompted
-                )
-            }
-            .sorted { ($0.receivedAt, $0.id.uuidString) < ($1.receivedAt, $1.id.uuidString) }
+        Self.sorted(payloadFiles().compactMap(recoveredReport(fromPayloadAt:)))
     }
 
-    /// Trims to the newest `maxReports`, writes the index, then deletes every payload
-    /// file the index no longer names. Rotation only ever removes files this store
-    /// wrote, and only after the index that drops them is safely on disk.
+    /// Records for payload files the index does not name.
+    ///
+    /// `ingest` writes the payload first and the index second, so a kill or a failed
+    /// index write leaves the only copy of a report on disk and unlisted. Adopting it
+    /// is what keeps it: the alternative is deleting the one thing MetricKit will
+    /// never hand over again.
+    private func adoptedOrphans(notIn known: Set<UUID>) -> [CrashReport] {
+        payloadFiles().compactMap { url in
+            guard
+                let id = UUID(uuidString: url.deletingPathExtension().lastPathComponent),
+                !known.contains(id)
+            else { return nil }
+            return recoveredReport(fromPayloadAt: url)
+        }
+    }
+
+    private func recoveredReport(fromPayloadAt url: URL) -> CrashReport? {
+        guard let id = UUID(uuidString: url.deletingPathExtension().lastPathComponent) else {
+            return nil
+        }
+        let modified = try? url.resourceValues(forKeys: [.contentModificationDateKey])
+            .contentModificationDate
+        let metadata = (try? Data(contentsOf: url)).map(CrashPayloadMetadata.init(payload:))
+        return CrashReport(
+            id: id,
+            receivedAt: modified ?? .distantPast,
+            appVersion: metadata?.appVersion,
+            appBuild: metadata?.appBuild,
+            osVersion: metadata?.osVersion,
+            deviceModel: metadata?.deviceModel,
+            promptState: .prompted
+        )
+    }
+
+    /// Slots each orphan into the existing order rather than re-sorting around it.
+    ///
+    /// MetricKit hands over a whole batch under one `receivedAt`, so sorting the list
+    /// would order those by their random UUIDs and let rotation drop an arbitrary one
+    /// of them. The recorded order is the arrival order and stays as it is.
+    private static func merged(_ reports: [CrashReport], with orphans: [CrashReport]) -> [CrashReport] {
+        guard !orphans.isEmpty else { return reports }
+        var merged = reports
+        for orphan in sorted(orphans) {
+            let position = merged.firstIndex { !isOlder($0, than: orphan) } ?? merged.count
+            merged.insert(orphan, at: position)
+        }
+        return merged
+    }
+
+    private static func sorted(_ reports: [CrashReport]) -> [CrashReport] {
+        reports.sorted { isOlder($0, than: $1) }
+    }
+
+    private static func isOlder(_ report: CrashReport, than other: CrashReport) -> Bool {
+        (report.receivedAt, report.id.uuidString) < (other.receivedAt, other.id.uuidString)
+    }
+
+    /// Adopts any payload file the index does not name, trims to the newest
+    /// `maxReports`, writes the index, then deletes the files rotation just dropped.
+    ///
+    /// Deleting by the dropped list rather than by "not in the index" is the point: a
+    /// payload written while the index write was interrupted is taken in instead of
+    /// being swept away, and a file this store never accounted for is left alone.
     private func save(_ reports: [CrashReport]) {
-        let kept = Array(reports.suffix(maxReports))
+        let known = Self.merged(reports, with: adoptedOrphans(notIn: Set(reports.map(\.id))))
+        let kept = Array(known.suffix(maxReports))
         do {
             let data = try Self.encoder.encode(CrashReportIndex(reports: kept))
             try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
@@ -200,12 +243,12 @@ public actor CrashReportStore {
             AppLog.diagnostics.error("\(AppLog.tag(.error, "Crash report index not written: \(error)"))")
             return
         }
-        let keptIDs = Set(kept.map(\.id))
+        let dropped = Set(known.map(\.id)).subtracting(kept.map(\.id))
         for url in payloadFiles() {
-            let id = UUID(uuidString: url.deletingPathExtension().lastPathComponent)
-            if id.map(keptIDs.contains) != true {
-                try? fileManager.removeItem(at: url)
-            }
+            guard let id = UUID(uuidString: url.deletingPathExtension().lastPathComponent),
+                  dropped.contains(id)
+            else { continue }
+            try? fileManager.removeItem(at: url)
         }
         notifyChange()
     }
