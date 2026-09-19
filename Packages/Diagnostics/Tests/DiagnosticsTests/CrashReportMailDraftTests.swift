@@ -62,4 +62,13 @@ final class CrashReportMailDraftTests: XCTestCase {
         XCTAssertEqual(draft.attachments.map(\.fileURL), urls)
         XCTAssertEqual(draft.attachments.map(\.fileName), ["alike-crash-1.json", "alike-crash-2.json"])
     }
+
+    /// `ShareLink` has no recipient field, so the only place the address can travel is
+    /// the message text — without it the fallback hands the user a report and no address.
+    func testShareBodyCarriesTheRecipientAndTheMailBody() {
+        let draft = draft([CrashReport(receivedAt: Date(timeIntervalSince1970: 10))])
+
+        XCTAssertTrue(draft.shareBody.contains(CrashReportSupport.email))
+        XCTAssertTrue(draft.shareBody.hasSuffix(draft.body))
+    }
 }

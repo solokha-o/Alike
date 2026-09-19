@@ -60,6 +60,15 @@ public struct CrashReportMailDraft: Equatable, Sendable {
         }
     }
 
+    /// The message for the share sheet, which has no recipient field.
+    ///
+    /// `ShareLink` carries the files, the subject and this text and drops `recipient`,
+    /// so without the address in here a Gmail user is handed a finished report and
+    /// nowhere to send it.
+    public var shareBody: String {
+        "\(DiagnosticsL10n.Mail.shareRecipient)\n\(recipient)\n\n\(body)"
+    }
+
     /// MetricKit reports `iPhone OS 18.6 (22G86)`; the subject reads `iOS 18.6`.
     static func displayOSVersion(_ raw: String) -> String {
         var version = raw

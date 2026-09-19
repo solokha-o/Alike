@@ -498,6 +498,172 @@
           }
         }
       }
+    },
+    "diagnostics.prompt.shareFallback" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошту не налаштовано, тому звіт передається через аркуш надсилання. Оберіть там поштовий застосунок і надішліть його на адресу:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ninguna cuenta de Mail configurada, así que el informe se envía por la hoja para compartir. Elige ahí una app de correo y mándalo a:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ninguna cuenta de Mail configurada, así que el informe se envía por la hoja para compartir. Elige ahí una app de correo y mándalo a:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há uma conta do Mail configurada, então o relatório passa pela folha de compartilhamento. Escolha um app de e-mail ali e envie para:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist kein Mail-Account eingerichtet, daher läuft der Bericht über das Teilen-Menü. Wähle dort eine Mail-App und sende ihn an:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun compte Mail n’est configuré : le rapport passe donc par la feuille de partage. Choisissez-y une app de messagerie et envoyez-le à :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun account Mail è configurato, quindi il report passa dal pannello di condivisione. Scegli lì un’app di posta e invialo a:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is geen Mail-account ingesteld, dus het rapport gaat via het deelvenster. Kies daar een mailapp en stuur het naar:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie skonfigurowano konta Mail, więc raport przechodzi przez arkusz udostępniania. Wybierz tam aplikację pocztową i wyślij go na adres:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mail hesabı ayarlanmadığı için rapor paylaşım sayfasından gidiyor. Orada bir e-posta uygulaması seçip şu adrese gönder:"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "裝置尚未設定「郵件」帳號，因此報告會透過分享選單傳送。請在其中選擇郵件 App，並寄到："
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يتم إعداد حساب بريد، لذا يمر التقرير عبر ورقة المشاركة. اختر تطبيق بريد هناك وأرسله إلى:"
+          }
+        }
+      }
+    },
+    "diagnostics.mail.shareRecipient" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send this crash report to:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надішліть цей звіт про збій на адресу:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía este informe de fallo a:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía este informe de fallo a:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envie este relatório de falha para:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sende diesen Absturzbericht an:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyez ce rapport de plantage à :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia questo report di arresto a:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stuur dit crashrapport naar:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij ten raport o awarii na adres:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu çökme raporunu şu adrese gönder:"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請將這份當機報告寄到："
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أرسل تقرير التعطل هذا إلى:"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -14,11 +14,15 @@ public enum DiagnosticsL10n {
         public static var send: String { DiagnosticsL10n.string("diagnostics.prompt.send") }
         /// Not Now
         public static var notNow: String { DiagnosticsL10n.string("diagnostics.prompt.notNow") }
+        /// No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:
+        public static var shareFallback: String { DiagnosticsL10n.string("diagnostics.prompt.shareFallback") }
     }
 
     public enum Mail {
         /// Alike created this crash report on my device. The attachment contains …
         public static var body: String { DiagnosticsL10n.string("diagnostics.mail.body") }
+        /// Send this crash report to:
+        public static var shareRecipient: String { DiagnosticsL10n.string("diagnostics.mail.shareRecipient") }
     }
 
     static func string(_ key: String.LocalizationValue) -> String {

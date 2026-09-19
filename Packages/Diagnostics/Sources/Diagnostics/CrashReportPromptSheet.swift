@@ -86,19 +86,37 @@ public struct CrashReportPromptSheet: View {
                     sendLabel
                 }
             } else {
-                ShareLink(
-                    items: draft.attachments.map(\.fileURL),
-                    subject: Text(draft.subject),
-                    message: Text(draft.body)
-                ) {
-                    sendLabel
+                VStack(spacing: 8) {
+                    ShareLink(
+                        items: draft.attachments.map(\.fileURL),
+                        subject: Text(draft.subject),
+                        message: Text(draft.shareBody)
+                    ) {
+                        sendLabel
+                    }
+                    .simultaneousGesture(TapGesture().onEnded { didShare = true })
+                    shareFallbackNote(recipient: draft.recipient)
                 }
-                .simultaneousGesture(TapGesture().onEnded { didShare = true })
             }
         } else {
             Button {} label: { sendLabel }
                 .disabled(true)
         }
+    }
+
+    /// The share sheet cannot address the mail for the user, so the address is on
+    /// screen to be read and copied before they pick an app.
+    private func shareFallbackNote(recipient: String) -> some View {
+        VStack(spacing: 2) {
+            Text(DiagnosticsL10n.Prompt.shareFallback)
+            Text(recipient)
+                .fontWeight(.semibold)
+                .textSelection(.enabled)
+        }
+        .font(.footnote)
+        .foregroundStyle(.secondary)
+        .multilineTextAlignment(.center)
+        .accessibilityElement(children: .combine)
     }
 
     private var sendLabel: some View {
