@@ -39,6 +39,9 @@ final class TabManager {
     var selectedTab: Tab = .scanner
     var shouldStartScan = false
     var needsRescan = false
+    /// `true` while `ScannerView` shows its paywall or the guide. Written by the scanner
+    /// through a binding, read by anything that wants the home screen to itself.
+    var isScannerModalPresented = false
     /// Where inside cleanup something outside the app asked to land — the same shape of
     /// carried intent as `shouldStartScan`, which `ScannerView` already consumes as a
     /// binding. `CleanupView` clears it once it has acted on it.
