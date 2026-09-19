@@ -150,7 +150,12 @@ pass/fail, and any finding written out in §6.
 
 ## 6. Device findings
 
-Walked on an **iPhone 13 mini, iOS 27**, 19 September 2026. Every functional row
+Walked on an **iPhone 13 mini, iOS 27**, 19 September 2026, on a debug build of
+`99f2a6f` — the Lock Screen 4/5 branch head, version 1.5.0 before the build was
+bumped to 12. Everything merged after it up to the 1.5.0 release commit is store
+metadata, documentation and this record, none of which the device can show
+differently, so the pass still stands for the release. The one later change that
+does touch rendering is the `libraryChanged` date below. Every functional row
 of §5 passed: the three families render each state, the ring follows the real
 `libraryTotalBytes` through a scan, a cold launch and a delete of local data, the
 taps land on their `alike://` screens cold and warm on both a Premium and a free
@@ -182,6 +187,20 @@ made. Nothing observed suggested a regression; that is an absence of evidence, n
 evidence. If the figures matter before 1.5.0 ships, step 3 wants
 `Library total bytes measured. assets=… duration=…` from Console on both builds,
 and step 10 wants Instruments (Allocations) attached to `AlikeWidgets`.
+
+**One change landed after this pass.** Review of PR #91 found that
+`.libraryChanged` dropped the scan date on `.accessoryRectangular`, so an
+estimate the library had already moved under read exactly like a fresh one, with
+no later timeline entry to correct it — the state carries no `isStale`. The
+rectangular slot now keeps `scannedAt`, as the home-screen widget always did.
+`WidgetAccessoryCompositionTests` pins it in both directions: the date survives
+the stale-suggestions → `libraryChanged` transition and reaches the
+accessibility label, and the ring and inline slots still carry none. Row 5 of
+the table above is therefore evidence for every state *as built at* `99f2a6f`;
+the rendered `libraryChanged` rectangle is the one row worth a second look on
+the device, and the simulator can stage it —
+`python3 tools/stage_widget_snapshot.py libraryChanged --udid <sim> --app <Alike.app>`
+— for anyone who wants it in a screenshot first.
 
 ## 7. Release-compatibility gate
 

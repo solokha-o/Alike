@@ -409,14 +409,19 @@ private extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .libraryChanged(bytes, _):
+        case let .libraryChanged(bytes, scannedAt):
             return accessory(
                 family: family,
                 symbol: brand,
                 figure: bytes.map { byteFigure($0, family: family) },
                 inline: bytes.map { WidgetL10n.Accessory.reclaimable(WidgetFormatting.approximateByteCount($0)) }
                     ?? WidgetL10n.Action.review,
-                footnote: nil,
+                // As on the home screen: the library moved under the estimate, so the
+                // figure is historical whatever the staleness threshold says, and the
+                // date is what keeps it from reading as a fresh count. Without it the
+                // rectangular slot is indistinguishable from a just-finished scan, and
+                // no later timeline entry corrects that — this state has no `isStale`.
+                footnote: family == .accessoryRectangular ? scannedAt.map(scannedFootnote) : nil,
                 action: WidgetL10n.Action.review,
                 progress: family == .accessoryCircular ? share(of: bytes, in: libraryTotalBytes) : nil,
                 destination: destination
