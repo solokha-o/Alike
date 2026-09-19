@@ -972,7 +972,7 @@ METADATA = {
         "description": UK_DESCRIPTION,
         # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
         "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,екран блокування",
-        "promotional_text": "Alike тепер показує, скільки можна звільнити, і на замкненому екрані — рядком, карткою або кільцем. Усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на рік.",
+        "promotional_text": "Alike тепер показує, скільки можна звільнити, і на замкненому екрані — рядком, карткою або кільцем. Усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
         "release_notes": "Віджет Alike тепер живе й на замкненому екрані.\n\n- Один рядок над годинником: скільки можна звільнити або наскільки просунувся перегляд.\n- Прямокутна картка з тим самим числом і наступною дією — «Переглянути» або «Продовжити».\n- Кільце, що малює частку медіатеки, яку можна звільнити, або частку вже переглянутого.\n- Додаються з «Налаштування» на самому замкненому екрані. Той самий віджет і ті самі числа, що й на домашньому.\n- Безкоштовні — так само, як віджети на домашньому екрані.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Keywords below are researched per market rather than translated. Each set
@@ -1039,7 +1039,7 @@ METADATA = {
         "subtitle": "Vind en ruim dubbels op",
         "description": NL_NL_DESCRIPTION,
         "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,album,toegangsscherm",
-        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, een kaart of een ring. Alles op je iPhone. Alike Pro: 7 dagen gratis per jaar.",
+        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, kaart of ring. Alles op je iPhone. Alike Pro: 7 dagen gratis op het jaarabonnement.",
         "release_notes": "De widget van Alike staat nu ook op je toegangsscherm.\n\n- Eén regel boven de klok: hoeveel je kunt vrijmaken, of hoe ver je met een controle bent.\n- Een rechthoekige kaart met hetzelfde getal en de volgende stap — 'Bekijken' of 'Verder'.\n- Een ring die het deel van je bibliotheek tekent dat je kunt vrijmaken, of het deel dat je al bekeken hebt.\n- Voeg ze toe via 'Pas aan' op het toegangsscherm zelf. Dezelfde widget, dezelfde getallen als op je beginscherm.\n- Gratis, net als de widgets op je beginscherm.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
