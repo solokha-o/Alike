@@ -1039,7 +1039,7 @@ METADATA = {
         "subtitle": "Vind en ruim dubbels op",
         "description": NL_NL_DESCRIPTION,
         "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,album,toegangsscherm",
-        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, kaart of ring. Alles op je iPhone. Alike Pro: 7 dagen gratis op het jaarabonnement.",
+        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, een kaart of een ring. Alles op je iPhone. Alike Pro: 7 dagen gratis op het jaarplan.",
         "release_notes": "De widget van Alike staat nu ook op je toegangsscherm.\n\n- Eén regel boven de klok: hoeveel je kunt vrijmaken, of hoe ver je met een controle bent.\n- Een rechthoekige kaart met hetzelfde getal en de volgende stap — 'Bekijken' of 'Verder'.\n- Een ring die het deel van je bibliotheek tekent dat je kunt vrijmaken, of het deel dat je al bekeken hebt.\n- Voeg ze toe via 'Pas aan' op het toegangsscherm zelf. Dezelfde widget, dezelfde getallen als op je beginscherm.\n- Gratis, net als de widgets op je beginscherm.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
