@@ -243,6 +243,19 @@ visibly beats its neighbour would sell the slide better than this one does.
   the space returned. Not one of them shows a change made to a photo and then
   undone. Shot 14 is the only frame that carries "one tap puts it back" — a
   reason to trust the app, not a picture of its manual.
+- **16. Lock Screen widgets.** Proposed for 1.5.0 and decided against before it
+  was ever shot. Apple requires screenshots for the display sizes a listing
+  serves, never screenshots of a particular feature, so nothing in the store
+  obliges this frame. What it would have cost is the whole locale loop again —
+  thirteen simulator captures with a reboot each, thirteen copy entries, and a
+  deck of eight slides instead of seven at 104 renders instead of 91. What it
+  would have bought is an eighth frame, reached only by a shopper who swipes
+  past seven. Slide 7 already says the app is useful without being opened, and
+  the Lock Screen is carried by the 1.5.0 description, the promotional text, the
+  release notes and the keywords instead — all of which a shopper reads without
+  swiping. Reopen this only with evidence that the listing is losing widget
+  installs, not because the feature shipped.
+
 - **Ukrainian 6 and 8.** Shots 6 and 8 are not in the deck or on the site in
   *either* locale, so a Ukrainian twin has no consumer.
 - **Ukrainian 11.** App Store Connect takes one review screenshot per in-app
@@ -254,9 +267,8 @@ visibly beats its neighbour would sell the slide better than this one does.
 
 `n/a` in the table means the same thing: not missing, not wanted.
 
-Shots 1, 3, 4, 5 and 7 make up the product deck in `SLIDES` as it stands, and
-shot 14 is the sixth slide once its frames exist; the others are captured but
-unused on the listing. Adding one to the deck means adding a `SlideLayout` and a
+Shots 1, 3, 4, 5, 7, 14 and 15 make up the product deck in `SLIDES` as it
+stands; the others are captured but unused on the listing. Adding one to the deck means adding a `SlideLayout` and a
 copy line per locale in `tools/generate_app_store_product_screenshots.py` — in
 the same commit as the captures, never ahead of them.
 
@@ -279,9 +291,10 @@ sips -c 2868 1320 tmp.png --out out.png
 The crop trims one pixel from the top and bottom, inside the status-bar and
 home-indicator margins.
 
-The App Store allows up to 10 screenshots. The deck ships five today and six
-once shot 14 is captured, so the ceiling has never been the binding constraint:
-what a slide has to earn is a shopper's attention, not a free slot.
+The App Store allows up to 10 screenshots and the deck ships seven, so the
+ceiling has never been the binding constraint: what a slide has to earn is a
+shopper's attention, not a free slot. Shot 16 is the worked example — see the
+retired list above.
 
 ## Wiring a screenshot into the site
 
