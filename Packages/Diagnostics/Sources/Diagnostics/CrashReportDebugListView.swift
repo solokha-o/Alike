@@ -1,4 +1,5 @@
 #if DEBUG
+import Core
 import SwiftUI
 
 /// Developer tooling: every stored crash payload, with a way to get it off the device
@@ -26,7 +27,7 @@ public struct CrashReportDebugListView: View {
                         Text("\(row.report.osVersion ?? "?") — \(row.report.deviceModel ?? "?")")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
-                        Text(row.report.receivedAt, format: .dateTime)
+                        Text(row.report.receivedAt.alikeFormatted(date: .numeric, time: .standard))
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                         if let fileURL = row.fileURL {
