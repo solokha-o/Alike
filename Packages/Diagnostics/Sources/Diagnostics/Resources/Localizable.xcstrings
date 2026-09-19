@@ -1,0 +1,504 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "diagnostics.prompt.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike closed unexpectedly"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike несподівано закрився"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike se cerró inesperadamente"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike se ha cerrado inesperadamente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike fechou inesperadamente"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike wurde unerwartet beendet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike s’est fermé de façon inattendue"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike si è chiuso in modo imprevisto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is onverwacht gestopt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja Alike nieoczekiwanie się zamknęła"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike beklenmedik şekilde kapandı"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 意外關閉"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم إغلاق Alike بشكل غير متوقع"
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a crash report to the developer? It opens as an email, so you can read it before anything is sent."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати звіт про збій розробнику? Він відкриється як лист, тож ви зможете переглянути його перед надсиланням."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar un informe del fallo al desarrollador? Se abre como un correo, así que puedes leerlo antes de enviarlo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar un informe del fallo al desarrollador? Se abre como un correo, así que puedes leerlo antes de enviarlo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar um relatório da falha ao desenvolvedor? Ele abre como um e-mail, então você pode ler antes de enviar."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absturzbericht an den Entwickler senden? Er wird als E-Mail geöffnet, du kannst ihn also vor dem Senden lesen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer un rapport de plantage au développeur ? Il s’ouvre sous forme d’e-mail, vous pouvez donc le lire avant l’envoi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviare un report dell’arresto anomalo allo sviluppatore? Si apre come e-mail, così puoi leggerlo prima dell’invio."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een crashrapport naar de ontwikkelaar sturen? Het opent als e-mail, zodat je het kunt lezen voordat het wordt verstuurd."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wysłać raport o awarii do twórcy aplikacji? Otworzy się jako e-mail, więc możesz go przeczytać przed wysłaniem."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geliştiriciye bir çökme raporu gönderilsin mi? Rapor bir e-posta olarak açılır, böylece göndermeden önce okuyabilirsiniz."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要將當機報告傳送給開發者嗎？報告會以電子郵件開啟，你可以在傳送前先閱讀。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد إرسال تقرير التعطل إلى المطوّر؟ سيُفتح كرسالة بريد إلكتروني لتتمكن من قراءته قبل الإرسال."
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The report contains the crash stack trace, the app version, the iOS version and your device model. No photos and no personal data."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звіт містить стек викликів збою, версію застосунку, версію iOS і модель пристрою. Жодних фото й жодних особистих даних."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El informe contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo de tu dispositivo. Sin fotos ni datos personales."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El informe contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo de tu dispositivo. Sin fotos ni datos personales."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O relatório contém o rastreamento da falha, a versão do app, a versão do iOS e o modelo do seu dispositivo. Sem fotos e sem dados pessoais."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Bericht enthält den Stacktrace des Absturzes, die App-Version, die iOS-Version und dein Gerätemodell. Keine Fotos und keine persönlichen Daten."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le rapport contient la trace du plantage, la version de l’app, la version d’iOS et le modèle de votre appareil. Aucune photo ni donnée personnelle."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il report contiene lo stack trace dell’arresto, la versione dell’app, la versione di iOS e il modello del dispositivo. Nessuna foto e nessun dato personale."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het rapport bevat de stacktrace van de crash, de appversie, de iOS-versie en je apparaatmodel. Geen foto’s en geen persoonlijke gegevens."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raport zawiera ślad stosu awarii, wersję aplikacji, wersję iOS i model urządzenia. Żadnych zdjęć ani danych osobowych."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rapor; çökmenin yığın izini, uygulama sürümünü, iOS sürümünü ve cihaz modelinizi içerir. Fotoğraf veya kişisel veri içermez."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "報告包含當機的堆疊追蹤、App 版本、iOS 版本和裝置型號。不含任何照片或個人資料。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتوي التقرير على تتبّع مكدّس التعطل وإصدار التطبيق وإصدار iOS وطراز جهازك. لا صور ولا بيانات شخصية."
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.send" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Report"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати звіт"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar informe"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar informe"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar relatório"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bericht senden"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer le rapport"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia report"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stuur rapport"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij raport"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raporu Gönder"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳送報告"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إرسال التقرير"
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.notNow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не зараз"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ora"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet nu"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie teraz"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Değil"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在不要"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ليس الآن"
+          }
+        }
+      }
+    },
+    "diagnostics.mail.body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike created this crash report on my device. The attachment contains the crash stack trace, the app version, the iOS version and the device model. It contains no photos and no personal data."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike створив цей звіт про збій на моєму пристрої. Вкладення містить стек викликів збою, версію застосунку, версію iOS і модель пристрою. У ньому немає фото чи особистих даних."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike creó este informe de fallo en mi dispositivo. El archivo adjunto contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo del dispositivo. No contiene fotos ni datos personales."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha creado este informe de fallo en mi dispositivo. El archivo adjunto contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo del dispositivo. No contiene fotos ni datos personales."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike criou este relatório de falha no meu dispositivo. O anexo contém o rastreamento da falha, a versão do app, a versão do iOS e o modelo do dispositivo. Não contém fotos nem dados pessoais."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hat diesen Absturzbericht auf meinem Gerät erstellt. Der Anhang enthält den Stacktrace des Absturzes, die App-Version, die iOS-Version und das Gerätemodell. Er enthält keine Fotos und keine persönlichen Daten."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a créé ce rapport de plantage sur mon appareil. La pièce jointe contient la trace du plantage, la version de l’app, la version d’iOS et le modèle de l’appareil. Elle ne contient ni photo ni donnée personnelle."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha creato questo report di arresto anomalo sul mio dispositivo. L’allegato contiene lo stack trace dell’arresto, la versione dell’app, la versione di iOS e il modello del dispositivo. Non contiene foto né dati personali."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft dit crashrapport op mijn apparaat gemaakt. De bijlage bevat de stacktrace van de crash, de appversie, de iOS-versie en het apparaatmodel. Er staan geen foto’s of persoonlijke gegevens in."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike utworzył ten raport o awarii na moim urządzeniu. Załącznik zawiera ślad stosu awarii, wersję aplikacji, wersję iOS i model urządzenia. Nie zawiera zdjęć ani danych osobowych."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike bu çökme raporunu cihazımda oluşturdu. Ek; çökmenin yığın izini, uygulama sürümünü, iOS sürümünü ve cihaz modelini içerir. Fotoğraf veya kişisel veri içermez."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 在我的裝置上建立了這份當機報告。附件包含當機的堆疊追蹤、App 版本、iOS 版本和裝置型號，不含任何照片或個人資料。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أنشأ Alike تقرير التعطل هذا على جهازي. يحتوي المرفق على تتبّع مكدّس التعطل وإصدار التطبيق وإصدار iOS وطراز الجهاز. ولا يحتوي على أي صور أو بيانات شخصية."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

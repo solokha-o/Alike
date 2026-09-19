@@ -23,6 +23,7 @@ let package = Package(
         .target(
             name: "Diagnostics",
             dependencies: ["Core"],
+            resources: [.process("Resources")],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
