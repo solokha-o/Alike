@@ -26,9 +26,11 @@ public final class CrashReportPromptCoordinator {
         self.policy = policy
     }
 
-    /// Runs for the lifetime of the calling task.
+    /// Runs for the lifetime of the calling task, on a subscription of its own: the
+    /// view that calls this is torn down and rebuilt within one process, and the next
+    /// observer has to keep hearing about new payloads.
     public func observeStore() async {
-        for await _ in store.changes {
+        for await _ in await store.changes() {
             revision += 1
         }
     }

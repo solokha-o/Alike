@@ -68,11 +68,39 @@ final class CrashReportStoreTests: XCTestCase {
     }
 
     func testIngestSignalsAChange() async {
-        var changes = store.changes.makeAsyncIterator()
+        var changes = await store.changes().makeAsyncIterator()
 
         await store.ingest([CrashPayloadFixture.data()])
 
         await changes.next()
+    }
+
+    /// One observer going away must not silence the store: the screen that watches it
+    /// is torn down and rebuilt inside a single process.
+    func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
+        let store = store!
+        let first = Task { for await _ in await store.changes() {} }
+        try await Task.sleep(for: .milliseconds(50))
+        first.cancel()
+        _ = await first.value
+
+        var second = await store.changes().makeAsyncIterator()
+        await store.ingest([CrashPayloadFixture.data()])
+
+        let change: Void? = await second.next()
+        XCTAssertNotNil(change)
+    }
+
+    func testEveryOpenObserverIsToldAboutAChange() async {
+        var first = await store.changes().makeAsyncIterator()
+        var second = await store.changes().makeAsyncIterator()
+
+        await store.ingest([CrashPayloadFixture.data()])
+
+        let firstChange: Void? = await first.next()
+        let secondChange: Void? = await second.next()
+        XCTAssertNotNil(firstChange)
+        XCTAssertNotNil(secondChange)
     }
 
     // MARK: - Prompt state

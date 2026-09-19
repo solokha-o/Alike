@@ -18,13 +18,10 @@ public actor CrashReportStore {
     public static let shared = CrashReportStore()
     public static let defaultMaxReports = 20
 
-    /// Yields after every change to the stored reports. Single consumer.
-    public nonisolated let changes: AsyncStream<Void>
-
     private let directoryURL: URL
     private let fileManager: FileManager
     private let maxReports: Int
-    private let changeContinuation: AsyncStream<Void>.Continuation
+    private var changeObservers: [UUID: AsyncStream<Void>.Continuation] = [:]
 
     public init(
         directoryURL: URL? = nil,
@@ -34,10 +31,36 @@ public actor CrashReportStore {
         self.directoryURL = directoryURL ?? Self.defaultDirectoryURL(fileManager: fileManager)
         self.fileManager = fileManager
         self.maxReports = max(1, maxReports)
-        (changes, changeContinuation) = AsyncStream.makeStream(
+    }
+
+    // MARK: - Change notifications
+
+    /// Yields after every change to the stored reports.
+    ///
+    /// A fresh stream per call, because the store outlives its observers: the screen
+    /// that watches it is torn down and rebuilt in the same process, and one shared
+    /// stream would be finished for good by the first observer's cancellation.
+    public func changes() -> AsyncStream<Void> {
+        let id = UUID()
+        let (stream, continuation) = AsyncStream.makeStream(
             of: Void.self,
             bufferingPolicy: .bufferingNewest(1)
         )
+        continuation.onTermination = { [weak self] _ in
+            Task { await self?.removeChangeObserver(id) }
+        }
+        changeObservers[id] = continuation
+        return stream
+    }
+
+    private func removeChangeObserver(_ id: UUID) {
+        changeObservers[id] = nil
+    }
+
+    private func notifyChange() {
+        for continuation in changeObservers.values {
+            continuation.yield()
+        }
     }
 
     // MARK: - Reading
@@ -178,7 +201,7 @@ public actor CrashReportStore {
                 try? fileManager.removeItem(at: url)
             }
         }
-        changeContinuation.yield()
+        notifyChange()
     }
 
     // MARK: - Paths

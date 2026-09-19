@@ -20,6 +20,24 @@ final class CrashReportPromptCoordinatorTests: XCTestCase {
         try? FileManager.default.removeItem(at: directoryURL)
     }
 
+    /// "Delete all data" tears down the tab that observes the store and onboarding puts
+    /// a new one back in the same process. The second observer has to keep working.
+    func testObservingAgainAfterTheFirstObserverWasCancelledStillBumpsTheRevision() async throws {
+        let firstObserver = Task { await coordinator.observeStore() }
+        try await Task.sleep(for: .milliseconds(50))
+        firstObserver.cancel()
+        _ = await firstObserver.value
+
+        let secondObserver = Task { await coordinator.observeStore() }
+        try await Task.sleep(for: .milliseconds(50))
+        let before = coordinator.revision
+        await store.ingest([CrashPayloadFixture.data()])
+        try await Task.sleep(for: .milliseconds(200))
+        secondObserver.cancel()
+
+        XCTAssertGreaterThan(coordinator.revision, before)
+    }
+
     func testPendingReportIsPresentedOnACalmScreen() async {
         await store.ingest([CrashPayloadFixture.data()])
 
