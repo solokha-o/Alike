@@ -24,8 +24,9 @@ canvas around the phone sparse.
 - Phone mockup: `tools/assets/iphone-mockup.png` (1022 x 2082, screen rect 52,46,970,2036).
 - Canvas: `1320 x 2868` exactly — the bundle rejects anything else.
 - Locales: `en-US`, `uk`, `de`, `fr`, `es`, `es-419`, `pt-BR`, `it`, `nl`,
-  `pl`, `tr`, `zh-Hant` — twelve, the app's own language codes, which are the
-  directory names. The upload bundle maps `es-419` onto App Store Connect's
+  `pl`, `tr`, `zh-Hant`, `ar` — thirteen, the app's own language codes, which
+  are the directory names. `ar` is laid out right to left and set in SF Arabic;
+  `RTL_LOCALES` in the generator is what sends it through `mirrored_layout()`. The upload bundle maps `es-419` onto App Store Connect's
   `es-MX` and `zh-Hant` onto the bare `it`/`pl`/`tr` spellings alongside it;
   nothing in the generator knows that. `LOCALES` in the generator is the list
   that decides; this one follows it.
@@ -50,11 +51,11 @@ build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py --va
 
 ## Product Order
 
-Six beats, in order: scan → queue → Best Shot → comparison → freed space →
-reversibility. Lead with the scan (what the app does), then the review queue,
-then Best Shot, then the safety of confirming before deleting, then the space
-that comes back, and close on the fact that the photo you keep can be improved
-and put back.
+Seven beats, in order: scan → queue → Best Shot → comparison → freed space →
+reversibility → widgets. Lead with the scan (what the app does), then the review
+queue, then Best Shot, then the safety of confirming before deleting, then the
+space that comes back, then the fact that the photo you keep can be improved and
+put back, and close on the app being useful without being opened.
 
 The sixth beat sells the undo, not the edit. Alike is not a photo editor and the
 slide must not read like one: the message is that the original always comes back,
@@ -64,6 +65,13 @@ retouching tool — the frame carries the Enhanced state and the way out of it i
 the same shot.
 
 Do not lead with the paywall, onboarding, or settings.
+
+A new feature does not earn a slide by existing. Eight frames cost a full locale
+loop — thirteen captures, thirteen copy entries, thirteen more renders — and the
+eighth is reached only by a shopper who swiped past seven. 1.5.0's Lock Screen
+widgets were decided against on exactly that ground and shipped in the listing
+text instead; `Docs/screenshot-shot-list.md` records the reasoning under shot 16.
+Ask what the slide moves, not whether there is a free slot.
 
 ## Copy Rules
 
