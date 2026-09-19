@@ -2,6 +2,7 @@ default_platform(:ios)
 
 require "fileutils"
 require "shellwords"
+require_relative "lib/app_store_version_guard"
 
 APP_IDENTIFIER = "com.alike.app"
 REPO_ROOT = File.expand_path("..", __dir__)
@@ -180,6 +181,33 @@ def app_store_api_key
   app_store_connect_api_key(options)
 end
 
+def connect_api_login!
+  key_id = ENV["APP_STORE_CONNECT_KEY_ID"]
+  issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+  key_filepath = ENV["APP_STORE_CONNECT_API_KEY_PATH"]
+  key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+
+  if !key_filepath.to_s.empty?
+    Spaceship::ConnectAPI.auth(key_id: key_id, issuer_id: issuer_id, filepath: File.expand_path(key_filepath))
+  else
+    Spaceship::ConnectAPI.auth(key_id: key_id, issuer_id: issuer_id, key: key_content)
+  end
+end
+
+# Reads the version App Store Connect currently has open for editing and fails
+# unless it is exactly the one the caller asked to submit. See
+# fastlane/lib/app_store_version_guard.rb for why this has to happen before
+# deliver rather than inside it.
+def verify_editable_app_store_version!(app_version)
+  connect_api_login!
+  app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+  version = AppStoreVersionGuard.verify!(app: app, requested_version: app_version)
+  UI.message("App Store Connect has #{version.version_string} open for editing; submitting that one.")
+  version
+rescue AppStoreVersionGuard::Mismatch => error
+  UI.user_error!(error.message)
+end
+
 def xcode_provisioning_args
   return unless ENV["ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES"] == "1"
 
@@ -280,6 +308,12 @@ platform :ios do
     # Submit. It answers nothing on the developer's behalf: whatever App Store
     # Connect already holds for export compliance, content rights and IDFA is
     # what the submission carries, and deliver stops if an answer is missing.
+    # `skip_metadata` does not disable deliver's own version handling: its
+    # `verify_version` calls `ensure_version!` before it looks for the build, so
+    # a wrong `version:` renames the prepared version and leaves it renamed when
+    # the build lookup then fails. Check first, and forbid the write outright.
+    verify_editable_app_store_version!(app_version)
+
     deliver(
       api_key: app_store_api_key,
       app_identifier: APP_IDENTIFIER,
@@ -288,6 +322,7 @@ platform :ios do
       skip_binary_upload: true,
       skip_metadata: true,
       skip_screenshots: true,
+      skip_app_version_update: true,
       submit_for_review: true,
       run_precheck_before_submit: false,
       force: true

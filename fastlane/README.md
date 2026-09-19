@@ -55,6 +55,14 @@ Upload only App Store screenshots without text metadata, binary, or review submi
 
 Download the dSYMs for a released version so Xcode Organizer can symbolicate its crash reports.
 
+### ios submit_review
+
+```sh
+[bundle exec] fastlane ios submit_review
+```
+
+Attach an already-processed build to the editable App Store version and submit that version to App Review.
+
 ### ios testflight_upload
 
 ```sh
