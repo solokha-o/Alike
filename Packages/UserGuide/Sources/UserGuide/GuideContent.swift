@@ -788,6 +788,12 @@ enum GuideContent {
                         symbol: "wifi.slash",
                         title: "userGuide.privacy.onDevice.network.title",
                         body: "userGuide.privacy.onDevice.network.body"
+                    ),
+                    GuideItem(
+                        id: "privacy.onDevice.crashReports",
+                        symbol: "exclamationmark.bubble",
+                        title: "userGuide.privacy.onDevice.crashReports.title",
+                        body: "userGuide.privacy.onDevice.crashReports.body"
                     )
                 ]
             ),
