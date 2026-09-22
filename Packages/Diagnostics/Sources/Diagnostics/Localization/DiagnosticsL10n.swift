@@ -8,7 +8,7 @@ public enum DiagnosticsL10n {
         public static var title: String { DiagnosticsL10n.string("diagnostics.prompt.title") }
         /// Send a crash report to the developer? It opens as an email, so you can read it before anything is sent.
         public static var message: String { DiagnosticsL10n.string("diagnostics.prompt.message") }
-        /// The report contains the crash stack trace, the app version, the iOS version and your device model. No photos and no personal data.
+        /// The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos.
         public static var details: String { DiagnosticsL10n.string("diagnostics.prompt.details") }
         /// Send Report
         public static var send: String { DiagnosticsL10n.string("diagnostics.prompt.send") }
@@ -19,7 +19,7 @@ public enum DiagnosticsL10n {
     }
 
     public enum Mail {
-        /// Alike created this crash report on my device. The attachment contains …
+        /// Alike attached the crash diagnostic iOS recorded on my device, unchanged: …
         public static var body: String { DiagnosticsL10n.string("diagnostics.mail.body") }
         /// Send this crash report to:
         public static var shareRecipient: String { DiagnosticsL10n.string("diagnostics.mail.shareRecipient") }

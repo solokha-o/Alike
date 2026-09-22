@@ -173,79 +173,79 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The report contains the crash stack trace, the app version, the iOS version and your device model. No photos and no personal data."
+            "value" : "The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Звіт містить стек викликів збою, версію застосунку, версію iOS і модель пристрою. Жодних фото й жодних особистих даних."
+            "value" : "Звіт — це діагностика збою, яку записала iOS: стек викликів, версії застосунку та iOS, модель пристрою і, для деяких збоїв, текст повідомлення про помилку. Alike надсилає його як є, без фільтрування. Фото він не містить."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El informe contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo de tu dispositivo. Sin fotos ni datos personales."
+            "value" : "El informe es el diagnóstico del fallo que registró iOS: la traza, las versiones de la app y de iOS, el modelo de tu dispositivo y, en algunos fallos, el mensaje de error. Alike lo envía tal cual, sin filtrarlo. No contiene fotos."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El informe contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo de tu dispositivo. Sin fotos ni datos personales."
+            "value" : "El informe es el diagnóstico del fallo que registró iOS: la traza, las versiones de la app y de iOS, el modelo de tu dispositivo y, en algunos fallos, el mensaje de error. Alike lo envía tal cual, sin filtrarlo. No contiene fotos."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O relatório contém o rastreamento da falha, a versão do app, a versão do iOS e o modelo do seu dispositivo. Sem fotos e sem dados pessoais."
+            "value" : "O relatório é o diagnóstico da falha registrado pelo iOS: o rastreamento, as versões do app e do iOS, o modelo do seu dispositivo e, em algumas falhas, a mensagem de erro. O Alike o envia como está, sem filtrar. Não contém fotos."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Bericht enthält den Stacktrace des Absturzes, die App-Version, die iOS-Version und dein Gerätemodell. Keine Fotos und keine persönlichen Daten."
+            "value" : "Der Bericht ist die Absturzdiagnose, die iOS aufgezeichnet hat: der Stacktrace, die App- und iOS-Version, dein Gerätemodell und bei manchen Abstürzen die Fehlermeldung. Alike sendet ihn unverändert und ungefiltert. Fotos enthält er nicht."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le rapport contient la trace du plantage, la version de l’app, la version d’iOS et le modèle de votre appareil. Aucune photo ni donnée personnelle."
+            "value" : "Le rapport est le diagnostic du plantage enregistré par iOS : la trace, les versions de l’app et d’iOS, le modèle de votre appareil et, pour certains plantages, le message d’erreur. Alike l’envoie tel quel, sans filtrage. Il ne contient aucune photo."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il report contiene lo stack trace dell’arresto, la versione dell’app, la versione di iOS e il modello del dispositivo. Nessuna foto e nessun dato personale."
+            "value" : "Il report è la diagnostica dell’arresto registrata da iOS: lo stack trace, le versioni dell’app e di iOS, il modello del dispositivo e, per alcuni arresti, il messaggio di errore. Alike lo invia così com’è, senza filtrarlo. Non contiene foto."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Het rapport bevat de stacktrace van de crash, de appversie, de iOS-versie en je apparaatmodel. Geen foto’s en geen persoonlijke gegevens."
+            "value" : "Het rapport is de crashdiagnose die iOS heeft vastgelegd: de stacktrace, de app- en iOS-versie, je apparaatmodel en bij sommige crashes de foutmelding. Alike verstuurt het ongewijzigd en ongefilterd. Het bevat geen foto’s."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Raport zawiera ślad stosu awarii, wersję aplikacji, wersję iOS i model urządzenia. Żadnych zdjęć ani danych osobowych."
+            "value" : "Raport to diagnostyka awarii zapisana przez iOS: ślad stosu, wersje aplikacji i iOS, model urządzenia oraz, przy niektórych awariach, komunikat o błędzie. Alike wysyła go bez zmian i bez filtrowania. Nie zawiera zdjęć."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rapor; çökmenin yığın izini, uygulama sürümünü, iOS sürümünü ve cihaz modelinizi içerir. Fotoğraf veya kişisel veri içermez."
+            "value" : "Rapor, iOS'un kaydettiği çökme tanılamasıdır: yığın izi, uygulama ve iOS sürümleri, cihaz modeliniz ve bazı çökmelerde hata mesajı. Alike onu filtrelemeden, olduğu gibi gönderir. Fotoğraf içermez."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "報告包含當機的堆疊追蹤、App 版本、iOS 版本和裝置型號。不含任何照片或個人資料。"
+            "value" : "報告是 iOS 記錄的當機診斷：堆疊追蹤、App 與 iOS 版本、裝置型號，部分當機還包含錯誤訊息。Alike 會原封不動地寄出，不做過濾。報告不含照片。"
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يحتوي التقرير على تتبّع مكدّس التعطل وإصدار التطبيق وإصدار iOS وطراز جهازك. لا صور ولا بيانات شخصية."
+            "value" : "التقرير هو تشخيص التعطل الذي سجّله iOS: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز جهازك، وفي بعض حالات التعطل رسالة الخطأ. يرسله Alike كما هو دون تنقيح. ولا يحتوي على صور."
           }
         }
       }
@@ -422,79 +422,79 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike created this crash report on my device. The attachment contains the crash stack trace, the app version, the iOS version and the device model. It contains no photos and no personal data."
+            "value" : "Alike attached the crash diagnostic iOS recorded on my device, unchanged: the stack trace, the app and iOS versions, the device model and, for some crashes, the error message. It contains no photos."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike створив цей звіт про збій на моєму пристрої. Вкладення містить стек викликів збою, версію застосунку, версію iOS і модель пристрою. У ньому немає фото чи особистих даних."
+            "value" : "Alike додав без змін діагностику збою, яку iOS записала на моєму пристрої: стек викликів, версії застосунку та iOS, модель пристрою і, для деяких збоїв, текст повідомлення про помилку. Фото в ній немає."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike creó este informe de fallo en mi dispositivo. El archivo adjunto contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo del dispositivo. No contiene fotos ni datos personales."
+            "value" : "Alike adjuntó sin cambios el diagnóstico del fallo que iOS registró en mi dispositivo: la traza, las versiones de la app y de iOS, el modelo del dispositivo y, en algunos fallos, el mensaje de error. No contiene fotos."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike ha creado este informe de fallo en mi dispositivo. El archivo adjunto contiene la traza del fallo, la versión de la app, la versión de iOS y el modelo del dispositivo. No contiene fotos ni datos personales."
+            "value" : "Alike ha adjuntado sin cambios el diagnóstico del fallo que iOS registró en mi dispositivo: la traza, las versiones de la app y de iOS, el modelo del dispositivo y, en algunos fallos, el mensaje de error. No contiene fotos."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike criou este relatório de falha no meu dispositivo. O anexo contém o rastreamento da falha, a versão do app, a versão do iOS e o modelo do dispositivo. Não contém fotos nem dados pessoais."
+            "value" : "O Alike anexou, sem alterações, o diagnóstico da falha que o iOS registrou no meu dispositivo: o rastreamento, as versões do app e do iOS, o modelo do dispositivo e, em algumas falhas, a mensagem de erro. Não contém fotos."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike hat diesen Absturzbericht auf meinem Gerät erstellt. Der Anhang enthält den Stacktrace des Absturzes, die App-Version, die iOS-Version und das Gerätemodell. Er enthält keine Fotos und keine persönlichen Daten."
+            "value" : "Alike hat die Absturzdiagnose, die iOS auf meinem Gerät aufgezeichnet hat, unverändert angehängt: den Stacktrace, die App- und iOS-Version, das Gerätemodell und bei manchen Abstürzen die Fehlermeldung. Sie enthält keine Fotos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike a créé ce rapport de plantage sur mon appareil. La pièce jointe contient la trace du plantage, la version de l’app, la version d’iOS et le modèle de l’appareil. Elle ne contient ni photo ni donnée personnelle."
+            "value" : "Alike a joint tel quel le diagnostic du plantage enregistré par iOS sur mon appareil : la trace, les versions de l’app et d’iOS, le modèle de l’appareil et, pour certains plantages, le message d’erreur. Il ne contient aucune photo."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike ha creato questo report di arresto anomalo sul mio dispositivo. L’allegato contiene lo stack trace dell’arresto, la versione dell’app, la versione di iOS e il modello del dispositivo. Non contiene foto né dati personali."
+            "value" : "Alike ha allegato senza modifiche la diagnostica dell’arresto registrata da iOS sul mio dispositivo: lo stack trace, le versioni dell’app e di iOS, il modello del dispositivo e, per alcuni arresti, il messaggio di errore. Non contiene foto."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike heeft dit crashrapport op mijn apparaat gemaakt. De bijlage bevat de stacktrace van de crash, de appversie, de iOS-versie en het apparaatmodel. Er staan geen foto’s of persoonlijke gegevens in."
+            "value" : "Alike heeft de crashdiagnose die iOS op mijn apparaat vastlegde ongewijzigd bijgevoegd: de stacktrace, de app- en iOS-versie, het apparaatmodel en bij sommige crashes de foutmelding. Er staan geen foto’s in."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike utworzył ten raport o awarii na moim urządzeniu. Załącznik zawiera ślad stosu awarii, wersję aplikacji, wersję iOS i model urządzenia. Nie zawiera zdjęć ani danych osobowych."
+            "value" : "Alike dołączył bez zmian diagnostykę awarii zapisaną przez iOS na moim urządzeniu: ślad stosu, wersje aplikacji i iOS, model urządzenia oraz, przy niektórych awariach, komunikat o błędzie. Nie zawiera zdjęć."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike bu çökme raporunu cihazımda oluşturdu. Ek; çökmenin yığın izini, uygulama sürümünü, iOS sürümünü ve cihaz modelini içerir. Fotoğraf veya kişisel veri içermez."
+            "value" : "Alike, iOS'un cihazımda kaydettiği çökme tanılamasını değiştirmeden ekledi: yığın izi, uygulama ve iOS sürümleri, cihaz modeli ve bazı çökmelerde hata mesajı. Fotoğraf içermez."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike 在我的裝置上建立了這份當機報告。附件包含當機的堆疊追蹤、App 版本、iOS 版本和裝置型號，不含任何照片或個人資料。"
+            "value" : "Alike 原封不動地附上了 iOS 在我的裝置上記錄的當機診斷：堆疊追蹤、App 與 iOS 版本、裝置型號，部分當機還包含錯誤訊息。不含任何照片。"
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أنشأ Alike تقرير التعطل هذا على جهازي. يحتوي المرفق على تتبّع مكدّس التعطل وإصدار التطبيق وإصدار iOS وطراز الجهاز. ولا يحتوي على أي صور أو بيانات شخصية."
+            "value" : "أرفق Alike دون تعديل تشخيص التعطل الذي سجّله iOS على جهازي: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز الجهاز، وفي بعض حالات التعطل رسالة الخطأ. ولا يحتوي على أي صور."
           }
         }
       }
