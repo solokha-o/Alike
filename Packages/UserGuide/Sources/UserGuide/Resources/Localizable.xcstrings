@@ -13371,79 +13371,79 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scan results and analysis caches, cleanup progress and history, and your Alike preferences."
+            "value": "Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Результати сканування й кеші аналізу, прогрес та історія очищення, а також ваші налаштування Alike."
+            "value": "Результати сканування й кеші аналізу, прогрес та історія очищення, звіти про збої, що чекають на iPhone, а також ваші налаштування Alike."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los resultados de los análisis y sus cachés, el progreso e historial de limpieza y tus preferencias de Alike."
+            "value": "Los resultados de los análisis y sus cachés, el progreso e historial de limpieza, los informes de fallos pendientes en tu iPhone y tus preferencias de Alike."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los resultados de los análisis y sus cachés, el progreso e historial de limpieza y tus preferencias de Alike."
+            "value": "Los resultados de los análisis y sus cachés, el progreso e historial de limpieza, los informes de fallos pendientes en tu iPhone y tus preferencias de Alike."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Resultados das análises e caches de análise, progresso e histórico de limpeza e suas preferências do Alike."
+            "value": "Resultados das análises e caches de análise, progresso e histórico de limpeza, relatórios de falhas guardados no seu iPhone e suas preferências do Alike."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scan-Ergebnisse und Analyse-Caches, Aufräum-Fortschritt und -Verlauf sowie deine Alike-Einstellungen."
+            "value": "Scan-Ergebnisse und Analyse-Caches, Aufräum-Fortschritt und -Verlauf, auf deinem iPhone wartende Absturzberichte sowie deine Alike-Einstellungen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les résultats d’analyse et leurs caches, la progression et l’historique de nettoyage, et vos préférences Alike."
+            "value": "Les résultats d’analyse et leurs caches, la progression et l’historique de nettoyage, les rapports de plantage en attente sur votre iPhone, et vos préférences Alike."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Risultati delle scansioni e cache di analisi, avanzamento e cronologia della pulizia, e le tue preferenze di Alike."
+            "value": "Risultati delle scansioni e cache di analisi, avanzamento e cronologia della pulizia, i report di arresto in attesa sul tuo iPhone, e le tue preferenze di Alike."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scanresultaten en analysecaches, opruimvoortgang en -geschiedenis, en je Alike-voorkeuren."
+            "value": "Scanresultaten en analysecaches, opruimvoortgang en -geschiedenis, crashrapporten die nog op je iPhone staan, en je Alike-voorkeuren."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wyniki skanowania i pamięci podręczne analizy, postęp i historia porządków oraz Twoje preferencje Alike."
+            "value": "Wyniki skanowania i pamięci podręczne analizy, postęp i historia porządków, raporty o awariach czekające na iPhonie oraz Twoje preferencje Alike."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tarama sonuçları ve analiz önbellekleri, temizlik ilerlemesi ve geçmişi ile Alike tercihlerin."
+            "value": "Tarama sonuçları ve analiz önbellekleri, temizlik ilerlemesi ve geçmişi, iPhone'unda bekleyen çökme raporları ile Alike tercihlerin."
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "掃描結果與分析快取、清理進度與歷史記錄，以及你的 Alike 偏好設定。"
+            "value": "掃描結果與分析快取、清理進度與歷史記錄、仍存放在 iPhone 上的當機報告，以及你的 Alike 偏好設定。"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "نتائج الفحص وذواكر التحليل المؤقتة، وتقدّم التنظيف وسجله، وتفضيلات Alike لديك."
+            "value": "نتائج الفحص وذواكر التحليل المؤقتة، وتقدّم التنظيف وسجله، وتقارير الأعطال المنتظرة على iPhone، وتفضيلات Alike لديك."
           }
         }
       }
@@ -14191,6 +14191,172 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا تُرفع صورك أبدًا"
+          }
+        }
+      }
+    },
+    "userGuide.privacy.onDevice.crashReports.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. You see the email before it goes, and only you can send it, from your own mail app. It holds the stack trace, the app and iOS versions and the device model — no photos."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Якщо Alike несподівано закриється, звіт про збій лишається на вашому iPhone, і Alike один раз запитає, чи надіслати його розробнику листом. Ви бачите лист до надсилання, і надіслати його можете лише ви — зі свого поштового застосунку. У ньому стек викликів, версії застосунку й iOS та модель пристрою — жодних фото."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si Alike se cierra inesperadamente, guarda el informe del fallo en tu iPhone y te pregunta una sola vez si quieres enviarlo por correo al desarrollador. Ves el correo antes de que salga, y solo tú puedes enviarlo, desde tu propia app de correo. Contiene la traza del fallo, las versiones de la app y de iOS y el modelo del dispositivo; ninguna foto."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si Alike se cierra inesperadamente, guarda el informe del fallo en tu iPhone y te pregunta una sola vez si quieres enviarlo por correo al desarrollador. Ves el correo antes de que salga, y solo tú puedes enviarlo, desde tu propia app de correo. Contiene la traza del fallo, las versiones de la app y de iOS y el modelo del dispositivo; ninguna foto."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se o Alike fechar inesperadamente, ele guarda o relatório da falha no seu iPhone e pergunta uma única vez se você quer enviá-lo por e-mail ao desenvolvedor. Você vê o e-mail antes de ele sair, e só você pode enviá-lo, pelo seu próprio app de e-mail. Ele traz o rastreamento da falha, as versões do app e do iOS e o modelo do aparelho — nenhuma foto."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird Alike unerwartet beendet, bleibt der Absturzbericht auf deinem iPhone, und Alike fragt ein einziges Mal, ob du ihn per E-Mail an den Entwickler senden möchtest. Du siehst die E-Mail, bevor sie geht, und nur du kannst sie senden, aus deiner eigenen Mail-App. Sie enthält den Stacktrace, die App- und iOS-Version und das Gerätemodell — keine Fotos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si Alike se ferme de façon inattendue, le rapport de plantage reste sur votre iPhone et Alike vous demande une seule fois si vous voulez l’envoyer par e-mail au développeur. Vous voyez l’e-mail avant qu’il parte, et vous seul pouvez l’envoyer, depuis votre propre app de messagerie. Il contient la trace du plantage, les versions de l’app et d’iOS et le modèle de l’appareil — aucune photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se Alike si chiude in modo imprevisto, il report dell’arresto resta sul tuo iPhone e Alike ti chiede una sola volta se vuoi inviarlo via email allo sviluppatore. Vedi l’email prima che parta, e solo tu puoi inviarla, dalla tua app di posta. Contiene lo stack trace, le versioni dell’app e di iOS e il modello del dispositivo — nessuna foto."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Alike onverwacht stopt, blijft het crashrapport op je iPhone en vraagt Alike één keer of je het per e-mail naar de ontwikkelaar wilt sturen. Je ziet de e-mail voordat hij vertrekt, en alleen jij kunt hem versturen, vanuit je eigen mailapp. Hij bevat de stacktrace, de app- en iOS-versie en het apparaatmodel — geen foto's."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeśli Alike nieoczekiwanie się zamknie, raport o awarii zostaje na Twoim iPhonie, a Alike zapyta jeden raz, czy wysłać go e-mailem do dewelopera. Widzisz wiadomość, zanim wyjdzie, i tylko Ty możesz ją wysłać — ze swojej aplikacji pocztowej. Zawiera ślad stosu, wersje aplikacji i iOS oraz model urządzenia — żadnych zdjęć."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike beklenmedik şekilde kapanırsa çökme raporu iPhone'unda kalır ve Alike onu geliştiriciye e-postayla göndermek isteyip istemediğini yalnızca bir kez sorar. E-postayı gitmeden önce görürsün ve onu yalnızca sen, kendi posta uygulamandan gönderebilirsin. Yığın izini, uygulama ve iOS sürümlerini ve cihaz modelini içerir — fotoğraf yok."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果 Alike 意外關閉，當機報告會留在你的 iPhone 上，Alike 只會詢問一次是否要用電子郵件寄給開發者。郵件寄出前你都看得到，而且只有你能從自己的郵件 App 寄出。內容包含堆疊追蹤、App 與 iOS 版本以及裝置型號——不含任何照片。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذا أُغلق Alike بشكل غير متوقع، يبقى تقرير التعطل على iPhone لديك، ويسألك Alike مرة واحدة إن كنت تريد إرساله بالبريد إلى المطوّر. ترى الرسالة قبل أن تُرسَل، ولا يرسلها أحد سواك من تطبيق البريد الخاص بك. يحتوي على تتبّع المكدّس وإصداري التطبيق وiOS وطراز الجهاز — ولا صور."
+          }
+        }
+      }
+    },
+    "userGuide.privacy.onDevice.crashReports.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crash reports go only where you send them"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Звіти про збої йдуть лише туди, куди ви їх надішлете"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los informes de fallos solo van adonde tú los envíes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los informes de fallos solo van adonde tú los envíes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relatórios de falhas só vão para onde você mandar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absturzberichte gehen nur dorthin, wohin du sie sendest"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les rapports de plantage ne partent que là où vous les envoyez"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I report di arresto vanno solo dove li invii tu"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crashrapporten gaan alleen waar jij ze heen stuurt"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raporty o awariach trafiają tylko tam, dokąd je wyślesz"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çökme raporları yalnızca senin gönderdiğin yere gider"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "當機報告只會寄到你寄出的地方"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تقارير الأعطال لا تذهب إلا حيث ترسلها أنت"
           }
         }
       }

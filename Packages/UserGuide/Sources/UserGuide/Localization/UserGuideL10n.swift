@@ -348,7 +348,7 @@ public enum UserGuideL10n {
         public static var deletedataKeptBody: String { UserGuideL10n.string("userGuide.privacy.deleteData.kept.body") }
         /// What stays untouched
         public static var deletedataKeptTitle: String { UserGuideL10n.string("userGuide.privacy.deleteData.kept.title") }
-        /// Scan results and analysis caches, cleanup progress and history, and your Alike preferences.
+        /// Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences.
         public static var deletedataRemovedBody: String { UserGuideL10n.string("userGuide.privacy.deleteData.removed.body") }
         /// What gets erased
         public static var deletedataRemovedTitle: String { UserGuideL10n.string("userGuide.privacy.deleteData.removed.title") }
@@ -360,6 +360,10 @@ public enum UserGuideL10n {
         public static var ondeviceAnalysisBody: String { UserGuideL10n.string("userGuide.privacy.onDevice.analysis.body") }
         /// Analysis never leaves your iPhone
         public static var ondeviceAnalysisTitle: String { UserGuideL10n.string("userGuide.privacy.onDevice.analysis.title") }
+        /// If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. …
+        public static var ondeviceCrashreportsBody: String { UserGuideL10n.string("userGuide.privacy.onDevice.crashReports.body") }
+        /// Crash reports go only where you send them
+        public static var ondeviceCrashreportsTitle: String { UserGuideL10n.string("userGuide.privacy.onDevice.crashReports.title") }
         /// Alike has no account, no sign-in, and no server of its own.
         public static var ondeviceFooter: String { UserGuideL10n.string("userGuide.privacy.onDevice.footer") }
         /// On your device
