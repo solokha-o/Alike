@@ -113,7 +113,9 @@ class DsymIndex:
                         self.index_zip(Path(directory) / name)
 
     def index_zip(self, archive: Path) -> None:
-        target = Path(self.scratch.name) / archive.stem
+        # Every `tools/dsyms` download is `dSYMs.zip`: a directory per archive keeps a
+        # second build's DWARF from overwriting a path the first one's UUID points at.
+        target = Path(tempfile.mkdtemp(prefix=f"{archive.stem}-", dir=self.scratch.name))
         try:
             with zipfile.ZipFile(archive) as bundle:
                 bundle.extractall(target)
