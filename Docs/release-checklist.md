@@ -138,6 +138,11 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 - [ ] `tools/release-check X.Y.Z N` green — version check, bundle validation,
       Release archive, no-upload IPA export.
 - [ ] No leftover debug flags, premium overrides or test endpoints.
+- [ ] The `.xcarchive` of the build being shipped is preserved under
+      `~/Library/Developer/Xcode/Archives` (`tools/release-check` does this unless
+      `ALIKE_PRESERVE_ARCHIVE=0`). Crash reports arrive as MetricKit payloads, and
+      `tools/symbolicate` can only read them with the dSYM of that exact build —
+      an archive that is gone makes that build's crashes unreadable for good.
 - [ ] Widget work: the QA record in `Docs/lock-screen-widget-qa.md` carries this
       release's pass, including the device rows the simulator cannot answer.
 - [ ] A release that adds a feature has decided, in writing, whether the deck
@@ -323,6 +328,8 @@ Manual, in App Store Connect:
 - [ ] Release branch state merged back everywhere it needs to be; `develop`
       green.
 - [ ] Notion release task updated with the submitted version and build.
+- [ ] Crash reports emailed by users (`Alike crash X.Y.Z (N) — …`) go through
+      `tools/symbolicate`; see `Docs/ci-cd.md`, "Crash Reports".
 - [ ] Watch for App Review messages — rejections on a first submission usually
       concern the subscription disclosure or the legal links, both of which are
       evidenced by `Docs/images/review/`.

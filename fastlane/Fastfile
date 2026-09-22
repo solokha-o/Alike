@@ -2,6 +2,8 @@ default_platform(:ios)
 
 require "fileutils"
 require "shellwords"
+require_relative "lib/app_store_api_credentials"
+require_relative "lib/app_store_version_guard"
 
 APP_IDENTIFIER = "com.alike.app"
 REPO_ROOT = File.expand_path("..", __dir__)
@@ -152,32 +154,34 @@ def wait_for_screenshot_checksums_before_verifying
   end
 end
 
+def app_store_api_credentials
+  AppStoreAPICredentials.resolve
+rescue AppStoreAPICredentials::MissingCredential => error
+  UI.user_error!(error.message)
+end
+
 def app_store_api_key
-  key_id = ENV["APP_STORE_CONNECT_KEY_ID"]
-  issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
-  key_filepath = ENV["APP_STORE_CONNECT_API_KEY_PATH"]
-  key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+  app_store_connect_api_key(app_store_api_credentials.action_options)
+end
 
-  UI.user_error!("APP_STORE_CONNECT_KEY_ID is required") if key_id.to_s.empty?
-  UI.user_error!("APP_STORE_CONNECT_ISSUER_ID is required") if issuer_id.to_s.empty?
+# Spaceship has no `is_key_content_base64`, so the credentials object hands it
+# an already-decoded key. See fastlane/lib/app_store_api_credentials.rb.
+def connect_api_login!
+  Spaceship::ConnectAPI.auth(**app_store_api_credentials.spaceship_auth_options)
+end
 
-  options = {
-    key_id: key_id,
-    issuer_id: issuer_id,
-    duration: 1200,
-    in_house: false
-  }
-
-  if !key_filepath.to_s.empty?
-    options[:key_filepath] = key_filepath
-  elsif !key_content.to_s.empty?
-    options[:key_content] = key_content
-    options[:is_key_content_base64] = ENV["APP_STORE_CONNECT_API_KEY_IS_BASE64"] == "true"
-  else
-    UI.user_error!("APP_STORE_CONNECT_API_KEY_PATH or APP_STORE_CONNECT_API_KEY_CONTENT is required")
-  end
-
-  app_store_connect_api_key(options)
+# Reads the version App Store Connect currently has open for editing and fails
+# unless it is exactly the one the caller asked to submit. See
+# fastlane/lib/app_store_version_guard.rb for why this has to happen before
+# deliver rather than inside it.
+def verify_editable_app_store_version!(app_version)
+  connect_api_login!
+  app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+  version = AppStoreVersionGuard.verify!(app: app, requested_version: app_version)
+  UI.message("App Store Connect has #{version.version_string} open for editing; submitting that one.")
+  version
+rescue AppStoreVersionGuard::Mismatch => error
+  UI.user_error!(error.message)
 end
 
 def xcode_provisioning_args
@@ -266,6 +270,39 @@ platform :ios do
     )
 
     UI.success("dSYMs written to #{output_directory}")
+  end
+
+  desc "Attach an already-processed build to the editable App Store version and submit that version to App Review."
+  lane :submit_review do |options|
+    app_version = options[:version].to_s
+    build_number = options[:build].to_s
+    UI.user_error!("version is required, e.g. fastlane submit_review version:1.5.0 build:12") if app_version.empty?
+    UI.user_error!("build is required, e.g. fastlane submit_review version:1.5.0 build:12") if build_number.empty?
+
+    # Metadata, screenshots and the binary each have their own lane and have
+    # already run by this point; this lane only picks the build and presses
+    # Submit. It answers nothing on the developer's behalf: whatever App Store
+    # Connect already holds for export compliance, content rights and IDFA is
+    # what the submission carries, and deliver stops if an answer is missing.
+    # `skip_metadata` does not disable deliver's own version handling: its
+    # `verify_version` calls `ensure_version!` before it looks for the build, so
+    # a wrong `version:` renames the prepared version and leaves it renamed when
+    # the build lookup then fails. Check first, and forbid the write outright.
+    verify_editable_app_store_version!(app_version)
+
+    deliver(
+      api_key: app_store_api_key,
+      app_identifier: APP_IDENTIFIER,
+      app_version: app_version,
+      build_number: build_number,
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      submit_for_review: true,
+      run_precheck_before_submit: false,
+      force: true
+    )
   end
 
   desc "Archive the release scheme and upload the build to TestFlight without review submission."

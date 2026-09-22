@@ -1,0 +1,670 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "diagnostics.prompt.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike closed unexpectedly"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike несподівано закрився"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike se cerró inesperadamente"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike se ha cerrado inesperadamente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike fechou inesperadamente"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike wurde unerwartet beendet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike s’est fermé de façon inattendue"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike si è chiuso in modo imprevisto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is onverwacht gestopt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja Alike nieoczekiwanie się zamknęła"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike beklenmedik şekilde kapandı"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 意外關閉"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم إغلاق Alike بشكل غير متوقع"
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a crash report to the developer? It opens as an email, so you can read it before anything is sent."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати звіт про збій розробнику? Він відкриється як лист, тож ви зможете переглянути його перед надсиланням."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar un informe del fallo al desarrollador? Se abre como un correo, así que puedes leerlo antes de enviarlo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar un informe del fallo al desarrollador? Se abre como un correo, así que puedes leerlo antes de enviarlo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar um relatório da falha ao desenvolvedor? Ele abre como um e-mail, então você pode ler antes de enviar."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absturzbericht an den Entwickler senden? Er wird als E-Mail geöffnet, du kannst ihn also vor dem Senden lesen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer un rapport de plantage au développeur ? Il s’ouvre sous forme d’e-mail, vous pouvez donc le lire avant l’envoi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviare un report dell’arresto anomalo allo sviluppatore? Si apre come e-mail, così puoi leggerlo prima dell’invio."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een crashrapport naar de ontwikkelaar sturen? Het opent als e-mail, zodat je het kunt lezen voordat het wordt verstuurd."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wysłać raport o awarii do twórcy aplikacji? Otworzy się jako e-mail, więc możesz go przeczytać przed wysłaniem."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geliştiriciye bir çökme raporu gönderilsin mi? Rapor bir e-posta olarak açılır, böylece göndermeden önce okuyabilirsiniz."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要將當機報告傳送給開發者嗎？報告會以電子郵件開啟，你可以在傳送前先閱讀。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد إرسال تقرير التعطل إلى المطوّر؟ سيُفتح كرسالة بريد إلكتروني لتتمكن من قراءته قبل الإرسال."
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звіт — це діагностика збою, яку записала iOS: стек викликів, версії застосунку та iOS, модель пристрою і, для деяких збоїв, текст повідомлення про помилку. Alike надсилає його як є, без фільтрування. Фото він не містить."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El informe es el diagnóstico del fallo que registró iOS: la traza, las versiones de la app y de iOS, el modelo de tu dispositivo y, en algunos fallos, el mensaje de error. Alike lo envía tal cual, sin filtrarlo. No contiene fotos."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El informe es el diagnóstico del fallo que registró iOS: la traza, las versiones de la app y de iOS, el modelo de tu dispositivo y, en algunos fallos, el mensaje de error. Alike lo envía tal cual, sin filtrarlo. No contiene fotos."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O relatório é o diagnóstico da falha registrado pelo iOS: o rastreamento, as versões do app e do iOS, o modelo do seu dispositivo e, em algumas falhas, a mensagem de erro. O Alike o envia como está, sem filtrar. Não contém fotos."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Bericht ist die Absturzdiagnose, die iOS aufgezeichnet hat: der Stacktrace, die App- und iOS-Version, dein Gerätemodell und bei manchen Abstürzen die Fehlermeldung. Alike sendet ihn unverändert und ungefiltert. Fotos enthält er nicht."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le rapport est le diagnostic du plantage enregistré par iOS : la trace, les versions de l’app et d’iOS, le modèle de votre appareil et, pour certains plantages, le message d’erreur. Alike l’envoie tel quel, sans filtrage. Il ne contient aucune photo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il report è la diagnostica dell’arresto registrata da iOS: lo stack trace, le versioni dell’app e di iOS, il modello del dispositivo e, per alcuni arresti, il messaggio di errore. Alike lo invia così com’è, senza filtrarlo. Non contiene foto."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het rapport is de crashdiagnose die iOS heeft vastgelegd: de stacktrace, de app- en iOS-versie, je apparaatmodel en bij sommige crashes de foutmelding. Alike verstuurt het ongewijzigd en ongefilterd. Het bevat geen foto’s."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raport to diagnostyka awarii zapisana przez iOS: ślad stosu, wersje aplikacji i iOS, model urządzenia oraz, przy niektórych awariach, komunikat o błędzie. Alike wysyła go bez zmian i bez filtrowania. Nie zawiera zdjęć."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rapor, iOS'un kaydettiği çökme tanılamasıdır: yığın izi, uygulama ve iOS sürümleri, cihaz modeliniz ve bazı çökmelerde hata mesajı. Alike onu filtrelemeden, olduğu gibi gönderir. Fotoğraf içermez."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "報告是 iOS 記錄的當機診斷：堆疊追蹤、App 與 iOS 版本、裝置型號，部分當機還包含錯誤訊息。Alike 會原封不動地寄出，不做過濾。報告不含照片。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التقرير هو تشخيص التعطل الذي سجّله iOS: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز جهازك، وفي بعض حالات التعطل رسالة الخطأ. يرسله Alike كما هو دون تنقيح. ولا يحتوي على صور."
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.send" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Report"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати звіт"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar informe"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar informe"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar relatório"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bericht senden"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer le rapport"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia report"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stuur rapport"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij raport"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raporu Gönder"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳送報告"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إرسال التقرير"
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.notNow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не зараз"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ora"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet nu"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie teraz"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Değil"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在不要"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ليس الآن"
+          }
+        }
+      }
+    },
+    "diagnostics.mail.body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike attached the crash diagnostic iOS recorded on my device, unchanged: the stack trace, the app and iOS versions, the device model and, for some crashes, the error message. It contains no photos."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike додав без змін діагностику збою, яку iOS записала на моєму пристрої: стек викликів, версії застосунку та iOS, модель пристрою і, для деяких збоїв, текст повідомлення про помилку. Фото в ній немає."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike adjuntó sin cambios el diagnóstico del fallo que iOS registró en mi dispositivo: la traza, las versiones de la app y de iOS, el modelo del dispositivo y, en algunos fallos, el mensaje de error. No contiene fotos."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha adjuntado sin cambios el diagnóstico del fallo que iOS registró en mi dispositivo: la traza, las versiones de la app y de iOS, el modelo del dispositivo y, en algunos fallos, el mensaje de error. No contiene fotos."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike anexou, sem alterações, o diagnóstico da falha que o iOS registrou no meu dispositivo: o rastreamento, as versões do app e do iOS, o modelo do dispositivo e, em algumas falhas, a mensagem de erro. Não contém fotos."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hat die Absturzdiagnose, die iOS auf meinem Gerät aufgezeichnet hat, unverändert angehängt: den Stacktrace, die App- und iOS-Version, das Gerätemodell und bei manchen Abstürzen die Fehlermeldung. Sie enthält keine Fotos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a joint tel quel le diagnostic du plantage enregistré par iOS sur mon appareil : la trace, les versions de l’app et d’iOS, le modèle de l’appareil et, pour certains plantages, le message d’erreur. Il ne contient aucune photo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha allegato senza modifiche la diagnostica dell’arresto registrata da iOS sul mio dispositivo: lo stack trace, le versioni dell’app e di iOS, il modello del dispositivo e, per alcuni arresti, il messaggio di errore. Non contiene foto."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft de crashdiagnose die iOS op mijn apparaat vastlegde ongewijzigd bijgevoegd: de stacktrace, de app- en iOS-versie, het apparaatmodel en bij sommige crashes de foutmelding. Er staan geen foto’s in."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike dołączył bez zmian diagnostykę awarii zapisaną przez iOS na moim urządzeniu: ślad stosu, wersje aplikacji i iOS, model urządzenia oraz, przy niektórych awariach, komunikat o błędzie. Nie zawiera zdjęć."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike, iOS'un cihazımda kaydettiği çökme tanılamasını değiştirmeden ekledi: yığın izi, uygulama ve iOS sürümleri, cihaz modeli ve bazı çökmelerde hata mesajı. Fotoğraf içermez."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 原封不動地附上了 iOS 在我的裝置上記錄的當機診斷：堆疊追蹤、App 與 iOS 版本、裝置型號，部分當機還包含錯誤訊息。不含任何照片。"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أرفق Alike دون تعديل تشخيص التعطل الذي سجّله iOS على جهازي: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز الجهاز، وفي بعض حالات التعطل رسالة الخطأ. ولا يحتوي على أي صور."
+          }
+        }
+      }
+    },
+    "diagnostics.prompt.shareFallback" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошту не налаштовано, тому звіт передається через аркуш надсилання. Оберіть там поштовий застосунок і надішліть його на адресу:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ninguna cuenta de Mail configurada, así que el informe se envía por la hoja para compartir. Elige ahí una app de correo y mándalo a:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ninguna cuenta de Mail configurada, así que el informe se envía por la hoja para compartir. Elige ahí una app de correo y mándalo a:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há uma conta do Mail configurada, então o relatório passa pela folha de compartilhamento. Escolha um app de e-mail ali e envie para:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist kein Mail-Account eingerichtet, daher läuft der Bericht über das Teilen-Menü. Wähle dort eine Mail-App und sende ihn an:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun compte Mail n’est configuré : le rapport passe donc par la feuille de partage. Choisissez-y une app de messagerie et envoyez-le à :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun account Mail è configurato, quindi il report passa dal pannello di condivisione. Scegli lì un’app di posta e invialo a:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is geen Mail-account ingesteld, dus het rapport gaat via het deelvenster. Kies daar een mailapp en stuur het naar:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie skonfigurowano konta Mail, więc raport przechodzi przez arkusz udostępniania. Wybierz tam aplikację pocztową i wyślij go na adres:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mail hesabı ayarlanmadığı için rapor paylaşım sayfasından gidiyor. Orada bir e-posta uygulaması seçip şu adrese gönder:"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "裝置尚未設定「郵件」帳號，因此報告會透過分享選單傳送。請在其中選擇郵件 App，並寄到："
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يتم إعداد حساب بريد، لذا يمر التقرير عبر ورقة المشاركة. اختر تطبيق بريد هناك وأرسله إلى:"
+          }
+        }
+      }
+    },
+    "diagnostics.mail.shareRecipient" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send this crash report to:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надішліть цей звіт про збій на адресу:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía este informe de fallo a:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía este informe de fallo a:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envie este relatório de falha para:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sende diesen Absturzbericht an:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyez ce rapport de plantage à :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia questo report di arresto a:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stuur dit crashrapport naar:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij ten raport o awarii na adres:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu çökme raporunu şu adrese gönder:"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請將這份當機報告寄到："
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أرسل تقرير التعطل هذا إلى:"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

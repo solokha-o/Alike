@@ -13,6 +13,7 @@
 		531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6392F2929E900DAB1E2 /* Scanner */; };
 		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
 		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
+		D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */ = {isa = PBXBuildFile; productRef = D1A60C0F2F90000100DAB1E2 /* Diagnostics */; };
 		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
 		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
@@ -86,6 +87,7 @@
 				7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */,
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
+				D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */,
 				9F1D0A001000000000000020 /* WidgetSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +174,7 @@
 				7A1B00072F30000100DAB1E2 /* Cleanup */,
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
+				D1A60C0F2F90000100DAB1E2 /* Diagnostics */,
 				53458A542F29455F00D1CCCC /* DesignSystem */,
 				53458A572F29457200D1CCCC /* PhotoAnalysis */,
 				53458A5A2F29457F00D1CCCC /* Storage */,
@@ -274,6 +277,7 @@
 				7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */,
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
+				D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */,
 				5A19A10232B8A5D2008C44A1 /* XCLocalSwiftPackageReference "../Packages/NavigationKit" */,
 				53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */,
 				53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */,
@@ -346,11 +350,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -366,11 +370,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -508,7 +512,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -522,7 +526,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -547,7 +551,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -561,7 +565,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -584,7 +588,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -595,7 +599,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -619,7 +623,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -630,7 +634,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -715,6 +719,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Launch;
 		};
+		D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Diagnostics;
+		};
 		53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/DesignSystem;
@@ -769,6 +777,10 @@
 		531BB63F2F292A8100DAB1E2 /* Launch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Launch;
+		};
+		D1A60C0F2F90000100DAB1E2 /* Diagnostics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Diagnostics;
 		};
 		53458A542F29455F00D1CCCC /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;

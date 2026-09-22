@@ -20,6 +20,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🕓 **History and insights** — every completed cleanup recorded locally, grouped by month
 - ⏰ **Cleanup reminders** — optional local notifications, on your own schedule *(custom schedules are Pro)*
 - 🧩 **Widgets** — reclaimable space and a library overview on the home screen, and three Lock Screen sizes — a line above the clock, a card, and a ring — all reading the same App Group snapshot, all free
+- 🩺 **Crash reports you send yourself** — after an unexpected close, Alike asks once whether to email the MetricKit report; you read the mail first, and Alike itself sends nothing
 - 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
 - 📊 **Adaptive grid** — 1 to 2 columns on iPhone, remembered between screens and launches
@@ -29,14 +30,16 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.5.0
+## 🆕 What ships in 1.6.0
 
-The widget leaves the home screen. What this release adds:
+A crash no longer disappears without a trace. What this release adds:
 
-- **Lock Screen widgets.** `AlikeStatusWidget` gains all three accessory families: `accessoryInline` puts one fact above the clock, `accessoryRectangular` carries the figure and the next step, and `accessoryCircular` draws the share of the library you can clear — or the share of the review already done — as a ring. Same widget kind, same snapshot, same `alike://` routes; StandBy shows them too, and they are free.
-- **`libraryTotalBytes` in the snapshot.** The ring needs a denominator, so a scan's category refresh now sums the whole library on the same `AssetByteSize` basis as the reclaimable estimate. The field is optional and the snapshot's schema version is unchanged: a payload written by 1.4.x still decodes, and its circular widget simply draws no ring.
+- **Crash reports, sent by the user.** A new `Diagnostics` package subscribes to MetricKit and stores each `MXCrashDiagnostic` payload untouched in Application Support, keeping the newest twenty. On the next calm launch — never mid-scan, mid-review or on the paywall — Alike asks once: send a report, or not now. Sending opens the mail composer with the payload attached and the address filled in; without a Mail account the share sheet takes over and the address is shown on screen and written into the message. Either answer is final for that payload.
+- **`tools/symbolicate`.** Turns an emailed payload into a readable stack: it matches the binary UUID to a local archive's dSYM with `dwarfdump --uuid`, runs `atos`, and fails loudly when the dSYM is missing rather than printing raw offsets.
 
-Earlier releases: 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
+Nothing leaves the device without the user's own action, and the app still opens no network connection, so the privacy label stays "Data Not Collected".
+
+Earlier releases: 1.5.0 put the widget on the Lock Screen in three sizes and added `libraryTotalBytes` to the snapshot; 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
 
 ## 🔒 Privacy
 
@@ -215,7 +218,8 @@ tools/full
 `tools/quick` runs whitespace checks, the four package suites above, and App Store
 metadata bundle validation. `tools/full` adds every remaining package and the app
 compile gate. Release preflight, metadata upload, and TestFlight upload live behind
-`tools/release-check`, `tools/upload`, and `tools/upload-build`.
+`tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`
+turns a crash report a user emailed into a readable stack.
 
 See [`Docs/ci-cd.md`](Docs/ci-cd.md) for the full runbook, required environment
 variables, and the safety rules that keep uploads deliberate.

@@ -40,9 +40,12 @@ QUICK_PACKAGES=(
 # WidgetSupport: SwiftPM does not compile the `.xcstrings` catalog either, so
 # every lookup returns its own key and the composition suites fail on strings
 # that are in fact present — eleven issues that say nothing about the code.
+# Diagnostics: same `.xcstrings` reason as WidgetSupport, and its MetricKit and
+# MessageUI code only exists on iOS, so a macOS `swift test` would cover none of it.
 SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
   "WidgetSupport"
+  "Diagnostics"
 )
 
 # Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
@@ -432,6 +435,7 @@ run_metadata_validation() {
   else
     run_step "metadata bundle generate placeholders" python3 tools/prepare_app_store_upload_bundle.py --allow-placeholder-urls
   fi
+  run_step "symbolicate script tests" python3 tools/symbolicate_crash_payload_test.py
 }
 
 resolve_build_destination() {

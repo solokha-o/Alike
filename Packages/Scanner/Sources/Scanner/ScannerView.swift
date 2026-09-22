@@ -14,6 +14,7 @@ public struct ScannerView: View {
     @State private var isGuidePresented = false
     @Binding private var sensitivity: SensitivityLevel
     @Binding private var shouldStartScan: Bool
+    @Binding private var isModalPresented: Bool
     private let subscriptionStore: SubscriptionStore?
     private let onOpenCleanup: () -> Void
 
@@ -21,12 +22,14 @@ public struct ScannerView: View {
         workspace: CleanupWorkspaceModel,
         sensitivity: Binding<SensitivityLevel>,
         shouldStartScan: Binding<Bool> = .constant(false),
+        isModalPresented: Binding<Bool> = .constant(false),
         subscriptionStore: SubscriptionStore? = nil,
         onOpenCleanup: @escaping () -> Void = {},
         viewModel: ScannerViewModel? = nil
     ) {
         self._sensitivity = sensitivity
         self._shouldStartScan = shouldStartScan
+        self._isModalPresented = isModalPresented
         self.subscriptionStore = subscriptionStore
         self.onOpenCleanup = onOpenCleanup
         self._viewModel = State(initialValue: viewModel ?? ScannerViewModel(
@@ -70,6 +73,11 @@ public struct ScannerView: View {
                 await startScan()
                 shouldStartScan = false
             }
+        }
+        // Reported outwards so the app never stacks one of its own sheets on top of a
+        // paywall or the guide; both live in local state the root cannot see.
+        .onChange(of: paywall != nil || isGuidePresented, initial: true) { _, presented in
+            isModalPresented = presented
         }
         .sheet(item: $paywall) { paywall in
             SubscriptionPaywallView(context: paywall.context, store: subscriptionStore)

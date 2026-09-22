@@ -11,24 +11,20 @@ is the core permission. Please grant "Full Access"; with "Limited Access",
 select three or four shots of one subject, or the scan reports no groups.
 
 The permission is also used to write. Enhancing a best shot writes a
-non-destructive adjustment through PHContentEditingOutput, stamped
-com.alike.autoEnhance: iOS keeps the original, no copy is created, and the
-edit reverts from either app. It is never automatic: previewed first, written
-only on Apply, and not offered for video or in Limited Access.
+non-destructive PHContentEditingOutput adjustment: iOS keeps the original, no
+copy is made, and it reverts from either app. It is never automatic: previewed
+first, written only on Apply, not offered for video or in Limited Access.
 
 Notification permission is requested only for the optional cleanup reminder.
 
 WIDGETS, HOME SCREEN AND LOCK SCREEN
-Two widgets, both free. One shows reclaimable space and how far through a
-half-finished review you are, with a tap back into it; the other lists similar
-groups, screenshots and blurred photos, each row opening it. New in 1.5.0 the
-first also offers three Lock Screen sizes, added from the Lock Screen's own
-Customize: a line above the clock, a card, a ring. StandBy shows them too.
-
-They read a JSON snapshot the app writes into a shared App Group — counts,
+Two free widgets. One shows reclaimable space and review progress; the other
+lists similar groups, screenshots and blurred photos. The first also comes in
+three Lock Screen sizes, added from the Lock Screen's own Customize, and
+StandBy shows them. They read a JSON snapshot in a shared App Group — counts,
 byte totals and a date, never image data — and make no network requests. Taps
-open `alike://` links; two library rows are Pro, so tapping one on a free
-account reaches that category's paywall, which is intended.
+open `alike://` links; two library rows are Pro, so on a free account they
+reach that category's paywall, which is intended.
 
 HOW TO EXERCISE THE APP
 1. Step through the introduction and grant photo access in the iOS alert.
@@ -38,29 +34,30 @@ HOW TO EXERCISE THE APP
    compare, Apply, then Revert to original.
 4. Tap the delete action and confirm. iOS shows its own confirmation.
 
-ON-DEVICE ANALYSIS
-All similarity analysis runs on device with the Apple Vision framework. No
-photo, thumbnail, feature print or result leaves the device, and the app
-makes no network requests except StoreKit's.
+CRASH REPORTS, NEW IN 1.6.0
+Alike keeps MetricKit crash payloads on the device. Only after a real crash,
+the next calm launch shows one sheet, "Alike closed unexpectedly": Send
+Report or Not Now. Send Report opens an addressed mail with the payload
+attached (the share sheet without Mail); nothing goes unless the user sends
+it. It asks once per crash, so a normal review will not see it.
 
-BEST SHOT LEARNS FROM YOUR OWN PICKS
-Overriding the suggested best shot stores the difference between the two
-photos' quality signals — derived numbers, not the photos — to nudge the
-ranking. Nothing is collected or sent; the values live in UserDefaults,
-Settings resets them, and Delete Alike Data erases them.
-App Privacy stays "Data Not Collected".
+ON-DEVICE, NOTHING COLLECTED
+Analysis runs on device with Vision. No photo, feature print or result
+leaves the device, and the only network requests are StoreKit's. Overriding a
+best shot stores derived numbers in UserDefaults to tune the ranking. App
+Privacy stays "Data Not Collected": all that can leave is a crash report the
+user chooses to email from their own mail account.
 
 DELETION IS ALWAYS CONFIRMED
-Alike never deletes anything on its own. Every cleanup needs confirmation in
-the app, iOS then presents its own, and the photos move to Recently Deleted
-for about 30 days.
+Every cleanup is confirmed in the app and then by iOS, and photos move to
+Recently Deleted for about 30 days.
 
 SUBSCRIPTION
 Alike Pro is an auto-renewable subscription with yearly and monthly plans.
-The free tier allows 3 scans per month, cleanup of one photo at a time,
-guided review with Best Shot, one-tap enhancement, the Best Shot learning and
-every widget, on the home screen and on the Lock Screen. Pro adds unlimited
-scans, batch, screenshot and blurred cleanup, filters and reminders.
+The free tier allows 3 scans a month, one-photo-at-a-time cleanup, guided
+review with Best Shot, enhancement, Best Shot learning and every widget. Pro
+adds unlimited scans, batch, screenshot and blurred cleanup, filters and
+reminders.
 
 The paywall is reachable from the Scanner tab, a group's Details view and
 Settings. It states the plan length, automatic renewal unless cancelled at
@@ -72,6 +69,6 @@ the Terms name Apple's Standard EULA.
 LANGUAGES AND DATA DELETION
 The app, its legal and support pages and the permission alert are in twelve
 languages; the listing, thirteen. Settings → Data & Privacy → Delete Alike
-Data erases all scan results, cleanup history, Best Shot learning and
-preferences on the device, and touches neither the photo library, the
+Data erases scan results, cleanup history, Best Shot learning, stored crash
+reports and preferences, and touches neither the photo library, the
 permission, nor the subscription.
