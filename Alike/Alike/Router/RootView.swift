@@ -19,6 +19,7 @@ import PhotoAnalysis
 import Purchases
 import PurchasesUI
 import WidgetSupport
+import Diagnostics
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -85,6 +86,7 @@ struct MainTabView: View {
     @State private var ratingPrompt = RatingPromptCoordinator(
         repository: UserDefaultsRatingPromptHistoryRepository()
     )
+    @State private var crashPrompt = CrashReportPromptCoordinator()
 
     init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
         self.onDataDeleted = onDataDeleted
@@ -161,6 +163,20 @@ struct MainTabView: View {
         .onChange(of: pendingWidgetDestination.destination, initial: true) {
             followPendingWidgetDestination()
         }
+        .task {
+            await crashPrompt.observeStore()
+        }
+        .task(id: crashPromptSignature) {
+            // Let the launch settle first; the delay and the repeated `isBusy` reads
+            // follow the rating prompt in `CleanupView`.
+            guard !isCrashPromptBlocked else { return }
+            try? await Task.sleep(for: Self.crashPromptDelay)
+            guard !Task.isCancelled else { return }
+            await crashPrompt.evaluate(isBusy: { isCrashPromptBlocked })
+        }
+        .sheet(item: Bindable(crashPrompt).presented) { prompt in
+            CrashReportPromptSheet(prompt: prompt, coordinator: crashPrompt)
+        }
         .alert(AlikeL10n.Rescan.title, isPresented: Bindable(tabManager).needsRescan) {
             Button(AlikeL10n.Rescan.later, role: .cancel) {
                 tabManager.dismissRescan()
@@ -171,6 +187,30 @@ struct MainTabView: View {
         } message: {
             Text(AlikeL10n.Rescan.message)
         }
+    }
+
+    // MARK: - Crash report prompt
+
+    private static let crashPromptDelay: Duration = .milliseconds(1_500)
+
+    /// `true` unless the calm scanner home owns the screen. The crash prompt never
+    /// interrupts a scan, a paywall, the guide, an alert, a widget deep link or another
+    /// tab — it waits for the next quiet moment instead.
+    private var isCrashPromptBlocked: Bool {
+        tabManager.selectedTab != .scanner || tabManager.isScannerModalPresented
+            || tabManager.needsRescan || tabManager.shouldStartScan
+            || cleanupWorkspace.scanOperation != .idle || scenePhase != .active
+            || pendingWidgetDestination.destination != nil
+    }
+
+    /// Re-evaluates when the screen frees up or a new payload lands.
+    private var crashPromptSignature: CrashPromptSignature {
+        CrashPromptSignature(isBlocked: isCrashPromptBlocked, revision: crashPrompt.revision)
+    }
+
+    private struct CrashPromptSignature: Equatable {
+        let isBlocked: Bool
+        let revision: Int
     }
 
     @ViewBuilder
@@ -203,6 +243,7 @@ struct MainTabView: View {
                 workspace: cleanupWorkspace,
                 sensitivity: sensitivity,
                 shouldStartScan: Bindable(tabManager).shouldStartScan,
+                isModalPresented: Bindable(tabManager).isScannerModalPresented,
                 subscriptionStore: subscriptionStore,
                 onOpenCleanup: {
                     tabManager.navigateToCleanup()

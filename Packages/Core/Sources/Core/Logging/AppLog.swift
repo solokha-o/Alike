@@ -10,6 +10,7 @@ public enum AppLog {
     public static let clustering = Logger(subsystem: subsystem, category: "clustering")
     public static let storage = Logger(subsystem: subsystem, category: "storage")
     public static let ui = Logger(subsystem: subsystem, category: "ui")
+    public static let diagnostics = Logger(subsystem: subsystem, category: "diagnostics")
 
     public enum Event {
         case start, finish, progress, cache, photokit, vision, clustering, storage, ui, error

@@ -13,6 +13,7 @@
 		531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB6392F2929E900DAB1E2 /* Scanner */; };
 		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
 		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
+		D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */ = {isa = PBXBuildFile; productRef = D1A60C0F2F90000100DAB1E2 /* Diagnostics */; };
 		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
 		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
@@ -86,6 +87,7 @@
 				7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */,
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
+				D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */,
 				9F1D0A001000000000000020 /* WidgetSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +174,7 @@
 				7A1B00072F30000100DAB1E2 /* Cleanup */,
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
+				D1A60C0F2F90000100DAB1E2 /* Diagnostics */,
 				53458A542F29455F00D1CCCC /* DesignSystem */,
 				53458A572F29457200D1CCCC /* PhotoAnalysis */,
 				53458A5A2F29457F00D1CCCC /* Storage */,
@@ -274,6 +277,7 @@
 				7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */,
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
+				D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */,
 				5A19A10232B8A5D2008C44A1 /* XCLocalSwiftPackageReference "../Packages/NavigationKit" */,
 				53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */,
 				53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */,
@@ -715,6 +719,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Launch;
 		};
+		D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Diagnostics;
+		};
 		53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/DesignSystem;
@@ -769,6 +777,10 @@
 		531BB63F2F292A8100DAB1E2 /* Launch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Launch;
+		};
+		D1A60C0F2F90000100DAB1E2 /* Diagnostics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Diagnostics;
 		};
 		53458A542F29455F00D1CCCC /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;

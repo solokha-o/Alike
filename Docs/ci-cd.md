@@ -19,6 +19,8 @@ Daily commands are the short wrappers in `tools/`:
 | Upload text only | `tools/text` | `tools/local_cd.sh upload-text-metadata` |
 | Upload screenshots only | `tools/upload-screenshots` | `tools/local_cd.sh upload-screenshots` |
 | Upload TestFlight build | `tools/upload-build` | `tools/local_cd.sh upload-testflight --version X.Y.Z --build N` |
+| Download Apple's dSYMs for a build | `tools/dsyms` | `fastlane ios dsyms version:X.Y.Z build_number:N` |
+| Read a crash report a user emailed | `tools/symbolicate <payload.json>` | `tools/symbolicate_crash_payload.py` |
 
 ## What The Shortcuts Do
 
@@ -300,6 +302,40 @@ It does not:
 - notify external testers
 - create or push tags
 - publish a release
+
+## Crash Reports
+
+Alike collects crashes itself, through MetricKit, because Apple's pipeline does not
+deliver them: App Store Connect has no crash-log endpoint, and Xcode Organizer only
+receives logs from users who opted into sharing with developers. Nothing is uploaded.
+After a crash the app asks once, on the calm scanner home, and the user sends the
+report from their own Mail (or the share sheet) as `alike-crash-N.json`.
+
+### `tools/symbolicate <payload.json>`
+
+The payload holds binary UUIDs and offsets, not function names. This turns it into a
+readable stack:
+
+```sh
+tools/symbolicate ~/Downloads/alike-crash-1.json
+```
+
+It finds the dSYM with the payload's UUID — Spotlight first, then `dwarfdump --uuid`
+over `$ALIKE_XCODE_ARCHIVES_ROOT` (default `~/Library/Developer/Xcode/Archives`, where
+`tools/release-check` preserves every archive), `build/fastlane/AlikeRelease.xcarchive`
+and `build/fastlane/dsyms/` (what `tools/dsyms X.Y.Z N` downloads; zips are unpacked) —
+and runs `atos`. `--dsym-root DIR` adds a search location.
+
+System frames stay as offsets. A missing dSYM for the `Alike` binary is exit code 2
+with the UUID and the searched locations, never a silently raw stack: **the archive
+of every shipped build is the only thing that makes its crashes readable**, so
+`ALIKE_PRESERVE_ARCHIVE=0` is not for release builds.
+
+Known blind spots, by design of MetricKit: out-of-memory (jetsam) terminations are not
+crashes and never appear; a crash is lost if the app is not opened again, or if it
+happens before the subscriber registers in `AlikeApp.init`; the widget extension's
+process is not covered. Delivery is once a day, on a later launch. In a Debug build,
+Settings → Crash Reports lists the stored payloads and can inject a fixture.
 
 ## Schemes
 

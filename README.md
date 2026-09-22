@@ -215,7 +215,8 @@ tools/full
 `tools/quick` runs whitespace checks, the four package suites above, and App Store
 metadata bundle validation. `tools/full` adds every remaining package and the app
 compile gate. Release preflight, metadata upload, and TestFlight upload live behind
-`tools/release-check`, `tools/upload`, and `tools/upload-build`.
+`tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`
+turns a crash report a user emailed into a readable stack.
 
 See [`Docs/ci-cd.md`](Docs/ci-cd.md) for the full runbook, required environment
 variables, and the safety rules that keep uploads deliberate.

@@ -18,13 +18,16 @@ Usage:
   tools/text
   tools/upload-build [X.Y.Z] [N]
   tools/upload-screenshots
+  tools/dsyms [X.Y.Z] [N]
+  tools/symbolicate <payload.json> [--dsym-root DIR]
 
 Behavior:
   - Loads .env automatically when present. Disable with ALIKE_NO_ENV=1.
   - Defaults LANG/LC_ALL to en_US.UTF-8 when neither is already UTF-8; fastlane requires it.
   - Uses CLANG_MODULE_CACHE_PATH=/private/tmp/alike-local-ci-clang-cache by default.
   - Upload shortcuts ask for interactive confirmation unless ALIKE_ASSUME_YES=1.
-  - release-check and upload-build infer version/build from project.pbxproj when omitted.
+  - release-check, upload-build and dsyms infer version/build from project.pbxproj when omitted.
+  - symbolicate turns a MetricKit crash payload into a readable stack; it needs the dSYM of that exact build.
 USAGE
 }
 
@@ -167,6 +170,14 @@ run_dsyms() {
   exec bundle exec fastlane ios dsyms version:"$RESOLVED_VERSION" build_number:"$RESOLVED_BUILD"
 }
 
+run_symbolicate() {
+  # atos and dwarfdump come from the selected Xcode, not from the Command Line Tools.
+  # shellcheck source=tools/xcode-env.sh
+  source "$ROOT_DIR/tools/xcode-env.sh"
+  ensure_developer_dir
+  exec python3 "$ROOT_DIR/tools/symbolicate_crash_payload.py" "$@"
+}
+
 run_upload_screenshots() {
   load_env_if_present
   confirm_upload "Upload screenshots to App Store Connect."
@@ -208,6 +219,10 @@ main() {
     dsyms)
       shift
       run_dsyms "${1:-}" "${2:-}"
+      ;;
+    symbolicate)
+      shift
+      run_symbolicate "$@"
       ;;
     -h|--help|help|"")
       usage
