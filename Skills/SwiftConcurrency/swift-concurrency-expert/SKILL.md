@@ -35,3 +35,4 @@ Common fixes:
 - See `references/swift-6-2-concurrency.md` for Swift 6.2 changes, patterns, and examples.
 - See `references/approachable-concurrency.md` when the project is opted into approachable concurrency mode.
 - See `references/swiftui-concurrency-tour-wwdc.md` for SwiftUI-specific concurrency guidance.
+- See `references/swiftui-offmain-layout-isolation-trap.md` for an `EXC_BREAKPOINT` in `_swift_task_checkIsolatedSwift` on a background thread under `ForEachState.item`, which happens when SwiftUI measures a `ForEach` inside `ViewThatFits` or a `.hidden()` reservation.

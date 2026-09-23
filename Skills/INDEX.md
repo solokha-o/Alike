@@ -33,7 +33,7 @@ request needs that extra depth.
 | `Storage/persisted-data-evolution` | Core Data model edits, `UserDefaults` keys, `Codable`/`Data` payload changes, migration safety for users with existing data | Pair with `External/core-data-expert` only for mapping models or heavyweight migration depth | No |
 | `SwiftConcurrency/app-store-changelog` | App Store “What’s New”, release notes from git history/tags | No | No |
 | `SwiftConcurrency/gh-issue-fix-flow` | Fix a GitHub issue end-to-end with `gh`, validation, commit, push | Pair with GitHub plugin/CLI only when issue access is needed | No |
-| `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state, or add debug-only app access such as premium overrides and feature flags | Pair with Build iOS tools when available | No |
+| `SwiftConcurrency/ios-debugger-agent` | Build/run/debug on iOS Simulator, inspect UI/logs/runtime state, add debug-only app access such as premium overrides and feature flags, or triage an App Store crash from Xcode Organizer (`references/organizer-crash-triage.md`) | Pair with Build iOS tools when available | No |
 | `SwiftConcurrency/macos-spm-app-packaging` | SwiftPM macOS app scaffold/build/package/sign/notarize | Pair with Build macOS tools only for packaging/signing depth | No |
 | `SwiftConcurrency/swift-concurrency-expert` | Local Swift concurrency review/fixes, actors, `@MainActor`, Sendable | Use external concurrency only for deeper migration/diagnostic depth | No |
 | `SwiftConcurrency/swiftui-liquid-glass` | iOS 26+ SwiftUI Liquid Glass implementation/review | Pair with SwiftUI external only for latest API uncertainty | No |
