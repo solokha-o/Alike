@@ -261,27 +261,49 @@ struct ClusterReviewSummaryCard: View {
         )
     }
 
+    /// Reserved slots are explicit views, not a `ForEach`: SwiftUI can resolve
+    /// a `ForEach` body off the main thread during async layout, where its
+    /// main-actor isolation check traps. See
+    /// `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md`.
     private var selectionSummaryLabel: some View {
-        ZStack(alignment: .topLeading) {
-            ForEach(Self.reservedSelectionCounts(assetCount: assetCount), id: \.self) { count in
-                // Both wordings are reserved so finishing the review never
-                // reflows the card around the photo grid.
-                ForEach([false, true], id: \.self) { confirmed in
-                    selectionSummaryText(
-                        selectionSummary(
-                            selectedCount: count,
-                            estimatedSavingsText: maximumEstimatedSavingsText,
-                            isReviewConfirmed: confirmed
-                        )
-                    )
-                    .hidden()
-                    .accessibilityHidden(true)
-                }
+        let reservedCounts = Self.reservedSelectionCounts(assetCount: assetCount)
+        let reservedMaximum = reservedCounts.last ?? 0
+
+        return ZStack(alignment: .topLeading) {
+            reservedSelectionSlot(count: 0)
+
+            if reservedCounts.contains(1) {
+                reservedSelectionSlot(count: 1)
+            }
+
+            if reservedMaximum > 1 {
+                reservedSelectionSlot(count: reservedMaximum)
             }
 
             selectionSummaryText(selectionSummary)
                 .foregroundStyle(selectedCount > 0 ? Color.accent : Color.secondary)
         }
+    }
+
+    /// Both wordings are reserved so finishing the review never reflows the
+    /// card around the photo grid.
+    private func reservedSelectionSlot(count: Int) -> some View {
+        ZStack(alignment: .topLeading) {
+            reservedSelectionText(count: count, isReviewConfirmed: false)
+            reservedSelectionText(count: count, isReviewConfirmed: true)
+        }
+    }
+
+    private func reservedSelectionText(count: Int, isReviewConfirmed: Bool) -> some View {
+        selectionSummaryText(
+            selectionSummary(
+                selectedCount: count,
+                estimatedSavingsText: maximumEstimatedSavingsText,
+                isReviewConfirmed: isReviewConfirmed
+            )
+        )
+        .hidden()
+        .accessibilityHidden(true)
     }
 
     private func selectionSummaryText(_ text: String) -> some View {
@@ -400,14 +422,14 @@ struct ClusterReviewSummaryCard: View {
 
     private var statusLabel: some View {
         ZStack(alignment: .leading) {
-            ForEach(Self.reservedReviewStatuses, id: \.rawValue) { status in
-                statusContent(
-                    title: statusTitle(for: status),
-                    iconName: statusIconName(for: status)
-                )
-                .hidden()
-                .accessibilityHidden(true)
-            }
+            // Explicit slots, not a `ForEach`: `ViewThatFits` in `summary`
+            // measures this label off the main thread, where a `ForEach`
+            // body trips its main-actor isolation check (Organizer point
+            // sq7WDHJt-BgHYvLVs5W7_).
+            reservedStatusSlot(.notReviewed)
+            reservedStatusSlot(.needsReReview)
+            reservedStatusSlot(.inReview)
+            reservedStatusSlot(.reviewed)
 
             statusContent(title: statusTitle, iconName: statusIconName)
         }
@@ -417,12 +439,21 @@ struct ClusterReviewSummaryCard: View {
         .accessibilityHint(Text(DetailsL10n.ClusterReviewSummaryCard.currentCleanupReviewStatus))
     }
 
+    /// Every status `statusLabel` reserves a slot for. Keep in step with the
+    /// explicit `reservedStatusSlot` calls there; a new case also fails to
+    /// compile in `statusTitle(for:)` and `statusIconName(for:)`.
     static let reservedReviewStatuses: [ClusterReviewStatus] = [
         .notReviewed,
         .needsReReview,
         .inReview,
         .reviewed
     ]
+
+    private func reservedStatusSlot(_ status: ClusterReviewStatus) -> some View {
+        statusContent(title: statusTitle(for: status), iconName: statusIconName(for: status))
+            .hidden()
+            .accessibilityHidden(true)
+    }
 
     private func statusContent(title: String, iconName: String) -> some View {
         HStack(spacing: Spacing.xxSmall) {

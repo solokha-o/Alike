@@ -138,6 +138,7 @@ init(dependency: Dependency) {
 - Prefer small, explicit helpers over large conditional blocks.
 - Keep computed view builders below `body` and non-view computed vars above `init`.
 - For MV-first guidance and rationale, see `references/mv-patterns.md`.
+- Moving a subview into its own `View` type does not change its actor isolation. It does not fix a main-actor isolation trap in a `ForEach` that SwiftUI measures off the main thread. See `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md`.
 
 ## Large-view handling
 

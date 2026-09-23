@@ -23,6 +23,7 @@ description: Adaptive UI layout guidance for SwiftUI apps across iPhone/iPad siz
 2) Pick adaptation strategy:
    - Use size classes for major layout splits (compact/regular).
    - Use ViewThatFits or custom Layout for component-level adaptation.
+     SwiftUI can measure `ViewThatFits` candidates off the main thread, so keep them static: no `ForEach` or other closure-holding containers inside them. See `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md`.
    - Use Dynamic Type for text scaling and spacing adjustments.
 3) Define metrics:
    - Create a metrics struct + factory (inputs: size class, dynamic type, optional container size).

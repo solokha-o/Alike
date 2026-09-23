@@ -36,17 +36,23 @@ struct ScreenshotCleanupSummaryCard: View {
         category.summary(count: assetCount)
     }
 
+    /// Reserved slots are explicit views, not a `ForEach`: SwiftUI can resolve
+    /// a `ForEach` body off the main thread during async layout, where its
+    /// main-actor isolation check traps. See
+    /// `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md`.
     private var selectionSummary: some View {
-        ZStack(alignment: .topLeading) {
-            ForEach(Self.reservedSelectionCounts(assetCount: assetCount), id: \.self) { count in
-                selectionSummaryText(
-                    savingsText(
-                        selectedCount: count,
-                        estimatedSavingsText: maximumEstimatedSavingsText
-                    )
-                )
-                .hidden()
-                .accessibilityHidden(true)
+        let reservedCounts = Self.reservedSelectionCounts(assetCount: assetCount)
+        let reservedMaximum = reservedCounts.last ?? 0
+
+        return ZStack(alignment: .topLeading) {
+            reservedSelectionText(count: 0)
+
+            if reservedCounts.contains(1) {
+                reservedSelectionText(count: 1)
+            }
+
+            if reservedMaximum > 1 {
+                reservedSelectionText(count: reservedMaximum)
             }
 
             if selectedCount > 0 {
@@ -60,6 +66,17 @@ struct ScreenshotCleanupSummaryCard: View {
             }
         }
         .animation(nil, value: selectedCount)
+    }
+
+    private func reservedSelectionText(count: Int) -> some View {
+        selectionSummaryText(
+            savingsText(
+                selectedCount: count,
+                estimatedSavingsText: maximumEstimatedSavingsText
+            )
+        )
+        .hidden()
+        .accessibilityHidden(true)
     }
 
     private func selectionSummaryText(_ text: String) -> some View {
