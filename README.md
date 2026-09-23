@@ -30,16 +30,14 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.6.0
+## 🆕 What ships in 1.6.1
 
-A crash no longer disappears without a trace. What this release adds:
+A patch release with two fixes:
 
-- **Crash reports, sent by the user.** A new `Diagnostics` package subscribes to MetricKit and stores each `MXCrashDiagnostic` payload untouched in Application Support, keeping the newest twenty. On the next calm launch — never mid-scan, mid-review or on the paywall — Alike asks once: send a report, or not now. Sending opens the mail composer with the payload attached and the address filled in; without a Mail account the share sheet takes over and the address is shown on screen and written into the message. Either answer is final for that payload.
-- **`tools/symbolicate`.** Turns an emailed payload into a readable stack: it matches the binary UUID to a local archive's dSYM with `dwarfdump --uuid`, runs `atos`, and fails loudly when the dSYM is missing rather than printing raw offsets.
+- **The group summary card no longer crashes.** The review status and selection summaries reserved their size with a `ForEach`; in Swift 6 mode its closure inherits the view's main-actor isolation, and iOS 26 lays out `ViewThatFits` off the main thread, so the runtime check stopped the app. The reservations are now explicit views, with the same sizes.
+- **Delete Alike Data wins over a running scan.** A scan cancelled by the deletion could suspend after its identity check and then write a failed state over the freshly reset workspace. The scan now settles its state before awaiting the progress relay's cancellation.
 
-Nothing leaves the device without the user's own action, and the app still opens no network connection, so the privacy label stays "Data Not Collected".
-
-Earlier releases: 1.5.0 put the widget on the Lock Screen in three sizes and added `libraryTotalBytes` to the snapshot; 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
+Earlier releases: 1.6.0 added crash reports the user sends themselves — MetricKit payloads kept on the device, one prompt per crash, sent by the user's own mail — and the app's first privacy manifest; 1.5.0 put the widget on the Lock Screen in three sizes and added `libraryTotalBytes` to the snapshot; 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
 
 ## 🔒 Privacy
 
