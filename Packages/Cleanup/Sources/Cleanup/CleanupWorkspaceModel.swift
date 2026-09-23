@@ -434,24 +434,30 @@ private extension CleanupWorkspaceModel {
         }
         scanTask = task
 
+        // Each branch settles the workspace state before its only suspension
+        // point. Awaiting the relay first would let `prepareForDataDeletion`
+        // reset the workspace in that gap, and this scan would then write its
+        // stale outcome over the reset.
         do {
             let summary = try await task.value
             if activeScan?.id == scanID {
-                await progressRelay?.cancel()
+                let finishedRelay = progressRelay
                 progressRelay = nil
                 scanTask = nil
                 activeScan = nil
                 scanOperation = .idle
+                await finishedRelay?.cancel()
             }
             return ScanOutcome(summary: summary, joinedInFlightOperation: false)
         } catch {
             if activeScan?.id == scanID {
-                await progressRelay?.cancel()
+                let finishedRelay = progressRelay
                 progressRelay = nil
                 scanTask = nil
                 let failurePurpose = activeScan?.purpose ?? purpose
                 activeScan = nil
                 scanOperation = .failed(message: error.localizedDescription, purpose: failurePurpose)
+                await finishedRelay?.cancel()
             }
             throw error
         }
