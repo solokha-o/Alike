@@ -68,6 +68,9 @@ Use these when asked to inspect or interact with the running app.
 - Stop logs: `mcp__XcodeBuildMCP__stop_sim_log_cap` and summarize important lines.
 - For console output, set `captureConsole: true` and relaunch if required.
 
+## App Store Crash Reports
+- For crashes from Xcode Organizer (`.xccrashpoint` logs, dSYMs, `NO_CRASH_STACK` points), follow `references/organizer-crash-triage.md`.
+
 ## Troubleshooting
 - If build fails, ask whether to retry with `preferXcodebuild: true`.
 - If the wrong app launches, confirm the scheme and bundle id.

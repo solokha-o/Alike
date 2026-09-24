@@ -34,6 +34,7 @@ description: >
 - [ ] No deep nesting of opaque `some View` closures that defeat type-checking
 - [ ] Conditional branches use `@ViewBuilder` or `Group`; no `AnyView` erasure unless unavoidable
 - [ ] Subviews receive only the data they need — not the whole parent state
+- [ ] No `ForEach` or other closure-holding container inside `.hidden()` size reservations or `ViewThatFits` candidates; use explicit views for a fixed set. SwiftUI measures these off the main thread, and in Swift 6 the closure's isolation check traps. See `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md`
 → Details: `references/view-graph-hierarchy.md`
 
 ### 📐 Structure & Ordering
@@ -88,7 +89,7 @@ description: >
    → Open `references/update-minimization.md` first, then Lifecycle.
 
 3. ForEach crashes or shows wrong items?
-   → Open `references/view-graph-hierarchy.md`.
+   → Open `references/view-graph-hierarchy.md`. If the crash is `EXC_BREAKPOINT` on a background thread in `_swift_task_checkIsolatedSwift`, open `Skills/SwiftConcurrency/swift-concurrency-expert/references/swiftui-offmain-layout-isolation-trap.md` instead.
 
 4. `@State` / `@Observable` confusion?
    → Open `references/initialization-patterns.md` + `Skills/SwiftConcurrency/swift-concurrency-expert/SKILL.md`.

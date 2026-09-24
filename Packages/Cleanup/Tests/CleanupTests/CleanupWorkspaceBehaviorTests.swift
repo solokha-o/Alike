@@ -40,7 +40,9 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         let preparation = Task { @MainActor in
             await workspace.prepareForDataDeletion()
         }
-        await Task.yield()
+        // Deliver the late result only once deletion has cancelled the scan,
+        // modelling an analysis that ignores cancellation and still returns.
+        await analysis.waitUntilAnalyzeIsCancelled()
         await analysis.succeed(with: [lateCluster])
         await preparation.value
 
@@ -343,6 +345,8 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
     private var analyzeCallCountStorage = 0
     private var analyzeStartWaiters: [CheckedContinuation<Void, Never>] = []
     private var analysisContinuation: CheckedContinuation<[PhotoCluster], Error>?
+    private var analyzeWasCancelled = false
+    private var analyzeCancellationWaiters: [CheckedContinuation<Void, Never>] = []
     private var progress: (@Sendable (Double) -> Void)?
 
     func analyzePhotoLibrary(
@@ -355,8 +359,12 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
         analyzeStartWaiters.removeAll()
         waiters.forEach { $0.resume() }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            analysisContinuation = continuation
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { continuation in
+                analysisContinuation = continuation
+            }
+        } onCancel: {
+            Task { await self.markAnalyzeCancelled() }
         }
     }
 
@@ -382,6 +390,23 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
     }
 
     func analyzeCallCount() -> Int { analyzeCallCountStorage }
+
+    /// Suspends until the task running `analyzePhotoLibrary` is cancelled. The
+    /// pending analysis keeps waiting for `succeed`/`fail`, so a test can
+    /// deliver a result deliberately after cancellation.
+    func waitUntilAnalyzeIsCancelled() async {
+        guard !analyzeWasCancelled else { return }
+        await withCheckedContinuation { continuation in
+            analyzeCancellationWaiters.append(continuation)
+        }
+    }
+
+    private func markAnalyzeCancelled() {
+        analyzeWasCancelled = true
+        let waiters = analyzeCancellationWaiters
+        analyzeCancellationWaiters.removeAll()
+        waiters.forEach { $0.resume() }
+    }
 
     func sendProgress(_ value: Double) {
         progress?(value)
