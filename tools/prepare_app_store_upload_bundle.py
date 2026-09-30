@@ -842,7 +842,7 @@ ALIKE PRO
 Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir veya iptal edebilirsin."""
 
 ZH_HANT_DESCRIPTION = """\
-不讓任何一張照片離開你的裝置，就能把儲存空間省回來：Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成一組組，在每一組中挑出最佳照片，並幫你清理其餘的。
+不讓任何一張照片離開你的裝置，就能釋出儲存空間：Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成一組組，在每一組中挑出最佳照片，並幫你清理其餘的。
 
 運作方式
 掃描。Alike 以 Apple 的 Vision 框架比對你的照片圖庫，全程在 iPhone 上完成。系統只比對拍攝時間與地點相近的照片，螢幕快照除非你特別要求，否則不會出現在結果中。
@@ -1031,7 +1031,7 @@ METADATA = {
     # holds far more Chinese terms than Latin ones. The zh-Hant words past 最佳
     # and the ar-SA subtitle's الجوال were picked from search suggestions
     # without popularity data, and none of tr, pl, nl-NL, zh-Hant or ar-SA has
-    # been read by a native speaker yet.
+    # been read by a native speaker; an agent language review was the check.
     "it": {
         "subtitle": "Pulizia: elimina foto doppie",
         "description": IT_DESCRIPTION,
@@ -1043,7 +1043,7 @@ METADATA = {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
         "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,cleanup,fotos",
-        "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarplan. Geen advertenties, geen account.",
+        "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
         "release_notes": "Een kleine update die Alike stabieler maakt.\n\n- Een zeldzame crash bij het bekijken van een groep vergelijkbare foto's opgelost.\n- 'Verwijder Alike-gegevens' zorgt nu altijd voor een schone start, ook als er nog een scan loopt.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
@@ -1063,8 +1063,8 @@ METADATA = {
     "zh-Hant": {
         "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
-        "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,相冊,智能,神器,優化,幫手,快照,去重",
-        "promotional_text": "把空間省回來：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
+        "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
+        "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
         "release_notes": "這是一個讓 Alike 更穩定的小更新。\n\n- 修正檢視一組相似照片時偶爾發生的當機。\n- 「刪除 Alike 資料」現在一定會讓一切從頭開始，即使掃描仍在進行中。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
