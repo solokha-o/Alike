@@ -21,6 +21,11 @@ Then render the chosen one into the listing folder:
 
     build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py --variant spotlight
 
+Candidate first slides for a store test (`LEAD_VARIANTS`) render beside the
+original, en-US only, without touching the listing:
+
+    build/tools-venv/bin/python tools/generate_app_store_product_screenshots.py --lead-variants
+
 Contact sheets land under `build/generated/` so the listing folder holds nothing
 but uploadable PNGs.
 """
@@ -794,6 +799,28 @@ VARIANTS = (
 VARIANTS_BY_NAME = {variant.name: variant for variant in VARIANTS}
 DEFAULT_VARIANT = "spotlight"  # the direction shipping on the listing
 
+# Candidate first slides for a Product Page Optimization test or a direct swap
+# (ASO stage 5). The first three slides are the ones search results show. Each
+# candidate replaces the copy of slide 1 only — same capture, same order, same
+# slides 2 and 3 — so a difference in conversion has one explanation. en-US
+# only until a winner exists; `COPY` stays what ships. No gigabyte figure: the
+# app has no measured one to promise.
+LEAD_SLIDE_COUNT = 3
+LEAD_VARIANT_LOCALE = "en-US"
+LEAD_VARIANTS = {
+    "A-space-first": (
+        "FREE SPACE",
+        "Get your\nstorage back",
+        "See how much space you'll free before anything is deleted.",
+    ),
+    "B-privacy-first": (
+        "ON-DEVICE",
+        "No photo leaves\nyour iPhone",
+        "Alike finds the photos that look alike with Apple Vision, entirely on-device.",
+    ),
+}
+LEAD_VARIANT_ROOT = DRAFT_ROOT / "lead-variants"
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -804,6 +831,12 @@ def parse_args() -> argparse.Namespace:
         "--drafts",
         action="store_true",
         help=f"Render every variant into {DRAFT_ROOT.relative_to(ROOT)}/ for comparison instead of the listing.",
+    )
+    parser.add_argument(
+        "--lead-variants",
+        action="store_true",
+        help=f"Render the first {LEAD_SLIDE_COUNT} {LEAD_VARIANT_LOCALE} slides for the original and every "
+        f"LEAD_VARIANTS entry into {LEAD_VARIANT_ROOT.relative_to(ROOT)}/ instead of the listing.",
     )
     parser.add_argument("--dry-run", action="store_true", help="Validate sources and layouts without writing PNGs.")
     return parser.parse_args()
@@ -1526,13 +1559,51 @@ def render_drafts(locales: list[str]) -> None:
     print(f"Compare: {(DRAFT_ROOT / 'contact-sheet-all-variants.png').relative_to(ROOT)}")
 
 
+def render_lead_variants() -> None:
+    """The listing's first slides next to each candidate, in the shipping variant."""
+    variant = VARIANTS_BY_NAME[DEFAULT_VARIANT]
+    locale = LEAD_VARIANT_LOCALE
+    original = COPY[locale][:LEAD_SLIDE_COUNT]
+    decks = {"original": original}
+    decks.update({name: [lead, *original[1:]] for name, lead in LEAD_VARIANTS.items()})
+    rows: list[tuple[str, list[Path]]] = []
+    for name, deck in decks.items():
+        output = LEAD_VARIANT_ROOT / name
+        output.mkdir(parents=True, exist_ok=True)
+        rendered: list[Path] = []
+        for index, (slide, copy) in enumerate(zip(SLIDES, deck)):
+            image = render_slide(index, slide, variant, copy, SOURCE_ROOT / locale / slide.source, locale)
+            assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
+            target = output / slide.source
+            image.save(target, optimize=True)
+            rendered.append(target)
+        rows.append((name, rendered))
+    contact_sheet(rows, LEAD_VARIANT_ROOT / "contact-sheet.png", thumb_size=(260, 566))
+    contact_sheet(rows, LEAD_VARIANT_ROOT / "contact-sheet-160px.png", thumb_size=(160, 348))
+    print(f"{len(decks)} decks x {LEAD_SLIDE_COUNT} slides ({locale}, {variant.name}) in {LEAD_VARIANT_ROOT.relative_to(ROOT)}/")
+
+
 def main() -> None:
     args = parse_args()
+    if args.lead_variants:
+        args.locales = LEAD_VARIANT_LOCALE
     locales = selected_locales(args.locales)
     validate_sources(locales)
+    if args.lead_variants:
+        # validate_sources proved the shipping copy; prove the candidates too.
+        for lead in LEAD_VARIANTS.values():
+            family = LOCALE_FONT_FAMILY.get(LEAD_VARIANT_LOCALE, SF_PRO)
+            face = font(48, "Bold", family)
+            missing = sorted({c for c in "".join(lead) if not c.isspace() and not draws_glyph(face, c)})
+            if missing:
+                raise SystemExit(f"{LEAD_VARIANT_LOCALE}: no glyph for {' '.join(missing)} in {lead[1]!r}")
 
     if args.dry_run:
         print(f"ok: {len(SLIDES)} slides x {len(locales)} locales x {len(VARIANTS)} variants")
+        return
+
+    if args.lead_variants:
+        render_lead_variants()
         return
 
     if args.drafts:
