@@ -11,7 +11,10 @@ import Foundation
 public struct RatingPromptPolicy: Sendable {
     public enum Defaults {
         public static let minimumDeletedItems = 3
-        public static let minimumInstallAge: TimeInterval = 3 * 86_400
+        /// One day rather than three, so a user who comes back the next day and cleans again
+        /// is asked. The first cleanup on install day is still never asked: the app is judged
+        /// on a return visit, not on first impressions.
+        public static let minimumInstallAge: TimeInterval = 1 * 86_400
         public static let cooldown: TimeInterval = 120 * 86_400
         public static let maximumLifetimePrompts = 3
     }

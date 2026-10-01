@@ -5,26 +5,25 @@ import Cleanup
 
 @MainActor
 final class SettingsViewModelTests: XCTestCase {
-    func testHandleRateTappedTriggersReview() async {
+    func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() async {
         let repository = MockRatingPromptHistoryRepository()
         let viewModel = SettingsViewModel(
             appVersion: "1.2.3",
             ratingPrompt: RatingPromptCoordinator(repository: repository, appVersion: "1.2.3")
         )
-        var didCall = false
+        var openedURL: URL?
 
         XCTAssertEqual(viewModel.reviewTrigger, 0)
-        viewModel.handleRateTapped(requestReview: {
-            didCall = true
-        })
+        viewModel.handleRateTapped(openURL: { openedURL = $0 })
 
-        XCTAssertTrue(didCall)
+        XCTAssertEqual(openedURL, AppStoreLinks.writeReview)
         XCTAssertEqual(viewModel.reviewTrigger, 1)
 
-        await viewModel.waitForManualRatingRecord()
+        // Opening the App Store page spends no review-sheet quota, so the automatic
+        // post-cleanup prompt must not inherit a cooldown from it.
         let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 1)
-        XCTAssertEqual(history.lastPromptedAppVersion, "1.2.3")
+        XCTAssertEqual(history.promptCount, 0)
+        XCTAssertNil(history.lastPromptedDate)
     }
 
     func testRescanRequiredAfterSensitivityChangeIsTrue() {

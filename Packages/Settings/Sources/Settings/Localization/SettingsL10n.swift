@@ -121,6 +121,8 @@ public enum SettingsL10n {
         public static var premiumLetsChooseCustomWeekly: String { SettingsL10n.string("settings.main.premiumLetsChooseCustomWeekly") }
         /// Privacy Policy
         public static var privacyPolicy: String { SettingsL10n.string("settings.main.privacyPolicy") }
+        /// Opens the App Store page to write a review
+        public static var openAppStoreReviewPage: String { SettingsL10n.string("settings.main.openAppStoreReviewPage") }
         /// Rate on App Store
         public static var rateOnAppStore: String { SettingsL10n.string("settings.main.rateOnAppStore") }
         /// Reminder day
@@ -135,8 +137,6 @@ public enum SettingsL10n {
         }
         /// Reminder time
         public static var reminderTime: String { SettingsL10n.string("settings.main.reminderTime") }
-        /// Request the App Store rating prompt
-        public static var requestAppStoreRatingPrompt: String { SettingsL10n.string("settings.main.requestAppStoreRatingPrompt") }
         /// Reset Best Shot Learning
         public static var resetBestShotLearning: String { SettingsL10n.string("settings.main.resetBestShotLearning") }
         /// Reset Best Shot learning?
