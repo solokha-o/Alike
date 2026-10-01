@@ -58,6 +58,15 @@ final class RatingPromptPolicyTests: XCTestCase {
     func testFreshInstallIsNotEligible() {
         XCTAssertFalse(
             policy.shouldRequestReview(
+                history: makeHistory(installedDaysAgo: 23.0 / 24),
+                context: makeContext()
+            )
+        )
+    }
+
+    func testInstallOneDayOldIsEligible() {
+        XCTAssertTrue(
+            policy.shouldRequestReview(
                 history: makeHistory(installedDaysAgo: 1),
                 context: makeContext()
             )

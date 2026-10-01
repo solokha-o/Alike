@@ -11,7 +11,9 @@ import Foundation
 public struct RatingPromptPolicy: Sendable {
     public enum Defaults {
         public static let minimumDeletedItems = 3
-        public static let minimumInstallAge: TimeInterval = 3 * 86_400
+        /// One day rather than three: most installations finish their first cleanup on day
+        /// one and return rarely, so a three-day gate kept the ask from almost everyone.
+        public static let minimumInstallAge: TimeInterval = 1 * 86_400
         public static let cooldown: TimeInterval = 120 * 86_400
         public static let maximumLifetimePrompts = 3
     }
