@@ -971,7 +971,7 @@ METADATA = {
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
         "promotional_text": "Get storage back: see how much space you'll free before deleting anything, and no photo leaves your iPhone. 7 days of Pro free on the yearly plan. No ads, no account.",
-        "release_notes": "A small release that makes Alike steadier.\n\n- Fixed a rare crash while reviewing a group of similar photos.\n- Delete Alike Data now always leaves a clean start, even when a scan is still running.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "release_notes": "A small update around ratings and feedback.\n\n- Rate on App Store in Settings now opens the review page directly.\n- After a cleanup, Alike may ask for a rating from your second day with the app instead of the fourth.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Дублікати й очищення фото",
@@ -980,7 +980,7 @@ METADATA = {
         # hence the four English words at the end.
         "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
         "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
-        "release_notes": "Невеликий випуск, який робить Alike стабільнішим.\n\n- Виправлено рідкісний збій під час перегляду групи схожих фото.\n- «Видалити дані Alike» тепер завжди дає чистий початок, навіть якщо сканування ще триває.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Невеликий випуск про оцінки та відгуки.\n\n- «Оцінити в App Store» у налаштуваннях тепер одразу відкриває сторінку відгуку.\n- Після очищення Alike може запитати оцінку вже з другого дня користування, а не з четвертого.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Subtitle and keyword words below come from each storefront's own search
     # suggestions and Search Popularity (September 2026), not from a translation
@@ -992,35 +992,35 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
         "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
-        "release_notes": "Ein kleines Update, das Alike stabiler macht.\n\n- Einen seltenen Absturz beim Prüfen einer Gruppe ähnlicher Fotos behoben.\n- „Alike-Daten löschen“ sorgt jetzt immer für einen sauberen Neuanfang, auch wenn gerade ein Scan läuft.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "release_notes": "Ein kleines Update rund um Bewertungen und Feedback.\n\n- „Im App Store bewerten“ in den Einstellungen öffnet jetzt direkt die Bewertungsseite.\n- Nach einem Aufräumen kann Alike schon ab dem zweiten Tag statt ab dem vierten um eine Bewertung bitten.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
         "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
         "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
-        "release_notes": "Une petite mise à jour qui rend Alike plus stable.\n\n- Correction d’un plantage rare pendant l’examen d’un groupe de photos similaires.\n- « Supprimer les données Alike » repart désormais toujours de zéro, même si une analyse est en cours.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "release_notes": "Une petite mise à jour autour des notes et des avis.\n\n- « Noter sur l’App Store » dans les réglages ouvre désormais directement la page d’avis.\n- Après un nettoyage, Alike peut demander une note dès le deuxième jour d’utilisation au lieu du quatrième.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
         "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
         "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Una actualización pequeña que hace Alike más estable.\n\n- Corregido un fallo poco frecuente al revisar un grupo de fotos similares.\n- «Eliminar datos de Alike» ahora siempre deja todo listo para empezar de cero, incluso con un análisis en curso.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Una actualización pequeña sobre valoraciones y opiniones.\n\n- «Valorar en el App Store» en los ajustes ahora abre directamente la página de reseñas.\n- Tras una limpieza, Alike puede pedirte una valoración desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
         "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Una actualización pequeña que hace Alike más estable.\n\n- Corregido un fallo poco frecuente al revisar un grupo de fotos similares.\n- «Eliminar datos de Alike» ahora siempre deja todo listo para empezar de cero, incluso con un análisis en curso.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Una actualización pequeña sobre calificaciones y reseñas.\n\n- «Valorar en el App Store» en la configuración ahora abre directamente la página de reseñas.\n- Después de una limpieza, Alike puede pedirte una calificación desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
-        "release_notes": "Uma atualização pequena que deixa o Alike mais estável.\n\n- Corrigida uma falha rara ao revisar um grupo de fotos parecidas.\n- «Apagar dados do Alike» agora sempre deixa tudo pronto para recomeçar do zero, mesmo com uma análise em andamento.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "release_notes": "Uma atualização pequena sobre avaliações e feedback.\n\n- «Avaliar na App Store» nos ajustes agora abre direto a página de avaliação.\n- Depois de uma limpeza, o Alike pode pedir uma avaliação já no segundo dia de uso, em vez do quarto.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
     # The same rules hold for the six locales below. pl and tr keep English
     # words because that is what those storefronts measurably search for, and
@@ -1037,35 +1037,35 @@ METADATA = {
         "description": IT_DESCRIPTION,
         "keywords": "duplicate,simili,doppioni,pulisci,libera,spazio,galleria,archiviazione,telefono,ordina,cleanup",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
-        "release_notes": "Un piccolo aggiornamento che rende Alike più stabile.\n\n- Risolto un raro arresto durante la revisione di un gruppo di foto simili.\n- «Elimina i dati di Alike» ora riparte sempre da zero, anche se è in corso una scansione.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "release_notes": "Un piccolo aggiornamento su valutazioni e feedback.\n\n- «Valuta su App Store» nelle impostazioni ora apre direttamente la pagina delle recensioni.\n- Dopo una pulizia, Alike può chiederti una valutazione già dal secondo giorno di utilizzo invece che dal quarto.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
         "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,cleanup,fotos",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
-        "release_notes": "Een kleine update die Alike stabieler maakt.\n\n- Een zeldzame crash bij het bekijken van een groep vergelijkbare foto's opgelost.\n- 'Verwijder Alike-gegevens' zorgt nu altijd voor een schone start, ook als er nog een scan loopt.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "release_notes": "Een kleine update rond beoordelingen en feedback.\n\n- 'Beoordeel in de App Store' in de instellingen opent nu direct de beoordelingspagina.\n- Na een opruimbeurt kan Alike al vanaf je tweede dag met de app om een beoordeling vragen in plaats van de vierde.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
         "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,cleanup,storage,clean,up",
         "promotional_text": "Odzyskaj miejsce: przed usunięciem widzisz, ile go zwolnisz, a żadne zdjęcie nie opuszcza iPhone'a. Pro: 7 dni gratis w planie rocznym. Bez reklam i bez konta.",
-        "release_notes": "Niewielka aktualizacja, dzięki której Alike działa stabilniej.\n\n- Naprawiono rzadką awarię podczas przeglądania grupy podobnych zdjęć.\n- „Usuń dane Alike” zawsze daje teraz czysty start, nawet gdy skanowanie jeszcze trwa.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "release_notes": "Niewielka aktualizacja dotycząca ocen i opinii.\n\n- „Oceń w App Store” w ustawieniach otwiera teraz od razu stronę recenzji.\n- Po porządkach Alike może poprosić o ocenę już drugiego dnia korzystania zamiast czwartego.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
         "description": TR_DESCRIPTION,
         "keywords": "temizleme,galeri,depolama,alanı,yer,açma,telefon,yinelenen,aynı,benzer,kopya,bulanık,albüm,cleanup",
         "promotional_text": "Yer kazan: silmeden önce ne kadar alan açılacağını gör; hiçbir fotoğraf iPhone'undan çıkmaz. Pro: yıllık planda 7 gün ücretsiz. Reklam yok, hesap yok.",
-        "release_notes": "Alike'ı daha kararlı hâle getiren küçük bir güncelleme.\n\n- Benzer fotoğraflardan oluşan bir grubu incelerken nadiren yaşanan bir çökme giderildi.\n- “Alike Verilerini Sil” artık tarama sürerken bile her zaman temiz bir başlangıç sağlıyor.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "release_notes": "Değerlendirme ve geri bildirimle ilgili küçük bir güncelleme.\n\n- Ayarlardaki “App Store'da Değerlendir” artık doğrudan yorum sayfasını açıyor.\n- Bir temizlikten sonra Alike, dördüncü gün yerine kullanımın ikinci gününden itibaren değerlendirme isteyebilir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
         "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
         "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
-        "release_notes": "這是一個讓 Alike 更穩定的小更新。\n\n- 修正檢視一組相似照片時偶爾發生的當機。\n- 「刪除 Alike 資料」現在一定會讓一切從頭開始，即使掃描仍在進行中。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "release_notes": "這是一個關於評分與意見回饋的小更新。\n\n- 設定中的「前往 App Store 評分」現在會直接開啟評論頁面。\n- 清理完成後，Alike 可能從使用的第二天起就詢問評分，而不是第四天。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
         "subtitle": "حذف الصور المكررة من الجوال",
@@ -1074,7 +1074,7 @@ METADATA = {
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
         "promotional_text": "استرجع المساحة: اعرف كم ستوفّر قبل أن تحذف أي شيء، ولا تغادر أي صورة جهاز iPhone. ‏Pro: 7 أيام مجانًا في الخطة السنوية. بلا إعلانات وبلا حساب.",
-        "release_notes": "تحديث صغير يجعل Alike أكثر استقرارًا.\n\n- إصلاح إغلاق مفاجئ نادر أثناء مراجعة مجموعة من الصور المتشابهة.\n- «حذف بيانات Alike» يمنحك الآن بداية نظيفة دائمًا، حتى أثناء تشغيل الفحص.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "release_notes": "تحديث صغير يخص التقييمات والملاحظات.\n\n- «التقييم على App Store» في الإعدادات يفتح الآن صفحة التقييم مباشرة.\n- بعد التنظيف، قد يطلب Alike تقييمًا بدءًا من اليوم الثاني لاستخدام التطبيق بدلًا من الرابع.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
