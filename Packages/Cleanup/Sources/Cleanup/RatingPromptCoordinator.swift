@@ -63,8 +63,11 @@ public final class RatingPromptCoordinator {
         return true
     }
 
-    /// Records a review request the user started themselves from Settings, so the automatic
-    /// prompt respects the same cooldown.
+    /// Records a review request the user started themselves, so the automatic prompt respects
+    /// the same cooldown.
+    ///
+    /// Settings no longer calls this: its rate button opens the App Store review page, which
+    /// does not spend the system review-sheet quota.
     public func recordManualRating() async {
         await repository.recordPromptShown(at: now(), appVersion: appVersion)
     }

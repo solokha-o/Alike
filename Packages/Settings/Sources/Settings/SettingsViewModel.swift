@@ -1,5 +1,4 @@
 import SwiftUI
-import StoreKit
 import Core
 import Cleanup
 import Storage
@@ -19,42 +18,37 @@ public final class SettingsViewModel {
     public private(set) var cleanupReminderErrorMessage: String?
 
     private let cleanupReminderManager: any CleanupReminderManaging
-    private let ratingPrompt: RatingPromptCoordinator
     private var cleanupReminderMutationTask: Task<Void, Never>?
     private var cleanupReminderMutationGeneration = 0
-    private var manualRatingTask: Task<Void, Never>?
 
     public init(
         appVersion: String = SettingsViewModel.fullAppVersion(),
         cleanupReminderManager: (any CleanupReminderManaging)? = nil,
-        ratingPrompt: RatingPromptCoordinator = RatingPromptCoordinator()
+        // Kept so existing call sites still compile; the rate button no longer records a
+        // prompt, so the coordinator is not used here any more.
+        ratingPrompt: RatingPromptCoordinator? = nil
     ) {
         self.appVersion = appVersion
         self.cleanupReminderManager = cleanupReminderManager
             ?? CleanupReminderManager(
                 preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
             )
-        self.ratingPrompt = ratingPrompt
     }
 
-    public func handleRateTapped(requestReview: RequestReviewAction) {
-        handleRateTapped(requestReview: { requestReview() })
+    /// Opens the App Store page on its "write a review" composer.
+    ///
+    /// A link rather than `RequestReviewAction`: StoreKit may silently show nothing, and Apple
+    /// advises against calling it from a button. Opening the page spends no system quota, so
+    /// it is not recorded and never delays the automatic post-cleanup prompt.
+    public func handleRateTapped(openURL: OpenURLAction) {
+        handleRateTapped(openURL: { openURL($0) })
     }
 
-    func handleRateTapped(requestReview: () -> Void) {
+    func handleRateTapped(openURL: (URL) -> Void) {
         reviewTrigger += 1
-        requestReview()
-        // A manual ask spends the same App Store quota as an automatic one, so it starts
-        // the cooldown for the post-cleanup prompt too.
-        manualRatingTask = Task { [ratingPrompt] in
-            await ratingPrompt.recordManualRating()
-        }
+        openURL(AppStoreLinks.writeReview)
     }
 
-    func waitForManualRatingRecord() async {
-        await manualRatingTask?.value
-    }
-    
     public func rescanRequiredAfterSensitivityChange() -> Bool {
         true
     }
