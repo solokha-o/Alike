@@ -1,5 +1,4 @@
 import SwiftUI
-import StoreKit
 import Core
 import DesignSystem
 import Diagnostics
@@ -53,7 +52,7 @@ private enum RestorePurchasesFeedback: String, Identifiable {
 
 /// Settings screen
 public struct SettingsView: View {
-    @Environment(\.requestReview) private var requestReview
+    @Environment(\.openURL) private var openURL
     @Environment(\.subscriptionLegalLinks) private var legalLinks
     @Binding var sensitivity: SensitivityLevel
     @Binding var needsRescan: Bool
@@ -541,7 +540,7 @@ public struct SettingsView: View {
             .accessibilityHint(Text(SettingsL10n.Main.shareAppUsingAvailableSharing))
             
             Button {
-                viewModel.handleRateTapped(requestReview: requestReview)
+                viewModel.handleRateTapped(openURL: openURL)
             } label: {
                 Label {
                     Text(SettingsL10n.Main.rateOnAppStore)
@@ -549,7 +548,7 @@ public struct SettingsView: View {
                     Image(systemName: "star")
                 }
             }
-            .accessibilityHint(Text(SettingsL10n.Main.requestAppStoreRatingPrompt))
+            .accessibilityHint(Text(SettingsL10n.Main.openAppStoreReviewPage))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
             
             // The subject is percent-encoded in the literal rather than left to

@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import struct
 from dataclasses import dataclass
@@ -67,6 +68,8 @@ LOCALE_LEGAL_LABELS = {
     "ar-SA": ("سياسة الخصوصية", "شروط الاستخدام"),
 }
 TODO_MARKER = "TODO:"
+HAN_PATTERN = re.compile(r"[\u4e00-\u9fff]")
+APP_NAME_MAX_LENGTH = 30
 APP_SUBTITLE_MAX_LENGTH = 30
 # App Store Connect counts keywords in characters, commas included — not bytes.
 # Counting bytes made the limit roughly twice as strict for Cyrillic: the uk
@@ -201,7 +204,7 @@ REQUIRED_LOCALIZED_FILES = (
 # with the free/Pro split defined by PremiumFeature and PremiumAccessPolicy.
 # Prices are never stated: StoreKit supplies localized pricing.
 EN_US_DESCRIPTION = """\
-Alike finds the near-duplicates hiding in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest — without a single photo leaving your device.
+Get your storage back without a single photo leaving your iPhone: Alike finds the near-duplicates in your camera roll, groups them, picks the best shot in each group, and helps you clear the rest.
 
 HOW IT WORKS
 Scan. Alike compares your library with Apple's Vision framework, entirely on your iPhone. Photos taken close together in time and place are compared, and screenshots stay out of the results unless you ask for them.
@@ -258,7 +261,7 @@ ALIKE PRO
 Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
 
 UK_DESCRIPTION = """\
-Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту — і жодне фото не залишає ваш пристрій.
+Поверніть місце на iPhone, і жодне фото не залишить ваш пристрій: Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту.
 
 ЯК ЦЕ ПРАЦЮЄ
 Сканування. Alike порівнює медіатеку за допомогою фреймворку Apple Vision повністю на вашому iPhone. Порівнюються знімки, близькі за часом і місцем зйомки, а знімки екрана не потрапляють у результати, якщо ви не попросите.
@@ -321,7 +324,7 @@ Alike Pro — це підписка з автоматичним поновлен
 # in de, es, es-419 and pt-BR, vouvoiement in fr, and feature names taken from
 # the .xcstrings catalogs so the listing and the UI say the same words.
 DE_DE_DESCRIPTION = """\
-Alike findet die Beinahe-Dubletten in deiner Mediathek, gruppiert sie, wählt in jeder Gruppe die beste Aufnahme und hilft dir, den Rest aufzuräumen — und kein einziges Foto verlässt dabei dein Gerät.
+Hol dir Speicherplatz zurück, ohne dass ein einziges Foto dein Gerät verlässt: Alike findet die Beinahe-Dubletten in deiner Mediathek, gruppiert sie, wählt in jeder Gruppe die beste Aufnahme und hilft dir, den Rest aufzuräumen.
 
 SO FUNKTIONIERT ES
 Scannen. Alike vergleicht deine Mediathek mit Apples Vision-Framework, vollständig auf deinem iPhone. Verglichen werden Fotos, die zeitlich und örtlich nah beieinander entstanden sind. Bildschirmfotos bleiben außen vor, solange du sie nicht ausdrücklich anforderst.
@@ -378,7 +381,7 @@ ALIKE PRO
 Alike Pro ist ein Abonnement mit automatischer Verlängerung, im Jahres- und im Monatsplan, berechnet in deiner Landeswährung. Der Jahresplan enthält 7 Tage gratis für berechtigte neue Abonnenten, und die Abrechnung beginnt nach Ablauf des Testzeitraums. Abonnements verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple Account. Verwalten oder kündigen kannst du jederzeit in den iOS-Einstellungen."""
 
 FR_FR_DESCRIPTION = """\
-Alike retrouve les quasi-doublons cachés dans votre photothèque, les regroupe, choisit la meilleure photo de chaque groupe et vous aide à nettoyer le reste — sans qu'une seule photo quitte votre appareil.
+Gagnez de l'espace sans qu'aucune photo quitte votre appareil : Alike retrouve les quasi-doublons de votre photothèque, les regroupe, choisit la meilleure photo de chaque groupe et vous aide à nettoyer le reste.
 
 COMMENT ÇA MARCHE
 Analyser. Alike compare votre photothèque avec le framework Vision d'Apple, entièrement sur votre iPhone. Les photos prises à des dates et des lieux proches sont comparées, et les captures d'écran restent hors des résultats tant que vous ne les demandez pas.
@@ -435,7 +438,7 @@ ALIKE PRO
 Alike Pro est un abonnement à renouvellement automatique, en formule annuelle ou mensuelle, facturé dans votre devise locale. La formule annuelle comprend 7 jours d'essai gratuit pour les nouveaux abonnés éligibles, et la facturation commence à la fin de l'essai. L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le gérer ou le résilier à tout moment dans les Réglages iOS."""
 
 ES_ES_DESCRIPTION = """\
-Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, sin que ninguna foto salga de tu dispositivo.
+Recupera espacio sin que ninguna foto salga de tu dispositivo: Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto.
 
 CÓMO FUNCIONA
 Analizar. Alike compara tu fototeca con el framework Vision de Apple, íntegramente en tu iPhone. Se comparan las fotos tomadas en momentos y lugares cercanos, y las capturas de pantalla se quedan fuera de los resultados salvo que las pidas.
@@ -492,7 +495,7 @@ ALIKE PRO
 Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratuita para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o cancelarla cuando quieras en los Ajustes de iOS."""
 
 ES_MX_DESCRIPTION = """\
-Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto, sin que ninguna foto salga de tu dispositivo.
+Recupera espacio sin que ninguna foto salga de tu dispositivo: Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto.
 
 CÓMO FUNCIONA
 Analizar. Alike compara tu fototeca con el framework Vision de Apple, totalmente en tu iPhone. Se comparan las fotos tomadas en momentos y lugares cercanos, y las capturas de pantalla se quedan fuera de los resultados a menos que las pidas.
@@ -549,7 +552,7 @@ ALIKE PRO
 Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratis para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes administrarla o cancelarla cuando quieras en la Configuración de iOS."""
 
 PT_BR_DESCRIPTION = """\
-O Alike encontra as quase duplicadas escondidas na sua fototeca, agrupa todas, escolhe a melhor foto de cada grupo e ajuda você a limpar o resto — sem que uma única foto saia do seu dispositivo.
+Recupere espaço sem que uma única foto saia do seu dispositivo: o Alike encontra as quase duplicadas escondidas na sua fototeca, agrupa todas, escolhe a melhor foto de cada grupo e ajuda você a limpar o resto.
 
 COMO FUNCIONA
 Analisar. O Alike compara sua fototeca com o framework Vision da Apple, inteiramente no seu iPhone. São comparadas as fotos feitas em horários e lugares próximos, e as capturas de tela ficam fora dos resultados a menos que você peça.
@@ -611,7 +614,7 @@ O Alike Pro é uma assinatura de renovação automática com planos anual e mens
 # words. Register follows the catalogs too, which is informal in all five —
 # including Turkish, where the app says "Fotoğrafların", not "Fotoğraflarınız".
 IT_DESCRIPTION = """\
-Alike trova i quasi-doppioni nascosti nella tua libreria, li raggruppa, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto — senza che una sola foto lasci il tuo dispositivo.
+Recupera spazio senza che una sola foto lasci il tuo dispositivo: Alike trova i quasi-doppioni nella tua libreria, li raggruppa, sceglie lo scatto migliore di ogni gruppo e ti aiuta a eliminare il resto.
 
 COME FUNZIONA
 Scansiona. Alike confronta la tua libreria con il framework Vision di Apple, interamente sul tuo iPhone. Vengono confrontate le foto scattate vicine nel tempo e nel luogo, e gli screenshot restano fuori dai risultati se non li richiedi.
@@ -668,7 +671,7 @@ ALIKE PRO
 Alike Pro è un abbonamento a rinnovo automatico con piani annuale e mensile, con prezzi nella tua valuta locale. Il piano annuale include una prova gratuita di 7 giorni per i nuovi abbonati idonei, e la fatturazione inizia al termine della prova. Gli abbonamenti si rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del periodo in corso, e il pagamento viene addebitato sul tuo account Apple. Puoi gestire o annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS."""
 
 NL_NL_DESCRIPTION = """\
-Alike vindt de bijna-dubbele foto's die zich in je bibliotheek verstoppen, groepeert ze, kiest de beste opname van elke groep en helpt je de rest op te ruimen — zonder dat één foto je apparaat verlaat.
+Win ruimte terug zonder dat één foto je apparaat verlaat: Alike vindt de bijna-dubbele foto's in je bibliotheek, groepeert ze, kiest de beste opname van elke groep en helpt je de rest op te ruimen.
 
 ZO WERKT HET
 Scannen. Alike vergelijkt je bibliotheek met Apples Vision-framework, volledig op je iPhone. Foto's die qua tijd en plaats dicht bij elkaar liggen worden vergeleken, en schermafbeeldingen blijven buiten de resultaten tenzij je erom vraagt.
@@ -725,7 +728,7 @@ ALIKE PRO
 Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."""
 
 PL_DESCRIPTION = """\
-Alike znajduje prawie identyczne zdjęcia ukryte w Twojej bibliotece, grupuje je, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę — a żadne zdjęcie nie opuszcza Twojego urządzenia.
+Odzyskaj miejsce, a żadne zdjęcie nie opuści Twojego urządzenia: Alike znajduje prawie identyczne zdjęcia ukryte w Twojej bibliotece, grupuje je, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę.
 
 JAK TO DZIAŁA
 Skanuj. Alike porównuje bibliotekę za pomocą frameworka Vision od Apple, w całości na Twoim iPhonie. Porównywane są zdjęcia zrobione blisko siebie w czasie i miejscu, a zrzuty ekranu nie trafiają do wyników, dopóki o nie nie poprosisz.
@@ -782,7 +785,7 @@ ALIKE PRO
 Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów, a naliczanie opłat zaczyna się po zakończeniu okresu próbnego. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS."""
 
 TR_DESCRIPTION = """\
-Alike, kitaplığında saklanan neredeyse aynı fotoğrafları bulur, gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder — üstelik tek bir fotoğraf bile cihazından çıkmaz.
+Tek bir fotoğraf bile cihazından çıkmadan yer kazan: Alike, kitaplığında saklanan neredeyse aynı fotoğrafları bulur, gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder.
 
 NASIL ÇALIŞIR
 Tara. Alike, kitaplığını Apple'ın Vision çerçevesiyle tamamen iPhone'unda karşılaştırır. Zaman ve yer olarak birbirine yakın çekilen fotoğraflar karşılaştırılır, ekran görüntüleri ise sen istemedikçe sonuçlara girmez.
@@ -839,7 +842,7 @@ ALIKE PRO
 Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir veya iptal edebilirsin."""
 
 ZH_HANT_DESCRIPTION = """\
-Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成一組組，在每一組中挑出最佳照片，並幫你清理其餘的——而且沒有任何一張照片會離開你的裝置。
+不讓任何一張照片離開你的裝置，就能釋出儲存空間：Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成一組組，在每一組中挑出最佳照片，並幫你清理其餘的。
 
 運作方式
 掃描。Alike 以 Apple 的 Vision 框架比對你的照片圖庫，全程在 iPhone 上完成。系統只比對拍攝時間與地點相近的照片，螢幕快照除非你特別要求，否則不會出現在結果中。
@@ -897,7 +900,7 @@ Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以�
 
 
 AR_DESCRIPTION = """\
-يعثر Alike على الصور شبه المكررة المختبئة في مكتبتك، ويجمّعها، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي — دون أن تغادر صورة واحدة جهازك.
+استرجع مساحة التخزين دون أن تغادر صورة واحدة جهازك: يعثر Alike على الصور شبه المكررة المختبئة في مكتبتك، ويجمّعها، ويختار أفضل لقطة في كل مجموعة، ويساعدك على إزالة الباقي.
 
 كيف يعمل
 افحص. يقارن Alike مكتبتك باستخدام إطار عمل Vision من Apple، بالكامل على جهاز iPhone. تُقارن الصور المتقاربة في الزمان والمكان، وتبقى لقطات الشاشة خارج النتائج ما لم تطلبها.
@@ -956,121 +959,122 @@ AR_DESCRIPTION = """\
 
 METADATA = {
     "en-US": {
-        "subtitle": "Find and clear similar photos",
+        "subtitle": "Duplicate & Storage Cleanup",
         "description": EN_US_DESCRIPTION,
-        # App Store Connect indexes the app name and subtitle on top of this
-        # field, so "similar", "photo" and "cleaner" are deliberately absent —
-        # repeating them here would spend characters on terms already covered.
-        "keywords": "duplicate,cleanup,camera roll,storage,space,gallery,screenshot,blurry,album,delete,lock screen",
+        # The name, the subtitle and this field are indexed together, so no
+        # word appears in more than one of them; search_field_errors() refuses
+        # to build the bundle otherwise. Keywords are single words: the store
+        # combines them with the name and subtitle into phrases such as
+        # "camera roll cleaner" or "free up storage".
+        "keywords": "delete,space,gallery,screenshot,blurry,camera,roll,clean,up,free,album,declutter,sorter,best,shot",
         # Promotional text is the one field App Store Connect accepts without a
-        # new build, so the trial lives here as well as in the description.
-        "promotional_text": "Alike now shows what you can clear on the Lock Screen too — a line, a card or a ring. All on your iPhone. Alike Pro: 7 days free on the yearly plan.",
-        "release_notes": "A small release that makes Alike steadier.\n\n- Fixed a rare crash while reviewing a group of similar photos.\n- Delete Alike Data now always leaves a clean start, even when a scan is still running.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        # new build. It opens on the benefit and the privacy promise; the trial
+        # sits in the middle rather than as the closing line.
+        "promotional_text": "Get storage back: see how much space you'll free before deleting anything, and no photo leaves your iPhone. 7 days of Pro free on the yearly plan. No ads, no account.",
+        "release_notes": "A small update around ratings and feedback.\n\n- Rate on App Store in Settings now opens the review page directly.\n- After a cleanup, Alike may ask for a rating from your second day with the app instead of the fourth.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
-        "subtitle": "Знайти й прибрати схожі фото",
+        "subtitle": "Дублікати й очищення фото",
         "description": UK_DESCRIPTION,
-        # Same rule as en-US: the uk subtitle already covers "схожі" and "фото".
-        "keywords": "дублікати,очищення,галерея,сховище,місце,скріншоти,розмиті,копії,знімки,екран блокування",
-        "promotional_text": "Alike тепер показує, скільки можна звільнити, і на замкненому екрані — рядком, карткою або кільцем. Усе на вашому iPhone. Alike Pro: 7 днів безкоштовно на річному плані.",
-        "release_notes": "Невеликий випуск, який робить Alike стабільнішим.\n\n- Виправлено рідкісний збій під час перегляду групи схожих фото.\n- «Видалити дані Alike» тепер завжди дає чистий початок, навіть якщо сканування ще триває.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        # The UA storefront only shows measurable demand for English queries,
+        # hence the four English words at the end.
+        "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
+        "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
+        "release_notes": "Невеликий випуск про оцінки та відгуки.\n\n- «Оцінити в App Store» у налаштуваннях тепер одразу відкриває сторінку відгуку.\n- Після очищення Alike може запитати оцінку вже з другого дня користування, а не з четвертого.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
-    # Keywords below are researched per market rather than translated. Each set
-    # skips whatever the localized subtitle already indexes — "ähnliche Fotos",
-    # "photos similaires", "duplicados", "duplicadas" — because App Store
-    # Connect indexes the name and subtitle on top of this field, and repeating
-    # them spends a 100-character budget on terms already covered.
+    # Subtitle and keyword words below come from each storefront's own search
+    # suggestions and Search Popularity (September 2026), not from a translation
+    # of en-US. es-MX is also indexed by the US storefront, so its keywords are
+    # planned together with en-US: none repeats an en-US keyword, and the last
+    # four are English. cross_indexed_keyword_errors() enforces the first.
     "de-DE": {
-        "subtitle": "Ähnliche Fotos aufräumen",
+        "subtitle": "Doppelte Fotos löschen",
         "description": DE_DE_DESCRIPTION,
-        "keywords": "doppelte,duplikate,bilder,speicherplatz,galerie,bildschirmfoto,unscharf,löschen,sperrbildschirm",
-        "promotional_text": "Alike zeigt den freigebbaren Speicher jetzt auch auf dem Sperrbildschirm — als Zeile, Karte oder Ring. Alles auf deinem iPhone. Alike Pro: 7 Tage gratis im Jahresplan.",
-        "release_notes": "Ein kleines Update, das Alike stabiler macht.\n\n- Einen seltenen Absturz beim Prüfen einer Gruppe ähnlicher Fotos behoben.\n- „Alike-Daten löschen“ sorgt jetzt immer für einen sauberen Neuanfang, auch wenn gerade ein Scan läuft.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
+        "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
+        "release_notes": "Ein kleines Update rund um Bewertungen und Feedback.\n\n- „Im App Store bewerten“ in den Einstellungen öffnet jetzt direkt die Bewertungsseite.\n- Nach einem Aufräumen kann Alike schon ab dem zweiten Tag statt ab dem vierten um eine Bewertung bitten.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
-        "subtitle": "Nettoyer les photos similaires",
+        "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
-        "keywords": "doublons,double,images,stockage,espace,galerie,capture,flou,supprimer,écran verrouillé",
-        "promotional_text": "Alike affiche l'espace récupérable sur l'écran verrouillé aussi : ligne, carte ou anneau. Tout sur votre iPhone. Alike Pro : 7 jours offerts en formule annuelle.",
-        "release_notes": "Une petite mise à jour qui rend Alike plus stable.\n\n- Correction d’un plantage rare pendant l’examen d’un groupe de photos similaires.\n- « Supprimer les données Alike » repart désormais toujours de zéro, même si une analyse est en cours.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
+        "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
+        "release_notes": "Une petite mise à jour autour des notes et des avis.\n\n- « Noter sur l’App Store » dans les réglages ouvre désormais directement la page d’avis.\n- Après un nettoyage, Alike peut demander une note dès le deuxième jour d’utilisation au lieu du quatrième.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
-        "subtitle": "Encuentra y limpia duplicados",
+        "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
-        "keywords": "fotos,repetidas,similares,almacenamiento,espacio,galería,captura,borrosas,pantalla bloqueo",
-        "promotional_text": "Alike ya muestra el espacio recuperable en la pantalla de bloqueo: una línea, una tarjeta o un anillo. Todo en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Una actualización pequeña que hace Alike más estable.\n\n- Corregido un fallo poco frecuente al revisar un grupo de fotos similares.\n- «Eliminar datos de Alike» ahora siempre deja todo listo para empezar de cero, incluso con un análisis en curso.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
+        "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
+        "release_notes": "Una actualización pequeña sobre valoraciones y opiniones.\n\n- «Valorar en el App Store» en los ajustes ahora abre directamente la página de reseñas.\n- Tras una limpieza, Alike puede pedirte una valoración desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
-        "subtitle": "Encuentra y limpia duplicados",
+        "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
-        "keywords": "fotos,iguales,liberar espacio,almacenamiento,galería,capturas,borrosas,pantalla bloqueada",
-        "promotional_text": "Alike ya muestra el espacio recuperable en la pantalla bloqueada: una línea, una tarjeta o un anillo. Todo en tu iPhone. Alike Pro: 7 días gratis en el plan anual.",
-        "release_notes": "Una actualización pequeña que hace Alike más estable.\n\n- Corregido un fallo poco frecuente al revisar un grupo de fotos similares.\n- «Eliminar datos de Alike» ahora siempre deja todo listo para empezar de cero, incluso con un análisis en curso.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
+        "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
+        "release_notes": "Una actualización pequeña sobre calificaciones y reseñas.\n\n- «Valorar en el App Store» en la configuración ahora abre directamente la página de reseñas.\n- Después de una limpieza, Alike puede pedirte una calificación desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
-        "subtitle": "Encontre e limpe duplicadas",
+        "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
-        "keywords": "fotos,repetidas,iguais,armazenamento,liberar espaço,galeria,captura,apagar,tela bloqueada",
-        "promotional_text": "O Alike já mostra o espaço recuperável na tela bloqueada: uma linha, um cartão ou um anel. Tudo no seu iPhone. Alike Pro: 7 dias grátis no plano anual.",
-        "release_notes": "Uma atualização pequena que deixa o Alike mais estável.\n\n- Corrigida uma falha rara ao revisar um grupo de fotos parecidas.\n- «Apagar dados do Alike» agora sempre deixa tudo pronto para recomeçar do zero, mesmo com uma análise em andamento.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
+        "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
+        "release_notes": "Uma atualização pequena sobre avaliações e feedback.\n\n- «Avaliar na App Store» nos ajustes agora abre direto a página de avaliação.\n- Depois de uma limpeza, o Alike pode pedir uma avaliação já no segundo dia de uso, em vez do quarto.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
-    # Tier 3 keywords follow the same market-research rule as Tier 1: they skip
-    # whatever the localized subtitle already indexes — "doppioni", "dubbels",
-    # "podobne zdjęcia", "benzer fotoğrafları", 相似照片 — because App Store
-    # Connect indexes the name and subtitle on top of this field.
+    # The same rules hold for the six locales below. pl and tr keep English
+    # words because that is what those storefronts measurably search for, and
+    # the Polish forms without diacritics (zdjec, pamieci) are how the
+    # suggestions spell them.
     #
-    # The limits are characters, not bytes, which is what makes zh-Hant the
-    # roomiest listing here rather than the tightest: a 100-character keyword
-    # field holds far more Chinese terms than Latin ones, and a subtitle says in
-    # sixteen characters what English needs twenty-nine for. Brevity is still
-    # the rule, but the earlier eleven-character subtitle left the single
-    # heaviest indexed field after the name two-thirds empty, so it now also
-    # carries 相片 — the spelling Traditional Chinese searches use at least as
-    # often as 照片, which no field held before — and 一鍵.
+    # The limits are characters, not bytes, so a 100-character keyword field
+    # holds far more Chinese terms than Latin ones. The zh-Hant words past 最佳
+    # and the ar-SA subtitle's الجوال were picked from search suggestions
+    # without popularity data, and none of tr, pl, nl-NL, zh-Hant or ar-SA has
+    # been read by a native speaker; an agent language review was the check.
     "it": {
-        "subtitle": "Trova e pulisci i doppioni",
+        "subtitle": "Pulizia: elimina foto doppie",
         "description": IT_DESCRIPTION,
-        "keywords": "foto,simili,duplicate,spazio,archiviazione,galleria,screenshot,sfocate,schermata blocco",
-        "promotional_text": "Alike mostra lo spazio recuperabile anche nella schermata di blocco: riga, scheda o anello. Tutto sul tuo iPhone. Alike Pro: 7 giorni gratis nel piano annuale.",
-        "release_notes": "Un piccolo aggiornamento che rende Alike più stabile.\n\n- Risolto un raro arresto durante la revisione di un gruppo di foto simili.\n- «Elimina i dati di Alike» ora riparte sempre da zero, anche se è in corso una scansione.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "keywords": "duplicate,simili,doppioni,pulisci,libera,spazio,galleria,archiviazione,telefono,ordina,cleanup",
+        "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
+        "release_notes": "Un piccolo aggiornamento su valutazioni e feedback.\n\n- «Valuta su App Store» nelle impostazioni ora apre direttamente la pagina delle recensioni.\n- Dopo una pulizia, Alike può chiederti una valutazione già dal secondo giorno di utilizzo invece che dal quarto.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
-        "subtitle": "Vind en ruim dubbels op",
+        "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
-        "keywords": "foto,dubbele,opruimen,opslag,ruimte,galerij,schermafbeelding,wazig,album,toegangsscherm",
-        "promotional_text": "Alike laat de vrij te maken ruimte nu ook op je toegangsscherm zien: een regel, een kaart of een ring. Alles op je iPhone. Alike Pro: 7 dagen gratis op het jaarplan.",
-        "release_notes": "Een kleine update die Alike stabieler maakt.\n\n- Een zeldzame crash bij het bekijken van een groep vergelijkbare foto's opgelost.\n- 'Verwijder Alike-gegevens' zorgt nu altijd voor een schone start, ook als er nog een scan loopt.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,cleanup,fotos",
+        "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
+        "release_notes": "Een kleine update rond beoordelingen en feedback.\n\n- 'Beoordeel in de App Store' in de instellingen opent nu direct de beoordelingspagina.\n- Na een opruimbeurt kan Alike al vanaf je tweede dag met de app om een beoordeling vragen in plaats van de vierde.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
-        "subtitle": "Znajdź i usuń podobne zdjęcia",
+        "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
-        "keywords": "duplikaty,kopie,porządki,pamięć,miejsce,galeria,zrzut ekranu,rozmyte,ekran blokady",
-        "promotional_text": "Alike pokazuje odzyskiwalne miejsce także na ekranie blokady: wiersz, karta albo pierścień. Wszystko na Twoim iPhonie. Alike Pro: 7 dni gratis w planie rocznym.",
-        "release_notes": "Niewielka aktualizacja, dzięki której Alike działa stabilniej.\n\n- Naprawiono rzadką awarię podczas przeglądania grupy podobnych zdjęć.\n- „Usuń dane Alike” zawsze daje teraz czysty start, nawet gdy skanowanie jeszcze trwa.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,cleanup,storage,clean,up",
+        "promotional_text": "Odzyskaj miejsce: przed usunięciem widzisz, ile go zwolnisz, a żadne zdjęcie nie opuszcza iPhone'a. Pro: 7 dni gratis w planie rocznym. Bez reklam i bez konta.",
+        "release_notes": "Niewielka aktualizacja dotycząca ocen i opinii.\n\n- „Oceń w App Store” w ustawieniach otwiera teraz od razu stronę recenzji.\n- Po porządkach Alike może poprosić o ocenę już drugiego dnia korzystania zamiast czwartego.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
-        "subtitle": "Benzer fotoğrafları temizle",
+        "subtitle": "Fotoğraf silme ve temizleyici",
         "description": TR_DESCRIPTION,
-        "keywords": "kopya,yinelenen,depolama,alan,galeri,ekran görüntüsü,bulanık,silme,albüm,kilit ekranı",
-        "promotional_text": "Alike kazanılabilir alanı artık kilitli ekranda da gösteriyor: satır, kart veya halka. Her şey iPhone'unda. Alike Pro: yıllık planda 7 gün ücretsiz.",
-        "release_notes": "Alike'ı daha kararlı hâle getiren küçük bir güncelleme.\n\n- Benzer fotoğraflardan oluşan bir grubu incelerken nadiren yaşanan bir çökme giderildi.\n- “Alike Verilerini Sil” artık tarama sürerken bile her zaman temiz bir başlangıç sağlıyor.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "keywords": "temizleme,galeri,depolama,alanı,yer,açma,telefon,yinelenen,aynı,benzer,kopya,bulanık,albüm,cleanup",
+        "promotional_text": "Yer kazan: silmeden önce ne kadar alan açılacağını gör; hiçbir fotoğraf iPhone'undan çıkmaz. Pro: yıllık planda 7 gün ücretsiz. Reklam yok, hesap yok.",
+        "release_notes": "Değerlendirme ve geri bildirimle ilgili küçük bir güncelleme.\n\n- Ayarlardaki “App Store'da Değerlendir” artık doğrudan yorum sayfasını açıyor.\n- Bir temizlikten sonra Alike, dördüncü gün yerine kullanımın ikinci gününden itibaren değerlendirme isteyebilir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
-        "subtitle": "找出相似與重複相片，一鍵清出空間",
+        "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
-        "keywords": "重覆,清理,相簿,圖庫,儲存,釋放,螢幕快照,截圖,模糊,刪除,整理,近似,連拍,空間不足,照片管理,記憶體,瘦身,掃描,批次,手機,離線,隱私,圖片,檔案,免費,鎖定畫面",
-        "promotional_text": "Alike 現在也在鎖定畫面顯示可以釋出的空間——單行、卡片或圓環。全程在你的 iPhone 上。Alike Pro：年繳方案 7 天免費。",
-        "release_notes": "這是一個讓 Alike 更穩定的小更新。\n\n- 修正檢視一組相似照片時偶爾發生的當機。\n- 「刪除 Alike 資料」現在一定會讓一切從頭開始，即使掃描仍在進行中。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
+        "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
+        "release_notes": "這是一個關於評分與意見回饋的小更新。\n\n- 設定中的「前往 App Store 評分」現在會直接開啟評論頁面。\n- 清理完成後，Alike 可能從使用的第二天起就詢問評分，而不是第四天。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
-        "subtitle": "اعثر على الصور المتشابهة",
+        "subtitle": "حذف الصور المكررة من الجوال",
         "description": AR_DESCRIPTION,
-        # Same rule as every other locale: the name and subtitle already carry
-        # "صور" and "متشابهة", so the keyword field spends its characters elsewhere.
-        "keywords": "مكرر,تنظيف,معرض,مساحة,تخزين,ترتيب,ألبوم,لقطة شاشة,ضبابي,حذف,نسخ,صور مكررة,شاشة القفل",
-        "promotional_text": "يعرض Alike الآن المساحة القابلة للاسترجاع على شاشة القفل أيضًا: سطر أو بطاقة أو حلقة. كل شيء على جهاز iPhone. ‏Alike Pro: 7 أيام مجانًا في الخطة السنوية.",
-        "release_notes": "تحديث صغير يجعل Alike أكثر استقرارًا.\n\n- إصلاح إغلاق مفاجئ نادر أثناء مراجعة مجموعة من الصور المتشابهة.\n- «حذف بيانات Alike» يمنحك الآن بداية نظيفة دائمًا، حتى أثناء تشغيل الفحص.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        # المكرره is the second spelling of the subtitle's المكررة; both appear
+        # in the SA storefront's suggestions.
+        "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
+        "promotional_text": "استرجع المساحة: اعرف كم ستوفّر قبل أن تحذف أي شيء، ولا تغادر أي صورة جهاز iPhone. ‏Pro: 7 أيام مجانًا في الخطة السنوية. بلا إعلانات وبلا حساب.",
+        "release_notes": "تحديث صغير يخص التقييمات والملاحظات.\n\n- «التقييم على App Store» في الإعدادات يفتح الآن صفحة التقييم مباشرة.\n- بعد التنظيف، قد يطلب Alike تقييمًا بدءًا من اليوم الثاني لاستخدام التطبيق بدلًا من الرابع.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
@@ -1633,6 +1637,85 @@ def validate_locale_folder_names() -> list[str]:
     return errors
 
 
+def search_tokens(text: str) -> list[str]:
+    return [token.casefold() for token in re.findall(r"[^\W_]+", text)]
+
+
+def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) -> list[str]:
+    """Rules for the three fields App Store search indexes together.
+
+    A word repeated across the name, the subtitle and the keywords adds no
+    weight and spends characters from a 30 + 30 + 100 budget, so repeats are
+    errors here rather than style notes. Lengths are Unicode characters, which
+    is what App Store Connect counts. Chinese has no word breaks, so a keyword
+    written in Han characters is also looked for inside the subtitle as a
+    substring. Matching is exact otherwise: "fotos" does not collide with
+    "foto", because how the store folds word forms is not documented.
+    """
+    errors: list[str] = []
+    if len(name) > APP_NAME_MAX_LENGTH:
+        errors.append(f"{locale} name is {len(name)} characters, limit {APP_NAME_MAX_LENGTH}")
+
+    name_tokens = set(search_tokens(name))
+    # English plurals of the name's own words are the one form treated as a
+    # repeat: "photos" next to "Photo" is the mistake the old subtitles made.
+    name_forms = name_tokens | {f"{token}s" for token in name_tokens}
+    subtitle_tokens = set(search_tokens(subtitle))
+    for token in sorted(subtitle_tokens & name_forms):
+        errors.append(f"{locale} subtitle repeats {token!r} from the name")
+
+    items = keywords.split(",")
+    seen: set[str] = set()
+    for item in items:
+        if not item or item != item.strip():
+            errors.append(f"{locale} keywords contain an empty or space-padded entry {item!r}")
+            continue
+        folded = item.casefold()
+        if folded in seen:
+            errors.append(f"{locale} keywords list {item!r} more than once")
+        seen.add(folded)
+        for token in search_tokens(item):
+            if token in name_forms:
+                errors.append(f"{locale} keyword {item!r} repeats the name")
+            elif token in subtitle_tokens or (HAN_PATTERN.search(token) and token in subtitle):
+                errors.append(f"{locale} keyword {item!r} repeats the subtitle")
+    return errors
+
+
+def cross_indexed_keyword_errors(keywords_by_locale: dict[str, str]) -> list[str]:
+    # The US storefront indexes es-MX next to en-US, so a word in both fields
+    # is a word paid for twice.
+    shared = {item.casefold() for item in keywords_by_locale.get("en-US", "").split(",")} & {
+        item.casefold() for item in keywords_by_locale.get("es-MX", "").split(",")
+    }
+    return [f"es-MX keyword {item!r} repeats en-US" for item in sorted(shared - {""})]
+
+
+def validate_source_search_fields() -> list[str]:
+    errors: list[str] = []
+    for locale, values in METADATA.items():
+        errors.extend(search_field_errors(locale, APP_NAME, values["subtitle"], values["keywords"]))
+    errors.extend(
+        cross_indexed_keyword_errors({locale: values["keywords"] for locale, values in METADATA.items()})
+    )
+    return errors
+
+
+def validate_generated_search_fields() -> list[str]:
+    errors: list[str] = []
+    keywords_by_locale: dict[str, str] = {}
+    for mapping in UPLOAD_SAFE_LOCALES:
+        locale_root = METADATA_ROOT / mapping.apple
+        paths = [locale_root / filename for filename in ("name.txt", "subtitle.txt", "keywords.txt")]
+        if not all(path.exists() for path in paths):
+            continue  # validate_metadata() reports the missing file
+        name, subtitle, keywords = (path.read_text(encoding="utf-8").strip() for path in paths)
+        keywords_by_locale[mapping.apple] = keywords
+        errors.extend(search_field_errors(mapping.apple, name, subtitle, keywords))
+    errors.extend(cross_indexed_keyword_errors(keywords_by_locale))
+    return errors
+
+
 def validate_metadata() -> list[str]:
     errors: list[str] = []
     # METADATA and UPLOAD_SAFE_LOCALES have to describe the same set of
@@ -1927,6 +2010,7 @@ def validate_bundle(allow_placeholder_urls: bool, allow_shared_urls: bool = Fals
     errors = []
     errors.extend(validate_locale_folder_names())
     errors.extend(validate_metadata())
+    errors.extend(validate_generated_search_fields())
     errors.extend(validate_urls(allow_placeholder_urls))
     errors.extend(validate_localized_urls(allow_placeholder_urls, allow_shared_urls))
     errors.extend(validate_placeholder_copy(allow_placeholder_urls))
@@ -1942,6 +2026,13 @@ def validate_bundle(allow_placeholder_urls: bool, allow_shared_urls: bool = Fals
 def main() -> None:
     args = parse_args()
     if not args.validate_only:
+        # Checked on the source before anything is written, so a repeat or an
+        # over-long name leaves the previous bundle in place instead of
+        # replacing it with one that cannot ship.
+        source_errors = validate_source_search_fields()
+        if source_errors:
+            formatted = "\n".join(f"- {error}" for error in source_errors)
+            raise SystemExit(f"App Store search fields are invalid; bundle not generated:\n{formatted}")
         reset_output_dirs()
         generate_metadata(
             privacy_url=env_or_placeholder("ALIKE_PRIVACY_URL", PRIVACY_URL_PLACEHOLDER),

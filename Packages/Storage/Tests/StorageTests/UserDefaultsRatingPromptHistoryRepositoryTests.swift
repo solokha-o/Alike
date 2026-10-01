@@ -56,6 +56,22 @@ final class UserDefaultsRatingPromptHistoryRepositoryTests: XCTestCase {
         )
     }
 
+    /// A payload written by a shipped build, including a prompt recorded from the old
+    /// Settings rate button, must still decode field for field: the policy change only moves
+    /// a default and never rewrites stored history.
+    func testShippedPayloadDecodesUnchanged() async throws {
+        // Foundation's default JSONEncoder stores dates as seconds since 2001-01-01.
+        let shipped = #"{"firstLaunchDate":800000000,"lastPromptedDate":801000000,"lastPromptedAppVersion":"1.6.1","promptCount":1}"#
+        UserDefaults.standard.set(try XCTUnwrap(shipped.data(using: .utf8)), forKey: key)
+
+        let history = await makeRepository().loadHistory(now: referenceDate)
+
+        XCTAssertEqual(history.firstLaunchDate, Date(timeIntervalSinceReferenceDate: 800_000_000))
+        XCTAssertEqual(history.lastPromptedDate, Date(timeIntervalSinceReferenceDate: 801_000_000))
+        XCTAssertEqual(history.lastPromptedAppVersion, "1.6.1")
+        XCTAssertEqual(history.promptCount, 1)
+    }
+
     func testRecordPromptShownSeedsFirstLaunchDateWhenNoPriorReadHappened() async {
         let repository = makeRepository()
 

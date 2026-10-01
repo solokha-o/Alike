@@ -8,7 +8,8 @@ public struct RatingPromptHistory: Codable, Sendable, Equatable {
     /// First time the app read this history; used as the install date proxy.
     public var firstLaunchDate: Date?
 
-    /// Last time a review request was issued, automatically or from Settings.
+    /// Last time a review request was issued. Builds before the Settings rate button became
+    /// an App Store link also recorded taps on that button here.
     public var lastPromptedDate: Date?
 
     /// Marketing version that was current when the last request was issued.

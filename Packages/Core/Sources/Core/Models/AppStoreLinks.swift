@@ -17,7 +17,7 @@ public enum AppStoreLinks {
 
     /// Product page opened directly on the "write a review" composer.
     ///
-    /// Used only as a manual fallback; the in-app rating flow uses the system review sheet.
+    /// Used by the Settings rate button; the automatic post-cleanup ask uses the system review sheet.
     public static var writeReview: URL {
         URL(string: productBase + appID + "?action=write-review") ?? fallback
     }
