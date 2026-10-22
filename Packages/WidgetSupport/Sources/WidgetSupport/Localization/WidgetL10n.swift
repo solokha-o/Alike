@@ -71,6 +71,9 @@ public enum WidgetL10n {
             WidgetL10n.plural("widgetsupport.status.ofGroups", total, bundle: bundle, locale: locale)
         }
 
+        /// "Largest groups" — the heading over the extra-large widget's group rows.
+        public static var largestGroups: String { WidgetL10n.string("widgetsupport.status.largestGroups") }
+
         /// "12 groups left" — groups still to review, never photos deleted.
         public static func groupsRemaining(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             WidgetL10n.plural("widgetsupport.status.groupsRemaining", count, bundle: bundle, locale: locale)
