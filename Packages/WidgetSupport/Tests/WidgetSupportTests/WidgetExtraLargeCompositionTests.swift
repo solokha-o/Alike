@@ -153,6 +153,13 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         XCTAssertTrue(share.text.contains(WidgetFormatting.byteCount(Self.library)), share.text)
     }
 
+    func testThePercentKeepsWesternDigitsUnderArabic() {
+        let rendered = WidgetFormatting.percent(0.64, basedOn: Locale(identifier: "ar_SA"))
+
+        XCTAssertTrue(rendered.contains("64"), rendered)
+        XCTAssertFalse(rendered.unicodeScalars.contains { (0x0660...0x0669).contains($0.value) }, rendered)
+    }
+
     func testAnUnknownLibrarySizeDrawsNoShare() {
         XCTAssertNil(Self.xl(Self.snapshot(clusters: nil, library: nil)).share)
     }

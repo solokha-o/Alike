@@ -136,9 +136,7 @@ private extension WidgetPresentation {
     static func libraryShare(of bytes: Int64?, in total: Int64?, drawsBar: Bool) -> WidgetLibraryShare? {
         guard let bytes, bytes > 0, let total, let fraction = share(of: bytes, in: total) else { return nil }
         let shown = max(fraction, 0.01)
-        let percent = shown.formatted(
-            .percent.precision(.fractionLength(0)).locale(WidgetFormatting.locale)
-        )
+        let percent = WidgetFormatting.percent(shown)
         return WidgetLibraryShare(
             fraction: fraction,
             text: WidgetL10n.Status.shareOfLibrary(percent, WidgetFormatting.byteCount(total)),
