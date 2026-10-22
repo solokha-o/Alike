@@ -14,21 +14,36 @@ struct AlikeStatusWidget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: WidgetSnapshotTimelineProvider()) { entry in
-            AlikeStatusWidgetView(state: entry.state, libraryTotalBytes: entry.libraryTotalBytes)
+            AlikeStatusWidgetView(
+                state: entry.state,
+                libraryTotalBytes: entry.libraryTotalBytes,
+                topClusters: entry.topClusters,
+                clusterCount: entry.clusterCount
+            )
         }
         .configurationDisplayName(WidgetL10n.Widget.displayName)
         .description(WidgetL10n.Widget.description)
         // Additive: `systemSmall` placements already on a home screen keep the size they
         // were added at. The kind is unchanged, so the app's reload calls still address
         // this widget. The Lock Screen families (1.5.0) join the same kind for the same
-        // reason: one reload reaches every placement.
-        .supportedFamilies([
-            .systemSmall, .systemMedium,
-            .accessoryCircular, .accessoryRectangular, .accessoryInline
-        ])
+        // reason: one reload reaches every placement, and so does the extra-large
+        // portrait family on iOS 27 — offered only where WidgetKit has it, so the
+        // gallery on iOS 17–26 lists exactly the five it did before.
+        .supportedFamilies(Self.families)
         // The layouts carry their own `WidgetLayoutMetrics.contentMargin`: the concept
         // sits closer to the edge than WidgetKit's default margins allow.
         .contentMarginsDisabled()
+    }
+
+    private static var families: [WidgetFamily] {
+        var families: [WidgetFamily] = [
+            .systemSmall, .systemMedium,
+            .accessoryCircular, .accessoryRectangular, .accessoryInline
+        ]
+        if #available(iOS 27.0, *) {
+            families.append(.systemExtraLargePortrait)
+        }
+        return families
     }
 }
 
@@ -42,8 +57,43 @@ struct AlikeStatusWidgetView: View {
 
     let state: WidgetDisplayState
     var libraryTotalBytes: Int64? = nil
+    var topClusters: [WidgetClusterSummary]? = nil
+    var clusterCount: Int? = nil
 
     var body: some View {
+        if isExtraLargePortrait {
+            extraLarge
+        } else {
+            standard
+        }
+    }
+
+    /// iOS 27's `systemExtraLargePortrait`, kept off the `WidgetLayoutFamily` switch:
+    /// that enum is shipped, and the five families it maps stay exactly as they were.
+    private var isExtraLargePortrait: Bool {
+        if #available(iOS 27.0, *) {
+            return widgetFamily == .systemExtraLargePortrait
+        }
+        return false
+    }
+
+    private var extraLarge: some View {
+        let composition = WidgetPresentation.extraLargeComposition(
+            for: state,
+            topClusters: topClusters,
+            clusterCount: clusterCount
+        )
+        return WidgetExtraLargeLayout(composition: composition)
+            .containerBackground(.fill.tertiary, for: .widget)
+            .widgetURL(composition.base.destination.url)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(composition.accessibilityLabel)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint(composition.base.accessibilityHint)
+    }
+
+    @ViewBuilder
+    private var standard: some View {
         let composition = WidgetPresentation.composition(
             for: state,
             family: layoutFamily,
@@ -84,9 +134,10 @@ struct AlikeStatusWidgetView: View {
         .accessibilityHint(composition.accessibilityHint)
     }
 
-    /// `supportedFamilies` admits exactly these five, so anything else would be a family
-    /// WidgetKit was never told this widget renders; the small layout is the safe
-    /// reading of one if it ever arrives.
+    /// `supportedFamilies` admits these five, plus the extra-large portrait family on
+    /// iOS 27, which `body` routes before it reaches here. Anything else would be a
+    /// family WidgetKit was never told this widget renders; the small layout is the
+    /// safe reading of one if it ever arrives.
     private var layoutFamily: WidgetLayoutFamily {
         switch widgetFamily {
         case .systemMedium: .medium
@@ -128,7 +179,9 @@ private func entry(_ snapshot: WidgetSnapshot?) -> WidgetSnapshotEntry {
     WidgetSnapshotEntry(
         date: .now,
         state: WidgetPresentation.displayState(for: snapshot),
-        libraryTotalBytes: snapshot?.libraryTotalBytes
+        libraryTotalBytes: snapshot?.libraryTotalBytes,
+        topClusters: snapshot?.topClusters,
+        clusterCount: snapshot?.clusterCount
     )
 }
 
@@ -228,4 +281,28 @@ private func entry(_ snapshot: WidgetSnapshot?) -> WidgetSnapshotEntry {
     WidgetSnapshotEntry(date: .now, state: .allCaughtUp(scannedAt: .now))
     WidgetSnapshotEntry(date: .now, state: .unavailable)
     WidgetSnapshotEntry(date: .now, state: WidgetPresentation.displayState(for: .suggestions()))
+}
+
+// MARK: - Extra-large portrait (iOS 27)
+
+// Four groups, one group, a 1.6.2 payload with no rows, and the two states without
+// figures. The Arabic and accessibility-size variants are the canvas selector's job.
+
+@available(iOS 27.0, *)
+#Preview("XL portrait", as: .systemExtraLargePortrait) {
+    AlikeStatusWidget()
+} timeline: {
+    entry(.suggestions())
+    entry(WidgetSnapshot(
+        generatedAt: .now,
+        photoAuthorization: .authorized,
+        hasCompletedScan: true,
+        lastScanDate: .now,
+        estimatedSavingsBytes: 268_435_456,
+        clusterCount: 1,
+        topClusters: [WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9)]
+    ))
+    entry(.partialReview())
+    WidgetSnapshotEntry(date: .now, state: .neverScanned)
+    WidgetSnapshotEntry(date: .now, state: .allCaughtUp(scannedAt: .now))
 }
