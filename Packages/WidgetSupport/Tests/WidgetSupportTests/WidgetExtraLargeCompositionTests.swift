@@ -19,40 +19,58 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         }
     }
 
-    private static func suggestions(clusterCount: Int?) -> WidgetDisplayState {
-        .hasSuggestions(bytes: 1_932_735_283, clusterCount: clusterCount, scannedAt: scannedAt, isStale: false)
+    private static let estimate: Int64 = 1_932_735_283
+    private static let library: Int64 = 27_917_287_424
+
+    private static func snapshot(
+        clusters: [WidgetClusterSummary]?,
+        clusterCount: Int? = 24,
+        estimate: Int64? = WidgetExtraLargeCompositionTests.estimate,
+        library: Int64? = WidgetExtraLargeCompositionTests.library,
+        isPremium: Bool = false
+    ) -> WidgetSnapshot {
+        WidgetSnapshot(
+            generatedAt: scannedAt,
+            photoAuthorization: .authorized,
+            hasCompletedScan: true,
+            lastScanDate: scannedAt,
+            estimatedSavingsBytes: estimate,
+            libraryTotalBytes: library,
+            clusterCount: clusterCount,
+            screenshotAssetCount: 86,
+            blurredPhotoAssetCount: 12,
+            isPremium: isPremium,
+            topClusters: clusters
+        )
     }
 
-    // MARK: - Rows
-
-    func testNoClustersDrawsNoRowsAndNoHeading() {
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 0),
-            topClusters: []
+    private static func xl(_ snapshot: WidgetSnapshot?) -> WidgetExtraLargeComposition {
+        WidgetPresentation.extraLargeComposition(
+            for: WidgetPresentation.displayState(for: snapshot, now: scannedAt),
+            snapshot: snapshot
         )
-
-        XCTAssertTrue(composition.clusterRows.isEmpty)
-        XCTAssertNil(composition.rowsTitle)
     }
 
-    func testOneClusterDrawsOneRow() {
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 1),
-            topClusters: [WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9)]
-        )
+    // MARK: - Group lines
+
+    func testNoClustersDrawsNoGroupLines() {
+        XCTAssertTrue(Self.xl(Self.snapshot(clusters: [], clusterCount: 0)).clusterRows.isEmpty)
+    }
+
+    func testOneClusterDrawsOneGroupLine() {
+        let composition = Self.xl(Self.snapshot(
+            clusters: [WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9)],
+            clusterCount: 1
+        ))
 
         XCTAssertEqual(composition.clusterRows.count, 1)
         XCTAssertEqual(composition.clusterRows.first?.bytes, WidgetFormatting.approximateByteCount(268_435_456))
         XCTAssertEqual(composition.clusterRows.first?.photos, WidgetL10n.Library.photos(9))
-        XCTAssertEqual(composition.rowsTitle, WidgetL10n.Status.largestGroups)
     }
 
-    func testThreeClustersDrawThreeRowsLargestFirst() {
+    func testThreeClustersDrawThreeLinesLargestFirst() {
         let input = Self.clusters(3)
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 3),
-            topClusters: input
-        )
+        let composition = Self.xl(Self.snapshot(clusters: input, clusterCount: 3))
 
         let expected = input.sorted { $0.reclaimableBytes > $1.reclaimableBytes }
             .map { WidgetFormatting.approximateByteCount($0.reclaimableBytes) }
@@ -61,10 +79,7 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
 
     func testTenClustersAreCappedAtTheLimitLargestFirst() {
         let input = Self.clusters(10)
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 10),
-            topClusters: input
-        )
+        let composition = Self.xl(Self.snapshot(clusters: input, clusterCount: 10))
 
         XCTAssertEqual(composition.clusterRows.count, WidgetSnapshot.topClustersLimit)
         let expected = input.sorted { $0.reclaimableBytes > $1.reclaimableBytes }
@@ -81,68 +96,121 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         XCTAssertEqual(WidgetClusterSummary.top([empty, a, b]), [a, b])
     }
 
-    func testAPayloadWithoutTopClustersDrawsNoRowsRatherThanZeros() {
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 24),
-            topClusters: nil
-        )
+    func testAPayloadWithoutTopClustersDrawsNoGroupLinesRatherThanZeros() {
+        let composition = Self.xl(Self.snapshot(clusters: nil))
 
         XCTAssertTrue(composition.clusterRows.isEmpty)
-        XCTAssertNil(composition.rowsTitle)
-        // The count is still known, so it is still said.
-        XCTAssertEqual(composition.clusterCountLine, WidgetL10n.Status.similarGroups(24))
+        // The category rows still come from the counts the payload does carry.
+        XCTAssertEqual(composition.categoryRows.count, 3)
     }
 
-    func testStatesWithoutFiguresListNoGroups() {
-        let states: [WidgetDisplayState] = [
-            .unavailable,
-            .noAccess(.denied),
-            .noAccess(.limited),
-            .neverScanned,
-            .allCaughtUp(scannedAt: Self.scannedAt)
-        ]
+    // MARK: - Categories
+
+    func testCategoryRowsAreTheLibraryWidgetsRows() {
+        let snapshot = Self.snapshot(clusters: Self.clusters(4))
+
+        XCTAssertEqual(Self.xl(snapshot).categoryRows, WidgetPresentation.libraryComposition(for: snapshot, now: Self.scannedAt).rows)
+        XCTAssertEqual(Self.xl(snapshot).categoryRows.map(\.destination), [.similarPhotos, .screenshots, .blurredPhotos])
+    }
+
+    func testScreenshotsAndBlurredAreLockedWithoutPremium() {
+        let free = Self.xl(Self.snapshot(clusters: nil, isPremium: false)).categoryRows
+        let premium = Self.xl(Self.snapshot(clusters: nil, isPremium: true)).categoryRows
+
+        XCTAssertEqual(free.map(\.isLocked), [false, true, true])
+        XCTAssertEqual(premium.map(\.isLocked), [false, false, false])
+    }
+
+    func testAllCaughtUpKeepsCategoriesButDropsFigures() {
+        let snapshot = Self.snapshot(clusters: Self.clusters(4), clusterCount: 0, estimate: 0)
+        let composition = Self.xl(snapshot)
+
+        XCTAssertEqual(WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt), .allCaughtUp(scannedAt: Self.scannedAt))
+        XCTAssertEqual(composition.categoryRows.count, 3)
+        XCTAssertTrue(composition.clusterRows.isEmpty)
+        XCTAssertNil(composition.share)
+    }
+
+    func testUnscannedStatesListNothing() {
+        let states: [WidgetDisplayState] = [.unavailable, .noAccess(.denied), .neverScanned]
+        let snapshot = Self.snapshot(clusters: Self.clusters(4))
 
         for state in states {
-            let composition = WidgetPresentation.extraLargeComposition(for: state, topClusters: Self.clusters(4))
+            let composition = WidgetPresentation.extraLargeComposition(for: state, snapshot: snapshot)
+            XCTAssertTrue(composition.categoryRows.isEmpty, "\(state)")
             XCTAssertTrue(composition.clusterRows.isEmpty, "\(state)")
-            XCTAssertNil(composition.clusterCountLine, "\(state)")
+            XCTAssertNil(composition.share, "\(state)")
         }
     }
+
+    // MARK: - Share of library
+
+    func testShareIsTheEstimateOverTheLibrary() throws {
+        let share = try XCTUnwrap(Self.xl(Self.snapshot(clusters: nil)).share)
+
+        XCTAssertEqual(share.fraction, Double(Self.estimate) / Double(Self.library), accuracy: 0.0001)
+        XCTAssertTrue(share.drawsBar)
+        XCTAssertTrue(share.text.contains(WidgetFormatting.byteCount(Self.library)), share.text)
+    }
+
+    func testAnUnknownLibrarySizeDrawsNoShare() {
+        XCTAssertNil(Self.xl(Self.snapshot(clusters: nil, library: nil)).share)
+    }
+
+    func testATinyShareStillReadsOnePercent() throws {
+        let share = try XCTUnwrap(Self.xl(Self.snapshot(clusters: nil, estimate: 1_000, library: Self.library)).share)
+
+        XCTAssertTrue(share.text.contains("1"), share.text)
+        XCTAssertFalse(share.text.hasPrefix("0"), share.text)
+    }
+
+    func testAReviewInProgressStillShowsTheShareAndGroups() {
+        let snapshot = WidgetSnapshot(
+            generatedAt: Self.scannedAt,
+            photoAuthorization: .authorized,
+            hasCompletedScan: true,
+            lastScanDate: Self.scannedAt,
+            estimatedSavingsBytes: Self.estimate,
+            libraryTotalBytes: Self.library,
+            clusterCount: 30,
+            sessionProgress: WidgetSessionProgress(reviewedClusters: 5, totalClusters: 30, updatedAt: Self.scannedAt),
+            topClusters: Self.clusters(4)
+        )
+        let composition = Self.xl(snapshot)
+
+        XCTAssertNotNil(composition.share)
+        // The review's own bar is already there; the share is a line, not a second bar.
+        XCTAssertEqual(composition.share?.drawsBar, false)
+        XCTAssertEqual(composition.clusterRows.count, 4)
+        XCTAssertEqual(composition.base.actionTitle, WidgetL10n.Action.continueReview)
+    }
+
+    // MARK: - Status zone
 
     func testTheBaseIsTheMediumComposition() {
-        let state = Self.suggestions(clusterCount: 24)
-        let composition = WidgetPresentation.extraLargeComposition(for: state, topClusters: Self.clusters(4))
+        let snapshot = Self.snapshot(clusters: Self.clusters(4))
+        let state = WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt)
 
-        XCTAssertEqual(composition.base, WidgetPresentation.composition(for: state, family: .medium))
-        XCTAssertEqual(composition.base.actionTitle, WidgetL10n.Action.review)
-        XCTAssertEqual(composition.base.caption, WidgetL10n.Status.reclaimable)
+        XCTAssertEqual(Self.xl(snapshot).base, WidgetPresentation.composition(for: state, family: .medium))
     }
 
-    func testAccessibilityLabelReadsTheFigureAndEveryRow() {
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: Self.suggestions(clusterCount: 2),
-            topClusters: Self.clusters(2)
-        )
+    func testAccessibilityLabelReadsTheFigureAndTheShare() throws {
+        let composition = Self.xl(Self.snapshot(clusters: Self.clusters(2)))
+        let share = try XCTUnwrap(composition.share)
 
-        let label = composition.accessibilityLabel
-        XCTAssertTrue(label.contains(composition.base.headline ?? "<missing>"))
-        for row in composition.clusterRows {
-            XCTAssertTrue(label.contains(row.bytes))
-            XCTAssertTrue(label.contains(row.photos))
-        }
+        XCTAssertTrue(composition.accessibilityLabel.contains(composition.base.headline ?? "<missing>"))
+        XCTAssertTrue(composition.accessibilityLabel.contains(share.text))
     }
 
     // MARK: - Localization
 
-    func testLargestGroupsIsTranslatedInEveryShippedLanguage() throws {
+    func testShareOfLibraryIsTranslatedInEveryShippedLanguage() throws {
         let catalog = try LocalizationCatalog.load()
-        let localizations = try catalog.localizations(of: "widgetsupport.status.largestGroups")
+        let localizations = try catalog.localizations(of: "widgetsupport.status.shareOfLibrary")
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = LocalizationCatalog.value(of: localizations[language])
-            XCTAssertNotNil(value, language)
-            XCTAssertFalse(value?.isEmpty ?? true, language)
-            XCTAssertNotEqual(value, "widgetsupport.status.largestGroups", language)
+            let value = try XCTUnwrap(LocalizationCatalog.value(of: localizations[language]), language)
+            XCTAssertTrue(value.contains("%1$@") && value.contains("%2$@"), "\(language): \(value)")
         }
     }
 

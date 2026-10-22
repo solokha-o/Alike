@@ -12,10 +12,9 @@ struct WidgetSnapshotEntry: TimelineEntry {
     /// What the circular ring measures the reclaimable estimate against. `nil` for a
     /// 1.4.x payload, which draws the figure without a ring.
     var libraryTotalBytes: Int64? = nil
-    /// The extra-large family's rows and its group count. `nil` for a payload written
-    /// before `topClusters` existed, which draws the figure without rows.
-    var topClusters: [WidgetClusterSummary]? = nil
-    var clusterCount: Int? = nil
+    /// What the extra-large family reads beyond the state: category counts, the premium
+    /// flag, the library size and the largest groups. `nil` when there is no snapshot.
+    var snapshot: WidgetSnapshot? = nil
 }
 
 /// Reads the shared snapshot and hands WidgetKit a single entry.
@@ -43,8 +42,7 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
             date: Date(),
             state: WidgetPresentation.displayState(for: snapshot),
             libraryTotalBytes: snapshot.libraryTotalBytes,
-            topClusters: snapshot.topClusters,
-            clusterCount: snapshot.clusterCount
+            snapshot: snapshot
         )
     }
 
@@ -56,8 +54,7 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
             date: Date(),
             state: WidgetPresentation.displayState(for: snapshot),
             libraryTotalBytes: snapshot?.libraryTotalBytes,
-            topClusters: snapshot?.topClusters,
-            clusterCount: snapshot?.clusterCount
+            snapshot: snapshot
         ))
     }
 
@@ -68,8 +65,7 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
                 date: $0.date,
                 state: $0.state,
                 libraryTotalBytes: snapshot?.libraryTotalBytes,
-                topClusters: snapshot?.topClusters,
-                clusterCount: snapshot?.clusterCount
+                snapshot: snapshot
             )
         }
         completion(Timeline(entries: entries, policy: .never))

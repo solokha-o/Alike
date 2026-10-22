@@ -17,8 +17,7 @@ struct AlikeStatusWidget: Widget {
             AlikeStatusWidgetView(
                 state: entry.state,
                 libraryTotalBytes: entry.libraryTotalBytes,
-                topClusters: entry.topClusters,
-                clusterCount: entry.clusterCount
+                snapshot: entry.snapshot
             )
         }
         .configurationDisplayName(WidgetL10n.Widget.displayName)
@@ -57,8 +56,7 @@ struct AlikeStatusWidgetView: View {
 
     let state: WidgetDisplayState
     var libraryTotalBytes: Int64? = nil
-    var topClusters: [WidgetClusterSummary]? = nil
-    var clusterCount: Int? = nil
+    var snapshot: WidgetSnapshot? = nil
 
     var body: some View {
         if isExtraLargePortrait {
@@ -78,18 +76,13 @@ struct AlikeStatusWidgetView: View {
     }
 
     private var extraLarge: some View {
-        let composition = WidgetPresentation.extraLargeComposition(
-            for: state,
-            topClusters: topClusters,
-            clusterCount: clusterCount
-        )
+        let composition = WidgetPresentation.extraLargeComposition(for: state, snapshot: snapshot)
+        // No whole-widget `accessibilityElement(children: .ignore)` here: the category
+        // rows are `Link`s and must stay reachable. The layout groups the status zone
+        // into one element instead, and `widgetURL` covers everything outside the rows.
         return WidgetExtraLargeLayout(composition: composition)
             .containerBackground(.fill.tertiary, for: .widget)
             .widgetURL(composition.base.destination.url)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(composition.accessibilityLabel)
-            .accessibilityAddTraits(.isButton)
-            .accessibilityHint(composition.base.accessibilityHint)
     }
 
     @ViewBuilder
@@ -180,8 +173,7 @@ private func entry(_ snapshot: WidgetSnapshot?) -> WidgetSnapshotEntry {
         date: .now,
         state: WidgetPresentation.displayState(for: snapshot),
         libraryTotalBytes: snapshot?.libraryTotalBytes,
-        topClusters: snapshot?.topClusters,
-        clusterCount: snapshot?.clusterCount
+        snapshot: snapshot
     )
 }
 
