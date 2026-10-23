@@ -262,6 +262,13 @@ public enum DetailsL10n {
         public static var tryLoadingThePhotoAgain: String { DetailsL10n.string("details.fullscreenZoomablePhoto.tryLoadingThePhotoAgain") }
     }
 
+    public enum PhotoTileSwipe {
+        /// Keep
+        public static var keep: String { DetailsL10n.string("details.photoTileSwipe.keep") }
+        /// Select
+        public static var select: String { DetailsL10n.string("details.photoTileSwipe.select") }
+    }
+
     public enum ScreenshotCleanup {
         /// Screenshot cleanup is available on iOS.
         public static var screenshotCleanupAvailableIOS: String { DetailsL10n.string("details.screenshotCleanup.screenshotCleanupAvailableIOS") }
