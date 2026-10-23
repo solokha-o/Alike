@@ -20,6 +20,7 @@ import Purchases
 import PurchasesUI
 import WidgetSupport
 import Diagnostics
+import AppIntentsKit
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -61,6 +62,7 @@ struct MainTabView: View {
     @State private var cleanupWorkspace = CleanupWorkspaceModel()
     private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
     private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
+    private let clusterSpotlightPublisher = ClusterSpotlightPublisher()
     private let photoPermissionManager: any PhotoPermissionManager = PhotoPermissionManagerImpl()
     @Environment(PendingWidgetDestination.self) private var pendingWidgetDestination
     private let onDataDeleted: @MainActor @Sendable () -> Void
@@ -159,6 +161,9 @@ struct MainTabView: View {
                 authorization: photoPermissionManager.authorizationStatus,
                 isPremium: subscriptionStore.entitlementState.isPremium
             )
+            // Same trigger, same aggregates: Spotlight holds the cluster metadata the
+            // widget's top-clusters list is built from, nothing more.
+            clusterSpotlightPublisher.publish(workspace: cleanupWorkspace)
         }
         .onChange(of: pendingWidgetDestination.destination, initial: true) {
             followPendingWidgetDestination()
@@ -288,6 +293,9 @@ struct MainTabView: View {
                     // After the wipe, not before: a snapshot published in between would
                     // put the counts the user just deleted back on their home screen.
                     widgetSnapshotPublisher.clear()
+                    // The Spotlight index is another copy outside the sandbox; the flow is
+                    // not complete until it is empty too.
+                    try await clusterSpotlightPublisher.clear()
                     onDataDeleted()
                 },
                 onResetBestShotPersonalization: {
@@ -359,6 +367,10 @@ struct MainTabView: View {
             tabManager.navigateToCleanup(entry: .category(.screenshots))
         case .blurredPhotos:
             tabManager.navigateToCleanup(entry: .category(.blurredPhotos))
+        case .scan:
+            // Same path as the in-app "Rescan" prompt: `ScannerView` consumes
+            // `shouldStartScan` and runs the quota check before anything scans.
+            tabManager.navigateToScanner(andStartScan: true)
         }
     }
 

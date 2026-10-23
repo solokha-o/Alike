@@ -11,6 +11,10 @@ public enum WidgetDestination: String, Sendable, CaseIterable, Codable {
     case similarPhotos
     case screenshots
     case blurredPhotos
+    /// The scanner tab, with a scan requested. Added for App Intents (spike #5): no
+    /// widget emits it, and `ScannerView` still owns the free-scan quota and the Photos
+    /// permission prompt, so the link asks for a scan rather than performing one.
+    case scan
 
     public static let scheme = "alike"
 
@@ -24,6 +28,7 @@ public enum WidgetDestination: String, Sendable, CaseIterable, Codable {
         case .similarPhotos: "similar"
         case .screenshots: "screenshots"
         case .blurredPhotos: "blurred"
+        case .scan: "scan"
         }
     }
 

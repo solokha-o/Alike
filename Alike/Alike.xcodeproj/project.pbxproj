@@ -14,6 +14,7 @@
 		531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63C2F292A3B00DAB1E2 /* Welcome */; };
 		531BB6402F292A8100DAB1E2 /* Launch in Frameworks */ = {isa = PBXBuildFile; productRef = 531BB63F2F292A8100DAB1E2 /* Launch */; };
 		D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */ = {isa = PBXBuildFile; productRef = D1A60C0F2F90000100DAB1E2 /* Diagnostics */; };
+		A51E00012F95000100DAB1E2 /* AppIntentsKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51E00032F95000100DAB1E2 /* AppIntentsKit */; };
 		53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A542F29455F00D1CCCC /* DesignSystem */; };
 		53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A572F29457200D1CCCC /* PhotoAnalysis */; };
 		53458A5B2F29457F00D1CCCC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 53458A5A2F29457F00D1CCCC /* Storage */; };
@@ -88,6 +89,7 @@
 				531BB6342F29294A00DAB1E2 /* Details in Frameworks */,
 				531BB6402F292A8100DAB1E2 /* Launch in Frameworks */,
 				D1A60C0D2F90000100DAB1E2 /* Diagnostics in Frameworks */,
+				A51E00012F95000100DAB1E2 /* AppIntentsKit in Frameworks */,
 				9F1D0A001000000000000020 /* WidgetSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,6 +177,7 @@
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
 				D1A60C0F2F90000100DAB1E2 /* Diagnostics */,
+				A51E00032F95000100DAB1E2 /* AppIntentsKit */,
 				53458A542F29455F00D1CCCC /* DesignSystem */,
 				53458A572F29457200D1CCCC /* PhotoAnalysis */,
 				53458A5A2F29457F00D1CCCC /* Storage */,
@@ -278,6 +281,7 @@
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
 				D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */,
+				A51E00022F95000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/AppIntentsKit" */,
 				5A19A10232B8A5D2008C44A1 /* XCLocalSwiftPackageReference "../Packages/NavigationKit" */,
 				53458A532F29455F00D1CCCC /* XCLocalSwiftPackageReference "../Packages/DesignSystem" */,
 				53458A562F29457200D1CCCC /* XCLocalSwiftPackageReference "../Packages/PhotoAnalysis" */,
@@ -695,6 +699,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		A51E00022F95000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/AppIntentsKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/AppIntentsKit;
+		};
 		531BB62F2F29293A00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Core" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Core;
@@ -754,6 +762,10 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A51E00032F95000100DAB1E2 /* AppIntentsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppIntentsKit;
+		};
 		531BB6302F29293A00DAB1E2 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;

@@ -42,10 +42,13 @@ QUICK_PACKAGES=(
 # that are in fact present — eleven issues that say nothing about the code.
 # Diagnostics: same `.xcstrings` reason as WidgetSupport, and its MetricKit and
 # MessageUI code only exists on iOS, so a macOS `swift test` would cover none of it.
+# AppIntentsKit: same `.xcstrings` reason, and the App Intents metadata processor
+# only runs under xcodebuild.
 SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
   "WidgetSupport"
   "Diagnostics"
+  "AppIntentsKit"
 )
 
 # Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
