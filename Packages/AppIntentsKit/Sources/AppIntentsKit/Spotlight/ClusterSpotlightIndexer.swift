@@ -13,11 +13,43 @@ public protocol SpotlightIndexClearing: Sendable {
     func clearIndex() async throws
 }
 
+/// `deleteAllSearchableItems` did not resume its continuation on the iOS 27.0 simulator
+/// even though CoreSpotlight logged `delete-all … result: success`. The Delete Alike
+/// Data flow must not hang on that, so the wait is bounded; on timeout the request has
+/// already been handed to the index daemon, which journals it.
+public struct SpotlightIndexClearTimeout: Error, Equatable {
+    public let timeout: Duration
+}
+
 public struct SystemSpotlightIndexClearer: SpotlightIndexClearing {
-    public init() {}
+    public static let defaultTimeout: Duration = .seconds(5)
+
+    private let timeout: Duration
+    private let deleteAll: @Sendable () async throws -> Void
+
+    public init(timeout: Duration = SystemSpotlightIndexClearer.defaultTimeout) {
+        self.init(timeout: timeout) {
+            try await CSSearchableIndex.default().deleteAllSearchableItems()
+        }
+    }
+
+    init(timeout: Duration, deleteAll: @escaping @Sendable () async throws -> Void) {
+        self.timeout = timeout
+        self.deleteAll = deleteAll
+    }
 
     public func clearIndex() async throws {
-        try await CSSearchableIndex.default().deleteAllSearchableItems()
+        let timeout = self.timeout
+        let deleteAll = self.deleteAll
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask { try await deleteAll() }
+            group.addTask {
+                try await Task.sleep(for: timeout)
+                throw SpotlightIndexClearTimeout(timeout: timeout)
+            }
+            defer { group.cancelAll() }
+            try await group.next()
+        }
     }
 }
 

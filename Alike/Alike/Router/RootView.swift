@@ -161,8 +161,12 @@ struct MainTabView: View {
                 authorization: photoPermissionManager.authorizationStatus,
                 isPremium: subscriptionStore.entitlementState.isPremium
             )
-            // Same trigger, same aggregates: Spotlight holds the cluster metadata the
-            // widget's top-clusters list is built from, nothing more.
+        }
+        // Its own trigger rather than the widget's: the widget signature does not carry
+        // `scanOperation`, and the scan's results land a moment before it flips back to
+        // idle, so a publish riding on the widget task would run while the scan is still
+        // "scanning" and then never again.
+        .task(id: spotlightIndexSignature) {
             clusterSpotlightPublisher.publish(workspace: cleanupWorkspace)
         }
         .onChange(of: pendingWidgetDestination.destination, initial: true) {
@@ -341,6 +345,18 @@ struct MainTabView: View {
         )
     }
 
+    /// What has to change before the Spotlight copy of the cluster metadata is stale.
+    private var spotlightIndexSignature: SpotlightIndexSignature {
+        SpotlightIndexSignature(
+            isScanIdle: cleanupWorkspace.scanOperation == .idle,
+            hasCompletedScanBaseline: cleanupWorkspace.hasCompletedScanBaseline,
+            lastCompletedScanDate: cleanupWorkspace.lastCompletedScanDate,
+            clusterCount: cleanupWorkspace.clusters.count,
+            // A keeper change moves a group's reclaimable bytes without moving its count.
+            estimatedSavingsBytes: cleanupWorkspace.reclaimableEstimate.totalBytes
+        )
+    }
+
     /// Acts on a widget tap once the main screen is the one on screen.
     ///
     /// Every destination still lands on the cleanup tab; the category-specific ones now
@@ -403,6 +419,14 @@ private struct WidgetSnapshotSignature: Equatable {
     let inReviewClusters: Int
     let sessionUpdatedAt: Date?
     let shouldShowRescanPrompt: Bool
+}
+
+private struct SpotlightIndexSignature: Equatable {
+    let isScanIdle: Bool
+    let hasCompletedScanBaseline: Bool
+    let lastCompletedScanDate: Date?
+    let clusterCount: Int
+    let estimatedSavingsBytes: Int64
 }
 
 private struct CleanupReminderTaskID: Equatable {

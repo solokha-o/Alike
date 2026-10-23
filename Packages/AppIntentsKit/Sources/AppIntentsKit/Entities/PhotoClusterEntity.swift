@@ -10,24 +10,24 @@ import Foundation
 @available(iOS 18.0, macOS 15.0, *)
 public struct PhotoClusterEntity: IndexedEntity {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("appintents.entity.photoCluster.typeName")
+        name: LocalizedStringResource("Photo group", table: "AppIntents")
     )
     public static let defaultQuery = PhotoClusterEntityQuery()
 
     public let id: String
 
     @Property(
-        title: LocalizedStringResource("appintents.entity.photoCluster.photoCount")
+        title: LocalizedStringResource("Photo count", table: "AppIntents")
     )
     public var photoCount: Int
 
     @Property(
-        title: LocalizedStringResource("appintents.entity.photoCluster.reclaimableBytes")
+        title: LocalizedStringResource("Reclaimable bytes", table: "AppIntents")
     )
     public var reclaimableBytes: Int
 
     @Property(
-        title: LocalizedStringResource("appintents.entity.photoCluster.month")
+        title: LocalizedStringResource("Month", table: "AppIntents")
     )
     public var month: Date
 

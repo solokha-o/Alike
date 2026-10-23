@@ -51,6 +51,38 @@ final class ClusterSpotlightIndexerTests: XCTestCase {
     }
 }
 
+final class SystemSpotlightIndexClearerTests: XCTestCase {
+    func testAHangingDeleteAllThrowsATimeoutInsteadOfWaitingForever() async {
+        let clearer = SystemSpotlightIndexClearer(timeout: .milliseconds(100)) {
+            try await Task.sleep(for: .seconds(30))
+        }
+        do {
+            try await clearer.clearIndex()
+            XCTFail("expected a timeout")
+        } catch let timeout as SpotlightIndexClearTimeout {
+            XCTAssertEqual(timeout.timeout, .milliseconds(100))
+        } catch {
+            XCTFail("unexpected error \(error)")
+        }
+    }
+
+    func testAPromptDeleteAllCompletesWithoutError() async throws {
+        let clearer = SystemSpotlightIndexClearer(timeout: .seconds(5)) {}
+        try await clearer.clearIndex()
+    }
+
+    func testAFailingDeleteAllPropagatesItsError() async {
+        struct Boom: Error {}
+        let clearer = SystemSpotlightIndexClearer(timeout: .seconds(5)) { throw Boom() }
+        do {
+            try await clearer.clearIndex()
+            XCTFail("expected Boom")
+        } catch {
+            XCTAssertTrue(error is Boom, "\(error)")
+        }
+    }
+}
+
 // MARK: - Doubles
 
 final class FakeClearer: SpotlightIndexClearing, @unchecked Sendable {

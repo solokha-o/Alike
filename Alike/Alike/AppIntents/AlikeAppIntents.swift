@@ -29,7 +29,7 @@ struct AlikeAppShortcuts: AppShortcutsProvider {
                 "Start a \(.applicationName) scan",
                 "Find similar photos with \(.applicationName)"
             ],
-            shortTitle: LocalizedStringResource("appintents.startScan.title"),
+            shortTitle: LocalizedStringResource("Scan Photos", table: "AppIntents"),
             systemImageName: "viewfinder"
         )
         AppShortcut(
@@ -39,7 +39,7 @@ struct AlikeAppShortcuts: AppShortcutsProvider {
                 "How much can \(.applicationName) clean up",
                 "\(.applicationName) reclaimable space"
             ],
-            shortTitle: LocalizedStringResource("appintents.showReclaimable.title"),
+            shortTitle: LocalizedStringResource("Check Reclaimable Space", table: "AppIntents"),
             systemImageName: "internaldrive"
         )
         AppShortcut(
@@ -49,7 +49,7 @@ struct AlikeAppShortcuts: AppShortcutsProvider {
                 "Review photos in \(.applicationName)",
                 "Open \(\.$category) in \(.applicationName)"
             ],
-            shortTitle: LocalizedStringResource("appintents.openReview.title"),
+            shortTitle: LocalizedStringResource("Open Photo Review", table: "AppIntents"),
             systemImageName: "photo.stack"
         )
     }

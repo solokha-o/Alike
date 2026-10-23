@@ -9,21 +9,21 @@ public enum ClusterReviewCategory: String, AppEnum {
     case blurredPhotos
 
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("appintents.category.typeName")
+        name: LocalizedStringResource("Review category", table: "AppIntents")
     )
 
     public static let caseDisplayRepresentations: [ClusterReviewCategory: DisplayRepresentation] = [
         .similarPhotos: DisplayRepresentation(
-            title: LocalizedStringResource("appintents.category.similarPhotos")
+            title: LocalizedStringResource("Similar photos", table: "AppIntents")
         ),
         .resumeReview: DisplayRepresentation(
-            title: LocalizedStringResource("appintents.category.resumeReview")
+            title: LocalizedStringResource("Resume review", table: "AppIntents")
         ),
         .screenshots: DisplayRepresentation(
-            title: LocalizedStringResource("appintents.category.screenshots")
+            title: LocalizedStringResource("Screenshots", table: "AppIntents")
         ),
         .blurredPhotos: DisplayRepresentation(
-            title: LocalizedStringResource("appintents.category.blurredPhotos")
+            title: LocalizedStringResource("Blurred photos", table: "AppIntents")
         )
     ]
 

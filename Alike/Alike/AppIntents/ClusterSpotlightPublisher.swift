@@ -83,7 +83,16 @@ final class ClusterSpotlightPublisher {
     func clear() async throws {
         lastPublishedRecords = nil
         recordStore.replace(with: [])
-        try await clearer.clearIndex()
+        do {
+            try await clearer.clearIndex()
+        } catch let timeout as SpotlightIndexClearTimeout {
+            // The request reached CoreSpotlight, which journals it; only the reply is
+            // missing. Logged, not surfaced: the user's local data is already gone and a
+            // failure here would read as if it were not.
+            Self.logger.error(
+                "\(AppLog.tag(.error, "Spotlight clear did not reply within \(timeout.timeout); continuing"))"
+            )
+        }
     }
 
     /// Same keeper and byte source as `reclaimableEstimate` and the widget's top
