@@ -100,7 +100,7 @@
 - Spotlight-індексація: після скану з `--seed-spotlight-samples` CoreSpotlight логує `add-update-items:3 … result: success`, `spotlightknowledged` отримує подію `App.Intents.IndexedEntity [sourceIdentifier=com.alike.app]`.
 - Delete All Data: `delete-all … Completed donation deleting ALL items … result: success`, потік завершується за кілька секунд, застосунок переходить на welcome.
 - Privacy: entity й індекс не містять `localIdentifier`, імен файлів, мініатюр, feature prints (тест `PhotoClusterEntityTests`, перевірка `attributeSet`).
-- `tools/full` на iPhone 18 Pro Max, iOS 27.0 — див. рядок нижче (заповнено після прогону).
+- `tools/full` на iPhone 18 Pro Max, iOS 27.0: 24/24 pass, включно з `xcodebuild test Packages/AppIntentsKit` (звіт `build/reports/local-ci/20261023T171904Z-55048`).
 
 ## Не перевірено
 
