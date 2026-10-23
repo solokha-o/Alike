@@ -13,8 +13,11 @@ public struct StartScanIntent: AppIntent {
     )
     public static let openAppWhenRun = true
 
-    @Dependency
-    private var environment: any AppIntentsEnvironmentProviding
+    /// Resolved by the system inside the intent perform flow. Internal, not private,
+    /// so a test can inject a fake through `$environment.wrappedValue` before calling
+    /// `perform()` directly — outside the system flow nothing resolves it.
+    @Dependency(key: AppIntentsEnvironment.dependencyKey)
+    var environment: any AppIntentsEnvironmentProviding
 
     public init() {}
 

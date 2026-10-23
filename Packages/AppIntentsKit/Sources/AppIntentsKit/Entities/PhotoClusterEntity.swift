@@ -80,8 +80,8 @@ public struct PhotoClusterEntity: IndexedEntity {
 /// Resolves entities by identifier and offers the current clusters as suggestions.
 @available(iOS 18.0, macOS 15.0, *)
 public struct PhotoClusterEntityQuery: EntityQuery {
-    @Dependency
-    private var source: any ClusterIndexSource
+    @Dependency(key: ClusterIndexSourceRegistration.dependencyKey)
+    var source: any ClusterIndexSource
 
     public init() {}
 
@@ -101,8 +101,10 @@ public struct PhotoClusterEntityQuery: EntityQuery {
 }
 
 public enum ClusterIndexSourceRegistration {
+    public static let dependencyKey = "com.alike.appintents.clusterIndexSource"
+
     /// Registers the app's cluster source so the entity query can resolve identifiers.
     public static func register(_ source: any ClusterIndexSource) {
-        AppDependencyManager.shared.add(dependency: source)
+        AppDependencyManager.shared.add(key: dependencyKey, dependency: source)
     }
 }

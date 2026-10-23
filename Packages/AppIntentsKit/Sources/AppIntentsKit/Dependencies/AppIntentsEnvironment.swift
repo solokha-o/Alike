@@ -51,9 +51,14 @@ public protocol AppIntentsEnvironmentProviding: Sendable {
 }
 
 public enum AppIntentsEnvironment {
+    /// Explicit key: the default one is derived from the value's type, and an existential
+    /// registered through a generic `add` does not reliably match the `@Dependency`
+    /// declared as `any AppIntentsEnvironmentProviding`.
+    public static let dependencyKey = "com.alike.appintents.environment"
+
     /// Registers the app's environment so `@Dependency` resolves inside `perform()`.
     /// Call once, at launch, before the system can run an intent.
     public static func register(_ environment: any AppIntentsEnvironmentProviding) {
-        AppDependencyManager.shared.add(dependency: environment)
+        AppDependencyManager.shared.add(key: dependencyKey, dependency: environment)
     }
 }

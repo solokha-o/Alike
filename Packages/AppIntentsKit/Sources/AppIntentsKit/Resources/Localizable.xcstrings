@@ -256,13 +256,13 @@
               "zero": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "لا صور متشابهة"
+                  "value": "%lld صور متشابهة"
                 }
               },
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "صورة متشابهة واحدة"
+                  "value": "%lld صورة متشابهة"
                 }
               },
               "two": {
