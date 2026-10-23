@@ -7,9 +7,9 @@ import Foundation
 /// count as a value so a shortcut can keep computing with it, and a spoken dialog so
 /// Siri has something to say.
 public struct ShowReclaimableIntent: AppIntent {
-    public static let title = LocalizedStringResource("appintents.showReclaimable.title", table: "AppIntents")
+    public static let title = LocalizedStringResource("appintents.showReclaimable.title")
     public static let description = IntentDescription(
-        LocalizedStringResource("appintents.showReclaimable.description", table: "AppIntents")
+        LocalizedStringResource("appintents.showReclaimable.description")
     )
     public static let openAppWhenRun = false
 

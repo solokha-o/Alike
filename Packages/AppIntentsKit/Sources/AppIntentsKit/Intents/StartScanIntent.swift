@@ -7,9 +7,9 @@ import Foundation
 /// call the scan itself: `ScannerView` owns the free-scan quota and the Photos
 /// permission prompt, and running the scan from here would bypass both.
 public struct StartScanIntent: AppIntent {
-    public static let title = LocalizedStringResource("appintents.startScan.title", table: "AppIntents")
+    public static let title = LocalizedStringResource("appintents.startScan.title")
     public static let description = IntentDescription(
-        LocalizedStringResource("appintents.startScan.description", table: "AppIntents")
+        LocalizedStringResource("appintents.startScan.description")
     )
     public static let openAppWhenRun = true
 

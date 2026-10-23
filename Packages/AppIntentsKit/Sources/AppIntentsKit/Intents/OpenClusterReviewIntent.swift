@@ -8,9 +8,9 @@ import Foundation
 /// entitlement and shows the paywall, and this intent must not become a second gate
 /// or a way around the first one. The dialog says so up front.
 public struct OpenClusterReviewIntent: AppIntent {
-    public static let title = LocalizedStringResource("appintents.openReview.title", table: "AppIntents")
+    public static let title = LocalizedStringResource("appintents.openReview.title")
     public static let description = IntentDescription(
-        LocalizedStringResource("appintents.openReview.description", table: "AppIntents")
+        LocalizedStringResource("appintents.openReview.description")
     )
     public static let openAppWhenRun = true
 
@@ -19,7 +19,7 @@ public struct OpenClusterReviewIntent: AppIntent {
     }
 
     @Parameter(
-        title: LocalizedStringResource("appintents.openReview.parameter.category", table: "AppIntents"),
+        title: LocalizedStringResource("appintents.openReview.parameter.category"),
         default: .similarPhotos
     )
     public var category: ClusterReviewCategory

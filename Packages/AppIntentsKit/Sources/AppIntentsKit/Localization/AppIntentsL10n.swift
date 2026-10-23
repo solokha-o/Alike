@@ -2,9 +2,10 @@
 //
 // Only the strings an intent resolves at run time live here. Titles, descriptions,
 // parameter and property names are `LocalizedStringResource` literals next to the
-// intents with `table: "AppIntents"`: the App Intents metadata processor reads them
-// from the source and refuses any bundle but the app's, so their translations live in
-// the app target's `AppIntents.xcstrings`, not in this package.
+// intents: the App Intents metadata processor reads them from the source and refuses
+// any bundle but the app's, and the Shortcuts app resolved a custom `table:` to the
+// raw key, so their translations live in the app target's `Localizable.xcstrings`
+// under the `appintents.` prefix, not in this package.
 
 import Foundation
 
