@@ -60,6 +60,10 @@ ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
 ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
 ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
 
+ALIKE_PRIVACY_URL_PT_PT="https://alikeapp.github.io/pt-br/privacy/"
+ALIKE_TERMS_URL_PT_PT="https://alikeapp.github.io/pt-br/terms/"
+ALIKE_SUPPORT_URL_PT_PT="https://alikeapp.github.io/pt-br/support/"
+
 ALIKE_PRIVACY_URL_IT="https://alikeapp.github.io/it/privacy/"
 ALIKE_TERMS_URL_IT="https://alikeapp.github.io/it/terms/"
 ALIKE_SUPPORT_URL_IT="https://alikeapp.github.io/it/support/"
@@ -172,9 +176,10 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`), for all thirteen
-      localizations the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`,
-      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`.
+      (`tools/prepare_app_store_upload_bundle.py`), for all fourteen
+      localizations with their own copy: `en-US`, `uk`, `de-DE`, `fr-FR`,
+      `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`,
+      `ar-SA`.
       Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift
       apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
@@ -193,7 +198,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
       what Best Shot learns and where it is reset, confirmed deletion into
       Recently Deleted, and the three paywall entry points.
 - [ ] Anything the release adds that is **free** says so in `ALIKE FREE`, in all
-      thirteen locales. Without that line a reader, and App Review, can
+      fourteen descriptions (`pt-PT` included). Without that line a reader, and App Review, can
       reasonably read a new feature as being behind the paywall.
 - [ ] Descriptions measured in **strict** mode, not with
       `--allow-placeholder-urls`. The placeholder run understates every locale
@@ -207,7 +212,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ## 4. Screenshots
 
 - [ ] Deck rendered and eyeballed per locale — see `Docs/screenshot-brief.md`.
-      Seven slides in thirteen locales as of 1.4.0, so ninety-one renders;
+      Seven slides in fourteen decks as of 1.7.0 (`pt-PT` added), so ninety-eight renders;
       `--dry-run` prints the count and is the cheapest way to catch a locale
       short an entry.
 - [ ] Capture status table in `Docs/screenshot-shot-list.md` current.
@@ -232,7 +237,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 - [ ] `bundle exec ruby tools/app_store_iap_metadata.rb status` reflects the
       Alike Pro group and both plans.
 - [ ] `upload-localizations` for the display names and descriptions in all
-      thirteen localizations. `Alike.storekit` is the source of that copy, and
+      eighteen listing localizations. `Alike.storekit` is the source of that copy, and
       `validate_storekit_locale_coverage` fails generation when a shipped
       locale is missing from it. Only `en-US` failures are fatal; App Store Connect
       rejecting another locale is reported as a warning and skipped.

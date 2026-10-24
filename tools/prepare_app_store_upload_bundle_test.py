@@ -68,6 +68,12 @@ class SearchFieldTests(unittest.TestCase):
             ["en-GB keyword 'up' repeats it"],
         )
 
+    def test_pt_pt_has_its_own_deck_and_copy(self) -> None:
+        mapping = next(m for m in bundle.UPLOAD_SAFE_LOCALES if m.apple == "pt-PT")
+        self.assertEqual(mapping.source, "pt-PT")
+        self.assertNotEqual(bundle.METADATA["pt-PT"]["description"], bundle.METADATA["pt-BR"]["description"])
+        self.assertNotEqual(bundle.METADATA["pt-PT"]["keywords"], bundle.METADATA["pt-BR"]["keywords"])
+
     def test_regional_listings_have_their_own_keywords(self) -> None:
         source_listing = {"en-US": "en-US", "fr": "fr-FR"}
         for mapping in bundle.UPLOAD_SAFE_LOCALES:
