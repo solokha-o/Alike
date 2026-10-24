@@ -62,6 +62,12 @@ class SearchFieldTests(unittest.TestCase):
             ["fr-CA keyword 'space' repeats en-CA", "en-GB keyword 'tidy' repeats en-AU"],
         )
 
+    def test_european_keyword_shared_with_en_gb_fails(self) -> None:
+        self.assertEqual(
+            bundle.cross_indexed_keyword_errors({"it": "spazio,up", "nl-NL": "opslag", "pl": "miejsce", "en-GB": "free,up"}),
+            ["en-GB keyword 'up' repeats it"],
+        )
+
     def test_regional_listings_have_their_own_keywords(self) -> None:
         source_listing = {"en-US": "en-US", "fr": "fr-FR"}
         for mapping in bundle.UPLOAD_SAFE_LOCALES:
