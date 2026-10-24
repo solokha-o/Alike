@@ -98,6 +98,26 @@
           "description" : "",
           "displayName" : "Alike Pro",
           "locale" : "ar_SA"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_CA"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_AU"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "fr_CA"
         }
       ],
       "name" : "Alike Pro",
@@ -203,6 +223,26 @@
               "description" : "كل أدوات Pro بفاتورة سنوية واحدة.",
               "displayName" : "‏Alike Pro سنويًا",
               "locale" : "ar_SA"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Tous les outils Pro, une fois par an.",
+              "displayName" : "Alike Pro annuel",
+              "locale" : "fr_CA"
             }
           ],
           "productID" : "com.alike.app.pro.yearly",
@@ -302,6 +342,26 @@
               "description" : "تنظيف صور Alike Pro بالكامل، شهريًا.",
               "displayName" : "‏Alike Pro شهريًا",
               "locale" : "ar_SA"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Tout le nettoyage photo d’Alike Pro.",
+              "displayName" : "Alike Pro mensuel",
+              "locale" : "fr_CA"
             }
           ],
           "productID" : "com.alike.app.pro.monthly",

@@ -66,6 +66,10 @@ LOCALE_LEGAL_LABELS = {
     "tr": ("Gizlilik Politikası", "Kullanım Koşulları"),
     "zh-Hant": ("隱私權政策", "使用條款"),
     "ar-SA": ("سياسة الخصوصية", "شروط الاستخدام"),
+    "en-GB": (PRIVACY_LABEL, TERMS_LABEL),
+    "en-CA": (PRIVACY_LABEL, TERMS_LABEL),
+    "en-AU": (PRIVACY_LABEL, TERMS_LABEL),
+    "fr-CA": ("Politique de confidentialité", "Conditions d’utilisation"),
 }
 TODO_MARKER = "TODO:"
 HAN_PATTERN = re.compile(r"[\u4e00-\u9fff]")
@@ -104,7 +108,10 @@ class LocaleMapping:
     apple: str
 
 
-# The listing ships the same thirteen languages the app itself is translated into.
+# The listing ships the thirteen languages the app itself is translated into,
+# plus four regional listings that reuse one of them: en-GB, en-CA and en-AU
+# take the en-US deck and fr-CA takes the fr deck, so one `source` can feed
+# several `apple` locales and no deck is copied under Docs/images/.
 # `source` is the app's own language code, which is also the directory name
 # under Docs/images/; `apple` is the App Store Connect locale, which is not the
 # same string. es-419 is the app's Latin American Spanish and maps onto App
@@ -115,11 +122,12 @@ class LocaleMapping:
 # region-qualified it-IT, pl-PL and tr-TR as unsupported directory names, while
 # nl-NL and zh-Hant are accepted as-is.
 #
-# Adding a locale means five things, and a missing one is a validation error
+# Adding a locale means six things, and a missing one is a validation error
 # rather than a silent gap: a mapping here, an entry in METADATA, a row in
-# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, and a localization in
-# Alike.storekit for the subscription group and every product in it. Arabic
-# arrived with the first four and without the fifth, which is what
+# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, a row in
+# STOREKIT_TO_APP_STORE_LOCALE, and a localization in Alike.storekit for the
+# subscription group and every product in it. Arabic
+# arrived with the first four and without the last, which is what
 # validate_storekit_locale_coverage() now refuses to let happen again.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
@@ -135,6 +143,10 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="tr", apple="tr"),
     LocaleMapping(source="zh-Hant", apple="zh-Hant"),
     LocaleMapping(source="ar", apple="ar-SA"),
+    LocaleMapping(source="en-US", apple="en-GB"),
+    LocaleMapping(source="en-US", apple="en-CA"),
+    LocaleMapping(source="en-US", apple="en-AU"),
+    LocaleMapping(source="fr", apple="fr-CA"),
 )
 
 # DELIVER_ACCEPTED_LOCALES guards UPLOAD_SAFE_LOCALES against a regression of
@@ -142,7 +154,7 @@ UPLOAD_SAFE_LOCALES = (
 # locale folder names (see `Deliver::Loader.language_folders`), and a locale
 # spelled outside that set fails at upload time with "Unsupported directory
 # name(s)" instead of at generation time where it is cheap to catch. This
-# project ships only the subset of that set the app is translated into, and
+# project ships only the subset of that set the listing uses, and
 # validate_locale_folder_names() checks every generated metadata/screenshot
 # folder against it.
 DELIVER_ACCEPTED_LOCALES = frozenset(
@@ -160,6 +172,10 @@ DELIVER_ACCEPTED_LOCALES = frozenset(
         "tr",
         "zh-Hant",
         "ar-SA",
+        "en-GB",
+        "en-CA",
+        "en-AU",
+        "fr-CA",
     }
 )
 
@@ -182,6 +198,10 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "tr_TR": "tr",
     "zh_TW": "zh-Hant",
     "ar_SA": "ar-SA",
+    "en_GB": "en-GB",
+    "en_CA": "en-CA",
+    "en_AU": "en-AU",
+    "fr_CA": "fr-CA",
 }
 
 APP_STORE_TO_STOREKIT_LOCALE = {apple: storekit for storekit, apple in STOREKIT_TO_APP_STORE_LOCALE.items()}
@@ -1078,6 +1098,68 @@ METADATA = {
     },
 }
 
+# The four regional listings below reuse the copy of their source language
+# rather than carrying a second copy of it, so a change to en-US or fr-FR
+# reaches them too. en-GB and en-AU swap in British spelling and the iOS UI
+# names those locales use; the table holds every US form the en-US copy has
+# today, and a new one has to be added here by hand. en-CA is the en-US copy
+# unchanged; whether it should take Canadian spellings such as "colours" is
+# part of the native read in card 49. fr-CA keeps the fr-FR
+# copy unchanged: nothing in it reads as France-only to an agent review, and a
+# native Québécois read is card 49.
+#
+# Keywords are the one field written per market. Australia indexes en-GB next
+# to en-AU and Canada indexes fr-CA next to en-CA, so those keyword lists are
+# planned in pairs, the way en-US and es-MX are; cross_indexed_keyword_errors()
+# enforces it. en-AU keeps words en-GB already covers out of its own field and
+# spends it on Australian phrasing instead. None of the four has been read by a
+# native speaker yet.
+BRITISH_SPELLING = (
+    ("Airplane Mode", "Aeroplane Mode"),
+    ("colors", "colours"),
+)
+
+
+def british_spelling(text: str) -> str:
+    for american, british in BRITISH_SPELLING:
+        text = text.replace(american, british)
+    return text
+
+
+def regional_copy(source: str, keywords: str, spelling=lambda text: text) -> dict[str, str]:
+    values = METADATA[source]
+    return {
+        "subtitle": values["subtitle"],
+        "description": spelling(values["description"]),
+        "keywords": keywords,
+        "promotional_text": spelling(values["promotional_text"]),
+        "release_notes": spelling(values["release_notes"]),
+    }
+
+
+METADATA.update(
+    {
+        "en-GB": regional_copy(
+            "en-US",
+            "delete,space,camera,roll,clear,free,up,memory,phone,tidy,declutter,gallery,screenshot,blurry,pics",
+            british_spelling,
+        ),
+        "en-CA": regional_copy(
+            "en-US",
+            "delete,space,camera,roll,clear,free,up,memory,phone,cell,tidy,gallery,screenshot,blurry,pics,album",
+        ),
+        "en-AU": regional_copy(
+            "en-US",
+            "remove,iphone,album,picture,images,sort,sorter,best,shot,swipe,organiser,full,mobile",
+            british_spelling,
+        ),
+        "fr-CA": regional_copy(
+            "fr-FR",
+            "supprimer,effacer,nettoyer,libérer,espace,mémoire,cellulaire,galerie,capture,écran,floues,cleanup",
+        ),
+    }
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare Alike App Store metadata and screenshots for fastlane deliver.")
@@ -1201,15 +1283,16 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     because this function has no way to tell which run it is in; on every other
     run `validate_localized_urls` fails before the bundle is used, naming the
     unset variable. An unconfigured `.env` therefore does not quietly produce
-    English URLs for twelve listings any more — it produces a hard failure.
+    English URLs for sixteen listings any more — it produces a hard failure.
 
     The site publishes each locale's own pages — /uk/, /de/, /fr/, /es/,
-    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all twelve non-English
-    listings must point at them through their own
-    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, thirty-six in all.
+    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all sixteen listings
+    other than en-US must point at them through their own
+    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, forty-eight in all.
     _ES_MX points at the same /es/ pages as _ES_ES on purpose: one Spanish page
     serves both listings, said explicitly rather than by falling through to
-    English.
+    English. The regional listings do the same: _EN_GB, _EN_CA and _EN_AU name
+    the English pages and _FR_CA names the /fr/ pages.
     """
     override = os.environ.get(locale_url_env_var(kind, apple_locale), "").strip()
     return override if override else base_url
@@ -1483,12 +1566,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for all thirteen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all seventeen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`, `en-GB`, `en-CA`, `en-AU`, `fr-CA`. The first thirteen match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. The last four reuse the `en-US` or `fr` screenshots and copy, with their own keywords. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`. The site publishes all twelve of those locales, so all thirty-six are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`, `_EN_GB`, `_EN_CA`, `_EN_AU`, `_FR_CA`. The site has a page for every one of those listings, so all forty-eight are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. `_EN_GB`, `_EN_CA` and `_EN_AU` point at the English pages and `_FR_CA` at `/fr/`. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1592,7 +1675,10 @@ def validate_localized_urls(allow_placeholder_urls: bool, allow_shared_urls: boo
             emitted = path.read_text(encoding="utf-8").strip() if path.exists() else ""
             if emitted and emitted != override:
                 errors.append(f"{path} is {emitted}, not the {variable} value {override}")
-            elif emitted and emitted == base_urls[kind] and base_urls[kind]:
+            # en-GB, en-CA and en-AU read the English pages on purpose, so the
+            # shared URL is the right value for them; they still have to name
+            # it through their own override.
+            elif emitted and emitted == base_urls[kind] and base_urls[kind] and mapping.source != "en-US":
                 errors.append(f"{path} still carries the shared {kind.title()} URL")
 
         # The Terms URL never gets a file of its own; it reaches the listing
@@ -1682,13 +1768,26 @@ def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) ->
     return errors
 
 
+# Storefronts that index a second listing locale next to their default one
+# (App Store Connect Help, "App Store localizations"), as (default, additional).
+# A word in both fields is a word paid for twice. The US storefront indexes
+# more locales than es-MX; only the pairs whose keywords are planned together
+# are listed here.
+CROSS_INDEXED_LOCALES = (
+    ("en-US", "es-MX"),
+    ("en-CA", "fr-CA"),
+    ("en-AU", "en-GB"),
+)
+
+
 def cross_indexed_keyword_errors(keywords_by_locale: dict[str, str]) -> list[str]:
-    # The US storefront indexes es-MX next to en-US, so a word in both fields
-    # is a word paid for twice.
-    shared = {item.casefold() for item in keywords_by_locale.get("en-US", "").split(",")} & {
-        item.casefold() for item in keywords_by_locale.get("es-MX", "").split(",")
-    }
-    return [f"es-MX keyword {item!r} repeats en-US" for item in sorted(shared - {""})]
+    errors: list[str] = []
+    for default, additional in CROSS_INDEXED_LOCALES:
+        shared = {item.casefold() for item in keywords_by_locale.get(default, "").split(",")} & {
+            item.casefold() for item in keywords_by_locale.get(additional, "").split(",")
+        }
+        errors.extend(f"{additional} keyword {item!r} repeats {default}" for item in sorted(shared - {""}))
+    return errors
 
 
 def validate_source_search_fields() -> list[str]:

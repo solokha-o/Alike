@@ -15,7 +15,8 @@ alikeapp/alikeapp.github.io       the published pages themselves (separate repo)
 ```
 
 The site publishes twelve locales — `en`, `uk`, `de`, `fr`, `es`, `pt-BR`, `it`,
-`nl`, `pl`, `tr`, `zh-Hant`, `ar` — against thirteen App Store listings. `es` is one page
+`nl`, `pl`, `tr`, `zh-Hant`, `ar` — against seventeen App Store listings. `en` also
+serves `en-GB`, `en-CA` and `en-AU`, and `fr` also serves `fr-CA`. `es` is one page
 serving both `es-ES` and `es-MX`: the legal copy does not need the regional
 vocabulary split, so `/es/` carries the Spain wording and advertises
 `hreflang="es-419"` for the Latin American storefront.

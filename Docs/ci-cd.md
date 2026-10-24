@@ -431,8 +431,9 @@ this repository.
 | Terms of Use | `/terms/` | `/uk/terms/` | `/de/terms/` | `/fr/terms/` | `/es/terms/` | `/pt-br/terms/` | `/it/terms/` | `/nl/terms/` | `/pl/terms/` | `/tr/terms/` | `/zh-hant/terms/` | `/ar/terms/` |
 | Support | `/support/` | `/uk/support/` | `/de/support/` | `/fr/support/` | `/es/support/` | `/pt-br/support/` | `/it/support/` | `/nl/support/` | `/pl/support/` | `/tr/support/` | `/zh-hant/support/` | `/ar/support/` |
 
-Twelve locales against thirteen listings: the `es` column serves both `es-ES`
-and `es-MX`.
+Twelve locales against seventeen listings: the `es` column serves both `es-ES`
+and `es-MX`, the root column serves `en-US`, `en-GB`, `en-CA` and `en-AU`, and
+the `fr` column serves `fr-FR` and `fr-CA`.
 
 That repository's `scripts/check-site.sh` is the build gate. It runs on every
 pull request there and again before each deploy, and asserts the locale matrix,
