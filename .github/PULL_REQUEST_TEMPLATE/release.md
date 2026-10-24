@@ -56,9 +56,10 @@ for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/; do for p in "" 
 
 **Store metadata**
 
-- [ ] Release notes written for all thirteen listing localizations — `en-US`,
+- [ ] Release notes written for all thirteen source listing localizations — `en-US`,
       `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`,
-      `tr`, `zh-Hant`, `ar-SA`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
+      `tr`, `zh-Hant`, `ar-SA`. `en-GB`, `en-CA`, `en-AU` and `fr-CA` take theirs
+      from `en-US` and `fr-FR`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
       drift apart, but nothing checks that a release note was actually
       refreshed — that is this box. `it`, `pl` and `tr` are bare codes on
       purpose: Fastlane `deliver` rejects the region-qualified spelling.

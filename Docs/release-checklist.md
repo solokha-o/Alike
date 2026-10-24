@@ -25,7 +25,7 @@ validate whenever you like; upload when nothing is in review.
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
 - [ ] The per-locale URL overrides set for every non-English listing. All
-      thirty-six are **required**: strict generation fails on an unset
+      forty-eight are **required**: strict generation fails on an unset
       override, naming the variable, rather than falling back to the shared
       English URL and sending readers to legal text they were not reading a
       moment ago. `--allow-shared-urls` opts out, and only the generator accepts
@@ -88,6 +88,25 @@ ALIKE_SUPPORT_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/support/"
 ALIKE_PRIVACY_URL_AR_SA="https://alikeapp.github.io/ar/privacy/"
 ALIKE_TERMS_URL_AR_SA="https://alikeapp.github.io/ar/terms/"
 ALIKE_SUPPORT_URL_AR_SA="https://alikeapp.github.io/ar/support/"
+
+# Regional listings with no pages of their own: en-GB, en-CA and en-AU name the
+# English pages at the root, fr-CA names the /fr/ pages. Said explicitly, the
+# same way es-MX names /es/, so strict generation still sees an override.
+ALIKE_PRIVACY_URL_EN_GB="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_GB="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_GB="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_EN_CA="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_CA="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_CA="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_EN_AU="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_AU="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_AU="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_FR_CA="https://alikeapp.github.io/fr/privacy/"
+ALIKE_TERMS_URL_FR_CA="https://alikeapp.github.io/fr/terms/"
+ALIKE_SUPPORT_URL_FR_CA="https://alikeapp.github.io/fr/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and

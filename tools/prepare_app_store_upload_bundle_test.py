@@ -54,6 +54,32 @@ class SearchFieldTests(unittest.TestCase):
             ["es-MX keyword 'space' repeats en-US"],
         )
 
+    def test_regional_keyword_shared_with_cross_indexed_locale_fails(self) -> None:
+        self.assertEqual(
+            bundle.cross_indexed_keyword_errors(
+                {"en-CA": "delete,space", "fr-CA": "supprimer,space", "en-AU": "tidy", "en-GB": "TIDY"}
+            ),
+            ["fr-CA keyword 'space' repeats en-CA", "en-GB keyword 'tidy' repeats en-AU"],
+        )
+
+    def test_regional_listings_have_their_own_keywords(self) -> None:
+        source_listing = {"en-US": "en-US", "fr": "fr-FR"}
+        for mapping in bundle.UPLOAD_SAFE_LOCALES:
+            source = source_listing.get(mapping.source)
+            if source is None or source == mapping.apple:
+                continue
+            with self.subTest(locale=mapping.apple):
+                self.assertNotEqual(bundle.METADATA[mapping.apple]["keywords"], bundle.METADATA[source]["keywords"])
+                self.assertEqual(bundle.METADATA[mapping.apple]["subtitle"], bundle.METADATA[source]["subtitle"])
+
+    def test_british_listings_use_british_spelling(self) -> None:
+        for locale in ("en-GB", "en-AU"):
+            for field in ("description", "promotional_text", "release_notes"):
+                with self.subTest(locale=locale, field=field):
+                    text = bundle.METADATA[locale][field]
+                    for american, _ in bundle.BRITISH_SPELLING:
+                        self.assertNotIn(american, text)
+
     def test_shipped_metadata_passes(self) -> None:
         self.assertEqual(bundle.validate_source_search_fields(), [])
 
