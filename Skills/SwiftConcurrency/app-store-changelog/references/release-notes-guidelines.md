@@ -13,7 +13,7 @@ The store text is a separate piece of writing, not a summary of that section.
 |---|---|---|
 | 1 | Lead with what the person can do now, in "you" form: "You can…", "Swipe a photo to…". | People read for benefit, not for feature names. |
 | 2 | Say where to find a new thing in one short clause: "add it from the widget gallery", "in a group, swipe a photo". | A feature nobody finds does not exist for them. |
-| 3 | Use the app's own UI names from the string catalogs, in that locale. Never invent a label. | The words in the notes must match the words on screen. |
+| 3 | Use the app's own UI names from the string catalogs, in that locale. Never invent a label. When a line sends the person to a screen, use that screen's title, not the name of a widget link or a button that leads there; they can differ (Screenshots: `details.screenshotCleanup.screenshots` vs `widgetsupport.library.screenshots`). | The words in the notes must match the words on the screen the person looks at. |
 | 4 | No developer or system jargon: no API, framework, `systemExtraLargePortrait`, toolbar, rotor, render, overflow menu, pt, cross-fade, snapshot. Describe what the eye sees instead. | Typical users do not know what "UI" or "optimisation" means. |
 | 5 | State an OS requirement once, in a closing line, not in every bullet. The opener may name the iOS version as the theme ("ready for iOS 27"). | "On iOS 27" five times reads like a spec sheet. |
 | 6 | Fit the length to the update: 2–5 bullets, each one idea in 1–2 short sentences. | A small fix gets a sentence; a big release gets more, never a changelog. |
@@ -65,7 +65,7 @@ The store text is a separate piece of writing, not a summary of that section.
 - Every bullet maps to a real, visible change in the range.
 - Read each bullet aloud as a non-technical friend: would they know what changed and where?
 - No word from the "Instead of" column, no code names, no OS version in more than one place.
-- UI names match the string catalog in each locale.
+- UI names match the string catalog in each locale, and a screen is named by its own title.
 - Length fits the store limit (4000 characters on the App Store) and the size of the update.
 
 ## Sources
