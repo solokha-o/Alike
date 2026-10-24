@@ -215,7 +215,10 @@ struct MainTabView: View {
 
     @ViewBuilder
     private var adaptiveTabView: some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 27.0, *) {
+            prominentTabView
+                .tabBarMinimizeBehavior(.onScrollDown)
+        } else if #available(iOS 26.0, *) {
             tabView
                 .tabBarMinimizeBehavior(.onScrollDown)
         } else {
@@ -235,6 +238,20 @@ struct MainTabView: View {
         }
     }
     
+    /// iOS 27: the same tabs, titles, icons and `selectedTab` binding as `tabView`, built
+    /// with the `Tab` API so Scanner can take the `.prominent` role. `tabView` stays the
+    /// path for iOS 17–26 unchanged.
+    @available(iOS 27.0, *)
+    private var prominentTabView: some View {
+        TabView(selection: Bindable(tabManager).selectedTab) {
+            ForEach(tabs, id: \.self) { tab in
+                SwiftUI.Tab(tab.title, systemImage: tab.icon, value: tab, role: tab.tabRole) {
+                    tabView(for: tab)
+                }
+            }
+        }
+    }
+
     @ViewBuilder
     private func tabView(for tab: TabManager.Tab) -> some View {
         switch tab {
@@ -347,19 +364,7 @@ struct MainTabView: View {
     /// content has loaded. A review finished since the tap lands on the root.
     private func followPendingWidgetDestination() {
         guard let destination = pendingWidgetDestination.consume() else { return }
-
-        switch destination {
-        case .cleanup:
-            tabManager.navigateToCleanup()
-        case .resumeReview:
-            tabManager.navigateToCleanup(entry: .resumeReview)
-        case .similarPhotos:
-            tabManager.navigateToCleanup(entry: .similarPhotos)
-        case .screenshots:
-            tabManager.navigateToCleanup(entry: .category(.screenshots))
-        case .blurredPhotos:
-            tabManager.navigateToCleanup(entry: .category(.blurredPhotos))
-        }
+        tabManager.follow(destination)
     }
 
     private func resyncCleanupReminder() async {

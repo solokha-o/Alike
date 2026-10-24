@@ -6,7 +6,9 @@
 //
 
 import Cleanup
+import Core
 import SwiftUI
+import WidgetSupport
 
 /// Manages tab navigation and state
 @MainActor
@@ -32,6 +34,13 @@ final class TabManager {
             case .cleanup: return "photo.stack"
             case .settings: return "gear"
             }
+        }
+
+        /// The iOS 27 tab bar role: Scanner is the prominent tab, the others keep the
+        /// default role. Only the iOS 27 `Tab` builder reads it; older systems keep `.tabItem`.
+        @available(iOS 27.0, *)
+        var tabRole: TabRole? {
+            self == .scanner ? .prominent : nil
         }
     }
     
@@ -64,6 +73,23 @@ final class TabManager {
         }
     }
     
+    /// Where a widget tap lands. Every destination is the cleanup tab; the category ones
+    /// also carry the entry `CleanupView` resolves (and gates) once its content loads.
+    func follow(_ destination: WidgetDestination) {
+        switch destination {
+        case .cleanup:
+            navigateToCleanup()
+        case .resumeReview:
+            navigateToCleanup(entry: .resumeReview)
+        case .similarPhotos:
+            navigateToCleanup(entry: .similarPhotos)
+        case .screenshots:
+            navigateToCleanup(entry: .category(.screenshots))
+        case .blurredPhotos:
+            navigateToCleanup(entry: .category(.blurredPhotos))
+        }
+    }
+
     func requestRescan() {
         needsRescan = true
     }
