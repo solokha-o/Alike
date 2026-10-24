@@ -1042,10 +1042,24 @@ METADATA = {
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
         "release_notes": "O Alike está pronto para o iOS 27, com um widget novo e um jeito mais rápido de organizar suas fotos.\n\n- Um widget alto novo mostra quanto espaço você pode liberar e seus maiores grupos, com atalhos para «Fotos semelhantes», «Capturas de tela» e «Fotos desfocadas». Adicione pela galeria de widgets da sua Tela de Início.\n- Em um grupo, deslize uma foto para selecionar, manter ou definir como melhor foto, sem abrir. Também funciona em «Capturas de tela» e com o VoiceOver.\n- Os botões de «Limpeza» agora cabem nos iPhones menores, e as fotos abrem com mais suavidade.\n- O desenho do widget mantém as cores quando os ícones da sua Tela de Início estão com tonalidade ou transparentes.\n\nO widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
-    # The same rules hold for the six locales below. pl and tr keep English
-    # words because that is what those storefronts measurably search for, and
-    # the Polish forms without diacritics (zdjec, pamieci) are how the
-    # suggestions spell them.
+    # The same rules hold for the six locales below. tr keeps English words
+    # because that is what that storefront measurably searches for, and the
+    # Polish forms without diacritics (zdjec, pamieci) are how the suggestions
+    # spell them.
+    #
+    # it, nl-NL and pl keywords come from Apple Ads Search Popularity
+    # (getRecommendedKeywords, read 2026-10-24) and the ASA — Discovery search
+    # terms, which had one term in three months. Apple Ads returns the same
+    # popularity for every storefront, so the numbers rank words, not markets.
+    # Italy, the Netherlands and Poland also index en-GB, so none of the three
+    # repeats an en-GB keyword or a word of its subtitle ("Duplicate & Storage
+    # Cleanup"). it: the Italian searches with measured demand (elimina foto
+    # 26, libera spazio iphone 23, pulisci telefono 22, pulizia iphone 17,
+    # cancella foto 17, spazio iphone 16); duplicate, simili and the other
+    # duplicate searches sit at the floor of 5, so only doppioni stays. nl-NL
+    # and pl: every Dutch and Polish search checked sits at 5, so their own
+    # words stay and the room en-GB already covered goes to clean (42) and
+    # swipe (photo delete swipe 21).
     #
     # The limits are characters, not bytes, so a 100-character keyword field
     # holds far more Chinese terms than Latin ones. The zh-Hant words past 最佳
@@ -1055,21 +1069,21 @@ METADATA = {
     "it": {
         "subtitle": "Pulizia: elimina foto doppie",
         "description": IT_DESCRIPTION,
-        "keywords": "duplicate,simili,doppioni,pulisci,libera,spazio,galleria,archiviazione,telefono,ordina,cleanup",
+        "keywords": "libera,spazio,iphone,telefono,pulisci,pulire,cancella,eliminare,galleria,sfocate,swipe,doppioni",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
         "release_notes": "Alike è pronto per iOS 27, con un nuovo widget e un modo più rapido per riordinare le tue foto.\n\n- Un nuovo widget alto mostra quanto spazio puoi liberare e i tuoi gruppi più grandi, con scorciatoie a «Foto simili», «Screenshot» e «Foto sfocate». Aggiungilo dalla galleria dei widget nella schermata Home.\n- In un gruppo, scorri una foto per selezionarla, mantenerla o impostarla come scatto migliore, senza aprirla. Funziona anche in «Screenshot» e con VoiceOver.\n- I pulsanti di «Pulizia» ora entrano negli iPhone più piccoli, e le foto si aprono in modo più fluido.\n- Il disegno del widget mantiene i suoi colori quando le icone della schermata Home sono colorate o trasparenti.\n\nIl nuovo widget, lo scorrimento e i pulsanti di «Pulizia» richiedono iOS 27.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
-        "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,cleanup,fotos",
+        "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,fotos,swipe,clean",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
         "release_notes": "Alike is klaar voor iOS 27, met een nieuwe widget en een snellere manier om je foto's op te ruimen.\n\n- Een nieuwe hoge widget laat zien hoeveel ruimte je kunt vrijmaken en wat je grootste groepen zijn, met snelkoppelingen naar 'Vergelijkbare foto's', 'Schermafbeeldingen' en 'Wazige foto's'. Voeg hem toe via de widgetgalerij op je beginscherm.\n- Veeg in een groep over een foto om hem te selecteren, te bewaren of als beste opname in te stellen, zonder hem te openen. Dat werkt ook bij 'Schermafbeeldingen' en met VoiceOver.\n- De knoppen bij 'Opruimen' passen nu op kleinere iPhones, en foto's openen soepeler.\n- De afbeelding in de widget houdt haar kleuren als de symbolen op je beginscherm getint of helder zijn.\n\nDe nieuwe widget, het vegen en de knoppen bij 'Opruimen' hebben iOS 27 nodig.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
-        "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,cleanup,storage,clean,up",
+        "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
         "promotional_text": "Odzyskaj miejsce: przed usunięciem widzisz, ile go zwolnisz, a żadne zdjęcie nie opuszcza iPhone'a. Pro: 7 dni gratis w planie rocznym. Bez reklam i bez konta.",
         "release_notes": "Alike jest gotowy na iOS 27: nowy widżet i szybszy sposób na porządki w zdjęciach.\n\n- Nowy wysoki widżet pokazuje, ile miejsca możesz zwolnić, i Twoje największe grupy, a do tego skróty do „Podobne zdjęcia”, „Zrzuty ekranu” i „Rozmyte zdjęcia”. Dodaj go z galerii widżetów na ekranie początkowym.\n- W grupie przesuń zdjęcie, aby je zaznaczyć, zachować lub ustawić jako najlepsze ujęcie, bez otwierania. Działa to też w „Zrzutach ekranu” i z VoiceOver.\n- Przyciski w „Porządkach” mieszczą się teraz na mniejszych iPhone’ach, a zdjęcia otwierają się płynniej.\n- Obrazek w widżecie zachowuje kolory, gdy ikony na ekranie początkowym są przyciemnione lub przezroczyste.\n\nNowy widżet, przesuwanie i przyciski w „Porządkach” wymagają iOS 27.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
@@ -1777,6 +1791,9 @@ CROSS_INDEXED_LOCALES = (
     ("en-US", "es-MX"),
     ("en-CA", "fr-CA"),
     ("en-AU", "en-GB"),
+    ("it", "en-GB"),
+    ("nl-NL", "en-GB"),
+    ("pl", "en-GB"),
 )
 
 
