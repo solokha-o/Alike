@@ -70,11 +70,10 @@ not touched**. A translation that blurs that line reads as "this app deletes you
 These make privacy claims: on-device analysis, nothing uploaded, nothing auto-deleted.
 They have to stay *exactly* as strong as the English — no stronger.
 
-The `NSPhotoLibraryUsageDescription` string in `Alike/Alike.xcodeproj` is **not** localized
-and is out of scope here: it lives in the build settings
-(`INFOPLIST_KEY_NSPhotoLibraryUsageDescription`), not in a catalog, so it shows in English
-in every locale. Worth fixing, but it is a separate change — see the note in
-`Docs/Localization/README.md`.
+The `NSPhotoLibraryUsageDescription` prompt makes the same claims and adds one more: the
+original is always kept, so an enhancement can be reverted. It lives in
+`Alike/Alike/InfoPlist.xcstrings`, not in a package catalog — see "The permission prompt"
+in `Docs/Localization/README.md`.
 
 ## Tier 2 — read it, but nothing breaks
 
