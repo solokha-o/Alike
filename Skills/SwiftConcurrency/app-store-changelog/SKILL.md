@@ -35,9 +35,8 @@ Collect user-impacting changes from git history since the last tag, then write A
 - Ask for clarification if any change is ambiguous or possibly internal-only.
 
 ## Output Format
-- Title (optional): "What’s New" or product name + version.
-- Bullet list only; one sentence per bullet.
-- Stick to storefront limits if the user provides one.
+- Use the one shape in `references/release-notes-guidelines.md` ("Shape"): opener, 2–5 bullets of 1–2 sentences, one OS line, then the privacy and feedback lines.
+- Keep within the storefront limit (4000 characters on the App Store).
 
 ## Routing map
 - Collect commits and touched files since the last tag -> `scripts/collect_release_changes.sh`
