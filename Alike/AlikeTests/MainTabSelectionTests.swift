@@ -4,24 +4,14 @@ import WidgetSupport
 import XCTest
 @testable import Alike
 
-/// `MainTabView` has 2 tab builders: the `Tab` API on iOS 27 (Scanner `.prominent`) and the
-/// `.tabItem` path on iOS 17–26. Both bind the same `TabManager.selectedTab` and use the same
-/// `TabManager.Tab` value per tab, so navigation and widget deep links must land on the same
-/// tab on both. These tests lock the shared inputs; the views themselves are not rendered.
+/// `MainTabView` binds `TabManager.selectedTab` and tags each tab with its `TabManager.Tab`
+/// value, so navigation and widget deep links land through `TabManager` alone. These tests
+/// lock that routing; the views themselves are not rendered.
 @MainActor
 final class MainTabSelectionTests: XCTestCase {
-    func testTabValuesAreTheSameForBothBuildersAndKeepTheirOrder() {
+    func testTabValuesKeepTheirOrder() {
         XCTAssertEqual(TabManager.Tab.allCases, [.scanner, .cleanup, .settings])
         XCTAssertEqual(TabManager().selectedTab, .scanner)
-    }
-
-    func testOnlyScannerIsProminentOnIOS27() throws {
-        guard #available(iOS 27.0, *) else {
-            throw XCTSkip("TabRole.prominent needs iOS 27; the fallback has no tab role.")
-        }
-        XCTAssertEqual(TabManager.Tab.scanner.tabRole, .prominent)
-        XCTAssertNil(TabManager.Tab.cleanup.tabRole)
-        XCTAssertNil(TabManager.Tab.settings.tabRole)
     }
 
     func testNavigationActionsSelectTheExpectedTab() {

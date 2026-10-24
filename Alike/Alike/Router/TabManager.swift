@@ -35,13 +35,6 @@ final class TabManager {
             case .settings: return "gear"
             }
         }
-
-        /// The iOS 27 tab bar role: Scanner is the prominent tab, the others keep the
-        /// default role. Only the iOS 27 `Tab` builder reads it; older systems keep `.tabItem`.
-        @available(iOS 27.0, *)
-        var tabRole: TabRole? {
-            self == .scanner ? .prominent : nil
-        }
     }
     
     // MARK: - State
