@@ -100,7 +100,22 @@ final class WidgetSnapshotPublisher {
                     totalClusters: $0.totalClusters,
                     updatedAt: $0.updatedAt
                 )
-            }
+            },
+            // Same keeper and byte source as `reclaimableEstimate`, so a row never claims
+            // a photo the headline figure keeps. Unknown before a scan baseline.
+            topClusters: hasCompletedScan
+                ? WidgetClusterSummary.top(clusters.map { cluster in
+                    let reclaimable = cluster.reclaimableCluster(
+                        keeping: workspace.reviewStates[cluster.id]?.bestShotLocalIdentifier
+                    )
+                    return WidgetClusterSummary(
+                        reclaimableBytes: reclaimable.assets
+                            .filter { $0.localIdentifier != reclaimable.keeperLocalIdentifier }
+                            .reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes },
+                        photoCount: cluster.count
+                    )
+                })
+                : nil
         )
 
         // Driven by a `task(id:)` carrying the scene phase, so this runs on every

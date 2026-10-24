@@ -347,19 +347,7 @@ struct MainTabView: View {
     /// content has loaded. A review finished since the tap lands on the root.
     private func followPendingWidgetDestination() {
         guard let destination = pendingWidgetDestination.consume() else { return }
-
-        switch destination {
-        case .cleanup:
-            tabManager.navigateToCleanup()
-        case .resumeReview:
-            tabManager.navigateToCleanup(entry: .resumeReview)
-        case .similarPhotos:
-            tabManager.navigateToCleanup(entry: .similarPhotos)
-        case .screenshots:
-            tabManager.navigateToCleanup(entry: .category(.screenshots))
-        case .blurredPhotos:
-            tabManager.navigateToCleanup(entry: .category(.blurredPhotos))
-        }
+        tabManager.follow(destination)
     }
 
     private func resyncCleanupReminder() async {

@@ -66,6 +66,10 @@ LOCALE_LEGAL_LABELS = {
     "tr": ("Gizlilik Politikası", "Kullanım Koşulları"),
     "zh-Hant": ("隱私權政策", "使用條款"),
     "ar-SA": ("سياسة الخصوصية", "شروط الاستخدام"),
+    "en-GB": (PRIVACY_LABEL, TERMS_LABEL),
+    "en-CA": (PRIVACY_LABEL, TERMS_LABEL),
+    "en-AU": (PRIVACY_LABEL, TERMS_LABEL),
+    "fr-CA": ("Politique de confidentialité", "Conditions d’utilisation"),
 }
 TODO_MARKER = "TODO:"
 HAN_PATTERN = re.compile(r"[\u4e00-\u9fff]")
@@ -104,7 +108,10 @@ class LocaleMapping:
     apple: str
 
 
-# The listing ships the same thirteen languages the app itself is translated into.
+# The listing ships the thirteen languages the app itself is translated into,
+# plus four regional listings that reuse one of them: en-GB, en-CA and en-AU
+# take the en-US deck and fr-CA takes the fr deck, so one `source` can feed
+# several `apple` locales and no deck is copied under Docs/images/.
 # `source` is the app's own language code, which is also the directory name
 # under Docs/images/; `apple` is the App Store Connect locale, which is not the
 # same string. es-419 is the app's Latin American Spanish and maps onto App
@@ -115,11 +122,12 @@ class LocaleMapping:
 # region-qualified it-IT, pl-PL and tr-TR as unsupported directory names, while
 # nl-NL and zh-Hant are accepted as-is.
 #
-# Adding a locale means five things, and a missing one is a validation error
+# Adding a locale means six things, and a missing one is a validation error
 # rather than a silent gap: a mapping here, an entry in METADATA, a row in
-# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, and a localization in
-# Alike.storekit for the subscription group and every product in it. Arabic
-# arrived with the first four and without the fifth, which is what
+# LOCALE_LEGAL_LABELS, a deck in Docs/images/<source>/, a row in
+# STOREKIT_TO_APP_STORE_LOCALE, and a localization in Alike.storekit for the
+# subscription group and every product in it. Arabic
+# arrived with the first four and without the last, which is what
 # validate_storekit_locale_coverage() now refuses to let happen again.
 UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="en-US", apple="en-US"),
@@ -135,6 +143,10 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="tr", apple="tr"),
     LocaleMapping(source="zh-Hant", apple="zh-Hant"),
     LocaleMapping(source="ar", apple="ar-SA"),
+    LocaleMapping(source="en-US", apple="en-GB"),
+    LocaleMapping(source="en-US", apple="en-CA"),
+    LocaleMapping(source="en-US", apple="en-AU"),
+    LocaleMapping(source="fr", apple="fr-CA"),
 )
 
 # DELIVER_ACCEPTED_LOCALES guards UPLOAD_SAFE_LOCALES against a regression of
@@ -142,7 +154,7 @@ UPLOAD_SAFE_LOCALES = (
 # locale folder names (see `Deliver::Loader.language_folders`), and a locale
 # spelled outside that set fails at upload time with "Unsupported directory
 # name(s)" instead of at generation time where it is cheap to catch. This
-# project ships only the subset of that set the app is translated into, and
+# project ships only the subset of that set the listing uses, and
 # validate_locale_folder_names() checks every generated metadata/screenshot
 # folder against it.
 DELIVER_ACCEPTED_LOCALES = frozenset(
@@ -160,6 +172,10 @@ DELIVER_ACCEPTED_LOCALES = frozenset(
         "tr",
         "zh-Hant",
         "ar-SA",
+        "en-GB",
+        "en-CA",
+        "en-AU",
+        "fr-CA",
     }
 )
 
@@ -182,6 +198,10 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "tr_TR": "tr",
     "zh_TW": "zh-Hant",
     "ar_SA": "ar-SA",
+    "en_GB": "en-GB",
+    "en_CA": "en-CA",
+    "en_AU": "en-AU",
+    "fr_CA": "fr-CA",
 }
 
 APP_STORE_TO_STOREKIT_LOCALE = {apple: storekit for storekit, apple in STOREKIT_TO_APP_STORE_LOCALE.items()}
@@ -971,7 +991,7 @@ METADATA = {
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
         "promotional_text": "Get storage back: see how much space you'll free before deleting anything, and no photo leaves your iPhone. 7 days of Pro free on the yearly plan. No ads, no account.",
-        "release_notes": "A small update around ratings and feedback.\n\n- Rate on App Store in Settings now opens the review page directly.\n- After a cleanup, Alike may ask for a rating from your second day with the app instead of the fourth.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "release_notes": "Alike is ready for iOS 27, with a new widget and a quicker way to sort your photos.\n\n- A new tall widget shows how much space you can free and your largest groups, with shortcuts to Similar Photos, Screenshots and Blurred Photos. Add it from the widget gallery on your Home Screen.\n- In a group, swipe a photo to Select it, Keep it or make it the Best Shot, without opening it. Swiping works in Screenshots too, and with VoiceOver.\n- The Cleanup buttons now fit on smaller iPhones, and photos open more smoothly.\n- The widget picture keeps its colors when your Home Screen icons are tinted or clear.\n\nThe new widget, the swipes and the Cleanup buttons need iOS 27.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Дублікати й очищення фото",
@@ -980,7 +1000,7 @@ METADATA = {
         # hence the four English words at the end.
         "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
         "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
-        "release_notes": "Невеликий випуск про оцінки та відгуки.\n\n- «Оцінити в App Store» у налаштуваннях тепер одразу відкриває сторінку відгуку.\n- Після очищення Alike може запитати оцінку вже з другого дня користування, а не з четвертого.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Alike готовий до iOS 27: новий віджет і швидший спосіб розібрати фото.\n\n- Новий високий віджет показує, скільки місця можна звільнити, і ваші найбільші групи, а також веде до «Схожі фото», «Скриншоти» і «Розмиті фото». Додайте його з галереї віджетів на головному екрані.\n- У групі проведіть по фото, щоб «Вибрати», «Залишити» або зробити його найкращим кадром, не відкриваючи його. Свайп працює і на екрані «Знімки екрана», і з VoiceOver.\n- Кнопки в «Очищенні» тепер вміщаються на менших iPhone, а фото відкриваються плавніше.\n- Малюнок на віджеті зберігає кольори, коли іконки на головному екрані тоновані або прозорі.\n\nНовий віджет, свайпи і кнопки в «Очищенні» працюють на iOS 27.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Subtitle and keyword words below come from each storefront's own search
     # suggestions and Search Popularity (September 2026), not from a translation
@@ -992,40 +1012,54 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
         "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
-        "release_notes": "Ein kleines Update rund um Bewertungen und Feedback.\n\n- „Im App Store bewerten“ in den Einstellungen öffnet jetzt direkt die Bewertungsseite.\n- Nach einem Aufräumen kann Alike schon ab dem zweiten Tag statt ab dem vierten um eine Bewertung bitten.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "release_notes": "Alike ist bereit für iOS 27: mit einem neuen Widget und einem schnelleren Weg, deine Fotos zu sortieren.\n\n- Ein neues hohes Widget zeigt, wie viel Speicher du freigeben kannst, und deine größten Gruppen, dazu Abkürzungen zu „Ähnliche Fotos“, „Screenshots“ und „Unscharfe Fotos“. Füge es über die Widget-Galerie auf deinem Home-Bildschirm hinzu.\n- Wische in einer Gruppe über ein Foto, um es auszuwählen, zu behalten oder als beste Aufnahme festzulegen, ohne es zu öffnen. Das klappt auch bei „Bildschirmfotos“ und mit VoiceOver.\n- Die Tasten in „Aufräumen“ passen jetzt auch auf kleinere iPhones, und Fotos öffnen sich flüssiger.\n- Das Bild im Widget behält seine Farben, wenn deine Symbole auf dem Home-Bildschirm getönt oder klar sind.\n\nDas neue Widget, das Wischen und die Tasten in „Aufräumen“ brauchen iOS 27.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
         "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
         "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
-        "release_notes": "Une petite mise à jour autour des notes et des avis.\n\n- « Noter sur l’App Store » dans les réglages ouvre désormais directement la page d’avis.\n- Après un nettoyage, Alike peut demander une note dès le deuxième jour d’utilisation au lieu du quatrième.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "release_notes": "Alike est prêt pour iOS 27, avec un nouveau widget et une façon plus rapide de trier vos photos.\n\n- Un nouveau widget en hauteur montre l’espace que vous pouvez libérer et vos plus grands groupes, avec des raccourcis vers « Photos similaires », « Captures d’écran » et « Photos floues ». Ajoutez-le depuis la galerie de widgets de votre écran d’accueil.\n- Dans un groupe, balayez une photo pour la sélectionner, la garder ou la définir comme meilleure photo, sans l’ouvrir. Le balayage marche aussi dans « Captures d’écran » et avec VoiceOver.\n- Les boutons de « Nettoyage » tiennent désormais sur les petits iPhone, et les photos s’ouvrent plus en douceur.\n- L’image du widget garde ses couleurs quand les icônes de votre écran d’accueil sont teintées ou transparentes.\n\nLe nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
         "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
         "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Una actualización pequeña sobre valoraciones y opiniones.\n\n- «Valorar en el App Store» en los ajustes ahora abre directamente la página de reseñas.\n- Tras una limpieza, Alike puede pedirte una valoración desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Alike está listo para iOS 27, con un widget nuevo y una forma más rápida de ordenar tus fotos.\n\n- Un widget alto nuevo muestra cuánto espacio puedes liberar y tus grupos más grandes, con accesos a «Fotos similares», «Capturas» y «Fotos borrosas». Añádelo desde la galería de widgets de tu pantalla de inicio.\n- En un grupo, desliza una foto para seleccionarla, conservarla o marcarla como mejor toma, sin abrirla. También funciona en «Capturas de pantalla» y con VoiceOver.\n- Los botones de «Limpieza» ya caben en los iPhone más pequeños, y las fotos se abren con más suavidad.\n- El dibujo del widget conserva sus colores cuando los iconos de tu pantalla de inicio están tintados o son transparentes.\n\nEl widget nuevo, los deslizamientos y los botones de «Limpieza» necesitan iOS 27.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
         "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Una actualización pequeña sobre calificaciones y reseñas.\n\n- «Valorar en el App Store» en la configuración ahora abre directamente la página de reseñas.\n- Después de una limpieza, Alike puede pedirte una calificación desde el segundo día de uso en lugar del cuarto.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Alike está listo para iOS 27, con un widget nuevo y una forma más rápida de ordenar tus fotos.\n\n- Un widget alto nuevo muestra cuánto espacio puedes liberar y tus grupos más grandes, con accesos a «Fotos similares», «Capturas» y «Fotos borrosas». Agrégalo desde la galería de widgets de tu pantalla de inicio.\n- En un grupo, desliza una foto para seleccionarla, conservarla o marcarla como mejor toma, sin abrirla. También funciona en «Capturas de pantalla» y con VoiceOver.\n- Los botones de «Limpieza» ya caben en los iPhone más pequeños, y las fotos se abren con más suavidad.\n- El dibujo del widget conserva sus colores cuando los íconos de tu pantalla de inicio tienen tinte o son transparentes.\n\nEl widget nuevo, los deslizamientos y los botones de «Limpieza» necesitan iOS 27.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
-        "release_notes": "Uma atualização pequena sobre avaliações e feedback.\n\n- «Avaliar na App Store» nos ajustes agora abre direto a página de avaliação.\n- Depois de uma limpeza, o Alike pode pedir uma avaliação já no segundo dia de uso, em vez do quarto.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "release_notes": "O Alike está pronto para o iOS 27, com um widget novo e um jeito mais rápido de organizar suas fotos.\n\n- Um widget alto novo mostra quanto espaço você pode liberar e seus maiores grupos, com atalhos para «Fotos semelhantes», «Capturas de tela» e «Fotos desfocadas». Adicione pela galeria de widgets da sua Tela de Início.\n- Em um grupo, deslize uma foto para selecionar, manter ou definir como melhor foto, sem abrir. Também funciona em «Capturas de tela» e com o VoiceOver.\n- Os botões de «Limpeza» agora cabem nos iPhones menores, e as fotos abrem com mais suavidade.\n- O desenho do widget mantém as cores quando os ícones da sua Tela de Início estão com tonalidade ou transparentes.\n\nO widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
-    # The same rules hold for the six locales below. pl and tr keep English
-    # words because that is what those storefronts measurably search for, and
-    # the Polish forms without diacritics (zdjec, pamieci) are how the
-    # suggestions spell them.
+    # The same rules hold for the six locales below. tr keeps English words
+    # because that is what that storefront measurably searches for, and the
+    # Polish forms without diacritics (zdjec, pamieci) are how the suggestions
+    # spell them.
+    #
+    # it, nl-NL and pl keywords come from Apple Ads Search Popularity
+    # (getRecommendedKeywords, read 2026-10-24) and the ASA — Discovery search
+    # terms, which had one term in three months. Apple Ads returns the same
+    # popularity for every storefront, so the numbers rank words, not markets.
+    # Italy, the Netherlands and Poland also index en-GB, so none of the three
+    # repeats an en-GB keyword or a word of its subtitle ("Duplicate & Storage
+    # Cleanup"). it: the Italian searches with measured demand (elimina foto
+    # 26, libera spazio iphone 23, pulisci telefono 22, pulizia iphone 17,
+    # cancella foto 17, spazio iphone 16); duplicate, simili and the other
+    # duplicate searches sit at the floor of 5, so only doppioni stays. nl-NL
+    # and pl: every Dutch and Polish search checked sits at 5, so their own
+    # words stay and the room en-GB already covered goes to clean (42) and
+    # swipe (photo delete swipe 21).
     #
     # The limits are characters, not bytes, so a 100-character keyword field
     # holds far more Chinese terms than Latin ones. The zh-Hant words past 最佳
@@ -1035,37 +1069,37 @@ METADATA = {
     "it": {
         "subtitle": "Pulizia: elimina foto doppie",
         "description": IT_DESCRIPTION,
-        "keywords": "duplicate,simili,doppioni,pulisci,libera,spazio,galleria,archiviazione,telefono,ordina,cleanup",
+        "keywords": "libera,spazio,iphone,telefono,pulisci,pulire,cancella,eliminare,galleria,sfocate,swipe,doppioni",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
-        "release_notes": "Un piccolo aggiornamento su valutazioni e feedback.\n\n- «Valuta su App Store» nelle impostazioni ora apre direttamente la pagina delle recensioni.\n- Dopo una pulizia, Alike può chiederti una valutazione già dal secondo giorno di utilizzo invece che dal quarto.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "release_notes": "Alike è pronto per iOS 27, con un nuovo widget e un modo più rapido per riordinare le tue foto.\n\n- Un nuovo widget alto mostra quanto spazio puoi liberare e i tuoi gruppi più grandi, con scorciatoie a «Foto simili», «Screenshot» e «Foto sfocate». Aggiungilo dalla galleria dei widget nella schermata Home.\n- In un gruppo, scorri una foto per selezionarla, mantenerla o impostarla come scatto migliore, senza aprirla. Funziona anche in «Screenshot» e con VoiceOver.\n- I pulsanti di «Pulizia» ora entrano negli iPhone più piccoli, e le foto si aprono in modo più fluido.\n- Il disegno del widget mantiene i suoi colori quando le icone della schermata Home sono colorate o trasparenti.\n\nIl nuovo widget, lo scorrimento e i pulsanti di «Pulizia» richiedono iOS 27.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
-        "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,cleanup,fotos",
+        "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,fotos,swipe,clean",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
-        "release_notes": "Een kleine update rond beoordelingen en feedback.\n\n- 'Beoordeel in de App Store' in de instellingen opent nu direct de beoordelingspagina.\n- Na een opruimbeurt kan Alike al vanaf je tweede dag met de app om een beoordeling vragen in plaats van de vierde.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "release_notes": "Alike is klaar voor iOS 27, met een nieuwe widget en een snellere manier om je foto's op te ruimen.\n\n- Een nieuwe hoge widget laat zien hoeveel ruimte je kunt vrijmaken en wat je grootste groepen zijn, met snelkoppelingen naar 'Vergelijkbare foto's', 'Schermafbeeldingen' en 'Wazige foto's'. Voeg hem toe via de widgetgalerij op je beginscherm.\n- Veeg in een groep over een foto om hem te selecteren, te bewaren of als beste opname in te stellen, zonder hem te openen. Dat werkt ook bij 'Schermafbeeldingen' en met VoiceOver.\n- De knoppen bij 'Opruimen' passen nu op kleinere iPhones, en foto's openen soepeler.\n- De afbeelding in de widget houdt haar kleuren als de symbolen op je beginscherm getint of helder zijn.\n\nDe nieuwe widget, het vegen en de knoppen bij 'Opruimen' hebben iOS 27 nodig.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
-        "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,cleanup,storage,clean,up",
+        "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
         "promotional_text": "Odzyskaj miejsce: przed usunięciem widzisz, ile go zwolnisz, a żadne zdjęcie nie opuszcza iPhone'a. Pro: 7 dni gratis w planie rocznym. Bez reklam i bez konta.",
-        "release_notes": "Niewielka aktualizacja dotycząca ocen i opinii.\n\n- „Oceń w App Store” w ustawieniach otwiera teraz od razu stronę recenzji.\n- Po porządkach Alike może poprosić o ocenę już drugiego dnia korzystania zamiast czwartego.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "release_notes": "Alike jest gotowy na iOS 27: nowy widżet i szybszy sposób na porządki w zdjęciach.\n\n- Nowy wysoki widżet pokazuje, ile miejsca możesz zwolnić, i Twoje największe grupy, a do tego skróty do „Podobne zdjęcia”, „Zrzuty ekranu” i „Rozmyte zdjęcia”. Dodaj go z galerii widżetów na ekranie początkowym.\n- W grupie przesuń zdjęcie, aby je zaznaczyć, zachować lub ustawić jako najlepsze ujęcie, bez otwierania. Działa to też w „Zrzutach ekranu” i z VoiceOver.\n- Przyciski w „Porządkach” mieszczą się teraz na mniejszych iPhone’ach, a zdjęcia otwierają się płynniej.\n- Obrazek w widżecie zachowuje kolory, gdy ikony na ekranie początkowym są przyciemnione lub przezroczyste.\n\nNowy widżet, przesuwanie i przyciski w „Porządkach” wymagają iOS 27.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
         "description": TR_DESCRIPTION,
         "keywords": "temizleme,galeri,depolama,alanı,yer,açma,telefon,yinelenen,aynı,benzer,kopya,bulanık,albüm,cleanup",
         "promotional_text": "Yer kazan: silmeden önce ne kadar alan açılacağını gör; hiçbir fotoğraf iPhone'undan çıkmaz. Pro: yıllık planda 7 gün ücretsiz. Reklam yok, hesap yok.",
-        "release_notes": "Değerlendirme ve geri bildirimle ilgili küçük bir güncelleme.\n\n- Ayarlardaki “App Store'da Değerlendir” artık doğrudan yorum sayfasını açıyor.\n- Bir temizlikten sonra Alike, dördüncü gün yerine kullanımın ikinci gününden itibaren değerlendirme isteyebilir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "release_notes": "Alike iOS 27'ye hazır: yeni bir widget ve fotoğraflarını daha hızlı ayıklamanın bir yolu.\n\n- Yeni uzun widget ne kadar alan açabileceğini ve en büyük gruplarını gösterir; Benzer Fotoğraflar, Ekran görüntüleri ve Bulanık Fotoğraflar kısayolları da var. Ana Ekran'daki widget galerisinden ekleyebilirsin.\n- Bir grupta fotoğrafı açmadan kaydırarak seçebilir, saklayabilir veya En İyi Kare yapabilirsin. Kaydırma, Ekran Görüntüleri ekranında ve VoiceOver ile de çalışır.\n- Temizlik düğmeleri artık küçük iPhone'lara sığıyor ve fotoğraflar daha akıcı açılıyor.\n- Ana Ekran simgelerin renklendirilmiş veya şeffaf olduğunda widget çizimi renklerini korur.\n\nYeni widget, kaydırma ve Temizlik düğmeleri iOS 27 gerektirir.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
         "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
         "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
-        "release_notes": "這是一個關於評分與意見回饋的小更新。\n\n- 設定中的「前往 App Store 評分」現在會直接開啟評論頁面。\n- 清理完成後，Alike 可能從使用的第二天起就詢問評分，而不是第四天。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "release_notes": "Alike 已支援 iOS 27，帶來新的小工具，以及更快整理照片的方式。\n\n- 新的直式大型小工具會顯示你能釋放多少空間和你最大的幾個群組，並提供前往「相似照片」、「螢幕截圖」和「模糊照片」的捷徑。從主畫面的小工具圖庫加入即可。\n- 在群組中滑動照片，不用打開就能選取、保留或設為最佳照片。在「螢幕快照」中和使用 VoiceOver 時也能這樣操作。\n- 「清理」的按鈕現在在較小的 iPhone 上也放得下，照片開啟時也更流暢。\n- 當主畫面圖像設為著色或透明時，小工具的插圖仍會保留原本的顏色。\n\n新的小工具、滑動操作和「清理」按鈕需要 iOS 27。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
         "subtitle": "حذف الصور المكررة من الجوال",
@@ -1074,9 +1108,71 @@ METADATA = {
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
         "promotional_text": "استرجع المساحة: اعرف كم ستوفّر قبل أن تحذف أي شيء، ولا تغادر أي صورة جهاز iPhone. ‏Pro: 7 أيام مجانًا في الخطة السنوية. بلا إعلانات وبلا حساب.",
-        "release_notes": "تحديث صغير يخص التقييمات والملاحظات.\n\n- «التقييم على App Store» في الإعدادات يفتح الآن صفحة التقييم مباشرة.\n- بعد التنظيف، قد يطلب Alike تقييمًا بدءًا من اليوم الثاني لاستخدام التطبيق بدلًا من الرابع.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "release_notes": "أصبح Alike جاهزًا لـ iOS 27، مع أداة جديدة وطريقة أسرع لترتيب صورك.\n\n- أداة طويلة جديدة تعرض المساحة التي يمكنك تحريرها وأكبر مجموعاتك، مع اختصارات إلى «الصور المتشابهة» و«لقطات الشاشة» و«الصور الضبابية». أضِفها من معرض الأدوات في شاشتك الرئيسية.\n- في المجموعة، اسحب الصورة لتحديدها أو الاحتفاظ بها أو جعلها أفضل لقطة، من دون فتحها. يعمل السحب أيضًا في «لقطات الشاشة» ومع VoiceOver.\n- أصبحت أزرار «التنظيف» تتسع على أجهزة iPhone الأصغر، وتُفتح الصور بسلاسة أكبر.\n- يحتفظ رسم الأداة بألوانه عندما تكون أيقونات شاشتك الرئيسية ملوّنة أو شفافة.\n\nتتطلب الأداة الجديدة والسحب وأزرار «التنظيف» نظام iOS 27.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
+
+# The four regional listings below reuse the copy of their source language
+# rather than carrying a second copy of it, so a change to en-US or fr-FR
+# reaches them too. en-GB and en-AU swap in British spelling and the iOS UI
+# names those locales use; the table holds every US form the en-US copy has
+# today, and a new one has to be added here by hand. en-CA is the en-US copy
+# unchanged; whether it should take Canadian spellings such as "colours" is
+# part of the native read in card 49. fr-CA keeps the fr-FR
+# copy unchanged: nothing in it reads as France-only to an agent review, and a
+# native Québécois read is card 49.
+#
+# Keywords are the one field written per market. Australia indexes en-GB next
+# to en-AU and Canada indexes fr-CA next to en-CA, so those keyword lists are
+# planned in pairs, the way en-US and es-MX are; cross_indexed_keyword_errors()
+# enforces it. en-AU keeps words en-GB already covers out of its own field and
+# spends it on Australian phrasing instead. None of the four has been read by a
+# native speaker yet.
+BRITISH_SPELLING = (
+    ("Airplane Mode", "Aeroplane Mode"),
+    ("colors", "colours"),
+)
+
+
+def british_spelling(text: str) -> str:
+    for american, british in BRITISH_SPELLING:
+        text = text.replace(american, british)
+    return text
+
+
+def regional_copy(source: str, keywords: str, spelling=lambda text: text) -> dict[str, str]:
+    values = METADATA[source]
+    return {
+        "subtitle": values["subtitle"],
+        "description": spelling(values["description"]),
+        "keywords": keywords,
+        "promotional_text": spelling(values["promotional_text"]),
+        "release_notes": spelling(values["release_notes"]),
+    }
+
+
+METADATA.update(
+    {
+        "en-GB": regional_copy(
+            "en-US",
+            "delete,space,camera,roll,clear,free,up,memory,phone,tidy,declutter,gallery,screenshot,blurry,pics",
+            british_spelling,
+        ),
+        "en-CA": regional_copy(
+            "en-US",
+            "delete,space,camera,roll,clear,free,up,memory,phone,cell,tidy,gallery,screenshot,blurry,pics,album",
+        ),
+        "en-AU": regional_copy(
+            "en-US",
+            "remove,iphone,album,picture,images,sort,sorter,best,shot,swipe,organiser,full,mobile",
+            british_spelling,
+        ),
+        "fr-CA": regional_copy(
+            "fr-FR",
+            "supprimer,effacer,nettoyer,libérer,espace,mémoire,cellulaire,galerie,capture,écran,floues,cleanup",
+        ),
+    }
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -1201,15 +1297,16 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     because this function has no way to tell which run it is in; on every other
     run `validate_localized_urls` fails before the bundle is used, naming the
     unset variable. An unconfigured `.env` therefore does not quietly produce
-    English URLs for twelve listings any more — it produces a hard failure.
+    English URLs for sixteen listings any more — it produces a hard failure.
 
     The site publishes each locale's own pages — /uk/, /de/, /fr/, /es/,
-    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all twelve non-English
-    listings must point at them through their own
-    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, thirty-six in all.
+    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all sixteen listings
+    other than en-US must point at them through their own
+    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, forty-eight in all.
     _ES_MX points at the same /es/ pages as _ES_ES on purpose: one Spanish page
     serves both listings, said explicitly rather than by falling through to
-    English.
+    English. The regional listings do the same: _EN_GB, _EN_CA and _EN_AU name
+    the English pages and _FR_CA names the /fr/ pages.
     """
     override = os.environ.get(locale_url_env_var(kind, apple_locale), "").strip()
     return override if override else base_url
@@ -1483,12 +1580,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for all thirteen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`. They match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all seventeen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`, `en-GB`, `en-CA`, `en-AU`, `fr-CA`. The first thirteen match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. The last four reuse the `en-US` or `fr` screenshots and copy, with their own keywords. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`. The site publishes all twelve of those locales, so all thirty-six are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`, `_EN_GB`, `_EN_CA`, `_EN_AU`, `_FR_CA`. The site has a page for every one of those listings, so all forty-eight are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. `_EN_GB`, `_EN_CA` and `_EN_AU` point at the English pages and `_FR_CA` at `/fr/`. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1592,7 +1689,10 @@ def validate_localized_urls(allow_placeholder_urls: bool, allow_shared_urls: boo
             emitted = path.read_text(encoding="utf-8").strip() if path.exists() else ""
             if emitted and emitted != override:
                 errors.append(f"{path} is {emitted}, not the {variable} value {override}")
-            elif emitted and emitted == base_urls[kind] and base_urls[kind]:
+            # en-GB, en-CA and en-AU read the English pages on purpose, so the
+            # shared URL is the right value for them; they still have to name
+            # it through their own override.
+            elif emitted and emitted == base_urls[kind] and base_urls[kind] and mapping.source != "en-US":
                 errors.append(f"{path} still carries the shared {kind.title()} URL")
 
         # The Terms URL never gets a file of its own; it reaches the listing
@@ -1682,13 +1782,29 @@ def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) ->
     return errors
 
 
+# Storefronts that index a second listing locale next to their default one
+# (App Store Connect Help, "App Store localizations"), as (default, additional).
+# A word in both fields is a word paid for twice. The US storefront indexes
+# more locales than es-MX; only the pairs whose keywords are planned together
+# are listed here.
+CROSS_INDEXED_LOCALES = (
+    ("en-US", "es-MX"),
+    ("en-CA", "fr-CA"),
+    ("en-AU", "en-GB"),
+    ("it", "en-GB"),
+    ("nl-NL", "en-GB"),
+    ("pl", "en-GB"),
+)
+
+
 def cross_indexed_keyword_errors(keywords_by_locale: dict[str, str]) -> list[str]:
-    # The US storefront indexes es-MX next to en-US, so a word in both fields
-    # is a word paid for twice.
-    shared = {item.casefold() for item in keywords_by_locale.get("en-US", "").split(",")} & {
-        item.casefold() for item in keywords_by_locale.get("es-MX", "").split(",")
-    }
-    return [f"es-MX keyword {item!r} repeats en-US" for item in sorted(shared - {""})]
+    errors: list[str] = []
+    for default, additional in CROSS_INDEXED_LOCALES:
+        shared = {item.casefold() for item in keywords_by_locale.get(default, "").split(",")} & {
+            item.casefold() for item in keywords_by_locale.get(additional, "").split(",")
+        }
+        errors.extend(f"{additional} keyword {item!r} repeats {default}" for item in sorted(shared - {""}))
+    return errors
 
 
 def validate_source_search_fields() -> list[str]:

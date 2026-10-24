@@ -150,6 +150,7 @@ public struct ClusterDetailsView: View {
         }
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: viewModel.assets, selectedIndex: selection.index)
+                .photoPagerTransition()
         }
         .sheet(item: $presentedPremiumFeature) { _ in
             SubscriptionPaywallView(
@@ -373,7 +374,16 @@ public struct ClusterDetailsView: View {
                                 onRevertEnhancement: viewModel.isBestShot(asset.localIdentifier)
                                     && viewModel.isEnhancementActionVisible
                                     ? { Task { await viewModel.revertEnhancement() } }
-                                    : nil
+                                    : nil,
+                                swipeActions: PhotoTileSwipeAction.available(
+                                    isSelected: viewModel.isSelected(asset.localIdentifier),
+                                    isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                    canSelect: !viewModel.bestShotAssetID.isEmpty,
+                                    canMakeBestShot: true
+                                ),
+                                onSwipeAction: { action in
+                                    action.perform(on: viewModel, assetID: asset.localIdentifier)
+                                }
                             )
                             .transition(
                                 .asymmetric(
@@ -383,6 +393,7 @@ public struct ClusterDetailsView: View {
                             )
                         }
                     }
+                    .photoTileSwipeActionsContainer()
                 }
             }
         }
@@ -433,6 +444,9 @@ struct SelectablePhotoThumbnail: View {
     var enhancementState: PhotoEnhancementState = .unavailable
     var onEnhance: (() -> Void)?
     var onRevertEnhancement: (() -> Void)?
+    /// Empty before iOS 27, where grids cannot host swipe actions.
+    var swipeActions: [PhotoTileSwipeAction] = []
+    var onSwipeAction: (PhotoTileSwipeAction) -> Void = { _ in }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -529,6 +543,10 @@ struct SelectablePhotoThumbnail: View {
             .accessibilityHint(Text(accessibilityHint))
             .accessibilityAddTraits(isSelected ? [.isSelected] : [])
             .accessibilityActions {
+                // The rotor mirrors the swipe; Make Best Shot is already below.
+                ForEach(swipeActions.filter { $0 != .makeBestShot }, id: \.self) { action in
+                    Button(action.title) { onSwipeAction(action) }
+                }
                 if let onMakeBestShot, !isBestShot {
                     Button(DetailsL10n.ClusterDetails.makeBestShot, action: onMakeBestShot)
                 }
@@ -548,6 +566,7 @@ struct SelectablePhotoThumbnail: View {
         }
         .contentShape(.interaction, thumbnailShape)
         .contentShape(.contextMenuPreview, thumbnailShape)
+        .photoTileSwipeActions(swipeActions, perform: onSwipeAction)
         .contextMenu {
             enhancementMenuItems
 

@@ -115,7 +115,7 @@ struct WidgetLibraryLayout: View {
 }
 
 /// One line: what it is, how many there are, and whether it is behind the paywall.
-private struct WidgetLibraryRowView: View {
+struct WidgetLibraryRowView: View {
     let row: WidgetLibraryRow
 
     var body: some View {

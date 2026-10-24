@@ -513,12 +513,16 @@ public struct CleanupView: View {
     @ToolbarContentBuilder
     private var cleanupToolbar: some ToolbarContent {
 #if os(iOS)
-        if !workspace.clusters.isEmpty {
-            ToolbarItem(placement: .topBarTrailing) { columnsMenu }
-            ToolbarItem(placement: .topBarTrailing) { controlsButton }
-        }
-        if workspace.hasCompletedScanBaseline {
-            ToolbarItem(placement: .topBarTrailing) { rescanButton }
+        if #available(iOS 27.0, *) {
+            overflowCleanupToolbar
+        } else {
+            if !workspace.clusters.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) { columnsMenu }
+                ToolbarItem(placement: .topBarTrailing) { controlsButton }
+            }
+            if workspace.hasCompletedScanBaseline {
+                ToolbarItem(placement: .topBarTrailing) { rescanButton }
+            }
         }
 #else
         if !workspace.clusters.isEmpty {
@@ -530,6 +534,34 @@ public struct CleanupView: View {
         }
 #endif
     }
+
+#if os(iOS)
+    /// Three icons next to a large title clip on a 375 pt screen at large
+    /// Dynamic Type. Rescan is the screen's main action, so it stays pinned;
+    /// the grid and filter options fold into the system overflow menu.
+    @available(iOS 27.0, *)
+    @ToolbarContentBuilder
+    private var overflowCleanupToolbar: some ToolbarContent {
+        if workspace.hasCompletedScanBaseline {
+            ToolbarItem(placement: .topBarPinnedTrailing) { rescanButton }
+                .visibilityPriority(.high)
+        }
+        if !workspace.clusters.isEmpty {
+            ToolbarOverflowMenu {
+                PhotoGridColumnsPicker()
+                Button { isControlsPresented = true } label: {
+                    Label(
+                        CleanupL10n.Main.filterAndSort,
+                        systemImage: controls.isDefault
+                            ? "line.3.horizontal.decrease.circle"
+                            : "line.3.horizontal.decrease.circle.fill"
+                    )
+                }
+            }
+            .visibilityPriority(.low)
+        }
+    }
+#endif
 
     private var columnsMenu: some View {
         PhotoGridColumnsMenu()

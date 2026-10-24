@@ -261,6 +261,16 @@ public extension WidgetPresentation {
     }
 }
 
+extension WidgetPresentation {
+    /// The reclaimable estimate as a share of the library, or `nil` when either side is
+    /// unknown. A 1.4.0 payload has no library size, and a ring drawn at zero would read
+    /// as "nothing to clean" when the truth is "not measured".
+    static func share(of bytes: Int64?, in total: Int64?) -> Double? {
+        guard let bytes, let total, total > 0 else { return nil }
+        return min(max(Double(bytes) / Double(total), 0), 1)
+    }
+}
+
 private extension WidgetPresentation {
     static func scannedFootnote(_ date: Date) -> String {
         WidgetL10n.Status.lastScanned(WidgetFormatting.timestamp(date, timeStyle: .omitted))
@@ -462,14 +472,6 @@ private extension WidgetPresentation {
                 ? WidgetFormatting.byteCount(bytes)
                 : WidgetFormatting.approximateByteCount(bytes)
         )
-    }
-
-    /// The reclaimable estimate as a share of the library, or `nil` when either side is
-    /// unknown. A 1.4.0 payload has no library size, and a ring drawn at zero would read
-    /// as "nothing to clean" when the truth is "not measured".
-    static func share(of bytes: Int64?, in total: Int64?) -> Double? {
-        guard let bytes, let total, total > 0 else { return nil }
-        return min(max(Double(bytes) / Double(total), 0), 1)
     }
 
     /// Distributes one fact across the three accessory shapes.

@@ -180,9 +180,12 @@ digits into catalog copy, because those are the one path the pin cannot reach.
 Plural *category* selection is unaffected: the numbering system changes how a number is
 spelled, not which CLDR bucket it falls into. `36` still selects `many` in Arabic.
 
-## Not in the catalogs
+## The permission prompt
 
-`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` is a build setting in
-`Alike/Alike.xcodeproj`, not a catalog key, so the photo-permission prompt shows English
-in every locale. Localizing it means an `InfoPlist.xcstrings` in the app target; it is
-worth doing and is deliberately outside task 40's diff.
+`NSPhotoLibraryUsageDescription` is not in a package catalog. The build setting
+`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` in `Alike/Alike.xcodeproj` puts the English
+base value into the generated `Info.plist`, and `Alike/Alike/InfoPlist.xcstrings` translates
+it. Keep both: without the build setting the key is absent and the permission request
+crashes. `InfoPlistCatalogTests` in `Alike/AlikeTests` fails when a shipped language is
+missing, when the catalog English drifts from the build setting, or when the build setting
+disappears.

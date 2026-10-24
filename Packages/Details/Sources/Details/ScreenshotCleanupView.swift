@@ -87,6 +87,7 @@ public struct ScreenshotCleanupView: View {
         }
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: assets, selectedIndex: selection.index)
+                .photoPagerTransition()
         }
         .sheet(item: $presentedPremiumFeature) { _ in
             SubscriptionPaywallView(
@@ -175,10 +176,20 @@ private extension ScreenshotCleanupView {
                     },
                     onOpenOriginal: {
                         openOriginal(for: asset)
+                    },
+                    swipeActions: PhotoTileSwipeAction.available(
+                        isSelected: viewModel.isSelected(asset.localIdentifier),
+                        isBestShot: false,
+                        canSelect: true,
+                        canMakeBestShot: false
+                    ),
+                    onSwipeAction: { action in
+                        action.perform(on: viewModel, assetID: asset.localIdentifier)
                     }
                 )
             }
         }
+        .photoTileSwipeActionsContainer()
         .allowsHitTesting(!viewModel.isDeleting)
         .padding(.horizontal, Spacing.medium)
         .padding(.bottom, Spacing.medium)

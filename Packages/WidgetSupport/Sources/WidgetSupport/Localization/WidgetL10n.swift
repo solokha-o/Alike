@@ -71,6 +71,16 @@ public enum WidgetL10n {
             WidgetL10n.plural("widgetsupport.status.ofGroups", total, bundle: bundle, locale: locale)
         }
 
+        /// "7% of your 26 GB of photos" — the line under the extra-large widget's share
+        /// bar. Photos rather than "library": the measured total leaves videos out.
+        public static func shareOfLibrary(_ formattedShare: String, _ formattedTotal: String) -> String {
+            String(
+                format: WidgetL10n.string("widgetsupport.status.shareOfLibrary"),
+                locale: WidgetFormatting.locale,
+                formattedShare, formattedTotal
+            )
+        }
+
         /// "12 groups left" — groups still to review, never photos deleted.
         public static func groupsRemaining(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             WidgetL10n.plural("widgetsupport.status.groupsRemaining", count, bundle: bundle, locale: locale)
