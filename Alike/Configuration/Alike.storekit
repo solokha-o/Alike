@@ -72,6 +72,11 @@
         {
           "description" : "",
           "displayName" : "Alike Pro",
+          "locale" : "pt_PT"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
           "locale" : "it_IT"
         },
         {
@@ -195,6 +200,11 @@
               "locale" : "pt_BR"
             },
             {
+              "description" : "Todas as funções Pro, pagamento anual.",
+              "displayName" : "Alike Pro anual",
+              "locale" : "pt_PT"
+            },
+            {
               "description" : "Tutti gli strumenti Pro, pagamento annuale.",
               "displayName" : "Alike Pro annuale",
               "locale" : "it_IT"
@@ -312,6 +322,11 @@
               "description" : "Toda a limpeza de fotos do Alike Pro.",
               "displayName" : "Alike Pro mensal",
               "locale" : "pt_BR"
+            },
+            {
+              "description" : "Toda a limpeza de fotos do Alike Pro.",
+              "displayName" : "Alike Pro mensal",
+              "locale" : "pt_PT"
             },
             {
               "description" : "Tutta la pulizia foto di Alike Pro.",

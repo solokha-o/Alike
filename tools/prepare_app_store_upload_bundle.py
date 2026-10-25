@@ -60,6 +60,7 @@ LOCALE_LEGAL_LABELS = {
     "es-ES": ("Política de privacidad", "Términos de uso"),
     "es-MX": ("Política de privacidad", "Términos de uso"),
     "pt-BR": ("Política de Privacidade", "Termos de Uso"),
+    "pt-PT": ("Política de Privacidade", "Termos de Utilização"),
     "it": ("Informativa sulla privacy", "Condizioni d’uso"),
     "nl-NL": ("Privacybeleid", "Gebruiksvoorwaarden"),
     "pl": ("Polityka prywatności", "Warunki korzystania"),
@@ -111,7 +112,11 @@ class LocaleMapping:
 # The listing ships the thirteen languages the app itself is translated into,
 # plus four regional listings that reuse one of them: en-GB, en-CA and en-AU
 # take the en-US deck and fr-CA takes the fr deck, so one `source` can feed
-# several `apple` locales and no deck is copied under Docs/images/.
+# several `apple` locales and no deck is copied under Docs/images/. pt-PT is
+# the one listing with a deck but no app translation: its headlines are
+# European Portuguese, while the captures inside the phone are the pt-BR ones,
+# because pt-BR is the UI a Portuguese device shows (RAW_SOURCE_LOCALE in
+# tools/generate_app_store_product_screenshots.py).
 # `source` is the app's own language code, which is also the directory name
 # under Docs/images/; `apple` is the App Store Connect locale, which is not the
 # same string. es-419 is the app's Latin American Spanish and maps onto App
@@ -137,6 +142,7 @@ UPLOAD_SAFE_LOCALES = (
     LocaleMapping(source="es", apple="es-ES"),
     LocaleMapping(source="es-419", apple="es-MX"),
     LocaleMapping(source="pt-BR", apple="pt-BR"),
+    LocaleMapping(source="pt-PT", apple="pt-PT"),
     LocaleMapping(source="it", apple="it"),
     LocaleMapping(source="nl", apple="nl-NL"),
     LocaleMapping(source="pl", apple="pl"),
@@ -166,6 +172,7 @@ DELIVER_ACCEPTED_LOCALES = frozenset(
         "es-ES",
         "es-MX",
         "pt-BR",
+        "pt-PT",
         "it",
         "nl-NL",
         "pl",
@@ -192,6 +199,7 @@ STOREKIT_TO_APP_STORE_LOCALE = {
     "es_ES": "es-ES",
     "es_MX": "es-MX",
     "pt_BR": "pt-BR",
+    "pt_PT": "pt-PT",
     "it_IT": "it",
     "nl_NL": "nl-NL",
     "pl_PL": "pl",
@@ -628,6 +636,68 @@ ALIKE PRO
 
 O Alike Pro é uma assinatura de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos assinantes elegíveis, e a cobrança começa quando o teste termina. As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando quiser nos Ajustes do iOS."""
 
+# European Portuguese, adapted from PT_BR_DESCRIPTION rather than respelt: the
+# article before the possessive, no "você", and Portugal's words (ecrã,
+# eliminar, libertar, telemóvel, Definições). Names in «» and the in-app
+# Ajustes stay as the app shows them, because the app's UI is pt-BR; the
+# languages line says so instead of implying a European Portuguese app.
+PT_PT_DESCRIPTION = """\
+Recupere espaço sem que uma única foto saia do seu dispositivo: o Alike encontra as quase duplicadas escondidas na sua fototeca, agrupa-as, escolhe a melhor foto de cada grupo e ajuda-o a limpar o resto.
+
+COMO FUNCIONA
+Analisar. O Alike compara a sua fototeca com a framework Vision da Apple, inteiramente no seu iPhone. São comparadas as fotos tiradas em horas e locais próximos, e as capturas de ecrã ficam fora dos resultados, a não ser que as peça.
+Rever. Cada grupo abre com uma melhor foto já selecionada, por isso decide em segundos. Manter só a melhor, selecionar todas menos a melhor ou escolher à mão.
+Limpar. Confirme, e as fotos escolhidas vão para «Apagados recentemente», onde o iOS as guarda durante cerca de 30 dias.
+
+A PRIVACIDADE É O ESSENCIAL
+- Toda a análise corre no dispositivo, com a framework Vision da Apple.
+- Nenhuma foto, miniatura ou impressão de características é enviada para lado nenhum.
+- Sem conta, sem início de sessão, sem servidor do Alike.
+- Sem analytics, sem rastreamento, sem identificadores de publicidade.
+- Sem anúncios em parte alguma da app.
+- Analisar e limpar não precisam de qualquer ligação — o Alike funciona em modo de voo.
+- Nada é eliminado sem a sua confirmação explícita.
+
+FEITO PARA FOTOTECAS A SÉRIO
+- Três níveis de sensibilidade, das fotos quase idênticas a uma rede mais ampla.
+- Deteção da melhor foto medida nas próprias fotos — nitidez, exposição, rostos e ruído —, para que cada grupo já tenha uma escolha sensata para manter.
+- Melhoria opcional com um toque para a foto que mantém, com o original sempre a um toque.
+- Selos de revisão: Nova, Em revisão, Revisada e Revisar de novo depois de uma nova análise.
+- Adiciona ou elimina fotos e o Alike repara, trazendo de volta só os grupos que mudaram — sem repetir a análise inteira.
+- Progresso, Selecionadas e Economia estimada enquanto trabalha.
+- Histórico de limpeza agrupado por mês, para ver quanto espaço já recuperou.
+- Um layout espaçoso de uma coluna ou uma grelha mais densa, alternáveis a qualquer momento e memorizados.
+- Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.
+- Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
+- Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.
+- Treze idiomas, com a app em português do Brasil, e modo escuro completo.
+
+O CONTROLO É SEU
+- A melhoria não destrói nada: o original continua na sua fototeca e um toque restaura-o.
+- O Alike aprende com as melhores fotos que o próprio utilizador escolhe — no seu dispositivo, e pode repor isso quando quiser nos Ajustes.
+- Ajustes, depois Dados e privacidade, depois Apagar dados do Alike remove todos os resultados de análise, o histórico de limpeza e as preferências que a app guardou — e nunca toca na sua fototeca.
+- Conceda acesso total ou limitado: o Alike trabalha com o que escolher partilhar.
+
+ALIKE FREE
+- 3 análises por mês
+- Revisão guiada com a melhor foto
+- Melhoria com um toque, sempre reversível
+- Melhor foto que aprende com as suas escolhas
+- Ordenação e histórico de limpeza
+- Limpeza de uma foto de cada vez
+- Widgets
+
+ALIKE PRO
+- 7 dias grátis no plano anual, para novos subscritores elegíveis
+- Análises ilimitadas
+- Limpeza em lote de seleções inteiras
+- Limpeza de capturas de ecrã
+- Limpeza de fotos desfocadas
+- Filtros avançados
+- Lembretes de limpeza personalizados
+
+O Alike Pro é uma subscrição de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos subscritores elegíveis, e a cobrança começa quando o teste termina. As subscrições são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Pode gerir ou cancelar quando quiser nas Definições do iOS."""
+
 # The five Tier 3 descriptions follow the same rule as Tier 1 above: same
 # structure, same claims, the auto-renew paragraph in full, and feature names
 # lifted from the .xcstrings catalogs so the listing and the UI say the same
@@ -1041,6 +1111,17 @@ METADATA = {
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
         "release_notes": "O Alike está pronto para o iOS 27, com um widget novo e um jeito mais rápido de organizar suas fotos.\n\n- Um widget alto novo mostra quanto espaço você pode liberar e seus maiores grupos, com atalhos para «Fotos semelhantes», «Capturas de tela» e «Fotos desfocadas». Adicione pela galeria de widgets da sua Tela de Início.\n- Em um grupo, deslize uma foto para selecionar, manter ou definir como melhor foto, sem abrir. Também funciona em «Capturas de tela» e com o VoiceOver.\n- Os botões de «Limpeza» agora cabem nos iPhones menores, e as fotos abrem com mais suavidade.\n- O desenho do widget mantém as cores quando os ícones da sua Tela de Início estão com tonalidade ou transparentes.\n\nO widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+    },
+    # pt-PT: Portugal indexes en-GB next to pt-PT, so none of these repeats an
+    # en-GB keyword (cross_indexed_keyword_errors() enforces it). The words
+    # are Portugal's own spelling (libertar, telemóvel, ecrã), picked without
+    # Search Popularity data, and no native speaker has read this entry yet.
+    "pt-PT": {
+        "subtitle": "Eliminar fotos duplicadas",
+        "description": PT_PT_DESCRIPTION,
+        "keywords": "limpar,limpeza,repetidas,iguais,apagar,libertar,espaço,armazenamento,galeria,organizar,telemóvel",
+        "promotional_text": "Recupere espaço: veja quanto vai libertar antes de eliminar o que quer que seja, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios.",
+        "release_notes": "O Alike está pronto para o iOS 27, com um widget novo e uma forma mais rápida de organizar as suas fotos.\n\n- Um widget alto novo mostra quanto espaço pode libertar e os seus maiores grupos, com atalhos para «Fotos semelhantes», «Capturas de tela» e «Fotos desfocadas». Adicione-o a partir da galeria de widgets do ecrã principal.\n- Num grupo, deslize uma foto para a selecionar, manter ou definir como melhor foto, sem a abrir. Também funciona em «Capturas de tela» e com o VoiceOver.\n- Os botões de «Limpeza» já cabem nos iPhone mais pequenos, e as fotos abrem com mais fluidez.\n- O desenho do widget mantém as cores quando os ícones do ecrã principal estão com tonalidade ou transparentes.\n\nO widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n\nTudo continua a correr no seu dispositivo: sem conta, sem envios, e o que limpa vai para «Apagados recentemente», onde o iOS o guarda durante cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da App Store chega diretamente a mim.",
     },
     # The same rules hold for the six locales below. tr keeps English words
     # because that is what that storefront measurably searches for, and the
@@ -1580,12 +1661,12 @@ tools/upload-screenshots
 
 ## Notes
 
-- Localized copy for all seventeen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`, `en-GB`, `en-CA`, `en-AU`, `fr-CA`. The first thirteen match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. The last four reuse the `en-US` or `fr` screenshots and copy, with their own keywords. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
+- Localized copy for all eighteen listing locales is defined in `tools/prepare_app_store_upload_bundle.py`: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`, `pt-PT`, `en-GB`, `en-CA`, `en-AU`, `fr-CA`. The first thirteen match the languages the app itself is translated into; the app's `es-419` maps onto App Store Connect's `es-MX`. `pt-PT` has its own copy and screenshot headlines over the `pt-BR` captures, because the app's UI is `pt-BR`. The last four reuse the `en-US` or `fr` screenshots and copy, with their own keywords. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever disagree, and strict generation refuses to run if any `TODO:` marker is reintroduced.
 - App Review contact and reviewer notes are generated into `metadata/review_information/*.txt` and uploaded automatically by Fastlane `deliver`.
 - Edit tracked reviewer notes in `Docs/app-store-review-notes.txt`.
 - Alike has no account and no sign-in, so `demo_user.txt` and `demo_password.txt` are intentionally empty.
 - `marketing_url.txt` is written only when `ALIKE_MARKETING_URL` is set. The marketing URL is optional for Apple, and `deliver` leaves the App Store Connect value untouched when the file is absent.
-- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`, `_EN_GB`, `_EN_CA`, `_EN_AU`, `_FR_CA`. The site has a page for every one of those listings, so all forty-eight are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. `_EN_GB`, `_EN_CA` and `_EN_AU` point at the English pages and `_FR_CA` at `/fr/`. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
+- Every locale gets `ALIKE_PRIVACY_URL` / `ALIKE_TERMS_URL` / `ALIKE_SUPPORT_URL` unless it has its own override, suffixed with the App Store locale uppercased and `-` to `_`: `_UK`, `_DE_DE`, `_FR_FR`, `_ES_ES`, `_ES_MX`, `_PT_BR`, `_PT_PT`, `_IT`, `_NL_NL`, `_PL`, `_TR`, `_ZH_HANT`, `_AR_SA`, `_EN_GB`, `_EN_CA`, `_EN_AU`, `_FR_CA`. The site has a page for every one of those listings, so all fifty-one are required: strict generation fails on an unset override rather than falling back to the shared English URL, which would send a reader who was just reading localized App Store copy to an English privacy policy. `--allow-shared-urls` opts out deliberately. `_ES_MX` points at the same `/es/` pages as `_ES_ES`: one Spanish page serves both listings. `_EN_GB`, `_EN_CA` and `_EN_AU` point at the English pages and `_FR_CA` at `/fr/`, and `_PT_PT` at the `/pt-br/` pages. Values are listed in `Docs/release-checklist.md` step 0. The description footer labels follow the locale on their own.
 - App privacy questionnaire data is not included; Fastlane `deliver` only uploads the privacy URL.
 - Subscription metadata is exported to `iap_metadata/app_store_connect_iap_metadata.json`.
 - Fastlane `deliver` does not upload the exported IAP metadata; use it as source data for a separate App Store Connect API automation step.
@@ -1789,6 +1870,7 @@ def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) ->
 # are listed here.
 CROSS_INDEXED_LOCALES = (
     ("en-US", "es-MX"),
+    ("pt-PT", "en-GB"),
     ("en-CA", "fr-CA"),
     ("en-AU", "en-GB"),
     ("it", "en-GB"),

@@ -63,8 +63,16 @@ PHONE_SCREEN_RECT = (52, 46, 970, 2036)
 # Directory names under Docs/images/, which are the app's own language codes,
 # not the App Store Connect ones. UPLOAD_SAFE_LOCALES in
 # tools/prepare_app_store_upload_bundle.py maps es-419 onto App Store Connect's
-# es-MX slot; nothing here needs to know that.
-LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant", "ar")
+# es-MX slot; nothing here needs to know that. pt-PT is the one listing
+# language the app is not translated into: it has its own copy and deck, but
+# no captures of its own (RAW_SOURCE_LOCALE below).
+LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "pt-PT", "it", "nl", "pl", "tr", "zh-Hant", "ar")
+
+# The app ships pt-BR only, so a device set to European Portuguese shows the
+# pt-BR UI. Fresh pt-PT captures would be pixel-for-pixel the pt-BR ones;
+# pointing at them keeps one set of captures instead of a copied folder that
+# drifts the next time pt-BR is re-shot.
+RAW_SOURCE_LOCALE = {"pt-PT": "pt-BR"}
 
 # Han glyphs carry far more meaning per square than Latin ones, so a headline
 # set at the shared 112 start size reads as a wall rather than a line. Starting
@@ -527,6 +535,46 @@ COPY = {
             "Dois widgets: o espaço que dá para recuperar e o que a fototeca ainda guarda.",
         ),
     ],
+    # European Portuguese, not a respelling of pt-BR: the article before the
+    # possessive ("a sua fototeca"), no "você", and Portugal's own words —
+    # "ecrã", "eliminar", "rever", "poupança".
+    "pt-PT": [
+        (
+            "NO DISPOSITIVO",
+            "Encontre as fotos\nque se parecem",
+            "O Alike analisa a sua fototeca com Apple Vision, no seu iPhone.",
+        ),
+        (
+            "UMA SÓ FILA",
+            "Cada grupo,\npronto a rever",
+            "Os grupos chegam com selos: vê sempre o que falta.",
+        ),
+        (
+            "MELHOR FOTO",
+            "A que fica\njá está escolhida",
+            "O Alike destaca a melhor foto de cada grupo. Só tem de confirmar.",
+        ),
+        (
+            "COMPARAR",
+            "Reveja antes\nde limpar",
+            "Revisão em tamanho real. Nada é eliminado sem a sua confirmação.",
+        ),
+        (
+            "ESPAÇO LIVRE",
+            "Recupere os\ngigabytes",
+            "Fotos selecionadas e poupança estimada, enquanto limpa.",
+        ),
+        (
+            "SEMPRE REVERSÍVEL",
+            "Melhore a que fica,\nmantenha o original",
+            "Um toque melhora a melhor foto. Outro repõe o original — que nunca sai da sua fototeca.",
+        ),
+        (
+            "ECRÃ PRINCIPAL",
+            "Visível sem\nabrir o Alike",
+            "Dois widgets: o espaço que pode recuperar e o que a fototeca ainda guarda.",
+        ),
+    ],
     "it": [
         (
             "SUL DISPOSITIVO",
@@ -840,6 +888,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true", help="Validate sources and layouts without writing PNGs.")
     return parser.parse_args()
+
+
+def raw_source(locale: str, name: str) -> Path:
+    return SOURCE_ROOT / RAW_SOURCE_LOCALE.get(locale, locale) / name
 
 
 def selected_locales(raw: str) -> list[str]:
@@ -1453,7 +1505,7 @@ def validate_sources(locales: list[str]) -> None:
             raise SystemExit(f"Missing marketing copy for {len(SLIDES)} slides in {locale}")
         validate_glyph_coverage(locale)
         for slide in SLIDES:
-            source = SOURCE_ROOT / locale / slide.source
+            source = raw_source(locale, slide.source)
             if not source.exists():
                 missing.append(source)
     if missing:
@@ -1513,7 +1565,7 @@ def render_locale(variant: Variant, locale: str, output_root: Path, quiet: bool 
     rendered: list[Path] = []
     for index, slide in enumerate(SLIDES):
         image = render_slide(
-            index, slide, variant, COPY[locale][index], SOURCE_ROOT / locale / slide.source, locale
+            index, slide, variant, COPY[locale][index], raw_source(locale, slide.source), locale
         )
         assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
         target = locale_output / slide.source
@@ -1572,7 +1624,7 @@ def render_lead_variants() -> None:
         output.mkdir(parents=True, exist_ok=True)
         rendered: list[Path] = []
         for index, (slide, copy) in enumerate(zip(SLIDES, deck)):
-            image = render_slide(index, slide, variant, copy, SOURCE_ROOT / locale / slide.source, locale)
+            image = render_slide(index, slide, variant, copy, raw_source(locale, slide.source), locale)
             assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
             target = output / slide.source
             image.save(target, optimize=True)
