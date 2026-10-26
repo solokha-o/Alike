@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class CoreDataPhotoQualityScoreRepositoryTests: XCTestCase {
+@Suite struct CoreDataPhotoQualityScoreRepositoryTests {
     private var repository: CoreDataPhotoQualityScoreRepository!
     private var inMemoryController: PersistenceController!
     private let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
@@ -17,103 +18,101 @@ final class CoreDataPhotoQualityScoreRepositoryTests: XCTestCase {
         inMemoryController = nil
     }
 
-    func testSaveAndLoadRoundTripsSignals() async throws {
+    @Test func testSaveAndLoadRoundTripsSignals() async throws {
         try await repository.saveScores([makeScore("photo-1")])
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertEqual(score.signals.globalSharpness, 42, accuracy: 0.000_1)
-        XCTAssertEqual(score.signals.subjectSharpness ?? 0, 30, accuracy: 0.000_1)
-        XCTAssertEqual(score.signals.usableFaceSignals.count, 1)
-        XCTAssertEqual(score.sourceModificationDate?.timeIntervalSince1970 ?? 0,
-                       modificationDate.timeIntervalSince1970,
-                       accuracy: 0.001)
-        XCTAssertFalse(score.isAlikeEnhanced)
+        #expect(abs(score.signals.globalSharpness - 42) <= 0.000_1)
+        #expect(abs((score.signals.subjectSharpness ?? 0) - 30) <= 0.000_1)
+        #expect(score.signals.usableFaceSignals.count == 1)
+        #expect(abs((score.sourceModificationDate?.timeIntervalSince1970 ?? 0) - modificationDate.timeIntervalSince1970) <= 0.001)
+        #expect(!score.isAlikeEnhanced)
     }
 
-    func testCacheHitForUnchangedAssetAndVersions() async throws {
+    @Test func testCacheHitForUnchangedAssetAndVersions() async throws {
         try await repository.saveScores([makeScore("photo-1")])
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertTrue(score.isFresh(
+        #expect(score.isFresh(
             modificationDate: modificationDate,
             scoringModelVersion: 1,
             thumbnailConfigVersion: 1
         ))
     }
 
-    func testCacheMissOnChangedModificationDate() async throws {
+    @Test func testCacheMissOnChangedModificationDate() async throws {
         try await repository.saveScores([makeScore("photo-1")])
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertFalse(score.isFresh(
+        #expect(!(score.isFresh(
             modificationDate: modificationDate.addingTimeInterval(60),
             scoringModelVersion: 1,
             thumbnailConfigVersion: 1
-        ))
+        )))
     }
 
-    func testCacheMissOnChangedScoringModelVersion() async throws {
+    @Test func testCacheMissOnChangedScoringModelVersion() async throws {
         try await repository.saveScores([makeScore("photo-1")])
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertFalse(score.isFresh(
+        #expect(!(score.isFresh(
             modificationDate: modificationDate,
             scoringModelVersion: 2,
             thumbnailConfigVersion: 1
-        ))
+        )))
     }
 
-    func testCacheMissOnChangedThumbnailConfigVersion() async throws {
+    @Test func testCacheMissOnChangedThumbnailConfigVersion() async throws {
         try await repository.saveScores([makeScore("photo-1")])
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertFalse(score.isFresh(
+        #expect(!(score.isFresh(
             modificationDate: modificationDate,
             scoringModelVersion: 1,
             thumbnailConfigVersion: 2
-        ))
+        )))
     }
 
-    func testSavingTwiceOverwritesInsteadOfDuplicating() async throws {
+    @Test func testSavingTwiceOverwritesInsteadOfDuplicating() async throws {
         try await repository.saveScores([makeScore("photo-1", globalSharpness: 10)])
         try await repository.saveScores([makeScore("photo-1", globalSharpness: 90)])
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        XCTAssertEqual(loaded.count, 1)
-        XCTAssertEqual(loaded["photo-1"]?.signals.globalSharpness ?? 0, 90, accuracy: 0.000_1)
+        #expect(loaded.count == 1)
+        #expect(abs((loaded["photo-1"]?.signals.globalSharpness ?? 0) - 90) <= 0.000_1)
     }
 
-    func testUnknownIdentifiersAreSimplyAbsent() async throws {
+    @Test func testUnknownIdentifiersAreSimplyAbsent() async throws {
         try await repository.saveScores([makeScore("photo-1")])
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1", "photo-2"])
 
-        XCTAssertEqual(Set(loaded.keys), ["photo-1"])
+        #expect(Set(loaded.keys) == ["photo-1"])
     }
 
-    func testDeleteAllScoresClearsTheCache() async throws {
+    @Test func testDeleteAllScoresClearsTheCache() async throws {
         try await repository.saveScores([makeScore("photo-1"), makeScore("photo-2")])
 
         try await repository.deleteAllScores()
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1", "photo-2"])
-        XCTAssertTrue(loaded.isEmpty)
+        #expect(loaded.isEmpty)
     }
 
-    func testEnhancedFlagSurvivesTheRoundTrip() async throws {
+    @Test func testEnhancedFlagSurvivesTheRoundTrip() async throws {
         try await repository.saveScores([makeScore("photo-1", isAlikeEnhanced: true)])
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
-        let score = try XCTUnwrap(loaded["photo-1"])
+        let score = try #require(loaded["photo-1"])
 
-        XCTAssertTrue(score.isAlikeEnhanced)
-        XCTAssertTrue(score.isFresh(
+        #expect(score.isAlikeEnhanced)
+        #expect(score.isFresh(
             modificationDate: modificationDate.addingTimeInterval(3_600),
             scoringModelVersion: 1,
             thumbnailConfigVersion: 1

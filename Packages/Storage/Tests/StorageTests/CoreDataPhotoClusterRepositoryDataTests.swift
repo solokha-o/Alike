@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Storage
 
 @MainActor
-final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
+@Suite struct CoreDataPhotoClusterRepositoryDataTests {
     private var repository: CoreDataPhotoClusterRepository!
     private var controller: PersistenceController!
 
@@ -16,7 +17,7 @@ final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
         controller = nil
     }
 
-    func testSaveAndLoadClusterData() async throws {
+    @Test func testSaveAndLoadClusterData() async throws {
         let clusterA = CoreDataPhotoClusterRepository.ClusterData(
             id: UUID(),
             createdAt: Date(),
@@ -51,12 +52,12 @@ final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
         try await repository.saveClusterData([clusterA, clusterB])
         let loaded = try await repository.loadClusterData()
 
-        XCTAssertEqual(loaded.count, 2)
-        XCTAssertEqual(loaded[0].assets.count, 1)
-        XCTAssertEqual(loaded[1].assets.count, 1)
+        #expect(loaded.count == 2)
+        #expect(loaded[0].assets.count == 1)
+        #expect(loaded[1].assets.count == 1)
     }
 
-    func testSaveClusterDataOverwritesExisting() async throws {
+    @Test func testSaveClusterDataOverwritesExisting() async throws {
         let first = CoreDataPhotoClusterRepository.ClusterData(
             id: UUID(),
             createdAt: Date(),
@@ -74,11 +75,11 @@ final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
         try await repository.saveClusterData([second])
 
         let loaded = try await repository.loadClusterData()
-        XCTAssertEqual(loaded.count, 1)
-        XCTAssertEqual(loaded.first?.averageSimilarity ?? 0, 0.7, accuracy: 0.001)
+        #expect(loaded.count == 1)
+        #expect(abs((loaded.first?.averageSimilarity ?? 0) - 0.7) <= 0.001)
     }
 
-    func testLoadClusterSnapshotsPreservesAssetMetadataForDiffing() async throws {
+    @Test func testLoadClusterSnapshotsPreservesAssetMetadataForDiffing() async throws {
         let clusterID = UUID()
         let createdAt = Date(timeIntervalSince1970: 100)
         let modifiedAt = Date(timeIntervalSince1970: 200)
@@ -109,9 +110,9 @@ final class CoreDataPhotoClusterRepositoryDataTests: XCTestCase {
         try await repository.saveClusterData([cluster])
         let snapshots = try await repository.loadClusterSnapshots()
 
-        XCTAssertEqual(snapshots.count, 1)
-        XCTAssertEqual(snapshots.first?.id, clusterID)
-        XCTAssertEqual(snapshots.first?.assetIdentifiers, ["asset-a", "asset-b"])
-        XCTAssertEqual(snapshots.first?.bestShotLocalIdentifier, "asset-a")
+        #expect(snapshots.count == 1)
+        #expect(snapshots.first?.id == clusterID)
+        #expect(snapshots.first?.assetIdentifiers == ["asset-a", "asset-b"])
+        #expect(snapshots.first?.bestShotLocalIdentifier == "asset-a")
     }
 }
