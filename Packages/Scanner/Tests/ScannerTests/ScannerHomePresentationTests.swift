@@ -1,13 +1,14 @@
 import Cleanup
 import Core
-import XCTest
+import Foundation
+import Testing
 @testable import Scanner
 
 @MainActor
-final class ScannerHomePresentationTests: XCTestCase {
+@Suite struct ScannerHomePresentationTests {
     private let scanEventID = UUID(uuidString: "7FDF377A-F575-45D2-BEC5-E56C99323571")!
 
-    func testNeverScannedUsesReadyAliAndStartsScanning() {
+    @Test func testNeverScannedUsesReadyAliAndStartsScanning() {
         let presentation = ScannerHomePresentation.resolve(
             state: .idle,
             hasLibraryChanged: false,
@@ -15,13 +16,13 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(presentation.cue.state, .idle(.ready))
-        XCTAssertEqual(presentation.primaryAction, .startScanning)
-        XCTAssertNil(presentation.secondaryAction)
-        XCTAssertNil(presentation.progress)
+        #expect(presentation.cue.state == .idle(.ready))
+        #expect(presentation.primaryAction == .startScanning)
+        #expect(presentation.secondaryAction == nil)
+        #expect(presentation.progress == nil)
     }
 
-    func testScanningUsesStableSearchingAliAndClampedProgress() {
+    @Test func testScanningUsesStableSearchingAliAndClampedProgress() {
         let first = ScannerHomePresentation.resolve(
             state: .scanning(progress: 1.4),
             hasLibraryChanged: false,
@@ -35,15 +36,15 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(first.cue.state, .scanning)
-        XCTAssertEqual(first.cue.id, second.cue.id)
-        XCTAssertEqual(first.visualPhase, second.visualPhase)
-        XCTAssertEqual(first.visualPhase, .scanning)
-        XCTAssertEqual(first.progress, 1)
-        XCTAssertNil(first.primaryAction)
+        #expect(first.cue.state == .scanning)
+        #expect(first.cue.id == second.cue.id)
+        #expect(first.visualPhase == second.visualPhase)
+        #expect(first.visualPhase == .scanning)
+        #expect(first.progress == 1)
+        #expect(first.primaryAction == nil)
     }
 
-    func testLibraryChangeTakesPrecedenceOverCompletedResults() {
+    @Test func testLibraryChangeTakesPrecedenceOverCompletedResults() {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 4)),
             hasLibraryChanged: true,
@@ -51,13 +52,13 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(presentation.cue.state, .idle(.libraryChanged(newItemsCount: nil)))
-        XCTAssertEqual(presentation.visualPhase, .libraryChanged)
-        XCTAssertEqual(presentation.primaryAction, .startScanning)
-        XCTAssertEqual(presentation.secondaryAction, .openCleanup)
+        #expect(presentation.cue.state == .idle(.libraryChanged(newItemsCount: nil)))
+        #expect(presentation.visualPhase == .libraryChanged)
+        #expect(presentation.primaryAction == .startScanning)
+        #expect(presentation.secondaryAction == .openCleanup)
     }
 
-    func testCompletedResultsUseReviewsAliAndCleanupNavigation() {
+    @Test func testCompletedResultsUseReviewsAliAndCleanupNavigation() {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 4)),
             hasLibraryChanged: false,
@@ -65,13 +66,13 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(presentation.cue.state, .idle(.hasReviews(count: 4)))
-        XCTAssertEqual(presentation.visualPhase, .reviews)
-        XCTAssertEqual(presentation.primaryAction, .openCleanup)
-        XCTAssertEqual(presentation.secondaryAction, .startScanning)
+        #expect(presentation.cue.state == .idle(.hasReviews(count: 4)))
+        #expect(presentation.visualPhase == .reviews)
+        #expect(presentation.primaryAction == .openCleanup)
+        #expect(presentation.secondaryAction == .startScanning)
     }
 
-    func testEmptyCompletionUsesAllCaughtUpAli() {
+    @Test func testEmptyCompletionUsesAllCaughtUpAli() {
         let presentation = ScannerHomePresentation.resolve(
             state: .completed(summary(opportunities: 0)),
             hasLibraryChanged: false,
@@ -79,13 +80,13 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(presentation.cue.state, .idle(.allCaughtUp))
-        XCTAssertEqual(presentation.visualPhase, .caughtUp)
-        XCTAssertEqual(presentation.primaryAction, .startScanning)
-        XCTAssertNil(presentation.secondaryAction)
+        #expect(presentation.cue.state == .idle(.allCaughtUp))
+        #expect(presentation.visualPhase == .caughtUp)
+        #expect(presentation.primaryAction == .startScanning)
+        #expect(presentation.secondaryAction == nil)
     }
 
-    func testFailureUsesStableIssueAliAndPreservesExistingCleanupRoute() {
+    @Test func testFailureUsesStableIssueAliAndPreservesExistingCleanupRoute() {
         let first = ScannerHomePresentation.resolve(
             state: .error("Connection interrupted"),
             hasLibraryChanged: false,
@@ -99,18 +100,17 @@ final class ScannerHomePresentationTests: XCTestCase {
             scanEventID: scanEventID
         )
 
-        XCTAssertEqual(
-            first.cue.state,
-            .recoverableError(AlikeErrorContext(operation: .scan))
+        #expect(
+            first.cue.state == .recoverableError(AlikeErrorContext(operation: .scan))
         )
-        XCTAssertEqual(first.cue.id, second.cue.id)
-        XCTAssertEqual(first.primaryAction, .startScanning)
-        XCTAssertEqual(first.visualPhase, .error)
-        XCTAssertEqual(first.secondaryAction, .openCleanup)
-        XCTAssertNil(second.secondaryAction)
+        #expect(first.cue.id == second.cue.id)
+        #expect(first.primaryAction == .startScanning)
+        #expect(first.visualPhase == .error)
+        #expect(first.secondaryAction == .openCleanup)
+        #expect(second.secondaryAction == nil)
     }
 
-    func testVisualPhaseChangesAcrossReadyScanningResultsAndError() {
+    @Test func testVisualPhaseChangesAcrossReadyScanningResultsAndError() {
         let phases = [
             ScannerHomePresentation.resolve(
                 state: .idle,
@@ -138,23 +138,22 @@ final class ScannerHomePresentationTests: XCTestCase {
             ).visualPhase,
         ]
 
-        XCTAssertEqual(Set(phases).count, phases.count)
+        #expect(Set(phases).count == phases.count)
     }
 
-    func testAllowanceIsHiddenForUnlimitedAccessAndClampsRemainingScans() {
-        XCTAssertNil(ScannerAllowancePresentation.resolve(
+    @Test func testAllowanceIsHiddenForUnlimitedAccessAndClampsRemainingScans() {
+        #expect(ScannerAllowancePresentation.resolve(
             hasUnlimitedAccess: true,
             remainingScans: 3,
             totalScans: 3
-        ))
+        ) == nil)
 
-        XCTAssertEqual(
+        #expect(
             ScannerAllowancePresentation.resolve(
                 hasUnlimitedAccess: false,
                 remainingScans: -1,
                 totalScans: 3
-            ),
-            ScannerAllowancePresentation(remainingScans: 0, totalScans: 3)
+            ) == ScannerAllowancePresentation(remainingScans: 0, totalScans: 3)
         )
     }
 
