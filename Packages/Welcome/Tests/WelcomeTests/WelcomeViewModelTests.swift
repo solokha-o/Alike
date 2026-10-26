@@ -1,10 +1,10 @@
-import XCTest
+import Testing
 import Photos
 import Core
 @testable import Welcome
 
 @MainActor
-final class WelcomeViewModelTests: XCTestCase {
+@Suite struct WelcomeViewModelTests {
     var viewModel: WelcomeViewModel!
     var mockPermissionManager: MockPhotoPermissionManager!
     
@@ -20,86 +20,86 @@ final class WelcomeViewModelTests: XCTestCase {
     
     // MARK: - Initial State Tests
     
-    func testInitialState() {
-        XCTAssertEqual(viewModel.authorizationStatus, .notDetermined)
-        XCTAssertFalse(viewModel.isAuthorized)
+    @Test func testInitialState() {
+        #expect(viewModel.authorizationStatus == .notDetermined)
+        #expect(!viewModel.isAuthorized)
     }
 
-    func testDataDeletionReplayReplaysOnboardingWithoutRequestingPermission() {
-        XCTAssertTrue(WelcomeMode.dataDeletionReplay.replaysOnboarding)
-        XCTAssertFalse(WelcomeMode.dataDeletionReplay.requestsPhotoPermission)
-        XCTAssertFalse(WelcomeMode.permissionRequest.replaysOnboarding)
-        XCTAssertTrue(WelcomeMode.permissionRequest.requestsPhotoPermission)
+    @Test func testDataDeletionReplayReplaysOnboardingWithoutRequestingPermission() {
+        #expect(WelcomeMode.dataDeletionReplay.replaysOnboarding)
+        #expect(!WelcomeMode.dataDeletionReplay.requestsPhotoPermission)
+        #expect(!WelcomeMode.permissionRequest.replaysOnboarding)
+        #expect(WelcomeMode.permissionRequest.requestsPhotoPermission)
     }
     
-    func testIsAuthorizedWhenAuthorized() {
+    @Test func testIsAuthorizedWhenAuthorized() {
         mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
         viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
-        XCTAssertTrue(viewModel.isAuthorized)
+        #expect(viewModel.isAuthorized)
     }
     
-    func testIsAuthorizedWhenLimited() {
+    @Test func testIsAuthorizedWhenLimited() {
         mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .limited)
         viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
-        XCTAssertTrue(viewModel.isAuthorized)
+        #expect(viewModel.isAuthorized)
     }
     
-    func testIsNotAuthorizedWhenDenied() {
+    @Test func testIsNotAuthorizedWhenDenied() {
         mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
         viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
-        XCTAssertFalse(viewModel.isAuthorized)
+        #expect(!viewModel.isAuthorized)
     }
     
     // MARK: - Permission Request Tests
     
-    func testRequestPermissionSuccess() async {
+    @Test func testRequestPermissionSuccess() async {
         mockPermissionManager.requestAuthorizationResult = .authorized
         
         await viewModel.requestPermission()
         
-        XCTAssertTrue(mockPermissionManager.didCallRequestAuthorization)
-        XCTAssertEqual(viewModel.authorizationStatus, .authorized)
-        XCTAssertTrue(viewModel.isAuthorized)
+        #expect(mockPermissionManager.didCallRequestAuthorization)
+        #expect(viewModel.authorizationStatus == .authorized)
+        #expect(viewModel.isAuthorized)
     }
     
-    func testRequestPermissionDenied() async {
+    @Test func testRequestPermissionDenied() async {
         mockPermissionManager.requestAuthorizationResult = .denied
         
         await viewModel.requestPermission()
         
-        XCTAssertTrue(mockPermissionManager.didCallRequestAuthorization)
-        XCTAssertEqual(viewModel.authorizationStatus, .denied)
-        XCTAssertFalse(viewModel.isAuthorized)
+        #expect(mockPermissionManager.didCallRequestAuthorization)
+        #expect(viewModel.authorizationStatus == .denied)
+        #expect(!viewModel.isAuthorized)
     }
     
-    func testRequestPermissionLimited() async {
+    @Test func testRequestPermissionLimited() async {
         mockPermissionManager.requestAuthorizationResult = .limited
         
         await viewModel.requestPermission()
         
-        XCTAssertTrue(mockPermissionManager.didCallRequestAuthorization)
-        XCTAssertEqual(viewModel.authorizationStatus, .limited)
-        XCTAssertTrue(viewModel.isAuthorized)
+        #expect(mockPermissionManager.didCallRequestAuthorization)
+        #expect(viewModel.authorizationStatus == .limited)
+        #expect(viewModel.isAuthorized)
     }
     
     // MARK: - Settings Tests
     
-    func testOpenSettings() {
+    @Test func testOpenSettings() {
         viewModel.openSettings()
         
-        XCTAssertTrue(mockPermissionManager.didCallOpenSettings)
+        #expect(mockPermissionManager.didCallOpenSettings)
     }
     
     // MARK: - Check Status Tests
     
-    func testCheckStatus() {
+    @Test func testCheckStatus() {
         mockPermissionManager.authorizationStatus = .authorized
         
         viewModel.checkStatus()
         
-        XCTAssertEqual(viewModel.authorizationStatus, .authorized)
+        #expect(viewModel.authorizationStatus == .authorized)
     }
 }
