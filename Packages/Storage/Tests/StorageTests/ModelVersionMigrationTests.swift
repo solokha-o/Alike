@@ -14,23 +14,21 @@ import Testing
 /// model, holding one cluster and one photo. When a version 2 model lands, this
 /// test starts exercising a genuine version 1 -> version 2 migration without any
 /// change; add a new fixture per shipped version that is still in the field.
-@Suite struct ModelVersionMigrationTests {
+///
+/// A `final class` suite: each test copies the fixture into its own `UUID`
+/// directory, and `deinit` removes it.
+@Suite final class ModelVersionMigrationTests {
 
-    private var storeDirectory: URL!
+    private let storeDirectory: URL
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    init() throws {
         storeDirectory = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("ModelVersionMigrationTests-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: storeDirectory, withIntermediateDirectories: true)
     }
 
-    override func tearDownWithError() throws {
-        if let storeDirectory {
-            try? FileManager.default.removeItem(at: storeDirectory)
-        }
-        storeDirectory = nil
-        try super.tearDownWithError()
+    deinit {
+        try? FileManager.default.removeItem(at: storeDirectory)
     }
 
     // MARK: - Baseline

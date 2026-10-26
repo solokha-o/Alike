@@ -7,18 +7,13 @@ import Core
 
 @MainActor
 @Suite struct CoreDataPhotoClusterRepositoryTests {
-    var repository: CoreDataPhotoClusterRepository!
-    var inMemoryController: PersistenceController!
+    let repository: CoreDataPhotoClusterRepository
+    let inMemoryController: PersistenceController
     
-    override func setUp() async throws {
+    init() {
         // Create in-memory store for testing
         inMemoryController = PersistenceController.preview()
         repository = CoreDataPhotoClusterRepository(persistence: inMemoryController)
-    }
-    
-    override func tearDown() async throws {
-        repository = nil
-        inMemoryController = nil
     }
     
     // MARK: - Save and Load Tests
@@ -101,8 +96,9 @@ import Core
         let retrievedDate = await repository.getLastScanDate()
         
         #expect(retrievedDate != nil, "Scan date should not be nil")
+        let eps = 1.0
         #expect(
-            abs(scanDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= 1.0,
+            abs(scanDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
             "Retrieved date should match saved date"
         )
     }
@@ -129,8 +125,9 @@ import Core
         // Then: Should return latest date
         let retrievedDate = await repository.getLastScanDate()
         
+        let eps = 1.0
         #expect(
-            abs(secondDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= 1.0,
+            abs(secondDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
             "Should return most recent scan date"
         )
     }
@@ -310,8 +307,9 @@ import Core
             "The legacy baseline must not be backfilled from an untrustworthy fingerprint"
         )
         let storedMetadata = try #require(metadata)
+        let eps = 1.0
         #expect(
-            abs(storedMetadata.lastScanDate.timeIntervalSince1970 - legacyDate.timeIntervalSince1970) <= 1.0,
+            abs(storedMetadata.lastScanDate.timeIntervalSince1970 - legacyDate.timeIntervalSince1970) <= eps,
             "Requesting a rescan must not alter the stored baseline"
         )
     }
@@ -331,8 +329,9 @@ import Core
         let loadedClusters = try await repository.loadClusters()
         
         // Then: Average similarity should be preserved
+        let eps: Float = 0.01
         #expect(
-            abs((loadedClusters.first?.averageSimilarity ?? 0) - (0.92 as Float)) <= 0.01 as Float,
+            abs((loadedClusters.first?.averageSimilarity ?? 0) - (0.92 as Float)) <= eps,
             "Average similarity should be preserved"
         )
     }
@@ -351,8 +350,9 @@ import Core
         let loadedClusters = try await repository.loadClusters()
         
         // Then: Creation date should be preserved
+        let eps = 1.0
         #expect(
-            abs(createdDate.timeIntervalSince1970 - (loadedClusters.first?.createdAt.timeIntervalSince1970 ?? 0)) <= 1.0,
+            abs(createdDate.timeIntervalSince1970 - (loadedClusters.first?.createdAt.timeIntervalSince1970 ?? 0)) <= eps,
             "Creation date should be preserved"
         )
     }

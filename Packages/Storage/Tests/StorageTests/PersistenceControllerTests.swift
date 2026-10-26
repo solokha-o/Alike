@@ -3,6 +3,10 @@ import Testing
 import CoreData
 @testable import Storage
 
+/// `@MainActor`: the tests read and write `viewContext`, a main-queue context.
+/// Under XCTest they ran one at a time off the main thread; in parallel that broke
+/// Core Data's queue rule and one run fetched 0 rows right after a save.
+@MainActor
 @Suite struct PersistenceControllerTests {
     
     // MARK: - In-Memory Store Tests
@@ -53,7 +57,8 @@ import CoreData
         
         // Then: Data should be available
         #expect(results.count == 1, "Should fetch saved entity")
-        #expect(abs((results.first?.averageSimilarity ?? 0.0) - 0.90) <= 0.01)
+        let eps: Float = 0.01
+        #expect(abs((results.first?.averageSimilarity ?? 0.0) - 0.90) <= eps)
     }
     
     // MARK: - Background Task Tests

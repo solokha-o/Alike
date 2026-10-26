@@ -4,17 +4,12 @@ import Testing
 
 @MainActor
 @Suite struct CoreDataPhotoClusterRepositoryDataTests {
-    private var repository: CoreDataPhotoClusterRepository!
-    private var controller: PersistenceController!
+    private let repository: CoreDataPhotoClusterRepository
+    private let controller: PersistenceController
 
-    override func setUp() async throws {
+    init() {
         controller = PersistenceController.preview()
         repository = CoreDataPhotoClusterRepository(persistence: controller)
-    }
-
-    override func tearDown() async throws {
-        repository = nil
-        controller = nil
     }
 
     @Test func testSaveAndLoadClusterData() async throws {
@@ -76,7 +71,8 @@ import Testing
 
         let loaded = try await repository.loadClusterData()
         #expect(loaded.count == 1)
-        #expect(abs((loaded.first?.averageSimilarity ?? 0) - 0.7) <= 0.001)
+        let eps: Float = 0.001
+        #expect(abs((loaded.first?.averageSimilarity ?? 0) - 0.7) <= eps)
     }
 
     @Test func testLoadClusterSnapshotsPreservesAssetMetadataForDiffing() async throws {

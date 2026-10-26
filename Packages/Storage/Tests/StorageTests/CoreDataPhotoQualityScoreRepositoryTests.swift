@@ -4,18 +4,13 @@ import Core
 @testable import Storage
 
 @Suite struct CoreDataPhotoQualityScoreRepositoryTests {
-    private var repository: CoreDataPhotoQualityScoreRepository!
-    private var inMemoryController: PersistenceController!
+    private let repository: CoreDataPhotoQualityScoreRepository
+    private let inMemoryController: PersistenceController
     private let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
 
-    override func setUp() async throws {
+    init() {
         inMemoryController = PersistenceController.preview()
         repository = CoreDataPhotoQualityScoreRepository(persistence: inMemoryController)
-    }
-
-    override func tearDown() async throws {
-        repository = nil
-        inMemoryController = nil
     }
 
     @Test func testSaveAndLoadRoundTripsSignals() async throws {
@@ -24,10 +19,12 @@ import Core
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
         let score = try #require(loaded["photo-1"])
 
-        #expect(abs(score.signals.globalSharpness - 42) <= 0.000_1)
-        #expect(abs((score.signals.subjectSharpness ?? 0) - 30) <= 0.000_1)
+        let eps = 0.000_1
+        let dateEps = 0.001
+        #expect(abs(score.signals.globalSharpness - 42) <= eps)
+        #expect(abs((score.signals.subjectSharpness ?? 0) - 30) <= eps)
         #expect(score.signals.usableFaceSignals.count == 1)
-        #expect(abs((score.sourceModificationDate?.timeIntervalSince1970 ?? 0) - modificationDate.timeIntervalSince1970) <= 0.001)
+        #expect(abs((score.sourceModificationDate?.timeIntervalSince1970 ?? 0) - modificationDate.timeIntervalSince1970) <= dateEps)
         #expect(!score.isAlikeEnhanced)
     }
 
@@ -85,7 +82,8 @@ import Core
 
         let loaded = try await repository.loadScores(localIdentifiers: ["photo-1"])
         #expect(loaded.count == 1)
-        #expect(abs((loaded["photo-1"]?.signals.globalSharpness ?? 0) - 90) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((loaded["photo-1"]?.signals.globalSharpness ?? 0) - 90) <= eps)
     }
 
     @Test func testUnknownIdentifiersAreSimplyAbsent() async throws {
