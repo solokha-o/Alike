@@ -34,7 +34,8 @@ import Photos
     @Test func testMockValues() {
         let mock = PhotoCluster.mock
         #expect(mock.count == 0)
-        #expect(abs(mock.averageSimilarity - 0.85) <= 0.001)
+        let eps: Float = 0.001
+        #expect(abs(mock.averageSimilarity - 0.85) <= eps)
 
         let mocks = PhotoCluster.mockMultiple
         #expect(!mocks.isEmpty)

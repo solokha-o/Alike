@@ -67,7 +67,8 @@ import Photos
             mediaType: .image
         )
 
-        #expect(abs(metadata.megapixelCount - 12) <= 0.001)
+        let eps = 0.001
+        #expect(abs(metadata.megapixelCount - 12) <= eps)
     }
 
     @Test func testFormattedModificationDateIsNilWhenUnavailable() {
