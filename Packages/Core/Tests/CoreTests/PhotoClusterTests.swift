@@ -1,43 +1,44 @@
-import XCTest
+import Foundation
+import Testing
 import Photos
 @testable import Core
 
-final class PhotoClusterTests: XCTestCase {
-    func testCountAndThumbnailWhenEmpty() {
+@Suite struct PhotoClusterTests {
+    @Test func testCountAndThumbnailWhenEmpty() {
         let cluster = PhotoCluster(assets: [])
 
-        XCTAssertEqual(cluster.count, 0)
-        XCTAssertNil(cluster.thumbnail)
+        #expect(cluster.count == 0)
+        #expect(cluster.thumbnail == nil)
     }
 
-    func testEqualityUsesId() {
+    @Test func testEqualityUsesId() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
         let clusterC = PhotoCluster(assets: [])
 
-        XCTAssertEqual(clusterA, clusterB)
-        XCTAssertNotEqual(clusterA, clusterC)
+        #expect(clusterA == clusterB)
+        #expect(clusterA != clusterC)
     }
 
-    func testHashableUsesId() {
+    @Test func testHashableUsesId() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
 
         let set = Set([clusterA, clusterB])
-        XCTAssertEqual(set.count, 1)
+        #expect(set.count == 1)
     }
 
     #if DEBUG
-    func testMockValues() {
+    @Test func testMockValues() {
         let mock = PhotoCluster.mock
-        XCTAssertEqual(mock.count, 0)
-        XCTAssertEqual(mock.averageSimilarity, 0.85, accuracy: 0.001)
+        #expect(mock.count == 0)
+        #expect(abs(mock.averageSimilarity - 0.85) <= 0.001)
 
         let mocks = PhotoCluster.mockMultiple
-        XCTAssertFalse(mocks.isEmpty)
-        XCTAssertTrue(mocks.allSatisfy { $0.assets.isEmpty })
+        #expect(!mocks.isEmpty)
+        #expect(mocks.allSatisfy { $0.assets.isEmpty })
     }
     #endif
 }

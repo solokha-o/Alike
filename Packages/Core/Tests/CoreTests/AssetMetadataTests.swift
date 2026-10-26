@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 import Photos
 @testable import Core
 
-final class AssetMetadataTests: XCTestCase {
-    func testResolutionFormatting() {
+@Suite struct AssetMetadataTests {
+    @Test func testResolutionFormatting() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -13,10 +14,10 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertEqual(metadata.resolution, "400 × 300")
+        #expect(metadata.resolution == "400 × 300")
     }
 
-    func testFormattedCreationDateUnknownWhenNil() {
+    @Test func testFormattedCreationDateUnknownWhenNil() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -26,10 +27,10 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertEqual(metadata.formattedCreationDate, "Unknown")
+        #expect(metadata.formattedCreationDate == "Unknown")
     }
 
-    func testFormattedCreationDateNotEmpty() {
+    @Test func testFormattedCreationDateNotEmpty() {
         let metadata = AssetMetadata(
             creationDate: Date(timeIntervalSince1970: 0),
             modificationDate: nil,
@@ -39,11 +40,11 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertFalse(metadata.formattedCreationDate.isEmpty)
-        XCTAssertNotEqual(metadata.formattedCreationDate, "Unknown")
+        #expect(!metadata.formattedCreationDate.isEmpty)
+        #expect(metadata.formattedCreationDate != "Unknown")
     }
 
-    func testEstimatedCleanupBytesIsAvailableWithoutUIKit() {
+    @Test func testEstimatedCleanupBytesIsAvailableWithoutUIKit() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -53,10 +54,10 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertEqual(metadata.estimatedCleanupBytes, 60_000)
+        #expect(metadata.estimatedCleanupBytes == 60_000)
     }
 
-    func testMegapixelCountUsesPixelDimensions() {
+    @Test func testMegapixelCountUsesPixelDimensions() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -66,10 +67,10 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertEqual(metadata.megapixelCount, 12, accuracy: 0.001)
+        #expect(abs(metadata.megapixelCount - 12) <= 0.001)
     }
 
-    func testFormattedModificationDateIsNilWhenUnavailable() {
+    @Test func testFormattedModificationDateIsNilWhenUnavailable() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -79,10 +80,10 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertNil(metadata.formattedModificationDate)
+        #expect(metadata.formattedModificationDate == nil)
     }
 
-    func testFormattedModificationDateIsAvailable() {
+    @Test func testFormattedModificationDateIsAvailable() throws {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: Date(timeIntervalSince1970: 0),
@@ -92,10 +93,11 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertFalse(try XCTUnwrap(metadata.formattedModificationDate).isEmpty)
+        let formattedModificationDate = try #require(metadata.formattedModificationDate)
+        #expect(!formattedModificationDate.isEmpty)
     }
 
-    func testPhotoTraitsMapFromAssetMediaSubtypes() {
+    @Test func testPhotoTraitsMapFromAssetMediaSubtypes() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -106,13 +108,12 @@ final class AssetMetadataTests: XCTestCase {
             mediaSubtypes: [.photoScreenshot, .photoPanorama, .photoLive, .photoHDR, .photoDepthEffect]
         )
 
-        XCTAssertEqual(
-            metadata.photoTraits,
-            [.screenshot, .panorama, .livePhoto, .hdr, .depthEffect]
+        #expect(
+            metadata.photoTraits == [.screenshot, .panorama, .livePhoto, .hdr, .depthEffect]
         )
     }
 
-    func testNewMetadataDefaultsRemainEmpty() {
+    @Test func testNewMetadataDefaultsRemainEmpty() {
         let metadata = AssetMetadata(
             creationDate: nil,
             modificationDate: nil,
@@ -122,11 +123,11 @@ final class AssetMetadataTests: XCTestCase {
             mediaType: .image
         )
 
-        XCTAssertTrue(metadata.photoTraits.isEmpty)
-        XCTAssertNil(metadata.location)
+        #expect(metadata.photoTraits.isEmpty)
+        #expect(metadata.location == nil)
     }
 
-    func testLocationPreservesCoordinates() {
+    @Test func testLocationPreservesCoordinates() {
         let location = AssetLocation(latitude: 50.4501, longitude: 30.5234)
         let metadata = AssetMetadata(
             creationDate: nil,
@@ -138,6 +139,6 @@ final class AssetMetadataTests: XCTestCase {
             location: location
         )
 
-        XCTAssertEqual(metadata.location, location)
+        #expect(metadata.location == location)
     }
 }
