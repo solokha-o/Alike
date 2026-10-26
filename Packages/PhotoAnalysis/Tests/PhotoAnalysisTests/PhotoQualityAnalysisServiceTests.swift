@@ -28,7 +28,8 @@ import Testing
         let signals = service.signals(for: white, pixelArea: 1_000)
 
         #expect(signals.brightClippedFraction > 0.9)
-        #expect(abs(signals.darkClippedFraction - 0) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs(signals.darkClippedFraction - 0) <= eps)
     }
 
     @Test func testCrushedFrameReportsDarkClipping() throws {
@@ -37,7 +38,8 @@ import Testing
         let signals = service.signals(for: black, pixelArea: 1_000)
 
         #expect(signals.darkClippedFraction > 0.9)
-        #expect(abs(signals.brightClippedFraction - 0) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs(signals.brightClippedFraction - 0) <= eps)
     }
 
     @Test func testFlatFrameReportsLowContrast() throws {
@@ -153,7 +155,8 @@ import Testing
         )
         // The box is still reported in analysis-image pixels, which is what
         // `boxPixelSize` has always meant.
-        #expect(abs(face.boxPixelSize - (0.08 * 256)) <= 1)
+        let eps: Double = 1
+        #expect(abs(face.boxPixelSize - (0.08 * 256)) <= eps)
         #expect(face.boxPixelSize < sourcePixelSize)
     }
 

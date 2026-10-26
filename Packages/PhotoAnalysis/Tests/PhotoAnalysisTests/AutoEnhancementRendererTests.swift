@@ -6,19 +6,25 @@ import Foundation
 import Testing
 @testable import PhotoAnalysis
 
-@Suite struct AutoEnhancementRendererTests {
+/// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
+///
+/// `.serialized`: `AutoEnhancementRenderer.render` runs Core Image auto-adjust,
+/// which runs Vision face detection and blocks its thread until Vision is done.
+/// With every test of this suite in parallel, all cooperative threads blocked in
+/// that wait and the test run hung. Vision owns that limit, so a test cannot
+/// isolate it; one render at a time in this suite avoids the hang.
+@Suite(.serialized) final class AutoEnhancementRendererTests {
     private let renderer = AutoEnhancementRenderer()
-    private var temporaryDirectory: URL!
+    private let temporaryDirectory: URL
 
-    override func setUpWithError() throws {
+    init() throws {
         temporaryDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("auto-enhancement-tests-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true)
     }
 
-    override func tearDownWithError() throws {
+    deinit {
         try? FileManager.default.removeItem(at: temporaryDirectory)
-        temporaryDirectory = nil
     }
 
     /// The regression this whole fix exists for: an image tagged with a wide

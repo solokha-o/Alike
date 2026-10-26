@@ -5,7 +5,12 @@ import Photos
 import Testing
 @testable import PhotoAnalysis
 
-@Suite struct PhotoKitEnhancementServiceTests {
+/// `.serialized`: `AutoEnhancementRenderer.render` runs Core Image auto-adjust,
+/// which runs Vision face detection and blocks its thread until Vision is done.
+/// With every test of this suite in parallel, all cooperative threads blocked in
+/// that wait and the test run hung. Vision owns that limit, so a test cannot
+/// isolate it; one render at a time in this suite avoids the hang.
+@Suite(.serialized) struct PhotoKitEnhancementServiceTests {
     private let identifier = "photo-1"
 
     // MARK: - Apply
@@ -26,7 +31,8 @@ import Testing
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
         #expect(stored[identifier]?.isAlikeEnhanced == true)
         // The signals must stay the ones measured before the enhancement.
-        #expect(abs((stored[identifier]?.signals.globalSharpness ?? 0) - 40) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((stored[identifier]?.signals.globalSharpness ?? 0) - 40) <= eps)
     }
 
     /// With consent given, the enhancement is written on top of the other app's

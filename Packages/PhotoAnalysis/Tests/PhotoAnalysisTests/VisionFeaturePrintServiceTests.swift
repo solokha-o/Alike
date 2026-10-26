@@ -9,15 +9,7 @@ import UIKit
 
 @MainActor
 @Suite struct VisionFeaturePrintServiceTests {
-    var service: VisionFeaturePrintService!
-    
-    override func setUp() async throws {
-        service = VisionFeaturePrintService()
-    }
-    
-    override func tearDown() async throws {
-        service = nil
-    }
+    let service = VisionFeaturePrintService()
     
     // MARK: - Feature Print Generation Tests
     
@@ -81,7 +73,8 @@ import UIKit
         let distance2to1 = try service.computeDistance(between: print2, and: print1)
         
         // Then: Distance should be the same in both directions
-        #expect(abs(distance1to2 - distance2to1) <= 0.001, "Distance should be symmetric")
+        let eps: Float = 0.001
+        #expect(abs(distance1to2 - distance2to1) <= eps, "Distance should be symmetric")
     }
 
     @Test func testShouldSkipImageDataRequestForPhotosError() {

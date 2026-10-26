@@ -19,7 +19,8 @@ import Testing
         let measured = await inner.receivedIdentifiers
         #expect(measured.isEmpty)
         #expect(scores.map(\.localIdentifier) == ["cached"])
-        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 33) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 33) <= eps)
     }
 
     @Test func testOnlyCacheMissesAreMeasuredAndWrittenBack() async throws {
@@ -86,7 +87,8 @@ import Testing
 
         let measured = await inner.receivedIdentifiers
         #expect(measured.isEmpty)
-        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
         #expect(scores.first?.isAlikeEnhanced == true)
     }
 
@@ -111,7 +113,8 @@ import Testing
 
         let measured = await inner.receivedIdentifiers
         #expect(measured.isEmpty)
-        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
     }
 
     /// The user edited the photo in another app afterwards. The cached signals
@@ -136,7 +139,8 @@ import Testing
 
         let measured = await inner.receivedIdentifiers
         #expect(measured == ["enhanced"])
-        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 50) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 50) <= eps)
     }
 
     /// Our edit was undone in Photos, so the photo is back to its original and
@@ -180,7 +184,8 @@ import Testing
 
         let measured = await inner.receivedIdentifiers
         #expect(measured.isEmpty)
-        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
     }
 
     /// Only the flagged rows pay for the extra question.
