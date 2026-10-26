@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class AlikeReactionTests: XCTestCase {
-    func testAllEightStatesConstructAndNormalizeAssociatedValues() {
+@Suite struct AlikeReactionTests {
+    @Test func testAllEightStatesConstructAndNormalizeAssociatedValues() {
         let cleanup = AlikeCleanupSummary(itemCount: -2, estimatedSavingsBytes: -10)
-        XCTAssertEqual(cleanup, AlikeCleanupSummary(itemCount: 0, estimatedSavingsBytes: 0))
+        #expect(cleanup == AlikeCleanupSummary(itemCount: 0, estimatedSavingsBytes: 0))
 
         let states: [AlikeState] = [
             .idle(.ready),
@@ -16,59 +17,59 @@ final class AlikeReactionTests: XCTestCase {
             .permissionIssue(AlikePermissionContext(operation: .scan)),
             .recoverableError(AlikeErrorContext(operation: .cleanup)),
         ]
-        XCTAssertEqual(states.count, 8)
+        #expect(states.count == 8)
     }
 
-    func testScanStartAndCompletionShareEventIdentityButHaveDistinctCueIdentity() {
+    @Test func testScanStartAndCompletionShareEventIdentityButHaveDistinctCueIdentity() {
         let operationID = UUID()
         var resolver = AlikeReactionResolver()
 
         let scanning = resolver.apply(.scanAdmitted(id: operationID))
         let results = resolver.apply(.scanCompleted(id: operationID, candidateCount: 4))
 
-        XCTAssertEqual(scanning?.id.eventID, .scan(operationID))
-        XCTAssertEqual(results?.id.eventID, .scan(operationID))
-        XCTAssertEqual(scanning?.id.kind, .scanning)
-        XCTAssertEqual(results?.id.kind, .resultsFound)
-        XCTAssertEqual(results?.state, .resultsFound(candidateCount: 4))
+        #expect(scanning?.id.eventID == .scan(operationID))
+        #expect(results?.id.eventID == .scan(operationID))
+        #expect(scanning?.id.kind == .scanning)
+        #expect(results?.id.kind == .resultsFound)
+        #expect(results?.state == .resultsFound(candidateCount: 4))
     }
 
-    func testEmptySuccessfulScanMapsToNoResultsAndNegativeCountIsClamped() {
+    @Test func testEmptySuccessfulScanMapsToNoResultsAndNegativeCountIsClamped() {
         let operationID = UUID()
         var resolver = AlikeReactionResolver()
         _ = resolver.apply(.scanAdmitted(id: operationID))
 
         let cue = resolver.apply(.scanCompleted(id: operationID, candidateCount: -1))
 
-        XCTAssertEqual(cue?.state, .noResults)
-        XCTAssertEqual(cue?.persistence, .oneShot)
+        #expect(cue?.state == .noResults)
+        #expect(cue?.persistence == .oneShot)
     }
 
-    func testRepeatedOneShotIsRejectedAfterConsumption() {
+    @Test func testRepeatedOneShotIsRejectedAfterConsumption() {
         let operationID = UUID()
         var resolver = AlikeReactionResolver()
         let first = resolver.apply(.scanCompleted(id: operationID, candidateCount: 2))
-        XCTAssertNotNil(first)
+        #expect(first != nil)
         _ = resolver.apply(.reactionConsumed(id: first!.id))
 
-        XCTAssertNil(resolver.apply(.scanCompleted(id: operationID, candidateCount: 2)))
-        XCTAssertNil(resolver.currentCue)
+        #expect(resolver.apply(.scanCompleted(id: operationID, candidateCount: 2)) == nil)
+        #expect(resolver.currentCue == nil)
     }
 
-    func testDifferentOperationIdentityEmitsNewOneShot() {
+    @Test func testDifferentOperationIdentityEmitsNewOneShot() {
         var resolver = AlikeReactionResolver()
-        XCTAssertNotNil(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
-        XCTAssertNotNil(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
+        #expect(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)) != nil)
+        #expect(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)) != nil)
     }
 
-    func testErrorAndPermissionSuppressPositiveTerminalCueForSameEvent() {
+    @Test func testErrorAndPermissionSuppressPositiveTerminalCueForSameEvent() {
         let scanID = UUID()
         var errorResolver = AlikeReactionResolver()
         _ = errorResolver.apply(.recoverableFailure(
             id: .scan(scanID),
             context: AlikeErrorContext(operation: .scan)
         ))
-        XCTAssertNil(errorResolver.apply(.scanCompleted(id: scanID, candidateCount: 2)))
+        #expect(errorResolver.apply(.scanCompleted(id: scanID, candidateCount: 2)) == nil)
 
         let cleanupID = UUID()
         var permissionResolver = AlikeReactionResolver()
@@ -76,32 +77,32 @@ final class AlikeReactionTests: XCTestCase {
             id: .cleanup(cleanupID),
             context: AlikePermissionContext(operation: .cleanup)
         ))
-        XCTAssertEqual(permissionResolver.currentCue?.state, .permissionIssue(.init(operation: .cleanup)))
+        #expect(permissionResolver.currentCue?.state == .permissionIssue(.init(operation: .cleanup)))
     }
 
-    func testCleanupRetryUpgradesFailureToOneSuccessWithoutReplay() {
+    @Test func testCleanupRetryUpgradesFailureToOneSuccessWithoutReplay() {
         let recordID = UUID()
         let summary = AlikeCleanupSummary(itemCount: 3, estimatedSavingsBytes: 1_024)
         var resolver = AlikeReactionResolver()
         _ = resolver.apply(.cleanupReconciliationFailed(id: recordID))
 
         let success = resolver.apply(.cleanupCompleted(id: recordID, summary: summary))
-        XCTAssertEqual(success?.state, .cleanupSuccess(summary))
+        #expect(success?.state == .cleanupSuccess(summary))
         _ = resolver.apply(.reactionConsumed(id: success!.id))
-        XCTAssertNil(resolver.apply(.cleanupCompleted(id: recordID, summary: summary)))
+        #expect(resolver.apply(.cleanupCompleted(id: recordID, summary: summary)) == nil)
     }
 
-    func testConsumptionDoesNotClearNewerCue() {
+    @Test func testConsumptionDoesNotClearNewerCue() {
         var resolver = AlikeReactionResolver()
         let older = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1))!
         let newer = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2))!
 
         _ = resolver.apply(.reactionConsumed(id: older.id))
 
-        XCTAssertEqual(resolver.currentCue, newer)
+        #expect(resolver.currentCue == newer)
     }
 
-    func testCancellationClearsOnlyMatchingScanCue() {
+    @Test func testCancellationClearsOnlyMatchingScanCue() {
         let firstID = UUID()
         let secondID = UUID()
         var resolver = AlikeReactionResolver()
@@ -109,26 +110,26 @@ final class AlikeReactionTests: XCTestCase {
         _ = resolver.apply(.scanAdmitted(id: secondID))
 
         _ = resolver.apply(.scanCancelled(id: firstID))
-        XCTAssertEqual(resolver.currentCue?.id.eventID, .scan(secondID))
+        #expect(resolver.currentCue?.id.eventID == .scan(secondID))
 
         _ = resolver.apply(.scanCancelled(id: secondID))
-        XCTAssertNil(resolver.currentCue)
+        #expect(resolver.currentCue == nil)
     }
 
-    func testCleanupReadyIsEntitlementIndependentAndClearsOnStart() {
+    @Test func testCleanupReadyIsEntitlementIndependentAndClearsOnStart() {
         let selectionID = UUID()
         var resolver = AlikeReactionResolver()
         let cue = resolver.apply(.cleanupReady(
             id: selectionID,
             summary: AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 500)
         ))
-        XCTAssertEqual(cue?.state, .cleanupReady(.init(itemCount: 2, estimatedSavingsBytes: 500)))
+        #expect(cue?.state == .cleanupReady(.init(itemCount: 2, estimatedSavingsBytes: 500)))
 
         _ = resolver.apply(.cleanupStarted(id: selectionID))
-        XCTAssertNil(resolver.currentCue)
+        #expect(resolver.currentCue == nil)
     }
 
-    func testPersistentCueWithStableIdentityPublishesUpdatedState() {
+    @Test func testPersistentCueWithStableIdentityPublishesUpdatedState() {
         let selectionID = UUID()
         var resolver = AlikeReactionResolver()
         _ = resolver.apply(.cleanupReady(
@@ -141,14 +142,13 @@ final class AlikeReactionTests: XCTestCase {
             summary: AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300)
         ))
 
-        XCTAssertEqual(
-            updated?.state,
-            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300))
+        #expect(
+            updated?.state == .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 300))
         )
-        XCTAssertEqual(resolver.currentCue, updated)
+        #expect(resolver.currentCue == updated)
     }
 
-    func testCleanupStartDoesNotClearAnotherCleanupCue() {
+    @Test func testCleanupStartDoesNotClearAnotherCleanupCue() {
         let firstID = UUID()
         let secondID = UUID()
         var resolver = AlikeReactionResolver()
@@ -159,6 +159,6 @@ final class AlikeReactionTests: XCTestCase {
 
         _ = resolver.apply(.cleanupStarted(id: firstID))
 
-        XCTAssertEqual(resolver.currentCue, secondCue)
+        #expect(resolver.currentCue == secondCue)
     }
 }
