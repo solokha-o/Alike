@@ -1,12 +1,9 @@
 import Foundation
-import XCTest
+import Testing
 @testable import WidgetSupport
 
 /// The extra-large portrait widget (iOS 27) and the `topClusters` payload it reads.
-///
-/// XCTest until the Swift Testing migration card; the neighbouring suites that already
-/// use Swift Testing are left as they are.
-final class WidgetExtraLargeCompositionTests: XCTestCase {
+@Suite struct WidgetExtraLargeCompositionTests {
     private static let scannedAt = Date(timeIntervalSince1970: 1_770_000_000)
 
     private static func clusters(_ count: Int) -> [WidgetClusterSummary] {
@@ -53,125 +50,125 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
 
     // MARK: - Group lines
 
-    func testNoClustersDrawsNoGroupLines() {
-        XCTAssertTrue(Self.xl(Self.snapshot(clusters: [], clusterCount: 0)).clusterRows.isEmpty)
+    @Test func testNoClustersDrawsNoGroupLines() {
+        #expect(Self.xl(Self.snapshot(clusters: [], clusterCount: 0)).clusterRows.isEmpty)
     }
 
-    func testOneClusterDrawsOneGroupLine() {
+    @Test func testOneClusterDrawsOneGroupLine() {
         let composition = Self.xl(Self.snapshot(
             clusters: [WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9)],
             clusterCount: 1
         ))
 
-        XCTAssertEqual(composition.clusterRows.count, 1)
-        XCTAssertEqual(composition.clusterRows.first?.bytes, WidgetFormatting.approximateByteCount(268_435_456))
-        XCTAssertEqual(composition.clusterRows.first?.photos, WidgetL10n.Library.photos(9))
+        #expect(composition.clusterRows.count == 1)
+        #expect(composition.clusterRows.first?.bytes == WidgetFormatting.approximateByteCount(268_435_456))
+        #expect(composition.clusterRows.first?.photos == WidgetL10n.Library.photos(9))
     }
 
-    func testThreeClustersDrawThreeLinesLargestFirst() {
+    @Test func testThreeClustersDrawThreeLinesLargestFirst() {
         let input = Self.clusters(3)
         let composition = Self.xl(Self.snapshot(clusters: input, clusterCount: 3))
 
         let expected = input.sorted { $0.reclaimableBytes > $1.reclaimableBytes }
             .map { WidgetFormatting.approximateByteCount($0.reclaimableBytes) }
-        XCTAssertEqual(composition.clusterRows.map(\.bytes), expected)
+        #expect(composition.clusterRows.map(\.bytes) == expected)
     }
 
-    func testTenClustersAreCappedAtTheLimitLargestFirst() {
+    @Test func testTenClustersAreCappedAtTheLimitLargestFirst() {
         let input = Self.clusters(10)
         let composition = Self.xl(Self.snapshot(clusters: input, clusterCount: 10))
 
-        XCTAssertEqual(composition.clusterRows.count, WidgetSnapshot.topClustersLimit)
+        #expect(composition.clusterRows.count == WidgetSnapshot.topClustersLimit)
         let expected = input.sorted { $0.reclaimableBytes > $1.reclaimableBytes }
             .prefix(WidgetSnapshot.topClustersLimit)
             .map { WidgetFormatting.approximateByteCount($0.reclaimableBytes) }
-        XCTAssertEqual(composition.clusterRows.map(\.bytes), Array(expected))
+        #expect(composition.clusterRows.map(\.bytes) == Array(expected))
     }
 
-    func testRankingDropsEmptyGroupsAndKeepsInputOrderOnTies() {
+    @Test func testRankingDropsEmptyGroupsAndKeepsInputOrderOnTies() {
         let a = WidgetClusterSummary(reclaimableBytes: 5, photoCount: 1)
         let b = WidgetClusterSummary(reclaimableBytes: 5, photoCount: 2)
         let empty = WidgetClusterSummary(reclaimableBytes: 0, photoCount: 3)
 
-        XCTAssertEqual(WidgetClusterSummary.top([empty, a, b]), [a, b])
+        #expect(WidgetClusterSummary.top([empty, a, b]) == [a, b])
     }
 
-    func testAPayloadWithoutTopClustersDrawsNoGroupLinesRatherThanZeros() {
+    @Test func testAPayloadWithoutTopClustersDrawsNoGroupLinesRatherThanZeros() {
         let composition = Self.xl(Self.snapshot(clusters: nil))
 
-        XCTAssertTrue(composition.clusterRows.isEmpty)
+        #expect(composition.clusterRows.isEmpty)
         // The category rows still come from the counts the payload does carry.
-        XCTAssertEqual(composition.categoryRows.count, 3)
+        #expect(composition.categoryRows.count == 3)
     }
 
     // MARK: - Categories
 
-    func testCategoryRowsAreTheLibraryWidgetsRows() {
+    @Test func testCategoryRowsAreTheLibraryWidgetsRows() {
         let snapshot = Self.snapshot(clusters: Self.clusters(4))
 
-        XCTAssertEqual(Self.xl(snapshot).categoryRows, WidgetPresentation.libraryComposition(for: snapshot, now: Self.scannedAt).rows)
-        XCTAssertEqual(Self.xl(snapshot).categoryRows.map(\.destination), [.similarPhotos, .screenshots, .blurredPhotos])
+        #expect(Self.xl(snapshot).categoryRows == WidgetPresentation.libraryComposition(for: snapshot, now: Self.scannedAt).rows)
+        #expect(Self.xl(snapshot).categoryRows.map(\.destination) == [.similarPhotos, .screenshots, .blurredPhotos])
     }
 
-    func testScreenshotsAndBlurredAreLockedWithoutPremium() {
+    @Test func testScreenshotsAndBlurredAreLockedWithoutPremium() {
         let free = Self.xl(Self.snapshot(clusters: nil, isPremium: false)).categoryRows
         let premium = Self.xl(Self.snapshot(clusters: nil, isPremium: true)).categoryRows
 
-        XCTAssertEqual(free.map(\.isLocked), [false, true, true])
-        XCTAssertEqual(premium.map(\.isLocked), [false, false, false])
+        #expect(free.map(\.isLocked) == [false, true, true])
+        #expect(premium.map(\.isLocked) == [false, false, false])
     }
 
-    func testAllCaughtUpKeepsCategoriesButDropsFigures() {
+    @Test func testAllCaughtUpKeepsCategoriesButDropsFigures() {
         let snapshot = Self.snapshot(clusters: Self.clusters(4), clusterCount: 0, estimate: 0)
         let composition = Self.xl(snapshot)
 
-        XCTAssertEqual(WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt), .allCaughtUp(scannedAt: Self.scannedAt))
-        XCTAssertEqual(composition.categoryRows.count, 3)
-        XCTAssertTrue(composition.clusterRows.isEmpty)
-        XCTAssertNil(composition.share)
+        #expect(WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt) == .allCaughtUp(scannedAt: Self.scannedAt))
+        #expect(composition.categoryRows.count == 3)
+        #expect(composition.clusterRows.isEmpty)
+        #expect(composition.share == nil)
     }
 
-    func testUnscannedStatesListNothing() {
+    @Test func testUnscannedStatesListNothing() {
         let states: [WidgetDisplayState] = [.unavailable, .noAccess(.denied), .neverScanned]
         let snapshot = Self.snapshot(clusters: Self.clusters(4))
 
         for state in states {
             let composition = WidgetPresentation.extraLargeComposition(for: state, snapshot: snapshot)
-            XCTAssertTrue(composition.categoryRows.isEmpty, "\(state)")
-            XCTAssertTrue(composition.clusterRows.isEmpty, "\(state)")
-            XCTAssertNil(composition.share, "\(state)")
+            #expect(composition.categoryRows.isEmpty, "\(state)")
+            #expect(composition.clusterRows.isEmpty, "\(state)")
+            #expect(composition.share == nil, "\(state)")
         }
     }
 
     // MARK: - Share of library
 
-    func testShareIsTheEstimateOverTheLibrary() throws {
-        let share = try XCTUnwrap(Self.xl(Self.snapshot(clusters: nil)).share)
+    @Test func testShareIsTheEstimateOverTheLibrary() throws {
+        let share = try #require(Self.xl(Self.snapshot(clusters: nil)).share)
 
-        XCTAssertEqual(share.fraction, Double(Self.estimate) / Double(Self.library), accuracy: 0.0001)
-        XCTAssertTrue(share.drawsBar)
-        XCTAssertTrue(share.text.contains(WidgetFormatting.byteCount(Self.library)), share.text)
+        #expect(abs(share.fraction - (Double(Self.estimate) / Double(Self.library))) <= 0.0001)
+        #expect(share.drawsBar)
+        #expect(share.text.contains(WidgetFormatting.byteCount(Self.library)), Comment(rawValue: share.text))
     }
 
-    func testThePercentKeepsWesternDigitsUnderArabic() {
+    @Test func testThePercentKeepsWesternDigitsUnderArabic() {
         let rendered = WidgetFormatting.percent(0.64, basedOn: Locale(identifier: "ar_SA"))
 
-        XCTAssertTrue(rendered.contains("64"), rendered)
-        XCTAssertFalse(rendered.unicodeScalars.contains { (0x0660...0x0669).contains($0.value) }, rendered)
+        #expect(rendered.contains("64"), Comment(rawValue: rendered))
+        #expect(!(rendered.unicodeScalars.contains { (0x0660...0x0669).contains($0.value) }), Comment(rawValue: rendered))
     }
 
-    func testAnUnknownLibrarySizeDrawsNoShare() {
-        XCTAssertNil(Self.xl(Self.snapshot(clusters: nil, library: nil)).share)
+    @Test func testAnUnknownLibrarySizeDrawsNoShare() {
+        #expect(Self.xl(Self.snapshot(clusters: nil, library: nil)).share == nil)
     }
 
-    func testATinyShareStillReadsOnePercent() throws {
-        let share = try XCTUnwrap(Self.xl(Self.snapshot(clusters: nil, estimate: 1_000, library: Self.library)).share)
+    @Test func testATinyShareStillReadsOnePercent() throws {
+        let share = try #require(Self.xl(Self.snapshot(clusters: nil, estimate: 1_000, library: Self.library)).share)
 
-        XCTAssertTrue(share.text.contains("1"), share.text)
-        XCTAssertFalse(share.text.hasPrefix("0"), share.text)
+        #expect(share.text.contains("1"), Comment(rawValue: share.text))
+        #expect(!(share.text.hasPrefix("0")), Comment(rawValue: share.text))
     }
 
-    func testAReviewInProgressStillShowsTheShareAndGroups() {
+    @Test func testAReviewInProgressStillShowsTheShareAndGroups() {
         let snapshot = WidgetSnapshot(
             generatedAt: Self.scannedAt,
             photoAuthorization: .authorized,
@@ -185,50 +182,50 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         )
         let composition = Self.xl(snapshot)
 
-        XCTAssertNotNil(composition.share)
+        #expect(composition.share != nil)
         // The review's own bar is already there; the share is a line, not a second bar.
-        XCTAssertEqual(composition.share?.drawsBar, false)
-        XCTAssertEqual(composition.clusterRows.count, 4)
-        XCTAssertEqual(composition.base.actionTitle, WidgetL10n.Action.continueReview)
+        #expect(composition.share?.drawsBar == false)
+        #expect(composition.clusterRows.count == 4)
+        #expect(composition.base.actionTitle == WidgetL10n.Action.continueReview)
     }
 
     // MARK: - Status zone
 
-    func testTheBaseIsTheMediumComposition() {
+    @Test func testTheBaseIsTheMediumComposition() {
         let snapshot = Self.snapshot(clusters: Self.clusters(4))
         let state = WidgetPresentation.displayState(for: snapshot, now: Self.scannedAt)
 
-        XCTAssertEqual(Self.xl(snapshot).base, WidgetPresentation.composition(for: state, family: .medium))
+        #expect(Self.xl(snapshot).base == WidgetPresentation.composition(for: state, family: .medium))
     }
 
-    func testAccessibilityLabelReadsTheFigureAndTheShare() throws {
+    @Test func testAccessibilityLabelReadsTheFigureAndTheShare() throws {
         let composition = Self.xl(Self.snapshot(clusters: Self.clusters(2)))
-        let share = try XCTUnwrap(composition.share)
+        let share = try #require(composition.share)
 
-        XCTAssertTrue(composition.accessibilityLabel.contains(composition.base.headline ?? "<missing>"))
-        XCTAssertTrue(composition.accessibilityLabel.contains(share.text))
+        #expect(composition.accessibilityLabel.contains(composition.base.headline ?? "<missing>"))
+        #expect(composition.accessibilityLabel.contains(share.text))
     }
 
     // MARK: - Localization
 
-    func testShareOfLibraryIsTranslatedInEveryShippedLanguage() throws {
+    @Test func testShareOfLibraryIsTranslatedInEveryShippedLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         let localizations = try catalog.localizations(of: "widgetsupport.status.shareOfLibrary")
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = try XCTUnwrap(LocalizationCatalog.value(of: localizations[language]), language)
-            XCTAssertTrue(value.contains("%1$@") && value.contains("%2$@"), "\(language): \(value)")
+            let value = try #require(LocalizationCatalog.value(of: localizations[language]), Comment(rawValue: language))
+            #expect(value.contains("%1$@") && value.contains("%2$@"), "\(language): \(value)")
         }
     }
 
-    func testRowPhotoCountUsesThePluralForms() throws {
+    @Test func testRowPhotoCountUsesThePluralForms() throws {
         let catalog = try LocalizationCatalog.load()
 
         // `uk` and `pl` do not share boundaries: 2 and 22 are `few`, 5 and 25 `many`.
         for language in ["uk", "pl", "ar"] {
             for category in LocalizationCatalog.pluralCategories(for: language) {
                 let value = try catalog.plural("widgetsupport.library.photos", language: language, category: category)
-                XCTAssertTrue(value.contains("%1$lld") || value.contains("%lld"), "\(language)/\(category)")
+                #expect(value.contains("%1$lld") || value.contains("%lld"), "\(language)/\(category)")
             }
         }
     }
@@ -257,22 +254,22 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         return encoder
     }
 
-    func testA162PayloadDecodesWithNoTopClusters() throws {
+    @Test func testA162PayloadDecodesWithNoTopClusters() throws {
         let snapshot = try Self.decoder().decode(WidgetSnapshot.self, from: Self.payload162)
 
-        XCTAssertEqual(snapshot.schemaVersion, WidgetSnapshot.currentSchemaVersion)
-        XCTAssertNil(snapshot.topClusters)
-        XCTAssertEqual(snapshot.estimatedSavingsBytes, 1_932_735_283)
-        XCTAssertEqual(snapshot.libraryTotalBytes, 27_917_287_424)
-        XCTAssertEqual(snapshot.clusterCount, 24)
-        XCTAssertEqual(snapshot.screenshotAssetCount, 86)
-        XCTAssertEqual(snapshot.blurredPhotoAssetCount, 12)
-        XCTAssertFalse(snapshot.isPremium)
-        XCTAssertEqual(snapshot.sessionProgress?.reviewedClusters, 3)
-        XCTAssertEqual(snapshot.sessionProgress?.inReviewClusters, 1)
+        #expect(snapshot.schemaVersion == WidgetSnapshot.currentSchemaVersion)
+        #expect(snapshot.topClusters == nil)
+        #expect(snapshot.estimatedSavingsBytes == 1_932_735_283)
+        #expect(snapshot.libraryTotalBytes == 27_917_287_424)
+        #expect(snapshot.clusterCount == 24)
+        #expect(snapshot.screenshotAssetCount == 86)
+        #expect(snapshot.blurredPhotoAssetCount == 12)
+        #expect(!snapshot.isPremium)
+        #expect(snapshot.sessionProgress?.reviewedClusters == 3)
+        #expect(snapshot.sessionProgress?.inReviewClusters == 1)
     }
 
-    func testA162PayloadReadThroughTheStoreKeepsItsState() throws {
+    @Test func testA162PayloadReadThroughTheStoreKeepsItsState() throws {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -281,21 +278,21 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
         let store = WidgetSnapshotStore(containerURL: directory)
         try Self.payload162.write(to: directory.appendingPathComponent(WidgetSnapshotStore.fileName))
 
-        let snapshot = try XCTUnwrap(store.read())
-        XCTAssertNil(snapshot.topClusters)
-        XCTAssertEqual(snapshot.clusterCount, 24)
+        let snapshot = try #require(store.read())
+        #expect(snapshot.topClusters == nil)
+        #expect(snapshot.clusterCount == 24)
     }
 
-    func testANewPayloadRoundTripsWithTopClusters() throws {
+    @Test func testANewPayloadRoundTripsWithTopClusters() throws {
         let original = WidgetSnapshot.placeholder(now: Self.scannedAt)
-        XCTAssertNotNil(original.topClusters)
+        #expect(original.topClusters != nil)
 
         let decoded = try Self.decoder().decode(WidgetSnapshot.self, from: Self.encoder().encode(original))
 
-        XCTAssertEqual(decoded, original)
+        #expect(decoded == original)
     }
 
-    func testTopClustersCountAsContent() {
+    @Test func testTopClustersCountAsContent() {
         let base = WidgetSnapshot.placeholder(now: Self.scannedAt)
         let changed = WidgetSnapshot(
             generatedAt: base.generatedAt,
@@ -310,6 +307,6 @@ final class WidgetExtraLargeCompositionTests: XCTestCase {
             topClusters: Array(base.topClusters?.prefix(2) ?? [])
         )
 
-        XCTAssertFalse(base.hasSameContent(as: changed))
+        #expect(!(base.hasSameContent(as: changed)))
     }
 }
