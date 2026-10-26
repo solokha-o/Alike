@@ -34,7 +34,8 @@ import Testing
         let threshold = level.threshold
         
         // Then: Should be 0.8
-        #expect(abs(threshold - 0.8) <= 0.001, "Low sensitivity threshold should be 0.8")
+        let eps: Float = 0.001
+        #expect(abs(threshold - 0.8) <= eps, "Low sensitivity threshold should be 0.8")
     }
     
     @Test func testMediumSensitivityThreshold() {
@@ -45,7 +46,8 @@ import Testing
         let threshold = level.threshold
         
         // Then: Should be 0.9
-        #expect(abs(threshold - 0.9) <= 0.001, "Medium sensitivity threshold should be 0.9")
+        let eps: Float = 0.001
+        #expect(abs(threshold - 0.9) <= eps, "Medium sensitivity threshold should be 0.9")
     }
     
     @Test func testHighSensitivityThreshold() {
@@ -56,7 +58,8 @@ import Testing
         let threshold = level.threshold
         
         // Then: Should be 0.95
-        #expect(abs(threshold - 0.95) <= 0.001, "High sensitivity threshold should be 0.95")
+        let eps: Float = 0.001
+        #expect(abs(threshold - 0.95) <= eps, "High sensitivity threshold should be 0.95")
     }
     
     @Test func testThresholdsAreOrdered() {
@@ -155,7 +158,8 @@ import Testing
         }.value
         
         // Then: Should work correctly (Sendable conformance)
-        #expect(abs(result - 0.9) <= 0.001)
+        let eps: Float = 0.001
+        #expect(abs(result - 0.9) <= eps)
     }
     
     // MARK: - Comparison Tests

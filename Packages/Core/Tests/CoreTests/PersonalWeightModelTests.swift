@@ -250,7 +250,8 @@ import Testing
         _ = result.withFaces.exposure
         _ = result.withFaces.noiseArtifacts
         _ = result.withFaces.resolution
-        #expect(abs(result.withFaces.total - 1) <= 1e-9)
+        let eps = 1e-9
+        #expect(abs(result.withFaces.total - 1) <= eps)
 
         // The un-personalised gates and floors are untouched by construction:
         // this call took no config beyond the global weights it started
@@ -424,7 +425,8 @@ import Testing
         _ weights: PhotoQualityScoringConfig.Weights,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        #expect(abs(weights.total - 1) <= 1e-9, sourceLocation: sourceLocation)
+        let eps = 1e-9
+        #expect(abs(weights.total - 1) <= eps, sourceLocation: sourceLocation)
         #expect(weights.sharpness >= 0, sourceLocation: sourceLocation)
         #expect(weights.faceQuality >= 0, sourceLocation: sourceLocation)
         #expect(weights.exposure >= 0, sourceLocation: sourceLocation)
@@ -574,8 +576,9 @@ import Testing
 
         // The value `BestShotRanker` actually multiplies `resolution` by.
         let effectiveResolutionWeight = min(result.resolution, global.resolutionWeightCap)
+        let eps = 1e-9
         #expect(
-            abs(effectiveResolutionWeight - result.resolution) <= 1e-9,
+            abs(effectiveResolutionWeight - result.resolution) <= eps,
             "the raw fitted weight should already be at or under the cap, not rely on the ranker's min() to save it"
         )
         #expect(effectiveResolutionWeight <= global.resolutionWeightCap + 1e-9)

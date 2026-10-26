@@ -11,8 +11,9 @@ import Testing
     }
 
     @Test func testWeightSetsSumToOne() {
-        #expect(abs(PhotoQualityScoringConfig.current.weightsWithoutFaces.total - 1) <= 0.000_1)
-        #expect(abs(PhotoQualityScoringConfig.current.weightsWithFaces.total - 1) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs(PhotoQualityScoringConfig.current.weightsWithoutFaces.total - 1) <= eps)
+        #expect(abs(PhotoQualityScoringConfig.current.weightsWithFaces.total - 1) <= eps)
     }
 
     @Test func testFaceWeightIsUnusedWithoutFaces() {
