@@ -5,17 +5,12 @@ import Core
 
 @MainActor
 @Suite struct WelcomeViewModelTests {
-    var viewModel: WelcomeViewModel!
-    var mockPermissionManager: MockPhotoPermissionManager!
+    let viewModel: WelcomeViewModel
+    let mockPermissionManager: MockPhotoPermissionManager
     
-    override func setUp() async throws {
+    init() {
         mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .notDetermined)
         viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
-    }
-    
-    override func tearDown() async throws {
-        viewModel = nil
-        mockPermissionManager = nil
     }
     
     // MARK: - Initial State Tests
@@ -33,22 +28,22 @@ import Core
     }
     
     @Test func testIsAuthorizedWhenAuthorized() {
-        mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
-        viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
+        let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .authorized)
+        let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
         #expect(viewModel.isAuthorized)
     }
     
     @Test func testIsAuthorizedWhenLimited() {
-        mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .limited)
-        viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
+        let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .limited)
+        let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
         #expect(viewModel.isAuthorized)
     }
     
     @Test func testIsNotAuthorizedWhenDenied() {
-        mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
-        viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
+        let mockPermissionManager = MockPhotoPermissionManager(authorizationStatus: .denied)
+        let viewModel = WelcomeViewModel(permissionManager: mockPermissionManager)
         
         #expect(!viewModel.isAuthorized)
     }
