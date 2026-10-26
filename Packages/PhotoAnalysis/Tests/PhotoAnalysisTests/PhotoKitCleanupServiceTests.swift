@@ -1,15 +1,16 @@
 import Photos
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import PhotoAnalysis
 
 @MainActor
-final class PhotoKitCleanupServiceTests: XCTestCase {
-    func testDeleteAssetsThrowsWhenNothingSelected() async {
+@Suite struct PhotoKitCleanupServiceTests {
+    @Test func testDeleteAssetsThrowsWhenNothingSelected() async {
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },
             cleanupRequestBuilder: { _ in
-                XCTFail("Cleanup request should not be built for empty selections")
+                Issue.record("Cleanup request should not be built for empty selections")
                 return ResolvedPhotoCleanupRequest(resolvedCount: 0) {}
             }
         )
@@ -20,15 +21,15 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
                 sourceClusterID: UUID(),
                 estimatedSavingsBytes: 0
             )
-            XCTFail("Expected nothingSelected error")
+            Issue.record("Expected nothingSelected error")
         } catch let error as PhotoCleanupError {
-            XCTAssertEqual(error, .nothingSelected)
+            #expect(error == .nothingSelected)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
-    func testDeleteAssetsThrowsWhenNotAuthorized() async {
+    @Test func testDeleteAssetsThrowsWhenNotAuthorized() async {
         var didBuildRequest = false
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .denied },
@@ -44,22 +45,22 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
                 sourceClusterID: UUID(),
                 estimatedSavingsBytes: 0
             )
-            XCTFail("Expected notAuthorized error")
+            Issue.record("Expected notAuthorized error")
         } catch let error as PhotoCleanupError {
-            XCTAssertEqual(error, .notAuthorized)
+            #expect(error == .notAuthorized)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
 
-        XCTAssertFalse(didBuildRequest)
+        #expect(!didBuildRequest)
     }
 
-    func testDeleteAssetsThrowsWhenAssetsAreUnavailable() async {
+    @Test func testDeleteAssetsThrowsWhenAssetsAreUnavailable() async {
         var didPerformDeletion = false
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },
             cleanupRequestBuilder: { identifiers in
-                XCTAssertEqual(identifiers, Set(["a", "b"]))
+                #expect(identifiers == Set(["a", "b"]))
                 return ResolvedPhotoCleanupRequest(resolvedCount: 1) {
                     didPerformDeletion = true
                 }
@@ -72,23 +73,23 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
                 sourceClusterID: UUID(),
                 estimatedSavingsBytes: 0
             )
-            XCTFail("Expected selectedAssetsUnavailable error")
+            Issue.record("Expected selectedAssetsUnavailable error")
         } catch let error as PhotoCleanupError {
-            XCTAssertEqual(error, .selectedAssetsUnavailable(missingCount: 1))
+            #expect(error == .selectedAssetsUnavailable(missingCount: 1))
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
 
-        XCTAssertFalse(didPerformDeletion)
+        #expect(!didPerformDeletion)
     }
 
-    func testDeleteAssetsDeletesResolvedAssets() async throws {
+    @Test func testDeleteAssetsDeletesResolvedAssets() async throws {
         let clusterID = UUID()
         var didPerformDeletion = false
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },
             cleanupRequestBuilder: { identifiers in
-                XCTAssertEqual(identifiers, Set(["a", "b"]))
+                #expect(identifiers == Set(["a", "b"]))
                 return ResolvedPhotoCleanupRequest(resolvedCount: identifiers.count) {
                     didPerformDeletion = true
                 }
@@ -101,13 +102,13 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
             estimatedSavingsBytes: 2_048
         )
 
-        XCTAssertTrue(didPerformDeletion)
-        XCTAssertEqual(record.sourceClusterID, clusterID)
-        XCTAssertEqual(record.deletedCount, 2)
-        XCTAssertEqual(record.estimatedSavingsBytes, 2_048)
+        #expect(didPerformDeletion)
+        #expect(record.sourceClusterID == clusterID)
+        #expect(record.deletedCount == 2)
+        #expect(record.estimatedSavingsBytes == 2_048)
     }
 
-    func testDeleteAssetsWrapsDeletionFailures() async {
+    @Test func testDeleteAssetsWrapsDeletionFailures() async {
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },
             cleanupRequestBuilder: { identifiers in
@@ -124,15 +125,15 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
                 sourceClusterID: UUID(),
                 estimatedSavingsBytes: 0
             )
-            XCTFail("Expected deleteFailed error")
+            Issue.record("Expected deleteFailed error")
         } catch let error as PhotoCleanupError {
-            XCTAssertEqual(error, .deleteFailed)
+            #expect(error == .deleteFailed)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
-    func testDeleteAssetsPropagatesAvailabilityChangeImmediatelyBeforeDeletion() async {
+    @Test func testDeleteAssetsPropagatesAvailabilityChangeImmediatelyBeforeDeletion() async {
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },
             cleanupRequestBuilder: { identifiers in
@@ -148,11 +149,11 @@ final class PhotoKitCleanupServiceTests: XCTestCase {
                 sourceClusterID: UUID(),
                 estimatedSavingsBytes: 2_048
             )
-            XCTFail("Expected selectedAssetsUnavailable error")
+            Issue.record("Expected selectedAssetsUnavailable error")
         } catch let error as PhotoCleanupError {
-            XCTAssertEqual(error, .selectedAssetsUnavailable(missingCount: 1))
+            #expect(error == .selectedAssetsUnavailable(missingCount: 1))
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 }

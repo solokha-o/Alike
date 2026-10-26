@@ -2,15 +2,15 @@ import Core
 import CoreImage
 import Foundation
 import Photos
-import XCTest
+import Testing
 @testable import PhotoAnalysis
 
-final class PhotoKitEnhancementServiceTests: XCTestCase {
+@Suite struct PhotoKitEnhancementServiceTests {
     private let identifier = "photo-1"
 
     // MARK: - Apply
 
-    func testApplyingWritesAlikeAdjustmentDataAndFlagsTheCachedScore() async throws {
+    @Test func testApplyingWritesAlikeAdjustmentDataAndFlagsTheCachedScore() async throws {
         let library = FakePhotoLibrary()
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeScore()])
@@ -19,20 +19,20 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         let adjustment = try await service.applyEnhancement(localIdentifier: identifier)
 
         let saved = await library.savedAdjustmentData
-        XCTAssertNotNil(saved)
-        let decoded = try JSONDecoder().decode(PhotoEnhancementAdjustment.self, from: try XCTUnwrap(saved))
-        XCTAssertEqual(decoded.steps.map(\.filterName), adjustment.steps.map(\.filterName))
+        #expect(saved != nil)
+        let decoded = try JSONDecoder().decode(PhotoEnhancementAdjustment.self, from: try #require(saved))
+        #expect(decoded.steps.map(\.filterName) == adjustment.steps.map(\.filterName))
 
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, true)
+        #expect(stored[identifier]?.isAlikeEnhanced == true)
         // The signals must stay the ones measured before the enhancement.
-        XCTAssertEqual(stored[identifier]?.signals.globalSharpness ?? 0, 40, accuracy: 0.000_1)
+        #expect(abs((stored[identifier]?.signals.globalSharpness ?? 0) - 40) <= 0.000_1)
     }
 
     /// With consent given, the enhancement is written on top of the other app's
     /// result — nothing of theirs is destroyed, and a single revert still takes
     /// the photo back to the camera original.
-    func testEnhancingOnTopOfAForeignEditWritesWithoutRevertingIt() async throws {
+    @Test func testEnhancingOnTopOfAForeignEditWritesWithoutRevertingIt() async throws {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -43,11 +43,11 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let didRevert = await library.didRevert
         let saved = await library.savedAdjustmentData
-        XCTAssertFalse(didRevert, "The other app's edit is built on, not undone")
-        XCTAssertNotNil(saved)
+        #expect(!didRevert, "The other app's edit is built on, not undone")
+        #expect(saved != nil)
     }
 
-    func testApplyingMapsAnUnavailableOriginalToItsOwnError() async {
+    @Test func testApplyingMapsAnUnavailableOriginalToItsOwnError() async {
         let library = FakePhotoLibrary(originalError: PhotoEnhancementError.originalUnavailable)
         let service = makeService(library: library)
 
@@ -56,7 +56,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
-    func testApplyingMapsASaveFailureToSaveFailed() async {
+    @Test func testApplyingMapsASaveFailureToSaveFailed() async {
         struct WriteError: Error {}
         let library = FakePhotoLibrary(saveError: WriteError())
         let service = makeService(library: library)
@@ -66,7 +66,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
-    func testApplyingIsRefusedWithLimitedAccess() async {
+    @Test func testApplyingIsRefusedWithLimitedAccess() async {
         let service = makeService(library: FakePhotoLibrary(), authorization: .limited)
 
         await assertThrows(.limitedAccessNotEditable) {
@@ -74,7 +74,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
-    func testApplyingIsRefusedWithoutAuthorization() async {
+    @Test func testApplyingIsRefusedWithoutAuthorization() async {
         let service = makeService(library: FakePhotoLibrary(), authorization: .denied)
 
         await assertThrows(.notAuthorized) {
@@ -82,7 +82,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
-    func testApplyingIsRefusedForAnAssetTheUserCannotEdit() async {
+    @Test func testApplyingIsRefusedForAnAssetTheUserCannotEdit() async {
         let service = makeService(library: FakePhotoLibrary(isEditable: false))
 
         await assertThrows(.limitedAccessNotEditable) {
@@ -92,7 +92,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
     // MARK: - Revert
 
-    func testRevertingRestoresTheOriginalAndClearsTheEnhancedFlag() async throws {
+    @Test func testRevertingRestoresTheOriginalAndClearsTheEnhancedFlag() async throws {
         let library = FakePhotoLibrary(
             existingAdjustmentFormatIdentifier: PhotoEnhancementAdjustment.formatIdentifier
         )
@@ -103,12 +103,12 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         try await service.revertToOriginal(localIdentifier: identifier)
 
         let didRevert = await library.didRevert
-        XCTAssertTrue(didRevert)
+        #expect(didRevert)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+        #expect(stored[identifier]?.isAlikeEnhanced == false)
     }
 
-    func testRevertingIsRefusedForAnEditMadeByAnotherApp() async {
+    @Test func testRevertingIsRefusedForAnEditMadeByAnotherApp() async {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -117,10 +117,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let didRevert = await library.didRevert
-        XCTAssertFalse(didRevert)
+        #expect(!didRevert)
     }
 
-    func testRevertingIsRefusedForAnUneditedPhoto() async {
+    @Test func testRevertingIsRefusedForAnUneditedPhoto() async {
         let service = makeService(library: FakePhotoLibrary())
 
         await assertThrows(.notEnhancedByAlike) {
@@ -128,7 +128,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
     }
 
-    func testApplyingPassesTheRenderedRecipeToTheSaveStep() async throws {
+    @Test func testApplyingPassesTheRenderedRecipeToTheSaveStep() async throws {
         let library = FakePhotoLibrary()
         let service = makeService(library: library)
 
@@ -137,10 +137,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         // The recipe replayed on a Live Photo's frames must describe the same
         // steps that were stamped into the adjustment data.
         let recipeStepCount = await library.savedRecipeStepCount
-        XCTAssertEqual(recipeStepCount, adjustment.steps.count)
+        #expect(recipeStepCount == adjustment.steps.count)
     }
 
-    func testAnUnsupportedAssetIsRefusedBeforeAnythingIsWritten() async {
+    @Test func testAnUnsupportedAssetIsRefusedBeforeAnythingIsWritten() async {
         let library = FakePhotoLibrary(isSupported: false)
         let service = makeService(library: library)
 
@@ -149,36 +149,36 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let saved = await library.savedAdjustmentData
-        XCTAssertNil(saved)
+        #expect(saved == nil)
     }
 
     // MARK: - Availability
 
-    func testEnhancementIsUnavailableForAnUnsupportedAsset() async {
+    @Test func testEnhancementIsUnavailableForAnUnsupportedAsset() async {
         let service = makeService(library: FakePhotoLibrary(isSupported: false))
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .unavailable)
+        #expect(availability == .unavailable)
     }
 
-    func testEnhancementIsUnavailableForANonEditableAsset() async {
+    @Test func testEnhancementIsUnavailableForANonEditableAsset() async {
         let service = makeService(library: FakePhotoLibrary(isEditable: false))
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .unavailable)
+        #expect(availability == .unavailable)
     }
 
-    func testEnhancementIsUnavailableForAMissingAsset() async {
+    @Test func testEnhancementIsUnavailableForAMissingAsset() async {
         let service = makeService(library: FakePhotoLibrary(isMissing: true))
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .unavailable)
+        #expect(availability == .unavailable)
     }
 
-    func testAvailabilityIsAnsweredWithOneCheapResolution() async {
+    @Test func testAvailabilityIsAnsweredWithOneCheapResolution() async {
         let library = FakePhotoLibrary()
         let service = makeService(library: library)
 
@@ -187,10 +187,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         // Asking twice would resolve the photo twice, and resolving can pull a
         // full-size original down from iCloud.
         let purposes = await library.requestedPurposes
-        XCTAssertEqual(purposes, [.availability])
+        #expect(purposes == [.availability])
     }
 
-    func testOnlyAlikesOwnEditIsRecognizedAsEnhanced() async {
+    @Test func testOnlyAlikesOwnEditIsRecognizedAsEnhanced() async {
         let ours = makeService(library: FakePhotoLibrary(
             existingAdjustmentFormatIdentifier: PhotoEnhancementAdjustment.formatIdentifier
         ))
@@ -203,11 +203,11 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         let theirsAvailability = await theirs.availability(localIdentifier: identifier)
         let untouchedAvailability = await untouched.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(oursAvailability, .enhanced)
+        #expect(oursAvailability == .enhanced)
         // Another app's edit is not ours to replace silently — the action stays
         // available, and the UI says what applying it would do.
-        XCTAssertEqual(theirsAvailability, .editedElsewhere)
-        XCTAssertEqual(untouchedAvailability, .available)
+        #expect(theirsAvailability == .editedElsewhere)
+        #expect(untouchedAvailability == .available)
     }
 
     // MARK: - An unreadable editing input
@@ -216,7 +216,7 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
     /// availability may not pull a full-size original down from iCloud. Calling
     /// that "no edit" cleared Alike's marker, and the score cache then sent the
     /// photo back to be measured against its own enhanced pixels.
-    func testAnUnreadableInputKeepsTheEnhancedMarkerAndAnswersFromIt() async throws {
+    @Test func testAnUnreadableInputKeepsTheEnhancedMarkerAndAnswersFromIt() async throws {
         let repository = MockPhotoQualityScoreRepository()
         try await repository.saveScores([makeScore(isAlikeEnhanced: true)])
         let service = makeService(
@@ -226,15 +226,15 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .enhanced)
+        #expect(availability == .enhanced)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, true)
+        #expect(stored[identifier]?.isAlikeEnhanced == true)
     }
 
     /// The same unreadable photo with nothing recorded about it keeps offering
     /// the action, exactly as before: the action must not depend on a photo
     /// being resolvable without the network.
-    func testAnUnreadableInputWithNoMarkerStillOffersTheAction() async throws {
+    @Test func testAnUnreadableInputWithNoMarkerStillOffersTheAction() async throws {
         let repository = MockPhotoQualityScoreRepository()
         try await repository.saveScores([makeScore(isAlikeEnhanced: false)])
         let service = makeService(
@@ -244,26 +244,26 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .available)
+        #expect(availability == .available)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+        #expect(stored[identifier]?.isAlikeEnhanced == false)
     }
 
     /// A readable photo that genuinely carries no edit still clears the marker.
     /// That is the path the unknown state was wrongly sharing.
-    func testAReadableInputWithNoEditStillClearsTheMarker() async throws {
+    @Test func testAReadableInputWithNoEditStillClearsTheMarker() async throws {
         let repository = MockPhotoQualityScoreRepository()
         try await repository.saveScores([makeScore(isAlikeEnhanced: true)])
         let service = makeService(library: FakePhotoLibrary(), repository: repository)
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .available)
+        #expect(availability == .available)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+        #expect(stored[identifier]?.isAlikeEnhanced == false)
     }
 
-    func testApplyingRefusesToReplaceAnotherAppsEditWithoutConsent() async {
+    @Test func testApplyingRefusesToReplaceAnotherAppsEditWithoutConsent() async {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -272,14 +272,14 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let saved = await library.savedAdjustmentData
-        XCTAssertNil(saved)
+        #expect(saved == nil)
     }
 
     /// The consent question is what stands between another app's edit and ours.
     /// Asked on the cheap pass alone it cannot be answered for a photo that is
     /// not local, and the edit — which does reach the network — would then lay
     /// Alike's work over someone else's without ever saying so.
-    func testApplyingRefusesAnotherAppsEditThatOnlyTheNetworkCanSee() async {
+    @Test func testApplyingRefusesAnotherAppsEditThatOnlyTheNetworkCanSee() async {
         let library = FakePhotoLibrary(
             existingAdjustmentFormatIdentifier: "com.example.otherEditor",
             isLocallyReadable: false
@@ -291,17 +291,17 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let saved = await library.savedAdjustmentData
-        XCTAssertNil(saved)
+        #expect(saved == nil)
         // The cheap pass is asked first and reads nothing; only then is the
         // photo resolved again with the network allowed.
         let purposes = await library.requestedPurposes
-        XCTAssertEqual(purposes, [.availability, .availabilityAllowingNetwork])
+        #expect(purposes == [.availability, .availabilityAllowingNetwork])
     }
 
     /// A photo that is on the device is read by the cheap pass, and the answer
     /// it gives is the library's own — resolving the asset a second time with
     /// the network allowed would only repeat a question already answered.
-    func testApplyingAsksTheNetworkOnlyForAPhotoTheCheapPassCannotRead() async {
+    @Test func testApplyingAsksTheNetworkOnlyForAPhotoTheCheapPassCannotRead() async {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -310,13 +310,13 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let purposes = await library.requestedPurposes
-        XCTAssertEqual(purposes, [.availability])
+        #expect(purposes == [.availability])
     }
 
     /// A photo the library refuses outright is refused by the edit too, so
     /// asking again with the network allowed buys nothing and can pull a
     /// full-size original down from iCloud for an answer already given.
-    func testApplyingDoesNotAskTheNetworkAboutAPhotoTheLibraryRefuses() async {
+    @Test func testApplyingDoesNotAskTheNetworkAboutAPhotoTheLibraryRefuses() async {
         let library = FakePhotoLibrary(isEditable: false)
         let service = makeService(library: library)
 
@@ -325,10 +325,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         }
 
         let purposes = await library.requestedPurposes
-        XCTAssertEqual(purposes, [.availability, .editing])
+        #expect(purposes == [.availability, .editing])
     }
 
-    func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
+    @Test func testApplyingReplacesAnotherAppsEditOnceTheUserAgrees() async throws {
         let library = FakePhotoLibrary(existingAdjustmentFormatIdentifier: "com.example.otherEditor")
         let service = makeService(library: library)
 
@@ -338,10 +338,10 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         )
 
         let saved = await library.savedAdjustmentData
-        XCTAssertNotNil(saved)
+        #expect(saved != nil)
     }
 
-    func testRevertingWorksForAnAssetAlikeCanNoLongerEnhance() async throws {
+    @Test func testRevertingWorksForAnAssetAlikeCanNoLongerEnhance() async throws {
         // The Live Photo's video part is gone, so the asset is unsupported for
         // rendering — but putting the original back needs no rendering at all.
         let library = FakePhotoLibrary(
@@ -353,25 +353,25 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
         try await service.revertToOriginal(localIdentifier: identifier)
 
         let didRevert = await library.didRevert
-        XCTAssertTrue(didRevert)
+        #expect(didRevert)
     }
 
-    func testApplyingCachesThePreEnhancementSignalsWhenNothingWasScored() async throws {
+    @Test func testApplyingCachesThePreEnhancementSignalsWhenNothingWasScored() async throws {
         let repository = MockPhotoQualityScoreRepository()
         let service = makeService(library: FakePhotoLibrary(), repository: repository)
 
         _ = try await service.applyEnhancement(localIdentifier: identifier)
 
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        let score = try XCTUnwrap(stored[identifier])
-        XCTAssertTrue(score.isAlikeEnhanced)
-        XCTAssertNil(score.signals.analysisFailure)
+        let score = try #require(stored[identifier])
+        #expect(score.isAlikeEnhanced)
+        #expect(score.signals.analysisFailure == nil)
     }
 
     /// Another app replacing our edit must clear the cached marker, or the
     /// score cache keeps serving pre-edit signals for a photo that no longer
     /// carries Alike's enhancement.
-    func testAForeignEditClearsTheCachedAlikeMarker() async throws {
+    @Test func testAForeignEditClearsTheCachedAlikeMarker() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeScore(isAlikeEnhanced: true)])
         let service = makeService(
@@ -381,26 +381,26 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .editedElsewhere)
+        #expect(availability == .editedElsewhere)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+        #expect(stored[identifier]?.isAlikeEnhanced == false)
     }
 
-    func testAnEditRevertedOutsideAlikeClearsTheCachedMarker() async throws {
+    @Test func testAnEditRevertedOutsideAlikeClearsTheCachedMarker() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeScore(isAlikeEnhanced: true)])
         let service = makeService(library: FakePhotoLibrary(), repository: repository)
 
         let availability = await service.availability(localIdentifier: identifier)
 
-        XCTAssertEqual(availability, .available)
+        #expect(availability == .available)
         let stored = try await repository.loadScores(localIdentifiers: [identifier])
-        XCTAssertEqual(stored[identifier]?.isAlikeEnhanced, false)
+        #expect(stored[identifier]?.isAlikeEnhanced == false)
     }
 
     // MARK: - Preview
 
-    func testPreviewRendersWithoutTouchingTheLibrary() async throws {
+    @Test func testPreviewRendersWithoutTouchingTheLibrary() async throws {
         let library = FakePhotoLibrary()
         let service = makeService(library: library)
 
@@ -409,11 +409,11 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
             targetSize: CGSize(width: 64, height: 64)
         )
 
-        XCTAssertLessThanOrEqual(preview.width, 64)
+        #expect(preview.width <= 64)
         let saved = await library.savedAdjustmentData
-        XCTAssertNil(saved)
+        #expect(saved == nil)
         let didRevert = await library.didRevert
-        XCTAssertFalse(didRevert)
+        #expect(!didRevert)
     }
 
     // MARK: - Helpers
@@ -443,17 +443,16 @@ final class PhotoKitEnhancementServiceTests: XCTestCase {
 
     private func assertThrows(
         _ expected: PhotoEnhancementError,
-        file: StaticString = #filePath,
-        line: UInt = #line,
+        sourceLocation: SourceLocation = #_sourceLocation,
         _ operation: () async throws -> Void
     ) async {
         do {
             try await operation()
-            XCTFail("Expected \(expected)", file: file, line: line)
+            Issue.record("Expected \(expected)", sourceLocation: sourceLocation)
         } catch let error as PhotoEnhancementError {
-            XCTAssertEqual(error, expected, file: file, line: line)
+            #expect(error == expected, sourceLocation: sourceLocation)
         } catch {
-            XCTFail("Unexpected error: \(error)", file: file, line: line)
+            Issue.record("Unexpected error: \(error)", sourceLocation: sourceLocation)
         }
     }
 }
