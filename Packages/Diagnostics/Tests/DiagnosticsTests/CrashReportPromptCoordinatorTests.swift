@@ -2,22 +2,22 @@ import Foundation
 import Testing
 @testable import Diagnostics
 
+/// A `final class` suite: the temporary directory is removed in `deinit`. The old
+/// `tearDown` was `async` only in its signature — the removal is synchronous.
 @MainActor
-@Suite struct CrashReportPromptCoordinatorTests {
-    private var directoryURL: URL!
-    private var store: CrashReportStore!
-    private var coordinator: CrashReportPromptCoordinator!
+@Suite final class CrashReportPromptCoordinatorTests {
+    private let directoryURL: URL
+    private let store: CrashReportStore
+    private let coordinator: CrashReportPromptCoordinator
 
-    override func setUp() async throws {
+    init() {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         store = CrashReportStore(directoryURL: directoryURL)
         coordinator = CrashReportPromptCoordinator(store: store)
     }
 
-    override func tearDown() async throws {
-        coordinator = nil
-        store = nil
+    deinit {
         try? FileManager.default.removeItem(at: directoryURL)
     }
 

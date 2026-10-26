@@ -2,24 +2,22 @@ import Foundation
 import Testing
 @testable import Diagnostics
 
-@Suite struct CrashReportStoreTests {
-    private var directoryURL: URL!
-    private var store: CrashReportStore!
+/// A `final class` suite: the temporary directory is removed in `deinit`.
+@Suite final class CrashReportStoreTests {
+    private let directoryURL: URL
+    private let store: CrashReportStore
 
     private var indexURL: URL { directoryURL.appendingPathComponent("index.json") }
     private var payloadsURL: URL { directoryURL.appendingPathComponent("payloads") }
 
-    override func setUpWithError() throws {
+    init() {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         store = CrashReportStore(directoryURL: directoryURL)
     }
 
-    override func tearDownWithError() throws {
-        store = nil
-        if let directoryURL {
-            try? FileManager.default.removeItem(at: directoryURL)
-        }
+    deinit {
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     private func payloadFileNames() -> Set<String> {
@@ -79,7 +77,7 @@ import Testing
     /// One observer going away must not silence the store: the screen that watches it
     /// is torn down and rebuilt inside a single process.
     @Test func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
-        let store = store!
+        let store = self.store
         let first = Task { for await _ in await store.changes() {} }
         try await Task.sleep(for: .milliseconds(50))
         first.cancel()
