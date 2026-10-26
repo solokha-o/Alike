@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 /// The app target owns `Alike/Alike/Localizable.xcstrings`, which after task 40 holds app-level
 /// strings only — the rescan alert and the tab titles. Every text-owning package has had this
@@ -28,7 +29,7 @@ struct LocalizationCatalog {
         let url = appRoot(file: file).appendingPathComponent("Alike/Localizable.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return LocalizationCatalog(strings: try XCTUnwrap(strings))
+        return LocalizationCatalog(strings: try #require(strings))
     }
 
     /// The keys the wrapper resolves, read back out of the wrapper source.
@@ -44,20 +45,20 @@ struct LocalizationCatalog {
     }
 
     func localizations(of key: String) throws -> [String: [String: Any]] {
-        let entry = try XCTUnwrap(strings[key], "missing key \(key)")
-        return try XCTUnwrap(
+        let entry = try #require(strings[key], "missing key \(key)")
+        return try #require(
             entry["localizations"] as? [String: [String: Any]],
             "no localizations for \(key)"
         )
     }
 }
 
-final class LocalizationCatalogTests: XCTestCase {
-    func testEveryWrapperKeyExistsInTheCatalog() throws {
+@Suite struct LocalizationCatalogTests {
+    @Test func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)
 
-        XCTAssertTrue(
+        #expect(
             missing.isEmpty,
             "wrapper resolves keys the catalog does not define: \(missing.sorted())"
         )
@@ -65,12 +66,12 @@ final class LocalizationCatalogTests: XCTestCase {
 
     /// The reverse direction matters more here than in the packages: the app catalog is exactly
     /// where 103 keys with no call site accumulated, and this is what stops that recurring.
-    func testEveryCatalogKeyIsReachableThroughTheWrapper() throws {
+    @Test func testEveryCatalogKeyIsReachableThroughTheWrapper() throws {
         let catalog = try LocalizationCatalog.load()
         let unreachable = Set(catalog.strings.keys)
             .subtracting(try LocalizationCatalog.wrapperKeys())
 
-        XCTAssertTrue(
+        #expect(
             unreachable.isEmpty,
             "catalog keys no wrapper accessor resolves: \(unreachable.sorted())"
         )
@@ -78,17 +79,17 @@ final class LocalizationCatalogTests: XCTestCase {
 
     /// A literal that never got a semantic key would land here as its own English text — which is
     /// how the app catalog filled up with copy nobody could translate against.
-    func testEveryKeyIsNamespacedToTheAppTarget() throws {
+    @Test func testEveryKeyIsNamespacedToTheAppTarget() throws {
         let catalog = try LocalizationCatalog.load()
         let foreign = catalog.strings.keys.filter { !$0.hasPrefix(LocalizationCatalog.modulePrefix) }
 
-        XCTAssertTrue(
+        #expect(
             foreign.isEmpty,
             "keys outside the \(LocalizationCatalog.modulePrefix) namespace: \(foreign.sorted())"
         )
     }
 
-    func testEveryKeyCarriesEveryShippedLanguage() throws {
+    @Test func testEveryKeyCarriesEveryShippedLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         var incomplete: [String] = []
 
@@ -99,6 +100,6 @@ final class LocalizationCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(incomplete.isEmpty, "incomplete entries: \(incomplete)")
+        #expect(incomplete.isEmpty, "incomplete entries: \(incomplete)")
     }
 }
