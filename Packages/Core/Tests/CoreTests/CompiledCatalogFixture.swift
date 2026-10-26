@@ -1,5 +1,4 @@
 import Foundation
-import Testing
 
 /// Builds a real, loadable `.lproj` bundle out of the package's own `Localizable.xcstrings`.
 ///
@@ -27,7 +26,7 @@ enum CompiledCatalogFixture {
     static func bundle(language: String, file: StaticString = #filePath) throws -> Bundle {
         let root = try compile(file: file)
         let lproj = root.appendingPathComponent("\(language).lproj")
-        return try #require(Bundle(url: lproj), "no compiled resources for \(language)")
+        return try LocalizationCatalog.unwrap(Bundle(url: lproj), "no compiled resources for \(language)")
     }
 
     private static func compile(file: StaticString) throws -> URL {
