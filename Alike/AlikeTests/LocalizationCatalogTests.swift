@@ -19,6 +19,19 @@ struct LocalizationCatalog {
 
     let strings: [String: [String: Any]]
 
+    /// A value the catalog was expected to carry and did not.
+    ///
+    /// The catalog helper stays free of any test framework: a missing value is a thrown
+    /// error, and the calling test records it as an issue with this description.
+    struct MissingValue: Error, CustomStringConvertible {
+        let description: String
+    }
+
+    static func unwrap<Value>(_ value: Value?, _ message: @autoclosure () -> String = "unexpected nil") throws -> Value {
+        guard let value else { throw MissingValue(description: message()) }
+        return value
+    }
+
     static func appRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
             .deletingLastPathComponent()  // AlikeTests
@@ -29,7 +42,7 @@ struct LocalizationCatalog {
         let url = appRoot(file: file).appendingPathComponent("Alike/Localizable.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return LocalizationCatalog(strings: try #require(strings))
+        return LocalizationCatalog(strings: try Self.unwrap(strings))
     }
 
     /// The keys the wrapper resolves, read back out of the wrapper source.
@@ -45,8 +58,8 @@ struct LocalizationCatalog {
     }
 
     func localizations(of key: String) throws -> [String: [String: Any]] {
-        let entry = try #require(strings[key], "missing key \(key)")
-        return try #require(
+        let entry = try Self.unwrap(strings[key], "missing key \(key)")
+        return try Self.unwrap(
             entry["localizations"] as? [String: [String: Any]],
             "no localizations for \(key)"
         )

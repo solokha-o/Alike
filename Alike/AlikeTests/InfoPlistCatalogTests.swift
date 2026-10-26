@@ -18,7 +18,7 @@ struct InfoPlistCatalog {
             .appendingPathComponent("Alike/InfoPlist.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return InfoPlistCatalog(strings: try #require(strings))
+        return InfoPlistCatalog(strings: try LocalizationCatalog.unwrap(strings))
     }
 
     /// One entry per build configuration of the app target: its usage-description build settings,
