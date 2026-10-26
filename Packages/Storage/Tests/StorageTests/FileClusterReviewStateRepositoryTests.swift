@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class FileClusterReviewStateRepositoryTests: XCTestCase {
+@Suite struct FileClusterReviewStateRepositoryTests {
     private var directoryURL: URL!
     private var fileURL: URL!
     private var repository: FileClusterReviewStateRepository!
@@ -22,7 +23,7 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         }
     }
 
-    func testSaveAndLoadReviewStateRoundTrip() async throws {
+    @Test func testSaveAndLoadReviewStateRoundTrip() async throws {
         let clusterID = UUID()
         let state = ClusterReviewState(
             clusterID: clusterID,
@@ -36,10 +37,10 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.saveReviewState(state)
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(loaded, state)
+        #expect(loaded == state)
     }
 
-    func testSaveAndLoadNeedsReReviewStateRoundTrip() async throws {
+    @Test func testSaveAndLoadNeedsReReviewStateRoundTrip() async throws {
         let clusterID = UUID()
         let state = ClusterReviewState(
             clusterID: clusterID,
@@ -54,10 +55,10 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.saveReviewState(state)
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(loaded, state)
+        #expect(loaded == state)
     }
 
-    func testLoadAllReturnsMultipleStates() async throws {
+    @Test func testLoadAllReturnsMultipleStates() async throws {
         let first = ClusterReviewState(
             clusterID: UUID(),
             bestShotLocalIdentifier: "a",
@@ -79,11 +80,11 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.saveReviewState(second)
 
         let loaded = try await repository.loadAllReviewStates()
-        XCTAssertEqual(loaded[first.clusterID], first)
-        XCTAssertEqual(loaded[second.clusterID], second)
+        #expect(loaded[first.clusterID] == first)
+        #expect(loaded[second.clusterID] == second)
     }
 
-    func testSavingSameClusterOverwritesState() async throws {
+    @Test func testSavingSameClusterOverwritesState() async throws {
         let clusterID = UUID()
         let initial = ClusterReviewState(
             clusterID: clusterID,
@@ -106,10 +107,10 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.saveReviewState(updated)
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(loaded, updated)
+        #expect(loaded == updated)
     }
 
-    func testDeleteReviewStateKeepsOtherStates() async throws {
+    @Test func testDeleteReviewStateKeepsOtherStates() async throws {
         let first = ClusterReviewState(
             clusterID: UUID(),
             bestShotLocalIdentifier: "a",
@@ -132,13 +133,13 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.deleteReviewState(clusterID: first.clusterID)
 
         let loaded = try await repository.loadAllReviewStates()
-        XCTAssertNil(loaded[first.clusterID])
-        XCTAssertEqual(loaded[second.clusterID], second)
+        #expect(loaded[first.clusterID] == nil)
+        #expect(loaded[second.clusterID] == second)
     }
 
     /// States written before the best-shot override flag existed must still
     /// decode: a decoding failure here drops every cluster's review progress.
-    func testLoadsStatesPersistedBeforeBestShotOverrideFlag() async throws {
+    @Test func testLoadsStatesPersistedBeforeBestShotOverrideFlag() async throws {
         let clusterID = UUID()
         let legacyJSON = """
         {
@@ -159,16 +160,16 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
 
-        XCTAssertEqual(loaded?.bestShotLocalIdentifier, "best")
-        XCTAssertEqual(loaded?.selectedLocalIdentifiers, ["candidate"])
-        XCTAssertEqual(loaded?.status, .reviewed)
-        XCTAssertEqual(loaded?.isBestShotUserSelected, false)
-        XCTAssertNil(loaded?.byteSizeVersion)
+        #expect(loaded?.bestShotLocalIdentifier == "best")
+        #expect(loaded?.selectedLocalIdentifiers == ["candidate"])
+        #expect(loaded?.status == .reviewed)
+        #expect(loaded?.isBestShotUserSelected == false)
+        #expect(loaded?.byteSizeVersion == nil)
     }
 
     /// Reviews finished before the explicit confirmation existed were stored as
     /// `.reviewed`, so they must come back confirmed instead of reopening.
-    func testLoadsReviewedStatePersistedBeforeConfirmationFlag() async throws {
+    @Test func testLoadsReviewedStatePersistedBeforeConfirmationFlag() async throws {
         let clusterID = UUID()
         let legacyJSON = """
         {
@@ -189,10 +190,10 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
 
-        XCTAssertEqual(loaded?.isReviewConfirmed, true)
+        #expect(loaded?.isReviewConfirmed == true)
     }
 
-    func testLoadsUnfinishedStatePersistedBeforeConfirmationFlag() async throws {
+    @Test func testLoadsUnfinishedStatePersistedBeforeConfirmationFlag() async throws {
         let clusterID = UUID()
         let legacyJSON = """
         {
@@ -213,10 +214,10 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
 
-        XCTAssertEqual(loaded?.isReviewConfirmed, false)
+        #expect(loaded?.isReviewConfirmed == false)
     }
 
-    func testSaveAndLoadUserSelectedBestShotRoundTrip() async throws {
+    @Test func testSaveAndLoadUserSelectedBestShotRoundTrip() async throws {
         let clusterID = UUID()
         let state = ClusterReviewState(
             clusterID: clusterID,
@@ -231,14 +232,14 @@ final class FileClusterReviewStateRepositoryTests: XCTestCase {
         try await repository.saveReviewState(state)
 
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(loaded, state)
-        XCTAssertEqual(loaded?.isBestShotUserSelected, true)
+        #expect(loaded == state)
+        #expect(loaded?.isBestShotUserSelected == true)
     }
 
-    func testCorruptedJSONReturnsEmptyStateMap() async throws {
+    @Test func testCorruptedJSONReturnsEmptyStateMap() async throws {
         try Data("not-json".utf8).write(to: fileURL)
 
         let loaded = try await repository.loadAllReviewStates()
-        XCTAssertTrue(loaded.isEmpty)
+        #expect(loaded.isEmpty)
     }
 }

@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
+@Suite struct FileCleanupCategorySnapshotRepositoryTests {
     private var directoryURL: URL!
     private var fileURL: URL!
     private var repository: FileCleanupCategorySnapshotRepository!
@@ -22,7 +23,7 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         }
     }
 
-    func testSaveAndLoadSnapshotRoundTrip() async throws {
+    @Test func testSaveAndLoadSnapshotRoundTrip() async throws {
         let snapshot = CleanupCategorySnapshot(
             kind: .blurredPhotos,
             localIdentifiers: ["one", "two"],
@@ -33,10 +34,10 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         try await repository.saveSnapshot(snapshot)
 
         let loaded = try await repository.loadSnapshot(for: .blurredPhotos)
-        XCTAssertEqual(loaded, snapshot)
+        #expect(loaded == snapshot)
     }
 
-    func testOverwriteExistingSnapshot() async throws {
+    @Test func testOverwriteExistingSnapshot() async throws {
         let initial = CleanupCategorySnapshot(
             kind: .screenshots,
             localIdentifiers: ["old"],
@@ -54,12 +55,12 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         try await repository.saveSnapshot(updated)
 
         let loaded = try await repository.loadSnapshot(for: .screenshots)
-        XCTAssertEqual(loaded, updated)
+        #expect(loaded == updated)
     }
 
     /// Snapshots written before `byteSizeVersion` existed still load, marked as
     /// heuristic so the workspace re-measures them instead of dropping them.
-    func testLoadsSnapshotsPersistedBeforeByteSizeVersion() async throws {
+    @Test func testLoadsSnapshotsPersistedBeforeByteSizeVersion() async throws {
         let legacyJSON = """
         {
           "snapshots": [
@@ -77,20 +78,20 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
 
         let loaded = try await repository.loadSnapshot(for: .screenshots)
 
-        XCTAssertEqual(loaded?.localIdentifiers, ["one", "two"])
-        XCTAssertEqual(loaded?.estimatedSavingsBytes, 2048)
-        XCTAssertNil(loaded?.byteSizeVersion)
+        #expect(loaded?.localIdentifiers == ["one", "two"])
+        #expect(loaded?.estimatedSavingsBytes == 2048)
+        #expect(loaded?.byteSizeVersion == nil)
     }
 
-    func testCorruptedJSONReturnsEmptySnapshots() async throws {
+    @Test func testCorruptedJSONReturnsEmptySnapshots() async throws {
         try Data("not-json".utf8).write(to: fileURL)
 
         let loaded = try await repository.loadAllSnapshots()
-        XCTAssertTrue(loaded.isEmpty)
+        #expect(loaded.isEmpty)
     }
 
-    func testConcurrentSavesAcrossRepositoryInstancesPreserveBothCategories() async throws {
-        let firstRepository = try XCTUnwrap(repository)
+    @Test func testConcurrentSavesAcrossRepositoryInstancesPreserveBothCategories() async throws {
+        let firstRepository = try #require(repository)
         let secondRepository = FileCleanupCategorySnapshotRepository(fileURL: fileURL)
         let screenshotSnapshot = CleanupCategorySnapshot(
             kind: .screenshots,
@@ -110,11 +111,11 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         _ = try await (saveScreenshots, saveBlur)
 
         let loaded = try await firstRepository.loadAllSnapshots()
-        XCTAssertEqual(loaded[.screenshots], screenshotSnapshot)
-        XCTAssertEqual(loaded[.blurredPhotos], blurSnapshot)
+        #expect(loaded[.screenshots] == screenshotSnapshot)
+        #expect(loaded[.blurredPhotos] == blurSnapshot)
     }
 
-    func testReplaceAllSnapshotsRemovesStaleCategoriesInOneOperation() async throws {
+    @Test func testReplaceAllSnapshotsRemovesStaleCategoriesInOneOperation() async throws {
         let staleSnapshot = makeSnapshot(kind: .screenshots, generation: "stale")
         let replacement = makeSnapshot(kind: .blurredPhotos, generation: "replacement")
         try await repository.saveSnapshot(staleSnapshot)
@@ -122,11 +123,11 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         try await repository.replaceAllSnapshots([replacement])
 
         let loaded = try await repository.loadAllSnapshots()
-        XCTAssertEqual(loaded, [.blurredPhotos: replacement])
+        #expect(loaded == [.blurredPhotos: replacement])
     }
 
-    func testConcurrentReadersOnlyObserveCompleteReplacements() async throws {
-        let repository = try XCTUnwrap(repository)
+    @Test func testConcurrentReadersOnlyObserveCompleteReplacements() async throws {
+        let repository = try #require(repository)
         let firstGeneration = CleanupCategoryKind.allCases.map {
             makeSnapshot(kind: $0, generation: "first")
         }
@@ -154,13 +155,13 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
         }
 
         for observation in observations {
-            XCTAssertEqual(observation.count, CleanupCategoryKind.allCases.count)
+            #expect(observation.count == CleanupCategoryKind.allCases.count)
             let generations = Set(observation.values.flatMap(\.localIdentifiers))
-            XCTAssertTrue(generations == ["first"] || generations == ["second"])
+            #expect(generations == ["first"] || generations == ["second"])
         }
     }
 
-    func testFailedReplacementPreservesPreviouslyStoredSnapshots() async throws {
+    @Test func testFailedReplacementPreservesPreviouslyStoredSnapshots() async throws {
         let original = CleanupCategoryKind.allCases.map {
             makeSnapshot(kind: $0, generation: "original")
         }
@@ -172,13 +173,13 @@ final class FileCleanupCategorySnapshotRepositoryTests: XCTestCase {
             try await repository.replaceAllSnapshots([
                 makeSnapshot(kind: .screenshots, generation: "replacement")
             ])
-            XCTFail("Expected replacement to fail")
+            Issue.record("Expected replacement to fail")
         } catch {
             // The write failure is expected; verify the committed file was not changed.
         }
 
         let loaded = try await repository.loadAllSnapshots()
-        XCTAssertEqual(loaded, Dictionary(uniqueKeysWithValues: original.map { ($0.kind, $0) }))
+        #expect(loaded == Dictionary(uniqueKeysWithValues: original.map { ($0.kind, $0) }))
     }
 }
 

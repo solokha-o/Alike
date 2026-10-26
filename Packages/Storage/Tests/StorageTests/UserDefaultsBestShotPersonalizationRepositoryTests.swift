@@ -1,8 +1,9 @@
 import Core
-import XCTest
+import Foundation
+import Testing
 @testable import Storage
 
-final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
+@Suite struct UserDefaultsBestShotPersonalizationRepositoryTests {
     private var suiteName: String!
     private var examplesKey: String!
     private var weightsKey: String!
@@ -72,45 +73,45 @@ final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
         )
     }
 
-    func testStartsEmpty() async {
+    @Test func testStartsEmpty() async {
         let examples = await repository.loadExamples()
         let weights = await repository.loadWeights()
 
-        XCTAssertTrue(examples.isEmpty)
-        XCTAssertNil(weights)
+        #expect(examples.isEmpty)
+        #expect(weights == nil)
     }
 
-    func testRoundTripsExamples() async {
+    @Test func testRoundTripsExamples() async {
         let example = makeExample()
         await repository.record(example)
 
         let examples = await repository.loadExamples()
 
-        XCTAssertEqual(examples, [example])
+        #expect(examples == [example])
     }
 
-    func testRoundTripsWeights() async {
+    @Test func testRoundTripsWeights() async {
         let weights = makeWeights()
         await repository.saveWeights(weights)
 
         let loaded = await repository.loadWeights()
 
-        XCTAssertEqual(loaded, weights)
+        #expect(loaded == weights)
     }
 
-    func testSavingWeightsReplacesThePreviousValue() async {
+    @Test func testSavingWeightsReplacesThePreviousValue() async {
         await repository.saveWeights(makeWeights())
         let replacement = makeWeights()
         await repository.saveWeights(replacement)
 
         let loaded = await repository.loadWeights()
 
-        XCTAssertEqual(loaded, replacement)
+        #expect(loaded == replacement)
     }
 
     /// Past the cap, the oldest example is dropped first and insertion order
     /// is preserved among the survivors.
-    func testCapsAtFiveHundredDroppingTheOldestFirst() async {
+    @Test func testCapsAtFiveHundredDroppingTheOldestFirst() async {
         let repository = repository
         for index in 0..<520 {
             await repository.record(makeExample(recordedAt: Date(timeIntervalSince1970: Double(index))))
@@ -118,14 +119,14 @@ final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
 
         let examples = await repository.loadExamples()
 
-        XCTAssertEqual(examples.count, 500)
-        XCTAssertEqual(examples.first?.recordedAt, Date(timeIntervalSince1970: 20))
-        XCTAssertEqual(examples.last?.recordedAt, Date(timeIntervalSince1970: 519))
+        #expect(examples.count == 500)
+        #expect(examples.first?.recordedAt == Date(timeIntervalSince1970: 20))
+        #expect(examples.last?.recordedAt == Date(timeIntervalSince1970: 519))
     }
 
     /// Examples measured under a different scoring formula must never be
     /// reinterpreted against the current one.
-    func testLoadExamplesFiltersOutAStaleScoringModelVersion() async {
+    @Test func testLoadExamplesFiltersOutAStaleScoringModelVersion() async {
         let current = makeExample(scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion)
         let stale = makeExample(scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion + 1)
         await repository.record(stale)
@@ -133,19 +134,19 @@ final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
 
         let examples = await repository.loadExamples()
 
-        XCTAssertEqual(examples, [current])
+        #expect(examples == [current])
     }
 
-    func testLoadWeightsReturnsNilForAStaleScoringModelVersion() async {
+    @Test func testLoadWeightsReturnsNilForAStaleScoringModelVersion() async {
         let stale = makeWeights(scoringModelVersion: PhotoQualityScoringConfig.current.scoringModelVersion + 1)
         await repository.saveWeights(stale)
 
         let loaded = await repository.loadWeights()
 
-        XCTAssertNil(loaded)
+        #expect(loaded == nil)
     }
 
-    func testResetClearsBothExamplesAndWeights() async {
+    @Test func testResetClearsBothExamplesAndWeights() async {
         await repository.record(makeExample())
         await repository.saveWeights(makeWeights())
 
@@ -153,27 +154,27 @@ final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
 
         let examples = await repository.loadExamples()
         let weights = await repository.loadWeights()
-        XCTAssertTrue(examples.isEmpty)
-        XCTAssertNil(weights)
+        #expect(examples.isEmpty)
+        #expect(weights == nil)
     }
 
-    func testCorruptExamplesDataYieldsEmptyRatherThanCrashing() async {
+    @Test func testCorruptExamplesDataYieldsEmptyRatherThanCrashing() async {
         UserDefaults(suiteName: suiteName)!.set(Data([0x00, 0x01, 0x02]), forKey: examplesKey)
 
         let examples = await repository.loadExamples()
 
-        XCTAssertTrue(examples.isEmpty)
+        #expect(examples.isEmpty)
     }
 
-    func testCorruptWeightsDataYieldsNilRatherThanCrashing() async {
+    @Test func testCorruptWeightsDataYieldsNilRatherThanCrashing() async {
         UserDefaults(suiteName: suiteName)!.set(Data([0x00, 0x01, 0x02]), forKey: weightsKey)
 
         let weights = await repository.loadWeights()
 
-        XCTAssertNil(weights)
+        #expect(weights == nil)
     }
 
-    func testDataSurvivesANewRepositoryInstance() async {
+    @Test func testDataSurvivesANewRepositoryInstance() async {
         let example = makeExample()
         let weights = makeWeights()
         await repository.record(example)
@@ -187,13 +188,13 @@ final class UserDefaultsBestShotPersonalizationRepositoryTests: XCTestCase {
 
         let examples = await reopened.loadExamples()
         let loadedWeights = await reopened.loadWeights()
-        XCTAssertEqual(examples, [example])
-        XCTAssertEqual(loadedWeights, weights)
+        #expect(examples == [example])
+        #expect(loadedWeights == weights)
     }
 
     /// Deleting local app data must take the personalization data with it.
-    func testTheStorageKeysAreResettable() {
-        XCTAssertTrue(AppPreferenceKey.resettable.contains(AppPreferenceKey.BestShot.overrideExamples))
-        XCTAssertTrue(AppPreferenceKey.resettable.contains(AppPreferenceKey.BestShot.personalWeights))
+    @Test func testTheStorageKeysAreResettable() {
+        #expect(AppPreferenceKey.resettable.contains(AppPreferenceKey.BestShot.overrideExamples))
+        #expect(AppPreferenceKey.resettable.contains(AppPreferenceKey.BestShot.personalWeights))
     }
 }

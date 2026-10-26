@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class FileCleanupHistoryRepositoryTests: XCTestCase {
+@Suite struct FileCleanupHistoryRepositoryTests {
     private var directoryURL: URL!
     private var fileURL: URL!
     private var repository: FileCleanupHistoryRepository!
@@ -22,7 +23,7 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
         }
     }
 
-    func testAppendAndLoadEntriesRoundTrip() async throws {
+    @Test func testAppendAndLoadEntriesRoundTrip() async throws {
         let entry = CleanupCompletionRecord(
             sourceClusterID: UUID(),
             deletedCount: 3,
@@ -32,10 +33,10 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
         try await repository.append(entry)
 
         let loaded = try await repository.loadEntries()
-        XCTAssertEqual(loaded, [entry])
+        #expect(loaded == [entry])
     }
 
-    func testAppendPreservesMultipleEntries() async throws {
+    @Test func testAppendPreservesMultipleEntries() async throws {
         let first = CleanupCompletionRecord(
             sourceClusterID: UUID(),
             deletedCount: 1,
@@ -53,18 +54,18 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
         try await repository.append(second)
 
         let loaded = try await repository.loadEntries()
-        XCTAssertEqual(loaded, [first, second])
+        #expect(loaded == [first, second])
     }
 
-    func testCorruptedJSONThrowsAndAppendDoesNotOverwriteFile() async throws {
+    @Test func testCorruptedJSONThrowsAndAppendDoesNotOverwriteFile() async throws {
         let corruptedData = Data("not-json".utf8)
         try corruptedData.write(to: fileURL)
 
         do {
             _ = try await repository.loadEntries()
-            XCTFail("Expected corrupted history to throw")
+            Issue.record("Expected corrupted history to throw")
         } catch {
-            XCTAssertFalse(error is CancellationError)
+            #expect(!(error is CancellationError))
         }
 
         do {
@@ -75,14 +76,14 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
                     estimatedSavingsBytes: 100
                 )
             )
-            XCTFail("Expected append to preserve and reject corrupted history")
+            Issue.record("Expected append to preserve and reject corrupted history")
         } catch {
-            XCTAssertEqual(try Data(contentsOf: fileURL), corruptedData)
+            #expect(try Data(contentsOf: fileURL) == corruptedData)
         }
     }
 
-    func testConcurrentAppendsAcrossRepositoryInstancesPreserveEveryEntry() async throws {
-        let firstRepository = try XCTUnwrap(repository)
+    @Test func testConcurrentAppendsAcrossRepositoryInstancesPreserveEveryEntry() async throws {
+        let firstRepository = try #require(repository)
         let secondRepository = FileCleanupHistoryRepository(fileURL: fileURL)
         let records = (0..<40).map { index in
             CleanupCompletionRecord(
@@ -104,6 +105,6 @@ final class FileCleanupHistoryRepositoryTests: XCTestCase {
         }
 
         let loaded = try await firstRepository.loadEntries()
-        XCTAssertEqual(Set(loaded.map(\.id)), Set(records.map(\.id)))
+        #expect(Set(loaded.map(\.id)) == Set(records.map(\.id)))
     }
 }

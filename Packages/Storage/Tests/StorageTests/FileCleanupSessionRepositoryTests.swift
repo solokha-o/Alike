@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class FileCleanupSessionRepositoryTests: XCTestCase {
+@Suite struct FileCleanupSessionRepositoryTests {
     private var directoryURL: URL!
     private var fileURL: URL!
     private var repository: FileCleanupSessionRepository!
@@ -22,7 +23,7 @@ final class FileCleanupSessionRepositoryTests: XCTestCase {
         }
     }
 
-    func testSaveAndLoadActiveSessionRoundTrip() async throws {
+    @Test func testSaveAndLoadActiveSessionRoundTrip() async throws {
         let session = CleanupSession(
             totalClusters: 10,
             reviewedClusters: 4,
@@ -32,10 +33,10 @@ final class FileCleanupSessionRepositoryTests: XCTestCase {
         try await repository.saveActiveSession(session)
         let loaded = try await repository.loadActiveSession()
 
-        XCTAssertEqual(loaded, session)
+        #expect(loaded == session)
     }
 
-    func testSavingSecondSessionOverwritesFirst() async throws {
+    @Test func testSavingSecondSessionOverwritesFirst() async throws {
         let first = CleanupSession(
             totalClusters: 5,
             reviewedClusters: 1,
@@ -51,10 +52,10 @@ final class FileCleanupSessionRepositoryTests: XCTestCase {
         try await repository.saveActiveSession(second)
 
         let loaded = try await repository.loadActiveSession()
-        XCTAssertEqual(loaded, second)
+        #expect(loaded == second)
     }
 
-    func testDeleteActiveSessionRemovesSavedData() async throws {
+    @Test func testDeleteActiveSessionRemovesSavedData() async throws {
         let session = CleanupSession(
             totalClusters: 3,
             reviewedClusters: 2,
@@ -65,13 +66,13 @@ final class FileCleanupSessionRepositoryTests: XCTestCase {
         try await repository.deleteActiveSession()
         let loaded = try await repository.loadActiveSession()
 
-        XCTAssertNil(loaded)
+        #expect(loaded == nil)
     }
 
-    func testCorruptedJSONReturnsNilSession() async throws {
+    @Test func testCorruptedJSONReturnsNilSession() async throws {
         try Data("not-json".utf8).write(to: fileURL)
 
         let loaded = try await repository.loadActiveSession()
-        XCTAssertNil(loaded)
+        #expect(loaded == nil)
     }
 }

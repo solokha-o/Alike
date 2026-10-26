@@ -1,10 +1,10 @@
 import CoreData
 import Core
 import Foundation
-import XCTest
+import Testing
 @testable import Storage
 
-final class LocalAppDataDeletionServiceTests: XCTestCase {
+@Suite struct LocalAppDataDeletionServiceTests {
     private var directoryURL: URL!
     private var defaults: UserDefaults!
     private var suiteName: String!
@@ -17,7 +17,7 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
             withIntermediateDirectories: true
         )
         suiteName = "LocalAppDataDeletionServiceTests.\(UUID().uuidString)"
-        defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
     override func tearDownWithError() throws {
@@ -30,7 +30,7 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
         directoryURL = nil
     }
 
-    func testDeleteAllDataRemovesAppDataAndPreservesMonetizationState() async throws {
+    @Test func testDeleteAllDataRemovesAppDataAndPreservesMonetizationState() async throws {
         let persistence = PersistenceController.preview()
         try seedPersistence(persistence)
         let alikeDirectory = directoryURL.appendingPathComponent("Alike", isDirectory: true)
@@ -55,18 +55,18 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
         try await service.deleteAllData()
         try await service.deleteAllData()
 
-        XCTAssertFalse(FileManager.default.fileExists(atPath: alikeDirectory.path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: unrelatedFile.path))
+        #expect(!(FileManager.default.fileExists(atPath: alikeDirectory.path)))
+        #expect(FileManager.default.fileExists(atPath: unrelatedFile.path))
         for key in AppPreferenceKey.resettable {
-            XCTAssertNil(defaults.object(forKey: key), "Expected \(key) to be removed")
+            #expect(defaults.object(forKey: key) == nil, "Expected \(key) to be removed")
         }
-        XCTAssertNotNil(defaults.data(forKey: AppPreferenceKey.Premium.monthlyScanUsage))
-        XCTAssertTrue(defaults.bool(forKey: AppPreferenceKey.Premium.postFirstUsefulScanPrompt))
-        XCTAssertNotNil(defaults.data(forKey: AppPreferenceKey.Premium.subscriptionEntitlement))
+        #expect(defaults.data(forKey: AppPreferenceKey.Premium.monthlyScanUsage) != nil)
+        #expect(defaults.bool(forKey: AppPreferenceKey.Premium.postFirstUsefulScanPrompt))
+        #expect(defaults.data(forKey: AppPreferenceKey.Premium.subscriptionEntitlement) != nil)
         try assertPersistenceIsEmpty(persistence)
     }
 
-    func testPersistentDeletionFailurePropagatesBeforeOtherDataIsRemoved() async throws {
+    @Test func testPersistentDeletionFailurePropagatesBeforeOtherDataIsRemoved() async throws {
         let alikeDirectory = directoryURL.appendingPathComponent("Alike", isDirectory: true)
         try FileManager.default.createDirectory(at: alikeDirectory, withIntermediateDirectories: true)
         defaults.set(3, forKey: AppPreferenceKey.PhotoGrid.compactColumns)
@@ -79,13 +79,13 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
 
         do {
             try await service.deleteAllData()
-            XCTFail("Expected deletion to fail")
+            Issue.record("Expected deletion to fail")
         } catch {
-            XCTAssertEqual(error as? ExpectedError, .failure)
+            #expect(error as? ExpectedError == .failure)
         }
 
-        XCTAssertTrue(FileManager.default.fileExists(atPath: alikeDirectory.path))
-        XCTAssertEqual(defaults.integer(forKey: AppPreferenceKey.PhotoGrid.compactColumns), 3)
+        #expect(FileManager.default.fileExists(atPath: alikeDirectory.path))
+        #expect(defaults.integer(forKey: AppPreferenceKey.PhotoGrid.compactColumns) == 3)
     }
 
     private func seedPersistence(_ persistence: PersistenceController) throws {
@@ -104,9 +104,9 @@ final class LocalAppDataDeletionServiceTests: XCTestCase {
 
     private func assertPersistenceIsEmpty(_ persistence: PersistenceController) throws {
         let context = persistence.viewContext
-        XCTAssertEqual(try context.count(for: ClusterEntity.fetchRequest()), 0)
-        XCTAssertEqual(try context.count(for: PhotoEntity.fetchRequest()), 0)
-        XCTAssertEqual(try context.count(for: ScanMetadataEntity.fetchRequest()), 0)
+        #expect(try context.count(for: ClusterEntity.fetchRequest()) == 0)
+        #expect(try context.count(for: PhotoEntity.fetchRequest()) == 0)
+        #expect(try context.count(for: ScanMetadataEntity.fetchRequest()) == 0)
     }
 }
 

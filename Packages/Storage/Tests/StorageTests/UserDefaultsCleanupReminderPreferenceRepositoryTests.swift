@@ -1,7 +1,8 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Storage
 
-final class UserDefaultsCleanupReminderPreferenceRepositoryTests: XCTestCase {
+@Suite struct UserDefaultsCleanupReminderPreferenceRepositoryTests {
     private var repository: UserDefaultsCleanupReminderPreferenceRepository!
     private let reminderEnabledKey = "cleanup.reminder.test.isEnabled"
     private let reminderWeekdayKey = "cleanup.reminder.test.weekday"
@@ -23,39 +24,39 @@ final class UserDefaultsCleanupReminderPreferenceRepositoryTests: XCTestCase {
         clearTestValues()
     }
 
-    func testLoadReminderEnabledDefaultsToFalse() async {
+    @Test func testLoadReminderEnabledDefaultsToFalse() async {
         let isEnabled = await repository.loadReminderEnabled()
-        XCTAssertFalse(isEnabled)
+        #expect(!isEnabled)
     }
 
-    func testSaveReminderEnabledPersistsTrue() async {
+    @Test func testSaveReminderEnabledPersistsTrue() async {
         await repository.saveReminderEnabled(true)
 
         let isEnabled = await repository.loadReminderEnabled()
-        XCTAssertTrue(isEnabled)
+        #expect(isEnabled)
     }
 
-    func testSaveReminderEnabledPersistsFalseOverwrite() async {
+    @Test func testSaveReminderEnabledPersistsFalseOverwrite() async {
         await repository.saveReminderEnabled(true)
         await repository.saveReminderEnabled(false)
 
         let isEnabled = await repository.loadReminderEnabled()
-        XCTAssertFalse(isEnabled)
+        #expect(!isEnabled)
     }
 
-    func testLoadReminderScheduleDefaultsToWeeklySundayAtSixPm() async {
+    @Test func testLoadReminderScheduleDefaultsToWeeklySundayAtSixPm() async {
         let schedule = await repository.loadReminderSchedule()
 
-        XCTAssertEqual(schedule, .defaultWeekly)
+        #expect(schedule == .defaultWeekly)
     }
 
-    func testSaveReminderSchedulePersistsCustomValues() async {
+    @Test func testSaveReminderSchedulePersistsCustomValues() async {
         let schedule = CleanupReminderSchedule(weekday: 4, hour: 8, minute: 45)
 
         await repository.saveReminderSchedule(schedule)
 
         let persistedSchedule = await repository.loadReminderSchedule()
-        XCTAssertEqual(persistedSchedule, schedule)
+        #expect(persistedSchedule == schedule)
     }
 
     private func clearTestValues() {
