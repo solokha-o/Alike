@@ -39,6 +39,19 @@ struct LocalizationCatalog {
 
     let strings: [String: [String: Any]]
 
+    /// A value the catalog was expected to carry and did not.
+    ///
+    /// The catalog helper stays free of any test framework: a missing value is a thrown
+    /// error, and the calling test records it as an issue with this description.
+    struct MissingValue: Error, CustomStringConvertible {
+        let description: String
+    }
+
+    static func unwrap<Value>(_ value: Value?, _ message: @autoclosure () -> String = "unexpected nil") throws -> Value {
+        guard let value else { throw MissingValue(description: message()) }
+        return value
+    }
+
     static func packageRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
             .deletingLastPathComponent()  // Tests/<target>Tests
@@ -51,7 +64,7 @@ struct LocalizationCatalog {
             .appendingPathComponent("Sources/\(targetName)/Resources/Localizable.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return LocalizationCatalog(strings: try #require(strings))
+        return LocalizationCatalog(strings: try Self.unwrap(strings))
     }
 
     /// The keys the generated wrapper resolves, read back out of the wrapper source.
@@ -67,8 +80,8 @@ struct LocalizationCatalog {
     }
 
     func localizations(of key: String) throws -> [String: [String: Any]] {
-        let entry = try #require(strings[key], "missing key \(key)")
-        return try #require(
+        let entry = try Self.unwrap(strings[key], "missing key \(key)")
+        return try Self.unwrap(
             entry["localizations"] as? [String: [String: Any]],
             "no localizations for \(key)"
         )
@@ -79,9 +92,9 @@ struct LocalizationCatalog {
     }
 
     func plural(_ key: String, language: String, category: String) throws -> String {
-        let unit = try #require(plurals(key, language: language)[category] as? [String: Any])
-        let stringUnit = try #require(unit["stringUnit"] as? [String: Any])
-        return try #require(stringUnit["value"] as? String)
+        let unit = try Self.unwrap(plurals(key, language: language)[category] as? [String: Any])
+        let stringUnit = try Self.unwrap(unit["stringUnit"] as? [String: Any])
+        return try Self.unwrap(stringUnit["value"] as? String)
     }
 
     /// A single `stringUnit` value, or nil for a plural entry.
@@ -212,11 +225,11 @@ struct LocalizationCatalog {
     }
 
     private func plurals(_ key: String, language: String) throws -> [String: Any] {
-        let variations = try #require(
+        let variations = try Self.unwrap(
             localizations(of: key)[language]?["variations"] as? [String: Any],
             "\(key) has no variations in \(language)"
         )
-        return try #require(variations["plural"] as? [String: Any])
+        return try Self.unwrap(variations["plural"] as? [String: Any])
     }
 }
 

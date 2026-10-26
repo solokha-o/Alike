@@ -145,7 +145,8 @@ import Testing
     @Test func testShareIsTheEstimateOverTheLibrary() throws {
         let share = try #require(Self.xl(Self.snapshot(clusters: nil)).share)
 
-        #expect(abs(share.fraction - (Double(Self.estimate) / Double(Self.library))) <= 0.0001)
+        let eps = 0.0001
+        #expect(abs(share.fraction - (Double(Self.estimate) / Double(Self.library))) <= eps)
         #expect(share.drawsBar)
         #expect(share.text.contains(WidgetFormatting.byteCount(Self.library)), Comment(rawValue: share.text))
     }
