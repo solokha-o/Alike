@@ -2,16 +2,20 @@ import Testing
 import Foundation
 @testable import Storage
 
-@Suite struct UserDefaultsPremiumPromptHistoryRepositoryTests {
-    private var key: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsPremiumPromptHistoryRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let key = "premium.prompt.test.\(UUID().uuidString)"
 
-    override func setUp() {
-        key = "premium.prompt.test.\(UUID().uuidString)"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: key)
-        key = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     @Test func testClaimSucceedsExactlyOnceAndSurvivesRepositoryRecreation() async {
@@ -64,6 +68,6 @@ import Foundation
     }
 
     private func makeRepository() -> UserDefaultsPremiumPromptHistoryRepository {
-        UserDefaultsPremiumPromptHistoryRepository(postFirstUsefulScanKey: key)
+        UserDefaultsPremiumPromptHistoryRepository(defaults: UserDefaults(suiteName: suiteName)!, postFirstUsefulScanKey: key)
     }
 }

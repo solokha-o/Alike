@@ -4,12 +4,15 @@ import Foundation
 import Testing
 @testable import Storage
 
-@Suite struct LocalAppDataDeletionServiceTests {
-    private var directoryURL: URL!
-    private var defaults: UserDefaults!
-    private var suiteName: String!
+/// A `final class` suite: each test gets its own `UUID` directory and `UserDefaults` suite, and `deinit` removes both.
+/// `@MainActor`: the tests seed and read `viewContext`, a main-queue context.
+@MainActor
+@Suite final class LocalAppDataDeletionServiceTests {
+    private let directoryURL: URL
+    private let defaults: UserDefaults
+    private let suiteName: String
 
-    override func setUpWithError() throws {
+    init() throws {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(
@@ -20,14 +23,11 @@ import Testing
         defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDownWithError() throws {
-        defaults.removePersistentDomain(forName: suiteName)
-        defaults = nil
-        suiteName = nil
-        if let directoryURL {
-            try? FileManager.default.removeItem(at: directoryURL)
-        }
-        directoryURL = nil
+    deinit {
+        // `deinit` is nonisolated and `UserDefaults` is not `Sendable`, so it
+        // opens the suite by name instead of using `defaults`.
+        UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     @Test func testDeleteAllDataRemovesAppDataAndPreservesMonetizationState() async throws {

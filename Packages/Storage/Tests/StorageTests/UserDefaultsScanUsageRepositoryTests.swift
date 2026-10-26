@@ -2,24 +2,27 @@ import Testing
 import Foundation
 @testable import Storage
 
-@Suite struct UserDefaultsScanUsageRepositoryTests {
-    private var monthlyUsageKey: String!
-    private var legacyUsageKey: String!
-    private var calendar: Calendar!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsScanUsageRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let monthlyUsageKey: String
+    private let legacyUsageKey: String
+    private let calendar: Calendar
 
-    override func setUp() {
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
         monthlyUsageKey = "premium.monthlyScanUsage.test.\(UUID().uuidString)"
-        legacyUsageKey = "\(monthlyUsageKey!).legacy"
-        calendar = Calendar(identifier: .gregorian)
+        legacyUsageKey = "\(monthlyUsageKey).legacy"
+        var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        self.calendar = calendar
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: monthlyUsageKey)
-        UserDefaults.standard.removeObject(forKey: legacyUsageKey)
-        monthlyUsageKey = nil
-        legacyUsageKey = nil
-        calendar = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     @Test func testMissingUsageLoadsAsNilAndCanBeInitialized() async {
@@ -75,6 +78,7 @@ import Foundation
 
     private func makeRepository() -> UserDefaultsScanUsageRepository {
         UserDefaultsScanUsageRepository(
+            defaults: UserDefaults(suiteName: suiteName)!,
             monthlyUsageKey: monthlyUsageKey,
             legacyCompletedScanCountKey: legacyUsageKey,
             calendar: calendar

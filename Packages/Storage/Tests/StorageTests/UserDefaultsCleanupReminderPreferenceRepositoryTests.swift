@@ -2,16 +2,22 @@ import Foundation
 import Testing
 @testable import Storage
 
-@Suite struct UserDefaultsCleanupReminderPreferenceRepositoryTests {
-    private var repository: UserDefaultsCleanupReminderPreferenceRepository!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsCleanupReminderPreferenceRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let repository: UserDefaultsCleanupReminderPreferenceRepository
     private let reminderEnabledKey = "cleanup.reminder.test.isEnabled"
     private let reminderWeekdayKey = "cleanup.reminder.test.weekday"
     private let reminderHourKey = "cleanup.reminder.test.hour"
     private let reminderMinuteKey = "cleanup.reminder.test.minute"
 
-    override func setUpWithError() throws {
-        clearTestValues()
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
         repository = UserDefaultsCleanupReminderPreferenceRepository(
+            userDefaults: try #require(UserDefaults(suiteName: suiteName)),
             reminderEnabledKey: reminderEnabledKey,
             reminderWeekdayKey: reminderWeekdayKey,
             reminderHourKey: reminderHourKey,
@@ -19,9 +25,8 @@ import Testing
         )
     }
 
-    override func tearDownWithError() throws {
-        repository = nil
-        clearTestValues()
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     @Test func testLoadReminderEnabledDefaultsToFalse() async {
@@ -57,13 +62,5 @@ import Testing
 
         let persistedSchedule = await repository.loadReminderSchedule()
         #expect(persistedSchedule == schedule)
-    }
-
-    private func clearTestValues() {
-        let userDefaults = UserDefaults.standard
-        userDefaults.removeObject(forKey: reminderEnabledKey)
-        userDefaults.removeObject(forKey: reminderWeekdayKey)
-        userDefaults.removeObject(forKey: reminderHourKey)
-        userDefaults.removeObject(forKey: reminderMinuteKey)
     }
 }

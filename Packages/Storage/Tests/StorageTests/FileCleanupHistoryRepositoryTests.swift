@@ -3,12 +3,13 @@ import Testing
 import Core
 @testable import Storage
 
-@Suite struct FileCleanupHistoryRepositoryTests {
-    private var directoryURL: URL!
-    private var fileURL: URL!
-    private var repository: FileCleanupHistoryRepository!
+/// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
+@Suite final class FileCleanupHistoryRepositoryTests {
+    private let directoryURL: URL
+    private let fileURL: URL
+    private let repository: FileCleanupHistoryRepository
 
-    override func setUpWithError() throws {
+    init() throws {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
@@ -16,11 +17,8 @@ import Core
         repository = FileCleanupHistoryRepository(fileURL: fileURL)
     }
 
-    override func tearDownWithError() throws {
-        repository = nil
-        if let directoryURL {
-            try? FileManager.default.removeItem(at: directoryURL)
-        }
+    deinit {
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     @Test func testAppendAndLoadEntriesRoundTrip() async throws {
@@ -83,7 +81,7 @@ import Core
     }
 
     @Test func testConcurrentAppendsAcrossRepositoryInstancesPreserveEveryEntry() async throws {
-        let firstRepository = try #require(repository)
+        let firstRepository = repository
         let secondRepository = FileCleanupHistoryRepository(fileURL: fileURL)
         let records = (0..<40).map { index in
             CleanupCompletionRecord(

@@ -3,17 +3,21 @@ import Testing
 import Core
 @testable import Storage
 
-@Suite struct UserDefaultsRatingPromptHistoryRepositoryTests {
-    private var key: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsRatingPromptHistoryRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let key = "rating.promptHistory.test.\(UUID().uuidString)"
     private let referenceDate = Date(timeIntervalSince1970: 1_800_000_000)
 
-    override func setUp() {
-        key = "rating.promptHistory.test.\(UUID().uuidString)"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: key)
-        key = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     @Test func testFirstLoadOnAFreshInstallSeedsFirstLaunchDate() async {
@@ -62,7 +66,7 @@ import Core
     @Test func testShippedPayloadDecodesUnchanged() async throws {
         // Foundation's default JSONEncoder stores dates as seconds since 2001-01-01.
         let shipped = #"{"firstLaunchDate":800000000,"lastPromptedDate":801000000,"lastPromptedAppVersion":"1.6.1","promptCount":1}"#
-        UserDefaults.standard.set(try #require(shipped.data(using: .utf8)), forKey: key)
+        defaults.set(try #require(shipped.data(using: .utf8)), forKey: key)
 
         let history = await makeRepository().loadHistory(now: referenceDate)
 
@@ -82,6 +86,6 @@ import Core
     }
 
     private func makeRepository() -> UserDefaultsRatingPromptHistoryRepository {
-        UserDefaultsRatingPromptHistoryRepository(defaults: .standard, historyKey: key)
+        UserDefaultsRatingPromptHistoryRepository(defaults: UserDefaults(suiteName: suiteName)!, historyKey: key)
     }
 }

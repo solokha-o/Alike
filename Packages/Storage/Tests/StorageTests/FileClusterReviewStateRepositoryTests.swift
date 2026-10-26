@@ -3,12 +3,13 @@ import Testing
 import Core
 @testable import Storage
 
-@Suite struct FileClusterReviewStateRepositoryTests {
-    private var directoryURL: URL!
-    private var fileURL: URL!
-    private var repository: FileClusterReviewStateRepository!
+/// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
+@Suite final class FileClusterReviewStateRepositoryTests {
+    private let directoryURL: URL
+    private let fileURL: URL
+    private let repository: FileClusterReviewStateRepository
 
-    override func setUpWithError() throws {
+    init() throws {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
@@ -16,11 +17,8 @@ import Core
         repository = FileClusterReviewStateRepository(fileURL: fileURL)
     }
 
-    override func tearDownWithError() throws {
-        repository = nil
-        if let directoryURL {
-            try? FileManager.default.removeItem(at: directoryURL)
-        }
+    deinit {
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     @Test func testSaveAndLoadReviewStateRoundTrip() async throws {

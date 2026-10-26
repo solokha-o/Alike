@@ -3,26 +3,26 @@ import Foundation
 import Testing
 @testable import Storage
 
-@Suite struct UserDefaultsBestShotOverrideMetricsRepositoryTests {
-    /// Each test gets its own key in the standard suite, matching how the other
-    /// `UserDefaults` repositories are tested here.
-    private var key: String!
-    private var countedClustersKey: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsBestShotOverrideMetricsRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let key = "bestShot.overrideMetrics.test.\(UUID().uuidString)"
+    private let countedClustersKey = "bestShot.countedClusters.test.\(UUID().uuidString)"
 
-    override func setUp() {
-        key = "bestShot.overrideMetrics.test.\(UUID().uuidString)"
-        countedClustersKey = "bestShot.countedClusters.test.\(UUID().uuidString)"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: key)
-        UserDefaults.standard.removeObject(forKey: countedClustersKey)
-        key = nil
-        countedClustersKey = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     private var repository: UserDefaultsBestShotOverrideMetricsRepository {
         UserDefaultsBestShotOverrideMetricsRepository(
+            defaults: UserDefaults(suiteName: suiteName)!,
             key: key,
             countedClustersKey: countedClustersKey
         )
@@ -46,7 +46,8 @@ import Testing
 
         #expect(metrics.recommendationCount == 3)
         #expect(metrics.manualOverrideCount == 1)
-        #expect(abs(metrics.overrideRate - (1.0 / 3.0)) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs(metrics.overrideRate - (1.0 / 3.0)) <= eps)
     }
 
     /// An unresolved cluster never recommended anything, so it cannot be a
@@ -89,6 +90,7 @@ import Testing
         await repository.recordRecommendation(confidence: .automatic, clusterID: UUID())
 
         let reopened = UserDefaultsBestShotOverrideMetricsRepository(
+            defaults: UserDefaults(suiteName: suiteName)!,
             key: key,
             countedClustersKey: countedClustersKey
         )
@@ -109,7 +111,8 @@ import Testing
 
         let metrics = await repository.loadMetrics()
         #expect(metrics.recommendationCount == 1)
-        #expect(abs(metrics.overrideRate - 1) <= 0.000_1)
+        let eps = 0.000_1
+        #expect(abs(metrics.overrideRate - 1) <= eps)
     }
 
     @Test func testResetClearsEverything() async {

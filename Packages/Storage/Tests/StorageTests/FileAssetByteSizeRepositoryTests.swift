@@ -3,17 +3,18 @@ import Testing
 import Core
 @testable import Storage
 
-@Suite struct FileAssetByteSizeRepositoryTests {
-    private var directoryURL: URL!
-    private var fileURL: URL!
+/// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
+@Suite final class FileAssetByteSizeRepositoryTests {
+    private let directoryURL: URL
+    private let fileURL: URL
 
-    override func setUpWithError() throws {
+    init() {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         fileURL = directoryURL.appendingPathComponent("asset_byte_sizes.json")
     }
 
-    override func tearDownWithError() throws {
+    deinit {
         try? FileManager.default.removeItem(at: directoryURL)
     }
 

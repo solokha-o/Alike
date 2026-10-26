@@ -3,22 +3,21 @@ import Foundation
 import Testing
 @testable import Storage
 
-@Suite struct UserDefaultsBestShotPersonalizationRepositoryTests {
-    private var suiteName: String!
-    private var examplesKey: String!
-    private var weightsKey: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsBestShotPersonalizationRepositoryTests {
+    private let suiteName = "UserDefaultsBestShotPersonalizationRepositoryTests.\(UUID().uuidString)"
+    private let defaults: UserDefaults
+    private let examplesKey = "bestShot.overrideExamples.test"
+    private let weightsKey = "bestShot.personalWeights.test"
 
-    override func setUp() {
-        suiteName = "UserDefaultsBestShotPersonalizationRepositoryTests.\(UUID().uuidString)"
-        examplesKey = "bestShot.overrideExamples.test"
-        weightsKey = "bestShot.personalWeights.test"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
-        suiteName = nil
-        examplesKey = nil
-        weightsKey = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
     private var repository: UserDefaultsBestShotPersonalizationRepository {
@@ -159,7 +158,7 @@ import Testing
     }
 
     @Test func testCorruptExamplesDataYieldsEmptyRatherThanCrashing() async {
-        UserDefaults(suiteName: suiteName)!.set(Data([0x00, 0x01, 0x02]), forKey: examplesKey)
+        defaults.set(Data([0x00, 0x01, 0x02]), forKey: examplesKey)
 
         let examples = await repository.loadExamples()
 
@@ -167,7 +166,7 @@ import Testing
     }
 
     @Test func testCorruptWeightsDataYieldsNilRatherThanCrashing() async {
-        UserDefaults(suiteName: suiteName)!.set(Data([0x00, 0x01, 0x02]), forKey: weightsKey)
+        defaults.set(Data([0x00, 0x01, 0x02]), forKey: weightsKey)
 
         let weights = await repository.loadWeights()
 
