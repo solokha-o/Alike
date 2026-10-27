@@ -59,13 +59,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld foto borrosa seleccionada a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld foto borrosa seleccionada a Eliminados?"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados?"
                 }
               }
             }
@@ -352,13 +352,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld captura de pantalla seleccionada a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld captura de pantalla seleccionada a Eliminados?"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados?"
                 }
               }
             }
@@ -1768,7 +1768,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es": {
@@ -1851,7 +1851,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es": {
@@ -1934,7 +1934,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+            "value": "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es": {
@@ -2017,7 +2017,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+            "value": "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es": {

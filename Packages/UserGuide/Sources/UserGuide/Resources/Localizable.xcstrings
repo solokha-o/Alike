@@ -8237,7 +8237,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los resultados que ya analizaste siguen disponibles, te suscribas o no."
+            "value": "Los resultados de análisis anteriores siguen disponibles, tengas o no una suscripción."
           }
         },
         "es": {
@@ -8735,7 +8735,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Puedes mover fotos a Eliminados recientemente de una en una."
+            "value": "Puedes mover fotos a Eliminados de una en una."
           }
         },
         "es": {
@@ -9067,7 +9067,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mueve toda tu selección en un solo paso en lugar de una foto a la vez."
+            "value": "Mueve todas las fotos seleccionadas en un solo paso, en lugar de una foto a la vez."
           }
         },
         "es": {
@@ -9565,7 +9565,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Puedes gestionar o cancelar la suscripción cuando quieras en el App Store. Los precios se muestran antes de suscribirte."
+            "value": "Puedes administrar o cancelar la suscripción cuando quieras en App Store. Los precios se muestran antes de que te suscribas."
           }
         },
         "es": {
@@ -9648,7 +9648,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lo que añade Alike Pro"
+            "value": "Lo que agrega Alike Pro"
           }
         },
         "es": {
@@ -9897,7 +9897,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre la categoría Capturas de pantalla y despéjala en bloque."
+            "value": "Abre la categoría Capturas de pantalla y límpiala de una sola vez."
           }
         },
         "es": {
@@ -10229,7 +10229,7 @@
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Qué se incluye sin suscripción y qué añade Pro."
+            "value": "Qué se incluye sin suscripción y qué agrega Pro."
           }
         },
         "es": {
