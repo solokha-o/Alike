@@ -1510,7 +1510,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "La versione gratuita include %1$d scansioni per mese di calendario. Te ne restano %2$d e il limite si azzera il %3$@."
+            "value": "La versione gratuita include %1$d scansioni per mese di calendario. Te ne restano %2$d e il numero di scansioni disponibili si rinnova il %3$@."
           }
         },
         "nl": {
@@ -5743,7 +5743,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Risparmia il %d%% rispetto al mensile"
+            "value": "Risparmia %d%% rispetto al piano mensile"
           }
         },
         "nl": {

@@ -1256,6 +1256,88 @@ METADATA.update(
 )
 
 
+# Reviewed storefront copy; keep regional listings independent.
+METADATA['it'].update(
+    {'description': 'Alike raggruppa foto quasi identiche, sceglie la migliore e ti aiuta a eliminare le altre. '
+                'Nessuna foto lascia il tuo iPhone.\n'
+                '\n'
+                'COME FUNZIONA\n'
+                'Scansiona. Alike confronta la tua libreria con il framework Vision di Apple, interamente '
+                'sul tuo iPhone. Vengono confrontate le foto scattate vicine nel tempo e nel luogo, e gli '
+                'screenshot restano fuori dai risultati se non li richiedi.\n'
+                'Controlla. La foto migliore è già selezionata. Tieni solo quella, seleziona tutte le altre '
+                'o scegli a mano.\n'
+                'Pulisci. Conferma e le foto che hai scelto finiscono in «Eliminati di recente», dove iOS le '
+                'conserva per circa 30 giorni. Lo spazio potrebbe non liberarsi finché non le elimini '
+                'definitivamente.\n'
+                '\n'
+                'LA PRIVACY PRIMA DI TUTTO\n'
+                "- Tutta l'analisi avviene sul dispositivo con il framework Vision di Apple.\n"
+                '- Nessuna foto, miniatura o impronta caratteristica viene mai caricata online.\n'
+                '- Nessun account, nessun accesso, nessun server Alike.\n'
+                '- Nessuna analisi statistica, nessun tracciamento, nessun identificativo pubblicitario.\n'
+                "- Nessuna pubblicità in nessuna parte dell'app.\n"
+                '- La scansione e la pulizia non richiedono alcuna connessione: Alike funziona in modalità '
+                'aereo.\n'
+                '- Niente viene eliminato senza la tua conferma esplicita.\n'
+                '\n'
+                'PENSATA PER LIBRERIE VERE\n'
+                '- Tre livelli di sensibilità, dagli scatti quasi identici a foto meno simili.\n'
+                '- Riconoscimento dello scatto migliore misurato sulle foto stesse — nitidezza, esposizione, '
+                'volti e rumore — così ogni gruppo ha già una scelta sensata da tenere.\n'
+                "- Miglioramento facoltativo con un tocco per la foto che tieni, l'originale sempre a un "
+                'tocco.\n'
+                '- Indicatori di controllo: Nuovo, In controllo, Controllato e Da controllare dopo una nuova '
+                'scansione.\n'
+                '- Aggiungi o elimini foto e Alike se ne accorge, riproponendo solo i gruppi cambiati — '
+                'senza rifare tutta la scansione.\n'
+                '- Avanzamento, Selezionate e Risparmio stimato mentre lavori.\n'
+                '- Cronologia pulizia raggruppata per mese.\n'
+                '- Puoi passare da un layout a una colonna a una griglia più fitta. Alike ricorda la tua '
+                'scelta.\n'
+                "- Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.\n"
+                '- Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.\n'
+                '- Widget nella schermata home e in quella di blocco: spazio recuperabile e libreria.\n'
+                '- Tredici lingue e modalità scura completa.\n'
+                '\n'
+                'SEI TU A DECIDERE\n'
+                "- Il miglioramento non distrugge nulla: l'originale resta nella tua libreria e un tocco lo "
+                'ripristina.\n'
+                '- Alike impara dagli scatti migliori che scegli tu — sul tuo dispositivo, e puoi azzerarlo '
+                'quando vuoi in Impostazioni.\n'
+                '- Impostazioni, poi Dati e privacy, poi Elimina i dati di Alike cancella i risultati delle '
+                'scansioni, la cronologia della pulizia e le preferenze — e non tocca mai la tua libreria.\n'
+                '- Concedi accesso completo o limitato: Alike lavora con quello che scegli di condividere.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- 3 scansioni per mese di calendario\n'
+                '- Controllo guidato con lo scatto migliore\n'
+                '- Miglioramento con un tocco, sempre reversibile\n'
+                '- Scatto migliore che impara dalle tue scelte\n'
+                '- Ordinamento e cronologia pulizia\n'
+                '- Pulizia di una foto alla volta\n'
+                '- Widget\n'
+                '\n'
+                'ALIKE PRO\n'
+                '- 7 giorni gratis sul piano annuale, per i nuovi abbonati idonei\n'
+                '- Scansioni illimitate\n'
+                '- Pulizia di intere selezioni in una volta\n'
+                '- Pulizia screenshot\n'
+                '- Pulizia foto sfocate\n'
+                '- Filtri avanzati\n'
+                '- Promemoria di pulizia personalizzati\n'
+                '\n'
+                'Alike Pro è un abbonamento a rinnovo automatico con piani annuale e mensile, con prezzi '
+                'nella tua valuta locale. Il piano annuale include una prova gratuita di 7 giorni per i '
+                'nuovi abbonati idonei, e la fatturazione inizia al termine della prova. Gli abbonamenti si '
+                'rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del '
+                'periodo in corso, e il pagamento viene addebitato sul tuo account Apple. Puoi gestire o '
+                "annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS.",
+ 'promotional_text': 'Stima lo spazio da recuperare. Le foto restano su iPhone. Pro gratis per 7 giorni nel '
+                     'piano annuale per i nuovi abbonati idonei. Senza pubblicità né account.'}
+)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare Alike App Store metadata and screenshots for fastlane deliver.")
     parser.add_argument(
