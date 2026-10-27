@@ -8,21 +8,18 @@ import Core
 /// at an unlocked build. So the override has to apply to exactly the feature
 /// whose key is set, and to nothing else.
 @MainActor
-@Suite struct DebugPremiumAccessControllerTests {
-    private var defaults: UserDefaults!
-    private var suiteName: String!
+@Suite final class DebugPremiumAccessControllerTests {
+    private let defaults: UserDefaults
+    private let suiteName: String
 
-    override func setUp() {
-        super.setUp()
+    init() throws {
         suiteName = "DebugPremiumAccessControllerTests.\(UUID().uuidString)"
-        defaults = UserDefaults(suiteName: suiteName)
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        defaults.removePersistentDomain(forName: suiteName)
-        defaults = nil
-        suiteName = nil
-        super.tearDown()
+    deinit {
+        // deinit is nonisolated: open the suite by name instead of reading `defaults`.
+        UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
     }
 
     @Test func testOverrideUnlocksOnlyTheFeatureWhoseKeyIsSet() {
