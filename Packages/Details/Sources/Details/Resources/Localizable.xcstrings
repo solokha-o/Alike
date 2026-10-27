@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "‏Alike يحتفي بأفضل لقطة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a celebrar a melhor fotografia"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التوفير التقديري"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poupança estimada"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "جارٍ تنظيم الصور"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A organizar fotografias"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المحددة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias selecionadas"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "‏Alike يقارن بين الصور المتشابهة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a comparar fotografias semelhantes"
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تطبيق"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicar"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "جارٍ اختيار أفضل لقطة…"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A escolher a melhor fotografia…"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تفاصيل المجموعة متاحة على iOS."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os detalhes do grupo estão disponíveis no iOS."
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "المقارنة بالأصل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar com o original"
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يبدّل بين الأصل والنسخة المحسّنة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alterna entre o original e a versão melhorada"
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "تاريخ الإنشاء"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criada"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التواريخ"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datas"
           }
         }
       }
@@ -1288,6 +1360,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografia selecionada para Apagado?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias selecionadas para Apagado?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias selecionadas para Apagado?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1370,6 +1466,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تأثير العمق"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Efeito de profundidade"
           }
         }
       }
@@ -1454,6 +1556,12 @@
             "state": "translated",
             "value": "التفاصيل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalhes"
+          }
         }
       }
     },
@@ -1536,6 +1644,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -1620,6 +1734,12 @@
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لإزالة هذه الصورة من تحديد التنظيف"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca duas vezes para tirar esta fotografia da seleção de limpeza"
+          }
         }
       }
     },
@@ -1702,6 +1822,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لإعادة فتح هذه المجموعة للمراجعة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca duas vezes para reabrir este grupo para revisão"
           }
         }
       }
@@ -1786,6 +1912,12 @@
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لتحديد هذه الصورة للتنظيف"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca duas vezes para selecionar esta fotografia para a limpeza"
+          }
         }
       }
     },
@@ -1868,6 +2000,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حُرِّرت في تطبيق آخر"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editada noutra app"
           }
         }
       }
@@ -1952,6 +2090,12 @@
             "state": "translated",
             "value": "تحسين"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melhorar"
+          }
         }
       }
     },
@@ -2034,6 +2178,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مُحسّنة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melhorada"
           }
         }
       }
@@ -2118,6 +2268,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة في تطبيق آخر، لذا لم يغيّرها Alike دون سؤال."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta fotografia foi editada noutra app, por isso o Alike não a alterou sem perguntar."
+          }
         }
       }
     },
@@ -2200,6 +2356,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يمكن تحسين الصور ذات الوصول المحدود. امنح Alike الوصول إلى كل الصور من الإعدادات."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não é possível melhorar fotografias partilhadas através do acesso limitado. Permite que o Alike aceda a todas as fotografias nas Definições."
           }
         }
       }
@@ -2284,6 +2446,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة خارج Alike، لذا لن يتراجع Alike عن ذلك التعديل."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta fotografia foi editada fora do Alike, por isso o Alike não irá reverter essa edição."
+          }
         }
       }
     },
@@ -2366,6 +2534,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصورة الأصلية غير متاحة الآن. قد تكون قيد التنزيل من iCloud."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fotografia original não está disponível neste momento. Poderá ainda estar a ser descarregada do iCloud."
           }
         }
       }
@@ -2450,6 +2624,12 @@
             "state": "translated",
             "value": "معاينة التحسين"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização melhorada"
+          }
         }
       }
     },
@@ -2532,6 +2712,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تجهيز النسخة المحسّنة من هذه الصورة."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível preparar a versão melhorada desta fotografia."
           }
         }
       }
@@ -2616,6 +2802,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة في تطبيق آخر. يُطبَّق التحسين فوق ذلك التعديل، والعودة إلى الأصل تلغي كليهما."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta fotografia foi editada noutra app. A melhoria é aplicada sobre essa edição. Voltar ao original reverte as duas alterações."
+          }
         }
       }
     },
@@ -2698,6 +2890,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر حفظ الصورة المحسّنة في مكتبتك."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível guardar a fotografia melhorada na tua fototeca."
           }
         }
       }
@@ -2782,6 +2980,12 @@
             "state": "translated",
             "value": "تعذّر التحسين"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível melhorar"
+          }
         }
       }
     },
@@ -2864,6 +3068,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكن لـ Alike تحسين الصور فقط في الوقت الحالي."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por enquanto, o Alike só melhora fotografias."
           }
         }
       }
@@ -2948,6 +3158,12 @@
             "state": "translated",
             "value": "مفضلة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorita"
+          }
         }
       }
     },
@@ -3030,6 +3246,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ينهي المراجعة ويحتفظ بكل صورة في هذه المجموعة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conclui a revisão e mantém todas as fotografias deste grupo"
           }
         }
       }
@@ -3114,6 +3336,12 @@
             "state": "translated",
             "value": "ينهي المراجعة ويحتفظ بالصور التي لم تحددها"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conclui a revisão e mantém as fotografias que não selecionaste"
+          }
         }
       }
     },
@@ -3193,6 +3421,12 @@
           }
         },
         "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "pt-PT": {
           "stringUnit": {
             "state": "translated",
             "value": "HDR"
@@ -3280,6 +3514,12 @@
             "state": "translated",
             "value": "المس مع الاستمرار لعرض الأصل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca e mantém premido para ver o original"
+          }
         }
       }
     },
@@ -3362,6 +3602,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الاحتفاظ بـ %1$d من %2$d"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A manter %1$d de %2$d"
           }
         }
       }
@@ -3446,6 +3692,12 @@
             "state": "translated",
             "value": "صورة حية"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
         }
       }
     },
@@ -3528,6 +3780,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الموقع"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Localização"
           }
         }
       }
@@ -3612,6 +3870,12 @@
             "state": "translated",
             "value": "جعلها أفضل لقطة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definir como melhor fotografia"
+          }
         }
       }
     },
@@ -3694,6 +3958,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خريطة تُظهر مكان التقاط الصورة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mapa que mostra onde a fotografia foi tirada"
           }
         }
       }
@@ -3778,6 +4048,12 @@
             "state": "translated",
             "value": "وضع علامة تمت المراجعة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como revisto"
+          }
         }
       }
     },
@@ -3860,6 +4136,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ميغابكسل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapixels"
           }
         }
       }
@@ -3944,6 +4226,12 @@
             "state": "translated",
             "value": "تاريخ التعديل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modificada"
+          }
         }
       }
     },
@@ -4026,6 +4314,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خيارات أخرى"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais opções"
           }
         }
       }
@@ -4110,6 +4404,12 @@
             "state": "translated",
             "value": "%@ ميجابكسل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
         }
       }
     },
@@ -4192,6 +4492,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não"
           }
         }
       }
@@ -4276,6 +4582,12 @@
             "state": "translated",
             "value": "لا توجد لقطة أفضل واضحة — اخترها بنفسك"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma fotografia se destaca claramente — escolhe tu"
+          }
         }
       }
     },
@@ -4358,6 +4670,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا توجد صور متاحة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma fotografia disponível"
           }
         }
       }
@@ -4442,6 +4760,12 @@
             "state": "translated",
             "value": "غير محددة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não selecionada"
+          }
         }
       }
     },
@@ -4524,6 +4848,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفتح في الخرائط"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir em Mapas"
           }
         }
       }
@@ -4608,6 +4938,12 @@
             "state": "translated",
             "value": "فتح الأصل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir original"
+          }
         }
       }
     },
@@ -4690,6 +5026,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح موقع الصورة في الخرائط"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a localização da fotografia em Mapas"
           }
         }
       }
@@ -4774,6 +5116,12 @@
             "state": "translated",
             "value": "الأصل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Original"
+          }
         }
       }
     },
@@ -4856,6 +5204,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بانوراما"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
           }
         }
       }
@@ -4940,6 +5294,12 @@
             "state": "translated",
             "value": "صورة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografia"
+          }
         }
       }
     },
@@ -5022,6 +5382,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "معلومات الصورة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informações da fotografia"
           }
         }
       }
@@ -5106,6 +5472,12 @@
             "state": "translated",
             "value": "موقع الصورة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Localização da fotografia"
+          }
         }
       }
     },
@@ -5188,6 +5560,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الأفضل على الأرجح"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Provavelmente a melhor"
           }
         }
       }
@@ -5272,6 +5650,12 @@
             "state": "translated",
             "value": "إضاءة أفضل"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melhor exposição"
+          }
         }
       }
     },
@@ -5354,6 +5738,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الوجه واضح"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosto em foco"
           }
         }
       }
@@ -5438,6 +5828,12 @@
             "state": "translated",
             "value": "دقة أعلى"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maior resolução"
+          }
         }
       }
     },
@@ -5520,6 +5916,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ضوضاء أقل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menos ruído"
           }
         }
       }
@@ -5604,6 +6006,12 @@
             "state": "translated",
             "value": "العينان مفتوحتان"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olhos abertos"
+          }
         }
       }
     },
@@ -5686,6 +6094,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أكثر حدة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais nítida"
           }
         }
       }
@@ -5770,6 +6184,12 @@
             "state": "translated",
             "value": "الدقة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolução"
+          }
         }
       }
     },
@@ -5852,6 +6272,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "العودة إلى الأصل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltar ao original"
           }
         }
       }
@@ -5936,6 +6362,12 @@
             "state": "translated",
             "value": "لقطة شاشة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captura de ecrã"
+          }
         }
       }
     },
@@ -6018,6 +6450,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد الكل ما عدا الأفضل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar todas menos a melhor"
           }
         }
       }
@@ -6102,6 +6540,12 @@
             "state": "translated",
             "value": "محددة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionada"
+          }
         }
       }
     },
@@ -6184,6 +6628,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "محددة لمراجعة التنظيف"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionada para a revisão de limpeza"
           }
         }
       }
@@ -6268,6 +6718,12 @@
             "state": "translated",
             "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fotografia selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
+          }
         }
       }
     },
@@ -6350,6 +6806,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As fotografias selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -6434,6 +6896,12 @@
             "state": "translated",
             "value": "التحديد"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleção"
+          }
         }
       }
     },
@@ -6516,6 +6984,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختصارات التحديد وتخطيط الشبكة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atalhos de seleção e layout da grelha"
           }
         }
       }
@@ -6600,6 +7074,12 @@
             "state": "translated",
             "value": "عرض المعلومات"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar informações"
+          }
         }
       }
     },
@@ -6682,6 +7162,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias semelhantes"
           }
         }
       }
@@ -6766,6 +7252,12 @@
             "state": "translated",
             "value": "يُحتفظ بهذه الصورة بوصفها أفضل لقطة. اضغط مطولًا على صورة أخرى لجعلها أفضل لقطة بدلًا منها."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta fotografia foi mantida como a melhor. Mantém outra fotografia premida para a definir como a melhor."
+          }
         }
       }
     },
@@ -6848,6 +7340,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "النوع"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
           }
         }
       }
@@ -6932,6 +7430,12 @@
             "state": "translated",
             "value": "عرض"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver"
+          }
         }
       }
     },
@@ -7014,6 +7518,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نعم"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sim"
           }
         }
       }
@@ -7308,6 +7818,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografia"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -7390,6 +7924,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ النقل..."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A mover…"
           }
         }
       }
@@ -7474,6 +8014,12 @@
             "state": "translated",
             "value": "حالة مراجعة التنظيف الحالية"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estado atual da revisão de limpeza"
+          }
         }
       }
     },
@@ -7556,6 +8102,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قيد المراجعة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em revisão"
           }
         }
       }
@@ -7640,6 +8192,12 @@
             "state": "translated",
             "value": "الاحتفاظ بـ %1$d من %2$d، الحجم التقديري %3$@."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A manter %1$d de %2$d, tamanho estimado %3$@."
+          }
         }
       }
     },
@@ -7722,6 +8280,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "صورة متشابهة واحدة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 fotografia semelhante"
           }
         }
       }
@@ -7806,6 +8370,12 @@
             "state": "translated",
             "value": "بحاجة إلى مراجعة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precisa de revisão"
+          }
         }
       }
     },
@@ -7888,6 +8458,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم تُراجَع"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não revisto"
           }
         }
       }
@@ -8182,6 +8758,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionada, tamanho estimado %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -8264,6 +8864,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d صور متشابهة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d fotografias semelhantes"
           }
         }
       }
@@ -8348,6 +8954,12 @@
             "state": "translated",
             "value": "انقر على الصور لتحديدها للتنظيف"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca nas fotografias para as selecionar para limpeza"
+          }
         }
       }
     },
@@ -8430,6 +9042,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور قبل أن يتمكن من حذف الصور. افتح الإعدادات للمتابعة."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike precisa de acesso à fototeca para apagar fotografias. Abre as Definições para continuar."
           }
         }
       }
@@ -8514,6 +9132,12 @@
             "state": "translated",
             "value": "‏Alike ينظّم الصور المحددة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike está a organizar as fotografias selecionadas"
+          }
         }
       }
     },
@@ -8596,6 +9220,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أفضل لقطة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melhor fotografia"
           }
         }
       }
@@ -8680,6 +9310,12 @@
             "state": "translated",
             "value": "إلغاء"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
         }
       }
     },
@@ -8762,6 +9398,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التنظيف غير متاح"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza indisponível"
           }
         }
       }
@@ -8846,6 +9488,12 @@
             "state": "translated",
             "value": "مسح التحديد"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar seleção"
+          }
         }
       }
     },
@@ -8928,6 +9576,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إغلاق"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fechar"
           }
         }
       }
@@ -9012,6 +9666,12 @@
             "state": "translated",
             "value": "تعذّر نقل الصور المحددة. يُرجى المحاولة مرة أخرى."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível mover as fotografias selecionadas. Tenta novamente."
+          }
         }
       }
     },
@@ -9094,6 +9754,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الاحتفاظ بجميع الصور البالغ عددها %d"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A manter todas as %d fotografias"
           }
         }
       }
@@ -9178,6 +9844,12 @@
             "state": "translated",
             "value": "جارٍ تحميل معاينة الصورة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A carregar a pré-visualização da fotografia"
+          }
         }
       }
     },
@@ -9260,6 +9932,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نقل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover"
           }
         }
       }
@@ -9344,6 +10022,12 @@
             "state": "translated",
             "value": "نقل الصور المحددة حاليًا إلى «المحذوفة مؤخرًا»"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover as fotografias selecionadas para Apagado"
+          }
         }
       }
     },
@@ -9426,6 +10110,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "موافق"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -9510,6 +10200,12 @@
             "state": "translated",
             "value": "فتح الإعدادات"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Definições"
+          }
         }
       }
     },
@@ -9592,6 +10288,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "معاينة الصورة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização da fotografia"
           }
         }
       }
@@ -9676,6 +10378,12 @@
             "state": "translated",
             "value": "معاينة الصورة غير متوفرة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização da fotografia indisponível"
+          }
         }
       }
     },
@@ -9758,6 +10466,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تمت مراجعتها"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisto"
           }
         }
       }
@@ -9842,6 +10556,12 @@
             "state": "translated",
             "value": "حدد صورة واحدة على الأقل قبل الحذف."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleciona pelo menos uma fotografia antes de apagar."
+          }
         }
       }
     },
@@ -9924,6 +10644,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم تعد بعض الصور المحددة متاحة. قد يكون وصولك إلى المكتبة محدودًا، أو أن المكتبة تغيّرت منذ آخر فحص."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algumas fotografias selecionadas já não estão disponíveis. O teu acesso à fototeca poderá estar limitado, ou a fototeca mudou desde a última análise."
           }
         }
       }
@@ -10008,6 +10734,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar novamente"
+          }
         }
       }
     },
@@ -10090,6 +10822,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حاول تحميل الصورة مرة أخرى"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenta carregar a fotografia novamente"
           }
         }
       }
@@ -10174,6 +10912,12 @@
             "state": "translated",
             "value": "الاحتفاظ"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manter"
+          }
         }
       }
     },
@@ -10256,6 +11000,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar"
           }
         }
       }
@@ -10340,6 +11090,12 @@
             "state": "translated",
             "value": "تنظيف لقطات الشاشة متاح على iOS."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A limpeza de capturas de ecrã está disponível no iOS."
+          }
         }
       }
     },
@@ -10422,6 +11178,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات الشاشة"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturas de ecrã"
           }
         }
       }
@@ -10506,6 +11268,12 @@
             "state": "translated",
             "value": "اختر الصور المحددة للتنظيف"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe quais fotografias ficam selecionadas para a limpeza"
+          }
         }
       }
     },
@@ -10588,6 +11356,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نقل المحدد"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover selecionadas"
           }
         }
       }
@@ -10672,6 +11446,12 @@
             "state": "translated",
             "value": "جارٍ النقل..."
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A mover…"
+          }
         }
       }
     },
@@ -10754,6 +11534,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد الكل"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar todas"
           }
         }
       }

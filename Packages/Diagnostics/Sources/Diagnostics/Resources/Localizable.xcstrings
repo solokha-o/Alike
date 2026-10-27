@@ -81,6 +81,12 @@
             "state" : "translated",
             "value" : "تم إغلاق Alike بشكل غير متوقع"
           }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike fechou inesperadamente"
+          }
         }
       }
     },
@@ -163,6 +169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "هل تريد إرسال تقرير التعطل إلى المطوّر؟ سيُفتح كرسالة بريد إلكتروني لتتمكن من قراءته قبل الإرسال."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queres enviar um relatório da falha ao programador? O relatório abre num e-mail, para o poderes ler antes de o enviares."
           }
         }
       }
@@ -247,6 +259,12 @@
             "state" : "translated",
             "value" : "التقرير هو تشخيص التعطل الذي سجّله iOS: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز جهازك، وفي بعض حالات التعطل رسالة الخطأ. يرسله Alike كما هو دون تنقيح. ولا يحتوي على صور."
           }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O relatório contém o diagnóstico da falha registado pelo iOS: o rastreio da pilha, as versões da app e do iOS, o modelo do teu dispositivo e, em algumas falhas, a mensagem de erro. O Alike envia-o sem alterações nem filtros. Não contém fotografias."
+          }
         }
       }
     },
@@ -329,6 +347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إرسال التقرير"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar relatório"
           }
         }
       }
@@ -413,6 +437,12 @@
             "state" : "translated",
             "value" : "ليس الآن"
           }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
         }
       }
     },
@@ -495,6 +525,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرفق Alike دون تعديل تشخيص التعطل الذي سجّله iOS على جهازي: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز الجهاز، وفي بعض حالات التعطل رسالة الخطأ. ولا يحتوي على أي صور."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike anexou, sem alterações, o diagnóstico da falha que o iOS registou no meu dispositivo: o rastreio da pilha, as versões da app e do iOS, o modelo do dispositivo e, em algumas falhas, a mensagem de erro. Não contém fotografias."
           }
         }
       }
@@ -579,6 +615,12 @@
             "state" : "translated",
             "value" : "لم يتم إعداد حساب بريد، لذا يمر التقرير عبر ورقة المشاركة. اختر تطبيق بريد هناك وأرسله إلى:"
           }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há nenhuma conta configurada no Mail, por isso o relatório abre na folha de partilha. Escolhe uma app de e-mail e envia-o para:"
+          }
         }
       }
     },
@@ -661,6 +703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرسل تقرير التعطل هذا إلى:"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envia este relatório de falha para:"
           }
         }
       }
