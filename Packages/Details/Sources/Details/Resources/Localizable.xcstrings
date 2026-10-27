@@ -1073,13 +1073,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld foto seleccionada a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld foto seleccionada a Eliminados?"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "¿Mover %1$lld fotos seleccionadas a Eliminados recientemente?"
+                  "value": "¿Mover %1$lld fotos seleccionadas a Eliminados?"
                 }
               }
             }
@@ -6212,7 +6212,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+            "value": "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "pt-BR": {
@@ -6295,7 +6295,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+            "value": "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "pt-BR": {

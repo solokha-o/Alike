@@ -1232,7 +1232,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Es posible que no se libere espacio hasta que los elementos se eliminen de forma permanente de Eliminados recientemente."
+            "value": "Es posible que no se libere espacio hasta que los elementos se eliminen de forma permanente de Eliminados."
           }
         },
         "pt-BR": {
@@ -5853,13 +5853,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld foto movida a Eliminados recientemente."
+                  "value": "%1$lld foto movida a Eliminados."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld fotos movidas a Eliminados recientemente."
+                  "value": "%1$lld fotos movidas a Eliminados."
                 }
               }
             }

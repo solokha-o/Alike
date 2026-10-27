@@ -8243,7 +8243,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los resultados que ya has analizado siguen disponibles, te suscribas o no."
+            "value": "Los resultados de los análisis anteriores siguen disponibles, te suscribas o no."
           }
         },
         "pt-BR": {
@@ -8741,7 +8741,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Puedes mover fotos a Eliminados recientemente de una en una."
+            "value": "Puedes mover fotos a Eliminados de una en una."
           }
         },
         "pt-BR": {
@@ -8824,7 +8824,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Una foto a la vez"
+            "value": "Una foto cada vez"
           }
         },
         "pt-BR": {
@@ -9073,7 +9073,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mueve toda tu selección en un solo paso en lugar de una foto a la vez."
+            "value": "Mueve todas las fotos seleccionadas de una vez, en lugar de una en una."
           }
         },
         "pt-BR": {
@@ -9903,7 +9903,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre la categoría Capturas de pantalla y despéjala en bloque."
+            "value": "Abre la categoría Capturas de pantalla y límpiala en bloque."
           }
         },
         "pt-BR": {
