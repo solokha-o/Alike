@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "تم منح الإذن"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access Granted"
+          }
         }
       }
     },
@@ -161,6 +167,12 @@
           }
         },
         "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "en-AU": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "تم حذف بيانات Alike"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike data deleted"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يحتاج Alike إلى إذن الوصول إلى الصور لفحص مكتبتك وإعداد اقتراحات التنظيف وحفظ التحسين عندما تختار تطبيقه."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhancement when you choose to apply one."
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "لا يحذف Alike الصور تلقائيًا أبدًا. أنت تراجع الاقتراحات أولًا وتؤكد كل إجراء تنظيف."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike، محقق صورك"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, your photo detective"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "يبقى التحليل على جهازك، ولا يُحذف أي شيء تلقائيًا."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis stays on your device, and nothing is deleted automatically."
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "رجوع"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "يمكنك تغيير الإذن لاحقًا من الإعدادات، ولا يحذف Alike أي شيء دون تأكيدك."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can change access later in Settings, and Alike never deletes anything without your confirmation."
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك منح الإذن الآن والعودة إلى التنظيف متى كنت مستعدًا."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can grant access now and return to cleanup whenever you're ready."
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "نظّف مكتبتك بثقة"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean up your library with confidence"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قارن بين الصور واحتفظ باللقطات التي تهمك."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare photos and keep the shots that matter to you."
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "متابعة"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فعّل إذن الوصول إلى الصور من الإعدادات عندما تكون مستعدًا للمتابعة."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable photo access in Settings when you're ready to continue."
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "يبقى كل حذف مؤكَّدًا وظاهرًا وبين يديك بالكامل."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every deletion stays confirmed, visible, and fully in your hands."
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اعثر على فرص التنظيف"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find cleanup opportunities"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "جمّع الصور المتشابهة بصريًا وغيرها من العناصر التي تستحق المراجعة."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group visually similar photos and other items worth reviewing."
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "كيف يساعدك Alike"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How Alike helps"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "اعرف حجم المساحة التي يمكنك استرجاعها قبل أن تبدأ التنظيف."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Know how much space you could reclaim before you clean up."
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم حذف بيانات Alike المحفوظة على جهازك. أما صورك واشتراكك فلم يطرأ عليهما أي تغيير."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your local Alike data was deleted. Your photos and subscription are unchanged."
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "التالي"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يُحذف أي شيء تلقائيًا"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing is deleted automatically"
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "فتح الإعدادات"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصفحة %1$lld من %2$lld"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %1$lld of %2$lld"
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "يتيح إذن الوصول إلى الصور لـ Alike فحص مكتبتك وتجميع الصور المتشابهة وإعداد اقتراحات تنظيف لتراجعها — وكذلك، عندما تطلب ذلك بنفسك فقط، حفظ نسخة محسّنة من صورة تحتفظ بها."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review — and, only when you ask for it, save an enhanced version of a photo you keep."
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يلزم إذن الوصول إلى الصور"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Access Required"
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "يبقى تحليل صورك على هذا الجهاز ويمنحك اقتراحات تنظيف موجَّهة."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photo analysis stays on this device and gives you guided cleanup suggestions."
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تبقى صورك خاصة، وستؤكد كل عملية تنظيف قبل إزالة أي شيء."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos stay private, and you'll confirm every cleanup before anything is removed."
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "خاص ودائمًا تحت سيطرتك"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private and always in your control"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحليل خاص على الجهاز"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private on-device analysis"
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "راجع كل اقتراح"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review every suggestion"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "راجع الصور المتشابهة، وحرّر مساحة التخزين، وابقَ متحكمًا في كل عملية حذف."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review similar photos, free up storage, and stay in control of every deletion."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "أنت تراجع الاقتراحات أولًا وتؤكد بنفسك كل إجراء تنظيف."
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You review suggestions first and confirm every cleanup action yourself."
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مسار تنظيف آمن"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe cleanup flow"
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "اطّلع على التوفير المحتمل"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See potential savings"
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اكتشف الصور المتشابهة التي يمكنها تحرير مساحة بمجرد أن تقرر ما تريد إزالته."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spot similar photos that can free up space once you decide what to remove."
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "توفير مساحة التخزين"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage savings"
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حوّل مكتبة مزدحمة إلى تنظيف موجَّه."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn a crowded library into a guided cleanup."
           }
         }
       }
@@ -3236,6 +3464,12 @@
             "state": "translated",
             "value": "لماذا يطلب Alike إذن الوصول إلى الصور"
           }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why Alike asks for photo access"
+          }
         }
       }
     },
@@ -3318,6 +3552,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تبقى مكتبتك تحت سيطرتك"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your library stays under your control"
           }
         }
       }

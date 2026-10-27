@@ -81,6 +81,12 @@
             "state" : "translated",
             "value" : "تم إغلاق Alike بشكل غير متوقع"
           }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike closed unexpectedly"
+          }
         }
       }
     },
@@ -163,6 +169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "هل تريد إرسال تقرير التعطل إلى المطوّر؟ سيُفتح كرسالة بريد إلكتروني لتتمكن من قراءته قبل الإرسال."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a crash report to the developer? It opens as an email, so you can read it before anything is sent."
           }
         }
       }
@@ -247,6 +259,12 @@
             "state" : "translated",
             "value" : "التقرير هو تشخيص التعطل الذي سجّله iOS: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز جهازك، وفي بعض حالات التعطل رسالة الخطأ. يرسله Alike كما هو دون تنقيح. ولا يحتوي على صور."
           }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos."
+          }
         }
       }
     },
@@ -329,6 +347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إرسال التقرير"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Report"
           }
         }
       }
@@ -413,6 +437,12 @@
             "state" : "translated",
             "value" : "ليس الآن"
           }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
         }
       }
     },
@@ -495,6 +525,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرفق Alike دون تعديل تشخيص التعطل الذي سجّله iOS على جهازي: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز الجهاز، وفي بعض حالات التعطل رسالة الخطأ. ولا يحتوي على أي صور."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike attached the crash diagnostic iOS recorded on my device, unchanged: the stack trace, the app and iOS versions, the device model and, for some crashes, the error message. It contains no photos."
           }
         }
       }
@@ -579,6 +615,12 @@
             "state" : "translated",
             "value" : "لم يتم إعداد حساب بريد، لذا يمر التقرير عبر ورقة المشاركة. اختر تطبيق بريد هناك وأرسله إلى:"
           }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:"
+          }
         }
       }
     },
@@ -661,6 +703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرسل تقرير التعطل هذا إلى:"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send this crash report to:"
           }
         }
       }
