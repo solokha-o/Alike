@@ -128,7 +128,7 @@ Rendered by `disclosure` in
 
 **PL**
 
-> Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS.
+> Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować.
 
 **TR**
 

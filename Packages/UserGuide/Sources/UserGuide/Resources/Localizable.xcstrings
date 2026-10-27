@@ -8279,7 +8279,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wyniki, które już przeskanowałeś, pozostają dostępne — niezależnie od subskrypcji."
+            "value": "Wyniki wcześniejszych skanowań pozostają dostępne niezależnie od tego, czy masz subskrypcję."
           }
         },
         "tr": {
@@ -9109,7 +9109,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Przenieś cały wybór w jednym kroku zamiast po jednym zdjęciu."
+            "value": "Przenieś wszystkie wybrane zdjęcia naraz zamiast pojedynczo."
           }
         },
         "tr": {
@@ -9607,7 +9607,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w App Store. Ceny są pokazywane przed subskrypcją."
+            "value": "W App Store możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować. Ceny zobaczysz przed rozpoczęciem subskrypcji."
           }
         },
         "tr": {
