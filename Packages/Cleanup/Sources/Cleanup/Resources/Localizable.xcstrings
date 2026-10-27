@@ -415,19 +415,19 @@
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Suppressions récentes"
                 }
               },
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%2$@ récupérables estimés, %1$lld photo déplacée vers Supprimés récemment"
+                  "value": "%2$@ récupérables estimés, %1$lld photo déplacée vers Suppressions récentes"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                  "value": "%2$@ récupérables estimés, %1$lld photos déplacées vers Suppressions récentes"
                 }
               }
             }
@@ -835,7 +835,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Déplacement vers Supprimés récemment"
+            "value": "Déplacement vers Suppressions récentes"
           }
         },
         "it": {
@@ -1001,7 +1001,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Photos déplacées vers Supprimés récemment"
+            "value": "Photos déplacées vers Suppressions récentes"
           }
         },
         "it": {
@@ -1250,7 +1250,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de Supprimés récemment."
+            "value": "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de Suppressions récentes."
           }
         },
         "it": {
@@ -5913,19 +5913,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld photo déplacée vers Supprimés récemment."
+                  "value": "%1$lld photo déplacée vers Suppressions récentes."
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld photos déplacées vers Supprimés récemment."
+                  "value": "%1$lld photos déplacées vers Suppressions récentes."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld photos déplacées vers Supprimés récemment."
+                  "value": "%1$lld photos déplacées vers Suppressions récentes."
                 }
               }
             }
