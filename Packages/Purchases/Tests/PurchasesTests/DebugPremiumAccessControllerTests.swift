@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Purchases
 import Core
 
@@ -7,7 +8,7 @@ import Core
 /// at an unlocked build. So the override has to apply to exactly the feature
 /// whose key is set, and to nothing else.
 @MainActor
-final class DebugPremiumAccessControllerTests: XCTestCase {
+@Suite struct DebugPremiumAccessControllerTests {
     private var defaults: UserDefaults!
     private var suiteName: String!
 
@@ -24,7 +25,7 @@ final class DebugPremiumAccessControllerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testOverrideUnlocksOnlyTheFeatureWhoseKeyIsSet() {
+    @Test func testOverrideUnlocksOnlyTheFeatureWhoseKeyIsSet() {
         for overridden in PremiumFeature.allCases {
             defaults.removePersistentDomain(forName: suiteName)
             defaults.set(true, forKey: overridden.debugOverrideDefaultsKey)
@@ -33,19 +34,18 @@ final class DebugPremiumAccessControllerTests: XCTestCase {
                 defaults: defaults
             )
 
-            XCTAssertEqual(controller.access(to: overridden), .allowed)
+            #expect(controller.access(to: overridden) == .allowed)
 
             for other in PremiumFeature.allCases where other != overridden {
-                XCTAssertEqual(
-                    controller.access(to: other),
-                    PremiumAccessController().access(to: other),
+                #expect(
+                    controller.access(to: other) == PremiumAccessController().access(to: other),
                     "overriding \(overridden) also changed \(other)"
                 )
             }
         }
     }
 
-    func testWithoutOverridesEveryDecisionMatchesTheBaseController() {
+    @Test func testWithoutOverridesEveryDecisionMatchesTheBaseController() {
         let base = PremiumAccessController()
         let controller = DebugPremiumAccessController(base: base, defaults: defaults)
         let contexts: [PremiumAccessContext] = [
@@ -58,29 +58,27 @@ final class DebugPremiumAccessControllerTests: XCTestCase {
 
         for feature in PremiumFeature.allCases {
             for context in contexts {
-                XCTAssertEqual(
-                    controller.access(to: feature, context: context),
-                    base.access(to: feature, context: context),
+                #expect(
+                    controller.access(to: feature, context: context) == base.access(to: feature, context: context),
                     "\(feature) in \(context) diverges from the base controller"
                 )
             }
         }
     }
 
-    func testOverrideBeatsTheContextThatWouldOtherwiseLockTheFeature() {
+    @Test func testOverrideBeatsTheContextThatWouldOtherwiseLockTheFeature() {
         defaults.set(true, forKey: PremiumFeature.unlimitedScans.debugOverrideDefaultsKey)
         let controller = DebugPremiumAccessController(
             base: PremiumAccessController(),
             defaults: defaults
         )
 
-        XCTAssertEqual(
-            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 99)),
-            .allowed
+        #expect(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 99)) == .allowed
         )
     }
 
-    func testEntitlementStateIsNotFakedByAnOverride() {
+    @Test func testEntitlementStateIsNotFakedByAnOverride() {
         // The override exists to reach gated screens, not to pretend a purchase
         // happened. Anything reading `entitlementState` — receipt-driven copy,
         // restore prompts — must still see the real, unpurchased state.
@@ -90,12 +88,12 @@ final class DebugPremiumAccessControllerTests: XCTestCase {
             defaults: defaults
         )
 
-        XCTAssertFalse(controller.entitlementState.isPremium)
+        #expect(!controller.entitlementState.isPremium)
     }
 
-    func testEveryFeatureHasADistinctOverrideKey() {
+    @Test func testEveryFeatureHasADistinctOverrideKey() {
         let keys = PremiumFeature.allCases.map(\.debugOverrideDefaultsKey)
 
-        XCTAssertEqual(Set(keys).count, keys.count, "two features share a debug override key")
+        #expect(Set(keys).count == keys.count, "two features share a debug override key")
     }
 }
