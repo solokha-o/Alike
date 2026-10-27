@@ -8255,7 +8255,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bereits gescannte Ergebnisse bleiben verfügbar – mit oder ohne Abo."
+            "value": "Die Ergebnisse früherer Scans bleiben verfügbar – mit oder ohne Abo."
           }
         },
         "fr": {
@@ -9085,7 +9085,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bewege deine ganze Auswahl in einem Schritt statt Foto für Foto."
+            "value": "Bewege alle ausgewählten Fotos auf einmal statt einzeln."
           }
         },
         "fr": {
@@ -9583,7 +9583,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du kannst ein Abo jederzeit im App Store verwalten oder kündigen. Die Preise siehst du, bevor du abschließt."
+            "value": "Du kannst ein Abo jederzeit im App Store verwalten oder kündigen. Die Preise siehst du, bevor du ein Abo abschließt."
           }
         },
         "fr": {
@@ -9666,7 +9666,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das bringt Alike Pro dazu"
+            "value": "Das bietet Alike Pro zusätzlich"
           }
         },
         "fr": {
@@ -10081,7 +10081,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scanne so oft du willst, ohne monatliches Kontingent."
+            "value": "Scanne so oft du willst, ohne monatliche Begrenzung."
           }
         },
         "fr": {
@@ -17053,7 +17053,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch, Chinesisch (traditionell) und Arabisch verfügbar. Der Schalter öffnet die iOS-Einstellungsseite der App."
+            "value": "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch, Chinesisch (traditionell) und Arabisch verfügbar. Diese Option öffnet die iOS-Einstellungsseite der App."
           }
         },
         "fr": {
