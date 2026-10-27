@@ -8291,7 +8291,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你已掃描過的結果會持續保留，無論是否訂閱。"
+            "value": "先前掃描的結果會持續保留，無論是否訂閱。"
           }
         },
         "ar": {
@@ -9785,7 +9785,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "選擇每週清理提醒的日期與時間。"
+            "value": "選擇每週在哪一天、什麼時間收到清理提醒。"
           }
         },
         "ar": {
@@ -9951,7 +9951,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "打開「螢幕快照」類別，並批次清空。"
+            "value": "打開「截圖」類別，並批次清空。"
           }
         },
         "ar": {
@@ -10034,7 +10034,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "螢幕快照清理"
+            "value": "截圖清理"
           }
         },
         "ar": {
