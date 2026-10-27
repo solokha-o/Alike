@@ -8249,7 +8249,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Os resultados que você já analisou continuam disponíveis, com ou sem assinatura."
+            "value": "Os resultados das análises anteriores continuam disponíveis, com ou sem assinatura."
           }
         },
         "de": {
@@ -8581,7 +8581,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Três análises por mês, com o contador zerando no início do mês seguinte."
+            "value": "Três análises por mês-calendário, com o contador zerando no início do mês seguinte."
           }
         },
         "de": {
@@ -8747,7 +8747,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você pode mover fotos para Apagados recentemente uma a uma."
+            "value": "Você pode mover fotos para Apagados uma a uma."
           }
         },
         "de": {
@@ -9079,7 +9079,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mova toda a sua seleção em uma etapa, em vez de uma foto por vez."
+            "value": "Mova todas as fotos selecionadas de uma vez, em vez de uma foto por vez."
           }
         },
         "de": {
@@ -10075,7 +10075,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Analise quantas vezes quiser, sem cota mensal."
+            "value": "Analise quantas vezes quiser, sem limite mensal."
           }
         },
         "de": {
@@ -16300,7 +16300,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O Alike Free inclui três análises por mês. O contador zera no início do mês seguinte."
+            "value": "O Alike Free inclui três análises por mês-calendário. O contador zera no início do mês seguinte."
           }
         },
         "de": {

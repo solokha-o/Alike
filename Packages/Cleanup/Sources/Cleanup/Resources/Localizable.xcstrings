@@ -1238,7 +1238,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O espaço pode não ser liberado até que os itens sejam apagados definitivamente de Apagados recentemente."
+            "value": "O espaço pode não ser liberado até que os itens sejam apagados definitivamente de Apagados."
           }
         },
         "de": {
@@ -5871,19 +5871,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld foto movida para Apagados recentemente."
+                  "value": "%1$lld foto movida para Apagados."
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld fotos movidas para Apagados recentemente."
+                  "value": "%1$lld fotos movidas para Apagados."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$lld fotos movidas para Apagados recentemente."
+                  "value": "%1$lld fotos movidas para Apagados."
                 }
               }
             }

@@ -95,19 +95,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld foto desfocada selecionada para Apagados recentemente?"
+                  "value": "Mover %1$lld foto desfocada selecionada para Apagados?"
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados recentemente?"
+                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados?"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados recentemente?"
+                  "value": "Mover %1$lld fotos desfocadas selecionadas para Apagados?"
                 }
               }
             }
@@ -388,19 +388,19 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld captura de tela selecionada para Apagados recentemente?"
+                  "value": "Mover %1$lld captura de tela selecionada para Apagados?"
                 }
               },
               "many": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados recentemente?"
+                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados?"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados recentemente?"
+                  "value": "Mover %1$lld capturas de tela selecionadas para Apagados?"
                 }
               }
             }
@@ -1780,7 +1780,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
+            "value": "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "de": {
@@ -1863,7 +1863,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
+            "value": "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "de": {
@@ -1946,7 +1946,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "A captura de tela selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
+            "value": "A captura de tela selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "de": {
@@ -2029,7 +2029,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As capturas de tela selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
+            "value": "As capturas de tela selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "de": {
