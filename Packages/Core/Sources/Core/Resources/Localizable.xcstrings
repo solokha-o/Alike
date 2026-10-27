@@ -1816,7 +1816,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili fotoğraf kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili fotoğraf arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {
@@ -1899,7 +1899,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili fotoğraflar kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili fotoğraflar arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {
@@ -1982,7 +1982,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili ekran görüntüsü kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili ekran görüntüsü arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {
@@ -2065,7 +2065,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili ekran görüntüleri kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili ekran görüntüleri arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {

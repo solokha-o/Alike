@@ -317,7 +317,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike'ın kitaplığını taraması, temizlik önerileri hazırlaması ve sen uygulamayı seçtiğinde iyileştirmeyi kaydedebilmesi için fotoğraf erişimi gerekiyor."
+            "value": "Alike'ın fotoğraf arşivini taraması, temizlik önerileri hazırlaması ve bir iyileştirmeyi uygulamayı seçtiğinde kaydetmesi için fotoğraflarına erişmesi gerekiyor."
           }
         },
         "zh-Hant": {
@@ -400,7 +400,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike hiçbir fotoğrafı otomatik olarak silmez. Önce önerileri sen gözden geçirir, her temizlik işlemini sen onaylarsın."
+            "value": "Alike hiçbir fotoğrafı otomatik olarak silmez. Önce önerileri gözden geçirirsin ve her temizlik işlemini onaylarsın."
           }
         },
         "zh-Hant": {
@@ -2060,7 +2060,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fotoğraf erişimi, Alike'ın kitaplığını taramasını, benzer fotoğrafları gruplamasını ve senin gözden geçirmen için temizlik önerileri hazırlamasını sağlar — ayrıca, yalnızca sen istediğinde, sakladığın bir fotoğrafın iyileştirilmiş sürümünü kaydeder."
+            "value": "Fotoğraf erişimi, Alike'ın fotoğraf arşivini taramasını, benzer fotoğrafları gruplamasını ve gözden geçirmen için temizlik önerileri hazırlamasını sağlar. Yalnızca sen istediğinde, sakladığın bir fotoğrafın iyileştirilmiş sürümünü de kaydedebilir."
           }
         },
         "zh-Hant": {
