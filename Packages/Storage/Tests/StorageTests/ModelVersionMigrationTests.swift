@@ -17,6 +17,10 @@ import Testing
 ///
 /// A `final class` suite: each test copies the fixture into its own `UUID`
 /// directory, and `deinit` removes it.
+///
+/// `@MainActor`: the baseline test fetches through `viewContext`, a main-queue
+/// context, and Swift Testing would otherwise run it on a worker thread.
+@MainActor
 @Suite final class ModelVersionMigrationTests {
 
     private let storeDirectory: URL
