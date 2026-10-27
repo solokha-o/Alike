@@ -36,6 +36,10 @@ Rendered by `disclosure` in
 
 ### Paragraph 1 — renewal and billing
 
+**FR-CA**
+
+> Les abonnements sont renouvelés automatiquement, sauf annulation au moins 24 heures avant la fin de la période en cours. Le paiement est débité de votre compte Apple.
+
 **EN**
 
 > Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
@@ -89,6 +93,10 @@ Rendered by `disclosure` in
 > تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. تُخصم قيمة الدفع من حساب Apple الخاص بك.
 
 ### Paragraph 2 — trial and cancellation
+
+**FR-CA**
+
+> Le forfait annuel comprend un essai gratuit de 7 jours pour les nouveaux abonnés admissibles. La facturation commence à la fin de l’essai, sauf si vous annulez l’abonnement au moins 24 heures avant la fin de l’essai. Vous pouvez gérer ou annuler votre abonnement en tout temps dans les Réglages iOS.
 
 **EN**
 
@@ -155,6 +163,7 @@ must not smooth it away.
 
 | Locale | Privacy Policy | Terms of Use |
 | --- | --- | --- |
+| `fr-CA` | Politique de confidentialité | Conditions d’utilisation |
 | `en` | Privacy Policy | Terms of Use |
 | `uk` | Політика конфіденційності | Умови використання |
 | `es-419` | Política de privacidad | Términos de uso |

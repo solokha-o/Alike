@@ -81,6 +81,12 @@
             "state" : "translated",
             "value" : "تم إغلاق Alike بشكل غير متوقع"
           }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike s’est fermé de façon inattendue"
+          }
         }
       }
     },
@@ -163,6 +169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "هل تريد إرسال تقرير التعطل إلى المطوّر؟ سيُفتح كرسالة بريد إلكتروني لتتمكن من قراءته قبل الإرسال."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer un rapport de plantage au développeur ? Il s’ouvre sous forme de courriel, vous pouvez donc le lire avant l’envoi."
           }
         }
       }
@@ -247,6 +259,12 @@
             "state" : "translated",
             "value" : "التقرير هو تشخيص التعطل الذي سجّله iOS: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز جهازك، وفي بعض حالات التعطل رسالة الخطأ. يرسله Alike كما هو دون تنقيح. ولا يحتوي على صور."
           }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le rapport est le diagnostic du plantage enregistré par iOS : la trace, les versions de l’app et d’iOS, le modèle de votre appareil et, pour certains plantages, le message d’erreur. Alike l’envoie tel quel, sans filtrage. Il ne contient aucune photo."
+          }
         }
       }
     },
@@ -329,6 +347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إرسال التقرير"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer le rapport"
           }
         }
       }
@@ -413,6 +437,12 @@
             "state" : "translated",
             "value" : "ليس الآن"
           }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
+          }
         }
       }
     },
@@ -495,6 +525,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرفق Alike دون تعديل تشخيص التعطل الذي سجّله iOS على جهازي: تتبّع المكدّس وإصدارا التطبيق وiOS وطراز الجهاز، وفي بعض حالات التعطل رسالة الخطأ. ولا يحتوي على أي صور."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a joint tel quel le diagnostic du plantage enregistré par iOS sur mon appareil : la trace, les versions de l’app et d’iOS, le modèle de l’appareil et, pour certains plantages, le message d’erreur. Il ne contient aucune photo."
           }
         }
       }
@@ -579,6 +615,12 @@
             "state" : "translated",
             "value" : "لم يتم إعداد حساب بريد، لذا يمر التقرير عبر ورقة المشاركة. اختر تطبيق بريد هناك وأرسله إلى:"
           }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun compte Mail n’est configuré : le rapport passe donc par la feuille de partage. Choisissez-y une app de messagerie et envoyez-le à :"
+          }
         }
       }
     },
@@ -661,6 +703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "أرسل تقرير التعطل هذا إلى:"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyez ce rapport de plantage à :"
           }
         }
       }

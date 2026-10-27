@@ -292,6 +292,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photo floue sélectionnée vers « Suppressions récentes » ?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -585,6 +609,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld capture d’écran sélectionnée vers « Suppressions récentes » ?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -667,6 +715,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تنظيف الصور الضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage des photos floues"
           }
         }
       }
@@ -751,6 +805,12 @@
             "state": "translated",
             "value": "تنظيف الصور الضبابية ميزة مميزة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le nettoyage des photos floues est une fonctionnalité premium"
+          }
         }
       }
     },
@@ -833,6 +893,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور الضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos floues"
           }
         }
       }
@@ -917,6 +983,12 @@
             "state": "translated",
             "value": "صور يُرجَّح أنها منخفضة الجودة بناءً على تحليل يجري على الجهاز. راجعها قبل الحذف."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos probablement de faible qualité d’après l’analyse sur l’appareil. À examiner avant suppression."
+          }
         }
       }
     },
@@ -999,6 +1071,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يتم العثور على صور ضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune photo floue trouvée"
           }
         }
       }
@@ -1083,6 +1161,12 @@
             "state": "translated",
             "value": "لم يتم العثور على لقطات شاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune capture d’écran trouvée"
+          }
         }
       }
     },
@@ -1165,6 +1249,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح تنظيف الصور الضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le nettoyage des photos floues"
           }
         }
       }
@@ -1249,6 +1339,12 @@
             "state": "translated",
             "value": "فتح تنظيف لقطات الشاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le nettoyage des captures d’écran"
+          }
         }
       }
     },
@@ -1331,6 +1427,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح صفحة الاشتراك المميز لتنظيف الصور الضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l’offre premium pour le nettoyage des photos floues"
           }
         }
       }
@@ -1415,6 +1517,12 @@
             "state": "translated",
             "value": "يفتح صفحة الاشتراك المميز لتنظيف لقطات الشاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l’offre premium pour le nettoyage des captures d’écran"
+          }
         }
       }
     },
@@ -1497,6 +1605,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أجرِ فحصًا جديدًا بعد تغيّر مكتبتك أو إذا كانت هناك صور أخرى بحاجة إلى مراجعة."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancez une nouvelle analyse après une modification de votre photothèque ou s’il reste des photos à examiner."
           }
         }
       }
@@ -1581,6 +1695,12 @@
             "state": "translated",
             "value": "تنظيف لقطات الشاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage des captures d’écran"
+          }
         }
       }
     },
@@ -1663,6 +1783,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تنظيف لقطات الشاشة ميزة مميزة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le nettoyage des captures d’écran est une fonctionnalité premium"
           }
         }
       }
@@ -1747,6 +1873,12 @@
             "state": "translated",
             "value": "لقطات الشاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captures d’écran"
+          }
         }
       }
     },
@@ -1829,6 +1961,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         }
       }
@@ -1913,6 +2051,12 @@
             "state": "translated",
             "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+          }
         }
       }
     },
@@ -1996,6 +2140,12 @@
             "state": "translated",
             "value": "ستُزال لقطة الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+          }
         }
       }
     },
@@ -2078,6 +2228,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال لقطات الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         }
       }
@@ -2368,6 +2524,30 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              }
+            }
+          }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnée, taille estimée %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnées, taille estimée %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld sélectionnées, taille estimée %2$@."
                 }
               }
             }
@@ -2665,6 +2845,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photo probablement floue à examiner."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos probablement floues à examiner."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos probablement floues à examiner."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2958,6 +3162,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capture d’écran à examiner."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captures d’écran à examiner."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captures d’écran à examiner."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3040,6 +3268,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جرّب إعادة الفحص بعد تحديث مكتبتك."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relancez une analyse après la mise à jour de votre photothèque."
           }
         }
       }
@@ -3124,6 +3358,12 @@
             "state": "translated",
             "value": "افتح تنظيف الصور الضبابية لمراجعة اللقطات التي يُرجَّح أنها منخفضة الجودة قبل حذفها بالتأكيد الآمن نفسه."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez le nettoyage des photos floues pour examiner les photos probablement de mauvaise qualité avant de les supprimer, avec la même confirmation sécurisée."
+          }
         }
       }
     },
@@ -3206,6 +3446,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح تنظيف لقطات الشاشة لمراجعة لقطات الشاشة وحذفها بالتأكيد الآمن نفسه."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez le nettoyage des captures d’écran pour les examiner et les supprimer avec la même confirmation sécurisée."
           }
         }
       }
@@ -3290,6 +3536,12 @@
             "state": "translated",
             "value": "عالية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Élevée"
+          }
         }
       }
     },
@@ -3373,6 +3625,12 @@
             "state": "translated",
             "value": "منخفضة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
         }
       }
     },
@@ -3455,6 +3713,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "متوسطة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyenne"
           }
         }
       }

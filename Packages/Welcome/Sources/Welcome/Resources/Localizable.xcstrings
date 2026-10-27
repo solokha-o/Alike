@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "تم منح الإذن"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès autorisé"
+          }
         }
       }
     },
@@ -161,6 +167,12 @@
           }
         },
         "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "fr-CA": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "تم حذف بيانات Alike"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données Alike supprimées"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يحتاج Alike إلى إذن الوصول إلى الصور لفحص مكتبتك وإعداد اقتراحات التنظيف وحفظ التحسين عندما تختار تطبيقه."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a besoin d’accéder à vos photos pour analyser votre photothèque, préparer des suggestions de nettoyage et enregistrer une amélioration lorsque vous choisissez de l’appliquer."
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "لا يحذف Alike الصور تلقائيًا أبدًا. أنت تراجع الاقتراحات أولًا وتؤكد كل إجراء تنظيف."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ne supprime jamais de photos automatiquement. Vous examinez d’abord les suggestions et confirmez chaque nettoyage."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike، محقق صورك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, votre détective photo"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "يبقى التحليل على جهازك، ولا يُحذف أي شيء تلقائيًا."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’analyse reste sur votre appareil et rien n’est supprimé automatiquement."
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "رجوع"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retour"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "يمكنك تغيير الإذن لاحقًا من الإعدادات، ولا يحذف Alike أي شيء دون تأكيدك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pourrez modifier l’accès plus tard dans Réglages, et Alike ne supprime jamais rien sans votre confirmation."
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك منح الإذن الآن والعودة إلى التنظيف متى كنت مستعدًا."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez autoriser l’accès maintenant et revenir au nettoyage quand vous le souhaitez."
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "نظّف مكتبتك بثقة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyez votre photothèque en toute confiance"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قارن بين الصور واحتفظ باللقطات التي تهمك."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparez vos photos et gardez les clichés qui comptent pour vous."
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "متابعة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فعّل إذن الوصول إلى الصور من الإعدادات عندما تكون مستعدًا للمتابعة."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez l’accès aux photos dans Réglages lorsque vous souhaitez continuer."
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "يبقى كل حذف مؤكَّدًا وظاهرًا وبين يديك بالكامل."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque suppression reste confirmée, visible et entièrement entre vos mains."
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اعثر على فرص التنظيف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trouver des possibilités de nettoyage"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "جمّع الصور المتشابهة بصريًا وغيرها من العناصر التي تستحق المراجعة."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regroupe les photos visuellement similaires et les autres éléments à examiner."
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "كيف يساعدك Alike"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment Alike vous aide"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "اعرف حجم المساحة التي يمكنك استرجاعها قبل أن تبدأ التنظيف."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sachez combien d’espace vous pourriez récupérer avant de faire le tri."
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم حذف بيانات Alike المحفوظة على جهازك. أما صورك واشتراكك فلم يطرأ عليهما أي تغيير."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos données Alike locales ont été supprimées. Vos photos et votre abonnement sont inchangés."
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "التالي"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivant"
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يُحذف أي شيء تلقائيًا"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien n’est supprimé automatiquement"
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "فتح الإعدادات"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصفحة %1$lld من %2$lld"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %1$lld sur %2$lld"
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "يتيح إذن الوصول إلى الصور لـ Alike فحص مكتبتك وتجميع الصور المتشابهة وإعداد اقتراحات تنظيف لتراجعها — وكذلك، عندما تطلب ذلك بنفسك فقط، حفظ نسخة محسّنة من صورة تحتفظ بها."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’accès aux photos permet à Alike d’analyser votre photothèque, de regrouper les photos similaires et de préparer des suggestions de nettoyage à examiner — et, uniquement à votre demande, d’enregistrer une version améliorée d’une photo que vous gardez."
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يلزم إذن الوصول إلى الصور"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès aux photos requis"
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "يبقى تحليل صورك على هذا الجهاز ويمنحك اقتراحات تنظيف موجَّهة."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’analyse de vos photos reste sur cet appareil et vous propose un nettoyage guidé."
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تبقى صورك خاصة، وستؤكد كل عملية تنظيف قبل إزالة أي شيء."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos photos restent privées et vous confirmez chaque nettoyage avant toute suppression."
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "خاص ودائمًا تحت سيطرتك"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privé et toujours sous votre contrôle"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحليل خاص على الجهاز"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse privée sur l’appareil"
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "راجع كل اقتراح"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examiner chaque suggestion"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "راجع الصور المتشابهة، وحرّر مساحة التخزين، وابقَ متحكمًا في كل عملية حذف."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez les photos similaires, libérez de l’espace et gardez la main sur chaque suppression."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "أنت تراجع الاقتراحات أولًا وتؤكد بنفسك كل إجراء تنظيف."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous examinez d’abord les suggestions et confirmez vous-même chaque nettoyage."
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مسار تنظيف آمن"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage sans risque"
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "اطّلع على التوفير المحتمل"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les gains possibles"
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اكتشف الصور المتشابهة التي يمكنها تحرير مساحة بمجرد أن تقرر ما تريد إزالته."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repérez les photos similaires qui libéreront de l’espace une fois votre choix fait."
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "توفير مساحة التخزين"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espace récupéré"
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حوّل مكتبة مزدحمة إلى تنظيف موجَّه."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transformez une photothèque encombrée en nettoyage guidé."
           }
         }
       }
@@ -3236,6 +3464,12 @@
             "state": "translated",
             "value": "لماذا يطلب Alike إذن الوصول إلى الصور"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourquoi Alike demande l’accès aux photos"
+          }
         }
       }
     },
@@ -3318,6 +3552,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تبقى مكتبتك تحت سيطرتك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre photothèque reste sous votre contrôle"
           }
         }
       }

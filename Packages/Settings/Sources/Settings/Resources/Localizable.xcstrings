@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "قد تكون بعض البيانات قد أُزيلت بالفعل. يُرجى المحاولة مرة أخرى لإكمال حذف بيانات Alike."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certaines données ont peut-être déjà été supprimées. Réessayez pour terminer la suppression de vos données Alike."
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike Pro مُفعَّل"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro est actif"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "تمت استعادة اشتراكك في Alike Pro."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre abonnement Alike Pro a été restauré."
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التحليل"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "يمكنك متابعة استخدام Alike المجاني."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez continuer à utiliser Alike Free."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إلغاء"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "تغيير اللغة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changer de langue"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تقدّم التنظيف والجلسات والسجل"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression, sessions et historique de nettoyage"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "تذكير التنظيف"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rappel de nettoyage"
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تحديث تذكير التنظيف. يُرجى المحاولة مرة أخرى."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre rappel de nettoyage n’a pas pu être mis à jour. Réessayez."
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "التواصل مع المطوّر"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contacter le développeur"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر حذف بيانات Alike"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de supprimer les données Alike"
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "تعذّرت استعادة المشتريات"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de restaurer les achats"
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تحديث التذكير"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de mettre à jour le rappel"
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "تخصيص اليوم والوقت"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnaliser le jour et l’heure"
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "البيانات والخصوصية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données et confidentialité"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "التصحيح"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débogage"
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حذف بيانات Alike"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer les données Alike"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "حذف جميع بيانات Alike؟"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer toutes les données Alike ?"
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ الحذف..."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suppression…"
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "تفعيل الوصول المميز لتنظيف الصور الضبابية في إصدارات التصحيح"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer l’accès premium au nettoyage des photos floues dans les versions de débogage"
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تفعيل تخصيص جدول التذكير المميز في إصدارات التصحيح"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer la personnalisation premium des rappels dans les versions de débogage"
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "تفعيل الوصول المميز لتنظيف لقطات الشاشة في إصدارات التصحيح"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer l’accès premium au nettoyage des captures d’écran dans les versions de débogage"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فعّل تذكيرًا أسبوعيًا للعودة ومتابعة التنظيف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez un rappel hebdomadaire pour revenir poursuivre le nettoyage"
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "تُجدوَل التذكيرات المجانية يوم %@. اشترك في النسخة المميزة لاختيار يومك ووقتك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les rappels gratuits sont programmés pour %@. Débloquez le premium pour choisir vos propres jour et heure."
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تفضيلات الشبكة والحساسية والتذكير"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Préférences de grille, de sensibilité et de rappels"
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "الحساسية الأعلى تعثر على مزيد من الصور المتشابهة لكنها قد تشمل صورًا أقل تشابهًا"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une sensibilité plus élevée trouve davantage de photos similaires, mais peut inclure des images moins ressemblantes"
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "طريقة الاستخدام"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode d’emploi"
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "اللغة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الشؤون القانونية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mentions légales"
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "حصة الفحص المجاني الشهرية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyses gratuites par mois"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يُعثر على اشتراك مُفعَّل في Alike Pro."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun abonnement Alike Pro actif n’a été trouvé."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "الإشعارات مُعطَّلة لتطبيق Alike. فعّلها من الإعدادات لتصلك تذكيرات التنظيف الأسبوعية."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les notifications sont désactivées pour Alike. Activez-les dans Réglages pour recevoir votre rappel de nettoyage hebdomadaire."
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "موافق"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "فتح سياسة خصوصية Alike في متصفحك"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir la politique de confidentialité d’Alike dans votre navigateur"
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح شروط استخدام Alike في متصفحك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les conditions d’utilisation d’Alike dans votre navigateur"
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "فتح محرر البريد للتواصل مع المطوّر"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir la messagerie pour contacter le développeur"
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح تفاصيل النسخة المميزة لجدولة تذكير تنظيف مخصص"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les détails premium pour planifier des rappels de nettoyage personnalisés"
           }
         }
       }
@@ -3236,6 +3464,12 @@
             "state": "translated",
             "value": "فتح الإعدادات"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
+          }
         }
       }
     },
@@ -3318,6 +3552,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح إعدادات النظام لتغيير لغة التطبيق"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les réglages système pour changer la langue de l’app"
           }
         }
       }
@@ -3402,6 +3642,12 @@
             "state": "translated",
             "value": "فتح إرشادات الاستخدام ونصائح سير عمل التنظيف"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le mode d’emploi et les conseils de nettoyage"
+          }
         }
       }
     },
@@ -3484,6 +3730,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حذف بيانات Alike نهائيًا بعد التأكيد"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer définitivement les données Alike après confirmation"
           }
         }
       }
@@ -3568,6 +3820,12 @@
             "state": "translated",
             "value": "إذن الوصول إلى الصور واشتراك Alike Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès aux photos et abonnement Alike Pro"
+          }
         }
       }
     },
@@ -3650,6 +3908,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يؤدي هذا الإجراء إلى حذف مكتبة صورك أبدًا."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette action ne supprime jamais votre photothèque."
           }
         }
       }
@@ -3734,6 +3998,12 @@
             "state": "translated",
             "value": "صورك وعناصر «المحذوفة مؤخرًا»"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos photos et les éléments de « Suppressions récentes »"
+          }
         }
       }
     },
@@ -3816,6 +4086,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يُرجى التحقق من اتصالك ومحاولة الاستعادة مرة أخرى."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez votre connexion et relancez la restauration."
           }
         }
       }
@@ -3900,6 +4176,12 @@
             "state": "translated",
             "value": "تتيح لك النسخة المميزة اختيار جدول تذكير أسبوعي مخصص."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le premium vous laisse choisir votre propre rappel hebdomadaire."
+          }
         }
       }
     },
@@ -3982,6 +4264,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "سياسة الخصوصية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Politique de confidentialité"
           }
         }
       }
@@ -4066,6 +4354,12 @@
             "state": "translated",
             "value": "يفتح صفحة App Store لكتابة مراجعة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre la page de l’App Store pour rédiger un avis"
+          }
         }
       }
     },
@@ -4148,6 +4442,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التقييم على App Store"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noter sur l’App Store"
           }
         }
       }
@@ -4232,6 +4532,12 @@
             "state": "translated",
             "value": "يوم التذكير"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour du rappel"
+          }
         }
       }
     },
@@ -4314,6 +4620,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جدول التذكير"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planification du rappel"
           }
         }
       }
@@ -4398,6 +4710,12 @@
             "state": "translated",
             "value": "%1$@ في %2$@"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ à %2$@"
+          }
         }
       }
     },
@@ -4480,6 +4798,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "وقت التذكير"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heure du rappel"
           }
         }
       }
@@ -4564,6 +4888,12 @@
             "state": "translated",
             "value": "مراجعة البيانات التي يخزّنها Alike على هذا الجهاز وحذفها نهائيًا"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examiner et supprimer définitivement les données stockées par Alike sur cet appareil"
+          }
         }
       }
     },
@@ -4646,6 +4976,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نتائج الفحص وذواكر التحليل المؤقتة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résultats d’analyse et caches d’analyse"
           }
         }
       }
@@ -4730,6 +5066,12 @@
             "state": "translated",
             "value": "الحساسية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensibilité"
+          }
         }
       }
     },
@@ -4812,6 +5154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإعدادات"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
           }
         }
       }
@@ -4896,6 +5244,12 @@
             "state": "translated",
             "value": "مشاركة التطبيق"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager l’app"
+          }
         }
       }
     },
@@ -4978,6 +5332,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مشاركة التطبيق عبر خيارات المشاركة المتاحة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager l’app avec les options disponibles"
           }
         }
       }
@@ -5062,6 +5422,12 @@
             "state": "translated",
             "value": "الاشتراك"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement"
+          }
         }
       }
     },
@@ -5144,6 +5510,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الدعم"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assistance"
           }
         }
       }
@@ -5228,6 +5600,12 @@
             "state": "translated",
             "value": "شروط الاستخدام"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions d’utilisation"
+          }
         }
       }
     },
@@ -5310,6 +5688,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يمكن التراجع عن هذا الإجراء. سيعيد Alike عرض شاشات التعريف عند انتهاء الحذف."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette action est irréversible. Alike réaffichera l’introduction une fois la suppression terminée."
           }
         }
       }
@@ -5394,6 +5778,12 @@
             "state": "translated",
             "value": "هذا التجاوز متاح في إصدارات التصحيح فقط ويؤثر في التحقق المحلي من النسخة المميزة."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce forçage n’existe que dans les versions de débogage et concerne le contrôle premium local."
+          }
         }
       }
     },
@@ -5476,6 +5866,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يؤدي هذا إلى حذف نتائج Alike المحلية وسجل التنظيف والتفضيلات نهائيًا. أما صورك واشتراكك فسيبقيان كما هما."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cela supprime définitivement les résultats locaux, l’historique de nettoyage et les préférences d’Alike. Vos photos et votre abonnement sont conservés."
           }
         }
       }
@@ -5560,6 +5956,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
         }
       }
     },
@@ -5642,6 +6044,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح ميزة المرشّحات المتقدمة المميزة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Filtres avancés"
           }
         }
       }
@@ -5726,6 +6134,12 @@
             "state": "translated",
             "value": "فتح ميزة التنظيف الجماعي المميزة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Nettoyage groupé"
+          }
         }
       }
     },
@@ -5808,6 +6222,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح ميزة تنظيف الصور الضبابية المميزة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Nettoyage des photos floues"
           }
         }
       }
@@ -5892,6 +6312,12 @@
             "state": "translated",
             "value": "فتح ميزة جدول التذكير المخصص المميزة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Rappel personnalisé"
+          }
         }
       }
     },
@@ -5974,6 +6400,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح ميزة تنظيف لقطات الشاشة المميزة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Nettoyage des captures d’écran"
           }
         }
       }
@@ -6058,6 +6490,12 @@
             "state": "translated",
             "value": "فتح ميزة الفحوصات غير المحدودة المميزة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer la fonctionnalité premium Analyses illimitées"
+          }
         }
       }
     },
@@ -6140,6 +6578,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإصدار"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
           }
         }
       }
@@ -6224,6 +6668,12 @@
             "state": "translated",
             "value": "تذكير التنظيف الأسبوعي"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rappel de nettoyage hebdomadaire"
+          }
         }
       }
     },
@@ -6306,6 +6756,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي سيُحذف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qui sera supprimé"
           }
         }
       }
@@ -6390,6 +6846,12 @@
             "state": "translated",
             "value": "ما الذي سيبقى"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qui est conservé"
+          }
         }
       }
     },
@@ -6472,6 +6934,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يتعلم Alike الصور التي تختارها كأفضل لقطة لتحسين الترتيب المستقبلي. تؤدي إعادة التعيين إلى نسيان ذلك والعودة إلى الترتيب الافتراضي — لا يتم إرسال أي شيء مطلقًا خارج جهازك."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike apprend quelles photos vous choisissez comme Meilleure Photo pour améliorer les classements futurs. La réinitialisation oublie cela et revient au classement par défaut — rien ne quitte jamais votre appareil."
           }
         }
       }
@@ -6556,6 +7024,12 @@
             "state": "translated",
             "value": "تخصيص أفضل لقطة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnalisation de la Meilleure Photo"
+          }
         }
       }
     },
@@ -6638,6 +7112,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّرت إعادة تعيين تعلّم أفضل لقطة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de réinitialiser l'apprentissage de la Meilleure Photo"
           }
         }
       }
@@ -6722,6 +7202,12 @@
             "state": "translated",
             "value": "ينسى ما تعلّمه Alike من اختياراتك لأفضل لقطة ويعود إلى الترتيب الافتراضي."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oublie ce qu'Alike a appris de vos choix de Meilleure Photo et revient au classement par défaut."
+          }
         }
       }
     },
@@ -6804,6 +7290,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إعادة تعيين تعلّم أفضل لقطة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser l'apprentissage de la Meilleure Photo"
           }
         }
       }
@@ -6888,6 +7380,12 @@
             "state": "translated",
             "value": "هل تريد إعادة تعيين تعلّم أفضل لقطة؟"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser l'apprentissage de la Meilleure Photo ?"
+          }
         }
       }
     },
@@ -6970,6 +7468,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ إعادة التعيين..."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialisation…"
           }
         }
       }
@@ -7054,6 +7558,12 @@
             "state": "translated",
             "value": "سيؤدي هذا إلى نسيان ما تعلّمه Alike من اختياراتك لأفضل لقطة والعودة إلى الترتيب الافتراضي."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cela oublie ce qu'Alike a appris de vos choix de Meilleure Photo et revient au classement par défaut."
+          }
         }
       }
     },
@@ -7136,6 +7646,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قد لا تكون إعادة تعيين تخصيص أفضل لقطة قد اكتملت. يُرجى المحاولة مرة أخرى."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La personnalisation de la Meilleure Photo n'a peut-être pas été entièrement réinitialisée. Veuillez réessayer."
           }
         }
       }

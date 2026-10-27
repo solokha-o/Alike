@@ -81,6 +81,12 @@
             "state": "translated",
             "value": "開啟 Alike 清理"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le nettoyage Alike"
+          }
         }
       }
     },
@@ -163,6 +169,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "在 Alike 中開啟此列表"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre cette liste dans Alike"
           }
         }
       }
@@ -247,6 +259,12 @@
             "state": "translated",
             "value": "متابعة المراجعة في Alike"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre le tri dans Alike"
+          }
         }
       }
     },
@@ -329,6 +347,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "開啟 Alike 升級畫面"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l’écran d’abonnement d’Alike"
           }
         }
       }
@@ -413,6 +437,12 @@
             "state": "translated",
             "value": "كل شيء نظيف"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout est propre"
+          }
         }
       }
     },
@@ -495,6 +525,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ للتنظيف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ à nettoyer"
           }
         }
       }
@@ -579,6 +615,12 @@
             "state": "translated",
             "value": "المراجعة: %1$lld من %2$lld"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tri : %1$lld sur %2$lld"
+          }
         }
       }
     },
@@ -658,6 +700,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "fr-CA": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -745,6 +793,12 @@
             "state": "translated",
             "value": "متابعة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre"
+          }
         }
       }
     },
@@ -827,6 +881,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مراجعة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier"
           }
         }
       }
@@ -911,6 +971,12 @@
             "state": "translated",
             "value": "فحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyser"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
             "state": "translated",
             "value": "模糊"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Floues"
+          }
         }
       }
     },
@@ -1076,6 +1148,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已鎖定"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrouillé"
           }
         }
       }
@@ -1370,6 +1448,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photo"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld photos"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1452,6 +1554,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "螢幕截圖"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captures d’écran"
           }
         }
       }
@@ -1536,6 +1644,12 @@
             "state": "translated",
             "value": "相似"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similaires"
+          }
         }
       }
     },
@@ -1619,6 +1733,12 @@
             "state": "translated",
             "value": "已全部處理"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout est à jour"
+          }
         }
       }
     },
@@ -1701,6 +1821,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "繼續檢視"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre le tri"
           }
         }
       }
@@ -1991,6 +2117,30 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%1$lld 個群組"
+                }
+              }
+            }
+          }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupe"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes"
                 }
               }
             }
@@ -2288,6 +2438,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupe restant"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes restants"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes restants"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2370,6 +2544,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مجموعات تمت مراجعتها"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupes triés"
           }
         }
       }
@@ -2454,6 +2634,12 @@
             "state": "translated",
             "value": "上次檢視 %@"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier tri le %@"
+          }
         }
       }
     },
@@ -2536,6 +2722,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "掃描於 %@"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysé le %@"
           }
         }
       }
@@ -2620,6 +2812,12 @@
             "state": "translated",
             "value": "圖庫已變更"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photothèque modifiée"
+          }
         }
       }
     },
@@ -2703,6 +2901,12 @@
             "state": "translated",
             "value": "僅限已分享的照片"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour les photos partagées"
+          }
         }
       }
     },
@@ -2785,6 +2989,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "允許取用照片"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser l’accès aux photos"
           }
         }
       }
@@ -3079,6 +3289,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "sur %1$lld groupes"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "sur %1$lld groupe"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "sur %1$lld groupes"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3161,6 +3395,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "/ %1$lld"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sur %1$lld"
           }
         }
       }
@@ -3245,6 +3485,12 @@
             "state": "translated",
             "value": "開啟 Alike"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Alike"
+          }
         }
       }
     },
@@ -3327,6 +3573,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "可清理空間"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disponible à nettoyer"
           }
         }
       }
@@ -3411,6 +3663,12 @@
             "state": "translated",
             "value": "掃描你的圖庫"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyser votre photothèque"
+          }
         }
       }
     },
@@ -3493,6 +3751,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "佔照片 %2$@ 的 %1$@"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ de vos %2$@ de photos"
           }
         }
       }
@@ -3787,6 +4051,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupe similaire"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes similaires"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld groupes similaires"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3870,6 +4158,12 @@
             "state": "translated",
             "value": "可以釋出多少空間，以及尚未完成的檢視。"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’espace que vous pouvez récupérer, et le tri resté inachevé."
+          }
         }
       }
     },
@@ -3949,6 +4243,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
+        },
+        "fr-CA": {
           "stringUnit": {
             "state": "translated",
             "value": "Alike"
@@ -4036,6 +4336,12 @@
             "state": "translated",
             "value": "一眼掌握相似群組、螢幕截圖與模糊照片。"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupes de photos similaires, captures d’écran et photos floues en un coup d’œil."
+          }
         }
       }
     },
@@ -4119,6 +4425,12 @@
             "state": "translated",
             "value": "Alike 圖庫"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photothèque Alike"
+          }
         }
       }
     },
@@ -4201,6 +4513,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "圖庫總覽"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu de la photothèque"
           }
         }
       }

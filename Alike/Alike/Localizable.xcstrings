@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "لاحقًا"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus tard"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يتطلب تغيير الحساسية إجراء فحص جديد لكي يسري المفعول"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La modification de la sensibilité ne prend effet qu’après une nouvelle analyse"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "إعادة الفحص الآن"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyser"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يلزم إعادة الفحص"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle analyse requise"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "التنظيف"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyage"
+          }
         }
       }
     },
@@ -497,6 +527,12 @@
             "state": "translated",
             "value": "الفحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse"
+          }
         }
       }
     },
@@ -579,6 +615,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإعدادات"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
           }
         }
       }

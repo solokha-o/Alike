@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "Alike Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike Pro مُفعَّل"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro est actif"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "نظّف كل الصور المحددة مع Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyez toutes les photos sélectionnées avec Pro"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "استعادة المشتريات"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurer les achats"
           }
         }
       }
@@ -620,6 +644,30 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "راجع %1$lld صورة محددة وأزلها في إجراء واحد، مع %2$@ قابلة للاسترجاع تقديريًا."
+                }
+              }
+            }
+          }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Examinez et supprimez %1$lld photo sélectionnée en une seule action, avec %2$@ récupérables estimés."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Examinez et supprimez %1$lld photos sélectionnées en une seule action, avec %2$@ récupérables estimés."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Examinez et supprimez %1$lld photos sélectionnées en une seule action, avec %2$@ récupérables estimés."
                 }
               }
             }
@@ -917,6 +965,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilité de nettoyage. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilités de nettoyage. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilités de nettoyage. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1210,6 +1282,30 @@
               }
             }
           }
+        },
+        "fr-CA": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilité de nettoyage, soit %2$@ récupérables estimés. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilités de nettoyage, soit %2$@ récupérables estimés. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Votre analyse a trouvé %1$lld possibilités de nettoyage, soit %2$@ récupérables estimés. Passez à Alike Pro pour nettoyer plus vite."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1292,6 +1388,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختر يوم التذكير الأسبوعي ووقته بما يناسب روتينك."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez le jour et l’heure du rappel hebdomadaire qui vous conviennent."
           }
         }
       }
@@ -1376,6 +1478,12 @@
             "state": "translated",
             "value": "اعثر على الصور المهمة بسرعة أكبر"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trouvez plus vite les photos qui comptent"
+          }
         }
       }
     },
@@ -1458,6 +1566,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "عثرت على أولى فرص التنظيف لديك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez trouvé vos premières possibilités de nettoyage"
           }
         }
       }
@@ -1542,6 +1656,12 @@
             "state": "translated",
             "value": "تشمل النسخة المجانية %1$d فحوصات في الشهر الميلادي. لديك %2$d متبقية، وتتجدد الحصة في %3$@."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La version gratuite comprend %1$d analyses par mois civil. Il vous en reste %2$d, et le quota est réinitialisé le %3$@."
+          }
         }
       }
     },
@@ -1624,6 +1744,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تشمل النسخة المجانية %1$d فحوصات في الشهر الميلادي. لديك %2$d متبقية."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La version gratuite comprend %1$d analyses par mois civil. Il vous en reste %2$d."
           }
         }
       }
@@ -1708,6 +1834,12 @@
             "state": "translated",
             "value": "تشمل النسخة المجانية ثلاثة فحوصات في الشهر الميلادي. أما Pro فيبقي نتائج تنظيفك محدَّثة كلما تغيّرت مكتبتك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La version gratuite comprend trois analyses par mois civil. Pro garde vos résultats à jour à chaque modification de votre photothèque."
+          }
         }
       }
     },
@@ -1790,6 +1922,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "واصل الفحص بلا حدود شهرية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysez sans limite mensuelle"
           }
         }
       }
@@ -1874,6 +2012,12 @@
             "state": "translated",
             "value": "اجعل التنظيف يناسب جدولك"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un nettoyage à votre rythme"
+          }
         }
       }
     },
@@ -1956,6 +2100,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اجعل كل عملية تنظيف أسرع مع Alike Pro"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyez plus vite avec Alike Pro"
           }
         }
       }
@@ -2040,6 +2190,12 @@
             "state": "translated",
             "value": "أزل عدة صور محددة في إجراء واحد آمن ومؤكَّد."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimez plusieurs photos sélectionnées en une seule action sécurisée et confirmée."
+          }
         }
       }
     },
@@ -2122,6 +2278,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "راجع الصور التي يُرجَّح أنها ضبابية بسرعة أكبر"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez plus vite les photos probablement floues"
           }
         }
       }
@@ -2206,6 +2368,12 @@
             "state": "translated",
             "value": "راجع اللقطات التي يُرجَّح أنها منخفضة الجودة قبل أن تقرر ما تحتفظ به وما تزيله."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez les photos probablement de mauvaise qualité avant de décider quoi garder ou supprimer."
+          }
         }
       }
     },
@@ -2288,6 +2456,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "راجع لقطات الشاشة معًا واختر بدقة ما ينبغي نقله إلى «المحذوفة مؤخرًا»."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers « Suppressions récentes »."
           }
         }
       }
@@ -2372,6 +2546,12 @@
             "state": "translated",
             "value": "راجع اقتراحات التنظيف الذكية مع الاحتفاظ بالتحكم الكامل في كل عملية حذف."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez les suggestions de nettoyage intelligent en gardant la main sur chaque suppression."
+          }
         }
       }
     },
@@ -2454,6 +2634,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "راجع هذه الفئة الذكية واسترجع ما يقدَّر بـ %@."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez cette catégorie intelligente et récupérez environ %@."
           }
         }
       }
@@ -2538,6 +2724,12 @@
             "state": "translated",
             "value": "حوّل فوضى لقطات الشاشة إلى مساحة حرة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transformez vos captures d’écran en espace libre"
+          }
         }
       }
     },
@@ -2620,6 +2812,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح مرشّحات حالة المراجعة وحجم المجموعة والمفضلة لتنظيف أسرع."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez les filtres par statut, taille de groupe et favoris pour nettoyer plus vite."
           }
         }
       }
@@ -2704,6 +2902,12 @@
             "state": "translated",
             "value": "افتح فحوصات غير محدودة وفئات ذكية ومرشّحات متقدمة وتنظيفًا جماعيًا وتذكيرات مخصصة."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez les analyses illimitées, les catégories intelligentes, les filtres avancés, le nettoyage groupé et les rappels personnalisés."
+          }
         }
       }
     },
@@ -2786,6 +2990,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح %@ مع Alike Pro"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez %@ avec Alike Pro"
           }
         }
       }
@@ -2870,6 +3080,12 @@
             "state": "translated",
             "value": "%1$@ • مُفعَّل حتى %2$@"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ • Actif jusqu’au %2$@"
+          }
         }
       }
     },
@@ -2952,6 +3168,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حالة Alike Pro غير متوفرة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "État d’Alike Pro indisponible"
           }
         }
       }
@@ -3036,6 +3258,12 @@
             "state": "translated",
             "value": "جارٍ التحقق من Alike Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification d’Alike Pro"
+          }
         }
       }
     },
@@ -3118,6 +3346,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ التحقق من حالة الاشتراك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification de l’état de l’abonnement"
           }
         }
       }
@@ -3202,6 +3436,12 @@
             "state": "translated",
             "value": "جارٍ تأكيد حالة اشتراكك في App Store."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmation de l’état de votre abonnement App Store."
+          }
         }
       }
     },
@@ -3284,6 +3524,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "المتابعة بصورة واحدة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec une photo"
           }
         }
       }
@@ -3368,6 +3614,12 @@
             "state": "translated",
             "value": "يبقى وصولك الحالي كما هو. افتح الخطط لإعادة محاولة تحميل تفاصيل الاشتراك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre accès actuel est conservé. Ouvrez les forfaits pour recharger les détails de l’abonnement."
+          }
         }
       }
     },
@@ -3447,6 +3699,12 @@
           }
         },
         "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "fr-CA": {
           "stringUnit": {
             "state": "translated",
             "value": "Pro"
@@ -3534,6 +3792,12 @@
             "state": "translated",
             "value": "يتطلب Alike Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nécessite Alike Pro"
+          }
         }
       }
     },
@@ -3616,6 +3880,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$d محدد • %2$@ قابلة للاسترجاع تقديريًا"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d sélectionnées • %2$@ récupérables estimés"
           }
         }
       }
@@ -3700,6 +3970,12 @@
             "state": "translated",
             "value": "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
+          }
         }
       }
     },
@@ -3782,6 +4058,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الترقية إلى Alike Pro"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à Alike Pro"
           }
         }
       }
@@ -3866,6 +4148,12 @@
             "state": "translated",
             "value": "عرض Alike Pro"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir Alike Pro"
+          }
         }
       }
     },
@@ -3948,6 +4236,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "عرض الخطط"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les forfaits"
           }
         }
       }
@@ -4032,6 +4326,12 @@
             "state": "translated",
             "value": "مرشّحات متقدمة وتنظيف جماعي"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtres avancés et nettoyage groupé"
+          }
         }
       }
     },
@@ -4114,6 +4414,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا تزال نسخة Alike المجانية تشمل ثلاثة فحوصات في كل شهر ميلادي، ومراجعة النتائج الحالية، وتنظيف صورة واحدة."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free comprend toujours trois analyses par mois civil, l’examen des résultats existants et le nettoyage photo par photo."
           }
         }
       }
@@ -4198,6 +4504,12 @@
             "state": "translated",
             "value": "‏Alike Pro مُفعَّل الآن."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro est désormais actif."
+          }
         }
       }
     },
@@ -4280,6 +4592,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تمت استعادة اشتراكك في Alike Pro."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre abonnement Alike Pro a été restauré."
           }
         }
       }
@@ -4364,6 +4682,12 @@
             "state": "translated",
             "value": "الفوترة شهريًا"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facturation mensuelle"
+          }
         }
       }
     },
@@ -4446,6 +4770,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفوترة سنويًا"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facturation annuelle"
           }
         }
       }
@@ -4530,6 +4860,12 @@
             "state": "translated",
             "value": "يمكنك متابعة استخدام Alike المجاني ريثما تتوفر خطط الاشتراك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez continuer à utiliser Alike Free tant que les forfaits d’abonnement sont indisponibles."
+          }
         }
       }
     },
@@ -4612,6 +4948,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحقق من اتصالك وحاول تحميل خطط الاشتراك مرة أخرى."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez votre connexion et rechargez les forfaits d’abonnement."
           }
         }
       }
@@ -4696,6 +5038,12 @@
             "state": "translated",
             "value": "تذكير بالتنظيف وفق جدولك"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un rappel de nettoyage à votre rythme"
+          }
         }
       }
     },
@@ -4778,6 +5126,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إغلاق"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fermer"
           }
         }
       }
@@ -4862,6 +5216,12 @@
             "state": "translated",
             "value": "المتابعة بـ %@"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec %@"
+          }
         }
       }
     },
@@ -4944,6 +5304,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ تحميل خطط App Store…"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement des forfaits App Store…"
           }
         }
       }
@@ -5028,6 +5394,12 @@
             "state": "translated",
             "value": "لم يُعثر على اشتراك مُفعَّل في Alike Pro."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun abonnement Alike Pro actif n’a été trouvé."
+          }
         }
       }
     },
@@ -5110,6 +5482,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ادفع شهرًا واحدًا في كل مرة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Payez mois par mois"
           }
         }
       }
@@ -5194,6 +5572,12 @@
             "state": "translated",
             "value": "الخطط غير متوفرة بعد"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les forfaits ne sont pas encore disponibles"
+          }
         }
       }
     },
@@ -5276,6 +5660,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تحميل الخطط"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les forfaits"
           }
         }
       }
@@ -5360,6 +5750,12 @@
             "state": "translated",
             "value": "سياسة الخصوصية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Politique de confidentialité"
+          }
         }
       }
     },
@@ -5442,6 +5838,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "عملية الشراء في انتظار موافقة App Store."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre achat est en attente de validation par l’App Store."
           }
         }
       }
@@ -5526,6 +5928,12 @@
             "state": "translated",
             "value": "جارٍ الشراء…"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Achat en cours…"
+          }
         }
       }
     },
@@ -5608,6 +6016,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "موصى به"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommandé"
           }
         }
       }
@@ -5692,6 +6106,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
         }
       }
     },
@@ -5774,6 +6194,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "وفّر %d%% مقارنةً بالاشتراك الشهري"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Économisez %d %% par rapport au forfait mensuel"
           }
         }
       }
@@ -5858,6 +6284,12 @@
             "state": "translated",
             "value": "وفّر مع الفوترة السنوية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Économisez avec la facturation annuelle"
+          }
         }
       }
     },
@@ -5940,6 +6372,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختر خطة اشتراك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionnez un forfait d’abonnement"
           }
         }
       }
@@ -6024,6 +6462,12 @@
             "state": "translated",
             "value": "اختيار خطة الاشتراك هذه"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionner ce forfait d’abonnement"
+          }
         }
       }
     },
@@ -6106,6 +6550,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فئتان ذكيتان للقطات الشاشة والصور الضبابية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catégories intelligentes de captures d’écran et de photos floues"
           }
         }
       }
@@ -6190,6 +6640,12 @@
             "state": "translated",
             "value": "خطط الاشتراك غير متوفرة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forfaits d’abonnement indisponibles"
+          }
         }
       }
     },
@@ -6272,6 +6728,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. تُخصم قيمة الدفع من حساب Apple الخاص بك."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les abonnements sont renouvelés automatiquement, sauf annulation au moins 24 heures avant la fin de la période en cours. Le paiement est débité de votre compte Apple."
           }
         }
       }
@@ -6356,6 +6818,12 @@
             "state": "translated",
             "value": "شروط الاستخدام"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions d’utilisation"
+          }
         }
       }
     },
@@ -6438,6 +6906,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فحوصات غير محدودة للمكتبة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyses illimitées de la photothèque"
           }
         }
       }
@@ -6522,6 +6996,12 @@
             "state": "translated",
             "value": "تم فتح الفحوصات غير المحدودة وجميع أدوات التنظيف في Pro."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les analyses illimitées et tous les outils de nettoyage Pro sont débloqués."
+          }
         }
       }
     },
@@ -6604,6 +7084,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر إتمام عملية الشراء. تحقق من اتصالك وحاول مرة أخرى."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous n’avons pas pu finaliser votre achat. Vérifiez votre connexion et réessayez."
           }
         }
       }
@@ -6688,6 +7174,12 @@
             "state": "translated",
             "value": "تعذّرت استعادة مشترياتك. تحقق من اتصالك وحاول مرة أخرى."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous n’avons pas pu restaurer vos achats. Vérifiez votre connexion et réessayez."
+          }
         }
       }
     },
@@ -6770,6 +7262,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ قبل ذلك بـ 24 ساعة على الأقل. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le forfait annuel comprend un essai gratuit de 7 jours pour les nouveaux abonnés admissibles. La facturation commence à la fin de l’essai, sauf si vous annulez l’abonnement au moins 24 heures avant la fin de l’essai. Vous pouvez gérer ou annuler votre abonnement en tout temps dans les Réglages iOS."
           }
         }
       }

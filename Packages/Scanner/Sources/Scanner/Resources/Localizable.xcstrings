@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "فحص الصور الجديدة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyser les nouvelles photos"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم رصد صور جديدة."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelles photos détectées."
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "أعد الفحص لتحديث فرص التنظيف لديك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relancez une analyse pour actualiser vos possibilités de nettoyage."
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بدء الفحص"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancer l’analyse"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "جاهز متى شئت."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt quand vous l’êtes."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افحص مكتبة صورك بحثًا عن فرص للتنظيف."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysez votre photothèque à la recherche de possibilités de nettoyage."
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "طريقة الاستخدام"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode d’emploi"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح إرشادات الاستخدام ونصائح سير عمل التنظيف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le mode d’emploi et les conseils de nettoyage"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "الفحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse"
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك التنقل بين علامات التبويب أثناء الفحص. ستُحدَّث نتائج التنظيف عند انتهائه."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez changer d’onglet pendant l’analyse. Vos résultats seront actualisés à la fin."
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "فرص التنظيف جاهزة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les possibilités de nettoyage sont prêtes"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر عليّ إكمال هذا الفحص."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je n’ai pas pu terminer cette analyse."
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "مكتبتك محدَّثة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre photothèque est à jour"
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يُعثر على أي فرص للتنظيف في هذا الفحص."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune possibilité de nettoyage n’a été trouvée lors de cette analyse."
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مراجعة التنظيف"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examiner le nettoyage"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "راجع كل اقتراح قبل إزالة أي شيء."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examinez chaque suggestion avant toute suppression."
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مراجعة التنظيف الحالي"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examiner le nettoyage en cours"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "إعادة الفحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyser à nouveau"
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ فحص مكتبة صورك"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse de votre photothèque"
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "الصور الضبابية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos floues"
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مجموعات من الصور المتشابهة."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupes de photos qui se ressemblent."
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "آخر فحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière analyse"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حالة المكتبة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "État de la photothèque"
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "صور يُرجَّح أنها منخفضة الجودة لمراجعتها."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos probablement de faible qualité à examiner."
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بحاجة إلى تحديث"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À actualiser"
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "بقي %1$d من %2$d من الفحوصات المجانية"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il vous reste %1$d analyses gratuites sur %2$d"
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح خيارات الترقية"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre les options d’abonnement"
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "الفرص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Possibilités"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قابل للاسترجاع"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupérable"
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "تقدّم الفحص"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression de l’analyse"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات شاشة قد لا تكون مفيدة بعد الآن."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captures d’écran qui ne vous servent peut-être plus."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "لقطات الشاشة"
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captures d’écran"
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos similaires"
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "هذه النتائج تعود إلى ما قبل تغيّر مكتبة صورك."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ces résultats datent d’avant la dernière modification de votre photothèque."
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "احصل على المزيد مع Alike Pro"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allez plus loin avec Alike Pro"
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
           }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي يفحصه Alike"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qu’Alike vérifie"
           }
         }
       }
