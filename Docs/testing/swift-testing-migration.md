@@ -158,3 +158,29 @@ How the numbers were read:
 | Package steps | 47:06 |
 | App compile (`xcodebuild Alike build`) | 8:06 |
 | `tools/full` total | 55:20 |
+
+## CI check: `tools/full` and Swift Testing failures
+
+Done 2026-10-26 with a temporary Swift Testing probe that was not committed:
+
+```swift
+@Suite struct CIProbeTests {
+    @Test func ciProbe() { #expect(Bool(false), "M1 CI probe: tools/full must fail here") }
+}
+```
+
+`tools/full` stops at the first failed step, and `Launch` runs before `NavigationKit`.
+So the check used 2 runs, one probe in each run.
+
+| Path | Package | Run | Result |
+| --- | --- | --- | --- |
+| `xcodebuild test` | Launch | `20261026T115047Z-48750` | Step failed, exit 65; `report.json` status `failed`. xcresult: `totalTestCount` 8 (7 XCTest + 1 Swift Testing), 1 failed, failure `CIProbeTests/ciProbe()`. |
+| `swift test` | NavigationKit | `20261026T121539Z-54663` | Step failed, exit 1; `report.json` status `failed`. Log: XCTest `Executed 6 tests, with 0 failures`, Swift Testing `Test run with 1 test in 1 suite failed … with 1 issue`. |
+
+Conclusions:
+
+- `tools/full` fails on a Swift Testing failure on both paths.
+- The xcresult summary counts Swift Testing tests together with XCTest tests.
+- `swift test` prints 2 separate summaries: `Executed N tests` covers XCTest only, and
+  `Test run with N tests` covers Swift Testing only. Add both lines for the package count.
+- `report.json` records only the status and exit code of each step. It has no test counts.
