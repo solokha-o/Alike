@@ -1256,6 +1256,88 @@ METADATA.update(
 )
 
 
+# Reviewed storefront copy; keep regional listings independent.
+METADATA['nl-NL'].update(
+    {'description': "Alike groepeert bijna gelijke foto's, kiest de beste en helpt je de rest op te ruimen. Geen "
+                'foto verlaat je iPhone.\n'
+                '\n'
+                'ZO WERKT HET\n'
+                'Scannen. Alike vergelijkt je bibliotheek met Apples Vision-framework, volledig op je '
+                "iPhone. Foto's die qua tijd en plaats dicht bij elkaar liggen worden vergeleken, en "
+                'schermafbeeldingen blijven buiten de resultaten tenzij je erom vraagt.\n'
+                'Bekijken. De beste foto is al geselecteerd. Bewaar alleen die foto, selecteer alle andere '
+                'of kies zelf.\n'
+                "Opruimen. Bevestig, en de foto's die je koos gaan naar 'Recent verwijderd', waar iOS ze "
+                "ongeveer 30 dagen bewaart. Er komt mogelijk pas ruimte vrij nadat je de foto's definitief "
+                'hebt verwijderd.\n'
+                '\n'
+                'JE PRIVACY STAAT VOOROP\n'
+                '- Alle analyse draait op het apparaat met Apples Vision-framework.\n'
+                '- Geen foto, miniatuur of kenmerkafdruk wordt ooit geüpload.\n'
+                '- Geen account, geen inloggen, geen Alike-server.\n'
+                "- Geen analytics, geen tracking, geen advertentie-id's.\n"
+                '- Nergens in de app advertenties.\n'
+                '- Scannen en opruimen hebben helemaal geen verbinding nodig — Alike werkt in '
+                'vliegtuigmodus.\n'
+                '- Er wordt niets verwijderd zonder je uitdrukkelijke bevestiging.\n'
+                '\n'
+                'GEMAAKT VOOR ECHTE BIBLIOTHEKEN\n'
+                '- Drie niveaus van gevoeligheid, van bijna identieke opnamen tot minder vergelijkbare '
+                "foto's.\n"
+                "- Herkenning van de beste opname, gemeten aan de foto's zelf — scherpte, belichting, "
+                'gezichten en ruis — zodat elke groep een verstandige keuze klaar heeft staan.\n'
+                '- Optionele verbetering met één tik voor de foto die je houdt, het origineel altijd één tik '
+                'verderop.\n'
+                '- Statuslabels: Nieuw, Wordt bekeken, Bekeken en Moet worden bekeken na een nieuwe scan.\n'
+                "- Voeg foto's toe of verwijder ze en Alike merkt het, en toont alleen de groepen die "
+                'veranderd zijn — geen volledige nieuwe scan nodig.\n'
+                '- Voortgang, Geselecteerd en Geschatte besparing terwijl je werkt.\n'
+                '- Opruimgeschiedenis per maand, zodat je ziet hoeveel je al hebt teruggewonnen.\n'
+                '- Wissel tussen één kolom en een dichter raster. Alike onthoudt je keuze.\n'
+                '- Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.\n'
+                '- Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.\n'
+                '- Widgets op je beginscherm en je toegangsscherm: vrij te maken ruimte en je bibliotheek.\n'
+                '- Dertien talen en volledige donkere modus.\n'
+                '\n'
+                'JIJ HOUDT DE CONTROLE\n'
+                '- Verbeteren is niet destructief: het origineel blijft in je bibliotheek en één tik zet het '
+                'terug.\n'
+                '- Alike leert van de beste opnamen die je zelf kiest — op je apparaat, en je kunt dat '
+                'altijd resetten in Instellingen.\n'
+                '- Instellingen, dan Gegevens en privacy, dan Verwijder Alike-gegevens wist scanresultaten, '
+                'opruimgeschiedenis en voorkeuren — en raakt je fotobibliotheek nooit aan.\n'
+                '- Geef volledige of beperkte toegang: Alike werkt met wat jij besluit te delen.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- 3 scans per kalendermaand\n'
+                '- Begeleid bekijken met de beste opname\n'
+                '- Verbetering met één tik, altijd terug te draaien\n'
+                '- Beste opname die leert van je eigen keuzes\n'
+                '- Sorteren en opruimgeschiedenis\n'
+                '- Eén foto tegelijk opruimen\n'
+                '- Widgets\n'
+                '\n'
+                'ALIKE PRO\n'
+                '- 7 dagen gratis op het jaarabonnement, voor nieuwe abonnees die daarvoor in aanmerking '
+                'komen\n'
+                '- Onbeperkt scannen\n'
+                '- Hele selecties in één keer opruimen\n'
+                '- Schermafbeeldingen opruimen\n'
+                "- Wazige foto's opruimen\n"
+                '- Geavanceerde filters\n'
+                '- Eigen opruimherinneringen\n'
+                '\n'
+                'Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, '
+                'geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen '
+                'voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de '
+                'proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur '
+                'voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je '
+                'Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen.',
+ 'promotional_text': 'Bekijk de geschatte ruimtewinst. Foto’s blijven op je iPhone. Jaarabonnement: 7 dagen '
+                     'Pro gratis voor nieuwe abonnees die in aanmerking komen. Geen reclame of account.'}
+)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare Alike App Store metadata and screenshots for fastlane deliver.")
     parser.add_argument(

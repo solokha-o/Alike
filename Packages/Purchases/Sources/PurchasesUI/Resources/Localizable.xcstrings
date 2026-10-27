@@ -1516,7 +1516,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gratis bevat %1$d scans per kalendermaand. Je hebt er nog %2$d en het tegoed wordt op %3$@ vernieuwd."
+            "value": "De gratis versie bevat %1$d scans per kalendermaand. Je hebt er nog %2$d en het tegoed wordt op %3$@ vernieuwd."
           }
         },
         "pl": {
@@ -1599,7 +1599,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gratis bevat %1$d scans per kalendermaand. Je hebt er nog %2$d."
+            "value": "De gratis versie bevat %1$d scans per kalendermaand. Je hebt er nog %2$d."
           }
         },
         "pl": {
@@ -4089,7 +4089,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike Free bevat nog steeds drie scans per kalendermaand, het bekijken van bestaande resultaten en het opruimen van één foto."
+            "value": "Alike Free bevat nog steeds drie scans per kalendermaand, het bekijken van bestaande resultaten en het opruimen van één foto tegelijk."
           }
         },
         "pl": {
@@ -5749,7 +5749,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bespaar %d%% ten opzichte van maandelijks"
+            "value": "Bespaar %d%% ten opzichte van een maandabonnement"
           }
         },
         "pl": {
