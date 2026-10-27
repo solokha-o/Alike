@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "فحص الصور الجديدة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan New Photos"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم رصد صور جديدة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New photos detected."
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "أعد الفحص لتحديث فرص التنظيف لديك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan again to refresh your cleanup opportunities."
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بدء الفحص"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scanning"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "جاهز متى شئت."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready when you are."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افحص مكتبة صورك بحثًا عن فرص للتنظيف."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan your photo library for cleanup opportunities."
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "طريقة الاستخدام"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Use"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح إرشادات الاستخدام ونصائح سير عمل التنظيف"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open usage instructions and cleanup workflow tips"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "الفحص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanner"
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك التنقل بين علامات التبويب أثناء الفحص. ستُحدَّث نتائج التنظيف عند انتهائه."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "فرص التنظيف جاهزة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup opportunities are ready"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر عليّ إكمال هذا الفحص."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I couldn't finish this scan."
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "مكتبتك محدَّثة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your library is up to date"
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يُعثر على أي فرص للتنظيف في هذا الفحص."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No cleanup opportunities were found in this scan."
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مراجعة التنظيف"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Cleanup"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "راجع كل اقتراح قبل إزالة أي شيء."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review each suggestion before anything is removed."
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مراجعة التنظيف الحالي"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Existing Cleanup"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "إعادة الفحص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Again"
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ فحص مكتبة صورك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning your photo library"
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "الصور الضبابية"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مجموعات من الصور المتشابهة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groups of photos that look alike."
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "آخر فحص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last Scan"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حالة المكتبة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Library Status"
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "صور يُرجَّح أنها منخفضة الجودة لمراجعتها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely low-quality photos to review."
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بحاجة إلى تحديث"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs refresh"
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "بقي %1$d من %2$d من الفحوصات المجانية"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$d of %2$d free scans remaining"
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح خيارات الترقية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the upgrade options"
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "الفرص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opportunities"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قابل للاسترجاع"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reclaimable"
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "تقدّم الفحص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning progress"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات شاشة قد لا تكون مفيدة بعد الآن."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen captures that may no longer be useful."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "لقطات الشاشة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos"
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "هذه النتائج تعود إلى ما قبل تغيّر مكتبة صورك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These results are from before your photo library changed."
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "احصل على المزيد مع Alike Pro"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock more with Alike Pro"
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي يفحصه Alike"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike checks"
           }
         }
       }

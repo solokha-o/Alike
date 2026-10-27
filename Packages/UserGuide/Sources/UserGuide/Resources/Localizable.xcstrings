@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "الخطوة %1$d من %2$d: %3$@"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %1$d of %2$d: %3$@"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أُضيفت صور إلى مجموعة سبق أن راجعتها أو أُزيلت منها، لذا تستحق نظرة أخرى."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos were added to or removed from a group you had already reviewed, so it's worth another look."
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "متغيّرة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changed"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي تعنيه الشارات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What the badges mean"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "حددت صورًا هنا لكنك لم تضع علامة على المجموعة بأنها روجعت."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've selected photos here but haven't marked the group as reviewed."
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قيد المراجعة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In review"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "ظهرت هذه المجموعة في أحدث فحص."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This group appeared in the most recent scan."
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جديدة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "لم تفتح هذه المجموعة بعد."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't opened this group yet."
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم تُراجَع"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not reviewed"
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "اتخذت قرارك بشأن هذه المجموعة — أيًّا كان ذلك القرار."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've made your decision about this group — whatever that decision was."
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تمت مراجعتها"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewed"
           }
         }
       }
@@ -1078,6 +1150,12 @@
             "state": "translated",
             "value": "بدّل بين تخطيط فسيح بعمود واحد وشبكة أكثر كثافة من شريط الأدوات في أي شاشة صور. يتذكر Alike اختيارك بين عمليات التشغيل."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice between launches."
+          }
         }
       }
     },
@@ -1160,6 +1238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الأعمدة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columns"
           }
         }
       }
@@ -1244,6 +1328,12 @@
             "state": "translated",
             "value": "ضيّق القائمة حسب حالة المراجعة أو الحد الأدنى لحجم المجموعة أو المفضلة فقط. يبقى الترتيب متاحًا في Alike المجاني."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Narrow the list by review status, minimum group size, or favourites only. Sorting stays available on Alike Free."
+          }
         }
       }
     },
@@ -1326,6 +1416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "المرشّحات المتقدمة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced filters"
           }
         }
       }
@@ -1410,6 +1506,12 @@
             "state": "translated",
             "value": "تعيد «إعادة تعيين الضوابط» الترتيب والمرشّحات إلى إعداداتها الافتراضية."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset controls puts sorting and filters back to their defaults."
+          }
         }
       }
     },
@@ -1492,6 +1594,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الترتيب والمرشّحات والتخطيط"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sorting, filters and layout"
           }
         }
       }
@@ -1576,6 +1684,12 @@
             "state": "translated",
             "value": "رتّب المجموعات حسب الأحدث، أو الأكثر توفيرًا للمساحة، أو الأكبر حجمًا، أو الأعلى تشابهًا، أو حالة المراجعة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Order groups by newest, most space to save, largest group, highest similarity, or review status."
+          }
         }
       }
     },
@@ -1658,6 +1772,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الترتيب"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort"
           }
         }
       }
@@ -1742,6 +1862,12 @@
             "state": "translated",
             "value": "يفتح المجموعة التالية التي لا تزال بحاجة إلى انتباهك، فلا تضطر أبدًا إلى البحث عن الموضع الذي توقفت عنده."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the next group that still needs your attention, so you never have to hunt for where you stopped."
+          }
         }
       }
     },
@@ -1824,6 +1950,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "متابعة المراجعة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue Review"
           }
         }
       }
@@ -1908,6 +2040,12 @@
             "state": "translated",
             "value": "تقدّمك"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your progress"
+          }
         }
       }
     },
@@ -1990,6 +2128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يعرض كل ما نظّفته حتى الآن، مجمَّعًا حسب الشهر، مع إجماليك منذ البداية."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows everything you've cleaned up so far, grouped by month, with your all-time total."
           }
         }
       }
@@ -2074,6 +2218,12 @@
             "state": "translated",
             "value": "السجل"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
         }
       }
     },
@@ -2156,6 +2306,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "«التوفير التقديري» هو حجم المساحة التي سيحررها تحديدك الحالي بعد حذف الصور نهائيًا."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimated Savings is how much space your current selection would free once the photos are permanently deleted."
           }
         }
       }
@@ -2240,6 +2396,12 @@
             "state": "translated",
             "value": "تمت مراجعتها، المتبقي، المحدد، التوفير التقديري"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewed, Remaining, Selected, Estimated Savings"
+          }
         }
       }
     },
@@ -2322,6 +2484,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "كل مجموعة عثر عليها Alike، بما فيها تلك التي وضعت عليها علامة أنها روجعت."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every group Alike found, including the ones you already marked as reviewed."
           }
         }
       }
@@ -2406,6 +2574,12 @@
             "state": "translated",
             "value": "كل المجموعات"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All clusters"
+          }
         }
       }
     },
@@ -2488,6 +2662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا تظهر «بحاجة إلى مراجعة» إلا عندما يكون هناك شيء جديد أو متغيّر لتنظر فيه."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs review appears only when there is something new or changed to look at."
           }
         }
       }
@@ -2572,6 +2752,12 @@
             "state": "translated",
             "value": "قائمتان من المجموعات"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two lists of groups"
+          }
         }
       }
     },
@@ -2654,6 +2840,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "المجموعات التي لم تقرر بشأنها بعد، إضافة إلى تلك التي غيّرتها إعادة الفحص. ابدأ من هنا."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groups you haven't decided on yet, plus ones a rescan changed. Start here."
           }
         }
       }
@@ -2738,6 +2930,12 @@
             "state": "translated",
             "value": "بحاجة إلى مراجعة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs review"
+          }
         }
       }
     },
@@ -2820,6 +3018,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تقدّمك، وقسما المجموعات، والشارات، والترتيب والمرشّحات."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your progress, the two cluster sections, badges, sorting and filters."
           }
         }
       }
@@ -2904,6 +3108,12 @@
             "state": "translated",
             "value": "العمل ضمن التنظيف"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working through Cleanup"
+          }
         }
       }
     },
@@ -2986,6 +3196,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يقارن Alike الوضوح والإضاءة والضوضاء، ومدى وضوح الوجوه وانفتاح العينين. تحصل الصورة المفضلة على دفعة صغيرة — ولا شيء إن كانت ضبابية أو سيئة الإضاءة. وعندما لا تتفوق أي صورة بوضوح، يترك لك Alike الاختيار بدلاً من التخمين."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favourite gets a small nudge — none at all if it's blurry or badly exposed. When nothing stands out clearly, Alike leaves the choice to you instead of guessing."
           }
         }
       }
@@ -3070,6 +3286,12 @@
             "state": "translated",
             "value": "كيف يختارها Alike"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How Alike picks it"
+          }
         }
       }
     },
@@ -3152,6 +3374,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يبقى اختيارك اليدوي ساريًا ما دامت تلك الصورة موجودة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your manual choice stays in place for as long as that photo exists."
           }
         }
       }
@@ -3236,6 +3464,12 @@
             "state": "translated",
             "value": "أفضل لقطة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Best Shot"
+          }
         }
       }
     },
@@ -3318,6 +3552,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا توافق؟ اضغط مطولًا على أي صورة واختر «جعلها أفضل لقطة». وتنضم اللقطة السابقة إلى تحديدك."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disagree? Press and hold any photo and choose Make Best Shot. The previous keeper joins your selection."
           }
         }
       }
@@ -3402,6 +3642,12 @@
             "state": "translated",
             "value": "جعلها أفضل لقطة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make Best Shot"
+          }
         }
       }
     },
@@ -3484,6 +3730,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يجهّز Alike نسخة محسّنة ويعرضها كمعاينة. ولا يُكتب أي شيء حتى تضغط «تطبيق»."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Apply."
           }
         }
       }
@@ -3568,6 +3820,12 @@
             "state": "translated",
             "value": "شاهدها قبل أن تحتفظ بها"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See it before you keep it"
+          }
         }
       }
     },
@@ -3650,6 +3908,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "في العرض بملء الشاشة، اضغط مطولًا على الصورة لرؤية الأصل، وارفع إصبعك لتعود إلى النسخة المحسّنة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced version again."
           }
         }
       }
@@ -3734,6 +3998,12 @@
             "state": "translated",
             "value": "اضغط مطولًا للمقارنة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touch and hold to compare"
+          }
         }
       }
     },
@@ -3816,6 +4086,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يغادر الأصل مكتبتك أبدًا. يكتب Alike التغيير بالطريقة نفسها التي يستخدمها تطبيق الصور، فيمكنك التراجع عنه من أي من التطبيقين."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The original never leaves your library. Alike writes the change the way Photos does, so either app can undo it."
           }
         }
       }
@@ -3900,6 +4176,12 @@
             "state": "translated",
             "value": "تحسين الصورة التي تحتفظ بها"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhance the one you keep"
+          }
         }
       }
     },
@@ -3982,6 +4264,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التحسين غير متاح لمقاطع الفيديو، ولا مع الوصول المحدود، ولا للصور التي يعتبرها النظام غير قابلة للتحرير. وإذا كانت الصورة تحمل تعديلاً من تطبيق آخر، يسأل Alike قبل استبداله."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhancement is not available for video, in Limited Access, or for photos the system marks as non-editable. If a photo already carries another app's edit, Alike asks before replacing it."
           }
         }
       }
@@ -4066,6 +4354,12 @@
             "state": "translated",
             "value": "متى لا يكون متاحًا"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When it is not offered"
+          }
         }
       }
     },
@@ -4148,6 +4442,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خطوة واحدة تُعيد الأصل. يحتفظ به iOS نيابةً عنك، فلا تُنشأ أي نسخة مكررة، ويمكن لتطبيق الصور أيضًا التراجع عن التغيير — «تحرير» ثم «العودة إلى الأصل»."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Photos can undo the change too — Edit, then Revert."
           }
         }
       }
@@ -4232,6 +4532,12 @@
             "state": "translated",
             "value": "العودة إلى الأصل"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revert to original"
+          }
         }
       }
     },
@@ -4314,6 +4620,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "了解你的喜好"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learning your taste"
           }
         }
       }
@@ -4398,6 +4710,12 @@
             "state": "translated",
             "value": "Alike 學到的內容只留在這部裝置上，絕不會被上傳。"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike learns stays on this device and is never uploaded."
+          }
         }
       }
     },
@@ -4480,6 +4798,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alike 會從你的選擇中學習"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike learns from your picks"
           }
         }
       }
@@ -4564,6 +4888,12 @@
             "state": "translated",
             "value": "每次你選擇的最佳照片和 Alike 建議的不同時，它會記住你偏好的地方，下次就會稍微多考慮這一點。要累積幾次選擇之後，你才會注意到差異。"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every time you choose a different Best Shot than the one Alike suggested, it remembers what you preferred and leans that way a little more next time. It takes a handful of picks before you notice a difference."
+          }
         }
       }
     },
@@ -4646,6 +4976,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "它不會做的事"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What it won't do"
           }
         }
       }
@@ -4730,6 +5066,12 @@
             "state": "translated",
             "value": "這只會改變銳利度、曝光、雜訊和臉孔彼此之間的權重。模糊或曝光不佳的照片絕不會因此被選為最佳照片。"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This only changes how much sharpness, exposure, noise, and faces count against each other. A blurry or badly exposed photo is never promoted to Best Shot because of it."
+          }
         }
       }
     },
@@ -4812,6 +5154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "重新開始"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting over"
           }
         }
       }
@@ -4896,6 +5244,12 @@
             "state": "translated",
             "value": "在設定中，重設「最佳照片」學習內容會忘記 Alike 學到的一切，並回到預設排序。"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the default ranking."
+          }
         }
       }
     },
@@ -4978,6 +5332,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح الصورة بملء الشاشة. مرّر بين صور المجموعة واستخدم القرص للتكبير على التفاصيل."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the details."
           }
         }
       }
@@ -5062,6 +5422,12 @@
             "state": "translated",
             "value": "فتح الأصل"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Original"
+          }
         }
       }
     },
@@ -5144,6 +5510,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نظرة أقرب"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looking closer"
           }
         }
       }
@@ -5228,6 +5600,12 @@
             "state": "translated",
             "value": "اضغط مطولًا على صورة لعرض الدقة ونوع الملف والتواريخ وحالة التفضيل ومكان التقاطها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold a photo for resolution, file type, dates, favourite status, and where it was taken."
+          }
         }
       }
     },
@@ -5310,6 +5688,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "عرض المعلومات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Info"
           }
         }
       }
@@ -5394,6 +5778,12 @@
             "state": "translated",
             "value": "وضع علامة «تمت المراجعة» على مجموعة هو قرارك، وليس نتيجة لتحديد الصور. ويمكنك إعادة فتحها في أي وقت."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen it at any time."
+          }
         }
       }
     },
@@ -5476,6 +5866,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إنهاء مجموعة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finishing a group"
           }
         }
       }
@@ -5560,6 +5956,12 @@
             "state": "translated",
             "value": "إذا كانت كل صورة في المجموعة تستحق الاحتفاظ، ضع علامة أنها روجعت وانتقل إلى غيرها. لا يلزم إزالة أي شيء."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If every photo in a group is worth keeping, mark it reviewed and move on. Nothing has to be removed."
+          }
         }
       }
     },
@@ -5642,6 +6044,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الاحتفاظ بكل شيء يُحتسب أيضًا"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping everything counts too"
           }
         }
       }
@@ -5726,6 +6134,12 @@
             "state": "translated",
             "value": "يظهر الزر في الأسفل بمجرد تحديد شيء، وهو يطلب التأكيد دائمًا أولًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The button at the bottom appears once something is selected, and always asks for confirmation first."
+          }
         }
       }
     },
@@ -5808,6 +6222,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نقل الصور المحددة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move the selected photos"
           }
         }
       }
@@ -5892,6 +6312,12 @@
             "state": "translated",
             "value": "استخدم زر الختم في شريط التنقل عند انتهائك من مجموعة. انقره مرة أخرى لإعادة فتحها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the seal button in the navigation bar when you're done with a group. Tap it again to reopen it."
+          }
         }
       }
     },
@@ -5974,6 +6400,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "وضع علامة تمت المراجعة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark as reviewed"
           }
         }
       }
@@ -6058,6 +6490,12 @@
             "state": "translated",
             "value": "ينقل Alike المجاني صورة واحدة في كل مرة. أما Alike Pro فيزيل تحديدك كاملًا في خطوة واحدة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free moves one photo at a time. Alike Pro removes your whole selection in a single step."
+          }
         }
       }
     },
@@ -6140,6 +6578,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إزالة عدة صور دفعة واحدة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removing several photos at once"
           }
         }
       }
@@ -6224,6 +6668,12 @@
             "state": "translated",
             "value": "يُحفظ تحديدك، لذا فإن إغلاق مجموعة والعودة إليها لاحقًا لا يفقدك شيئًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your selection is saved, so closing a group and coming back later loses nothing."
+          }
         }
       }
     },
@@ -6306,6 +6756,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختيار الصور"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choosing photos"
           }
         }
       }
@@ -6390,6 +6846,12 @@
             "state": "translated",
             "value": "من قائمة ••• : حدد كل شيء ما عدا اللقطة المحتفظ بها دفعة واحدة، أو امسح التحديد بالكامل."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In the ••• menu: select everything but the keeper in one go, or clear the whole selection."
+          }
         }
       }
     },
@@ -6472,6 +6934,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد الكل ما عدا الأفضل"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All Except Best"
           }
         }
       }
@@ -6556,6 +7024,12 @@
             "state": "translated",
             "value": "انقر على أي صورة لتحديدها للإزالة. انقر مرة أخرى للاحتفاظ بها. ولا يمكن تحديد أفضل لقطة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap any photo to mark it for removal. Tap again to keep it. The Best Shot can't be selected."
+          }
         }
       }
     },
@@ -6638,6 +7112,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "انقر للتحديد"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to select"
           }
         }
       }
@@ -6722,6 +7202,12 @@
             "state": "translated",
             "value": "اختيار ما تحتفظ به داخل المجموعة، ووضع علامة أنها روجعت."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choosing what to keep inside a group, and marking it reviewed."
+          }
         }
       }
     },
@@ -6804,6 +7290,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة وأفضل لقطة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos and Best Shot"
           }
         }
       }
@@ -6888,6 +7380,12 @@
             "state": "translated",
             "value": "يعرض Alike ما سيُنقل وحجم المساحة التي يشغلها، ثم يسلّم الطلب إلى النظام."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike shows what will be moved and how much space it holds, then hands the request to the system."
+          }
         }
       }
     },
@@ -6970,6 +7468,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يطلب iOS التأكيد"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS asks for confirmation"
           }
         }
       }
@@ -7054,6 +7558,12 @@
             "state": "translated",
             "value": "لا يستطيع Alike إزالة صورة من تلقاء نفسه — يسألك iOS دائمًا أولًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike can't remove a photo on its own — iOS always asks you first."
+          }
         }
       }
     },
@@ -7136,6 +7646,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خطوة بخطوة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step by step"
           }
         }
       }
@@ -7220,6 +7736,12 @@
             "state": "translated",
             "value": "إذا كانت صور iCloud مفعّلة، تُنقل الصور نفسها إلى «المحذوفة مؤخرًا» على أجهزتك الأخرى."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If iCloud Photos is on, the same photos move to Recently Deleted on your other devices."
+          }
         }
       }
     },
@@ -7302,6 +7824,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تُزامن صور iCloud التغيير"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud Photos syncs the change"
           }
         }
       }
@@ -7386,6 +7914,12 @@
             "state": "translated",
             "value": "تنتهي الصور إلى ألبوم «المحذوفة مؤخرًا» في تطبيق الصور، حيث يمكنك استعادة أي منها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos land in the Photos app's Recently Deleted album, where you can restore any of them."
+          }
         }
       }
     },
@@ -7468,6 +8002,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "30 يومًا لتغيير رأيك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 days to change your mind"
           }
         }
       }
@@ -7552,6 +8092,12 @@
             "state": "translated",
             "value": "لا تعود المساحة إلا بعد مغادرة الصور «المحذوفة مؤخرًا» — تلقائيًا بعد 30 يومًا، أو عندما تفرّغ الألبوم."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage comes back only after the photos leave Recently Deleted — automatically after 30 days, or when you empty the album."
+          }
         }
       }
     },
@@ -7634,6 +8180,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تتحرر المساحة في النهاية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space is freed at the end"
           }
         }
       }
@@ -7718,6 +8270,12 @@
             "state": "translated",
             "value": "خط زمني مجمَّع حسب الشهر، لتتمكن من رؤية ما نظّفته ومتى."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A timeline grouped by month, so you can see what you cleaned up and when."
+          }
         }
       }
     },
@@ -7800,6 +8358,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "النشاط الأخير"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent Activity"
           }
         }
       }
@@ -7884,6 +8448,12 @@
             "state": "translated",
             "value": "سجل التنظيف"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup History"
+          }
         }
       }
     },
@@ -7966,6 +8536,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إجمالياتك الجارية: المساحة المسترجعة، والصور المنقولة، وجلسات التنظيف المكتملة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your running totals: space reclaimed, photos moved, and cleanup sessions completed."
           }
         }
       }
@@ -8050,6 +8626,12 @@
             "state": "translated",
             "value": "الأثر الإجمالي"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All-Time Impact"
+          }
         }
       }
     },
@@ -8132,6 +8714,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "«المحذوفة مؤخرًا»، ومتى تتحرر المساحة فعليًا، وخدمة iCloud."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recently Deleted, when space is actually freed, and iCloud."
           }
         }
       }
@@ -8216,6 +8804,12 @@
             "state": "translated",
             "value": "ماذا يحدث عند الحذف"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What happens when you delete"
+          }
         }
       }
     },
@@ -8298,6 +8892,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تبقى النتائج التي فحصتها بالفعل متاحة، سواء اشتركت أم لا."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Results you've already scanned stay available, whether or not you subscribe."
           }
         }
       }
@@ -8382,6 +8982,12 @@
             "state": "translated",
             "value": "المتضمَّن في Alike المجاني"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Included in Alike Free"
+          }
         }
       }
     },
@@ -8464,6 +9070,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح كل مجموعة، وقارن بين الصور، وغيّر أفضل لقطة، وضع علامة على المجموعات بأنها روجعت."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open every group, compare photos, change the Best Shot, and mark groups as reviewed."
           }
         }
       }
@@ -8548,6 +9160,12 @@
             "state": "translated",
             "value": "مراجعة كاملة للصور المتشابهة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full review of similar photos"
+          }
         }
       }
     },
@@ -8630,6 +9248,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ثلاثة فحوصات في كل شهر ميلادي، ويُصفَّر العدّاد في بداية الشهر التالي."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three scans each calendar month, with the counter resetting at the start of the next one."
           }
         }
       }
@@ -8714,6 +9338,12 @@
             "state": "translated",
             "value": "ثلاثة فحوصات شهريًا"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three scans a month"
+          }
         }
       }
     },
@@ -8796,6 +9426,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك نقل الصور إلى «المحذوفة مؤخرًا» واحدة تلو الأخرى."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can move photos to Recently Deleted one by one."
           }
         }
       }
@@ -8880,6 +9516,12 @@
             "state": "translated",
             "value": "صورة واحدة في كل مرة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One photo at a time"
+          }
         }
       }
     },
@@ -8962,6 +9604,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "كل ترتيبات الفرز في التنظيف متاحة دون اشتراك."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every sort order in Cleanup is available without a subscription."
           }
         }
       }
@@ -9046,6 +9694,12 @@
             "state": "translated",
             "value": "كل خيارات الترتيب"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All sorting options"
+          }
         }
       }
     },
@@ -9128,6 +9782,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "انقل تحديدك بالكامل في خطوة واحدة بدلًا من صورة تلو الأخرى."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move your entire selection in one step instead of one photo at a time."
           }
         }
       }
@@ -9212,6 +9872,12 @@
             "state": "translated",
             "value": "التنظيف الجماعي"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batch cleanup"
+          }
         }
       }
     },
@@ -9294,6 +9960,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح فئة الصور الضبابية وراجع ما رصده التحليل على الجهاز."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Blurred Photos category and review what on-device analysis flagged."
           }
         }
       }
@@ -9378,6 +10050,12 @@
             "state": "translated",
             "value": "تنظيف الصور الضبابية"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred photos cleanup"
+          }
         }
       }
     },
@@ -9460,6 +10138,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "صفِّ التنظيف حسب حالة المراجعة أو الحد الأدنى لحجم المجموعة أو المفضلة فقط."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter Cleanup by review status, minimum group size, or favourites only."
           }
         }
       }
@@ -9544,6 +10228,12 @@
             "state": "translated",
             "value": "المرشّحات المتقدمة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced filters"
+          }
         }
       }
     },
@@ -9626,6 +10316,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من App Store. وتُعرض الأسعار قبل أن تشترك."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage or cancel a subscription any time in the App Store. Prices are shown before you subscribe."
           }
         }
       }
@@ -9710,6 +10406,12 @@
             "state": "translated",
             "value": "ما يضيفه Alike Pro"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added by Alike Pro"
+          }
         }
       }
     },
@@ -9792,6 +10494,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختر يوم تذكير التنظيف الأسبوعي ووقته."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the day and time of your weekly cleanup reminder."
           }
         }
       }
@@ -9876,6 +10584,12 @@
             "state": "translated",
             "value": "جدول تذكير مخصص"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom reminder schedule"
+          }
         }
       }
     },
@@ -9958,6 +10672,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح فئة لقطات الشاشة وأفرغها دفعة واحدة."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Screenshots category and clear it in bulk."
           }
         }
       }
@@ -10042,6 +10762,12 @@
             "state": "translated",
             "value": "تنظيف لقطات الشاشة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots cleanup"
+          }
         }
       }
     },
@@ -10124,6 +10850,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أعد الفحص كما تشاء، بلا حصة شهرية."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rescan as often as you like, with no monthly allowance."
           }
         }
       }
@@ -10208,6 +10940,12 @@
             "state": "translated",
             "value": "فحوصات غير محدودة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited scans"
+          }
         }
       }
     },
@@ -10290,6 +11028,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما المتضمَّن دون اشتراك، وما الذي يضيفه Pro."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What's included without a subscription, and what Pro adds."
           }
         }
       }
@@ -10374,6 +11118,12 @@
             "state": "translated",
             "value": "‏Alike المجاني وAlike Pro"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free and Alike Pro"
+          }
         }
       }
     },
@@ -10456,6 +11206,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الوصول والأمان"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access and safety"
           }
         }
       }
@@ -10540,6 +11296,12 @@
             "state": "translated",
             "value": "لا يفعل Alike أكثر من الاقتراح. وكل إزالة تحتاج إلى تحديدك وإلى تأكيد النظام."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike only ever suggests. Every removal needs your selection and the system confirmation."
+          }
         }
       }
     },
@@ -10622,6 +11384,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يُحذف أي شيء تلقائيًا"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing is deleted automatically"
           }
         }
       }
@@ -10706,6 +11474,12 @@
             "state": "translated",
             "value": "تُحلَّل الصور على الجهاز. ولا يُرفع أي شيء إلى أي مكان."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos are analyzed on device. Nothing is uploaded anywhere."
+          }
         }
       }
     },
@@ -10788,6 +11562,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "كل شيء يجري على iPhone الخاص بك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything runs on your iPhone"
           }
         }
       }
@@ -10872,6 +11652,12 @@
             "state": "translated",
             "value": "يحتاج Alike إلى إذن القراءة والكتابة في مكتبتك: القراءة لتحليل الصور، والكتابة لنقل ما تختاره منها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs read and write access to your library: read to analyze photos, write to move the ones you pick."
+          }
         }
       }
     },
@@ -10954,6 +11740,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إذن الوصول إلى الصور"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo access"
           }
         }
       }
@@ -11038,6 +11830,12 @@
             "state": "translated",
             "value": "يمكنك التوقف بعد أي خطوة والمتابعة لاحقًا — فتقدّمك محفوظ."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can stop after any step and pick up later — your progress is saved."
+          }
         }
       }
     },
@@ -11120,6 +11918,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الدورة المكوّنة من ثلاث خطوات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The three-step loop"
           }
         }
       }
@@ -11204,6 +12008,12 @@
             "state": "translated",
             "value": "أكّد، فتنتقل الصور المحددة إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS مدة 30 يومًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm, and the selected photos go to Recently Deleted, where iOS keeps them for 30 days."
+          }
         }
       }
     },
@@ -11286,6 +12096,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "النقل إلى «المحذوفة مؤخرًا»"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to Recently Deleted"
           }
         }
       }
@@ -11370,6 +12186,12 @@
             "state": "translated",
             "value": "افتح مجموعة في علامة تبويب التنظيف، وقارن بين الصور، واختر ما لم تعد بحاجة إليه."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open a group on the Cleanup tab, compare the photos, and choose which ones you no longer need."
+          }
         }
       }
     },
@@ -11452,6 +12274,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "المراجعة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review"
           }
         }
       }
@@ -11536,6 +12364,12 @@
             "state": "translated",
             "value": "يبحث Alike في مكتبة صورك من علامة تبويب الفحص ويجمّع الصور المتشابهة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike looks through your photo library on the Scanner tab and groups photos that look alike."
+          }
         }
       }
     },
@@ -11618,6 +12452,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفحص"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
           }
         }
       }
@@ -11702,6 +12542,12 @@
             "state": "translated",
             "value": "صور تبدو خارج نطاق التركيز، جُمعت لتتحقق منها قبل الإزالة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos that look out of focus, gathered for you to check before removing."
+          }
         }
       }
     },
@@ -11784,6 +12630,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور الضبابية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
           }
         }
       }
@@ -11868,6 +12720,12 @@
             "state": "translated",
             "value": "يحلل Alike الصور فقط. ولا تُقرأ مقاطع الفيديو أو تُدرَج في الفحص أبدًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike analyzes photos only. Videos are never read or included in a scan."
+          }
         }
       }
     },
@@ -11950,6 +12808,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي ينظر إليه Alike"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike looks at"
           }
         }
       }
@@ -12034,6 +12898,12 @@
             "state": "translated",
             "value": "تُستبعد لقطات الشاشة من مجموعات التشابه وتُجمع في فئة خاصة بها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen captures are kept out of similarity groups and collected in their own category."
+          }
         }
       }
     },
@@ -12116,6 +12986,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات الشاشة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
           }
         }
       }
@@ -12200,6 +13076,12 @@
             "state": "translated",
             "value": "اللقطات المتتابعة وشبه المكررة التي تبدو متشابهة — اللحظة نفسها مصوَّرة عدة مرات."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bursts and near-duplicates that look alike — the same moment shot several times."
+          }
         }
       }
     },
@@ -12282,6 +13164,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos"
           }
         }
       }
@@ -12366,6 +13254,12 @@
             "state": "translated",
             "value": "ما الذي يفعله Alike، وما الذي ينظر إليه، والدورة المكوّنة من ثلاث خطوات."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike does, what it looks at, and the three-step loop."
+          }
         }
       }
     },
@@ -12448,6 +13342,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "البدء"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getting started"
           }
         }
       }
@@ -12532,6 +13432,12 @@
             "state": "translated",
             "value": "لا يزيل Alike صورة أبدًا دون تأكيدك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike never removes a photo without your confirmation."
+          }
         }
       }
     },
@@ -12614,6 +13520,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يعثر Alike على الصور التي تستحق نظرة ثانية، ويترك لك قرار ما يبقى."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike finds photos worth a second look, and lets you decide what stays."
           }
         }
       }
@@ -12698,6 +13610,12 @@
             "state": "translated",
             "value": "لا توجد نتائج"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Results"
+          }
         }
       }
     },
@@ -12780,6 +13698,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جرّب كلمة مختلفة، أو تصفّح المواضيع."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try a different word, or browse the topics."
           }
         }
       }
@@ -12864,6 +13788,12 @@
             "state": "translated",
             "value": "ابحث في الدليل"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search the guide"
+          }
         }
       }
     },
@@ -12946,6 +13876,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح موضوع الدليل هذا"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens this guide topic"
           }
         }
       }
@@ -13030,6 +13966,12 @@
             "state": "translated",
             "value": "المواضيع"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Topics"
+          }
         }
       }
     },
@@ -13112,6 +14054,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تجده في الإعدادات، ضمن «البيانات والخصوصية». ولا يمكن التراجع عنه."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find it in Settings, under Data & Privacy. It can't be undone."
           }
         }
       }
@@ -13196,6 +14144,12 @@
             "state": "translated",
             "value": "حذف بيانات Alike"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Alike Data"
+          }
         }
       }
     },
@@ -13278,6 +14232,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "صورك، وألبوم «المحذوفة مؤخرًا» لديك، وإذن الوصول إلى صورك، واشتراكك في Alike Pro."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos, your Recently Deleted album, your photo access, and your Alike Pro subscription."
           }
         }
       }
@@ -13362,6 +14322,12 @@
             "state": "translated",
             "value": "ما يبقى دون مساس"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What stays untouched"
+          }
         }
       }
     },
@@ -13444,6 +14410,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نتائج الفحص وذواكر التحليل المؤقتة، وتقدّم التنظيف وسجله، وتقارير الأعطال المنتظرة على iPhone، وتفضيلات Alike لديك."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences."
           }
         }
       }
@@ -13528,6 +14500,12 @@
             "state": "translated",
             "value": "ما الذي يُمحى"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What gets erased"
+          }
         }
       }
     },
@@ -13610,6 +14588,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يعرض Alike مقدمته من جديد بعد ذلك، دون أن يطلب إذن الوصول إلى الصور مرة ثانية."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike shows its introduction again afterwards, without asking for photo access a second time."
           }
         }
       }
@@ -13694,6 +14678,12 @@
             "state": "translated",
             "value": "البدء من جديد"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting fresh"
+          }
         }
       }
     },
@@ -13776,6 +14766,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تُقارن الصور باستخدام إطار عمل الرؤية من Apple على الجهاز، وتُخزَّن النتائج محليًا."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos are compared using Apple's on-device vision framework, and the results are stored locally."
           }
         }
       }
@@ -13860,6 +14856,12 @@
             "state": "translated",
             "value": "لا يغادر التحليل جهاز iPhone الخاص بك أبدًا"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis never leaves your iPhone"
+          }
         }
       }
     },
@@ -13942,6 +14944,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ليس لـ Alike حساب ولا تسجيل دخول ولا خادم خاص به."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike has no account, no sign-in, and no server of its own."
           }
         }
       }
@@ -14026,6 +15034,12 @@
             "state": "translated",
             "value": "على جهازك"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On your device"
+          }
         }
       }
     },
@@ -14108,6 +15122,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "طلبات الشبكة الوحيدة التي يجريها Alike هي إلى App Store، من أجل الاشتراكات."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The only network requests Alike makes are to the App Store, for subscriptions."
           }
         }
       }
@@ -14192,6 +15212,12 @@
             "state": "translated",
             "value": "لا تُرفع صورك أبدًا"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos are never uploaded"
+          }
         }
       }
     },
@@ -14274,6 +15300,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إذا أُغلق Alike بشكل غير متوقع، يبقى تقرير التعطل على iPhone لديك، ويسألك Alike مرة واحدة إن كنت تريد إرساله بالبريد إلى المطوّر. ترى الرسالة قبل أن تُرسَل، ولا يرسلها أحد سواك من تطبيق البريد الخاص بك. يحتوي على تتبّع المكدّس وإصداري التطبيق وiOS وطراز الجهاز — ولا صور."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. You see the email before it goes, and only you can send it, from your own mail app. It holds the stack trace, the app and iOS versions and the device model — no photos."
           }
         }
       }
@@ -14358,6 +15390,12 @@
             "state": "translated",
             "value": "تقارير الأعطال لا تذهب إلا حيث ترسلها أنت"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crash reports go only where you send them"
+          }
         }
       }
     },
@@ -14440,6 +15478,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ما الذي يطلبه Alike"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Alike asks for"
           }
         }
       }
@@ -14524,6 +15568,12 @@
             "state": "translated",
             "value": "يُطلب فقط إذا فعّلت تذكير التنظيف الأسبوعي، ولا يُطلب في غير ذلك أبدًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requested only if you turn on the weekly cleanup reminder, and never otherwise."
+          }
         }
       }
     },
@@ -14606,6 +15656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإشعارات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
           }
         }
       }
@@ -14690,6 +15746,12 @@
             "state": "translated",
             "value": "يُطلب مرة واحدة في البداية، ويُستخدم لقراءة مكتبتك و — فقط عندما تحسّن صورة بنفسك — لحفظ ذلك التغيير. ويمكنك تغييره أو تقييده في أي وقت من إعدادات iOS."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requested once at the start, and used to read your library and — only when you enhance a photo yourself — to save that change. You can change or limit it any time in iOS Settings."
+          }
         }
       }
     },
@@ -14772,6 +15834,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مكتبة الصور"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo library"
           }
         }
       }
@@ -14856,6 +15924,12 @@
             "state": "translated",
             "value": "ما يبقى على جهازك، وما يطلبه Alike، وكيفية محو بياناته."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What stays on your device, what Alike asks for, and how to erase its data."
+          }
         }
       }
     },
@@ -14938,6 +16012,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الخصوصية وبياناتك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy and your data"
           }
         }
       }
@@ -15022,6 +16102,12 @@
             "state": "translated",
             "value": "توضّح البطاقة ما الذي حدث وتتيح «إعادة المحاولة». وتبقى النتائج السابقة متاحة في هذه الأثناء."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The card explains what went wrong and offers Retry. Earlier results stay available in the meantime."
+          }
         }
       }
     },
@@ -15104,6 +16190,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يكتمل أحد الفحوصات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan didn't finish"
           }
         }
       }
@@ -15188,6 +16280,12 @@
             "state": "translated",
             "value": "التحديث الذي يجري تلقائيًا بعد نقلك للصور لا يُحتسب من فحوصاتك المجانية."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A refresh that runs by itself after you move photos does not count against your free scans."
+          }
         }
       }
     },
@@ -15270,6 +16368,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "متى تعيد الفحص"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When to scan again"
           }
         }
       }
@@ -15354,6 +16458,12 @@
             "state": "translated",
             "value": "عندما تضيف صورًا أو تزيلها من مكان آخر، يضع Alike علامة على النتائج بأنها بحاجة إلى تحديث ويعرض إعادة الفحص."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When you add or remove photos elsewhere, Alike marks the results as needing a refresh and offers to rescan."
+          }
         }
       }
     },
@@ -15436,6 +16546,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تغيّرت مكتبتك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your library changed"
           }
         }
       }
@@ -15520,6 +16636,12 @@
             "state": "translated",
             "value": "تحدد الحساسية مقدار التشابه المطلوب بين صورتين لتقعا في المجموعة نفسها، لذا يطلب Alike إعادة الفحص بعد تغييرها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensitivity decides how alike two photos must be to land in the same group, so Alike asks to rescan after you change it."
+          }
         }
       }
     },
@@ -15602,6 +16724,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "غيّرت الحساسية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You changed sensitivity"
           }
         }
       }
@@ -15686,6 +16814,12 @@
             "state": "translated",
             "value": "يستمر الفحص عند تنقلك بين علامات التبويب. ويُحدَّث التنظيف تلقائيًا بمجرد انتهائه."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning continues when you switch tabs. Cleanup refreshes on its own once it finishes."
+          }
         }
       }
     },
@@ -15768,6 +16902,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "واصل استخدام التطبيق أثناء عمله"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep using the app while it works"
           }
         }
       }
@@ -15852,6 +16992,12 @@
             "state": "translated",
             "value": "يتذكر Alike ما تعلّمه عن كل صورة ولا يعيد تحليل سوى ما تغيّر فعلًا."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike remembers what it learned about each photo and only re-analyzes what actually changed."
+          }
         }
       }
     },
@@ -15934,6 +17080,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفحوصات اللاحقة أسرع"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Later scans are faster"
           }
         }
       }
@@ -16018,6 +17170,12 @@
             "state": "translated",
             "value": "تتغيّر بطاقة الفحص مع تقدّم العملية وتخبرك بما ينبغي فعله بعد ذلك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Scanner card changes as the scan progresses and tells you what to do next."
+          }
         }
       }
     },
@@ -16100,6 +17258,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إجراء فحص"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running a scan"
           }
         }
       }
@@ -16184,6 +17348,12 @@
             "state": "translated",
             "value": "انقر الزر في علامة تبويب الفحص. ويُظهر شريط التقدّم مدى تقدّم التحليل."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap the button on the Scanner tab. A progress bar shows how far along the analysis is."
+          }
         }
       }
     },
@@ -16266,6 +17436,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بدء الفحص"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start scanning"
           }
         }
       }
@@ -16350,6 +17526,12 @@
             "state": "translated",
             "value": "يشمل Alike المجاني ثلاثة فحوصات في كل شهر ميلادي. ويُصفَّر العدّاد في بداية الشهر التالي."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Free includes three scans each calendar month. The counter resets at the start of the next month."
+          }
         }
       }
     },
@@ -16432,6 +17614,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفحوصات المجانية المتبقية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free scans remaining"
           }
         }
       }
@@ -16516,6 +17704,12 @@
             "state": "translated",
             "value": "بعد فحصك الأول تعرض البطاقة موعد إجرائه وعدد الفرص التي عُثر عليها وحجم المساحة التي تشغلها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After your first scan the card shows when it ran, how many opportunities were found, and how much space they hold."
+          }
         }
       }
     },
@@ -16598,6 +17792,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "آخر فحص في لمحة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan at a glance"
           }
         }
       }
@@ -16682,6 +17882,12 @@
             "state": "translated",
             "value": "حالة المكتبة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Library status"
+          }
         }
       }
     },
@@ -16764,6 +17970,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إجراء فحص، وقراءة بطاقة الفحص، ومعرفة متى تعيد الفحص."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running a scan, reading the Scanner card, and knowing when to rescan."
           }
         }
       }
@@ -16848,6 +18060,12 @@
             "state": "translated",
             "value": "فحص مكتبتك"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning your library"
+          }
         }
       }
     },
@@ -16930,6 +18148,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يستدعي تغيير الحساسية إعادة فحص، لأن المجموعات يجب أن تُبنى من جديد."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changing sensitivity asks for a rescan, because the groups have to be built again."
           }
         }
       }
@@ -17014,6 +18238,12 @@
             "state": "translated",
             "value": "ضبط النتائج"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuning the results"
+          }
         }
       }
     },
@@ -17096,6 +18326,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يتوفر Alike بالإنجليزية والأوكرانية والإسبانية والبرتغالية والألمانية والفرنسية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ويفتح المُبدِّل صفحة إعدادات iOS الخاصة بالتطبيق."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. The switch opens the iOS Settings page for the app."
           }
         }
       }
@@ -17180,6 +18416,12 @@
             "state": "translated",
             "value": "تغيير اللغة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change Language"
+          }
         }
       }
     },
@@ -17262,6 +18504,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تجمّع الحساسية المنخفضة الصور شبه المتطابقة فقط. أما العالية فتوسّع النطاق وتعثر على تطابقات أكثر لكنها أقل ارتباطًا."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low groups only near-identical photos. High casts a wider net and finds more, but loosely related, matches."
           }
         }
       }
@@ -17346,6 +18594,12 @@
             "state": "translated",
             "value": "الحساسية"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensitivity"
+          }
         }
       }
     },
@@ -17428,6 +18682,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التذكير معطَّل حتى تفعّله، ويطلب إذن الإشعارات في المرة الأولى."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The reminder is off until you turn it on, and asks for notification permission the first time."
           }
         }
       }
@@ -17512,6 +18772,12 @@
             "state": "translated",
             "value": "تذكير التنظيف الأسبوعي"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly cleanup reminder"
+          }
         }
       }
     },
@@ -17594,6 +18860,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يتيح لك Alike Pro نقل التذكير إلى اليوم والوقت اللذين يناسبانك."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike Pro lets you move the reminder to whichever day and time suits you."
           }
         }
       }
@@ -17678,6 +18950,12 @@
             "state": "translated",
             "value": "اختر يومك ووقتك"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick your own day and time"
+          }
         }
       }
     },
@@ -17760,6 +19038,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تذكير لطيف بقضاء بضع دقائق في التنظيف. وفي Alike المجاني يصل مساء الأحد."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A gentle reminder to spend a few minutes on cleanup. On Alike Free it arrives on Sunday evening."
           }
         }
       }
@@ -17844,6 +19128,12 @@
             "state": "translated",
             "value": "تنبيه مرة في الأسبوع"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A nudge once a week"
+          }
         }
       }
     },
@@ -17926,6 +19216,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اشتراكك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription"
           }
         }
       }
@@ -18010,6 +19306,12 @@
             "state": "translated",
             "value": "على جهاز جديد، أو بعد إعادة التثبيت، يعيد هذا اشتراكك الحالي."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On a new device, or after reinstalling, this brings your existing subscription back."
+          }
         }
       }
     },
@@ -18092,6 +19394,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "استعادة المشتريات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
           }
         }
       }
@@ -18176,6 +19484,12 @@
             "state": "translated",
             "value": "تعرض البطاقة في أعلى الإعدادات ما إذا كان Alike Pro مُفعَّلًا ومتى يتجدد."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The card at the top of Settings shows whether Alike Pro is active and when it renews."
+          }
         }
       }
     },
@@ -18258,6 +19572,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حالة الاشتراك"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription status"
           }
         }
       }
@@ -18342,6 +19662,12 @@
             "state": "translated",
             "value": "الحساسية واللغة والتذكير الأسبوعي واشتراكك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensitivity, language, the weekly reminder and your subscription."
+          }
         }
       }
     },
@@ -18424,6 +19750,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإعدادات والتذكيرات"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings and reminders"
           }
         }
       }
@@ -18508,6 +19840,12 @@
             "state": "translated",
             "value": "لا يقترح Alike سوى النسبة الأقل وضوحًا من صورك، وفقط عندما يتوفر عدد كافٍ منها للمقارنة."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike suggests only the softest few percent of your photos, and only when there are enough to compare."
+          }
         }
       }
     },
@@ -18590,6 +19928,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أوضح الحالات فقط"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the clearest cases"
           }
         }
       }
@@ -18674,6 +20018,12 @@
             "state": "translated",
             "value": "الصور التي وضعتها في المفضلة لا تظهر هنا أبدًا — ضع صورة في المفضلة لحمايتها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos you marked as favourites never appear here — mark a photo as a favourite to protect it."
+          }
         }
       }
     },
@@ -18756,6 +20106,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا تُمسّ المفضلة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favourites are left alone"
           }
         }
       }
@@ -18840,6 +20196,12 @@
             "state": "translated",
             "value": "قِصَر القائمة مقصود: تفويت صورة ضبابية لا يكلفك شيئًا، أما وضع علامة خاطئة على ذكرى عزيزة فيكلفك."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A short list is intentional: a missed blurry photo costs you nothing, a wrongly flagged keepsake does."
+          }
         }
       }
     },
@@ -18922,6 +20284,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لماذا قائمة الصور الضبابية قصيرة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why the blurred list is short"
           }
         }
       }
@@ -19006,6 +20374,12 @@
             "state": "translated",
             "value": "صور تبدو خارج نطاق التركيز، استنادًا إلى تحليل يجري على الجهاز. تستحق التحقق منها قبل إزالتها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos that look out of focus, based on on-device analysis. Worth checking before you remove them."
+          }
         }
       }
     },
@@ -19088,6 +20462,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور الضبابية"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
           }
         }
       }
@@ -19172,6 +20552,12 @@
             "state": "translated",
             "value": "كلتا الفئتين جزء من Alike Pro. والنقر على فئة مقفلة يعرض أولًا ما عثرت عليه."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both categories are part of Alike Pro. Tapping a locked one shows what it found first."
+          }
         }
       }
     },
@@ -19254,6 +20640,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فئتان إضافيتان"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two extra categories"
           }
         }
       }
@@ -19338,6 +20730,12 @@
             "state": "translated",
             "value": "لقطات شاشة مجموعة في مكان واحد، مع المساحة التي تشغلها."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen captures collected in one place, with the space they take up."
+          }
         }
       }
     },
@@ -19420,6 +20818,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات الشاشة"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
           }
         }
       }
@@ -19504,6 +20908,12 @@
             "state": "translated",
             "value": "لقطات الشاشة والصور الضبابية، مجموعة خارج مجموعات التشابه."
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots and Blurred Photos, gathered outside the similarity groups."
+          }
         }
       }
     },
@@ -19586,6 +20996,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التنظيف الذكي"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Cleanup"
           }
         }
       }
@@ -19670,6 +21086,12 @@
             "state": "translated",
             "value": "كيف تعمل"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How they work"
+          }
         }
       }
     },
@@ -19752,6 +21174,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اضغط مطولًا لعرض المعلومات أو فتح الأصل، واضبط الأعمدة من شريط الأدوات."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold for Show Info or Open Original, and adjust columns from the toolbar."
           }
         }
       }
@@ -19836,6 +21264,12 @@
             "state": "translated",
             "value": "الأدوات نفسها المستخدمة في المجموعة"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same tools as a group"
+          }
         }
       }
     },
@@ -19918,6 +21352,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "زر واحد يحدد كل شيء أو يمسح التحديد، ويحتفظ الملخص بإجمالٍ جارٍ."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One button selects everything or clears the selection, and the summary keeps a running total."
           }
         }
       }
@@ -20002,6 +21442,12 @@
             "state": "translated",
             "value": "تحديد الكل أو الاختيار فرديًا"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All or pick individually"
+          }
         }
       }
     },
@@ -20085,6 +21531,12 @@
             "state": "translated",
             "value": "طريقة الاستخدام"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Use"
+          }
         }
       }
     },
@@ -20167,6 +21619,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إغلاق"
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         }
       }

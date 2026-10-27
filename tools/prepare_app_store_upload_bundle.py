@@ -1256,6 +1256,28 @@ METADATA.update(
 )
 
 
+# Reviewed storefront copy; keep regional listings independent.
+METADATA['en-CA'].update(
+    {'release_notes': 'Alike is ready for iOS 27, with a new widget and a quicker way to sort your photos.\n'
+                  '\n'
+                  '- A new tall widget shows how much space you can free and your largest groups, with '
+                  'shortcuts to Similar Photos, Screenshots and Blurred Photos. Add it from the widget '
+                  'gallery on your Home Screen.\n'
+                  '- In a group, swipe a photo to Select it, Keep it or make it the Best Shot, without '
+                  'opening it. Swiping works in Screenshots too, and with VoiceOver.\n'
+                  '- The Cleanup buttons now fit on smaller iPhones, and photos open more smoothly.\n'
+                  '- The widget picture keeps its colours when your Home Screen icons are tinted or clear.\n'
+                  '\n'
+                  'The new widget, the swipes and the Cleanup buttons need iOS 27.\n'
+                  '\n'
+                  'Everything still runs on your device: no account, no uploads, and what you clear goes to '
+                  'Recently Deleted, where iOS keeps it for about 30 days.\n'
+                  '\n'
+                  'Feedback and bug reports are genuinely welcome — the support link on the App Store page '
+                  'reaches me directly.'}
+)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare Alike App Store metadata and screenshots for fastlane deliver.")
     parser.add_argument(

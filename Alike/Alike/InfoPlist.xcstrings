@@ -10,6 +10,12 @@
             "state" : "new",
             "value" : "Alike"
           }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
         }
       }
     },
@@ -93,6 +99,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會分析你的照片圖庫以找出外觀相似的照片，並可優化你選擇的照片；原始照片一律保留，隨時都能還原。"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
           }
         }
       }

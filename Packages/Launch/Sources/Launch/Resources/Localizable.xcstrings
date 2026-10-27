@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "Alike"
           }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
         }
       }
     }
