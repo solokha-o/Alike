@@ -292,6 +292,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -585,6 +603,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -667,6 +703,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تنظيف الصور الضبابية"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photo Cleanup"
           }
         }
       }
@@ -751,6 +793,12 @@
             "state": "translated",
             "value": "تنظيف الصور الضبابية ميزة مميزة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred photo cleanup is a premium feature"
+          }
         }
       }
     },
@@ -833,6 +881,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور الضبابية"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blurred Photos"
           }
         }
       }
@@ -917,6 +971,12 @@
             "state": "translated",
             "value": "صور يُرجَّح أنها منخفضة الجودة بناءً على تحليل يجري على الجهاز. راجعها قبل الحذف."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely low-quality photos based on on-device analysis. Review before deleting."
+          }
         }
       }
     },
@@ -999,6 +1059,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم يتم العثور على صور ضبابية"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Blurred Photos Found"
           }
         }
       }
@@ -1083,6 +1149,12 @@
             "state": "translated",
             "value": "لم يتم العثور على لقطات شاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Screenshots Found"
+          }
         }
       }
     },
@@ -1165,6 +1237,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "فتح تنظيف الصور الضبابية"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open blurred photo cleanup"
           }
         }
       }
@@ -1249,6 +1327,12 @@
             "state": "translated",
             "value": "فتح تنظيف لقطات الشاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open screenshot cleanup"
+          }
         }
       }
     },
@@ -1331,6 +1415,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح صفحة الاشتراك المميز لتنظيف الصور الضبابية"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the premium paywall for blurred photo cleanup"
           }
         }
       }
@@ -1415,6 +1505,12 @@
             "state": "translated",
             "value": "يفتح صفحة الاشتراك المميز لتنظيف لقطات الشاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the premium paywall for screenshot cleanup"
+          }
         }
       }
     },
@@ -1497,6 +1593,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أجرِ فحصًا جديدًا بعد تغيّر مكتبتك أو إذا كانت هناك صور أخرى بحاجة إلى مراجعة."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run a new scan after your library changes or if more photos need review."
           }
         }
       }
@@ -1581,6 +1683,12 @@
             "state": "translated",
             "value": "تنظيف لقطات الشاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot Cleanup"
+          }
         }
       }
     },
@@ -1663,6 +1771,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تنظيف لقطات الشاشة ميزة مميزة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot cleanup is a premium feature"
           }
         }
       }
@@ -1747,6 +1861,12 @@
             "state": "translated",
             "value": "لقطات الشاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
         }
       }
     },
@@ -1829,6 +1949,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
           }
         }
       }
@@ -1913,6 +2039,12 @@
             "state": "translated",
             "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
         }
       }
     },
@@ -1996,6 +2128,12 @@
             "state": "translated",
             "value": "ستُزال لقطة الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
         }
       }
     },
@@ -2078,6 +2216,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال لقطات الشاشة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
           }
         }
       }
@@ -2368,6 +2512,24 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%1$lld محدد، الحجم التقديري %2$@."
+                }
+              }
+            }
+          }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
                 }
               }
             }
@@ -2665,6 +2827,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2958,6 +3138,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshot available for review."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3040,6 +3238,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جرّب إعادة الفحص بعد تحديث مكتبتك."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try rescanning after your library updates."
           }
         }
       }
@@ -3124,6 +3328,12 @@
             "state": "translated",
             "value": "افتح تنظيف الصور الضبابية لمراجعة اللقطات التي يُرجَّح أنها منخفضة الجودة قبل حذفها بالتأكيد الآمن نفسه."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
+          }
         }
       }
     },
@@ -3206,6 +3416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "افتح تنظيف لقطات الشاشة لمراجعة لقطات الشاشة وحذفها بالتأكيد الآمن نفسه."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
           }
         }
       }
@@ -3290,6 +3506,12 @@
             "state": "translated",
             "value": "عالية"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High"
+          }
         }
       }
     },
@@ -3373,6 +3595,12 @@
             "state": "translated",
             "value": "منخفضة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low"
+          }
         }
       }
     },
@@ -3455,6 +3683,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "متوسطة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
           }
         }
       }

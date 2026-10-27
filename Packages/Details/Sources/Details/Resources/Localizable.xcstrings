@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "‏Alike يحتفي بأفضل لقطة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebrating the Best Shot"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التوفير التقديري"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimated Savings"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "جارٍ تنظيم الصور"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Organising Photos"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المحددة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected Photos"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "‏Alike يقارن بين الصور المتشابهة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike comparing similar photos"
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تطبيق"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "جارٍ اختيار أفضل لقطة…"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choosing the best shot…"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تفاصيل المجموعة متاحة على iOS."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cluster details are available on iOS."
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "المقارنة بالأصل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare with the original"
+          }
         }
       }
     },
@@ -828,6 +882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يبدّل بين الأصل والنسخة المحسّنة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switches between the original and the enhanced version"
           }
         }
       }
@@ -912,6 +972,12 @@
             "state": "translated",
             "value": "تاريخ الإنشاء"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created"
+          }
         }
       }
     },
@@ -994,6 +1060,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التواريخ"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates"
           }
         }
       }
@@ -1288,6 +1360,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Photo to Recently Deleted?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Selected Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1370,6 +1460,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تأثير العمق"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depth Effect"
           }
         }
       }
@@ -1454,6 +1550,12 @@
             "state": "translated",
             "value": "التفاصيل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
         }
       }
     },
@@ -1536,6 +1638,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تم"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
           }
         }
       }
@@ -1620,6 +1728,12 @@
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لإزالة هذه الصورة من تحديد التنظيف"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to remove this photo from cleanup selection"
+          }
         }
       }
     },
@@ -1702,6 +1816,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لإعادة فتح هذه المجموعة للمراجعة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to reopen this cluster for review"
           }
         }
       }
@@ -1786,6 +1906,12 @@
             "state": "translated",
             "value": "انقر نقرًا مزدوجًا لتحديد هذه الصورة للتنظيف"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double tap to select this photo for cleanup"
+          }
         }
       }
     },
@@ -1868,6 +1994,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حُرِّرت في تطبيق آخر"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edited in another app"
           }
         }
       }
@@ -1952,6 +2084,12 @@
             "state": "translated",
             "value": "تحسين"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhance"
+          }
         }
       }
     },
@@ -2034,6 +2172,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "مُحسّنة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhanced"
           }
         }
       }
@@ -2118,6 +2262,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة في تطبيق آخر، لذا لم يغيّرها Alike دون سؤال."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo was edited in another app, so Alike didn't change it without asking."
+          }
         }
       }
     },
@@ -2200,6 +2350,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا يمكن تحسين الصور ذات الوصول المحدود. امنح Alike الوصول إلى كل الصور من الإعدادات."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos shared through limited access can't be enhanced. Give Alike access to all photos in Settings."
           }
         }
       }
@@ -2284,6 +2440,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة خارج Alike، لذا لن يتراجع Alike عن ذلك التعديل."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo was edited outside Alike, so Alike won't undo that edit."
+          }
         }
       }
     },
@@ -2366,6 +2528,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصورة الأصلية غير متاحة الآن. قد تكون قيد التنزيل من iCloud."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The original photo isn't available right now. It may still be downloading from iCloud."
           }
         }
       }
@@ -2450,6 +2618,12 @@
             "state": "translated",
             "value": "معاينة التحسين"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhanced preview"
+          }
         }
       }
     },
@@ -2532,6 +2706,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر تجهيز النسخة المحسّنة من هذه الصورة."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't prepare the enhanced version of this photo."
           }
         }
       }
@@ -2616,6 +2796,12 @@
             "state": "translated",
             "value": "حُرِّرت هذه الصورة في تطبيق آخر. يُطبَّق التحسين فوق ذلك التعديل، والعودة إلى الأصل تلغي كليهما."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo was edited in another app. The enhancement is applied on top of that edit, and one revert takes the photo back to the original."
+          }
         }
       }
     },
@@ -2698,6 +2884,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعذّر حفظ الصورة المحسّنة في مكتبتك."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save the enhanced photo to your library."
           }
         }
       }
@@ -2782,6 +2974,12 @@
             "state": "translated",
             "value": "تعذّر التحسين"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhancement Unavailable"
+          }
         }
       }
     },
@@ -2864,6 +3062,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يمكن لـ Alike تحسين الصور فقط في الوقت الحالي."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike can only enhance photos for now."
           }
         }
       }
@@ -2948,6 +3152,12 @@
             "state": "translated",
             "value": "مفضلة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favourite"
+          }
         }
       }
     },
@@ -3030,6 +3240,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ينهي المراجعة ويحتفظ بكل صورة في هذه المجموعة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finishes the review and keeps every photo in this cluster"
           }
         }
       }
@@ -3114,6 +3330,12 @@
             "state": "translated",
             "value": "ينهي المراجعة ويحتفظ بالصور التي لم تحددها"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finishes the review and keeps the photos you did not select"
+          }
         }
       }
     },
@@ -3193,6 +3415,12 @@
           }
         },
         "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDR"
+          }
+        },
+        "en-GB": {
           "stringUnit": {
             "state": "translated",
             "value": "HDR"
@@ -3280,6 +3508,12 @@
             "state": "translated",
             "value": "المس مع الاستمرار لعرض الأصل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touch and hold to see the original"
+          }
         }
       }
     },
@@ -3362,6 +3596,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الاحتفاظ بـ %1$d من %2$d"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %1$d of %2$d"
           }
         }
       }
@@ -3446,6 +3686,12 @@
             "state": "translated",
             "value": "صورة حية"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live Photo"
+          }
         }
       }
     },
@@ -3528,6 +3774,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الموقع"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
           }
         }
       }
@@ -3612,6 +3864,12 @@
             "state": "translated",
             "value": "جعلها أفضل لقطة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make Best Shot"
+          }
         }
       }
     },
@@ -3694,6 +3952,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خريطة تُظهر مكان التقاط الصورة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map showing where the photo was taken"
           }
         }
       }
@@ -3778,6 +4042,12 @@
             "state": "translated",
             "value": "وضع علامة تمت المراجعة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark Reviewed"
+          }
         }
       }
     },
@@ -3860,6 +4130,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ميغابكسل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Megapixels"
           }
         }
       }
@@ -3944,6 +4220,12 @@
             "state": "translated",
             "value": "تاريخ التعديل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modified"
+          }
         }
       }
     },
@@ -4026,6 +4308,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "خيارات أخرى"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More Options"
           }
         }
       }
@@ -4110,6 +4398,12 @@
             "state": "translated",
             "value": "%@ ميجابكسل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MP"
+          }
         }
       }
     },
@@ -4192,6 +4486,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No"
           }
         }
       }
@@ -4276,6 +4576,12 @@
             "state": "translated",
             "value": "لا توجد لقطة أفضل واضحة — اخترها بنفسك"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No obvious Best Shot — choose one yourself"
+          }
         }
       }
     },
@@ -4358,6 +4664,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لا توجد صور متاحة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Photos Available"
           }
         }
       }
@@ -4442,6 +4754,12 @@
             "state": "translated",
             "value": "غير محددة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not selected"
+          }
         }
       }
     },
@@ -4524,6 +4842,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الفتح في الخرائط"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Maps"
           }
         }
       }
@@ -4608,6 +4932,12 @@
             "state": "translated",
             "value": "فتح الأصل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Original"
+          }
         }
       }
     },
@@ -4690,6 +5020,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يفتح موقع الصورة في الخرائط"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the photo location in Maps"
           }
         }
       }
@@ -4774,6 +5110,12 @@
             "state": "translated",
             "value": "الأصل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Original"
+          }
         }
       }
     },
@@ -4856,6 +5198,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "بانوراما"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panorama"
           }
         }
       }
@@ -4940,6 +5288,12 @@
             "state": "translated",
             "value": "صورة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo"
+          }
         }
       }
     },
@@ -5022,6 +5376,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "معلومات الصورة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Info"
           }
         }
       }
@@ -5106,6 +5466,12 @@
             "state": "translated",
             "value": "موقع الصورة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo location"
+          }
         }
       }
     },
@@ -5188,6 +5554,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الأفضل على الأرجح"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probably best"
           }
         }
       }
@@ -5272,6 +5644,12 @@
             "state": "translated",
             "value": "إضاءة أفضل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Better exposure"
+          }
         }
       }
     },
@@ -5354,6 +5732,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الوجه واضح"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face in focus"
           }
         }
       }
@@ -5438,6 +5822,12 @@
             "state": "translated",
             "value": "دقة أعلى"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Higher resolution"
+          }
         }
       }
     },
@@ -5520,6 +5910,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ضوضاء أقل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Less noise"
           }
         }
       }
@@ -5604,6 +6000,12 @@
             "state": "translated",
             "value": "العينان مفتوحتان"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eyes open"
+          }
         }
       }
     },
@@ -5686,6 +6088,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أكثر حدة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sharper"
           }
         }
       }
@@ -5770,6 +6178,12 @@
             "state": "translated",
             "value": "الدقة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolution"
+          }
         }
       }
     },
@@ -5852,6 +6266,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "العودة إلى الأصل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revert to original"
           }
         }
       }
@@ -5936,6 +6356,12 @@
             "state": "translated",
             "value": "لقطة شاشة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
         }
       }
     },
@@ -6018,6 +6444,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد الكل ما عدا الأفضل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All Except Best"
           }
         }
       }
@@ -6102,6 +6534,12 @@
             "state": "translated",
             "value": "محددة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected"
+          }
         }
       }
     },
@@ -6184,6 +6622,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "محددة لمراجعة التنظيف"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected for cleanup review"
           }
         }
       }
@@ -6268,6 +6712,12 @@
             "state": "translated",
             "value": "ستُزال الصورة المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
         }
       }
     },
@@ -6350,6 +6800,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ستُزال الصور المحددة من مكتبتك ومن الأجهزة الأخرى التي تستخدم صور iCloud، ثم تبقى في «المحذوفة مؤخرًا» مدة تصل إلى 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا. المساحة التقديرية القابلة للاسترجاع: %@."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
           }
         }
       }
@@ -6434,6 +6890,12 @@
             "state": "translated",
             "value": "التحديد"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selection"
+          }
         }
       }
     },
@@ -6516,6 +6978,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختصارات التحديد وتخطيط الشبكة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selection shortcuts and grid layout"
           }
         }
       }
@@ -6600,6 +7068,12 @@
             "state": "translated",
             "value": "عرض المعلومات"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Info"
+          }
         }
       }
     },
@@ -6682,6 +7156,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الصور المتشابهة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar Photos"
           }
         }
       }
@@ -6766,6 +7246,12 @@
             "state": "translated",
             "value": "يُحتفظ بهذه الصورة بوصفها أفضل لقطة. اضغط مطولًا على صورة أخرى لجعلها أفضل لقطة بدلًا منها."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This photo is kept as the best shot. Long press another photo to make it the best shot instead."
+          }
         }
       }
     },
@@ -6848,6 +7334,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "النوع"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
           }
         }
       }
@@ -6932,6 +7424,12 @@
             "state": "translated",
             "value": "عرض"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View"
+          }
         }
       }
     },
@@ -7014,6 +7512,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نعم"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes"
           }
         }
       }
@@ -7308,6 +7812,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Photo"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %1$lld Photos"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -7390,6 +7912,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "جارٍ النقل..."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving..."
           }
         }
       }
@@ -7474,6 +8002,12 @@
             "state": "translated",
             "value": "حالة مراجعة التنظيف الحالية"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current cleanup review status"
+          }
         }
       }
     },
@@ -7556,6 +8090,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "قيد المراجعة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In review"
           }
         }
       }
@@ -7640,6 +8180,12 @@
             "state": "translated",
             "value": "الاحتفاظ بـ %1$d من %2$d، الحجم التقديري %3$@."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %1$d of %2$d, estimated size %3$@."
+          }
         }
       }
     },
@@ -7722,6 +8268,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "صورة متشابهة واحدة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Similar Photo"
           }
         }
       }
@@ -7806,6 +8358,12 @@
             "state": "translated",
             "value": "بحاجة إلى مراجعة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs review"
+          }
         }
       }
     },
@@ -7888,6 +8446,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم تُراجَع"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not reviewed"
           }
         }
       }
@@ -8182,6 +8746,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -8264,6 +8846,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d صور متشابهة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Similar Photos"
           }
         }
       }
@@ -8348,6 +8936,12 @@
             "state": "translated",
             "value": "انقر على الصور لتحديدها للتنظيف"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap photos to select them for cleanup"
+          }
         }
       }
     },
@@ -8430,6 +9024,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور قبل أن يتمكن من حذف الصور. افتح الإعدادات للمتابعة."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo library access before it can delete photos. Open Settings to continue."
           }
         }
       }
@@ -8514,6 +9114,12 @@
             "state": "translated",
             "value": "‏Alike ينظّم الصور المحددة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike organising selected photos"
+          }
         }
       }
     },
@@ -8596,6 +9202,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "أفضل لقطة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Shot"
           }
         }
       }
@@ -8680,6 +9292,12 @@
             "state": "translated",
             "value": "إلغاء"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
         }
       }
     },
@@ -8762,6 +9380,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "التنظيف غير متاح"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Unavailable"
           }
         }
       }
@@ -8846,6 +9470,12 @@
             "state": "translated",
             "value": "مسح التحديد"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Selection"
+          }
         }
       }
     },
@@ -8928,6 +9558,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "إغلاق"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         }
       }
@@ -9012,6 +9648,12 @@
             "state": "translated",
             "value": "تعذّر نقل الصور المحددة. يُرجى المحاولة مرة أخرى."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't move the selected photos. Please try again."
+          }
         }
       }
     },
@@ -9094,6 +9736,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الاحتفاظ بجميع الصور البالغ عددها %d"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping all %d photos"
           }
         }
       }
@@ -9178,6 +9826,12 @@
             "state": "translated",
             "value": "جارٍ تحميل معاينة الصورة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading photo preview"
+          }
         }
       }
     },
@@ -9260,6 +9914,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نقل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move"
           }
         }
       }
@@ -9344,6 +10004,12 @@
             "state": "translated",
             "value": "نقل الصور المحددة حاليًا إلى «المحذوفة مؤخرًا»"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move the currently selected photos to Recently Deleted"
+          }
         }
       }
     },
@@ -9426,6 +10092,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "موافق"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -9510,6 +10182,12 @@
             "state": "translated",
             "value": "فتح الإعدادات"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
         }
       }
     },
@@ -9592,6 +10270,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "معاينة الصورة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview"
           }
         }
       }
@@ -9676,6 +10360,12 @@
             "state": "translated",
             "value": "معاينة الصورة غير متوفرة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview unavailable"
+          }
         }
       }
     },
@@ -9758,6 +10448,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تمت مراجعتها"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewed"
           }
         }
       }
@@ -9842,6 +10538,12 @@
             "state": "translated",
             "value": "حدد صورة واحدة على الأقل قبل الحذف."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select at least one photo before deleting."
+          }
         }
       }
     },
@@ -9924,6 +10626,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لم تعد بعض الصور المحددة متاحة. قد يكون وصولك إلى المكتبة محدودًا، أو أن المكتبة تغيّرت منذ آخر فحص."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some selected photos are no longer available. Your library access may be limited, or the library changed since the last scan."
           }
         }
       }
@@ -10008,6 +10716,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
         }
       }
     },
@@ -10090,6 +10804,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حاول تحميل الصورة مرة أخرى"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try loading the photo again"
           }
         }
       }
@@ -10174,6 +10894,12 @@
             "state": "translated",
             "value": "الاحتفاظ"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
         }
       }
     },
@@ -10256,6 +10982,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select"
           }
         }
       }
@@ -10340,6 +11072,12 @@
             "state": "translated",
             "value": "تنظيف لقطات الشاشة متاح على iOS."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot cleanup is available on iOS."
+          }
         }
       }
     },
@@ -10422,6 +11160,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لقطات الشاشة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
           }
         }
       }
@@ -10506,6 +11250,12 @@
             "state": "translated",
             "value": "اختر الصور المحددة للتنظيف"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose which photos are selected for cleanup"
+          }
         }
       }
     },
@@ -10588,6 +11338,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "نقل المحدد"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move Selected"
           }
         }
       }
@@ -10672,6 +11428,12 @@
             "state": "translated",
             "value": "جارٍ النقل..."
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving..."
+          }
         }
       }
     },
@@ -10754,6 +11516,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحديد الكل"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All"
           }
         }
       }
