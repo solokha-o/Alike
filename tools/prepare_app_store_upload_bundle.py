@@ -1295,7 +1295,7 @@ METADATA['tr'].update(
                 'hatırlanır.\n'
                 "- Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.\n"
                 '- İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.\n'
-                "- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve arşiva bir bakış.\n"
+                "- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve arşive bir bakış.\n"
                 '- On üç dil ve tam Koyu Mod desteği.\n'
                 '\n'
                 'KONTROL SENDE\n'
