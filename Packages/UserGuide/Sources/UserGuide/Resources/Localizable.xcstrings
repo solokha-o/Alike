@@ -76,6 +76,12 @@
             "value" : "Passo %1$d de %2$d: %3$@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passo %1$d de %2$d: %3$@"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,12 +98,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "步驟 %1$d，共 %2$d 步：%3$@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passo %1$d de %2$d: %3$@"
           }
         }
       }
@@ -177,6 +177,12 @@
             "value" : "Fotos foram adicionadas ou removidas de um grupo que você já tinha revisado, então vale outra olhada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foram adicionadas ou removidas fotografias de um grupo que já tinhas revisto. Convém revê-lo novamente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193,12 +199,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你已檢視過的群組中新增或移除了照片，值得再看一次。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Foram adicionadas ou removidas fotografias de um grupo que já tinhas revisto. Convém revê-lo novamente."
           }
         }
       }
@@ -278,6 +278,12 @@
             "value" : "Alterado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,12 +300,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已變更"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alterado"
           }
         }
       }
@@ -379,6 +379,12 @@
             "value" : "O que significam os selos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que significam os selos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,12 +401,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "標記的意思"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que significam os selos"
           }
         }
       }
@@ -480,6 +480,12 @@
             "value" : "Você selecionou fotos aqui, mas não marcou o grupo como revisado."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionaste fotografias aqui, mas ainda não marcaste o grupo como revisto."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -496,12 +502,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你在這裡選了照片，但尚未將群組標示為已檢視。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionaste fotografias aqui, mas ainda não marcaste o grupo como revisto."
           }
         }
       }
@@ -581,6 +581,12 @@
             "value" : "Em revisão"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em revisão"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -597,12 +603,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視中"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Em revisão"
           }
         }
       }
@@ -682,6 +682,12 @@
             "value" : "Este grupo apareceu na análise mais recente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este grupo apareceu na análise mais recente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -698,12 +704,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這個群組出現在最近一次掃描中。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este grupo apareceu na análise mais recente."
           }
         }
       }
@@ -783,6 +783,12 @@
             "value" : "Novo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -799,12 +805,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Novo"
           }
         }
       }
@@ -884,6 +884,12 @@
             "value" : "Você ainda não abriu este grupo."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda não abriste este grupo."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -900,12 +906,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你還沒有打開這個群組。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ainda não abriste este grupo."
           }
         }
       }
@@ -985,6 +985,12 @@
             "value" : "Não revisado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não revisto"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1001,12 +1007,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não revisto"
           }
         }
       }
@@ -1086,6 +1086,12 @@
             "value" : "Você já tomou sua decisão sobre este grupo, seja ela qual for."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já tomaste uma decisão sobre este grupo, seja ela qual for."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1102,12 +1108,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你已對這個群組做出決定，無論是什麼決定。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Já tomaste uma decisão sobre este grupo, seja ela qual for."
           }
         }
       }
@@ -1187,6 +1187,12 @@
             "value" : "Revisado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisto"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1203,12 +1209,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisto"
           }
         }
       }
@@ -1288,6 +1288,12 @@
             "value" : "Alterne entre um layout espaçoso de uma coluna e uma grade mais densa pela barra de ferramentas em qualquer tela de fotos. O Alike lembra sua escolha entre as aberturas do app."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterna entre uma disposição espaçosa de uma coluna e uma grelha mais densa na barra de ferramentas de qualquer ecrã de fotografias. O Alike guarda a tua escolha para a próxima vez que abrires a app."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1304,12 +1310,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在任一照片畫面的工具列中，於寬鬆的單欄版面與較密集的格線之間切換。Alike 會在下次啟動時記住你的選擇。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alterna entre uma disposição espaçosa de uma coluna e uma grelha mais densa na barra de ferramentas de qualquer ecrã de fotografias. O Alike guarda a tua escolha para a próxima vez que abrires a app."
           }
         }
       }
@@ -1389,6 +1389,12 @@
             "value" : "Colunas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colunas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1405,12 +1411,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "欄數"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colunas"
           }
         }
       }
@@ -1490,6 +1490,12 @@
             "value" : "Filtre a lista por status de revisão, tamanho mínimo do grupo ou apenas favoritas. A ordenação continua disponível no Alike Free."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtra a lista por estado de revisão, tamanho mínimo do grupo ou apenas favoritas. A ordenação continua disponível no Alike Free."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1506,12 +1512,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "依檢視狀態、群組最小數量或僅限最愛來縮小清單範圍。排序在 Alike Free 中仍可使用。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtra a lista por estado de revisão, tamanho mínimo do grupo ou apenas favoritas. A ordenação continua disponível no Alike Free."
           }
         }
       }
@@ -1591,6 +1591,12 @@
             "value" : "Filtros avançados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtros avançados"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1607,12 +1613,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "進階篩選"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtros avançados"
           }
         }
       }
@@ -1692,6 +1692,12 @@
             "value" : "Redefinir controles devolve a ordenação e os filtros aos valores padrão."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repor controlos repõe os valores predefinidos da ordenação e dos filtros."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1708,12 +1714,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「重置條件」會將排序與篩選恢復為預設值。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Repor controlos repõe os valores predefinidos da ordenação e dos filtros."
           }
         }
       }
@@ -1793,6 +1793,12 @@
             "value" : "Ordenação, filtros e layout"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenação, filtros e disposição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1809,12 +1815,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "排序、篩選與版面"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordenação, filtros e disposição"
           }
         }
       }
@@ -1894,6 +1894,12 @@
             "value" : "Ordene os grupos por mais recentes, maior economia de espaço, maior grupo, maior semelhança ou status de revisão."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordena os grupos por mais recentes, maior poupança de espaço, maior grupo, maior semelhança ou estado de revisão."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1910,12 +1916,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "依最新、可省下最多空間、最大群組、相似度最高或檢視狀態來排序群組。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordena os grupos por mais recentes, maior poupança de espaço, maior grupo, maior semelhança ou estado de revisão."
           }
         }
       }
@@ -1995,6 +1995,12 @@
             "value" : "Ordenar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2011,12 +2017,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "排序"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordenar"
           }
         }
       }
@@ -2096,6 +2096,12 @@
             "value" : "Abre o próximo grupo que ainda precisa da sua atenção, para você nunca ter que procurar onde parou."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre o próximo grupo que ainda precisa da tua atenção, para não teres de procurar onde paraste."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2112,12 +2118,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開下一個仍需你處理的群組，讓你不必再找上次停在哪裡。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre o próximo grupo que ainda precisa da tua atenção, para não teres de procurar onde paraste."
           }
         }
       }
@@ -2197,6 +2197,12 @@
             "value" : "Continuar revisão"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar revisão"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2213,12 +2219,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "繼續檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar revisão"
           }
         }
       }
@@ -2298,6 +2298,12 @@
             "value" : "Seu progresso"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O teu progresso"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2314,12 +2320,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的進度"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O teu progresso"
           }
         }
       }
@@ -2399,6 +2399,12 @@
             "value" : "Mostra tudo o que você já limpou, agrupado por mês, com o seu total geral."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra tudo o que já limpaste, agrupado por mês, com o total acumulado."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2415,12 +2421,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "顯示你至今清理過的所有項目，依月份分組，並附上歷來總計。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra tudo o que já limpaste, agrupado por mês, com o total acumulado."
           }
         }
       }
@@ -2500,6 +2500,12 @@
             "value" : "Histórico"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Histórico"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2516,12 +2522,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "歷史記錄"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Histórico"
           }
         }
       }
@@ -2601,6 +2601,12 @@
             "value" : "A economia estimada é quanto espaço a sua seleção atual liberaria assim que as fotos fossem apagadas definitivamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A poupança estimada indica o espaço que a tua seleção atual libertaria depois de as fotografias serem apagadas definitivamente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2617,12 +2623,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「預估可省空間」是指目前選取的照片在永久刪除後可釋出的空間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A poupança estimada indica o espaço que a tua seleção atual libertaria depois de as fotografias serem apagadas definitivamente."
           }
         }
       }
@@ -2702,6 +2702,12 @@
             "value" : "Revisados, restantes, selecionadas e economia estimada"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revistos, restantes, selecionadas e poupança estimada"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2718,12 +2724,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已檢視、尚餘、已選取、預估可省空間"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revistos, restantes, selecionadas e poupança estimada"
           }
         }
       }
@@ -2803,6 +2803,12 @@
             "value" : "Todos os grupos que o Alike encontrou, incluindo os que você já marcou como revisados."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os grupos que o Alike encontrou, incluindo os que já marcaste como revistos."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2819,12 +2825,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 找到的所有群組，包括你已標示為已檢視的群組。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos os grupos que o Alike encontrou, incluindo os que já marcaste como revistos."
           }
         }
       }
@@ -2904,6 +2904,12 @@
             "value" : "Todos os grupos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os grupos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2920,12 +2926,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所有群組"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos os grupos"
           }
         }
       }
@@ -3005,6 +3005,12 @@
             "value" : "“Precisa de revisão” aparece apenas quando há algo novo ou alterado para ver."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Precisa de revisão” aparece apenas quando há algo novo ou alterado para ver."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3021,12 +3027,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只有在有新增或變更的項目時，才會出現「待檢視」。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“Precisa de revisão” aparece apenas quando há algo novo ou alterado para ver."
           }
         }
       }
@@ -3106,6 +3106,12 @@
             "value" : "Duas listas de grupos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duas listas de grupos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3122,12 +3128,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "兩份群組清單"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duas listas de grupos"
           }
         }
       }
@@ -3207,6 +3207,12 @@
             "value" : "Grupos sobre os quais você ainda não decidiu, mais os que uma nova análise alterou. Comece por aqui."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos sobre os quais ainda não decidiste e grupos alterados por uma nova análise. Começa por aqui."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3223,12 +3229,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你尚未決定的群組，以及重新掃描後有變動的群組。從這裡開始。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos sobre os quais ainda não decidiste e grupos alterados por uma nova análise. Começa por aqui."
           }
         }
       }
@@ -3308,6 +3308,12 @@
             "value" : "Precisa de revisão"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precisa de revisão"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3324,12 +3330,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "待檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Precisa de revisão"
           }
         }
       }
@@ -3409,6 +3409,12 @@
             "value" : "Seu progresso, as duas seções de grupos, os selos, a ordenação e os filtros."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O teu progresso, as duas secções de grupos, os selos, a ordenação e os filtros."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3425,12 +3431,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的進度、兩個群組區段、標記、排序與篩選。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O teu progresso, as duas secções de grupos, os selos, a ordenação e os filtros."
           }
         }
       }
@@ -3510,6 +3510,12 @@
             "value" : "Avançando na limpeza"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançar na limpeza"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3526,12 +3532,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用「清理」"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avançar na limpeza"
           }
         }
       }
@@ -3611,6 +3611,12 @@
             "value" : "O Alike compara nitidez, exposição, ruído e se os rostos estão em foco com os olhos abertos. Uma foto favorita recebe um pequeno empurrão — nenhum se estiver desfocada ou mal exposta. Quando nada se destaca claramente, o Alike deixa a escolha para você em vez de adivinhar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike compara a nitidez, a exposição, o ruído e se os rostos estão focados e com os olhos abertos. Uma fotografia favorita recebe uma pequena vantagem — nenhuma se estiver desfocada ou mal exposta. Quando nenhuma se destaca claramente, o Alike deixa-te escolher em vez de adivinhar."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3627,12 +3633,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會比較銳利度、曝光、雜訊，以及臉孔是否清晰、眼睛是否張開。最愛照片會得到一點加分——如果照片模糊或曝光不佳，就完全沒有加分。當沒有照片明顯勝出時，Alike 會把選擇權交給你，而不是用猜的。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike compara a nitidez, a exposição, o ruído e se os rostos estão focados e com os olhos abertos. Uma fotografia favorita recebe uma pequena vantagem — nenhuma se estiver desfocada ou mal exposta. Quando nenhuma se destaca claramente, o Alike deixa-te escolher em vez de adivinhar."
           }
         }
       }
@@ -3712,6 +3712,12 @@
             "value" : "Como o Alike escolhe"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como o Alike escolhe"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3728,12 +3734,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 如何挑選"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como o Alike escolhe"
           }
         }
       }
@@ -3813,6 +3813,12 @@
             "value" : "Sua escolha manual permanece enquanto aquela foto existir."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua escolha manual mantém-se enquanto essa fotografia existir."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3829,12 +3835,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只要那張照片還在，你手動的選擇就會保留。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua escolha manual mantém-se enquanto essa fotografia existir."
           }
         }
       }
@@ -3914,6 +3914,12 @@
             "value" : "A melhor foto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A melhor fotografia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3930,12 +3936,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最佳照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A melhor fotografia"
           }
         }
       }
@@ -4015,6 +4015,12 @@
             "value" : "Não concorda? Mantenha qualquer foto pressionada e escolha “Definir como melhor foto”. A anterior entra na sua seleção."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não concordas? Mantém qualquer fotografia premida e escolhe “Definir como melhor fotografia”. A fotografia anteriormente escolhida passa a fazer parte da tua seleção."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4031,12 +4037,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不同意嗎？長按任一張照片並選擇「設為最佳照片」。原本保留的那張會加入你的選取範圍。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não concordas? Mantém qualquer fotografia premida e escolhe “Definir como melhor fotografia”. A fotografia anteriormente escolhida passa a fazer parte da tua seleção."
           }
         }
       }
@@ -4116,6 +4116,12 @@
             "value" : "Definir como melhor foto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definir como melhor fotografia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4132,12 +4138,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "設為最佳照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Definir como melhor fotografia"
           }
         }
       }
@@ -4217,6 +4217,12 @@
             "value" : "O Alike prepara uma versão aprimorada e a mostra como prévia. Nada é gravado até você tocar em “Aplicar”."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike prepara uma versão melhorada e mostra uma pré-visualização. Nada é gravado até tocares em “Aplicar”."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4233,12 +4239,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會準備一個優化版本，並以預覽方式顯示。在你點一下「套用」之前，不會寫入任何東西。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike prepara uma versão melhorada e mostra uma pré-visualização. Nada é gravado até tocares em “Aplicar”."
           }
         }
       }
@@ -4318,6 +4318,12 @@
             "value" : "Veja antes de ficar com ela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vê antes de ficar com ela"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4334,12 +4340,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "先看過再決定保留"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vê antes de ficar com ela"
           }
         }
       }
@@ -4419,6 +4419,12 @@
             "value" : "Na visualização em tela cheia, mantenha a foto pressionada para ver o original e solte para voltar à versão aprimorada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na visualização em ecrã completo, mantém a fotografia premida para veres o original. Solta-a para voltares a ver a versão melhorada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4435,12 +4441,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在全螢幕檢視中長按照片可看到原始照片，放開就會回到優化版本。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Na visualização em ecrã completo, mantém a fotografia premida para veres o original. Solta-a para voltares a ver a versão melhorada."
           }
         }
       }
@@ -4520,6 +4520,12 @@
             "value" : "Mantenha pressionado para comparar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manter premido para comparar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4536,12 +4542,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "長按即可比較"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Manter premido para comparar"
           }
         }
       }
@@ -4621,6 +4621,12 @@
             "value" : "O original nunca sai da sua fototeca. O Alike grava a alteração do mesmo jeito que o app Fotos, então dá para desfazer em qualquer um dos dois."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O original nunca sai da tua fototeca. O Alike grava a alteração da mesma forma que a app Fotografias, pelo que ambas as apps a podem reverter."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4637,12 +4643,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "原始照片絕不會離開你的圖庫。Alike 以「照片」App 相同的方式寫入這項變更，所以在任一個 App 都能取消。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O original nunca sai da tua fototeca. O Alike grava a alteração da mesma forma que a app Fotografias, pelo que ambas as apps a podem reverter."
           }
         }
       }
@@ -4722,6 +4722,12 @@
             "value" : "Aprimorar a foto que você guarda"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melhorar a fotografia que manténs"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4738,12 +4744,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "優化你要保留的那張"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Melhorar a fotografia que manténs"
           }
         }
       }
@@ -4823,6 +4823,12 @@
             "value" : "O aprimoramento não está disponível para vídeos, com acesso limitado nem para fotos que o sistema marca como não editáveis. Se uma foto já tem uma edição de outro app, o Alike pergunta antes de substituí-la."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A melhoria não está disponível para vídeos, com acesso limitado nem para fotografias que o sistema marca como não editáveis. Se uma fotografia já tem uma edição de outra app, o Alike pergunta antes de substituí-la."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4839,12 +4845,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "影片、受限取用的情況，以及系統標示為無法編輯的照片，都不會提供優化。如果照片上已有其他 App 的編輯，Alike 會先詢問再取代。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A melhoria não está disponível para vídeos, com acesso limitado nem para fotografias que o sistema marca como não editáveis. Se uma fotografia já tem uma edição de outra app, o Alike pergunta antes de substituí-la."
           }
         }
       }
@@ -4924,6 +4924,12 @@
             "value" : "Quando não é oferecido"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quando a melhoria não está disponível"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4940,12 +4946,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "什麼時候不會提供"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quando a melhoria não está disponível"
           }
         }
       }
@@ -5025,6 +5025,12 @@
             "value" : "Um passo traz o original de volta. O iOS o mantém para você, então nenhuma cópia é criada, e o app Fotos também desfaz a alteração: “Editar” e depois “Reverter”."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um passo repõe o original. O iOS guarda-o, pelo que não é criada uma cópia. A app Fotografias também pode reverter a alteração: “Editar” e depois “Restabelecer”."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5041,12 +5047,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一個步驟就能把原始照片放回去。iOS 會替你保留原始照片，因此不會產生副本，「照片」App 也能取消這項變更——「編輯」，然後「還原」。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um passo repõe o original. O iOS guarda-o, pelo que não é criada uma cópia. A app Fotografias também pode reverter a alteração: “Editar” e depois “Restabelecer”."
           }
         }
       }
@@ -5126,6 +5126,12 @@
             "value" : "Voltar ao original"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voltar ao original"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5142,12 +5148,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "還原為原始照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voltar ao original"
           }
         }
       }
@@ -5227,6 +5227,12 @@
             "value" : "Abre a foto em tela cheia. Deslize entre as fotos do grupo e use o gesto de pinça para ampliar os detalhes."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre a fotografia em ecrã completo. Desliza entre as fotografias do grupo e usa o gesto de pinça para ampliar os detalhes."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5243,12 +5249,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "以全螢幕打開照片。在群組照片間滑動，並用縮放手勢放大細節。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aprender as tuas preferências"
           }
         }
       }
@@ -5328,6 +5328,12 @@
             "value" : "Abrir original"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir original"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5344,12 +5350,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開原始檔"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike aprende fica neste dispositivo e nunca é enviado."
           }
         }
       }
@@ -5429,6 +5429,12 @@
             "value" : "Olhando mais de perto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver mais de perto"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5445,12 +5451,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "看得更仔細"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike aprende com as tuas escolhas"
           }
         }
       }
@@ -5530,6 +5530,12 @@
             "value" : "Mantenha uma foto pressionada para ver resolução, tipo de arquivo, datas, se é favorita e onde foi tirada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantém uma fotografia premida para veres a resolução, o tipo de ficheiro, as datas, se é favorita e onde foi tirada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5546,12 +5552,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "長按照片可查看解析度、檔案類型、日期、最愛狀態與拍攝地點。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sempre que escolhes uma Melhor Fotografia diferente da sugerida pelo Alike, a app guarda a tua preferência e dá-lhe um pouco mais de peso na próxima vez. São necessárias algumas escolhas antes de notares uma diferença."
           }
         }
       }
@@ -5631,6 +5631,12 @@
             "value" : "Mostrar informações"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar informações"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5647,12 +5653,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "顯示資訊"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que ele não faz"
           }
         }
       }
@@ -5732,6 +5732,12 @@
             "value" : "O que o Alike aprende fica neste dispositivo e nunca é enviado."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike aprende fica neste dispositivo e nunca é enviado."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5748,12 +5754,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 學到的內容只留在這部裝置上，絕不會被上傳。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isso só muda o quanto nitidez, exposição, ruído e rostos contam uns em relação aos outros. Uma fotografia desfocada ou mal exposta nunca se torna a melhor fotografia por causa disso."
           }
         }
       }
@@ -5833,6 +5833,12 @@
             "value" : "Aprendendo seu gosto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aprender as tuas preferências"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5849,12 +5855,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "了解你的喜好"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recomeçar"
           }
         }
       }
@@ -5934,6 +5934,12 @@
             "value" : "Toda vez que você escolhe uma melhor foto diferente da sugerida pelo Alike, ele lembra o que você preferiu e passa a pender um pouco mais nessa direção da próxima vez. São necessárias algumas escolhas antes que você note uma diferença."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sempre que escolhes uma Melhor Fotografia diferente da sugerida pelo Alike, a app guarda a tua preferência e dá-lhe um pouco mais de peso na próxima vez. São necessárias algumas escolhas antes de notares uma diferença."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5950,12 +5956,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每次你選擇的最佳照片和 Alike 建議的不同時，它會記住你偏好的地方，下次就會稍微多考慮這一點。要累積幾次選擇之後，你才會注意到差異。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nas Definições, “Repor aprendizagem da Melhor Fotografia” faz o Alike esquecer tudo o que aprendeu e voltar à classificação predefinida."
           }
         }
       }
@@ -6035,6 +6035,12 @@
             "value" : "O Alike aprende com suas escolhas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike aprende com as tuas escolhas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6051,12 +6057,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會從你的選擇中學習"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre a fotografia em ecrã completo. Desliza entre as fotografias do grupo e usa o gesto de pinça para ampliar os detalhes."
           }
         }
       }
@@ -6136,6 +6136,12 @@
             "value" : "Isso só muda o quanto nitidez, exposição, ruído e rostos contam uns em relação aos outros. Uma foto desfocada ou mal exposta nunca se torna a melhor foto por causa disso."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isso só muda o quanto nitidez, exposição, ruído e rostos contam uns em relação aos outros. Uma fotografia desfocada ou mal exposta nunca se torna a melhor fotografia por causa disso."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6152,12 +6158,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這只會改變銳利度、曝光、雜訊和臉孔彼此之間的權重。模糊或曝光不佳的照片絕不會因此被選為最佳照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir original"
           }
         }
       }
@@ -6237,6 +6237,12 @@
             "value" : "O que ele não faz"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que ele não faz"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6253,12 +6259,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "它不會做的事"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ver mais de perto"
           }
         }
       }
@@ -6338,6 +6338,12 @@
             "value" : "Em Ajustes, “Redefinir aprendizado da Melhor Foto” esquece tudo o que o Alike aprendeu e volta à classificação padrão."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nas Definições, “Repor aprendizagem da Melhor Fotografia” faz o Alike esquecer tudo o que aprendeu e voltar à classificação predefinida."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6354,12 +6360,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在設定中，重設「最佳照片」學習內容會忘記 Alike 學到的一切，並回到預設排序。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantém uma fotografia premida para veres a resolução, o tipo de ficheiro, as datas, se é favorita e onde foi tirada."
           }
         }
       }
@@ -6439,6 +6439,12 @@
             "value" : "Recomeçando"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recomeçar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6455,12 +6461,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重新開始"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar informações"
           }
         }
       }
@@ -6540,6 +6540,12 @@
             "value" : "Marcar um grupo como revisado é decisão sua, não consequência de selecionar fotos. Você pode reabri-lo quando quiser."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar um grupo como revisto é uma decisão tua, não uma consequência de selecionar fotografias. Podes reabri-lo quando quiseres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6556,12 +6562,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "將群組標示為已檢視是你的決定，並非選取照片造成的結果。你隨時可以重新打開。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Marcar um grupo como revisto é uma decisão tua, não uma consequência de selecionar fotografias. Podes reabri-lo quando quiseres."
           }
         }
       }
@@ -6641,6 +6641,12 @@
             "value" : "Concluindo um grupo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluir um grupo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6657,12 +6663,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完成一個群組"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Concluir um grupo"
           }
         }
       }
@@ -6742,6 +6742,12 @@
             "value" : "Se vale a pena manter todas as fotos de um grupo, marque como revisado e siga em frente. Nada precisa ser removido."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se todas as fotografias de um grupo merecem ser mantidas, marca-o como revisto e continua. Não é preciso remover nada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6758,12 +6764,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "如果群組中的每張照片都值得保留，就標示為已檢視並繼續。不必移除任何東西。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se todas as fotografias de um grupo merecem ser mantidas, marca-o como revisto e continua. Não é preciso remover nada."
           }
         }
       }
@@ -6843,6 +6843,12 @@
             "value" : "Manter tudo também conta"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manter tudo também conta"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6859,12 +6865,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "全部保留也算完成"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Manter tudo também conta"
           }
         }
       }
@@ -6944,6 +6944,12 @@
             "value" : "O botão na parte de baixo aparece quando há algo selecionado e sempre pede confirmação antes."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O botão na parte inferior aparece quando selecionas algo e pede sempre confirmação primeiro."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6960,12 +6966,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "底部的按鈕會在你選取項目後出現，並且一定會先請你確認。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O botão na parte inferior aparece quando selecionas algo e pede sempre confirmação primeiro."
           }
         }
       }
@@ -7045,6 +7045,12 @@
             "value" : "Mover as fotos selecionadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover as fotografias selecionadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7061,12 +7067,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移動已選取的照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mover as fotografias selecionadas"
           }
         }
       }
@@ -7146,6 +7146,12 @@
             "value" : "Use o botão de selo na barra de navegação quando terminar com um grupo. Toque nele de novo para reabrir."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa o botão com o selo na barra de navegação quando terminares um grupo. Toca novamente para o reabrir."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7162,12 +7168,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完成一個群組後，請使用導覽列上的印章按鈕。再點一下即可重新打開。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Usa o botão com o selo na barra de navegação quando terminares um grupo. Toca novamente para o reabrir."
           }
         }
       }
@@ -7247,6 +7247,12 @@
             "value" : "Marcar como revisado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar como revisto"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7263,12 +7269,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "標示為已檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Marcar como revisto"
           }
         }
       }
@@ -7348,6 +7348,12 @@
             "value" : "O Alike Free move uma foto por vez. O Alike Pro remove toda a sua seleção em uma única etapa."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Free move uma fotografia de cada vez. O Alike Pro remove toda a tua seleção num único passo."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7364,12 +7370,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free 一次移動一張照片。Alike Pro 可一步移除整組選取項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Free move uma fotografia de cada vez. O Alike Pro remove toda a tua seleção num único passo."
           }
         }
       }
@@ -7449,6 +7449,12 @@
             "value" : "Remover várias fotos de uma vez"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover várias fotografias de uma vez"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7465,12 +7471,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一次移除多張照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remover várias fotografias de uma vez"
           }
         }
       }
@@ -7550,6 +7550,12 @@
             "value" : "Sua seleção é salva, então fechar um grupo e voltar depois não perde nada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua seleção fica guardada. Não perdes nada se fechares um grupo e voltares mais tarde."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7566,12 +7572,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的選取會被儲存，因此關掉群組稍後再回來也不會遺失任何內容。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua seleção fica guardada. Não perdes nada se fechares um grupo e voltares mais tarde."
           }
         }
       }
@@ -7651,6 +7651,12 @@
             "value" : "Escolhendo fotos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A escolher fotografias"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7667,12 +7673,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A escolher fotografias"
           }
         }
       }
@@ -7752,6 +7752,12 @@
             "value" : "No menu •••: selecione tudo menos a que fica, ou limpe a seleção inteira."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No menu •••, seleciona de uma só vez todas as fotografias exceto a melhor, ou limpa toda a seleção."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7768,12 +7774,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 ••• 選單中：一次選取除保留照片外的全部，或清除整組選取。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No menu •••, seleciona de uma só vez todas as fotografias exceto a melhor, ou limpa toda a seleção."
           }
         }
       }
@@ -7853,6 +7853,12 @@
             "value" : "Selecionar todas menos a melhor"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar todas menos a melhor"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7869,12 +7875,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選取除最佳照片外的全部"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionar todas menos a melhor"
           }
         }
       }
@@ -7954,6 +7954,12 @@
             "value" : "Toque em qualquer foto para marcá-la para remoção. Toque de novo para mantê-la. A melhor foto não pode ser selecionada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca numa fotografia para a selecionares para remoção. Toca novamente para a manteres. A Melhor Fotografia não pode ser selecionada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7970,12 +7976,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "點一下照片即可標示為待移除，再點一下即可保留。最佳照片無法被選取。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toca numa fotografia para a selecionares para remoção. Toca novamente para a manteres. A Melhor Fotografia não pode ser selecionada."
           }
         }
       }
@@ -8055,6 +8055,12 @@
             "value" : "Toque para selecionar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca para selecionar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8071,12 +8077,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "點一下選取"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toca para selecionar"
           }
         }
       }
@@ -8156,6 +8156,12 @@
             "value" : "Escolher o que manter dentro de um grupo e marcá-lo como revisado."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolher o que manter dentro de um grupo e marcá-lo como revisto."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8172,12 +8178,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在群組中挑選要保留的照片，並標示為已檢視。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolher o que manter dentro de um grupo e marcá-lo como revisto."
           }
         }
       }
@@ -8257,6 +8257,12 @@
             "value" : "Fotos semelhantes e melhor foto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias semelhantes e melhor fotografia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8273,12 +8279,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "相似照片與最佳照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias semelhantes e melhor fotografia"
           }
         }
       }
@@ -8358,6 +8358,12 @@
             "value" : "O Alike mostra o que será movido e quanto espaço ocupa, e então entrega o pedido ao sistema."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike mostra o que será movido e quanto espaço ocupa. Depois, envia o pedido ao sistema."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8374,12 +8380,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會顯示將移動哪些項目、佔用多少空間，然後把要求交給系統。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike mostra o que será movido e quanto espaço ocupa. Depois, envia o pedido ao sistema."
           }
         }
       }
@@ -8459,6 +8459,12 @@
             "value" : "O iOS pede confirmação"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O iOS pede confirmação"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8475,12 +8481,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "iOS 會請你確認"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O iOS pede confirmação"
           }
         }
       }
@@ -8560,6 +8560,12 @@
             "value" : "O Alike não consegue remover uma foto sozinho — o iOS sempre pergunta antes."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike não consegue remover uma fotografia por si só — o iOS pede-te sempre confirmação primeiro."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8576,12 +8582,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 無法自行移除照片，iOS 一定會先詢問你。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike não consegue remover uma fotografia por si só — o iOS pede-te sempre confirmação primeiro."
           }
         }
       }
@@ -8661,6 +8661,12 @@
             "value" : "Passo a passo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passo a passo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8677,12 +8683,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "逐步說明"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passo a passo"
           }
         }
       }
@@ -8762,6 +8762,12 @@
             "value" : "Se o Fotos do iCloud estiver ativado, as mesmas fotos vão para Apagados recentemente nos seus outros dispositivos."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se usares Fotografias em iCloud, as mesmas fotografias passam para Apagado nos teus outros dispositivos."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8778,12 +8784,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "若已開啟「iCloud 照片」，同樣的照片也會在你的其他裝置上移到「最近刪除」。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se usares Fotografias em iCloud, as mesmas fotografias passam para Apagado nos teus outros dispositivos."
           }
         }
       }
@@ -8863,6 +8863,12 @@
             "value" : "O Fotos do iCloud sincroniza a mudança"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias em iCloud sincroniza a alteração"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8879,12 +8885,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「iCloud 照片」會同步這項變更"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias em iCloud sincroniza a alteração"
           }
         }
       }
@@ -8964,6 +8964,12 @@
             "value" : "As fotos vão para o álbum Apagados recentemente do app Fotos, de onde você pode recuperar qualquer uma."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As fotografias vão para o álbum Apagado da app Fotografias, de onde podes recuperar qualquer uma."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8980,12 +8986,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片會進入「照片」App 的「最近刪除」相簿，你可以從那裡回復任何一張。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As fotografias vão para o álbum Apagado da app Fotografias, de onde podes recuperar qualquer uma."
           }
         }
       }
@@ -9065,6 +9065,12 @@
             "value" : "30 dias para mudar de ideia"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 dias para mudar de ideia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9081,12 +9087,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "30 天可以反悔"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "30 dias para mudar de ideia"
           }
         }
       }
@@ -9166,6 +9166,12 @@
             "value" : "O espaço só volta depois que as fotos saem de Apagados recentemente — automaticamente após 30 dias ou quando você esvazia o álbum."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O espaço só é libertado depois de as fotografias saírem de Apagado — automaticamente após 30 dias ou quando esvazias o álbum."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9182,12 +9188,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只有在照片離開「最近刪除」之後空間才會回來：30 天後自動清除，或由你手動清空相簿。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O espaço só é libertado depois de as fotografias saírem de Apagado — automaticamente após 30 dias ou quando esvazias o álbum."
           }
         }
       }
@@ -9267,6 +9267,12 @@
             "value" : "O espaço é liberado no fim"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O espaço é libertado no fim"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9283,12 +9289,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "空間會在最後才釋出"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O espaço é libertado no fim"
           }
         }
       }
@@ -9368,6 +9368,12 @@
             "value" : "Uma linha do tempo agrupada por mês, para você ver o que limpou e quando."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma cronologia agrupada por mês, para veres o que limpaste e quando."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9384,12 +9390,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "依月份分組的時間軸，讓你看見自己何時清理了什麼。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uma cronologia agrupada por mês, para veres o que limpaste e quando."
           }
         }
       }
@@ -9469,6 +9469,12 @@
             "value" : "Atividade recente"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atividade recente"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9485,12 +9491,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "近期活動"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atividade recente"
           }
         }
       }
@@ -9570,6 +9570,12 @@
             "value" : "Histórico de limpeza"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Histórico de limpeza"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9586,12 +9592,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "清理歷史記錄"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Histórico de limpeza"
           }
         }
       }
@@ -9671,6 +9671,12 @@
             "value" : "Seus totais acumulados: espaço recuperado, fotos movidas e sessões de limpeza concluídas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os teus totais acumulados: espaço recuperado, fotografias movidas e sessões de limpeza concluídas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9687,12 +9693,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的累計數字：已回收空間、已移動照片數，以及完成的清理次數。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os teus totais acumulados: espaço recuperado, fotografias movidas e sessões de limpeza concluídas."
           }
         }
       }
@@ -9772,6 +9772,12 @@
             "value" : "Impacto total"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impacto total"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9788,12 +9794,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "歷來成效"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impacto total"
           }
         }
       }
@@ -9873,6 +9873,12 @@
             "value" : "Apagados recentemente, quando o espaço é de fato liberado e o iCloud."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagado, quando o espaço é realmente libertado e o iCloud."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9889,12 +9895,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「最近刪除」、空間何時真正釋出，以及 iCloud。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apagado, quando o espaço é realmente libertado e o iCloud."
           }
         }
       }
@@ -9974,6 +9974,12 @@
             "value" : "O que acontece quando você apaga"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que acontece quando apagas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9990,12 +9996,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刪除時會發生什麼"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que acontece quando apagas"
           }
         }
       }
@@ -10075,6 +10075,12 @@
             "value" : "Os resultados que você já analisou continuam disponíveis, com ou sem assinatura."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os resultados das análises anteriores continuam disponíveis, com ou sem subscrição."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10091,12 +10097,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你已掃描過的結果會持續保留，無論是否訂閱。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os resultados das análises anteriores continuam disponíveis, com ou sem subscrição."
           }
         }
       }
@@ -10176,6 +10176,12 @@
             "value" : "Incluído no Alike Free"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluído no Alike Free"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10192,12 +10198,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free 包含的功能"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Incluído no Alike Free"
           }
         }
       }
@@ -10277,6 +10277,12 @@
             "value" : "Abra todos os grupos, compare fotos, mude a melhor foto e marque grupos como revisados."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre todos os grupos, compara fotografias, muda a Melhor Fotografia e marca os grupos como revistos."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10293,12 +10299,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開每個群組、比較照片、更換最佳照片，並將群組標示為已檢視。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre todos os grupos, compara fotografias, muda a Melhor Fotografia e marca os grupos como revistos."
           }
         }
       }
@@ -10378,6 +10378,12 @@
             "value" : "Revisão completa das fotos semelhantes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisão completa das fotografias semelhantes"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10394,12 +10400,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完整檢視相似照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisão completa das fotografias semelhantes"
           }
         }
       }
@@ -10479,6 +10479,12 @@
             "value" : "Três análises por mês, com o contador zerando no início do mês seguinte."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Três análises por mês civil. O contador reinicia no início do mês seguinte."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10495,12 +10501,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每個日曆月三次掃描，計數會在下個月初重設。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Três análises por mês civil. O contador reinicia no início do mês seguinte."
           }
         }
       }
@@ -10580,6 +10580,12 @@
             "value" : "Três análises por mês"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Três análises por mês"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10596,12 +10602,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每月三次掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Três análises por mês"
           }
         }
       }
@@ -10681,6 +10681,12 @@
             "value" : "Você pode mover fotos para Apagados recentemente uma a uma."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podes mover fotografias para Apagado uma a uma."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10697,12 +10703,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你可以逐張將照片移到「最近刪除」。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podes mover fotografias para Apagado uma a uma."
           }
         }
       }
@@ -10782,6 +10782,12 @@
             "value" : "Uma foto por vez"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma fotografia de cada vez"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10798,12 +10804,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一次一張照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uma fotografia de cada vez"
           }
         }
       }
@@ -10883,6 +10883,12 @@
             "value" : "Todas as ordenações da limpeza estão disponíveis sem assinatura."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as ordenações da limpeza estão disponíveis sem subscrição."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10899,12 +10905,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「清理」中的所有排序方式都無須訂閱即可使用。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todas as ordenações da limpeza estão disponíveis sem subscrição."
           }
         }
       }
@@ -10984,6 +10984,12 @@
             "value" : "Todas as opções de ordenação"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as opções de ordenação"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11000,12 +11006,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所有排序選項"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todas as opções de ordenação"
           }
         }
       }
@@ -11085,6 +11085,12 @@
             "value" : "Mova toda a sua seleção em uma etapa, em vez de uma foto por vez."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move todas as fotografias selecionadas num único passo, em vez de uma de cada vez."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11101,12 +11107,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一步移動整組選取項目，不必逐張處理。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move todas as fotografias selecionadas num único passo, em vez de uma de cada vez."
           }
         }
       }
@@ -11186,6 +11186,12 @@
             "value" : "Limpeza em lote"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza em lote"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11202,12 +11208,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "批次清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza em lote"
           }
         }
       }
@@ -11287,6 +11287,12 @@
             "value" : "Abra a categoria Fotos desfocadas e revise o que a análise no dispositivo sinalizou."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre a categoria Fotografias desfocadas e revê o que a análise no dispositivo sinalizou."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11303,12 +11309,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開「模糊照片」類別，檢視裝置端分析標示出的項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre a categoria Fotografias desfocadas e revê o que a análise no dispositivo sinalizou."
           }
         }
       }
@@ -11388,6 +11388,12 @@
             "value" : "Limpeza de fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza de fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11404,12 +11410,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza de fotografias desfocadas"
           }
         }
       }
@@ -11489,6 +11489,12 @@
             "value" : "Filtre a limpeza por status de revisão, tamanho mínimo do grupo ou apenas favoritas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtra a limpeza por estado de revisão, tamanho mínimo do grupo ou apenas favoritas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11505,12 +11511,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "依檢視狀態、群組最小數量或僅限最愛來篩選「清理」。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtra a limpeza por estado de revisão, tamanho mínimo do grupo ou apenas favoritas."
           }
         }
       }
@@ -11590,6 +11590,12 @@
             "value" : "Filtros avançados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtros avançados"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11606,12 +11612,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "進階篩選"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtros avançados"
           }
         }
       }
@@ -11691,6 +11691,12 @@
             "value" : "Gerencie ou cancele a assinatura quando quiser na App Store. Os preços aparecem antes de você assinar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gere ou cancela uma subscrição a qualquer momento na App Store. Os preços são apresentados antes de subscreveres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11707,12 +11713,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你隨時可以在 App Store 管理或取消訂閱項目。訂閱前會先顯示價格。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gere ou cancela uma subscrição a qualquer momento na App Store. Os preços são apresentados antes de subscreveres."
           }
         }
       }
@@ -11792,6 +11792,12 @@
             "value" : "O que o Alike Pro acrescenta"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike Pro acrescenta"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11808,12 +11814,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro 額外提供"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike Pro acrescenta"
           }
         }
       }
@@ -11893,6 +11893,12 @@
             "value" : "Escolha o dia e o horário do seu lembrete semanal de limpeza."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe o dia e a hora do teu lembrete semanal de limpeza."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11909,12 +11915,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇每週清理提醒的日期與時間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe o dia e a hora do teu lembrete semanal de limpeza."
           }
         }
       }
@@ -11994,6 +11994,12 @@
             "value" : "Lembrete personalizado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lembrete personalizado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12010,12 +12016,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自訂提醒排程"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lembrete personalizado"
           }
         }
       }
@@ -12095,6 +12095,12 @@
             "value" : "Abra a categoria Capturas de tela e limpe tudo de uma vez."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre a categoria Capturas de ecrã e limpa tudo de uma vez."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12111,12 +12117,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開「螢幕快照」類別，並批次清空。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre a categoria Capturas de ecrã e limpa tudo de uma vez."
           }
         }
       }
@@ -12196,6 +12196,12 @@
             "value" : "Limpeza de capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza de capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12212,12 +12218,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza de capturas de ecrã"
           }
         }
       }
@@ -12297,6 +12297,12 @@
             "value" : "Analise quantas vezes quiser, sem cota mensal."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volta a analisar as vezes que quiseres, sem limite mensal."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12313,12 +12319,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "想掃描幾次就掃描幾次，沒有每月額度限制。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volta a analisar as vezes que quiseres, sem limite mensal."
           }
         }
       }
@@ -12398,6 +12398,12 @@
             "value" : "Análises ilimitadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análises ilimitadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12414,12 +12420,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無限次掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análises ilimitadas"
           }
         }
       }
@@ -12499,6 +12499,12 @@
             "value" : "O que está incluído sem assinatura e o que o Pro acrescenta."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que está incluído sem subscrição e o que o Pro acrescenta."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12515,12 +12521,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無須訂閱即有的功能，以及 Pro 額外提供的功能。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que está incluído sem subscrição e o que o Pro acrescenta."
           }
         }
       }
@@ -12600,6 +12600,12 @@
             "value" : "Alike Free e Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free e Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12616,12 +12622,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free 與 Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike Free e Alike Pro"
           }
         }
       }
@@ -12701,6 +12701,12 @@
             "value" : "Acesso e segurança"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acesso e segurança"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12717,12 +12723,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取用權與安全性"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acesso e segurança"
           }
         }
       }
@@ -12802,6 +12802,12 @@
             "value" : "O Alike apenas sugere. Toda remoção depende da sua seleção e da confirmação do sistema."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike apenas sugere. Toda remoção depende da tua seleção e da confirmação do sistema."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12818,12 +12824,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 只會提出建議。任何移除都需要你的選取和系統確認。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike apenas sugere. Toda remoção depende da tua seleção e da confirmação do sistema."
           }
         }
       }
@@ -12903,6 +12903,12 @@
             "value" : "Nada é apagado automaticamente"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada é apagado automaticamente"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12919,12 +12925,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不會自動刪除任何內容"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nada é apagado automaticamente"
           }
         }
       }
@@ -13004,6 +13004,12 @@
             "value" : "As fotos são analisadas no dispositivo. Nada é enviado para lugar nenhum."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As fotografias são analisadas no dispositivo. Nada é enviado para lugar nenhum."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13020,12 +13026,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片在裝置上分析，不會上傳到任何地方。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As fotografias são analisadas no dispositivo. Nada é enviado para lugar nenhum."
           }
         }
       }
@@ -13105,6 +13105,12 @@
             "value" : "Tudo roda no seu iPhone"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo funciona no teu iPhone"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13121,12 +13127,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一切都在你的 iPhone 上執行"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tudo funciona no teu iPhone"
           }
         }
       }
@@ -13206,6 +13206,12 @@
             "value" : "O Alike precisa de acesso de leitura e gravação à sua fototeca: leitura para analisar as fotos e gravação para mover as que você escolher."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike precisa de acesso de leitura e gravação à tua fototeca: leitura para analisar as fotografias e gravação para mover as que escolheres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13222,12 +13228,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 需要圖庫的讀取與寫入權限：讀取用於分析照片，寫入用於移動你挑選的照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike precisa de acesso de leitura e gravação à tua fototeca: leitura para analisar as fotografias e gravação para mover as que escolheres."
           }
         }
       }
@@ -13307,6 +13307,12 @@
             "value" : "Acesso às fotos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acesso às fotografias"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13323,12 +13329,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片取用權"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acesso às fotografias"
           }
         }
       }
@@ -13408,6 +13408,12 @@
             "value" : "Você pode parar depois de qualquer etapa e continuar depois — seu progresso é salvo."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podes parar depois de qualquer passo e continuar mais tarde — o teu progresso fica guardado."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13424,12 +13430,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你可以在任一步驟後停下，稍後再繼續，進度都會保存。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podes parar depois de qualquer passo e continuar mais tarde — o teu progresso fica guardado."
           }
         }
       }
@@ -13509,6 +13509,12 @@
             "value" : "O ciclo de três etapas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O ciclo de três etapas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13525,12 +13531,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "三步驟循環"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O ciclo de três etapas"
           }
         }
       }
@@ -13610,6 +13610,12 @@
             "value" : "Confirme e as fotos selecionadas vão para Apagados recentemente, onde o iOS as mantém por 30 dias."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirma e as fotografias selecionadas vão para Apagado, onde o iOS as mantém por 30 dias."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13626,12 +13632,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "確認後，所選照片會移到「最近刪除」，iOS 會保留 30 天。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Confirma e as fotografias selecionadas vão para Apagado, onde o iOS as mantém por 30 dias."
           }
         }
       }
@@ -13711,6 +13711,12 @@
             "value" : "Mover para Apagados recentemente"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover para Apagado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13727,12 +13733,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移到「最近刪除」"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mover para Apagado"
           }
         }
       }
@@ -13812,6 +13812,12 @@
             "value" : "Abra um grupo na aba Limpeza, compare as fotos e escolha as que você não precisa mais."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre um grupo no separador Limpeza, compara as fotografias e escolhe as que já não precisas de manter."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13828,12 +13834,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在「清理」標籤頁打開群組，比較照片並挑出你不再需要的。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre um grupo no separador Limpeza, compara as fotografias e escolhe as que já não precisas de manter."
           }
         }
       }
@@ -13913,6 +13913,12 @@
             "value" : "Revisar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rever"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13929,12 +13935,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rever"
           }
         }
       }
@@ -14014,6 +14014,12 @@
             "value" : "O Alike percorre sua fototeca na aba Análise e agrupa as fotos parecidas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike percorre a tua fototeca no separador Análise e agrupa as fotografias parecidas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14030,12 +14036,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會在「掃描」標籤頁瀏覽你的照片圖庫，並將外觀相似的照片分組。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike percorre a tua fototeca no separador Análise e agrupa as fotografias parecidas."
           }
         }
       }
@@ -14115,6 +14115,12 @@
             "value" : "Analisar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14131,12 +14137,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar"
           }
         }
       }
@@ -14216,6 +14216,12 @@
             "value" : "Fotos que parecem fora de foco, reunidas para você conferir antes de remover."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias que parecem desfocadas, reunidas para as verificares antes de as removeres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14232,12 +14238,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "看起來失焦的照片，集中起來讓你在移除前先確認。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias que parecem desfocadas, reunidas para as verificares antes de as removeres."
           }
         }
       }
@@ -14317,6 +14317,12 @@
             "value" : "Fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14333,12 +14339,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias desfocadas"
           }
         }
       }
@@ -14418,6 +14418,12 @@
             "value" : "O Alike analisa apenas fotos. Vídeos nunca são lidos nem incluídos em uma análise."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike analisa apenas fotografias. Os vídeos nunca são lidos nem incluídos numa análise."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14434,12 +14440,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 只分析照片。影片絕不會被讀取，也不會納入掃描。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike analisa apenas fotografias. Os vídeos nunca são lidos nem incluídos numa análise."
           }
         }
       }
@@ -14519,6 +14519,12 @@
             "value" : "O que o Alike observa"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike observa"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14535,12 +14541,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會看哪些內容"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike observa"
           }
         }
       }
@@ -14620,6 +14620,12 @@
             "value" : "As capturas de tela ficam fora dos grupos de semelhança e são reunidas na própria categoria."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As capturas de ecrã ficam fora dos grupos de semelhança e são reunidas na própria categoria."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14636,12 +14642,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕擷取畫面不會納入相似群組，而是收在自己的類別中。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As capturas de ecrã ficam fora dos grupos de semelhança e são reunidas na própria categoria."
           }
         }
       }
@@ -14721,6 +14721,12 @@
             "value" : "Capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14737,12 +14743,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã"
           }
         }
       }
@@ -14822,6 +14822,12 @@
             "value" : "Sequências e quase duplicatas parecidas — o mesmo momento fotografado várias vezes."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sequências e fotografias quase duplicadas — o mesmo momento fotografado várias vezes."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14838,12 +14844,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "看起來相似的連拍與近乎重複的照片，也就是同一瞬間拍了好幾張。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sequências e fotografias quase duplicadas — o mesmo momento fotografado várias vezes."
           }
         }
       }
@@ -14923,6 +14923,12 @@
             "value" : "Fotos semelhantes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias semelhantes"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14939,12 +14945,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "相似照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias semelhantes"
           }
         }
       }
@@ -15024,6 +15024,12 @@
             "value" : "O que o Alike faz, o que ele observa e o ciclo de três etapas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike faz, o que ele observa e o ciclo de três etapas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15040,12 +15046,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 的用途、觀察範圍，以及三步驟循環。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike faz, o que ele observa e o ciclo de três etapas."
           }
         }
       }
@@ -15125,6 +15125,12 @@
             "value" : "Primeiros passos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primeiros passos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15141,12 +15147,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開始使用"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Primeiros passos"
           }
         }
       }
@@ -15226,6 +15226,12 @@
             "value" : "O Alike nunca remove uma foto sem a sua confirmação."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike nunca remove uma fotografia sem a tua confirmação."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15242,12 +15248,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未經你確認，Alike 絕不會移除照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike nunca remove uma fotografia sem a tua confirmação."
           }
         }
       }
@@ -15327,6 +15327,12 @@
             "value" : "O Alike encontra fotos que merecem uma segunda olhada e deixa você decidir o que fica."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike encontra fotografias que merecem uma segunda análise e deixa-te decidir o que fica."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15343,12 +15349,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 找出值得再看一眼的照片，由你決定要留下什麼。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike encontra fotografias que merecem uma segunda análise e deixa-te decidir o que fica."
           }
         }
       }
@@ -15428,6 +15428,12 @@
             "value" : "Nenhum resultado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum resultado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15444,12 +15450,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "沒有結果"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhum resultado"
           }
         }
       }
@@ -15529,6 +15529,12 @@
             "value" : "Tente outra palavra ou navegue pelos tópicos."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenta outra palavra ou consulta os tópicos."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15545,12 +15551,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "換個關鍵字試試，或瀏覽各個主題。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tenta outra palavra ou consulta os tópicos."
           }
         }
       }
@@ -15630,6 +15630,12 @@
             "value" : "Buscar no guia"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar no guia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15646,12 +15652,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "搜尋使用指南"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pesquisar no guia"
           }
         }
       }
@@ -15731,6 +15731,12 @@
             "value" : "Abre este tópico do guia"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre este tópico do guia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15747,12 +15753,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開這個使用指南主題"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre este tópico do guia"
           }
         }
       }
@@ -15832,6 +15832,12 @@
             "value" : "Tópicos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tópicos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15848,12 +15854,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "主題"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tópicos"
           }
         }
       }
@@ -15933,6 +15933,12 @@
             "value" : "Você encontra isso nos Ajustes, em Dados e privacidade. Não dá para desfazer."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontras esta opção nas Definições, em Dados e privacidade. A ação não pode ser desfeita."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15949,12 +15955,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在「設定」的「資料與隱私權」中可以找到。此操作無法還原。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encontras esta opção nas Definições, em Dados e privacidade. A ação não pode ser desfeita."
           }
         }
       }
@@ -16034,6 +16034,12 @@
             "value" : "Apagar dados do Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar dados do Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16050,12 +16056,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刪除 Alike 資料"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apagar dados do Alike"
           }
         }
       }
@@ -16135,6 +16135,12 @@
             "value" : "Suas fotos, seu álbum Apagados recentemente, seu acesso às fotos e sua assinatura do Alike Pro."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As tuas fotografias, o álbum Apagado, o acesso às fotografias e a tua subscrição do Alike Pro."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16151,12 +16157,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的照片、「最近刪除」相簿、照片取用權，以及 Alike Pro 訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As tuas fotografias, o álbum Apagado, o acesso às fotografias e a tua subscrição do Alike Pro."
           }
         }
       }
@@ -16236,6 +16236,12 @@
             "value" : "O que fica intacto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que fica intacto"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16252,12 +16258,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不受影響的項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que fica intacto"
           }
         }
       }
@@ -16337,6 +16337,12 @@
             "value" : "Resultados das análises e caches de análise, progresso e histórico de limpeza, relatórios de falhas guardados no seu iPhone e suas preferências do Alike."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultados das análises e caches de análise, progresso e histórico de limpeza, relatórios de falhas que aguardam no teu iPhone e as tuas preferências do Alike."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16353,12 +16359,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描結果與分析快取、清理進度與歷史記錄、仍存放在 iPhone 上的當機報告，以及你的 Alike 偏好設定。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Resultados das análises e caches de análise, progresso e histórico de limpeza, relatórios de falhas que aguardam no teu iPhone e as tuas preferências do Alike."
           }
         }
       }
@@ -16438,6 +16438,12 @@
             "value" : "O que é apagado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que é apagado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16454,12 +16460,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "會被清除的項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que é apagado"
           }
         }
       }
@@ -16539,6 +16539,12 @@
             "value" : "Depois disso o Alike mostra a introdução novamente, sem pedir acesso às fotos outra vez."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depois disso o Alike mostra a introdução novamente, sem pedir acesso às fotografias outra vez."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16555,12 +16561,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "之後 Alike 會再次顯示介紹流程，但不會再要求一次照片取用權。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Depois disso o Alike mostra a introdução novamente, sem pedir acesso às fotografias outra vez."
           }
         }
       }
@@ -16640,6 +16640,12 @@
             "value" : "Começar do zero"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começar do zero"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16656,12 +16662,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重新開始"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Começar do zero"
           }
         }
       }
@@ -16741,6 +16741,12 @@
             "value" : "As fotos são comparadas com o framework de visão no dispositivo da Apple, e os resultados ficam salvos localmente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As fotografias são comparadas com o framework de visão da Apple no dispositivo. Os resultados ficam guardados localmente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16757,12 +16763,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片會透過 Apple 的裝置端視覺框架進行比較，結果儲存在本機。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As fotografias são comparadas com o framework de visão da Apple no dispositivo. Os resultados ficam guardados localmente."
           }
         }
       }
@@ -16842,6 +16842,12 @@
             "value" : "A análise nunca sai do seu iPhone"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A análise nunca sai do teu iPhone"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16858,12 +16864,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "分析絕不會離開你的 iPhone"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A análise nunca sai do teu iPhone"
           }
         }
       }
@@ -16943,6 +16943,12 @@
             "value" : "Se o Alike fechar inesperadamente, ele guarda o relatório da falha no seu iPhone e pergunta uma única vez se você quer enviá-lo por e-mail ao desenvolvedor. Você vê o e-mail antes de ele sair, e só você pode enviá-lo, pelo seu próprio app de e-mail. Ele traz o rastreamento da falha, as versões do app e do iOS e o modelo do aparelho — nenhuma foto."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se o Alike fechar inesperadamente, guarda o relatório da falha no teu iPhone e pergunta uma vez se o queres enviar por e-mail ao programador. Podes ler o e-mail antes do envio. Só tu o podes enviar, através da tua app de e-mail. Contém o rastreio da pilha, as versões da app e do iOS e o modelo do dispositivo — não contém fotografias."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16959,12 +16965,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "如果 Alike 意外關閉，當機報告會留在你的 iPhone 上，Alike 只會詢問一次是否要用電子郵件寄給開發者。郵件寄出前你都看得到，而且只有你能從自己的郵件 App 寄出。內容包含堆疊追蹤、App 與 iOS 版本以及裝置型號——不含任何照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike não tem conta, início de sessão nem servidor próprio."
           }
         }
       }
@@ -17044,6 +17044,12 @@
             "value" : "Relatórios de falhas só vão para onde você mandar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os relatórios de falhas só vão para onde os enviares"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17060,12 +17066,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "當機報告只會寄到你寄出的地方"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No teu dispositivo"
           }
         }
       }
@@ -17145,6 +17145,12 @@
             "value" : "O Alike não tem conta, nem login, nem servidor próprio."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike não tem conta, início de sessão nem servidor próprio."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17161,12 +17167,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 沒有帳號、不需登入，也沒有自己的伺服器。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os únicos pedidos de rede do Alike destinam-se à App Store, para as subscrições."
           }
         }
       }
@@ -17246,6 +17246,12 @@
             "value" : "No seu dispositivo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No teu dispositivo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17262,12 +17268,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在你的裝置上"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As tuas fotografias nunca são enviadas"
           }
         }
       }
@@ -17347,6 +17347,12 @@
             "value" : "As únicas requisições de rede que o Alike faz são para a App Store, por causa das assinaturas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os únicos pedidos de rede do Alike destinam-se à App Store, para as subscrições."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17363,12 +17369,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 唯一的網路要求是為了訂閱而連線到 App Store。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se o Alike fechar inesperadamente, guarda o relatório da falha no teu iPhone e pergunta uma vez se o queres enviar por e-mail ao programador. Podes ler o e-mail antes do envio. Só tu o podes enviar, através da tua app de e-mail. Contém o rastreio da pilha, as versões da app e do iOS e o modelo do dispositivo — não contém fotografias."
           }
         }
       }
@@ -17448,6 +17448,12 @@
             "value" : "Suas fotos nunca são enviadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As tuas fotografias nunca são enviadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17464,12 +17470,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的照片絕不會被上傳"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os relatórios de falhas só vão para onde os enviares"
           }
         }
       }
@@ -17549,6 +17549,12 @@
             "value" : "O que o Alike pede"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike pede"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17565,12 +17571,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會要求哪些權限"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike pede"
           }
         }
       }
@@ -17650,6 +17650,12 @@
             "value" : "Pedido apenas se você ativar o lembrete semanal de limpeza, e nunca em outra situação."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O acesso é pedido apenas se ativares o lembrete semanal de limpeza, nunca noutras circunstâncias."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17666,12 +17672,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只有在你開啟每週清理提醒時才會要求，其他情況一律不會。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O acesso é pedido apenas se ativares o lembrete semanal de limpeza, nunca noutras circunstâncias."
           }
         }
       }
@@ -17751,6 +17751,12 @@
             "value" : "Notificações"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notificações"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17767,12 +17773,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通知"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notificações"
           }
         }
       }
@@ -17852,6 +17852,12 @@
             "value" : "Pedido uma vez, no início, e usado para ler sua fototeca e — só quando você mesmo aprimora uma foto — salvar essa alteração. Você pode mudar ou limitar isso quando quiser nos Ajustes do iOS."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O acesso é pedido uma vez, no início, para ler a tua fototeca e guardar uma alteração apenas quando escolhes melhorar uma fotografia. Podes alterar ou limitar o acesso a qualquer momento nas Definições do iOS."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17868,12 +17874,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只在一開始要求一次，用來讀取你的圖庫，並且只有在你自己優化照片時，才會儲存那項變更。你隨時可以在 iOS「設定」中更改或限制。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O acesso é pedido uma vez, no início, para ler a tua fototeca e guardar uma alteração apenas quando escolhes melhorar uma fotografia. Podes alterar ou limitar o acesso a qualquer momento nas Definições do iOS."
           }
         }
       }
@@ -17953,6 +17953,12 @@
             "value" : "Fototeca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17969,12 +17975,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片圖庫"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fototeca"
           }
         }
       }
@@ -18054,6 +18054,12 @@
             "value" : "O que fica no seu dispositivo, o que o Alike pede e como apagar os dados dele."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que fica no teu dispositivo, o que o Alike pede e como apagar os dados dele."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18070,12 +18076,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "哪些內容留在你的裝置上、Alike 會要求什麼，以及如何清除其資料。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que fica no teu dispositivo, o que o Alike pede e como apagar os dados dele."
           }
         }
       }
@@ -18155,6 +18155,12 @@
             "value" : "Privacidade e seus dados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacidade e os teus dados"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18171,12 +18177,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "隱私權與你的資料"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Privacidade e os teus dados"
           }
         }
       }
@@ -18256,6 +18256,12 @@
             "value" : "O cartão explica o que deu errado e oferece Tentar novamente. Os resultados anteriores continuam disponíveis enquanto isso."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cartão explica o que correu mal e apresenta a opção Tentar novamente. Entretanto, os resultados anteriores continuam disponíveis."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18272,12 +18278,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "卡片會說明出了什麼問題並提供「重試」。在此期間，先前的結果仍可使用。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O cartão explica o que correu mal e apresenta a opção Tentar novamente. Entretanto, os resultados anteriores continuam disponíveis."
           }
         }
       }
@@ -18357,6 +18357,12 @@
             "value" : "Uma análise não terminou"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma análise não terminou"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18373,12 +18379,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "有一次掃描未完成"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uma análise não terminou"
           }
         }
       }
@@ -18458,6 +18458,12 @@
             "value" : "Uma atualização que roda sozinha depois de você mover fotos não conta nas suas análises gratuitas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma atualização automática depois de moveres fotografias não conta para o teu limite de análises gratuitas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18474,12 +18480,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移動照片後自動執行的更新，不會計入你的免費掃描次數。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uma atualização automática depois de moveres fotografias não conta para o teu limite de análises gratuitas."
           }
         }
       }
@@ -18559,6 +18559,12 @@
             "value" : "Quando analisar de novo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quando analisar de novo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18575,12 +18581,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "何時該重新掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quando analisar de novo"
           }
         }
       }
@@ -18660,6 +18660,12 @@
             "value" : "Quando você adiciona ou remove fotos em outro lugar, o Alike marca os resultados como desatualizados e oferece uma nova análise."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quando adicionas ou removes fotografias noutro local, o Alike indica que é necessário atualizar os resultados e propõe uma nova análise."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18676,12 +18682,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "當你在別處新增或移除照片時，Alike 會將結果標示為須更新，並提議重新掃描。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quando adicionas ou removes fotografias noutro local, o Alike indica que é necessário atualizar os resultados e propõe uma nova análise."
           }
         }
       }
@@ -18761,6 +18761,12 @@
             "value" : "Sua fototeca mudou"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua fototeca mudou"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18777,12 +18783,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的圖庫有變動"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua fototeca mudou"
           }
         }
       }
@@ -18862,6 +18862,12 @@
             "value" : "A sensibilidade decide o quanto duas fotos precisam se parecer para caírem no mesmo grupo, por isso o Alike pede uma nova análise depois que você a altera."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A sensibilidade determina o grau de semelhança necessário para agrupar duas fotografias. Por isso, o Alike pede uma nova análise depois de a alterares."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18878,12 +18884,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "敏感度決定兩張照片要多相似才會歸為同一組，因此更改後 Alike 會要求重新掃描。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A sensibilidade determina o grau de semelhança necessário para agrupar duas fotografias. Por isso, o Alike pede uma nova análise depois de a alterares."
           }
         }
       }
@@ -18963,6 +18963,12 @@
             "value" : "Você alterou a sensibilidade"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alteraste a sensibilidade"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18979,12 +18985,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你更改了敏感度"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alteraste a sensibilidade"
           }
         }
       }
@@ -19064,6 +19064,12 @@
             "value" : "A análise continua quando você troca de aba. A limpeza é atualizada sozinha assim que ela termina."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A análise continua quando mudas de separador. A limpeza atualiza-se automaticamente quando a análise termina."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19080,12 +19086,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "切換標籤頁時掃描會持續進行。完成後，「清理」會自動更新。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A análise continua quando mudas de separador. A limpeza atualiza-se automaticamente quando a análise termina."
           }
         }
       }
@@ -19165,6 +19165,12 @@
             "value" : "Continue usando o app enquanto ele trabalha"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a usar a app durante a análise"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19181,12 +19187,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描期間仍可繼續使用 App"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continua a usar a app durante a análise"
           }
         }
       }
@@ -19266,6 +19266,12 @@
             "value" : "O Alike guarda o que aprendeu sobre cada foto e só reanalisa o que de fato mudou."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike guarda o que aprendeu sobre cada fotografia e só volta a analisar o que realmente mudou."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19282,12 +19288,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會記住它對每張照片的分析結果，只重新分析真正有變動的部分。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike guarda o que aprendeu sobre cada fotografia e só volta a analisar o que realmente mudou."
           }
         }
       }
@@ -19367,6 +19367,12 @@
             "value" : "As análises seguintes são mais rápidas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As análises seguintes são mais rápidas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19383,12 +19389,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "之後的掃描會更快"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As análises seguintes são mais rápidas"
           }
         }
       }
@@ -19468,6 +19468,12 @@
             "value" : "O cartão da análise muda conforme ela avança e diz o que fazer em seguida."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cartão da análise muda conforme ela avança e diz o que fazer em seguida."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19484,12 +19490,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「掃描」卡片會隨掃描進度變化，並告訴你下一步該做什麼。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O cartão da análise muda conforme ela avança e diz o que fazer em seguida."
           }
         }
       }
@@ -19569,6 +19569,12 @@
             "value" : "Fazendo uma análise"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fazer uma análise"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19585,12 +19591,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "執行掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fazer uma análise"
           }
         }
       }
@@ -19670,6 +19670,12 @@
             "value" : "Toque no botão da aba Análise. Uma barra de progresso mostra o quanto já foi analisado."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca no botão do separador Análise. Uma barra de progresso mostra o avanço da análise."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19686,12 +19692,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "點一下「掃描」標籤頁中的按鈕。進度列會顯示分析進行到哪裡。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toca no botão do separador Análise. Uma barra de progresso mostra o avanço da análise."
           }
         }
       }
@@ -19771,6 +19771,12 @@
             "value" : "Iniciar a análise"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar a análise"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19787,12 +19793,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開始掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar a análise"
           }
         }
       }
@@ -19872,6 +19872,12 @@
             "value" : "O Alike Free inclui três análises por mês. O contador zera no início do mês seguinte."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Free inclui três análises por mês civil. O contador reinicia no início do mês seguinte."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19888,12 +19894,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free 每個日曆月包含三次掃描。計數會在下個月初重設。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Free inclui três análises por mês civil. O contador reinicia no início do mês seguinte."
           }
         }
       }
@@ -19973,6 +19973,12 @@
             "value" : "Análises gratuitas restantes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análises gratuitas restantes"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19989,12 +19995,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "剩餘的免費掃描次數"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análises gratuitas restantes"
           }
         }
       }
@@ -20074,6 +20074,12 @@
             "value" : "Depois da primeira análise, o cartão mostra quando ela rodou, quantas oportunidades foram encontradas e quanto espaço elas ocupam."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depois da primeira análise, o cartão mostra quando foi feita, quantas oportunidades encontrou e quanto espaço ocupam."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20090,12 +20096,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "首次掃描後，卡片會顯示掃描時間、找到多少可清理項目，以及它們佔用多少空間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Depois da primeira análise, o cartão mostra quando foi feita, quantas oportunidades encontrou e quanto espaço ocupam."
           }
         }
       }
@@ -20175,6 +20175,12 @@
             "value" : "A última análise num relance"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A última análise num relance"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20191,12 +20197,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次掃描一覽"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A última análise num relance"
           }
         }
       }
@@ -20276,6 +20276,12 @@
             "value" : "Status da fototeca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado da fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20292,12 +20298,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫狀態"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado da fototeca"
           }
         }
       }
@@ -20377,6 +20377,12 @@
             "value" : "Fazer uma análise, ler o cartão e saber quando analisar de novo."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fazer uma análise, ler o cartão e saber quando analisar de novo."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20393,12 +20399,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "執行掃描、讀懂「掃描」卡片，以及何時該重新掃描。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fazer uma análise, ler o cartão e saber quando analisar de novo."
           }
         }
       }
@@ -20478,6 +20478,12 @@
             "value" : "Analisando sua fototeca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar a tua fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20494,12 +20500,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描你的圖庫"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar a tua fototeca"
           }
         }
       }
@@ -20579,6 +20579,12 @@
             "value" : "Alterar a sensibilidade pede uma nova análise, porque os grupos precisam ser montados novamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar a sensibilidade exige uma nova análise, porque é necessário formar novamente os grupos."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20595,12 +20601,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更改敏感度需要重新掃描，因為群組必須重新建立。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alterar a sensibilidade exige uma nova análise, porque é necessário formar novamente os grupos."
           }
         }
       }
@@ -20680,6 +20680,12 @@
             "value" : "Ajustando os resultados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustar os resultados"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20696,12 +20702,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "調整結果"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajustar os resultados"
           }
         }
       }
@@ -20781,6 +20781,12 @@
             "value" : "O Alike está disponível em inglês, ucraniano, espanhol, português, alemão, francês, italiano, neerlandês, polonês, turco, chinês tradicional e árabe. O botão abre a página do app nos Ajustes do iOS."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike está disponível em inglês, ucraniano, espanhol, português, alemão, francês, italiano, neerlandês, polaco, turco, chinês tradicional e árabe. O botão abre a página da app nas Definições do iOS."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20797,12 +20803,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 提供英文、烏克蘭文、西班牙文、葡萄牙文、德文、法文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。此選項會打開 App 的 iOS「設定」頁面。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike está disponível em inglês, ucraniano, espanhol, português, alemão, francês, italiano, neerlandês, polaco, turco, chinês tradicional e árabe. O botão abre a página da app nas Definições do iOS."
           }
         }
       }
@@ -20882,6 +20882,12 @@
             "value" : "Alterar idioma"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar idioma"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20898,12 +20904,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更改語言"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alterar idioma"
           }
         }
       }
@@ -20983,6 +20983,12 @@
             "value" : "Baixa agrupa apenas fotos quase idênticas. Alta abre o leque e encontra mais correspondências, porém menos parecidas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baixa agrupa apenas fotografias quase idênticas. Alta abre o leque e encontra mais correspondências, porém menos parecidas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20999,12 +21005,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「低」只會將幾乎相同的照片分為一組。「高」會放寬範圍，找到更多但關聯較鬆散的結果。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Baixa agrupa apenas fotografias quase idênticas. Alta abre o leque e encontra mais correspondências, porém menos parecidas."
           }
         }
       }
@@ -21084,6 +21084,12 @@
             "value" : "Sensibilidade"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensibilidade"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21100,12 +21106,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "敏感度"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sensibilidade"
           }
         }
       }
@@ -21185,6 +21185,12 @@
             "value" : "O lembrete fica desativado até você ligá-lo, e pede permissão de notificações na primeira vez."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O lembrete fica desativado até o ativares. Na primeira vez, pede permissão para enviar notificações."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21201,12 +21207,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "提醒預設為關閉，開啟後第一次會要求通知權限。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O lembrete fica desativado até o ativares. Na primeira vez, pede permissão para enviar notificações."
           }
         }
       }
@@ -21286,6 +21286,12 @@
             "value" : "Lembrete semanal de limpeza"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lembrete semanal de limpeza"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21302,12 +21308,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每週清理提醒"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lembrete semanal de limpeza"
           }
         }
       }
@@ -21387,6 +21387,12 @@
             "value" : "O Alike Pro permite mover o lembrete para o dia e o horário que combinarem com você."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Pro permite escolher o dia e a hora que mais te convêm para receberes o lembrete."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21403,12 +21409,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro 讓你把提醒改到最適合你的日期與時間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Pro permite escolher o dia e a hora que mais te convêm para receberes o lembrete."
           }
         }
       }
@@ -21488,6 +21488,12 @@
             "value" : "Escolha seu dia e horário"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe o dia e a hora"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21504,12 +21510,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自選日期與時間"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe o dia e a hora"
           }
         }
       }
@@ -21589,6 +21589,12 @@
             "value" : "Um lembrete leve para dedicar alguns minutos à limpeza. No Alike Free ele chega no domingo à noite."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um lembrete leve para dedicar alguns minutos à limpeza. No Alike Free ele chega no domingo à noite."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21605,12 +21611,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "溫和地提醒你花幾分鐘整理。在 Alike Free 中，提醒會在星期日傍晚送達。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um lembrete leve para dedicar alguns minutos à limpeza. No Alike Free ele chega no domingo à noite."
           }
         }
       }
@@ -21690,6 +21690,12 @@
             "value" : "Um toque uma vez por semana"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um toque uma vez por semana"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21706,12 +21712,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每週一次的小提醒"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um toque uma vez por semana"
           }
         }
       }
@@ -21791,6 +21791,12 @@
             "value" : "Sua assinatura"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua subscrição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21807,12 +21813,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的訂閱項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua subscrição"
           }
         }
       }
@@ -21892,6 +21892,12 @@
             "value" : "Em um dispositivo novo, ou depois de reinstalar, isto traz sua assinatura de volta."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Num dispositivo novo, ou depois de reinstalares a app, esta opção restaura a tua subscrição existente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21908,12 +21914,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在新裝置上或重新安裝後，這會找回你現有的訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Num dispositivo novo, ou depois de reinstalares a app, esta opção restaura a tua subscrição existente."
           }
         }
       }
@@ -21993,6 +21993,12 @@
             "value" : "Restaurar compras"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar compras"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22009,12 +22015,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "回復購買項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restaurar compras"
           }
         }
       }
@@ -22094,6 +22094,12 @@
             "value" : "O cartão no topo dos Ajustes mostra se o Alike Pro está ativo e quando ele renova."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cartão no topo das Definições mostra se o Alike Pro está ativo e quando se renova."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22110,12 +22116,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「設定」最上方的卡片會顯示 Alike Pro 是否啟用，以及何時續訂。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O cartão no topo das Definições mostra se o Alike Pro está ativo e quando se renova."
           }
         }
       }
@@ -22195,6 +22195,12 @@
             "value" : "Status da assinatura"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado da subscrição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22211,12 +22217,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "訂閱狀態"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado da subscrição"
           }
         }
       }
@@ -22296,6 +22296,12 @@
             "value" : "Sensibilidade, idioma, o lembrete semanal e sua assinatura."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A sensibilidade, o idioma, o lembrete semanal e a tua subscrição."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22312,12 +22318,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "敏感度、語言、每週提醒與你的訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A sensibilidade, o idioma, o lembrete semanal e a tua subscrição."
           }
         }
       }
@@ -22397,6 +22397,12 @@
             "value" : "Ajustes e lembretes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definições e lembretes"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22413,12 +22419,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "設定與提醒"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Definições e lembretes"
           }
         }
       }
@@ -22498,6 +22498,12 @@
             "value" : "O Alike sugere apenas os poucos por cento mais suaves das suas fotos, e só quando há material suficiente para comparar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike sugere apenas a pequena percentagem de fotografias menos nítidas, e só quando existem fotografias suficientes para comparar."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22514,12 +22520,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 只會建議照片中最模糊的少數幾個百分比，而且僅在數量足以比較時才會這麼做。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike sugere apenas a pequena percentagem de fotografias menos nítidas, e só quando existem fotografias suficientes para comparar."
           }
         }
       }
@@ -22599,6 +22599,12 @@
             "value" : "Só os casos mais claros"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Só os casos mais claros"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22615,12 +22621,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只挑最明確的情況"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Só os casos mais claros"
           }
         }
       }
@@ -22700,6 +22700,12 @@
             "value" : "Fotos marcadas como favoritas nunca aparecem aqui — marque uma foto como favorita para protegê-la."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As fotografias que marcaste como favoritas nunca aparecem aqui — marca uma fotografia como favorita para a protegeres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22716,12 +22722,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你標為最愛的照片絕不會出現在這裡；把照片加入最愛即可保護它。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As fotografias que marcaste como favoritas nunca aparecem aqui — marca uma fotografia como favorita para a protegeres."
           }
         }
       }
@@ -22801,6 +22801,12 @@
             "value" : "As favoritas ficam de fora"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As favoritas ficam de fora"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22817,12 +22823,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最愛不會被動到"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As favoritas ficam de fora"
           }
         }
       }
@@ -22902,6 +22902,12 @@
             "value" : "A lista curta é proposital: uma foto tremida que passa não custa nada; uma lembrança sinalizada por engano, sim."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A lista é curta de propósito: não detetar uma fotografia desfocada não te prejudica, mas sinalizar uma recordação por engano pode prejudicar-te."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22918,12 +22924,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "清單短是刻意的：漏掉一張模糊照片沒有損失，誤標一段回憶才有。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A lista é curta de propósito: não detetar uma fotografia desfocada não te prejudica, mas sinalizar uma recordação por engano pode prejudicar-te."
           }
         }
       }
@@ -23003,6 +23003,12 @@
             "value" : "Por que a lista de desfocadas é curta"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por que a lista de desfocadas é curta"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23019,12 +23025,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "為什麼模糊清單很短"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Por que a lista de desfocadas é curta"
           }
         }
       }
@@ -23104,6 +23104,12 @@
             "value" : "Fotos que parecem fora de foco, segundo a análise no dispositivo. Vale conferir antes de remover."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias que parecem desfocadas, segundo a análise no dispositivo. Convém verificá-las antes de as removeres."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23120,12 +23126,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "根據裝置端分析看起來失焦的照片。移除前值得先確認。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias que parecem desfocadas, segundo a análise no dispositivo. Convém verificá-las antes de as removeres."
           }
         }
       }
@@ -23205,6 +23205,12 @@
             "value" : "Fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23221,12 +23227,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias desfocadas"
           }
         }
       }
@@ -23306,6 +23306,12 @@
             "value" : "As duas categorias fazem parte do Alike Pro. Ao tocar em uma bloqueada, você vê primeiro o que ela encontrou."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As duas categorias fazem parte do Alike Pro. Quando tocas numa categoria bloqueada, vês primeiro o que encontrou."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23322,12 +23328,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這兩個類別皆屬於 Alike Pro。點一下已鎖定的類別，會先顯示它找到了什麼。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As duas categorias fazem parte do Alike Pro. Quando tocas numa categoria bloqueada, vês primeiro o que encontrou."
           }
         }
       }
@@ -23407,6 +23407,12 @@
             "value" : "Duas categorias extras"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duas categorias adicionais"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23423,12 +23429,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "兩個額外類別"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duas categorias adicionais"
           }
         }
       }
@@ -23508,6 +23508,12 @@
             "value" : "Capturas de tela reunidas em um só lugar, com o espaço que ocupam."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã reunidas num só local, com o espaço que ocupam."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23524,12 +23530,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕擷取畫面集中在一處，並顯示佔用的空間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã reunidas num só local, com o espaço que ocupam."
           }
         }
       }
@@ -23609,6 +23609,12 @@
             "value" : "Capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23625,12 +23631,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã"
           }
         }
       }
@@ -23710,6 +23710,12 @@
             "value" : "Capturas de tela e fotos desfocadas, reunidas fora dos grupos de semelhança."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã e fotografias desfocadas, reunidas fora dos grupos de semelhança."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23726,12 +23732,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在相似群組之外另行收集的螢幕快照與模糊照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã e fotografias desfocadas, reunidas fora dos grupos de semelhança."
           }
         }
       }
@@ -23811,6 +23811,12 @@
             "value" : "Limpeza inteligente"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza inteligente"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23827,12 +23833,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "智慧清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza inteligente"
           }
         }
       }
@@ -23912,6 +23912,12 @@
             "value" : "Como elas funcionam"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como elas funcionam"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23928,12 +23934,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "運作方式"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como elas funcionam"
           }
         }
       }
@@ -24013,6 +24013,12 @@
             "value" : "Mantenha pressionado para “Mostrar informações” ou “Abrir original”, e ajuste as colunas pela barra de ferramentas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantém premido para aceder a “Mostrar informações” ou “Abrir original”. Ajusta as colunas na barra de ferramentas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24029,12 +24035,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "長按可使用「顯示資訊」或「打開原始檔」，並可從工具列調整欄數。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantém premido para aceder a “Mostrar informações” ou “Abrir original”. Ajusta as colunas na barra de ferramentas."
           }
         }
       }
@@ -24114,6 +24114,12 @@
             "value" : "As mesmas ferramentas de um grupo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As mesmas ferramentas de um grupo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24130,12 +24136,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "與群組相同的工具"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As mesmas ferramentas de um grupo"
           }
         }
       }
@@ -24215,6 +24215,12 @@
             "value" : "Um botão seleciona tudo ou limpa a seleção, e o resumo mantém o total atualizado."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um botão seleciona tudo ou limpa a seleção, e o resumo mantém o total atualizado."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24231,12 +24237,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一個按鈕即可全選或清除選取，摘要會即時更新總計。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um botão seleciona tudo ou limpa a seleção, e o resumo mantém o total atualizado."
           }
         }
       }
@@ -24316,6 +24316,12 @@
             "value" : "Selecionar todas ou escolher uma a uma"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar todas ou escolher uma a uma"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24332,12 +24338,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "全選或逐張挑選"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionar todas ou escolher uma a uma"
           }
         }
       }
@@ -24417,6 +24417,12 @@
             "value" : "Como usar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como usar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24433,12 +24439,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用說明"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como usar"
           }
         }
       }
@@ -24518,6 +24518,12 @@
             "value" : "Fechar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24534,12 +24540,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "關閉"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fechar"
           }
         }
       }
