@@ -36,6 +36,10 @@ Rendered by `disclosure` in
 
 ### Paragraph 1 — renewal and billing
 
+**EN-CA**
+
+> Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
+
 **PT-PT**
 
 > As subscrições renovam-se automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. O pagamento é cobrado na tua Conta Apple.
@@ -101,6 +105,10 @@ Rendered by `disclosure` in
 > تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. تُخصم قيمة الدفع من حساب Apple الخاص بك.
 
 ### Paragraph 2 — trial and cancellation
+
+**EN-CA**
+
+> The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.
 
 **PT-PT**
 
@@ -179,6 +187,7 @@ must not smooth it away.
 
 | Locale | Privacy Policy | Terms of Use |
 | --- | --- | --- |
+| `en-CA` | Privacy Policy | Terms of Use |
 | `pt-PT` | Política de Privacidade | Termos de Utilização |
 | `fr-CA` | Politique de confidentialité | Conditions d’utilisation |
 | `en-GB` | Privacy Policy | Terms of Use |

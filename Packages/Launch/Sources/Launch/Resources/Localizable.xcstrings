@@ -22,6 +22,12 @@
             "value" : "Alike"
           }
         },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76,6 +82,12 @@
             "value" : "Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,12 +104,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike"
           }
         }
       }

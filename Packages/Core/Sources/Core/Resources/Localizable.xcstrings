@@ -82,6 +82,24 @@
             }
           }
         },
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
         "en-GB" : {
           "variations" : {
             "plural" : {
@@ -274,6 +292,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld fotografia desfocada selecionada para Apagado?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -329,30 +371,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "將所選的 %1$lld 張模糊照片移到「最近刪除」？"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld fotografia desfocada selecionada para Apagado?"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
                 }
               }
             }
@@ -424,6 +442,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -633,6 +669,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld captura de ecrã selecionada para Apagado?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -692,30 +752,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld captura de ecrã selecionada para Apagado?"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -735,6 +771,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photo Cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred Photo Cleanup"
@@ -794,6 +836,12 @@
             "value" : "Limpeza de fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza de fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -810,12 +858,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza de fotografias desfocadas"
           }
         }
       }
@@ -836,6 +878,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred photo cleanup is a premium feature"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred photo cleanup is a premium feature"
@@ -895,6 +943,12 @@
             "value" : "A limpeza de fotos desfocadas é um recurso premium"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A limpeza de fotografias desfocadas é uma funcionalidade premium"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -911,12 +965,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片清理為進階功能"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A limpeza de fotografias desfocadas é uma funcionalidade premium"
           }
         }
       }
@@ -937,6 +985,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred Photos"
@@ -996,6 +1050,12 @@
             "value" : "Fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1012,12 +1072,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias desfocadas"
           }
         }
       }
@@ -1038,6 +1092,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos based on on-device analysis. Review before deleting."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Likely low-quality photos based on on-device analysis. Review before deleting."
@@ -1097,6 +1157,12 @@
             "value" : "Fotos provavelmente de baixa qualidade, segundo a análise no dispositivo. Revise antes de apagar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias provavelmente de baixa qualidade, segundo a análise no dispositivo. Revê antes de apagar."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1113,12 +1179,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "根據裝置端分析，這些照片品質可能偏低。請先檢視再刪除。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografias provavelmente de baixa qualidade, segundo a análise no dispositivo. Revê antes de apagar."
           }
         }
       }
@@ -1139,6 +1199,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Blurred Photos Found"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Blurred Photos Found"
@@ -1198,6 +1264,12 @@
             "value" : "Nenhuma foto desfocada encontrada"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma fotografia desfocada encontrada"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1214,12 +1286,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到模糊照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhuma fotografia desfocada encontrada"
           }
         }
       }
@@ -1240,6 +1306,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Screenshots Found"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Screenshots Found"
@@ -1299,6 +1371,12 @@
             "value" : "Nenhuma captura de tela encontrada"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma captura de ecrã encontrada"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1315,12 +1393,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到螢幕快照"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhuma captura de ecrã encontrada"
           }
         }
       }
@@ -1341,6 +1413,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open blurred photo cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open blurred photo cleanup"
@@ -1400,6 +1478,12 @@
             "value" : "Abrir limpeza de fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir limpeza de fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1416,12 +1500,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開模糊照片清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir limpeza de fotografias desfocadas"
           }
         }
       }
@@ -1442,6 +1520,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open screenshot cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open screenshot cleanup"
@@ -1501,6 +1585,12 @@
             "value" : "Abrir limpeza de capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir limpeza de capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1517,12 +1607,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開螢幕快照清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir limpeza de capturas de ecrã"
           }
         }
       }
@@ -1543,6 +1627,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for blurred photo cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the premium paywall for blurred photo cleanup"
@@ -1602,6 +1692,12 @@
             "value" : "Abre a oferta premium para a limpeza de fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre a oferta premium para a limpeza de fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1618,12 +1714,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開模糊照片清理的進階功能頁面"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre a oferta premium para a limpeza de fotografias desfocadas"
           }
         }
       }
@@ -1644,6 +1734,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for screenshot cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the premium paywall for screenshot cleanup"
@@ -1703,6 +1799,12 @@
             "value" : "Abre a oferta premium para a limpeza de capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre a oferta premium para a limpeza de capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1719,12 +1821,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開螢幕快照清理的進階功能頁面"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre a oferta premium para a limpeza de capturas de ecrã"
           }
         }
       }
@@ -1745,6 +1841,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run a new scan after your library changes or if more photos need review."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Run a new scan after your library changes or if more photos need review."
@@ -1804,6 +1906,12 @@
             "value" : "Faça uma nova análise quando sua fototeca mudar ou se houver mais fotos para revisar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faz uma nova análise quando a tua fototeca mudar ou houver mais fotografias para rever."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1820,12 +1928,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫有變動、或還有照片需要檢視時，請重新掃描。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faz uma nova análise quando a tua fototeca mudar ou houver mais fotografias para rever."
           }
         }
       }
@@ -1846,6 +1948,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot Cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshot Cleanup"
@@ -1905,6 +2013,12 @@
             "value" : "Limpeza de capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza de capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1921,12 +2035,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza de capturas de ecrã"
           }
         }
       }
@@ -1947,6 +2055,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot cleanup is a premium feature"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshot cleanup is a premium feature"
@@ -2006,6 +2120,12 @@
             "value" : "A limpeza de capturas de tela é um recurso premium"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A limpeza de capturas de ecrã é uma funcionalidade premium"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2022,12 +2142,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照清理為進階功能"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A limpeza de capturas de ecrã é uma funcionalidade premium"
           }
         }
       }
@@ -2048,6 +2162,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots"
@@ -2107,6 +2227,12 @@
             "value" : "Capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2123,12 +2249,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã"
           }
         }
       }
@@ -2149,6 +2269,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
@@ -2208,6 +2334,12 @@
             "value" : "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fotografia selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2224,12 +2356,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A fotografia selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2250,6 +2376,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
@@ -2309,6 +2441,12 @@
             "value" : "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As fotografias selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2325,12 +2463,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As fotografias selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2351,6 +2483,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
@@ -2410,6 +2548,12 @@
             "value" : "A captura de tela selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A captura de ecrã selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2426,12 +2570,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A captura de ecrã selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2452,6 +2590,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
@@ -2511,6 +2655,12 @@
             "value" : "As capturas de tela selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As capturas de ecrã selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2527,12 +2677,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As capturas de ecrã selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2601,6 +2745,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -2810,6 +2972,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selecionada, tamanho estimado %2$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -2865,30 +3051,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "已選取 %1$lld 張，預估大小 %2$@。"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld selecionada, tamanho estimado %2$@."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
                 }
               }
             }
@@ -2960,6 +3122,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -3169,6 +3349,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografia provavelmente desfocada disponível para revisão."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -3224,30 +3428,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "有 %1$lld 張可能模糊的照片可供檢視。"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografia provavelmente desfocada disponível para revisão."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
                 }
               }
             }
@@ -3319,6 +3499,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshot available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -3528,6 +3726,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld capturas de ecrã disponíveis para revisão."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld captura de ecrã disponível para revisão."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld capturas de ecrã disponíveis para revisão."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -3587,30 +3809,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld captura de ecrã disponível para revisão."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld capturas de ecrã disponíveis para revisão."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld capturas de ecrã disponíveis para revisão."
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -3630,6 +3828,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try rescanning after your library updates."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Try rescanning after your library updates."
@@ -3689,6 +3893,12 @@
             "value" : "Tente analisar novamente depois que sua fototeca for atualizada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenta analisar novamente depois de a tua fototeca ser atualizada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3705,12 +3915,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫更新後請再掃描一次。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tenta analisar novamente depois de a tua fototeca ser atualizada."
           }
         }
       }
@@ -3731,6 +3935,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
@@ -3790,6 +4000,12 @@
             "value" : "Libere a limpeza de fotos desfocadas para revisar as imagens provavelmente de baixa qualidade antes de apagá-las, com a mesma confirmação segura."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia a limpeza de fotografias desfocadas para rever as imagens provavelmente de baixa qualidade antes de as apagares, com a mesma confirmação segura."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3806,12 +4022,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖模糊照片清理，透過同樣安全的確認流程，在刪除前先檢視可能品質不佳的照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia a limpeza de fotografias desfocadas para rever as imagens provavelmente de baixa qualidade antes de as apagares, com a mesma confirmação segura."
           }
         }
       }
@@ -3832,6 +4042,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
@@ -3891,6 +4107,12 @@
             "value" : "Libere a limpeza de capturas de tela para revisá-las e apagá-las com a mesma confirmação segura."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia a limpeza de capturas de ecrã para as reveres e apagares, com a mesma confirmação segura."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3907,12 +4129,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia a limpeza de capturas de ecrã para as reveres e apagares, com a mesma confirmação segura."
           }
         }
       }
@@ -3933,6 +4149,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "High"
@@ -3992,6 +4214,12 @@
             "value" : "Alta"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alta"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4008,12 +4236,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "高"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alta"
           }
         }
       }
@@ -4034,6 +4256,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Low"
@@ -4093,6 +4321,12 @@
             "value" : "Baixa"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baixa"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4109,12 +4343,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "低"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Baixa"
           }
         }
       }
@@ -4135,6 +4363,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medium"
@@ -4194,6 +4428,12 @@
             "value" : "Média"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Média"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4210,12 +4450,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "中"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Média"
           }
         }
       }

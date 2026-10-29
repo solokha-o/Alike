@@ -22,6 +22,12 @@
             "value" : "Alike Pro"
           }
         },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76,6 +82,12 @@
             "value" : "Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,12 +104,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike Pro"
           }
         }
       }
@@ -118,6 +124,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro is active"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro is active"
@@ -177,6 +189,12 @@
             "value" : "O Alike Pro está ativo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Pro está ativo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193,12 +211,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro 已啟用"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Pro está ativo"
           }
         }
       }
@@ -219,6 +231,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean up all selected photos with Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clean up all selected photos with Pro"
@@ -278,6 +296,12 @@
             "value" : "Limpe todas as fotos selecionadas com o Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpa todas as fotografias selecionadas com o Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,12 +318,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用 Pro 清理所有已選取的照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpa todas as fotografias selecionadas com o Pro"
           }
         }
       }
@@ -320,6 +338,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore Purchases"
@@ -379,6 +403,12 @@
             "value" : "Restaurar compras"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar compras"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,12 +425,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "回復購買項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restaurar compras"
           }
         }
       }
@@ -469,6 +493,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Review and remove %1$lld selected photo in one action, with %2$@ estimated reclaimable."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Review and remove %1$lld selected photos in one action, with %2$@ estimated reclaimable."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -678,6 +720,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Revê e remove %1$lld fotografias selecionadas numa única ação, com %2$@ de espaço recuperável estimado."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Revê e remove %1$lld fotografia selecionada numa única ação, com %2$@ de espaço recuperável estimado."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Revê e remove %1$lld fotografias selecionadas numa única ação, com %2$@ de espaço recuperável estimado."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -733,30 +799,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "一次操作即可檢視並移除所選的 %1$lld 張照片，預估可回收 %2$@。"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Revê e remove %1$lld fotografia selecionada numa única ação, com %2$@ de espaço recuperável estimado."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Revê e remove %1$lld fotografias selecionadas numa única ação, com %2$@ de espaço recuperável estimado."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Revê e remove %1$lld fotografias selecionadas numa única ação, com %2$@ de espaço recuperável estimado."
                 }
               }
             }
@@ -828,6 +870,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your scan found %1$lld cleanup opportunity. Unlock Alike Pro to clean up faster."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your scan found %1$lld cleanup opportunities. Unlock Alike Pro to clean up faster."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -1037,6 +1097,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidades de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidade de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidades de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -1092,30 +1176,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "這次掃描找到 %1$lld 項可清理的項目。解鎖 Alike Pro，清理更快速。"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidade de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidades de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidades de limpeza. Desbloqueia o Alike Pro para limpar mais depressa."
                 }
               }
             }
@@ -1187,6 +1247,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your scan found %1$lld cleanup opportunity with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your scan found %1$lld cleanup opportunities with %2$@ estimated reclaimable. Unlock Alike Pro to clean up faster."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -1396,6 +1474,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidades de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidade de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A tua análise encontrou %1$lld oportunidades de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -1455,30 +1557,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidade de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidades de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "A tua análise encontrou %1$lld oportunidades de limpeza com %2$@ de espaço recuperável estimado. Desbloqueia o Alike Pro para limpar mais depressa."
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -1498,6 +1576,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the weekly reminder day and time that fits your routine."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose the weekly reminder day and time that fits your routine."
@@ -1557,6 +1641,12 @@
             "value" : "Escolha o dia e o horário do lembrete semanal que combinam com sua rotina."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe o dia e a hora do lembrete semanal que se adaptam à tua rotina."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1573,12 +1663,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇符合你作息的每週提醒日期與時間。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe o dia e a hora do lembrete semanal que se adaptam à tua rotina."
           }
         }
       }
@@ -1599,6 +1683,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find the photos that matter faster"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Find the photos that matter faster"
@@ -1658,6 +1748,12 @@
             "value" : "Encontre mais rápido as fotos que importam"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontra mais depressa as fotografias que importam"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1674,12 +1770,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更快找到重要的照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encontra mais depressa as fotografias que importam"
           }
         }
       }
@@ -1700,6 +1790,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You found your first cleanup opportunities"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You found your first cleanup opportunities"
@@ -1759,6 +1855,12 @@
             "value" : "Você encontrou suas primeiras oportunidades de limpeza"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontraste as tuas primeiras oportunidades de limpeza"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1775,12 +1877,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你找到了第一批可清理的項目"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encontraste as tuas primeiras oportunidades de limpeza"
           }
         }
       }
@@ -1801,6 +1897,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free includes %1$d scans per calendar month. You have %2$d remaining and the allowance resets %3$@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free includes %1$d scans per calendar month. You have %2$d remaining and the allowance resets %3$@."
@@ -1860,6 +1962,12 @@
             "value" : "A versão gratuita inclui %1$d análises por mês. Restam %2$d, e o limite é renovado em %3$@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A versão gratuita permite %1$d análises por mês civil. Análises restantes: %2$d. O limite renova-se em %3$@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1876,12 +1984,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次，額度將於 %3$@ 重設。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A versão gratuita permite %1$d análises por mês civil. Análises restantes: %2$d. O limite renova-se em %3$@."
           }
         }
       }
@@ -1902,6 +2004,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free includes %1$d scans per calendar month. You have %2$d remaining."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free includes %1$d scans per calendar month. You have %2$d remaining."
@@ -1961,6 +2069,12 @@
             "value" : "A versão gratuita inclui %1$d análises por mês. Restam %2$d."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A versão gratuita permite %1$d análises por mês civil. Análises restantes: %2$d."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1977,12 +2091,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "免費版每個日曆月包含 %1$d 次掃描。你還剩 %2$d 次。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A versão gratuita permite %1$d análises por mês civil. Análises restantes: %2$d."
           }
         }
       }
@@ -2003,6 +2111,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free includes three scans per calendar month. Pro keeps your cleanup results current whenever your library changes."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free includes three scans per calendar month. Pro keeps your cleanup results current whenever your library changes."
@@ -2062,6 +2176,12 @@
             "value" : "A versão gratuita inclui três análises por mês. O Pro mantém seus resultados de limpeza em dia sempre que sua fototeca muda."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A versão gratuita inclui três análises por mês civil. O Pro mantém os teus resultados de limpeza atualizados sempre que a tua fototeca muda."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2078,12 +2198,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "免費版每個日曆月包含三次掃描。只要圖庫有變動，Pro 就會讓清理結果保持最新。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A versão gratuita inclui três análises por mês civil. O Pro mantém os teus resultados de limpeza atualizados sempre que a tua fototeca muda."
           }
         }
       }
@@ -2104,6 +2218,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep scanning without monthly limits"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keep scanning without monthly limits"
@@ -2163,6 +2283,12 @@
             "value" : "Continue analisando sem limites mensais"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a analisar sem limites mensais"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2179,12 +2305,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無每月次數上限，隨時掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continua a analisar sem limites mensais"
           }
         }
       }
@@ -2205,6 +2325,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make cleanup fit your schedule"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Make cleanup fit your schedule"
@@ -2264,6 +2390,12 @@
             "value" : "Adapte a limpeza à sua rotina"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adapta a limpeza à tua rotina"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2280,12 +2412,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "讓清理配合你的行程"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapta a limpeza à tua rotina"
           }
         }
       }
@@ -2306,6 +2432,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make every cleanup faster with Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Make every cleanup faster with Alike Pro"
@@ -2365,6 +2497,12 @@
             "value" : "Deixe cada limpeza mais rápida com o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torna cada limpeza mais rápida com o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2381,12 +2519,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用 Alike Pro，每次清理都更快"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Torna cada limpeza mais rápida com o Alike Pro"
           }
         }
       }
@@ -2407,6 +2539,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove multiple selected photos in one safe, confirmed action."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove multiple selected photos in one safe, confirmed action."
@@ -2466,6 +2604,12 @@
             "value" : "Remova várias fotos selecionadas em uma única ação segura e confirmada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove várias fotografias selecionadas numa única ação segura e confirmada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2482,12 +2626,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在一次安全且經過確認的操作中移除多張已選取的照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove várias fotografias selecionadas numa única ação segura e confirmada."
           }
         }
       }
@@ -2508,6 +2646,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review likely blurred photos faster"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review likely blurred photos faster"
@@ -2567,6 +2711,12 @@
             "value" : "Revise mais rápido as fotos provavelmente desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê mais depressa as fotografias provavelmente desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2583,12 +2733,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更快檢視可能模糊的照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revê mais depressa as fotografias provavelmente desfocadas"
           }
         }
       }
@@ -2609,6 +2753,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review likely low-quality shots before deciding what to keep or remove."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review likely low-quality shots before deciding what to keep or remove."
@@ -2668,6 +2818,12 @@
             "value" : "Revise as imagens provavelmente de baixa qualidade antes de decidir o que manter ou remover."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê as imagens provavelmente de baixa qualidade antes de decidir o que manter ou remover."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2684,12 +2840,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在決定保留或移除之前，先檢視可能品質不佳的照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revê as imagens provavelmente de baixa qualidade antes de decidir o que manter ou remover."
           }
         }
       }
@@ -2710,6 +2860,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review screenshots together and choose exactly what should move to Recently Deleted."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review screenshots together and choose exactly what should move to Recently Deleted."
@@ -2769,6 +2925,12 @@
             "value" : "Revise as capturas de tela juntas e escolha exatamente quais vão para Apagados recentemente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê as capturas de ecrã em conjunto e escolhe exatamente quais vão para Apagado."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2785,12 +2947,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一起檢視螢幕快照，精準選擇要移到「最近刪除」的項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revê as capturas de ecrã em conjunto e escolhe exatamente quais vão para Apagado."
           }
         }
       }
@@ -2811,6 +2967,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review smart cleanup suggestions while keeping full control over every deletion."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review smart cleanup suggestions while keeping full control over every deletion."
@@ -2870,6 +3032,12 @@
             "value" : "Revise as sugestões de limpeza inteligente mantendo o controle total de cada exclusão."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê as sugestões de limpeza inteligente mantendo o controlo total de cada eliminação."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2886,12 +3054,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視智慧清理建議，同時完全掌控每一次刪除。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revê as sugestões de limpeza inteligente mantendo o controlo total de cada eliminação."
           }
         }
       }
@@ -2912,6 +3074,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review this smart category and reclaim an estimated %@."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review this smart category and reclaim an estimated %@."
@@ -2971,6 +3139,12 @@
             "value" : "Revise esta categoria inteligente e recupere cerca de %@."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê esta categoria inteligente e recupera cerca de %@."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2987,12 +3161,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視這個智慧類別，預估可回收 %@。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revê esta categoria inteligente e recupera cerca de %@."
           }
         }
       }
@@ -3013,6 +3181,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn screenshot clutter into free space"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turn screenshot clutter into free space"
@@ -3072,6 +3246,12 @@
             "value" : "Transforme a bagunça de capturas em espaço livre"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transforma o excesso de capturas de ecrã em espaço livre"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3088,12 +3268,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "把雜亂的螢幕快照變成可用空間"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transforma o excesso de capturas de ecrã em espaço livre"
           }
         }
       }
@@ -3117,6 +3291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock review status, cluster size, and favorites filters for faster cleanup."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock review status, cluster size, and favourites filters for faster cleanup."
           }
         },
         "en-GB" : {
@@ -3173,6 +3353,12 @@
             "value" : "Libere os filtros de status de revisão, tamanho do grupo e favoritas para limpar mais rápido."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia os filtros de estado de revisão, tamanho do grupo e favoritas para limpar mais depressa."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3189,12 +3375,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖檢視狀態、群組大小與最愛篩選條件，清理更快速。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia os filtros de estado de revisão, tamanho do grupo e favoritas para limpar mais depressa."
           }
         }
       }
@@ -3215,6 +3395,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock unlimited scans, smart categories, advanced filters, batch cleanup, and custom reminders."
@@ -3274,6 +3460,12 @@
             "value" : "Libere análises ilimitadas, categorias inteligentes, filtros avançados, limpeza em lote e lembretes personalizados."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia análises ilimitadas, categorias inteligentes, filtros avançados, limpeza em lote e lembretes personalizados."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3290,12 +3482,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖無限次掃描、智慧類別、進階篩選、批次清理與自訂提醒。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia análises ilimitadas, categorias inteligentes, filtros avançados, limpeza em lote e lembretes personalizados."
           }
         }
       }
@@ -3316,6 +3502,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock %@ with Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock %@ with Alike Pro"
@@ -3375,6 +3567,12 @@
             "value" : "Libere %@ com o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia %@ com o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3391,12 +3589,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用 Alike Pro 解鎖%@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia %@ com o Alike Pro"
           }
         }
       }
@@ -3417,6 +3609,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ • Active through %2$@"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ • Active through %2$@"
@@ -3476,6 +3674,12 @@
             "value" : "%1$@ • Ativo até %2$@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ • Ativo até %2$@"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3492,12 +3696,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ • 有效期至 %2$@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ • Ativo até %2$@"
           }
         }
       }
@@ -3518,6 +3716,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro status unavailable"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro status unavailable"
@@ -3577,6 +3781,12 @@
             "value" : "Status do Alike Pro indisponível"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado do Alike Pro indisponível"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3593,12 +3803,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法取得 Alike Pro 狀態"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado do Alike Pro indisponível"
           }
         }
       }
@@ -3619,6 +3823,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Checking Alike Pro"
@@ -3678,6 +3888,12 @@
             "value" : "Verificando o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A verificar o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3694,12 +3910,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在檢查 Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A verificar o Alike Pro"
           }
         }
       }
@@ -3720,6 +3930,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking subscription status"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Checking subscription status"
@@ -3779,6 +3995,12 @@
             "value" : "Verificando o status da assinatura"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A verificar o estado da subscrição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3795,12 +4017,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在檢查訂閱狀態"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A verificar o estado da subscrição"
           }
         }
       }
@@ -3821,6 +4037,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirming your App Store subscription status."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirming your App Store subscription status."
@@ -3880,6 +4102,12 @@
             "value" : "Confirmando o status da sua assinatura na App Store."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A confirmar o estado da tua subscrição na App Store."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3896,12 +4124,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在確認你的 App Store 訂閱狀態。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A confirmar o estado da tua subscrição na App Store."
           }
         }
       }
@@ -3922,6 +4144,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with one photo"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue with one photo"
@@ -3981,6 +4209,12 @@
             "value" : "Continuar com uma foto"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar com uma fotografia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3997,12 +4231,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "以一張照片繼續"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar com uma fotografia"
           }
         }
       }
@@ -4023,6 +4251,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current access is preserved. Open plans to retry loading subscription details."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your current access is preserved. Open plans to retry loading subscription details."
@@ -4082,6 +4316,12 @@
             "value" : "Seu acesso atual está preservado. Abra os planos para tentar carregar os detalhes da assinatura novamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O teu acesso atual mantém-se. Abre os planos para tentar carregar novamente os detalhes da subscrição."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4098,12 +4338,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你目前的權限不受影響。打開方案以重新載入訂閱詳細資訊。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O teu acesso atual mantém-se. Abre os planos para tentar carregar novamente os detalhes da subscrição."
           }
         }
       }
@@ -4124,6 +4358,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pro"
@@ -4183,6 +4423,12 @@
             "value" : "Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4199,12 +4445,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pro"
           }
         }
       }
@@ -4225,6 +4465,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Requires Alike Pro"
@@ -4284,6 +4530,12 @@
             "value" : "Requer o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requer o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4300,12 +4552,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "須有 Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Requer o Alike Pro"
           }
         }
       }
@@ -4326,6 +4572,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d selected • %2$@ estimated reclaimable"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$d selected • %2$@ estimated reclaimable"
@@ -4385,6 +4637,12 @@
             "value" : "%1$d selecionadas • %2$@ recuperáveis estimados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d selecionadas • %2$@ de espaço recuperável estimado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4401,12 +4659,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已選取 %1$d 張 • 預估可回收 %2$@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$d selecionadas • %2$@ de espaço recuperável estimado"
           }
         }
       }
@@ -4427,6 +4679,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock unlimited scans, smart cleanup, and batch actions."
@@ -4486,6 +4744,12 @@
             "value" : "Libere análises ilimitadas, limpeza inteligente e ações em lote."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia análises ilimitadas, limpeza inteligente e ações em lote."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4502,12 +4766,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖無限次掃描、智慧清理與批次操作。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueia análises ilimitadas, limpeza inteligente e ações em lote."
           }
         }
       }
@@ -4528,6 +4786,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade to Alike Pro"
@@ -4587,6 +4851,12 @@
             "value" : "Assinar o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscrever o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4603,12 +4873,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "升級至 Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subscrever o Alike Pro"
           }
         }
       }
@@ -4629,6 +4893,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "View Alike Pro"
@@ -4688,6 +4958,12 @@
             "value" : "Ver o Alike Pro"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver o Alike Pro"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4704,12 +4980,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "查看 Alike Pro"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ver o Alike Pro"
           }
         }
       }
@@ -4730,6 +5000,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View plans"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "View plans"
@@ -4789,6 +5065,12 @@
             "value" : "Ver planos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver planos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4805,12 +5087,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "查看方案"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ver planos"
           }
         }
       }
@@ -4831,6 +5107,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced filters and batch cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced filters and batch cleanup"
@@ -4890,6 +5172,12 @@
             "value" : "Filtros avançados e limpeza em lote"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtros avançados e limpeza em lote"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4906,12 +5194,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "進階篩選與批次清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtros avançados e limpeza em lote"
           }
         }
       }
@@ -4932,6 +5214,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free still includes three scans each calendar month, review of existing results, and one-photo cleanup."
@@ -4991,6 +5279,12 @@
             "value" : "O Alike Free continua incluindo três análises por mês, a revisão dos resultados existentes e a limpeza de uma foto."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Free continua a incluir três análises por mês civil, a revisão dos resultados existentes e a limpeza de uma fotografia de cada vez."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5007,12 +5301,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free 仍包含每個日曆月三次掃描、檢視現有結果，以及單張照片清理。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Free continua a incluir três análises por mês civil, a revisão dos resultados existentes e a limpeza de uma fotografia de cada vez."
           }
         }
       }
@@ -5033,6 +5321,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro is now active."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro is now active."
@@ -5092,6 +5386,12 @@
             "value" : "O Alike Pro está ativo."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike Pro está ativo."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5108,12 +5408,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Pro 已啟用。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Alike Pro está ativo."
           }
         }
       }
@@ -5134,6 +5428,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Alike Pro subscription was restored."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your Alike Pro subscription was restored."
@@ -5193,6 +5493,12 @@
             "value" : "Sua assinatura do Alike Pro foi restaurada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua subscrição do Alike Pro foi restaurada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5209,12 +5515,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已回復你的 Alike Pro 訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua subscrição do Alike Pro foi restaurada."
           }
         }
       }
@@ -5235,6 +5535,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billed monthly"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Billed monthly"
@@ -5294,6 +5600,12 @@
             "value" : "Cobrança mensal"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faturação mensal"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5310,12 +5622,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每月計費"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faturação mensal"
           }
         }
       }
@@ -5336,6 +5642,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billed yearly"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Billed yearly"
@@ -5395,6 +5707,12 @@
             "value" : "Cobrança anual"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faturação anual"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5411,12 +5729,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每年計費"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faturação anual"
           }
         }
       }
@@ -5437,6 +5749,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can continue using Alike Free while subscription plans are unavailable."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can continue using Alike Free while subscription plans are unavailable."
@@ -5496,6 +5814,12 @@
             "value" : "Você pode continuar usando o Alike Free enquanto os planos de assinatura estiverem indisponíveis."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podes continuar a usar o Alike Free enquanto os planos de subscrição estiverem indisponíveis."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5512,12 +5836,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "訂閱方案無法取得期間，你可以繼續使用 Alike Free。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podes continuar a usar o Alike Free enquanto os planos de subscrição estiverem indisponíveis."
           }
         }
       }
@@ -5538,6 +5856,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your connection and try loading subscription plans again."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Check your connection and try loading subscription plans again."
@@ -5597,6 +5921,12 @@
             "value" : "Verifique sua conexão e tente carregar os planos de assinatura novamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifica a tua ligação e tenta carregar novamente os planos de subscrição."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5613,12 +5943,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請檢查網路連線，然後再次載入訂閱方案。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verifica a tua ligação e tenta carregar novamente os planos de subscrição."
           }
         }
       }
@@ -5639,6 +5963,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A cleanup reminder on your schedule"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A cleanup reminder on your schedule"
@@ -5698,6 +6028,12 @@
             "value" : "Um lembrete de limpeza no seu ritmo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um lembrete de limpeza no teu ritmo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5714,12 +6050,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "依你的時間安排的清理提醒"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um lembrete de limpeza no teu ritmo"
           }
         }
       }
@@ -5740,6 +6070,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
@@ -5799,6 +6135,12 @@
             "value" : "Fechar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5815,12 +6157,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "關閉"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fechar"
           }
         }
       }
@@ -5841,6 +6177,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with %@"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue with %@"
@@ -5900,6 +6242,12 @@
             "value" : "Continuar com %@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar com %@"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5916,12 +6264,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "繼續使用 %@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar com %@"
           }
         }
       }
@@ -5942,6 +6284,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading App Store plans…"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading App Store plans…"
@@ -6001,6 +6349,12 @@
             "value" : "Carregando os planos da App Store…"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A carregar os planos da App Store…"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6017,12 +6371,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在載入 App Store 方案…"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A carregar os planos da App Store…"
           }
         }
       }
@@ -6043,6 +6391,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No active Alike Pro subscription was found."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No active Alike Pro subscription was found."
@@ -6102,6 +6456,12 @@
             "value" : "Nenhuma assinatura ativa do Alike Pro foi encontrada."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma subscrição ativa do Alike Pro foi encontrada."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6118,12 +6478,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到使用中的 Alike Pro 訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhuma subscrição ativa do Alike Pro foi encontrada."
           }
         }
       }
@@ -6144,6 +6498,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pay for one month at a time"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pay for one month at a time"
@@ -6203,6 +6563,12 @@
             "value" : "Pague mês a mês"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paga mês a mês"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6219,12 +6585,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "按月付款"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paga mês a mês"
           }
         }
       }
@@ -6245,6 +6605,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plans aren't available yet"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plans aren't available yet"
@@ -6304,6 +6670,12 @@
             "value" : "Os planos ainda não estão disponíveis"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os planos ainda não estão disponíveis"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6320,12 +6692,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "方案尚未推出"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os planos ainda não estão disponíveis"
           }
         }
       }
@@ -6346,6 +6712,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plans couldn't be loaded"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plans couldn't be loaded"
@@ -6405,6 +6777,12 @@
             "value" : "Não foi possível carregar os planos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível carregar os planos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6421,12 +6799,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法載入方案"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não foi possível carregar os planos"
           }
         }
       }
@@ -6447,6 +6819,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacy Policy"
@@ -6506,6 +6884,12 @@
             "value" : "Política de Privacidade"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de Privacidade"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6522,12 +6906,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "隱私權政策"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Política de Privacidade"
           }
         }
       }
@@ -6548,6 +6926,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your purchase is pending App Store approval."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your purchase is pending App Store approval."
@@ -6607,6 +6991,12 @@
             "value" : "Sua compra está aguardando aprovação da App Store."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua compra aguarda aprovação da App Store."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6623,12 +7013,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的購買項目正在等待 App Store 核准。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua compra aguarda aprovação da App Store."
           }
         }
       }
@@ -6649,6 +7033,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchasing…"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Purchasing…"
@@ -6708,6 +7098,12 @@
             "value" : "Comprando…"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A comprar…"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6724,12 +7120,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在購買…"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A comprar…"
           }
         }
       }
@@ -6750,6 +7140,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommended"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recommended"
@@ -6809,6 +7205,12 @@
             "value" : "Recomendado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recomendado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6825,12 +7227,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "推薦"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recomendado"
           }
         }
       }
@@ -6851,6 +7247,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retry"
@@ -6910,6 +7312,12 @@
             "value" : "Tentar novamente"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6926,12 +7334,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重試"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tentar novamente"
           }
         }
       }
@@ -6952,6 +7354,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save %d%% compared with monthly"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save %d%% compared with monthly"
@@ -7011,6 +7419,12 @@
             "value" : "Economize %d%% em relação ao mensal"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poupa %d%% em relação ao plano mensal"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7027,12 +7441,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "比每月方案省下 %d%%"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Poupa %d%% em relação ao plano mensal"
           }
         }
       }
@@ -7053,6 +7461,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save with annual billing"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save with annual billing"
@@ -7112,6 +7526,12 @@
             "value" : "Economize com a cobrança anual"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poupa com a faturação anual"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7128,12 +7548,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇年繳更省"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Poupa com a faturação anual"
           }
         }
       }
@@ -7154,6 +7568,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a subscription plan"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select a subscription plan"
@@ -7213,6 +7633,12 @@
             "value" : "Selecione um plano de assinatura"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleciona um plano de subscrição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7229,12 +7655,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇訂閱方案"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleciona um plano de subscrição"
           }
         }
       }
@@ -7255,6 +7675,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select this subscription plan"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select this subscription plan"
@@ -7314,6 +7740,12 @@
             "value" : "Selecionar este plano de assinatura"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar este plano de subscrição"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7330,12 +7762,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇這個訂閱方案"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionar este plano de subscrição"
           }
         }
       }
@@ -7356,6 +7782,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart screenshot and blurred-photo categories"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smart screenshot and blurred-photo categories"
@@ -7415,6 +7847,12 @@
             "value" : "Categorias inteligentes de capturas e fotos desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorias inteligentes de capturas de ecrã e fotografias desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7431,12 +7869,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照與模糊照片的智慧類別"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Categorias inteligentes de capturas de ecrã e fotografias desfocadas"
           }
         }
       }
@@ -7457,6 +7889,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription plans unavailable"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Subscription plans unavailable"
@@ -7516,6 +7954,12 @@
             "value" : "Planos de assinatura indisponíveis"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planos de subscrição indisponíveis"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7532,12 +7976,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法取得訂閱方案"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Planos de subscrição indisponíveis"
           }
         }
       }
@@ -7558,6 +7996,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account."
@@ -7617,6 +8061,12 @@
             "value" : "As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. A cobrança é feita na sua conta Apple."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As subscrições renovam-se automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. O pagamento é cobrado na tua Conta Apple."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7633,12 +8083,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂。款項將向你的 Apple 帳戶收取。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As subscrições renovam-se automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. O pagamento é cobrado na tua Conta Apple."
           }
         }
       }
@@ -7659,6 +8103,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Use"
@@ -7718,6 +8168,12 @@
             "value" : "Termos de Uso"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Termos de Utilização"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7734,12 +8190,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用條款"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Termos de Utilização"
           }
         }
       }
@@ -7760,6 +8210,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited library scans"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlimited library scans"
@@ -7819,6 +8275,12 @@
             "value" : "Análises ilimitadas da fototeca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análises ilimitadas da fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7835,12 +8297,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無限次圖庫掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análises ilimitadas da fototeca"
           }
         }
       }
@@ -7861,6 +8317,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited scans and all Pro cleanup tools are unlocked."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlimited scans and all Pro cleanup tools are unlocked."
@@ -7920,6 +8382,12 @@
             "value" : "Análises ilimitadas e todas as ferramentas de limpeza do Pro estão liberadas."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As análises ilimitadas e todas as ferramentas de limpeza do Pro estão desbloqueadas."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7936,12 +8404,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已解鎖無限次掃描與所有 Pro 清理工具。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As análises ilimitadas e todas as ferramentas de limpeza do Pro estão desbloqueadas."
           }
         }
       }
@@ -7962,6 +8424,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't complete your purchase. Check your connection and try again."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "We couldn't complete your purchase. Check your connection and try again."
@@ -8021,6 +8489,12 @@
             "value" : "Não foi possível concluir sua compra. Verifique sua conexão e tente novamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível concluir a tua compra. Verifica a tua ligação e tenta novamente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8037,12 +8511,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法完成你的購買。請檢查網路連線後再試一次。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não foi possível concluir a tua compra. Verifica a tua ligação e tenta novamente."
           }
         }
       }
@@ -8063,6 +8531,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't restore your purchases. Check your connection and try again."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "We couldn't restore your purchases. Check your connection and try again."
@@ -8122,6 +8596,12 @@
             "value" : "Não foi possível restaurar suas compras. Verifique sua conexão e tente novamente."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível restaurar as tuas compras. Verifica a tua ligação e tenta novamente."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8138,12 +8618,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法回復你的購買項目。請檢查網路連線後再試一次。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não foi possível restaurar as tuas compras. Verifica a tua ligação e tenta novamente."
           }
         }
       }
@@ -8164,6 +8638,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings."
@@ -8223,6 +8703,12 @@
             "value" : "O plano anual inclui 7 dias de teste grátis para novos assinantes qualificados. A cobrança começa quando o teste termina, a menos que você cancele pelo menos 24 horas antes. Gerencie ou cancele quando quiser nos Ajustes do iOS."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O plano anual inclui um período experimental gratuito de 7 dias para novos subscritores elegíveis. A faturação começa no fim do período experimental, salvo se cancelares a subscrição pelo menos 24 horas antes. Podes gerir ou cancelar a subscrição a qualquer momento nas Definições do iOS."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8239,12 +8725,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O plano anual inclui um período experimental gratuito de 7 dias para novos subscritores elegíveis. A faturação começa no fim do período experimental, salvo se cancelares a subscrição pelo menos 24 horas antes. Podes gerir ou cancelar a subscrição a qualquer momento nas Definições do iOS."
           }
         }
       }

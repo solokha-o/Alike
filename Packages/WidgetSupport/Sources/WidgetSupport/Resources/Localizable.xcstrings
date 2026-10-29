@@ -22,6 +22,12 @@
             "value" : "Open Alike cleanup"
           }
         },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Alike cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76,6 +82,12 @@
             "value" : "Abrir a limpeza do Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir a limpeza do Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,12 +104,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟 Alike 清理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir a limpeza do Alike"
           }
         }
       }
@@ -118,6 +124,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens this list in Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens this list in Alike"
@@ -177,6 +189,12 @@
             "value" : "Abre esta lista no Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre esta lista no Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193,12 +211,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Alike 中開啟此列表"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre esta lista no Alike"
           }
         }
       }
@@ -219,6 +231,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue your review in Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue your review in Alike"
@@ -278,6 +296,12 @@
             "value" : "Continuar sua revisão no Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar a tua revisão no Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,12 +318,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Alike 繼續檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar a tua revisão no Alike"
           }
         }
       }
@@ -320,6 +338,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the Alike upgrade screen"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the Alike upgrade screen"
@@ -379,6 +403,12 @@
             "value" : "Abre a tela de upgrade do Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre o ecrã de subscrição do Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,12 +425,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟 Alike 升級畫面"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre o ecrã de subscrição do Alike"
           }
         }
       }
@@ -421,6 +445,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clean"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All clean"
@@ -480,6 +510,12 @@
             "value" : "Tudo limpo"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo limpo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -496,12 +532,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "全部清理完畢"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tudo limpo"
           }
         }
       }
@@ -522,6 +552,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ to clean up"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ to clean up"
@@ -581,6 +617,12 @@
             "value" : "%1$@ para limpar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ para limpar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -597,12 +639,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可清理 %1$@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ para limpar"
           }
         }
       }
@@ -623,6 +659,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review: %1$lld of %2$lld"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review: %1$lld of %2$lld"
@@ -682,6 +724,12 @@
             "value" : "Revisão: %1$lld de %2$lld"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisão: %1$lld de %2$lld"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -698,12 +746,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視：%1$lld / %2$lld"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisão: %1$lld de %2$lld"
           }
         }
       }
@@ -724,6 +766,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
@@ -783,6 +831,12 @@
             "value" : "Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -799,12 +853,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike"
           }
         }
       }
@@ -825,6 +873,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue"
@@ -884,6 +938,12 @@
             "value" : "Continuar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -900,12 +960,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "繼續"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar"
           }
         }
       }
@@ -926,6 +980,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review"
@@ -985,6 +1045,12 @@
             "value" : "Revisar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rever"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1001,12 +1067,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rever"
           }
         }
       }
@@ -1027,6 +1087,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan"
@@ -1086,6 +1152,12 @@
             "value" : "Analisar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1102,12 +1174,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar"
           }
         }
       }
@@ -1128,6 +1194,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred"
@@ -1187,6 +1259,12 @@
             "value" : "Desfocadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfocadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1203,12 +1281,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desfocadas"
           }
         }
       }
@@ -1229,6 +1301,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locked"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Locked"
@@ -1288,6 +1366,12 @@
             "value" : "Bloqueado"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueado"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1304,12 +1388,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已鎖定"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bloqueado"
           }
         }
       }
@@ -1378,6 +1456,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photos"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -1587,6 +1683,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografias"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografia"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld fotografias"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -1646,30 +1766,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografias"
-                }
-              },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografia"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld fotografias"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -1689,6 +1785,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots"
@@ -1748,6 +1850,12 @@
             "value" : "Capturas de tela"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1764,12 +1872,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕截圖"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de ecrã"
           }
         }
       }
@@ -1790,6 +1892,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Similar"
@@ -1849,6 +1957,12 @@
             "value" : "Semelhantes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semelhantes"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1865,12 +1979,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "相似"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Semelhantes"
           }
         }
       }
@@ -1891,6 +1999,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All caught up"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All caught up"
@@ -1950,6 +2064,12 @@
             "value" : "Tudo em dia"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo em dia"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1966,12 +2086,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已全部處理"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tudo em dia"
           }
         }
       }
@@ -1992,6 +2106,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue review"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue review"
@@ -2051,6 +2171,12 @@
             "value" : "Continuar revisão"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar revisão"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2067,12 +2193,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "繼續檢視"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar revisão"
           }
         }
       }
@@ -2141,6 +2261,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld group"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld groups"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -2350,6 +2488,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupos"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupos"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -2405,30 +2567,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld 個群組"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupos"
-                }
-              },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupo"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupos"
                 }
               }
             }
@@ -2500,6 +2638,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld group left"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld groups left"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -2709,6 +2865,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Restam %1$lld grupos"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Resta %1$lld grupo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Restam %1$lld grupos"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -2768,30 +2948,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Resta %1$lld grupo"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Restam %1$lld grupos"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Restam %1$lld grupos"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -2811,6 +2967,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups reviewed"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Groups reviewed"
@@ -2870,6 +3032,12 @@
             "value" : "Grupos revisados"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos revistos"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2886,12 +3054,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已檢視組數"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos revistos"
           }
         }
       }
@@ -2912,6 +3074,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last reviewed %@"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Last reviewed %@"
@@ -2971,6 +3139,12 @@
             "value" : "Última revisão em %@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última revisão em %@"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2987,12 +3161,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次檢視 %@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Última revisão em %@"
           }
         }
       }
@@ -3013,6 +3181,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanned %@"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scanned %@"
@@ -3072,6 +3246,12 @@
             "value" : "Analisado em %@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisado em %@"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3088,12 +3268,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描於 %@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisado em %@"
           }
         }
       }
@@ -3114,6 +3288,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library changed"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Library changed"
@@ -3173,6 +3353,12 @@
             "value" : "A biblioteca mudou"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fototeca mudou"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3189,12 +3375,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫已變更"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A fototeca mudou"
           }
         }
       }
@@ -3215,6 +3395,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For shared photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "For shared photos"
@@ -3274,6 +3460,12 @@
             "value" : "Para as fotos compartilhadas"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para as fotografias partilhadas"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3290,12 +3482,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "僅限已分享的照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para as fotografias partilhadas"
           }
         }
       }
@@ -3316,6 +3502,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow photo access"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Allow photo access"
@@ -3375,6 +3567,12 @@
             "value" : "Permita o acesso às fotos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite o acesso às fotografias"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3391,12 +3589,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "允許取用照片"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permite o acesso às fotografias"
           }
         }
       }
@@ -3465,6 +3657,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "of %1$lld group"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "of %1$lld groups"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -3674,6 +3884,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de %1$lld grupos"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de %1$lld grupo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de %1$lld grupos"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -3733,30 +3967,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "de %1$lld grupos"
-                }
-              },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "de %1$lld grupo"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "de %1$lld grupos"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -3776,6 +3986,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "of %1$lld"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "of %1$lld"
@@ -3835,6 +4051,12 @@
             "value" : "de %1$lld"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %1$lld"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3851,12 +4073,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "/ %1$lld"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "de %1$lld"
           }
         }
       }
@@ -3877,6 +4093,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Alike"
@@ -3936,6 +4158,12 @@
             "value" : "Abra o Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre o Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3952,12 +4180,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟 Alike"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre o Alike"
           }
         }
       }
@@ -3978,6 +4200,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available to clean up"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Available to clean up"
@@ -4037,6 +4265,12 @@
             "value" : "Disponível para limpar"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponível para limpar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4053,12 +4287,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可清理空間"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disponível para limpar"
           }
         }
       }
@@ -4079,6 +4307,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan your library"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan your library"
@@ -4138,6 +4372,12 @@
             "value" : "Analise sua biblioteca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisa a tua fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4154,12 +4394,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描你的圖庫"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisa a tua fototeca"
           }
         }
       }
@@ -4180,6 +4414,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ of your %2$@ of photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ of your %2$@ of photos"
@@ -4239,6 +4479,12 @@
             "value" : "%1$@ dos seus %2$@ de fotos"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dos teus %2$@ de fotografias"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4255,12 +4501,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "佔照片 %2$@ 的 %1$@"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ dos teus %2$@ de fotografias"
           }
         }
       }
@@ -4329,6 +4569,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld group of similar photos"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld groups of similar photos"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -4538,6 +4796,30 @@
             }
           }
         },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupos de fotografias semelhantes"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupo de fotografias semelhantes"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld grupos de fotografias semelhantes"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -4597,30 +4879,6 @@
               }
             }
           }
-        },
-        "pt-PT": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupo de fotografias semelhantes"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupos de fotografias semelhantes"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld grupos de fotografias semelhantes"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -4640,6 +4898,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much space you can reclaim, and the review you left unfinished."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "How much space you can reclaim, and the review you left unfinished."
@@ -4699,6 +4963,12 @@
             "value" : "Quanto espaço você pode recuperar e a revisão que ficou pela metade."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quanto espaço podes recuperar e a revisão que deixaste por concluir."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4715,12 +4985,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可以釋出多少空間，以及尚未完成的檢視。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quanto espaço podes recuperar e a revisão que deixaste por concluir."
           }
         }
       }
@@ -4741,6 +5005,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
@@ -4800,6 +5070,12 @@
             "value" : "Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4816,12 +5092,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike"
           }
         }
       }
@@ -4842,6 +5112,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar groups, screenshots and blurred photos, at a glance."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Similar groups, screenshots and blurred photos, at a glance."
@@ -4901,6 +5177,12 @@
             "value" : "Grupos de semelhantes, capturas de tela e fotos desfocadas num relance."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos de fotografias semelhantes, capturas de ecrã e fotografias desfocadas num relance."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4917,12 +5199,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一眼掌握相似群組、螢幕截圖與模糊照片。"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos de fotografias semelhantes, capturas de ecrã e fotografias desfocadas num relance."
           }
         }
       }
@@ -4943,6 +5219,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Library"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Library"
@@ -5002,6 +5284,12 @@
             "value" : "Biblioteca do Alike"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fototeca do Alike"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5018,12 +5306,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 圖庫"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fototeca do Alike"
           }
         }
       }
@@ -5044,6 +5326,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library overview"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Library overview"
@@ -5103,6 +5391,12 @@
             "value" : "Visão geral da biblioteca"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visão geral da fototeca"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5119,12 +5413,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫總覽"
-          }
-        },
-        "pt-PT": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Visão geral da fototeca"
           }
         }
       }
