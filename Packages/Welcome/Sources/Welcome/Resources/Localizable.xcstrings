@@ -22,6 +22,18 @@
             "value" : "Access Granted"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access Granted"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access Granted"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118,6 +130,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
@@ -224,6 +248,18 @@
             "value" : "Alike data deleted"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike data deleted"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike data deleted"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -320,6 +356,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhancement when you choose to apply one."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhancement when you choose to apply one."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike needs photo access to scan your library, prepare cleanup suggestions, and save an enhancement when you choose to apply one."
@@ -426,6 +474,18 @@
             "value" : "Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike never deletes photos automatically. You review the suggestions first and confirm every cleanup action."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -522,6 +582,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike, your photo detective"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike, your photo detective"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike, your photo detective"
@@ -628,6 +700,18 @@
             "value" : "Analysis stays on your device, and nothing is deleted automatically."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis stays on your device, and nothing is deleted automatically."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis stays on your device, and nothing is deleted automatically."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -724,6 +808,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back"
@@ -830,6 +926,18 @@
             "value" : "You can change access later in Settings, and Alike never deletes anything without your confirmation."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change access later in Settings, and Alike never deletes anything without your confirmation."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change access later in Settings, and Alike never deletes anything without your confirmation."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -926,6 +1034,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can grant access now and return to cleanup whenever you're ready."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can grant access now and return to cleanup whenever you're ready."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can grant access now and return to cleanup whenever you're ready."
@@ -1032,6 +1152,18 @@
             "value" : "Clean up your library with confidence"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean up your library with confidence"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean up your library with confidence"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1128,6 +1260,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compare photos and keep the shots that matter to you."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compare photos and keep the shots that matter to you."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compare photos and keep the shots that matter to you."
@@ -1234,6 +1378,18 @@
             "value" : "Continue"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1330,6 +1486,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable photo access in Settings when you're ready to continue."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable photo access in Settings when you're ready to continue."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable photo access in Settings when you're ready to continue."
@@ -1436,6 +1604,18 @@
             "value" : "Every deletion stays confirmed, visible, and fully in your hands."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every deletion stays confirmed, visible, and fully in your hands."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every deletion stays confirmed, visible, and fully in your hands."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1532,6 +1712,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find cleanup opportunities"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find cleanup opportunities"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Find cleanup opportunities"
@@ -1638,6 +1830,18 @@
             "value" : "Group visually similar photos and other items worth reviewing."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group visually similar photos and other items worth reviewing."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group visually similar photos and other items worth reviewing."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1734,6 +1938,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How Alike helps"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How Alike helps"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "How Alike helps"
@@ -1840,6 +2056,18 @@
             "value" : "Know how much space you could reclaim before you clean up."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Know how much space you could reclaim before you clean up."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Know how much space you could reclaim before you clean up."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1936,6 +2164,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your local Alike data was deleted. Your photos and subscription are unchanged."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your local Alike data was deleted. Your photos and subscription are unchanged."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your local Alike data was deleted. Your photos and subscription are unchanged."
@@ -2042,6 +2282,18 @@
             "value" : "Next"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2138,6 +2390,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is deleted automatically"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is deleted automatically"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nothing is deleted automatically"
@@ -2244,6 +2508,18 @@
             "value" : "Open Settings"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2340,6 +2616,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page %1$lld of %2$lld"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page %1$lld of %2$lld"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Page %1$lld of %2$lld"
@@ -2446,6 +2734,18 @@
             "value" : "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review — and, only when you ask for it, save an enhanced version of a photo you keep."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review — and, only when you ask for it, save an enhanced version of a photo you keep."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access lets Alike scan your library, group similar photos, and prepare cleanup suggestions for you to review — and, only when you ask for it, save an enhanced version of a photo you keep."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2542,6 +2842,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo Access Required"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo Access Required"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photo Access Required"
@@ -2648,6 +2960,18 @@
             "value" : "Your photo analysis stays on this device and gives you guided cleanup suggestions."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photo analysis stays on this device and gives you guided cleanup suggestions."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photo analysis stays on this device and gives you guided cleanup suggestions."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2744,6 +3068,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos stay private, and you'll confirm every cleanup before anything is removed."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos stay private, and you'll confirm every cleanup before anything is removed."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your photos stay private, and you'll confirm every cleanup before anything is removed."
@@ -2850,6 +3186,18 @@
             "value" : "Private and always in your control"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private and always in your control"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private and always in your control"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2946,6 +3294,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private on-device analysis"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private on-device analysis"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Private on-device analysis"
@@ -3052,6 +3412,18 @@
             "value" : "Review every suggestion"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review every suggestion"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review every suggestion"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3148,6 +3520,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review similar photos, free up storage, and stay in control of every deletion."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review similar photos, free up storage, and stay in control of every deletion."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review similar photos, free up storage, and stay in control of every deletion."
@@ -3254,6 +3638,18 @@
             "value" : "You review suggestions first and confirm every cleanup action yourself."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You review suggestions first and confirm every cleanup action yourself."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You review suggestions first and confirm every cleanup action yourself."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3350,6 +3746,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Safe cleanup flow"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Safe cleanup flow"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Safe cleanup flow"
@@ -3456,6 +3864,18 @@
             "value" : "See potential savings"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See potential savings"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See potential savings"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3552,6 +3972,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spot similar photos that can free up space once you decide what to remove."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spot similar photos that can free up space once you decide what to remove."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spot similar photos that can free up space once you decide what to remove."
@@ -3658,6 +4090,18 @@
             "value" : "Storage savings"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage savings"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage savings"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3754,6 +4198,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn a crowded library into a guided cleanup."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn a crowded library into a guided cleanup."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turn a crowded library into a guided cleanup."
@@ -3860,6 +4316,18 @@
             "value" : "Why Alike asks for photo access"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why Alike asks for photo access"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why Alike asks for photo access"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3956,6 +4424,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library stays under your control"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library stays under your control"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your library stays under your control"

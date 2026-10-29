@@ -22,6 +22,18 @@
             "value" : "Step %1$d of %2$d: %3$@"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %1$d of %2$d: %3$@"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %1$d of %2$d: %3$@"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118,6 +130,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos were added to or removed from a group you had already reviewed, so it's worth another look."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos were added to or removed from a group you had already reviewed, so it's worth another look."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photos were added to or removed from a group you had already reviewed, so it's worth another look."
@@ -224,6 +248,18 @@
             "value" : "Changed"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changed"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changed"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -320,6 +356,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What the badges mean"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What the badges mean"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What the badges mean"
@@ -426,6 +474,18 @@
             "value" : "You've selected photos here but haven't marked the group as reviewed."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've selected photos here but haven't marked the group as reviewed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've selected photos here but haven't marked the group as reviewed."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -522,6 +582,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In review"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In review"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "In review"
@@ -628,6 +700,18 @@
             "value" : "This group appeared in the most recent scan."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This group appeared in the most recent scan."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This group appeared in the most recent scan."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -724,6 +808,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "New"
@@ -830,6 +926,18 @@
             "value" : "You haven't opened this group yet."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't opened this group yet."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't opened this group yet."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -926,6 +1034,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not reviewed"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not reviewed"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not reviewed"
@@ -1032,6 +1152,18 @@
             "value" : "You've made your decision about this group — whatever that decision was."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've made your decision about this group — whatever that decision was."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've made your decision about this group — whatever that decision was."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1128,6 +1260,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviewed"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviewed"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reviewed"
@@ -1234,6 +1378,18 @@
             "value" : "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice between launches."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice between launches."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch between a roomy one-column layout and a denser grid from the toolbar on any photo screen. Alike remembers your choice between launches."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1330,6 +1486,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Columns"
@@ -1436,6 +1604,18 @@
             "value" : "Narrow the list by review status, minimum group size, or favourites only. Sorting stays available on Alike Free."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Narrow the list by review status, minimum group size, or favourites only. Sorting stays available on Alike Free."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Narrow the list by review status, minimum group size, or favourites only. Sorting stays available on Alike Free."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1532,6 +1712,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced filters"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced filters"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced filters"
@@ -1638,6 +1830,18 @@
             "value" : "Reset controls puts sorting and filters back to their defaults."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset controls puts sorting and filters back to their defaults."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset controls puts sorting and filters back to their defaults."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1734,6 +1938,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorting, filters and layout"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorting, filters and layout"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorting, filters and layout"
@@ -1840,6 +2056,18 @@
             "value" : "Order groups by newest, most space to save, largest group, highest similarity, or review status."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order groups by newest, most space to save, largest group, highest similarity, or review status."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order groups by newest, most space to save, largest group, highest similarity, or review status."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1936,6 +2164,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sort"
@@ -2042,6 +2282,18 @@
             "value" : "Opens the next group that still needs your attention, so you never have to hunt for where you stopped."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the next group that still needs your attention, so you never have to hunt for where you stopped."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the next group that still needs your attention, so you never have to hunt for where you stopped."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2138,6 +2390,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue Review"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue Review"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue Review"
@@ -2244,6 +2508,18 @@
             "value" : "Your progress"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2340,6 +2616,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows everything you've cleaned up so far, grouped by month, with your all-time total."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows everything you've cleaned up so far, grouped by month, with your all-time total."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shows everything you've cleaned up so far, grouped by month, with your all-time total."
@@ -2446,6 +2734,18 @@
             "value" : "History"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2542,6 +2842,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated Savings is how much space your current selection would free once the photos are permanently deleted."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated Savings is how much space your current selection would free once the photos are permanently deleted."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estimated Savings is how much space your current selection would free once the photos are permanently deleted."
@@ -2648,6 +2960,18 @@
             "value" : "Reviewed, Remaining, Selected, Estimated Savings"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviewed, Remaining, Selected, Estimated Savings"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviewed, Remaining, Selected, Estimated Savings"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2744,6 +3068,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every group Alike found, including the ones you already marked as reviewed."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every group Alike found, including the ones you already marked as reviewed."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every group Alike found, including the ones you already marked as reviewed."
@@ -2850,6 +3186,18 @@
             "value" : "All clusters"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clusters"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clusters"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2946,6 +3294,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs review appears only when there is something new or changed to look at."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs review appears only when there is something new or changed to look at."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Needs review appears only when there is something new or changed to look at."
@@ -3052,6 +3412,18 @@
             "value" : "Two lists of groups"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two lists of groups"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two lists of groups"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3148,6 +3520,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups you haven't decided on yet, plus ones a rescan changed. Start here."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups you haven't decided on yet, plus ones a rescan changed. Start here."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Groups you haven't decided on yet, plus ones a rescan changed. Start here."
@@ -3254,6 +3638,18 @@
             "value" : "Needs review"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs review"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs review"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3350,6 +3746,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress, the two cluster sections, badges, sorting and filters."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress, the two cluster sections, badges, sorting and filters."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your progress, the two cluster sections, badges, sorting and filters."
@@ -3456,6 +3864,18 @@
             "value" : "Working through Cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Working through Cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Working through Cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3552,6 +3972,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favourite gets a small nudge — none at all if it's blurry or badly exposed. When nothing stands out clearly, Alike leaves the choice to you instead of guessing."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favourite gets a small nudge — none at all if it's blurry or badly exposed. When nothing stands out clearly, Alike leaves the choice to you instead of guessing."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike compares sharpness, exposure, noise, and whether faces are in focus with eyes open. A favourite gets a small nudge — none at all if it's blurry or badly exposed. When nothing stands out clearly, Alike leaves the choice to you instead of guessing."
@@ -3658,6 +4090,18 @@
             "value" : "How Alike picks it"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How Alike picks it"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How Alike picks it"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3754,6 +4198,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your manual choice stays in place for as long as that photo exists."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your manual choice stays in place for as long as that photo exists."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your manual choice stays in place for as long as that photo exists."
@@ -3860,6 +4316,18 @@
             "value" : "The Best Shot"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Best Shot"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Best Shot"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3956,6 +4424,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disagree? Press and hold any photo and choose Make Best Shot. The previous keeper joins your selection."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disagree? Press and hold any photo and choose Make Best Shot. The previous keeper joins your selection."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disagree? Press and hold any photo and choose Make Best Shot. The previous keeper joins your selection."
@@ -4062,6 +4542,18 @@
             "value" : "Make Best Shot"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make Best Shot"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make Best Shot"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4158,6 +4650,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Apply."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Apply."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike prepares an enhanced version and shows it as a preview. Nothing is written until you tap Apply."
@@ -4264,6 +4768,18 @@
             "value" : "See it before you keep it"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See it before you keep it"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See it before you keep it"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4360,6 +4876,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced version again."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced version again."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "In the full-screen viewer, hold the photo to see the original, and let go to see the enhanced version again."
@@ -4466,6 +4994,18 @@
             "value" : "Touch and hold to compare"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold to compare"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold to compare"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4562,6 +5102,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The original never leaves your library. Alike writes the change the way Photos does, so either app can undo it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The original never leaves your library. Alike writes the change the way Photos does, so either app can undo it."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The original never leaves your library. Alike writes the change the way Photos does, so either app can undo it."
@@ -4668,6 +5220,18 @@
             "value" : "Enhance the one you keep"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhance the one you keep"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhance the one you keep"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4764,6 +5328,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhancement is not available for video, in Limited Access, or for photos the system marks as non-editable. If a photo already carries another app's edit, Alike asks before replacing it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhancement is not available for video, in Limited Access, or for photos the system marks as non-editable. If a photo already carries another app's edit, Alike asks before replacing it."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enhancement is not available for video, in Limited Access, or for photos the system marks as non-editable. If a photo already carries another app's edit, Alike asks before replacing it."
@@ -4870,6 +5446,18 @@
             "value" : "When it is not offered"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When it is not offered"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When it is not offered"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4966,6 +5554,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Photos can undo the change too — Edit, then Revert."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Photos can undo the change too — Edit, then Revert."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "One step puts the original back. iOS keeps it for you, so no duplicate is created, and Apple Photos can undo the change too — Edit, then Revert."
@@ -5072,6 +5672,18 @@
             "value" : "Revert to original"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revert to original"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revert to original"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5168,6 +5780,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the details."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the details."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the photo full screen. Swipe between the photos in the group and pinch to zoom in on the details."
@@ -5274,6 +5898,18 @@
             "value" : "Open Original"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Original"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Original"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5370,6 +6006,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking closer"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking closer"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Looking closer"
@@ -5476,6 +6124,18 @@
             "value" : "Press and hold a photo for resolution, file type, dates, favourite status, and where it was taken."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold a photo for resolution, file type, dates, favourite status, and where it was taken."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold a photo for resolution, file type, dates, favourite status, and where it was taken."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5572,6 +6232,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Info"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Info"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show Info"
@@ -5678,6 +6350,18 @@
             "value" : "What Alike learns stays on this device and is never uploaded."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike learns stays on this device and is never uploaded."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike learns stays on this device and is never uploaded."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5774,6 +6458,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learning your taste"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learning your taste"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Learning your taste"
@@ -5880,6 +6576,18 @@
             "value" : "Every time you choose a different Best Shot than the one Alike suggested, it remembers what you preferred and leans that way a little more next time. It takes a handful of picks before you notice a difference."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every time you choose a different Best Shot than the one Alike suggested, it remembers what you preferred and leans that way a little more next time. It takes a handful of picks before you notice a difference."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every time you choose a different Best Shot than the one Alike suggested, it remembers what you preferred and leans that way a little more next time. It takes a handful of picks before you notice a difference."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5976,6 +6684,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike learns from your picks"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike learns from your picks"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike learns from your picks"
@@ -6082,6 +6802,18 @@
             "value" : "This only changes how much sharpness, exposure, noise, and faces count against each other. A blurry or badly exposed photo is never promoted to Best Shot because of it."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This only changes how much sharpness, exposure, noise, and faces count against each other. A blurry or badly exposed photo is never promoted to Best Shot because of it."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This only changes how much sharpness, exposure, noise, and faces count against each other. A blurry or badly exposed photo is never promoted to Best Shot because of it."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6178,6 +6910,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What it won't do"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What it won't do"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What it won't do"
@@ -6284,6 +7028,18 @@
             "value" : "In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the default ranking."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the default ranking."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Settings, Reset Best Shot Learning forgets everything Alike has picked up and returns to the default ranking."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6380,6 +7136,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting over"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting over"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Starting over"
@@ -6486,6 +7254,18 @@
             "value" : "Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen it at any time."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen it at any time."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marking a group reviewed is your decision, not a consequence of selecting photos. You can reopen it at any time."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6582,6 +7362,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finishing a group"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finishing a group"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finishing a group"
@@ -6688,6 +7480,18 @@
             "value" : "If every photo in a group is worth keeping, mark it reviewed and move on. Nothing has to be removed."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If every photo in a group is worth keeping, mark it reviewed and move on. Nothing has to be removed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If every photo in a group is worth keeping, mark it reviewed and move on. Nothing has to be removed."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6784,6 +7588,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keeping everything counts too"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keeping everything counts too"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keeping everything counts too"
@@ -6890,6 +7706,18 @@
             "value" : "The button at the bottom appears once something is selected, and always asks for confirmation first."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The button at the bottom appears once something is selected, and always asks for confirmation first."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The button at the bottom appears once something is selected, and always asks for confirmation first."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6986,6 +7814,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move the selected photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move the selected photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Move the selected photos"
@@ -7092,6 +7932,18 @@
             "value" : "Use the seal button in the navigation bar when you're done with a group. Tap it again to reopen it."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the seal button in the navigation bar when you're done with a group. Tap it again to reopen it."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the seal button in the navigation bar when you're done with a group. Tap it again to reopen it."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7188,6 +8040,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as reviewed"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as reviewed"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mark as reviewed"
@@ -7294,6 +8158,18 @@
             "value" : "Alike Free moves one photo at a time. Alike Pro removes your whole selection in a single step."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free moves one photo at a time. Alike Pro removes your whole selection in a single step."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free moves one photo at a time. Alike Pro removes your whole selection in a single step."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7390,6 +8266,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removing several photos at once"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removing several photos at once"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Removing several photos at once"
@@ -7496,6 +8384,18 @@
             "value" : "Your selection is saved, so closing a group and coming back later loses nothing."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your selection is saved, so closing a group and coming back later loses nothing."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your selection is saved, so closing a group and coming back later loses nothing."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7592,6 +8492,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choosing photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choosing photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choosing photos"
@@ -7698,6 +8610,18 @@
             "value" : "In the ••• menu: select everything but the keeper in one go, or clear the whole selection."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the ••• menu: select everything but the keeper in one go, or clear the whole selection."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the ••• menu: select everything but the keeper in one go, or clear the whole selection."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7794,6 +8718,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All Except Best"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All Except Best"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select All Except Best"
@@ -7900,6 +8836,18 @@
             "value" : "Tap any photo to mark it for removal. Tap again to keep it. The Best Shot can't be selected."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap any photo to mark it for removal. Tap again to keep it. The Best Shot can't be selected."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap any photo to mark it for removal. Tap again to keep it. The Best Shot can't be selected."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7996,6 +8944,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to select"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to select"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap to select"
@@ -8102,6 +9062,18 @@
             "value" : "Choosing what to keep inside a group, and marking it reviewed."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choosing what to keep inside a group, and marking it reviewed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choosing what to keep inside a group, and marking it reviewed."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8198,6 +9170,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos and Best Shot"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos and Best Shot"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Similar Photos and Best Shot"
@@ -8304,6 +9288,18 @@
             "value" : "Alike shows what will be moved and how much space it holds, then hands the request to the system."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike shows what will be moved and how much space it holds, then hands the request to the system."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike shows what will be moved and how much space it holds, then hands the request to the system."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8400,6 +9396,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS asks for confirmation"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS asks for confirmation"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "iOS asks for confirmation"
@@ -8506,6 +9514,18 @@
             "value" : "Alike can't remove a photo on its own — iOS always asks you first."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike can't remove a photo on its own — iOS always asks you first."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike can't remove a photo on its own — iOS always asks you first."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8602,6 +9622,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step by step"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step by step"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Step by step"
@@ -8708,6 +9740,18 @@
             "value" : "If iCloud Photos is on, the same photos move to Recently Deleted on your other devices."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If iCloud Photos is on, the same photos move to Recently Deleted on your other devices."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If iCloud Photos is on, the same photos move to Recently Deleted on your other devices."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8717,25 +9761,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados recientemente en tus otros dispositivos."
+            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados en tus otros dispositivos."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados recientemente en tus otros dispositivos."
+            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados en tus otros dispositivos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans Supprimés récemment sur vos autres appareils."
+            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans Supprimées récemment sur vos autres appareils."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans « Suppressions récentes » sur vos autres appareils."
+            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans « Supprimées récemment » sur vos autres appareils."
           }
         },
         "it" : {
@@ -8759,7 +9803,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se o Fotos do iCloud estiver ativado, as mesmas fotos vão para Apagados recentemente nos seus outros dispositivos."
+            "value" : "Se o Fotos do iCloud estiver ativado, as mesmas fotos vão para Apagados nos seus outros dispositivos."
           }
         },
         "pt-PT" : {
@@ -8804,6 +9848,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Photos syncs the change"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Photos syncs the change"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "iCloud Photos syncs the change"
@@ -8910,6 +9966,18 @@
             "value" : "Photos land in the Photos app's Recently Deleted album, where you can restore any of them."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos land in the Photos app's Recently Deleted album, where you can restore any of them."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos land in the Photos app's Recently Deleted album, where you can restore any of them."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8919,25 +9987,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las fotos llegan al álbum Eliminados recientemente de la app Fotos, donde puedes recuperar cualquiera."
+            "value" : "Las fotos llegan al álbum Eliminados de la app Fotos, donde puedes recuperar cualquiera."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las fotos llegan al álbum Eliminados recientemente de la app Fotos, donde puedes recuperar cualquiera."
+            "value" : "Las fotos llegan al álbum Eliminados de la app Fotos, donde puedes recuperar cualquiera."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos arrivent dans l’album Supprimés récemment de l’app Photos, d’où vous pouvez toutes les restaurer."
+            "value" : "Les photos arrivent dans l’album Supprimées récemment de l’app Photos, d’où vous pouvez toutes les restaurer."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos arrivent dans l’album « Suppressions récentes » de l’app Photos, d’où vous pouvez toutes les restaurer."
+            "value" : "Les photos arrivent dans l’album « Supprimées récemment » de l’app Photos, d’où vous pouvez toutes les restaurer."
           }
         },
         "it" : {
@@ -8961,7 +10029,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As fotos vão para o álbum Apagados recentemente do app Fotos, de onde você pode recuperar qualquer uma."
+            "value" : "As fotos vão para o álbum Apagados do app Fotos, de onde você pode recuperar qualquer uma."
           }
         },
         "pt-PT" : {
@@ -9006,6 +10074,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 days to change your mind"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 days to change your mind"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "30 days to change your mind"
@@ -9112,6 +10192,18 @@
             "value" : "Storage comes back only after the photos leave Recently Deleted — automatically after 30 days, or when you empty the album."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage comes back only after the photos leave Recently Deleted — automatically after 30 days, or when you empty the album."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage comes back only after the photos leave Recently Deleted — automatically after 30 days, or when you empty the album."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9121,25 +10213,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados recientemente: automáticamente a los 30 días o cuando vacías el álbum."
+            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados: automáticamente a los 30 días o cuando vacías el álbum."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados recientemente: automáticamente a los 30 días o cuando vacías el álbum."
+            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados: automáticamente a los 30 días o cuando vacías el álbum."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne revient qu’une fois les photos sorties de Supprimés récemment : automatiquement au bout de 30 jours, ou quand vous videz l’album."
+            "value" : "L’espace ne revient qu’une fois les photos sorties de Supprimées récemment : automatiquement au bout de 30 jours, ou quand vous videz l’album."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne revient qu’une fois les photos sorties de « Suppressions récentes » : automatiquement au bout de 30 jours, ou quand vous videz l’album."
+            "value" : "L’espace ne revient qu’une fois les photos sorties de « Supprimées récemment » : automatiquement au bout de 30 jours, ou quand vous videz l’album."
           }
         },
         "it" : {
@@ -9163,7 +10255,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O espaço só volta depois que as fotos saem de Apagados recentemente — automaticamente após 30 dias ou quando você esvazia o álbum."
+            "value" : "O espaço só volta depois que as fotos saem de Apagados — automaticamente após 30 dias ou quando você esvazia o álbum."
           }
         },
         "pt-PT" : {
@@ -9208,6 +10300,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space is freed at the end"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space is freed at the end"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Space is freed at the end"
@@ -9314,6 +10418,18 @@
             "value" : "A timeline grouped by month, so you can see what you cleaned up and when."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A timeline grouped by month, so you can see what you cleaned up and when."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A timeline grouped by month, so you can see what you cleaned up and when."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9410,6 +10526,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Activity"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Activity"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recent Activity"
@@ -9516,6 +10644,18 @@
             "value" : "Cleanup History"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup History"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup History"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9612,6 +10752,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your running totals: space reclaimed, photos moved, and cleanup sessions completed."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your running totals: space reclaimed, photos moved, and cleanup sessions completed."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your running totals: space reclaimed, photos moved, and cleanup sessions completed."
@@ -9718,6 +10870,18 @@
             "value" : "All-Time Impact"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All-Time Impact"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All-Time Impact"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9819,6 +10983,18 @@
             "value" : "Recently Deleted, when space is actually freed, and iCloud."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently Deleted, when space is actually freed, and iCloud."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently Deleted, when space is actually freed, and iCloud."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9828,25 +11004,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminados recientemente, cuándo se libera el espacio de verdad e iCloud."
+            "value" : "Eliminados, cuándo se libera el espacio de verdad e iCloud."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminados recientemente, cuándo se libera el espacio de verdad e iCloud."
+            "value" : "Eliminados, cuándo se libera el espacio de verdad e iCloud."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimés récemment, le moment où l’espace est vraiment libéré, et iCloud."
+            "value" : "Supprimées récemment, le moment où l’espace est vraiment libéré, et iCloud."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« Suppressions récentes », le moment où l’espace est vraiment libéré, et iCloud."
+            "value" : "« Supprimées récemment », le moment où l’espace est vraiment libéré, et iCloud."
           }
         },
         "it" : {
@@ -9870,7 +11046,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apagados recentemente, quando o espaço é de fato liberado e o iCloud."
+            "value" : "Apagados, quando o espaço é de fato liberado e o iCloud."
           }
         },
         "pt-PT" : {
@@ -9915,6 +11091,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What happens when you delete"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What happens when you delete"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What happens when you delete"
@@ -10012,10 +11200,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bereits gescannte Ergebnisse bleiben verfügbar – mit oder ohne Abo."
+            "value" : "Die Ergebnisse früherer Scans bleiben verfügbar – mit oder ohne Abo."
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results you've already scanned stay available, whether or not you subscribe."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results you've already scanned stay available, whether or not you subscribe."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Results you've already scanned stay available, whether or not you subscribe."
@@ -10030,19 +11230,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los resultados que ya has analizado siguen disponibles, te suscribas o no."
+            "value" : "Los resultados de los análisis anteriores siguen disponibles, te suscribas o no."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los resultados que ya analizaste siguen disponibles, te suscribas o no."
+            "value" : "Los resultados de análisis anteriores siguen disponibles, tengas o no una suscripción."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les résultats déjà analysés restent disponibles, que vous soyez abonné ou non."
+            "value" : "Les résultats des analyses précédentes restent disponibles, que vous soyez abonné ou non."
           }
         },
         "fr-CA" : {
@@ -10054,13 +11254,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I risultati già analizzati restano disponibili, con o senza abbonamento."
+            "value" : "I risultati delle scansioni precedenti restano disponibili, con o senza abbonamento."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Resultaten die je al hebt gescand blijven beschikbaar, of je nu een abonnement hebt of niet."
+            "value" : "Resultaten van eerdere scans blijven beschikbaar, of je nu een abonnement hebt of niet."
           }
         },
         "pl" : {
@@ -10072,7 +11272,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os resultados que você já analisou continuam disponíveis, com ou sem assinatura."
+            "value" : "Os resultados das análises anteriores continuam disponíveis, com ou sem assinatura."
           }
         },
         "pt-PT" : {
@@ -10117,6 +11317,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Included in Alike Free"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Included in Alike Free"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Included in Alike Free"
@@ -10223,6 +11435,18 @@
             "value" : "Open every group, compare photos, change the Best Shot, and mark groups as reviewed."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open every group, compare photos, change the Best Shot, and mark groups as reviewed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open every group, compare photos, change the Best Shot, and mark groups as reviewed."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10319,6 +11543,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full review of similar photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full review of similar photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Full review of similar photos"
@@ -10425,6 +11661,18 @@
             "value" : "Three scans each calendar month, with the counter resetting at the start of the next one."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three scans each calendar month, with the counter resetting at the start of the next one."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three scans each calendar month, with the counter resetting at the start of the next one."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10476,7 +11724,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Três análises por mês, com o contador zerando no início do mês seguinte."
+            "value" : "Três análises por mês-calendário, com o contador zerando no início do mês seguinte."
           }
         },
         "pt-PT" : {
@@ -10521,6 +11769,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three scans a month"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three scans a month"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Three scans a month"
@@ -10627,6 +11887,18 @@
             "value" : "You can move photos to Recently Deleted one by one."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can move photos to Recently Deleted one by one."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can move photos to Recently Deleted one by one."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10636,25 +11908,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puedes mover fotos a Eliminados recientemente de una en una."
+            "value" : "Puedes mover fotos a Eliminados de una en una."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puedes mover fotos a Eliminados recientemente de una en una."
+            "value" : "Puedes mover fotos a Eliminados de una en una."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez déplacer les photos vers Supprimés récemment une par une."
+            "value" : "Vous pouvez déplacer les photos vers Supprimées récemment une par une."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez déplacer les photos vers « Suppressions récentes » une par une."
+            "value" : "Vous pouvez déplacer les photos vers « Supprimées récemment » une par une."
           }
         },
         "it" : {
@@ -10678,7 +11950,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você pode mover fotos para Apagados recentemente uma a uma."
+            "value" : "Você pode mover fotos para Apagados uma a uma."
           }
         },
         "pt-PT" : {
@@ -10728,6 +12000,18 @@
             "value" : "One photo at a time"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One photo at a time"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One photo at a time"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10737,7 +12021,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una foto a la vez"
+            "value" : "Una foto cada vez"
           }
         },
         "es-419" : {
@@ -10824,6 +12108,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every sort order in Cleanup is available without a subscription."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every sort order in Cleanup is available without a subscription."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every sort order in Cleanup is available without a subscription."
@@ -10930,6 +12226,18 @@
             "value" : "All sorting options"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All sorting options"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All sorting options"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11022,10 +12330,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bewege deine ganze Auswahl in einem Schritt statt Foto für Foto."
+            "value" : "Bewege alle ausgewählten Fotos auf einmal statt einzeln."
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move your entire selection in one step instead of one photo at a time."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move your entire selection in one step instead of one photo at a time."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Move your entire selection in one step instead of one photo at a time."
@@ -11040,19 +12360,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mueve toda tu selección en un solo paso en lugar de una foto a la vez."
+            "value" : "Mueve todas las fotos seleccionadas de una vez, en lugar de una en una."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mueve toda tu selección en un solo paso en lugar de una foto a la vez."
+            "value" : "Mueve todas las fotos seleccionadas en un solo paso, en lugar de una foto a la vez."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacez toute votre sélection en une étape au lieu d’une photo à la fois."
+            "value" : "Déplacez toutes les photos sélectionnées en une seule fois plutôt qu’une par une."
           }
         },
         "fr-CA" : {
@@ -11070,7 +12390,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verplaats je hele selectie in één stap in plaats van foto voor foto."
+            "value" : "Verplaats alle geselecteerde foto's in één keer in plaats van foto voor foto."
           }
         },
         "pl" : {
@@ -11082,7 +12402,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mova toda a sua seleção em uma etapa, em vez de uma foto por vez."
+            "value" : "Mova todas as fotos selecionadas de uma vez, em vez de uma foto por vez."
           }
         },
         "pt-PT" : {
@@ -11127,6 +12447,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batch cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batch cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Batch cleanup"
@@ -11233,6 +12565,18 @@
             "value" : "Open the Blurred Photos category and review what on-device analysis flagged."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Blurred Photos category and review what on-device analysis flagged."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Blurred Photos category and review what on-device analysis flagged."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11329,6 +12673,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred photos cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred photos cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred photos cleanup"
@@ -11435,6 +12791,18 @@
             "value" : "Filter Cleanup by review status, minimum group size, or favourites only."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter Cleanup by review status, minimum group size, or favourites only."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter Cleanup by review status, minimum group size, or favourites only."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11536,6 +12904,18 @@
             "value" : "Advanced filters"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced filters"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced filters"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11628,10 +13008,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du kannst ein Abo jederzeit im App Store verwalten oder kündigen. Die Preise siehst du, bevor du abschließt."
+            "value" : "Du kannst ein Abo jederzeit im App Store verwalten oder kündigen. Die Preise siehst du, bevor du ein Abo abschließt."
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage or cancel a subscription any time in the App Store. Prices are shown before you subscribe."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage or cancel a subscription any time in the App Store. Prices are shown before you subscribe."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manage or cancel a subscription any time in the App Store. Prices are shown before you subscribe."
@@ -11652,7 +13044,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puedes gestionar o cancelar la suscripción cuando quieras en el App Store. Los precios se muestran antes de suscribirte."
+            "value" : "Puedes administrar o cancelar la suscripción cuando quieras en App Store. Los precios se muestran antes de que te suscribas."
           }
         },
         "fr" : {
@@ -11676,7 +13068,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beheer of zeg je abonnement altijd op in de App Store. Prijzen worden getoond voordat je je abonneert."
+            "value" : "Je kunt je abonnement op elk moment beheren of opzeggen in de App Store. Je ziet de prijzen voordat je je abonneert."
           }
         },
         "pl" : {
@@ -11729,10 +13121,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das bringt Alike Pro dazu"
+            "value" : "Das bietet Alike Pro zusätzlich"
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added by Alike Pro"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added by Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Added by Alike Pro"
@@ -11753,7 +13157,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lo que añade Alike Pro"
+            "value" : "Lo que agrega Alike Pro"
           }
         },
         "fr" : {
@@ -11834,6 +13238,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the day and time of your weekly cleanup reminder."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the day and time of your weekly cleanup reminder."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose the day and time of your weekly cleanup reminder."
@@ -11940,6 +13356,18 @@
             "value" : "Custom reminder schedule"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom reminder schedule"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom reminder schedule"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12041,6 +13469,18 @@
             "value" : "Open the Screenshots category and clear it in bulk."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Screenshots category and clear it in bulk."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Screenshots category and clear it in bulk."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12050,13 +13490,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre la categoría Capturas de pantalla y despéjala en bloque."
+            "value" : "Abre la categoría Capturas de pantalla y límpiala en bloque."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre la categoría Capturas de pantalla y despéjala en bloque."
+            "value" : "Abre la categoría Capturas de pantalla y límpiala de una sola vez."
           }
         },
         "fr" : {
@@ -12137,6 +13577,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots cleanup"
@@ -12234,10 +13686,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scanne so oft du willst, ohne monatliches Kontingent."
+            "value" : "Scanne so oft du willst, ohne monatliche Begrenzung."
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan as often as you like, with no monthly allowance."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan as often as you like, with no monthly allowance."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rescan as often as you like, with no monthly allowance."
@@ -12282,7 +13746,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scan zo vaak je wilt, zonder maandtegoed."
+            "value" : "Scan zo vaak je wilt, zonder maandelijkse limiet."
           }
         },
         "pl" : {
@@ -12294,7 +13758,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analise quantas vezes quiser, sem cota mensal."
+            "value" : "Analise quantas vezes quiser, sem limite mensal."
           }
         },
         "pt-PT" : {
@@ -12339,6 +13803,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited scans"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited scans"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlimited scans"
@@ -12445,6 +13921,18 @@
             "value" : "What's included without a subscription, and what Pro adds."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's included without a subscription, and what Pro adds."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's included without a subscription, and what Pro adds."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12460,7 +13948,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Qué se incluye sin suscripción y qué añade Pro."
+            "value" : "Qué se incluye sin suscripción y qué agrega Pro."
           }
         },
         "fr" : {
@@ -12541,6 +14029,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free and Alike Pro"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free and Alike Pro"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike Free and Alike Pro"
@@ -12647,6 +14147,18 @@
             "value" : "Access and safety"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access and safety"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access and safety"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12743,6 +14255,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike only ever suggests. Every removal needs your selection and the system confirmation."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike only ever suggests. Every removal needs your selection and the system confirmation."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike only ever suggests. Every removal needs your selection and the system confirmation."
@@ -12849,6 +14373,18 @@
             "value" : "Nothing is deleted automatically"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is deleted automatically"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is deleted automatically"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12950,6 +14486,18 @@
             "value" : "Photos are analysed on device. Nothing is uploaded anywhere."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos are analysed on device. Nothing is uploaded anywhere."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos are analyzed on device. Nothing is uploaded anywhere."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13046,6 +14594,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything runs on your iPhone"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything runs on your iPhone"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Everything runs on your iPhone"
@@ -13152,6 +14712,18 @@
             "value" : "Alike needs read and write access to your library: read to analyse photos, write to move the ones you pick."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs read and write access to your library: read to analyse photos, write to move the ones you pick."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs read and write access to your library: read to analyze photos, write to move the ones you pick."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13248,6 +14820,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photo access"
@@ -13354,6 +14938,18 @@
             "value" : "You can stop after any step and pick up later — your progress is saved."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can stop after any step and pick up later — your progress is saved."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can stop after any step and pick up later — your progress is saved."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13450,6 +15046,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The three-step loop"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The three-step loop"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The three-step loop"
@@ -13556,6 +15164,18 @@
             "value" : "Confirm, and the selected photos go to Recently Deleted, where iOS keeps them for 30 days."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm, and the selected photos go to Recently Deleted, where iOS keeps them for 30 days."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm, and the selected photos go to Recently Deleted, where iOS keeps them for 30 days."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13565,25 +15185,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados recientemente, donde iOS las guarda 30 días."
+            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados, donde iOS las guarda 30 días."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados recientemente, donde iOS las guarda 30 días."
+            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados, donde iOS las guarda 30 días."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirmez, et les photos sélectionnées partent dans Supprimés récemment, où iOS les garde 30 jours."
+            "value" : "Confirmez, et les photos sélectionnées partent dans Supprimées récemment, où iOS les garde 30 jours."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirmez, et les photos sélectionnées partent dans « Suppressions récentes », où iOS les garde 30 jours."
+            "value" : "Confirmez, et les photos sélectionnées partent dans « Supprimées récemment », où iOS les garde 30 jours."
           }
         },
         "it" : {
@@ -13607,7 +15227,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirme e as fotos selecionadas vão para Apagados recentemente, onde o iOS as mantém por 30 dias."
+            "value" : "Confirme e as fotos selecionadas vão para Apagados, onde o iOS as mantém por 30 dias."
           }
         },
         "pt-PT" : {
@@ -13657,6 +15277,18 @@
             "value" : "Move to Recently Deleted"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to Recently Deleted"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to Recently Deleted"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13666,25 +15298,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover a Eliminados recientemente"
+            "value" : "Mover a Eliminados"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover a Eliminados recientemente"
+            "value" : "Mover a Eliminados"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacer vers Supprimés récemment"
+            "value" : "Déplacer vers Supprimées récemment"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacer vers « Suppressions récentes »"
+            "value" : "Déplacer vers « Supprimées récemment »"
           }
         },
         "it" : {
@@ -13708,7 +15340,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover para Apagados recentemente"
+            "value" : "Mover para Apagados"
           }
         },
         "pt-PT" : {
@@ -13753,6 +15385,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open a group on the Cleanup tab, compare the photos, and choose which ones you no longer need."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open a group on the Cleanup tab, compare the photos, and choose which ones you no longer need."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open a group on the Cleanup tab, compare the photos, and choose which ones you no longer need."
@@ -13859,6 +15503,18 @@
             "value" : "Review"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13955,6 +15611,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike looks through your photo library on the Scanner tab and groups photos that look alike."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike looks through your photo library on the Scanner tab and groups photos that look alike."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike looks through your photo library on the Scanner tab and groups photos that look alike."
@@ -14061,6 +15729,18 @@
             "value" : "Scan"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14157,6 +15837,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos that look out of focus, gathered for you to check before removing."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos that look out of focus, gathered for you to check before removing."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photos that look out of focus, gathered for you to check before removing."
@@ -14263,6 +15955,18 @@
             "value" : "Blurred Photos"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14364,6 +16068,18 @@
             "value" : "Alike analyses photos only. Videos are never read or included in a scan."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyses photos only. Videos are never read or included in a scan."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyzes photos only. Videos are never read or included in a scan."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14460,6 +16176,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike looks at"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike looks at"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What Alike looks at"
@@ -14566,6 +16294,18 @@
             "value" : "Screen captures are kept out of similarity groups and collected in their own category."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures are kept out of similarity groups and collected in their own category."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures are kept out of similarity groups and collected in their own category."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14662,6 +16402,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots"
@@ -14768,6 +16520,18 @@
             "value" : "Bursts and near-duplicates that look alike — the same moment shot several times."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bursts and near-duplicates that look alike — the same moment shot several times."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bursts and near-duplicates that look alike — the same moment shot several times."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14864,6 +16628,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Similar Photos"
@@ -14970,6 +16746,18 @@
             "value" : "What Alike does, what it looks at, and the three-step loop."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike does, what it looks at, and the three-step loop."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike does, what it looks at, and the three-step loop."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15066,6 +16854,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting started"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting started"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Getting started"
@@ -15172,6 +16972,18 @@
             "value" : "Alike never removes a photo without your confirmation."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike never removes a photo without your confirmation."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike never removes a photo without your confirmation."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15268,6 +17080,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike finds photos worth a second look, and lets you decide what stays."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike finds photos worth a second look, and lets you decide what stays."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike finds photos worth a second look, and lets you decide what stays."
@@ -15374,6 +17198,18 @@
             "value" : "No Results"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Results"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Results"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15470,6 +17306,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try a different word, or browse the topics."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try a different word, or browse the topics."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Try a different word, or browse the topics."
@@ -15576,6 +17424,18 @@
             "value" : "Search the guide"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the guide"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the guide"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15672,6 +17532,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens this guide topic"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens this guide topic"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens this guide topic"
@@ -15778,6 +17650,18 @@
             "value" : "Topics"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topics"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topics"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15874,6 +17758,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find it in Settings, under Data & Privacy. It can't be undone."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find it in Settings, under Data & Privacy. It can't be undone."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Find it in Settings, under Data & Privacy. It can't be undone."
@@ -15980,6 +17876,18 @@
             "value" : "Delete Alike Data"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Alike Data"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Alike Data"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16081,6 +17989,18 @@
             "value" : "Your photos, your Recently Deleted album, your photo access, and your Alike Pro subscription."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos, your Recently Deleted album, your photo access, and your Alike Pro subscription."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos, your Recently Deleted album, your photo access, and your Alike Pro subscription."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16090,25 +18010,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tus fotos, tu álbum Eliminados recientemente, tu acceso a las fotos y tu suscripción a Alike Pro."
+            "value" : "Tus fotos, tu álbum Eliminados, tu acceso a las fotos y tu suscripción a Alike Pro."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tus fotos, tu álbum Eliminados recientemente, tu acceso a las fotos y tu suscripción a Alike Pro."
+            "value" : "Tus fotos, tu álbum Eliminados, tu acceso a las fotos y tu suscripción a Alike Pro."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos, votre album Supprimés récemment, votre accès aux photos et votre abonnement Alike Pro."
+            "value" : "Vos photos, votre album Supprimées récemment, votre accès aux photos et votre abonnement Alike Pro."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos, votre album « Suppressions récentes », votre accès aux photos et votre abonnement Alike Pro."
+            "value" : "Vos photos, votre album « Supprimées récemment », votre accès aux photos et votre abonnement Alike Pro."
           }
         },
         "it" : {
@@ -16132,7 +18052,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suas fotos, seu álbum Apagados recentemente, seu acesso às fotos e sua assinatura do Alike Pro."
+            "value" : "Suas fotos, seu álbum Apagados, seu acesso às fotos e sua assinatura do Alike Pro."
           }
         },
         "pt-PT" : {
@@ -16177,6 +18097,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stays untouched"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stays untouched"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What stays untouched"
@@ -16283,6 +18215,18 @@
             "value" : "Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan results and analysis caches, cleanup progress and history, crash reports waiting on your iPhone, and your Alike preferences."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16379,6 +18323,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What gets erased"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What gets erased"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What gets erased"
@@ -16485,6 +18441,18 @@
             "value" : "Alike shows its introduction again afterwards, without asking for photo access a second time."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike shows its introduction again afterwards, without asking for photo access a second time."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike shows its introduction again afterwards, without asking for photo access a second time."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16581,6 +18549,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting fresh"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting fresh"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Starting fresh"
@@ -16687,6 +18667,18 @@
             "value" : "Photos are compared using Apple's on-device vision framework, and the results are stored locally."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos are compared using Apple's on-device vision framework, and the results are stored locally."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos are compared using Apple's on-device vision framework, and the results are stored locally."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16783,6 +18775,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis never leaves your iPhone"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis never leaves your iPhone"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Analysis never leaves your iPhone"
@@ -16889,6 +18893,18 @@
             "value" : "If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. You see the email before it goes, and only you can send it, from your own mail app. It holds the stack trace, the app and iOS versions and the device model — no photos."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. You see the email before it goes, and only you can send it, from your own mail app. It holds the stack trace, the app and iOS versions and the device model — no photos."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If Alike closes unexpectedly, it keeps the crash report on your iPhone and asks once whether to email it to the developer. You see the email before it goes, and only you can send it, from your own mail app. It holds the stack trace, the app and iOS versions and the device model — no photos."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16985,6 +19001,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crash reports go only where you send them"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crash reports go only where you send them"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crash reports go only where you send them"
@@ -17091,6 +19119,18 @@
             "value" : "Alike has no account, no sign-in, and no server of its own."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has no account, no sign-in, and no server of its own."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has no account, no sign-in, and no server of its own."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17187,6 +19227,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On your device"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On your device"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "On your device"
@@ -17293,6 +19345,18 @@
             "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17389,6 +19453,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos are never uploaded"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos are never uploaded"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your photos are never uploaded"
@@ -17495,6 +19571,18 @@
             "value" : "What Alike asks for"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike asks for"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike asks for"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17591,6 +19679,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requested only if you turn on the weekly cleanup reminder, and never otherwise."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requested only if you turn on the weekly cleanup reminder, and never otherwise."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Requested only if you turn on the weekly cleanup reminder, and never otherwise."
@@ -17697,6 +19797,18 @@
             "value" : "Notifications"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17793,6 +19905,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requested once at the start, and used to read your library and — only when you enhance a photo yourself — to save that change. You can change or limit it any time in iOS Settings."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requested once at the start, and used to read your library and — only when you enhance a photo yourself — to save that change. You can change or limit it any time in iOS Settings."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Requested once at the start, and used to read your library and — only when you enhance a photo yourself — to save that change. You can change or limit it any time in iOS Settings."
@@ -17899,6 +20023,18 @@
             "value" : "Photo library"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo library"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo library"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17995,6 +20131,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stays on your device, what Alike asks for, and how to erase its data."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stays on your device, what Alike asks for, and how to erase its data."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What stays on your device, what Alike asks for, and how to erase its data."
@@ -18101,6 +20249,18 @@
             "value" : "Privacy and your data"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy and your data"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy and your data"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18197,6 +20357,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The card explains what went wrong and offers Retry. Earlier results stay available in the meantime."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The card explains what went wrong and offers Retry. Earlier results stay available in the meantime."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The card explains what went wrong and offers Retry. Earlier results stay available in the meantime."
@@ -18303,6 +20475,18 @@
             "value" : "A scan didn't finish"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A scan didn't finish"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A scan didn't finish"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18399,6 +20583,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A refresh that runs by itself after you move photos does not count against your free scans."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A refresh that runs by itself after you move photos does not count against your free scans."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A refresh that runs by itself after you move photos does not count against your free scans."
@@ -18505,6 +20701,18 @@
             "value" : "When to scan again"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When to scan again"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When to scan again"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18601,6 +20809,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you add or remove photos elsewhere, Alike marks the results as needing a refresh and offers to rescan."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you add or remove photos elsewhere, Alike marks the results as needing a refresh and offers to rescan."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "When you add or remove photos elsewhere, Alike marks the results as needing a refresh and offers to rescan."
@@ -18707,6 +20927,18 @@
             "value" : "Your library changed"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library changed"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library changed"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18803,6 +21035,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity decides how alike two photos must be to land in the same group, so Alike asks to rescan after you change it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity decides how alike two photos must be to land in the same group, so Alike asks to rescan after you change it."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sensitivity decides how alike two photos must be to land in the same group, so Alike asks to rescan after you change it."
@@ -18909,6 +21153,18 @@
             "value" : "You changed sensitivity"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You changed sensitivity"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You changed sensitivity"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19005,6 +21261,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning continues when you switch tabs. Cleanup refreshes on its own once it finishes."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning continues when you switch tabs. Cleanup refreshes on its own once it finishes."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scanning continues when you switch tabs. Cleanup refreshes on its own once it finishes."
@@ -19111,6 +21379,18 @@
             "value" : "Keep using the app while it works"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep using the app while it works"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep using the app while it works"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19212,6 +21492,18 @@
             "value" : "Alike remembers what it learned about each photo and only re-analyses what actually changed."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike remembers what it learned about each photo and only re-analyses what actually changed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike remembers what it learned about each photo and only re-analyzes what actually changed."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19308,6 +21600,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later scans are faster"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later scans are faster"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Later scans are faster"
@@ -19414,6 +21718,18 @@
             "value" : "The Scanner card changes as the scan progresses and tells you what to do next."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Scanner card changes as the scan progresses and tells you what to do next."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Scanner card changes as the scan progresses and tells you what to do next."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19510,6 +21826,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running a scan"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running a scan"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Running a scan"
@@ -19616,6 +21944,18 @@
             "value" : "Tap the button on the Scanner tab. A progress bar shows how far along the analysis is."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the button on the Scanner tab. A progress bar shows how far along the analysis is."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the button on the Scanner tab. A progress bar shows how far along the analysis is."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19712,6 +22052,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start scanning"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start scanning"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start scanning"
@@ -19818,6 +22170,18 @@
             "value" : "Alike Free includes three scans each calendar month. The counter resets at the start of the next month."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free includes three scans each calendar month. The counter resets at the start of the next month."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Free includes three scans each calendar month. The counter resets at the start of the next month."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19869,7 +22233,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike Free inclui três análises por mês. O contador zera no início do mês seguinte."
+            "value" : "O Alike Free inclui três análises por mês-calendário. O contador zera no início do mês seguinte."
           }
         },
         "pt-PT" : {
@@ -19914,6 +22278,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free scans remaining"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free scans remaining"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free scans remaining"
@@ -20020,6 +22396,18 @@
             "value" : "After your first scan the card shows when it ran, how many opportunities were found, and how much space they hold."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After your first scan the card shows when it ran, how many opportunities were found, and how much space they hold."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After your first scan the card shows when it ran, how many opportunities were found, and how much space they hold."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20116,6 +22504,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last scan at a glance"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last scan at a glance"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Last scan at a glance"
@@ -20222,6 +22622,18 @@
             "value" : "Library status"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library status"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library status"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20318,6 +22730,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running a scan, reading the Scanner card, and knowing when to rescan."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running a scan, reading the Scanner card, and knowing when to rescan."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Running a scan, reading the Scanner card, and knowing when to rescan."
@@ -20424,6 +22848,18 @@
             "value" : "Scanning your library"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your library"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your library"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20520,6 +22956,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity asks for a rescan, because the groups have to be built again."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity asks for a rescan, because the groups have to be built again."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changing sensitivity asks for a rescan, because the groups have to be built again."
@@ -20626,6 +23074,18 @@
             "value" : "Tuning the results"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuning the results"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuning the results"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20718,10 +23178,22 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch, Chinesisch (traditionell) und Arabisch verfügbar. Der Schalter öffnet die iOS-Einstellungsseite der App."
+            "value" : "Alike ist auf Englisch, Ukrainisch, Spanisch, Portugiesisch, Deutsch, Französisch, Italienisch, Niederländisch, Polnisch, Türkisch, Chinesisch (traditionell) und Arabisch verfügbar. Diese Option öffnet die iOS-Einstellungsseite der App."
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. The switch opens the iOS Settings page for the app."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. The switch opens the iOS Settings page for the app."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike is available in English, Ukrainian, Spanish, Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. The switch opens the iOS Settings page for the app."
@@ -20766,7 +23238,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike is beschikbaar in het Engels, Oekraïens, Spaans, Portugees, Duits, Frans, Italiaans, Nederlands, Pools, Turks, traditioneel Chinees en Arabisch. De schakelaar opent de iOS-instellingenpagina van de app."
+            "value" : "Alike is beschikbaar in het Engels, Oekraïens, Spaans, Portugees, Duits, Frans, Italiaans, Nederlands, Pools, Turks, traditioneel Chinees en Arabisch. Deze optie opent de iOS-instellingenpagina van de app."
           }
         },
         "pl" : {
@@ -20823,6 +23295,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Language"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Language"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change Language"
@@ -20929,6 +23413,18 @@
             "value" : "Low groups only near-identical photos. High casts a wider net and finds more, but loosely related, matches."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low groups only near-identical photos. High casts a wider net and finds more, but loosely related, matches."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low groups only near-identical photos. High casts a wider net and finds more, but loosely related, matches."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21025,6 +23521,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sensitivity"
@@ -21131,6 +23639,18 @@
             "value" : "The reminder is off until you turn it on, and asks for notification permission the first time."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The reminder is off until you turn it on, and asks for notification permission the first time."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The reminder is off until you turn it on, and asks for notification permission the first time."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21227,6 +23747,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly cleanup reminder"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly cleanup reminder"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weekly cleanup reminder"
@@ -21333,6 +23865,18 @@
             "value" : "Alike Pro lets you move the reminder to whichever day and time suits you."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro lets you move the reminder to whichever day and time suits you."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro lets you move the reminder to whichever day and time suits you."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21429,6 +23973,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick your own day and time"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick your own day and time"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pick your own day and time"
@@ -21535,6 +24091,18 @@
             "value" : "A gentle reminder to spend a few minutes on cleanup. On Alike Free it arrives on Sunday evening."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A gentle reminder to spend a few minutes on cleanup. On Alike Free it arrives on Sunday evening."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A gentle reminder to spend a few minutes on cleanup. On Alike Free it arrives on Sunday evening."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21631,6 +24199,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nudge once a week"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nudge once a week"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A nudge once a week"
@@ -21737,6 +24317,18 @@
             "value" : "Your subscription"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21833,6 +24425,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On a new device, or after reinstalling, this brings your existing subscription back."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On a new device, or after reinstalling, this brings your existing subscription back."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "On a new device, or after reinstalling, this brings your existing subscription back."
@@ -21939,6 +24543,18 @@
             "value" : "Restore Purchases"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22035,6 +24651,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The card at the top of Settings shows whether Alike Pro is active and when it renews."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The card at the top of Settings shows whether Alike Pro is active and when it renews."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The card at the top of Settings shows whether Alike Pro is active and when it renews."
@@ -22141,6 +24769,18 @@
             "value" : "Subscription status"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription status"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription status"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22237,6 +24877,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity, language, the weekly reminder and your subscription."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity, language, the weekly reminder and your subscription."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sensitivity, language, the weekly reminder and your subscription."
@@ -22343,6 +24995,18 @@
             "value" : "Settings and reminders"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings and reminders"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings and reminders"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22439,6 +25103,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike suggests only the softest few percent of your photos, and only when there are enough to compare."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike suggests only the softest few percent of your photos, and only when there are enough to compare."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike suggests only the softest few percent of your photos, and only when there are enough to compare."
@@ -22545,6 +25221,18 @@
             "value" : "Only the clearest cases"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only the clearest cases"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only the clearest cases"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22641,6 +25329,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos you marked as favourites never appear here — mark a photo as a favourite to protect it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos you marked as favourites never appear here — mark a photo as a favourite to protect it."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photos you marked as favourites never appear here — mark a photo as a favourite to protect it."
@@ -22747,6 +25447,18 @@
             "value" : "Favourites are left alone"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites are left alone"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites are left alone"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22843,6 +25555,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A short list is intentional: a missed blurry photo costs you nothing, a wrongly flagged keepsake does."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A short list is intentional: a missed blurry photo costs you nothing, a wrongly flagged keepsake does."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A short list is intentional: a missed blurry photo costs you nothing, a wrongly flagged keepsake does."
@@ -22949,6 +25673,18 @@
             "value" : "Why the blurred list is short"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why the blurred list is short"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why the blurred list is short"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23045,6 +25781,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos that look out of focus, based on on-device analysis. Worth checking before you remove them."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos that look out of focus, based on on-device analysis. Worth checking before you remove them."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photos that look out of focus, based on on-device analysis. Worth checking before you remove them."
@@ -23151,6 +25899,18 @@
             "value" : "Blurred Photos"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23247,6 +26007,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Both categories are part of Alike Pro. Tapping a locked one shows what it found first."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Both categories are part of Alike Pro. Tapping a locked one shows what it found first."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Both categories are part of Alike Pro. Tapping a locked one shows what it found first."
@@ -23353,6 +26125,18 @@
             "value" : "Two extra categories"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two extra categories"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two extra categories"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23449,6 +26233,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures collected in one place, with the space they take up."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures collected in one place, with the space they take up."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screen captures collected in one place, with the space they take up."
@@ -23555,6 +26351,18 @@
             "value" : "Screenshots"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23651,6 +26459,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots and Blurred Photos, gathered outside the similarity groups."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots and Blurred Photos, gathered outside the similarity groups."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots and Blurred Photos, gathered outside the similarity groups."
@@ -23757,6 +26577,18 @@
             "value" : "Smart Cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart Cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart Cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23853,6 +26685,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How they work"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How they work"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "How they work"
@@ -23959,6 +26803,18 @@
             "value" : "Press and hold for Show Info or Open Original, and adjust columns from the toolbar."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold for Show Info or Open Original, and adjust columns from the toolbar."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold for Show Info or Open Original, and adjust columns from the toolbar."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24055,6 +26911,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same tools as a group"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same tools as a group"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Same tools as a group"
@@ -24161,6 +27029,18 @@
             "value" : "One button selects everything or clears the selection, and the summary keeps a running total."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One button selects everything or clears the selection, and the summary keeps a running total."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One button selects everything or clears the selection, and the summary keeps a running total."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24257,6 +27137,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All or pick individually"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All or pick individually"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select All or pick individually"
@@ -24363,6 +27255,18 @@
             "value" : "How to Use"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24459,6 +27363,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
