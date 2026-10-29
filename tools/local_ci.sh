@@ -13,8 +13,11 @@ LATEST_REPORT="$REPORT_ROOT/latest.json"
 PROJECT_PATH="Alike/Alike.xcodeproj"
 APP_SCHEME="Alike"
 RELEASE_SCHEME="Alike"
-DERIVED_DATA_ROOT="${ALIKE_DERIVED_DATA_ROOT:-/private/tmp/alike-local-ci-derived-data}"
-CACHE_ROOT="${ALIKE_LOCAL_CI_CACHE_ROOT:-/private/tmp/alike-local-ci-swiftpm}"
+# Build output lives on the external development disk, not the internal one.
+BUILD_ROOT="${ALIKE_BUILD_ROOT:-/Volumes/KINGSTON/DeveloperData}"
+PROJECT_BUILDS_ROOT="$BUILD_ROOT/Xcode/ProjectBuilds/Alike"
+DERIVED_DATA_ROOT="${ALIKE_DERIVED_DATA_ROOT:-$PROJECT_BUILDS_ROOT/local-ci-derived-data}"
+CACHE_ROOT="${ALIKE_LOCAL_CI_CACHE_ROOT:-$PROJECT_BUILDS_ROOT/local-ci-swiftpm}"
 SWIFTPM_SHARED_CACHE="$CACHE_ROOT/shared-cache"
 SWIFTPM_SCRATCH_ROOT="$CACHE_ROOT/scratch"
 BUILD_DESTINATION="${ALIKE_BUILD_DESTINATION:-}"
@@ -71,12 +74,16 @@ Modes:
   release-check  Version/build check plus Release archive/export validation.
 
 Environment:
-  ALIKE_DERIVED_DATA_ROOT        Override DerivedData root. Default: /private/tmp/alike-local-ci-derived-data
-  ALIKE_LOCAL_CI_CACHE_ROOT      Override SwiftPM scratch/cache root. Default: /private/tmp/alike-local-ci-swiftpm
+  ALIKE_BUILD_ROOT               External disk data root. Default: /Volumes/KINGSTON/DeveloperData
+                                  The run stops when it does not exist and a default below needs it.
+  ALIKE_DERIVED_DATA_ROOT        Override DerivedData root.
+                                  Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-derived-data
+  ALIKE_LOCAL_CI_CACHE_ROOT      Override SwiftPM scratch/cache root.
+                                  Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-swiftpm
   ALIKE_BUILD_DESTINATION        Override the xcodebuild destination for the full-mode app compile.
                                   By default, the newest available iPhone simulator is used.
   ALIKE_CI_BASE_REF              Override committed diff base. Default: origin/develop
-  CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable /private/tmp path.
+  CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable path.
   DEVELOPER_DIR                  Xcode toolchain to use. When unset and `xcode-select` points at the
                                   Command Line Tools, the newest installed Xcode is selected automatically.
   ALIKE_SKIP_APP_BUILD=1         Skip the full app compile in full mode.
@@ -686,8 +693,29 @@ parse_release_args() {
   fi
 }
 
+# A missing disk must stop the run: `mkdir -p` under an unmounted /Volumes path
+# would create a phantom folder on the internal disk instead.
+require_build_root() {
+  if [[ -n "${ALIKE_DERIVED_DATA_ROOT:-}" && -n "${ALIKE_LOCAL_CI_CACHE_ROOT:-}" ]]; then
+    return
+  fi
+
+  if [[ ! -d "$BUILD_ROOT" ]]; then
+    printf "Build root %s does not exist. Connect the external disk, or set ALIKE_BUILD_ROOT, or set both ALIKE_DERIVED_DATA_ROOT and ALIKE_LOCAL_CI_CACHE_ROOT.\n" "$BUILD_ROOT" >&2
+    exit 1
+  fi
+}
+
 main() {
   [[ -n "$MODE" ]] || fail_usage
+  # Help needs no build directories, so it answers before any are created.
+  case "$MODE" in
+    -h|--help|help)
+      usage
+      exit 0
+      ;;
+  esac
+  require_build_root
   mkdir -p "$REPORT_DIR"
   mkdir -p "$SWIFTPM_SHARED_CACHE" "$SWIFTPM_SCRATCH_ROOT"
   cd "$ROOT_DIR"
@@ -721,10 +749,6 @@ main() {
       run_release_archive
       run_release_export
       preserve_release_artifacts
-      ;;
-    -h|--help|help)
-      usage
-      exit 0
       ;;
     *)
       printf "Unknown mode: %s\n" "$MODE" >&2
