@@ -2061,7 +2061,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A versão gratuita inclui %1$d análises por mês. Restam %2$d, e o limite é renovado em %3$@."
+            "value" : "A versão gratuita inclui %1$d análises por mês-calendário. Restam %2$d, e o limite é renovado em %3$@."
           }
         },
         "pt-PT" : {
@@ -2174,7 +2174,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A versão gratuita inclui %1$d análises por mês. Restam %2$d."
+            "value" : "A versão gratuita inclui %1$d análises por mês-calendário. Restam %2$d."
           }
         },
         "pt-PT" : {
@@ -3078,7 +3078,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revise as capturas de tela juntas e escolha exatamente quais vão para Apagados recentemente."
+            "value" : "Revise as capturas de tela juntas e escolha exatamente quais vão para Apagados."
           }
         },
         "pt-PT" : {
@@ -5564,7 +5564,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike Free continua incluindo três análises por mês, a revisão dos resultados existentes e a limpeza de uma foto."
+            "value" : "O Alike Free continua incluindo três análises por mês-calendário, a revisão dos resultados existentes e a limpeza de uma foto por vez."
           }
         },
         "pt-PT" : {
@@ -7824,7 +7824,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Economize %d%% em relação ao mensal"
+            "value" : "Economize %d%% em relação ao plano mensal"
           }
         },
         "pt-PT" : {

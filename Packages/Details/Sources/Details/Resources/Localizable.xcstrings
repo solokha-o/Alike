@@ -1648,19 +1648,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mover %1$lld fotos selecionadas para Apagados recentemente?"
+                  "value" : "Mover %1$lld fotos selecionadas para Apagados?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mover %1$lld foto selecionada para Apagados recentemente?"
+                  "value" : "Mover %1$lld foto selecionada para Apagados?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mover %1$lld fotos selecionadas para Apagados recentemente?"
+                  "value" : "Mover %1$lld fotos selecionadas para Apagados?"
                 }
               }
             }
@@ -8503,7 +8503,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
+            "value" : "A foto selecionada será removida da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficará em Apagados por até 30 dias. O espaço pode não ser liberado até que ela seja apagada definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "pt-PT" : {
@@ -8616,7 +8616,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados recentemente por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
+            "value" : "As fotos selecionadas serão removidas da sua fototeca e dos outros dispositivos que usam o Fotos do iCloud e ficarão em Apagados por até 30 dias. O espaço pode não ser liberado até que elas sejam apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         },
         "pt-PT" : {
@@ -12683,7 +12683,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover as fotos selecionadas para Apagados recentemente"
+            "value" : "Mover as fotos selecionadas para Apagados"
           }
         },
         "pt-PT" : {

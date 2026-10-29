@@ -5622,7 +5622,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suas fotos e os itens em Apagados recentemente"
+            "value" : "Suas fotos e os itens em Apagados"
           }
         },
         "pt-PT" : {
@@ -8334,7 +8334,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Isto apaga definitivamente os resultados locais, o histórico de limpeza e as preferências do Alike. Suas fotos e sua assinatura permanecem."
+            "value" : "Isto apaga definitivamente os resultados locais, o histórico de limpeza e as preferências do Alike. Suas fotos e sua assinatura serão mantidas."
           }
         },
         "pt-PT" : {

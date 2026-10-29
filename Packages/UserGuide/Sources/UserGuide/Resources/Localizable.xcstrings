@@ -9803,7 +9803,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se o Fotos do iCloud estiver ativado, as mesmas fotos vão para Apagados recentemente nos seus outros dispositivos."
+            "value" : "Se o Fotos do iCloud estiver ativado, as mesmas fotos vão para Apagados nos seus outros dispositivos."
           }
         },
         "pt-PT" : {
@@ -10029,7 +10029,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As fotos vão para o álbum Apagados recentemente do app Fotos, de onde você pode recuperar qualquer uma."
+            "value" : "As fotos vão para o álbum Apagados do app Fotos, de onde você pode recuperar qualquer uma."
           }
         },
         "pt-PT" : {
@@ -10255,7 +10255,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O espaço só volta depois que as fotos saem de Apagados recentemente — automaticamente após 30 dias ou quando você esvazia o álbum."
+            "value" : "O espaço só volta depois que as fotos saem de Apagados — automaticamente após 30 dias ou quando você esvazia o álbum."
           }
         },
         "pt-PT" : {
@@ -11046,7 +11046,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apagados recentemente, quando o espaço é de fato liberado e o iCloud."
+            "value" : "Apagados, quando o espaço é de fato liberado e o iCloud."
           }
         },
         "pt-PT" : {
@@ -11272,7 +11272,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os resultados que você já analisou continuam disponíveis, com ou sem assinatura."
+            "value" : "Os resultados das análises anteriores continuam disponíveis, com ou sem assinatura."
           }
         },
         "pt-PT" : {
@@ -11724,7 +11724,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Três análises por mês, com o contador zerando no início do mês seguinte."
+            "value" : "Três análises por mês-calendário, com o contador zerando no início do mês seguinte."
           }
         },
         "pt-PT" : {
@@ -11950,7 +11950,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você pode mover fotos para Apagados recentemente uma a uma."
+            "value" : "Você pode mover fotos para Apagados uma a uma."
           }
         },
         "pt-PT" : {
@@ -12402,7 +12402,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mova toda a sua seleção em uma etapa, em vez de uma foto por vez."
+            "value" : "Mova todas as fotos selecionadas de uma vez, em vez de uma foto por vez."
           }
         },
         "pt-PT" : {
@@ -13758,7 +13758,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analise quantas vezes quiser, sem cota mensal."
+            "value" : "Analise quantas vezes quiser, sem limite mensal."
           }
         },
         "pt-PT" : {
@@ -15227,7 +15227,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirme e as fotos selecionadas vão para Apagados recentemente, onde o iOS as mantém por 30 dias."
+            "value" : "Confirme e as fotos selecionadas vão para Apagados, onde o iOS as mantém por 30 dias."
           }
         },
         "pt-PT" : {
@@ -15340,7 +15340,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover para Apagados recentemente"
+            "value" : "Mover para Apagados"
           }
         },
         "pt-PT" : {
@@ -18052,7 +18052,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suas fotos, seu álbum Apagados recentemente, seu acesso às fotos e sua assinatura do Alike Pro."
+            "value" : "Suas fotos, seu álbum Apagados, seu acesso às fotos e sua assinatura do Alike Pro."
           }
         },
         "pt-PT" : {
@@ -22233,7 +22233,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike Free inclui três análises por mês. O contador zera no início do mês seguinte."
+            "value" : "O Alike Free inclui três análises por mês-calendário. O contador zera no início do mês seguinte."
           }
         },
         "pt-PT" : {
