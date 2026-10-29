@@ -82,6 +82,42 @@
             }
           }
         },
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photo to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Blurred Photos to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
         "en-GB" : {
           "variations" : {
             "plural" : {
@@ -106,13 +142,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "¿Mover %1$lld foto borrosa seleccionada a Eliminados recientemente?"
+                  "value" : "¿Mover %1$lld foto borrosa seleccionada a Eliminados?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados recientemente?"
+                  "value" : "¿Mover %1$lld fotos borrosas seleccionadas a Eliminados?"
                 }
               }
             }
@@ -142,19 +178,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimées récemment ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photo floue sélectionnée vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photo floue sélectionnée vers Supprimées récemment ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimées récemment ?"
                 }
               }
             }
@@ -166,19 +202,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Supprimées récemment » ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photo floue sélectionnée vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photo floue sélectionnée vers « Supprimées récemment » ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Supprimées récemment » ?"
                 }
               }
             }
@@ -441,6 +477,42 @@
             }
           }
         },
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshot to Recently Deleted?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %1$lld Selected Screenshots to Recently Deleted?"
+                }
+              }
+            }
+          }
+        },
         "en-GB" : {
           "variations" : {
             "plural" : {
@@ -465,13 +537,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "¿Mover %1$lld captura de pantalla seleccionada a Eliminados recientemente?"
+                  "value" : "¿Mover %1$lld captura de pantalla seleccionada a Eliminados?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados recientemente?"
+                  "value" : "¿Mover %1$lld capturas de pantalla seleccionadas a Eliminados?"
                 }
               }
             }
@@ -501,19 +573,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimées récemment ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers Supprimées récemment ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimées récemment ?"
                 }
               }
             }
@@ -525,19 +597,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Supprimées récemment » ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers « Supprimées récemment » ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Supprimées récemment » ?"
                 }
               }
             }
@@ -740,6 +812,18 @@
             "value" : "Blurred Photo Cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photo Cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photo Cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -836,6 +920,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred photo cleanup is a premium feature"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred photo cleanup is a premium feature"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blurred photo cleanup is a premium feature"
@@ -942,6 +1038,18 @@
             "value" : "Blurred Photos"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1038,6 +1146,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos based on on-device analysis. Review before deleting."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos based on on-device analysis. Review before deleting."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Likely low-quality photos based on on-device analysis. Review before deleting."
@@ -1144,6 +1264,18 @@
             "value" : "No Blurred Photos Found"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Blurred Photos Found"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Blurred Photos Found"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1240,6 +1372,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Screenshots Found"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Screenshots Found"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Screenshots Found"
@@ -1346,6 +1490,18 @@
             "value" : "Open blurred photo cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open blurred photo cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open blurred photo cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1442,6 +1598,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open screenshot cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open screenshot cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open screenshot cleanup"
@@ -1548,6 +1716,18 @@
             "value" : "Opens the premium paywall for blurred photo cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for blurred photo cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for blurred photo cleanup"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1644,6 +1824,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for screenshot cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the premium paywall for screenshot cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the premium paywall for screenshot cleanup"
@@ -1750,6 +1942,18 @@
             "value" : "Run a new scan after your library changes or if more photos need review."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run a new scan after your library changes or if more photos need review."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run a new scan after your library changes or if more photos need review."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1846,6 +2050,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot Cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot Cleanup"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshot Cleanup"
@@ -1952,6 +2168,18 @@
             "value" : "Screenshot cleanup is a premium feature"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot cleanup is a premium feature"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot cleanup is a premium feature"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2048,6 +2276,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshots"
@@ -2154,6 +2394,18 @@
             "value" : "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photo will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2163,7 +2415,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+            "value" : "La foto seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es-419" : {
@@ -2175,13 +2427,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2255,6 +2507,18 @@
             "value" : "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected photos will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2264,7 +2528,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+            "value" : "Las fotos seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es-419" : {
@@ -2276,13 +2540,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2356,6 +2620,18 @@
             "value" : "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshot will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until it is permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2365,7 +2641,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
+            "value" : "La captura de pantalla seleccionada se eliminará de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerá en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se elimine de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es-419" : {
@@ -2377,13 +2653,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2457,6 +2733,18 @@
             "value" : "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected screenshots will be removed from your library and other devices using iCloud Photos, then remain in Recently Deleted for up to 30 days. Storage may not be freed until they are permanently deleted. Estimated reclaimable space: %@."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2466,7 +2754,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados recientemente hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
+            "value" : "Las capturas de pantalla seleccionadas se eliminarán de tu fototeca y de los demás dispositivos que usan Fotos en iCloud, y permanecerán en Eliminados hasta 30 días. Es posible que no se libere espacio hasta que se eliminen de forma permanente. Espacio recuperable estimado: %@."
           }
         },
         "es-419" : {
@@ -2478,13 +2766,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2601,6 +2889,42 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
+        },
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld selected, estimated size %2$@."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -2977,6 +3301,42 @@
             }
           }
         },
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photo available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld likely blurred photos available for review."
+                }
+              }
+            }
+          }
+        },
         "en-GB" : {
           "variations" : {
             "plural" : {
@@ -3336,6 +3696,42 @@
             }
           }
         },
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshot available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
+        },
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshot available for review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld screenshots available for review."
+                }
+              }
+            }
+          }
+        },
         "en-GB" : {
           "variations" : {
             "plural" : {
@@ -3635,6 +4031,18 @@
             "value" : "Try rescanning after your library updates."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try rescanning after your library updates."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try rescanning after your library updates."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3731,6 +4139,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock blurred photo cleanup to review likely low-quality shots before deleting them with the same safe confirmation flow."
@@ -3837,6 +4257,18 @@
             "value" : "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock screenshot cleanup to review and delete screenshots with the same safe confirmation flow."
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3933,6 +4365,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "High"
@@ -4039,6 +4483,18 @@
             "value" : "Low"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4135,6 +4591,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medium"
