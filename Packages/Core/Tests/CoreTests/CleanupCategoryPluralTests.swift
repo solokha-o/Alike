@@ -100,7 +100,7 @@ import Testing
 
         for count in [0, 1, 2, 5, 22, 25] {
             #expect(
-                CoreL10n.CleanupCategory.summaryScreenshots(count, bundle: bundle, locale: zh) == "有 \(count) 張螢幕快照可供檢視。"
+                CoreL10n.CleanupCategory.summaryScreenshots(count, bundle: bundle, locale: zh) == "有 \(count) 張截圖可供檢視。"
             )
         }
 

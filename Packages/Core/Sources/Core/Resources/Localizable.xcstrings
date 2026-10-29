@@ -1320,7 +1320,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "找不到螢幕快照"
+            "value" : "找不到截圖"
           }
         }
       }
@@ -1522,7 +1522,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打開螢幕快照清理"
+            "value" : "打開截圖清理"
           }
         }
       }
@@ -1724,7 +1724,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打開螢幕快照清理的進階功能頁面"
+            "value" : "打開截圖清理的進階功能頁面"
           }
         }
       }
@@ -1926,7 +1926,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照清理"
+            "value" : "截圖清理"
           }
         }
       }
@@ -2027,7 +2027,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照清理為進階功能"
+            "value" : "截圖清理為進階功能"
           }
         }
       }
@@ -2128,7 +2128,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }
@@ -3606,7 +3606,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "有 %1$lld 張螢幕快照可供檢視。"
+                  "value" : "有 %1$lld 張截圖可供檢視。"
                 }
               }
             }
@@ -3912,7 +3912,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
+            "value" : "解鎖截圖清理，透過同樣安全的確認流程檢視並刪除截圖。"
           }
         }
       }

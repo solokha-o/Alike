@@ -2622,7 +2622,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在除錯版本中啟用螢幕快照清理的進階權限"
+            "value" : "在除錯版本中啟用截圖清理的進階權限"
           }
         }
       }
@@ -8076,7 +8076,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解鎖「螢幕快照清理」進階功能"
+            "value" : "解鎖「截圖清理」進階功能"
           }
         }
       }

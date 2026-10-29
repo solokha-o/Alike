@@ -2790,7 +2790,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "一起檢視螢幕快照，精準選擇要移到「最近刪除」的項目。"
+            "value" : "一起檢視截圖，精準選擇要移到「最近刪除」的項目。"
           }
         }
       }
@@ -3093,7 +3093,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "把雜亂的螢幕快照變成可用空間"
+            "value" : "把雜亂的截圖變成可用空間"
           }
         }
       }
@@ -7436,7 +7436,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照與模糊照片的智慧類別"
+            "value" : "截圖與模糊照片的智慧類別"
           }
         }
       }

@@ -7223,7 +7223,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }
@@ -12587,7 +12587,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照清理可在 iOS 上使用。"
+            "value" : "截圖清理可在 iOS 上使用。"
           }
         }
       }
@@ -12688,7 +12688,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }

@@ -14742,7 +14742,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }
@@ -23630,7 +23630,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }
@@ -23731,7 +23731,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在相似群組之外另行收集的螢幕快照與模糊照片。"
+            "value" : "在相似群組之外另行收集的截圖與模糊照片。"
           }
         }
       }
