@@ -380,7 +380,7 @@ COPY = {
         (
             "HOME-BILDSCHIRM",
             "Sichtbar, ohne\nAlike zu öffnen",
-            "Zwei Widgets: der Speicher, der frei werden kann, und was die Mediathek noch hält.",
+            "Zwei Widgets: der Speicher, den du freigeben kannst, und deine Mediathek im Überblick.",
         ),
     ],
     "fr": [
