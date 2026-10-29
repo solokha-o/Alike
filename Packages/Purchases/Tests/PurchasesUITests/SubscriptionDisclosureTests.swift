@@ -1,12 +1,12 @@
 import Foundation
-import XCTest
+import Testing
 
 /// `Docs/legal/subscription-disclosure.md` calls itself the source of truth for the paywall
 /// disclosure and requires the copy to stay byte-identical to the catalog. Until now that was a
 /// promise in prose. It is a rejection surface under App Review guideline 3.1.2 — the renewal
 /// terms, the trial duration and how to cancel all have to be shown before purchase — so at five
 /// new languages a drift between the two is worth failing a build over.
-final class SubscriptionDisclosureTests: XCTestCase {
+@Suite struct SubscriptionDisclosureTests {
     private static let disclosureKeys = [
         "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled",
         "purchases.subscriptionPaywall.yearlyPlanIncludes7Day",
@@ -37,7 +37,7 @@ final class SubscriptionDisclosureTests: XCTestCase {
     /// location — not against the document as a whole — so a locale that borrows another
     /// locale's phrase (e.g. German using the English "Privacy Policy") fails instead of passing
     /// because the borrowed phrase happens to appear somewhere else in the document.
-    func testEveryDisclosureStringAppearsVerbatimInTheLegalDocument() throws {
+    @Test func testEveryDisclosureStringAppearsVerbatimInTheLegalDocument() throws {
         let document = try legalDocument()
         let catalog = try LocalizationCatalog.load()
 
@@ -61,11 +61,11 @@ final class SubscriptionDisclosureTests: XCTestCase {
         var mismatches: [String] = []
 
         for key in Self.disclosureKeys {
-            let expected = try XCTUnwrap(expectedByKey[key], "no parsed section for \(key)")
+            let expected = try #require(expectedByKey[key], "no parsed section for \(key)")
             for language in LocalizationCatalog.shippedLanguages {
-                let localization = try XCTUnwrap(catalog.localizations(of: key)[language])
-                let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-                let actual = try XCTUnwrap(unit["value"] as? String)
+                let localization = try #require(catalog.localizations(of: key)[language])
+                let unit = try #require(localization["stringUnit"] as? [String: Any])
+                let actual = try #require(unit["value"] as? String)
                 guard let documented = expected[language] else {
                     mismatches.append("\(key) [\(language)]: no documented value found for this locale")
                     continue
@@ -80,7 +80,7 @@ final class SubscriptionDisclosureTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(
+        #expect(
             mismatches.isEmpty,
             """
             Docs/legal/subscription-disclosure.md does not carry these strings verbatim. \
@@ -89,27 +89,27 @@ final class SubscriptionDisclosureTests: XCTestCase {
         )
     }
 
-    func testTheTrialParagraphKeepsItsEligibilityHedgeInEveryLanguage() throws {
+    @Test func testTheTrialParagraphKeepsItsEligibilityHedgeInEveryLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         let key = "purchases.subscriptionPaywall.yearlyPlanIncludes7Day"
         var unhedged: [String] = []
 
         for language in LocalizationCatalog.shippedLanguages {
-            let localization = try XCTUnwrap(catalog.localizations(of: key)[language])
-            let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-            let value = try XCTUnwrap(unit["value"] as? String)
-            let hedge = try XCTUnwrap(Self.eligibilityHedge[language], "no hedge for \(language)")
+            let localization = try #require(catalog.localizations(of: key)[language])
+            let unit = try #require(localization["stringUnit"] as? [String: Any])
+            let value = try #require(unit["value"] as? String)
+            let hedge = try #require(Self.eligibilityHedge[language], "no hedge for \(language)")
             if !value.contains(hedge) {
                 unhedged.append("\(language): expected \"\(hedge)\" in \"\(value)\"")
             }
         }
 
-        XCTAssertTrue(unhedged.isEmpty, "trial copy promises an unconditional trial: \(unhedged)")
+        #expect(unhedged.isEmpty, "trial copy promises an unconditional trial: \(unhedged)")
     }
 
     /// The 24-hour cancellation window and the 7-day trial length are facts, not phrasing. A
     /// translation that rounds "24 hours" to "a day" changes what the app promises.
-    func testRenewalAndTrialNumbersSurviveTranslation() throws {
+    @Test func testRenewalAndTrialNumbersSurviveTranslation() throws {
         let catalog = try LocalizationCatalog.load()
         var wrong: [String] = []
 
@@ -119,16 +119,16 @@ final class SubscriptionDisclosureTests: XCTestCase {
             ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "7")
         ] {
             for language in LocalizationCatalog.shippedLanguages {
-                let localization = try XCTUnwrap(catalog.localizations(of: key)[language])
-                let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-                let value = try XCTUnwrap(unit["value"] as? String)
+                let localization = try #require(catalog.localizations(of: key)[language])
+                let unit = try #require(localization["stringUnit"] as? [String: Any])
+                let value = try #require(unit["value"] as? String)
                 if !value.contains(number) {
                     wrong.append("\(key) [\(language)] lost \"\(number)\"")
                 }
             }
         }
 
-        XCTAssertTrue(wrong.isEmpty, "disclosure numbers changed in translation: \(wrong)")
+        #expect(wrong.isEmpty, "disclosure numbers changed in translation: \(wrong)")
     }
 
     private func legalDocument(file: StaticString = #filePath) throws -> String {
@@ -191,7 +191,7 @@ final class SubscriptionDisclosureTests: XCTestCase {
     /// heading or the end of the document.
     private func section(titled title: String, in document: String) throws -> Substring {
         let heading = "### \(title)"
-        let afterHeading = try XCTUnwrap(
+        let afterHeading = try #require(
             document.range(of: heading),
             "\(heading) not found in Docs/legal/subscription-disclosure.md"
         )

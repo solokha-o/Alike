@@ -653,7 +653,7 @@ COPY = {
         (
             "NA URZĄDZENIU",
             "Znajdź zdjęcia,\nktóre są podobne",
-            "Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie.",
+            "Alike skanuje bibliotekę za pomocą Apple Vision, w całości na iPhonie.",
         ),
         (
             "JEDNA KOLEJKA",
@@ -662,7 +662,7 @@ COPY = {
         ),
         (
             "NAJLEPSZE UJĘCIE",
-            "Zdjęcie do zostawienia\njest już wybrane",
+            "Najlepsze ujęcie\njuż wybrane",
             "Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz.",
         ),
         (
@@ -690,7 +690,7 @@ COPY = {
         (
             "CİHAZDA",
             "Birbirine benzeyen\nfotoğrafları bul",
-            "Alike, kitaplığını Apple Vision ile tamamen iPhone'unda tarar.",
+            "Alike, fotoğraf arşivini Apple Vision ile tamamen iPhone'unda tarar.",
         ),
         (
             "TEK KUYRUK",
@@ -715,12 +715,12 @@ COPY = {
         (
             "GERİ ALINABİLİR",
             "Kareyi iyileştir,\nözgünü sakla",
-            "Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz.",
+            "Bir dokunuş en iyi kareyi iyileştirir. Bir dokunuş orijinali geri getirir; orijinal fotoğraf arşivinde kalır.",
         ),
         (
             "ANA EKRAN",
             "Alike’ı açmadan\ngörünür",
-            "İki widget: kazanabileceğin alan ve kitaplığında hâlâ duranlar.",
+            "İki widget: kazanabileceğin alan ve fotoğraf arşivinin özeti.",
         ),
     ],
     # Chinese headlines carry the same idea in about half the characters, so the
