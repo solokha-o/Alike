@@ -1,14 +1,14 @@
 import Core
 import Foundation
 import Photos
-import XCTest
+import Testing
 @testable import PhotoAnalysis
 
-final class CachingPhotoQualityAnalyzerTests: XCTestCase {
+@Suite struct CachingPhotoQualityAnalyzerTests {
     private let config = PhotoQualityScoringConfig.current
     private let modificationDate = Date(timeIntervalSince1970: 1_000)
 
-    func testFreshCacheEntriesAreNotMeasuredAgain() async throws {
+    @Test func testFreshCacheEntriesAreNotMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeCachedScore("cached", globalSharpness: 33)])
         let inner = RecordingQualityAnalyzer()
@@ -17,12 +17,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         let scores = try await analyzer.scores(for: [TestPHAsset(identifier: "cached")])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertTrue(measured.isEmpty)
-        XCTAssertEqual(scores.map(\.localIdentifier), ["cached"])
-        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 33, accuracy: 0.000_1)
+        #expect(measured.isEmpty)
+        #expect(scores.map(\.localIdentifier) == ["cached"])
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 33) <= eps)
     }
 
-    func testOnlyCacheMissesAreMeasuredAndWrittenBack() async throws {
+    @Test func testOnlyCacheMissesAreMeasuredAndWrittenBack() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeCachedScore("cached", globalSharpness: 33)])
         let inner = RecordingQualityAnalyzer()
@@ -34,13 +35,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertEqual(measured, ["fresh"])
-        XCTAssertEqual(scores.map(\.localIdentifier), ["cached", "fresh"])
+        #expect(measured == ["fresh"])
+        #expect(scores.map(\.localIdentifier) == ["cached", "fresh"])
         let stored = try await repository.loadScores(localIdentifiers: ["fresh"])
-        XCTAssertNotNil(stored["fresh"])
+        #expect(stored["fresh"] != nil)
     }
 
-    func testAChangedPhotoIsMeasuredAgain() async throws {
+    @Test func testAChangedPhotoIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeCachedScore("edited", globalSharpness: 33)])
         let inner = RecordingQualityAnalyzer()
@@ -51,10 +52,10 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertEqual(measured, ["edited"])
+        #expect(measured == ["edited"])
     }
 
-    func testAStaleScoringModelVersionIsMeasuredAgain() async throws {
+    @Test func testAStaleScoringModelVersionIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("old-model", globalSharpness: 33, scoringModelVersion: config.scoringModelVersion - 1)
@@ -65,13 +66,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         _ = try await analyzer.scores(for: [TestPHAsset(identifier: "old-model")])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertEqual(measured, ["old-model"])
+        #expect(measured == ["old-model"])
     }
 
     /// Phase 2 flags the assets Alike itself enhanced. Re-scoring them would
     /// measure our own edit, lifting the score of the very photo whose defects
     /// the ranking was supposed to see.
-    func testAnAlikeEnhancedPhotoIsNotRescoredAndKeepsItsPreEnhancementSignals() async throws {
+    @Test func testAnAlikeEnhancedPhotoIsNotRescoredAndKeepsItsPreEnhancementSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
@@ -85,14 +86,15 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertTrue(measured.isEmpty)
-        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 21, accuracy: 0.000_1)
-        XCTAssertEqual(scores.first?.isAlikeEnhanced, true)
+        #expect(measured.isEmpty)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
+        #expect(scores.first?.isAlikeEnhanced == true)
     }
 
     /// The pre-enhancement signals survive only while our edit is the edit on
     /// the photo. It still is here, so nothing is re-measured.
-    func testAnEnhancedPhotoStillCarryingOurEditKeepsItsSignals() async throws {
+    @Test func testAnEnhancedPhotoStillCarryingOurEditKeepsItsSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
@@ -110,14 +112,15 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertTrue(measured.isEmpty)
-        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 21, accuracy: 0.000_1)
+        #expect(measured.isEmpty)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
     }
 
     /// The user edited the photo in another app afterwards. The cached signals
     /// describe pixels nobody will see again, so the ranker measures what is
     /// there now instead of ranking on a stale original for good.
-    func testAnEnhancedPhotoEditedElsewhereIsMeasuredAgain() async throws {
+    @Test func testAnEnhancedPhotoEditedElsewhereIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
@@ -135,13 +138,14 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertEqual(measured, ["enhanced"])
-        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 50, accuracy: 0.000_1)
+        #expect(measured == ["enhanced"])
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 50) <= eps)
     }
 
     /// Our edit was undone in Photos, so the photo is back to its original and
     /// the flagged row no longer describes anything special.
-    func testAnEnhancedPhotoRevertedInPhotosIsMeasuredAgain() async throws {
+    @Test func testAnEnhancedPhotoRevertedInPhotosIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
@@ -157,13 +161,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         _ = try await analyzer.scores(for: [TestPHAsset(identifier: "enhanced")])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertEqual(measured, ["enhanced"])
+        #expect(measured == ["enhanced"])
     }
 
     /// An asset the library will not answer for is "cannot tell", not "the edit
     /// is gone": throwing away the only measurement of the original over a
     /// temporary read failure is worse than keeping it.
-    func testAnUnreadableEnhancedPhotoKeepsItsSignals() async throws {
+    @Test func testAnUnreadableEnhancedPhotoKeepsItsSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
             makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
@@ -179,12 +183,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         let scores = try await analyzer.scores(for: [TestPHAsset(identifier: "enhanced")])
 
         let measured = await inner.receivedIdentifiers
-        XCTAssertTrue(measured.isEmpty)
-        XCTAssertEqual(scores.first?.signals.globalSharpness ?? 0, 21, accuracy: 0.000_1)
+        #expect(measured.isEmpty)
+        let eps = 0.000_1
+        #expect(abs((scores.first?.signals.globalSharpness ?? 0) - 21) <= eps)
     }
 
     /// Only the flagged rows pay for the extra question.
-    func testAnOrdinaryCachedPhotoIsNotAskedAboutItsEdit() async throws {
+    @Test func testAnOrdinaryCachedPhotoIsNotAskedAboutItsEdit() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([makeCachedScore("cached", globalSharpness: 33)])
         let inner = RecordingQualityAnalyzer()
@@ -205,13 +210,13 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ])
 
         let identifiers = await asked.identifiers
-        XCTAssertTrue(identifiers.isEmpty)
+        #expect(identifiers.isEmpty)
     }
 
     /// A failed measurement is a moment, not a fact about the photo: caching it
     /// as fresh would mean one offline moment removes the asset from ranking
     /// for good.
-    func testATransientFailureIsRetriedOnTheNextRun() async throws {
+    @Test func testATransientFailureIsRetriedOnTheNextRun() async throws {
         let repository = MockPhotoQualityScoreRepository()
         let failing = FixedQualityAnalyzer(signals: .failed(.assetUnavailable))
         let asset = TestPHAsset(identifier: "offline")
@@ -221,10 +226,10 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
             analyzer: failing,
             config: config
         ).scores(for: [asset])
-        XCTAssertEqual(firstRun.first?.signals.analysisFailure, .assetUnavailable)
+        #expect(firstRun.first?.signals.analysisFailure == .assetUnavailable)
 
         let cached = try await repository.loadScores(localIdentifiers: ["offline"])
-        XCTAssertTrue(cached.isEmpty, "A failure must not occupy the cache")
+        #expect(cached.isEmpty, "A failure must not occupy the cache")
 
         let succeeding = RecordingQualityAnalyzer()
         let secondRun = try await CachingPhotoQualityAnalyzer(
@@ -234,11 +239,11 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
         ).scores(for: [asset])
 
         let measured = await succeeding.receivedIdentifiers
-        XCTAssertEqual(measured, ["offline"])
-        XCTAssertEqual(secondRun.first?.signals.isUsable, true)
+        #expect(measured == ["offline"])
+        #expect(secondRun.first?.signals.isUsable == true)
     }
 
-    func testAFailingCacheStillProducesScores() async throws {
+    @Test func testAFailingCacheStillProducesScores() async throws {
         struct CacheError: Error {}
         let repository = MockPhotoQualityScoreRepository()
         await repository.setLoadScoresError(CacheError())
@@ -247,7 +252,7 @@ final class CachingPhotoQualityAnalyzerTests: XCTestCase {
 
         let scores = try await analyzer.scores(for: [TestPHAsset(identifier: "a")])
 
-        XCTAssertEqual(scores.map(\.localIdentifier), ["a"])
+        #expect(scores.map(\.localIdentifier) == ["a"])
     }
 
     // MARK: - Helpers

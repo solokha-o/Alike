@@ -1,55 +1,50 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
 @MainActor
-final class PremiumAccessTests: XCTestCase {
-    func testFreeTierLocksUnconditionalPremiumFeatures() {
+@Suite struct PremiumAccessTests {
+    @Test func testFreeTierLocksUnconditionalPremiumFeatures() {
         let controller = PremiumAccessController()
 
-        XCTAssertEqual(controller.access(to: .screenshotCleanup), .requiresPremium)
-        XCTAssertEqual(controller.access(to: .blurredPhotoCleanup), .requiresPremium)
-        XCTAssertEqual(controller.access(to: .advancedFilters), .requiresPremium)
-        XCTAssertEqual(controller.access(to: .cleanupReminderCustomization), .requiresPremium)
+        #expect(controller.access(to: .screenshotCleanup) == .requiresPremium)
+        #expect(controller.access(to: .blurredPhotoCleanup) == .requiresPremium)
+        #expect(controller.access(to: .advancedFilters) == .requiresPremium)
+        #expect(controller.access(to: .cleanupReminderCustomization) == .requiresPremium)
     }
 
-    func testFreeTierAllowsThreeMonthlyScansAndLocksFourth() {
+    @Test func testFreeTierAllowsThreeMonthlyScansAndLocksFourth() {
         let controller = PremiumAccessController()
 
-        XCTAssertEqual(
-            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 0)),
-            .allowed
+        #expect(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 0)) == .allowed
         )
-        XCTAssertEqual(
-            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 1)),
-            .allowed
+        #expect(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 1)) == .allowed
         )
-        XCTAssertEqual(
-            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 2)),
-            .allowed
+        #expect(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 2)) == .allowed
         )
-        XCTAssertEqual(
-            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 3)),
-            .requiresPremium
+        #expect(
+            controller.access(to: .unlimitedScans, context: .scan(completedThisMonth: 3)) == .requiresPremium
         )
     }
 
-    func testFreeTierAllowsOnlySinglePhotoCleanup() {
+    @Test func testFreeTierAllowsOnlySinglePhotoCleanup() {
         let controller = PremiumAccessController()
 
-        XCTAssertEqual(
-            controller.access(to: .batchCleanup, context: .cleanupSelection(count: 1)),
-            .allowed
+        #expect(
+            controller.access(to: .batchCleanup, context: .cleanupSelection(count: 1)) == .allowed
         )
-        XCTAssertEqual(
-            controller.access(to: .batchCleanup, context: .cleanupSelection(count: 2)),
-            .requiresPremium
+        #expect(
+            controller.access(to: .batchCleanup, context: .cleanupSelection(count: 2)) == .requiresPremium
         )
     }
 
-    func testUnlockedFeatureOverridesFreePolicyWithoutUnlockingOtherFeatures() {
+    @Test func testUnlockedFeatureOverridesFreePolicyWithoutUnlockingOtherFeatures() {
         let controller = PremiumAccessController(unlockedFeatures: [.advancedFilters])
 
-        XCTAssertEqual(controller.access(to: .advancedFilters), .allowed)
-        XCTAssertEqual(controller.access(to: .screenshotCleanup), .requiresPremium)
+        #expect(controller.access(to: .advancedFilters) == .allowed)
+        #expect(controller.access(to: .screenshotCleanup) == .requiresPremium)
     }
 }
