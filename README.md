@@ -248,7 +248,7 @@ categories for it.
 
 [`Docs/Localization/README.md`](Docs/Localization/README.md) is the convention and the
 recipe for adding a language; [`native-review.md`](Docs/Localization/native-review.md) is
-the list of strings a native speaker still needs to sign off.
+the review log and the list of strings a native speaker still needs to sign off.
 
 ## 🤝 Contributing
 

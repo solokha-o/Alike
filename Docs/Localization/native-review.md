@@ -8,20 +8,23 @@ This file is the list of strings where a wrong word costs money or a review flag
 is what a reviewer should be handed. The key tables below apply to every shipped language;
 the per-language notes at the end say what to watch for in each.
 
-Terminology was matched against Apple's own platform vocabulary per language rather than
-a generic glossary — "Zuletzt gelöscht", "Supprimés récemment", "Eliminados
-recientemente", "Apagados recentemente", "Eliminati di recente", "Recent verwijderd",
-"Ostatnio usunięte", "Son Silinenler", "最近刪除", "المحذوفة مؤخرًا". A reviewer should check
-that choice as
-much as the grammar.
+Terminology follows the words Apple's iPhone User Guide uses in each language for the Photos
+app, checked on 2026-10-29 against "Delete or hide photos and videos on iPhone"
+(`support.apple.com/<locale>/guide/iphone/iphb4defbde9/ios`). The Recently Deleted album is
+"Zuletzt gelöscht" (`de`), "Supprimées récemment" (`fr`, `fr-CA`), "Eliminados" (`es`,
+`es-419`), "Apagados" (`pt-BR`), "Apagado" (`pt-PT`), "Eliminati di recente" (`it`), "Recent
+verwijderd" (`nl`), "Ostatnio usunięte" (`pl`), "Son Silinenler" (`tr`), "Недавно видалені"
+(`uk`), "最近刪除" (`zh-Hant`) and "المحذوفة مؤخرًا" (`ar`). Apple renames these between iOS
+releases, so check them again when a new iOS ships, and change every string that names the
+album at once — a partial rename shows the user two names for one album.
 
-Three tier 3 terminology calls are the least certain and should be confirmed first:
+Three tier 3 terminology calls were the least certain:
 
 | Term | Choice made | Why it is uncertain |
 |---|---|---|
-| Screenshot (`it`) | "screenshot" | Apple's Italian has used both "screenshot" and "istantanea schermo" across releases. Whichever the current iOS Photos album says is the one to use. |
-| Screenshot (`zh-Hant`) | 螢幕快照 | Apple's zh-TW term, but 螢幕截圖 is far more common in everyday Taiwanese usage. This is a house-style call, not a correctness one. |
-| Library (`tr`) | kitaplık | Apple's Turkish for a media library. "Kütüphane" reads more naturally to some, but would diverge from the Photos app. |
+| Screenshot (`it`) | "screenshot" | Confirmed 2026-10-29: Apple's Italian guide says "Scattare uno screenshot". |
+| Screenshot (`zh-Hant`) | 截圖 | Changed 2026-10-29 from 螢幕快照: Apple's zh-TW guide now says 拍攝截圖, and 截圖 is the everyday word. |
+| Library (`tr`) | kitaplık | Not confirmed. Apple's Turkish for a media library; "Kütüphane" reads more naturally to some, but would diverge from the Photos app. |
 
 ## Tier 1 — a wrong word here costs a refund or a rejection
 
@@ -183,20 +186,35 @@ entries state facts and have to agree with the app: the free allowance in `prici
   string reads awkwardly around the embedded Latin run. Glyphs also sit taller than Latin
   ones, so fixed-height labels are where clipping shows first.
 
+## Review log
+
+| Date | Locales | Who | What | Pull requests |
+|---|---|---|---|---|
+| 2026-10-27 | `ar`, `pl`, `tr`, `en-GB`, `fr-CA`, `pt-PT` | Codex (AI text review) | Tier 1 keys, tier 2 facts, App Store copy; `en-GB`, `fr-CA`, `pt-PT` added as full locales | #120, #138, #142, #143, #144, #145, #146 |
+| 2026-10-27 | `en-CA`, `en-AU`, `de`, `fr`, `it`, `nl`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Codex (AI text review) | Same scope; `en-CA`, `en-AU` added as full locales | #148–#158 |
+| 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
+
+Placeholders, plural categories and the disclosure text were checked mechanically for every
+locale, and `tools/full` passed on `develop` after the last merge.
+
 ## Not yet reviewed by a native speaker
+
+**Every locale has had an AI review pass. No locale has been signed off by a native
+speaker**, and no locale has been checked on a device — the `ar`, `pl` and `tr` device
+checks (layout, mirroring, plural forms at 1, 2, 5, 22, 25) are still open. The AI pass
+fixed wording and consistency; it cannot replace a person who reads the language every day.
 
 Task 44 added the same five languages to the App Store listing — subtitle, keywords,
 description, promotional text, release notes, the in-app-purchase display names, and the
-five marketing screenshot captions — and to the landing site. That copy was written the
-same way and carries the same caveat, with two places worth a reviewer's attention beyond
-the app strings: **keywords**, which are market research rather than translation and are
-the one field where a plausible-sounding word simply fails to be what people search for,
-and the **zh-Hant screenshot captions**, which are the only copy in the project set in
-Heiti TC rather than SF Pro and should be read at thumbnail size, not at full size.
+five marketing screenshot captions — and to the landing site. That copy carries the same
+caveat, with two places worth a reviewer's attention beyond the app strings: **keywords**,
+which are market research rather than translation and are the one field where a
+plausible-sounding word simply fails to be what people search for, and the **zh-Hant
+screenshot captions**, which are the only copy in the project set in Heiti TC rather than
+SF Pro and should be read at thumbnail size, not at full size.
 
-No language in the app has had a native pass. `ar` is the newest and carries the most
-novel risk, because it is the only language where a translation error and a *layout* error
-look the same to a non-reader; spend review budget there first, on the paywall and the
-deletion confirmations. After that, `pl` and `tr` — Polish because wrong plural forms are
-visible to every user on every count, Turkish because the paywall and deletion copy are the
-longest strings in the app in that language.
+When a native speaker is available, spend the budget in this order: `ar` first, because it
+is the only language where a translation error and a *layout* error look the same to a
+non-reader — the paywall and the deletion confirmations first; then `pl` and `tr` — Polish
+because wrong plural forms are visible to every user on every count, Turkish because the
+paywall and deletion copy are the longest strings in the app in that language.
