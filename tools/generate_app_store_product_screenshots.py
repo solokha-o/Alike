@@ -625,7 +625,7 @@ COPY = {
         ),
         (
             "BESTE OPNAME",
-            "De blijver is\nal gekozen",
+            "De beste foto\nis al gekozen",
             "Alike licht de beste opname uit. Jij hoeft alleen te bevestigen.",
         ),
         (
@@ -640,7 +640,7 @@ COPY = {
         ),
         (
             "ALTIJD OMKEERBAAR",
-            "Maak de blijver beter,\nhoud het origineel",
+            "Verbeter je foto,\nbehoud het origineel",
             "Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek.",
         ),
         (
