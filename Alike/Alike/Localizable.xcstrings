@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "稍後"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais tarde"
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更改敏感度後須重新掃描才會生效"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alterar a sensibilidade exige uma nova análise para ter efeito"
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "立即重新掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisar agora"
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "須重新掃描"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova análise necessária"
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "清理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza"
+          }
         }
       }
     },
@@ -568,6 +598,12 @@
             "state" : "translated",
             "value" : "掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análise"
+          }
         }
       }
     },
@@ -662,6 +698,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "設定"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definições"
           }
         }
       }

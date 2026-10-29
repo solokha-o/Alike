@@ -333,6 +333,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografia desfocada selecionada para Apagado?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld fotografias desfocadas selecionadas para Apagado?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -668,6 +692,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld captura de ecrã selecionada para Apagado?"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %1$lld capturas de ecrã selecionadas para Apagado?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -762,6 +810,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片清理"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza de fotografias desfocadas"
           }
         }
       }
@@ -858,6 +912,12 @@
             "state" : "translated",
             "value" : "模糊照片清理為進階功能"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A limpeza de fotografias desfocadas é uma funcionalidade premium"
+          }
         }
       }
     },
@@ -952,6 +1012,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模糊照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias desfocadas"
           }
         }
       }
@@ -1048,6 +1114,12 @@
             "state" : "translated",
             "value" : "根據裝置端分析，這些照片品質可能偏低。請先檢視再刪除。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias provavelmente de baixa qualidade, segundo a análise no dispositivo. Revê antes de apagar."
+          }
         }
       }
     },
@@ -1142,6 +1214,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到模糊照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma fotografia desfocada encontrada"
           }
         }
       }
@@ -1238,6 +1316,12 @@
             "state" : "translated",
             "value" : "找不到螢幕快照"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma captura de ecrã encontrada"
+          }
         }
       }
     },
@@ -1332,6 +1416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開模糊照片清理"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpeza de fotografias desfocadas"
           }
         }
       }
@@ -1428,6 +1518,12 @@
             "state" : "translated",
             "value" : "打開螢幕快照清理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir limpeza de capturas de ecrã"
+          }
         }
       }
     },
@@ -1522,6 +1618,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開模糊照片清理的進階功能頁面"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a oferta premium para a limpeza de fotografias desfocadas"
           }
         }
       }
@@ -1618,6 +1720,12 @@
             "state" : "translated",
             "value" : "打開螢幕快照清理的進階功能頁面"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a oferta premium para a limpeza de capturas de ecrã"
+          }
         }
       }
     },
@@ -1712,6 +1820,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫有變動、或還有照片需要檢視時，請重新掃描。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faz uma nova análise quando a tua fototeca mudar ou houver mais fotografias para rever."
           }
         }
       }
@@ -1808,6 +1922,12 @@
             "state" : "translated",
             "value" : "螢幕快照清理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpeza de capturas de ecrã"
+          }
         }
       }
     },
@@ -1902,6 +2022,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕快照清理為進階功能"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A limpeza de capturas de ecrã é uma funcionalidade premium"
           }
         }
       }
@@ -1998,6 +2124,12 @@
             "state" : "translated",
             "value" : "螢幕快照"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturas de ecrã"
+          }
         }
       }
     },
@@ -2092,6 +2224,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fotografia selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2188,6 +2326,12 @@
             "state" : "translated",
             "value" : "所選照片將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As fotografias selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
+          }
         }
       }
     },
@@ -2283,6 +2427,12 @@
             "state" : "translated",
             "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A captura de ecrã selecionada será removida da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficará em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até ser apagada definitivamente. Espaço recuperável estimado: %@."
+          }
         }
       }
     },
@@ -2377,6 +2527,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As capturas de ecrã selecionadas serão removidas da tua fototeca e dos outros dispositivos que usam Fotografias em iCloud. Ficarão em Apagado durante um máximo de 30 dias. O espaço pode não ser libertado até serem apagadas definitivamente. Espaço recuperável estimado: %@."
           }
         }
       }
@@ -2709,6 +2865,30 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "已選取 %1$lld 張，預估大小 %2$@。"
+                }
+              }
+            }
+          }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionada, tamanho estimado %2$@."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld selecionadas, tamanho estimado %2$@."
                 }
               }
             }
@@ -3048,6 +3228,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografia provavelmente desfocada disponível para revisão."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografias provavelmente desfocadas disponíveis para revisão."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3383,6 +3587,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld captura de ecrã disponível para revisão."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de ecrã disponíveis para revisão."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld capturas de ecrã disponíveis para revisão."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3477,6 +3705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫更新後請再掃描一次。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenta analisar novamente depois de a tua fototeca ser atualizada."
           }
         }
       }
@@ -3573,6 +3807,12 @@
             "state" : "translated",
             "value" : "解鎖模糊照片清理，透過同樣安全的確認流程，在刪除前先檢視可能品質不佳的照片。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloqueia a limpeza de fotografias desfocadas para rever as imagens provavelmente de baixa qualidade antes de as apagares, com a mesma confirmação segura."
+          }
         }
       }
     },
@@ -3667,6 +3907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloqueia a limpeza de capturas de ecrã para as reveres e apagares, com a mesma confirmação segura."
           }
         }
       }
@@ -3763,6 +4009,12 @@
             "state" : "translated",
             "value" : "高"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta"
+          }
         }
       }
     },
@@ -3858,6 +4110,12 @@
             "state" : "translated",
             "value" : "低"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baixa"
+          }
         }
       }
     },
@@ -3952,6 +4210,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "中"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Média"
           }
         }
       }

@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "開啟 Alike 清理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir a limpeza do Alike"
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Alike 中開啟此列表"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre esta lista no Alike"
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "在 Alike 繼續檢視"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar a tua revisão no Alike"
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟 Alike 升級畫面"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre o ecrã de subscrição do Alike"
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "全部清理完畢"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo limpo"
+          }
         }
       }
     },
@@ -567,6 +597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可清理 %1$@"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ para limpar"
           }
         }
       }
@@ -663,6 +699,12 @@
             "state" : "translated",
             "value" : "檢視：%1$lld / %2$lld"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisão: %1$lld de %2$lld"
+          }
         }
       }
     },
@@ -757,6 +799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
           }
         }
       }
@@ -853,6 +901,12 @@
             "state" : "translated",
             "value" : "繼續"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
         }
       }
     },
@@ -947,6 +1001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rever"
           }
         }
       }
@@ -1043,6 +1103,12 @@
             "state" : "translated",
             "value" : "掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisar"
+          }
         }
       }
     },
@@ -1138,6 +1204,12 @@
             "state" : "translated",
             "value" : "模糊"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desfocadas"
+          }
         }
       }
     },
@@ -1232,6 +1304,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已鎖定"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloqueado"
           }
         }
       }
@@ -1568,6 +1646,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografias"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografia"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld fotografias"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1662,6 +1764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "螢幕截圖"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturas de ecrã"
           }
         }
       }
@@ -1758,6 +1866,12 @@
             "state" : "translated",
             "value" : "相似"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semelhantes"
+          }
         }
       }
     },
@@ -1853,6 +1967,12 @@
             "state" : "translated",
             "value" : "已全部處理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo em dia"
+          }
         }
       }
     },
@@ -1947,6 +2067,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "繼續檢視"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar revisão"
           }
         }
       }
@@ -2279,6 +2405,30 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld 個群組"
+                }
+              }
+            }
+          }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupos"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupo"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupos"
                 }
               }
             }
@@ -2618,6 +2768,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Resta %1$lld grupo"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Restam %1$lld grupos"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Restam %1$lld grupos"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2712,6 +2886,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已檢視組數"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupos revistos"
           }
         }
       }
@@ -2808,6 +2988,12 @@
             "state" : "translated",
             "value" : "上次檢視 %@"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última revisão em %@"
+          }
         }
       }
     },
@@ -2902,6 +3088,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描於 %@"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisado em %@"
           }
         }
       }
@@ -2998,6 +3190,12 @@
             "state" : "translated",
             "value" : "圖庫已變更"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fototeca mudou"
+          }
         }
       }
     },
@@ -3093,6 +3291,12 @@
             "state" : "translated",
             "value" : "僅限已分享的照片"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para as fotografias partilhadas"
+          }
         }
       }
     },
@@ -3187,6 +3391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "允許取用照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite o acesso às fotografias"
           }
         }
       }
@@ -3523,6 +3733,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "de %1$lld grupos"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "de %1$lld grupo"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "de %1$lld grupos"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3617,6 +3851,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "/ %1$lld"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de %1$lld"
           }
         }
       }
@@ -3713,6 +3953,12 @@
             "state" : "translated",
             "value" : "開啟 Alike"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre o Alike"
+          }
         }
       }
     },
@@ -3807,6 +4053,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可清理空間"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disponível para limpar"
           }
         }
       }
@@ -3903,6 +4155,12 @@
             "state" : "translated",
             "value" : "掃描你的圖庫"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisa a tua fototeca"
+          }
         }
       }
     },
@@ -3997,6 +4255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "佔照片 %2$@ 的 %1$@"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ dos teus %2$@ de fotografias"
           }
         }
       }
@@ -4333,6 +4597,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupo de fotografias semelhantes"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupos de fotografias semelhantes"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld grupos de fotografias semelhantes"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -4427,6 +4715,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可以釋出多少空間，以及尚未完成的檢視。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quanto espaço podes recuperar e a revisão que deixaste por concluir."
           }
         }
       }
@@ -4523,6 +4817,12 @@
             "state" : "translated",
             "value" : "Alike"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
         }
       }
     },
@@ -4617,6 +4917,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一眼掌握相似群組、螢幕截圖與模糊照片。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupos de fotografias semelhantes, capturas de ecrã e fotografias desfocadas num relance."
           }
         }
       }
@@ -4713,6 +5019,12 @@
             "state" : "translated",
             "value" : "Alike 圖庫"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fototeca do Alike"
+          }
         }
       }
     },
@@ -4807,6 +5119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫總覽"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visão geral da fototeca"
           }
         }
       }

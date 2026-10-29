@@ -541,38 +541,38 @@ COPY = {
     "pt-PT": [
         (
             "NO DISPOSITIVO",
-            "Encontre as fotos\nque se parecem",
-            "O Alike analisa a sua fototeca com Apple Vision, no seu iPhone.",
+            "Encontra fotografias\nparecidas",
+            "O Alike analisa a tua fototeca com Apple Vision, no teu iPhone.",
         ),
         (
             "UMA SÓ FILA",
             "Cada grupo,\npronto a rever",
-            "Os grupos chegam com selos: vê sempre o que falta.",
+            "Os grupos têm indicadores de revisão: vês sempre o que falta.",
         ),
         (
-            "MELHOR FOTO",
-            "A que fica\njá está escolhida",
-            "O Alike destaca a melhor foto de cada grupo. Só tem de confirmar.",
+            "MELHOR FOTOGRAFIA",
+            "A melhor fotografia\njá está escolhida",
+            "O Alike destaca a melhor fotografia de cada grupo. Só tens de confirmar.",
         ),
         (
             "COMPARAR",
-            "Reveja antes\nde limpar",
-            "Revisão em tamanho real. Nada é eliminado sem a sua confirmação.",
+            "Revê antes\nde limpar",
+            "Revê em tamanho real. Nada é apagado sem a tua confirmação.",
         ),
         (
             "ESPAÇO LIVRE",
-            "Recupere os\ngigabytes",
-            "Fotos selecionadas e poupança estimada, enquanto limpa.",
+            "Recupera os\ngigabytes",
+            "Fotografias selecionadas e espaço recuperável estimado, enquanto limpas.",
         ),
         (
             "SEMPRE REVERSÍVEL",
-            "Melhore a que fica,\nmantenha o original",
-            "Um toque melhora a melhor foto. Outro repõe o original — que nunca sai da sua fototeca.",
+            "Melhora a fotografia,\nmantém o original",
+            "Um toque melhora a melhor fotografia. Outro repõe o original, que permanece na tua fototeca.",
         ),
         (
             "ECRÃ PRINCIPAL",
             "Visível sem\nabrir o Alike",
-            "Dois widgets: o espaço que pode recuperar e o que a fototeca ainda guarda.",
+            "Dois widgets: o espaço que podes recuperar e um resumo da tua fototeca.",
         ),
     ],
     "it": [

@@ -76,6 +76,12 @@
             "value" : "O Alike anexou, sem alterações, o diagnóstico da falha que o iOS registrou no meu dispositivo: o rastreamento, as versões do app e do iOS, o modelo do dispositivo e, em algumas falhas, a mensagem de erro. Não contém fotos."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike anexou, sem alterações, o diagnóstico da falha que o iOS registou no meu dispositivo: o rastreio da pilha, as versões da app e do iOS, o modelo do dispositivo e, em algumas falhas, a mensagem de erro. Não contém fotografias."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169,6 +175,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Envie este relatório de falha para:"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envia este relatório de falha para:"
           }
         },
         "tr" : {
@@ -266,6 +278,12 @@
             "value" : "O relatório é o diagnóstico da falha registrado pelo iOS: o rastreamento, as versões do app e do iOS, o modelo do seu dispositivo e, em algumas falhas, a mensagem de erro. O Alike o envia como está, sem filtrar. Não contém fotos."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O relatório contém o diagnóstico da falha registado pelo iOS: o rastreio da pilha, as versões da app e do iOS, o modelo do teu dispositivo e, em algumas falhas, a mensagem de erro. O Alike envia-o sem alterações nem filtros. Não contém fotografias."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -361,6 +379,12 @@
             "value" : "Enviar um relatório da falha ao desenvolvedor? Ele abre como um e-mail, então você pode ler antes de enviar."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queres enviar um relatório da falha ao programador? O relatório abre num e-mail, para o poderes ler antes de o enviares."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -451,6 +475,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agora não"
@@ -551,6 +581,12 @@
             "value" : "Enviar relatório"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar relatório"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -646,6 +682,12 @@
             "value" : "Não há uma conta do Mail configurada, então o relatório passa pela folha de compartilhamento. Escolha um app de e-mail ali e envie para:"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há nenhuma conta configurada no Mail, por isso o relatório abre na folha de partilha. Escolhe uma app de e-mail e envia-o para:"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -736,6 +778,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike fechou inesperadamente"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "O Alike fechou inesperadamente"

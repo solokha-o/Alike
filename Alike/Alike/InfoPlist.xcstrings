@@ -22,6 +22,12 @@
             "state" : "new",
             "value" : "Alike"
           }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
         }
       }
     },
@@ -99,6 +105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O Alike analisa sua fototeca para encontrar fotos visualmente semelhantes e pode aprimorar a foto que você escolher — o original é sempre mantido, então dá para reverter."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike analisa a tua fototeca para encontrar imagens visualmente semelhantes e pode melhorar uma fotografia que escolhas — mantendo sempre o original para poderes reverter a alteração."
           }
         },
         "tr" : {

@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "Alike 為你完成的清理喝采"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike celebra a tua limpeza concluída"
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 找到可清理的項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike encontrou oportunidades de limpeza"
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "Alike 已備妥可清理的項目供你檢視"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike tem oportunidades de limpeza prontas para revisão"
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 已準備好開始清理"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike está pronto para a limpeza"
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "Alike 需要取用照片圖庫才能繼續"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike precisa de acesso à tua fototeca para continuar"
+          }
         }
       }
     },
@@ -567,6 +597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 發現你的圖庫有新照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike notou fotografias novas na tua fototeca"
           }
         }
       }
@@ -663,6 +699,12 @@
             "state" : "translated",
             "value" : "Alike 掃描時發生問題"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike teve um problema com a análise"
+          }
         }
       }
     },
@@ -757,6 +799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 已準備好協助你整理照片圖庫"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike está pronto para ajudar a organizar a tua fototeca"
           }
         }
       }
@@ -853,6 +901,12 @@
             "state" : "translated",
             "value" : "Alike 表示你的照片圖庫都整理好了"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike indica que a tua fototeca está atualizada"
+          }
         }
       }
     },
@@ -948,6 +1002,12 @@
             "state" : "translated",
             "value" : "Alike 正在尋找相似的照片"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike a procurar fotografias semelhantes"
+          }
         }
       }
     },
@@ -1042,6 +1102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇顯示照片時要使用幾欄"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe quantas colunas usar para mostrar as fotografias"
           }
         }
       }
@@ -1378,6 +1444,30 @@
               }
             }
           }
+        },
+        "pt-PT": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld colunas"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld coluna"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld colunas"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1472,6 +1562,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "欄數"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colunas"
           }
         }
       }
@@ -1568,6 +1664,12 @@
             "state" : "translated",
             "value" : "格線欄數"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colunas da grelha"
+          }
         }
       }
     },
@@ -1662,6 +1764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法預覽照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização da fotografia indisponível"
           }
         }
       }
@@ -1758,6 +1866,12 @@
             "state" : "translated",
             "value" : "重試"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar novamente"
+          }
         }
       }
     },
@@ -1852,6 +1966,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "再次嘗試載入照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenta carregar a fotografia novamente"
           }
         }
       }

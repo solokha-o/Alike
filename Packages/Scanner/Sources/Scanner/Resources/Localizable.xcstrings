@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "掃描新照片"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisar fotografias novas"
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "偵測到新照片。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foram detetadas novas fotografias."
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "重新掃描以更新可清理的項目。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisa novamente para atualizar as tuas oportunidades de limpeza."
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開始掃描"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar análise"
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "隨時可以開始。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo pronto quando quiseres."
+          }
         }
       }
     },
@@ -567,6 +597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描你的照片圖庫，找出可清理的項目。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisa a tua fototeca para encontrar oportunidades de limpeza."
           }
         }
       }
@@ -663,6 +699,12 @@
             "state" : "translated",
             "value" : "使用說明"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como utilizar"
+          }
         }
       }
     },
@@ -757,6 +799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開使用說明與清理流程訣竅"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir as instruções de utilização e as dicas de limpeza"
           }
         }
       }
@@ -853,6 +901,12 @@
             "state" : "translated",
             "value" : "掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análise"
+          }
         }
       }
     },
@@ -947,6 +1001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描期間可以切換標籤頁。掃描完成後，清理結果會自動更新。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podes mudar de separador durante a análise. Os teus resultados de limpeza serão atualizados no fim."
           }
         }
       }
@@ -1043,6 +1103,12 @@
             "state" : "translated",
             "value" : "可清理的項目已備妥"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As oportunidades de limpeza estão prontas"
+          }
         }
       }
     },
@@ -1137,6 +1203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這次掃描沒能完成。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não consegui concluir esta análise."
           }
         }
       }
@@ -1233,6 +1305,12 @@
             "state" : "translated",
             "value" : "你的圖庫已是最新狀態"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tua fototeca está atualizada"
+          }
         }
       }
     },
@@ -1327,6 +1405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這次掃描沒有找到可清理的項目。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma oportunidade de limpeza foi encontrada nesta análise."
           }
         }
       }
@@ -1423,6 +1507,12 @@
             "state" : "translated",
             "value" : "重試"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar novamente"
+          }
         }
       }
     },
@@ -1517,6 +1607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視清理項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rever limpeza"
           }
         }
       }
@@ -1613,6 +1709,12 @@
             "state" : "translated",
             "value" : "在移除任何項目之前，先檢視每項建議。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revê cada sugestão antes que algo seja removido."
+          }
         }
       }
     },
@@ -1707,6 +1809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視現有清理項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rever limpeza existente"
           }
         }
       }
@@ -1803,6 +1911,12 @@
             "state" : "translated",
             "value" : "再次掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisar novamente"
+          }
         }
       }
     },
@@ -1897,6 +2011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在掃描你的照片圖庫"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A analisar a tua fototeca"
           }
         }
       }
@@ -1993,6 +2113,12 @@
             "state" : "translated",
             "value" : "模糊照片"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias desfocadas"
+          }
         }
       }
     },
@@ -2087,6 +2213,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "外觀相似的照片群組。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupos de fotografias parecidas."
           }
         }
       }
@@ -2183,6 +2315,12 @@
             "state" : "translated",
             "value" : "上次掃描"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última análise"
+          }
         }
       }
     },
@@ -2277,6 +2415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "圖庫狀態"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estado da fototeca"
           }
         }
       }
@@ -2373,6 +2517,12 @@
             "state" : "translated",
             "value" : "可能品質不佳、待檢視的照片。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias provavelmente de baixa qualidade para rever."
+          }
         }
       }
     },
@@ -2467,6 +2617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "須更新"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "É necessário atualizar"
           }
         }
       }
@@ -2563,6 +2719,12 @@
             "state" : "translated",
             "value" : "免費掃描還剩 %1$d 次，共 %2$d 次"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análises gratuitas restantes: %1$d de %2$d"
+          }
         }
       }
     },
@@ -2657,6 +2819,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開升級選項"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre as opções do plano Pro"
           }
         }
       }
@@ -2753,6 +2921,12 @@
             "state" : "translated",
             "value" : "可清理項目"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oportunidades"
+          }
         }
       }
     },
@@ -2847,6 +3021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可回收空間"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuperável"
           }
         }
       }
@@ -2943,6 +3123,12 @@
             "state" : "translated",
             "value" : "掃描進度"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progresso da análise"
+          }
         }
       }
     },
@@ -3037,6 +3223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可能已不再需要的螢幕擷取畫面。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturas de ecrã que poderão já não ser úteis."
           }
         }
       }
@@ -3133,6 +3325,12 @@
             "state" : "translated",
             "value" : "螢幕快照"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturas de ecrã"
+          }
         }
       }
     },
@@ -3227,6 +3425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "相似照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografias semelhantes"
           }
         }
       }
@@ -3323,6 +3527,12 @@
             "state" : "translated",
             "value" : "這些結果來自照片圖庫變動之前。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estes resultados são anteriores à última mudança na tua fototeca."
+          }
         }
       }
     },
@@ -3417,6 +3627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用 Alike Pro 解鎖更多功能"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtém mais com o Alike Pro"
           }
         }
       }
@@ -3513,6 +3729,12 @@
             "state" : "translated",
             "value" : "解鎖無限次掃描、智慧清理與批次操作。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloqueia análises ilimitadas, limpeza inteligente e ações em lote."
+          }
         }
       }
     },
@@ -3607,6 +3829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會檢查哪些項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que o Alike verifica"
           }
         }
       }

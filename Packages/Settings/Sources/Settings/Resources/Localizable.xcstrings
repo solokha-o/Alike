@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "部分資料可能已被移除。請再試一次以完成刪除 Alike 資料。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguns dados podem já ter sido removidos. Tenta novamente para concluir a eliminação dos teus dados do Alike."
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會學習你選為「最佳照片」的照片，藉此改善未來的排序。重設會忘記這些學習內容並回到預設排序—任何資料都不會離開你的裝置。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike Pro está ativo"
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "Alike Pro 已啟用"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tua subscrição do Alike Pro foi restaurada."
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已回復你的 Alike Pro 訂閱項目。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análise"
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "分析"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podes continuar a usar o Alike Free."
+          }
         }
       }
     },
@@ -567,6 +597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最佳照片個人化"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
           }
         }
       }
@@ -663,6 +699,12 @@
             "state" : "translated",
             "value" : "你可以繼續使用 Alike Free。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alterar idioma"
+          }
         }
       }
     },
@@ -757,6 +799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progresso, sessões e histórico de limpeza"
           }
         }
       }
@@ -853,6 +901,12 @@
             "state" : "translated",
             "value" : "更改語言"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lembrete de limpeza"
+          }
         }
       }
     },
@@ -947,6 +1001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "清理進度、工作階段與歷史記錄"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível atualizar o teu lembrete de limpeza. Tenta novamente."
           }
         }
       }
@@ -1043,6 +1103,12 @@
             "state" : "translated",
             "value" : "清理提醒"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falar com o programador"
+          }
         }
       }
     },
@@ -1137,6 +1203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法更新你的清理提醒。請再試一次。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível apagar os dados do Alike"
           }
         }
       }
@@ -1233,6 +1305,12 @@
             "state" : "translated",
             "value" : "聯絡開發者"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível restaurar as compras"
+          }
         }
       }
     },
@@ -1327,6 +1405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法刪除 Alike 資料"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível atualizar o lembrete"
           }
         }
       }
@@ -1423,6 +1507,12 @@
             "state" : "translated",
             "value" : "無法重設「最佳照片」學習內容"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizar dia e hora"
+          }
         }
       }
     },
@@ -1517,6 +1607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法回復購買項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dados e privacidade"
           }
         }
       }
@@ -1613,6 +1709,12 @@
             "state" : "translated",
             "value" : "無法更新提醒"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depuração"
+          }
         }
       }
     },
@@ -1707,6 +1809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自訂日期與時間"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar dados do Alike"
           }
         }
       }
@@ -1803,6 +1911,12 @@
             "state" : "translated",
             "value" : "資料與隱私權"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar todos os dados do Alike?"
+          }
         }
       }
     },
@@ -1897,6 +2011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "除錯"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A apagar..."
           }
         }
       }
@@ -1993,6 +2113,12 @@
             "state" : "translated",
             "value" : "刪除 Alike 資料"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativar o acesso premium à limpeza de fotografias desfocadas em builds de depuração"
+          }
         }
       }
     },
@@ -2087,6 +2213,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "要刪除所有 Alike 資料嗎？"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativar a personalização premium do lembrete em builds de depuração"
           }
         }
       }
@@ -2183,6 +2315,12 @@
             "state" : "translated",
             "value" : "正在刪除…"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativar o acesso premium à limpeza de capturas de ecrã em builds de depuração"
+          }
         }
       }
     },
@@ -2277,6 +2415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在除錯版本中啟用模糊照片清理的進階權限"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativa um lembrete semanal para voltar e continuar a limpeza"
           }
         }
       }
@@ -2373,6 +2517,12 @@
             "state" : "translated",
             "value" : "在除錯版本中啟用提醒排程自訂的進階權限"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os lembretes gratuitos estão agendados para %@. Desbloqueia o premium para escolheres o dia e a hora."
+          }
         }
       }
     },
@@ -2467,6 +2617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在除錯版本中啟用螢幕快照清理的進階權限"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferências de grelha, sensibilidade e lembretes"
           }
         }
       }
@@ -2563,6 +2719,12 @@
             "state" : "translated",
             "value" : "開啟每週提醒，回來繼續清理"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma sensibilidade maior encontra mais fotografias semelhantes, mas pode incluir imagens menos parecidas"
+          }
         }
       }
     },
@@ -2657,6 +2819,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "忘記 Alike 從你「最佳照片」選擇中學到的內容，並回到預設排序。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como usar"
           }
         }
       }
@@ -2753,6 +2921,12 @@
             "state" : "translated",
             "value" : "免費提醒的排程為 %@。解鎖進階功能即可自選日期與時間。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
         }
       }
     },
@@ -2847,6 +3021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "格線、敏感度與提醒偏好設定"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informações legais"
           }
         }
       }
@@ -2943,6 +3123,12 @@
             "state" : "translated",
             "value" : "敏感度越高，找到的相似照片越多，但也可能納入相似度較低的影像"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análises gratuitas por mês"
+          }
         }
       }
     },
@@ -3037,6 +3223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用說明"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma subscrição ativa do Alike Pro foi encontrada."
           }
         }
       }
@@ -3133,6 +3325,12 @@
             "state" : "translated",
             "value" : "語言"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As notificações do Alike estão desativadas. Ativa-as nas Definições para receberes o teu lembrete semanal de limpeza."
+          }
         }
       }
     },
@@ -3227,6 +3425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "法律資訊"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -3323,6 +3527,12 @@
             "state" : "translated",
             "value" : "每月免費掃描額度"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir a política de privacidade do Alike no navegador"
+          }
         }
       }
     },
@@ -3417,6 +3627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到使用中的 Alike Pro 訂閱項目。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir os termos de utilização do Alike no navegador"
           }
         }
       }
@@ -3513,6 +3729,12 @@
             "state" : "translated",
             "value" : "Alike 的通知已關閉。請到「設定」中開啟，以接收每週清理提醒。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir o e-mail para falar com o programador"
+          }
         }
       }
     },
@@ -3607,6 +3829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "好"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir os detalhes premium para agendar lembretes de limpeza personalizados"
           }
         }
       }
@@ -3703,6 +3931,12 @@
             "state" : "translated",
             "value" : "在瀏覽器中打開 Alike 隱私權政策"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Definições"
+          }
         }
       }
     },
@@ -3797,6 +4031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在瀏覽器中打開 Alike 使用條款"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir as definições do sistema para alterar o idioma da app"
           }
         }
       }
@@ -3893,6 +4133,12 @@
             "state" : "translated",
             "value" : "開啟 App Store 頁面以撰寫評論"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir as instruções de utilização e as dicas de limpeza"
+          }
         }
       }
     },
@@ -3987,6 +4233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開郵件編寫視窗以聯絡開發者"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar definitivamente os dados do Alike após a confirmação"
           }
         }
       }
@@ -4083,6 +4335,12 @@
             "state" : "translated",
             "value" : "打開自訂清理提醒排程的進階功能詳細資訊"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso às fotografias e subscrição do Alike Pro"
+          }
         }
       }
     },
@@ -4177,6 +4435,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開「設定」"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta ação nunca apaga a tua fototeca."
           }
         }
       }
@@ -4273,6 +4537,12 @@
             "state" : "translated",
             "value" : "打開系統設定以更改 App 語言"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As tuas fotografias e os elementos em Apagado"
+          }
         }
       }
     },
@@ -4367,6 +4637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打開使用說明與清理流程訣竅"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica a tua ligação e tenta restaurar novamente."
           }
         }
       }
@@ -4463,6 +4739,12 @@
             "state" : "translated",
             "value" : "確認後永久刪除 Alike 資料"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O premium permite escolher um lembrete semanal personalizado."
+          }
         }
       }
     },
@@ -4557,6 +4839,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "照片取用權與 Alike Pro 訂閱項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de Privacidade"
           }
         }
       }
@@ -4653,6 +4941,12 @@
             "state" : "translated",
             "value" : "此操作絕不會刪除你的照片圖庫。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a página da App Store para escrever uma avaliação"
+          }
         }
       }
     },
@@ -4747,6 +5041,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的照片與「最近刪除」中的項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avaliar na App Store"
           }
         }
       }
@@ -4843,6 +5143,12 @@
             "state" : "translated",
             "value" : "請檢查網路連線，然後再次嘗試回復。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dia do lembrete"
+          }
         }
       }
     },
@@ -4937,6 +5243,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "進階功能讓你自訂每週提醒排程。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agendamento do lembrete"
           }
         }
       }
@@ -5033,6 +5345,12 @@
             "state" : "translated",
             "value" : "隱私權政策"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ às %2$@"
+          }
         }
       }
     },
@@ -5127,6 +5445,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "前往 App Store 評分"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora do lembrete"
           }
         }
       }
@@ -5223,6 +5547,12 @@
             "state" : "translated",
             "value" : "提醒日期"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rever e apagar definitivamente os dados que o Alike guarda neste dispositivo"
+          }
         }
       }
     },
@@ -5317,6 +5647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "提醒排程"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultados das análises e caches de análise"
           }
         }
       }
@@ -5413,6 +5749,12 @@
             "state" : "translated",
             "value" : "%1$@ %2$@"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensibilidade"
+          }
         }
       }
     },
@@ -5507,6 +5849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "提醒時間"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definições"
           }
         }
       }
@@ -5603,6 +5951,12 @@
             "state" : "translated",
             "value" : "重設「最佳照片」學習內容"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partilhar app"
+          }
         }
       }
     },
@@ -5697,6 +6051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "要重設「最佳照片」學習內容嗎？"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partilhar a app com as opções disponíveis"
           }
         }
       }
@@ -5793,6 +6153,12 @@
             "state" : "translated",
             "value" : "重設中…"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscrição"
+          }
         }
       }
     },
@@ -5887,6 +6253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視並永久刪除 Alike 儲存在這部裝置上的資料"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suporte"
           }
         }
       }
@@ -5983,6 +6355,12 @@
             "state" : "translated",
             "value" : "掃描結果與分析快取"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termos de Utilização"
+          }
         }
       }
     },
@@ -6077,6 +6455,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "敏感度"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta ação não pode ser desfeita. O Alike mostrará a introdução novamente quando a eliminação terminar."
           }
         }
       }
@@ -6173,6 +6557,12 @@
             "state" : "translated",
             "value" : "設定"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta substituição está disponível apenas em builds de depuração e afeta o controlo premium local."
+          }
         }
       }
     },
@@ -6267,6 +6657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "分享 App"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isto apaga definitivamente os resultados locais, o histórico de limpeza e as preferências do Alike. As tuas fotografias e a tua subscrição mantêm-se."
           }
         }
       }
@@ -6363,6 +6759,12 @@
             "state" : "translated",
             "value" : "使用可用的分享選項來分享 App"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar novamente"
+          }
         }
       }
     },
@@ -6457,6 +6859,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "訂閱項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de filtros avançados"
           }
         }
       }
@@ -6553,6 +6961,12 @@
             "state" : "translated",
             "value" : "支援"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de limpeza em lote"
+          }
         }
       }
     },
@@ -6647,6 +7061,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用條款"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de limpeza de fotografias desfocadas"
           }
         }
       }
@@ -6743,6 +7163,12 @@
             "state" : "translated",
             "value" : "此操作無法還原。刪除完成後，Alike 會重新播放介紹流程。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de lembrete personalizado"
+          }
         }
       }
     },
@@ -6837,6 +7263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這會讓 Alike 忘記從你「最佳照片」選擇中學到的內容，並回到預設排序。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de limpeza de capturas de ecrã"
           }
         }
       }
@@ -6933,6 +7365,12 @@
             "state" : "translated",
             "value" : "此覆寫僅在除錯版本中可用，並會影響本機的進階功能限制。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear a funcionalidade premium de análises ilimitadas"
+          }
         }
       }
     },
@@ -7027,6 +7465,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這會永久刪除 Alike 的本機結果、清理歷史記錄與偏好設定。你的照片與訂閱項目會保留。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versão"
           }
         }
       }
@@ -7123,6 +7567,12 @@
             "state" : "translated",
             "value" : "再試一次"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lembrete semanal de limpeza"
+          }
         }
       }
     },
@@ -7217,6 +7667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖「進階篩選」進階功能"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que será apagado"
           }
         }
       }
@@ -7313,6 +7769,12 @@
             "state" : "translated",
             "value" : "解鎖「批次清理」進階功能"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que permanece"
+          }
         }
       }
     },
@@ -7407,6 +7869,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖「模糊照片清理」進階功能"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike aprende quais as fotografias que escolhes como Melhor Fotografia para melhorar as classificações futuras. Ao repor a aprendizagem, o Alike esquece essas escolhas e volta à classificação predefinida — nada é enviado para fora do teu dispositivo."
           }
         }
       }
@@ -7503,6 +7971,12 @@
             "state" : "translated",
             "value" : "解鎖「自訂提醒排程」進階功能"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalização da Melhor Fotografia"
+          }
         }
       }
     },
@@ -7597,6 +8071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解鎖「螢幕快照清理」進階功能"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível repor a aprendizagem da Melhor Fotografia"
           }
         }
       }
@@ -7693,6 +8173,12 @@
             "state" : "translated",
             "value" : "解鎖「無限次掃描」進階功能"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esquecer o que o Alike aprendeu com as tuas escolhas de Melhor Fotografia e voltar à classificação predefinida."
+          }
         }
       }
     },
@@ -7787,6 +8273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repor aprendizagem da Melhor Fotografia"
           }
         }
       }
@@ -7883,6 +8375,12 @@
             "state" : "translated",
             "value" : "每週清理提醒"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repor a aprendizagem da Melhor Fotografia?"
+          }
         }
       }
     },
@@ -7977,6 +8475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "將刪除的項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A repor..."
           }
         }
       }
@@ -8073,6 +8577,12 @@
             "state" : "translated",
             "value" : "將保留的項目"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isto faz o Alike esquecer o que aprendeu com as tuas escolhas de Melhor Fotografia e voltar à classificação predefinida."
+          }
         }
       }
     },
@@ -8167,6 +8677,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "「最佳照片」個人化設定可能未完全重設，請再試一次。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A personalização da Melhor Fotografia pode não ter sido totalmente reposta. Tenta novamente."
           }
         }
       }

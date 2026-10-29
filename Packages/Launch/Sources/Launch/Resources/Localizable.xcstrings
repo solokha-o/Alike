@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "Alike"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
+          }
         }
       }
     }

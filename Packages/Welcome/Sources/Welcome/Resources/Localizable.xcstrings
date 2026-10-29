@@ -93,6 +93,12 @@
             "state" : "translated",
             "value" : "已授予取用權"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso concedido"
+          }
         }
       }
     },
@@ -187,6 +193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike"
           }
         }
       }
@@ -283,6 +295,12 @@
             "state" : "translated",
             "value" : "已刪除 Alike 資料"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dados do Alike apagados"
+          }
         }
       }
     },
@@ -377,6 +395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 需要取用照片，才能掃描你的圖庫、準備清理建議，並在你選擇套用時儲存優化結果。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike precisa de acesso às fotografias para analisar a tua fototeca, preparar sugestões de limpeza e guardar uma melhoria quando escolhes aplicá-la."
           }
         }
       }
@@ -473,6 +497,12 @@
             "state" : "translated",
             "value" : "Alike 絕不會自動刪除照片。你會先檢視建議，並確認每一項清理操作。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Alike nunca apaga fotografias automaticamente. Primeiro, revês as sugestões e confirmas cada ação de limpeza."
+          }
         }
       }
     },
@@ -567,6 +597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike，你的照片偵探"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike, o teu detetive de fotografias"
           }
         }
       }
@@ -663,6 +699,12 @@
             "state" : "translated",
             "value" : "分析全程留在你的裝置上，也不會自動刪除任何內容。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A análise fica no teu dispositivo, e nada é apagado automaticamente."
+          }
         }
       }
     },
@@ -757,6 +799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "返回"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltar"
           }
         }
       }
@@ -853,6 +901,12 @@
             "state" : "translated",
             "value" : "你之後可以在「設定」中更改取用權；未經你確認，Alike 不會刪除任何內容。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podes alterar o acesso depois nas Definições, e o Alike nunca apaga nada sem a tua confirmação."
+          }
         }
       }
     },
@@ -947,6 +1001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你可以現在授予取用權，等準備好時再回來清理。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podes conceder acesso agora e voltar à limpeza quando estiveres pronto."
           }
         }
       }
@@ -1043,6 +1103,12 @@
             "state" : "translated",
             "value" : "安心整理你的圖庫"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpa a tua fototeca com confiança"
+          }
         }
       }
     },
@@ -1137,6 +1203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "比較照片，留下對你有意義的那幾張。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara fotografias e mantém as que são importantes para ti."
           }
         }
       }
@@ -1233,6 +1305,12 @@
             "state" : "translated",
             "value" : "繼續"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
         }
       }
     },
@@ -1327,6 +1405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "準備好繼續時，請到「設定」中開啟照片取用權。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativa o acesso às fotografias nas Definições quando estiveres pronto para continuar."
           }
         }
       }
@@ -1423,6 +1507,12 @@
             "state" : "translated",
             "value" : "每一次刪除都經過確認、清楚可見，完全由你作主。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada eliminação fica confirmada, visível e totalmente nas tuas mãos."
+          }
         }
       }
     },
@@ -1517,6 +1607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找出可清理的項目"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontra oportunidades de limpeza"
           }
         }
       }
@@ -1613,6 +1709,12 @@
             "state" : "translated",
             "value" : "將外觀相似的照片和其他值得檢視的項目分組。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrupa fotografias visualmente semelhantes e outros elementos que merecem ser revistos."
+          }
         }
       }
     },
@@ -1707,6 +1809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 如何幫上忙"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como o Alike ajuda"
           }
         }
       }
@@ -1803,6 +1911,12 @@
             "state" : "translated",
             "value" : "在清理之前，先了解你能釋出多少空間。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descobre quanto espaço podes recuperar antes de limpar."
+          }
         }
       }
     },
@@ -1897,6 +2011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已刪除本機的 Alike 資料。你的照片與訂閱項目不受影響。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os teus dados locais do Alike foram apagados. As tuas fotografias e a tua subscrição não foram alteradas."
           }
         }
       }
@@ -1993,6 +2113,12 @@
             "state" : "translated",
             "value" : "下一步"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avançar"
+          }
         }
       }
     },
@@ -2087,6 +2213,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不會自動刪除任何內容"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada é apagado automaticamente"
           }
         }
       }
@@ -2183,6 +2315,12 @@
             "state" : "translated",
             "value" : "打開「設定」"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Definições"
+          }
         }
       }
     },
@@ -2277,6 +2415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "第 %1$lld 頁，共 %2$lld 頁"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página %1$lld de %2$lld"
           }
         }
       }
@@ -2373,6 +2517,12 @@
             "state" : "translated",
             "value" : "取用照片後，Alike 就能掃描你的圖庫、將相似照片分組，並準備清理建議供你檢視；也只有在你要求時，才會儲存你所保留照片的優化版本。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O acesso às fotografias permite ao Alike analisar a tua fototeca, agrupar fotografias semelhantes e preparar sugestões de limpeza para reveres. Permite também guardar uma versão melhorada de uma fotografia que manténs, mas apenas quando o pedes."
+          }
         }
       }
     },
@@ -2467,6 +2617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "須取用照片"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso às fotografias necessário"
           }
         }
       }
@@ -2563,6 +2719,12 @@
             "state" : "translated",
             "value" : "你的照片分析全程留在這部裝置上，並提供逐步的清理建議。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A análise das tuas fotografias fica neste dispositivo e gera sugestões de limpeza guiadas."
+          }
         }
       }
     },
@@ -2657,6 +2819,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的照片保持私密；在移除任何內容之前，每次清理都由你確認。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As tuas fotografias mantêm-se privadas. Confirmas cada limpeza antes de qualquer elemento ser removido."
           }
         }
       }
@@ -2753,6 +2921,12 @@
             "state" : "translated",
             "value" : "私密，且始終由你掌控"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado e sempre sob o teu controlo"
+          }
         }
       }
     },
@@ -2847,6 +3021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在裝置上進行的私密分析"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Análise privada no dispositivo"
           }
         }
       }
@@ -2943,6 +3123,12 @@
             "state" : "translated",
             "value" : "檢視每一項建議"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revê cada sugestão"
+          }
         }
       }
     },
@@ -3037,6 +3223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視相似照片、釋出儲存空間，並掌控每一次刪除。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revê fotografias semelhantes, liberta espaço e mantém o controlo de cada eliminação."
           }
         }
       }
@@ -3133,6 +3325,12 @@
             "state" : "translated",
             "value" : "你會先檢視建議，並親自確認每一項清理操作。"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeiro, revês as sugestões e confirmas pessoalmente cada ação de limpeza."
+          }
         }
       }
     },
@@ -3227,6 +3425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安全的清理流程"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fluxo de limpeza seguro"
           }
         }
       }
@@ -3323,6 +3527,12 @@
             "state" : "translated",
             "value" : "查看可省下的空間"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vê a poupança possível"
+          }
         }
       }
     },
@@ -3417,6 +3627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找出相似照片；當你決定要移除哪些後，就能釋出空間。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontra fotografias semelhantes que podem libertar espaço quando decidires o que remover."
           }
         }
       }
@@ -3513,6 +3729,12 @@
             "state" : "translated",
             "value" : "節省的儲存空間"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poupança de espaço"
+          }
         }
       }
     },
@@ -3607,6 +3829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "把擁擠的圖庫變成一場有引導的清理。"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transforma uma fototeca cheia numa limpeza guiada."
           }
         }
       }
@@ -3703,6 +3931,12 @@
             "state" : "translated",
             "value" : "Alike 為何要取用照片"
           }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por que o Alike pede acesso às fotografias"
+          }
         }
       }
     },
@@ -3797,6 +4031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的圖庫始終由你掌控"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tua fototeca continua sob o teu controlo"
           }
         }
       }
