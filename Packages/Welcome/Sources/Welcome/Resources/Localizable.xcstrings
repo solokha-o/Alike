@@ -1227,7 +1227,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığını içi rahat şekilde temizle"
+            "value" : "Arşivini içi rahat şekilde temizle"
           }
         },
         "uk" : {
@@ -4278,7 +4278,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalabalık bir kitaplığı adım adım temizliğe dönüştür."
+            "value" : "Kalabalık bir arşivi adım adım temizliğe dönüştür."
           }
         },
         "uk" : {
@@ -4504,7 +4504,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın senin kontrolünde kalır"
+            "value" : "Arşivin senin kontrolünde kalır"
           }
         },
         "uk" : {

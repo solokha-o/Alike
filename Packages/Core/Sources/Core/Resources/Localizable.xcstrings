@@ -2017,7 +2017,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın değiştikten sonra ya da gözden geçirilecek başka fotoğraflar varsa yeni bir tarama yap."
+            "value" : "Arşivin değiştikten sonra ya da gözden geçirilecek başka fotoğraflar varsa yeni bir tarama yap."
           }
         },
         "uk" : {
@@ -4106,7 +4106,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın güncellendikten sonra yeniden taramayı dene."
+            "value" : "Arşivin güncellendikten sonra yeniden taramayı dene."
           }
         },
         "uk" : {

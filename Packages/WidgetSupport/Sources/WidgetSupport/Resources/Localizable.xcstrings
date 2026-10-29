@@ -3542,7 +3542,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplık değişti"
+            "value" : "Arşiv değişti"
           }
         },
         "uk" : {
@@ -4615,7 +4615,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığını tara"
+            "value" : "Arşivini tara"
           }
         },
         "uk" : {
@@ -5575,7 +5575,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike Kitaplığı"
+            "value" : "Alike Arşivi"
           }
         },
         "uk" : {
@@ -5688,7 +5688,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplık özeti"
+            "value" : "Arşiv özeti"
           }
         },
         "uk" : {

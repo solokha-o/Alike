@@ -3656,7 +3656,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İyileştirilmiş fotoğraf kitaplığınıza kaydedilemedi."
+            "value" : "İyileştirilmiş fotoğraf arşivinize kaydedilemedi."
           }
         },
         "uk" : {
@@ -13486,7 +13486,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seçili fotoğraflardan bazıları artık kullanılamıyor. Kitaplık erişimin sınırlı olabilir ya da kitaplık son taramadan bu yana değişmiş olabilir."
+            "value" : "Seçili fotoğraflardan bazıları artık kullanılamıyor. Arşiv erişimin sınırlı olabilir ya da arşiv son taramadan bu yana değişmiş olabilir."
           }
         },
         "uk" : {

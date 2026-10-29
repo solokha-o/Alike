@@ -314,7 +314,7 @@ struct LocalizationCatalog {
     /// Format specifiers have to survive translation, but their *order* does not.
     ///
     /// Turkish writes a percentage as `%50`, so `tr` legitimately carries
-    /// `Kitaplığın taranıyor… %%%d` where English carries `Scanning your library… %d%%`.
+    /// `Arşivin taranıyor… %%%d` where English carries `Scanning your library… %d%%`.
     /// Comparing the rendered shape position by position would call that a bug; comparing
     /// the multiset of conversion specifiers plus the number of literal `%%` calls it what
     /// it is — the same format, written the way the language writes it.
