@@ -817,17 +817,16 @@ ALIKE PRO
 
 Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."""
 
-PL_DESCRIPTION = """\
-Odzyskaj miejsce, a żadne zdjęcie nie opuści Twojego urządzenia: Alike znajduje prawie identyczne zdjęcia ukryte w Twojej bibliotece, grupuje je, wybiera najlepsze ujęcie w każdej grupie i pomaga uporządkować resztę.
+PL_DESCRIPTION = """Alike grupuje niemal identyczne zdjęcia, wybiera najlepsze i pomaga usunąć resztę. Żadne zdjęcie nie opuszcza iPhone’a.
 
 JAK TO DZIAŁA
 Skanuj. Alike porównuje bibliotekę za pomocą frameworka Vision od Apple, w całości na Twoim iPhonie. Porównywane są zdjęcia zrobione blisko siebie w czasie i miejscu, a zrzuty ekranu nie trafiają do wyników, dopóki o nie nie poprosisz.
-Przejrzyj. Każda grupa otwiera się z już wybranym najlepszym ujęciem, więc decyzja zajmuje sekundy. Zostaw tylko najlepsze, zaznacz wszystkie oprócz najlepszego albo wybierz ręcznie.
-Uporządkuj. Potwierdź, a wybrane zdjęcia trafią do albumu „Ostatnio usunięte”, gdzie iOS trzyma je około 30 dni.
+Przejrzyj. Najlepsze ujęcie jest już wybrane. Zachowaj tylko je, zaznacz wszystkie pozostałe albo wybierz ręcznie.
+Uporządkuj. Potwierdź, a wybrane zdjęcia trafią do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni. Miejsce może nie zostać zwolnione, dopóki zdjęcia nie zostaną trwale usunięte.
 
-PRYWATNOŚĆ TO CAŁY SENS
+PRYWATNOŚĆ PRZEDE WSZYSTKIM
 - Cała analiza działa na urządzeniu, na frameworku Vision od Apple.
-- Żadne zdjęcie, miniatura ani odcisk cech nigdy nie jest wysyłany do sieci.
+- Alike nigdy nie wysyła do sieci zdjęć, miniatur ani wektorów cech.
 - Bez konta, bez logowania, bez serwera Alike.
 - Bez analityki, bez śledzenia, bez identyfikatorów reklamowych.
 - Bez reklam w jakiejkolwiek części aplikacji.
@@ -835,7 +834,7 @@ PRYWATNOŚĆ TO CAŁY SENS
 - Nic nie zostaje usunięte bez Twojego wyraźnego potwierdzenia.
 
 ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
-- Trzy poziomy czułości, od niemal identycznych ujęć po szersze sito.
+- Trzy poziomy czułości, od niemal identycznych ujęć po mniej podobne zdjęcia.
 - Wykrywanie najlepszego ujęcia mierzone na samych zdjęciach — ostrość, ekspozycja, twarze i szum — więc każda grupa ma sensowny domyślny wybór do zachowania.
 - Opcjonalna poprawa jednym dotknięciem dla zdjęcia, które zostawiasz; oryginał zawsze o jedno dotknięcie dalej.
 - Znaczniki przeglądu: Nowe, W trakcie przeglądu, Przejrzane, Wymaga przeglądu.
@@ -845,7 +844,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili.
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
-- Widgety na ekranie początkowym i na ekranie blokady: odzyskiwalne miejsce i biblioteka.
+- Widżety na ekranie początkowym i na ekranie blokady: odzyskiwalne miejsce i biblioteka.
 - Trzynaście języków i pełny tryb ciemny.
 
 TO TY DECYDUJESZ
@@ -855,13 +854,13 @@ TO TY DECYDUJESZ
 - Przyznaj pełny albo ograniczony dostęp: Alike pracuje z tym, czym zdecydujesz się podzielić.
 
 ALIKE FREE
-- 3 skanowania miesięcznie
+- 3 skanowania w miesiącu kalendarzowym
 - Prowadzony przegląd z najlepszym ujęciem
 - Poprawa jednym dotknięciem, zawsze odwracalna
 - Najlepsze ujęcie, które uczy się z Twoich wyborów
 - Sortowanie i historia porządków
 - Porządki po jednym zdjęciu
-- Widgety
+- Widżety
 
 ALIKE PRO
 - 7 dni za darmo w planie rocznym, dla uprawnionych nowych subskrybentów
@@ -872,7 +871,7 @@ ALIKE PRO
 - Zaawansowane filtry
 - Własne przypomnienia o porządkach
 
-Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów, a naliczanie opłat zaczyna się po zakończeniu okresu próbnego. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS."""
+Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów, a naliczanie opłat zaczyna się po zakończeniu okresu próbnego. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować."""
 
 TR_DESCRIPTION = """\
 Tek bir fotoğraf bile cihazından çıkmadan yer kazan: Alike, kitaplığında saklanan neredeyse aynı fotoğrafları bulur, gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder.
@@ -995,7 +994,7 @@ AR_DESCRIPTION = """\
 كيف يعمل
 افحص. يقارن Alike مكتبتك باستخدام إطار عمل Vision من Apple، بالكامل على جهاز iPhone. تُقارن الصور المتقاربة في الزمان والمكان، وتبقى لقطات الشاشة خارج النتائج ما لم تطلبها.
 راجع. تُفتح كل مجموعة وقد اختير فيها «أفضل لقطة» سلفًا، فتقرر في ثوانٍ. احتفظ بالأفضل فقط، أو حدد الكل ما عدا الأفضل، أو اختر يدويًا.
-نظّف. أكّد، فتنتقل الصور التي اخترتها إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS نحو 30 يومًا.
+نظّف. أكّد، فتنتقل الصور التي اخترتها إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS نحو 30 يومًا. قد لا تتحرر المساحة إلا بعد حذفها نهائيًا.
 
 الخصوصية هي الفكرة كلها
 - يجري التحليل كله على الجهاز بإطار عمل Vision من Apple.
@@ -1027,7 +1026,7 @@ AR_DESCRIPTION = """\
 - امنح وصولًا كاملًا أو وصولًا محدودًا؛ يعمل Alike مع ما تختار مشاركته.
 
 ‏ALIKE المجاني
-- 3 فحوصات شهريًا
+- 3 عمليات فحص في الشهر الميلادي
 - مراجعة موجَّهة مع أفضل لقطة
 - تحسين بلمسة واحدة، يمكن التراجع عنه دائمًا
 - أفضل لقطة تتعلّم من اختياراتك
@@ -1044,7 +1043,7 @@ AR_DESCRIPTION = """\
 - مرشّحات متقدمة
 - تذكيرات تنظيف مخصصة
 
-‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين، وتبدأ الفوترة عند انتهاء التجربة. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS."""
+‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين، وتبدأ الفوترة عند انتهاء التجربة. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من إعدادات iOS."""
 
 
 METADATA = {
@@ -1165,8 +1164,8 @@ METADATA = {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
         "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
-        "promotional_text": "Odzyskaj miejsce: przed usunięciem widzisz, ile go zwolnisz, a żadne zdjęcie nie opuszcza iPhone'a. Pro: 7 dni gratis w planie rocznym. Bez reklam i bez konta.",
-        "release_notes": "Alike jest gotowy na iOS 27: nowy widżet i szybszy sposób na porządki w zdjęciach.\n\n- Nowy wysoki widżet pokazuje, ile miejsca możesz zwolnić, i Twoje największe grupy, a do tego skróty do „Podobne zdjęcia”, „Zrzuty ekranu” i „Rozmyte zdjęcia”. Dodaj go z galerii widżetów na ekranie początkowym.\n- W grupie przesuń zdjęcie, aby je zaznaczyć, zachować lub ustawić jako najlepsze ujęcie, bez otwierania. Działa to też w „Zrzutach ekranu” i z VoiceOver.\n- Przyciski w „Porządkach” mieszczą się teraz na mniejszych iPhone’ach, a zdjęcia otwierają się płynniej.\n- Obrazek w widżecie zachowuje kolory, gdy ikony na ekranie początkowym są przyciemnione lub przezroczyste.\n\nNowy widżet, przesuwanie i przyciski w „Porządkach” wymagają iOS 27.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do „Ostatnio usuniętych”, gdzie iOS trzyma je około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "promotional_text": "Zobacz szacowane miejsce do odzyskania. Zdjęcia zostają na iPhonie. Plan roczny: 7 dni Pro gratis dla uprawnionych nowych subskrybentów. Bez reklam i konta.",
+        "release_notes": "Alike jest gotowy na iOS 27: nowy widżet i szybszy sposób na porządki wśród zdjęć.\n\n- Nowy wysoki widżet pokazuje, ile miejsca możesz zwolnić, i Twoje największe grupy, a do tego skróty do kategorii „Podobne zdjęcia”, „Zrzuty ekranu” i „Rozmyte zdjęcia”. Dodaj go z galerii widżetów na ekranie początkowym.\n- W grupie przesuń zdjęcie, aby je zaznaczyć, zachować lub ustawić jako najlepsze ujęcie, bez otwierania. Działa to też w „Zrzutach ekranu” i z VoiceOver.\n- Przyciski w „Porządkach” mieszczą się teraz na mniejszych iPhone’ach, a zdjęcia otwierają się płynniej.\n- Obrazek w widżecie zachowuje kolory, gdy ikony na ekranie początkowym są przyciemnione lub przezroczyste.\n\nNowy widżet, przesuwanie i przyciski w „Porządkach” wymagają iOS 27.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
@@ -1188,8 +1187,8 @@ METADATA = {
         # المكرره is the second spelling of the subtitle's المكررة; both appear
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
-        "promotional_text": "استرجع المساحة: اعرف كم ستوفّر قبل أن تحذف أي شيء، ولا تغادر أي صورة جهاز iPhone. ‏Pro: 7 أيام مجانًا في الخطة السنوية. بلا إعلانات وبلا حساب.",
-        "release_notes": "أصبح Alike جاهزًا لـ iOS 27، مع أداة جديدة وطريقة أسرع لترتيب صورك.\n\n- أداة طويلة جديدة تعرض المساحة التي يمكنك تحريرها وأكبر مجموعاتك، مع اختصارات إلى «الصور المتشابهة» و«لقطات الشاشة» و«الصور الضبابية». أضِفها من معرض الأدوات في شاشتك الرئيسية.\n- في المجموعة، اسحب الصورة لتحديدها أو الاحتفاظ بها أو جعلها أفضل لقطة، من دون فتحها. يعمل السحب أيضًا في «لقطات الشاشة» ومع VoiceOver.\n- أصبحت أزرار «التنظيف» تتسع على أجهزة iPhone الأصغر، وتُفتح الصور بسلاسة أكبر.\n- يحتفظ رسم الأداة بألوانه عندما تكون أيقونات شاشتك الرئيسية ملوّنة أو شفافة.\n\nتتطلب الأداة الجديدة والسحب وأزرار «التنظيف» نظام iOS 27.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتكم وبلاغاتكم مرحَّب بها فعلًا — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "promotional_text": "اعرف المساحة التي يمكنك استرجاعها قبل الحذف. صورك تبقى على iPhone. تجربة Pro مجانية لمدة 7 أيام بالخطة السنوية للمشتركين الجدد المؤهلين. بلا إعلانات أو حساب.",
+        "release_notes": "أصبح Alike جاهزًا لـ iOS 27، مع أداة جديدة وطريقة أسرع لترتيب صورك.\n\n- أداة طويلة جديدة تعرض المساحة التي يمكنك تحريرها وأكبر مجموعاتك، مع اختصارات إلى «الصور المتشابهة» و«لقطات الشاشة» و«الصور الضبابية». أضِفها من معرض الأدوات في شاشتك الرئيسية.\n- في المجموعة، اسحب الصورة لتحديدها أو الاحتفاظ بها أو جعلها أفضل لقطة، من دون فتحها. يعمل السحب أيضًا في «لقطات الشاشة» ومع VoiceOver.\n- أصبحت أزرار «التنظيف» تتسع على أجهزة iPhone الأصغر، وتُفتح الصور بسلاسة أكبر.\n- يحتفظ رسم الأداة بألوانه عندما تكون أيقونات شاشتك الرئيسية ملوّنة أو شفافة.\n\nتتطلب الأداة الجديدة والسحب وأزرار «التنظيف» نظام iOS 27.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتك وبلاغاتك مرحَّب بها — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
@@ -1353,6 +1352,303 @@ METADATA['es-MX'].update(
                   'página de App Store llega directamente a mí.',
  'promotional_text': 'Ve cuánto espacio podrías liberar. Tus fotos quedan en el iPhone. Prueba Pro: 7 días '
                      'gratis con el plan anual para nuevos suscriptores elegibles. Sin anuncios ni cuenta.'}
+)
+
+METADATA['pt-PT'].update(
+    {'description': 'O Alike agrupa fotografias quase idênticas, escolhe a melhor e ajuda-te a limpar o resto. '
+                'Nenhuma fotografia sai do teu iPhone.\n'
+                '\n'
+                'COMO FUNCIONA\n'
+                'Analisar. O Alike compara a tua fototeca com a framework Vision da Apple, inteiramente no '
+                'teu iPhone. São comparadas as fotos tiradas em horas e locais próximos, e as capturas de '
+                'ecrã ficam fora dos resultados, a não ser que as peças.\n'
+                'Rever. A melhor fotografia já está selecionada. Mantém só essa, seleciona todas as outras '
+                'ou escolhe manualmente.\n'
+                'Limpar. Confirma, e as fotos escolhidas vão para «Apagado», onde o iOS as guarda durante '
+                'cerca de 30 dias. O espaço pode não ser libertado até apagares as fotografias '
+                'definitivamente.\n'
+                '\n'
+                'A PRIVACIDADE É O ESSENCIAL\n'
+                '- Toda a análise corre no dispositivo, com a framework Vision da Apple.\n'
+                '- Nenhuma foto, miniatura ou impressão de características é enviada para lado nenhum.\n'
+                '- Sem conta, sem início de sessão, sem servidor do Alike.\n'
+                '- Sem análise de utilização, sem seguimento, sem identificadores de publicidade.\n'
+                '- Sem anúncios em parte alguma da app.\n'
+                '- Analisar e limpar não precisam de qualquer ligação — o Alike funciona em modo de voo.\n'
+                '- Nada é eliminado sem a tua confirmação explícita.\n'
+                '\n'
+                'FEITO PARA FOTOTECAS A SÉRIO\n'
+                '- Três níveis de sensibilidade, das fotos quase idênticas a fotografias menos semelhantes.\n'
+                '- Deteção da melhor foto medida nas próprias fotos — nitidez, exposição, rostos e ruído —, '
+                'para que cada grupo já tenha uma escolha sensata para manter.\n'
+                '- Melhoria opcional com um toque para a foto que manténs, com o original sempre a um '
+                'toque.\n'
+                '- Selos de revisão: Nova, Em revisão, Revista e Rever novamente depois de uma nova '
+                'análise.\n'
+                '- Adicionas ou apagas fotografias e o Alike repara, trazendo de volta só os grupos que '
+                'mudaram — sem repetir a análise inteira.\n'
+                '- Progresso, Selecionadas e Poupança estimada enquanto trabalhas.\n'
+                '- Histórico de limpeza agrupado por mês, para ver quanto espaço já recuperaste.\n'
+                '- Um layout espaçoso de uma coluna ou uma grelha mais densa, alternáveis a qualquer momento '
+                'e memorizados.\n'
+                '- Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.\n'
+                '- Lembretes de limpeza opcionais, como notificações locais, no teu próprio horário.\n'
+                '- Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.\n'
+                '- Treze idiomas e modo escuro completo.\n'
+                '\n'
+                'TU TENS O CONTROLO\n'
+                '- A melhoria não destrói nada: o original continua na tua fototeca e um toque restaura-o.\n'
+                '- O Alike aprende com as melhores fotos que tu escolhes — no teu dispositivo, e podes repor '
+                'essa aprendizagem quando quiseres nas Definições.\n'
+                '- Definições, depois Dados e privacidade, depois Apagar dados do Alike remove todos os '
+                'resultados de análise, o histórico de limpeza e as preferências que a app guardou — e nunca '
+                'toca na tua fototeca.\n'
+                '- Concede acesso total ou limitado: o Alike trabalha com o que escolheres partilhar.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- 3 análises por mês de calendário\n'
+                '- Revisão guiada com a melhor foto\n'
+                '- Melhoria com um toque, sempre reversível\n'
+                '- Melhor foto que aprende com as tuas escolhas\n'
+                '- Ordenação e histórico de limpeza\n'
+                '- Limpeza de uma foto de cada vez\n'
+                '- Widgets\n'
+                '\n'
+                'ALIKE PRO\n'
+                '- 7 dias grátis no plano anual, para novos subscritores elegíveis\n'
+                '- Análises ilimitadas\n'
+                '- Limpeza em lote de seleções inteiras\n'
+                '- Limpeza de capturas de ecrã\n'
+                '- Limpeza de fotos desfocadas\n'
+                '- Filtros avançados\n'
+                '- Lembretes de limpeza personalizados\n'
+                '\n'
+                'O Alike Pro é uma subscrição de renovação automática com planos anual e mensal, com preços '
+                'na tua moeda local. O plano anual inclui 7 dias de teste grátis para novos subscritores '
+                'elegíveis, e a cobrança começa quando o teste termina. As subscrições são renovadas '
+                'automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período '
+                'atual, e o pagamento é debitado da tua Conta Apple. Podes gerir ou cancelar a subscrição '
+                'quando quiseres nas Definições do iOS.',
+ 'release_notes': 'O Alike está pronto para o iOS 27, com um widget novo e uma forma mais rápida de '
+                  'organizar as tuas fotografias.\n'
+                  '\n'
+                  '- Um widget alto novo mostra quanto espaço podes libertar e os teus maiores grupos, com '
+                  'atalhos para «Fotos semelhantes», «Capturas de ecrã» e «Fotos desfocadas». Adiciona-o a '
+                  'partir da galeria de widgets do ecrã principal.\n'
+                  '- Num grupo, desliza uma fotografia para a selecionar, manter ou definir como melhor '
+                  'foto, sem a abrir. Também funciona em «Capturas de ecrã» e com o VoiceOver.\n'
+                  '- Os botões de «Limpeza» já cabem nos iPhone mais pequenos, e as fotos abrem com mais '
+                  'fluidez.\n'
+                  '- O desenho do widget mantém as cores quando os ícones do ecrã principal estão com '
+                  'tonalidade ou transparentes.\n'
+                  '\n'
+                  'O widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n'
+                  '\n'
+                  'Tudo continua a correr no seu dispositivo: sem conta, sem envios, e o que apagas vai para '
+                  '«Apagado», onde o iOS o guarda durante cerca de 30 dias.\n'
+                  '\n'
+                  'Comentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da '
+                  'App Store chega diretamente a mim.',
+ 'promotional_text': 'Vê quanto espaço podes recuperar. As tuas fotos ficam no iPhone. Pro grátis por 7 dias '
+                     'no plano anual para novos subscritores elegíveis. Sem anúncios nem conta.'}
+)
+METADATA['fr-CA'].update(
+    {'description': 'Alike regroupe les photos presque identiques, choisit la meilleure et vous aide à nettoyer '
+                'les autres. Vos photos restent sur votre iPhone.\n'
+                '\n'
+                'COMMENT ÇA MARCHE\n'
+                "Analyser. Alike compare votre photothèque avec le framework Vision d'Apple, entièrement sur "
+                'votre iPhone. Les photos prises à des dates et des lieux proches sont comparées, et les '
+                "captures d'écran restent hors des résultats tant que vous ne les demandez pas.\n"
+                'Examiner. La meilleure photo est présélectionnée. Gardez-la seule, sélectionnez toutes les '
+                'autres ou choisissez à la main.\n'
+                'Nettoyer. Confirmez, et les photos choisies rejoignent « Suppressions récentes », où iOS '
+                'les conserve environ 30 jours. L’espace peut ne pas être libéré avant leur suppression '
+                'définitive.\n'
+                '\n'
+                'LA CONFIDENTIALITÉ AVANT TOUT\n'
+                "- Toute l'analyse se fait sur l'appareil avec le framework Vision d'Apple.\n"
+                "- Aucune photo, aucune miniature, aucune empreinte n'est jamais envoyée en ligne.\n"
+                '- Aucun compte, aucune connexion, aucun serveur Alike.\n'
+                "- Aucune mesure d'audience, aucun suivi, aucun identifiant publicitaire.\n"
+                "- Aucune publicité, nulle part dans l'app.\n"
+                "- L'analyse et le nettoyage ne demandent aucune connexion — Alike fonctionne en mode "
+                'Avion.\n'
+                "- Rien n'est supprimé sans votre confirmation explicite.\n"
+                '\n'
+                'CONÇU POUR DE VRAIES PHOTOTHÈQUES\n'
+                '- Trois niveaux de sensibilité, des photos presque identiques aux photos moins '
+                'ressemblantes.\n'
+                '- Détection de la meilleure photo, mesurée sur les photos elles-mêmes — netteté, '
+                "exposition, visages et bruit — pour que chaque groupe s'ouvre sur un choix raisonnable à "
+                'garder.\n'
+                "- Amélioration facultative en une touche pour la photo que vous gardez, l'originale à une "
+                'touche.\n'
+                "- Badges d'examen : Nouveau, En cours, Examiné, À revoir.\n"
+                '- Ajoutez ou supprimez des photos : Alike ne remet en avant que les groupes modifiés.\n'
+                '- Progression, Sélectionnées et Économie estimée pendant le travail.\n'
+                '- Historique de nettoyage par mois.\n'
+                '- Une mise en page sur une colonne ou une grille plus dense, permutable en tout temps.\n'
+                "- Un mode d'emploi consultable dans l'app.\n"
+                '- Rappels de nettoyage facultatifs, en notifications locales.\n'
+                "- Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la "
+                'photothèque.\n'
+                '- Treize langues et mode sombre complet.\n'
+                '\n'
+                'VOUS GARDEZ LA MAIN\n'
+                "- L'amélioration ne détruit rien : l'originale reste dans votre photothèque et une touche "
+                'la rétablit.\n'
+                '- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, '
+                'réinitialisable en tout temps dans les Réglages.\n'
+                '- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface les '
+                "résultats d'analyse, l'historique de nettoyage et les préférences — et ne touche jamais à "
+                'votre photothèque.\n'
+                '- Accordez un accès complet ou limité : Alike travaille avec ce que vous partagez.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- 3 analyses par mois civil\n'
+                '- Examen guidé avec la meilleure photo\n'
+                '- Amélioration en une touche, toujours réversible\n'
+                '- Meilleure photo qui apprend de vos propres choix\n'
+                '- Tri et historique de nettoyage\n'
+                '- Nettoyage photo par photo\n'
+                '- Widgets\n'
+                '\n'
+                'ALIKE PRO\n'
+                '- 7 jours offerts sur le forfait annuel, pour les nouveaux abonnés admissibles\n'
+                '- Analyses illimitées\n'
+                "- Nettoyage groupé d'une sélection entière\n"
+                "- Nettoyage des captures d'écran\n"
+                '- Nettoyage des photos floues\n'
+                '- Filtres avancés\n'
+                '- Rappels de nettoyage personnalisés\n'
+                '\n'
+                'Alike Pro est un abonnement à renouvellement automatique, en forfait annuel ou mensuel, '
+                "facturé dans votre devise locale. Le forfait annuel comprend 7 jours d'essai gratuit pour "
+                "les nouveaux abonnés admissibles, et la facturation commence à la fin de l'essai. "
+                "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin "
+                'de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le '
+                'gérer ou l’annuler en tout temps dans les Réglages iOS.',
+ 'release_notes': 'Alike est prêt pour iOS 27, avec un nouveau widget et une façon plus rapide de trier vos '
+                  'photos.\n'
+                  '\n'
+                  '- Un nouveau widget en hauteur montre l’espace que vous pouvez libérer et vos plus grands '
+                  'groupes, avec des raccourcis vers « Photos similaires », « Captures d’écran » et « Photos '
+                  'floues ». Ajoutez-le depuis la galerie de widgets de votre écran d’accueil.\n'
+                  '- Dans un groupe, balayez une photo pour la sélectionner, la garder ou la définir comme '
+                  'meilleure photo, sans l’ouvrir. Le balayage marche aussi dans « Captures d’écran » et '
+                  'avec VoiceOver.\n'
+                  '- Les boutons de « Nettoyage » tiennent désormais sur les petits iPhone, et les photos '
+                  's’ouvrent plus en douceur.\n'
+                  '- L’image du widget garde ses couleurs quand les icônes de votre écran d’accueil sont '
+                  'teintées ou transparentes.\n'
+                  '\n'
+                  'Le nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n'
+                  '\n'
+                  'Tout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous '
+                  'nettoyez part dans « Suppressions récentes », où iOS le conserve environ 30 jours.\n'
+                  '\n'
+                  "Vos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur "
+                  'la page App Store me parvient directement.',
+ 'promotional_text': 'Estimez l’espace à libérer. Vos photos restent sur iPhone. 7 jours de Pro gratuits au '
+                     'forfait annuel pour les nouveaux abonnés admissibles. Sans publicité ni compte.'}
+)
+# Reviewed Turkish storefront copy.
+METADATA['tr'].update(
+{'description': 'Alike, birbirine çok benzeyen fotoğrafları gruplar, en iyi kareyi seçer ve diğerlerini '
+                "temizlemene yardımcı olur. Fotoğrafların iPhone'unda kalır.\n"
+                '\n'
+                'NASIL ÇALIŞIR\n'
+                "Tara. Alike, arşivini Apple'ın Vision çerçevesiyle tamamen iPhone'unda karşılaştırır. Zaman "
+                've yer olarak birbirine yakın çekilen fotoğraflar karşılaştırılır, ekran görüntüleri ise '
+                'sen istemedikçe sonuçlara girmez.\n'
+                'Gözden geçir. En iyi kare önceden seçilidir. Yalnızca onu sakla, diğerlerini seç veya '
+                'seçimini elle yap.\n'
+                "Temizle. Onayla; seçtiğin fotoğraflar Son Silinenler'e taşınır, iOS onları yaklaşık 30 gün "
+                'orada tutar. Fotoğraflar kalıcı olarak silinene kadar depolama alanı boşalmayabilir.\n'
+                '\n'
+                'MESELENİN TAMAMI GİZLİLİK\n'
+                "- Tüm analiz, Apple'ın Vision çerçevesiyle cihazın üzerinde çalışır.\n"
+                '- Hiçbir fotoğraf, küçük resim ya da öznitelik izi hiçbir zaman yüklenmez.\n'
+                '- Hesap yok, oturum açma yok, Alike sunucusu yok.\n'
+                '- Analitik yok, izleme yok, reklam tanımlayıcısı yok.\n'
+                '- Uygulamanın hiçbir yerinde reklam yok.\n'
+                '- Tarama ve temizlik hiçbir bağlantı gerektirmez — Alike uçak modunda da çalışır.\n'
+                '- Açık onayın olmadan hiçbir şey silinmez.\n'
+                '\n'
+                'FOTOĞRAF ARŞİVİN İÇİN\n'
+                '- Üç duyarlılık düzeyi: neredeyse aynı karelerden daha az benzeyen fotoğraflara.\n'
+                '- Fotoğrafların kendisini ölçen En İyi Kare algılama — netlik, pozlama, yüzler ve gürültü — '
+                'böylece her grupta saklanacak makul bir seçenek hazır bekler.\n'
+                '- Sakladığın fotoğraf için isteğe bağlı tek dokunuşluk iyileştirme; orijinali her zaman bir '
+                'dokunuş uzakta.\n'
+                '- Gözden geçirme rozetleri: Yeni, Gözden geçiriliyor, Gözden geçirildi ve yeni taramadan '
+                'sonra Gözden geçirilmeli.\n'
+                '- Fotoğraf ekler ya da silersin, Alike bunu fark eder ve yalnızca değişen grupları yeniden '
+                'getirir — baştan tam tarama gerekmez.\n'
+                '- Çalışırken İlerleme, Seçildi ve Tahmini Kazanç.\n'
+                '- Aya göre gruplanmış Temizlik Geçmişi, ne kadar yer kazandığını görebilesin diye.\n'
+                '- Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve '
+                'hatırlanır.\n'
+                "- Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.\n"
+                '- İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.\n'
+                "- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve arşive bir bakış.\n"
+                '- On üç dil ve tam Koyu Mod desteği.\n'
+                '\n'
+                'KONTROL SENDE\n'
+                '- İyileştirme hiçbir şeyi bozmaz: orijinal arşivinde kalır ve tek dokunuş onu geri '
+                'getirir.\n'
+                '- Alike kendi seçtiğin en iyi karelerden öğrenir — hem de cihazında; istediğin an '
+                "Ayarlar'dan sıfırlayabilirsin.\n"
+                '- Ayarlar, sonra Veriler ve Gizlilik, sonra Alike Verilerini Sil; uygulamanın sakladığı her '
+                'tarama sonucunu, temizlik kaydını ve tercihi siler — fotoğraf arşivine ise hiç dokunmaz.\n'
+                '- Tam erişim ya da sınırlı erişim ver: Alike paylaşmayı seçtiğin neyse onunla çalışır.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- Her takvim ayında 3 tarama\n'
+                '- En İyi Kare ile yönlendirilmiş gözden geçirme\n'
+                '- Tek dokunuşla iyileştirme, her zaman geri alınabilir\n'
+                '- Kendi seçimlerinden öğrenen En İyi Kare\n'
+                '- Sıralama ve temizlik geçmişi\n'
+                '- Fotoğrafları teker teker temizleme\n'
+                "- Widget'lar\n"
+                '\n'
+                'ALIKE PRO\n'
+                '- Yıllık planda 7 gün ücretsiz, uygun yeni aboneler için\n'
+                '- Sınırsız tarama\n'
+                '- Seçimlerin tamamını tek seferde temizleme\n'
+                '- Ekran görüntüsü temizliği\n'
+                '- Bulanık fotoğraf temizliği\n'
+                '- Gelişmiş filtreler\n'
+                '- Kendi temizlik anımsatıcıların\n'
+                '\n'
+                'Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik '
+                'yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme '
+                'içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin '
+                'bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme '
+                "Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir "
+                'veya iptal edebilirsin.',
+ 'promotional_text': "Kazanabileceğin alanı gör. Fotoğrafların iPhone'unda kalır. Yıllık planda uygun yeni "
+                     'abonelere 7 günlük ücretsiz Pro denemesi. Reklam ve hesap yok.',
+ 'release_notes': "Alike iOS 27'ye hazır: yeni bir widget ve fotoğraflarını daha hızlı ayıklamanın bir "
+                  'yolu.\n'
+                  '\n'
+                  '- Yeni uzun widget ne kadar alan açabileceğini ve en büyük gruplarını gösterir; Benzer '
+                  "Fotoğraflar, Ekran görüntüleri ve Bulanık Fotoğraflar kısayolları da var. Ana Ekran'daki "
+                  'widget galerisinden ekleyebilirsin.\n'
+                  '- Bir grupta fotoğrafı açmadan kaydırarak seçebilir, saklayabilir veya En İyi Kare '
+                  'yapabilirsin. Kaydırma, Ekran Görüntüleri ekranında ve VoiceOver ile de çalışır.\n'
+                  "- Temizlik düğmeleri artık küçük iPhone'lara sığıyor ve fotoğraflar daha akıcı açılıyor.\n"
+                  '- Ana Ekran simgelerin renklendirilmiş veya şeffaf olduğunda widget çizimi renklerini '
+                  'korur.\n'
+                  '\n'
+                  'Yeni widget, kaydırma ve Temizlik düğmeleri iOS 27 gerektirir.\n'
+                  '\n'
+                  'Her şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son '
+                  "Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n"
+                  '\n'
+                  'Geri bildirimler ve hata bildirimleri memnuniyetle karşılanır — App Store sayfasındaki '
+                  'destek bağlantısı doğrudan bana ulaşır.'}
 )
 
 

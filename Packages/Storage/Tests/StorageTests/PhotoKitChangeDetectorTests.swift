@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Storage
 
-final class PhotoKitChangeDetectorTests: XCTestCase {
-    func testAccumulateAssetChangesUnionsInsertedAndDeletedIdentifiers() {
+@Suite struct PhotoKitChangeDetectorTests {
+    @Test func testAccumulateAssetChangesUnionsInsertedAndDeletedIdentifiers() {
         let providers: [() throws -> PhotoKitChangeDetector.AssetChangeDetails] = [
             {
                 PhotoKitChangeDetector.AssetChangeDetails(
@@ -20,15 +21,15 @@ final class PhotoKitChangeDetectorTests: XCTestCase {
 
         let result = PhotoKitChangeDetector.accumulateAssetChanges(providers)
 
-        XCTAssertEqual(result?.inserted, ["a", "b"])
-        XCTAssertEqual(result?.deleted, ["c"])
+        #expect(result?.inserted == ["a", "b"])
+        #expect(result?.deleted == ["c"])
     }
 
     /// A history record that fails to read must not collapse into "no
     /// changes": the failed record could be the only insertion or deletion,
     /// so the accumulator has to report "cannot answer" (nil) rather than
     /// silently skip it.
-    func testThrowingHistoryRecordReturnsNilInsteadOfSkippingIt() {
+    @Test func testThrowingHistoryRecordReturnsNilInsteadOfSkippingIt() {
         struct RecordReadFailure: Error {}
 
         let providers: [() throws -> PhotoKitChangeDetector.AssetChangeDetails] = [
@@ -43,6 +44,6 @@ final class PhotoKitChangeDetectorTests: XCTestCase {
 
         let result = PhotoKitChangeDetector.accumulateAssetChanges(providers)
 
-        XCTAssertNil(result)
+        #expect(result == nil)
     }
 }
