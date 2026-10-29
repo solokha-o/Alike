@@ -1,49 +1,51 @@
 import Cleanup
 import Core
+import Foundation
 import WidgetSupport
-import XCTest
+import Testing
 @testable import Alike
 
 /// `MainTabView` binds `TabManager.selectedTab` and tags each tab with its `TabManager.Tab`
 /// value, so navigation and widget deep links land through `TabManager` alone. These tests
 /// lock that routing; the views themselves are not rendered.
 @MainActor
-final class MainTabSelectionTests: XCTestCase {
-    func testTabValuesKeepTheirOrder() {
-        XCTAssertEqual(TabManager.Tab.allCases, [.scanner, .cleanup, .settings])
-        XCTAssertEqual(TabManager().selectedTab, .scanner)
+@Suite struct MainTabSelectionTests {
+    @Test func testTabValuesKeepTheirOrder() {
+        #expect(TabManager.Tab.allCases == [.scanner, .cleanup, .settings])
+        #expect(TabManager().selectedTab == .scanner)
     }
 
-    func testNavigationActionsSelectTheExpectedTab() {
+    @Test func testNavigationActionsSelectTheExpectedTab() {
         let manager = TabManager()
 
         manager.navigateToCleanup()
-        XCTAssertEqual(manager.selectedTab, .cleanup)
-        XCTAssertNil(manager.pendingCleanupEntry)
+        #expect(manager.selectedTab == .cleanup)
+        #expect(manager.pendingCleanupEntry == nil)
 
         manager.navigateToScanner(andStartScan: true)
-        XCTAssertEqual(manager.selectedTab, .scanner)
-        XCTAssertTrue(manager.shouldStartScan)
+        #expect(manager.selectedTab == .scanner)
+        #expect(manager.shouldStartScan)
 
         manager.selectedTab = .settings
         manager.requestRescan()
         manager.triggerRescan()
-        XCTAssertEqual(manager.selectedTab, .scanner)
-        XCTAssertFalse(manager.needsRescan)
+        #expect(manager.selectedTab == .scanner)
+        #expect(!manager.needsRescan)
     }
 
-    func testResumeWidgetLinkLandsOnCleanupWithResumeEntry() throws {
-        let destination = try XCTUnwrap(WidgetDestination(url: XCTUnwrap(URL(string: "alike://resume"))))
+    @Test func testResumeWidgetLinkLandsOnCleanupWithResumeEntry() throws {
+        let url = try #require(URL(string: "alike://resume"))
+        let destination = try #require(WidgetDestination(url: url))
         let manager = TabManager()
 
         manager.follow(destination)
 
-        XCTAssertEqual(manager.selectedTab, .cleanup)
-        XCTAssertEqual(manager.pendingCleanupEntry, .resumeReview)
-        XCTAssertFalse(manager.shouldStartScan)
+        #expect(manager.selectedTab == .cleanup)
+        #expect(manager.pendingCleanupEntry == .resumeReview)
+        #expect(!manager.shouldStartScan)
     }
 
-    func testEveryWidgetDestinationLandsOnCleanupWithItsEntry() {
+    @Test func testEveryWidgetDestinationLandsOnCleanupWithItsEntry() {
         let expected: [WidgetDestination: CleanupWidgetEntry?] = [
             .cleanup: nil,
             .resumeReview: .resumeReview,
@@ -51,13 +53,13 @@ final class MainTabSelectionTests: XCTestCase {
             .screenshots: .category(.screenshots),
             .blurredPhotos: .category(.blurredPhotos)
         ]
-        XCTAssertEqual(Set(expected.keys), Set(WidgetDestination.allCases))
+        #expect(Set(expected.keys) == Set(WidgetDestination.allCases))
 
         for destination in WidgetDestination.allCases {
             let manager = TabManager()
             manager.follow(destination)
-            XCTAssertEqual(manager.selectedTab, .cleanup, "\(destination)")
-            XCTAssertEqual(manager.pendingCleanupEntry, expected[destination] ?? nil, "\(destination)")
+            #expect(manager.selectedTab == .cleanup, "\(destination)")
+            #expect(manager.pendingCleanupEntry == expected[destination] ?? nil, "\(destination)")
         }
     }
 }

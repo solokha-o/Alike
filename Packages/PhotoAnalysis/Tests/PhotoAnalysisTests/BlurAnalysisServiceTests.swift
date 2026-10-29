@@ -1,12 +1,13 @@
 import CoreGraphics
-import XCTest
+import Foundation
+import Testing
 #if canImport(UIKit)
 import UIKit
 #endif
 @testable import PhotoAnalysis
 
-final class BlurAnalysisServiceTests: XCTestCase {
-    func testTaskPoolLimitsConcurrencyToFourAndPreservesOrder() async throws {
+@Suite struct BlurAnalysisServiceTests {
+    @Test func testTaskPoolLimitsConcurrencyToFourAndPreservesOrder() async throws {
         let tracker = ConcurrencyTracker()
 
         let results: [Int] = try await ImageAnalysisTaskPool.compactMap(
@@ -24,12 +25,12 @@ final class BlurAnalysisServiceTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(results, Array(0..<20))
+        #expect(results == Array(0..<20))
         let maximumConcurrentCount = await tracker.maximumConcurrentCount
-        XCTAssertLessThanOrEqual(maximumConcurrentCount, 4)
+        #expect(maximumConcurrentCount <= 4)
     }
 
-    func testTaskPoolIsolatesOneRecoverableFailure() async throws {
+    @Test func testTaskPoolIsolatesOneRecoverableFailure() async throws {
         enum ThumbnailError: Error {
             case unavailable
         }
@@ -44,10 +45,10 @@ final class BlurAnalysisServiceTests: XCTestCase {
             return value
         }
 
-        XCTAssertEqual(results, [1, 3])
+        #expect(results == [1, 3])
     }
 
-    func testTaskPoolPropagatesCancellation() async {
+    @Test func testTaskPoolPropagatesCancellation() async {
         let task = Task {
             try await ImageAnalysisTaskPool.compactMap(
                 Array(0..<8),
@@ -62,15 +63,15 @@ final class BlurAnalysisServiceTests: XCTestCase {
 
         do {
             _ = try await task.value
-            XCTFail("Expected cancellation")
+            Issue.record("Expected cancellation")
         } catch is CancellationError {
-            XCTAssertTrue(true)
+            #expect(true)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
-    func testBlurCandidateSelectorExcludesSharpItemsAndSortsResults() {
+    @Test func testBlurCandidateSelectorExcludesSharpItemsAndSortsResults() {
         let selected = BlurCandidateSelector.selectCandidates(from: [
             BlurAnalysisCandidate(localIdentifier: "sharp", sharpnessScore: 45, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "blur-small", sharpnessScore: 8, estimatedCleanupBytes: 200),
@@ -86,20 +87,20 @@ final class BlurAnalysisServiceTests: XCTestCase {
             BlurAnalysisCandidate(localIdentifier: "sharp-8", sharpnessScore: 49, estimatedCleanupBytes: 205)
         ])
 
-        XCTAssertEqual(selected.map(\.localIdentifier), ["blur-large"])
+        #expect(selected.map(\.localIdentifier) == ["blur-large"])
     }
 
-    func testBlurCandidateSelectorReturnsEmptyForSmallPopulation() {
+    @Test func testBlurCandidateSelectorReturnsEmptyForSmallPopulation() {
         let selected = BlurCandidateSelector.selectCandidates(from: [
             BlurAnalysisCandidate(localIdentifier: "one", sharpnessScore: 4, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "two", sharpnessScore: 5, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "three", sharpnessScore: 6, estimatedCleanupBytes: 100)
         ])
 
-        XCTAssertTrue(selected.isEmpty)
+        #expect(selected.isEmpty)
     }
 
-    func testBlurCandidateSelectorReturnsEmptyWhenAllPhotosAreReasonablySharp() {
+    @Test func testBlurCandidateSelectorReturnsEmptyWhenAllPhotosAreReasonablySharp() {
         let selected = BlurCandidateSelector.selectCandidates(from: [
             BlurAnalysisCandidate(localIdentifier: "1", sharpnessScore: 21, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "2", sharpnessScore: 22, estimatedCleanupBytes: 100),
@@ -115,48 +116,48 @@ final class BlurAnalysisServiceTests: XCTestCase {
             BlurAnalysisCandidate(localIdentifier: "12", sharpnessScore: 32, estimatedCleanupBytes: 100)
         ])
 
-        XCTAssertTrue(selected.isEmpty)
+        #expect(selected.isEmpty)
     }
 
-    func testBlurSharpnessScorerScoresBlurredImageLowerThanSharpImage() throws {
+    @Test func testBlurSharpnessScorerScoresBlurredImageLowerThanSharpImage() throws {
         let scorer = BlurSharpnessScorer()
-        let sharp = try XCTUnwrap(makeStripedImage())
-        let blurred = try XCTUnwrap(makeFlatImage())
+        let sharp = try #require(makeStripedImage())
+        let blurred = try #require(makeFlatImage())
 
         let sharpScore = scorer.score(image: sharp)
         let blurredScore = scorer.score(image: blurred)
 
-        XCTAssertGreaterThan(sharpScore, blurredScore)
+        #expect(sharpScore > blurredScore)
     }
 
     #if canImport(UIKit)
-    func testThumbnailRequestStateCancellationBeforeInstallResumesExactlyOnce() async {
+    @Test func testThumbnailRequestStateCancellationBeforeInstallResumesExactlyOnce() async {
         let state = AnalysisThumbnailRequestState()
         state.cancel()
 
         do {
             _ = try await withCheckedThrowingContinuation { continuation in
-                XCTAssertFalse(state.install(continuation))
+                #expect(!(state.install(continuation)))
                 state.timeout()
             } as CGImage?
-            XCTFail("Expected cancellation")
+            Issue.record("Expected cancellation")
         } catch is CancellationError {
-            XCTAssertTrue(true)
+            #expect(true)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
-    func testThumbnailRequestStateTimeoutReturnsNilExactlyOnce() async throws {
+    @Test func testThumbnailRequestStateTimeoutReturnsNilExactlyOnce() async throws {
         let state = AnalysisThumbnailRequestState()
 
         let image = try await withCheckedThrowingContinuation { continuation in
-            XCTAssertTrue(state.install(continuation))
+            #expect(state.install(continuation))
             state.timeout()
             state.finish(.success(nil))
         } as CGImage?
 
-        XCTAssertNil(image)
+        #expect(image == nil)
     }
     #endif
 

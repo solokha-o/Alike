@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-final class WeightSweepTests: XCTestCase {
+@Suite struct WeightSweepTests {
     private let config = PhotoQualityScoringConfig.current
 
     private func makeCorpus() -> BestShotCalibrationCorpus {
@@ -61,55 +62,55 @@ final class WeightSweepTests: XCTestCase {
         )
     }
 
-    func testSweepIsDeterministicAcrossRuns() {
+    @Test func testSweepIsDeterministicAcrossRuns() {
         let corpus = makeCorpus()
         let first = WeightSweep.run(corpus: corpus, baseline: config)
         let second = WeightSweep.run(corpus: corpus, baseline: config)
 
-        XCTAssertEqual(first.candidateConfig, second.candidateConfig)
-        XCTAssertEqual(first.candidateScore, second.candidateScore)
+        #expect(first.candidateConfig == second.candidateConfig)
+        #expect(first.candidateScore == second.candidateScore)
 
         let firstMetrics = MetricsReport.compute(corpus: corpus, config: first.candidateConfig)
         let secondMetrics = MetricsReport.compute(corpus: corpus, config: second.candidateConfig)
         let firstReport = ReportWriter.render(metrics: firstMetrics, corpus: corpus, warnings: [])
         let secondReport = ReportWriter.render(metrics: secondMetrics, corpus: corpus, warnings: [])
-        XCTAssertEqual(firstReport, secondReport)
+        #expect(firstReport == secondReport)
 
         let firstSweepReport = ReportWriter.render(sweep: first)
         let secondSweepReport = ReportWriter.render(sweep: second)
-        XCTAssertEqual(firstSweepReport, secondSweepReport)
+        #expect(firstSweepReport == secondSweepReport)
     }
 
-    func testEveryCandidateWeightsSumToOne() {
+    @Test func testEveryCandidateWeightsSumToOne() {
         let result = WeightSweep.run(corpus: makeCorpus(), baseline: config)
 
-        XCTAssertEqual(result.candidateConfig.weightsWithFaces.total, 1, accuracy: 1e-9)
-        XCTAssertEqual(result.candidateConfig.weightsWithoutFaces.total, 1, accuracy: 1e-9)
+        #expect(abs(result.candidateConfig.weightsWithFaces.total - 1) <= 1e-9)
+        #expect(abs(result.candidateConfig.weightsWithoutFaces.total - 1) <= 1e-9)
 
         for sensitivity in result.sensitivity {
             for sample in sensitivity.samples {
                 // The sensitivity grid only varies scalar thresholds, never the
                 // weights, so the weight invariant must still hold at every point.
-                XCTAssertEqual(
-                    result.candidateConfig.weightsWithFaces.total, 1, accuracy: 1e-9,
+                #expect(
+                    abs(result.candidateConfig.weightsWithFaces.total - 1) <= 1e-9,
                     "sensitivity sample for \(sensitivity.parameterName)=\(sample.value)"
                 )
             }
         }
     }
 
-    func testSweepWinnerIsAtLeastAsGoodAsBaseline() {
+    @Test func testSweepWinnerIsAtLeastAsGoodAsBaseline() {
         let corpus = makeCorpus()
         let result = WeightSweep.run(corpus: corpus, baseline: config)
         let baselineObjective = WeightSweep.score(config: config, corpus: corpus).objective
 
-        XCTAssertGreaterThanOrEqual(result.candidateScore.objective, baselineObjective - 1e-9)
-        XCTAssertEqual(result.baselineScore.objective, baselineObjective, accuracy: 1e-9)
+        #expect(result.candidateScore.objective >= baselineObjective - 1e-9)
+        #expect(abs(result.baselineScore.objective - baselineObjective) <= 1e-9)
     }
 
-    func testBlurPenaltyIsCarriedIntoTheResult() {
+    @Test func testBlurPenaltyIsCarriedIntoTheResult() {
         let result = WeightSweep.run(corpus: makeCorpus(), baseline: config, blurPenalty: 3.5)
-        XCTAssertEqual(result.blurPenalty, 3.5)
+        #expect(result.blurPenalty == 3.5)
     }
 
     /// Regression test for the "refuse to answer more often" trap: a synthetic
@@ -126,7 +127,7 @@ final class WeightSweepTests: XCTestCase {
     /// this is the trap `WeightSweep.score` must not fall into.
     /// `topOneAgreementOverAllClusters`, and therefore `objective`, must NOT
     /// improve, because refusing to answer never pays.
-    func testStricterFloorDoesNotImproveObjectiveEvenThoughResolvedOnlyAgreementRises() {
+    @Test func testStricterFloorDoesNotImproveObjectiveEvenThoughResolvedOnlyAgreementRises() {
         let lenientConfig = PhotoQualityScoringConfig(absoluteSharpnessFloor: 10)
         let strictConfig = PhotoQualityScoringConfig(absoluteSharpnessFloor: 14)
 
@@ -149,27 +150,25 @@ final class WeightSweepTests: XCTestCase {
 
         // Sanity check on the setup: the strict config really does resolve
         // fewer clusters while getting the exact same number right.
-        XCTAssertEqual(lenientMetrics.resolvedClusterCount, 4)
-        XCTAssertEqual(strictMetrics.resolvedClusterCount, 2)
-        XCTAssertEqual(lenientMetrics.correctClusterCount, 2)
-        XCTAssertEqual(strictMetrics.correctClusterCount, 2)
+        #expect(lenientMetrics.resolvedClusterCount == 4)
+        #expect(strictMetrics.resolvedClusterCount == 2)
+        #expect(lenientMetrics.correctClusterCount == 2)
+        #expect(strictMetrics.correctClusterCount == 2)
 
         // The trap: naively scoring on the resolved-only figure would call the
         // stricter config a strict improvement.
-        XCTAssertGreaterThan(
-            strictMetrics.topOneAgreement ?? -1,
-            lenientMetrics.topOneAgreement ?? -1,
+        #expect(
+            strictMetrics.topOneAgreement ?? -1 > lenientMetrics.topOneAgreement ?? -1,
             "resolved-only agreement rises purely from shrinking the denominator"
         )
 
         let lenientScore = WeightSweep.score(config: lenientConfig, corpus: corpus)
         let strictScore = WeightSweep.score(config: strictConfig, corpus: corpus)
 
-        XCTAssertEqual(lenientScore.topOneAgreementOverAllClusters, 0.5, accuracy: 1e-9)
-        XCTAssertEqual(strictScore.topOneAgreementOverAllClusters, 0.5, accuracy: 1e-9)
-        XCTAssertLessThanOrEqual(
-            strictScore.objective,
-            lenientScore.objective + 1e-9,
+        #expect(abs(lenientScore.topOneAgreementOverAllClusters - 0.5) <= 1e-9)
+        #expect(abs(strictScore.topOneAgreementOverAllClusters - 0.5) <= 1e-9)
+        #expect(
+            strictScore.objective <= lenientScore.objective + 1e-9,
             "refusing to answer more often must never raise the sweep objective"
         )
     }
@@ -183,7 +182,7 @@ final class WeightSweepTests: XCTestCase {
     /// outweighs its agreement — so refusal would "win". The fix charges an
     /// unresolved cluster into the penalty term at the same rate as a blurry
     /// winner, so refusing can never come out ahead of answering.
-    func testAllUnresolvedConfigScoresStrictlyBelowAnAnsweringConfigWithBlurryWinners() {
+    @Test func testAllUnresolvedConfigScoresStrictlyBelowAnAnsweringConfigWithBlurryWinners() {
         // Every candidate sits under both this config's critical sharpness
         // ratio and its absolute floor, so BestShotRanker.decide refuses
         // every cluster: every winner it would otherwise pick is disqualified
@@ -210,7 +209,7 @@ final class WeightSweepTests: XCTestCase {
         )
 
         let refusingMetrics = MetricsReport.compute(corpus: corpus, config: refusingConfig).overall
-        XCTAssertEqual(refusingMetrics.unresolvedCount, refusingMetrics.clusterCount, "setup: every cluster must refuse")
+        #expect(refusingMetrics.unresolvedCount == refusingMetrics.clusterCount, "setup: every cluster must refuse")
 
         let refusingScore = WeightSweep.score(config: refusingConfig, corpus: corpus, blurPenalty: 5.0)
         let answeringScore = WeightSweep.score(config: answeringConfig, corpus: corpus, blurPenalty: 5.0)
@@ -219,10 +218,9 @@ final class WeightSweepTests: XCTestCase {
         // terms vanish). Under the fix, an all-unresolved config is charged
         // the full blur penalty on every cluster: 0 agreement -
         // blurPenalty * (0 blurry winners + 4 unresolved) / 4 clusters == -blurPenalty.
-        XCTAssertEqual(refusingScore.objective, -5.0, accuracy: 1e-9, "refusing every cluster is charged the full blur penalty")
-        XCTAssertGreaterThan(
-            answeringScore.objective,
-            refusingScore.objective,
+        #expect(abs(refusingScore.objective - (-5.0)) <= 1e-9, "refusing every cluster is charged the full blur penalty")
+        #expect(
+            answeringScore.objective > refusingScore.objective,
             "a config that answers correctly and unblurred must strictly beat one that refuses everything"
         )
     }
@@ -241,7 +239,7 @@ final class WeightSweepTests: XCTestCase {
     /// is mixed — 1 blurry winner, 1 unresolved, neither zero) rather than
     /// hand-guessed, since `BestShotRanker`'s winner selection is not a
     /// simple function of a single candidate's sharpness value.
-    func testObjectivePinsExactArithmeticOnAMixedCorpus() {
+    @Test func testObjectivePinsExactArithmeticOnAMixedCorpus() {
         let mixedConfig = config
 
         let corpus = BestShotCalibrationCorpus(
@@ -266,9 +264,9 @@ final class WeightSweepTests: XCTestCase {
         )
 
         let metrics = MetricsReport.compute(corpus: corpus, config: mixedConfig).overall
-        XCTAssertEqual(metrics.clusterCount, 4)
-        XCTAssertGreaterThan(metrics.blurryWinnerCount, 0, "setup: the designed cluster must produce a blurry winner")
-        XCTAssertGreaterThan(metrics.unresolvedCount, 0, "setup: the last cluster must refuse outright")
+        #expect(metrics.clusterCount == 4)
+        #expect(metrics.blurryWinnerCount > 0, "setup: the designed cluster must produce a blurry winner")
+        #expect(metrics.unresolvedCount > 0, "setup: the last cluster must refuse outright")
 
         let score = WeightSweep.score(config: mixedConfig, corpus: corpus, blurPenalty: 5.0)
 
@@ -276,9 +274,9 @@ final class WeightSweepTests: XCTestCase {
         let expectedPenalizedRate = Double(metrics.blurryWinnerCount + metrics.unresolvedCount) / Double(metrics.clusterCount)
         let expectedObjective = expectedAgreement - 5.0 * expectedPenalizedRate
 
-        XCTAssertEqual(score.topOneAgreementOverAllClusters, expectedAgreement, accuracy: 1e-9)
-        XCTAssertEqual(score.penalizedBlurryRate, expectedPenalizedRate, accuracy: 1e-9)
-        XCTAssertEqual(score.objective, expectedObjective, accuracy: 1e-9)
+        #expect(abs(score.topOneAgreementOverAllClusters - expectedAgreement) <= 1e-9)
+        #expect(abs(score.penalizedBlurryRate - expectedPenalizedRate) <= 1e-9)
+        #expect(abs(score.objective - expectedObjective) <= 1e-9)
     }
 
     /// Pins the boundary of `score`'s precondition. Zero is a legitimate
@@ -286,21 +284,18 @@ final class WeightSweepTests: XCTestCase {
     /// `> 0`. A future tightening to `> 0` would reject this silently useful
     /// mode; a loosening to allow negatives would turn the unresolved charge
     /// into a reward and bring back the all-unresolved winner.
-    func testZeroBlurPenaltyIsAcceptedAndLeavesTheAgreementTermAlone() {
+    @Test func testZeroBlurPenaltyIsAcceptedAndLeavesTheAgreementTermAlone() {
         let corpus = makeCorpus()
         let metrics = MetricsReport.compute(corpus: corpus, config: config).overall
 
         let score = WeightSweep.score(config: config, corpus: corpus, blurPenalty: 0)
 
-        XCTAssertEqual(
-            score.objective,
-            metrics.topOneAgreementOverAllClusters ?? 0,
-            accuracy: 1e-9,
+        #expect(
+            abs(score.objective - (metrics.topOneAgreementOverAllClusters ?? 0)) <= 1e-9,
             "With no blur penalty the objective is the all-clusters agreement, unmodified"
         )
-        XCTAssertGreaterThanOrEqual(
-            score.penalizedBlurryRate,
-            0,
+        #expect(
+            score.penalizedBlurryRate >= 0,
             "The rate is still reported even when it is not charged"
         )
     }

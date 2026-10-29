@@ -3,90 +3,92 @@ import CoreGraphics
 import Foundation
 import Photos
 import Vision
-import XCTest
+import Testing
 @testable import PhotoAnalysis
 
-final class PhotoQualityAnalysisServiceTests: XCTestCase {
+@Suite struct PhotoQualityAnalysisServiceTests {
     private let service = PhotoQualityAnalysisService(faceDetector: { _ in [] })
 
     // MARK: - Raw signal ordering
 
-    func testCheckerboardIsMeasuredSharperThanFlatGray() throws {
-        let sharp = try XCTUnwrap(makeCheckerboardImage())
-        let flat = try XCTUnwrap(makeFlatImage(level: 127))
+    @Test func testCheckerboardIsMeasuredSharperThanFlatGray() throws {
+        let sharp = try #require(makeCheckerboardImage())
+        let flat = try #require(makeFlatImage(level: 127))
 
         let sharpSignals = service.signals(for: sharp, pixelArea: 1_000)
         let flatSignals = service.signals(for: flat, pixelArea: 1_000)
 
-        XCTAssertGreaterThan(sharpSignals.globalSharpness, flatSignals.globalSharpness)
-        XCTAssertNil(sharpSignals.analysisFailure)
+        #expect(sharpSignals.globalSharpness > flatSignals.globalSharpness)
+        #expect(sharpSignals.analysisFailure == nil)
     }
 
-    func testBlownOutFrameReportsBrightClipping() throws {
-        let white = try XCTUnwrap(makeFlatImage(level: 255))
+    @Test func testBlownOutFrameReportsBrightClipping() throws {
+        let white = try #require(makeFlatImage(level: 255))
 
         let signals = service.signals(for: white, pixelArea: 1_000)
 
-        XCTAssertGreaterThan(signals.brightClippedFraction, 0.9)
-        XCTAssertEqual(signals.darkClippedFraction, 0, accuracy: 0.000_1)
+        #expect(signals.brightClippedFraction > 0.9)
+        let eps = 0.000_1
+        #expect(abs(signals.darkClippedFraction - 0) <= eps)
     }
 
-    func testCrushedFrameReportsDarkClipping() throws {
-        let black = try XCTUnwrap(makeFlatImage(level: 0))
+    @Test func testCrushedFrameReportsDarkClipping() throws {
+        let black = try #require(makeFlatImage(level: 0))
 
         let signals = service.signals(for: black, pixelArea: 1_000)
 
-        XCTAssertGreaterThan(signals.darkClippedFraction, 0.9)
-        XCTAssertEqual(signals.brightClippedFraction, 0, accuracy: 0.000_1)
+        #expect(signals.darkClippedFraction > 0.9)
+        let eps = 0.000_1
+        #expect(abs(signals.brightClippedFraction - 0) <= eps)
     }
 
-    func testFlatFrameReportsLowContrast() throws {
-        let flat = try XCTUnwrap(makeFlatImage(level: 127))
-        let contrasty = try XCTUnwrap(makeCheckerboardImage())
+    @Test func testFlatFrameReportsLowContrast() throws {
+        let flat = try #require(makeFlatImage(level: 127))
+        let contrasty = try #require(makeCheckerboardImage())
 
         let flatSignals = service.signals(for: flat, pixelArea: 1_000)
         let contrastySignals = service.signals(for: contrasty, pixelArea: 1_000)
 
-        XCTAssertLessThan(flatSignals.subjectLumaStdDev, PhotoQualityScoringConfig.current.lowContrastStdDev)
-        XCTAssertGreaterThan(contrastySignals.subjectLumaStdDev, flatSignals.subjectLumaStdDev)
+        #expect(flatSignals.subjectLumaStdDev < PhotoQualityScoringConfig.current.lowContrastStdDev)
+        #expect(contrastySignals.subjectLumaStdDev > flatSignals.subjectLumaStdDev)
     }
 
-    func testNoisyFrameIsMeasuredNoisierThanCleanFrame() throws {
-        let noisy = try XCTUnwrap(makeNoisyImage())
-        let clean = try XCTUnwrap(makeFlatImage(level: 127))
+    @Test func testNoisyFrameIsMeasuredNoisierThanCleanFrame() throws {
+        let noisy = try #require(makeNoisyImage())
+        let clean = try #require(makeFlatImage(level: 127))
 
         let noisySignals = service.signals(for: noisy, pixelArea: 1_000)
         let cleanSignals = service.signals(for: clean, pixelArea: 1_000)
 
-        XCTAssertGreaterThan(noisySignals.noiseEstimate, cleanSignals.noiseEstimate)
+        #expect(noisySignals.noiseEstimate > cleanSignals.noiseEstimate)
     }
 
-    func testTooSmallImageIsReportedAsFailureInsteadOfAScore() throws {
-        let tiny = try XCTUnwrap(makeFlatImage(level: 127, side: 32))
+    @Test func testTooSmallImageIsReportedAsFailureInsteadOfAScore() throws {
+        let tiny = try #require(makeFlatImage(level: 127, side: 32))
 
         let signals = service.signals(for: tiny, pixelArea: 1_000)
 
-        XCTAssertEqual(signals.analysisFailure, .tooSmallToAnalyze)
-        XCTAssertFalse(signals.isUsable)
+        #expect(signals.analysisFailure == .tooSmallToAnalyze)
+        #expect(!signals.isUsable)
     }
 
-    func testFaceDetectionFailureStillProducesUsableSignals() throws {
+    @Test func testFaceDetectionFailureStillProducesUsableSignals() throws {
         struct DetectionError: Error {}
         let failing = PhotoQualityAnalysisService(faceDetector: { _ in throw DetectionError() })
-        let image = try XCTUnwrap(makeCheckerboardImage())
+        let image = try #require(makeCheckerboardImage())
 
         let signals = failing.signals(for: image, pixelArea: 1_000)
 
-        XCTAssertTrue(signals.isUsable)
-        XCTAssertFalse(signals.hasFaces)
+        #expect(signals.isUsable)
+        #expect(!signals.hasFaces)
     }
 
     /// The subject is the face that fills the frame, not the sharpest one: a
     /// small crisp bystander must not speak for a blurred person in front.
-    func testTheLargestFaceProvidesTheSubjectSignals() throws {
+    @Test func testTheLargestFaceProvidesTheSubjectSignals() throws {
         // Left half flat (the big, soft subject), right half a fine checkerboard
         // (the small, sharp bystander).
-        let image = try XCTUnwrap(makeImage(side: 256, value: { x, _ in
+        let image = try #require(makeImage(side: 256, value: { x, _ in
             guard x >= 128 else { return 127 }
             return x.isMultiple(of: 2) ? 0 : 255
         }))
@@ -99,11 +101,11 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         })
 
         let signals = service.signals(for: image, pixelArea: 1_000)
-        let subjectSharpness = try XCTUnwrap(signals.subjectSharpness)
-        let sharpestFace = try XCTUnwrap(signals.usableFaceSignals.map(\.sharpness).max())
+        let subjectSharpness = try #require(signals.subjectSharpness)
+        let sharpestFace = try #require(signals.usableFaceSignals.map(\.sharpness).max())
 
-        XCTAssertEqual(signals.usableFaceSignals.count, 2)
-        XCTAssertLessThan(subjectSharpness, sharpestFace)
+        #expect(signals.usableFaceSignals.count == 2)
+        #expect(subjectSharpness < sharpestFace)
     }
 
     // MARK: - The face size gate
@@ -113,9 +115,9 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
     /// because the gate demanded 64 pixels of a 256-pixel analysis image, which
     /// is a quarter of the long side. Given a face source with real pixels in
     /// it, that same face is now measured.
-    func testAnOrdinaryDistantFaceIsMeasuredInsteadOfDiscarded() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+    @Test func testAnOrdinaryDistantFaceIsMeasuredInsteadOfDiscarded() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
+        let faceSource = try #require(makeCheckerboardImage(side: 1_024))
         let service = PhotoQualityAnalysisService(faceDetector: { _ in
             [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08))]
         })
@@ -126,16 +128,16 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             pixelArea: 12_000_000
         )
 
-        XCTAssertTrue(signals.hasFaces)
-        XCTAssertEqual(signals.rejectedFaceCounts, .empty)
-        XCTAssertNotNil(signals.subjectSharpness)
+        #expect(signals.hasFaces)
+        #expect(signals.rejectedFaceCounts == .empty)
+        #expect(signals.subjectSharpness != nil)
     }
 
     /// And it is measured on the face source's pixels, not on the handful the
     /// analysis thumbnail could offer.
-    func testFaceSharpnessIsMeasuredOnTheFaceSourcePixels() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+    @Test func testFaceSharpnessIsMeasuredOnTheFaceSourcePixels() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
+        let faceSource = try #require(makeCheckerboardImage(side: 1_024))
         let service = PhotoQualityAnalysisService(faceDetector: { _ in
             [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08))]
         })
@@ -145,43 +147,43 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             faceSource: faceSource,
             pixelArea: 12_000_000
         )
-        let face = try XCTUnwrap(signals.usableFaceSignals.first)
-        let sourcePixelSize = try XCTUnwrap(face.sourcePixelSize)
+        let face = try #require(signals.usableFaceSignals.first)
+        let sourcePixelSize = try #require(face.sourcePixelSize)
 
-        XCTAssertGreaterThanOrEqual(
-            sourcePixelSize,
-            Double(PhotoQualityScoringConfig.current.faceCropSide)
+        #expect(
+            sourcePixelSize >= Double(PhotoQualityScoringConfig.current.faceCropSide)
         )
         // The box is still reported in analysis-image pixels, which is what
         // `boxPixelSize` has always meant.
-        XCTAssertEqual(face.boxPixelSize, 0.08 * 256, accuracy: 1)
-        XCTAssertLessThan(face.boxPixelSize, sourcePixelSize)
+        let eps: Double = 1
+        #expect(abs(face.boxPixelSize - (0.08 * 256)) <= eps)
+        #expect(face.boxPixelSize < sourcePixelSize)
     }
 
     /// Without a face source there are only ~20 real pixels behind that face.
     /// Rather than stretch them onto the crop grid and call the result
     /// sharpness, the face is rejected — and the rejection is counted, so the
     /// photo does not look like one with nobody in it.
-    func testAFaceWithoutEnoughRealPixelsIsRejectedAndCountedRatherThanInterpolated() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
+    @Test func testAFaceWithoutEnoughRealPixelsIsRejectedAndCountedRatherThanInterpolated() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
         let service = PhotoQualityAnalysisService(faceDetector: { _ in
             [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08))]
         })
 
         let signals = service.signals(for: analysisImage, faceSource: nil, pixelArea: 12_000_000)
 
-        XCTAssertFalse(signals.hasFaces)
-        XCTAssertTrue(signals.hasOnlyRejectedFaces)
-        XCTAssertEqual(signals.rejectedFaceCounts?.insufficientResolution, 1)
-        XCTAssertEqual(signals.rejectedFaceCounts?.tooSmallInFrame, 0)
+        #expect(!signals.hasFaces)
+        #expect(signals.hasOnlyRejectedFaces)
+        #expect(signals.rejectedFaceCounts?.insufficientResolution == 1)
+        #expect(signals.rejectedFaceCounts?.tooSmallInFrame == 0)
     }
 
     /// A face too small to be the subject is still turned away — the fraction
     /// gate is a relevance gate, not a removed one — but it is counted before
     /// the crop stage, so the reason is legible.
-    func testAFaceTooSmallToBeTheSubjectIsCountedAgainstTheFrameFraction() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+    @Test func testAFaceTooSmallToBeTheSubjectIsCountedAgainstTheFrameFraction() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
+        let faceSource = try #require(makeCheckerboardImage(side: 1_024))
         let service = PhotoQualityAnalysisService(faceDetector: { _ in
             [VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.01))]
         })
@@ -192,15 +194,15 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             pixelArea: 12_000_000
         )
 
-        XCTAssertFalse(signals.hasFaces)
-        XCTAssertEqual(signals.rejectedFaceCounts?.tooSmallInFrame, 1)
-        XCTAssertEqual(signals.rejectedFaceCounts?.insufficientResolution, 0)
+        #expect(!signals.hasFaces)
+        #expect(signals.rejectedFaceCounts?.tooSmallInFrame == 1)
+        #expect(signals.rejectedFaceCounts?.insufficientResolution == 0)
     }
 
     /// A synthesized observation reports full confidence, so the floor is
     /// raised above it rather than faking a low-confidence detection.
-    func testAFaceBelowTheConfidenceFloorIsCountedSeparately() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
+    @Test func testAFaceBelowTheConfidenceFloorIsCountedSeparately() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
         var config = PhotoQualityScoringConfig.current
         config.minimumFaceDetectionConfidence = 2
         let service = PhotoQualityAnalysisService(config: config, faceDetector: { _ in
@@ -209,29 +211,29 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         let signals = service.signals(for: analysisImage, faceSource: nil, pixelArea: 12_000_000)
 
-        XCTAssertFalse(signals.hasFaces)
-        XCTAssertTrue(signals.hasOnlyRejectedFaces)
-        XCTAssertEqual(signals.rejectedFaceCounts?.lowConfidence, 1)
-        XCTAssertEqual(signals.rejectedFaceCounts?.tooSmallInFrame, 0)
+        #expect(!signals.hasFaces)
+        #expect(signals.hasOnlyRejectedFaces)
+        #expect(signals.rejectedFaceCounts?.lowConfidence == 1)
+        #expect(signals.rejectedFaceCounts?.tooSmallInFrame == 0)
     }
 
     /// A detector that threw measured nothing, so it rejected nothing either.
     /// Reporting a rejection here would blame the gate for a Vision failure.
-    func testADetectorFailureIsNotRecordedAsARejection() throws {
+    @Test func testADetectorFailureIsNotRecordedAsARejection() throws {
         struct DetectionError: Error {}
         let service = PhotoQualityAnalysisService(faceDetector: { _ in throw DetectionError() })
-        let image = try XCTUnwrap(makeCheckerboardImage())
+        let image = try #require(makeCheckerboardImage())
 
         let signals = service.signals(for: image, pixelArea: 1_000)
 
-        XCTAssertEqual(signals.rejectedFaceCounts, .empty)
-        XCTAssertFalse(signals.hasOnlyRejectedFaces)
+        #expect(signals.rejectedFaceCounts == .empty)
+        #expect(!signals.hasOnlyRejectedFaces)
     }
 
     /// A photo about to be recorded as `tooSmallToAnalyze` must not pay for
     /// face detection, nor for a second image request, before that verdict.
-    func testAnImageTooSmallToAnalyzeIsNotProbedForFaces() async throws {
-        let tiny = try XCTUnwrap(makeCheckerboardImage(side: 32))
+    @Test func testAnImageTooSmallToAnalyzeIsNotProbedForFaces() async throws {
+        let tiny = try #require(makeCheckerboardImage(side: 32))
         let requestedSides = RequestedSideRecorder()
         let detectorCalls = CallCounter()
         let service = PhotoQualityAnalysisService(
@@ -249,9 +251,9 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         let sides = await requestedSides.sides(for: "tiny")
 
-        XCTAssertEqual(scores.first?.signals.analysisFailure, .tooSmallToAnalyze)
-        XCTAssertEqual(sides.count, 1)
-        XCTAssertEqual(detectorCalls.count, 0)
+        #expect(scores.first?.signals.analysisFailure == .tooSmallToAnalyze)
+        #expect(sides.count == 1)
+        #expect(detectorCalls.count == 0)
     }
 
     /// Vision is not monotonic in resolution — this PR's own measurements show
@@ -259,9 +261,9 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
     /// re-detection that comes back with fewer faces must not be taken
     /// wholesale: the face it dropped was already accepted, and losing it takes
     /// the subject sharpness and the blink/crop penalties with it.
-    func testAFaceTheReDetectionMissesIsKeptFromTheFirstPass() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 512))
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+    @Test func testAFaceTheReDetectionMissesIsKeptFromTheFirstPass() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 512))
+        let faceSource = try #require(makeCheckerboardImage(side: 1_024))
         let left = Self.faceBox(fraction: 0.20, x: 0.05)
         let right = Self.faceBox(fraction: 0.20, x: 0.60)
         let service = PhotoQualityAnalysisService(faceDetector: { image in
@@ -277,11 +279,11 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             pixelArea: 12_000_000
         )
 
-        XCTAssertEqual(signals.usableFaceSignals.count, 2, "the dropped face must survive the merge")
+        #expect(signals.usableFaceSignals.count == 2, "the dropped face must survive the merge")
         // Both are measured on the face source, not one on each image.
         let sizes = signals.usableFaceSignals.compactMap(\.sourcePixelSize)
-        XCTAssertEqual(sizes.count, 2)
-        XCTAssertTrue(sizes.allSatisfy { $0 > 128 }, "expected face-source pixels, got \(sizes)")
+        #expect(sizes.count == 2)
+        #expect(sizes.allSatisfy { $0 > 128 }, "expected face-source pixels, got \(sizes)")
     }
 
     /// The 2 -> 0 case, which the first attempt at this fix missed: when the
@@ -290,12 +292,12 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
     /// `insufficientResolution` — a face at 8 % of a 512-pixel frame is 41 real
     /// pixels, below `faceCropSide` — even though the image fetched to measure
     /// them has the pixels to spare.
-    func testFacesAreMeasuredOnTheFaceSourceEvenWhenTheReDetectionFindsNobody() throws {
+    @Test func testFacesAreMeasuredOnTheFaceSourceEvenWhenTheReDetectionFindsNobody() throws {
         let config = PhotoQualityScoringConfig.current
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: config.analysisImageLongSide))
+        let analysisImage = try #require(makeCheckerboardImage(side: config.analysisImageLongSide))
         // The size production would actually request for a face this small.
         let sourceSide = config.faceSourceLongSide(smallestAcceptedFaceFraction: 0.08)
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: sourceSide))
+        let faceSource = try #require(makeCheckerboardImage(side: sourceSide))
         let service = PhotoQualityAnalysisService(faceDetector: { image in
             image.width == config.analysisImageLongSide
                 ? [
@@ -311,20 +313,20 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             pixelArea: 12_000_000
         )
 
-        XCTAssertEqual(signals.usableFaceSignals.count, 2)
-        XCTAssertEqual(signals.rejectedFaceCounts?.insufficientResolution, 0)
+        #expect(signals.usableFaceSignals.count == 2)
+        #expect(signals.rejectedFaceCounts?.insufficientResolution == 0)
         let sizes = signals.usableFaceSignals.compactMap(\.sourcePixelSize)
-        XCTAssertEqual(sizes.count, 2)
-        XCTAssertTrue(
+        #expect(sizes.count == 2)
+        #expect(
             sizes.allSatisfy { $0 >= Double(config.faceCropSide) },
             "expected face-source pixels at or above the crop side, got \(sizes)"
         )
     }
 
     /// The merge must not turn one person into two when both passes see them.
-    func testAFaceBothPassesSeeIsCountedOnce() throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 512))
-        let faceSource = try XCTUnwrap(makeCheckerboardImage(side: 1_024))
+    @Test func testAFaceBothPassesSeeIsCountedOnce() throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 512))
+        let faceSource = try #require(makeCheckerboardImage(side: 1_024))
         let box = Self.faceBox(fraction: 0.20, x: 0.05)
         let service = PhotoQualityAnalysisService(faceDetector: { image in
             // The same face, detected a shade differently at the two sizes.
@@ -339,13 +341,13 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
             pixelArea: 12_000_000
         )
 
-        XCTAssertEqual(signals.usableFaceSignals.count, 1)
+        #expect(signals.usableFaceSignals.count == 1)
     }
 
     // MARK: - The face source request
 
-    func testTheFaceSourceIsRequestedOnlyForPhotosThatHaveAFace() async throws {
-        let image = try XCTUnwrap(makeCheckerboardImage(side: 256))
+    @Test func testTheFaceSourceIsRequestedOnlyForPhotosThatHaveAFace() async throws {
+        let image = try #require(makeCheckerboardImage(side: 256))
         let requestedSides = RequestedSideRecorder()
         let service = PhotoQualityAnalysisService(
             imageProvider: { asset, size in
@@ -360,16 +362,15 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         _ = try await service.scores(for: [TestPHAsset(identifier: "portrait")])
         let sides = await requestedSides.sides(for: "portrait")
 
-        XCTAssertEqual(sides.first, PhotoQualityScoringConfig.current.analysisImageLongSide)
-        XCTAssertEqual(sides.count, 2, "a photo with a face pays for a second, larger image")
-        XCTAssertEqual(
-            sides.last,
-            PhotoQualityScoringConfig.current.faceSourceLongSide(smallestAcceptedFaceFraction: 0.08)
+        #expect(sides.first == PhotoQualityScoringConfig.current.analysisImageLongSide)
+        #expect(sides.count == 2, "a photo with a face pays for a second, larger image")
+        #expect(
+            sides.last == PhotoQualityScoringConfig.current.faceSourceLongSide(smallestAcceptedFaceFraction: 0.08)
         )
     }
 
-    func testAPhotoWithoutFacesCostsExactlyOneImageRequest() async throws {
-        let image = try XCTUnwrap(makeCheckerboardImage(side: 256))
+    @Test func testAPhotoWithoutFacesCostsExactlyOneImageRequest() async throws {
+        let image = try #require(makeCheckerboardImage(side: 256))
         let requestedSides = RequestedSideRecorder()
         let service = PhotoQualityAnalysisService(
             imageProvider: { asset, size in
@@ -382,14 +383,14 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         _ = try await service.scores(for: [TestPHAsset(identifier: "landscape")])
         let sides = await requestedSides.sides(for: "landscape")
 
-        XCTAssertEqual(sides, [PhotoQualityScoringConfig.current.analysisImageLongSide])
+        #expect(sides == [PhotoQualityScoringConfig.current.analysisImageLongSide])
     }
 
     /// A second request that fails must not cost the photo its faces: they are
     /// measured on the analysis image instead, which is a degraded reading but
     /// an honest one.
-    func testAFailedFaceSourceRequestFallsBackToTheAnalysisImage() async throws {
-        let analysisImage = try XCTUnwrap(makeCheckerboardImage(side: 256))
+    @Test func testAFailedFaceSourceRequestFallsBackToTheAnalysisImage() async throws {
+        let analysisImage = try #require(makeCheckerboardImage(side: 256))
         let service = PhotoQualityAnalysisService(
             imageProvider: { _, size in
                 Int(size.width) == PhotoQualityScoringConfig.current.analysisImageLongSide
@@ -402,12 +403,12 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         )
 
         let scores = try await service.scores(for: [TestPHAsset(identifier: "portrait")])
-        let signals = try XCTUnwrap(scores.first?.signals)
+        let signals = try #require(scores.first?.signals)
 
-        XCTAssertTrue(signals.isUsable)
+        #expect(signals.isUsable)
         // 30 % of a 256-pixel frame is 77 real pixels, above the crop side, so
         // the fallback still produces a measurement.
-        XCTAssertTrue(signals.hasFaces)
+        #expect(signals.hasFaces)
     }
 
     /// Cancelling during the *second* request must cancel the item, not be
@@ -418,7 +419,7 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
     /// the cancellation is invisible in Vision calls. What it actually produced
     /// was a finished score — the sampling and face-crop work ran, and the
     /// asset was logged as unavailable — for a scan nobody was waiting for.
-    func testCancellationDuringTheFaceSourceRequestCancelsInsteadOfScoring() async {
+    @Test func testCancellationDuringTheFaceSourceRequestCancelsInsteadOfScoring() async {
         let analysisSide = PhotoQualityScoringConfig.current.analysisImageLongSide
         let analysisImage = makeCheckerboardImage(side: analysisSide)
         let service = PhotoQualityAnalysisService(
@@ -435,11 +436,11 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         do {
             let scores = try await service.scores(for: [TestPHAsset(identifier: "one")])
-            XCTFail("Expected cancellation, got \(scores.count) score(s)")
+            Issue.record("Expected cancellation, got \(scores.count) score(s)")
         } catch is CancellationError {
-            XCTAssertTrue(true)
+            #expect(true)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
@@ -451,9 +452,9 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
     // MARK: - Batch behaviour
 
-    func testBatchAnalysisStaysWithinTheConfiguredConcurrencyLimit() async throws {
+    @Test func testBatchAnalysisStaysWithinTheConfiguredConcurrencyLimit() async throws {
         let tracker = AnalysisConcurrencyTracker()
-        let image = try XCTUnwrap(makeCheckerboardImage())
+        let image = try #require(makeCheckerboardImage())
         let service = PhotoQualityAnalysisService(
             imageProvider: { _, _ in
                 await tracker.start()
@@ -467,15 +468,14 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         let scores = try await service.scores(for: assets)
 
-        XCTAssertEqual(scores.count, assets.count)
+        #expect(scores.count == assets.count)
         let maximumConcurrentCount = await tracker.maximumConcurrentCount
-        XCTAssertLessThanOrEqual(
-            maximumConcurrentCount,
-            PhotoQualityScoringConfig.current.maxConcurrentAnalysisTasks
+        #expect(
+            maximumConcurrentCount <= PhotoQualityScoringConfig.current.maxConcurrentAnalysisTasks
         )
     }
 
-    func testBatchAnalysisPropagatesCancellation() async {
+    @Test func testBatchAnalysisPropagatesCancellation() async {
         let service = PhotoQualityAnalysisService(
             imageProvider: { _, _ in
                 try await Task.sleep(for: .seconds(5))
@@ -490,16 +490,16 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
 
         do {
             _ = try await task.value
-            XCTFail("Expected cancellation")
+            Issue.record("Expected cancellation")
         } catch is CancellationError {
-            XCTAssertTrue(true)
+            #expect(true)
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            Issue.record("Unexpected error: \(error)")
         }
     }
 
-    func testOneUnreadablePhotoIsRecordedAsAFailureWithoutFailingTheBatch() async throws {
-        let image = try XCTUnwrap(makeCheckerboardImage())
+    @Test func testOneUnreadablePhotoIsRecordedAsAFailureWithoutFailingTheBatch() async throws {
+        let image = try #require(makeCheckerboardImage())
         let service = PhotoQualityAnalysisService(
             imageProvider: { asset, _ in
                 asset.localIdentifier == "broken" ? nil : image
@@ -515,14 +515,14 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         let scores = try await service.scores(for: assets)
         let byIdentifier = Dictionary(uniqueKeysWithValues: scores.map { ($0.localIdentifier, $0) })
 
-        XCTAssertEqual(scores.count, 3)
-        XCTAssertEqual(byIdentifier["broken"]?.signals.analysisFailure, .assetUnavailable)
-        XCTAssertEqual(byIdentifier["good"]?.signals.isUsable, true)
-        XCTAssertEqual(byIdentifier["also-good"]?.signals.isUsable, true)
+        #expect(scores.count == 3)
+        #expect(byIdentifier["broken"]?.signals.analysisFailure == .assetUnavailable)
+        #expect(byIdentifier["good"]?.signals.isUsable == true)
+        #expect(byIdentifier["also-good"]?.signals.isUsable == true)
     }
 
-    func testScoresCarryTheAssetIdentityAndConfigVersions() async throws {
-        let image = try XCTUnwrap(makeCheckerboardImage())
+    @Test func testScoresCarryTheAssetIdentityAndConfigVersions() async throws {
+        let image = try #require(makeCheckerboardImage())
         let service = PhotoQualityAnalysisService(
             imageProvider: { _, _ in image },
             faceDetector: { _ in [] }
@@ -530,14 +530,14 @@ final class PhotoQualityAnalysisServiceTests: XCTestCase {
         let asset = TestPHAsset(identifier: "one", modificationDate: Date(timeIntervalSince1970: 77))
 
         let scores = try await service.scores(for: [asset])
-        let score = try XCTUnwrap(scores.first)
+        let score = try #require(scores.first)
 
-        XCTAssertEqual(score.localIdentifier, "one")
-        XCTAssertEqual(score.sourceModificationDate, Date(timeIntervalSince1970: 77))
-        XCTAssertEqual(score.scoringModelVersion, PhotoQualityScoringConfig.current.scoringModelVersion)
-        XCTAssertEqual(score.thumbnailConfigVersion, PhotoQualityScoringConfig.current.thumbnailConfigVersion)
-        XCTAssertEqual(score.signals.pixelArea, 12_000_000)
-        XCTAssertFalse(score.isAlikeEnhanced)
+        #expect(score.localIdentifier == "one")
+        #expect(score.sourceModificationDate == Date(timeIntervalSince1970: 77))
+        #expect(score.scoringModelVersion == PhotoQualityScoringConfig.current.scoringModelVersion)
+        #expect(score.thumbnailConfigVersion == PhotoQualityScoringConfig.current.thumbnailConfigVersion)
+        #expect(score.signals.pixelArea == 12_000_000)
+        #expect(!score.isAlikeEnhanced)
     }
 
     // MARK: - Helpers
