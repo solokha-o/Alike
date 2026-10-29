@@ -660,19 +660,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados recentemente"
+                  "value" : "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ recuperáveis estimados, %1$lld foto movida para Apagados recentemente"
+                  "value" : "%2$@ recuperáveis estimados, %1$lld foto movida para Apagados"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados recentemente"
+                  "value" : "%2$@ recuperáveis estimados, %1$lld fotos movidas para Apagados"
                 }
               }
             }
@@ -1038,7 +1038,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Movimentação para Apagados recentemente"
+            "value" : "Movimentação para Apagados"
           }
         },
         "pt-PT" : {
@@ -1240,7 +1240,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fotos movidas para Apagados recentemente"
+            "value" : "Fotos movidas para Apagados"
           }
         },
         "pt-PT" : {
