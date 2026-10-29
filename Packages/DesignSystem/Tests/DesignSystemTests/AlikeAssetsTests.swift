@@ -1,56 +1,56 @@
 import Foundation
 import ImageIO
-import XCTest
+import Testing
 import Lottie
 @testable import DesignSystem
 
-final class AlikeAssetsTests: XCTestCase {
-    func testScannerIdleExportsAreAvailableForEveryStateAndScale() {
+@Suite struct AlikeAssetsTests {
+    @Test func testScannerIdleExportsAreAvailableForEveryStateAndScale() {
         let scales: [AlikeAssets.ScannerIdleScale] = [.oneX, .twoX, .threeX]
 
         for state in AlikeAssets.ScannerIdleState.allCases {
             for scale in scales {
                 let url = AlikeAssets.scannerIdleURL(for: state, scale: scale)
-                XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+                #expect(FileManager.default.fileExists(atPath: url.path))
             }
         }
     }
 
-    func testScannerIdleOverlaysAreAvailableAndValid() throws {
+    @Test func testScannerIdleOverlaysAreAvailableAndValid() throws {
         for state in AlikeAssets.ScannerIdleState.allCases {
-            let overlayURL = try XCTUnwrap(AlikeAssets.scannerIdleOverlayURL(for: state))
-            XCTAssertTrue(FileManager.default.fileExists(atPath: overlayURL.path))
-            XCTAssertNotNil(LottieAnimation.filepath(overlayURL.path))
+            let overlayURL = try #require(AlikeAssets.scannerIdleOverlayURL(for: state))
+            #expect(FileManager.default.fileExists(atPath: overlayURL.path))
+            #expect(LottieAnimation.filepath(overlayURL.path) != nil)
         }
     }
 
-    func testWelcomeHeroExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .threeX).path))
+    @Test func testWelcomeHeroExportsAreAvailable() {
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .oneX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .twoX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.welcomeHeroURL(for: .threeX).path))
     }
 
-    func testWelcomeHeroOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.welcomeHeroOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testWelcomeHeroOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.welcomeHeroOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
-    func testScannerSearchingExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .threeX).path))
+    @Test func testScannerSearchingExportsAreAvailable() {
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .oneX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .twoX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.scannerSearchingURL(for: .threeX).path))
     }
 
-    func testScannerSearchingOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.scannerSearchingOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testScannerSearchingOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.scannerSearchingOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
-    func testScannerIssueExportsAreDecodableAtExpectedSizes() throws {
+    @Test func testScannerIssueExportsAreDecodableAtExpectedSizes() throws {
         try assertRasterExports([
             (AlikeAssets.scannerIssueURL(for: .oneX), 418),
             (AlikeAssets.scannerIssueURL(for: .twoX), 836),
@@ -58,33 +58,33 @@ final class AlikeAssetsTests: XCTestCase {
         ])
     }
 
-    func testComparisonReviewExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .threeX).path))
+    @Test func testComparisonReviewExportsAreAvailable() {
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .oneX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .twoX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.comparisonReviewURL(for: .threeX).path))
     }
 
-    func testComparisonReviewOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.comparisonReviewOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testComparisonReviewOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.comparisonReviewOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
-    func testBestShotExportsAreAvailable() {
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .oneX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .twoX).path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .threeX).path))
+    @Test func testBestShotExportsAreAvailable() {
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .oneX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .twoX).path))
+        #expect(FileManager.default.fileExists(atPath: AlikeAssets.bestShotURL(for: .threeX).path))
     }
 
-    func testBestShotOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.bestShotOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testBestShotOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.bestShotOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
-    func testCleanupProgressExportsAreDecodableAtExpectedSizes() throws {
+    @Test func testCleanupProgressExportsAreDecodableAtExpectedSizes() throws {
         try assertRasterExports([
             (AlikeAssets.cleanupProgressURL(for: .oneX), 418),
             (AlikeAssets.cleanupProgressURL(for: .twoX), 836),
@@ -92,14 +92,14 @@ final class AlikeAssetsTests: XCTestCase {
         ])
     }
 
-    func testCleanupProgressOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.cleanupProgressOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testCleanupProgressOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.cleanupProgressOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
-    func testCleanupSuccessExportsAreDecodableAtExpectedSizes() throws {
+    @Test func testCleanupSuccessExportsAreDecodableAtExpectedSizes() throws {
         try assertRasterExports([
             (AlikeAssets.cleanupSuccessURL(for: .oneX), 418),
             (AlikeAssets.cleanupSuccessURL(for: .twoX), 836),
@@ -107,33 +107,30 @@ final class AlikeAssetsTests: XCTestCase {
         ])
     }
 
-    func testCleanupSuccessOverlayIsAvailable() {
-        let overlayURL = try? XCTUnwrap(AlikeAssets.cleanupSuccessOverlayURL)
-        XCTAssertNotNil(overlayURL)
-        XCTAssertTrue(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
-        XCTAssertNotNil(overlayURL.flatMap { LottieAnimation.filepath($0.path) })
+    @Test func testCleanupSuccessOverlayIsAvailable() {
+        let overlayURL = try? #require(AlikeAssets.cleanupSuccessOverlayURL)
+        #expect(overlayURL != nil)
+        #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
     }
 
     private func assertRasterExports(
         _ exports: [(url: URL, expectedPixelSize: Int)],
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) throws {
         for export in exports {
-            let source = try XCTUnwrap(
+            let source = try #require(
                 CGImageSourceCreateWithURL(export.url as CFURL, nil),
                 "Expected a decodable image source at \(export.url.lastPathComponent)",
-                file: file,
-                line: line
+                sourceLocation: sourceLocation
             )
-            let image = try XCTUnwrap(
+            let image = try #require(
                 CGImageSourceCreateImageAtIndex(source, 0, nil),
                 "Expected a decodable image at \(export.url.lastPathComponent)",
-                file: file,
-                line: line
+                sourceLocation: sourceLocation
             )
-            XCTAssertEqual(image.width, export.expectedPixelSize, file: file, line: line)
-            XCTAssertEqual(image.height, export.expectedPixelSize, file: file, line: line)
+            #expect(image.width == export.expectedPixelSize, sourceLocation: sourceLocation)
+            #expect(image.height == export.expectedPixelSize, sourceLocation: sourceLocation)
         }
     }
 }
