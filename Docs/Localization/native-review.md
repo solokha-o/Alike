@@ -24,7 +24,7 @@ Three tier 3 terminology calls were the least certain:
 |---|---|---|
 | Screenshot (`it`) | "screenshot" | Confirmed 2026-10-29: Apple's Italian guide says "Scattare uno screenshot". |
 | Screenshot (`zh-Hant`) | 截圖 | Changed 2026-10-29 from 螢幕快照: Apple's zh-TW guide now says 拍攝截圖, and 截圖 is the everyday word. |
-| Library (`tr`) | kitaplık | Not confirmed. Apple's Turkish for a media library; "Kütüphane" reads more naturally to some, but would diverge from the Photos app. |
+| Library (`tr`) | arşiv | Changed 2026-10-29 from "kitaplık": Apple's Turkish guide says "Fotoğraf arşivi", and the app already used "arşiv" in 11 strings and the store text. |
 
 ## Tier 1 — a wrong word here costs a refund or a rejection
 

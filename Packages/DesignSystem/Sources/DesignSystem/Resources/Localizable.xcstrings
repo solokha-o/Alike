@@ -549,7 +549,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike'ın devam edebilmesi için fotoğraf kitaplığı izni gerekiyor"
+            "value" : "Alike'ın devam edebilmesi için fotoğraf arşivi izni gerekiyor"
           }
         },
         "uk" : {
@@ -662,7 +662,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike kitaplığında yeni fotoğraflar fark etti"
+            "value" : "Alike arşivinde yeni fotoğraflar fark etti"
           }
         },
         "uk" : {
@@ -888,7 +888,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike fotoğraf kitaplığını düzenlemene yardıma hazır"
+            "value" : "Alike fotoğraf arşivini düzenlemene yardıma hazır"
           }
         },
         "uk" : {
@@ -1001,7 +1001,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike fotoğraf kitaplığının tamamen düzenli olduğunu söylüyor"
+            "value" : "Alike fotoğraf arşivinin tamamen düzenli olduğunu söylüyor"
           }
         },
         "uk" : {

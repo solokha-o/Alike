@@ -662,7 +662,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Temizlik fırsatları için fotoğraf kitaplığını tara."
+            "value" : "Temizlik fırsatları için fotoğraf arşivini tara."
           }
         },
         "uk" : {
@@ -1453,7 +1453,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın güncel"
+            "value" : "Arşivin güncel"
           }
         },
         "uk" : {
@@ -2244,7 +2244,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fotoğraf kitaplığın taranıyor"
+            "value" : "Fotoğraf arşivin taranıyor"
           }
         },
         "uk" : {
@@ -2696,7 +2696,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplık Durumu"
+            "value" : "Arşiv Durumu"
           }
         },
         "uk" : {
@@ -3939,7 +3939,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu sonuçlar, fotoğraf kitaplığın değişmeden önceki hâline ait."
+            "value" : "Bu sonuçlar, fotoğraf arşivin değişmeden önceki hâline ait."
           }
         },
         "uk" : {

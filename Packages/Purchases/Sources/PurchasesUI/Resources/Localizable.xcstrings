@@ -2299,7 +2299,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ücretsiz sürüm takvim ayı başına üç tarama içerir. Pro, kitaplığın her değiştiğinde temizlik sonuçlarını güncel tutar."
+            "value" : "Ücretsiz sürüm takvim ayı başına üç tarama içerir. Pro, arşivin her değiştiğinde temizlik sonuçlarını güncel tutar."
           }
         },
         "uk" : {
@@ -8740,7 +8740,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırsız kitaplık taraması"
+            "value" : "Sınırsız arşiv taraması"
           }
         },
         "uk" : {

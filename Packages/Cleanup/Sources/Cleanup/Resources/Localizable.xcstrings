@@ -8344,7 +8344,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fotoğraflar silindi ama kitaplık yenilemesi başarısız oldu. Sonuçlarını yenilemek için yeni bir tarama yap."
+            "value" : "Fotoğraflar silindi ama arşiv yenilemesi başarısız oldu. Sonuçlarını yenilemek için yeni bir tarama yap."
           }
         },
         "uk" : {
@@ -9700,7 +9700,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Önce Kitaplığını Tara"
+            "value" : "Önce Arşivini Tara"
           }
         },
         "uk" : {
@@ -9813,7 +9813,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın taranıyor… %%%d"
+            "value" : "Arşivin taranıyor… %%%d"
           }
         },
         "uk" : {
@@ -10717,7 +10717,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın değişti"
+            "value" : "Arşivin değişti"
           }
         },
         "uk" : {

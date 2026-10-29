@@ -5182,7 +5182,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Orijinal, kitaplığından hiç çıkmaz. Alike değişikliği Fotoğraflar uygulamasının yaptığı gibi yazar; böylece iki uygulamadan da geri alabilirsin."
+            "value" : "Orijinal, arşivinden hiç çıkmaz. Alike değişikliği Fotoğraflar uygulamasının yaptığı gibi yazar; böylece iki uygulamadan da geri alabilirsin."
           }
         },
         "uk" : {
@@ -14787,7 +14787,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike'ın fotoğraf kitaplığınıza okuma ve yazma erişimi gerekir: fotoğrafları analiz etmek için okuma, seçtiklerini taşımak için yazma."
+            "value" : "Alike'ın fotoğraf arşivinize okuma ve yazma erişimi gerekir: fotoğrafları analiz etmek için okuma, seçtiklerini taşımak için yazma."
           }
         },
         "uk" : {
@@ -15691,7 +15691,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike, Tarayıcı sekmesinde fotoğraf kitaplığınıza bakar ve birbirine benzeyen fotoğrafları gruplar."
+            "value" : "Alike, Tarayıcı sekmesinde fotoğraf arşivinize bakar ve birbirine benzeyen fotoğrafları gruplar."
           }
         },
         "uk" : {
@@ -19985,7 +19985,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Başlangıçta bir kez istenir; kitaplığını okumak ve — yalnızca bir fotoğrafı kendin iyileştirdiğinde — bu değişikliği kaydetmek için kullanılır. İstediğin zaman iOS Ayarları'ndan değiştirebilir ya da sınırlayabilirsin."
+            "value" : "Başlangıçta bir kez istenir; arşivini okumak ve — yalnızca bir fotoğrafı kendin iyileştirdiğinde — bu değişikliği kaydetmek için kullanılır. İstediğin zaman iOS Ayarları'ndan değiştirebilir ya da sınırlayabilirsin."
           }
         },
         "uk" : {
@@ -20098,7 +20098,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fotoğraf kitaplığı"
+            "value" : "Fotoğraf arşivi"
           }
         },
         "uk" : {
@@ -21002,7 +21002,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığın değişti"
+            "value" : "Arşivin değişti"
           }
         },
         "uk" : {
@@ -22697,7 +22697,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplık durumu"
+            "value" : "Arşiv durumu"
           }
         },
         "uk" : {
@@ -22923,7 +22923,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kitaplığını taramak"
+            "value" : "Arşivini taramak"
           }
         },
         "uk" : {
