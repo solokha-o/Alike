@@ -140,7 +140,7 @@ Rendered by `disclosure` in
 
 **AR**
 
-> تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ قبل ذلك بـ 24 ساعة على الأقل. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS.
+> تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ الاشتراك قبل انتهائها بـ 24 ساعة على الأقل. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من إعدادات iOS.
 
 The phrase "for eligible new subscribers" is load-bearing. Trial eligibility is
 decided by StoreKit per subscription group, and a customer who already used the
