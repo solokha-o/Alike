@@ -266,6 +266,8 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				"en-AU",
+				"en-CA",
 				"pt-PT",
 				"fr-CA",
 				"en-GB",
