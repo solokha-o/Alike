@@ -193,15 +193,17 @@ entries state facts and have to agree with the app: the free allowance in `prici
 | 2026-10-27 | `ar`, `pl`, `tr`, `en-GB`, `fr-CA`, `pt-PT` | Codex (AI text review) | Tier 1 keys, tier 2 facts, App Store copy; `en-GB`, `fr-CA`, `pt-PT` added as full locales | #120, #138, #142, #143, #144, #145, #146 |
 | 2026-10-27 | `en-CA`, `en-AU`, `de`, `fr`, `it`, `nl`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Codex (AI text review) | Same scope; `en-CA`, `en-AU` added as full locales | #148–#158 |
 | 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
+| 2026-10-29 | All 17 locales | Oleksandr Solokha (product owner) | Accepted the AI review pass for release in place of a native-speaker sign-off, and confirmed the `ar`/`pl`/`tr` device check | — |
 
 Placeholders, plural categories and the disclosure text were checked mechanically for every
 locale, and `tools/full` passed on `develop` after the last merge.
 
 ## Not yet reviewed by a native speaker
 
-**Every locale has had an AI review pass. No locale has been signed off by a native
-speaker**, and no locale has been checked on a device — the `ar`, `pl` and `tr` device
-checks (layout, mirroring, plural forms at 1, 2, 5, 22, 25) are still open. The AI pass
+**Every locale has had an AI review pass, and the product owner accepted it for release on
+2026-10-29. No locale has been signed off by a native speaker.** The product owner
+confirmed the `ar`, `pl` and `tr` device checks (layout, mirroring, plural forms at 1, 2, 5,
+22, 25) on 2026-10-29. The AI pass
 fixed wording and consistency; it cannot replace a person who reads the language every day.
 
 Task 44 added the same five languages to the App Store listing — subtitle, keywords,
