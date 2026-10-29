@@ -1,10 +1,11 @@
+import Foundation
 import SwiftUI
-import XCTest
+import Testing
 @testable import DesignSystem
 
 @MainActor
-final class AnimatedImageOverlayTests: XCTestCase {
-    func testCreatesStaticFallbackWithoutAnimation() {
+@Suite struct AnimatedImageOverlayTests {
+    @Test func testCreatesStaticFallbackWithoutAnimation() {
         let view = AnimatedImageOverlay(
             animationURL: nil,
             aspectRatio: 1,
@@ -13,10 +14,10 @@ final class AnimatedImageOverlayTests: XCTestCase {
             Color.clear
         }
 
-        XCTAssertNotNil(view)
+        #expect(view != nil)
     }
 
-    func testSupportsLoopingPlayback() {
+    @Test func testSupportsLoopingPlayback() {
         let view = AnimatedImageOverlay(
             animationURL: URL(fileURLWithPath: "/tmp/overlay.json"),
             aspectRatio: 4.0 / 3.0,
@@ -26,38 +27,38 @@ final class AnimatedImageOverlayTests: XCTestCase {
             Image(systemName: "photo")
         }
 
-        XCTAssertNotNil(view)
+        #expect(view != nil)
     }
 
-    func testReduceMotionPreventsOverlayAnimationRendering() {
+    @Test func testReduceMotionPreventsOverlayAnimationRendering() {
         let animationURL = URL(fileURLWithPath: "/tmp/overlay.json")
 
-        XCTAssertTrue(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+        #expect(AnimatedImageOverlay<Color>.shouldRenderAnimation(
             animationURL: animationURL,
             reduceMotion: false
         ))
-        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+        #expect(!(AnimatedImageOverlay<Color>.shouldRenderAnimation(
             animationURL: animationURL,
             reduceMotion: true
-        ))
-        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldRenderAnimation(
+        )))
+        #expect(!(AnimatedImageOverlay<Color>.shouldRenderAnimation(
             animationURL: nil,
             reduceMotion: false
-        ))
+        )))
     }
 
-    func testAmbientMotionRepeatsOnlyWhenMotionIsAllowed() {
-        XCTAssertTrue(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+    @Test func testAmbientMotionRepeatsOnlyWhenMotionIsAllowed() {
+        #expect(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
             ambientMotion: .breathe,
             reduceMotion: false
         ))
-        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+        #expect(!(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
             ambientMotion: .breathe,
             reduceMotion: true
-        ))
-        XCTAssertFalse(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
+        )))
+        #expect(!(AnimatedImageOverlay<Color>.shouldAnimateAmbientMotion(
             ambientMotion: .none,
             reduceMotion: false
-        ))
+        )))
     }
 }

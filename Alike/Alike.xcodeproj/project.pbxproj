@@ -267,6 +267,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				"en-AU",
+				"pt-PT",
+				"fr-CA",
+				"en-GB",
 				en,
 				Base,
 				uk,
