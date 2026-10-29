@@ -11,6 +11,18 @@
             "value" : "Alike"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "new",
@@ -26,7 +38,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يحلّل Alike مكتبة صورك للعثور على الصور المتشابهة بصريًا، ويمكنه تحسين صورة تختارها — يُحتفظ بالأصل دائمًا حتى يمكنك التراجع."
+            "value" : "يحلّل Alike مكتبة صورك للعثور على الصور المتشابهة بصريًا، ويمكنه تحسين صورة تختارها — ويحتفظ دائمًا بالصورة الأصلية لتتمكن من التراجع عن التحسين."
           }
         },
         "de" : {
@@ -39,6 +51,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyses your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
           }
         },
         "es" : {
@@ -54,6 +72,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyse votre photothèque pour trouver les photos qui se ressemblent et peut améliorer la photo de votre choix : l’original est toujours conservé, vous pouvez donc revenir en arrière."
+          }
+        },
+        "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike analyse votre photothèque pour trouver les photos qui se ressemblent et peut améliorer la photo de votre choix : l’original est toujours conservé, vous pouvez donc revenir en arrière."
@@ -83,10 +107,16 @@
             "value" : "O Alike analisa sua fototeca para encontrar fotos visualmente semelhantes e pode aprimorar a foto que você escolher — o original é sempre mantido, então dá para reverter."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike analisa a tua fototeca para encontrar imagens visualmente semelhantes e pode melhorar uma fotografia que escolhas — mantendo sempre o original para poderes reverter a alteração."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike, görsel olarak benzer fotoğrafları bulmak için fotoğraf kitaplığını analiz eder ve seçtiğin fotoğrafı iyileştirebilir — orijinal her zaman saklanır, böylece geri alabilirsin."
+            "value" : "Alike, görsel olarak benzer fotoğrafları bulmak için fotoğraf arşivini analiz eder ve seçtiğin fotoğrafı iyileştirebilir — orijinal her zaman saklanır, böylece geri alabilirsin."
           }
         },
         "uk" : {
@@ -99,12 +129,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike 會分析你的照片圖庫以找出外觀相似的照片，並可優化你選擇的照片；原始照片一律保留，隨時都能還原。"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O Alike analisa a tua fototeca para encontrar imagens visualmente semelhantes e pode melhorar uma fotografia que escolhas — mantendo sempre o original para poderes reverter a alteração."
           }
         }
       }

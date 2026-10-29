@@ -1,24 +1,23 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Diagnostics
 
-final class CrashReportStoreTests: XCTestCase {
-    private var directoryURL: URL!
-    private var store: CrashReportStore!
+/// A `final class` suite: the temporary directory is removed in `deinit`.
+@Suite final class CrashReportStoreTests {
+    private let directoryURL: URL
+    private let store: CrashReportStore
 
     private var indexURL: URL { directoryURL.appendingPathComponent("index.json") }
     private var payloadsURL: URL { directoryURL.appendingPathComponent("payloads") }
 
-    override func setUpWithError() throws {
+    init() {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         store = CrashReportStore(directoryURL: directoryURL)
     }
 
-    override func tearDownWithError() throws {
-        store = nil
-        if let directoryURL {
-            try? FileManager.default.removeItem(at: directoryURL)
-        }
+    deinit {
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     private func payloadFileNames() -> Set<String> {
@@ -32,42 +31,42 @@ final class CrashReportStoreTests: XCTestCase {
 
     // MARK: - Ingest
 
-    func testMissingDirectoryReadsAsNoReports() async {
+    @Test func testMissingDirectoryReadsAsNoReports() async {
         let reports = await store.reports()
-        XCTAssertEqual(reports, [])
+        #expect(reports == [])
     }
 
-    func testIngestStoresThePayloadBytesUntouchedAndReadsItsMetadata() async throws {
+    @Test func testIngestStoresThePayloadBytesUntouchedAndReadsItsMetadata() async throws {
         let payload = CrashPayloadFixture.data()
         let receivedAt = Date(timeIntervalSince1970: 1_790_000_000)
 
         await store.ingest([payload], receivedAt: receivedAt)
 
         let reports = await store.reports()
-        let report = try XCTUnwrap(reports.first)
-        XCTAssertEqual(reports.count, 1)
-        XCTAssertEqual(report.receivedAt, receivedAt)
-        XCTAssertEqual(report.appVersion, "1.5.0")
-        XCTAssertEqual(report.appBuild, "12")
-        XCTAssertEqual(report.osVersion, "iPhone OS 18.6 (22G86)")
-        XCTAssertEqual(report.deviceModel, "iPhone14,3")
-        XCTAssertEqual(report.promptState, .pending)
+        let report = try #require(reports.first)
+        #expect(reports.count == 1)
+        #expect(report.receivedAt == receivedAt)
+        #expect(report.appVersion == "1.5.0")
+        #expect(report.appBuild == "12")
+        #expect(report.osVersion == "iPhone OS 18.6 (22G86)")
+        #expect(report.deviceModel == "iPhone14,3")
+        #expect(report.promptState == .pending)
         let fileURL = await store.payloadFileURL(for: report.id)
-        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(fileURL)), payload)
+        #expect(try Data(contentsOf: #require(fileURL)) == payload)
     }
 
-    func testPayloadThatIsNotJSONIsStillKept() async throws {
+    @Test func testPayloadThatIsNotJSONIsStillKept() async throws {
         let payload = Data("not-json".utf8)
 
         await store.ingest([payload], receivedAt: Date(timeIntervalSince1970: 10))
 
-        let report = try await XCTUnwrapAsync(await store.reports().first)
-        XCTAssertNil(report.appVersion)
+        let report = try #require(await store.reports().first)
+        #expect(report.appVersion == nil)
         let fileURL = await store.payloadFileURL(for: report.id)
-        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(fileURL)), payload)
+        #expect(try Data(contentsOf: #require(fileURL)) == payload)
     }
 
-    func testIngestSignalsAChange() async {
+    @Test func testIngestSignalsAChange() async {
         var changes = await store.changes().makeAsyncIterator()
 
         await store.ingest([CrashPayloadFixture.data()])
@@ -77,8 +76,8 @@ final class CrashReportStoreTests: XCTestCase {
 
     /// One observer going away must not silence the store: the screen that watches it
     /// is torn down and rebuilt inside a single process.
-    func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
-        let store = store!
+    @Test func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
+        let store = self.store
         let first = Task { for await _ in await store.changes() {} }
         try await Task.sleep(for: .milliseconds(50))
         first.cancel()
@@ -88,10 +87,10 @@ final class CrashReportStoreTests: XCTestCase {
         await store.ingest([CrashPayloadFixture.data()])
 
         let change: Void? = await second.next()
-        XCTAssertNotNil(change)
+        #expect(change != nil)
     }
 
-    func testEveryOpenObserverIsToldAboutAChange() async {
+    @Test func testEveryOpenObserverIsToldAboutAChange() async {
         var first = await store.changes().makeAsyncIterator()
         var second = await store.changes().makeAsyncIterator()
 
@@ -99,25 +98,25 @@ final class CrashReportStoreTests: XCTestCase {
 
         let firstChange: Void? = await first.next()
         let secondChange: Void? = await second.next()
-        XCTAssertNotNil(firstChange)
-        XCTAssertNotNil(secondChange)
+        #expect(firstChange != nil)
+        #expect(secondChange != nil)
     }
 
     // MARK: - Prompt state
 
-    func testPromptStateSurvivesAReload() async throws {
+    @Test func testPromptStateSurvivesAReload() async throws {
         await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 10))
-        let id = try await XCTUnwrapAsync(await store.reports().first).id
+        let id = try #require(await store.reports().first).id
 
         await store.setPromptState(.declined, for: id)
 
         let reloaded = await CrashReportStore(directoryURL: directoryURL).reports()
-        XCTAssertEqual(reloaded.map(\.promptState), [.declined])
+        #expect(reloaded.map(\.promptState) == [.declined])
     }
 
     // MARK: - Rotation
 
-    func testExactlyAtTheLimitNothingIsRotatedOut() async {
+    @Test func testExactlyAtTheLimitNothingIsRotatedOut() async {
         let store = CrashReportStore(directoryURL: directoryURL, maxReports: 3)
         for second in 1...3 {
             await store.ingest(
@@ -127,11 +126,11 @@ final class CrashReportStoreTests: XCTestCase {
         }
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["1", "2", "3"])
-        XCTAssertEqual(payloadFileNames().count, 3)
+        #expect(reports.map(\.appBuild) == ["1", "2", "3"])
+        #expect(payloadFileNames().count == 3)
     }
 
-    func testOverTheLimitTheOldestReportAndItsFileAreRemoved() async {
+    @Test func testOverTheLimitTheOldestReportAndItsFileAreRemoved() async {
         let store = CrashReportStore(directoryURL: directoryURL, maxReports: 3)
         for second in 1...4 {
             await store.ingest(
@@ -141,34 +140,34 @@ final class CrashReportStoreTests: XCTestCase {
         }
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["2", "3", "4"])
-        XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
+        #expect(reports.map(\.appBuild) == ["2", "3", "4"])
+        #expect(payloadFileNames() == Set(reports.map { "\($0.id.uuidString).json" }))
     }
 
     /// A MetricKit batch arrives under one timestamp, so rotation has nothing but the
     /// recorded order to go on — and must drop the first of them, not an arbitrary one.
-    func testAdoptingAPayloadDoesNotReorderABatchThatShareTheSameTimestamp() async throws {
+    @Test func testAdoptingAPayloadDoesNotReorderABatchThatShareTheSameTimestamp() async throws {
         let store = CrashReportStore(directoryURL: directoryURL, maxReports: 3)
         let batch = (1...3).map { CrashPayloadFixture.data(build: "\($0)") }
         await store.ingest(batch, receivedAt: Date(timeIntervalSince1970: 10))
         try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 20))
 
-        let touched = try await XCTUnwrapAsync(await store.reports().last)
+        let touched = try #require(await store.reports().last)
         await store.setPromptState(.declined, for: touched.id)
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["2", "3", "orphan"])
+        #expect(reports.map(\.appBuild) == ["2", "3", "orphan"])
     }
 
-    func testDefaultLimitKeepsTwentyReports() async {
+    @Test func testDefaultLimitKeepsTwentyReports() async {
         let payloads = (1...21).map { CrashPayloadFixture.data(build: "\($0)") }
 
         await store.ingest(payloads, receivedAt: Date(timeIntervalSince1970: 10))
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.count, 20)
-        XCTAssertEqual(reports.first?.appBuild, "2")
-        XCTAssertEqual(payloadFileNames().count, 20)
+        #expect(reports.count == 20)
+        #expect(reports.first?.appBuild == "2")
+        #expect(payloadFileNames().count == 20)
     }
 
     // MARK: - Interrupted writes
@@ -185,31 +184,31 @@ final class CrashReportStoreTests: XCTestCase {
         return id
     }
 
-    func testPayloadLeftUnlistedByAnInterruptedIngestIsStillRead() async throws {
+    @Test func testPayloadLeftUnlistedByAnInterruptedIngestIsStillRead() async throws {
         let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
 
         let reports = await store.reports()
 
-        XCTAssertEqual(reports.map(\.id), [id])
-        XCTAssertEqual(reports.map(\.appBuild), ["orphan"])
-        XCTAssertEqual(reports.map(\.promptState), [.prompted])
+        #expect(reports.map(\.id) == [id])
+        #expect(reports.map(\.appBuild) == ["orphan"])
+        #expect(reports.map(\.promptState) == [.prompted])
     }
 
-    func testPayloadLeftUnlistedByAnInterruptedIngestIsAdoptedByTheNextWrite() async throws {
+    @Test func testPayloadLeftUnlistedByAnInterruptedIngestIsAdoptedByTheNextWrite() async throws {
         await store.ingest([CrashPayloadFixture.data(build: "1")], receivedAt: Date(timeIntervalSince1970: 10))
         let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
 
         await store.ingest([CrashPayloadFixture.data(build: "2")], receivedAt: Date(timeIntervalSince1970: 20))
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["1", "orphan", "2"])
-        XCTAssertTrue(reports.map(\.id).contains(id))
-        XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
+        #expect(reports.map(\.appBuild) == ["1", "orphan", "2"])
+        #expect(reports.map(\.id).contains(id))
+        #expect(payloadFileNames() == Set(reports.map { "\($0.id.uuidString).json" }))
     }
 
     /// An adopted payload takes part in rotation like any other: it goes when it is the
     /// oldest, not because it was unlisted.
-    func testAnAdoptedPayloadIsRotatedOutOnlyWhenItIsTheOldest() async throws {
+    @Test func testAnAdoptedPayloadIsRotatedOutOnlyWhenItIsTheOldest() async throws {
         let store = CrashReportStore(directoryURL: directoryURL, maxReports: 2)
         await store.ingest([CrashPayloadFixture.data(build: "1")], receivedAt: Date(timeIntervalSince1970: 10))
         let id = try writeUnlistedPayload(receivedAt: Date(timeIntervalSince1970: 15))
@@ -217,14 +216,14 @@ final class CrashReportStoreTests: XCTestCase {
         await store.ingest([CrashPayloadFixture.data(build: "3")], receivedAt: Date(timeIntervalSince1970: 30))
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["orphan", "3"])
-        XCTAssertTrue(reports.map(\.id).contains(id))
-        XCTAssertEqual(payloadFileNames(), Set(reports.map { "\($0.id.uuidString).json" }))
+        #expect(reports.map(\.appBuild) == ["orphan", "3"])
+        #expect(reports.map(\.id).contains(id))
+        #expect(payloadFileNames() == Set(reports.map { "\($0.id.uuidString).json" }))
     }
 
     /// A file this store never wrote is not its business either way: it is left alone
     /// rather than deleted, because the sweep now only removes what rotation dropped.
-    func testAFileThatIsNotAPayloadIsLeftAlone() async throws {
+    @Test func testAFileThatIsNotAPayloadIsLeftAlone() async throws {
         try FileManager.default.createDirectory(at: payloadsURL, withIntermediateDirectories: true)
         let stray = payloadsURL.appendingPathComponent("not-a-uuid.json")
         try Data("{}".utf8).write(to: stray)
@@ -232,15 +231,15 @@ final class CrashReportStoreTests: XCTestCase {
         await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 10))
 
         let reports = await store.reports()
-        XCTAssertTrue(FileManager.default.fileExists(atPath: stray.path))
-        XCTAssertEqual(reports.count, 1)
+        #expect(FileManager.default.fileExists(atPath: stray.path))
+        #expect(reports.count == 1)
     }
 
     // MARK: - Persisted shape
 
     /// The schema 1 index, byte for byte as the first build that shipped it writes it. If this stops decoding,
     /// installed users lose their stored crash reports.
-    func testSchemaOneIndexStillDecodes() async throws {
+    @Test func testSchemaOneIndexStillDecodes() async throws {
         try writeIndex(
             """
             {"reports":[{"appBuild":"12","appVersion":"1.5.0","deviceModel":"iPhone14,3",\
@@ -251,11 +250,10 @@ final class CrashReportStoreTests: XCTestCase {
 
         let reports = await store.reports()
 
-        XCTAssertEqual(
-            reports,
-            [
+        #expect(
+            reports == [
                 CrashReport(
-                    id: try XCTUnwrap(UUID(uuidString: "8F1B6C0A-5B0E-4C43-9E55-0C6E4E6D2A11")),
+                    id: try #require(UUID(uuidString: "8F1B6C0A-5B0E-4C43-9E55-0C6E4E6D2A11")),
                     receivedAt: Date(timeIntervalSince1970: 1_789_804_800),
                     appVersion: "1.5.0",
                     appBuild: "12",
@@ -267,7 +265,7 @@ final class CrashReportStoreTests: XCTestCase {
         )
     }
 
-    func testIndexRoundTripsThroughTheEncoder() throws {
+    @Test func testIndexRoundTripsThroughTheEncoder() throws {
         let index = CrashReportIndex(reports: [
             CrashReport(receivedAt: Date(timeIntervalSince1970: 10), appVersion: "1.5.0", promptState: .sent),
             CrashReport(receivedAt: Date(timeIntervalSince1970: 20))
@@ -279,10 +277,10 @@ final class CrashReportStoreTests: XCTestCase {
 
         let decoded = try decoder.decode(CrashReportIndex.self, from: encoder.encode(index))
 
-        XCTAssertEqual(decoded, index)
+        #expect(decoded == index)
     }
 
-    func testRecordWithOnlyTheRequiredKeysDecodesAndIsNeverPromptedAbout() async throws {
+    @Test func testRecordWithOnlyTheRequiredKeysDecodesAndIsNeverPromptedAbout() async throws {
         try writeIndex(
             """
             {"reports":[{"id":"8F1B6C0A-5B0E-4C43-9E55-0C6E4E6D2A11",\
@@ -290,13 +288,13 @@ final class CrashReportStoreTests: XCTestCase {
             """
         )
 
-        let report = try await XCTUnwrapAsync(await store.reports().first)
+        let report = try #require(await store.reports().first)
 
-        XCTAssertNil(report.appVersion)
-        XCTAssertEqual(report.promptState, .prompted)
+        #expect(report.appVersion == nil)
+        #expect(report.promptState == .prompted)
     }
 
-    func testUnknownPromptStateDegradesToPrompted() async throws {
+    @Test func testUnknownPromptStateDegradesToPrompted() async throws {
         try writeIndex(
             """
             {"reports":[{"id":"8F1B6C0A-5B0E-4C43-9E55-0C6E4E6D2A11","promptState":"snoozed",\
@@ -306,66 +304,56 @@ final class CrashReportStoreTests: XCTestCase {
 
         let reports = await store.reports()
 
-        XCTAssertEqual(reports.map(\.promptState), [.prompted])
+        #expect(reports.map(\.promptState) == [.prompted])
     }
 
-    func testNewerSchemaIsIgnoredAndLeftUntouched() async throws {
+    @Test func testNewerSchemaIsIgnoredAndLeftUntouched() async throws {
         let newer = #"{"reports":[],"schemaVersion":99,"shape":"unknown"}"#
         try writeIndex(newer)
 
         await store.ingest([CrashPayloadFixture.data()])
         let reports = await store.reports()
 
-        XCTAssertEqual(reports, [])
-        XCTAssertEqual(try String(contentsOf: indexURL, encoding: .utf8), newer)
-        XCTAssertEqual(payloadFileNames(), [])
+        #expect(reports == [])
+        #expect(try String(contentsOf: indexURL, encoding: .utf8) == newer)
+        #expect(payloadFileNames() == [])
     }
 
     /// A newer schema is free to reshape the records too, so the version has to be read
     /// before them — otherwise this index looks corrupt and gets rewritten as schema 1.
-    func testNewerSchemaWithAnUnreadableShapeIsStillLeftUntouched() async throws {
+    @Test func testNewerSchemaWithAnUnreadableShapeIsStillLeftUntouched() async throws {
         let newer = #"{"reports":{"newShape":true},"schemaVersion":99}"#
         try writeIndex(newer)
 
         await store.ingest([CrashPayloadFixture.data()])
         let reports = await store.reports()
 
-        XCTAssertEqual(reports, [])
-        XCTAssertEqual(try String(contentsOf: indexURL, encoding: .utf8), newer)
-        XCTAssertEqual(payloadFileNames(), [])
+        #expect(reports == [])
+        #expect(try String(contentsOf: indexURL, encoding: .utf8) == newer)
+        #expect(payloadFileNames() == [])
     }
 
-    func testCorruptIndexIsRebuiltFromThePayloadFilesWithoutPromptingAgain() async throws {
+    @Test func testCorruptIndexIsRebuiltFromThePayloadFilesWithoutPromptingAgain() async throws {
         await store.ingest([CrashPayloadFixture.data()], receivedAt: Date(timeIntervalSince1970: 10))
-        let original = try await XCTUnwrapAsync(await store.reports().first)
+        let original = try #require(await store.reports().first)
         try Data("{\"reports\":[{".utf8).write(to: indexURL)
 
         let rebuilt = await store.reports()
 
-        XCTAssertEqual(rebuilt.map(\.id), [original.id])
-        XCTAssertEqual(rebuilt.map(\.appVersion), ["1.5.0"])
-        XCTAssertEqual(rebuilt.map(\.promptState), [.prompted])
+        #expect(rebuilt.map(\.id) == [original.id])
+        #expect(rebuilt.map(\.appVersion) == ["1.5.0"])
+        #expect(rebuilt.map(\.promptState) == [.prompted])
     }
 
-    func testIngestOverACorruptIndexKeepsTheRecoveredPayloads() async throws {
+    @Test func testIngestOverACorruptIndexKeepsTheRecoveredPayloads() async throws {
         await store.ingest([CrashPayloadFixture.data(build: "1")], receivedAt: Date(timeIntervalSince1970: 10))
         try Data("garbage".utf8).write(to: indexURL)
 
         await store.ingest([CrashPayloadFixture.data(build: "2")], receivedAt: Date())
 
         let reports = await store.reports()
-        XCTAssertEqual(reports.map(\.appBuild), ["1", "2"])
-        XCTAssertEqual(reports.map(\.promptState), [.prompted, .pending])
-        XCTAssertEqual(payloadFileNames().count, 2)
+        #expect(reports.map(\.appBuild) == ["1", "2"])
+        #expect(reports.map(\.promptState) == [.prompted, .pending])
+        #expect(payloadFileNames().count == 2)
     }
-}
-
-/// `XCTUnwrap` for a value produced by an `await`.
-func XCTUnwrapAsync<T>(
-    _ expression: @autoclosure () async throws -> T?,
-    file: StaticString = #filePath,
-    line: UInt = #line
-) async throws -> T {
-    let value = try await expression()
-    return try XCTUnwrap(value, file: file, line: line)
 }

@@ -15,6 +15,18 @@ Use this skill when the user asks to add, fix, refactor, or review tests in Swif
 - Improve test speed and determinism
 - Review tests for isolation/parallel safety
 
+## Migration Status (read first)
+
+Alike is migrating from XCTest to Swift Testing package by package. Rules, the API
+replacement table, and the baseline test counts live in
+`Docs/testing/swift-testing-migration.md`.
+
+- A package moves to Swift Testing only under its own migration card (M1–M6).
+- In a package that is still on XCTest, write new tests in XCTest until that card.
+- In a package that has migrated, write new tests in Swift Testing.
+- Never mix XCTest and Swift Testing in one file.
+- Check a package with `grep -rl "import XCTest" Packages/<Name>/Tests`.
+
 ## Workflow
 
 1. Identify behavior under test and smallest boundary (function/type/service).
