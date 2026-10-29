@@ -1528,7 +1528,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ücretsiz sürüm takvim ayı başına %1$d tarama içerir. %2$d tarama hakkın kaldı ve hakkın %3$@ tarihinde sıfırlanır."
+            "value": "Ücretsiz sürüm takvim ayı başına %1$d tarama içerir. %2$d tarama hakkın kaldı. Tarama hakkın %3$@ tarihinde yenilenir."
           }
         },
         "zh-Hant": {
@@ -4101,7 +4101,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike Free her takvim ayında yine üç tarama, mevcut sonuçların gözden geçirilmesi ve tek fotoğrafla temizlik içerir."
+            "value": "Alike Free her takvim ayında yine üç tarama, mevcut sonuçları gözden geçirme ve fotoğrafları tek tek temizleme olanağı sunar."
           }
         },
         "zh-Hant": {

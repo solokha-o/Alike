@@ -1255,6 +1255,105 @@ METADATA.update(
 )
 
 
+# Reviewed Turkish storefront copy.
+METADATA['tr'].update(
+{'description': 'Alike, birbirine çok benzeyen fotoğrafları gruplar, en iyi kareyi seçer ve diğerlerini '
+                "temizlemene yardımcı olur. Fotoğrafların iPhone'unda kalır.\n"
+                '\n'
+                'NASIL ÇALIŞIR\n'
+                "Tara. Alike, arşivini Apple'ın Vision çerçevesiyle tamamen iPhone'unda karşılaştırır. Zaman "
+                've yer olarak birbirine yakın çekilen fotoğraflar karşılaştırılır, ekran görüntüleri ise '
+                'sen istemedikçe sonuçlara girmez.\n'
+                'Gözden geçir. En iyi kare önceden seçilidir. Yalnızca onu sakla, diğerlerini seç veya '
+                'seçimini elle yap.\n'
+                "Temizle. Onayla; seçtiğin fotoğraflar Son Silinenler'e taşınır, iOS onları yaklaşık 30 gün "
+                'orada tutar. Fotoğraflar kalıcı olarak silinene kadar depolama alanı boşalmayabilir.\n'
+                '\n'
+                'MESELENİN TAMAMI GİZLİLİK\n'
+                "- Tüm analiz, Apple'ın Vision çerçevesiyle cihazın üzerinde çalışır.\n"
+                '- Hiçbir fotoğraf, küçük resim ya da öznitelik izi hiçbir zaman yüklenmez.\n'
+                '- Hesap yok, oturum açma yok, Alike sunucusu yok.\n'
+                '- Analitik yok, izleme yok, reklam tanımlayıcısı yok.\n'
+                '- Uygulamanın hiçbir yerinde reklam yok.\n'
+                '- Tarama ve temizlik hiçbir bağlantı gerektirmez — Alike uçak modunda da çalışır.\n'
+                '- Açık onayın olmadan hiçbir şey silinmez.\n'
+                '\n'
+                'FOTOĞRAF ARŞİVİN İÇİN\n'
+                '- Üç duyarlılık düzeyi: neredeyse aynı karelerden daha az benzeyen fotoğraflara.\n'
+                '- Fotoğrafların kendisini ölçen En İyi Kare algılama — netlik, pozlama, yüzler ve gürültü — '
+                'böylece her grupta saklanacak makul bir seçenek hazır bekler.\n'
+                '- Sakladığın fotoğraf için isteğe bağlı tek dokunuşluk iyileştirme; orijinali her zaman bir '
+                'dokunuş uzakta.\n'
+                '- Gözden geçirme rozetleri: Yeni, Gözden geçiriliyor, Gözden geçirildi ve yeni taramadan '
+                'sonra Gözden geçirilmeli.\n'
+                '- Fotoğraf ekler ya da silersin, Alike bunu fark eder ve yalnızca değişen grupları yeniden '
+                'getirir — baştan tam tarama gerekmez.\n'
+                '- Çalışırken İlerleme, Seçildi ve Tahmini Kazanç.\n'
+                '- Aya göre gruplanmış Temizlik Geçmişi, ne kadar yer kazandığını görebilesin diye.\n'
+                '- Ferah tek sütunlu düzen ya da daha sık ızgara; istediğin zaman değiştirilir ve '
+                'hatırlanır.\n'
+                "- Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.\n"
+                '- İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.\n'
+                "- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve arşive bir bakış.\n"
+                '- On üç dil ve tam Koyu Mod desteği.\n'
+                '\n'
+                'KONTROL SENDE\n'
+                '- İyileştirme hiçbir şeyi bozmaz: orijinal arşivinde kalır ve tek dokunuş onu geri '
+                'getirir.\n'
+                '- Alike kendi seçtiğin en iyi karelerden öğrenir — hem de cihazında; istediğin an '
+                "Ayarlar'dan sıfırlayabilirsin.\n"
+                '- Ayarlar, sonra Veriler ve Gizlilik, sonra Alike Verilerini Sil; uygulamanın sakladığı her '
+                'tarama sonucunu, temizlik kaydını ve tercihi siler — fotoğraf arşivine ise hiç dokunmaz.\n'
+                '- Tam erişim ya da sınırlı erişim ver: Alike paylaşmayı seçtiğin neyse onunla çalışır.\n'
+                '\n'
+                'ALIKE FREE\n'
+                '- Her takvim ayında 3 tarama\n'
+                '- En İyi Kare ile yönlendirilmiş gözden geçirme\n'
+                '- Tek dokunuşla iyileştirme, her zaman geri alınabilir\n'
+                '- Kendi seçimlerinden öğrenen En İyi Kare\n'
+                '- Sıralama ve temizlik geçmişi\n'
+                '- Fotoğrafları teker teker temizleme\n'
+                "- Widget'lar\n"
+                '\n'
+                'ALIKE PRO\n'
+                '- Yıllık planda 7 gün ücretsiz, uygun yeni aboneler için\n'
+                '- Sınırsız tarama\n'
+                '- Seçimlerin tamamını tek seferde temizleme\n'
+                '- Ekran görüntüsü temizliği\n'
+                '- Bulanık fotoğraf temizliği\n'
+                '- Gelişmiş filtreler\n'
+                '- Kendi temizlik anımsatıcıların\n'
+                '\n'
+                'Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik '
+                'yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme '
+                'içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin '
+                'bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme '
+                "Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir "
+                'veya iptal edebilirsin.',
+ 'promotional_text': "Kazanabileceğin alanı gör. Fotoğrafların iPhone'unda kalır. Yıllık planda uygun yeni "
+                     'abonelere 7 günlük ücretsiz Pro denemesi. Reklam ve hesap yok.',
+ 'release_notes': "Alike iOS 27'ye hazır: yeni bir widget ve fotoğraflarını daha hızlı ayıklamanın bir "
+                  'yolu.\n'
+                  '\n'
+                  '- Yeni uzun widget ne kadar alan açabileceğini ve en büyük gruplarını gösterir; Benzer '
+                  "Fotoğraflar, Ekran görüntüleri ve Bulanık Fotoğraflar kısayolları da var. Ana Ekran'daki "
+                  'widget galerisinden ekleyebilirsin.\n'
+                  '- Bir grupta fotoğrafı açmadan kaydırarak seçebilir, saklayabilir veya En İyi Kare '
+                  'yapabilirsin. Kaydırma, Ekran Görüntüleri ekranında ve VoiceOver ile de çalışır.\n'
+                  "- Temizlik düğmeleri artık küçük iPhone'lara sığıyor ve fotoğraflar daha akıcı açılıyor.\n"
+                  '- Ana Ekran simgelerin renklendirilmiş veya şeffaf olduğunda widget çizimi renklerini '
+                  'korur.\n'
+                  '\n'
+                  'Yeni widget, kaydırma ve Temizlik düğmeleri iOS 27 gerektirir.\n'
+                  '\n'
+                  'Her şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son '
+                  "Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n"
+                  '\n'
+                  'Geri bildirimler ve hata bildirimleri memnuniyetle karşılanır — App Store sayfasındaki '
+                  'destek bağlantısı doğrudan bana ulaşır.'}
+)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare Alike App Store metadata and screenshots for fastlane deliver.")
     parser.add_argument(

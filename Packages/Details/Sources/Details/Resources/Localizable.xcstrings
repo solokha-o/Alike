@@ -6254,7 +6254,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili fotoğraf kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili fotoğraf arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {
@@ -6337,7 +6337,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seçili fotoğraflar kitaplığından ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
+            "value": "Seçili fotoğraflar arşivinden ve iCloud Fotoğrafları'nı kullanan diğer aygıtlardan kaldırılacak, ardından en fazla 30 gün boyunca Son Silinenler'de kalacak. Kalıcı olarak silinene kadar depolama alanı boşalmayabilir. Tahmini geri kazanılabilir alan: %@."
           }
         },
         "zh-Hant": {
@@ -8417,7 +8417,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alike'ın fotoğrafları silebilmesi için fotoğraf kitaplığı erişimi gerekiyor. Sürdürmek için Ayarlar'ı aç."
+            "value": "Alike'ın fotoğrafları silebilmesi için fotoğraf arşivi erişimi gerekiyor. Sürdürmek için Ayarlar'ı aç."
           }
         },
         "zh-Hant": {

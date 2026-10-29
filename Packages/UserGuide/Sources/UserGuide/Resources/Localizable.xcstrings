@@ -8285,7 +8285,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Daha önce taradığın sonuçlar, abone olsan da olmasan da kullanılabilir kalır."
+            "value": "Önceki taramaların sonuçları, abone olsan da olmasan da kullanılabilir."
           }
         },
         "zh-Hant": {
@@ -8866,7 +8866,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Teker teker fotoğraf"
+            "value": "Her seferinde bir fotoğraf"
           }
         },
         "zh-Hant": {
@@ -9115,7 +9115,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm seçimini teker teker yerine tek adımda taşı."
+            "value": "Seçtiğin tüm fotoğrafları tek tek değil, tek adımda taşı."
           }
         },
         "zh-Hant": {
@@ -10111,7 +10111,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İstediğin sıklıkta yeniden tara, aylık hak sınırı olmadan."
+            "value": "Aylık bir sınır olmadan istediğin sıklıkta yeniden tara."
           }
         },
         "zh-Hant": {
