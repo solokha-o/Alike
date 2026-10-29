@@ -594,7 +594,7 @@ COPY = {
         (
             "CONFRONTA",
             "Controlla prima\ndi eliminare",
-            "Revisione a dimensione piena. Niente sparisce senza conferma.",
+            "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
             "SPAZIO LIBERO",
