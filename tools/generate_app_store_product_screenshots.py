@@ -380,7 +380,7 @@ COPY = {
         (
             "HOME-BILDSCHIRM",
             "Sichtbar, ohne\nAlike zu öffnen",
-            "Zwei Widgets: der Speicher, der frei werden kann, und was die Mediathek noch hält.",
+            "Zwei Widgets: der Speicher, den du freigeben kannst, und deine Mediathek im Überblick.",
         ),
     ],
     "fr": [
@@ -594,7 +594,7 @@ COPY = {
         (
             "CONFRONTA",
             "Controlla prima\ndi eliminare",
-            "Revisione a dimensione piena. Niente sparisce senza conferma.",
+            "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
             "SPAZIO LIBERO",
