@@ -1275,6 +1275,7 @@ METADATA['en-CA'].update(
                   'Feedback and bug reports are genuinely welcome — the support link on the App Store page '
                   'reaches me directly.'}
 )
+
 METADATA['pt-PT'].update(
     {'description': 'O Alike agrupa fotografias quase idênticas, escolhe a melhor e ajuda-te a limpar o resto. '
                 'Nenhuma fotografia sai do teu iPhone.\n'
