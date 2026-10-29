@@ -630,19 +630,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimées récemment"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photo déplacée vers Supprimés récemment"
+                  "value" : "%2$@ récupérables estimés, %1$lld photo déplacée vers Supprimées récemment"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimés récemment"
+                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers Supprimées récemment"
                 }
               }
             }
@@ -654,19 +654,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers « Suppressions récentes »"
+                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers « Supprimées récemment »"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photo déplacée vers « Suppressions récentes »"
+                  "value" : "%2$@ récupérables estimés, %1$lld photo déplacée vers « Supprimées récemment »"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers « Suppressions récentes »"
+                  "value" : "%2$@ récupérables estimés, %1$lld photos déplacées vers « Supprimées récemment »"
                 }
               }
             }
@@ -1128,13 +1128,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacement vers Supprimés récemment"
+            "value" : "Déplacement vers Supprimées récemment"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacement vers « Suppressions récentes »"
+            "value" : "Déplacement vers « Supprimées récemment »"
           }
         },
         "it" : {
@@ -1354,13 +1354,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos déplacées vers Supprimés récemment"
+            "value" : "Photos déplacées vers Supprimées récemment"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos déplacées vers « Suppressions récentes »"
+            "value" : "Photos déplacées vers « Supprimées récemment »"
           }
         },
         "it" : {
@@ -1693,13 +1693,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de Supprimés récemment."
+            "value" : "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de Supprimées récemment."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de « Suppressions récentes »."
+            "value" : "L’espace ne sera peut-être libéré qu’une fois les éléments supprimés définitivement de « Supprimées récemment »."
           }
         },
         "it" : {
@@ -8030,19 +8030,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photos déplacées vers Supprimés récemment."
+                  "value" : "%1$lld photos déplacées vers Supprimées récemment."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photo déplacée vers Supprimés récemment."
+                  "value" : "%1$lld photo déplacée vers Supprimées récemment."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photos déplacées vers Supprimés récemment."
+                  "value" : "%1$lld photos déplacées vers Supprimées récemment."
                 }
               }
             }
@@ -8054,19 +8054,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photos déplacées vers « Suppressions récentes »."
+                  "value" : "%1$lld photos déplacées vers « Supprimées récemment »."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photo déplacée vers « Suppressions récentes »."
+                  "value" : "%1$lld photo déplacée vers « Supprimées récemment »."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld photos déplacées vers « Suppressions récentes »."
+                  "value" : "%1$lld photos déplacées vers « Supprimées récemment »."
                 }
               }
             }

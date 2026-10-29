@@ -5592,13 +5592,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos et les éléments de Supprimés récemment"
+            "value" : "Vos photos et les éléments de Supprimées récemment"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos et les éléments de « Suppressions récentes »"
+            "value" : "Vos photos et les éléments de « Supprimées récemment »"
           }
         },
         "it" : {

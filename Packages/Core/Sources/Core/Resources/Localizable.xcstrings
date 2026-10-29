@@ -178,19 +178,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimées récemment ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photo floue sélectionnée vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photo floue sélectionnée vers Supprimées récemment ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers Supprimées récemment ?"
                 }
               }
             }
@@ -202,19 +202,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Supprimées récemment » ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photo floue sélectionnée vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photo floue sélectionnée vers « Supprimées récemment » ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld photos floues sélectionnées vers « Supprimées récemment » ?"
                 }
               }
             }
@@ -573,19 +573,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimées récemment ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers Supprimées récemment ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimés récemment ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers Supprimées récemment ?"
                 }
               }
             }
@@ -597,19 +597,19 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Supprimées récemment » ?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld capture d’écran sélectionnée vers « Supprimées récemment » ?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Suppressions récentes » ?"
+                  "value" : "Déplacer %1$lld captures d’écran sélectionnées vers « Supprimées récemment » ?"
                 }
               }
             }
@@ -2427,13 +2427,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La photo sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2540,13 +2540,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les photos sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2653,13 +2653,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
+            "value" : "La capture d’écran sélectionnée sera retirée de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservée dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après sa suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
@@ -2766,13 +2766,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimés récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans Supprimées récemment pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Suppressions récentes » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
+            "value" : "Les captures d’écran sélectionnées seront retirées de votre photothèque et des autres appareils utilisant Photos iCloud, puis conservées dans « Supprimées récemment » pendant 30 jours maximum. L’espace ne sera peut-être libéré qu’après leur suppression définitive. Espace récupérable estimé : %@."
           }
         },
         "it" : {
