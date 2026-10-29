@@ -1522,7 +1522,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wersja darmowa obejmuje %1$d skanowań w miesiącu kalendarzowym. Pozostało Ci %2$d, a limit odnowi się %3$@."
+            "value": "W wersji darmowej limit skanowań na miesiąc kalendarzowy wynosi %1$d. Pozostało Ci %2$d, a limit odnowi się %3$@."
           }
         },
         "tr": {
@@ -1605,7 +1605,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wersja darmowa obejmuje %1$d skanowań w miesiącu kalendarzowym. Pozostało Ci %2$d."
+            "value": "W wersji darmowej limit skanowań na miesiąc kalendarzowy wynosi %1$d. Pozostało Ci %2$d."
           }
         },
         "tr": {
@@ -6751,7 +6751,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS."
+            "value": "Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować."
           }
         },
         "tr": {

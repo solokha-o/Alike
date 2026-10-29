@@ -653,7 +653,7 @@ COPY = {
         (
             "NA URZĄDZENIU",
             "Znajdź zdjęcia,\nktóre są podobne",
-            "Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie.",
+            "Alike skanuje bibliotekę za pomocą Apple Vision, w całości na iPhonie.",
         ),
         (
             "JEDNA KOLEJKA",
@@ -662,7 +662,7 @@ COPY = {
         ),
         (
             "NAJLEPSZE UJĘCIE",
-            "Zdjęcie do zostawienia\njest już wybrane",
+            "Najlepsze ujęcie\njuż wybrane",
             "Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz.",
         ),
         (
