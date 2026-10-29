@@ -22,6 +22,12 @@
             "value" : "Later"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124,6 +130,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity requires a new scan to take effect"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changing sensitivity requires a new scan to take effect"
@@ -236,6 +248,12 @@
             "value" : "Rescan Now"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Now"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +356,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Required"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rescan Required"
@@ -450,6 +474,12 @@
             "value" : "Cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -557,6 +587,12 @@
             "value" : "Scanner"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -659,6 +695,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"

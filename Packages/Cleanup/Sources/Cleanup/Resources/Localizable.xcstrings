@@ -22,6 +22,12 @@
             "value" : "All-Time Impact"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All-Time Impact"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124,6 +130,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup Sessions"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cleanup Sessions"
@@ -236,6 +248,12 @@
             "value" : "Completed cleanups will appear here."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completed cleanups will appear here."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +356,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated Reclaimable"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estimated Reclaimable"
@@ -493,6 +517,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%2$@ estimated reclaimable, %1$lld photo moved to Recently Deleted"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%2$@ estimated reclaimable, %1$lld photos moved to Recently Deleted"
+                }
+              }
+            }
+          }
+        },
+        "en-AU" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -827,6 +869,12 @@
             "value" : "History"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -929,6 +977,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History Unavailable"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "History Unavailable"
@@ -1041,6 +1095,12 @@
             "value" : "Moved to Recently Deleted"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moved to Recently Deleted"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1143,6 +1203,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Cleanup History"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Cleanup History"
@@ -1255,6 +1321,12 @@
             "value" : "Photos Moved to Recently Deleted"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos Moved to Recently Deleted"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1357,6 +1429,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Activity"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recent Activity"
@@ -1469,6 +1547,12 @@
             "value" : "Retry"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1571,6 +1655,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage may not be freed until items are permanently deleted from Recently Deleted."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Storage may not be freed until items are permanently deleted from Recently Deleted."
@@ -1683,6 +1773,12 @@
             "value" : "Unable to load cleanup history."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load cleanup history."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1790,6 +1886,12 @@
             "value" : "Open Alike this week to clear clutter and keep saving storage."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Alike this week to clear clutter and keep saving storage."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1892,6 +1994,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready for another cleanup?"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ready for another cleanup?"
@@ -2047,6 +2155,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photos"
+                }
+              }
+            }
+          }
+        },
+        "en-AU" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -2381,6 +2507,12 @@
             "value" : "All clusters"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clusters"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2483,6 +2615,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clusters reviewed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All clusters reviewed"
@@ -2595,6 +2733,12 @@
             "value" : "All clusters reviewed. %1$d of %2$d clusters reviewed, %3$d selected, %4$@ estimated savings."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All clusters reviewed. %1$d of %2$d clusters reviewed, %3$d selected, %4$@ estimated savings."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2697,6 +2841,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All review states"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All review states"
@@ -2809,6 +2959,12 @@
             "value" : "Any size"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any size"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2911,6 +3067,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changed"
@@ -3023,6 +3185,12 @@
             "value" : "Cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3125,6 +3293,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup History"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cleanup History"
@@ -3237,6 +3411,12 @@
             "value" : "Your cleanup results are up to date."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your cleanup results are up to date."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3339,6 +3519,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup Unavailable"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cleanup Unavailable"
@@ -3451,6 +3637,12 @@
             "value" : "Continue Review"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue Review"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3553,6 +3745,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue review. %1$d of %2$d clusters reviewed, %3$d remaining, %4$d selected, %5$@ estimated savings."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue review. %1$d of %2$d clusters reviewed, %3$d remaining, %4$d selected, %5$@ estimated savings."
@@ -3665,6 +3863,12 @@
             "value" : "Couldn't Open Cleanup Category"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Open Cleanup Category"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3767,6 +3971,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss cleanup status"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dismiss cleanup status"
@@ -3879,6 +4089,12 @@
             "value" : "Done"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3981,6 +4197,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated Savings"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estimated Savings"
@@ -4093,6 +4315,12 @@
             "value" : "Everything else still available in your cleanup queue"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything else still available in your cleanup queue"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4200,6 +4428,12 @@
             "value" : "Favorites only"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites only"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4302,6 +4536,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter and Sort"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter and Sort"
@@ -4414,6 +4654,12 @@
             "value" : "Filter and sort clusters"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter and sort clusters"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4516,6 +4762,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter by"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter by"
@@ -4628,6 +4880,12 @@
             "value" : "Go to Scanner"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Scanner"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4730,6 +4988,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide this status message"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hide this status message"
@@ -4842,6 +5106,12 @@
             "value" : "Highest similarity"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highest similarity"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4944,6 +5214,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In review"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "In review"
@@ -5099,6 +5375,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld item • %2$@ estimated reclaimable"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld items • %2$@ estimated reclaimable"
+                }
+              }
+            }
+          }
+        },
+        "en-AU" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -5433,6 +5727,12 @@
             "value" : "Largest cluster"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Largest cluster"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5535,6 +5835,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your latest scan did not find similar photos or smart categories to review."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your latest scan did not find similar photos or smart categories to review."
@@ -5647,6 +5953,12 @@
             "value" : "Locked"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locked"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5749,6 +6061,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum cluster size"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Minimum cluster size"
@@ -5861,6 +6179,12 @@
             "value" : "Most space to save"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most space to save"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5963,6 +6287,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs review"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Needs review"
@@ -6075,6 +6405,12 @@
             "value" : "New"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6177,6 +6513,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New and changed clusters after your latest rescan"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "New and changed clusters after your latest rescan"
@@ -6289,6 +6631,12 @@
             "value" : "Newest"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Newest"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6391,6 +6739,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Cleanup Opportunities"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Cleanup Opportunities"
@@ -6503,6 +6857,12 @@
             "value" : "No Clusters Match These Controls"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Clusters Match These Controls"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6605,6 +6965,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not reviewed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not reviewed"
@@ -6717,6 +7083,12 @@
             "value" : "Nothing left to review right now"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing left to review right now"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6819,6 +7191,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -6931,6 +7309,12 @@
             "value" : "Open next cluster to continue cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open next cluster to continue cleanup"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7033,6 +7417,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open this cleanup category"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open this cleanup category"
@@ -7145,6 +7535,12 @@
             "value" : "Open this cluster to review photos"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open this cluster to review photos"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7252,6 +7648,12 @@
             "value" : "Opens the upgrade options"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the upgrade options"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7354,6 +7756,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d or more photos"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d or more photos"
@@ -7509,6 +7917,24 @@
           }
         },
         "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photo moved to Recently Deleted."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld photos moved to Recently Deleted."
+                }
+              }
+            }
+          }
+        },
+        "en-AU" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -7843,6 +8269,12 @@
             "value" : "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7945,6 +8377,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick up where you left off"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pick up where you left off"
@@ -8057,6 +8495,12 @@
             "value" : "Refresh Required"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh Required"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8159,6 +8603,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refreshing Cleanup"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Refreshing Cleanup"
@@ -8271,6 +8721,12 @@
             "value" : "Remaining"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remaining"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8373,6 +8829,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rescan"
@@ -8485,6 +8947,12 @@
             "value" : "Rescan Photos"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Photos"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8587,6 +9055,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset controls"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset controls"
@@ -8699,6 +9173,12 @@
             "value" : "Review status"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review status"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8801,6 +9281,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviewed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reviewed"
@@ -8913,6 +9399,12 @@
             "value" : "Run a new scan to refresh cleanup suggestions."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run a new scan to refresh cleanup suggestions."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9015,6 +9507,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Failed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan Failed"
@@ -9127,6 +9625,12 @@
             "value" : "Scan Your Library First"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Your Library First"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9229,6 +9733,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your library… %d%%"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scanning your library… %d%%"
@@ -9341,6 +9851,12 @@
             "value" : "Selected"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9443,6 +9959,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart Cleanup"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smart Cleanup"
@@ -9555,6 +10077,12 @@
             "value" : "Sort by"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort by"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9657,6 +10185,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort order"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sort order"
@@ -9769,6 +10303,12 @@
             "value" : "Start a scan to find similar photos and smart cleanup suggestions."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start a scan to find similar photos and smart cleanup suggestions."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9871,6 +10411,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try changing filters or resetting controls."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Try changing filters or resetting controls."
@@ -9983,6 +10529,12 @@
             "value" : "Unlock advanced filters"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock advanced filters"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10085,6 +10637,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library changed"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your library changed"

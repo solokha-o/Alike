@@ -11,6 +11,12 @@
             "value" : "Alike"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "new",
@@ -57,6 +63,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyses your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
           }
         },
         "en-CA" : {

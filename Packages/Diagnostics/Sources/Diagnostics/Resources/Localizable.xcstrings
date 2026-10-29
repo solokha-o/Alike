@@ -22,6 +22,12 @@
             "value" : "Alike attached the crash diagnostic iOS recorded on my device, unchanged: the stack trace, the app and iOS versions, the device model and, for some crashes, the error message. It contains no photos."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike attached the crash diagnostic iOS recorded on my device, unchanged: the stack trace, the app and iOS versions, the device model and, for some crashes, the error message. It contains no photos."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124,6 +130,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send this crash report to:"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send this crash report to:"
@@ -236,6 +248,12 @@
             "value" : "The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The report is the crash diagnostic iOS recorded: the stack trace, the app and iOS versions, your device model and, for some crashes, the error message. Alike sends it as it is, unfiltered. It contains no photos."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +356,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a crash report to the developer? It opens as an email, so you can read it before anything is sent."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send a crash report to the developer? It opens as an email, so you can read it before anything is sent."
@@ -450,6 +474,12 @@
             "value" : "Not Now"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -552,6 +582,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Report"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send Report"
@@ -664,6 +700,12 @@
             "value" : "No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Mail account is set up, so the report goes through the share sheet. Pick a mail app there and send it to:"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -766,6 +808,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike closed unexpectedly"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike closed unexpectedly"

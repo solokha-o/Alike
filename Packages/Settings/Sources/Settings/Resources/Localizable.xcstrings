@@ -22,6 +22,12 @@
             "value" : "Some data may already have been removed. Please try again to finish deleting your Alike data."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some data may already have been removed. Please try again to finish deleting your Alike data."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124,6 +130,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike learns which photos you pick as Best Shot to improve future rankings. Resetting forgets that and returns to the default ranking — nothing is ever sent off your device."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike learns which photos you pick as Best Shot to improve future rankings. Resetting forgets that and returns to the default ranking — nothing is ever sent off your device."
@@ -236,6 +248,12 @@
             "value" : "Alike Pro is active"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro is active"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +356,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Alike Pro subscription was restored."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your Alike Pro subscription was restored."
@@ -450,6 +474,12 @@
             "value" : "Analysis"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -552,6 +582,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best Shot personalization"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Best Shot personalization"
@@ -664,6 +700,12 @@
             "value" : "You can continue using Alike Free."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can continue using Alike Free."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -766,6 +808,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
@@ -878,6 +926,12 @@
             "value" : "Change Language"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Language"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -980,6 +1034,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup progress, sessions, and history"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cleanup progress, sessions, and history"
@@ -1092,6 +1152,12 @@
             "value" : "Cleanup Reminder"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup Reminder"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1194,6 +1260,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your cleanup reminder couldn't be updated. Please try again."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your cleanup reminder couldn't be updated. Please try again."
@@ -1306,6 +1378,12 @@
             "value" : "Contact Developer"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact Developer"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1408,6 +1486,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Delete Alike Data"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couldn't Delete Alike Data"
@@ -1520,6 +1604,12 @@
             "value" : "Couldn't Reset Best Shot Learning"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Reset Best Shot Learning"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1622,6 +1712,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Restore Purchases"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couldn't Restore Purchases"
@@ -1734,6 +1830,12 @@
             "value" : "Couldn't Update Reminder"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Update Reminder"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1841,6 +1943,12 @@
             "value" : "Customize day & time"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise day & time"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1943,6 +2051,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data & Privacy"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data & Privacy"
@@ -2055,6 +2169,12 @@
             "value" : "Debug"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2157,6 +2277,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Alike Data"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete Alike Data"
@@ -2269,6 +2395,12 @@
             "value" : "Delete all Alike data?"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all Alike data?"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2371,6 +2503,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleting..."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deleting..."
@@ -2483,6 +2621,12 @@
             "value" : "Enable premium blurred photo cleanup access in debug builds"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable premium blurred photo cleanup access in debug builds"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2590,6 +2734,12 @@
             "value" : "Enable premium reminder schedule customization in debug builds"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable premium reminder schedule customisation in debug builds"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2692,6 +2842,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable premium screenshot cleanup access in debug builds"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable premium screenshot cleanup access in debug builds"
@@ -2804,6 +2960,12 @@
             "value" : "Enable a weekly reminder to come back and continue cleanup"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable a weekly reminder to come back and continue cleanup"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2906,6 +3068,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forget what Alike learned from your Best Shot picks and return to the default ranking."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Forget what Alike learned from your Best Shot picks and return to the default ranking."
@@ -3018,6 +3186,12 @@
             "value" : "Free reminders are scheduled for %@. Unlock premium to choose your own day and time."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free reminders are scheduled for %@. Unlock premium to choose your own day and time."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3120,6 +3294,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid, sensitivity, and reminder preferences"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grid, sensitivity, and reminder preferences"
@@ -3232,6 +3412,12 @@
             "value" : "Higher sensitivity finds more similar photos but may include less alike images"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Higher sensitivity finds more similar photos but may include less alike images"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3334,6 +3520,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "How to Use"
@@ -3446,6 +3638,12 @@
             "value" : "Language"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3548,6 +3746,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legal"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legal"
@@ -3660,6 +3864,12 @@
             "value" : "Monthly free-scan allowance"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly free-scan allowance"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3762,6 +3972,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No active Alike Pro subscription was found."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No active Alike Pro subscription was found."
@@ -3874,6 +4090,12 @@
             "value" : "Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications are turned off for Alike. Enable them in Settings to receive your weekly cleanup reminder."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3976,6 +4198,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -4088,6 +4316,12 @@
             "value" : "Open the Alike privacy policy in your browser"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Alike privacy policy in your browser"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4190,6 +4424,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Alike terms of use in your browser"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open the Alike terms of use in your browser"
@@ -4302,6 +4542,12 @@
             "value" : "Opens the App Store page to write a review"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the App Store page to write a review"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4404,6 +4650,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open email composer to contact the developer"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open email composer to contact the developer"
@@ -4516,6 +4768,12 @@
             "value" : "Open premium details for custom cleanup reminder scheduling"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open premium details for custom cleanup reminder scheduling"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4618,6 +4876,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Settings"
@@ -4730,6 +4994,12 @@
             "value" : "Open system settings to change app language"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open system settings to change app language"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4832,6 +5102,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open usage instructions and cleanup workflow tips"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open usage instructions and cleanup workflow tips"
@@ -4944,6 +5220,12 @@
             "value" : "Permanently delete Alike data after confirmation"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permanently delete Alike data after confirmation"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5046,6 +5328,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access and Alike Pro subscription"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photo access and Alike Pro subscription"
@@ -5158,6 +5446,12 @@
             "value" : "Your photo library is never deleted by this action."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photo library is never deleted by this action."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5260,6 +5554,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your photos and Recently Deleted items"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your photos and Recently Deleted items"
@@ -5372,6 +5672,12 @@
             "value" : "Please check your connection and try restoring again."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check your connection and try restoring again."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5474,6 +5780,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium lets you choose a custom weekly reminder schedule."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Premium lets you choose a custom weekly reminder schedule."
@@ -5586,6 +5898,12 @@
             "value" : "Privacy Policy"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5688,6 +6006,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate on App Store"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rate on App Store"
@@ -5800,6 +6124,12 @@
             "value" : "Reminder day"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder day"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5902,6 +6232,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder schedule"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reminder schedule"
@@ -6014,6 +6350,12 @@
             "value" : "%1$@ at %2$@"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ at %2$@"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6116,6 +6458,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder time"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reminder time"
@@ -6228,6 +6576,12 @@
             "value" : "Reset Best Shot Learning"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Best Shot Learning"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6330,6 +6684,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Best Shot learning?"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset Best Shot learning?"
@@ -6442,6 +6802,12 @@
             "value" : "Resetting..."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetting..."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6544,6 +6910,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review and permanently delete data stored by Alike on this device"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review and permanently delete data stored by Alike on this device"
@@ -6656,6 +7028,12 @@
             "value" : "Scan results and analysis caches"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan results and analysis caches"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6758,6 +7136,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitivity"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sensitivity"
@@ -6870,6 +7254,12 @@
             "value" : "Settings"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6972,6 +7362,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share App"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share App"
@@ -7084,6 +7480,12 @@
             "value" : "Share the app using available sharing options"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the app using available sharing options"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7186,6 +7588,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Subscription"
@@ -7298,6 +7706,12 @@
             "value" : "Support"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7400,6 +7814,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Use"
@@ -7512,6 +7932,12 @@
             "value" : "This action can't be undone. Alike will replay onboarding when deletion finishes."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action can't be undone. Alike will replay onboarding when deletion finishes."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7614,6 +8040,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This forgets what Alike learned from your Best Shot picks and returns to the default ranking."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This forgets what Alike learned from your Best Shot picks and returns to the default ranking."
@@ -7726,6 +8158,12 @@
             "value" : "This override is available only in debug builds and affects local premium gating."
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This override is available only in debug builds and affects local premium gating."
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7828,6 +8266,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This permanently deletes Alike's local results, cleanup history, and preferences. Your photos and subscription will stay."
@@ -7940,6 +8384,12 @@
             "value" : "Try Again"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8042,6 +8492,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Advanced Filters Premium Feature"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock Advanced Filters Premium Feature"
@@ -8154,6 +8610,12 @@
             "value" : "Unlock Batch Cleanup Premium Feature"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Batch Cleanup Premium Feature"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8256,6 +8718,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Blurred Photo Cleanup Premium Feature"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock Blurred Photo Cleanup Premium Feature"
@@ -8368,6 +8836,12 @@
             "value" : "Unlock Custom Reminder Schedule Premium Feature"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Custom Reminder Schedule Premium Feature"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8470,6 +8944,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Screenshot Cleanup Premium Feature"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock Screenshot Cleanup Premium Feature"
@@ -8582,6 +9062,12 @@
             "value" : "Unlock Unlimited Scans Premium Feature"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Unlimited Scans Premium Feature"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8684,6 +9170,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version"
@@ -8796,6 +9288,12 @@
             "value" : "Weekly cleanup reminder"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly cleanup reminder"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8898,6 +9396,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What will be deleted"
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "What will be deleted"
@@ -9010,6 +9514,12 @@
             "value" : "What will stay"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What will stay"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9112,6 +9622,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best Shot personalization may not have fully reset. Please try again."
+          }
+        },
+        "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Best Shot personalization may not have fully reset. Please try again."

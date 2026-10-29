@@ -22,6 +22,12 @@
             "value" : "Alike"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike"
+          }
+        },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
