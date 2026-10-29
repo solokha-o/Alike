@@ -82,6 +82,12 @@
             "state": "translated",
             "value": "يحتفي Alike بإتمام عملية التنظيف"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike celebrates your completed cleanup"
+          }
         }
       }
     },
@@ -164,6 +170,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "عثر Alike على فرص للتنظيف"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike found cleanup opportunities"
           }
         }
       }
@@ -248,6 +260,12 @@
             "state": "translated",
             "value": "لدى Alike فرص تنظيف جاهزة للمراجعة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike has cleanup opportunities ready for review"
+          }
         }
       }
     },
@@ -330,6 +348,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike جاهز للتنظيف"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike is ready for cleanup"
           }
         }
       }
@@ -414,6 +438,12 @@
             "state": "translated",
             "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور للمتابعة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike needs photo library permission to continue"
+          }
         }
       }
     },
@@ -496,6 +526,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "لاحظ Alike وجود صور جديدة في مكتبتك"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike noticed new photos in your library"
           }
         }
       }
@@ -580,6 +616,12 @@
             "state": "translated",
             "value": "واجه Alike مشكلة أثناء الفحص"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike ran into a problem with the scan"
+          }
         }
       }
     },
@@ -662,6 +704,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "‏Alike جاهز لمساعدتك في تنظيم مكتبة صورك"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike is ready to help organise your photo library"
           }
         }
       }
@@ -746,6 +794,12 @@
             "state": "translated",
             "value": "يقول Alike إن مكتبة صورك مرتّبة بالكامل"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike says your photo library is all caught up"
+          }
         }
       }
     },
@@ -829,6 +883,12 @@
             "state": "translated",
             "value": "يبحث Alike عن الصور المتشابهة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alike searching for similar photos"
+          }
         }
       }
     },
@@ -911,6 +971,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "اختر عدد الأعمدة المستخدمة لعرض الصور"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose how many columns are used to display photos"
           }
         }
       }
@@ -1205,6 +1271,24 @@
               }
             }
           }
+        },
+        "en-GB": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Column"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$lld Columns"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1287,6 +1371,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "الأعمدة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columns"
           }
         }
       }
@@ -1371,6 +1461,12 @@
             "state": "translated",
             "value": "أعمدة الشبكة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grid Columns"
+          }
         }
       }
     },
@@ -1453,6 +1549,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "معاينة الصورة غير متوفرة"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo preview unavailable"
           }
         }
       }
@@ -1537,6 +1639,12 @@
             "state": "translated",
             "value": "إعادة المحاولة"
           }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
         }
       }
     },
@@ -1619,6 +1727,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "حاول تحميل الصورة مرة أخرى"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try loading the photo again"
           }
         }
       }
