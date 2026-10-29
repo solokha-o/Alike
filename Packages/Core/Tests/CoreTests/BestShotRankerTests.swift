@@ -1,12 +1,13 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class BestShotRankerTests: XCTestCase {
+@Suite struct BestShotRankerTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Requirements from the task
 
-    func testSharpNonFavoriteBeatsBlurredFavorite() {
+    @Test func testSharpNonFavoriteBeatsBlurredFavorite() {
         let blurredFavorite = makeSnapshot("blurred", isFavorite: true)
         let sharp = makeSnapshot("sharp")
 
@@ -18,12 +19,12 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "sharp")
-        XCTAssertEqual(decision.confidence, .automatic)
-        XCTAssertTrue(decision.reasonCodes.contains(.sharper))
+        #expect(decision.localIdentifier == "sharp")
+        #expect(decision.confidence == .automatic)
+        #expect(decision.reasonCodes.contains(.sharper))
     }
 
-    func testFavoriteStillWinsBetweenComparablyGoodPhotos() {
+    @Test func testFavoriteStillWinsBetweenComparablyGoodPhotos() {
         // Favorite stays a positive signal — it just cannot outrank a defect.
         let favorite = makeSnapshot("favorite", isFavorite: true)
         let other = makeSnapshot("other")
@@ -36,10 +37,10 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.rankedCandidates.first?.localIdentifier, "favorite")
+        #expect(decision.rankedCandidates.first?.localIdentifier == "favorite")
     }
 
-    func testSmallerSharpFrameBeatsHighResolutionMotionBlur() {
+    @Test func testSmallerSharpFrameBeatsHighResolutionMotionBlur() {
         let bigBlurred = makeSnapshot("big", pixelWidth: 8000, pixelHeight: 6000)
         let smallSharp = makeSnapshot("small", pixelWidth: 2000, pixelHeight: 1500)
 
@@ -51,10 +52,10 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "small")
+        #expect(decision.localIdentifier == "small")
     }
 
-    func testFaceInFocusBeatsSharpBackgroundWithBlurredFace() {
+    @Test func testFaceInFocusBeatsSharpBackgroundWithBlurredFace() {
         let sharpBackground = makeSnapshot("background")
         let faceInFocus = makeSnapshot("face")
 
@@ -76,11 +77,11 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "face")
-        XCTAssertTrue(decision.reasonCodes.contains(.faceInFocus) || decision.reasonCodes.contains(.sharper))
+        #expect(decision.localIdentifier == "face")
+        #expect(decision.reasonCodes.contains(.faceInFocus) || decision.reasonCodes.contains(.sharper))
     }
 
-    func testOpenEyesBeatClosedEyesInTheSameBurst() {
+    @Test func testOpenEyesBeatClosedEyesInTheSameBurst() {
         let closed = makeSnapshot("closed")
         let open = makeSnapshot("open")
 
@@ -102,11 +103,11 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "open")
-        XCTAssertTrue(decision.reasonCodes.contains(.openEyes))
+        #expect(decision.localIdentifier == "open")
+        #expect(decision.reasonCodes.contains(.openEyes))
     }
 
-    func testCorrectlyExposedFrameBeatsBlownOutFrame() {
+    @Test func testCorrectlyExposedFrameBeatsBlownOutFrame() {
         let blownOut = makeSnapshot("blown")
         let exposed = makeSnapshot("exposed")
 
@@ -118,11 +119,11 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "exposed")
-        XCTAssertTrue(decision.reasonCodes.contains(.betterExposure))
+        #expect(decision.localIdentifier == "exposed")
+        #expect(decision.reasonCodes.contains(.betterExposure))
     }
 
-    func testFavoriteBonusDoesNotApplyToCriticallyBlurredCandidate() {
+    @Test func testFavoriteBonusDoesNotApplyToCriticallyBlurredCandidate() {
         let blurredFavorite = makeSnapshot("blurred", isFavorite: true)
         let sharpOne = makeSnapshot("sharp1")
         let sharpTwo = makeSnapshot("sharp2")
@@ -137,11 +138,11 @@ final class BestShotRankerTests: XCTestCase {
         )
 
         let blurredCandidate = decision.rankedCandidates.first { $0.localIdentifier == "blurred" }
-        XCTAssertEqual(blurredCandidate?.isExcluded, true)
-        XCTAssertNotEqual(decision.localIdentifier, "blurred")
+        #expect(blurredCandidate?.isExcluded == true)
+        #expect(decision.localIdentifier != "blurred")
     }
 
-    func testWeakClusterDoesNotClaimABestShot() {
+    @Test func testWeakClusterDoesNotClaimABestShot() {
         let snapshots = ["a", "b", "c"].map { makeSnapshot($0) }
         let decision = BestShotRanker.decide(
             snapshots: snapshots,
@@ -152,14 +153,14 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.confidence, .unresolved)
-        XCTAssertNil(decision.localIdentifier)
+        #expect(decision.confidence == .unresolved)
+        #expect(decision.localIdentifier == nil)
         // Weak photos are still listed; nothing is hidden from the user.
-        XCTAssertEqual(decision.rankedCandidates.count, 3)
-        XCTAssertFalse(decision.rankedCandidates.contains { $0.isExcluded })
+        #expect(decision.rankedCandidates.count == 3)
+        #expect(!(decision.rankedCandidates.contains { $0.isExcluded }))
     }
 
-    func testNearlyEqualScoresStayUnresolvedButKeepAStableOrder() {
+    @Test func testNearlyEqualScoresStayUnresolvedButKeepAStableOrder() {
         let snapshots = [
             makeSnapshot("a", creationDate: Date(timeIntervalSince1970: 100)),
             makeSnapshot("b", creationDate: Date(timeIntervalSince1970: 100)),
@@ -174,15 +175,14 @@ final class BestShotRankerTests: XCTestCase {
         let first = BestShotRanker.decide(snapshots: snapshots, scores: scores)
         let second = BestShotRanker.decide(snapshots: snapshots.reversed(), scores: scores)
 
-        XCTAssertEqual(first.confidence, .unresolved)
-        XCTAssertEqual(
-            first.rankedCandidates.map(\.localIdentifier),
-            second.rankedCandidates.map(\.localIdentifier)
+        #expect(first.confidence == .unresolved)
+        #expect(
+            first.rankedCandidates.map(\.localIdentifier) == second.rankedCandidates.map(\.localIdentifier)
         )
-        XCTAssertEqual(first.rankedCandidates.first?.localIdentifier, "a")
+        #expect(first.rankedCandidates.first?.localIdentifier == "a")
     }
 
-    func testRepeatedAnalysisOfAnUnchangedClusterReturnsTheSameWinner() {
+    @Test func testRepeatedAnalysisOfAnUnchangedClusterReturnsTheSameWinner() {
         let snapshots = [makeSnapshot("a"), makeSnapshot("b"), makeSnapshot("c")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 20),
@@ -193,15 +193,15 @@ final class BestShotRankerTests: XCTestCase {
         let first = BestShotRanker.decide(snapshots: snapshots, scores: scores)
         let second = BestShotRanker.decide(snapshots: snapshots.shuffled(), scores: scores)
 
-        XCTAssertEqual(first.localIdentifier, "b")
-        XCTAssertEqual(first.localIdentifier, second.localIdentifier)
-        XCTAssertEqual(first.confidence, second.confidence)
+        #expect(first.localIdentifier == "b")
+        #expect(first.localIdentifier == second.localIdentifier)
+        #expect(first.confidence == second.confidence)
     }
 
     /// The face ROI is sampled on its own, larger grid, so its Laplacian is far
     /// smaller than the frame's. The absolute floor must be judged on the frame,
     /// or every portrait cluster is declared weak.
-    func testPortraitClusterIsNotDeclaredWeakBecauseOfTheFaceCropScale() {
+    @Test func testPortraitClusterIsNotDeclaredWeakBecauseOfTheFaceCropScale() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("sharp-face"), makeSnapshot("soft-face")],
             scores: makeScores([
@@ -220,11 +220,11 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "sharp-face")
-        XCTAssertNotEqual(decision.confidence, .unresolved)
+        #expect(decision.localIdentifier == "sharp-face")
+        #expect(decision.confidence != .unresolved)
     }
 
-    func testClosedEyesAreExplainedAsOpenEyesRatherThanSharpness() {
+    @Test func testClosedEyesAreExplainedAsOpenEyesRatherThanSharpness() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("open"), makeSnapshot("closed")],
             scores: makeScores([
@@ -243,29 +243,29 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "open")
-        XCTAssertEqual(decision.reasonCodes.first, .openEyes)
-        XCTAssertFalse(
-            decision.reasonCodes.contains(.sharper),
+        #expect(decision.localIdentifier == "open")
+        #expect(decision.reasonCodes.first == .openEyes)
+        #expect(
+            !(decision.reasonCodes.contains(.sharper)),
             "Both frames are equally sharp — the eyes are the reason"
         )
     }
 
     // MARK: - Fallbacks
 
-    func testMissingSignalsFallBackToMetadataRanking() {
+    @Test func testMissingSignalsFallBackToMetadataRanking() {
         let favorite = makeSnapshot("favorite", isFavorite: true)
         let plain = makeSnapshot("plain")
 
         let decision = BestShotRanker.decide(snapshots: [favorite, plain], scores: [:])
 
-        XCTAssertEqual(decision.localIdentifier, "favorite")
-        XCTAssertEqual(decision.confidence, .automatic)
-        XCTAssertTrue(decision.reasonCodes.isEmpty)
-        XCTAssertEqual(decision.rankedCandidates.count, 2)
+        #expect(decision.localIdentifier == "favorite")
+        #expect(decision.confidence == .automatic)
+        #expect(decision.reasonCodes.isEmpty)
+        #expect(decision.rankedCandidates.count == 2)
     }
 
-    func testFailedAnalysisIsIgnoredWithoutLosingThePhoto() {
+    @Test func testFailedAnalysisIsIgnoredWithoutLosingThePhoto() {
         let broken = makeSnapshot("broken")
         let sharpOne = makeSnapshot("sharp1")
         let sharpTwo = makeSnapshot("sharp2")
@@ -285,14 +285,14 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "sharp1")
-        XCTAssertFalse(decision.rankedCandidates.contains { $0.localIdentifier == "broken" })
+        #expect(decision.localIdentifier == "sharp1")
+        #expect(!(decision.rankedCandidates.contains { $0.localIdentifier == "broken" }))
         // A row that says "could not measure" is not coverage: the ranking has
         // no idea whether the broken photo was the better one.
-        XCTAssertEqual(decision.confidence, .lowConfidence)
+        #expect(decision.confidence == .lowConfidence)
     }
 
-    func testAFailedMeasurementDowngradesTheMetadataFallbackToo() {
+    @Test func testAFailedMeasurementDowngradesTheMetadataFallbackToo() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("broken"), makeSnapshot("only-good")],
             scores: makeScores([
@@ -309,10 +309,10 @@ final class BestShotRankerTests: XCTestCase {
 
         // One usable photo falls back to metadata ranking, but measuring was
         // attempted and failed, so the badge must not claim certainty.
-        XCTAssertEqual(decision.confidence, .lowConfidence)
+        #expect(decision.confidence == .lowConfidence)
     }
 
-    func testOneMeasuredPhotoAndOneUnmeasuredOneIsNotConfident() {
+    @Test func testOneMeasuredPhotoAndOneUnmeasuredOneIsNotConfident() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("measured"), makeSnapshot("never-measured")],
             scores: makeScores([makeScore("measured", globalSharpness: 60)])
@@ -321,10 +321,10 @@ final class BestShotRankerTests: XCTestCase {
         // Only one photo is usable, so this lands in the metadata fallback. The
         // missing row is not a failure and not coverage either: nothing is known
         // about the second photo, so the badge cannot claim the first one wins.
-        XCTAssertEqual(decision.confidence, .lowConfidence)
+        #expect(decision.confidence == .lowConfidence)
     }
 
-    func testUnmeasuredClusterKeepsTheConfidentMetadataBadge() {
+    @Test func testUnmeasuredClusterKeepsTheConfidentMetadataBadge() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("a"), makeSnapshot("b")],
             scores: [:]
@@ -332,10 +332,10 @@ final class BestShotRankerTests: XCTestCase {
 
         // Nobody has measured this cluster yet. Metadata ranking is what the app
         // always shipped, so it keeps behaving exactly as before.
-        XCTAssertEqual(decision.confidence, .automatic)
+        #expect(decision.confidence == .automatic)
     }
 
-    func testPartialCoverageNeverClaimsFullConfidence() {
+    @Test func testPartialCoverageNeverClaimsFullConfidence() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("a"), makeSnapshot("b"), makeSnapshot("unscored")],
             scores: makeScores([
@@ -344,37 +344,37 @@ final class BestShotRankerTests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "a")
-        XCTAssertEqual(decision.confidence, .lowConfidence)
+        #expect(decision.localIdentifier == "a")
+        #expect(decision.confidence == .lowConfidence)
     }
 
     /// One measured photo next to one the analyzer never returned is partial
     /// knowledge, not a metadata-only cluster: the ranking cannot know whether
     /// the unmeasured photo was the better one.
-    func testOneUsableScoreBesideAMissingOneIsNotConfident() {
+    @Test func testOneUsableScoreBesideAMissingOneIsNotConfident() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("measured"), makeSnapshot("never-analyzed")],
             scores: makeScores([makeScore("measured", globalSharpness: 60)])
         )
 
-        XCTAssertEqual(decision.confidence, .lowConfidence)
-        XCTAssertNotNil(decision.localIdentifier)
+        #expect(decision.confidence == .lowConfidence)
+        #expect(decision.localIdentifier != nil)
     }
 
-    func testSinglePhotoClusterKeepsItsOnlyPhoto() {
+    @Test func testSinglePhotoClusterKeepsItsOnlyPhoto() {
         let decision = BestShotRanker.decide(
             snapshots: [makeSnapshot("only")],
             scores: makeScores([makeScore("only", globalSharpness: 50)])
         )
 
-        XCTAssertEqual(decision.localIdentifier, "only")
+        #expect(decision.localIdentifier == "only")
         // Nothing is unknown about a cluster of one measured photo, so partial
         // coverage does not apply and the badge stays confident.
-        XCTAssertEqual(decision.confidence, .automatic)
+        #expect(decision.confidence == .automatic)
     }
 
-    func testEmptyClusterDecidesNothing() {
-        XCTAssertEqual(BestShotRanker.decide(snapshots: [], scores: [:]), .empty)
+    @Test func testEmptyClusterDecidesNothing() {
+        #expect(BestShotRanker.decide(snapshots: [], scores: [:]) == .empty)
     }
 
     // MARK: - sharpnessRatios
@@ -382,7 +382,7 @@ final class BestShotRankerTests: XCTestCase {
     /// `sharpnessRatios` is the extracted computation `decide` itself uses to
     /// exclude a critically blurred frame; this asserts the two never
     /// disagree about which candidate that is.
-    func testSharpnessRatiosAgreeWithDecidesOwnExclusion() {
+    @Test func testSharpnessRatiosAgreeWithDecidesOwnExclusion() {
         let blurred = makeSnapshot("blurred")
         let referenceOne = makeSnapshot("reference1")
         let referenceTwo = makeSnapshot("reference2")
@@ -399,18 +399,18 @@ final class BestShotRankerTests: XCTestCase {
                 .filter { (ratios[$0.localIdentifier] ?? 1) < config.criticalSharpnessRatio }
                 .map(\.localIdentifier)
         )
-        XCTAssertEqual(excludedByRatio, ["blurred"])
+        #expect(excludedByRatio == ["blurred"])
 
         let decision = BestShotRanker.decide(snapshots: snapshots, scores: scores, config: config)
         let excludedByDecide = Set(
             decision.rankedCandidates.filter(\.isExcluded).map(\.localIdentifier)
         )
-        XCTAssertEqual(excludedByDecide, excludedByRatio)
+        #expect(excludedByDecide == excludedByRatio)
     }
 
     // MARK: - overrideExample
 
-    func testChosenSharperFrameProducesAPositiveSharpnessDelta() throws {
+    @Test func testChosenSharperFrameProducesAPositiveSharpnessDelta() throws {
         let sharp = makeSnapshot("sharp")
         let blurry = makeSnapshot("blurry")
         let snapshots = [sharp, blurry]
@@ -419,7 +419,7 @@ final class BestShotRankerTests: XCTestCase {
             makeScore("blurry", globalSharpness: 30)
         ])
         let decision = BestShotRanker.decide(snapshots: snapshots, scores: scores)
-        XCTAssertEqual(decision.localIdentifier, "sharp")
+        #expect(decision.localIdentifier == "sharp")
 
         let example = BestShotRanker.overrideExample(
             snapshots: snapshots,
@@ -428,16 +428,16 @@ final class BestShotRankerTests: XCTestCase {
             recommended: "blurry"
         )
 
-        let example2 = try XCTUnwrap(example)
-        XCTAssertGreaterThan(example2.componentDelta.sharpness, 0)
+        let example2 = try #require(example)
+        #expect(example2.componentDelta.sharpness > 0)
         // The chosen frame is strictly better and carries no penalty gap in
         // the other direction, so noise/exposure/resolution should not go
         // negative for it here (both frames share identical inputs there).
-        XCTAssertGreaterThanOrEqual(example2.componentDelta.exposure, 0)
-        XCTAssertGreaterThanOrEqual(example2.componentDelta.noiseArtifacts, 0)
+        #expect(example2.componentDelta.exposure >= 0)
+        #expect(example2.componentDelta.noiseArtifacts >= 0)
     }
 
-    func testOverrideExampleIsNilWhenChosenEqualsRecommended() {
+    @Test func testOverrideExampleIsNilWhenChosenEqualsRecommended() {
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 60),
@@ -451,10 +451,10 @@ final class BestShotRankerTests: XCTestCase {
             recommended: "a"
         )
 
-        XCTAssertNil(example)
+        #expect(example == nil)
     }
 
-    func testOverrideExampleIsNilWhenAnIdentifierIsNotInTheCluster() {
+    @Test func testOverrideExampleIsNilWhenAnIdentifierIsNotInTheCluster() {
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 60),
@@ -468,10 +468,10 @@ final class BestShotRankerTests: XCTestCase {
             recommended: "not-in-cluster"
         )
 
-        XCTAssertNil(example)
+        #expect(example == nil)
     }
 
-    func testOverrideExampleIsNilWhenEitherSideWasExcludedForCriticalBlur() {
+    @Test func testOverrideExampleIsNilWhenEitherSideWasExcludedForCriticalBlur() {
         let blurred = makeSnapshot("blurred")
         let referenceOne = makeSnapshot("reference1")
         let referenceTwo = makeSnapshot("reference2")
@@ -495,39 +495,39 @@ final class BestShotRankerTests: XCTestCase {
             recommended: "blurred"
         )
 
-        XCTAssertNil(exampleChosenExcluded)
-        XCTAssertNil(exampleRecommendedExcluded)
+        #expect(exampleChosenExcluded == nil)
+        #expect(exampleRecommendedExcluded == nil)
     }
 
-    func testClusterHasFacesReflectsWhetherTheClusterHasUsableFaceSignals() throws {
+    @Test func testClusterHasFacesReflectsWhetherTheClusterHasUsableFaceSignals() throws {
         let withFaces = [makeSnapshot("a"), makeSnapshot("b")]
         let facedScores = makeScores([
             makeScore("a", globalSharpness: 50, subjectSharpness: 50, faces: [makeFace(sharpness: 50)]),
             makeScore("b", globalSharpness: 40, subjectSharpness: 40, faces: [makeFace(sharpness: 40)])
         ])
-        let faced = try XCTUnwrap(BestShotRanker.overrideExample(
+        let faced = try #require(BestShotRanker.overrideExample(
             snapshots: withFaces,
             scores: facedScores,
             chosen: "a",
             recommended: "b"
         ))
-        XCTAssertTrue(faced.clusterHasFaces)
+        #expect(faced.clusterHasFaces)
 
         let withoutFaces = [makeSnapshot("c"), makeSnapshot("d")]
         let facelessScores = makeScores([
             makeScore("c", globalSharpness: 50),
             makeScore("d", globalSharpness: 40)
         ])
-        let faceless = try XCTUnwrap(BestShotRanker.overrideExample(
+        let faceless = try #require(BestShotRanker.overrideExample(
             snapshots: withoutFaces,
             scores: facelessScores,
             chosen: "c",
             recommended: "d"
         ))
-        XCTAssertFalse(faceless.clusterHasFaces)
+        #expect(!faceless.clusterHasFaces)
     }
 
-    func testOffsetDeltaIsSignedTowardTheFavoriteFrame() throws {
+    @Test func testOffsetDeltaIsSignedTowardTheFavoriteFrame() throws {
         // Keep both frames far from the critical-blur exclusion band and from
         // score clamping, differing only in favorite status.
         let favorite = makeSnapshot("favorite", isFavorite: true)
@@ -538,24 +538,24 @@ final class BestShotRankerTests: XCTestCase {
             makeScore("other", globalSharpness: 50)
         ])
 
-        let favoriteChosen = try XCTUnwrap(BestShotRanker.overrideExample(
+        let favoriteChosen = try #require(BestShotRanker.overrideExample(
             snapshots: snapshots,
             scores: scores,
             chosen: "favorite",
             recommended: "other"
         ))
-        let favoriteRecommended = try XCTUnwrap(BestShotRanker.overrideExample(
+        let favoriteRecommended = try #require(BestShotRanker.overrideExample(
             snapshots: snapshots,
             scores: scores,
             chosen: "other",
             recommended: "favorite"
         ))
 
-        XCTAssertGreaterThan(favoriteChosen.offsetDelta, 0)
-        XCTAssertLessThan(favoriteRecommended.offsetDelta, 0)
+        #expect(favoriteChosen.offsetDelta > 0)
+        #expect(favoriteRecommended.offsetDelta < 0)
     }
 
-    func testScoringModelVersionIsCarriedFromThePassedConfig() {
+    @Test func testScoringModelVersionIsCarriedFromThePassedConfig() {
         var customConfig = PhotoQualityScoringConfig.current
         customConfig.scoringModelVersion = 999
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
@@ -572,10 +572,10 @@ final class BestShotRankerTests: XCTestCase {
             config: customConfig
         )
 
-        XCTAssertEqual(example?.scoringModelVersion, 999)
+        #expect(example?.scoringModelVersion == 999)
     }
 
-    func testBestShotOverrideExampleRoundTripsThroughCodable() throws {
+    @Test func testBestShotOverrideExampleRoundTripsThroughCodable() throws {
         let example = BestShotOverrideExample(
             recordedAt: Date(timeIntervalSince1970: 12_345),
             clusterHasFaces: true,
@@ -593,7 +593,7 @@ final class BestShotRankerTests: XCTestCase {
         let data = try JSONEncoder().encode(example)
         let decoded = try JSONDecoder().decode(BestShotOverrideExample.self, from: data)
 
-        XCTAssertEqual(decoded, example)
+        #expect(decoded == example)
     }
 
     // MARK: - Helpers

@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 /// The permission prompts are the first sentence a new user reads, and they live outside
 /// `Localizable.xcstrings`: the build setting `INFOPLIST_KEY_<key>` puts the English base value
@@ -17,7 +18,7 @@ struct InfoPlistCatalog {
             .appendingPathComponent("Alike/InfoPlist.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return InfoPlistCatalog(strings: try XCTUnwrap(strings))
+        return InfoPlistCatalog(strings: try LocalizationCatalog.unwrap(strings))
     }
 
     /// One entry per build configuration of the app target: its usage-description build settings,
@@ -58,49 +59,49 @@ struct InfoPlistCatalog {
     }
 }
 
-final class InfoPlistCatalogTests: XCTestCase {
-    func testTheAppTargetIsFoundInTheProject() throws {
+@Suite struct InfoPlistCatalogTests {
+    @Test func testTheAppTargetIsFoundInTheProject() throws {
         let configurations = try InfoPlistCatalog.appConfigurations()
 
-        XCTAssertEqual(configurations.count, 2, "expected the Debug and Release configurations")
+        #expect(configurations.count == 2, "expected the Debug and Release configurations")
     }
 
     /// Guards the crash: the old task 46 card said to delete the build setting, and the catalog
     /// alone would leave `Info.plist` without a purpose string.
-    func testEveryCatalogUsageDescriptionIsABuildSettingInEveryConfiguration() throws {
+    @Test func testEveryCatalogUsageDescriptionIsABuildSettingInEveryConfiguration() throws {
         let catalog = try InfoPlistCatalog.load()
         let configurations = try InfoPlistCatalog.appConfigurations()
-        XCTAssertFalse(catalog.usageDescriptionKeys.isEmpty, "no usage description in the catalog")
+        #expect(!catalog.usageDescriptionKeys.isEmpty, "no usage description in the catalog")
 
         for (index, settings) in configurations.enumerated() {
             let missing = Set(catalog.usageDescriptionKeys).subtracting(settings.keys)
-            XCTAssertTrue(
+            #expect(
                 missing.isEmpty,
                 "configuration \(index) has no INFOPLIST_KEY_ build setting for \(missing.sorted())"
             )
         }
     }
 
-    func testEveryUsageDescriptionBuildSettingIsInTheCatalog() throws {
+    @Test func testEveryUsageDescriptionBuildSettingIsInTheCatalog() throws {
         let catalog = try InfoPlistCatalog.load()
         let settingKeys = Set(try InfoPlistCatalog.appConfigurations().flatMap(\.keys))
         let missing = settingKeys.subtracting(catalog.strings.keys)
 
-        XCTAssertTrue(missing.isEmpty, "build settings the catalog does not translate: \(missing.sorted())")
+        #expect(missing.isEmpty, "build settings the catalog does not translate: \(missing.sorted())")
     }
 
     /// Translators work against the catalog's English, so it has to be the English that ships.
-    func testTheCatalogEnglishMatchesTheBuildSetting() throws {
+    @Test func testTheCatalogEnglishMatchesTheBuildSetting() throws {
         let catalog = try InfoPlistCatalog.load()
 
         for settings in try InfoPlistCatalog.appConfigurations() {
             for (key, buildSetting) in settings {
-                XCTAssertEqual(catalog.value(of: key, in: "en"), buildSetting, "\(key) drifted")
+                #expect(catalog.value(of: key, in: "en") == buildSetting, "\(key) drifted")
             }
         }
     }
 
-    func testEveryUsageDescriptionCarriesEveryShippedLanguage() throws {
+    @Test func testEveryUsageDescriptionCarriesEveryShippedLanguage() throws {
         let catalog = try InfoPlistCatalog.load()
         var incomplete: [String] = []
 
@@ -111,6 +112,6 @@ final class InfoPlistCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(incomplete.isEmpty, "untranslated entries: \(incomplete)")
+        #expect(incomplete.isEmpty, "untranslated entries: \(incomplete)")
     }
 }
