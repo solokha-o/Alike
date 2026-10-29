@@ -2,28 +2,28 @@ import Cleanup
 import Core
 import Foundation
 import Photos
-import XCTest
+import Testing
 @testable import Scanner
 
 @MainActor
-final class ScannerViewModelTests: XCTestCase {
-    func testInitialStateIsIdleWithFullFreeAllowance() {
+@Suite struct ScannerViewModelTests {
+    @Test func testInitialStateIsIdleWithFullFreeAllowance() {
         let viewModel = makeViewModel()
 
-        XCTAssertEqual(viewModel.state, .idle)
-        XCTAssertEqual(viewModel.remainingFreeScans, PremiumAccessPolicy.monthlyFreeScanLimit)
+        #expect(viewModel.state == .idle)
+        #expect(viewModel.remainingFreeScans == PremiumAccessPolicy.monthlyFreeScanLimit)
     }
 
-    func testDuplicateScanningProgressDoesNotRepublishState() {
+    @Test func testDuplicateScanningProgressDoesNotRepublishState() {
         let viewModel = makeViewModel()
 
-        XCTAssertTrue(viewModel.publishScanningProgress(0.25))
-        XCTAssertFalse(viewModel.publishScanningProgress(0.25))
-        XCTAssertTrue(viewModel.publishScanningProgress(0.5))
-        XCTAssertEqual(viewModel.state, .scanning(progress: 0.5))
+        #expect(viewModel.publishScanningProgress(0.25))
+        #expect(!(viewModel.publishScanningProgress(0.25)))
+        #expect(viewModel.publishScanningProgress(0.5))
+        #expect(viewModel.state == .scanning(progress: 0.5))
     }
 
-    func testLoadMigratesCurrentMonthWorkspaceBaselineIntoUsage() async {
+    @Test func testLoadMigratesCurrentMonthWorkspaceBaselineIntoUsage() async {
         let date = makeDate(year: 2026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
@@ -33,9 +33,9 @@ final class ScannerViewModelTests: XCTestCase {
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.monthlyScanUsage?.completedScanCount, 1)
-        XCTAssertEqual(viewModel.remainingFreeScans, 2)
-        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+        #expect(viewModel.monthlyScanUsage?.completedScanCount == 1)
+        #expect(viewModel.remainingFreeScans == 2)
+        #expect(viewModel.state == .completed(ScanSummary(
             clusterCount: 0,
             cleanupCategoryCandidateCount: 0,
             estimatedSavingsBytes: 0,
@@ -46,7 +46,7 @@ final class ScannerViewModelTests: XCTestCase {
     /// After a cold launch the workspace has no `lastScanSummary`, so the view
     /// model synthesizes one; its figure must be the workspace's own estimate,
     /// not a second formula.
-    func testColdLaunchSummaryReadsTheWorkspaceReclaimableEstimate() async {
+    @Test func testColdLaunchSummaryReadsTheWorkspaceReclaimableEstimate() async {
         let date = makeDate(year: 2026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
@@ -64,8 +64,8 @@ final class ScannerViewModelTests: XCTestCase {
 
         await viewModel.load()
 
-        XCTAssertEqual(workspace.reclaimableEstimate.totalBytes, 700)
-        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+        #expect(workspace.reclaimableEstimate.totalBytes == 700)
+        #expect(viewModel.state == .completed(ScanSummary(
             clusterCount: 0,
             cleanupCategoryCandidateCount: 2,
             estimatedSavingsBytes: 700,
@@ -75,7 +75,7 @@ final class ScannerViewModelTests: XCTestCase {
 
     /// Choosing another best shot after a scan moves the estimate with no new scan;
     /// the library card must show the new figure before any restart.
-    func testKeeperChangeAfterScanUpdatesTheLibrarySummarySavings() async throws {
+    @Test func testKeeperChangeAfterScanUpdatesTheLibrarySummarySavings() async throws {
         // 2 000 000 and 1 000 000 bytes.
         let cluster = PhotoCluster(assets: [
             SizedPhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000),
@@ -88,10 +88,10 @@ final class ScannerViewModelTests: XCTestCase {
         let viewModel = makeViewModel(workspace: workspace)
 
         _ = await viewModel.startScanning()
-        let keeper = try XCTUnwrap(cluster.bestShotAsset()?.localIdentifier)
+        let keeper = try #require(cluster.bestShotAsset()?.localIdentifier)
         let newKeeper = keeper == "large" ? "small" : "large"
         let expectedBytes: Int64 = newKeeper == "large" ? 1_000_000 : 2_000_000
-        XCTAssertNotEqual(viewModel.librarySummary?.estimatedSavingsBytes, expectedBytes)
+        #expect(viewModel.librarySummary?.estimatedSavingsBytes != expectedBytes)
 
         await reviewRepository.setStoredStates([
             cluster.id: ClusterReviewState(
@@ -105,10 +105,10 @@ final class ScannerViewModelTests: XCTestCase {
         ])
         await workspace.reloadReviewState()
 
-        XCTAssertEqual(viewModel.librarySummary?.estimatedSavingsBytes, expectedBytes)
+        #expect(viewModel.librarySummary?.estimatedSavingsBytes == expectedBytes)
     }
 
-    func testLoadResetsStaleMonthlyUsage() async {
+    @Test func testLoadResetsStaleMonthlyUsage() async {
         let july = makeDate(year: 2026, month: 7, day: 31)
         let august = makeDate(year: 2026, month: 8, day: 1)
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: july))
@@ -116,11 +116,11 @@ final class ScannerViewModelTests: XCTestCase {
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.remainingFreeScans, 3)
-        XCTAssertEqual(viewModel.monthlyScanUsage?.completedScanCount, 0)
+        #expect(viewModel.remainingFreeScans == 3)
+        #expect(viewModel.monthlyScanUsage?.completedScanCount == 0)
     }
 
-    func testStartScanningResetsMonthlyAllowanceWithoutRecreatingViewModel() async {
+    @Test func testStartScanningResetsMonthlyAllowanceWithoutRecreatingViewModel() async {
         let july = makeDate(year: 2026, month: 7, day: 31)
         let august = makeDate(year: 2026, month: 8, day: 1)
         let clock = TestClock(july)
@@ -133,17 +133,17 @@ final class ScannerViewModelTests: XCTestCase {
         )
 
         await viewModel.load()
-        XCTAssertEqual(viewModel.remainingFreeScans, 0)
+        #expect(viewModel.remainingFreeScans == 0)
 
         clock.now = august
         let decision = await viewModel.startScanning()
         let recordCallCount = await usage.recordCallCount()
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertEqual(viewModel.remainingFreeScans, 2)
-        XCTAssertEqual(recordCallCount, 1)
+        #expect(decision == .allowed)
+        #expect(viewModel.remainingFreeScans == 2)
+        #expect(recordCallCount == 1)
     }
 
-    func testDeniedAdmissionDoesNotStartWorkspaceScan() async {
+    @Test func testDeniedAdmissionDoesNotStartWorkspaceScan() async {
         let analysis = MockPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: Date()))
         let viewModel = makeViewModel(workspace: makeWorkspace(analysis: analysis), usage: usage)
@@ -151,13 +151,13 @@ final class ScannerViewModelTests: XCTestCase {
         let decision = await viewModel.startScanning()
         let didAnalyze = await analysis.didCallAnalyzePhotoLibrary
         let recordCallCount = await usage.recordCallCount()
-        XCTAssertEqual(decision, .requiresPremium)
-        XCTAssertEqual(viewModel.state, .idle)
-        XCTAssertFalse(didAnalyze)
-        XCTAssertEqual(recordCallCount, 0)
+        #expect(decision == .requiresPremium)
+        #expect(viewModel.state == .idle)
+        #expect(!didAnalyze)
+        #expect(recordCallCount == 0)
     }
 
-    func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async {
+    @Test func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async {
         let analysis = MockPhotoAnalysisService()
         let cluster = makeCluster()
         let category = CleanupCategorySummary(
@@ -173,10 +173,10 @@ final class ScannerViewModelTests: XCTestCase {
         let decision = await viewModel.startScanning()
         let recordCallCount = await usage.recordCallCount()
 
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertEqual(recordCallCount, 1)
-        XCTAssertEqual(viewModel.remainingFreeScans, 2)
-        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+        #expect(decision == .allowed)
+        #expect(recordCallCount == 1)
+        #expect(viewModel.remainingFreeScans == 2)
+        #expect(viewModel.state == .completed(ScanSummary(
             clusterCount: 1,
             cleanupCategoryCandidateCount: 2,
             estimatedSavingsBytes: 1_024,
@@ -184,7 +184,7 @@ final class ScannerViewModelTests: XCTestCase {
         )))
     }
 
-    func testEachAdmittedScanGetsFreshAliAnimationIdentity() async {
+    @Test func testEachAdmittedScanGetsFreshAliAnimationIdentity() async {
         let viewModel = makeViewModel()
 
         let firstDecision = await viewModel.startScanning()
@@ -193,12 +193,12 @@ final class ScannerViewModelTests: XCTestCase {
         let secondDecision = await viewModel.startScanning()
         let secondScanEventID = viewModel.scanEventID
 
-        XCTAssertEqual(firstDecision, .allowed)
-        XCTAssertEqual(secondDecision, .allowed)
-        XCTAssertNotEqual(firstScanEventID, secondScanEventID)
+        #expect(firstDecision == .allowed)
+        #expect(secondDecision == .allowed)
+        #expect(firstScanEventID != secondScanEventID)
     }
 
-    func testFailedScanDoesNotConsumeAllowanceAndKeepsLastGoodWorkspaceContent() async {
+    @Test func testFailedScanDoesNotConsumeAllowanceAndKeepsLastGoodWorkspaceContent() async {
         let repository = MockPhotoClusterRepository()
         let existing = makeCluster()
         await repository.setGetLastScanDateResult(Date())
@@ -213,16 +213,17 @@ final class ScannerViewModelTests: XCTestCase {
         let decision = await viewModel.startScanning()
         let recordCallCount = await usage.recordCallCount()
 
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertEqual(recordCallCount, 0)
-        XCTAssertEqual(workspace.clusters.map(\.id), [existing.id])
-        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 1)
+        #expect(decision == .allowed)
+        #expect(recordCallCount == 0)
+        #expect(workspace.clusters.map(\.id) == [existing.id])
+        #expect(viewModel.librarySummary?.clusterCount == 1)
         guard case .error = viewModel.state else {
-            return XCTFail("Expected scan failure to map to Scanner.State.error")
+            Issue.record("Expected scan failure to map to Scanner.State.error")
+            return
         }
     }
 
-    func testLibrarySummaryReflectsPostReconciliationWorkspaceSummaryWithoutNewUserScan() async {
+    @Test func testLibrarySummaryReflectsPostReconciliationWorkspaceSummaryWithoutNewUserScan() async {
         let analysis = MockPhotoAnalysisService()
         let firstCluster = makeCluster()
         await analysis.setAnalyzePhotoLibraryResult(.success([firstCluster]))
@@ -231,8 +232,8 @@ final class ScannerViewModelTests: XCTestCase {
         let viewModel = makeViewModel(workspace: workspace)
 
         let decision = await viewModel.startScanning()
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 1)
+        #expect(decision == .allowed)
+        #expect(viewModel.librarySummary?.clusterCount == 1)
 
         // CleanupView reconciles the workspace directly after a deletion —
         // there is no path back into ScannerViewModel, so `state` goes stale
@@ -246,11 +247,11 @@ final class ScannerViewModelTests: XCTestCase {
         )
         await workspace.reconcile(after: record, sensitivity: .medium)
 
-        XCTAssertEqual(viewModel.librarySummary?.clusterCount, 0)
-        XCTAssertEqual(viewModel.librarySummary?.completedAt, workspace.lastScanSummary?.completedAt)
+        #expect(viewModel.librarySummary?.clusterCount == 0)
+        #expect(viewModel.librarySummary?.completedAt == workspace.lastScanSummary?.completedAt)
     }
 
-    func testConcurrentStartsShareOneAdmissionAndWorkspaceScan() async {
+    @Test func testConcurrentStartsShareOneAdmissionAndWorkspaceScan() async {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
         let viewModel = makeViewModel(workspace: makeWorkspace(analysis: analysis), usage: usage)
@@ -265,13 +266,13 @@ final class ScannerViewModelTests: XCTestCase {
         let secondDecision = await second.value
         let analyzeCallCount = await analysis.currentAnalyzeCallCount()
         let recordCallCount = await usage.recordCallCount()
-        XCTAssertEqual(firstDecision, .allowed)
-        XCTAssertEqual(secondDecision, .allowed)
-        XCTAssertEqual(analyzeCallCount, 1)
-        XCTAssertEqual(recordCallCount, 1)
+        #expect(firstDecision == .allowed)
+        #expect(secondDecision == .allowed)
+        #expect(analyzeCallCount == 1)
+        #expect(recordCallCount == 1)
     }
 
-    func testSuspendedScanPublishesProgressWithoutChangingScanningAliVisualPhase() async {
+    @Test func testSuspendedScanPublishesProgressWithoutChangingScanningAliVisualPhase() async {
         let analysis = SuspendedPhotoAnalysisService()
         let viewModel = makeViewModel(workspace: makeWorkspace(analysis: analysis))
 
@@ -279,9 +280,10 @@ final class ScannerViewModelTests: XCTestCase {
         await analysis.waitUntilAnalyzeCallCount(1)
 
         guard let progress = await waitForPublishedProgress(in: viewModel) else {
-            return XCTFail("Expected progress while analysis remains suspended")
+            Issue.record("Expected progress while analysis remains suspended")
+            return
         }
-        XCTAssertLessThan(progress, 1)
+        #expect(progress < 1)
 
         let published = ScannerHomePresentation.resolve(
             state: viewModel.state,
@@ -296,9 +298,9 @@ final class ScannerViewModelTests: XCTestCase {
             scanEventID: viewModel.scanEventID
         )
 
-        XCTAssertEqual(published.visualPhase, .scanning)
-        XCTAssertEqual(published.visualPhase, subsequent.visualPhase)
-        XCTAssertEqual(published.cue.id, subsequent.cue.id)
+        #expect(published.visualPhase == .scanning)
+        #expect(published.visualPhase == subsequent.visualPhase)
+        #expect(published.cue.id == subsequent.cue.id)
 
         await analysis.resumeNext(returning: [])
         _ = await scan.value
@@ -314,7 +316,7 @@ final class ScannerViewModelTests: XCTestCase {
         return nil
     }
 
-    func testJoiningReconciliationScanDoesNotConsumeUserScanAllowance() async {
+    @Test func testJoiningReconciliationScanDoesNotConsumeUserScanAllowance() async {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
         let workspace = makeWorkspace(analysis: analysis)
@@ -337,10 +339,11 @@ final class ScannerViewModelTests: XCTestCase {
         await reconciliation.value
         let recordCallCount = await usage.recordCallCount()
 
-        XCTAssertEqual(scannerDecision, .allowed)
-        XCTAssertEqual(recordCallCount, 0)
+        #expect(scannerDecision == .allowed)
+        #expect(recordCallCount == 0)
         guard case .completed = viewModel.state else {
-            return XCTFail("Expected Scanner to map the joined reconciliation result to completion")
+            Issue.record("Expected Scanner to map the joined reconciliation result to completion")
+            return
         }
     }
 
@@ -348,7 +351,7 @@ final class ScannerViewModelTests: XCTestCase {
     /// reconciliation's must not silently join it: it should wait for the
     /// reconciliation to finish and then run its own scan at the requested
     /// sensitivity, and that fresh work should be charged normally.
-    func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async {
+    @Test func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
         let workspace = makeWorkspace(analysis: analysis)
@@ -381,10 +384,10 @@ final class ScannerViewModelTests: XCTestCase {
         let recordCallCount = await usage.recordCallCount()
         let lastSensitivity = await analysis.lastSensitivity()
 
-        XCTAssertEqual(scannerDecision, .allowed)
-        XCTAssertEqual(recordCallCount, 1, "Fresh work must be charged even though a reconciliation was in flight")
-        XCTAssertEqual(lastSensitivity, SensitivityLevel.high.threshold)
-        XCTAssertEqual(viewModel.state, .completed(ScanSummary(
+        #expect(scannerDecision == .allowed)
+        #expect(recordCallCount == 1, "Fresh work must be charged even though a reconciliation was in flight")
+        #expect(lastSensitivity == SensitivityLevel.high.threshold)
+        #expect(viewModel.state == .completed(ScanSummary(
             clusterCount: 1,
             cleanupCategoryCandidateCount: 0,
             estimatedSavingsBytes: 0,
@@ -392,7 +395,7 @@ final class ScannerViewModelTests: XCTestCase {
         )))
     }
 
-    func testUsefulFreeScanPublishesOneContextualOfferAndConsumptionClearsIt() async {
+    @Test func testUsefulFreeScanPublishesOneContextualOfferAndConsumptionClearsIt() async {
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([makeCluster()]))
         let prompts = MockPremiumPromptHistoryRepository()
@@ -405,20 +408,20 @@ final class ScannerViewModelTests: XCTestCase {
         _ = await viewModel.startScanning()
         let claimCallCount = await prompts.claimCallCount
 
-        XCTAssertEqual(viewModel.pendingPostScanPremiumOffer?.similarClusterCount, 1)
+        #expect(viewModel.pendingPostScanPremiumOffer?.similarClusterCount == 1)
         viewModel.consumePostScanPremiumOffer()
-        XCTAssertNil(viewModel.pendingPostScanPremiumOffer)
-        XCTAssertEqual(claimCallCount, 1)
+        #expect(viewModel.pendingPostScanPremiumOffer == nil)
+        #expect(claimCallCount == 1)
     }
 
-    func testEmptyOrPremiumOrUnknownEntitlementScansDoNotPublishOffer() async {
+    @Test func testEmptyOrPremiumOrUnknownEntitlementScansDoNotPublishOffer() async {
         let emptyAnalysis = MockPhotoAnalysisService()
         let emptyViewModel = makeViewModel(
             workspace: makeWorkspace(analysis: emptyAnalysis),
             premiumAccess: TestPremiumAccess(isPremium: false, source: .verified)
         )
         _ = await emptyViewModel.startScanning()
-        XCTAssertNil(emptyViewModel.pendingPostScanPremiumOffer)
+        #expect(emptyViewModel.pendingPostScanPremiumOffer == nil)
 
         let premiumAnalysis = MockPhotoAnalysisService()
         await premiumAnalysis.setAnalyzePhotoLibraryResult(.success([makeCluster()]))
@@ -427,7 +430,7 @@ final class ScannerViewModelTests: XCTestCase {
             premiumAccess: TestPremiumAccess(isPremium: true, source: .verified)
         )
         _ = await premiumViewModel.startScanning()
-        XCTAssertNil(premiumViewModel.pendingPostScanPremiumOffer)
+        #expect(premiumViewModel.pendingPostScanPremiumOffer == nil)
 
         let unknownAnalysis = MockPhotoAnalysisService()
         await unknownAnalysis.setAnalyzePhotoLibraryResult(.success([makeCluster()]))
@@ -436,7 +439,7 @@ final class ScannerViewModelTests: XCTestCase {
             premiumAccess: TestPremiumAccess(isPremium: false, source: .unknown)
         )
         _ = await unknownViewModel.startScanning()
-        XCTAssertNil(unknownViewModel.pendingPostScanPremiumOffer)
+        #expect(unknownViewModel.pendingPostScanPremiumOffer == nil)
     }
 }
 
