@@ -3042,7 +3042,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revisa las capturas de pantalla juntas y elige exactamente cuáles pasan a Eliminados recientemente."
+            "value" : "Revisa las capturas de pantalla juntas y elige exactamente cuáles pasan a Eliminados."
           }
         },
         "fr" : {
@@ -5528,7 +5528,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike Free sigue incluyendo tres análisis cada mes calendario, la revisión de los resultados existentes y la limpieza de una foto."
+            "value" : "Alike Free sigue incluyendo tres análisis por mes calendario, la revisión de resultados existentes y la limpieza de una foto a la vez."
           }
         },
         "fr" : {
@@ -9144,7 +9144,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El plan anual incluye una prueba gratuita de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes gestionar o cancelar la suscripción cuando quieras en Configuración de iOS."
+            "value" : "El plan anual incluye una prueba gratis de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro comienza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes administrar o cancelar la suscripción cuando quieras en Configuración de iOS."
           }
         },
         "fr" : {

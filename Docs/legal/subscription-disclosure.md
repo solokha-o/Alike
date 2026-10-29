@@ -140,7 +140,7 @@ Rendered by `disclosure` in
 
 **ES-419**
 
-> El plan anual incluye una prueba gratuita de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes gestionar o cancelar la suscripción cuando quieras en Configuración de iOS.
+> El plan anual incluye una prueba gratis de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro comienza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes administrar o cancelar la suscripción cuando quieras en Configuración de iOS.
 
 **ES**
 

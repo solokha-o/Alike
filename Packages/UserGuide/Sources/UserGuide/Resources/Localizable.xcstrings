@@ -9767,7 +9767,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados recientemente en tus otros dispositivos."
+            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados en tus otros dispositivos."
           }
         },
         "fr" : {
@@ -9993,7 +9993,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las fotos llegan al álbum Eliminados recientemente de la app Fotos, donde puedes recuperar cualquiera."
+            "value" : "Las fotos llegan al álbum Eliminados de la app Fotos, donde puedes recuperar cualquiera."
           }
         },
         "fr" : {
@@ -10219,7 +10219,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados recientemente: automáticamente a los 30 días o cuando vacías el álbum."
+            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados: automáticamente a los 30 días o cuando vacías el álbum."
           }
         },
         "fr" : {
@@ -11010,7 +11010,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminados recientemente, cuándo se libera el espacio de verdad e iCloud."
+            "value" : "Eliminados, cuándo se libera el espacio de verdad e iCloud."
           }
         },
         "fr" : {
@@ -11236,7 +11236,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los resultados que ya analizaste siguen disponibles, te suscribas o no."
+            "value" : "Los resultados de análisis anteriores siguen disponibles, tengas o no una suscripción."
           }
         },
         "fr" : {
@@ -11914,7 +11914,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puedes mover fotos a Eliminados recientemente de una en una."
+            "value" : "Puedes mover fotos a Eliminados de una en una."
           }
         },
         "fr" : {
@@ -12366,7 +12366,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mueve toda tu selección en un solo paso en lugar de una foto a la vez."
+            "value" : "Mueve todas las fotos seleccionadas en un solo paso, en lugar de una foto a la vez."
           }
         },
         "fr" : {
@@ -13044,7 +13044,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puedes gestionar o cancelar la suscripción cuando quieras en el App Store. Los precios se muestran antes de suscribirte."
+            "value" : "Puedes administrar o cancelar la suscripción cuando quieras en App Store. Los precios se muestran antes de que te suscribas."
           }
         },
         "fr" : {
@@ -13157,7 +13157,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lo que añade Alike Pro"
+            "value" : "Lo que agrega Alike Pro"
           }
         },
         "fr" : {
@@ -13496,7 +13496,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre la categoría Capturas de pantalla y despéjala en bloque."
+            "value" : "Abre la categoría Capturas de pantalla y límpiala de una sola vez."
           }
         },
         "fr" : {
@@ -13948,7 +13948,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Qué se incluye sin suscripción y qué añade Pro."
+            "value" : "Qué se incluye sin suscripción y qué agrega Pro."
           }
         },
         "fr" : {
@@ -15191,7 +15191,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados recientemente, donde iOS las guarda 30 días."
+            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados, donde iOS las guarda 30 días."
           }
         },
         "fr" : {
@@ -15304,7 +15304,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover a Eliminados recientemente"
+            "value" : "Mover a Eliminados"
           }
         },
         "fr" : {
@@ -18016,7 +18016,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tus fotos, tu álbum Eliminados recientemente, tu acceso a las fotos y tu suscripción a Alike Pro."
+            "value" : "Tus fotos, tu álbum Eliminados, tu acceso a las fotos y tu suscripción a Alike Pro."
           }
         },
         "fr" : {
