@@ -8723,7 +8723,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados recientemente en tus otros dispositivos."
+            "value" : "Si Fotos en iCloud está activado, las mismas fotos pasan a Eliminados en tus otros dispositivos."
           }
         },
         "fr" : {
@@ -8925,7 +8925,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las fotos llegan al álbum Eliminados recientemente de la app Fotos, donde puedes recuperar cualquiera."
+            "value" : "Las fotos llegan al álbum Eliminados de la app Fotos, donde puedes recuperar cualquiera."
           }
         },
         "fr" : {
@@ -9127,7 +9127,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados recientemente: automáticamente a los 30 días o cuando vacías el álbum."
+            "value" : "El espacio vuelve solo cuando las fotos salen de Eliminados: automáticamente a los 30 días o cuando vacías el álbum."
           }
         },
         "fr" : {
@@ -9834,7 +9834,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminados recientemente, cuándo se libera el espacio de verdad e iCloud."
+            "value" : "Eliminados, cuándo se libera el espacio de verdad e iCloud."
           }
         },
         "fr" : {
@@ -13571,7 +13571,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados recientemente, donde iOS las guarda 30 días."
+            "value" : "Confirma y las fotos seleccionadas pasan a Eliminados, donde iOS las guarda 30 días."
           }
         },
         "fr" : {
@@ -13672,7 +13672,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover a Eliminados recientemente"
+            "value" : "Mover a Eliminados"
           }
         },
         "fr" : {
@@ -16096,7 +16096,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tus fotos, tu álbum Eliminados recientemente, tu acceso a las fotos y tu suscripción a Alike Pro."
+            "value" : "Tus fotos, tu álbum Eliminados, tu acceso a las fotos y tu suscripción a Alike Pro."
           }
         },
         "fr" : {
