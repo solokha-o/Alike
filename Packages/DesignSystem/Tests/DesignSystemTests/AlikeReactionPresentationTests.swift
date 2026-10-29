@@ -1,10 +1,11 @@
+import Foundation
 import Core
 import SwiftUI
-import XCTest
+import Testing
 @testable import DesignSystem
 
-final class AlikeReactionPresentationTests: XCTestCase {
-    func testScanningLoopsOnlyWhileVisibleAndActive() {
+@Suite struct AlikeReactionPresentationTests {
+    @Test func testScanningLoopsOnlyWhileVisibleAndActive() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .scanning),
             state: .scanning,
@@ -24,14 +25,14 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .background
         )
 
-        XCTAssertEqual(active.playback, .loop)
-        XCTAssertNotNil(active.animationURL)
-        XCTAssertEqual(active.ambientMotion, .breathe)
-        XCTAssertNil(inactive.animationURL)
-        XCTAssertEqual(inactive.ambientMotion, .none)
+        #expect(active.playback == .loop)
+        #expect(active.animationURL != nil)
+        #expect(active.ambientMotion == .breathe)
+        #expect(inactive.animationURL == nil)
+        #expect(inactive.ambientMotion == .none)
     }
 
-    func testOneShotReactionUsesNativeFallbackWhenAssetsArePending() {
+    @Test func testOneShotReactionUsesNativeFallbackWhenAssetsArePending() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .resultsFound),
             state: .resultsFound(candidateCount: 2),
@@ -45,13 +46,13 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.playback, .once)
-        XCTAssertNil(presentation.staticImageURL)
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.fallbackSystemImageName, "sparkles")
+        #expect(presentation.playback == .once)
+        #expect(presentation.staticImageURL == nil)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.fallbackSystemImageName == "sparkles")
     }
 
-    func testPermissionAndErrorPresentationsHaveNoPlayfulMotion() {
+    @Test func testPermissionAndErrorPresentationsHaveNoPlayfulMotion() {
         let states: [(AlikeReactionKind, AlikeState)] = [
             (.permissionIssue, .permissionIssue(.init(operation: .scan))),
             (.recoverableError, .recoverableError(.init(operation: .reconciliation))),
@@ -70,12 +71,12 @@ final class AlikeReactionPresentationTests: XCTestCase {
                 scenePhase: .active
             )
 
-            XCTAssertNil(presentation.animationURL)
-            XCTAssertEqual(presentation.ambientMotion, .none)
+            #expect(presentation.animationURL == nil)
+            #expect(presentation.ambientMotion == .none)
         }
     }
 
-    func testRecoverableErrorUsesStaticAliWithReadyAliFallback() {
+    @Test func testRecoverableErrorUsesStaticAliWithReadyAliFallback() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .operation(UUID()), kind: .recoverableError),
             state: .recoverableError(.init(operation: .scan)),
@@ -89,16 +90,15 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.staticImageURL, AlikeAssets.optionalScannerIssueURL(for: .twoX))
-        XCTAssertEqual(
-            presentation.fallbackStaticImageURL,
-            AlikeAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
+        #expect(presentation.staticImageURL == AlikeAssets.optionalScannerIssueURL(for: .twoX))
+        #expect(
+            presentation.fallbackStaticImageURL == AlikeAssets.optionalScannerIdleURL(for: .ready, scale: .twoX)
         )
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testCleanupSuccessUsesApprovedAssetsAndOneShotLifecycleGating() {
+    @Test func testCleanupSuccessUsesApprovedAssetsAndOneShotLifecycleGating() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .cleanup(UUID()), kind: .cleanupSuccess),
             state: .cleanupSuccess(.init(itemCount: 2, estimatedSavingsBytes: 1_024)),
@@ -118,14 +118,14 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertEqual(active.staticImageURL, AlikeAssets.cleanupSuccessURL(for: .twoX))
-        XCTAssertEqual(active.animationURL, AlikeAssets.cleanupSuccessOverlayURL)
-        XCTAssertEqual(active.playback, .once)
-        XCTAssertEqual(active.ambientMotion, .none)
-        XCTAssertNil(hidden.animationURL)
+        #expect(active.staticImageURL == AlikeAssets.cleanupSuccessURL(for: .twoX))
+        #expect(active.animationURL == AlikeAssets.cleanupSuccessOverlayURL)
+        #expect(active.playback == .once)
+        #expect(active.ambientMotion == .none)
+        #expect(hidden.animationURL == nil)
     }
 
-    func testNoResultsUsesCalmAllCaughtUpStaticPresentation() {
+    @Test func testNoResultsUsesCalmAllCaughtUpStaticPresentation() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .noResults),
             state: .noResults,
@@ -139,15 +139,14 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertEqual(
-            presentation.staticImageURL,
-            AlikeAssets.optionalScannerIdleURL(for: .allCaughtUp, scale: .threeX)
+        #expect(
+            presentation.staticImageURL == AlikeAssets.optionalScannerIdleURL(for: .allCaughtUp, scale: .threeX)
         )
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testAllCaughtUpIdleIsStaticWhileOtherIdleContextsKeepMotion() {
+    @Test func testAllCaughtUpIdleIsStaticWhileOtherIdleContextsKeepMotion() {
         let allCaughtUp = AlikeReactionPresentation.resolve(
             cue: idleCue(context: .allCaughtUp),
             displayScale: 2,
@@ -161,10 +160,10 @@ final class AlikeReactionPresentationTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertNil(allCaughtUp.animationURL)
-        XCTAssertEqual(allCaughtUp.ambientMotion, .none)
-        XCTAssertNotNil(ready.animationURL)
-        XCTAssertEqual(ready.ambientMotion, .breathe)
+        #expect(allCaughtUp.animationURL == nil)
+        #expect(allCaughtUp.ambientMotion == .none)
+        #expect(ready.animationURL != nil)
+        #expect(ready.ambientMotion == .breathe)
     }
 
     private func idleCue(context: AlikeIdleContext) -> AlikeReactionCue {

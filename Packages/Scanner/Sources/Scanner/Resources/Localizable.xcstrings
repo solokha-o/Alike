@@ -1,3388 +1,4072 @@
 {
-  "sourceLanguage": "en",
-  "version": "1.1",
-  "strings": {
-    "scanner.alike.libraryChanged.cta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan New Photos"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "scanner.alike.libraryChanged.cta" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فحص الصور الجديدة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканувати нові фото"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Fotos scannen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar fotos nuevas"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan New Photos"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar fotos nuevas"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan New Photos"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar fotos novas"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan New Photos"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neue Fotos scannen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar fotos nuevas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyser les nouvelles photos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar fotos nuevas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scansiona le nuove foto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser les nouvelles photos"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nieuwe foto's scannen"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser les nouvelles photos"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skanuj nowe zdjęcia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scansiona le nuove foto"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeni Fotoğrafları Tara"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuwe foto's scannen"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描新照片"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skanuj nowe zdjęcia"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فحص الصور الجديدة"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar fotos novas"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan New Photos"
-          }
-        }
-      }
-    },
-    "scanner.alike.libraryChanged.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New photos detected."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar fotografias novas"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Виявлено нові фото."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni Fotoğrafları Tara"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se detectaron fotos nuevas."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканувати нові фото"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se han detectado fotos nuevas."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos novas detectadas."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neue Fotos erkannt."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nouvelles photos détectées."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rilevate nuove foto."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nieuwe foto's gevonden."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wykryto nowe zdjęcia."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeni fotoğraflar algılandı."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "偵測到新照片。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تم رصد صور جديدة."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New photos detected."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描新照片"
           }
         }
       }
     },
-    "scanner.alike.libraryChanged.supporting": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan again to refresh your cleanup opportunities."
+    "scanner.alike.libraryChanged.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم رصد صور جديدة."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Проскануйте знову, щоб оновити можливості для очищення."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Fotos erkannt."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analiza de nuevo para actualizar tus oportunidades de limpieza."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New photos detected."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analiza de nuevo para actualizar tus oportunidades de limpieza."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New photos detected."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analise novamente para atualizar suas oportunidades de limpeza."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New photos detected."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanne erneut, um deine Aufräummöglichkeiten zu aktualisieren."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han detectado fotos nuevas."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relancez une analyse pour actualiser vos possibilités de nettoyage."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se detectaron fotos nuevas."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ripeti la scansione per aggiornare le occasioni di pulizia."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelles photos détectées."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan opnieuw om je opruimkansen bij te werken."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelles photos détectées."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zeskanuj ponownie, aby odświeżyć okazje do porządków."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rilevate nuove foto."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temizlik fırsatlarını yenilemek için yeniden tara."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuwe foto's gevonden."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "重新掃描以更新可清理的項目。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykryto nowe zdjęcia."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "أعد الفحص لتحديث فرص التنظيف لديك."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos novas detectadas."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan again to refresh your cleanup opportunities."
-          }
-        }
-      }
-    },
-    "scanner.alike.ready.cta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Scanning"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foram detetadas novas fotografias."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Почати сканування"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni fotoğraflar algılandı."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comenzar análisis"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виявлено нові фото."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Empezar análisis"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar análise"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan starten"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lancer l’analyse"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia la scansione"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start scan"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rozpocznij skanowanie"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taramayı Başlat"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "開始掃描"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بدء الفحص"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Scanning"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "偵測到新照片。"
           }
         }
       }
     },
-    "scanner.alike.ready.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ready when you are."
+    "scanner.alike.libraryChanged.supporting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعد الفحص لتحديث فرص التنظيف لديك."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Готовий, коли ви готові."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanne erneut, um deine Aufräummöglichkeiten zu aktualisieren."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listo cuando tú lo estés."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan again to refresh your cleanup opportunities."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listo cuando tú lo estés."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan again to refresh your cleanup opportunities."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tudo pronto quando você estiver."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan again to refresh your cleanup opportunities."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bereit, wenn du es bist."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analiza de nuevo para actualizar tus oportunidades de limpieza."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prêt quand vous l’êtes."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analiza de nuevo para actualizar tus oportunidades de limpieza."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pronto quando vuoi."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relancez une analyse pour actualiser vos possibilités de nettoyage."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Klaar wanneer jij dat bent."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relancez une analyse pour actualiser vos possibilités de nettoyage."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gotowe, kiedy zechcesz."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripeti la scansione per aggiornare le occasioni di pulizia."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sen hazır olduğunda başlayabiliriz."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan opnieuw om je opruimkansen bij te werken."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "隨時可以開始。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeskanuj ponownie, aby odświeżyć okazje do porządków."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جاهز متى شئت."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analise novamente para atualizar suas oportunidades de limpeza."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ready when you are."
-          }
-        }
-      }
-    },
-    "scanner.alike.ready.supporting": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan your photo library for cleanup opportunities."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisa novamente para atualizar as tuas oportunidades de limpeza."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Проскануйте фототеку, щоб знайти можливості для очищення."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlik fırsatlarını yenilemek için yeniden tara."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analiza tu fototeca en busca de oportunidades de limpieza."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проскануйте знову, щоб оновити можливості для очищення."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analiza tu fototeca en busca de oportunidades de limpieza."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analise sua fototeca em busca de oportunidades de limpeza."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Durchsuche deine Mediathek nach Aufräummöglichkeiten."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analysez votre photothèque à la recherche de possibilités de nettoyage."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizza la libreria foto per trovare occasioni di pulizia."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan je fotobibliotheek op opruimkansen."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Przeskanuj bibliotekę zdjęć w poszukiwaniu okazji do porządków."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temizlik fırsatları için fotoğraf kitaplığını tara."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描你的照片圖庫，找出可清理的項目。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افحص مكتبة صورك بحثًا عن فرص للتنظيف."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan your photo library for cleanup opportunities."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重新掃描以更新可清理的項目。"
           }
         }
       }
     },
-    "scanner.main.howToUse": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How to Use"
+    "scanner.alike.ready.cta" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدء الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Як користуватись"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan starten"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cómo se usa"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Scanning"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cómo se usa"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Scanning"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como usar"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Scanning"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anleitung"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar análisis"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mode d’emploi"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comenzar análisis"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Come si usa"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancer l’analyse"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zo werkt het"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancer l’analyse"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jak korzystać"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia la scansione"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nasıl Kullanılır"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start scan"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "使用說明"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij skanowanie"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "طريقة الاستخدام"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar análise"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How to Use"
-          }
-        }
-      }
-    },
-    "scanner.main.openUsageInstructionsCleanupWorkflow": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open usage instructions and cleanup workflow tips"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar análise"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Відкрити інструкції та поради щодо процесу очищення"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taramayı Başlat"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir las instrucciones de uso y los consejos del flujo de limpieza"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почати сканування"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir las instrucciones de uso y los consejos del flujo de limpieza"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir as instruções de uso e as dicas do fluxo de limpeza"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anleitung und Tipps zum Aufräumen öffnen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrir le mode d’emploi et les conseils de nettoyage"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri le istruzioni d'uso e i consigli per la pulizia"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open de gebruiksaanwijzing en tips voor het opruimen"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Otwórz instrukcję obsługi i wskazówki dotyczące porządków"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kullanım yönergelerini ve temizlik ipuçlarını aç"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "打開使用說明與清理流程訣竅"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فتح إرشادات الاستخدام ونصائح سير عمل التنظيف"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open usage instructions and cleanup workflow tips"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開始掃描"
           }
         }
       }
     },
-    "scanner.main.scanner": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+    "scanner.alike.ready.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جاهز متى شئت."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканер"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereit, wenn du es bist."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready when you are."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análisis"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready when you are."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análise"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready when you are."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo cuando tú lo estés."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyse"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo cuando tú lo estés."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prêt quand vous l’êtes."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prêt quand vous l’êtes."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skaner"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pronto quando vuoi."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tarayıcı"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klaar wanneer jij dat bent."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gotowe, kiedy zechcesz."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الفحص"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo pronto quando você estiver."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.canSwitchTabsWhileScanning": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo pronto quando quiseres."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Під час сканування можна переходити між вкладками. Результати очищення оновляться після його завершення."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sen hazır olduğunda başlayabiliriz."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Puedes cambiar de pestaña mientras se analiza. Tus resultados de limpieza se actualizarán al terminar."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Готовий, коли ви готові."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Puedes cambiar de pestaña mientras se analiza. Tus resultados de limpieza se actualizarán al terminar."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Você pode trocar de aba durante a análise. Seus resultados de limpeza serão atualizados ao final."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Du kannst während des Scans den Tab wechseln. Deine Ergebnisse werden nach Abschluss aktualisiert."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vous pouvez changer d’onglet pendant l’analyse. Vos résultats seront actualisés à la fin."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Puoi cambiare scheda durante la scansione. I risultati della pulizia si aggiorneranno al termine."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je kunt tijdens het scannen naar een ander tabblad gaan. Je opruimresultaten worden bijgewerkt zodra het klaar is."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podczas skanowania możesz przełączać karty. Wyniki porządków odświeżą się po zakończeniu."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tarama sürerken sekmeler arasında geçiş yapabilirsin. Temizlik sonuçların tamamlandığında yenilenir."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描期間可以切換標籤頁。掃描完成後，清理結果會自動更新。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يمكنك التنقل بين علامات التبويب أثناء الفحص. ستُحدَّث نتائج التنظيف عند انتهائه."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隨時可以開始。"
           }
         }
       }
     },
-    "scanner.scannerHome.cleanupOpportunitiesAreReady": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cleanup opportunities are ready"
+    "scanner.alike.ready.supporting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افحص مكتبة صورك بحثًا عن فرص للتنظيف."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Можливості для очищення готові"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchsuche deine Mediathek nach Aufräummöglichkeiten."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las oportunidades de limpieza están listas"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan your photo library for cleanup opportunities."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las oportunidades de limpieza están listas"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan your photo library for cleanup opportunities."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As oportunidades de limpeza estão prontas"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan your photo library for cleanup opportunities."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aufräummöglichkeiten sind bereit"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analiza tu fototeca en busca de oportunidades de limpieza."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les possibilités de nettoyage sont prêtes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analiza tu fototeca en busca de oportunidades de limpieza."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le occasioni di pulizia sono pronte"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysez votre photothèque à la recherche de possibilités de nettoyage."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je opruimkansen staan klaar"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysez votre photothèque à la recherche de possibilités de nettoyage."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Okazje do porządków są gotowe"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizza la libreria foto per trovare occasioni di pulizia."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temizlik fırsatları hazır"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan je fotobibliotheek op opruimkansen."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "可清理的項目已備妥"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeskanuj bibliotekę zdjęć w poszukiwaniu okazji do porządków."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرص التنظيف جاهزة"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analise sua fototeca em busca de oportunidades de limpeza."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cleanup opportunities are ready"
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.iCouldntFinishThisScan": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I couldn't finish this scan."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisa a tua fototeca para encontrar oportunidades de limpeza."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Мені не вдалося завершити це сканування."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlik fırsatları için fotoğraf kitaplığını tara."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No pude terminar este análisis."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проскануйте фототеку, щоб знайти можливості для очищення."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No he podido terminar este análisis."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não consegui concluir esta análise."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ich konnte diesen Scan nicht abschließen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je n’ai pas pu terminer cette analyse."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Non sono riuscito a completare questa scansione."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ik kon deze scan niet voltooien."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nie udało mi się dokończyć tego skanowania."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu taramayı tamamlayamadım."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "這次掃描沒能完成。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تعذّر عليّ إكمال هذا الفحص."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I couldn't finish this scan."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描你的照片圖庫，找出可清理的項目。"
           }
         }
       }
     },
-    "scanner.scannerHome.libraryUpDate": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your library is up to date"
+    "scanner.main.howToUse" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "طريقة الاستخدام"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ваша фототека актуальна"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anleitung"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu fototeca está al día"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu fototeca está al día"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sua fototeca está em dia"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to Use"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Mediathek ist auf dem neuesten Stand"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cómo se usa"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Votre photothèque est à jour"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cómo se usa"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La tua libreria è aggiornata"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode d’emploi"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je bibliotheek is up-to-date"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode d’emploi"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Twoja biblioteka jest aktualna"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come si usa"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kitaplığın güncel"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zo werkt het"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "你的圖庫已是最新狀態"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jak korzystać"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مكتبتك محدَّثة"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como usar"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your library is up to date"
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.noCleanupOpportunitiesWereFound": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No cleanup opportunities were found in this scan."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como utilizar"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Під час цього сканування не знайдено можливостей для очищення."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nasıl Kullanılır"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron oportunidades de limpieza en este análisis."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Як користуватись"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se han encontrado oportunidades de limpieza en este análisis."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhuma oportunidade de limpeza foi encontrada nesta análise."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In diesem Scan wurden keine Aufräummöglichkeiten gefunden."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucune possibilité de nettoyage n’a été trouvée lors de cette analyse."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessuna occasione di pulizia trovata in questa scansione."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deze scan heeft geen opruimkansen gevonden."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "To skanowanie nie znalazło okazji do porządków."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu taramada temizlik fırsatı bulunamadı."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "這次掃描沒有找到可清理的項目。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لم يُعثر على أي فرص للتنظيف في هذا الفحص."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No cleanup opportunities were found in this scan."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用說明"
           }
         }
       }
     },
-    "scanner.scannerHome.retry": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
+    "scanner.main.openUsageInstructionsCleanupWorkflow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فتح إرشادات الاستخدام ونصائح سير عمل التنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Повторити"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anleitung und Tipps zum Aufräumen öffnen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reintentar"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open usage instructions and cleanup workflow tips"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reintentar"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open usage instructions and cleanup workflow tips"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tentar novamente"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open usage instructions and cleanup workflow tips"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wiederholen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir las instrucciones de uso y los consejos del flujo de limpieza"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réessayer"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir las instrucciones de uso y los consejos del flujo de limpieza"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Riprova"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir le mode d’emploi et les conseils de nettoyage"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opnieuw"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir le mode d’emploi et les conseils de nettoyage"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ponów"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri le istruzioni d'uso e i consigli per la pulizia"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden Dene"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open de gebruiksaanwijzing en tips voor het opruimen"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "重試"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz instrukcję obsługi i wskazówki dotyczące porządków"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إعادة المحاولة"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir as instruções de uso e as dicas do fluxo de limpeza"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.reviewCleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Cleanup"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir as instruções de utilização e as dicas de limpeza"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Переглянути очищення"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanım yönergelerini ve temizlik ipuçlarını aç"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpieza"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити інструкції та поради щодо процесу очищення"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpieza"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpeza"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aufräumen prüfen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Examiner le nettoyage"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Controlla la pulizia"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bekijk opruiming"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Przejrzyj porządki"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temizliği Gözden Geçir"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "檢視清理項目"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مراجعة التنظيف"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Cleanup"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打開使用說明與清理流程訣竅"
           }
         }
       }
     },
-    "scanner.scannerHome.reviewEachSuggestionBeforeAnything": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review each suggestion before anything is removed."
+    "scanner.main.scanner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перегляньте кожну пропозицію, перш ніж щось видаляти."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisa cada sugerencia antes de que se elimine algo."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisa cada sugerencia antes de que se elimine nada."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revise cada sugestão antes que algo seja removido."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prüfe jeden Vorschlag, bevor etwas entfernt wird."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Examinez chaque suggestion avant toute suppression."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Controlla ogni suggerimento prima che venga rimosso qualcosa."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bekijk elke suggestie voordat er iets wordt verwijderd."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Przejrzyj każdą propozycję, zanim cokolwiek zostanie usunięte."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hiçbir şey kaldırılmadan önce her öneriyi gözden geçir."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在移除任何項目之前，先檢視每項建議。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaner"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "راجع كل اقتراح قبل إزالة أي شيء."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análise"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review each suggestion before anything is removed."
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.reviewExistingCleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Existing Cleanup"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análise"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Переглянути наявне очищення"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarayıcı"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpieza existente"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканер"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpieza existente"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar limpeza existente"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vorhandenes Aufräumen prüfen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Examiner le nettoyage en cours"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Controlla la pulizia esistente"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bekijk bestaande opruiming"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Przejrzyj istniejące porządki"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mevcut Temizliği Gözden Geçir"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "檢視現有清理項目"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مراجعة التنظيف الحالي"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Existing Cleanup"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描"
           }
         }
       }
     },
-    "scanner.scannerHome.scanAgain": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan Again"
+    "scanner.scannerHome.canSwitchTabsWhileScanning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكنك التنقل بين علامات التبويب أثناء الفحص. ستُحدَّث نتائج التنظيف عند انتهائه."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканувати знову"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst während des Scans den Tab wechseln. Deine Ergebnisse werden nach Abschluss aktualisiert."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar de nuevo"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar de nuevo"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar novamente"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can switch tabs while scanning. Your cleanup results will refresh when it finishes."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erneut scannen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes cambiar de pestaña mientras se analiza. Tus resultados de limpieza se actualizarán al terminar."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyser à nouveau"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes cambiar de pestaña mientras se analiza. Tus resultados de limpieza se actualizarán al terminar."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scansiona di nuovo"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez changer d’onglet pendant l’analyse. Vos résultats seront actualisés à la fin."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opnieuw scannen"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez changer d’onglet pendant l’analyse. Vos résultats seront actualisés à la fin."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skanuj ponownie"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puoi cambiare scheda durante la scansione. I risultati della pulizia si aggiorneranno al termine."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden Tara"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je kunt tijdens het scannen naar een ander tabblad gaan. Je opruimresultaten worden bijgewerkt zodra het klaar is."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "再次掃描"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podczas skanowania możesz przełączać karty. Wyniki porządków odświeżą się po zakończeniu."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إعادة الفحص"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você pode trocar de aba durante a análise. Seus resultados de limpeza serão atualizados ao final."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan Again"
-          }
-        }
-      }
-    },
-    "scanner.scannerHome.scanningYourPhotoLibrary": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanning your photo library"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podes mudar de separador durante a análise. Os teus resultados de limpeza serão atualizados no fim."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканування фототеки"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarama sürerken sekmeler arasında geçiş yapabilirsin. Temizlik sonuçların tamamlandığında yenilenir."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizando tu fototeca"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Під час сканування можна переходити між вкладками. Результати очищення оновляться після його завершення."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizando tu fototeca"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisando sua fototeca"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Mediathek wird gescannt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyse de votre photothèque"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scansione della libreria foto"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je fotobibliotheek wordt gescand"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skanowanie biblioteki zdjęć"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotoğraf kitaplığın taranıyor"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "正在掃描你的照片圖庫"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جارٍ فحص مكتبة صورك"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanning your photo library"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描期間可以切換標籤頁。掃描完成後，清理結果會自動更新。"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.blurredPhotos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blurred Photos"
+    "scanner.scannerHome.cleanupOpportunitiesAreReady" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرص التنظيف جاهزة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Розмиті фото"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufräummöglichkeiten sind bereit"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos borrosas"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup opportunities are ready"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos borrosas"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup opportunities are ready"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos desfocadas"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup opportunities are ready"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unscharfe Fotos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las oportunidades de limpieza están listas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photos floues"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las oportunidades de limpieza están listas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Foto sfocate"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les possibilités de nettoyage sont prêtes"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wazige foto's"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les possibilités de nettoyage sont prêtes"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rozmyte zdjęcia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le occasioni di pulizia sono pronte"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bulanık Fotoğraflar"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je opruimkansen staan klaar"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "模糊照片"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okazje do porządków są gotowe"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الصور الضبابية"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As oportunidades de limpeza estão prontas"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blurred Photos"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.groupsPhotosThatLookAlike": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Groups of photos that look alike."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As oportunidades de limpeza estão prontas"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Групи схожих між собою фото."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlik fırsatları hazır"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos de fotos que se parecen."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можливості для очищення готові"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos de fotos que se parecen."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupos de fotos parecidas."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gruppen ähnlich aussehender Fotos."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Groupes de photos qui se ressemblent."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gruppi di foto che si somigliano."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Groepen foto's die op elkaar lijken."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupy zdjęć, które wyglądają podobnie."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Birbirine benzeyen fotoğraf grupları."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "外觀相似的照片群組。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مجموعات من الصور المتشابهة."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Groups of photos that look alike."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可清理的項目已備妥"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.lastScan": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last Scan"
+    "scanner.scannerHome.iCouldntFinishThisScan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر عليّ إكمال هذا الفحص."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Останнє сканування"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich konnte diesen Scan nicht abschließen."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Último análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I couldn't finish this scan."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Último análisis"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I couldn't finish this scan."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Última análise"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I couldn't finish this scan."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Letzter Scan"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No he podido terminar este análisis."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dernière analyse"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No pude terminar este análisis."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultima scansione"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n’ai pas pu terminer cette analyse."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Laatste scan"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n’ai pas pu terminer cette analyse."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ostatnie skanowanie"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non sono riuscito a completare questa scansione."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son Tarama"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ik kon deze scan niet voltooien."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "上次掃描"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało mi się dokończyć tego skanowania."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "آخر فحص"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não consegui concluir esta análise."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last Scan"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.libraryStatus": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Library Status"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não consegui concluir esta análise."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Стан фототеки"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu taramayı tamamlayamadım."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado de la fototeca"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мені не вдалося завершити це сканування."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado de la fototeca"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Status da fototeca"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mediathek-Status"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "État de la photothèque"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stato della libreria"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bibliotheekstatus"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stan biblioteki"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kitaplık Durumu"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "圖庫狀態"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حالة المكتبة"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Library Status"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這次掃描沒能完成。"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.likelyLowQualityPhotosReview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Likely low-quality photos to review."
+    "scanner.scannerHome.libraryUpDate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مكتبتك محدَّثة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Імовірно неякісні фото для перегляду."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Mediathek ist auf dem neuesten Stand"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos probablemente de baja calidad para revisar."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library is up to date"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos probablemente de baja calidad para revisar."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library is up to date"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos provavelmente de baixa qualidade para revisar."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your library is up to date"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wahrscheinlich Fotos in geringer Qualität zur Durchsicht."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu fototeca está al día"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photos probablement de faible qualité à examiner."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu fototeca está al día"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Foto probabilmente di bassa qualità da controllare."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre photothèque est à jour"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Waarschijnlijk foto's van lage kwaliteit om te bekijken."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre photothèque est à jour"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zdjęcia prawdopodobnie niskiej jakości do przejrzenia."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua libreria è aggiornata"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gözden geçirilecek, düşük kaliteli olabilecek fotoğraflar."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je bibliotheek is up-to-date"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "可能品質不佳、待檢視的照片。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twoja biblioteka jest aktualna"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "صور يُرجَّح أنها منخفضة الجودة لمراجعتها."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua fototeca está em dia"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Likely low-quality photos to review."
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.needsRefresh": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Needs refresh"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tua fototeca está atualizada"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Потрібне оновлення"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kitaplığın güncel"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Necesita actualizarse"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваша фототека актуальна"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Necesita actualizarse"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Precisa atualizar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aktualisierung nötig"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À actualiser"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Da aggiornare"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Moet worden ververst"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wymaga odświeżenia"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yenilenmeli"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "須更新"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بحاجة إلى تحديث"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Needs refresh"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的圖庫已是最新狀態"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.ofFreeScansRemaining": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$d of %2$d free scans remaining"
+    "scanner.scannerHome.noCleanupOpportunitiesWereFound" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يُعثر على أي فرص للتنظيف في هذا الفحص."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Залишилося безкоштовних сканувань: %1$d із %2$d"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In diesem Scan wurden keine Aufräummöglichkeiten gefunden."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Te quedan %1$d de %2$d análisis gratuitos"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cleanup opportunities were found in this scan."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Te quedan %1$d de %2$d análisis gratuitos"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cleanup opportunities were found in this scan."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restam %1$d de %2$d análises gratuitas"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cleanup opportunities were found in this scan."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noch %1$d von %2$d kostenlosen Scans"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado oportunidades de limpieza en este análisis."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il vous reste %1$d analyses gratuites sur %2$d"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron oportunidades de limpieza en este análisis."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$d di %2$d scansioni gratuite rimaste"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune possibilité de nettoyage n’a été trouvée lors de cette analyse."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nog %1$d van %2$d gratis scans"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune possibilité de nettoyage n’a été trouvée lors de cette analyse."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pozostało %1$d z %2$d darmowych skanowań"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna occasione di pulizia trovata in questa scansione."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%2$d ücretsiz taramadan %1$d tanesi kaldı"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze scan heeft geen opruimkansen gevonden."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "免費掃描還剩 %1$d 次，共 %2$d 次"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To skanowanie nie znalazło okazji do porządków."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بقي %1$d من %2$d من الفحوصات المجانية"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma oportunidade de limpeza foi encontrada nesta análise."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$d of %2$d free scans remaining"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.opensTheUpgradeOptions": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens the upgrade options"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma oportunidade de limpeza foi encontrada nesta análise."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Відкриває варіанти оновлення підписки"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu taramada temizlik fırsatı bulunamadı."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre las opciones de mejora"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Під час цього сканування не знайдено можливостей для очищення."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre las opciones de mejora"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre as opções de upgrade"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Öffnet die Upgrade-Optionen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvre les options d’abonnement"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apre le opzioni di upgrade"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opent de upgrade-opties"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Otwiera opcje ulepszenia"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yükseltme seçeneklerini açar"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "打開升級選項"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يفتح خيارات الترقية"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens the upgrade options"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這次掃描沒有找到可清理的項目。"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.opportunities": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opportunities"
+    "scanner.scannerHome.retry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Можливості"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederholen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oportunidades"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oportunidades"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oportunidades"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Möglichkeiten"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Possibilités"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Occasioni"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kansen"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Okazje"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprova"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fırsatlar"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "可清理項目"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponów"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الفرص"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opportunities"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.reclaimable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reclaimable"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Можна звільнити"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Dene"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recuperable"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторити"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recuperable"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recuperável"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Freigebbar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Récupérable"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recuperabile"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vrij te maken"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do odzyskania"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geri Kazanılabilir"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "可回收空間"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "قابل للاسترجاع"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reclaimable"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重試"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.scanningProgress": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanning progress"
+    "scanner.scannerHome.reviewCleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مراجعة التنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Хід сканування"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufräumen prüfen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Progreso del análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Cleanup"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Progreso del análisis"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Cleanup"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Progresso da análise"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Cleanup"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan-Fortschritt"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpieza"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Progression de l’analyse"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpieza"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avanzamento della scansione"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examiner le nettoyage"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voortgang van de scan"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examiner le nettoyage"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Postęp skanowania"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla la pulizia"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tarama ilerlemesi"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk opruiming"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描進度"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejrzyj porządki"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تقدّم الفحص"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpeza"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanning progress"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.screenCapturesThatMayNo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screen captures that may no longer be useful."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rever limpeza"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Знімки екрана, які можуть бути вже не потрібні."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizliği Gözden Geçir"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de pantalla que quizá ya no te sirvan."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переглянути очищення"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de pantalla que quizá ya no te sirvan."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de tela que talvez não sejam mais úteis."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bildschirmfotos, die du vielleicht nicht mehr brauchst."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Captures d’écran qui ne vous servent peut-être plus."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Immagini dello schermo che potrebbero non servire più."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schermopnamen die je misschien niet meer nodig hebt."
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrzuty ekranu, które mogą już nie być potrzebne."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Artık işine yaramayabilecek ekran görüntüleri."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "可能已不再需要的螢幕擷取畫面。"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لقطات شاشة قد لا تكون مفيدة بعد الآن."
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screen captures that may no longer be useful."
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢視清理項目"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.screenshots": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screenshots"
+    "scanner.scannerHome.reviewEachSuggestionBeforeAnything" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "راجع كل اقتراح قبل إزالة أي شيء."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Знімки екрана"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe jeden Vorschlag, bevor etwas entfernt wird."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de pantalla"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review each suggestion before anything is removed."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de pantalla"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review each suggestion before anything is removed."
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Capturas de tela"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review each suggestion before anything is removed."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bildschirmfotos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa cada sugerencia antes de que se elimine nada."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Captures d’écran"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa cada sugerencia antes de que se elimine algo."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screenshot"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examinez chaque suggestion avant toute suppression."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schermafbeeldingen"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examinez chaque suggestion avant toute suppression."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrzuty ekranu"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla ogni suggerimento prima che venga rimosso qualcosa."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ekran Görüntüleri"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk elke suggestie voordat er iets wordt verwijderd."
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "螢幕快照"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejrzyj każdą propozycję, zanim cokolwiek zostanie usunięte."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لقطات الشاشة"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revise cada sugestão antes que algo seja removido."
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screenshots"
-          }
-        }
-      }
-    },
-    "scanner.scannerHomeComponents.similarPhotos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Similar Photos"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revê cada sugestão antes que algo seja removido."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Схожі фото"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiçbir şey kaldırılmadan önce her öneriyi gözden geçir."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos similares"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перегляньте кожну пропозицію, перш ніж щось видаляти."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos similares"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotos semelhantes"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ähnliche Fotos"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photos similaires"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Foto simili"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vergelijkbare foto's"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podobne zdjęcia"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Benzer Fotoğraflar"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "相似照片"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الصور المتشابهة"
-          }
-        },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Similar Photos"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在移除任何項目之前，先檢視每項建議。"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.theseResultsFromBeforePhoto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "These results are from before your photo library changed."
+    "scanner.scannerHome.reviewExistingCleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مراجعة التنظيف الحالي"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ці результати отримано до змін у вашій фототеці."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorhandenes Aufräumen prüfen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estos resultados son anteriores al último cambio en tu fototeca."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Existing Cleanup"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estos resultados son anteriores al último cambio en tu fototeca."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Existing Cleanup"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estes resultados são anteriores à última mudança na sua fototeca."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Existing Cleanup"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diese Ergebnisse stammen von vor der letzten Änderung deiner Mediathek."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpieza existente"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ces résultats datent d’avant la dernière modification de votre photothèque."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpieza existente"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Questi risultati sono precedenti alle modifiche della libreria foto."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examiner le nettoyage en cours"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deze resultaten dateren van vóór de wijzigingen in je fotobibliotheek."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examiner le nettoyage en cours"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Te wyniki pochodzą sprzed zmian w bibliotece zdjęć."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla la pulizia esistente"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu sonuçlar, fotoğraf kitaplığın değişmeden önceki hâline ait."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk bestaande opruiming"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "這些結果來自照片圖庫變動之前。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejrzyj istniejące porządki"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هذه النتائج تعود إلى ما قبل تغيّر مكتبة صورك."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar limpeza existente"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "These results are from before your photo library changed."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rever limpeza existente"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mevcut Temizliği Gözden Geçir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переглянути наявне очищення"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢視現有清理項目"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.unlockMoreWithAlikePro": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlock more with Alike Pro"
+    "scanner.scannerHome.scanAgain" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Відкрийте більше можливостей з Alike Pro"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut scannen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Consigue más con Alike Pro"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Again"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Consigue más con Alike Pro"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Again"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tenha mais com o Alike Pro"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Again"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mehr mit Alike Pro"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar de nuevo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Allez plus loin avec Alike Pro"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar de nuevo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sblocca di più con Alike Pro"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser à nouveau"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ontgrendel meer met Alike Pro"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser à nouveau"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odblokuj więcej dzięki Alike Pro"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scansiona di nuovo"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike Pro ile daha fazlasının kilidini aç"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw scannen"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "使用 Alike Pro 解鎖更多功能"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skanuj ponownie"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "احصل على المزيد مع Alike Pro"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar novamente"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlock more with Alike Pro"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar novamente"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Tara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканувати знову"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再次掃描"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.unlockUnlimitedScansSmartCleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlock unlimited scans, smart cleanup, and batch actions."
+    "scanner.scannerHome.scanningYourPhotoLibrary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ فحص مكتبة صورك"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Розблокуйте необмежені сканування, розумне очищення та пакетні дії."
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Mediathek wird gescannt"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloquea análisis ilimitados, limpieza inteligente y acciones por lotes."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your photo library"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloquea análisis ilimitados, limpieza inteligente y acciones por lotes."
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your photo library"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Libere análises ilimitadas, limpeza inteligente e ações em lote."
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning your photo library"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schalte unbegrenzte Scans, smartes Aufräumen und Stapelaktionen frei."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando tu fototeca"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando tu fototeca"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sblocca scansioni illimitate, pulizia intelligente e azioni in blocco."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse de votre photothèque"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ontgrendel onbeperkt scannen, slim opruimen en bulkacties."
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse de votre photothèque"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odblokuj nieograniczone skanowania, inteligentne porządki i operacje zbiorcze."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scansione della libreria foto"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sınırsız taramaların, akıllı temizliğin ve toplu işlemlerin kilidini aç."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je fotobibliotheek wordt gescand"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "解鎖無限次掃描、智慧清理與批次操作。"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skanowanie biblioteki zdjęć"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisando sua fototeca"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlock unlimited scans, smart cleanup, and batch actions."
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A analisar a tua fototeca"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoğraf kitaplığın taranıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканування фототеки"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在掃描你的照片圖庫"
           }
         }
       }
     },
-    "scanner.scannerHomeComponents.whatAlikeChecks": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What Alike checks"
+    "scanner.scannerHomeComponents.blurredPhotos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصور الضبابية"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Що перевіряє Alike"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unscharfe Fotos"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qué revisa Alike"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qué revisa Alike"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O que o Alike verifica"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blurred Photos"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Was Alike prüft"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos borrosas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ce qu’Alike vérifie"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos borrosas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cosa controlla Alike"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos floues"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wat Alike controleert"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos floues"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Co sprawdza Alike"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto sfocate"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike neleri denetler"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wazige foto's"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 會檢查哪些項目"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozmyte zdjęcia"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ما الذي يفحصه Alike"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos desfocadas"
           }
         },
-        "en-CA": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What Alike checks"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias desfocadas"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bulanık Fotoğraflar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розмиті фото"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模糊照片"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.groupsPhotosThatLookAlike" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مجموعات من الصور المتشابهة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen ähnlich aussehender Fotos."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups of photos that look alike."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups of photos that look alike."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groups of photos that look alike."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos de fotos que se parecen."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos de fotos que se parecen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groupes de photos qui se ressemblent."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groupes de photos qui se ressemblent."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppi di foto che si somigliano."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groepen foto's die op elkaar lijken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupy zdjęć, które wyglądają podobnie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos de fotos parecidas."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupos de fotografias parecidas."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birbirine benzeyen fotoğraf grupları."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Групи схожих між собою фото."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外觀相似的照片群組。"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.lastScan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آخر فحص"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Scan"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Scan"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Scan"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Scan"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último análisis"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último análisis"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière analyse"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière analyse"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ultima scansione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatste scan"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostatnie skanowanie"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última análise"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última análise"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Tarama"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Останнє сканування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次掃描"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.libraryStatus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حالة المكتبة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek-Status"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library Status"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library Status"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library Status"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado de la fototeca"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado de la fototeca"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État de la photothèque"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État de la photothèque"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stato della libreria"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bibliotheekstatus"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stan biblioteki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status da fototeca"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado da fototeca"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kitaplık Durumu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стан фототеки"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圖庫狀態"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.likelyLowQualityPhotosReview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صور يُرجَّح أنها منخفضة الجودة لمراجعتها."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wahrscheinlich Fotos in geringer Qualität zur Durchsicht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos to review."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos to review."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely low-quality photos to review."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos probablemente de baja calidad para revisar."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos probablemente de baja calidad para revisar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos probablement de faible qualité à examiner."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos probablement de faible qualité à examiner."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto probabilmente di bassa qualità da controllare."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waarschijnlijk foto's van lage kwaliteit om te bekijken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdjęcia prawdopodobnie niskiej jakości do przejrzenia."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos provavelmente de baixa qualidade para revisar."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias provavelmente de baixa qualidade para rever."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gözden geçirilecek, düşük kaliteli olabilecek fotoğraflar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імовірно неякісні фото для перегляду."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可能品質不佳、待檢視的照片。"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.needsRefresh" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بحاجة إلى تحديث"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisierung nötig"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs refresh"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs refresh"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Needs refresh"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesita actualizarse"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesita actualizarse"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À actualiser"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À actualiser"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da aggiornare"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moet worden ververst"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymaga odświeżenia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precisa atualizar"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É necessário atualizar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yenilenmeli"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Потрібне оновлення"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "須更新"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.ofFreeScansRemaining" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بقي %1$d من %2$d من الفحوصات المجانية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch %1$d von %2$d kostenlosen Scans"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d of %2$d free scans remaining"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d of %2$d free scans remaining"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d of %2$d free scans remaining"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te quedan %1$d de %2$d análisis gratuitos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te quedan %1$d de %2$d análisis gratuitos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste %1$d analyses gratuites sur %2$d"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste %1$d analyses gratuites sur %2$d"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d di %2$d scansioni gratuite rimaste"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog %1$d van %2$d gratis scans"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozostało %1$d z %2$d darmowych skanowań"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restam %1$d de %2$d análises gratuitas"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análises gratuitas restantes: %1$d de %2$d"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$d ücretsiz taramadan %1$d tanesi kaldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишилося безкоштовних сканувань: %1$d із %2$d"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "免費掃描還剩 %1$d 次，共 %2$d 次"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.opensTheUpgradeOptions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يفتح خيارات الترقية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet die Upgrade-Optionen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the upgrade options"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the upgrade options"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the upgrade options"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre las opciones de mejora"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre las opciones de mejora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre les options d’abonnement"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre les options d’abonnement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apre le opzioni di upgrade"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opent de upgrade-opties"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwiera opcje ulepszenia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre as opções de upgrade"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre as opções do plano Pro"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yükseltme seçeneklerini açar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкриває варіанти оновлення підписки"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打開升級選項"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.opportunities" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الفرص"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möglichkeiten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opportunities"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opportunities"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opportunities"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oportunidades"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oportunidades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Possibilités"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Possibilités"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Occasioni"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kansen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okazje"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oportunidades"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oportunidades"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fırsatlar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можливості"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可清理項目"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.reclaimable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قابل للاسترجاع"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigebbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reclaimable"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reclaimable"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reclaimable"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperable"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Récupérable"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Récupérable"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperabile"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vrij te maken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do odzyskania"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperável"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperável"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geri Kazanılabilir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можна звільнити"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可回收空間"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.scanningProgress" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقدّم الفحص"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan-Fortschritt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning progress"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning progress"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning progress"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso del análisis"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso del análisis"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progression de l’analyse"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progression de l’analyse"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanzamento della scansione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voortgang van de scan"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postęp skanowania"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progresso da análise"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progresso da análise"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarama ilerlemesi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хід сканування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描進度"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.screenCapturesThatMayNo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لقطات شاشة قد لا تكون مفيدة بعد الآن."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildschirmfotos, die du vielleicht nicht mehr brauchst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures that may no longer be useful."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures that may no longer be useful."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen captures that may no longer be useful."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de pantalla que quizá ya no te sirvan."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de pantalla que quizá ya no te sirvan."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captures d’écran qui ne vous servent peut-être plus."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captures d’écran qui ne vous servent peut-être plus."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immagini dello schermo che potrebbero non servire più."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schermopnamen die je misschien niet meer nodig hebt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrzuty ekranu, które mogą już nie być potrzebne."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de tela que talvez não sejam mais úteis."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã que poderão já não ser úteis."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artık işine yaramayabilecek ekran görüntüleri."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знімки екрана, які можуть бути вже не потрібні."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可能已不再需要的螢幕擷取畫面。"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.screenshots" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لقطات الشاشة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildschirmfotos"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshots"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de pantalla"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de pantalla"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captures d’écran"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captures d’écran"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schermafbeeldingen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrzuty ekranu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de tela"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturas de ecrã"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekran Görüntüleri"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знімки екрана"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "螢幕快照"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.similarPhotos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصور المتشابهة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ähnliche Fotos"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Photos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos similares"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos similares"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos similaires"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos similaires"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto simili"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vergelijkbare foto's"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podobne zdjęcia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos semelhantes"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografias semelhantes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benzer Fotoğraflar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схожі фото"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相似照片"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.theseResultsFromBeforePhoto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذه النتائج تعود إلى ما قبل تغيّر مكتبة صورك."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Ergebnisse stammen von vor der letzten Änderung deiner Mediathek."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These results are from before your photo library changed."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These results are from before your photo library changed."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These results are from before your photo library changed."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estos resultados son anteriores al último cambio en tu fototeca."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estos resultados son anteriores al último cambio en tu fototeca."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces résultats datent d’avant la dernière modification de votre photothèque."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces résultats datent d’avant la dernière modification de votre photothèque."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questi risultati sono precedenti alle modifiche della libreria foto."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze resultaten dateren van vóór de wijzigingen in je fotobibliotheek."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te wyniki pochodzą sprzed zmian w bibliotece zdjęć."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estes resultados são anteriores à última mudança na sua fototeca."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estes resultados são anteriores à última mudança na tua fototeca."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu sonuçlar, fotoğraf kitaplığın değişmeden önceki hâline ait."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ці результати отримано до змін у вашій фототеці."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這些結果來自照片圖庫變動之前。"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.unlockMoreWithAlikePro" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احصل على المزيد مع Alike Pro"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr mit Alike Pro"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock more with Alike Pro"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock more with Alike Pro"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock more with Alike Pro"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigue más con Alike Pro"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigue más con Alike Pro"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allez plus loin avec Alike Pro"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allez plus loin avec Alike Pro"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sblocca di più con Alike Pro"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontgrendel meer met Alike Pro"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj więcej dzięki Alike Pro"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenha mais com o Alike Pro"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtém mais com o Alike Pro"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike Pro ile daha fazlasının kilidini aç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрийте більше можливостей з Alike Pro"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用 Alike Pro 解鎖更多功能"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.unlockUnlimitedScansSmartCleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افتح فحوصات غير محدودة وتنظيفًا ذكيًا وإجراءات جماعية."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte unbegrenzte Scans, smartes Aufräumen und Stapelaktionen frei."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock unlimited scans, smart cleanup, and batch actions."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea análisis ilimitados, limpieza inteligente y acciones por lotes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea análisis ilimitados, limpieza inteligente y acciones por lotes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquez les analyses illimitées, le nettoyage intelligent et les actions groupées."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sblocca scansioni illimitate, pulizia intelligente e azioni in blocco."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontgrendel onbeperkt scannen, slim opruimen en bulkacties."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj nieograniczone skanowania, inteligentne porządki i operacje zbiorcze."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Libere análises ilimitadas, limpeza inteligente e ações em lote."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueia análises ilimitadas, limpeza inteligente e ações em lote."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sınırsız taramaların, akıllı temizliğin ve toplu işlemlerin kilidini aç."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розблокуйте необмежені сканування, розумне очищення та пакетні дії."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖無限次掃描、智慧清理與批次操作。"
+          }
+        }
+      }
+    },
+    "scanner.scannerHomeComponents.whatAlikeChecks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما الذي يفحصه Alike"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Was Alike prüft"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike checks"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike checks"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Alike checks"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qué revisa Alike"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qué revisa Alike"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qu’Alike vérifie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qu’Alike vérifie"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cosa controlla Alike"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat Alike controleert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co sprawdza Alike"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike verifica"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que o Alike verifica"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike neleri denetler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Що перевіряє Alike"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 會檢查哪些項目"
           }
         }
       }
     }
-  }
+  },
+  "version" : "1.1"
 }
