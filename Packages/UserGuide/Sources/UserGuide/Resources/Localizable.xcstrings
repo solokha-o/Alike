@@ -8729,13 +8729,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans Suppressions récentes sur vos autres appareils."
+            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans Supprimées récemment sur vos autres appareils."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans « Suppressions récentes » sur vos autres appareils."
+            "value" : "Si Photos iCloud est activé, les mêmes photos passent dans « Supprimées récemment » sur vos autres appareils."
           }
         },
         "it" : {
@@ -8931,13 +8931,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos arrivent dans l’album Suppressions récentes de l’app Photos, d’où vous pouvez toutes les restaurer."
+            "value" : "Les photos arrivent dans l’album Supprimées récemment de l’app Photos, d’où vous pouvez toutes les restaurer."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les photos arrivent dans l’album « Suppressions récentes » de l’app Photos, d’où vous pouvez toutes les restaurer."
+            "value" : "Les photos arrivent dans l’album « Supprimées récemment » de l’app Photos, d’où vous pouvez toutes les restaurer."
           }
         },
         "it" : {
@@ -9133,13 +9133,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne revient qu’une fois les photos sorties de Suppressions récentes : automatiquement au bout de 30 jours, ou quand vous videz l’album."
+            "value" : "L’espace ne revient qu’une fois les photos sorties de Supprimées récemment : automatiquement au bout de 30 jours, ou quand vous videz l’album."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’espace ne revient qu’une fois les photos sorties de « Suppressions récentes » : automatiquement au bout de 30 jours, ou quand vous videz l’album."
+            "value" : "L’espace ne revient qu’une fois les photos sorties de « Supprimées récemment » : automatiquement au bout de 30 jours, ou quand vous videz l’album."
           }
         },
         "it" : {
@@ -9840,13 +9840,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suppressions récentes, le moment où l’espace est vraiment libéré, et iCloud."
+            "value" : "Supprimées récemment, le moment où l’espace est vraiment libéré, et iCloud."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« Suppressions récentes », le moment où l’espace est vraiment libéré, et iCloud."
+            "value" : "« Supprimées récemment », le moment où l’espace est vraiment libéré, et iCloud."
           }
         },
         "it" : {
@@ -10648,13 +10648,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez déplacer les photos vers Suppressions récentes une par une."
+            "value" : "Vous pouvez déplacer les photos vers Supprimées récemment une par une."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez déplacer les photos vers « Suppressions récentes » une par une."
+            "value" : "Vous pouvez déplacer les photos vers « Supprimées récemment » une par une."
           }
         },
         "it" : {
@@ -13577,13 +13577,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirmez, et les photos sélectionnées partent dans Suppressions récentes, où iOS les garde 30 jours."
+            "value" : "Confirmez, et les photos sélectionnées partent dans Supprimées récemment, où iOS les garde 30 jours."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirmez, et les photos sélectionnées partent dans « Suppressions récentes », où iOS les garde 30 jours."
+            "value" : "Confirmez, et les photos sélectionnées partent dans « Supprimées récemment », où iOS les garde 30 jours."
           }
         },
         "it" : {
@@ -13678,13 +13678,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacer vers Suppressions récentes"
+            "value" : "Déplacer vers Supprimées récemment"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacer vers « Suppressions récentes »"
+            "value" : "Déplacer vers « Supprimées récemment »"
           }
         },
         "it" : {
@@ -16102,13 +16102,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos, votre album Suppressions récentes, votre accès aux photos et votre abonnement Alike Pro."
+            "value" : "Vos photos, votre album Supprimées récemment, votre accès aux photos et votre abonnement Alike Pro."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos photos, votre album « Suppressions récentes », votre accès aux photos et votre abonnement Alike Pro."
+            "value" : "Vos photos, votre album « Supprimées récemment », votre accès aux photos et votre abonnement Alike Pro."
           }
         },
         "it" : {

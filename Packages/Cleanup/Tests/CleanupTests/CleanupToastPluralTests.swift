@@ -41,11 +41,11 @@ final class CleanupToastPluralTests: XCTestCase {
 
         XCTAssertEqual(
             CleanupL10n.Main.photosMovedToRecentlyDeleted(1, bundle: fr, locale: french),
-            "1 photo déplacée vers Suppressions récentes."
+            "1 photo déplacée vers Supprimées récemment."
         )
         XCTAssertEqual(
             CleanupL10n.Main.photosMovedToRecentlyDeleted(3, bundle: fr, locale: french),
-            "3 photos déplacées vers Suppressions récentes."
+            "3 photos déplacées vers Supprimées récemment."
         )
     }
 

@@ -2736,13 +2736,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers Suppressions récentes."
+            "value" : "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers Supprimées récemment."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers « Suppressions récentes »."
+            "value" : "Examinez vos captures d’écran ensemble et choisissez précisément ce qui part vers « Supprimées récemment »."
           }
         },
         "it" : {

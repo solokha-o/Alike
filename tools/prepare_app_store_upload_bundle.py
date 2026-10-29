@@ -1266,7 +1266,7 @@ METADATA['fr-FR'].update(
                 "captures d'écran restent hors des résultats tant que vous ne les demandez pas.\n"
                 'Examiner. La meilleure photo est présélectionnée. Gardez-la seule, sélectionnez toutes les '
                 'autres ou choisissez à la main.\n'
-                'Nettoyer. Confirmez, et les photos choisies rejoignent « Suppressions récentes », où iOS '
+                'Nettoyer. Confirmez, et les photos choisies rejoignent « Supprimées récemment », où iOS '
                 'les conserve environ 30 jours. L’espace peut ne pas être libéré avant leur suppression '
                 'définitive.\n'
                 '\n'
@@ -1350,7 +1350,7 @@ METADATA['fr-FR'].update(
                   'Le nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n'
                   '\n'
                   'Tout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous '
-                  'nettoyez part dans « Suppressions récentes », où iOS le conserve environ 30 jours.\n'
+                  'nettoyez part dans « Supprimées récemment », où iOS le conserve environ 30 jours.\n'
                   '\n'
                   'Vos retours et signalements de bugs sont les bienvenus. Le lien d’assistance sur la page '
                   'App Store vous permet de me contacter directement.',
@@ -1466,7 +1466,7 @@ METADATA['fr-CA'].update(
                 "captures d'écran restent hors des résultats tant que vous ne les demandez pas.\n"
                 'Examiner. La meilleure photo est présélectionnée. Gardez-la seule, sélectionnez toutes les '
                 'autres ou choisissez à la main.\n'
-                'Nettoyer. Confirmez, et les photos choisies rejoignent « Suppressions récentes », où iOS '
+                'Nettoyer. Confirmez, et les photos choisies rejoignent « Supprimées récemment », où iOS '
                 'les conserve environ 30 jours. L’espace peut ne pas être libéré avant leur suppression '
                 'définitive.\n'
                 '\n'
@@ -1550,7 +1550,7 @@ METADATA['fr-CA'].update(
                   'Le nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n'
                   '\n'
                   'Tout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous '
-                  'nettoyez part dans « Suppressions récentes », où iOS le conserve environ 30 jours.\n'
+                  'nettoyez part dans « Supprimées récemment », où iOS le conserve environ 30 jours.\n'
                   '\n'
                   "Vos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur "
                   'la page App Store me parvient directement.',
