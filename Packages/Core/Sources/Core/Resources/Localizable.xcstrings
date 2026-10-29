@@ -783,7 +783,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "將所選的 %1$lld 張螢幕快照移到「最近刪除」？"
+                  "value" : "將所選的 %1$lld 張截圖移到「最近刪除」？"
                 }
               }
             }
@@ -1464,7 +1464,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "找不到螢幕快照"
+            "value" : "找不到截圖"
           }
         }
       }
@@ -1690,7 +1690,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打開螢幕快照清理"
+            "value" : "打開截圖清理"
           }
         }
       }
@@ -1916,7 +1916,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打開螢幕快照清理的進階功能頁面"
+            "value" : "打開截圖清理的進階功能頁面"
           }
         }
       }
@@ -2142,7 +2142,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照清理"
+            "value" : "截圖清理"
           }
         }
       }
@@ -2255,7 +2255,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照清理為進階功能"
+            "value" : "截圖清理為進階功能"
           }
         }
       }
@@ -2368,7 +2368,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "螢幕快照"
+            "value" : "截圖"
           }
         }
       }
@@ -2707,7 +2707,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+            "value" : "所選截圖將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
         }
       }
@@ -2820,7 +2820,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "所選螢幕快照將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
+            "value" : "所選截圖將從你的圖庫以及使用「iCloud 照片」的其他裝置上移除，並在「最近刪除」中保留最多 30 天。在永久刪除之前，儲存空間可能不會釋出。預估可回收空間：%@。"
           }
         }
       }
@@ -4002,7 +4002,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "有 %1$lld 張螢幕快照可供檢視。"
+                  "value" : "有 %1$lld 張截圖可供檢視。"
                 }
               }
             }
@@ -4344,7 +4344,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解鎖螢幕快照清理，透過同樣安全的確認流程檢視並刪除螢幕快照。"
+            "value" : "解鎖截圖清理，透過同樣安全的確認流程檢視並刪除截圖。"
           }
         }
       }

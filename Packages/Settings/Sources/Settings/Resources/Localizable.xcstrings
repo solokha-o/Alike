@@ -2934,7 +2934,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在除錯版本中啟用螢幕快照清理的進階權限"
+            "value" : "在除錯版本中啟用截圖清理的進階權限"
           }
         }
       }
@@ -8019,7 +8019,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此操作無法還原。刪除完成後，Alike 會重新播放介紹流程。"
+            "value" : "此操作無法還原。刪除完成後，Alike 會重新顯示初始設定畫面。"
           }
         }
       }
@@ -9036,7 +9036,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解鎖「螢幕快照清理」進階功能"
+            "value" : "解鎖「截圖清理」進階功能"
           }
         }
       }
