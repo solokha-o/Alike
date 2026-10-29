@@ -510,13 +510,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ recuperables estimados, %1$lld foto movida a Eliminados recientemente"
+                  "value" : "%2$@ recuperables estimados, %1$lld foto movida a Eliminados"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%2$@ recuperables estimados, %1$lld fotos movidas a Eliminados recientemente"
+                  "value" : "%2$@ recuperables estimados, %1$lld fotos movidas a Eliminados"
                 }
               }
             }
@@ -996,7 +996,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Traslado a Eliminados recientemente"
+            "value" : "Traslado a Eliminados"
           }
         },
         "es-419" : {
@@ -1198,7 +1198,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fotos movidas a Eliminados recientemente"
+            "value" : "Fotos movidas a Eliminados"
           }
         },
         "es-419" : {
