@@ -308,7 +308,7 @@ COPY = {
         (
             "НА ПРИСТРОЇ",
             "Знайдіть схожі\nфотографії",
-            "Alike сканує медіатеку через Apple Vision повністю на вашому iPhone.",
+            "Alike сканує фототеку через Apple Vision повністю на вашому iPhone.",
         ),
         (
             "ЧЕРГА",
@@ -333,12 +333,12 @@ COPY = {
         (
             "ОРИГІНАЛ ПОРУЧ",
             "Покращте кадр,\nзбережіть оригінал",
-            "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки.",
+            "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з фототеки.",
         ),
         (
-            "ДОМАШНІЙ ЕКРАН",
+            "ГОЛОВНИЙ ЕКРАН",
             "Видно, не\nвідкриваючи Alike",
-            "Два віджети: скільки місця можна звільнити і що лишилось у медіатеці.",
+            "Два віджети: скільки місця можна звільнити і що лишилось у фототеці.",
         ),
     ],
     # The line break in each headline is chosen for that language, not carried
@@ -380,7 +380,7 @@ COPY = {
         (
             "HOME-BILDSCHIRM",
             "Sichtbar, ohne\nAlike zu öffnen",
-            "Zwei Widgets: der Speicher, der frei werden kann, und was die Mediathek noch hält.",
+            "Zwei Widgets: der Speicher, den du freigeben kannst, und deine Mediathek im Überblick.",
         ),
     ],
     "fr": [
@@ -594,7 +594,7 @@ COPY = {
         (
             "CONFRONTA",
             "Controlla prima\ndi eliminare",
-            "Revisione a dimensione piena. Niente sparisce senza conferma.",
+            "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
             "SPAZIO LIBERO",
@@ -625,7 +625,7 @@ COPY = {
         ),
         (
             "BESTE OPNAME",
-            "De blijver is\nal gekozen",
+            "De beste foto\nis al gekozen",
             "Alike licht de beste opname uit. Jij hoeft alleen te bevestigen.",
         ),
         (
@@ -640,7 +640,7 @@ COPY = {
         ),
         (
             "ALTIJD OMKEERBAAR",
-            "Maak de blijver beter,\nhoud het origineel",
+            "Verbeter je foto,\nbehoud het origineel",
             "Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek.",
         ),
         (

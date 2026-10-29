@@ -11,6 +11,18 @@
             "value" : "Alike"
           }
         },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alike"
+          }
+        },
         "en-GB" : {
           "stringUnit" : {
             "state" : "new",
@@ -48,6 +60,18 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike analyses your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
+          }
+        },
+        "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alike analyzes your photo library to find visually similar images, and can enhance a photo you choose — always keeping the original so you can revert it."
@@ -122,7 +146,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike аналізує вашу фотобібліотеку, щоб знаходити візуально схожі знімки, і може покращити обране вами фото — оригінал завжди зберігається, тож зміну можна скасувати."
+            "value" : "Alike аналізує вашу фототеку, щоб знаходити візуально схожі знімки, і може покращити обране вами фото — оригінал завжди зберігається, тож зміну можна скасувати."
           }
         },
         "zh-Hant" : {
