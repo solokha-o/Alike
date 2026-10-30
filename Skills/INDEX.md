@@ -28,6 +28,7 @@ request needs that extra depth.
 | `GitFlow/ios-git-flow` | Branching, commits, version/build numbers, release tags, develop/main merge | No | No |
 | `GitFlow/pr-agent-flow` | Pull request preparation, self-review, PR descriptions, and review-comment response with separate coding/review passes | No | No |
 | `Localization/spm-localization` | `.xcstrings`, package localization, typed wrappers, the twelve shipped locales, CLDR plurals | Pair with Core Data external only when localized model labels cross persistence boundaries | No |
+| `Localization/localized-copy-review` | Native-style review of translations, privacy and terms parity, subscription wording, landing and marketing copy | Optional `ux-writing` for unresolved interface copy; copy-editing or legal review methods only when local references are insufficient | No |
 | `Meta/skill-authoring-governance` | Create, slim, decompose, or update skills | Pair with `project-skill-audit` for audits | No |
 | `project-skill-audit` | Audit project-local skills, suggest updates/new skills, reduce skill duplication | Pair with `Meta/skill-authoring-governance` for implementation | No |
 | `Storage/persisted-data-evolution` | Core Data model edits, `UserDefaults` keys, `Codable`/`Data` payload changes, migration safety for users with existing data | Pair with `External/core-data-expert` only for mapping models or heavyweight migration depth | No |
