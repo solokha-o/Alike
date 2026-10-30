@@ -152,6 +152,66 @@ translation exactly as strong as the English, and no stronger:
 entries state facts and have to agree with the app: the free allowance in `pricing.free`
 ("3 scans per month") and the language count in the last `features.items` entry.
 
+### Landing review pass 2 — 2026-10-30
+
+On the same date, Codex repeated the review using the local
+`localized-copy-review` workflow: semantic comparison, fluency, legal claim scope,
+and marketing clarity. Follow-up edits in site PR #15 clarify who learns from
+photo choices and who resets that learning, and improve permission descriptions,
+sensitivity instructions, layout wording and privacy headlines across the 9
+locales. The Italian privacy list now retains the source's explicit exclusion of
+renting personal data. In `it`, `nl`, `pl`, `tr` and `zh-Hant`, the privacy
+governing-law sentence now preserves consumer data-protection rights specifically,
+matching English rather than adding a separate general consumer-rights clause.
+The Terms' mandatory consumer protections remain unchanged. Both subscription
+disclosures remain untouched. No additional Terms edits were needed in this pass.
+No tests, builds, site checks or legal parity checks ran during the repeat review.
+
+Codex completed an AI copy review of `<locale>/privacy.md`, `<locale>/terms.md`
+and `_data/<locale>.yml` for `de`, `fr`, `es`, `pt-BR`, `it`, `nl`, `pl`, `tr`
+and `zh-Hant`. The proposed edits are in
+[site PR #15](https://github.com/alikeapp/alikeapp.github.io/pull/15), on
+`docs/native-review-pass-2`, with one commit per locale. This records an AI review,
+not a native-speaker or legal sign-off.
+
+The pass corrected album names in French, Spanish and Brazilian Portuguese;
+Turkish `arşiv` terminology and informal commands; Traditional Chinese `截圖`;
+Italian sign-in wording; intellectual-property scope; and literal marketing
+phrases. It retained the EULA priority, plan durations, trial eligibility,
+24-hour billing windows, Apple refund limits, mandatory consumer rights and
+Apple's third-party-beneficiary rights. Landing copy now limits Delete Alike Data
+to local Alike data and qualifies the yearly trial for eligible new subscribers.
+The free allowance remains 3 scans per month.
+
+The requested localization skill lists 12 locales, but the current InfoPlist,
+PurchasesUI and Core catalogs contain 18, matching `knownRegions` without `Base`.
+The translated feature entry therefore says **18 language variants**, including
+regional English, French and Portuguese variants, and lists them. No site locale
+or page was added. After the review, the owner chose the 18-variant count for the
+whole site, so `en`, `uk` and `ar` now say the same; before that change they still
+said thirteen and the site stated two numbers. The older 12-locale skill
+list and 17-locale review-log count need a separate correction.
+
+The current English privacy policy describes optional MetricKit crash reports
+sent by the user. The pass preserved that scope and its exclusion of third-party
+crash-reporting services; it did not add an absolute claim of no crash reports.
+
+Checks after the review, on 2026-10-30:
+
+- `tools/check_site_legal_parity.py --require` failed on `main` and on the PR
+  branch: the last sentence of `pricing.disclosure_trial` in `pl` and `ar` had
+  drifted from `Docs/legal/subscription-disclosure.md`. The site is the copy, so
+  site PR #15 now restores both values from the document; the document and the
+  catalog did not change. All 24 disclosure strings now match.
+- `scripts/test-check-site.sh` passed 51 of 51 regression tests, and
+  `scripts/check-site.sh` passed on the rendered site, before and after that fix.
+
+Still open:
+
+- Native-speaker and legal sign-off remain open for all 18 reviewed legal pages,
+  especially liability and mandatory consumer-rights clauses. The PRs are not
+  merged. The Notion card status remains unchanged.
+
 ## Per-language notes for the reviewer
 
 - **`es-419` vs `es`** — these are separate texts on purpose. `es-419` uses "Configuración",
