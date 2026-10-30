@@ -187,7 +187,9 @@ The requested localization skill lists 12 locales, but the current InfoPlist,
 PurchasesUI and Core catalogs contain 18, matching `knownRegions` without `Base`.
 The translated feature entry therefore says **18 language variants**, including
 regional English, French and Portuguese variants, and lists them. No site locale
-or page was added. English site files remain unchanged. The older 12-locale skill
+or page was added. After the review, the owner chose the 18-variant count for the
+whole site, so `en`, `uk` and `ar` now say the same; before that change they still
+said thirteen and the site stated two numbers. The older 12-locale skill
 list and 17-locale review-log count need a separate correction.
 
 The current English privacy policy describes optional MetricKit crash reports
