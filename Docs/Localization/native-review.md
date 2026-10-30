@@ -154,6 +154,19 @@ entries state facts and have to agree with the app: the free allowance in `prici
 
 ### Landing review pass 2 — 2026-10-30
 
+On the same date, Codex repeated the review using the local
+`localized-copy-review` workflow: semantic comparison, fluency, legal claim scope,
+and marketing clarity. Follow-up edits in site PR #15 clarify who learns from
+photo choices and who resets that learning, and improve permission descriptions,
+sensitivity instructions, layout wording and privacy headlines across the 9
+locales. The Italian privacy list now retains the source's explicit exclusion of
+renting personal data. In `it`, `nl`, `pl`, `tr` and `zh-Hant`, the privacy
+governing-law sentence now preserves consumer data-protection rights specifically,
+matching English rather than adding a separate general consumer-rights clause.
+The Terms' mandatory consumer protections remain unchanged. Both subscription
+disclosures remain untouched. No additional Terms edits were needed in this pass.
+No tests, builds, site checks or legal parity checks ran during the repeat review.
+
 Codex completed an AI copy review of `<locale>/privacy.md`, `<locale>/terms.md`
 and `_data/<locale>.yml` for `de`, `fr`, `es`, `pt-BR`, `it`, `nl`, `pl`, `tr`
 and `zh-Hant`. The proposed edits are in
