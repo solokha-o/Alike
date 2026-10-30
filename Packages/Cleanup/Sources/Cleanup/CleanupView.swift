@@ -3,7 +3,6 @@ import Photos
 import StoreKit
 import Core
 import DesignSystem
-import Details
 import NavigationKit
 import PhotoAnalysis
 import Purchases
@@ -1385,3 +1384,22 @@ private struct CleanupStatusBanner: View {
     )
     .padding()
 }
+
+// The destinations are stubs: the real group and category screens live in a package
+// Cleanup does not depend on, and the app builds them. Gated like the Details preview,
+// so nothing preview-only reaches a Release build.
+#if DEBUG
+#Preview("Cleanup") {
+    CleanupView(
+        workspace: CleanupWorkspaceModel(),
+        sensitivity: .constant(.medium),
+        ratingPrompt: RatingPromptCoordinator(),
+        onOpenScanner: {},
+        onRequestScan: {}
+    ) { context in
+        Text(verbatim: "Group: \(context.cluster.assets.count) photos")
+    } screenshotDestination: { context in
+        Text(verbatim: "Category: \(context.kind.rawValue), \(context.assets.count) photos")
+    }
+}
+#endif
