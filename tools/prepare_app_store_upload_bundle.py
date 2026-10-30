@@ -260,7 +260,7 @@ BUILT FOR REAL LIBRARIES
 - A searchable guide inside the app, one tap from the Scanner.
 - Optional cleanup reminders, delivered as local notifications on your own schedule.
 - Widgets on the home screen and the Lock Screen: reclaimable space, and your library at a glance.
-- Thirteen languages: English, Ukrainian, German, French, Spanish, Latin American Spanish, Brazilian Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
+- 18 language variants: English plus British, Canadian and Australian English, Ukrainian, German, French and Canadian French, Spanish and Latin American Spanish, Brazilian and European Portuguese, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic. Full Dark Mode support.
 
 YOU STAY IN CONTROL
 - Enhancement is non-destructive: the original stays in your library and one tap restores it.
@@ -271,7 +271,7 @@ YOU STAY IN CONTROL
 ALIKE FREE
 - 3 scans per month
 - Guided review with Best Shot
-- One-tap enhancement, always reversible
+- One-tap enhancement, original always one tap away
 - Best Shot that learns from your own picks
 - Sorting and cleanup history
 - Clean up one photo at a time
@@ -286,7 +286,7 @@ ALIKE PRO
 - Advanced filters
 - Custom cleanup reminders
 
-Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers, and billing starts when the trial ends. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
+Alike Pro is an auto-renewable subscription with yearly and monthly plans, priced in your local currency. The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your Apple Account. Manage or cancel anytime in iOS Settings."""
 
 UK_DESCRIPTION = """\
 Поверніть місце на iPhone, і жодне фото не залишить ваш пристрій: Alike знаходить майже однакові знімки у вашій медіатеці, групує їх, обирає найкращий у кожній групі й допомагає прибрати решту.
@@ -317,7 +317,7 @@ UK_DESCRIPTION = """\
 - Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
 - Віджети на домашньому й замкненому екрані: вільне місце й огляд медіатеки.
-- Тринадцять мов і повна темна тема.
+- 18 мовних варіантів і повна темна тема.
 
 ВИ КЕРУЄТЕ ВСІМ
 - Покращення не змінює оригінал: він залишається у вашій медіатеці, і один дотик повертає його.
@@ -328,7 +328,7 @@ UK_DESCRIPTION = """\
 ALIKE FREE
 - 3 сканування на місяць
 - Покроковий перегляд із найкращим знімком
-- Покращення одним дотиком, яке завжди можна скасувати
+- Покращення одним дотиком, оригінал завжди за один дотик
 - Найкращий знімок, що вчиться на ваших виборах
 - Сортування та історія прибирання
 - Прибирання по одному фото за раз
@@ -343,7 +343,7 @@ ALIKE PRO
 - Розширені фільтри
 - Власні нагадування про прибирання
 
-Alike Pro — це підписка з автоматичним поновленням, річний і місячний плани, ціни у вашій валюті. Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право; оплата починається після завершення пробного періоду. Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS."""
+Alike Pro — це підписка з автоматичним поновленням, річний і місячний плани, ціни у вашій валюті. Річний план містить 7 днів безкоштовно для нових підписників, які мають на це право. Оплата починається після завершення пробного періоду, якщо ви не скасуєте підписку щонайменше за 24 години до цього. Підписка поновлюється автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її можна будь-коли в Налаштуваннях iOS."""
 
 # The five Tier 1 descriptions below are adapted, not translated. Structure and
 # claims match en-US exactly — the auto-renew paragraph in particular is a legal
@@ -380,7 +380,7 @@ FÜR ECHTE MEDIATHEKEN GEBAUT
 - Eine durchsuchbare Anleitung in der App.
 - Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem Zeitplan.
 - Widgets für Home- und Sperrbildschirm: freier Speicher, Mediathek auf einen Blick.
-- Dreizehn Sprachen und voller Dark Mode.
+- 18 Sprachvarianten und voller Dark Mode.
 
 DU BEHÄLTST DIE KONTROLLE
 - Die Verbesserung ist nicht zerstörend: Das Original bleibt in deiner Mediathek, und ein Tippen stellt es wieder her.
@@ -391,7 +391,7 @@ DU BEHÄLTST DIE KONTROLLE
 ALIKE FREE
 - 3 Scans pro Monat
 - Geführte Prüfung mit bester Aufnahme
-- Verbesserung mit einem Tippen, immer umkehrbar
+- Verbesserung mit einem Tippen, Original immer einen Tipp entfernt
 - Beste Aufnahme, die aus deinen eigenen Wahlen lernt
 - Sortierung und Aufräum-Verlauf
 - Ein Foto nach dem anderen aufräumen
@@ -406,7 +406,7 @@ ALIKE PRO
 - Erweiterte Filter
 - Eigene Aufräum-Erinnerungen
 
-Alike Pro ist ein Abonnement mit automatischer Verlängerung, im Jahres- und im Monatsplan, berechnet in deiner Landeswährung. Der Jahresplan enthält 7 Tage gratis für berechtigte neue Abonnenten, und die Abrechnung beginnt nach Ablauf des Testzeitraums. Abonnements verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple Account. Verwalten oder kündigen kannst du jederzeit in den iOS-Einstellungen."""
+Alike Pro ist ein Abonnement mit automatischer Verlängerung, im Jahres- und im Monatsplan, berechnet in deiner Landeswährung. Der Jahresplan enthält 7 Tage gratis für berechtigte neue Abonnenten. Die Abrechnung beginnt mit dem Ende der Testphase, sofern du nicht mindestens 24 Stunden vorher kündigst. Abonnements verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple Account. Verwalten oder kündigen kannst du jederzeit in den iOS-Einstellungen."""
 
 FR_FR_DESCRIPTION = """\
 Gagnez de l'espace sans qu'aucune photo quitte votre appareil : Alike retrouve les quasi-doublons de votre photothèque, les regroupe, choisit la meilleure photo de chaque groupe et vous aide à nettoyer le reste.
@@ -437,7 +437,7 @@ CONÇU POUR DE VRAIES PHOTOTHÈQUES
 - Un mode d'emploi consultable dans l'app.
 - Rappels de nettoyage facultatifs, en notifications locales.
 - Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la photothèque.
-- Treize langues et mode sombre complet.
+- 18 variantes linguistiques et mode sombre complet.
 
 VOUS GARDEZ LA MAIN
 - L'amélioration ne détruit rien : l'originale reste dans votre photothèque et une touche la rétablit.
@@ -448,7 +448,7 @@ VOUS GARDEZ LA MAIN
 ALIKE FREE
 - 3 analyses par mois
 - Examen guidé avec la meilleure photo
-- Amélioration en une touche, toujours réversible
+- Amélioration en une touche, l’original toujours à une touche
 - Meilleure photo qui apprend de vos propres choix
 - Tri et historique de nettoyage
 - Nettoyage photo par photo
@@ -463,7 +463,7 @@ ALIKE PRO
 - Filtres avancés
 - Rappels de nettoyage personnalisés
 
-Alike Pro est un abonnement à renouvellement automatique, en formule annuelle ou mensuelle, facturé dans votre devise locale. La formule annuelle comprend 7 jours d'essai gratuit pour les nouveaux abonnés éligibles, et la facturation commence à la fin de l'essai. L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le gérer ou le résilier à tout moment dans les Réglages iOS."""
+Alike Pro est un abonnement à renouvellement automatique, en formule annuelle ou mensuelle, facturé dans votre devise locale. La formule annuelle comprend 7 jours d'essai gratuit pour les nouveaux abonnés éligibles. La facturation commence à la fin de l’essai, sauf résiliation au moins 24 heures avant. L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le gérer ou le résilier à tout moment dans les Réglages iOS."""
 
 ES_ES_DESCRIPTION = """\
 Recupera espacio sin que ninguna foto salga de tu dispositivo: Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto.
@@ -494,7 +494,7 @@ HECHO PARA FOTOTECAS REALES
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
 - Widgets en la pantalla de inicio y en la de bloqueo: espacio recuperable y fototeca.
-- Trece idiomas y modo oscuro completo.
+- 18 variantes de idioma y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
@@ -505,7 +505,7 @@ TÚ TIENES EL CONTROL
 ALIKE FREE
 - 3 análisis al mes
 - Revisión guiada con la mejor toma
-- Mejora con un toque, siempre reversible
+- Mejora con un toque, con el original siempre a un toque
 - Mejor toma que aprende de tus propias elecciones
 - Ordenación e historial de limpieza
 - Limpieza de una foto cada vez
@@ -520,7 +520,7 @@ ALIKE PRO
 - Filtros avanzados
 - Recordatorios de limpieza personalizados
 
-Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratuita para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o cancelarla cuando quieras en los Ajustes de iOS."""
+Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratuita para nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o cancelarla cuando quieras en los Ajustes de iOS."""
 
 ES_MX_DESCRIPTION = """\
 Recupera espacio sin que ninguna foto salga de tu dispositivo: Alike encuentra los casi duplicados escondidos en tu fototeca, los agrupa, elige la mejor toma de cada grupo y te ayuda a limpiar el resto.
@@ -551,7 +551,7 @@ HECHO PARA FOTOTECAS REALES
 - Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.
 - Recordatorios de limpieza opcionales, como notificaciones locales.
 - Widgets en la pantalla de inicio y en la bloqueada: espacio recuperable y fototeca.
-- Trece idiomas y modo oscuro completo.
+- 18 variantes de idioma y modo oscuro completo.
 
 TÚ TIENES EL CONTROL
 - La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.
@@ -562,7 +562,7 @@ TÚ TIENES EL CONTROL
 ALIKE FREE
 - 3 análisis al mes
 - Revisión guiada con la mejor toma
-- Mejora con un toque, siempre reversible
+- Mejora con un toque, con el original siempre a un toque
 - Mejor toma que aprende de tus propias elecciones
 - Ordenamiento e historial de limpieza
 - Limpieza de una foto a la vez
@@ -577,7 +577,7 @@ ALIKE PRO
 - Filtros avanzados
 - Recordatorios de limpieza personalizados
 
-Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratis para nuevos suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes administrarla o cancelarla cuando quieras en la Configuración de iOS."""
+Alike Pro es una suscripción de renovación automática con planes anual y mensual, con precios en tu moneda local. El plan anual incluye 7 días de prueba gratis para nuevos suscriptores que cumplan los requisitos. El cobro comienza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes administrarla o cancelarla cuando quieras en la Configuración de iOS."""
 
 PT_BR_DESCRIPTION = """\
 Recupere espaço sem que uma única foto saia do seu dispositivo: o Alike encontra as quase duplicadas escondidas na sua fototeca, agrupa todas, escolhe a melhor foto de cada grupo e ajuda você a limpar o resto.
@@ -608,7 +608,7 @@ FEITO PARA FOTOTECAS DE VERDADE
 - Instruções de uso com busca dentro do app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
 - Widgets na tela de início e na tela bloqueada: o espaço recuperável e a fototeca.
-- Treze idiomas e modo escuro completo.
+- 18 variantes de idioma e modo escuro completo.
 
 VOCÊ NO CONTROLE
 - O aprimoramento não destrói nada: o original continua na sua fototeca e um toque o restaura.
@@ -619,7 +619,7 @@ VOCÊ NO CONTROLE
 ALIKE FREE
 - 3 análises por mês
 - Revisão guiada com a melhor foto
-- Aprimoramento com um toque, sempre reversível
+- Aprimoramento com um toque, com o original sempre a um toque
 - Melhor foto que aprende com as suas escolhas
 - Ordenação e histórico de limpeza
 - Limpeza de uma foto por vez
@@ -634,7 +634,7 @@ ALIKE PRO
 - Filtros avançados
 - Lembretes de limpeza personalizados
 
-O Alike Pro é uma assinatura de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos assinantes elegíveis, e a cobrança começa quando o teste termina. As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando quiser nos Ajustes do iOS."""
+O Alike Pro é uma assinatura de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos assinantes elegíveis. A cobrança começa quando o teste termina, a menos que você cancele pelo menos 24 horas antes. As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando quiser nos Ajustes do iOS."""
 
 # European Portuguese, adapted from PT_BR_DESCRIPTION rather than respelt: the
 # article before the possessive, no "você", and Portugal's words (ecrã,
@@ -670,7 +670,7 @@ FEITO PARA FOTOTECAS A SÉRIO
 - Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
 - Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.
-- Treze idiomas, com a app em português do Brasil, e modo escuro completo.
+- 18 variantes de idioma, com a app em português do Brasil, e modo escuro completo.
 
 O CONTROLO É SEU
 - A melhoria não destrói nada: o original continua na sua fototeca e um toque restaura-o.
@@ -681,7 +681,7 @@ O CONTROLO É SEU
 ALIKE FREE
 - 3 análises por mês
 - Revisão guiada com a melhor foto
-- Melhoria com um toque, sempre reversível
+- Melhoria com um toque, com o original sempre a um toque
 - Melhor foto que aprende com as suas escolhas
 - Ordenação e histórico de limpeza
 - Limpeza de uma foto de cada vez
@@ -696,7 +696,7 @@ ALIKE PRO
 - Filtros avançados
 - Lembretes de limpeza personalizados
 
-O Alike Pro é uma subscrição de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos subscritores elegíveis, e a cobrança começa quando o teste termina. As subscrições são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Pode gerir ou cancelar quando quiser nas Definições do iOS."""
+O Alike Pro é uma subscrição de renovação automática com planos anual e mensal, com preços na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos subscritores elegíveis. A faturação começa no fim do teste, salvo se cancelares pelo menos 24 horas antes. As subscrições são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual, e o pagamento é debitado da sua Conta Apple. Pode gerir ou cancelar quando quiser nas Definições do iOS."""
 
 # The five Tier 3 descriptions follow the same rule as Tier 1 above: same
 # structure, same claims, the auto-renew paragraph in full, and feature names
@@ -732,7 +732,7 @@ PENSATA PER LIBRERIE VERE
 - Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.
 - Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.
 - Widget nella schermata home e in quella di blocco: spazio recuperabile e libreria.
-- Tredici lingue e modalità scura completa.
+- 18 varianti linguistiche e modalità scura completa.
 
 SEI TU A DECIDERE
 - Il miglioramento non distrugge nulla: l'originale resta nella tua libreria e un tocco lo ripristina.
@@ -743,7 +743,7 @@ SEI TU A DECIDERE
 ALIKE FREE
 - 3 scansioni al mese
 - Controllo guidato con lo scatto migliore
-- Miglioramento con un tocco, sempre reversibile
+- Miglioramento con un tocco, l’originale sempre a un tocco
 - Scatto migliore che impara dalle tue scelte
 - Ordinamento e cronologia pulizia
 - Pulizia di una foto alla volta
@@ -758,7 +758,7 @@ ALIKE PRO
 - Filtri avanzati
 - Promemoria di pulizia personalizzati
 
-Alike Pro è un abbonamento a rinnovo automatico con piani annuale e mensile, con prezzi nella tua valuta locale. Il piano annuale include una prova gratuita di 7 giorni per i nuovi abbonati idonei, e la fatturazione inizia al termine della prova. Gli abbonamenti si rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del periodo in corso, e il pagamento viene addebitato sul tuo account Apple. Puoi gestire o annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS."""
+Alike Pro è un abbonamento a rinnovo automatico con piani annuale e mensile, con prezzi nella tua valuta locale. Il piano annuale include una prova gratuita di 7 giorni per i nuovi abbonati idonei. La fatturazione inizia al termine della prova, a meno che tu non annulli almeno 24 ore prima. Gli abbonamenti si rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del periodo in corso, e il pagamento viene addebitato sul tuo account Apple. Puoi gestire o annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS."""
 
 NL_NL_DESCRIPTION = """\
 Win ruimte terug zonder dat één foto je apparaat verlaat: Alike vindt de bijna-dubbele foto's in je bibliotheek, groepeert ze, kiest de beste opname van elke groep en helpt je de rest op te ruimen.
@@ -789,7 +789,7 @@ GEMAAKT VOOR ECHTE BIBLIOTHEKEN
 - Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.
 - Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.
 - Widgets op je beginscherm en je toegangsscherm: vrij te maken ruimte en je bibliotheek.
-- Dertien talen en volledige donkere modus.
+- 18 taalvarianten en volledige donkere modus.
 
 JIJ HOUDT DE CONTROLE
 - Verbeteren is niet destructief: het origineel blijft in je bibliotheek en één tik zet het terug.
@@ -800,7 +800,7 @@ JIJ HOUDT DE CONTROLE
 ALIKE FREE
 - 3 scans per maand
 - Begeleid bekijken met de beste opname
-- Verbetering met één tik, altijd terug te draaien
+- Verbetering met één tik, het origineel altijd één tik verderop
 - Beste opname die leert van je eigen keuzes
 - Sorteren en opruimgeschiedenis
 - Eén foto tegelijk opruimen
@@ -815,7 +815,7 @@ ALIKE PRO
 - Geavanceerde filters
 - Eigen opruimherinneringen
 
-Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."""
+Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen voor nieuwe abonnees die daarvoor in aanmerking komen. De facturering begint zodra de proefperiode afloopt, tenzij je minstens 24 uur van tevoren opzegt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen."""
 
 PL_DESCRIPTION = """Alike grupuje niemal identyczne zdjęcia, wybiera najlepsze i pomaga usunąć resztę. Żadne zdjęcie nie opuszcza iPhone’a.
 
@@ -845,7 +845,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
 - Widżety na ekranie początkowym i na ekranie blokady: odzyskiwalne miejsce i biblioteka.
-- Trzynaście języków i pełny tryb ciemny.
+- 18 wariantów językowych i pełny tryb ciemny.
 
 TO TY DECYDUJESZ
 - Poprawa niczego nie niszczy: oryginał zostaje w bibliotece, a jedno dotknięcie go przywraca.
@@ -856,7 +856,7 @@ TO TY DECYDUJESZ
 ALIKE FREE
 - 3 skanowania w miesiącu kalendarzowym
 - Prowadzony przegląd z najlepszym ujęciem
-- Poprawa jednym dotknięciem, zawsze odwracalna
+- Poprawa jednym dotknięciem, oryginał zawsze o jedno dotknięcie dalej
 - Najlepsze ujęcie, które uczy się z Twoich wyborów
 - Sortowanie i historia porządków
 - Porządki po jednym zdjęciu
@@ -871,7 +871,7 @@ ALIKE PRO
 - Zaawansowane filtry
 - Własne przypomnienia o porządkach
 
-Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów, a naliczanie opłat zaczyna się po zakończeniu okresu próbnego. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować."""
+Alike Pro to subskrypcja odnawiana automatycznie, w planie rocznym i miesięcznym, w cenach w Twojej walucie. Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu, a płatność jest pobierana z Twojego konta Apple. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować."""
 
 TR_DESCRIPTION = """\
 Tek bir fotoğraf bile cihazından çıkmadan yer kazan: Alike, kitaplığında saklanan neredeyse aynı fotoğrafları bulur, gruplar, her grubun en iyi karesini seçer ve geri kalanını temizlemene yardım eder.
@@ -902,7 +902,7 @@ GERÇEK KİTAPLIKLAR İÇİN
 - Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.
 - İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.
 - Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve kitaplığa bir bakış.
-- On üç dil ve tam Koyu Mod desteği.
+- 18 dil seçeneği ve tam Koyu Mod desteği.
 
 KONTROL SENDE
 - İyileştirme hiçbir şeyi bozmaz: orijinal kitaplığında kalır ve tek dokunuş onu geri getirir.
@@ -913,7 +913,7 @@ KONTROL SENDE
 ALIKE FREE
 - Ayda 3 tarama
 - En İyi Kare ile yönlendirilmiş gözden geçirme
-- Tek dokunuşla iyileştirme, her zaman geri alınabilir
+- Tek dokunuşla iyileştirme, orijinali her zaman bir dokunuş uzakta
 - Kendi seçimlerinden öğrenen En İyi Kare
 - Sıralama ve temizlik geçmişi
 - Fotoğrafları teker teker temizleme
@@ -928,7 +928,7 @@ ALIKE PRO
 - Gelişmiş filtreler
 - Kendi temizlik anımsatıcıların
 
-Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir veya iptal edebilirsin."""
+Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme içerir. Deneme bitmeden en az 24 saat önce iptal etmezsen faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir veya iptal edebilirsin."""
 
 ZH_HANT_DESCRIPTION = """\
 不讓任何一張照片離開你的裝置，就能釋出儲存空間：Alike 會找出照片圖庫裡藏著的近乎重複的照片，把它們分成一組組，在每一組中挑出最佳照片，並幫你清理其餘的。
@@ -959,7 +959,7 @@ ZH_HANT_DESCRIPTION = """\
 - App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。
 - 選用的清理提醒，以本地通知依你自己的時間送達。
 - 主畫面與鎖定畫面小工具：可以釋出的空間，以及一眼掌握的圖庫。
-- 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
+- 18 種語言版本：英文及英國、加拿大、澳洲英文版本，以及烏克蘭文、德文、法文及加拿大法文、西班牙文及拉丁美洲西班牙文、葡萄牙文（巴西與葡萄牙）、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。
 
 一切由你決定
 - 優化不會破壞原檔：原始照片留在你的照片圖庫裡，點一下就能還原。
@@ -970,7 +970,7 @@ ZH_HANT_DESCRIPTION = """\
 ALIKE FREE
 - 每月 3 次掃描
 - 有最佳照片引導的檢視流程
-- 一鍵優化，隨時都能還原
+- 一鍵優化，原始照片隨時都能還原
 - 會從你自己的挑選中學習的最佳照片
 - 排序與清理歷史記錄
 - 一次清理一張照片
@@ -985,7 +985,7 @@ ALIKE PRO
 - 進階篩選
 - 自訂清理提醒
 
-Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用，試用結束時即開始計費。除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"""
+Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。除非在目前週期結束前至少 24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。"""
 
 
 AR_DESCRIPTION = """\
@@ -1017,7 +1017,7 @@ AR_DESCRIPTION = """\
 - دليل قابل للبحث داخل التطبيق، على بُعد نقرة واحدة من شاشة الفحص.
 - تذكيرات تنظيف اختيارية، تصل كإشعارات محلية وفق جدولك أنت.
 - عناصر على الشاشة الرئيسية وشاشة القفل: المساحة التي يمكن استعادتها، والمكتبة في لمحة.
-- ثلاث عشرة لغة: الإنجليزية والأوكرانية والألمانية والفرنسية والإسبانية وإسبانية أمريكا اللاتينية والبرتغالية البرازيلية والإيطالية والهولندية والبولندية والتركية والصينية التقليدية والعربية. ودعم كامل للوضع الداكن.
+- 18 نسخة لغوية: الإنجليزية، والإنجليزية البريطانية والكندية والأسترالية، والأوكرانية، والألمانية، والفرنسية والفرنسية الكندية، والإسبانية وإسبانية أمريكا اللاتينية، والبرتغالية البرازيلية والأوروبية، والإيطالية، والهولندية، والبولندية، والتركية، والصينية التقليدية، والعربية. ودعم كامل للوضع الداكن.
 
 تبقى أنت المتحكم
 - التحسين لا يتلف شيئًا: يبقى الأصل في مكتبتك، ولمسة واحدة تعيده.
@@ -1028,7 +1028,7 @@ AR_DESCRIPTION = """\
 ‏ALIKE المجاني
 - 3 عمليات فحص في الشهر الميلادي
 - مراجعة موجَّهة مع أفضل لقطة
-- تحسين بلمسة واحدة، يمكن التراجع عنه دائمًا
+- تحسين بلمسة واحدة، والأصل دائمًا على بُعد لمسة
 - أفضل لقطة تتعلّم من اختياراتك
 - الترتيب وسجل التنظيف
 - تنظيف صورة واحدة في كل مرة
@@ -1043,7 +1043,7 @@ AR_DESCRIPTION = """\
 - مرشّحات متقدمة
 - تذكيرات تنظيف مخصصة
 
-‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين، وتبدأ الفوترة عند انتهاء التجربة. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من إعدادات iOS."""
+‏Alike Pro اشتراك يتجدد تلقائيًا بخطتين سنوية وشهرية، بسعر بعملتك المحلية. تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ الاشتراك قبل انتهائها بـ 24 ساعة على الأقل. تتجدد الاشتراكات تلقائيًا ما لم تُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية، وتُخصم قيمة الدفع من حساب Apple الخاص بك. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من إعدادات iOS."""
 
 
 METADATA = {
@@ -1286,7 +1286,7 @@ METADATA['zh-Hant'].update(
                 '- App 內建可搜尋的使用說明，從掃描畫面點一下就能開啟。\n'
                 '- 選用的清理提醒，以本地通知依你自己的時間送達。\n'
                 '- 主畫面與鎖定畫面小工具：可以釋出的空間，以及一眼掌握的圖庫。\n'
-                '- 十三種語言：英文、烏克蘭文、德文、法文、西班牙文、拉丁美洲西班牙文、巴西葡萄牙文、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。\n'
+                '- 18 種語言版本：英文及英國、加拿大、澳洲英文版本，以及烏克蘭文、德文、法文及加拿大法文、西班牙文及拉丁美洲西班牙文、葡萄牙文（巴西與葡萄牙）、義大利文、荷蘭文、波蘭文、土耳其文、繁體中文與阿拉伯文。完整支援深色模式。\n'
                 '\n'
                 '一切由你決定\n'
                 '- 優化不會破壞原檔：原始照片留在你的照片圖庫裡，點一下就能還原。\n'
@@ -1297,7 +1297,7 @@ METADATA['zh-Hant'].update(
                 'ALIKE FREE\n'
                 '- 每個曆月 3 次掃描\n'
                 '- 有最佳照片引導的檢視流程\n'
-                '- 一鍵優化，隨時都能還原\n'
+                '- 一鍵優化，原始照片隨時都能還原\n'
                 '- 會從你自己的挑選中學習的最佳照片\n'
                 '- 排序與清理歷史記錄\n'
                 '- 一次清理一張照片\n'
@@ -1312,7 +1312,7 @@ METADATA['zh-Hant'].update(
                 '- 進階篩選\n'
                 '- 自訂清理提醒\n'
                 '\n'
-                'Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用，試用結束時即開始計費。除非在目前週期結束前至少 '
+                'Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。除非在目前週期結束前至少 '
                 '24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。',
  'release_notes': 'Alike 已支援 iOS 27，帶來新的小工具，以及更快整理照片的方式。\n'
                   '\n'
@@ -1370,7 +1370,7 @@ METADATA['uk'].update(
                 '- Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.\n'
                 '- Віджети на головному екрані й екрані блокування: місце, яке можна звільнити, й огляд '
                 'фототеки.\n'
-                '- Тринадцять мов і повна темна тема.\n'
+                '- 18 мовних варіантів і повна темна тема.\n'
                 '\n'
                 'ВИ КЕРУЄТЕ ВСІМ\n'
                 '- Покращення не змінює оригінал: він залишається у вашій фототеці, і один дотик повертає '
@@ -1384,7 +1384,7 @@ METADATA['uk'].update(
                 'ALIKE FREE\n'
                 '- 3 сканування на календарний місяць\n'
                 '- Покроковий перегляд із найкращим кадром\n'
-                '- Покращення одним дотиком, яке завжди можна скасувати\n'
+                '- Покращення одним дотиком, оригінал завжди за один дотик\n'
                 '- Вибір найкращого кадру з урахуванням ваших рішень\n'
                 '- Сортування та історія прибирання\n'
                 '- Прибирання по одному фото за раз\n'
@@ -1401,7 +1401,7 @@ METADATA['uk'].update(
                 '\n'
                 'Alike Pro — це підписка з автоматичним поновленням, річний і місячний плани, ціни у вашій '
                 'валюті. Річний план містить 7 днів безкоштовно для нових підписників, які мають на це '
-                'право; оплата починається після завершення пробного періоду. Підписка поновлюється '
+                'право. Оплата починається після завершення пробного періоду, якщо ви не скасуєте підписку щонайменше за 24 години до цього. Підписка поновлюється '
                 'автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, '
                 'а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її '
                 'можна будь-коли в Налаштуваннях iOS.',
@@ -1466,7 +1466,7 @@ METADATA['pt-BR'].update(
                 '- Instruções de uso com busca dentro do app, a um toque do Analisador.\n'
                 '- Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.\n'
                 '- Widgets na tela de início e na tela bloqueada: o espaço recuperável e a fototeca.\n'
-                '- Treze idiomas e modo escuro completo.\n'
+                '- 18 variantes de idioma e modo escuro completo.\n'
                 '\n'
                 'VOCÊ NO CONTROLE\n'
                 '- O aprimoramento não destrói nada: o original continua na sua fototeca e um toque o '
@@ -1481,7 +1481,7 @@ METADATA['pt-BR'].update(
                 'ALIKE FREE\n'
                 '- 3 análises por mês do calendário\n'
                 '- Revisão guiada com a melhor foto\n'
-                '- Aprimoramento com um toque, sempre reversível\n'
+                '- Aprimoramento com um toque, com o original sempre a um toque\n'
                 '- Melhor foto que aprende com as suas escolhas\n'
                 '- Ordenação e histórico de limpeza\n'
                 '- Limpeza de uma foto por vez\n'
@@ -1498,7 +1498,7 @@ METADATA['pt-BR'].update(
                 '\n'
                 'O Alike Pro é uma assinatura de renovação automática com planos anual e mensal, com preços '
                 'na sua moeda local. O plano anual inclui 7 dias de teste grátis para novos assinantes '
-                'elegíveis, e a cobrança começa quando o teste termina. As assinaturas são renovadas '
+                'elegíveis. A cobrança começa quando o teste termina, a menos que você cancele pelo menos 24 horas antes. As assinaturas são renovadas '
                 'automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período '
                 'atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando '
                 'quiser nos Ajustes do iOS.',
@@ -1565,7 +1565,7 @@ METADATA['es-MX'].update(
                 '- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.\n'
                 '- Recordatorios de limpieza opcionales, como notificaciones locales.\n'
                 '- Widgets en la pantalla de inicio y en la bloqueada: espacio recuperable y fototeca.\n'
-                '- Trece idiomas y modo oscuro completo.\n'
+                '- 18 variantes de idioma y modo oscuro completo.\n'
                 '\n'
                 'TÚ TIENES EL CONTROL\n'
                 '- La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.\n'
@@ -1579,7 +1579,7 @@ METADATA['es-MX'].update(
                 'ALIKE FREE\n'
                 '- 3 análisis por mes calendario\n'
                 '- Revisión guiada con la mejor toma\n'
-                '- Mejora con un toque, siempre reversible\n'
+                '- Mejora con un toque, con el original siempre a un toque\n'
                 '- Mejor toma que aprende de tus propias elecciones\n'
                 '- Ordenamiento e historial de limpieza\n'
                 '- Limpieza de una foto a la vez\n'
@@ -1596,7 +1596,7 @@ METADATA['es-MX'].update(
                 '\n'
                 'Alike Pro es una suscripción de renovación automática con planes anual y mensual, con '
                 'precios en tu moneda local. El plan anual incluye 7 días de prueba gratis para nuevos '
-                'suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las '
+                'suscriptores que cumplan los requisitos. El cobro comienza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Las '
                 'suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes '
                 'del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes '
                 'administrarla o cancelarla cuando quieras en la Configuración de iOS.',
@@ -1663,7 +1663,7 @@ METADATA['es-ES'].update(
                 '- Instrucciones de uso con búsqueda dentro de la app, a un toque del Analizador.\n'
                 '- Recordatorios de limpieza opcionales, como notificaciones locales.\n'
                 '- Widgets en la pantalla de inicio y en la de bloqueo: espacio recuperable y fototeca.\n'
-                '- Trece idiomas y modo oscuro completo.\n'
+                '- 18 variantes de idioma y modo oscuro completo.\n'
                 '\n'
                 'TÚ TIENES EL CONTROL\n'
                 '- La mejora no destruye nada: el original se queda en tu fototeca y un toque lo restaura.\n'
@@ -1676,7 +1676,7 @@ METADATA['es-ES'].update(
                 'ALIKE FREE\n'
                 '- 3 análisis por mes natural\n'
                 '- Revisión guiada con la mejor toma\n'
-                '- Mejora con un toque, siempre reversible\n'
+                '- Mejora con un toque, con el original siempre a un toque\n'
                 '- Mejor toma que aprende de tus propias elecciones\n'
                 '- Ordenación e historial de limpieza\n'
                 '- Limpieza de una foto cada vez\n'
@@ -1693,7 +1693,7 @@ METADATA['es-ES'].update(
                 '\n'
                 'Alike Pro es una suscripción de renovación automática con planes anual y mensual, con '
                 'precios en tu moneda local. El plan anual incluye 7 días de prueba gratuita para nuevos '
-                'suscriptores que cumplan los requisitos, y el cobro empieza al terminar la prueba. Las '
+                'suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Las '
                 'suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del '
                 'final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o '
                 'cancelarla cuando quieras en los Ajustes de iOS.',
@@ -1761,7 +1761,7 @@ METADATA['nl-NL'].update(
                 '- Een doorzoekbare handleiding in de app, één tik vanaf de Scanner.\n'
                 '- Optionele opruimherinneringen als lokale berichtgevingen, op je eigen schema.\n'
                 '- Widgets op je beginscherm en je toegangsscherm: vrij te maken ruimte en je bibliotheek.\n'
-                '- Dertien talen en volledige donkere modus.\n'
+                '- 18 taalvarianten en volledige donkere modus.\n'
                 '\n'
                 'JIJ HOUDT DE CONTROLE\n'
                 '- Verbeteren is niet destructief: het origineel blijft in je bibliotheek en één tik zet het '
@@ -1775,7 +1775,7 @@ METADATA['nl-NL'].update(
                 'ALIKE FREE\n'
                 '- 3 scans per kalendermaand\n'
                 '- Begeleid bekijken met de beste opname\n'
-                '- Verbetering met één tik, altijd terug te draaien\n'
+                '- Verbetering met één tik, het origineel altijd één tik verderop\n'
                 '- Beste opname die leert van je eigen keuzes\n'
                 '- Sorteren en opruimgeschiedenis\n'
                 '- Eén foto tegelijk opruimen\n'
@@ -1793,8 +1793,8 @@ METADATA['nl-NL'].update(
                 '\n'
                 'Alike Pro is een abonnement met automatische verlenging, met een jaar- en een maandplan, '
                 'geprijsd in je eigen valuta. Het jaarabonnement bevat een gratis proefperiode van 7 dagen '
-                'voor nieuwe abonnees die daarvoor in aanmerking komen, en de facturering begint zodra de '
-                'proefperiode afloopt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur '
+                'voor nieuwe abonnees die daarvoor in aanmerking komen. De facturering begint zodra de '
+                'proefperiode afloopt, tenzij je minstens 24 uur van tevoren opzegt. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur '
                 'voor het einde van de huidige periode worden opgezegd. Het bedrag wordt afgeschreven van je '
                 'Apple Account. Je kunt je abonnement altijd beheren of opzeggen in de iOS-instellingen.',
  'promotional_text': 'Bekijk de geschatte ruimtewinst. Foto’s blijven op je iPhone. Jaarabonnement: 7 dagen '
@@ -1842,7 +1842,7 @@ METADATA['it'].update(
                 "- Istruzioni consultabili dentro l'app, a un tocco dallo Scanner.\n"
                 '- Promemoria di pulizia facoltativi, come notifiche locali, secondo i tuoi orari.\n'
                 '- Widget nella schermata home e in quella di blocco: spazio recuperabile e libreria.\n'
-                '- Tredici lingue e modalità scura completa.\n'
+                '- 18 varianti linguistiche e modalità scura completa.\n'
                 '\n'
                 'SEI TU A DECIDERE\n'
                 "- Il miglioramento non distrugge nulla: l'originale resta nella tua libreria e un tocco lo "
@@ -1856,7 +1856,7 @@ METADATA['it'].update(
                 'ALIKE FREE\n'
                 '- 3 scansioni per mese di calendario\n'
                 '- Controllo guidato con lo scatto migliore\n'
-                '- Miglioramento con un tocco, sempre reversibile\n'
+                '- Miglioramento con un tocco, l’originale sempre a un tocco\n'
                 '- Scatto migliore che impara dalle tue scelte\n'
                 '- Ordinamento e cronologia pulizia\n'
                 '- Pulizia di una foto alla volta\n'
@@ -1873,7 +1873,7 @@ METADATA['it'].update(
                 '\n'
                 'Alike Pro è un abbonamento a rinnovo automatico con piani annuale e mensile, con prezzi '
                 'nella tua valuta locale. Il piano annuale include una prova gratuita di 7 giorni per i '
-                'nuovi abbonati idonei, e la fatturazione inizia al termine della prova. Gli abbonamenti si '
+                'nuovi abbonati idonei. La fatturazione inizia al termine della prova, a meno che tu non annulli almeno 24 ore prima. Gli abbonamenti si '
                 'rinnovano automaticamente se non vengono annullati almeno 24 ore prima della fine del '
                 'periodo in corso, e il pagamento viene addebitato sul tuo account Apple. Puoi gestire o '
                 "annullare l'abbonamento in qualsiasi momento in Impostazioni di iOS.",
@@ -1922,7 +1922,7 @@ METADATA['fr-FR'].update(
                 '- Rappels de nettoyage facultatifs, en notifications locales.\n'
                 "- Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la "
                 'photothèque.\n'
-                '- Treize langues et mode sombre complet.\n'
+                '- 18 variantes linguistiques et mode sombre complet.\n'
                 '\n'
                 'VOUS GARDEZ LA MAIN\n'
                 '- L’original reste dans votre photothèque après l’amélioration. Un toucher permet de le '
@@ -1937,7 +1937,7 @@ METADATA['fr-FR'].update(
                 'ALIKE FREE\n'
                 '- 3 analyses par mois civil\n'
                 '- Examen guidé avec la meilleure photo\n'
-                '- Amélioration en une touche, toujours réversible\n'
+                '- Amélioration en une touche, l’original toujours à une touche\n'
                 '- Meilleure photo qui apprend de vos propres choix\n'
                 '- Tri et historique de nettoyage\n'
                 '- Nettoyage photo par photo\n'
@@ -1954,7 +1954,7 @@ METADATA['fr-FR'].update(
                 '\n'
                 'Alike Pro est un abonnement à renouvellement automatique, en formule annuelle ou mensuelle, '
                 "facturé dans votre devise locale. La formule annuelle comprend 7 jours d'essai gratuit pour "
-                "les nouveaux abonnés éligibles, et la facturation commence à la fin de l'essai. "
+                "les nouveaux abonnés éligibles. La facturation commence à la fin de l’essai, sauf résiliation au moins 24 heures avant. "
                 "L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin "
                 'de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le '
                 'gérer ou le résilier à tout moment dans les Réglages iOS.',
@@ -2022,7 +2022,7 @@ METADATA['de-DE'].update(
                 '- Eine durchsuchbare Anleitung in der App.\n'
                 '- Optionale Aufräum-Erinnerungen als lokale Mitteilungen, nach deinem Zeitplan.\n'
                 '- Widgets für Home- und Sperrbildschirm: freigebbarer Speicher, Mediathek auf einen Blick.\n'
-                '- Dreizehn Sprachen und voller Dark Mode.\n'
+                '- 18 Sprachvarianten und voller Dark Mode.\n'
                 '\n'
                 'DU BEHÄLTST DIE KONTROLLE\n'
                 '- Bei der Verbesserung bleibt das Original in deiner Mediathek. Ein Tippen stellt es wieder '
@@ -2037,7 +2037,7 @@ METADATA['de-DE'].update(
                 'ALIKE FREE\n'
                 '- 3 Scans pro Kalendermonat\n'
                 '- Geführte Prüfung mit bester Aufnahme\n'
-                '- Verbesserung mit einem Tippen, immer umkehrbar\n'
+                '- Verbesserung mit einem Tippen, Original immer einen Tipp entfernt\n'
                 '- Beste Aufnahme, die aus deiner eigenen Auswahl lernt\n'
                 '- Sortierung und Aufräum-Verlauf\n'
                 '- Ein Foto nach dem anderen aufräumen\n'
@@ -2054,7 +2054,7 @@ METADATA['de-DE'].update(
                 '\n'
                 'Alike Pro ist ein Abonnement mit automatischer Verlängerung, im Jahres- und im Monatsplan, '
                 'berechnet in deiner Landeswährung. Der Jahresplan enthält 7 Tage gratis für berechtigte '
-                'neue Abonnenten, und die Abrechnung beginnt nach Ablauf des Testzeitraums. Abonnements '
+                'neue Abonnenten. Die Abrechnung beginnt mit dem Ende der Testphase, sofern du nicht mindestens 24 Stunden vorher kündigst. Abonnements '
                 'verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden '
                 'Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple-Account. Verwalten '
                 'oder kündigen kannst du jederzeit in den iOS-Einstellungen.',
@@ -2143,7 +2143,7 @@ METADATA['pt-PT'].update(
                 '- Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.\n'
                 '- Lembretes de limpeza opcionais, como notificações locais, no teu próprio horário.\n'
                 '- Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.\n'
-                '- Treze idiomas e modo escuro completo.\n'
+                '- 18 variantes de idioma e modo escuro completo.\n'
                 '\n'
                 'TU TENS O CONTROLO\n'
                 '- A melhoria não destrói nada: o original continua na tua fototeca e um toque restaura-o.\n'
@@ -2157,7 +2157,7 @@ METADATA['pt-PT'].update(
                 'ALIKE FREE\n'
                 '- 3 análises por mês de calendário\n'
                 '- Revisão guiada com a melhor foto\n'
-                '- Melhoria com um toque, sempre reversível\n'
+                '- Melhoria com um toque, com o original sempre a um toque\n'
                 '- Melhor foto que aprende com as tuas escolhas\n'
                 '- Ordenação e histórico de limpeza\n'
                 '- Limpeza de uma foto de cada vez\n'
@@ -2174,7 +2174,7 @@ METADATA['pt-PT'].update(
                 '\n'
                 'O Alike Pro é uma subscrição de renovação automática com planos anual e mensal, com preços '
                 'na tua moeda local. O plano anual inclui 7 dias de teste grátis para novos subscritores '
-                'elegíveis, e a cobrança começa quando o teste termina. As subscrições são renovadas '
+                'elegíveis. A faturação começa no fim do teste, salvo se cancelares pelo menos 24 horas antes. As subscrições são renovadas '
                 'automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período '
                 'atual, e o pagamento é debitado da tua Conta Apple. Podes gerir ou cancelar a subscrição '
                 'quando quiseres nas Definições do iOS.',
@@ -2242,7 +2242,7 @@ METADATA['fr-CA'].update(
                 '- Rappels de nettoyage facultatifs, en notifications locales.\n'
                 "- Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la "
                 'photothèque.\n'
-                '- Treize langues et mode sombre complet.\n'
+                '- 18 variantes linguistiques et mode sombre complet.\n'
                 '\n'
                 'VOUS GARDEZ LA MAIN\n'
                 "- L'amélioration ne détruit rien : l'original reste dans votre photothèque et une touche "
@@ -2257,7 +2257,7 @@ METADATA['fr-CA'].update(
                 'ALIKE FREE\n'
                 '- 3 analyses par mois civil\n'
                 '- Examen guidé avec la meilleure photo\n'
-                '- Amélioration en une touche, toujours réversible\n'
+                '- Amélioration en une touche, l’original toujours à une touche\n'
                 '- Meilleure photo qui apprend de vos propres choix\n'
                 '- Tri et historique de nettoyage\n'
                 '- Nettoyage photo par photo\n'
@@ -2274,7 +2274,7 @@ METADATA['fr-CA'].update(
                 '\n'
                 'Alike Pro est un abonnement à renouvellement automatique, en forfait annuel ou mensuel, '
                 "facturé dans votre devise locale. Le forfait annuel comprend 7 jours d'essai gratuit pour "
-                "les nouveaux abonnés admissibles, et la facturation commence à la fin de l'essai. "
+                "les nouveaux abonnés admissibles. La facturation commence à la fin de l’essai, sauf si vous annulez au moins 24 heures avant. "
                 "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin "
                 'de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le '
                 'gérer ou l’annuler en tout temps dans les Réglages iOS.',
@@ -2342,7 +2342,7 @@ METADATA['tr'].update(
                 "- Uygulamanın içinde aranabilir bir kullanım kılavuzu, Tarayıcı'dan bir dokunuş uzakta.\n"
                 '- İsteğe bağlı temizlik anımsatıcıları, kendi programına göre yerel bildirim olarak gelir.\n'
                 "- Ana ekranda ve kilitli ekranda widget'lar: kazanılabilir alan ve arşive bir bakış.\n"
-                '- On üç dil ve tam Koyu Mod desteği.\n'
+                '- 18 dil seçeneği ve tam Koyu Mod desteği.\n'
                 '\n'
                 'KONTROL SENDE\n'
                 '- İyileştirme hiçbir şeyi bozmaz: orijinal arşivinde kalır ve tek dokunuş onu geri '
@@ -2356,7 +2356,7 @@ METADATA['tr'].update(
                 'ALIKE FREE\n'
                 '- Her takvim ayında 3 tarama\n'
                 '- En İyi Kare ile yönlendirilmiş gözden geçirme\n'
-                '- Tek dokunuşla iyileştirme, her zaman geri alınabilir\n'
+                '- Tek dokunuşla iyileştirme, orijinali her zaman bir dokunuş uzakta\n'
                 '- Kendi seçimlerinden öğrenen En İyi Kare\n'
                 '- Sıralama ve temizlik geçmişi\n'
                 '- Fotoğrafları teker teker temizleme\n'
@@ -2373,7 +2373,7 @@ METADATA['tr'].update(
                 '\n'
                 'Alike Pro, yıllık ve aylık planları olan, kendi para biriminde fiyatlanan otomatik '
                 'yenilenen bir aboneliktir. Yıllık plan, uygun yeni aboneler için 7 günlük ücretsiz deneme '
-                'içerir ve faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin '
+                'içerir. Deneme bitmeden en az 24 saat önce iptal etmezsen faturalandırma deneme sona erdiğinde başlar. Abonelikler, mevcut dönemin '
                 'bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir ve ödeme '
                 "Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir "
                 'veya iptal edebilirsin.',
