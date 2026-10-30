@@ -316,7 +316,7 @@ COPY = {
             "Групи з позначками перегляду — завжди видно, що лишилось.",
         ),
         (
-            "НАЙКРАЩИЙ ЗНІМОК",
+            "НАЙКРАЩИЙ КАДР",
             "Найкраще фото\nвже обрано",
             "Alike виділяє найвдаліший кадр у групі. Вам лишається підтвердити.",
         ),
@@ -598,7 +598,7 @@ COPY = {
         ),
         (
             "SPAZIO LIBERO",
-            "Guarda tornare\ni gigabyte",
+            "Recupera i tuoi\ngigabyte",
             "Foto selezionate e risparmio stimato, mentre fai pulizia.",
         ),
         (
@@ -709,12 +709,12 @@ COPY = {
         ),
         (
             "BOŞ ALAN",
-            "Gigabaytların\ngeri gelişini gör",
+            "Gigabaytlarca\nalan kazan",
             "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
         ),
         (
             "GERİ ALINABİLİR",
-            "Kareyi iyileştir,\nözgünü sakla",
+            "Kareyi iyileştir,\norijinali sakla",
             "Bir dokunuş en iyi kareyi iyileştirir. Bir dokunuş orijinali geri getirir; orijinal fotoğraf arşivinde kalır.",
         ),
         (
@@ -744,7 +744,7 @@ COPY = {
         ),
         (
             "先比對",
-            "任何照片消失前\n都先看過",
+            "刪除任何照片前\n都先看過",
             "以原尺寸檢視。未經你確認，不會刪除任何東西。",
         ),
         (
