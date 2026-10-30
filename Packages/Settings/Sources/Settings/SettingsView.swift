@@ -87,7 +87,7 @@ public struct SettingsView: View {
         subscriptionStore: SubscriptionStore? = nil,
         onDeleteAllData: @escaping @MainActor @Sendable () async throws -> Void = {},
         onResetBestShotPersonalization: @escaping @MainActor @Sendable () async throws -> Void = {},
-        viewModel: SettingsViewModel = SettingsViewModel()
+        viewModel: SettingsViewModel
     ) {
         self._sensitivity = sensitivity
         self._needsRescan = needsRescan
@@ -842,9 +842,12 @@ private struct DeleteAllDataView: View {
 }
 
 // MARK: - Preview
+#if DEBUG
 #Preview {
     SettingsView(
         sensitivity: .constant(.medium),
-        needsRescan: .constant(false)
+        needsRescan: .constant(false),
+        viewModel: SettingsViewModel(cleanupReminderManager: MockCleanupReminderManager())
     )
 }
+#endif
