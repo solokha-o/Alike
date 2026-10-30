@@ -255,7 +255,7 @@ Still open:
 | 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
 | 2026-10-29 | All 17 locales | Oleksandr Solokha (product owner) | Accepted the AI review pass for release in place of a native-speaker sign-off, and confirmed the `ar`/`pl`/`tr` device check | — |
 
-| 2026-10-30 | All 18 listing locales: `en-US`, `en-GB`, `en-CA`, `en-AU`, `uk`, `de-DE`, `fr-FR`, `fr-CA`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` | AI text review (listing) | Card 49: trial eligibility in English promotional text, Ukrainian catalog terms, French learning-reset wording, Canadian French grammar, Portuguese register, monthly IAP descriptions and screenshot captions; keywords unchanged | PR pending |
+| 2026-10-30 | All 18 listing locales: `en-US`, `en-GB`, `en-CA`, `en-AU`, `uk`, `de-DE`, `fr-FR`, `fr-CA`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` | AI text review (listing) | Card 49: trial eligibility in English promotional text, Ukrainian catalog terms, French learning-reset wording, Canadian French grammar, Portuguese register, monthly IAP descriptions and screenshot captions; keywords unchanged | [#164](https://github.com/solokha-o/Alike/pull/164) |
 
 Placeholders, plural categories and the disclosure text were checked mechanically for every
 locale, and `tools/full` passed on `develop` after the last merge. These checks
