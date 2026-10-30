@@ -3548,7 +3548,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Бібліотека змінилася"
+            "value" : "Фототека змінилася"
           }
         },
         "zh-Hant" : {
@@ -4621,7 +4621,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скануйте бібліотеку"
+            "value" : "Скануйте фототеку"
           }
         },
         "zh-Hant" : {
@@ -5581,7 +5581,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Бібліотека Alike"
+            "value" : "Фототека Alike"
           }
         },
         "zh-Hant" : {
@@ -5694,7 +5694,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Огляд бібліотеки"
+            "value" : "Огляд фототеки"
           }
         },
         "zh-Hant" : {

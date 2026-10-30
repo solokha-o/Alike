@@ -334,17 +334,17 @@
               "locale" : "it_IT"
             },
             {
-              "description" : "Al het opruimwerk van Alike Pro.",
+              "description" : "Alle opruimfuncties van Alike Pro.",
               "displayName" : "Alike Pro maandelijks",
               "locale" : "nl_NL"
             },
             {
-              "description" : "Wszystkie porządki w zdjęciach Alike Pro.",
+              "description" : "Wszystkie funkcje porządkowania zdjęć.",
               "displayName" : "Alike Pro miesięcznie",
               "locale" : "pl_PL"
             },
             {
-              "description" : "Alike Pro'nun tüm fotoğraf temizliği.",
+              "description" : "Tüm Alike Pro fotoğraf temizleme özellikleri.",
               "displayName" : "Alike Pro aylık",
               "locale" : "tr_TR"
             },
@@ -354,7 +354,7 @@
               "locale" : "zh_TW"
             },
             {
-              "description" : "تنظيف صور Alike Pro بالكامل، شهريًا.",
+              "description" : "كل ميزات تنظيف الصور في Alike Pro، شهريًا.",
               "displayName" : "‏Alike Pro شهريًا",
               "locale" : "ar_SA"
             },

@@ -254,9 +254,15 @@ Still open:
 | 2026-10-27 | `en-CA`, `en-AU`, `de`, `fr`, `it`, `nl`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Codex (AI text review) | Same scope; `en-CA`, `en-AU` added as full locales | #148–#158 |
 | 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
 | 2026-10-29 | All 17 locales | Oleksandr Solokha (product owner) | Accepted the AI review pass for release in place of a native-speaker sign-off, and confirmed the `ar`/`pl`/`tr` device check | — |
+| 2026-10-30 | All 18 listing locales: `en-US`, `en-GB`, `en-CA`, `en-AU`, `uk`, `de-DE`, `fr-FR`, `fr-CA`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` | AI text review (listing) | Card 49: trial eligibility in English promotional text, Ukrainian catalog terms, French learning-reset wording, Canadian French grammar, Portuguese register, monthly IAP descriptions and screenshot captions; keywords unchanged | [#164](https://github.com/solokha-o/Alike/pull/164) |
+| 2026-10-30 | All 18 listing locales; `uk` widget strings | Claude (follow-up to the review's open questions) | Descriptions count 18 language variants, as the site does; the trial sentence carries the 24-hour cancellation deadline from disclosure paragraph 2; "always reversible" became "original always one tap away"; the `uk` widget and enhancement-error strings use фототека; `tr` and `uk` widget captures retaken and the changed captions re-rendered | [#164](https://github.com/solokha-o/Alike/pull/164) |
 
 Placeholders, plural categories and the disclosure text were checked mechanically for every
-locale, and `tools/full` passed on `develop` after the last merge.
+locale, and `tools/full` passed on `develop` after the last merge. These checks
+predate the card 49 listing review. The initial card 49 text review ran no validation.
+Its follow-up passed the upload-bundle tests, bundle generation and validation (with the
+placeholder-URL flags), and a Release simulator build of the app on 2026-10-30; the
+`WidgetSupport` and `Details` package tests were not run.
 
 ## Not yet reviewed by a native speaker
 
@@ -266,14 +272,22 @@ confirmed the `ar`, `pl` and `tr` device checks (layout, mirroring, plural forms
 22, 25) on 2026-10-29. The AI pass
 fixed wording and consistency; it cannot replace a person who reads the language every day.
 
-Task 44 added the same five languages to the App Store listing — subtitle, keywords,
-description, promotional text, release notes, the in-app-purchase display names, and the
-five marketing screenshot captions — and to the landing site. That copy carries the same
-caveat, with two places worth a reviewer's attention beyond the app strings: **keywords**,
-which are market research rather than translation and are the one field where a
-plausible-sounding word simply fails to be what people search for, and the **zh-Hant
-screenshot captions**, which are the only copy in the project set in Heiti TC rather than
-SF Pro and should be read at thumbnail size, not at full size.
+Card 49 reviewed all 18 App Store listing locales on 2026-10-30. This was an
+AI text review, accepted by the product owner in place of a native-speaker review.
+No native speaker has signed off the listing. The pass covered subtitles,
+descriptions, promotional text, release notes, keywords, IAP names and descriptions,
+and all 7 screenshot captions per source deck. Existing rendered images were
+inspected at about 230 pixels wide, starting with `zh-Hant`, `de`, `it` and `tr`.
+The follow-up re-rendered the changed captions and retook the `tr` and `uk` widget
+captures on an iPhone 18 Pro Max simulator (iOS 27.2) with a staged widget snapshot.
+
+**Keywords and rendered captions still need a person.** Search demand needs market
+knowledge, including for the unchanged Apple Ads keywords in `it`, `nl-NL` and `pl`.
+A person must review caption density and legibility, especially `zh-Hant` in Heiti TC.
+The `zh-Hant` keywords 大師, 神器 and 快照 stay: the first two are common in Taiwanese
+cleaner-app names, and 快照 catches searches that still use Apple's older term for
+screenshots. No popularity data backs them yet. The disclosure document and the
+PurchasesUI catalog did not change; the listing now quotes them more closely.
 
 When a native speaker is available, spend the budget in this order: `ar` first, because it
 is the only language where a translation error and a *layout* error look the same to a
