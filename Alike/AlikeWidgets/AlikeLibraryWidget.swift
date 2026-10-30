@@ -7,7 +7,7 @@ import SwiftUI
 import WidgetKit
 import WidgetSupport
 
-/// Concept №4, "Огляд бібліотеки": what is in the library, by category, with a way into
+/// Concept №4, "Огляд фототеки": what is in the library, by category, with a way into
 /// each one.
 ///
 /// A separate `Widget` rather than a third family on `AlikeStatusWidget`. That one
