@@ -152,6 +152,51 @@ translation exactly as strong as the English, and no stronger:
 entries state facts and have to agree with the app: the free allowance in `pricing.free`
 ("3 scans per month") and the language count in the last `features.items` entry.
 
+### Landing review pass 2 — 2026-10-30
+
+Codex completed an AI copy review of `<locale>/privacy.md`, `<locale>/terms.md`
+and `_data/<locale>.yml` for `de`, `fr`, `es`, `pt-BR`, `it`, `nl`, `pl`, `tr`
+and `zh-Hant`. The proposed edits are in
+[site PR #15](https://github.com/alikeapp/alikeapp.github.io/pull/15), on
+`docs/native-review-pass-2`, with one commit per locale. This records an AI review,
+not a native-speaker or legal sign-off.
+
+The pass corrected album names in French, Spanish and Brazilian Portuguese;
+Turkish `arşiv` terminology and informal commands; Traditional Chinese `截圖`;
+Italian sign-in wording; intellectual-property scope; and literal marketing
+phrases. It retained the EULA priority, plan durations, trial eligibility,
+24-hour billing windows, Apple refund limits, mandatory consumer rights and
+Apple's third-party-beneficiary rights. Landing copy now limits Delete Alike Data
+to local Alike data and qualifies the yearly trial for eligible new subscribers.
+The free allowance remains 3 scans per month.
+
+The requested localization skill lists 12 locales, but the current InfoPlist,
+PurchasesUI and Core catalogs contain 18, matching `knownRegions` without `Base`.
+The translated feature entry therefore says **18 language variants**, including
+regional English, French and Portuguese variants, and lists them. No site locale
+or page was added. English site files remain unchanged. The older 12-locale skill
+list and 17-locale review-log count need a separate correction.
+
+The current English privacy policy describes optional MetricKit crash reports
+sent by the user. The pass preserved that scope and its exclusion of third-party
+crash-reporting services; it did not add an absolute claim of no crash reports.
+
+Still open:
+
+- Task 47 must reconcile the last sentence of Polish `pricing.disclosure_trial`.
+  The site says "Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie
+  w Ustawieniach iOS." The legal document and PurchasesUI catalog say
+  "W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją
+  anulować." The site sentence has faulty verb coordination. The approved wording
+  must agree in the document, catalog and `_data/pl.yml`; both protected
+  disclosure values remain untouched in every locale in this pass.
+- A separate agent must run site checks and legal parity checks after both PRs
+  open. No tests, builds, `scripts/check-site.sh` or
+  `tools/check_site_legal_parity.py` ran in this pass, at the user's request.
+- Native-speaker and legal sign-off remain open for all 18 reviewed legal pages,
+  especially liability and mandatory consumer-rights clauses. The PRs are not
+  merged. The Notion card status remains unchanged.
+
 ## Per-language notes for the reviewer
 
 - **`es-419` vs `es`** — these are separate texts on purpose. `es-419` uses "Configuración",
