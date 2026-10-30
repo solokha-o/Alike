@@ -259,7 +259,10 @@ Still open:
 
 Placeholders, plural categories and the disclosure text were checked mechanically for every
 locale, and `tools/full` passed on `develop` after the last merge. These checks
-predate the card 49 listing review; that review ran no validation.
+predate the card 49 listing review. The initial card 49 text review ran no validation.
+Its follow-up passed the upload-bundle tests, bundle generation and validation (with the
+placeholder-URL flags), and a Release simulator build of the app on 2026-10-30; the
+`WidgetSupport` and `Details` package tests were not run.
 
 ## Not yet reviewed by a native speaker
 
