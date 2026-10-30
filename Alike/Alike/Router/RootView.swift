@@ -20,6 +20,7 @@ import Purchases
 import PurchasesUI
 import WidgetSupport
 import Diagnostics
+import Details
 
 /// Root view that manages app navigation flow
 struct RootView: View {
@@ -271,7 +272,11 @@ struct MainTabView: View {
                     tabManager.navigateToScanner(andStartScan: true)
                 },
                 pendingWidgetEntry: Bindable(tabManager).pendingCleanupEntry
-            )
+            ) { context in
+                clusterDetails(for: context)
+            } screenshotDestination: { context in
+                screenshotCleanup(for: context)
+            }
         case .settings:
             SettingsView(
                 sensitivity: sensitivity,
@@ -298,6 +303,45 @@ struct MainTabView: View {
                 )
             )
         }
+    }
+
+    // MARK: - Cleanup destinations
+
+    /// The group screen `CleanupView` pushes. Built here so `Cleanup` does not depend
+    /// on `Details`; the callbacks come from `CleanupView` unchanged.
+    private func clusterDetails(for context: CleanupClusterDestinationContext) -> some View {
+        ClusterDetailsView(
+            cluster: context.cluster,
+            cleanupService: cleanupWorkspace.cleanupService,
+            cleanupHistoryRepository: cleanupWorkspace.cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            subscriptionStore: subscriptionStore,
+            openSettingsAction: {
+                PhotoPermissionManagerImpl().openSettings()
+            },
+            qualityAnalyzer: cleanupWorkspace.qualityAnalyzer,
+            enhancementService: cleanupWorkspace.enhancementService,
+            overrideMetrics: cleanupWorkspace.bestShotOverrideMetrics,
+            personalizedConfigProvider: cleanupWorkspace.bestShotPersonalizedConfigProvider,
+            onReviewStateChanged: context.onReviewStateChanged,
+            onCleanupCompleted: context.onCleanupCompleted
+        )
+    }
+
+    /// The category screen `CleanupView` shows in its non-dismissable sheet.
+    private func screenshotCleanup(for context: CleanupCategoryDestinationContext) -> some View {
+        ScreenshotCleanupView(
+            assets: context.assets,
+            sourceCategory: context.kind,
+            cleanupService: cleanupWorkspace.cleanupService,
+            cleanupHistoryRepository: cleanupWorkspace.cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            subscriptionStore: subscriptionStore,
+            openSettingsAction: {
+                PhotoPermissionManagerImpl().openSettings()
+            },
+            onCleanupCompleted: context.onCleanupCompleted
+        )
     }
 
     /// What has to change before the widget's copy of the aggregates is out of date.

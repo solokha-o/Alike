@@ -113,11 +113,17 @@ extension View {
 /// The review-focused home for results produced by ``CleanupWorkspaceModel``.
 /// Scanner owns starting scans and entitlement admission; Cleanup only presents
 /// the durable workspace and routes the user to an explicit rescan action.
-public struct CleanupView: View {
+///
+/// The screens a group or a category opens come from the host through
+/// `clusterDestination` and `screenshotDestination`, so this package does not depend
+/// on the package that implements them. Cleanup still owns how they open: a push for a
+/// group, a sheet the user cannot swipe away for a category.
+public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>: View {
     private enum Constants {
-        static let reconciliationDismissalDelay = Duration.milliseconds(500)
+        // Computed: a generic type cannot hold static stored properties.
+        static var reconciliationDismissalDelay: Duration { .milliseconds(500) }
         /// Lets the success banner land before the system review sheet takes over.
-        static let ratingPromptDelay = Duration.milliseconds(1_500)
+        static var ratingPromptDelay: Duration { .milliseconds(1_500) }
     }
 
     private let workspace: CleanupWorkspaceModel
@@ -128,6 +134,8 @@ public struct CleanupView: View {
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
     @Binding private var pendingWidgetEntry: CleanupWidgetEntry?
+    private let clusterDestination: (CleanupClusterDestinationContext) -> ClusterDestination
+    private let screenshotDestination: (CleanupCategoryDestinationContext) -> ScreenshotDestination
 
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @Environment(\.requestReview) private var requestReview
@@ -152,7 +160,9 @@ public struct CleanupView: View {
         onRequestScan: @escaping @MainActor @Sendable () -> Void,
         // Defaulted: every existing call site stays valid, and a host that has no
         // widget routing to feed in does not have to know this parameter exists.
-        pendingWidgetEntry: Binding<CleanupWidgetEntry?> = .constant(nil)
+        pendingWidgetEntry: Binding<CleanupWidgetEntry?> = .constant(nil),
+        @ViewBuilder clusterDestination: @escaping (CleanupClusterDestinationContext) -> ClusterDestination,
+        @ViewBuilder screenshotDestination: @escaping (CleanupCategoryDestinationContext) -> ScreenshotDestination
     ) {
         self.workspace = workspace
         self._sensitivity = sensitivity
@@ -162,6 +172,8 @@ public struct CleanupView: View {
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
         self._pendingWidgetEntry = pendingWidgetEntry
+        self.clusterDestination = clusterDestination
+        self.screenshotDestination = screenshotDestination
     }
 
     public var body: some View {
@@ -176,17 +188,12 @@ public struct CleanupView: View {
         }
         .sheet(item: $presentedCategory) { category in
             RoutedNavigationStack {
-                ScreenshotCleanupView(
-                    assets: category.assets,
-                    sourceCategory: category.kind,
-                    cleanupService: workspace.cleanupService,
-                    cleanupHistoryRepository: workspace.cleanupHistoryRepository,
-                    premiumAccess: premiumAccess,
-                    subscriptionStore: subscriptionStore,
-                    openSettingsAction: {
-                        PhotoPermissionManagerImpl().openSettings()
-                    },
-                    onCleanupCompleted: reconcile
+                screenshotDestination(
+                    CleanupCategoryDestinationContext(
+                        kind: category.kind,
+                        assets: category.assets,
+                        onCleanupCompleted: reconcile
+                    )
                 )
             }
             .interactiveDismissDisabled()
@@ -219,21 +226,12 @@ public struct CleanupView: View {
     private func destination(for route: CleanupRoute) -> some View {
         switch route {
         case .cluster(let cluster):
-            ClusterDetailsView(
-                cluster: cluster,
-                cleanupService: workspace.cleanupService,
-                cleanupHistoryRepository: workspace.cleanupHistoryRepository,
-                premiumAccess: premiumAccess,
-                subscriptionStore: subscriptionStore,
-                openSettingsAction: {
-                    PhotoPermissionManagerImpl().openSettings()
-                },
-                qualityAnalyzer: workspace.qualityAnalyzer,
-                enhancementService: workspace.enhancementService,
-                overrideMetrics: workspace.bestShotOverrideMetrics,
-                personalizedConfigProvider: workspace.bestShotPersonalizedConfigProvider,
-                onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
-                onCleanupCompleted: reconcile
+            clusterDestination(
+                CleanupClusterDestinationContext(
+                    cluster: cluster,
+                    onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
+                    onCleanupCompleted: reconcile
+                )
             )
         case .history:
             CleanupHistoryView(
