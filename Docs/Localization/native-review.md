@@ -255,8 +255,11 @@ Still open:
 | 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
 | 2026-10-29 | All 17 locales | Oleksandr Solokha (product owner) | Accepted the AI review pass for release in place of a native-speaker sign-off, and confirmed the `ar`/`pl`/`tr` device check | — |
 
+| 2026-10-30 | All 18 listing locales: `en-US`, `en-GB`, `en-CA`, `en-AU`, `uk`, `de-DE`, `fr-FR`, `fr-CA`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` | AI text review (listing) | Card 49: trial eligibility in English promotional text, Ukrainian catalog terms, French learning-reset wording, Canadian French grammar, Portuguese register, monthly IAP descriptions and screenshot captions; keywords unchanged | PR pending |
+
 Placeholders, plural categories and the disclosure text were checked mechanically for every
-locale, and `tools/full` passed on `develop` after the last merge.
+locale, and `tools/full` passed on `develop` after the last merge. These checks
+predate the card 49 listing review; that review ran no validation.
 
 ## Not yet reviewed by a native speaker
 
@@ -266,14 +269,19 @@ confirmed the `ar`, `pl` and `tr` device checks (layout, mirroring, plural forms
 22, 25) on 2026-10-29. The AI pass
 fixed wording and consistency; it cannot replace a person who reads the language every day.
 
-Task 44 added the same five languages to the App Store listing — subtitle, keywords,
-description, promotional text, release notes, the in-app-purchase display names, and the
-five marketing screenshot captions — and to the landing site. That copy carries the same
-caveat, with two places worth a reviewer's attention beyond the app strings: **keywords**,
-which are market research rather than translation and are the one field where a
-plausible-sounding word simply fails to be what people search for, and the **zh-Hant
-screenshot captions**, which are the only copy in the project set in Heiti TC rather than
-SF Pro and should be read at thumbnail size, not at full size.
+Card 49 reviewed all 18 App Store listing locales on 2026-10-30. This was an
+AI text review, accepted by the product owner in place of a native-speaker review.
+No native speaker has signed off the listing. The pass covered subtitles,
+descriptions, promotional text, release notes, keywords, IAP names and descriptions,
+and all 7 screenshot captions per source deck. Existing rendered images were
+inspected at about 230 pixels wide, starting with `zh-Hant`, `de`, `it` and `tr`.
+Changed captions still need re-rendering; this pass did not render them.
+
+**Keywords and rendered captions still need a person.** Search demand needs market
+knowledge, including for the unchanged Apple Ads keywords in `it`, `nl-NL` and `pl`.
+A person must review caption density and legibility, especially `zh-Hant` in Heiti TC.
+The pass ran no tests, builds, generators or uploads. Another agent owns validation.
+Subscription disclosures and app string catalogs remain unchanged.
 
 When a native speaker is available, spend the budget in this order: `ar` first, because it
 is the only language where a translation error and a *layout* error look the same to a
