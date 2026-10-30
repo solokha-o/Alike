@@ -1059,7 +1059,7 @@ METADATA = {
         # Promotional text is the one field App Store Connect accepts without a
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
-        "promotional_text": "Get storage back: see how much space you'll free before deleting anything, and no photo leaves your iPhone. 7 days of Pro free on the yearly plan. No ads, no account.",
+        "promotional_text": "See how much space you could free. Photos stay on your iPhone. Yearly Pro: 7 days free for eligible new subscribers. No ads, no account.",
         "release_notes": "Alike is ready for iOS 27, with a new widget and a quicker way to sort your photos.\n\n- A new tall widget shows how much space you can free and your largest groups, with shortcuts to Similar Photos, Screenshots and Blurred Photos. Add it from the widget gallery on your Home Screen.\n- In a group, swipe a photo to Select it, Keep it or make it the Best Shot, without opening it. Swiping works in Screenshots too, and with VoiceOver.\n- The Cleanup buttons now fit on smaller iPhones, and photos open more smoothly.\n- The widget picture keeps its colors when your Home Screen icons are tinted or clear.\n\nThe new widget, the swipes and the Cleanup buttons need iOS 27.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
@@ -1338,8 +1338,8 @@ METADATA['uk'].update(
                 'Сканування. Alike порівнює фототеку за допомогою фреймворку Apple Vision повністю на вашому '
                 'iPhone. Порівнюються знімки, близькі за часом і місцем зйомки, а знімки екрана не '
                 'потрапляють у результати, якщо ви не попросите.\n'
-                'Перегляд. Кожна група відкривається з уже обраним найкращим знімком, тож рішення займає '
-                'секунди. «Залишити лише найкраще», «Обрати все крім найкращого» або вибір вручну.\n'
+                'Перегляд. Кожна група відкривається з уже обраним найкращим кадром, тож рішення займає '
+                'секунди. «Залишити лише найкраще», «Вибрати все, крім найкращого» або вибір вручну.\n'
                 'Прибирання. Підтвердьте — і обрані фотографії потраплять до альбому «Недавно видалені», де '
                 'iOS зберігає їх близько 30 днів. Місце може не звільнитися, доки ви не видалите ці '
                 'фотографії остаточно.\n'
@@ -1355,8 +1355,8 @@ METADATA['uk'].update(
                 '\n'
                 'СТВОРЕНО ДЛЯ СПРАВЖНІХ ФОТОТЕК\n'
                 '- Три рівні чутливості — від майже ідентичних знімків до ширшого пошуку.\n'
-                '- Вибір найкращого знімка за самими фотографіями — різкістю, експозицією, обличчями й '
-                'шумом, тож у кожній групі є розумний варіант залишити.\n'
+                '- Вибір найкращого кадру за самими фотографіями — різкістю, експозицією, обличчями й '
+                'шумом, тож у кожній групі вже обрано фото, яке варто залишити.\n'
                 '- Необовʼязкове покращення одним дотиком для знімка, який ви залишаєте, — оригінал завжди '
                 'за один дотик.\n'
                 '- Позначки: «Нове», «У перегляді», «Переглянуто», «Потребує перегляду».\n'
@@ -1375,7 +1375,7 @@ METADATA['uk'].update(
                 'ВИ КЕРУЄТЕ ВСІМ\n'
                 '- Покращення не змінює оригінал: він залишається у вашій фототеці, і один дотик повертає '
                 'його.\n'
-                '- Alike вчиться на найкращих знімках, які ви обираєте самі, — на вашому пристрої, і це '
+                '- Alike вчиться на найкращих кадрах, які ви обираєте самі, — на вашому пристрої, і це '
                 'можна будь-коли скинути в налаштуваннях.\n'
                 '- «Дані та приватність» → «Видалити дані Alike» стирає всі результати сканувань, записи '
                 'прибирання й налаштування — і не торкається вашої фототеки.\n'
@@ -1383,9 +1383,9 @@ METADATA['uk'].update(
                 '\n'
                 'ALIKE FREE\n'
                 '- 3 сканування на календарний місяць\n'
-                '- Покроковий перегляд із найкращим знімком\n'
+                '- Покроковий перегляд із найкращим кадром\n'
                 '- Покращення одним дотиком, яке завжди можна скасувати\n'
-                '- Вибір найкращого знімка з урахуванням ваших рішень\n'
+                '- Вибір найкращого кадру з урахуванням ваших рішень\n'
                 '- Сортування та історія прибирання\n'
                 '- Прибирання по одному фото за раз\n'
                 '- Віджети\n'
@@ -1927,8 +1927,8 @@ METADATA['fr-FR'].update(
                 'VOUS GARDEZ LA MAIN\n'
                 '- L’original reste dans votre photothèque après l’amélioration. Un toucher permet de le '
                 'rétablir.\n'
-                '- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, '
-                'réinitialisable à tout moment dans les Réglages.\n'
+                '- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil. '
+                'Vous pouvez réinitialiser cet apprentissage à tout moment dans les Réglages.\n'
                 '- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface les '
                 "résultats d'analyse, l'historique de nettoyage et les préférences — et ne touche jamais à "
                 'votre photothèque.\n'
@@ -2193,7 +2193,7 @@ METADATA['pt-PT'].update(
                   '\n'
                   'O widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n'
                   '\n'
-                  'Tudo continua a correr no seu dispositivo: sem conta, sem envios, e o que apagas vai para '
+                  'Tudo continua a correr no teu dispositivo: sem conta, sem envios, e o que apagas vai para '
                   '«Apagado», onde o iOS o guarda durante cerca de 30 dias.\n'
                   '\n'
                   'Comentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da '
@@ -2231,7 +2231,7 @@ METADATA['fr-CA'].update(
                 '- Détection de la meilleure photo, mesurée sur les photos elles-mêmes — netteté, '
                 "exposition, visages et bruit — pour que chaque groupe s'ouvre sur un choix raisonnable à "
                 'garder.\n'
-                "- Amélioration facultative en une touche pour la photo que vous gardez, l'originale à une "
+                "- Amélioration facultative en une touche pour la photo que vous gardez, l'original à une "
                 'touche.\n'
                 "- Badges d'examen : Nouveau, En cours, Examiné, À revoir.\n"
                 '- Ajoutez ou supprimez des photos : Alike ne remet en avant que les groupes modifiés.\n'
@@ -2245,10 +2245,10 @@ METADATA['fr-CA'].update(
                 '- Treize langues et mode sombre complet.\n'
                 '\n'
                 'VOUS GARDEZ LA MAIN\n'
-                "- L'amélioration ne détruit rien : l'originale reste dans votre photothèque et une touche "
-                'la rétablit.\n'
-                '- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil, '
-                'réinitialisable en tout temps dans les Réglages.\n'
+                "- L'amélioration ne détruit rien : l'original reste dans votre photothèque et une touche "
+                'le rétablit.\n'
+                '- Alike apprend des meilleures photos que vous choisissez vous-même — sur votre appareil. '
+                'Vous pouvez réinitialiser cet apprentissage en tout temps dans les Réglages.\n'
                 '- Réglages, puis Données et confidentialité, puis Supprimer les données Alike efface les '
                 "résultats d'analyse, l'historique de nettoyage et les préférences — et ne touche jamais à "
                 'votre photothèque.\n'
