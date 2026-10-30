@@ -294,8 +294,7 @@ struct MainTabView: View {
                     await cleanupWorkspace.bestShotPersonalizedConfigProvider.reset()
                 },
                 viewModel: SettingsViewModel(
-                    cleanupReminderManager: cleanupReminderManager,
-                    ratingPrompt: ratingPrompt
+                    cleanupReminderManager: cleanupReminderManager
                 )
             )
         }
