@@ -194,18 +194,18 @@ The current English privacy policy describes optional MetricKit crash reports
 sent by the user. The pass preserved that scope and its exclusion of third-party
 crash-reporting services; it did not add an absolute claim of no crash reports.
 
+Checks after the review, on 2026-10-30:
+
+- `tools/check_site_legal_parity.py --require` failed on `main` and on the PR
+  branch: the last sentence of `pricing.disclosure_trial` in `pl` and `ar` had
+  drifted from `Docs/legal/subscription-disclosure.md`. The site is the copy, so
+  site PR #15 now restores both values from the document; the document and the
+  catalog did not change. All 24 disclosure strings now match.
+- `scripts/test-check-site.sh` passed 51 of 51 regression tests, and
+  `scripts/check-site.sh` passed on the rendered site, before and after that fix.
+
 Still open:
 
-- Task 47 must reconcile the last sentence of Polish `pricing.disclosure_trial`.
-  The site says "Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie
-  w Ustawieniach iOS." The legal document and PurchasesUI catalog say
-  "W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją
-  anulować." The site sentence has faulty verb coordination. The approved wording
-  must agree in the document, catalog and `_data/pl.yml`; both protected
-  disclosure values remain untouched in every locale in this pass.
-- A separate agent must run site checks and legal parity checks after both PRs
-  open. No tests, builds, `scripts/check-site.sh` or
-  `tools/check_site_legal_parity.py` ran in this pass, at the user's request.
 - Native-speaker and legal sign-off remain open for all 18 reviewed legal pages,
   especially liability and mandatory consumer-rights clauses. The PRs are not
   merged. The Notion card status remains unchanged.
