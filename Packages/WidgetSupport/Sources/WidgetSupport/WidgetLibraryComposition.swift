@@ -171,22 +171,11 @@ public extension WidgetPresentation {
     }
 }
 
-private extension WidgetPresentation {
-    /// A state with nothing measured to list: one sentence, no rows, no invented counts.
-    static func placeholder(caption: String, hero: WidgetHeroScene?) -> WidgetLibraryComposition {
-        WidgetLibraryComposition(
-            hero: hero,
-            rows: [],
-            caption: caption,
-            footnote: nil,
-            destination: .cleanup,
-            accessibilityLabel: caption,
-            accessibilityHint: WidgetL10n.Accessibility.openCleanup
-        )
-    }
-
-    static func overview(for snapshot: WidgetSnapshot) -> WidgetLibraryComposition {
-        let rows = [
+extension WidgetPresentation {
+    /// The three category lines, shared by the library overview and the extra-large
+    /// status widget so the two cannot list the same library differently.
+    static func libraryRows(for snapshot: WidgetSnapshot) -> [WidgetLibraryRow] {
+        [
             // Clusters, counted in groups. There is no "similar" category to read a
             // photo count off, and summing groups with photos would produce a figure
             // that means nothing.
@@ -215,6 +204,25 @@ private extension WidgetPresentation {
                 destination: .blurredPhotos
             )
         ]
+    }
+}
+
+private extension WidgetPresentation {
+    /// A state with nothing measured to list: one sentence, no rows, no invented counts.
+    static func placeholder(caption: String, hero: WidgetHeroScene?) -> WidgetLibraryComposition {
+        WidgetLibraryComposition(
+            hero: hero,
+            rows: [],
+            caption: caption,
+            footnote: nil,
+            destination: .cleanup,
+            accessibilityLabel: caption,
+            accessibilityHint: WidgetL10n.Accessibility.openCleanup
+        )
+    }
+
+    static func overview(for snapshot: WidgetSnapshot) -> WidgetLibraryComposition {
+        let rows = libraryRows(for: snapshot)
 
         let footnote = snapshot.lastScanDate.map {
             WidgetL10n.Status.lastScanned(WidgetFormatting.timestamp($0, timeStyle: .omitted))

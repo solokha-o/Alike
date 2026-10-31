@@ -47,6 +47,11 @@ public enum WidgetFormatting {
         value.formatted(.number.locale(locale(basedOn: base)))
     }
 
+    /// A whole percentage — «7%» — spelled the way the rest of the app spells shares.
+    public static func percent(_ fraction: Double, basedOn base: Locale = .current) -> String {
+        fraction.formatted(.percent.precision(.fractionLength(0)).locale(locale(basedOn: base)))
+    }
+
     /// A timestamp spelled the way the rest of the app spells timestamps.
     public static func timestamp(
         _ date: Date,

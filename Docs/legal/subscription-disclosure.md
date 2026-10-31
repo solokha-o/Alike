@@ -36,6 +36,26 @@ Rendered by `disclosure` in
 
 ### Paragraph 1 — renewal and billing
 
+**EN-AU**
+
+> Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
+
+**EN-CA**
+
+> Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
+
+**PT-PT**
+
+> As subscrições renovam-se automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. O pagamento é cobrado na tua Conta Apple.
+
+**FR-CA**
+
+> Les abonnements sont renouvelés automatiquement, sauf annulation au moins 24 heures avant la fin de la période en cours. Le paiement est débité de votre compte Apple.
+
+**EN-GB**
+
+> Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
+
 **EN**
 
 > Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple Account.
@@ -90,6 +110,26 @@ Rendered by `disclosure` in
 
 ### Paragraph 2 — trial and cancellation
 
+**EN-AU**
+
+> The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.
+
+**EN-CA**
+
+> The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.
+
+**PT-PT**
+
+> O plano anual inclui um período experimental gratuito de 7 dias para novos subscritores elegíveis. A faturação começa no fim do período experimental, salvo se cancelares a subscrição pelo menos 24 horas antes. Podes gerir ou cancelar a subscrição a qualquer momento nas Definições do iOS.
+
+**FR-CA**
+
+> Le forfait annuel comprend un essai gratuit de 7 jours pour les nouveaux abonnés admissibles. La facturation commence à la fin de l’essai, sauf si vous annulez l’abonnement au moins 24 heures avant la fin de l’essai. Vous pouvez gérer ou annuler votre abonnement en tout temps dans les Réglages iOS.
+
+**EN-GB**
+
+> The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.
+
 **EN**
 
 > The yearly plan includes a 7-day free trial for eligible new subscribers. Billing starts when the trial ends unless you cancel at least 24 hours before then. Manage or cancel anytime in iOS Settings.
@@ -100,7 +140,7 @@ Rendered by `disclosure` in
 
 **ES-419**
 
-> El plan anual incluye una prueba gratuita de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro empieza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes gestionar o cancelar la suscripción cuando quieras en Configuración de iOS.
+> El plan anual incluye una prueba gratis de 7 días para los nuevos suscriptores que cumplan los requisitos. El cobro comienza cuando termina la prueba, a menos que canceles al menos 24 horas antes. Puedes administrar o cancelar la suscripción cuando quieras en Configuración de iOS.
 
 **ES**
 
@@ -128,7 +168,7 @@ Rendered by `disclosure` in
 
 **PL**
 
-> Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. Subskrypcją możesz zarządzać lub anulować ją w dowolnym momencie w Ustawieniach iOS.
+> Plan roczny obejmuje 7-dniowy bezpłatny okres próbny dla uprawnionych nowych subskrybentów. Naliczanie opłat zaczyna się po zakończeniu okresu próbnego, chyba że anulujesz subskrypcję co najmniej 24 godziny wcześniej. W Ustawieniach iOS możesz w dowolnym momencie zarządzać subskrypcją lub ją anulować.
 
 **TR**
 
@@ -140,7 +180,7 @@ Rendered by `disclosure` in
 
 **AR**
 
-> تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ قبل ذلك بـ 24 ساعة على الأقل. يمكنك الإدارة أو الإلغاء في أي وقت من إعدادات iOS.
+> تشمل الخطة السنوية تجربة مجانية مدتها 7 أيام للمشتركين الجدد المؤهلين. تبدأ الفوترة عند انتهاء التجربة ما لم تُلغِ الاشتراك قبل انتهائها بـ 24 ساعة على الأقل. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت من إعدادات iOS.
 
 The phrase "for eligible new subscribers" is load-bearing. Trial eligibility is
 decided by StoreKit per subscription group, and a customer who already used the
@@ -155,6 +195,11 @@ must not smooth it away.
 
 | Locale | Privacy Policy | Terms of Use |
 | --- | --- | --- |
+| `en-AU` | Privacy Policy | Terms of Use |
+| `en-CA` | Privacy Policy | Terms of Use |
+| `pt-PT` | Política de Privacidade | Termos de Utilização |
+| `fr-CA` | Politique de confidentialité | Conditions d’utilisation |
+| `en-GB` | Privacy Policy | Terms of Use |
 | `en` | Privacy Policy | Terms of Use |
 | `uk` | Політика конфіденційності | Умови використання |
 | `es-419` | Política de privacidad | Términos de uso |

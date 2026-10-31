@@ -12,6 +12,9 @@ struct WidgetSnapshotEntry: TimelineEntry {
     /// What the circular ring measures the reclaimable estimate against. `nil` for a
     /// 1.4.x payload, which draws the figure without a ring.
     var libraryTotalBytes: Int64? = nil
+    /// What the extra-large family reads beyond the state: category counts, the premium
+    /// flag, the library size and the largest groups. `nil` when there is no snapshot.
+    var snapshot: WidgetSnapshot? = nil
 }
 
 /// Reads the shared snapshot and hands WidgetKit a single entry.
@@ -38,7 +41,8 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
         return WidgetSnapshotEntry(
             date: Date(),
             state: WidgetPresentation.displayState(for: snapshot),
-            libraryTotalBytes: snapshot.libraryTotalBytes
+            libraryTotalBytes: snapshot.libraryTotalBytes,
+            snapshot: snapshot
         )
     }
 
@@ -49,7 +53,8 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
         completion(WidgetSnapshotEntry(
             date: Date(),
             state: WidgetPresentation.displayState(for: snapshot),
-            libraryTotalBytes: snapshot?.libraryTotalBytes
+            libraryTotalBytes: snapshot?.libraryTotalBytes,
+            snapshot: snapshot
         ))
     }
 
@@ -59,7 +64,8 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
             WidgetSnapshotEntry(
                 date: $0.date,
                 state: $0.state,
-                libraryTotalBytes: snapshot?.libraryTotalBytes
+                libraryTotalBytes: snapshot?.libraryTotalBytes,
+                snapshot: snapshot
             )
         }
         completion(Timeline(entries: entries, policy: .never))

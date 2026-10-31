@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 /// RTL guard (task 45).
 ///
@@ -13,7 +14,7 @@ import XCTest
 /// whole symbol names rather than prefixes — a prefix list built from `arrow.right.square` never
 /// saw `arrow.up.right.square`, and a prefix list wide enough to catch it would have condemned
 /// the resize glyph.
-final class DirectionalSymbolTests: XCTestCase {
+@Suite struct DirectionalSymbolTests {
     private static let bannedSymbols: Set<String> = [
         "chevron.left", "chevron.right",
         "chevron.left.circle", "chevron.right.circle",
@@ -36,13 +37,13 @@ final class DirectionalSymbolTests: XCTestCase {
 
     private static let symbolLiteral = try! NSRegularExpression(pattern: "\"([a-z0-9.]+)\"")
 
-    func testNoPhysicalDirectionSymbolsInAnyPackage() throws {
+    @Test func testNoPhysicalDirectionSymbolsInAnyPackage() throws {
         var offenders: [String] = []
 
         for package in try Self.packageDirectories() {
             let sources = package.appendingPathComponent("Sources")
             guard FileManager.default.fileExists(atPath: sources.path) else { continue }
-            let enumerator = try XCTUnwrap(
+            let enumerator = try #require(
                 FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil)
             )
             for case let url as URL in enumerator where url.pathExtension == "swift" {
@@ -55,7 +56,7 @@ final class DirectionalSymbolTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(
+        #expect(
             offenders.isEmpty,
             """
             Physical-direction SF Symbols do not mirror in a right-to-left layout. Use the \

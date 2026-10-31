@@ -63,8 +63,16 @@ PHONE_SCREEN_RECT = (52, 46, 970, 2036)
 # Directory names under Docs/images/, which are the app's own language codes,
 # not the App Store Connect ones. UPLOAD_SAFE_LOCALES in
 # tools/prepare_app_store_upload_bundle.py maps es-419 onto App Store Connect's
-# es-MX slot; nothing here needs to know that.
-LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "it", "nl", "pl", "tr", "zh-Hant", "ar")
+# es-MX slot; nothing here needs to know that. pt-PT is the one listing
+# language the app is not translated into: it has its own copy and deck, but
+# no captures of its own (RAW_SOURCE_LOCALE below).
+LOCALES = ("en-US", "uk", "de", "fr", "es", "es-419", "pt-BR", "pt-PT", "it", "nl", "pl", "tr", "zh-Hant", "ar")
+
+# The app ships pt-BR only, so a device set to European Portuguese shows the
+# pt-BR UI. Fresh pt-PT captures would be pixel-for-pixel the pt-BR ones;
+# pointing at them keeps one set of captures instead of a copied folder that
+# drifts the next time pt-BR is re-shot.
+RAW_SOURCE_LOCALE = {"pt-PT": "pt-BR"}
 
 # Han glyphs carry far more meaning per square than Latin ones, so a headline
 # set at the shared 112 start size reads as a wall rather than a line. Starting
@@ -300,7 +308,7 @@ COPY = {
         (
             "НА ПРИСТРОЇ",
             "Знайдіть схожі\nфотографії",
-            "Alike сканує медіатеку через Apple Vision повністю на вашому iPhone.",
+            "Alike сканує фототеку через Apple Vision повністю на вашому iPhone.",
         ),
         (
             "ЧЕРГА",
@@ -308,7 +316,7 @@ COPY = {
             "Групи з позначками перегляду — завжди видно, що лишилось.",
         ),
         (
-            "НАЙКРАЩИЙ ЗНІМОК",
+            "НАЙКРАЩИЙ КАДР",
             "Найкраще фото\nвже обрано",
             "Alike виділяє найвдаліший кадр у групі. Вам лишається підтвердити.",
         ),
@@ -325,12 +333,12 @@ COPY = {
         (
             "ОРИГІНАЛ ПОРУЧ",
             "Покращте кадр,\nзбережіть оригінал",
-            "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки.",
+            "Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з фототеки.",
         ),
         (
-            "ДОМАШНІЙ ЕКРАН",
+            "ГОЛОВНИЙ ЕКРАН",
             "Видно, не\nвідкриваючи Alike",
-            "Два віджети: скільки місця можна звільнити і що лишилось у медіатеці.",
+            "Два віджети: скільки місця можна звільнити і що лишилось у фототеці.",
         ),
     ],
     # The line break in each headline is chosen for that language, not carried
@@ -372,7 +380,7 @@ COPY = {
         (
             "HOME-BILDSCHIRM",
             "Sichtbar, ohne\nAlike zu öffnen",
-            "Zwei Widgets: der Speicher, der frei werden kann, und was die Mediathek noch hält.",
+            "Zwei Widgets: der Speicher, den du freigeben kannst, und deine Mediathek im Überblick.",
         ),
     ],
     "fr": [
@@ -527,6 +535,46 @@ COPY = {
             "Dois widgets: o espaço que dá para recuperar e o que a fototeca ainda guarda.",
         ),
     ],
+    # European Portuguese, not a respelling of pt-BR: the article before the
+    # possessive ("a sua fototeca"), no "você", and Portugal's own words —
+    # "ecrã", "eliminar", "rever", "poupança".
+    "pt-PT": [
+        (
+            "NO DISPOSITIVO",
+            "Encontra fotografias\nparecidas",
+            "O Alike analisa a tua fototeca com Apple Vision, no teu iPhone.",
+        ),
+        (
+            "UMA SÓ FILA",
+            "Cada grupo,\npronto a rever",
+            "Os grupos têm indicadores de revisão: vês sempre o que falta.",
+        ),
+        (
+            "MELHOR FOTOGRAFIA",
+            "A melhor fotografia\njá está escolhida",
+            "O Alike destaca a melhor fotografia de cada grupo. Só tens de confirmar.",
+        ),
+        (
+            "COMPARAR",
+            "Revê antes\nde limpar",
+            "Revê em tamanho real. Nada é apagado sem a tua confirmação.",
+        ),
+        (
+            "ESPAÇO LIVRE",
+            "Recupera os\ngigabytes",
+            "Fotografias selecionadas e espaço recuperável estimado, enquanto limpas.",
+        ),
+        (
+            "SEMPRE REVERSÍVEL",
+            "Melhora a fotografia,\nmantém o original",
+            "Um toque melhora a melhor fotografia. Outro repõe o original, que permanece na tua fototeca.",
+        ),
+        (
+            "ECRÃ PRINCIPAL",
+            "Visível sem\nabrir o Alike",
+            "Dois widgets: o espaço que podes recuperar e um resumo da tua fototeca.",
+        ),
+    ],
     "it": [
         (
             "SUL DISPOSITIVO",
@@ -546,11 +594,11 @@ COPY = {
         (
             "CONFRONTA",
             "Controlla prima\ndi eliminare",
-            "Revisione a dimensione piena. Niente sparisce senza conferma.",
+            "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
             "SPAZIO LIBERO",
-            "Guarda tornare\ni gigabyte",
+            "Recupera i tuoi\ngigabyte",
             "Foto selezionate e risparmio stimato, mentre fai pulizia.",
         ),
         (
@@ -577,7 +625,7 @@ COPY = {
         ),
         (
             "BESTE OPNAME",
-            "De blijver is\nal gekozen",
+            "De beste foto\nis al gekozen",
             "Alike licht de beste opname uit. Jij hoeft alleen te bevestigen.",
         ),
         (
@@ -592,7 +640,7 @@ COPY = {
         ),
         (
             "ALTIJD OMKEERBAAR",
-            "Maak de blijver beter,\nhoud het origineel",
+            "Verbeter je foto,\nbehoud het origineel",
             "Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek.",
         ),
         (
@@ -605,7 +653,7 @@ COPY = {
         (
             "NA URZĄDZENIU",
             "Znajdź zdjęcia,\nktóre są podobne",
-            "Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie.",
+            "Alike skanuje bibliotekę za pomocą Apple Vision, w całości na iPhonie.",
         ),
         (
             "JEDNA KOLEJKA",
@@ -614,7 +662,7 @@ COPY = {
         ),
         (
             "NAJLEPSZE UJĘCIE",
-            "Zdjęcie do zostawienia\njest już wybrane",
+            "Najlepsze ujęcie\njuż wybrane",
             "Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz.",
         ),
         (
@@ -642,7 +690,7 @@ COPY = {
         (
             "CİHAZDA",
             "Birbirine benzeyen\nfotoğrafları bul",
-            "Alike, kitaplığını Apple Vision ile tamamen iPhone'unda tarar.",
+            "Alike, fotoğraf arşivini Apple Vision ile tamamen iPhone'unda tarar.",
         ),
         (
             "TEK KUYRUK",
@@ -661,18 +709,18 @@ COPY = {
         ),
         (
             "BOŞ ALAN",
-            "Gigabaytların\ngeri gelişini gör",
+            "Gigabaytlarca\nalan kazan",
             "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
         ),
         (
             "GERİ ALINABİLİR",
-            "Kareyi iyileştir,\nözgünü sakla",
-            "Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz.",
+            "Kareyi iyileştir,\norijinali sakla",
+            "Bir dokunuş en iyi kareyi iyileştirir. Bir dokunuş orijinali geri getirir; orijinal fotoğraf arşivinde kalır.",
         ),
         (
             "ANA EKRAN",
             "Alike’ı açmadan\ngörünür",
-            "İki widget: kazanabileceğin alan ve kitaplığında hâlâ duranlar.",
+            "İki widget: kazanabileceğin alan ve fotoğraf arşivinin özeti.",
         ),
     ],
     # Chinese headlines carry the same idea in about half the characters, so the
@@ -696,7 +744,7 @@ COPY = {
         ),
         (
             "先比對",
-            "任何照片消失前\n都先看過",
+            "刪除任何照片前\n都先看過",
             "以原尺寸檢視。未經你確認，不會刪除任何東西。",
         ),
         (
@@ -840,6 +888,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true", help="Validate sources and layouts without writing PNGs.")
     return parser.parse_args()
+
+
+def raw_source(locale: str, name: str) -> Path:
+    return SOURCE_ROOT / RAW_SOURCE_LOCALE.get(locale, locale) / name
 
 
 def selected_locales(raw: str) -> list[str]:
@@ -1453,7 +1505,7 @@ def validate_sources(locales: list[str]) -> None:
             raise SystemExit(f"Missing marketing copy for {len(SLIDES)} slides in {locale}")
         validate_glyph_coverage(locale)
         for slide in SLIDES:
-            source = SOURCE_ROOT / locale / slide.source
+            source = raw_source(locale, slide.source)
             if not source.exists():
                 missing.append(source)
     if missing:
@@ -1513,7 +1565,7 @@ def render_locale(variant: Variant, locale: str, output_root: Path, quiet: bool 
     rendered: list[Path] = []
     for index, slide in enumerate(SLIDES):
         image = render_slide(
-            index, slide, variant, COPY[locale][index], SOURCE_ROOT / locale / slide.source, locale
+            index, slide, variant, COPY[locale][index], raw_source(locale, slide.source), locale
         )
         assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
         target = locale_output / slide.source
@@ -1572,7 +1624,7 @@ def render_lead_variants() -> None:
         output.mkdir(parents=True, exist_ok=True)
         rendered: list[Path] = []
         for index, (slide, copy) in enumerate(zip(SLIDES, deck)):
-            image = render_slide(index, slide, variant, copy, SOURCE_ROOT / locale / slide.source, locale)
+            image = render_slide(index, slide, variant, copy, raw_source(locale, slide.source), locale)
             assert image.size == CANVAS, f"{slide.source} rendered at {image.size}"
             target = output / slide.source
             image.save(target, optimize=True)

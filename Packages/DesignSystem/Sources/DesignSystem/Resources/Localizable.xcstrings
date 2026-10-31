@@ -1,1206 +1,1637 @@
 {
-  "sourceLanguage": "en",
-  "version": "1.1",
-  "strings": {
-    "designSystem.alikeReaction.alikeCelebratesYourCompletedCleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike celebrates your completed cleanup"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "designSystem.alikeReaction.alikeCelebratesYourCompletedCleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتفي Alike بإتمام عملية التنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike радіє завершеному очищенню"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike feiert dein abgeschlossenes Aufräumen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike celebra tu limpieza completada"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebrates your completed cleanup"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike celebra tu limpieza completada"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebrates your completed cleanup"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike comemora sua limpeza concluída"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebrates your completed cleanup"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike feiert dein abgeschlossenes Aufräumen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebrates your completed cleanup"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike célèbre votre nettoyage terminé"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebra tu limpieza completada"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike festeggia la pulizia completata"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike celebra tu limpieza completada"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike viert je voltooide opruiming"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike célèbre votre nettoyage terminé"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike świętuje ukończone porządki"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike célèbre votre nettoyage terminé"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tamamladığın temizliği kutluyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike festeggia la pulizia completata"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 為你完成的清理喝采"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike viert je voltooide opruiming"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يحتفي Alike بإتمام عملية التنظيف"
-          }
-        }
-      }
-    },
-    "designSystem.alikeReaction.alikeFoundCleanupOpportunities": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike found cleanup opportunities"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike świętuje ukończone porządki"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike знайшов можливості для очищення"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike comemora sua limpeza concluída"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike encontró oportunidades de limpieza"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike celebra a tua limpeza concluída"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha encontrado oportunidades de limpieza"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tamamladığın temizliği kutluyor"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike encontrou oportunidades de limpeza"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike радіє завершеному очищенню"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike hat Aufräummöglichkeiten gefunden"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike a trouvé des possibilités de nettoyage"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha trovato occasioni di pulizia"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike heeft opruimkansen gevonden"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike znalazł okazje do porządków"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike temizlik fırsatları buldu"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 找到可清理的項目"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "عثر Alike على فرص للتنظيف"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 為你完成的清理喝采"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeHasCleanupOpportunitiesReady": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike has cleanup opportunities ready for review"
+    "designSystem.alikeReaction.alikeFoundCleanupOpportunities" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عثر Alike على فرص للتنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike має готові до перегляду можливості для очищення"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hat Aufräummöglichkeiten gefunden"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tiene oportunidades de limpieza listas para revisar"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike found cleanup opportunities"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tiene oportunidades de limpieza listas para revisar"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike found cleanup opportunities"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tem oportunidades de limpeza prontas para revisão"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike found cleanup opportunities"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike hat Aufräummöglichkeiten zur Durchsicht bereit"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike found cleanup opportunities"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike a des possibilités de nettoyage prêtes à être examinées"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha encontrado oportunidades de limpieza"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha occasioni di pulizia pronte da rivedere"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike encontró oportunidades de limpieza"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike heeft opruimkansen klaarstaan om te bekijken"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a trouvé des possibilités de nettoyage"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ma gotowe okazje do porządków"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a trouvé des possibilités de nettoyage"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike gözden geçirebileceğin temizlik fırsatları hazırladı"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha trovato occasioni di pulizia"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 已備妥可清理的項目供你檢視"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft opruimkansen gevonden"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لدى Alike فرص تنظيف جاهزة للمراجعة"
-          }
-        }
-      }
-    },
-    "designSystem.alikeReaction.alikeIsReadyForCleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike is ready for cleanup"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike znalazł okazje do porządków"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike готовий до очищення"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike encontrou oportunidades de limpeza"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está listo para limpiar"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike encontrou oportunidades de limpeza"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está listo para limpiar"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike temizlik fırsatları buldu"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está pronto para a limpeza"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike знайшов можливості для очищення"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ist bereit zum Aufräumen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike est prêt pour le nettoyage"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike è pronto per la pulizia"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike is klaar om op te ruimen"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike jest gotowy do porządków"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike temizliğe hazır"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 已準備好開始清理"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "‏Alike جاهز للتنظيف"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 找到可清理的項目"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeNeedsPhotoLibraryPermission": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike needs photo library permission to continue"
+    "designSystem.alikeReaction.alikeHasCleanupOpportunitiesReady" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لدى Alike فرص تنظيف جاهزة للمراجعة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike потрібен доступ до фототеки, щоб продовжити"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hat Aufräummöglichkeiten zur Durchsicht bereit"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike necesita permiso para acceder a tu fototeca para continuar"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has cleanup opportunities ready for review"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike necesita permiso para acceder a tu fototeca para continuar"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has cleanup opportunities ready for review"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike precisa de acesso à sua fototeca para continuar"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has cleanup opportunities ready for review"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike benötigt Zugriff auf deine Mediathek, um fortzufahren"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike has cleanup opportunities ready for review"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike a besoin d’accéder à votre photothèque pour continuer"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tiene oportunidades de limpieza listas para revisar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha bisogno dell'accesso alla libreria foto per continuare"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tiene oportunidades de limpieza listas para revisar"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike heeft toegang tot je fotobibliotheek nodig om verder te gaan"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a des possibilités de nettoyage prêtes à être examinées"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike potrzebuje dostępu do biblioteki zdjęć, aby kontynuować"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a des possibilités de nettoyage prêtes à être examinées"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike'ın devam edebilmesi için fotoğraf kitaplığı izni gerekiyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha occasioni di pulizia pronte da rivedere"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 需要取用照片圖庫才能繼續"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft opruimkansen klaarstaan om te bekijken"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور للمتابعة"
-          }
-        }
-      }
-    },
-    "designSystem.alikeReaction.alikeNoticedNewPhotosLibrary": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike noticed new photos in your library"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ma gotowe okazje do porządków"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike помітив нові фото у вашій фототеці"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tem oportunidades de limpeza prontas para revisão"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike detectó fotos nuevas en tu fototeca"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tem oportunidades de limpeza prontas para revisão"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha detectado fotos nuevas en tu fototeca"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike gözden geçirebileceğin temizlik fırsatları hazırladı"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike notou fotos novas na sua fototeca"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike має готові до перегляду можливості для очищення"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike hat neue Fotos in deiner Mediathek entdeckt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike a repéré de nouvelles photos dans votre photothèque"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha notato nuove foto nella tua libreria"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike heeft nieuwe foto's in je bibliotheek gezien"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike zauważył nowe zdjęcia w Twojej bibliotece"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike kitaplığında yeni fotoğraflar fark etti"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 發現你的圖庫有新照片"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لاحظ Alike وجود صور جديدة في مكتبتك"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 已備妥可清理的項目供你檢視"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeRanIntoProblemWith": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ran into a problem with the scan"
+    "designSystem.alikeReaction.alikeIsReadyForCleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏Alike جاهز للتنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike не зміг завершити сканування"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ist bereit zum Aufräumen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tuvo un problema con el análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready for cleanup"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha tenido un problema con el análisis"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready for cleanup"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike teve um problema com a análise"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready for cleanup"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Beim Scan ist ein Problem aufgetreten"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready for cleanup"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike a rencontré un problème lors de l’analyse"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está listo para limpiar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike ha riscontrato un problema con la scansione"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está listo para limpiar"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike liep tegen een probleem met de scan aan"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike est prêt pour le nettoyage"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike napotkał problem podczas skanowania"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike est prêt pour le nettoyage"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike tarama sırasında bir sorunla karşılaştı"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike è pronto per la pulizia"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 掃描時發生問題"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is klaar om op te ruimen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "واجه Alike مشكلة أثناء الفحص"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike jest gotowy do porządków"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está pronto para a limpeza"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está pronto para a limpeza"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike temizliğe hazır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike готовий до очищення"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 已準備好開始清理"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeReadyHelpOrganizePhoto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike is ready to help organize your photo library"
+    "designSystem.alikeReaction.alikeNeedsPhotoLibraryPermission" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Alike إلى إذن الوصول إلى مكتبة الصور للمتابعة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike готовий допомогти впорядкувати фототеку"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike benötigt Zugriff auf deine Mediathek, um fortzufahren"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está listo para ayudarte a organizar tu fototeca"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo library permission to continue"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está listo para ayudarte a organizar tu fototeca"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo library permission to continue"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike está pronto para ajudar a organizar sua fototeca"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo library permission to continue"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike hilft dir gern, deine Mediathek zu ordnen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike needs photo library permission to continue"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike est prêt à vous aider à organiser votre photothèque"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike necesita permiso para acceder a tu fototeca para continuar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike è pronto ad aiutarti a organizzare la libreria foto"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike necesita permiso para acceder a tu fototeca para continuar"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike helpt je graag je fotobibliotheek te ordenen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a besoin d’accéder à votre photothèque pour continuer"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike jest gotowy pomóc uporządkować bibliotekę zdjęć"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a besoin d’accéder à votre photothèque pour continuer"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike fotoğraf kitaplığını düzenlemene yardıma hazır"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha bisogno dell'accesso alla libreria foto per continuare"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 已準備好協助你整理照片圖庫"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft toegang tot je fotobibliotheek nodig om verder te gaan"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "‏Alike جاهز لمساعدتك في تنظيم مكتبة صورك"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike potrzebuje dostępu do biblioteki zdjęć, aby kontynuować"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike precisa de acesso à sua fototeca para continuar"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike precisa de acesso à tua fototeca para continuar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike'ın devam edebilmesi için fotoğraf arşivi izni gerekiyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike потрібен доступ до фототеки, щоб продовжити"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 需要取用照片圖庫才能繼續"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeSaysPhotoLibraryAll": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike says your photo library is all caught up"
+    "designSystem.alikeReaction.alikeNoticedNewPhotosLibrary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لاحظ Alike وجود صور جديدة في مكتبتك"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike повідомляє, що у фототеці все впорядковано"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hat neue Fotos in deiner Mediathek entdeckt"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike dice que tu fototeca está al día"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike noticed new photos in your library"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike dice que tu fototeca está al día"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike noticed new photos in your library"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike diz que sua fototeca está em dia"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike noticed new photos in your library"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike sagt, deine Mediathek ist auf dem neuesten Stand"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike noticed new photos in your library"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike indique que votre photothèque est à jour"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha detectado fotos nuevas en tu fototeca"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike dice che la tua libreria foto è tutta in ordine"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike detectó fotos nuevas en tu fototeca"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike zegt dat je fotobibliotheek helemaal bij is"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a repéré de nouvelles photos dans votre photothèque"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike uważa, że Twoja biblioteka zdjęć jest uporządkowana"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a repéré de nouvelles photos dans votre photothèque"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike fotoğraf kitaplığının tamamen düzenli olduğunu söylüyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha notato nuove foto nella tua libreria"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 表示你的照片圖庫都整理好了"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike heeft nieuwe foto's in je bibliotheek gezien"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يقول Alike إن مكتبة صورك مرتّبة بالكامل"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike zauważył nowe zdjęcia w Twojej bibliotece"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike notou fotos novas na sua fototeca"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike notou fotografias novas na tua fototeca"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike arşivinde yeni fotoğraflar fark etti"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike помітив нові фото у вашій фототеці"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 發現你的圖庫有新照片"
           }
         }
       }
     },
-    "designSystem.alikeReaction.alikeSearchingForSimilarPhotos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike searching for similar photos"
+    "designSystem.alikeReaction.alikeRanIntoProblemWith" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "واجه Alike مشكلة أثناء الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike шукає схожі фотографії"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Scan ist ein Problem aufgetreten"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike buscando fotos similares"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ran into a problem with the scan"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike buscando fotos similares"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ran into a problem with the scan"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike procurando fotos semelhantes"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ran into a problem with the scan"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike sucht nach ähnlichen Fotos"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ran into a problem with the scan"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike recherche des photos similaires"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha tenido un problema con el análisis"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike sta cercando foto simili"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tuvo un problema con el análisis"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike zoekt naar vergelijkbare foto's"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a rencontré un problème lors de l’analyse"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike szuka podobnych zdjęć"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a rencontré un problème lors de l’analyse"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike benzer fotoğrafları arıyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike ha riscontrato un problema con la scansione"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alike 正在尋找相似的照片"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike liep tegen een probleem met de scan aan"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يبحث Alike عن الصور المتشابهة"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike napotkał problem podczas skanowania"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike teve um problema com a análise"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike teve um problema com a análise"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike tarama sırasında bir sorunla karşılaştı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike не зміг завершити сканування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 掃描時發生問題"
           }
         }
       }
     },
-    "designSystem.photoGridColumnPreference.chooseHowManyColumnsUsed": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose how many columns are used to display photos"
+    "designSystem.alikeReaction.alikeReadyHelpOrganizePhoto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏Alike جاهز لمساعدتك في تنظيم مكتبة صورك"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Виберіть кількість стовпців для відображення фото"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike hilft dir gern, deine Mediathek zu ordnen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige cuántas columnas se usan para mostrar las fotos"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready to help organize your photo library"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige cuántas columnas se usan para mostrar las fotos"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready to help organise your photo library"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolha quantas colunas são usadas para exibir as fotos"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready to help organize your photo library"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wähle, in wie vielen Spalten Fotos angezeigt werden"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike is ready to help organise your photo library"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez le nombre de colonnes utilisées pour afficher les photos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está listo para ayudarte a organizar tu fototeca"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli quante colonne usare per mostrare le foto"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está listo para ayudarte a organizar tu fototeca"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kies met hoeveel kolommen foto's worden weergegeven"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike est prêt à vous aider à organiser votre photothèque"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wybierz, w ilu kolumnach wyświetlać zdjęcia"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike est prêt à vous aider à organiser votre photothèque"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotoğrafların kaç sütunda gösterileceğini seç"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike è pronto ad aiutarti a organizzare la libreria foto"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "選擇顯示照片時要使用幾欄"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike helpt je graag je fotobibliotheek te ordenen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "اختر عدد الأعمدة المستخدمة لعرض الصور"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike jest gotowy pomóc uporządkować bibliotekę zdjęć"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike está pronto para ajudar a organizar sua fototeca"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike está pronto para ajudar a organizar a tua fototeca"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike fotoğraf arşivini düzenlemene yardıma hazır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike готовий допомогти впорядкувати фототеку"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 已準備好協助你整理照片圖庫"
           }
         }
       }
     },
-    "designSystem.photoGridColumnPreference.columns": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld Spalte"
+    "designSystem.alikeReaction.alikeSaysPhotoLibraryAll" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يقول Alike إن مكتبة صورك مرتّبة بالكامل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike sagt, deine Mediathek ist auf dem neuesten Stand"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike says your photo library is all caught up"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike says your photo library is all caught up"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike says your photo library is all caught up"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike says your photo library is all caught up"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike dice que tu fototeca está al día"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike dice que tu fototeca está al día"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike indique que votre photothèque est à jour"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike indique que votre photothèque est à jour"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike dice che la tua libreria foto è tutta in ordine"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike zegt dat je fotobibliotheek helemaal bij is"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike uważa, że Twoja biblioteka zdjęć jest uporządkowana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike diz que sua fototeca está em dia"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Alike indica que a tua fototeca está atualizada"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike fotoğraf arşivinin tamamen düzenli olduğunu söylüyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike повідомляє, що у фототеці все впорядковано"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 表示你的照片圖庫都整理好了"
+          }
+        }
+      }
+    },
+    "designSystem.alikeReaction.alikeSearchingForSimilarPhotos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يبحث Alike عن الصور المتشابهة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike sucht nach ähnlichen Fotos"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike searching for similar photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike searching for similar photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike searching for similar photos"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike searching for similar photos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike buscando fotos similares"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike buscando fotos similares"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike recherche des photos similaires"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike recherche des photos similaires"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike sta cercando foto simili"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike zoekt naar vergelijkbare foto's"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike szuka podobnych zdjęć"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike procurando fotos semelhantes"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike a procurar fotografias semelhantes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike benzer fotoğrafları arıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike шукає схожі фотографії"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alike 正在尋找相似的照片"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.chooseHowManyColumnsUsed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر عدد الأعمدة المستخدمة لعرض الصور"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle, in wie vielen Spalten Fotos angezeigt werden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose how many columns are used to display photos"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose how many columns are used to display photos"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose how many columns are used to display photos"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose how many columns are used to display photos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige cuántas columnas se usan para mostrar las fotos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige cuántas columnas se usan para mostrar las fotos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez le nombre de colonnes utilisées pour afficher les photos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez le nombre de colonnes utilisées pour afficher les photos"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli quante colonne usare per mostrare le foto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies met hoeveel kolommen foto's worden weergegeven"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz, w ilu kolumnach wyświetlać zdjęcia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha quantas colunas são usadas para exibir as fotos"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe quantas colunas usar para mostrar as fotografias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoğrafların kaç sütunda gösterileceğini seç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виберіть кількість стовпців для відображення фото"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇顯示照片時要使用幾欄"
+          }
+        }
+      }
+    },
+    "designSystem.photoGridColumnPreference.columns" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld أعمدة"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld Spalten"
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld عمودًا"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld عمود"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld عمود"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "عمودان"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld عمود"
                 }
               }
             }
           }
         },
-        "en": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld Column"
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Spalte"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld Columns"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Spalten"
                 }
               }
             }
           }
         },
-        "es": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld columna"
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Column"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld columnas"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Columns"
                 }
               }
             }
           }
         },
-        "es-419": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld columna"
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Column"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld columnas"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Columns"
                 }
               }
             }
           }
         },
-        "fr": {
-          "variations": {
-            "plural": {
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colonnes"
+        "en-CA" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Column"
                 }
               },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colonne"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colonnes"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Columns"
                 }
               }
             }
           }
         },
-        "it": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colonna"
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Column"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colonne"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Columns"
                 }
               }
             }
           }
         },
-        "nl": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld kolom"
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld columna"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld kolommen"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld columnas"
                 }
               }
             }
           }
         },
-        "pl": {
-          "variations": {
-            "plural": {
-              "few": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Kolumny: %1$lld"
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld columna"
                 }
               },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Kolumny: %1$lld"
-                }
-              },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Kolumny: %1$lld"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Kolumny: %1$lld"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld columnas"
                 }
               }
             }
           }
         },
-        "pt-BR": {
-          "variations": {
-            "plural": {
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colunas"
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonnes"
                 }
               },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld coluna"
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonne"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld colunas"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonnes"
                 }
               }
             }
           }
         },
-        "tr": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld sütun"
+        "fr-CA" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonnes"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld sütun"
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonne"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonnes"
                 }
               }
             }
           }
         },
-        "uk": {
-          "variations": {
-            "plural": {
-              "few": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld колонки"
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonna"
                 }
               },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld колонок"
-                }
-              },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld колонка"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld колонки"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colonne"
                 }
               }
             }
           }
         },
-        "zh-Hant": {
-          "variations": {
-            "plural": {
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld 欄"
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld kolom"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld kolommen"
                 }
               }
             }
           }
         },
-        "ar": {
-          "variations": {
-            "plural": {
-              "few": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld أعمدة"
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kolumny: %1$lld"
                 }
               },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld عمودًا"
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kolumny: %1$lld"
                 }
               },
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld عمود"
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kolumny: %1$lld"
                 }
               },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld عمود"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kolumny: %1$lld"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colunas"
                 }
               },
-              "two": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "عمودان"
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld coluna"
                 }
               },
-              "zero": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$lld عمود"
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colunas"
+                }
+              }
+            }
+          }
+        },
+        "pt-PT" : {
+          "variations" : {
+            "plural" : {
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colunas"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld coluna"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld colunas"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld sütun"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld sütun"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld колонки"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld колонок"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld колонка"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld колонки"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld 欄"
                 }
               }
             }
@@ -1208,420 +1639,571 @@
         }
       }
     },
-    "designSystem.photoGridColumnPreference.columns2": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Columns"
+    "designSystem.photoGridColumnPreference.columns2" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأعمدة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Колонки"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spalten"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Columnas"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Columnas"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colunas"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spalten"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columns"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colonnes"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columnas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colonne"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columnas"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kolommen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonnes"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kolumny"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonnes"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sütunlar"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonne"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "欄數"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolommen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الأعمدة"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolumny"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colunas"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colunas"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sütunlar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Колонки"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "欄數"
           }
         }
       }
     },
-    "designSystem.photoGridColumnPreference.gridColumns": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grid Columns"
+    "designSystem.photoGridColumnPreference.gridColumns" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعمدة الشبكة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Стовпців у сітці"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rasterspalten"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Columnas de la cuadrícula"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Columns"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Columnas de la cuadrícula"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Columns"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colunas da grade"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Columns"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rasterspalten"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Columns"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colonnes de la grille"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columnas de la cuadrícula"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colonne della griglia"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Columnas de la cuadrícula"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rasterkolommen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonnes de la grille"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kolumny siatki"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonnes de la grille"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Izgara Sütunları"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colonne della griglia"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "格線欄數"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rasterkolommen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "أعمدة الشبكة"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolumny siatki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colunas da grade"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colunas da grelha"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izgara Sütunları"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стовпців у сітці"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "格線欄數"
           }
         }
       }
     },
-    "designSystem.photoLoadFailure.photoPreviewUnavailable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photo preview unavailable"
+    "designSystem.photoLoadFailure.photoPreviewUnavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "معاينة الصورة غير متوفرة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Попередній перегляд фото недоступний"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschau nicht verfügbar"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vista previa no disponible"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo preview unavailable"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vista previa no disponible"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo preview unavailable"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pré-visualização indisponível"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo preview unavailable"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vorschau nicht verfügbar"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo preview unavailable"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aperçu indisponible"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa no disponible"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anteprima non disponibile"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa no disponible"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voorvertoning niet beschikbaar"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperçu indisponible"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Podgląd niedostępny"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperçu indisponible"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotoğraf önizlemesi kullanılamıyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprima non disponibile"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "無法預覽照片"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorvertoning niet beschikbaar"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "معاينة الصورة غير متوفرة"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podgląd niedostępny"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pré-visualização indisponível"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pré-visualização da fotografia indisponível"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoğraf önizlemesi kullanılamıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попередній перегляд фото недоступний"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法預覽照片"
           }
         }
       }
     },
-    "designSystem.photoLoadFailure.retry": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
+    "designSystem.photoLoadFailure.retry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Повторити"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederholen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reintentar"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reintentar"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tentar novamente"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wiederholen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réessayer"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Riprova"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opnieuw"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ponów"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden Dene"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprova"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "重試"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إعادة المحاولة"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponów"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Dene"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторити"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重試"
           }
         }
       }
     },
-    "designSystem.photoLoadFailure.tryLoadingThePhotoAgain": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Try loading the photo again"
+    "designSystem.photoLoadFailure.tryLoadingThePhotoAgain" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حاول تحميل الصورة مرة أخرى"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Спробуйте завантажити фото ще раз"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versuche, das Foto erneut zu laden"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Intenta cargar la foto de nuevo"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try loading the photo again"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Intenta cargar la foto de nuevo"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try loading the photo again"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tente carregar a foto novamente"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try loading the photo again"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Versuche, das Foto erneut zu laden"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try loading the photo again"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Essayez de charger la photo à nouveau"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenta cargar la foto de nuevo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prova a caricare di nuovo la foto"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenta cargar la foto de nuevo"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Probeer de foto opnieuw te laden"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essayez de charger la photo à nouveau"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spróbuj wczytać zdjęcie ponownie"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essayez de charger la photo à nouveau"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotoğrafı yeniden yüklemeyi dene"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prova a caricare di nuovo la foto"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "再次嘗試載入照片"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probeer de foto opnieuw te laden"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حاول تحميل الصورة مرة أخرى"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spróbuj wczytać zdjęcie ponownie"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tente carregar a foto novamente"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenta carregar a fotografia novamente"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoğrafı yeniden yüklemeyi dene"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спробуйте завантажити фото ще раз"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再次嘗試載入照片"
           }
         }
       }
     }
-  }
+  },
+  "version" : "1.1"
 }

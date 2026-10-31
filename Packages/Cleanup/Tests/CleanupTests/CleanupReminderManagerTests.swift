@@ -192,6 +192,38 @@ final class CleanupReminderManagerTests: XCTestCase {
         XCTAssertEqual(addedRequests.first?.schedule, storedSchedule)
     }
 
+    /// A relaunch builds a new manager over the same stored preference; the reminder
+    /// the user enabled before must still read as enabled, with the same schedule.
+    func testNewManagerOverPersistedPreferenceLoadsEnabledState() async throws {
+        let customSchedule = CleanupReminderSchedule(weekday: 3, hour: 20, minute: 30)
+        let repository = MockCleanupReminderPreferenceRepository(
+            reminderSchedule: customSchedule
+        )
+        let notificationCenter = MockUserNotificationCenter(
+            authorizationStatus: .authorized
+        )
+        let firstLaunchManager = CleanupReminderManager(
+            preferenceRepository: repository,
+            notificationCenter: notificationCenter
+        )
+        _ = try await firstLaunchManager.setEnabled(true, isPremiumUnlocked: true)
+
+        let relaunchedManager = CleanupReminderManager(
+            preferenceRepository: repository,
+            notificationCenter: notificationCenter
+        )
+        let state = await relaunchedManager.loadState(isPremiumUnlocked: true)
+        try await relaunchedManager.resync(isPremiumUnlocked: true)
+
+        let addedRequests = await notificationCenter.addedRequests
+        XCTAssertTrue(state.isEnabled)
+        XCTAssertEqual(state.schedule, customSchedule)
+        XCTAssertEqual(
+            Set(addedRequests.map(\.identifier)),
+            ["cleanup.weekly.reminder"]
+        )
+    }
+
     func testResyncPropagatesAddFailureWithoutRemovingExistingRequest() async {
         let storedSchedule = CleanupReminderSchedule(weekday: 2, hour: 11, minute: 5)
         let existingRequest = makeReminderRequest(schedule: .defaultWeekly)

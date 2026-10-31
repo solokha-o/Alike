@@ -1,15 +1,16 @@
 import XCTest
 import Core
-import Cleanup
 @testable import Settings
 
 @MainActor
 final class SettingsViewModelTests: XCTestCase {
-    func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() async {
-        let repository = MockRatingPromptHistoryRepository()
+    func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() {
+        // Opening the App Store page spends no review-sheet quota, so the automatic
+        // post-cleanup prompt must not inherit a cooldown from it. Settings holds no
+        // rating prompt coordinator, so it has no way to record a prompt at all.
         let viewModel = SettingsViewModel(
             appVersion: "1.2.3",
-            ratingPrompt: RatingPromptCoordinator(repository: repository, appVersion: "1.2.3")
+            cleanupReminderManager: MockCleanupReminderManager()
         )
         var openedURL: URL?
 
@@ -18,21 +19,21 @@ final class SettingsViewModelTests: XCTestCase {
 
         XCTAssertEqual(openedURL, AppStoreLinks.writeReview)
         XCTAssertEqual(viewModel.reviewTrigger, 1)
-
-        // Opening the App Store page spends no review-sheet quota, so the automatic
-        // post-cleanup prompt must not inherit a cooldown from it.
-        let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 0)
-        XCTAssertNil(history.lastPromptedDate)
     }
 
     func testRescanRequiredAfterSensitivityChangeIsTrue() {
-        let viewModel = SettingsViewModel(appVersion: "1.2.3")
+        let viewModel = SettingsViewModel(
+            appVersion: "1.2.3",
+            cleanupReminderManager: MockCleanupReminderManager()
+        )
         XCTAssertTrue(viewModel.rescanRequiredAfterSensitivityChange())
     }
 
     func testInitUsesProvidedValues() {
-        let viewModel = SettingsViewModel(appVersion: "9.9.9")
+        let viewModel = SettingsViewModel(
+            appVersion: "9.9.9",
+            cleanupReminderManager: MockCleanupReminderManager()
+        )
 
         XCTAssertEqual(viewModel.appVersion, "9.9.9")
     }

@@ -25,7 +25,7 @@ validate whenever you like; upload when nothing is in review.
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
 - [ ] The per-locale URL overrides set for every non-English listing. All
-      thirty-six are **required**: strict generation fails on an unset
+      forty-eight are **required**: strict generation fails on an unset
       override, naming the variable, rather than falling back to the shared
       English URL and sending readers to legal text they were not reading a
       moment ago. `--allow-shared-urls` opts out, and only the generator accepts
@@ -60,6 +60,10 @@ ALIKE_PRIVACY_URL_PT_BR="https://alikeapp.github.io/pt-br/privacy/"
 ALIKE_TERMS_URL_PT_BR="https://alikeapp.github.io/pt-br/terms/"
 ALIKE_SUPPORT_URL_PT_BR="https://alikeapp.github.io/pt-br/support/"
 
+ALIKE_PRIVACY_URL_PT_PT="https://alikeapp.github.io/pt-br/privacy/"
+ALIKE_TERMS_URL_PT_PT="https://alikeapp.github.io/pt-br/terms/"
+ALIKE_SUPPORT_URL_PT_PT="https://alikeapp.github.io/pt-br/support/"
+
 ALIKE_PRIVACY_URL_IT="https://alikeapp.github.io/it/privacy/"
 ALIKE_TERMS_URL_IT="https://alikeapp.github.io/it/terms/"
 ALIKE_SUPPORT_URL_IT="https://alikeapp.github.io/it/support/"
@@ -88,6 +92,25 @@ ALIKE_SUPPORT_URL_ZH_HANT="https://alikeapp.github.io/zh-hant/support/"
 ALIKE_PRIVACY_URL_AR_SA="https://alikeapp.github.io/ar/privacy/"
 ALIKE_TERMS_URL_AR_SA="https://alikeapp.github.io/ar/terms/"
 ALIKE_SUPPORT_URL_AR_SA="https://alikeapp.github.io/ar/support/"
+
+# Regional listings with no pages of their own: en-GB, en-CA and en-AU name the
+# English pages at the root, fr-CA names the /fr/ pages. Said explicitly, the
+# same way es-MX names /es/, so strict generation still sees an override.
+ALIKE_PRIVACY_URL_EN_GB="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_GB="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_GB="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_EN_CA="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_CA="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_CA="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_EN_AU="https://alikeapp.github.io/privacy/"
+ALIKE_TERMS_URL_EN_AU="https://alikeapp.github.io/terms/"
+ALIKE_SUPPORT_URL_EN_AU="https://alikeapp.github.io/support/"
+
+ALIKE_PRIVACY_URL_FR_CA="https://alikeapp.github.io/fr/privacy/"
+ALIKE_TERMS_URL_FR_CA="https://alikeapp.github.io/fr/terms/"
+ALIKE_SUPPORT_URL_FR_CA="https://alikeapp.github.io/fr/support/"
 ```
 - [ ] App Store Connect API credentials available to fastlane:
       `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and
@@ -153,9 +176,10 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 ## 3. Metadata
 
 - [ ] Release notes updated for the release in `METADATA`
-      (`tools/prepare_app_store_upload_bundle.py`), for all thirteen
-      localizations the listing has: `en-US`, `uk`, `de-DE`, `fr-FR`, `es-ES`,
-      `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA`.
+      (`tools/prepare_app_store_upload_bundle.py`), for all fourteen
+      localizations with their own copy: `en-US`, `uk`, `de-DE`, `fr-FR`,
+      `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`,
+      `ar-SA`.
       Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES` ever drift
       apart.
 - [ ] Strict generation exits 0 with zero `TODO:` markers:
@@ -174,7 +198,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
       what Best Shot learns and where it is reset, confirmed deletion into
       Recently Deleted, and the three paywall entry points.
 - [ ] Anything the release adds that is **free** says so in `ALIKE FREE`, in all
-      thirteen locales. Without that line a reader, and App Review, can
+      fourteen descriptions (`pt-PT` included). Without that line a reader, and App Review, can
       reasonably read a new feature as being behind the paywall.
 - [ ] Descriptions measured in **strict** mode, not with
       `--allow-placeholder-urls`. The placeholder run understates every locale
@@ -188,7 +212,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 ## 4. Screenshots
 
 - [ ] Deck rendered and eyeballed per locale — see `Docs/screenshot-brief.md`.
-      Seven slides in thirteen locales as of 1.4.0, so ninety-one renders;
+      Seven slides in fourteen decks as of 1.7.0 (`pt-PT` added), so ninety-eight renders;
       `--dry-run` prints the count and is the cheapest way to catch a locale
       short an entry.
 - [ ] Capture status table in `Docs/screenshot-shot-list.md` current.
@@ -213,7 +237,7 @@ set -a; . ./.env; set +a; python3 tools/prepare_app_store_upload_bundle.py
 - [ ] `bundle exec ruby tools/app_store_iap_metadata.rb status` reflects the
       Alike Pro group and both plans.
 - [ ] `upload-localizations` for the display names and descriptions in all
-      thirteen localizations. `Alike.storekit` is the source of that copy, and
+      eighteen listing localizations. `Alike.storekit` is the source of that copy, and
       `validate_storekit_locale_coverage` fails generation when a shipped
       locale is missing from it. Only `en-US` failures are fatal; App Store Connect
       rejecting another locale is reported as a warning and skipped.

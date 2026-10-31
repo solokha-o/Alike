@@ -137,6 +137,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4010CA7A100000000000000B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4010CA7A1000000000000001 /* AlikeTests */,
@@ -217,6 +218,11 @@
 			target = 9F1D0A001000000000000007 /* AlikeWidgets */;
 			targetProxy = 9F1D0A001000000000000009 /* PBXContainerItemProxy */;
 		};
+		4010CA7A100000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 531BB61C2F29132C00DAB1E2 /* Alike */;
+			targetProxy = 4010CA7A100000000000000A /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXContainerItemProxy section */
@@ -226,6 +232,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9F1D0A001000000000000007;
 			remoteInfo = AlikeWidgets;
+		};
+		4010CA7A100000000000000A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 531BB6152F29132C00DAB1E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 531BB61C2F29132C00DAB1E2;
+			remoteInfo = Alike;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -239,6 +252,7 @@
 				TargetAttributes = {
 					4010CA7A1000000000000006 = {
 						CreatedOnToolsVersion = 26.6;
+						TestTargetID = 531BB61C2F29132C00DAB1E2;
 					};
 					531BB61C2F29132C00DAB1E2 = {
 						CreatedOnToolsVersion = 26.2;
@@ -252,6 +266,11 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				"en-AU",
+				"en-CA",
+				"pt-PT",
+				"fr-CA",
+				"en-GB",
 				en,
 				Base,
 				uk,
@@ -350,11 +369,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -363,6 +383,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alike.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Alike";
 			};
 			name = Debug;
 		};
@@ -370,11 +391,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -383,6 +405,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alike.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Alike";
 			};
 			name = Release;
 		};
@@ -512,7 +535,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -526,7 +549,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -551,7 +574,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -565,7 +588,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -588,7 +611,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -599,7 +622,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -623,7 +646,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -634,7 +657,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

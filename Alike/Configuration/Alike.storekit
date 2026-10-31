@@ -72,6 +72,11 @@
         {
           "description" : "",
           "displayName" : "Alike Pro",
+          "locale" : "pt_PT"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
           "locale" : "it_IT"
         },
         {
@@ -98,6 +103,26 @@
           "description" : "",
           "displayName" : "Alike Pro",
           "locale" : "ar_SA"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_CA"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "en_AU"
+        },
+        {
+          "description" : "",
+          "displayName" : "Alike Pro",
+          "locale" : "fr_CA"
         }
       ],
       "name" : "Alike Pro",
@@ -150,12 +175,12 @@
               "locale" : "uk"
             },
             {
-              "description" : "Alle Pro-Funktionen, einmal jährlich.",
+              "description" : "Alle Pro-Funktionen, jährliche Zahlung.",
               "displayName" : "Alike Pro Jahresplan",
               "locale" : "de_DE"
             },
             {
-              "description" : "Tous les outils Pro, une fois par an.",
+              "description" : "Tous les outils Pro, facturation annuelle.",
               "displayName" : "Alike Pro annuel",
               "locale" : "fr_FR"
             },
@@ -173,6 +198,11 @@
               "description" : "Todos os recursos Pro, pagamento anual.",
               "displayName" : "Alike Pro anual",
               "locale" : "pt_BR"
+            },
+            {
+              "description" : "Todas as funções Pro, pagamento anual.",
+              "displayName" : "Alike Pro anual",
+              "locale" : "pt_PT"
             },
             {
               "description" : "Tutti gli strumenti Pro, pagamento annuale.",
@@ -203,6 +233,26 @@
               "description" : "كل أدوات Pro بفاتورة سنوية واحدة.",
               "displayName" : "‏Alike Pro سنويًا",
               "locale" : "ar_SA"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unlock every Pro tool, billed once a year.",
+              "displayName" : "Alike Pro Yearly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Tous les outils Pro, facturation annuelle.",
+              "displayName" : "Alike Pro annuel",
+              "locale" : "fr_CA"
             }
           ],
           "productID" : "com.alike.app.pro.yearly",
@@ -274,22 +324,27 @@
               "locale" : "pt_BR"
             },
             {
+              "description" : "Toda a limpeza de fotos do Alike Pro.",
+              "displayName" : "Alike Pro mensal",
+              "locale" : "pt_PT"
+            },
+            {
               "description" : "Tutta la pulizia foto di Alike Pro.",
               "displayName" : "Alike Pro mensile",
               "locale" : "it_IT"
             },
             {
-              "description" : "Al het opruimwerk van Alike Pro.",
+              "description" : "Alle opruimfuncties van Alike Pro.",
               "displayName" : "Alike Pro maandelijks",
               "locale" : "nl_NL"
             },
             {
-              "description" : "Wszystkie porządki w zdjęciach Alike Pro.",
+              "description" : "Wszystkie funkcje porządkowania zdjęć.",
               "displayName" : "Alike Pro miesięcznie",
               "locale" : "pl_PL"
             },
             {
-              "description" : "Alike Pro'nun tüm fotoğraf temizliği.",
+              "description" : "Tüm Alike Pro fotoğraf temizleme özellikleri.",
               "displayName" : "Alike Pro aylık",
               "locale" : "tr_TR"
             },
@@ -299,9 +354,29 @@
               "locale" : "zh_TW"
             },
             {
-              "description" : "تنظيف صور Alike Pro بالكامل، شهريًا.",
+              "description" : "كل ميزات تنظيف الصور في Alike Pro، شهريًا.",
               "displayName" : "‏Alike Pro شهريًا",
               "locale" : "ar_SA"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unlock all Alike Pro photo cleanup features.",
+              "displayName" : "Alike Pro Monthly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Tout le nettoyage photo d’Alike Pro.",
+              "displayName" : "Alike Pro mensuel",
+              "locale" : "fr_CA"
             }
           ],
           "productID" : "com.alike.app.pro.monthly",

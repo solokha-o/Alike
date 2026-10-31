@@ -252,7 +252,7 @@ struct WidgetMediumLayout: View {
 
 /// The «Alike» wordmark, or the state's glyph for the states that have no figure to
 /// carry the widget. Which one is `WidgetPresentation`'s decision, not this view's.
-private struct WidgetHeader: View {
+struct WidgetHeader: View {
     let symbolName: String?
 
     var body: some View {
@@ -303,7 +303,7 @@ struct WidgetWordmark: View {
 ///
 /// Drawn in two pieces the way the concept colours it: the number in the accent, the
 /// rest — «із 30 груп» — in the text colour, on one line.
-private struct WidgetHeadline: View {
+struct WidgetHeadline: View {
     let parts: WidgetHeadlineParts?
     /// The concept's size at the default text size, scaled with Dynamic Type from there.
     @ScaledMetric private var size: CGFloat
@@ -365,7 +365,7 @@ private struct WidgetHeadline: View {
     }
 }
 
-private struct WidgetCaption: View {
+struct WidgetCaption: View {
     let text: String
     let font: Font
     let lines: Int
@@ -385,7 +385,7 @@ private struct WidgetCaption: View {
     }
 }
 
-private struct WidgetFootnote: View {
+struct WidgetFootnote: View {
     let text: String
 
     init(_ text: String) { self.text = text }
@@ -441,7 +441,7 @@ struct WidgetActionLabel: View {
 ///
 /// Only ever drawn for a fraction the composition resolved; a session with no groups
 /// yet has none, and gets no bar rather than an empty one.
-private struct WidgetProgressBar: View {
+struct WidgetProgressBar: View {
     let value: Double
 
     var body: some View {

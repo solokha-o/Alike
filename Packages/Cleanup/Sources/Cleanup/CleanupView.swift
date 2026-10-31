@@ -3,7 +3,6 @@ import Photos
 import StoreKit
 import Core
 import DesignSystem
-import Details
 import NavigationKit
 import PhotoAnalysis
 import Purchases
@@ -113,11 +112,17 @@ extension View {
 /// The review-focused home for results produced by ``CleanupWorkspaceModel``.
 /// Scanner owns starting scans and entitlement admission; Cleanup only presents
 /// the durable workspace and routes the user to an explicit rescan action.
-public struct CleanupView: View {
+///
+/// The screens a group or a category opens come from the host through
+/// `clusterDestination` and `screenshotDestination`, so this package does not depend
+/// on the package that implements them. Cleanup still owns how they open: a push for a
+/// group, a sheet the user cannot swipe away for a category.
+public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>: View {
     private enum Constants {
-        static let reconciliationDismissalDelay = Duration.milliseconds(500)
+        // Computed: a generic type cannot hold static stored properties.
+        static var reconciliationDismissalDelay: Duration { .milliseconds(500) }
         /// Lets the success banner land before the system review sheet takes over.
-        static let ratingPromptDelay = Duration.milliseconds(1_500)
+        static var ratingPromptDelay: Duration { .milliseconds(1_500) }
     }
 
     private let workspace: CleanupWorkspaceModel
@@ -128,6 +133,8 @@ public struct CleanupView: View {
     private let onOpenScanner: @MainActor @Sendable () -> Void
     private let onRequestScan: @MainActor @Sendable () -> Void
     @Binding private var pendingWidgetEntry: CleanupWidgetEntry?
+    private let clusterDestination: (CleanupClusterDestinationContext) -> ClusterDestination
+    private let screenshotDestination: (CleanupCategoryDestinationContext) -> ScreenshotDestination
 
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @Environment(\.requestReview) private var requestReview
@@ -152,7 +159,9 @@ public struct CleanupView: View {
         onRequestScan: @escaping @MainActor @Sendable () -> Void,
         // Defaulted: every existing call site stays valid, and a host that has no
         // widget routing to feed in does not have to know this parameter exists.
-        pendingWidgetEntry: Binding<CleanupWidgetEntry?> = .constant(nil)
+        pendingWidgetEntry: Binding<CleanupWidgetEntry?> = .constant(nil),
+        @ViewBuilder clusterDestination: @escaping (CleanupClusterDestinationContext) -> ClusterDestination,
+        @ViewBuilder screenshotDestination: @escaping (CleanupCategoryDestinationContext) -> ScreenshotDestination
     ) {
         self.workspace = workspace
         self._sensitivity = sensitivity
@@ -162,6 +171,8 @@ public struct CleanupView: View {
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
         self._pendingWidgetEntry = pendingWidgetEntry
+        self.clusterDestination = clusterDestination
+        self.screenshotDestination = screenshotDestination
     }
 
     public var body: some View {
@@ -176,17 +187,12 @@ public struct CleanupView: View {
         }
         .sheet(item: $presentedCategory) { category in
             RoutedNavigationStack {
-                ScreenshotCleanupView(
-                    assets: category.assets,
-                    sourceCategory: category.kind,
-                    cleanupService: workspace.cleanupService,
-                    cleanupHistoryRepository: workspace.cleanupHistoryRepository,
-                    premiumAccess: premiumAccess,
-                    subscriptionStore: subscriptionStore,
-                    openSettingsAction: {
-                        PhotoPermissionManagerImpl().openSettings()
-                    },
-                    onCleanupCompleted: reconcile
+                screenshotDestination(
+                    CleanupCategoryDestinationContext(
+                        kind: category.kind,
+                        assets: category.assets,
+                        onCleanupCompleted: reconcile
+                    )
                 )
             }
             .interactiveDismissDisabled()
@@ -219,21 +225,12 @@ public struct CleanupView: View {
     private func destination(for route: CleanupRoute) -> some View {
         switch route {
         case .cluster(let cluster):
-            ClusterDetailsView(
-                cluster: cluster,
-                cleanupService: workspace.cleanupService,
-                cleanupHistoryRepository: workspace.cleanupHistoryRepository,
-                premiumAccess: premiumAccess,
-                subscriptionStore: subscriptionStore,
-                openSettingsAction: {
-                    PhotoPermissionManagerImpl().openSettings()
-                },
-                qualityAnalyzer: workspace.qualityAnalyzer,
-                enhancementService: workspace.enhancementService,
-                overrideMetrics: workspace.bestShotOverrideMetrics,
-                personalizedConfigProvider: workspace.bestShotPersonalizedConfigProvider,
-                onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
-                onCleanupCompleted: reconcile
+            clusterDestination(
+                CleanupClusterDestinationContext(
+                    cluster: cluster,
+                    onReviewStateChanged: { Task { await workspace.reloadReviewState() } },
+                    onCleanupCompleted: reconcile
+                )
             )
         case .history:
             CleanupHistoryView(
@@ -513,12 +510,16 @@ public struct CleanupView: View {
     @ToolbarContentBuilder
     private var cleanupToolbar: some ToolbarContent {
 #if os(iOS)
-        if !workspace.clusters.isEmpty {
-            ToolbarItem(placement: .topBarTrailing) { columnsMenu }
-            ToolbarItem(placement: .topBarTrailing) { controlsButton }
-        }
-        if workspace.hasCompletedScanBaseline {
-            ToolbarItem(placement: .topBarTrailing) { rescanButton }
+        if #available(iOS 27.0, *) {
+            overflowCleanupToolbar
+        } else {
+            if !workspace.clusters.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) { columnsMenu }
+                ToolbarItem(placement: .topBarTrailing) { controlsButton }
+            }
+            if workspace.hasCompletedScanBaseline {
+                ToolbarItem(placement: .topBarTrailing) { rescanButton }
+            }
         }
 #else
         if !workspace.clusters.isEmpty {
@@ -530,6 +531,34 @@ public struct CleanupView: View {
         }
 #endif
     }
+
+#if os(iOS)
+    /// Three icons next to a large title clip on a 375 pt screen at large
+    /// Dynamic Type. Rescan is the screen's main action, so it stays pinned;
+    /// the grid and filter options fold into the system overflow menu.
+    @available(iOS 27.0, *)
+    @ToolbarContentBuilder
+    private var overflowCleanupToolbar: some ToolbarContent {
+        if workspace.hasCompletedScanBaseline {
+            ToolbarItem(placement: .topBarPinnedTrailing) { rescanButton }
+                .visibilityPriority(.high)
+        }
+        if !workspace.clusters.isEmpty {
+            ToolbarOverflowMenu {
+                PhotoGridColumnsPicker()
+                Button { isControlsPresented = true } label: {
+                    Label(
+                        CleanupL10n.Main.filterAndSort,
+                        systemImage: controls.isDefault
+                            ? "line.3.horizontal.decrease.circle"
+                            : "line.3.horizontal.decrease.circle.fill"
+                    )
+                }
+            }
+            .visibilityPriority(.low)
+        }
+    }
+#endif
 
     private var columnsMenu: some View {
         PhotoGridColumnsMenu()
@@ -1355,3 +1384,22 @@ private struct CleanupStatusBanner: View {
     )
     .padding()
 }
+
+// The destinations are stubs: the real group and category screens live in a package
+// Cleanup does not depend on, and the app builds them. Gated like the Details preview,
+// so nothing preview-only reaches a Release build.
+#if DEBUG
+#Preview("Cleanup") {
+    CleanupView(
+        workspace: CleanupWorkspaceModel(),
+        sensitivity: .constant(.medium),
+        ratingPrompt: RatingPromptCoordinator(),
+        onOpenScanner: {},
+        onRequestScan: {}
+    ) { context in
+        Text(verbatim: "Group: \(context.cluster.assets.count) photos")
+    } screenshotDestination: { context in
+        Text(verbatim: "Category: \(context.kind.rawValue), \(context.assets.count) photos")
+    }
+}
+#endif

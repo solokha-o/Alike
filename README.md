@@ -30,20 +30,23 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.6.2
+## 🆕 What ships in 1.7.0
 
-A patch release around ratings and the store listing:
+A minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
+
+- **Extra-large portrait widget.** On iOS 27, `AlikeStatusWidget` also offers `systemExtraLargePortrait`: the reclaimable figure, its share of the library, the group count, up to four largest groups and links to Similar Photos, Screenshots and Blurred Photos, with the Pro lock on the paid categories. The snapshot gains an optional `topClusters` field (bytes and photo count, no identifiers); a 1.6.2 snapshot without it still decodes.
+- **The widget hero keeps its colours.** On tinted and clear Home Screens (iOS 18+), the hero illustration renders in full colour; iOS 17 and the Lock Screen are unchanged.
+- **Swipe actions on photo tiles.** On iOS 27, the cluster grid offers Select, Keep and Make Best Shot by swipe, and the screenshot grid offers Select and Keep. Each swipe calls the tile's existing tap or context-menu action, and VoiceOver lists the same actions in the rotor.
+- **A Cleanup toolbar that fits.** On iOS 27, Rescan is pinned, and grid columns and filter/sort fold into the overflow menu, so the toolbar does not clip at 375 pt.
+- **Cross-fade into the photo pager.** On iOS 27, opening a photo full screen cross-fades.
+
+Earlier: 1.6.2 was a patch release around ratings and the store listing:
 
 - **Rate Alike opens the review page.** The Settings button used to call the system `requestReview`, which iOS may silently skip, and every tap counted as a prompt that blocked the post-cleanup ask for 120 days. It now opens the App Store write-review page and records nothing.
 - **The rating ask comes from day two.** `RatingPromptPolicy.Defaults.minimumInstallAge` drops from 3 days to 1, so a cleanup finished on a return visit from the second day on can trigger the system rating sheet. The stored prompt history keeps its format.
 - **New store texts.** Subtitles, keywords, promotional text and description openers in all thirteen locales come from the ASO keyword work; the binary is unchanged by them.
 
-Earlier: 1.6.1 was a patch release with two fixes:
-
-- **The group summary card no longer crashes.** The review status and selection summaries reserved their size with a `ForEach`; in Swift 6 mode its closure inherits the view's main-actor isolation, and iOS 26 lays out `ViewThatFits` off the main thread, so the runtime check stopped the app. The reservations are now explicit views, with the same sizes.
-- **Delete Alike Data wins over a running scan.** A scan cancelled by the deletion could suspend after its identity check and then write a failed state over the freshly reset workspace. The scan now settles its state before awaiting the progress relay's cancellation.
-
-Before that, 1.6.0 added crash reports the user sends themselves — MetricKit payloads kept on the device, one prompt per crash, sent by the user's own mail — and the app's first privacy manifest; 1.5.0 put the widget on the Lock Screen in three sizes and added `libraryTotalBytes` to the snapshot; 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
+Before that, 1.6.1 fixed the group summary card crash on iOS 26 and made Delete Alike Data win over a running scan; 1.6.0 added crash reports the user sends themselves — MetricKit payloads kept on the device, one prompt per crash, sent by the user's own mail — and the app's first privacy manifest; 1.5.0 put the widget on the Lock Screen in three sizes and added `libraryTotalBytes` to the snapshot; 1.4.1 fixed the reclaimable figure to count each photo once at its real file size; 1.4.0 added the two home screen widgets and the App Group snapshot behind them; 1.3.0 measured Best Shot from the image itself, added the reversible one-tap enhancement and the on-device personalisation that learns from your own picks, and froze the Core Data model as version 1; 1.2.0 added Arabic and its right-to-left layout, taking the listing to thirteen locales; 1.1.0 added Italian, Dutch, Polish, Turkish and Traditional Chinese. 1.0.0 was the first public release — similar-photo scanning with Vision feature prints, guided cleanup review, persistent review state, history and reminders.
 
 ## 🔒 Privacy
 
@@ -245,7 +248,7 @@ categories for it.
 
 [`Docs/Localization/README.md`](Docs/Localization/README.md) is the convention and the
 recipe for adding a language; [`native-review.md`](Docs/Localization/native-review.md) is
-the list of strings a native speaker still needs to sign off.
+the review log and the list of strings a native speaker still needs to sign off.
 
 ## 🤝 Contributing
 
