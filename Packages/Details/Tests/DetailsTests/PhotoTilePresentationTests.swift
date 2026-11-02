@@ -45,6 +45,19 @@ final class PhotoTilePresentationTests: XCTestCase {
         XCTAssertEqual(tile.accessibilityValue, DetailsL10n.ClusterDetails.probablyBestShot)
     }
 
+    /// Without a Best Shot a double tap selects nothing, so VoiceOver must not
+    /// offer it.
+    func testTileThatCannotBeSelectedSaysToChooseABestShotFirst() {
+        let tile = PhotoTilePresentation(
+            isBestShot: false,
+            isSelected: false,
+            bestShotConfidence: .unresolved,
+            canSelect: false
+        )
+        XCTAssertEqual(tile.accessibilityHint, DetailsL10n.ClusterDetails.chooseBestShotBeforeSelecting)
+        XCTAssertEqual(tile.accessibilityLabel, DetailsL10n.ClusterDetails.notSelected)
+    }
+
     // MARK: - Border
 
     func testBorderFollowsTheSamePrecedence() {

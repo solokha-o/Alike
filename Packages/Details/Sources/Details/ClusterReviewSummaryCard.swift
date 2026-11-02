@@ -320,7 +320,7 @@ struct ClusterReviewSummaryCard: View {
         guard selectedCount > 0 else {
             return isReviewConfirmed
                 ? String(format: DetailsL10n.Common.keepingAllPhotos, assetCount)
-                : DetailsL10n.ClusterReviewSummaryCard.tapPhotosSelectThemCleanup
+                : Self.emptySelectionHint(bestShotConfidence: bestShotConfidence)
         }
         if isReviewConfirmed {
             return String(
@@ -334,6 +334,15 @@ struct ClusterReviewSummaryCard: View {
             selectedCount,
             estimatedSavingsText
         )
+    }
+
+    /// Nothing can be selected until a Best Shot exists, so an unresolved
+    /// cluster names the step that unlocks selection instead of offering a tap
+    /// that does nothing. The menu works on every system; a swipe needs iOS 27.
+    static func emptySelectionHint(bestShotConfidence: BestShotConfidence) -> String {
+        bestShotConfidence == .unresolved
+            ? DetailsL10n.ClusterReviewSummaryCard.touchAndHoldToChooseBestShot
+            : DetailsL10n.ClusterReviewSummaryCard.tapPhotosSelectThemCleanup
     }
 
     static func reservedSelectionCounts(assetCount: Int) -> [Int] {

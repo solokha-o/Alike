@@ -10,6 +10,8 @@ struct PhotoTilePresentation {
     let isBestShot: Bool
     let isSelected: Bool
     let bestShotConfidence: BestShotConfidence
+    /// False while the cluster has no Best Shot: a tap then does nothing.
+    var canSelect = true
 
     var borderColor: Color {
         if isBestShot {
@@ -46,9 +48,12 @@ struct PhotoTilePresentation {
         if isBestShot {
             return DetailsL10n.ClusterDetails.thisPhotoKeptAsBest
         }
-        return isSelected
-            ? DetailsL10n.ClusterDetails.doubleTapRemoveThisPhoto
-            : DetailsL10n.ClusterDetails.doubleTapSelectThisPhoto
+        if isSelected {
+            return DetailsL10n.ClusterDetails.doubleTapRemoveThisPhoto
+        }
+        return canSelect
+            ? DetailsL10n.ClusterDetails.doubleTapSelectThisPhoto
+            : DetailsL10n.ClusterDetails.chooseBestShotBeforeSelecting
     }
 
     static func thumbnailTargetSize(aspectRatio: CGFloat) -> CGSize {
