@@ -63,6 +63,37 @@ final class PhotoTileSwipeActionsTests: XCTestCase {
         )
     }
 
+    // MARK: - Edges
+
+    /// An edge with no action must not get `swipeActions`: an empty edge still
+    /// opens, and the tile sticks off its place.
+    func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
+        try requireSwipeSupport()
+        let actions = PhotoTileSwipeAction.available(
+            isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
+        )
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.makeBestShot])
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [])
+    }
+
+    func testUnselectedTileHasAnActionOnEachEdge() throws {
+        try requireSwipeSupport()
+        let actions = PhotoTileSwipeAction.available(
+            isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
+        )
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.makeBestShot])
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [.select])
+    }
+
+    func testSelectedTileHasNothingOnTheTrailingEdge() throws {
+        try requireSwipeSupport()
+        let actions = PhotoTileSwipeAction.available(
+            isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
+        )
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.keep, .makeBestShot])
+        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [])
+    }
+
     // MARK: - Cluster review: swipe = button
 
     func testSwipeSelectMatchesTileTap() async {

@@ -45,6 +45,14 @@ enum PhotoTileSwipeAction: Hashable, CaseIterable {
         return actions
     }
 
+    /// The actions from `actions` that sit on one edge.
+    static func actions(
+        _ actions: [PhotoTileSwipeAction],
+        on edge: HorizontalEdge
+    ) -> [PhotoTileSwipeAction] {
+        actions.filter { $0.edge == edge }
+    }
+
     /// Keeping or choosing the keeper reads as a positive decision and sits on
     /// the leading edge; selecting for cleanup sits where deletion usually is.
     var edge: HorizontalEdge {
@@ -125,19 +133,28 @@ extension View {
 
     /// Attaches the tile's swipe actions. Full swipe stays off: each action is
     /// a review decision, and a long drag should not commit one by accident.
-    @ViewBuilder
     func photoTileSwipeActions(
         _ actions: [PhotoTileSwipeAction],
         perform: @escaping (PhotoTileSwipeAction) -> Void
     ) -> some View {
-        if actions.isEmpty {
+        photoTileSwipeEdge(.leading, actions: actions, perform: perform)
+            .photoTileSwipeEdge(.trailing, actions: actions, perform: perform)
+    }
+
+    /// An edge with no buttons gets no `swipeActions` at all: SwiftUI still lets
+    /// an empty edge open, and the tile then sticks slightly off its place.
+    @ViewBuilder
+    private func photoTileSwipeEdge(
+        _ edge: HorizontalEdge,
+        actions: [PhotoTileSwipeAction],
+        perform: @escaping (PhotoTileSwipeAction) -> Void
+    ) -> some View {
+        let edgeActions = PhotoTileSwipeAction.actions(actions, on: edge)
+        if edgeActions.isEmpty {
             self
         } else {
-            swipeActions(edge: .leading, allowsFullSwipe: false) {
-                PhotoTileSwipeButtons(actions: actions, edge: .leading, perform: perform)
-            }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                PhotoTileSwipeButtons(actions: actions, edge: .trailing, perform: perform)
+            swipeActions(edge: edge, allowsFullSwipe: false) {
+                PhotoTileSwipeButtons(actions: edgeActions, perform: perform)
             }
         }
     }
@@ -145,11 +162,10 @@ extension View {
 
 private struct PhotoTileSwipeButtons: View {
     let actions: [PhotoTileSwipeAction]
-    let edge: HorizontalEdge
     let perform: (PhotoTileSwipeAction) -> Void
 
     var body: some View {
-        ForEach(actions.filter { $0.edge == edge }, id: \.self) { action in
+        ForEach(actions, id: \.self) { action in
             Button {
                 perform(action)
             } label: {
