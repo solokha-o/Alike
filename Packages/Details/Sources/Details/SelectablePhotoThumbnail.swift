@@ -165,7 +165,7 @@ struct SelectablePhotoThumbnail: View {
                     Image(systemName: "info.circle")
                 }
             }
-            
+
             Button {
                 onOpenOriginal()
             } label: {

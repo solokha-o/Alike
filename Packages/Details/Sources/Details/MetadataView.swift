@@ -15,7 +15,7 @@ struct MetadataView: View {
     private var metadata: AssetMetadata {
         asset.displayMetadata
     }
-    
+
     var body: some View {
         RoutedNavigationStack {
             List {
