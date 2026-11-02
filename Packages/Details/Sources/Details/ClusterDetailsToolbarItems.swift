@@ -46,14 +46,14 @@ struct ClusterReviewToggle: View {
 /// and changing how the grid looks are different jobs, and the column
 /// options stay folded into a submenu so they never outnumber the actions.
 struct ClusterDetailsOverflowMenu: View {
-    let isActionBarVisible: Bool
+    let showsSelectionActions: Bool
     let hasSelection: Bool
     let onSelectAllExceptBest: () -> Void
     let onClearSelection: () -> Void
 
     var body: some View {
         Menu {
-            if isActionBarVisible {
+            if showsSelectionActions {
                 Section(DetailsL10n.ClusterDetails.selection) {
                     Button {
                         onSelectAllExceptBest()
@@ -94,7 +94,7 @@ struct ClusterDetailsOverflowMenu: View {
 
 #Preview("Overflow menu") {
     ClusterDetailsOverflowMenu(
-        isActionBarVisible: true,
+        showsSelectionActions: true,
         hasSelection: true,
         onSelectAllExceptBest: {},
         onClearSelection: {}

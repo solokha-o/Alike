@@ -679,6 +679,119 @@
         }
       }
     },
+    "details.clusterDetails.chooseBestShotBeforeSelecting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر أفضل لقطة قبل تحديد الصور للتنظيف"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle zuerst die beste Aufnahme, um Fotos zum Aufräumen auszuwählen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Best Shot before selecting photos for cleanup"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Best Shot before selecting photos for cleanup"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Best Shot before selecting photos for cleanup"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Best Shot before selecting photos for cleanup"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una mejor toma antes de seleccionar fotos para la limpieza"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una mejor toma antes de seleccionar fotos para la limpieza"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez une meilleure photo avant de sélectionner des photos pour le nettoyage"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez une meilleure photo avant de sélectionner des photos pour le nettoyage"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli uno scatto migliore prima di selezionare le foto per la pulizia"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies eerst een beste opname om foto's te selecteren voor opruimen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz najlepsze ujęcie, zanim wybierzesz zdjęcia do porządków"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha uma melhor foto antes de selecionar fotos para a limpeza"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe uma melhor fotografia antes de selecionar fotografias para a limpeza"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlik için fotoğraf seçmeden önce en iyi kareyi seç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спершу виберіть найкращий кадр, щоб вибрати фото для очищення"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請先選擇最佳照片，才能選取照片進行清理"
+          }
+        }
+      }
+    },
     "details.clusterDetails.choosingBestShot" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -11352,6 +11465,119 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "點一下照片即可選取以進行清理"
+          }
+        }
+      }
+    },
+    "details.clusterReviewSummaryCard.touchAndHoldToChooseBestShot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المس مع الاستمرار صورة، ثم اختر «جعلها أفضل لقطة»"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Halte ein Foto gedrückt und wähle „Als beste Aufnahme festlegen“"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold a photo, then choose Make Best Shot"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold a photo, then choose Make Best Shot"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold a photo, then choose Make Best Shot"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold a photo, then choose Make Best Shot"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén pulsada una foto y elige «Marcar como mejor toma»"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén presionada una foto y elige “Marcar como mejor toma”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez longuement une photo, puis choisissez « Définir comme meilleure photo »"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez longuement une photo, puis choisissez « Définir comme meilleure photo »"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tieni premuta una foto, poi scegli “Imposta come scatto migliore”"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd een foto ingedrukt en kies ‘Maak beste opname’"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przytrzymaj zdjęcie i wybierz „Ustaw jako najlepsze ujęcie”"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque e mantenha pressionada uma foto e escolha “Definir como melhor foto”"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantém premida uma fotografia e escolhe “Definir como melhor fotografia”"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir fotoğrafa dokunup basılı tut, ardından “En İyi Kare Yap” seçeneğini seç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натисніть і утримуйте фото, потім виберіть «Зробити найкращим кадром»"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按住照片，然後選擇「設為最佳照片」"
           }
         }
       }

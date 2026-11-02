@@ -11,6 +11,9 @@ struct SelectablePhotoThumbnail: View {
     let isBestShot: Bool
     var bestShotConfidence: BestShotConfidence = .automatic
     let isSelected: Bool
+    /// False while the cluster has no Best Shot, so VoiceOver does not offer a
+    /// selection that a double tap cannot make.
+    var canSelect = true
     let onToggleSelection: () -> Void
     let onOpenOriginal: () -> Void
     var onMakeBestShot: (() -> Void)?
@@ -191,7 +194,8 @@ struct SelectablePhotoThumbnail: View {
         PhotoTilePresentation(
             isBestShot: isBestShot,
             isSelected: isSelected,
-            bestShotConfidence: bestShotConfidence
+            bestShotConfidence: bestShotConfidence,
+            canSelect: canSelect
         )
     }
 
