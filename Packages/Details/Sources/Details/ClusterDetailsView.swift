@@ -132,7 +132,7 @@ public struct ClusterDetailsView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ClusterDetailsOverflowMenu(
-                        isActionBarVisible: viewModel.isActionBarVisible,
+                        showsSelectionActions: viewModel.isActionBarVisible && canSelectPhotos,
                         hasSelection: viewModel.selectedCount > 0,
                         onSelectAllExceptBest: { viewModel.selectAllExceptBest() },
                         onClearSelection: { viewModel.clearSelection() }
@@ -224,6 +224,12 @@ public struct ClusterDetailsView: View {
         .interactiveDismissDisabled(viewModel.isDeleting)
     }
 
+    /// One photo of a cluster is always kept, and that photo is the Best Shot,
+    /// so nothing can be selected until there is one.
+    private var canSelectPhotos: Bool {
+        !viewModel.bestShotAssetID.isEmpty
+    }
+
     private var actionBarTransition: AnyTransition {
         guard !reduceMotion else { return .opacity }
         return .move(edge: .bottom).combined(with: .opacity)
@@ -296,6 +302,7 @@ public struct ClusterDetailsView: View {
                                     && viewModel.isBestShot(asset.localIdentifier),
                                 bestShotConfidence: viewModel.bestShotConfidence,
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
+                                canSelect: canSelectPhotos,
                                 onToggleSelection: {
                                     viewModel.toggleSelection(for: asset.localIdentifier)
                                 },
@@ -328,7 +335,7 @@ public struct ClusterDetailsView: View {
                                 swipeActions: PhotoTileSwipeAction.available(
                                     isSelected: viewModel.isSelected(asset.localIdentifier),
                                     isBestShot: viewModel.isBestShot(asset.localIdentifier),
-                                    canSelect: !viewModel.bestShotAssetID.isEmpty,
+                                    canSelect: canSelectPhotos,
                                     canMakeBestShot: true
                                 ),
                                 onSwipeAction: { action in
