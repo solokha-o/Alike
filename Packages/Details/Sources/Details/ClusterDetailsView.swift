@@ -118,12 +118,25 @@ public struct ClusterDetailsView: View {
             if !viewModel.isDeleting {
                 if viewModel.isActionBarVisible {
                     ToolbarItem(placement: .topBarTrailing) {
-                        reviewToggle
+                        ClusterReviewToggle(
+                            isConfirmed: viewModel.isReviewConfirmed,
+                            keepSummaryText: viewModel.keepSummaryText,
+                            hint: ClusterReviewToggle.hint(
+                                isConfirmed: viewModel.isReviewConfirmed,
+                                selectedCount: viewModel.selectedCount
+                            ),
+                            onToggle: { viewModel.toggleReviewConfirmation() }
+                        )
                     }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    overflowMenu
+                    ClusterDetailsOverflowMenu(
+                        isActionBarVisible: viewModel.isActionBarVisible,
+                        hasSelection: viewModel.selectedCount > 0,
+                        onSelectAllExceptBest: { viewModel.selectAllExceptBest() },
+                        onClearSelection: { viewModel.clearSelection() }
+                    )
                 }
             }
         }
@@ -209,69 +222,6 @@ public struct ClusterDetailsView: View {
             }
         }
         .interactiveDismissDisabled(viewModel.isDeleting)
-    }
-
-    /// Finishing the review is a state the user flips, not a step in a flow, so
-    /// it reads as a toggle next to the title instead of a third button
-    /// competing with the destructive action at the bottom.
-    private var reviewToggle: some View {
-        Button {
-            viewModel.toggleReviewConfirmation()
-        } label: {
-            Image(systemName: viewModel.isReviewConfirmed ? "checkmark.seal.fill" : "checkmark.seal")
-                .symbolEffect(.bounce, value: reduceMotion ? false : viewModel.isReviewConfirmed)
-        }
-        .tint(viewModel.isReviewConfirmed ? Color.statusReviewed : nil)
-        .accessibilityLabel(Text(
-            viewModel.isReviewConfirmed
-                ? DetailsL10n.Common.reviewed
-                : DetailsL10n.ClusterDetails.markReviewed
-        ))
-        .accessibilityValue(Text(viewModel.keepSummaryText))
-        .accessibilityHint(Text(reviewToggleHint))
-        .accessibilityAddTraits(viewModel.isReviewConfirmed ? [.isSelected] : [])
-    }
-
-    private var reviewToggleHint: String {
-        if viewModel.isReviewConfirmed {
-            return DetailsL10n.ClusterDetails.doubleTapReopenThisCluster
-        }
-        return viewModel.selectedCount == 0
-            ? DetailsL10n.ClusterDetails.finishesReviewKeepsEveryPhoto
-            : DetailsL10n.ClusterDetails.finishesReviewKeepsPhotosDid
-    }
-
-    /// Two labelled sections instead of one flat list: acting on the selection
-    /// and changing how the grid looks are different jobs, and the column
-    /// options stay folded into a submenu so they never outnumber the actions.
-    private var overflowMenu: some View {
-        Menu {
-            if viewModel.isActionBarVisible {
-                Section(DetailsL10n.ClusterDetails.selection) {
-                    Button {
-                        viewModel.selectAllExceptBest()
-                    } label: {
-                        Label(DetailsL10n.ClusterDetails.selectAllExceptBest, systemImage: "checkmark.circle")
-                    }
-
-                    if viewModel.selectedCount > 0 {
-                        Button {
-                            viewModel.clearSelection()
-                        } label: {
-                            Label(DetailsL10n.Common.clearSelection, systemImage: "xmark.circle")
-                        }
-                    }
-                }
-            }
-
-            Section(DetailsL10n.ClusterDetails.view) {
-                PhotoGridColumnsPicker()
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-        }
-        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.moreOptions))
-        .accessibilityHint(Text(DetailsL10n.ClusterDetails.selectionShortcutsAndGridLayout))
     }
 
     private var actionBarTransition: AnyTransition {
