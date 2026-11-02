@@ -31,10 +31,11 @@ struct SelectablePhotoThumbnail: View {
     @State private var imageLoadState = PhotoImageLoadState()
     @State private var imageLoadAttempt = 0
     @State private var showingMetadata = false
+    @State private var tapGuard = PhotoTileTapGuard()
 
     var body: some View {
         ZStack {
-            Button(action: onToggleSelection) {
+            Button(action: toggleSelectionUnlessSwiped) {
                 PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
                     ZStack {
                         Color.secondary.opacity(ColorOpacity.placeholderFill)
@@ -115,6 +116,7 @@ struct SelectablePhotoThumbnail: View {
                 .animation(.appInteractiveFast, value: isBestShot)
             }
             .buttonStyle(.plain)
+            .photoTileSwipeTracking(tapGuard)
             .accessibilityLabel(Text(accessibilityLabel))
             .accessibilityValue(Text(accessibilityValue))
             .accessibilityHint(Text(accessibilityHint))
@@ -245,6 +247,11 @@ struct SelectablePhotoThumbnail: View {
         } catch {
             imageLoadState.resolve(.failed, generation: generation)
         }
+    }
+
+    private func toggleSelectionUnlessSwiped() {
+        guard tapGuard.allowsTap(at: .now) else { return }
+        onToggleSelection()
     }
 
     private var contextMenuPreview: some View {
