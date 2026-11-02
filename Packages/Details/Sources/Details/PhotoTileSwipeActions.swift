@@ -45,6 +45,14 @@ enum PhotoTileSwipeAction: Hashable, CaseIterable {
         return actions
     }
 
+    /// The actions from `actions` that sit on one edge.
+    static func actions(
+        _ actions: [PhotoTileSwipeAction],
+        on edge: HorizontalEdge
+    ) -> [PhotoTileSwipeAction] {
+        actions.filter { $0.edge == edge }
+    }
+
     /// Keeping or choosing the keeper reads as a positive decision and sits on
     /// the leading edge; selecting for cleanup sits where deletion usually is.
     var edge: HorizontalEdge {
@@ -112,7 +120,90 @@ enum PhotoTileSwipeAction: Hashable, CaseIterable {
     }
 }
 
+/// Tells a tap on the tile from the end of a horizontal swipe. An edge with no
+/// swipe actions does not claim the drag, so the tile's button would read the
+/// finger lifting as a tap and change the selection.
+@MainActor
+final class PhotoTileTapGuard {
+    /// Long enough for the button's action and the drag's end to arrive in
+    /// either order, and shorter than a person can tap again after a swipe.
+    static let settleInterval: TimeInterval = 0.2
+
+    private var isSwiping = false
+    private var lastSwipeEnd: Date?
+
+    static func isHorizontal(_ translation: CGPoint) -> Bool {
+        abs(translation.x) > abs(translation.y)
+    }
+
+    func swipeMoved() {
+        isSwiping = true
+    }
+
+    func dragEnded(at date: Date) {
+        guard isSwiping else { return }
+        isSwiping = false
+        lastSwipeEnd = date
+    }
+
+    func allowsTap(at date: Date) -> Bool {
+        guard !isSwiping else { return false }
+        guard let lastSwipeEnd else { return true }
+        return date.timeIntervalSince(lastSwipeEnd) >= Self.settleInterval
+    }
+}
+
+/// Watches the drag next to the scroll view and the swipe actions. A SwiftUI
+/// `DragGesture` here stops the grid from scrolling.
+@available(iOS 27.0, *)
+private struct PhotoTileSwipeTracker: UIGestureRecognizerRepresentable {
+    let tapGuard: PhotoTileTapGuard
+
+    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator {
+        Coordinator()
+    }
+
+    func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
+        let recognizer = UIPanGestureRecognizer()
+        recognizer.cancelsTouchesInView = false
+        recognizer.delegate = context.coordinator
+        return recognizer
+    }
+
+    func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context: Context) {
+        switch recognizer.state {
+        case .began, .changed:
+            if PhotoTileTapGuard.isHorizontal(recognizer.translation(in: recognizer.view)) {
+                tapGuard.swipeMoved()
+            }
+        case .ended, .cancelled, .failed:
+            tapGuard.dragEnded(at: .now)
+        default:
+            break
+        }
+    }
+
+    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            true
+        }
+    }
+}
+
 extension View {
+    /// Keeps a swipe from reading as a tap on iOS 27; a no-op before that.
+    @ViewBuilder
+    func photoTileSwipeTracking(_ tapGuard: PhotoTileTapGuard) -> some View {
+        if #available(iOS 27.0, *) {
+            gesture(PhotoTileSwipeTracker(tapGuard: tapGuard))
+        } else {
+            self
+        }
+    }
+
     /// Makes a photo grid host swipe actions on iOS 27; a no-op before that.
     @ViewBuilder
     func photoTileSwipeActionsContainer() -> some View {
@@ -125,19 +216,28 @@ extension View {
 
     /// Attaches the tile's swipe actions. Full swipe stays off: each action is
     /// a review decision, and a long drag should not commit one by accident.
-    @ViewBuilder
     func photoTileSwipeActions(
         _ actions: [PhotoTileSwipeAction],
         perform: @escaping (PhotoTileSwipeAction) -> Void
     ) -> some View {
-        if actions.isEmpty {
+        photoTileSwipeEdge(.leading, actions: actions, perform: perform)
+            .photoTileSwipeEdge(.trailing, actions: actions, perform: perform)
+    }
+
+    /// An edge with no buttons gets no `swipeActions` at all: SwiftUI still lets
+    /// an empty edge open, and the tile then sticks slightly off its place.
+    @ViewBuilder
+    private func photoTileSwipeEdge(
+        _ edge: HorizontalEdge,
+        actions: [PhotoTileSwipeAction],
+        perform: @escaping (PhotoTileSwipeAction) -> Void
+    ) -> some View {
+        let edgeActions = PhotoTileSwipeAction.actions(actions, on: edge)
+        if edgeActions.isEmpty {
             self
         } else {
-            swipeActions(edge: .leading, allowsFullSwipe: false) {
-                PhotoTileSwipeButtons(actions: actions, edge: .leading, perform: perform)
-            }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                PhotoTileSwipeButtons(actions: actions, edge: .trailing, perform: perform)
+            swipeActions(edge: edge, allowsFullSwipe: false) {
+                PhotoTileSwipeButtons(actions: edgeActions, perform: perform)
             }
         }
     }
@@ -145,11 +245,10 @@ extension View {
 
 private struct PhotoTileSwipeButtons: View {
     let actions: [PhotoTileSwipeAction]
-    let edge: HorizontalEdge
     let perform: (PhotoTileSwipeAction) -> Void
 
     var body: some View {
-        ForEach(actions.filter { $0.edge == edge }, id: \.self) { action in
+        ForEach(actions, id: \.self) { action in
             Button {
                 perform(action)
             } label: {
