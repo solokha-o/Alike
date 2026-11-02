@@ -613,18 +613,20 @@ struct SelectablePhotoThumbnail: View {
         }
     }
 
+    private var presentation: PhotoTilePresentation {
+        PhotoTilePresentation(
+            isBestShot: isBestShot,
+            isSelected: isSelected,
+            bestShotConfidence: bestShotConfidence
+        )
+    }
+
     private var borderColor: Color {
-        if isBestShot {
-            return .heroGold.opacity(0.9)
-        }
-        if isSelected {
-            return .accent
-        }
-        return .clear
+        presentation.borderColor
     }
 
     private var borderLineWidth: CGFloat {
-        (isBestShot || isSelected) ? 2 : 0
+        presentation.borderLineWidth
     }
 
     /// A settle-in fade rather than a pop when the measured ranking lands;
@@ -638,17 +640,15 @@ struct SelectablePhotoThumbnail: View {
     }
 
     private var thumbnailTargetSize: CGSize {
-        thumbnailAspectRatio == 1
-            ? CGSize(width: 1_000, height: 1_000)
-            : CGSize(width: 300, height: 300)
+        PhotoTilePresentation.thumbnailTargetSize(aspectRatio: thumbnailAspectRatio)
     }
 
-    /// The modification date is part of the key because it is part of the
-    /// thumbnail cache key: after Apply or Revert the view model hands over a
-    /// re-read asset, and only a changed key re-runs the load instead of
-    /// leaving the pre-edit picture on the tile.
     private var imageLoadTaskID: String {
-        "\(asset.localIdentifier)#\(asset.modificationDate?.timeIntervalSinceReferenceDate ?? 0)#\(imageLoadAttempt)"
+        PhotoTilePresentation.imageLoadTaskID(
+            localIdentifier: asset.localIdentifier,
+            modificationDate: asset.modificationDate,
+            attempt: imageLoadAttempt
+        )
     }
 
     @MainActor
@@ -733,29 +733,15 @@ struct SelectablePhotoThumbnail: View {
     }
 
     private var accessibilityLabel: String {
-        if isBestShot {
-            return bestShotConfidence.badgeTitle
-        }
-        if isSelected {
-            return DetailsL10n.ClusterDetails.selectedForCleanupReview
-        }
-        return DetailsL10n.ClusterDetails.notSelected
+        presentation.accessibilityLabel
     }
 
     private var accessibilityValue: String {
-        if isBestShot {
-            return bestShotConfidence.badgeTitle
-        }
-        return isSelected ? DetailsL10n.ClusterDetails.selected : DetailsL10n.ClusterDetails.notSelected
+        presentation.accessibilityValue
     }
 
     private var accessibilityHint: String {
-        if isBestShot {
-            return DetailsL10n.ClusterDetails.thisPhotoKeptAsBest
-        }
-        return isSelected
-            ? DetailsL10n.ClusterDetails.doubleTapRemoveThisPhoto
-            : DetailsL10n.ClusterDetails.doubleTapSelectThisPhoto
+        presentation.accessibilityHint
     }
 }
 
@@ -844,32 +830,11 @@ struct MetadataView: View {
     }
 
     private var formattedMegapixels: String {
-        let value = metadata.megapixelCount.formatted(
-            FloatingPointFormatStyle<Double>.alikeDecimal.precision(.fractionLength(0...1))
-        )
-        return String(format: DetailsL10n.ClusterDetails.mp, value)
+        PhotoMetadataPresentation.megapixelsText(metadata.megapixelCount)
     }
 
     private var photoType: String {
-        guard !metadata.photoTraits.isEmpty else {
-            return DetailsL10n.ClusterDetails.photo
-        }
-
-        return metadata.photoTraits.map { trait in
-            switch trait {
-            case .screenshot:
-                DetailsL10n.ClusterDetails.screenshot
-            case .panorama:
-                DetailsL10n.ClusterDetails.panorama
-            case .livePhoto:
-                DetailsL10n.ClusterDetails.livePhoto
-            case .hdr:
-                DetailsL10n.ClusterDetails.hdr
-            case .depthEffect:
-                DetailsL10n.ClusterDetails.depthEffect
-            }
-        }
-        .joined(separator: ", ")
+        PhotoMetadataPresentation.photoTypeText(metadata.photoTraits)
     }
 }
 
