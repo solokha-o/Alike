@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Details
 
 @MainActor
-final class ScreenshotCleanupViewModelTests: XCTestCase {
+@Suite struct ScreenshotCleanupViewModelTests {
     private var cleanupService: MockPhotoCleanupService!
     private var cleanupHistoryRepository: MockCleanupHistoryRepository!
 
@@ -17,34 +18,34 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         cleanupHistoryRepository = nil
     }
 
-    func testSelectionUpdatesEstimatedSavings() {
+    @Test func testSelectionUpdatesEstimatedSavings() {
         let viewModel = makeViewModel()
 
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
+        #expect(viewModel.selectedAssetIDs == ["one"])
+        #expect(viewModel.estimatedSavingsBytes == 100)
     }
 
-    func testMaximumEstimatedSavingsIncludesEveryAsset() {
+    @Test func testMaximumEstimatedSavingsIncludesEveryAsset() {
         let viewModel = makeViewModel()
 
-        XCTAssertEqual(viewModel.maximumEstimatedSavingsBytes, 150)
+        #expect(viewModel.maximumEstimatedSavingsBytes == 150)
     }
 
-    func testSelectAllAndClearSelection() {
+    @Test func testSelectAllAndClearSelection() {
         let viewModel = makeViewModel()
 
         viewModel.selectAll()
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 150)
+        #expect(viewModel.selectedAssetIDs == ["one", "two"])
+        #expect(viewModel.estimatedSavingsBytes == 150)
 
         viewModel.clearSelection()
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.estimatedSavingsBytes == 0)
     }
 
-    func testFreeUserCanDeleteSinglePhoto() async throws {
+    @Test func testFreeUserCanDeleteSinglePhoto() async throws {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 1,
@@ -58,12 +59,12 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         await viewModel.confirmDelete()
 
         let lastIdentifiers = await cleanupService.lastLocalIdentifiers
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertEqual(lastIdentifiers, ["one"])
-        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
+        #expect(decision == .allowed)
+        #expect(lastIdentifiers == ["one"])
+        #expect(viewModel.pendingCompletionRecord == expectedRecord)
     }
 
-    func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
+    @Test func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
         let viewModel = makeViewModel()
         viewModel.selectAll()
 
@@ -71,25 +72,25 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         await viewModel.confirmDelete()
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
 
-        XCTAssertEqual(decision, .requiresPremium)
-        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
-        XCTAssertFalse(cleanupDidRun)
+        #expect(decision == .requiresPremium)
+        #expect(!viewModel.isDeleteConfirmationPresented)
+        #expect(viewModel.selectedAssetIDs == ["one", "two"])
+        #expect(!cleanupDidRun)
     }
 
-    func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() {
+    @Test func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() {
         let viewModel = makeViewModel()
         viewModel.selectAll()
 
-        XCTAssertTrue(viewModel.requiresPremiumForCurrentSelection)
+        #expect(viewModel.requiresPremiumForCurrentSelection)
         viewModel.continueWithSingleFreeSelection()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
-        XCTAssertFalse(viewModel.requiresPremiumForCurrentSelection)
-        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+        #expect(viewModel.selectedAssetIDs == ["one"])
+        #expect(!viewModel.requiresPremiumForCurrentSelection)
+        #expect(viewModel.isDeleteConfirmationPresented)
     }
 
-    func testPremiumUserCanDeleteMultiplePhotos() async throws {
+    @Test func testPremiumUserCanDeleteMultiplePhotos() async throws {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 2,
@@ -107,13 +108,13 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         let lastSource = await cleanupService.lastSourceClusterID
         let lastEstimatedSavings = await cleanupService.lastEstimatedSavingsBytes
 
-        XCTAssertEqual(lastIdentifiers, ["one", "two"])
-        XCTAssertEqual(lastSource, CleanupCategoryKind.screenshots.sourceClusterID)
-        XCTAssertEqual(lastEstimatedSavings, 150)
-        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
+        #expect(lastIdentifiers == ["one", "two"])
+        #expect(lastSource == CleanupCategoryKind.screenshots.sourceClusterID)
+        #expect(lastEstimatedSavings == 150)
+        #expect(viewModel.pendingCompletionRecord == expectedRecord)
     }
 
-    func testConfirmDeletePublishesCompletionAfterHistoryAppendFinishes() async {
+    @Test func testConfirmDeletePublishesCompletionAfterHistoryAppendFinishes() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 2,
@@ -130,19 +131,19 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         let deleteTask = Task { await viewModel.confirmDelete() }
         await suspendedHistoryRepository.waitUntilAppendStarts()
 
-        XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertTrue(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == nil)
+        #expect(viewModel.isDeleting)
 
         await suspendedHistoryRepository.finishAppend()
         await deleteTask.value
 
-        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == expectedRecord)
+        #expect(!viewModel.isDeleting)
         let entries = await suspendedHistoryRepository.storedEntries()
-        XCTAssertEqual(entries, [expectedRecord])
+        #expect(entries == [expectedRecord])
     }
 
-    func testBlurredPhotoCompletionWaitsForDelayBeforePublishing() async {
+    @Test func testBlurredPhotoCompletionWaitsForDelayBeforePublishing() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.blurredPhotos.sourceClusterID,
             deletedCount: 2,
@@ -161,15 +162,15 @@ final class ScreenshotCleanupViewModelTests: XCTestCase {
         await suspendedDelay.waitUntilStarted()
 
         let lastSource = await cleanupService.lastSourceClusterID
-        XCTAssertEqual(lastSource, CleanupCategoryKind.blurredPhotos.sourceClusterID)
-        XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertTrue(viewModel.isDeleting)
+        #expect(lastSource == CleanupCategoryKind.blurredPhotos.sourceClusterID)
+        #expect(viewModel.pendingCompletionRecord == nil)
+        #expect(viewModel.isDeleting)
 
         await suspendedDelay.finish()
         await deleteTask.value
 
-        XCTAssertEqual(viewModel.pendingCompletionRecord, expectedRecord)
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == expectedRecord)
+        #expect(!viewModel.isDeleting)
     }
 
     private func makeViewModel(
