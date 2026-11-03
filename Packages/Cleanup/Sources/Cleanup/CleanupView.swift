@@ -313,7 +313,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
             CleanupStatusBanner(
                 icon: "arrow.triangle.2.circlepath",
                 title: CleanupL10n.Main.refreshingCleanup,
-                message: String(format: CleanupL10n.Main.scanningYourLibrary, Int(progress * 100)),
+                message: CleanupPresentation.scanningMessage(progress: progress),
                 showsProgress: true,
                 progress: progress
             )
@@ -379,29 +379,21 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
     }
 
     private var terminalReconciliationState: CleanupReconciliationState? {
-        guard let state = workspace.reconciliationState else { return nil }
-        if case .refreshing = state { return nil }
-        return state
+        CleanupPresentation.terminalReconciliationState(workspace.reconciliationState)
     }
 
     private var displayedScanOperation: ScanOperationState? {
-        switch workspace.scanOperation {
-        case .scanning(_, .userInitiated), .failed(_, .userInitiated):
-            workspace.scanOperation
-        case .idle, .scanning(_, .reconciliation), .failed(_, .reconciliation):
-            nil
-        }
+        CleanupPresentation.displayedScanOperation(workspace.scanOperation)
     }
 
     /// `true` while any other surface owns the screen, so the review sheet never lands on
     /// top of a paywall, a sheet, an alert, or a running scan.
     private var isRatingPromptBlocked: Bool {
-        presentedCategory != nil
-            || presentedPaywall != nil
-            || isControlsPresented
-            || categoryError != nil
-            || workspace.scanOperation != .idle
-            || scenePhase != .active
+        CleanupPresentation.isRatingPromptBlocked(
+            isScreenOwned: isScreenOwned,
+            scanOperation: workspace.scanOperation,
+            isSceneActive: scenePhase == .active
+        )
     }
 
     /// Asks for an App Store review after a cleanup that actually removed photos.
@@ -485,7 +477,10 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
         if !workspace.cleanupCategories.isEmpty {
             CleanupCategoriesCard(categories: workspace.cleanupCategories, isLocked: { !premiumAccess.hasAccess(to: $0.premiumFeature) }, onTap: openCategory)
         }
-        if !arrangement.hasAnyCluster && workspace.cleanupCategories.isEmpty {
+        if CleanupPresentation.showsNoOpportunities(
+            hasAnyCluster: arrangement.hasAnyCluster,
+            hasCategories: !workspace.cleanupCategories.isEmpty
+        ) {
             ContentUnavailableView {
                 Label(CleanupL10n.Main.noCleanupOpportunities, systemImage: "checkmark.seal")
             } description: { Text(CleanupL10n.Main.latestScanDidNotFind) }
@@ -549,9 +544,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
                 Button { isControlsPresented = true } label: {
                     Label(
                         CleanupL10n.Main.filterAndSort,
-                        systemImage: controls.isDefault
-                            ? "line.3.horizontal.decrease.circle"
-                            : "line.3.horizontal.decrease.circle.fill"
+                        systemImage: CleanupPresentation.controlsIconName(isDefault: controls.isDefault)
                     )
                 }
             }
@@ -566,7 +559,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
 
     private var controlsButton: some View {
         Button { isControlsPresented = true } label: {
-            Image(systemName: controls.isDefault ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+            Image(systemName: CleanupPresentation.controlsIconName(isDefault: controls.isDefault))
         }
         .accessibilityLabel(Text(CleanupL10n.Main.filterAndSortClusters))
     }
@@ -592,10 +585,12 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
     /// swap it, and a list or paywall the user is in is not something a home-screen tap
     /// should replace.
     private var isScreenOwned: Bool {
-        presentedCategory != nil
-            || presentedPaywall != nil
-            || isControlsPresented
-            || categoryError != nil
+        CleanupPresentation.isScreenOwned(
+            hasPresentedCategory: presentedCategory != nil,
+            hasPresentedPaywall: presentedPaywall != nil,
+            isControlsPresented: isControlsPresented,
+            hasCategoryError: categoryError != nil
+        )
     }
 
     /// Acts on a place a widget tap asked for, once there is something to act against.
@@ -672,15 +667,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
     }
 
     private func paywallContext(for feature: PremiumFeature) -> PremiumSurfaceContext {
-        if let kind = feature.categoryKind,
-           let category = workspace.cleanupCategories.first(where: { $0.kind == kind }) {
-            return .smartCategory(
-                feature: feature,
-                title: kind.presentation.title,
-                estimatedSavings: String.alikeByteCount(category.estimatedSavingsBytes)
-            )
-        }
-        return .feature(feature)
+        CleanupPresentation.paywallContext(for: feature, categories: workspace.cleanupCategories)
     }
 
     /// Re-derives the displayed cluster order and sectioning.
@@ -923,24 +910,11 @@ private struct CleanupProgressCard: View {
     }
 
     private var continueAccessibilityLabel: String {
-        String(
-            format: CleanupL10n.Main.continueReviewClustersReviewedRemaining,
-            progress.reviewedCount,
-            progress.totalClusters,
-            progress.remainingClusters,
-            progress.totalSelectedItems,
-            String.alikeByteCount(progress.reviewedSavingsBytes)
-        )
+        CleanupPresentation.continueAccessibilityLabel(progress)
     }
 
     private var completedAccessibilityLabel: String {
-        String(
-            format: CleanupL10n.Main.allClustersReviewedSelectedEstimated,
-            progress.reviewedCount,
-            progress.totalClusters,
-            progress.totalSelectedItems,
-            String.alikeByteCount(progress.reviewedSavingsBytes)
-        )
+        CleanupPresentation.completedAccessibilityLabel(progress)
     }
 
     private func metric(_ value: String, _ label: String) -> some View {
@@ -972,7 +946,7 @@ private struct CleanupCategoriesCard: View {
                         VStack(alignment: .leading) {
                             Text(category.kind.presentation.title)
                                 .font(.appHeadline)
-                            Text(categoryDetail(category))
+                            Text(CleanupPresentation.categoryDetail(category))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -987,7 +961,9 @@ private struct CleanupCategoriesCard: View {
                     )
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(Text(categoryAccessibilityLabel(category)))
+                .accessibilityLabel(
+                    Text(CleanupPresentation.categoryAccessibilityLabel(category, isLocked: isLocked(category.kind)))
+                )
                 .accessibilityHint(
                     Text(
                         isLocked(category.kind)
@@ -999,18 +975,6 @@ private struct CleanupCategoriesCard: View {
         }
         .padding(Spacing.medium)
         .cleanupGlassSurface()
-    }
-
-    private func categoryDetail(_ category: CleanupCategorySummary) -> String {
-        CleanupL10n.Main.itemsEstimatedReclaimable(
-            category.assetCount,
-            String.alikeByteCount(category.estimatedSavingsBytes)
-        )
-    }
-
-    private func categoryAccessibilityLabel(_ category: CleanupCategorySummary) -> String {
-        let lockedSuffix = isLocked(category.kind) ? ". \(CleanupL10n.Main.locked)" : ""
-        return "\(category.kind.presentation.title). \(categoryDetail(category))\(lockedSuffix)"
     }
 }
 
@@ -1042,7 +1006,7 @@ private struct CleanupClusterSection: View {
             LazyVGrid(
                 columns: Array(
                     repeating: GridItem(.flexible(), spacing: Spacing.small),
-                    count: max(1, gridColumns)
+                    count: CleanupPresentation.gridColumnCount(gridColumns)
                 ),
                 spacing: Spacing.small
             ) {
@@ -1197,29 +1161,11 @@ private struct CleanupClusterCard: View {
 #endif
 
     private var statusTitle: String {
-        switch status {
-        case .notReviewed:
-            CleanupL10n.Main.notReviewed
-        case .needsReReview:
-            CleanupL10n.Main.needsReview
-        case .inReview:
-            CleanupL10n.Main.inReview
-        case .reviewed:
-            CleanupL10n.Main.reviewed
-        }
+        CleanupPresentation.clusterStatusTitle(status)
     }
 
     private var statusIconName: String {
-        switch status {
-        case .notReviewed:
-            "circle"
-        case .needsReReview:
-            "arrow.triangle.2.circlepath.circle.fill"
-        case .inReview:
-            "clock.arrow.circlepath"
-        case .reviewed:
-            "checkmark.seal.fill"
-        }
+        CleanupPresentation.clusterStatusIconName(status)
     }
 
     private var statusColor: Color {
@@ -1236,23 +1182,11 @@ private struct CleanupClusterCard: View {
     }
 
     private var clusterAccessibilityLabel: String {
-        let resurfacingTitle: String
-        switch resurfacing {
-        case .new:
-            resurfacingTitle = CleanupL10n.Main.new
-        case .changed:
-            resurfacingTitle = CleanupL10n.Main.changed
-        case .none, .unchanged:
-            resurfacingTitle = ""
-        }
-
-        return [
-            CleanupL10n.Common.photos(cluster.count),
-            statusTitle,
-            resurfacingTitle
-        ]
-        .filter { !$0.isEmpty }
-        .joined(separator: ". ")
+        CleanupPresentation.clusterAccessibilityLabel(
+            photoCount: cluster.count,
+            status: status,
+            resurfacing: resurfacing
+        )
     }
 }
 
