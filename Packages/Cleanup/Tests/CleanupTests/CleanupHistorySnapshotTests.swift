@@ -1,6 +1,7 @@
 import Core
 import XCTest
 @testable import Cleanup
+@testable import CleanupWorkspace
 
 final class CleanupHistorySnapshotTests: XCTestCase {
     private var calendar: Calendar!

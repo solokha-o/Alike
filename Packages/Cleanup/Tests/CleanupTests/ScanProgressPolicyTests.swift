@@ -1,4 +1,5 @@
 @testable import Cleanup
+@testable import CleanupWorkspace
 import XCTest
 
 final class ScanProgressPolicyTests: XCTestCase {

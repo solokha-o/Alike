@@ -18,6 +18,7 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../DesignSystem"),
         .package(path: "../Cleanup"),
+        .package(path: "../CleanupWorkspace"),
         .package(path: "../NavigationKit"),
         .package(path: "../Purchases"),
         .package(path: "../UserGuide")
@@ -26,7 +27,7 @@ let package = Package(
         .target(
             name: "Scanner",
             dependencies: [
-                "Core", "DesignSystem", "Cleanup", "NavigationKit", "UserGuide",
+                "Core", "DesignSystem", "Cleanup", "CleanupWorkspace", "NavigationKit", "UserGuide",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
             ],
@@ -39,7 +40,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ScannerTests",
-            dependencies: ["Scanner", "Core", "Cleanup"]
+            dependencies: ["Scanner", "Core", "Cleanup", "CleanupWorkspace"]
         ),
     ]
 )

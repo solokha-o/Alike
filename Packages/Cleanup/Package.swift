@@ -15,6 +15,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(path: "../CleanupWorkspace"),
         .package(path: "../Core"),
         .package(path: "../Storage"),
         .package(path: "../PhotoAnalysis"),
@@ -26,7 +27,7 @@ let package = Package(
         .target(
             name: "Cleanup",
             dependencies: [
-                "Core", "Storage", "PhotoAnalysis", "DesignSystem", "NavigationKit",
+                "CleanupWorkspace", "Core", "Storage", "PhotoAnalysis", "DesignSystem", "NavigationKit",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
             ],
@@ -40,7 +41,7 @@ let package = Package(
         .testTarget(
             name: "CleanupTests",
             dependencies: [
-                "Cleanup", "Core", "Storage", "PhotoAnalysis",
+                "Cleanup", "CleanupWorkspace", "Core", "Storage", "PhotoAnalysis",
                 .product(name: "PurchasesUI", package: "Purchases")
             ]
         ),

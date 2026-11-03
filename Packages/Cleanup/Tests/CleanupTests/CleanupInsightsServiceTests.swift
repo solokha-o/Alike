@@ -1,6 +1,7 @@
 import XCTest
 import Core
 @testable import Cleanup
+@testable import CleanupWorkspace
 
 final class CleanupInsightsServiceTests: XCTestCase {
     func testLoadInsightsReturnsEmptySnapshotForEmptyHistory() async throws {

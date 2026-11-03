@@ -13,6 +13,7 @@ import Scanner
 import Settings
 import Core
 import Cleanup
+import CleanupWorkspace
 import Storage
 import Photos
 import PhotoAnalysis

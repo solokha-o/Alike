@@ -28,6 +28,7 @@ XCODE_ARCHIVES_ROOT="${ALIKE_XCODE_ARCHIVES_ROOT:-$HOME/Library/Developer/Xcode/
 
 QUICK_PACKAGES=(
   "Packages/Cleanup"
+  "Packages/CleanupWorkspace"
   "Packages/Scanner"
   "Packages/Settings"
   "Packages/Storage"
@@ -45,10 +46,14 @@ QUICK_PACKAGES=(
 # that are in fact present — eleven issues that say nothing about the code.
 # Diagnostics: same `.xcstrings` reason as WidgetSupport, and its MetricKit and
 # MessageUI code only exists on iOS, so a macOS `swift test` would cover none of it.
+# CleanupWorkspace: it does not reach DesignSystem, so it would otherwise land on
+# plain `swift test`, but it depends on Storage and its model defaults to Core Data
+# repositories. Its tests also came from Cleanup, which runs them on an iOS simulator.
 SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
   "WidgetSupport"
   "Diagnostics"
+  "CleanupWorkspace"
 )
 
 # Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
