@@ -1,33 +1,34 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Settings
 
 @MainActor
-final class DeleteAllDataModelTests: XCTestCase {
-    func testDeleteAllDataReturnsToIdleAfterSuccess() async {
+@Suite struct DeleteAllDataModelTests {
+    @Test func testDeleteAllDataReturnsToIdleAfterSuccess() async {
         let model = DeleteAllDataModel {}
 
         await model.deleteAllData()
 
-        XCTAssertEqual(model.state, .idle)
-        XCTAssertFalse(model.isDeleting)
-        XCTAssertNil(model.errorMessage)
+        #expect(model.state == .idle)
+        #expect(!model.isDeleting)
+        #expect(model.errorMessage == nil)
     }
 
-    func testDeleteAllDataExposesRetryableFailure() async {
+    @Test func testDeleteAllDataExposesRetryableFailure() async {
         let model = DeleteAllDataModel {
             throw DataDeletionTestError.failure
         }
 
         await model.deleteAllData()
 
-        XCTAssertNotNil(model.errorMessage)
-        XCTAssertFalse(model.isDeleting)
+        #expect(model.errorMessage != nil)
+        #expect(!model.isDeleting)
 
         model.dismissError()
-        XCTAssertEqual(model.state, .idle)
+        #expect(model.state == .idle)
     }
 
-    func testDeleteAllDataIgnoresDuplicateRequestWhileDeleting() async {
+    @Test func testDeleteAllDataIgnoresDuplicateRequestWhileDeleting() async {
         let operation = SuspendedDataDeletionOperation()
         let model = DeleteAllDataModel {
             try await operation.run()
@@ -40,12 +41,12 @@ final class DeleteAllDataModelTests: XCTestCase {
         await model.deleteAllData()
 
         let callCount = await operation.callCount()
-        XCTAssertEqual(callCount, 1)
-        XCTAssertTrue(model.isDeleting)
+        #expect(callCount == 1)
+        #expect(model.isDeleting)
 
         await operation.succeed()
         await first.value
-        XCTAssertEqual(model.state, .idle)
+        #expect(model.state == .idle)
     }
 }
 
