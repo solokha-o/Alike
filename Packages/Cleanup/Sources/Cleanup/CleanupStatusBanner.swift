@@ -1,4 +1,5 @@
 import SwiftUI
+import CleanupWorkspace
 import Core
 import DesignSystem
 

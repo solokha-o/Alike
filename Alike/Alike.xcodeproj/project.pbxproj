@@ -20,6 +20,7 @@
 		7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00022F30000100DAB1E2 /* Purchases */; };
 		7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00052F30000100DAB1E2 /* PurchasesUI */; };
 		7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00072F30000100DAB1E2 /* Cleanup */; };
+		C6A70C0D2F90000100DAB1E2 /* CleanupWorkspace in Frameworks */ = {isa = PBXBuildFile; productRef = C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */; };
 		9F1D0A001000000000000020 /* WidgetSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9F1D0A001000000000000021 /* WidgetSupport */; };
 		9F1D0A001000000000000022 /* WidgetSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9F1D0A001000000000000023 /* WidgetSupport */; };
 		9F1D0A001000000000000024 /* AlikeWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F1D0A001000000000000002 /* AlikeWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -78,6 +79,7 @@
 				531BB6372F29299500DAB1E2 /* Settings in Frameworks */,
 				531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */,
 				7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */,
+				C6A70C0D2F90000100DAB1E2 /* CleanupWorkspace in Frameworks */,
 				53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */,
 				53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */,
 				531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */,
@@ -173,6 +175,7 @@
 				531BB6362F29299500DAB1E2 /* Settings */,
 				531BB6392F2929E900DAB1E2 /* Scanner */,
 				7A1B00072F30000100DAB1E2 /* Cleanup */,
+				C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */,
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
 				D1A60C0F2F90000100DAB1E2 /* Diagnostics */,
@@ -294,6 +297,7 @@
 				531BB6352F29299500DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Settings" */,
 				531BB6382F2929E900DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Scanner" */,
 				7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */,
+				C6A70C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/CleanupWorkspace" */,
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
 				D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */,
@@ -770,6 +774,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Cleanup;
 		};
+		C6A70C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/CleanupWorkspace" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/CleanupWorkspace;
+		};
 		9F1D0A001000000000000010 /* XCLocalSwiftPackageReference "../Packages/WidgetSupport" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/WidgetSupport;
@@ -828,6 +836,10 @@
 		7A1B00072F30000100DAB1E2 /* Cleanup */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Cleanup;
+		};
+		C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CleanupWorkspace;
 		};
 		9F1D0A001000000000000021 /* WidgetSupport */ = {
 			isa = XCSwiftPackageProductDependency;

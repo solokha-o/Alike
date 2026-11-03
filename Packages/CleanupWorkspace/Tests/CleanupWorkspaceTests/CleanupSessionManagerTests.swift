@@ -1,6 +1,6 @@
 import XCTest
 import Core
-@testable import Cleanup
+@testable import CleanupWorkspace
 
 final class CleanupSessionManagerTests: XCTestCase {
     func testProgressIncludesSelectedItemsAndRemainingClusters() async {

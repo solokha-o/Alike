@@ -1,5 +1,6 @@
 import SwiftUI
 import Photos
+import CleanupWorkspace
 import Core
 import DesignSystem
 import PhotoAnalysis

@@ -1,6 +1,6 @@
 import XCTest
 import Core
-@testable import Cleanup
+@testable import CleanupWorkspace
 
 final class ClusterReviewStateResurfacerTests: XCTestCase {
     private let previousClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A1")!

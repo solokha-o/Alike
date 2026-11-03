@@ -82,6 +82,7 @@ Alike/
 ├── Welcome/                 # Onboarding & permissions
 ├── Scanner/                 # Scan lifecycle, allowance, and scan admission
 ├── Cleanup/                 # Review queue, smart cleanup, deletion, and history
+├── CleanupWorkspace/        # Shared scan and cleanup state, without UI
 ├── Purchases/               # StoreKit subscriptions, entitlements, paywalls
 ├── UserGuide/               # In-app guide catalog, hub and topics
 ├── Settings/                # Configuration

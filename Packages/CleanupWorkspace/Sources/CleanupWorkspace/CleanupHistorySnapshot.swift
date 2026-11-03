@@ -1,9 +1,9 @@
 import Core
 import Foundation
 
-struct CleanupHistorySnapshot: Equatable, Sendable {
-    let insights: CleanupInsights
-    let sections: [CleanupHistorySection]
+public struct CleanupHistorySnapshot: Equatable, Sendable {
+    public let insights: CleanupInsights
+    public let sections: [CleanupHistorySection]
 
     /// The calendar the history is cut into months on.
     ///
@@ -13,9 +13,9 @@ struct CleanupHistorySnapshot: Equatable, Sendable {
     /// Gregorian month its first day happened to fall in — an entry under a header naming a
     /// month it did not happen in. Named rather than inlined so a test can assert the default
     /// on any device, including the Latin-digit ones where reverting it looks harmless.
-    static var groupingCalendar: Calendar { .alikeFormattingCalendar }
+    public static var groupingCalendar: Calendar { .alikeFormattingCalendar }
 
-    init(entries: [CleanupCompletionRecord], calendar: Calendar = CleanupHistorySnapshot.groupingCalendar) {
+    public init(entries: [CleanupCompletionRecord], calendar: Calendar = CleanupHistorySnapshot.groupingCalendar) {
         let sortedEntries = entries.sorted { lhs, rhs in
             if lhs.completedAt == rhs.completedAt {
                 return lhs.id.uuidString > rhs.id.uuidString
@@ -44,14 +44,14 @@ struct CleanupHistorySnapshot: Equatable, Sendable {
             }
     }
 
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         sections.isEmpty
     }
 }
 
-struct CleanupHistorySection: Identifiable, Equatable, Sendable {
-    let month: Date
-    let entries: [CleanupCompletionRecord]
+public struct CleanupHistorySection: Identifiable, Equatable, Sendable {
+    public let month: Date
+    public let entries: [CleanupCompletionRecord]
 
-    var id: Date { month }
+    public var id: Date { month }
 }

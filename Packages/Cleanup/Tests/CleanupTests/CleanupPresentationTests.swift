@@ -2,6 +2,7 @@ import Core
 import PurchasesUI
 import XCTest
 @testable import Cleanup
+import CleanupWorkspace
 
 /// Pins what the Cleanup screen decides and says. The text tests compare against the
 /// compiled catalog string in the current locale, so they check which string and which
