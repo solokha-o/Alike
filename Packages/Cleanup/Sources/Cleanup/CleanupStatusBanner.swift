@@ -1,0 +1,131 @@
+import SwiftUI
+import DesignSystem
+
+struct CleanupStatusBanner: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    let icon: String
+    let title: String
+    let message: String
+    var actionTitle: String? = nil
+    var action: (() -> Void)? = nil
+    var showsProgress = false
+    var progress: Double? = nil
+    var dismiss: (() -> Void)? = nil
+
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                stackedLayout
+            } else {
+                ViewThatFits(in: .horizontal) {
+                    horizontalLayout
+                    stackedLayout
+                }
+            }
+        }
+        .padding(Spacing.medium)
+        .cleanupGlassSurface()
+    }
+
+    private var horizontalLayout: some View {
+        HStack(alignment: .top, spacing: Spacing.small) {
+            indicator
+            statusText(allowsWrapping: false)
+            Spacer(minLength: Spacing.small)
+            compactAction
+            dismissButton
+        }
+    }
+
+    private var stackedLayout: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            HStack(alignment: .top, spacing: Spacing.small) {
+                indicator
+                statusText(allowsWrapping: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                dismissButton
+            }
+
+            expandedAction
+        }
+    }
+
+    @ViewBuilder
+    private var indicator: some View {
+        if showsProgress {
+            ProgressView(value: progress)
+                .frame(width: 22)
+        } else {
+            Image(systemName: icon)
+                .foregroundStyle(Color.accent)
+        }
+    }
+
+    private func statusText(allowsWrapping: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.appHeadline)
+            Text(message)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .fixedSize(horizontal: !allowsWrapping, vertical: true)
+    }
+
+    @ViewBuilder
+    private var compactAction: some View {
+        if let actionTitle, let action {
+            Button(actionTitle, action: action)
+                .fixedSize(horizontal: true, vertical: false)
+                .cleanupGlassButton()
+        }
+    }
+
+    @ViewBuilder
+    private var expandedAction: some View {
+        if let actionTitle, let action {
+            Button(action: action) {
+                Text(actionTitle)
+                    .frame(maxWidth: .infinity)
+            }
+            .cleanupGlassButton()
+        }
+    }
+
+    @ViewBuilder
+    private var dismissButton: some View {
+        if let dismiss {
+            Button(action: dismiss) {
+                Image(systemName: "xmark")
+            }
+            .cleanupGlassButton()
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text(CleanupL10n.Main.dismissCleanupStatus))
+            .accessibilityHint(Text(CleanupL10n.Main.hideThisStatusMessage))
+        }
+    }
+}
+
+#Preview("Library Changed") {
+    CleanupStatusBanner(
+        icon: "photo.badge.arrow.down",
+        title: CleanupL10n.Main.yourLibraryChanged,
+        message: CleanupL10n.Main.runNewScanRefreshCleanup,
+        actionTitle: CleanupL10n.Main.rescan,
+        action: {}
+    )
+    .padding()
+}
+
+#Preview("Refresh Failure") {
+    CleanupStatusBanner(
+        icon: "exclamationmark.triangle.fill",
+        title: CleanupL10n.Main.refreshRequired,
+        message: CleanupL10n.Main.photosWereDeletedButLibrary,
+        actionTitle: CleanupL10n.Main.rescan,
+        action: {},
+        dismiss: {}
+    )
+    .padding()
+}
