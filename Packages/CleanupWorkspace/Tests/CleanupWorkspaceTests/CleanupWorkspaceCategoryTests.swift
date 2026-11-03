@@ -1,4 +1,3 @@
-import Cleanup
 import CleanupWorkspace
 import Core
 import Photos

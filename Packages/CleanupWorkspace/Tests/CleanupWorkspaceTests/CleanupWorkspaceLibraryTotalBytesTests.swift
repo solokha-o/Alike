@@ -1,6 +1,5 @@
 import Core
 import XCTest
-@testable import Cleanup
 @testable import CleanupWorkspace
 
 /// The widget ring's denominator: unknown until a scan summed the library, then

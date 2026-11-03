@@ -1,4 +1,3 @@
-@testable import Cleanup
 @testable import CleanupWorkspace
 import XCTest
 

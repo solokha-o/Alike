@@ -26,5 +26,9 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
+        .testTarget(
+            name: "CleanupWorkspaceTests",
+            dependencies: ["CleanupWorkspace", "Core", "Storage", "PhotoAnalysis"]
+        ),
     ]
 )
