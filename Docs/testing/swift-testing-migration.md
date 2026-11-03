@@ -11,11 +11,9 @@ Rules for moving Alike unit tests from XCTest to Swift Testing (`@Suite`, `@Test
 
 ## Branches
 
-- Integration branch: `test/swift-testing`, cut from `develop`.
-- Each card branch starts from `test/swift-testing` and merges back into it through a PR.
-- Merge `develop` into `test/swift-testing` regularly.
-- Do not merge `test/swift-testing` into `develop` before release 1.7.0
-  ([solokha-o/Alike#111](https://github.com/solokha-o/Alike/pull/111)). Card M7 does that merge.
+- There is no integration branch. `test/swift-testing` merged into `develop` through
+  [solokha-o/Alike#141](https://github.com/solokha-o/Alike/pull/141) with cards M1–M5, and it no longer exists.
+- Each card branch starts from `develop`, and each card PR targets `develop`.
 - Merge card PRs with a merge commit, not a squash: review needs the two commits apart.
 
 ## Card order
@@ -27,10 +25,14 @@ Rules for moving Alike unit tests from XCTest to Swift Testing (`@Suite`, `@Test
 | M3 | `Core`, `DesignSystem`, `WidgetSupport` | 35 | after M1 |
 | M4 | `Storage`, `PhotoAnalysis` | 28 | after M1 |
 | M5 | `Purchases`, `UserGuide` | 7 | after M1 and after the text review merges |
-| M6 | `Cleanup`, `Details`, `Settings` | 43 | after M1 and after refactor R1–R6 |
-| M7 | Close-out: CI blocks new `import XCTest`, merge into `develop` | — | after M2–M6 and release 1.7.0 |
+| M6 | `Settings`, `Cleanup`, `CleanupWorkspace`, `Details`, `Alike/AlikeTests/WidgetDeepLinkRoutingTests.swift` | 51 | after refactor R1–R6 |
+| M7 | Close-out: CI blocks new `import XCTest` | — | after M6 |
 
-M2–M6 can run in parallel.
+M1–M5 are in `develop`.
+
+Refactor card R7 changes `CleanupWorkspace` and needs its tests unchanged. Owner decision
+2026-11-03: `CleanupWorkspace` migrates in M6 without waiting for R7, and the 2 cards do not run
+at the same time.
 
 ## Rule: which framework a new test uses
 
@@ -158,6 +160,39 @@ How the numbers were read:
 | Package steps | 47:06 |
 | App compile (`xcodebuild Alike build`) | 8:06 |
 | `tools/full` total | 55:20 |
+
+The rows for `Cleanup` and `Details` above are out of date. Use the M6 baseline below for them.
+
+### M6 baseline
+
+Run 2026-11-03, `develop` at `6652b069`, Xcode 27.2 (27B48), simulator iPhone 17 on iOS 27.2 (24B114).
+This run replaces the 2026-10-26 numbers for `Settings`, `Cleanup` and `Details`. Refactor R6 moved
+65 tests from `Cleanup` into the new package `CleanupWorkspace`.
+
+Command, with the result bundle read through `xcrun xcresulttool get test-results tests`:
+
+```bash
+xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<simulator>' \
+  -jobs 6 -parallel-testing-enabled NO test
+```
+
+`tools/full` does not run `AlikeTests`. The app test file uses:
+
+```bash
+xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=<simulator>' \
+  -only-testing:AlikeTests/WidgetDeepLinkRoutingTests -jobs 6 -parallel-testing-enabled NO test
+```
+
+| Scope | Tests | Passed | Skipped |
+| --- | ---: | ---: | ---: |
+| `Settings` | 46 | 46 | 0 |
+| `Cleanup` | 105 | 105 | 0 |
+| `CleanupWorkspace` | 65 | 65 | 0 |
+| `Details` | 191 | 191 | 0 |
+| `WidgetDeepLinkRoutingTests` | 3 | 3 | 0 |
+| **Total** | **410** | **410** | **0** |
+
+Time is not recorded: each run also includes its wait in the machine queue.
 
 ## CI check: `tools/full` and Swift Testing failures
 
