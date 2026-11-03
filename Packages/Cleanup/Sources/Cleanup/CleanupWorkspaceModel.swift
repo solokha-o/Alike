@@ -85,7 +85,7 @@ public final class CleanupWorkspaceModel {
     /// often. They stay observable stored properties, so views still update.
     private(set) var sessionProgressSnapshot: CleanupSessionProgress = .empty
     private(set) var cleanupEntryClusterSnapshot: PhotoCluster?
-    private(set) var clusterIdentityKey: [UUID] = []
+    public private(set) var clusterIdentityKey: [UUID] = []
     private var scanMutationGeneration = 0
     private var cachedContentLoadTask: Task<Void, Never>?
     private var activeScan: (id: UUID, sensitivity: SensitivityLevel, purpose: ScanOperationPurpose)?

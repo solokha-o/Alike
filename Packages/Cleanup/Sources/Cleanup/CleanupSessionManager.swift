@@ -27,6 +27,24 @@ public struct CleanupSessionProgress: Equatable, Sendable {
     public let reviewedSavingsBytes: Int64
     public let totalSelectedItems: Int
 
+    public init(
+        totalClusters: Int,
+        reviewedCount: Int,
+        needsReReviewCount: Int,
+        inReviewCount: Int,
+        notReviewedCount: Int,
+        reviewedSavingsBytes: Int64,
+        totalSelectedItems: Int
+    ) {
+        self.totalClusters = totalClusters
+        self.reviewedCount = reviewedCount
+        self.needsReReviewCount = needsReReviewCount
+        self.inReviewCount = inReviewCount
+        self.notReviewedCount = notReviewedCount
+        self.reviewedSavingsBytes = reviewedSavingsBytes
+        self.totalSelectedItems = totalSelectedItems
+    }
+
     /// Progress over an empty workspace, before any content has been published.
     public static let empty = CleanupSessionProgress(
         totalClusters: 0,
