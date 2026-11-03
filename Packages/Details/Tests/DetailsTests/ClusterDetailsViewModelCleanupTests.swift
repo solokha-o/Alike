@@ -402,8 +402,7 @@ import Photos
     private func waitForPersistedRevision(
         _ expected: Int,
         on viewModel: ClusterDetailsViewModel,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async {
         for _ in 0..<1_000 where viewModel.persistedRevision < expected {
             await Task.yield()

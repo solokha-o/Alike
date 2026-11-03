@@ -524,8 +524,7 @@ import Photos
     private func waitForRecordedExamples(
         _ expected: Int,
         on personalizationRepository: MockBestShotPersonalizationRepository,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async {
         for _ in 0..<1_000 {
             let recorded = await personalizationRepository.recordedExamples

@@ -134,8 +134,7 @@ import Photos
     private func waitForRecordedManualPicks(
         _ expected: Int,
         on metrics: MockBestShotOverrideMetricsRepository,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async {
         for _ in 0..<1_000 {
             let picks = await metrics.recordedManualPicks
