@@ -39,7 +39,10 @@ let package = Package(
         ),
         .testTarget(
             name: "CleanupTests",
-            dependencies: ["Cleanup", "Core", "Storage", "PhotoAnalysis"]
+            dependencies: [
+                "Cleanup", "Core", "Storage", "PhotoAnalysis",
+                .product(name: "PurchasesUI", package: "Purchases")
+            ]
         ),
     ]
 )
