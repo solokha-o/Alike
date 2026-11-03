@@ -1,22 +1,17 @@
 import Core
-import XCTest
+import Foundation
+import Testing
 @testable import Details
 
 /// The card must not say "tap photos" while a tap cannot select anything.
-final class EmptySelectionHintTests: XCTestCase {
-    func testUnresolvedClusterNamesTheStepThatUnlocksSelection() {
-        XCTAssertEqual(
-            ClusterReviewSummaryCard.emptySelectionHint(bestShotConfidence: .unresolved),
-            DetailsL10n.ClusterReviewSummaryCard.touchAndHoldToChooseBestShot
-        )
+@Suite struct EmptySelectionHintTests {
+    @Test func testUnresolvedClusterNamesTheStepThatUnlocksSelection() {
+        #expect(ClusterReviewSummaryCard.emptySelectionHint(bestShotConfidence: .unresolved) == DetailsL10n.ClusterReviewSummaryCard.touchAndHoldToChooseBestShot)
     }
 
-    func testClusterWithABestShotKeepsTheTapHint() {
+    @Test func testClusterWithABestShotKeepsTheTapHint() {
         for confidence in [BestShotConfidence.automatic, .lowConfidence] {
-            XCTAssertEqual(
-                ClusterReviewSummaryCard.emptySelectionHint(bestShotConfidence: confidence),
-                DetailsL10n.ClusterReviewSummaryCard.tapPhotosSelectThemCleanup
-            )
+            #expect(ClusterReviewSummaryCard.emptySelectionHint(bestShotConfidence: confidence) == DetailsL10n.ClusterReviewSummaryCard.tapPhotosSelectThemCleanup)
         }
     }
 }

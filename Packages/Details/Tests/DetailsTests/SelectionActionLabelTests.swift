@@ -1,5 +1,5 @@
 import Foundation
-import XCTest
+import Testing
 
 /// The screenshot and blurred-photo cleanup screens stack two buttons: one clears the
 /// selection, the one below it moves the selected photos to Recently Deleted. They must not
@@ -9,7 +9,7 @@ import XCTest
 /// "Auswahl löschen", and "Effacer la sélection" above "Supprimer la sélection". Neither
 /// pair is catchable by a rule, so the labels are pinned here. If a future translation pass
 /// changes one, this test fails and the pair gets looked at again — which is the point.
-final class SelectionActionLabelTests: XCTestCase {
+@Suite struct SelectionActionLabelTests {
     private static let clearKey = "details.common.clearSelection"
     private static let moveKey = "details.screenshotCleanupComponents.moveSelected"
     private static let selectAllKey = "details.screenshotCleanupComponents.selectAll"
@@ -32,20 +32,20 @@ final class SelectionActionLabelTests: XCTestCase {
         "ar": ("مسح التحديد", "نقل المحدد")
     ]
 
-    func testTheClearAndMoveButtonsStayDistinguishable() throws {
+    @Test func testTheClearAndMoveButtonsStayDistinguishable() throws {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
-            let expected = try XCTUnwrap(Self.expected[language], "no expectation for \(language)")
-            XCTAssertEqual(try value(Self.clearKey, language, catalog), expected.clear, language)
-            XCTAssertEqual(try value(Self.moveKey, language, catalog), expected.move, language)
+            let expected = try #require(Self.expected[language], "no expectation for \(language)")
+            #expect(try value(Self.clearKey, language, catalog) == expected.clear, Comment(rawValue: language))
+            #expect(try value(Self.moveKey, language, catalog) == expected.move, Comment(rawValue: language))
         }
     }
 
     /// The button moves photos to Recently Deleted and opens a confirmation that says exactly
     /// that; the same action on the cluster screen says "Move N Photos". Nothing here may
     /// promise deletion — that happens 30 days later, in the Photos app, not on this tap.
-    func testNoSelectionActionPromisesDeletion() throws {
+    @Test func testNoSelectionActionPromisesDeletion() throws {
         let catalog = try LocalizationCatalog.load()
         let forbidden = [
             "delete", "видал", "elimin", "apagar", "löschen", "supprim",
@@ -56,18 +56,18 @@ final class SelectionActionLabelTests: XCTestCase {
             for language in LocalizationCatalog.shippedLanguages {
                 let value = try self.value(key, language, catalog).lowercased()
                 for word in forbidden where value.contains(word) {
-                    XCTFail("\(key) [\(language)] promises deletion: \(value)")
+                    Issue.record("\(key) [\(language)] promises deletion: \(value)")
                 }
             }
         }
     }
 
     /// French pairs the clear action with Select All, so the two have to keep mirroring.
-    func testFrenchSelectionActionsMirrorEachOther() throws {
+    @Test func testFrenchSelectionActionsMirrorEachOther() throws {
         let catalog = try LocalizationCatalog.load()
 
-        XCTAssertEqual(try value(Self.selectAllKey, "fr", catalog), "Tout sélectionner")
-        XCTAssertEqual(try value(Self.clearKey, "fr", catalog), "Tout désélectionner")
+        #expect(try value(Self.selectAllKey, "fr", catalog) == "Tout sélectionner")
+        #expect(try value(Self.clearKey, "fr", catalog) == "Tout désélectionner")
     }
 
     private func value(
@@ -75,8 +75,8 @@ final class SelectionActionLabelTests: XCTestCase {
         _ language: String,
         _ catalog: LocalizationCatalog
     ) throws -> String {
-        let localization = try XCTUnwrap(catalog.localizations(of: key)[language])
-        let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-        return try XCTUnwrap(unit["value"] as? String)
+        let localization = try #require(catalog.localizations(of: key)[language])
+        let unit = try #require(localization["stringUnit"] as? [String: Any])
+        return try #require(unit["value"] as? String)
     }
 }
