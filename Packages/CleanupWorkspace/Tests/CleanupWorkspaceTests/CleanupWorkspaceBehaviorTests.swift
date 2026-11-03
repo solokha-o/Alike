@@ -317,7 +317,11 @@ private extension CleanupWorkspaceBehaviorTests {
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
     }
 

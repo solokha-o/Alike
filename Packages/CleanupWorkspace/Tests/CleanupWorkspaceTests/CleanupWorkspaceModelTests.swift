@@ -128,7 +128,11 @@ private enum ScanPersistenceTestError: Error {
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
 
         await workspace.loadCachedContent()
@@ -143,7 +147,11 @@ private enum ScanPersistenceTestError: Error {
             reviewRepository: FailingReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
 
         let summary = try await workspace.scan(sensitivity: .medium)
@@ -261,7 +269,11 @@ private extension CleanupWorkspaceModelTests {
             reviewRepository: reviewRepository,
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
     }
 }

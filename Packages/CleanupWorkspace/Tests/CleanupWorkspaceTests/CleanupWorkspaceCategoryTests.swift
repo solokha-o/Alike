@@ -157,7 +157,11 @@ import Testing
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: historyRepository
+            cleanupHistoryRepository: historyRepository,
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
     }
 }

@@ -7,8 +7,10 @@ import Testing
 /// `ScanSummary.estimatedSavingsBytes`, the cold-launch estimate and the
 /// content's own estimate are one figure, computed once: every asset counted
 /// once across clusters and categories, and the keeper never counted.
+// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
+// A test here advances it, and another test asserts that nothing was measured during its scan.
 @MainActor
-@Suite struct CleanupWorkspaceReclaimableEstimateTests {
+@Suite(.serialized) struct CleanupWorkspaceReclaimableEstimateTests {
     @Test func testScanSummaryCountsAScreenshotInsideAClusterOnce() async throws {
         // 2 000 × 1 000 / 2 = 1 000 000 bytes per asset.
         let keeperCandidateA = FakePhotoAsset(localIdentifier: "a", pixelWidth: 2_000, pixelHeight: 1_000)
@@ -407,6 +409,9 @@ import Testing
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
             assetByteSizeRepository: byteSizeRepository,
             assetBytesByIdentifier: assetBytesByIdentifier
         )
