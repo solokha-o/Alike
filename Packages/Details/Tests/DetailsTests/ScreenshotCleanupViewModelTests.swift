@@ -5,18 +5,8 @@ import Core
 
 @MainActor
 @Suite struct ScreenshotCleanupViewModelTests {
-    private var cleanupService: MockPhotoCleanupService!
-    private var cleanupHistoryRepository: MockCleanupHistoryRepository!
-
-    override func setUp() async throws {
-        cleanupService = MockPhotoCleanupService()
-        cleanupHistoryRepository = MockCleanupHistoryRepository()
-    }
-
-    override func tearDown() async throws {
-        cleanupService = nil
-        cleanupHistoryRepository = nil
-    }
+    private let cleanupService = MockPhotoCleanupService()
+    private let cleanupHistoryRepository = MockCleanupHistoryRepository()
 
     @Test func testSelectionUpdatesEstimatedSavings() {
         let viewModel = makeViewModel()

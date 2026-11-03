@@ -13,8 +13,7 @@ import Core
 
     // MARK: - Offered actions
 
-    @Test func testUnselectedTileOffersSelectAndMakeBestShot() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileOffersSelectAndMakeBestShot() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -23,8 +22,7 @@ import Core
         #expect(PhotoTileSwipeAction.makeBestShot.edge == .leading)
     }
 
-    @Test func testSelectedTileOffersKeepInsteadOfSelect() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileOffersKeepInsteadOfSelect() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -32,24 +30,21 @@ import Core
         #expect(PhotoTileSwipeAction.keep.edge == .leading)
     }
 
-    @Test func testBestShotTileOffersNothing() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testBestShotTileOffersNothing() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: true, canSelect: true, canMakeBestShot: true
         )
         #expect(actions == [])
     }
 
-    @Test func testWithoutBestShotNothingIsSelectable() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testWithoutBestShotNothingIsSelectable() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
         #expect(actions == [.makeBestShot])
     }
 
-    @Test func testScreenshotTileOffersOnlySelectionActions() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testScreenshotTileOffersOnlySelectionActions() throws {
         #expect(PhotoTileSwipeAction.available(
                 isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: false
             ) == [.select])
@@ -62,8 +57,7 @@ import Core
 
     /// An edge with no action must not get `swipeActions`: an empty edge still
     /// opens, and the tile sticks off its place.
-    @Test func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
@@ -71,8 +65,7 @@ import Core
         #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [])
     }
 
-    @Test func testUnselectedTileHasAnActionOnEachEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileHasAnActionOnEachEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -80,8 +73,7 @@ import Core
         #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [.select])
     }
 
-    @Test func testSelectedTileHasNothingOnTheTrailingEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileHasNothingOnTheTrailingEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -175,12 +167,6 @@ import Core
 
     // MARK: - Helpers
 
-    private func requireSwipeSupport() throws {
-        guard PhotoTileSwipeAction.isSupported else {
-            throw XCTSkip("Grid swipe actions need iOS 27.")
-        }
-    }
-
     private func loadedClusterViewModel(
         selected: Set<String> = []
     ) async -> (ClusterDetailsViewModel, MockClusterReviewStateRepository) {
@@ -217,8 +203,7 @@ import Core
         _ tappedRepository: MockClusterReviewStateRepository,
         _ swiped: ClusterDetailsViewModel,
         _ swipedRepository: MockClusterReviewStateRepository,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async {
         #expect(swiped.selectedAssetIDs == tapped.selectedAssetIDs, sourceLocation: sourceLocation)
         #expect(swiped.bestShotAssetID == tapped.bestShotAssetID, sourceLocation: sourceLocation)
