@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 import Photos
 @testable import Details
 
 @MainActor
-final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDetailsViewModelFixture {
+@Suite struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -12,7 +13,7 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
 
     // MARK: - Anonymous override metrics
 
-    func testOpeningAClusterWithARecommendationCountsIt() async {
+    @Test func testOpeningAClusterWithARecommendationCountsIt() async {
         let metrics = MockBestShotOverrideMetricsRepository()
         let viewModel = makeViewModel(
             snapshots: [
@@ -26,10 +27,10 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
         await viewModel.load()
 
         let recorded = await metrics.recordedRecommendations
-        XCTAssertEqual(recorded, [.automatic])
+        #expect(recorded == [.automatic])
     }
 
-    func testReplacingTheRecommendationIsCountedAsAnOverride() async {
+    @Test func testReplacingTheRecommendationIsCountedAsAnOverride() async {
         let metrics = MockBestShotOverrideMetricsRepository()
         let viewModel = makeViewModel(
             snapshots: [
@@ -45,13 +46,13 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
         await waitForRecordedManualPicks(1, on: metrics)
 
         let picks = await metrics.recordedManualPicks
-        XCTAssertEqual(picks, [.automatic])
+        #expect(picks == [.automatic])
         let stored = await metrics.metrics
-        XCTAssertEqual(stored.manualOverrideCount, 1)
+        #expect(stored.manualOverrideCount == 1)
     }
 
     /// Switching between the user's own picks says nothing about the ranking.
-    func testSwitchingBetweenOwnPicksIsNotCountedTwice() async {
+    @Test func testSwitchingBetweenOwnPicksIsNotCountedTwice() async {
         let metrics = MockBestShotOverrideMetricsRepository()
         let viewModel = makeViewModel(
             snapshots: [
@@ -70,10 +71,10 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
         await Task.yield()
 
         let picks = await metrics.recordedManualPicks
-        XCTAssertEqual(picks, [.automatic])
+        #expect(picks == [.automatic])
     }
 
-    func testAnUnresolvedClusterRecordsNeitherRecommendationNorOverride() async {
+    @Test func testAnUnresolvedClusterRecordsNeitherRecommendationNorOverride() async {
         let metrics = MockBestShotOverrideMetricsRepository()
         let viewModel = makeViewModel(
             snapshots: weakClusterSnapshots,
@@ -88,15 +89,15 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
         let recommendations = await metrics.recordedRecommendations
         let picks = await metrics.recordedManualPicks
         let stored = await metrics.metrics
-        XCTAssertTrue(recommendations.isEmpty)
-        XCTAssertEqual(picks, [.unresolved])
-        XCTAssertEqual(stored.manualOverrideCount, 0)
-        XCTAssertEqual(stored.unresolvedManualPickCount, 1)
+        #expect(recommendations.isEmpty)
+        #expect(picks == [.unresolved])
+        #expect(stored.manualOverrideCount == 0)
+        #expect(stored.unresolvedManualPickCount == 1)
     }
 
     /// The screen shows a Best Shot before scoring finishes, so an override can
     /// arrive first. Both sides of the rate have to survive that.
-    func testAnOverrideBeforeScoringFinishesStillCountsBothSides() async {
+    @Test func testAnOverrideBeforeScoringFinishesStillCountsBothSides() async {
         let metrics = MockBestShotOverrideMetricsRepository()
         let analyzer = StallingPhotoQualityAnalyzer()
         let viewModel = ClusterDetailsViewModel(
@@ -125,9 +126,9 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
         await loading.value
 
         let stored = await metrics.metrics
-        XCTAssertEqual(stored.recommendationCount, 1)
-        XCTAssertEqual(stored.manualOverrideCount, 1)
-        XCTAssertEqual(stored.overrideRate, 1, accuracy: 0.000_1)
+        #expect(stored.recommendationCount == 1)
+        #expect(stored.manualOverrideCount == 1)
+        #expect(abs(stored.overrideRate - 1) <= 0.000_1)
     }
 
     private func waitForRecordedManualPicks(
@@ -142,6 +143,6 @@ final class ClusterDetailsViewModelOverrideMetricsTests: XCTestCase, ClusterDeta
             await Task.yield()
         }
         let picks = await metrics.recordedManualPicks
-        XCTAssertEqual(picks.count, expected, file: file, line: line)
+        #expect(picks.count == expected, sourceLocation: sourceLocation)
     }
 }

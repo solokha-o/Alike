@@ -1,16 +1,17 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 import Photos
 @testable import Details
 
 @MainActor
-final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFixture {
+@Suite struct ClusterDetailsViewModelTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
     let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000010")!
 
-    func testLoadWithoutPersistedStateComputesBestShot() async {
+    @Test func testLoadWithoutPersistedStateComputesBestShot() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "a", isFavorite: false, area: 800, createdAt: Date(timeIntervalSince1970: 10)),
@@ -20,12 +21,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "b")
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
+        #expect(viewModel.bestShotAssetID == "b")
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.reviewStatus == .notReviewed)
     }
 
-    func testLoadKeepsComparisonVisibleForUnreviewedCluster() async {
+    @Test func testLoadKeepsComparisonVisibleForUnreviewedCluster() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -33,16 +34,16 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
             ]
         )
 
-        XCTAssertFalse(viewModel.hasLoadedReviewState)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        #expect(!viewModel.hasLoadedReviewState)
+        #expect(!viewModel.isBestShotCelebrationVisible)
 
         await viewModel.load()
 
-        XCTAssertTrue(viewModel.hasLoadedReviewState)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.hasLoadedReviewState)
+        #expect(!viewModel.isBestShotCelebrationVisible)
     }
 
-    func testLoadDoesNotShowBestShotCelebrationForSingleAsset() async {
+    @Test func testLoadDoesNotShowBestShotCelebrationForSingleAsset() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "only", isFavorite: true, area: 100, createdAt: nil)
@@ -51,11 +52,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertTrue(viewModel.hasLoadedReviewState)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.hasLoadedReviewState)
+        #expect(!viewModel.isBestShotCelebrationVisible)
     }
 
-    func testInitializationDefersAssetSnapshotPreparationUntilLoad() async {
+    @Test func testInitializationDefersAssetSnapshotPreparationUntilLoad() async {
         let expectedSnapshots = [
             snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
             snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
@@ -64,26 +65,26 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         let viewModel = makeViewModel(loader: loader)
 
         let initialInvocationCount = await loader.invocationCount
-        XCTAssertEqual(initialInvocationCount, 0)
-        XCTAssertFalse(viewModel.hasLoadedReviewState)
-        XCTAssertEqual(viewModel.assetCount, 0)
+        #expect(initialInvocationCount == 0)
+        #expect(!viewModel.hasLoadedReviewState)
+        #expect(viewModel.assetCount == 0)
 
         let loadTask = Task { await viewModel.load() }
         await loader.waitUntilStarted()
 
-        XCTAssertFalse(viewModel.hasLoadedReviewState)
-        XCTAssertEqual(viewModel.assetCount, 0)
+        #expect(!viewModel.hasLoadedReviewState)
+        #expect(viewModel.assetCount == 0)
 
         await loader.finish()
         await loadTask.value
 
-        XCTAssertTrue(viewModel.hasLoadedReviewState)
-        XCTAssertEqual(viewModel.assetCount, 2)
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "candidate"])
+        #expect(viewModel.hasLoadedReviewState)
+        #expect(viewModel.assetCount == 2)
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.displayedAssetIdentifiers == ["best", "candidate"])
     }
 
-    func testCancelledAssetSnapshotPreparationDoesNotPublishPartialState() async {
+    @Test func testCancelledAssetSnapshotPreparationDoesNotPublishPartialState() async {
         let loader = ControlledReviewAssetSnapshotLoader(
             snapshots: [snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil)]
         )
@@ -94,12 +95,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         loadTask.cancel()
         await loadTask.value
 
-        XCTAssertFalse(viewModel.hasLoadedReviewState)
-        XCTAssertEqual(viewModel.assetCount, 0)
-        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
+        #expect(!viewModel.hasLoadedReviewState)
+        #expect(viewModel.assetCount == 0)
+        #expect(viewModel.bestShotAssetID.isEmpty)
     }
 
-    func testLoadRestoresPersistedSelection() async throws {
+    @Test func testLoadRestoresPersistedSelection() async throws {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
@@ -118,16 +119,16 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.selectedAssetIDs == ["candidate"])
         // Nothing but the best shot is kept, but the review was never finished,
         // so the cluster stays open instead of counting itself as reviewed.
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
-        XCTAssertNil(viewModel.bestShotCelebrationCue)
+        #expect(viewModel.reviewStatus == .inReview)
+        #expect(!viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.bestShotCelebrationCue == nil)
     }
 
-    func testSelectAllExceptBestExcludesBestShot() async {
+    @Test func testSelectAllExceptBestExcludesBestShot() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -139,16 +140,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.load()
         viewModel.selectAllExceptBest()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
-        XCTAssertEqual(
-            viewModel.currentAlikeReaction?.state,
-            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
-        )
+        #expect(viewModel.selectedAssetIDs == ["one", "two"])
+        #expect(viewModel.reviewStatus == .inReview)
+        #expect(!viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.currentAlikeReaction?.state == .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85)))
     }
 
-    func testConfirmingReviewCompletesClusterAndCelebrates() async {
+    @Test func testConfirmingReviewCompletesClusterAndCelebrates() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -161,13 +159,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.selectAllExceptBest()
         viewModel.toggleReviewConfirmation()
 
-        XCTAssertTrue(viewModel.isReviewConfirmed)
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertTrue(viewModel.isBestShotCelebrationVisible)
-        XCTAssertEqual(viewModel.bestShotCelebrationCue?.id.generation, 1)
+        #expect(viewModel.isReviewConfirmed)
+        #expect(viewModel.reviewStatus == .reviewed)
+        #expect(viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.bestShotCelebrationCue?.id.generation == 1)
     }
 
-    func testConfirmingReviewWithSeveralKeptPhotosStillCompletesCluster() async {
+    @Test func testConfirmingReviewWithSeveralKeptPhotosStillCompletesCluster() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -180,12 +178,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleSelection(for: "two")
         viewModel.toggleReviewConfirmation()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
-        XCTAssertEqual(viewModel.keptCount, 2)
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        #expect(viewModel.selectedAssetIDs == ["two"])
+        #expect(viewModel.keptCount == 2)
+        #expect(viewModel.reviewStatus == .reviewed)
     }
 
-    func testConfirmingReviewWithoutSelectionKeepsEveryPhoto() async {
+    @Test func testConfirmingReviewWithoutSelectionKeepsEveryPhoto() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -196,12 +194,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.load()
         viewModel.toggleReviewConfirmation()
 
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.reviewStatus == .reviewed)
+        #expect(viewModel.estimatedSavingsBytes == 0)
     }
 
-    func testTogglingReviewConfirmationTwiceReopensCluster() async {
+    @Test func testTogglingReviewConfirmationTwiceReopensCluster() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -214,11 +212,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleReviewConfirmation()
         viewModel.toggleReviewConfirmation()
 
-        XCTAssertFalse(viewModel.isReviewConfirmed)
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+        #expect(!viewModel.isReviewConfirmed)
+        #expect(viewModel.reviewStatus == .inReview)
     }
 
-    func testEditingSelectionAfterConfirmationReopensCluster() async {
+    @Test func testEditingSelectionAfterConfirmationReopensCluster() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -230,11 +228,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleReviewConfirmation()
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertFalse(viewModel.isReviewConfirmed)
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+        #expect(!viewModel.isReviewConfirmed)
+        #expect(viewModel.reviewStatus == .inReview)
     }
 
-    func testConfirmedReviewSurvivesReload() async throws {
+    @Test func testConfirmedReviewSurvivesReload() async throws {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -249,8 +247,8 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.save()
 
         let stored = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(stored?.isReviewConfirmed, true)
-        XCTAssertEqual(stored?.status, .reviewed)
+        #expect(stored?.isReviewConfirmed == true)
+        #expect(stored?.status == .reviewed)
 
         let reloaded = makeViewModel(
             snapshots: [
@@ -261,12 +259,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         )
         await reloaded.load()
 
-        XCTAssertTrue(reloaded.isReviewConfirmed)
-        XCTAssertEqual(reloaded.selectedAssetIDs, ["two"])
-        XCTAssertEqual(reloaded.reviewStatus, .reviewed)
+        #expect(reloaded.isReviewConfirmed)
+        #expect(reloaded.selectedAssetIDs == ["two"])
+        #expect(reloaded.reviewStatus == .reviewed)
     }
 
-    func testSetBestShotPromotesPhotoAndDeselectsIt() async {
+    @Test func testSetBestShotPromotesPhotoAndDeselectsIt() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -279,13 +277,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleSelection(for: "one")
         viewModel.setBestShot("one")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertTrue(viewModel.isBestShotUserSelected)
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(viewModel.isBestShotUserSelected)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.reviewStatus == .notReviewed)
     }
 
-    func testSetBestShotOnReviewedClusterSwapsPreviousBestIntoSelection() async {
+    @Test func testSetBestShotOnReviewedClusterSwapsPreviousBestIntoSelection() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -299,14 +297,14 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleReviewConfirmation()
         viewModel.setBestShot("one")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["best", "two"])
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(viewModel.selectedAssetIDs == ["best", "two"])
+        #expect(viewModel.reviewStatus == .reviewed)
     }
 
     /// Promoting a keeper inside a multi-keep review must not push the previous
     /// keeper into the delete pile: the user kept it on purpose.
-    func testSetBestShotOnMultiKeepReviewLeavesPreviousBestKept() async {
+    @Test func testSetBestShotOnMultiKeepReviewLeavesPreviousBestKept() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -320,12 +318,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleReviewConfirmation()
         viewModel.setBestShot("one")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(viewModel.selectedAssetIDs == ["two"])
+        #expect(viewModel.reviewStatus == .reviewed)
     }
 
-    func testSetBestShotOnPartiallyReviewedClusterLeavesPreviousBestUnselected() async {
+    @Test func testSetBestShotOnPartiallyReviewedClusterLeavesPreviousBestUnselected() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -338,12 +336,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleSelection(for: "two")
         viewModel.setBestShot("one")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["two"])
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(viewModel.selectedAssetIDs == ["two"])
+        #expect(viewModel.reviewStatus == .inReview)
     }
 
-    func testSetBestShotIgnoresUnknownAndAlreadyBestIdentifiers() async {
+    @Test func testSetBestShotIgnoresUnknownAndAlreadyBestIdentifiers() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -355,11 +353,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.setBestShot("missing")
         viewModel.setBestShot("best")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertFalse(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(!viewModel.isBestShotUserSelected)
     }
 
-    func testSetBestShotPersistsUserOverride() async throws {
+    @Test func testSetBestShotPersistsUserOverride() async throws {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -372,11 +370,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.save()
 
         let stored = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(stored?.bestShotLocalIdentifier, "one")
-        XCTAssertEqual(stored?.isBestShotUserSelected, true)
+        #expect(stored?.bestShotLocalIdentifier == "one")
+        #expect(stored?.isBestShotUserSelected == true)
     }
 
-    func testLoadRestoresUserSelectedBestShot() async {
+    @Test func testLoadRestoresUserSelectedBestShot() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "one",
@@ -396,11 +394,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertTrue(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(viewModel.isBestShotUserSelected)
     }
 
-    func testLoadDropsUserOverrideWhenChosenPhotoIsGone() async {
+    @Test func testLoadDropsUserOverrideWhenChosenPhotoIsGone() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "removed",
@@ -420,11 +418,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertFalse(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(!viewModel.isBestShotUserSelected)
     }
 
-    func testLoadNormalizesLegacyKeepBestOnlyModeAndKeepsGridVisible() async {
+    @Test func testLoadNormalizesLegacyKeepBestOnlyModeAndKeepsGridVisible() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
@@ -443,13 +441,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertEqual(viewModel.reviewMode, .selection)
-        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "one"])
+        #expect(viewModel.selectedAssetIDs == ["one"])
+        #expect(viewModel.reviewStatus == .reviewed)
+        #expect(viewModel.reviewMode == .selection)
+        #expect(viewModel.displayedAssetIdentifiers == ["best", "one"])
     }
 
-    func testClearSelectionResetsState() async {
+    @Test func testClearSelectionResetsState() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -461,13 +459,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.selectAllExceptBest()
         viewModel.clearSelection()
 
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.reviewStatus == .notReviewed)
+        #expect(viewModel.estimatedSavingsBytes == 0)
+        #expect(!viewModel.isBestShotCelebrationVisible)
     }
 
-    func testTogglingBestShotDoesNothing() async {
+    @Test func testTogglingBestShotDoesNothing() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -478,11 +476,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.load()
         viewModel.toggleSelection(for: "best")
 
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.reviewStatus, .notReviewed)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.reviewStatus == .notReviewed)
     }
 
-    func testMissingPersistedBestShotRecomputesFallback() async {
+    @Test func testMissingPersistedBestShotRecomputesFallback() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "missing",
@@ -501,11 +499,11 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.selectedAssetIDs == ["candidate"])
     }
 
-    func testLoadPreservesNeedsReReviewStatusForResurfacedCluster() async {
+    @Test func testLoadPreservesNeedsReReviewStatusForResurfacedCluster() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",
@@ -525,12 +523,12 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.reviewStatus, .needsReReview)
-        XCTAssertTrue(viewModel.selectedAssetIDs.isEmpty)
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 0)
+        #expect(viewModel.reviewStatus == .needsReReview)
+        #expect(viewModel.selectedAssetIDs.isEmpty)
+        #expect(viewModel.estimatedSavingsBytes == 0)
     }
 
-    func testEstimatedSavingsUsesSelectedAssetsOnly() async {
+    @Test func testEstimatedSavingsUsesSelectedAssetsOnly() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 300, createdAt: nil),
@@ -542,16 +540,13 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.load()
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertEqual(viewModel.estimatedSavingsBytes, 100)
-        XCTAssertEqual(
-            viewModel.maximumEstimatedSavingsText,
-            ByteCountFormatter.string(fromByteCount: 150, countStyle: .file)
-        )
-        XCTAssertEqual(viewModel.reviewStatus, .inReview)
-        XCTAssertFalse(viewModel.isBestShotCelebrationVisible)
+        #expect(viewModel.estimatedSavingsBytes == 100)
+        #expect(viewModel.maximumEstimatedSavingsText == ByteCountFormatter.string(fromByteCount: 150, countStyle: .file))
+        #expect(viewModel.reviewStatus == .inReview)
+        #expect(!viewModel.isBestShotCelebrationVisible)
     }
 
-    func testCleanupReadyReactionTracksSelectionChanges() async {
+    @Test func testCleanupReadyReactionTracksSelectionChanges() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -564,13 +559,10 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         viewModel.toggleSelection(for: "one")
         viewModel.toggleSelection(for: "two")
 
-        XCTAssertEqual(
-            viewModel.currentAlikeReaction?.state,
-            .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85))
-        )
+        #expect(viewModel.currentAlikeReaction?.state == .cleanupReady(AlikeCleanupSummary(itemCount: 2, estimatedSavingsBytes: 85)))
     }
 
-    func testBestShotBreaksTieByIdentifier() async {
+    @Test func testBestShotBreaksTieByIdentifier() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "a", isFavorite: false, area: 100, createdAt: Date(timeIntervalSince1970: 10)),
@@ -580,10 +572,10 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "a")
+        #expect(viewModel.bestShotAssetID == "a")
     }
 
-    func testBestShotPrefersNewerModificationDateWhenOtherSignalsMatch() async {
+    @Test func testBestShotPrefersNewerModificationDateWhenOtherSignalsMatch() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(
@@ -605,10 +597,10 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "newer")
+        #expect(viewModel.bestShotAssetID == "newer")
     }
 
-    func testSelectAllExceptBestKeepsAllAssetsVisible() async {
+    @Test func testSelectAllExceptBestKeepsAllAssetsVisible() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -620,7 +612,7 @@ final class ClusterDetailsViewModelTests: XCTestCase, ClusterDetailsViewModelFix
         await viewModel.load()
         viewModel.selectAllExceptBest()
 
-        XCTAssertEqual(viewModel.displayedAssetIdentifiers, ["best", "one", "two"])
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
+        #expect(viewModel.displayedAssetIdentifiers == ["best", "one", "two"])
+        #expect(viewModel.selectedAssetIDs == ["one", "two"])
     }
 }

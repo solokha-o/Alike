@@ -1,16 +1,17 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 import Photos
 @testable import Details
 
 @MainActor
-final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewModelFixture {
+@Suite struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
     let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000010")!
 
-    func testConfirmDeleteCallsCleanupServiceAndPersistsHistory() async throws {
+    @Test func testConfirmDeleteCallsCleanupServiceAndPersistsHistory() async throws {
         let completionRecord = CleanupCompletionRecord(
             sourceClusterID: clusterID,
             deletedCount: 2,
@@ -46,18 +47,18 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         let storedEntries = await cleanupHistoryRepository.entries
         let remainingState = try await repository.loadReviewState(clusterID: clusterID)
 
-        XCTAssertTrue(cleanupDidRun)
-        XCTAssertEqual(lastSelection, Set(["one", "two"]))
-        XCTAssertEqual(storedEntries, [completionRecord])
-        XCTAssertNil(remainingState)
-        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
-        XCTAssertTrue(viewModel.hasCompletedCleanup)
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(cleanupDidRun)
+        #expect(lastSelection == Set(["one", "two"]))
+        #expect(storedEntries == [completionRecord])
+        #expect(remainingState == nil)
+        #expect(viewModel.pendingCompletionRecord == completionRecord)
+        #expect(viewModel.hasCompletedCleanup)
+        #expect(!viewModel.isDeleting)
     }
 
     /// The keeper's protection is a selection invariant, so assert it where it
     /// actually matters: the identifiers handed to the cleanup service.
-    func testConfirmDeleteNeverSendsTheBestShotToCleanup() async {
+    @Test func testConfirmDeleteNeverSendsTheBestShotToCleanup() async {
         await cleanupService.setDeleteAssetsResult(.success(
             CleanupCompletionRecord(
                 sourceClusterID: clusterID,
@@ -82,12 +83,12 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.confirmDelete()
 
         let lastSelection = await cleanupService.lastLocalIdentifiers
-        XCTAssertEqual(viewModel.bestShotAssetID, "one")
-        XCTAssertFalse(lastSelection?.contains("one") ?? true)
-        XCTAssertEqual(lastSelection, Set(["best"]))
+        #expect(viewModel.bestShotAssetID == "one")
+        #expect(!(lastSelection?.contains("one") ?? true))
+        #expect(lastSelection == Set(["best"]))
     }
 
-    func testConfirmDeletePublishesCompletionAfterReviewStateRemovalFinishes() async {
+    @Test func testConfirmDeletePublishesCompletionAfterReviewStateRemovalFinishes() async {
         let completionRecord = CleanupCompletionRecord(
             sourceClusterID: clusterID,
             deletedCount: 1,
@@ -116,19 +117,19 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         let deleteTask = Task { await viewModel.confirmDelete() }
         await suspendedRepository.waitUntilDeleteStarts()
 
-        XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertTrue(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == nil)
+        #expect(viewModel.isDeleting)
         let storedEntries = await cleanupHistoryRepository.entries
-        XCTAssertEqual(storedEntries, [completionRecord])
+        #expect(storedEntries == [completionRecord])
 
         await suspendedRepository.finishDelete()
         await deleteTask.value
 
-        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == completionRecord)
+        #expect(!viewModel.isDeleting)
     }
 
-    func testConfirmDeleteWaitsForCompletionDelayBeforePublishing() async throws {
+    @Test func testConfirmDeleteWaitsForCompletionDelayBeforePublishing() async throws {
         let completionRecord = CleanupCompletionRecord(
             sourceClusterID: clusterID,
             deletedCount: 1,
@@ -150,18 +151,18 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await completionDelay.waitUntilStarted()
 
         let remainingState = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertNil(remainingState)
-        XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertTrue(viewModel.isDeleting)
+        #expect(remainingState == nil)
+        #expect(viewModel.pendingCompletionRecord == nil)
+        #expect(viewModel.isDeleting)
 
         await completionDelay.finish()
         await deleteTask.value
 
-        XCTAssertEqual(viewModel.pendingCompletionRecord, completionRecord)
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(viewModel.pendingCompletionRecord == completionRecord)
+        #expect(!viewModel.isDeleting)
     }
 
-    func testConfirmDeleteFailurePreservesSelectionAndShowsMessage() async {
+    @Test func testConfirmDeleteFailurePreservesSelectionAndShowsMessage() async {
         await cleanupService.setDeleteAssetsResult(.failure(PhotoCleanupError.deleteFailed))
         let viewModel = makeViewModel(
             snapshots: [
@@ -174,24 +175,18 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         viewModel.selectAllExceptBest()
         await viewModel.confirmDelete()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
-        XCTAssertNil(viewModel.pendingCompletionRecord)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
-        XCTAssertEqual(
-            viewModel.currentAlikeReaction?.state,
-            .recoverableError(AlikeErrorContext(operation: .cleanup))
-        )
-        XCTAssertFalse(viewModel.isDeleting)
+        #expect(viewModel.selectedAssetIDs == ["one"])
+        #expect(viewModel.pendingCompletionRecord == nil)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.Common.couldntMoveSelectedPhotosPlease)
+        #expect(viewModel.currentAlikeReaction?.state == .recoverableError(AlikeErrorContext(operation: .cleanup)))
+        #expect(!viewModel.isDeleting)
 
         viewModel.clearActionError()
 
-        XCTAssertEqual(
-            viewModel.currentAlikeReaction?.state,
-            .cleanupReady(AlikeCleanupSummary(itemCount: 1, estimatedSavingsBytes: 45))
-        )
+        #expect(viewModel.currentAlikeReaction?.state == .cleanupReady(AlikeCleanupSummary(itemCount: 1, estimatedSavingsBytes: 45)))
     }
 
-    func testConfirmDeleteDoesNotRunWithoutSelection() async {
+    @Test func testConfirmDeleteDoesNotRunWithoutSelection() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -203,11 +198,11 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.confirmDelete()
 
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
-        XCTAssertFalse(cleanupDidRun)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.selectAtLeastOnePhoto)
+        #expect(!cleanupDidRun)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.Common.selectAtLeastOnePhoto)
     }
 
-    func testDismissingDeleteErrorClearsErrorState() async {
+    @Test func testDismissingDeleteErrorClearsErrorState() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -218,16 +213,16 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.load()
         await viewModel.confirmDelete()
 
-        XCTAssertTrue(viewModel.isActionErrorPresented)
+        #expect(viewModel.isActionErrorPresented)
 
         viewModel.isActionErrorPresented = false
 
-        XCTAssertFalse(viewModel.isActionErrorPresented)
-        XCTAssertNil(viewModel.actionErrorMessage)
-        XCTAssertFalse(viewModel.shouldOfferOpenSettings)
+        #expect(!viewModel.isActionErrorPresented)
+        #expect(viewModel.actionErrorMessage == nil)
+        #expect(!viewModel.shouldOfferOpenSettings)
     }
 
-    func testDeleteConfirmationCopyReflectsSelectionCountAndSavings() async {
+    @Test func testDeleteConfirmationCopyReflectsSelectionCountAndSavings() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 300, createdAt: nil),
@@ -239,34 +234,22 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.load()
         viewModel.toggleSelection(for: "one")
 
-        XCTAssertEqual(
-            viewModel.deleteConfirmationTitle,
-            DetailsL10n.ClusterDetails.deleteAlertTitle(1)
-        )
-        XCTAssertEqual(
-            viewModel.deleteConfirmationMessage,
-            String(
+        #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(1))
+        #expect(viewModel.deleteConfirmationMessage == String(
                 format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
                 viewModel.estimatedSavingsText
-            )
-        )
+            ))
 
         viewModel.toggleSelection(for: "two")
 
-        XCTAssertEqual(
-            viewModel.deleteConfirmationTitle,
-            DetailsL10n.ClusterDetails.deleteAlertTitle(2)
-        )
-        XCTAssertEqual(
-            viewModel.deleteConfirmationMessage,
-            String(
+        #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(2))
+        #expect(viewModel.deleteConfirmationMessage == String(
                 format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
                 viewModel.estimatedSavingsText
-            )
-        )
+            ))
     }
 
-    func testFreeUserCanRequestSinglePhotoCleanup() async {
+    @Test func testFreeUserCanRequestSinglePhotoCleanup() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -278,11 +261,11 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
 
         let decision = viewModel.requestDeleteConfirmation()
 
-        XCTAssertEqual(decision, .allowed)
-        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+        #expect(decision == .allowed)
+        #expect(viewModel.isDeleteConfirmationPresented)
     }
 
-    func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
+    @Test func testFreeUserCannotRequestOrConfirmMultiPhotoCleanup() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -297,13 +280,13 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.confirmDelete()
         let cleanupDidRun = await cleanupService.didCallDeleteAssets
 
-        XCTAssertEqual(decision, .requiresPremium)
-        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one", "two"])
-        XCTAssertFalse(cleanupDidRun)
+        #expect(decision == .requiresPremium)
+        #expect(!viewModel.isDeleteConfirmationPresented)
+        #expect(viewModel.selectedAssetIDs == ["one", "two"])
+        #expect(!cleanupDidRun)
     }
 
-    func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() async {
+    @Test func testContinueFreeKeepsFirstSelectedAssetInVisibleOrder() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
@@ -314,15 +297,15 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await viewModel.load()
         viewModel.selectAllExceptBest()
 
-        XCTAssertTrue(viewModel.requiresPremiumForCurrentSelection)
+        #expect(viewModel.requiresPremiumForCurrentSelection)
         await viewModel.continueWithSingleFreeSelection()
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["one"])
-        XCTAssertFalse(viewModel.requiresPremiumForCurrentSelection)
-        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+        #expect(viewModel.selectedAssetIDs == ["one"])
+        #expect(!viewModel.requiresPremiumForCurrentSelection)
+        #expect(viewModel.isDeleteConfirmationPresented)
     }
 
-    func testPersistedRevisionAdvancesOnlyAfterEachSaveLands() async {
+    @Test func testPersistedRevisionAdvancesOnlyAfterEachSaveLands() async {
         let reviewRepository = SuspendableSaveClusterReviewStateRepository()
         let viewModel = makeViewModel(
             snapshots: [
@@ -333,13 +316,13 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         )
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.persistedRevision, 0)
+        #expect(viewModel.persistedRevision == 0)
 
         await reviewRepository.suspendNextSave()
         viewModel.toggleSelection(for: "one")
         await reviewRepository.waitUntilSuspendedSaveStarts()
 
-        XCTAssertEqual(viewModel.persistedRevision, 0)
+        #expect(viewModel.persistedRevision == 0)
 
         await reviewRepository.finishSuspendedSave()
         await waitForPersistedRevision(1, on: viewModel)
@@ -348,7 +331,7 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await waitForPersistedRevision(2, on: viewModel)
     }
 
-    func testAwaitPendingPersistenceDoesNotReturnUntilTheInFlightSaveLands() async {
+    @Test func testAwaitPendingPersistenceDoesNotReturnUntilTheInFlightSaveLands() async {
         let reviewRepository = SuspendableSaveClusterReviewStateRepository()
         let viewModel = makeViewModel(
             snapshots: [
@@ -362,7 +345,7 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         await reviewRepository.suspendNextSave()
         viewModel.toggleSelection(for: "one")
         await reviewRepository.waitUntilSuspendedSaveStarts()
-        XCTAssertEqual(viewModel.persistedRevision, 0)
+        #expect(viewModel.persistedRevision == 0)
 
         let waiter = Task { await viewModel.awaitPendingPersistence() }
         await reviewRepository.finishSuspendedSave()
@@ -370,12 +353,12 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
 
         // The host reads the repository as soon as this returns, so the write
         // has to be on disk by now, not merely enqueued.
-        XCTAssertEqual(viewModel.persistedRevision, 1)
+        #expect(viewModel.persistedRevision == 1)
         let persisted = try? await reviewRepository.loadReviewState(clusterID: clusterID)
-        XCTAssertEqual(persisted?.selectedLocalIdentifiers, ["one"])
+        #expect(persisted?.selectedLocalIdentifiers == ["one"])
     }
 
-    func testContinueFreeSerializesEarlierSaveBeforeConfirmationAndDeletion() async {
+    @Test func testContinueFreeSerializesEarlierSaveBeforeConfirmationAndDeletion() async {
         let reviewRepository = SuspendableSaveClusterReviewStateRepository()
         await cleanupService.setDeleteAssetsResult(.success(
             CleanupCompletionRecord(
@@ -401,19 +384,19 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
             await viewModel.continueWithSingleFreeSelection()
         }
 
-        XCTAssertFalse(viewModel.isDeleteConfirmationPresented)
+        #expect(!viewModel.isDeleteConfirmationPresented)
 
         await reviewRepository.finishSuspendedSave()
         await continueTask.value
 
-        XCTAssertTrue(viewModel.isDeleteConfirmationPresented)
+        #expect(viewModel.isDeleteConfirmationPresented)
         let persistedFallbackState = await reviewRepository.storedState(clusterID: clusterID)
-        XCTAssertEqual(persistedFallbackState?.selectedLocalIdentifiers, ["one"])
+        #expect(persistedFallbackState?.selectedLocalIdentifiers == ["one"])
 
         await viewModel.confirmDelete()
 
         let stateAfterDelete = await reviewRepository.storedState(clusterID: clusterID)
-        XCTAssertNil(stateAfterDelete)
+        #expect(stateAfterDelete == nil)
     }
 
     private func waitForPersistedRevision(
@@ -425,7 +408,7 @@ final class ClusterDetailsViewModelCleanupTests: XCTestCase, ClusterDetailsViewM
         for _ in 0..<1_000 where viewModel.persistedRevision < expected {
             await Task.yield()
         }
-        XCTAssertEqual(viewModel.persistedRevision, expected, file: file, line: line)
+        #expect(viewModel.persistedRevision == expected, sourceLocation: sourceLocation)
     }
 }
 

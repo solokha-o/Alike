@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 import Photos
 @testable import Details
 
 @MainActor
-final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewModelFixture {
+@Suite struct ClusterDetailsViewModelHapticsTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -15,7 +16,7 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
     /// The double haptic on open: the metadata ranking named one photo, the
     /// measured one named another, and the feedback followed the value rather
     /// than the user.
-    func testOpeningAClusterWhoseRankingMovesTheBestShotFiresNoFeedback() async {
+    @Test func testOpeningAClusterWhoseRankingMovesTheBestShotFiresNoFeedback() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
@@ -26,12 +27,12 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "sharp", "the ranking must still move the pick")
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0)
+        #expect(viewModel.bestShotAssetID == "sharp", "the ranking must still move the pick")
+        #expect(viewModel.successFeedbackTrigger == 0)
+        #expect(viewModel.selectionFeedbackTrigger == 0)
     }
 
-    func testOpeningAReviewedClusterWithARestoredSelectionFiresNoFeedback() async {
+    @Test func testOpeningAReviewedClusterWithARestoredSelectionFiresNoFeedback() async {
         await repository.setStoredStates([clusterID: ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "reviewed-pick",
@@ -51,13 +52,13 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["sharper"])
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0)
+        #expect(viewModel.reviewStatus == .reviewed)
+        #expect(viewModel.selectedAssetIDs == ["sharper"])
+        #expect(viewModel.successFeedbackTrigger == 0)
+        #expect(viewModel.selectionFeedbackTrigger == 0)
     }
 
-    func testChoosingTheBestShotFiresOneSuccessFeedbackOnly() async {
+    @Test func testChoosingTheBestShotFiresOneSuccessFeedbackOnly() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "a", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -68,15 +69,15 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
 
         viewModel.setBestShot("b")
 
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 0, "a Best Shot pick is one action, not two patterns")
+        #expect(viewModel.successFeedbackTrigger == 1)
+        #expect(viewModel.selectionFeedbackTrigger == 0, "a Best Shot pick is one action, not two patterns")
 
         // Re-picking the photo that is already the Best Shot changes nothing.
         viewModel.setBestShot("b")
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
+        #expect(viewModel.successFeedbackTrigger == 1)
     }
 
-    func testSelectingAPhotoFiresOneSelectionFeedbackOnly() async {
+    @Test func testSelectingAPhotoFiresOneSelectionFeedbackOnly() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -87,15 +88,15 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
 
         viewModel.toggleSelection(for: "other")
 
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 1)
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 0)
+        #expect(viewModel.selectionFeedbackTrigger == 1)
+        #expect(viewModel.successFeedbackTrigger == 0)
 
         // A rejected toggle — the Best Shot is always kept — is not an action.
         viewModel.toggleSelection(for: viewModel.bestShotAssetID)
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, 1)
+        #expect(viewModel.selectionFeedbackTrigger == 1)
     }
 
-    func testFinishingTheReviewFiresOneSuccessFeedbackAndReopeningItFiresNone() async {
+    @Test func testFinishingTheReviewFiresOneSuccessFeedbackAndReopeningItFiresNone() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -105,11 +106,11 @@ final class ClusterDetailsViewModelHapticsTests: XCTestCase, ClusterDetailsViewM
         await viewModel.load()
 
         viewModel.toggleReviewConfirmation()
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 1)
+        #expect(viewModel.reviewStatus == .reviewed)
+        #expect(viewModel.successFeedbackTrigger == 1)
 
         viewModel.toggleReviewConfirmation()
-        XCTAssertNotEqual(viewModel.reviewStatus, .reviewed)
-        XCTAssertEqual(viewModel.successFeedbackTrigger, 1, "reopening a review is not a confirmation")
+        #expect(viewModel.reviewStatus != .reviewed)
+        #expect(viewModel.successFeedbackTrigger == 1, "reopening a review is not a confirmation")
     }
 }

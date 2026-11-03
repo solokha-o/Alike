@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 import Photos
 @testable import Details
 
 @MainActor
-final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewModelFixture {
+@Suite struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -12,7 +13,7 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
     // MARK: - Best Shot quality scoring
 
-    func testScoredBestShotBeatsTheMetadataChoice() async {
+    @Test func testScoredBestShotBeatsTheMetadataChoice() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
@@ -23,12 +24,12 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "sharp")
-        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
-        XCTAssertTrue(viewModel.bestShotReasonCodes.contains(.sharper))
+        #expect(viewModel.bestShotAssetID == "sharp")
+        #expect(viewModel.bestShotConfidence == .automatic)
+        #expect(viewModel.bestShotReasonCodes.contains(.sharper))
     }
 
-    func testPersistedManualOverrideSurvivesARescanWithDifferentScores() async {
+    @Test func testPersistedManualOverrideSurvivesARescanWithDifferentScores() async {
         await repository.setStoredStates([clusterID: ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "chosen",
@@ -47,13 +48,13 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "chosen")
-        XCTAssertTrue(viewModel.isBestShotUserSelected)
-        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
-        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
+        #expect(viewModel.bestShotAssetID == "chosen")
+        #expect(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotConfidence == .automatic)
+        #expect(viewModel.bestShotReasonCodes.isEmpty)
     }
 
-    func testUnconfirmedAutomaticBestShotIsReplacedByTheFreshRanking() async {
+    @Test func testUnconfirmedAutomaticBestShotIsReplacedByTheFreshRanking() async {
         await repository.setStoredStates([clusterID: ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "old-pick",
@@ -72,11 +73,11 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "sharper")
-        XCTAssertFalse(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotAssetID == "sharper")
+        #expect(!viewModel.isBestShotUserSelected)
     }
 
-    func testFinishedReviewKeepsItsBestShotEvenWhenScoresDisagree() async {
+    @Test func testFinishedReviewKeepsItsBestShotEvenWhenScoresDisagree() async {
         await repository.setStoredStates([clusterID: ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "reviewed-pick",
@@ -96,11 +97,11 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "reviewed-pick")
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        #expect(viewModel.bestShotAssetID == "reviewed-pick")
+        #expect(viewModel.reviewStatus == .reviewed)
     }
 
-    func testUnresolvedClusterShowsNoBestShotButKeepsReviewAvailable() async {
+    @Test func testUnresolvedClusterShowsNoBestShotButKeepsReviewAvailable() async {
         let viewModel = makeViewModel(
             snapshots: weakClusterSnapshots,
             qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
@@ -108,18 +109,18 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotConfidence, .unresolved)
-        XCTAssertTrue(viewModel.bestShotAssetID.isEmpty)
-        XCTAssertTrue(viewModel.bestShotReasonCodes.isEmpty)
-        XCTAssertTrue(viewModel.isActionBarVisible)
+        #expect(viewModel.bestShotConfidence == .unresolved)
+        #expect(viewModel.bestShotAssetID.isEmpty)
+        #expect(viewModel.bestShotReasonCodes.isEmpty)
+        #expect(viewModel.isActionBarVisible)
 
         viewModel.toggleReviewConfirmation()
 
-        XCTAssertTrue(viewModel.isReviewConfirmed)
-        XCTAssertEqual(viewModel.reviewStatus, .reviewed)
+        #expect(viewModel.isReviewConfirmed)
+        #expect(viewModel.reviewStatus == .reviewed)
     }
 
-    func testChoosingABestShotInAnUnresolvedClusterMakesItCertain() async {
+    @Test func testChoosingABestShotInAnUnresolvedClusterMakesItCertain() async {
         let viewModel = makeViewModel(
             snapshots: weakClusterSnapshots,
             qualityScores: [("a", 4), ("b", 3.6), ("c", 3.8)]
@@ -128,12 +129,12 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         viewModel.setBestShot("b")
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "b")
-        XCTAssertTrue(viewModel.isBestShotUserSelected)
-        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        #expect(viewModel.bestShotAssetID == "b")
+        #expect(viewModel.isBestShotUserSelected)
+        #expect(viewModel.bestShotConfidence == .automatic)
     }
 
-    func testMissingQualityScoresKeepTheMetadataBestShot() async {
+    @Test func testMissingQualityScoresKeepTheMetadataBestShot() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
@@ -143,7 +144,7 @@ final class ClusterDetailsViewModelScoringTests: XCTestCase, ClusterDetailsViewM
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "favorite")
-        XCTAssertEqual(viewModel.bestShotConfidence, .automatic)
+        #expect(viewModel.bestShotAssetID == "favorite")
+        #expect(viewModel.bestShotConfidence == .automatic)
     }
 }
