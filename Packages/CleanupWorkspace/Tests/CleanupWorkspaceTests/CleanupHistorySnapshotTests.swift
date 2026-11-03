@@ -4,18 +4,13 @@ import Testing
 @testable import CleanupWorkspace
 
 @Suite struct CleanupHistorySnapshotTests {
-    private var calendar: Calendar!
+    private let calendar: Calendar
 
-    override func setUp() {
-        super.setUp()
-        calendar = Calendar(identifier: .gregorian)
+    init() {
+        var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "en_US_POSIX")
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-    }
-
-    override func tearDown() {
-        calendar = nil
-        super.tearDown()
+        self.calendar = calendar
     }
 
     @Test func testEmptyHistoryProducesEmptyInsightsAndSections() {
