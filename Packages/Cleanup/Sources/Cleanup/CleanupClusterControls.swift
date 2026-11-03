@@ -140,3 +140,11 @@ struct CleanupClusterControlsSheet: View {
         .presentationDetents([.medium, .large])
     }
 }
+
+#Preview("Controls Sheet") {
+    CleanupClusterControlsSheet(
+        controls: .constant(CleanupClusterControls()),
+        isAdvancedFilteringLocked: false,
+        onRequestAdvancedFilters: {}
+    )
+}

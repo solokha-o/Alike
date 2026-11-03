@@ -98,3 +98,20 @@ struct CleanupProgressCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
+#Preview("Progress Card") {
+    CleanupProgressCard(
+        progress: CleanupSessionProgress(
+            totalClusters: 10,
+            reviewedCount: 4,
+            needsReReviewCount: 0,
+            inReviewCount: 0,
+            notReviewedCount: 6,
+            reviewedSavingsBytes: 2_000_000,
+            totalSelectedItems: 7
+        ),
+        onContinue: {},
+        onOpenHistory: {}
+    )
+    .padding()
+}

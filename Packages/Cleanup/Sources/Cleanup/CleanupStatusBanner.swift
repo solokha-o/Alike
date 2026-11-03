@@ -1,4 +1,5 @@
 import SwiftUI
+import Core
 import DesignSystem
 
 struct CleanupStatusBanner: View {
@@ -107,6 +108,72 @@ struct CleanupStatusBanner: View {
     }
 }
 
+/// The banners that sit in the page above the results: the scan the user started, and
+/// the prompt to rescan a library that changed.
+struct CleanupPersistentBanners: View {
+    let scanOperation: ScanOperationState
+    let showsRescanPrompt: Bool
+    let onRequestScan: @MainActor @Sendable () -> Void
+
+    var body: some View {
+        if case .scanning(let progress, .userInitiated) = scanOperation {
+            CleanupStatusBanner(
+                icon: "arrow.triangle.2.circlepath",
+                title: CleanupL10n.Main.refreshingCleanup,
+                message: CleanupPresentation.scanningMessage(progress: progress),
+                showsProgress: true,
+                progress: progress
+            )
+        } else if case .failed(let message, .userInitiated) = scanOperation {
+            CleanupStatusBanner(
+                icon: "exclamationmark.triangle.fill",
+                title: CleanupL10n.Main.scanFailed,
+                message: message
+            )
+        }
+        if showsRescanPrompt {
+            CleanupStatusBanner(
+                icon: "photo.badge.arrow.down",
+                title: CleanupL10n.Main.yourLibraryChanged,
+                message: CleanupL10n.Main.runNewScanRefreshCleanup,
+                actionTitle: CleanupL10n.Main.rescan,
+                action: onRequestScan
+            )
+        }
+    }
+}
+
+/// The result of the refresh that follows a cleanup. Its screen owns when it appears and
+/// goes away; this only says what it reads.
+struct CleanupReconciliationBanner: View {
+    let state: CleanupReconciliationState
+    let onRequestScan: @MainActor @Sendable () -> Void
+    let onDismiss: (UUID) -> Void
+
+    var body: some View {
+        switch state {
+        case .refreshing:
+            EmptyView()
+        case .success(let record):
+            CleanupStatusBanner(
+                icon: "checkmark.circle.fill",
+                title: CleanupL10n.Main.photosMovedToRecentlyDeleted(record.deletedCount),
+                message: CleanupL10n.Main.cleanupResultsUpDate,
+                dismiss: { onDismiss(record.id) }
+            )
+        case .failed(let record, let message):
+            CleanupStatusBanner(
+                icon: "exclamationmark.triangle.fill",
+                title: CleanupL10n.Main.refreshRequired,
+                message: message,
+                actionTitle: CleanupL10n.Main.rescan,
+                action: onRequestScan,
+                dismiss: { onDismiss(record.id) }
+            )
+        }
+    }
+}
+
 #Preview("Library Changed") {
     CleanupStatusBanner(
         icon: "photo.badge.arrow.down",
@@ -126,6 +193,28 @@ struct CleanupStatusBanner: View {
         actionTitle: CleanupL10n.Main.rescan,
         action: {},
         dismiss: {}
+    )
+    .padding()
+}
+
+#Preview("Persistent Banners") {
+    VStack {
+        CleanupPersistentBanners(
+            scanOperation: .scanning(progress: 0.4, purpose: .userInitiated),
+            showsRescanPrompt: true,
+            onRequestScan: {}
+        )
+    }
+    .padding()
+}
+
+#Preview("Reconciliation Banner") {
+    CleanupReconciliationBanner(
+        state: .success(
+            CleanupCompletionRecord(sourceClusterID: UUID(), deletedCount: 3, estimatedSavingsBytes: 1_000)
+        ),
+        onRequestScan: {},
+        onDismiss: { _ in }
     )
     .padding()
 }

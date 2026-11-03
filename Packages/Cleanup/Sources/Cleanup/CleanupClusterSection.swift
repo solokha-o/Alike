@@ -215,3 +215,30 @@ private struct CleanupClusterCard: View {
         )
     }
 }
+
+// Gated like the Cleanup preview: the workspace builds real repositories.
+#if DEBUG
+#Preview("Cluster Section") {
+    CleanupClusterSection(
+        title: CleanupL10n.Main.needsReview,
+        subtitle: CleanupL10n.Main.newChangedClustersAfterLatest,
+        clusters: [],
+        gridColumns: 2,
+        workspace: CleanupWorkspaceModel(),
+        onOpen: { _ in }
+    )
+    .padding()
+}
+#endif
+
+#Preview("Cluster Card") {
+    CleanupClusterCard(
+        cluster: PhotoCluster(assets: []),
+        previewAsset: nil,
+        status: .needsReReview,
+        resurfacing: .new,
+        open: {}
+    )
+    .frame(width: 180)
+    .padding()
+}

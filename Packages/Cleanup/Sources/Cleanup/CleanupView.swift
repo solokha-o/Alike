@@ -201,8 +201,12 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
 
     private func cleanupStack(router: StackRouter<CleanupRoute>) -> some View {
         VStack(spacing: Spacing.medium) {
-            persistentBanners
-                .animation(.appSmooth, value: displayedScanOperation)
+            CleanupPersistentBanners(
+                scanOperation: workspace.scanOperation,
+                showsRescanPrompt: workspace.shouldShowRescanPrompt,
+                onRequestScan: onRequestScan
+            )
+            .animation(.appSmooth, value: displayedScanOperation)
             switch workspace.contentState {
             case .notLoaded:
                 ProgressView().padding(.top, Spacing.xxLarge)
@@ -218,73 +222,25 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
     }
 
     @ViewBuilder
-    private var persistentBanners: some View {
-        if case .scanning(let progress, .userInitiated) = workspace.scanOperation {
-            CleanupStatusBanner(
-                icon: "arrow.triangle.2.circlepath",
-                title: CleanupL10n.Main.refreshingCleanup,
-                message: CleanupPresentation.scanningMessage(progress: progress),
-                showsProgress: true,
-                progress: progress
-            )
-        } else if case .failed(let message, .userInitiated) = workspace.scanOperation {
-            CleanupStatusBanner(
-                icon: "exclamationmark.triangle.fill",
-                title: CleanupL10n.Main.scanFailed,
-                message: message
-            )
-        }
-        if workspace.shouldShowRescanPrompt {
-            CleanupStatusBanner(
-                icon: "photo.badge.arrow.down",
-                title: CleanupL10n.Main.yourLibraryChanged,
-                message: CleanupL10n.Main.runNewScanRefreshCleanup,
-                actionTitle: CleanupL10n.Main.rescan,
-                action: onRequestScan
-            )
-        }
-    }
-
-    @ViewBuilder
     private var reconciliationOverlay: some View {
         if let state = terminalReconciliationState, state.record.id != dismissedReconciliationID {
-            reconciliationBanner(state)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, Spacing.medium)
-                .padding(.top, Spacing.xSmall)
-                .transition(
-                    accessibilityReduceMotion
-                        ? .opacity
-                        : .move(edge: .top).combined(with: .opacity)
-                )
-                .zIndex(1)
-                .task(id: state) {
-                    await autoDismissReconciliationSuccess(state)
-                }
-        }
-    }
-
-    @ViewBuilder
-    private func reconciliationBanner(_ state: CleanupReconciliationState) -> some View {
-        switch state {
-        case .refreshing:
-            EmptyView()
-        case .success(let record):
-            CleanupStatusBanner(
-                icon: "checkmark.circle.fill",
-                title: CleanupL10n.Main.photosMovedToRecentlyDeleted(record.deletedCount),
-                message: CleanupL10n.Main.cleanupResultsUpDate,
-                dismiss: { dismissReconciliation(record.id) }
+            CleanupReconciliationBanner(
+                state: state,
+                onRequestScan: onRequestScan,
+                onDismiss: dismissReconciliation
             )
-        case .failed(let record, let message):
-            CleanupStatusBanner(
-                icon: "exclamationmark.triangle.fill",
-                title: CleanupL10n.Main.refreshRequired,
-                message: message,
-                actionTitle: CleanupL10n.Main.rescan,
-                action: onRequestScan,
-                dismiss: { dismissReconciliation(record.id) }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, Spacing.medium)
+            .padding(.top, Spacing.xSmall)
+            .transition(
+                accessibilityReduceMotion
+                    ? .opacity
+                    : .move(edge: .top).combined(with: .opacity)
             )
+            .zIndex(1)
+            .task(id: state) {
+                await autoDismissReconciliationSuccess(state)
+            }
         }
     }
 

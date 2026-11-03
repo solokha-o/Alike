@@ -53,3 +53,15 @@ struct CleanupCategoriesCard: View {
         .cleanupGlassSurface()
     }
 }
+
+#Preview("Categories Card") {
+    CleanupCategoriesCard(
+        categories: [
+            CleanupCategorySummary(kind: .screenshots, assetCount: 12, estimatedSavingsBytes: 4_000_000),
+            CleanupCategorySummary(kind: .blurredPhotos, assetCount: 3, estimatedSavingsBytes: 900_000)
+        ],
+        isLocked: { $0 == .blurredPhotos },
+        onTap: { _ in }
+    )
+    .padding()
+}
