@@ -30,18 +30,6 @@ enum CleanupPresentation {
         return state
     }
 
-    static func isScreenOwned(
-        hasPresentedCategory: Bool,
-        hasPresentedPaywall: Bool,
-        isControlsPresented: Bool,
-        hasCategoryError: Bool
-    ) -> Bool {
-        hasPresentedCategory
-            || hasPresentedPaywall
-            || isControlsPresented
-            || hasCategoryError
-    }
-
     static func isRatingPromptBlocked(
         isScreenOwned: Bool,
         scanOperation: ScanOperationState,

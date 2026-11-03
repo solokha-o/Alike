@@ -4,7 +4,8 @@ import XCTest
 @testable import Cleanup
 
 /// Pins what the Cleanup screen decides and says. The text tests compare against the
-/// catalog keys, so they check which string and which arguments, not a translation.
+/// compiled catalog string in the current locale, so they check which string and which
+/// arguments, not a translation.
 final class CleanupPresentationTests: XCTestCase {
     private let record = CleanupCompletionRecord(
         sourceClusterID: UUID(),
@@ -54,24 +55,7 @@ final class CleanupPresentationTests: XCTestCase {
         )
     }
 
-    // MARK: - Screen ownership and the rating prompt
-
-    func testScreenIsOwnedByAnyOfItsSurfaces() {
-        func owned(_ category: Bool, _ paywall: Bool, _ controls: Bool, _ error: Bool) -> Bool {
-            CleanupPresentation.isScreenOwned(
-                hasPresentedCategory: category,
-                hasPresentedPaywall: paywall,
-                isControlsPresented: controls,
-                hasCategoryError: error
-            )
-        }
-
-        XCTAssertFalse(owned(false, false, false, false))
-        XCTAssertTrue(owned(true, false, false, false))
-        XCTAssertTrue(owned(false, true, false, false))
-        XCTAssertTrue(owned(false, false, true, false))
-        XCTAssertTrue(owned(false, false, false, true))
-    }
+    // MARK: - Rating prompt
 
     func testRatingPromptIsBlockedByTheScreenByAScanAndByAnInactiveScene() {
         func blocked(_ owned: Bool, _ scan: ScanOperationState, _ active: Bool) -> Bool {

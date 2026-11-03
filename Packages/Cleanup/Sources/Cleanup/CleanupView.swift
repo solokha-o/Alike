@@ -451,12 +451,10 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
     /// swap it, and a list or paywall the user is in is not something a home-screen tap
     /// should replace.
     private var isScreenOwned: Bool {
-        CleanupPresentation.isScreenOwned(
-            hasPresentedCategory: presentedCategory != nil,
-            hasPresentedPaywall: presentedPaywall != nil,
-            isControlsPresented: isControlsPresented,
-            hasCategoryError: categoryError != nil
-        )
+        presentedCategory != nil
+            || presentedPaywall != nil
+            || isControlsPresented
+            || categoryError != nil
     }
 
     /// Acts on a place a widget tap asked for, once there is something to act against.
