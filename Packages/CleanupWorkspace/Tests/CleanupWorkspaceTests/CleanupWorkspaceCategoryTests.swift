@@ -1,15 +1,16 @@
 import CleanupWorkspace
 import Core
 import Photos
-import XCTest
+import Foundation
+import Testing
 
 /// Covers what the workspace does with smart-category and history data around a
 /// cached load: the order it presents categories in, what a missing category
 /// means, and that a repository failure degrades to an empty section instead of
 /// taking the whole workspace down.
 @MainActor
-final class CleanupWorkspaceCategoryTests: XCTestCase {
-    func testEachCategoryCarriesItsOwnSnapshotNumbersInKindOrder() async {
+@Suite struct CleanupWorkspaceCategoryTests {
+    @Test func testEachCategoryCarriesItsOwnSnapshotNumbersInKindOrder() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .blurredPhotos: snapshot(kind: .blurredPhotos, assetCount: 4, bytes: 400),
@@ -26,20 +27,17 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
         // fully determined and this assertion is deterministic: it fails every
         // time if a kind is dropped or the sequence changes. The per-kind values
         // below catch a summary attached to the wrong kind.
-        XCTAssertEqual(
-            workspace.cleanupCategories.map(\.kind),
-            CleanupCategoryKind.allCases
-        )
+        #expect(workspace.cleanupCategories.map(\.kind) == CleanupCategoryKind.allCases)
         let byKind = Dictionary(
             uniqueKeysWithValues: workspace.cleanupCategories.map { ($0.kind, $0) }
         )
-        XCTAssertEqual(byKind[.screenshots]?.assetCount, 7)
-        XCTAssertEqual(byKind[.screenshots]?.estimatedSavingsBytes, 700)
-        XCTAssertEqual(byKind[.blurredPhotos]?.assetCount, 4)
-        XCTAssertEqual(byKind[.blurredPhotos]?.estimatedSavingsBytes, 400)
+        #expect(byKind[.screenshots]?.assetCount == 7)
+        #expect(byKind[.screenshots]?.estimatedSavingsBytes == 700)
+        #expect(byKind[.blurredPhotos]?.assetCount == 4)
+        #expect(byKind[.blurredPhotos]?.estimatedSavingsBytes == 400)
     }
 
-    func testCategoryMissingFromRepositoryIsDroppedRatherThanShownEmpty() async {
+    @Test func testCategoryMissingFromRepositoryIsDroppedRatherThanShownEmpty() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
@@ -48,10 +46,10 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.cleanupCategories.map(\.kind), [.screenshots])
+        #expect(workspace.cleanupCategories.map(\.kind) == [.screenshots])
     }
 
-    func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async {
+    @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
@@ -61,14 +59,14 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.cleanupCategories, [])
+        #expect(workspace.cleanupCategories == [])
         // The rest of the workspace still has to arrive: a category read is one
         // section of the Cleanup tab, not a precondition for it.
-        XCTAssertNotNil(workspace.content)
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
+        #expect(workspace.content != nil)
+        #expect(workspace.contentState == .content(workspace.content!))
     }
 
-    func testHistoryRepositoryFailureYieldsEmptyInsightsWithoutFailingTheLoad() async {
+    @Test func testHistoryRepositoryFailureYieldsEmptyInsightsWithoutFailingTheLoad() async {
         let historyRepository = MockCleanupHistoryRepository(entries: [
             CleanupCompletionRecord(
                 sourceClusterID: UUID(),
@@ -82,12 +80,12 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.cleanupInsights, .empty)
-        XCTAssertFalse(workspace.cleanupInsights.hasHistory)
-        XCTAssertNotNil(workspace.content)
+        #expect(workspace.cleanupInsights == .empty)
+        #expect(!workspace.cleanupInsights.hasHistory)
+        #expect(workspace.content != nil)
     }
 
-    func testFailedScanRestoresThePreScanCategorySnapshots() async {
+    @Test func testFailedScanRestoresThePreScanCategorySnapshots() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         let preScan = snapshot(kind: .screenshots, assetCount: 9, bytes: 900)
         await categoryRepository.setStoredSnapshots([.screenshots: preScan])
@@ -107,13 +105,13 @@ final class CleanupWorkspaceCategoryTests: XCTestCase {
 
         do {
             _ = try await workspace.scan(sensitivity: .medium)
-            XCTFail("Expected the scan to fail while persisting clusters")
+            Issue.record("Expected the scan to fail while persisting clusters")
         } catch {
             // Expected: the save is what fails, after analysis succeeded.
         }
 
         let restored = await categoryRepository.storedSnapshots
-        XCTAssertEqual(restored, [.screenshots: preScan])
+        #expect(restored == [.screenshots: preScan])
     }
 
     // MARK: - Helpers

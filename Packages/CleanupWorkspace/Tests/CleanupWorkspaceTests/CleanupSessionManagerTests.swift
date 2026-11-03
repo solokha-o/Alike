@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import CleanupWorkspace
 
-final class CleanupSessionManagerTests: XCTestCase {
-    func testProgressIncludesSelectedItemsAndRemainingClusters() async {
+@Suite struct CleanupSessionManagerTests {
+    @Test func testProgressIncludesSelectedItemsAndRemainingClusters() async {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -36,17 +37,17 @@ final class CleanupSessionManagerTests: XCTestCase {
 
         let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
-        XCTAssertEqual(progress.totalClusters, 3)
-        XCTAssertEqual(progress.reviewedCount, 1)
-        XCTAssertEqual(progress.needsReReviewCount, 0)
-        XCTAssertEqual(progress.inReviewCount, 1)
-        XCTAssertEqual(progress.notReviewedCount, 1)
-        XCTAssertEqual(progress.reviewedSavingsBytes, 300)
-        XCTAssertEqual(progress.totalSelectedItems, 3)
-        XCTAssertEqual(progress.remainingClusters, 2)
+        #expect(progress.totalClusters == 3)
+        #expect(progress.reviewedCount == 1)
+        #expect(progress.needsReReviewCount == 0)
+        #expect(progress.inReviewCount == 1)
+        #expect(progress.notReviewedCount == 1)
+        #expect(progress.reviewedSavingsBytes == 300)
+        #expect(progress.totalSelectedItems == 3)
+        #expect(progress.remainingClusters == 2)
     }
 
-    func testProgressExcludesNeedsReReviewFromSavedSelections() async {
+    @Test func testProgressExcludesNeedsReReviewFromSavedSelections() async {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -79,14 +80,14 @@ final class CleanupSessionManagerTests: XCTestCase {
 
         let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
-        XCTAssertEqual(progress.reviewedCount, 1)
-        XCTAssertEqual(progress.needsReReviewCount, 1)
-        XCTAssertEqual(progress.totalSelectedItems, 1)
-        XCTAssertEqual(progress.reviewedSavingsBytes, 200)
-        XCTAssertEqual(progress.remainingClusters, 1)
+        #expect(progress.reviewedCount == 1)
+        #expect(progress.needsReReviewCount == 1)
+        #expect(progress.totalSelectedItems == 1)
+        #expect(progress.reviewedSavingsBytes == 200)
+        #expect(progress.remainingClusters == 1)
     }
 
-    func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() async {
+    @Test func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() async {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -132,22 +133,22 @@ final class CleanupSessionManagerTests: XCTestCase {
             from: [reviewed, inReview, notReviewed, needsReview],
             reviewStates: states
         )
-        XCTAssertEqual(first?.id, needsReviewID)
+        #expect(first?.id == needsReviewID)
 
         let second = await manager.nextClusterToReview(
             from: [reviewed, inReview, notReviewed],
             reviewStates: states
         )
-        XCTAssertEqual(second?.id, notReviewedID)
+        #expect(second?.id == notReviewedID)
 
         let third = await manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
-        XCTAssertEqual(third?.id, inReviewID)
+        #expect(third?.id == inReviewID)
 
         let completed = await manager.nextClusterToReview(from: [reviewed], reviewStates: states)
-        XCTAssertNil(completed)
+        #expect(completed == nil)
     }
 
-    func testProgressStaysAvailableWhenEveryClusterIsReviewed() async {
+    @Test func testProgressStaysAvailableWhenEveryClusterIsReviewed() async {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -178,21 +179,21 @@ final class CleanupSessionManagerTests: XCTestCase {
         ]
 
         let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
-        XCTAssertNil(next)
+        #expect(next == nil)
 
         let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
-        XCTAssertEqual(progress.totalClusters, 2)
-        XCTAssertEqual(progress.reviewedCount, 2)
-        XCTAssertEqual(progress.remainingClusters, 0)
-        XCTAssertEqual(progress.reviewedRatio, 1, accuracy: 0.0001)
-        XCTAssertEqual(progress.totalSelectedItems, 3)
-        XCTAssertEqual(progress.reviewedSavingsBytes, 300)
+        #expect(progress.totalClusters == 2)
+        #expect(progress.reviewedCount == 2)
+        #expect(progress.remainingClusters == 0)
+        #expect(abs(progress.reviewedRatio - 1) <= 0.0001)
+        #expect(progress.totalSelectedItems == 3)
+        #expect(progress.reviewedSavingsBytes == 300)
     }
 
     /// A cluster the user finished while keeping several photos — or all of
     /// them — is done, so it must not come back around in the review queue.
-    func testConfirmedMultiKeepClustersLeaveTheReviewQueue() async {
+    @Test func testConfirmedMultiKeepClustersLeaveTheReviewQueue() async {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -223,10 +224,10 @@ final class CleanupSessionManagerTests: XCTestCase {
         ]
 
         let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
-        XCTAssertNil(next)
+        #expect(next == nil)
 
         let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
-        XCTAssertEqual(progress.reviewedCount, 2)
-        XCTAssertEqual(progress.remainingClusters, 0)
+        #expect(progress.reviewedCount == 2)
+        #expect(progress.remainingClusters == 0)
     }
 }

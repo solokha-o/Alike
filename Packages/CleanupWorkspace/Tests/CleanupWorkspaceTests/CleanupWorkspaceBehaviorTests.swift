@@ -1,18 +1,19 @@
 import CleanupWorkspace
 import Core
 import Photos
-import XCTest
+import Foundation
+import Testing
 
 @MainActor
-final class CleanupWorkspaceBehaviorTests: XCTestCase {
-    func testCompletedEmptyCacheIsDistinctFromNeverScanned() async {
+@Suite struct CleanupWorkspaceBehaviorTests {
+    @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async {
         let neverScannedRepository = MockPhotoClusterRepository()
         let neverScanned = makeWorkspace(repository: neverScannedRepository)
 
         await neverScanned.loadCachedContent()
 
-        XCTAssertEqual(neverScanned.contentState, .neverScanned)
-        XCTAssertNil(neverScanned.content)
+        #expect(neverScanned.contentState == .neverScanned)
+        #expect(neverScanned.content == nil)
 
         let completedRepository = MockPhotoClusterRepository()
         await completedRepository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
@@ -20,11 +21,11 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
 
         await completed.loadCachedContent()
 
-        XCTAssertEqual(completed.content?.clusters, [])
-        XCTAssertEqual(completed.contentState, .content(completed.content!))
+        #expect(completed.content?.clusters == [])
+        #expect(completed.contentState == .content(completed.content!))
     }
 
-    func testPrepareForDataDeletionCancelsScanBeforeItCanPersist() async {
+    @Test func testPrepareForDataDeletionCancelsScanBeforeItCanPersist() async {
         let analysis = ControlledAnalysisService()
         let repository = MockPhotoClusterRepository()
         let workspace = makeWorkspace(
@@ -48,18 +49,18 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
 
         do {
             _ = try await scan.value
-            XCTFail("Expected the active scan to be cancelled")
+            Issue.record("Expected the active scan to be cancelled")
         } catch {
-            XCTAssertTrue(error is CancellationError)
+            #expect(error is CancellationError)
         }
         let savedClusters = await repository.savedClusters
-        XCTAssertEqual(savedClusters, [])
-        XCTAssertEqual(workspace.contentState, .neverScanned)
-        XCTAssertEqual(workspace.scanOperation, .idle)
-        XCTAssertNil(workspace.content)
+        #expect(savedClusters == [])
+        #expect(workspace.contentState == .neverScanned)
+        #expect(workspace.scanOperation == .idle)
+        #expect(workspace.content == nil)
     }
 
-    func testFailedRefreshPreservesLastGoodContent() async throws {
+    @Test func testFailedRefreshPreservesLastGoodContent() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let initialCluster = PhotoCluster(id: UUID(), assets: [], createdAt: .distantPast)
@@ -79,20 +80,17 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
 
         do {
             _ = try await failedScan.value
-            XCTFail("The refresh should fail")
+            Issue.record("The refresh should fail")
         } catch {
-            XCTAssertEqual(error as? TestError, .failedRefresh)
+            #expect(error as? TestError == .failedRefresh)
         }
 
-        XCTAssertEqual(workspace.clusters, [initialCluster])
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
-        XCTAssertEqual(
-            workspace.scanOperation,
-            .failed(message: TestError.failedRefresh.localizedDescription, purpose: .userInitiated)
-        )
+        #expect(workspace.clusters == [initialCluster])
+        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.scanOperation == .failed(message: TestError.failedRefresh.localizedDescription, purpose: .userInitiated))
     }
 
-    func testConcurrentScanRequestsAtMatchingSensitivityJoinOneUnderlyingOperation() async throws {
+    @Test func testConcurrentScanRequestsAtMatchingSensitivityJoinOneUnderlyingOperation() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let cluster = PhotoCluster(id: UUID(), assets: [])
@@ -103,23 +101,23 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await Task.yield()
 
         let callsWhileInFlight = await analysis.analyzeCallCount()
-        XCTAssertEqual(callsWhileInFlight, 1)
+        #expect(callsWhileInFlight == 1)
 
         await analysis.succeed(with: [cluster])
         let firstSummary = try await first.value
         let secondSummary = try await second.value
 
-        XCTAssertEqual(firstSummary, secondSummary)
-        XCTAssertEqual(firstSummary.clusterCount, 1)
+        #expect(firstSummary == secondSummary)
+        #expect(firstSummary.clusterCount == 1)
         let totalCalls = await analysis.analyzeCallCount()
-        XCTAssertEqual(totalCalls, 1)
+        #expect(totalCalls == 1)
     }
 
     /// A concurrent request at a different sensitivity must not silently
     /// reuse a summary computed at the wrong sensitivity: it should wait for
     /// the in-flight scan and then run its own, honoring the sensitivity it
     /// asked for.
-    func testConcurrentScanRequestAtDifferentSensitivityRunsAfterInFlightScanCompletes() async throws {
+    @Test func testConcurrentScanRequestAtDifferentSensitivityRunsAfterInFlightScanCompletes() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let firstCluster = PhotoCluster(id: UUID(), assets: [])
@@ -131,23 +129,23 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await Task.yield()
 
         let callsWhileFirstInFlight = await analysis.analyzeCallCount()
-        XCTAssertEqual(callsWhileFirstInFlight, 1, "A mismatched sensitivity must not join the in-flight scan")
+        #expect(callsWhileFirstInFlight == 1, "A mismatched sensitivity must not join the in-flight scan")
 
         await analysis.succeed(with: [firstCluster])
         let firstSummary = try await first.value
-        XCTAssertEqual(firstSummary.clusterCount, 1)
+        #expect(firstSummary.clusterCount == 1)
 
         await analysis.waitUntilAnalyzeStarts(expectedCallCount: 2)
         await analysis.succeed(with: secondClusters)
         let secondSummary = try await second.value
 
-        XCTAssertEqual(secondSummary.clusterCount, 2)
-        XCTAssertNotEqual(firstSummary, secondSummary)
+        #expect(secondSummary.clusterCount == 2)
+        #expect(firstSummary != secondSummary)
         let totalCalls = await analysis.analyzeCallCount()
-        XCTAssertEqual(totalCalls, 2)
+        #expect(totalCalls == 2)
     }
 
-    func testScanProgressNeverMovesBackward() async throws {
+    @Test func testScanProgressNeverMovesBackward() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let scan = Task { @MainActor in try await workspace.scan(sensitivity: .medium) }
@@ -158,13 +156,13 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await analysis.sendProgress(0.4)
         await Task.yield()
 
-        XCTAssertEqual(workspace.scanOperation.progress, 0.8)
+        #expect(workspace.scanOperation.progress == 0.8)
 
         await analysis.succeed(with: [])
         _ = try await scan.value
     }
 
-    func testFailedReconciliationKeepsLastGoodWorkspaceContent() async throws {
+    @Test func testFailedReconciliationKeepsLastGoodWorkspaceContent() async throws {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let cluster = PhotoCluster(id: UUID(), assets: [])
@@ -186,18 +184,15 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await analysis.fail(with: TestError.failedRefresh)
         await reconciliation.value
 
-        XCTAssertEqual(workspace.clusters, [cluster])
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
-        XCTAssertEqual(
-            workspace.reconciliationState,
-            .failed(
+        #expect(workspace.clusters == [cluster])
+        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.reconciliationState == .failed(
                 record,
                 message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
-            )
-        )
+            ))
     }
 
-    func testStaleCachedLoadCannotReplaceCompletedScan() async throws {
+    @Test func testStaleCachedLoadCannotReplaceCompletedScan() async throws {
         let staleCluster = PhotoCluster(id: UUID(), assets: [], createdAt: .distantPast)
         let freshCluster = PhotoCluster(id: UUID(), assets: [], createdAt: .now)
         let repository = ControlledPhotoClusterRepository(
@@ -219,11 +214,11 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await repository.resumeFirstClusterLoad(with: [staleCluster])
         await cacheLoad.value
 
-        XCTAssertEqual(workspace.clusters, [freshCluster])
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
+        #expect(workspace.clusters == [freshCluster])
+        #expect(workspace.contentState == .content(workspace.content!))
     }
 
-    func testRepeatedCachedLoadsJoinOneRepositoryRead() async {
+    @Test func testRepeatedCachedLoadsJoinOneRepositoryRead() async {
         let repository = ControlledPhotoClusterRepository(
             initialClusters: [],
             lastScanDate: .distantPast,
@@ -237,7 +232,7 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await Task.yield()
 
         let inFlightLoadCount = await repository.loadClustersCallCount()
-        XCTAssertEqual(inFlightLoadCount, 1)
+        #expect(inFlightLoadCount == 1)
 
         await repository.resumeFirstClusterLoad(with: [])
         await firstLoad.value
@@ -245,10 +240,10 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await workspace.loadCachedContent()
 
         let completedLoadCount = await repository.loadClustersCallCount()
-        XCTAssertEqual(completedLoadCount, 1)
+        #expect(completedLoadCount == 1)
     }
 
-    func testStaleGalleryChangeResultCannotReenableRescanAfterSuccessfulScan() async throws {
+    @Test func testStaleGalleryChangeResultCannotReenableRescanAfterSuccessfulScan() async throws {
         let repository = ControlledPhotoClusterRepository(
             initialClusters: [],
             lastScanDate: .distantPast,
@@ -269,11 +264,11 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await repository.resumeGalleryChangeCheck(with: true)
         let galleryChangeWasCommitted = await galleryCheck.value
 
-        XCTAssertFalse(galleryChangeWasCommitted)
-        XCTAssertFalse(workspace.shouldShowRescanPrompt)
+        #expect(!galleryChangeWasCommitted)
+        #expect(!workspace.shouldShowRescanPrompt)
     }
 
-    func testQueuedReconciliationProcessesOnlyLatestWaitingRecord() async {
+    @Test func testQueuedReconciliationProcessesOnlyLatestWaitingRecord() async {
         let analysis = ControlledAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let firstRecord = CleanupCompletionRecord(
@@ -306,8 +301,8 @@ final class CleanupWorkspaceBehaviorTests: XCTestCase {
         await firstReconciliation.value
         let analysisCallCount = await analysis.analyzeCallCount()
 
-        XCTAssertEqual(workspace.reconciliationState, .success(latestRecord))
-        XCTAssertEqual(analysisCallCount, 2)
+        #expect(workspace.reconciliationState == .success(latestRecord))
+        #expect(analysisCallCount == 2)
     }
 }
 
@@ -331,7 +326,7 @@ private extension CleanupWorkspaceBehaviorTests {
             if workspace.scanOperation.progress == expected { return }
             await Task.yield()
         }
-        XCTFail("Scan progress did not reach \(expected)")
+        Issue.record("Scan progress did not reach \(expected)")
     }
 }
 

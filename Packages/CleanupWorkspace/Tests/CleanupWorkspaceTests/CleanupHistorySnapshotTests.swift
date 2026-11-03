@@ -1,8 +1,9 @@
 import Core
-import XCTest
+import Foundation
+import Testing
 @testable import CleanupWorkspace
 
-final class CleanupHistorySnapshotTests: XCTestCase {
+@Suite struct CleanupHistorySnapshotTests {
     private var calendar: Calendar!
 
     override func setUp() {
@@ -17,15 +18,15 @@ final class CleanupHistorySnapshotTests: XCTestCase {
         super.tearDown()
     }
 
-    func testEmptyHistoryProducesEmptyInsightsAndSections() {
+    @Test func testEmptyHistoryProducesEmptyInsightsAndSections() {
         let snapshot = CleanupHistorySnapshot(entries: [], calendar: calendar)
 
-        XCTAssertEqual(snapshot.insights, .empty)
-        XCTAssertTrue(snapshot.sections.isEmpty)
-        XCTAssertTrue(snapshot.isEmpty)
+        #expect(snapshot.insights == .empty)
+        #expect(snapshot.sections.isEmpty)
+        #expect(snapshot.isEmpty)
     }
 
-    func testSnapshotAggregatesAndGroupsNewestFirst() {
+    @Test func testSnapshotAggregatesAndGroupsNewestFirst() {
         let januaryRecord = makeRecord(
             id: "00000000-0000-0000-0000-000000000001",
             count: 2,
@@ -56,19 +57,19 @@ final class CleanupHistorySnapshotTests: XCTestCase {
             calendar: calendar
         )
 
-        XCTAssertEqual(snapshot.insights.totalDeletedItems, 9)
-        XCTAssertEqual(snapshot.insights.totalSavedBytes, 7_168)
-        XCTAssertEqual(snapshot.insights.cleanupSessionCount, 3)
-        XCTAssertEqual(snapshot.insights.latestCleanup, latestRecord)
-        XCTAssertEqual(snapshot.sections.count, 2)
-        XCTAssertEqual(snapshot.sections[0].month, date(year: 2025, month: 2, day: 1))
-        XCTAssertEqual(snapshot.sections[0].entries, [latestRecord, earlyFebruaryRecord])
-        XCTAssertEqual(snapshot.sections[1].month, date(year: 2025, month: 1, day: 1))
-        XCTAssertEqual(snapshot.sections[1].entries, [januaryRecord])
-        XCTAssertFalse(snapshot.isEmpty)
+        #expect(snapshot.insights.totalDeletedItems == 9)
+        #expect(snapshot.insights.totalSavedBytes == 7_168)
+        #expect(snapshot.insights.cleanupSessionCount == 3)
+        #expect(snapshot.insights.latestCleanup == latestRecord)
+        #expect(snapshot.sections.count == 2)
+        #expect(snapshot.sections[0].month == date(year: 2025, month: 2, day: 1))
+        #expect(snapshot.sections[0].entries == [latestRecord, earlyFebruaryRecord])
+        #expect(snapshot.sections[1].month == date(year: 2025, month: 1, day: 1))
+        #expect(snapshot.sections[1].entries == [januaryRecord])
+        #expect(!snapshot.isEmpty)
     }
 
-    func testSnapshotKeepsZeroByteRecordAndUsesItAsLatestCleanup() {
+    @Test func testSnapshotKeepsZeroByteRecordAndUsesItAsLatestCleanup() {
         let record = makeRecord(
             id: "00000000-0000-0000-0000-000000000004",
             count: 1,
@@ -80,9 +81,9 @@ final class CleanupHistorySnapshotTests: XCTestCase {
 
         let snapshot = CleanupHistorySnapshot(entries: [record], calendar: calendar)
 
-        XCTAssertEqual(snapshot.insights.totalSavedBytes, 0)
-        XCTAssertEqual(snapshot.insights.latestCleanup, record)
-        XCTAssertEqual(snapshot.sections.first?.entries, [record])
+        #expect(snapshot.insights.totalSavedBytes == 0)
+        #expect(snapshot.insights.latestCleanup == record)
+        #expect(snapshot.sections.first?.entries == [record])
     }
 
     /// The months are cut on the calendar the header is spelled in, not on the device's.
@@ -91,7 +92,7 @@ final class CleanupHistorySnapshotTests: XCTestCase {
     /// everywhere. Grouping used to default to `Calendar.current`, so on an `ar-SA` device the
     /// buckets followed Umm al-Qura months while their labels stayed Gregorian, and an entry
     /// could sit under a header naming a month it did not happen in.
-    func testMonthsAreCutOnTheCalendarTheHeaderIsSpelledIn() throws {
+    @Test func testMonthsAreCutOnTheCalendarTheHeaderIsSpelledIn() throws {
         let groupingCalendar = CleanupHistorySnapshot.groupingCalendar
         var hijri = Calendar(identifier: .islamicUmmAlQura)
         hijri.locale = Locale(identifier: "ar_SA")
@@ -102,17 +103,14 @@ final class CleanupHistorySnapshotTests: XCTestCase {
         // than hard-coding it keeps the test honest if the Hijri tables are ever revised.
         let firstOfMarch = date(year: 2026, month: 3, day: 1, calendar: groupingCalendar)
         let hijriMonthOfFirst = hijri.component(.month, from: firstOfMarch)
-        let secondDay = try XCTUnwrap(
-            (2...31).first { day in
+        let secondDay = try #require((2...31).first { day in
                 guard let candidate = groupingCalendar.date(
                     from: DateComponents(year: 2026, month: 3, day: day)
                 ) else {
                     return false
                 }
                 return hijri.component(.month, from: candidate) != hijriMonthOfFirst
-            },
-            "March 2026 does not straddle an Umm al-Qura month boundary"
-        )
+            }, "March 2026 does not straddle an Umm al-Qura month boundary")
 
         let earlier = makeRecord(
             id: "00000000-0000-0000-0000-000000000005",
@@ -136,35 +134,28 @@ final class CleanupHistorySnapshotTests: XCTestCase {
         // Asserted directly as well as through the grouping: this machine's calendar is
         // Gregorian, so a revert to `.current` here would change nothing observable in the
         // sections below and would only surface on an Arabic device.
-        XCTAssertEqual(groupingCalendar, Calendar.alikeFormattingCalendar)
+        #expect(groupingCalendar == Calendar.alikeFormattingCalendar)
 
         // The default initializer is the one the app uses.
         let snapshot = CleanupHistorySnapshot(entries: [earlier, later])
 
-        XCTAssertEqual(snapshot.sections.count, 1)
-        XCTAssertEqual(snapshot.sections.first?.entries, [later, earlier])
+        #expect(snapshot.sections.count == 1)
+        #expect(snapshot.sections.first?.entries == [later, earlier])
         for section in snapshot.sections {
             for entry in section.entries {
-                XCTAssertEqual(
-                    header(of: section),
-                    label(for: entry.completedAt),
-                    "an entry sits under a header naming another month"
-                )
+                #expect(header(of: section) == label(for: entry.completedAt), "an entry sits under a header naming another month")
             }
         }
 
         // What the old default did on an ar-SA device: the same two entries split across two
         // sections, and one of them headed with a month it did not happen in.
         let asTheDeviceCalendarWouldCutIt = CleanupHistorySnapshot(entries: [earlier, later], calendar: hijri)
-        XCTAssertEqual(asTheDeviceCalendarWouldCutIt.sections.count, 2)
+        #expect(asTheDeviceCalendarWouldCutIt.sections.count == 2)
         let mislabelled = asTheDeviceCalendarWouldCutIt.sections.contains { section in
             section.entries.contains { entry in header(of: section) != label(for: entry.completedAt) }
         }
-        XCTAssertTrue(
-            mislabelled,
-            "expected the Hijri grouping to mislabel a section; headers: "
-                + asTheDeviceCalendarWouldCutIt.sections.map { header(of: $0) }.joined(separator: ", ")
-        )
+        #expect(mislabelled, Comment(rawValue: "expected the Hijri grouping to mislabel a section; headers: "
+                + asTheDeviceCalendarWouldCutIt.sections.map { header(of: $0) }.joined(separator: ", ")))
     }
 
     /// The header `CleanupHistoryView` puts on a section.

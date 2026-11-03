@@ -1,14 +1,15 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import CleanupWorkspace
 
-final class ClusterReviewStateResurfacerTests: XCTestCase {
+@Suite struct ClusterReviewStateResurfacerTests {
     private let previousClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A1")!
     private let newClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A2")!
 
     /// A best shot the user picked has to outlive a rescan whose recomputed pick
     /// differs, otherwise their choice silently reverts to the heuristic's.
-    func testUserSelectedBestShotSurvivesRecomputedChange() {
+    @Test func testUserSelectedBestShotSurvivesRecomputedChange() {
         let previous = snapshot(id: previousClusterID, favoriteIdentifier: "a")
         let new = snapshot(id: newClusterID, favoriteIdentifier: "b")
         let existing = reviewState(
@@ -23,14 +24,14 @@ final class ClusterReviewStateResurfacerTests: XCTestCase {
             existingReviewStates: [previousClusterID: existing]
         )
 
-        XCTAssertEqual(result.resurfacingStates[newClusterID], .unchanged)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.bestShotLocalIdentifier, "a")
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected, true)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.status, .reviewed)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.selectedLocalIdentifiers, ["b"])
+        #expect(result.resurfacingStates[newClusterID] == .unchanged)
+        #expect(result.migratedReviewStates[newClusterID]?.bestShotLocalIdentifier == "a")
+        #expect(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected == true)
+        #expect(result.migratedReviewStates[newClusterID]?.status == .reviewed)
+        #expect(result.migratedReviewStates[newClusterID]?.selectedLocalIdentifiers == ["b"])
     }
 
-    func testRecomputedBestShotChangeWithoutOverrideStillResurfaces() {
+    @Test func testRecomputedBestShotChangeWithoutOverrideStillResurfaces() {
         let previous = snapshot(id: previousClusterID, favoriteIdentifier: "a")
         let new = snapshot(id: newClusterID, favoriteIdentifier: "b")
         let existing = reviewState(
@@ -45,13 +46,13 @@ final class ClusterReviewStateResurfacerTests: XCTestCase {
             existingReviewStates: [previousClusterID: existing]
         )
 
-        XCTAssertEqual(result.resurfacingStates[newClusterID], .changed)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.status, .needsReReview)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.bestShotLocalIdentifier, "b")
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected, false)
+        #expect(result.resurfacingStates[newClusterID] == .changed)
+        #expect(result.migratedReviewStates[newClusterID]?.status == .needsReReview)
+        #expect(result.migratedReviewStates[newClusterID]?.bestShotLocalIdentifier == "b")
+        #expect(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected == false)
     }
 
-    func testOverrideDoesNotSurviveChangedAssetSet() {
+    @Test func testOverrideDoesNotSurviveChangedAssetSet() {
         let previous = snapshot(id: previousClusterID, favoriteIdentifier: "a")
         let new = PhotoClusterSnapshot(
             id: newClusterID,
@@ -71,10 +72,10 @@ final class ClusterReviewStateResurfacerTests: XCTestCase {
             existingReviewStates: [previousClusterID: existing]
         )
 
-        XCTAssertEqual(result.resurfacingStates[newClusterID], .changed)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.status, .needsReReview)
-        XCTAssertEqual(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected, false)
-        XCTAssertTrue(result.migratedReviewStates[newClusterID]?.selectedLocalIdentifiers.isEmpty ?? false)
+        #expect(result.resurfacingStates[newClusterID] == .changed)
+        #expect(result.migratedReviewStates[newClusterID]?.status == .needsReReview)
+        #expect(result.migratedReviewStates[newClusterID]?.isBestShotUserSelected == false)
+        #expect(result.migratedReviewStates[newClusterID]?.selectedLocalIdentifiers.isEmpty ?? false)
     }
 
     // MARK: - Helpers
