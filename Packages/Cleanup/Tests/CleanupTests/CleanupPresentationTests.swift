@@ -57,6 +57,22 @@ import CleanupWorkspace
         #expect(message != "English payload")
     }
 
+    /// The defect was in the view, so this reads the view's body. The positive check keeps
+    /// the test honest if `dump` stops descending into the tree.
+    @MainActor
+    @Test func testFailedReconciliationBannerDrawsTheCatalogText() {
+        let banner = CleanupReconciliationBanner(
+            state: .failed(record, message: "English payload"),
+            onRequestScan: {},
+            onDismiss: { _ in }
+        )
+        var tree = ""
+        dump(banner.body, to: &tree)
+
+        #expect(tree.contains(CleanupL10n.Main.photosWereDeletedButLibrary))
+        #expect(!tree.contains("English payload"))
+    }
+
     @Test func testSuccessfulReconciliationSaysResultsAreUpToDate() {
         #expect(CleanupPresentation.reconciliationMessage(for: .success(record)) == CleanupL10n.Main.cleanupResultsUpDate)
     }
