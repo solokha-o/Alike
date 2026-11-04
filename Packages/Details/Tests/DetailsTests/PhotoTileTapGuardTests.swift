@@ -1,55 +1,52 @@
 #if os(iOS)
-import XCTest
+import Foundation
+import Testing
 @testable import Details
 
 @MainActor
-final class PhotoTileTapGuardTests: XCTestCase {
+@Suite struct PhotoTileTapGuardTests {
     private let start = Date(timeIntervalSinceReferenceDate: 1_000)
 
-    func testTapPassesWhenNoSwipeHappened() {
-        XCTAssertTrue(PhotoTileTapGuard().allowsTap(at: start))
+    @Test func testTapPassesWhenNoSwipeHappened() {
+        #expect(PhotoTileTapGuard().allowsTap(at: start))
     }
 
-    func testTapIsIgnoredDuringASwipe() {
+    @Test func testTapIsIgnoredDuringASwipe() {
         let tapGuard = PhotoTileTapGuard()
         tapGuard.swipeMoved()
 
-        XCTAssertFalse(tapGuard.allowsTap(at: start))
+        #expect(!tapGuard.allowsTap(at: start))
     }
 
-    func testTapIsIgnoredRightAfterASwipeEnds() {
-        let tapGuard = PhotoTileTapGuard()
-        tapGuard.swipeMoved()
-        tapGuard.dragEnded(at: start)
-
-        XCTAssertFalse(tapGuard.allowsTap(at: start))
-        XCTAssertFalse(
-            tapGuard.allowsTap(at: start.addingTimeInterval(PhotoTileTapGuard.settleInterval - 0.01))
-        )
-    }
-
-    func testLaterTapPassesAfterASwipeEnds() {
+    @Test func testTapIsIgnoredRightAfterASwipeEnds() {
         let tapGuard = PhotoTileTapGuard()
         tapGuard.swipeMoved()
         tapGuard.dragEnded(at: start)
 
-        XCTAssertTrue(
-            tapGuard.allowsTap(at: start.addingTimeInterval(PhotoTileTapGuard.settleInterval))
-        )
+        #expect(!tapGuard.allowsTap(at: start))
+        #expect(!tapGuard.allowsTap(at: start.addingTimeInterval(PhotoTileTapGuard.settleInterval - 0.01)))
     }
 
-    func testADragThatNeverWentSidewaysDoesNotBlockATap() {
+    @Test func testLaterTapPassesAfterASwipeEnds() {
+        let tapGuard = PhotoTileTapGuard()
+        tapGuard.swipeMoved()
+        tapGuard.dragEnded(at: start)
+
+        #expect(tapGuard.allowsTap(at: start.addingTimeInterval(PhotoTileTapGuard.settleInterval)))
+    }
+
+    @Test func testADragThatNeverWentSidewaysDoesNotBlockATap() {
         let tapGuard = PhotoTileTapGuard()
         tapGuard.dragEnded(at: start)
 
-        XCTAssertTrue(tapGuard.allowsTap(at: start))
+        #expect(tapGuard.allowsTap(at: start))
     }
 
-    func testOnlyAMostlySidewaysDragCountsAsHorizontal() {
-        XCTAssertTrue(PhotoTileTapGuard.isHorizontal(CGPoint(x: 40, y: 10)))
-        XCTAssertTrue(PhotoTileTapGuard.isHorizontal(CGPoint(x: -40, y: 10)))
-        XCTAssertFalse(PhotoTileTapGuard.isHorizontal(CGPoint(x: 10, y: 40)))
-        XCTAssertFalse(PhotoTileTapGuard.isHorizontal(CGPoint(x: 10, y: -40)))
+    @Test func testOnlyAMostlySidewaysDragCountsAsHorizontal() {
+        #expect(PhotoTileTapGuard.isHorizontal(CGPoint(x: 40, y: 10)))
+        #expect(PhotoTileTapGuard.isHorizontal(CGPoint(x: -40, y: 10)))
+        #expect(!PhotoTileTapGuard.isHorizontal(CGPoint(x: 10, y: 40)))
+        #expect(!PhotoTileTapGuard.isHorizontal(CGPoint(x: 10, y: -40)))
     }
 }
 #endif
