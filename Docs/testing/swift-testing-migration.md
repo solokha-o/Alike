@@ -45,7 +45,8 @@ The step `no XCTest imports` in `tools/quick` and `tools/full` runs `tools/check
 It checks tracked, staged and new Swift files and skips ignored paths such as `.build`.
 Its message names the file; `run_step` writes it to the step log.
 
-The only exceptions need a matching path and matching content. There are no such tests today.
+The only exceptions need a matching path and matching content; a comment does not count as content.
+There are no such tests today.
 
 | Kind | Path | Content |
 | --- | --- | --- |
@@ -86,8 +87,7 @@ Notes from the pilot:
   `.serialized` with a reason, helpers. Review reads this commit in detail.
   If a package needs no manual change, say so in the PR body.
 - Do not change production code. Do not change what a test checks. Do not delete tests.
-- Do not mix XCTest and Swift Testing in one file. One target can hold both, so a package
-  migrates file by file.
+- Do not mix XCTest and Swift Testing in one file.
 - Commit format: `🧪 Tests: <what changed> in <Package> [M<n>]`.
 
 ## Parallelism rules
