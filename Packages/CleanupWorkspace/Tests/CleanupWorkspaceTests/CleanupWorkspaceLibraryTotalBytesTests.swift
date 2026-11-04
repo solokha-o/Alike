@@ -1,12 +1,13 @@
 import Core
-import XCTest
+import Foundation
+import Testing
 @testable import CleanupWorkspace
 
 /// The widget ring's denominator: unknown until a scan summed the library, then
 /// the scan's figure, across cold launches, until local data is deleted.
 @MainActor
-final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
-    func testIsNilBeforeTheFirstScan() async {
+@Suite struct CleanupWorkspaceLibraryTotalBytesTests {
+    @Test func testIsNilBeforeTheFirstScan() async {
         let byteSizes = MockAssetByteSizeRepository()
         // A leftover total without a scan baseline must not surface.
         await byteSizes.setStoredLibraryTotalBytes(6_400_000_000)
@@ -14,10 +15,10 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertNil(workspace.libraryTotalBytes)
+        #expect(workspace.libraryTotalBytes == nil)
     }
 
-    func testScanAdoptsAndPersistsTheAnalysisTotal() async throws {
+    @Test func testScanAdoptsAndPersistsTheAnalysisTotal() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(6_400_000_000)
         let byteSizes = MockAssetByteSizeRepository()
@@ -25,12 +26,12 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
 
         _ = try await workspace.scan(sensitivity: .medium)
 
-        XCTAssertEqual(workspace.libraryTotalBytes, 6_400_000_000)
+        #expect(workspace.libraryTotalBytes == 6_400_000_000)
         let stored = await byteSizes.storedLibraryTotalBytes
-        XCTAssertEqual(stored, 6_400_000_000)
+        #expect(stored == 6_400_000_000)
     }
 
-    func testColdLaunchRestoresThePersistedTotal() async throws {
+    @Test func testColdLaunchRestoresThePersistedTotal() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(6_400_000_000)
         let repository = MockPhotoClusterRepository()
@@ -44,10 +45,10 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
         let relaunched = makeWorkspace(repository: repository, byteSizeRepository: byteSizes)
         await relaunched.loadCachedContent()
 
-        XCTAssertEqual(relaunched.libraryTotalBytes, 6_400_000_000)
+        #expect(relaunched.libraryTotalBytes == 6_400_000_000)
     }
 
-    func testScanWithoutAMeasurementKeepsThePreviousTotal() async throws {
+    @Test func testScanWithoutAMeasurementKeepsThePreviousTotal() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(6_400_000_000)
         let byteSizes = MockAssetByteSizeRepository()
@@ -57,12 +58,12 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
         await analysis.setLibraryTotalBytesResult(nil)
         _ = try await workspace.scan(sensitivity: .medium)
 
-        XCTAssertEqual(workspace.libraryTotalBytes, 6_400_000_000)
+        #expect(workspace.libraryTotalBytes == 6_400_000_000)
         let saves = await byteSizes.saveLibraryTotalBytesCallCount
-        XCTAssertEqual(saves, 1)
+        #expect(saves == 1)
     }
 
-    func testDataDeletionClearsTheTotal() async throws {
+    @Test func testDataDeletionClearsTheTotal() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(6_400_000_000)
         let byteSizes = MockAssetByteSizeRepository()
@@ -71,12 +72,12 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
 
         await workspace.prepareForDataDeletion()
 
-        XCTAssertNil(workspace.libraryTotalBytes)
+        #expect(workspace.libraryTotalBytes == nil)
         let stored = await byteSizes.storedLibraryTotalBytes
-        XCTAssertNil(stored)
+        #expect(stored == nil)
     }
 
-    func testStaleCachedLoadDoesNotOverwriteANewerScanTotal() async throws {
+    @Test func testStaleCachedLoadDoesNotOverwriteANewerScanTotal() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(100)
         let repository = MockPhotoClusterRepository()
@@ -101,10 +102,10 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
         await byteSizes.releaseLoad()
         await staleLoad.value
 
-        XCTAssertEqual(workspace.libraryTotalBytes, 200)
+        #expect(workspace.libraryTotalBytes == 200)
     }
 
-    func testUnchangedTotalIsSavedAgainAfterAFailedWrite() async throws {
+    @Test func testUnchangedTotalIsSavedAgainAfterAFailedWrite() async throws {
         let analysis = MockPhotoAnalysisService()
         await analysis.setLibraryTotalBytesResult(100)
         let byteSizes = FailOnceLibraryTotalRepository()
@@ -114,7 +115,7 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
         _ = try await workspace.scan(sensitivity: .medium)
 
         let stored = await byteSizes.storedLibraryTotalBytes
-        XCTAssertEqual(stored, 100)
+        #expect(stored == 100)
     }
 
     private func makeWorkspace(
@@ -129,6 +130,9 @@ final class CleanupWorkspaceLibraryTotalBytesTests: XCTestCase {
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
             assetByteSizeRepository: byteSizeRepository
         )
     }

@@ -1,15 +1,16 @@
 import CleanupWorkspace
 import Core
 import Photos
-import XCTest
+import Foundation
+import Testing
 
 /// The post-cleanup refresh. `CleanupWorkspaceBehaviorTests` already covers the
 /// two failure shapes — a reconciliation that throws, and a superseded queue —
 /// so this covers what reconciliation is actually for: after photos are
 /// deleted, the workspace reflects the deletion.
 @MainActor
-final class CleanupWorkspaceReconciliationTests: XCTestCase {
-    func testSuccessfulReconciliationRefreshesClustersCategoriesAndInsights() async {
+@Suite struct CleanupWorkspaceReconciliationTests {
+    @Test func testSuccessfulReconciliationRefreshesClustersCategoriesAndInsights() async {
         let survivingCluster = PhotoCluster(id: UUID(), assets: [])
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([survivingCluster]))
@@ -35,17 +36,17 @@ final class CleanupWorkspaceReconciliationTests: XCTestCase {
 
         await workspace.reconcile(after: record, sensitivity: .medium)
 
-        XCTAssertEqual(workspace.reconciliationState, .success(record))
-        XCTAssertEqual(workspace.clusters, [survivingCluster])
-        XCTAssertEqual(workspace.cleanupCategories.map(\.kind), [.screenshots])
-        XCTAssertEqual(workspace.cleanupCategories.first?.assetCount, 2)
-        XCTAssertEqual(workspace.cleanupInsights.totalDeletedItems, 4)
-        XCTAssertEqual(workspace.cleanupInsights.totalSavedBytes, 4_096)
-        XCTAssertEqual(workspace.cleanupInsights.latestCleanup, record)
-        XCTAssertTrue(workspace.hasCompletedScanBaseline)
+        #expect(workspace.reconciliationState == .success(record))
+        #expect(workspace.clusters == [survivingCluster])
+        #expect(workspace.cleanupCategories.map(\.kind) == [.screenshots])
+        #expect(workspace.cleanupCategories.first?.assetCount == 2)
+        #expect(workspace.cleanupInsights.totalDeletedItems == 4)
+        #expect(workspace.cleanupInsights.totalSavedBytes == 4_096)
+        #expect(workspace.cleanupInsights.latestCleanup == record)
+        #expect(workspace.hasCompletedScanBaseline)
     }
 
-    func testReconciliationLeavesNoScanInFlightSoTheNextOneCanRun() async {
+    @Test func testReconciliationLeavesNoScanInFlightSoTheNextOneCanRun() async {
         let analysis = MockPhotoAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
         let record = CleanupCompletionRecord(
@@ -57,7 +58,7 @@ final class CleanupWorkspaceReconciliationTests: XCTestCase {
 
         await workspace.reconcile(after: record, sensitivity: .medium)
 
-        XCTAssertEqual(workspace.scanOperation, .idle)
+        #expect(workspace.scanOperation == .idle)
 
         // A second reconciliation must run its own scan rather than be swallowed
         // as a duplicate of the first — the queue is drained, not merely idle.
@@ -72,8 +73,8 @@ final class CleanupWorkspaceReconciliationTests: XCTestCase {
 
         await workspace.reconcile(after: secondRecord, sensitivity: .medium)
 
-        XCTAssertEqual(workspace.reconciliationState, .success(secondRecord))
-        XCTAssertEqual(workspace.clusters, [secondCluster])
+        #expect(workspace.reconciliationState == .success(secondRecord))
+        #expect(workspace.clusters == [secondCluster])
     }
 
     private func makeWorkspace(
@@ -86,7 +87,11 @@ final class CleanupWorkspaceReconciliationTests: XCTestCase {
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: historyRepository
+            cleanupHistoryRepository: historyRepository,
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
     }
 }

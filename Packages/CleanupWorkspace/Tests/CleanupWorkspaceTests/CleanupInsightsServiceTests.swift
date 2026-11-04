@@ -1,19 +1,20 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import CleanupWorkspace
 
-final class CleanupInsightsServiceTests: XCTestCase {
-    func testLoadInsightsReturnsEmptySnapshotForEmptyHistory() async throws {
+@Suite struct CleanupInsightsServiceTests {
+    @Test func testLoadInsightsReturnsEmptySnapshotForEmptyHistory() async throws {
         let repository = MockCleanupHistoryRepository(entries: [])
         let service = CleanupInsightsService(repository: repository)
 
         let insights = try await service.loadInsights()
 
-        XCTAssertEqual(insights, .empty)
-        XCTAssertFalse(insights.hasHistory)
+        #expect(insights == .empty)
+        #expect(!insights.hasHistory)
     }
 
-    func testLoadInsightsAggregatesTotalsAndLatestSession() async throws {
+    @Test func testLoadInsightsAggregatesTotalsAndLatestSession() async throws {
         let oldRecord = CleanupCompletionRecord(
             sourceClusterID: UUID(),
             deletedCount: 2,
@@ -31,10 +32,10 @@ final class CleanupInsightsServiceTests: XCTestCase {
 
         let insights = try await service.loadInsights()
 
-        XCTAssertEqual(insights.totalDeletedItems, 5)
-        XCTAssertEqual(insights.totalSavedBytes, 3_072)
-        XCTAssertEqual(insights.cleanupSessionCount, 2)
-        XCTAssertEqual(insights.latestCleanup, newRecord)
-        XCTAssertTrue(insights.hasHistory)
+        #expect(insights.totalDeletedItems == 5)
+        #expect(insights.totalSavedBytes == 3_072)
+        #expect(insights.cleanupSessionCount == 2)
+        #expect(insights.latestCleanup == newRecord)
+        #expect(insights.hasHistory)
     }
 }

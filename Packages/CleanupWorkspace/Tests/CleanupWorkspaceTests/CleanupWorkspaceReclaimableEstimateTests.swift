@@ -1,14 +1,17 @@
 import CleanupWorkspace
 import Core
 import Photos
-import XCTest
+import Foundation
+import Testing
 
 /// `ScanSummary.estimatedSavingsBytes`, the cold-launch estimate and the
 /// content's own estimate are one figure, computed once: every asset counted
 /// once across clusters and categories, and the keeper never counted.
+// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
+// A test here advances it, and another test asserts that nothing was measured during its scan.
 @MainActor
-final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
-    func testScanSummaryCountsAScreenshotInsideAClusterOnce() async throws {
+@Suite(.serialized) struct CleanupWorkspaceReclaimableEstimateTests {
+    @Test func testScanSummaryCountsAScreenshotInsideAClusterOnce() async throws {
         // 2 000 × 1 000 / 2 = 1 000 000 bytes per asset.
         let keeperCandidateA = FakePhotoAsset(localIdentifier: "a", pixelWidth: 2_000, pixelHeight: 1_000)
         let keeperCandidateB = FakePhotoAsset(localIdentifier: "b", pixelWidth: 2_000, pixelHeight: 1_000)
@@ -34,16 +37,16 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         // Three assets minus the keeper = 2 000 000 from the cluster; the category
         // adds only the screenshot the cluster did not already count.
-        let keeper = try XCTUnwrap(cluster.bestShotAsset()?.localIdentifier)
-        XCTAssertTrue(["a", "b", "shot"].contains(keeper))
+        let keeper = try #require(cluster.bestShotAsset()?.localIdentifier)
+        #expect(["a", "b", "shot"].contains(keeper))
         let expectedClusterBytes: Int64 = 2_000_000
         let expectedCategoryBytes: Int64 = keeper == "shot" ? 1_250_000 : 250_000
-        XCTAssertEqual(summary.estimatedSavingsBytes, expectedClusterBytes + expectedCategoryBytes)
-        XCTAssertEqual(workspace.reclaimableEstimate.totalBytes, summary.estimatedSavingsBytes)
-        XCTAssertEqual(workspace.content?.categorySnapshots.map(\.kind), [.screenshots])
+        #expect(summary.estimatedSavingsBytes == expectedClusterBytes + expectedCategoryBytes)
+        #expect(workspace.reclaimableEstimate.totalBytes == summary.estimatedSavingsBytes)
+        #expect(workspace.content?.categorySnapshots.map(\.kind) == [.screenshots])
     }
 
-    func testColdLoadExcludesTheUserChosenKeeperAndMatchesContentEstimate() async {
+    @Test func testColdLoadExcludesTheUserChosenKeeperAndMatchesContentEstimate() async {
         let first = FakePhotoAsset(localIdentifier: "first", pixelWidth: 2_000, pixelHeight: 1_000)
         let chosen = FakePhotoAsset(localIdentifier: "chosen", pixelWidth: 4_000, pixelHeight: 1_000)
         let third = FakePhotoAsset(localIdentifier: "third", pixelWidth: 2_000, pixelHeight: 500)
@@ -82,14 +85,14 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         // "chosen" is the user's keeper (2 000 000 bytes, excluded); "first" is
         // 1 000 000 and "third" 500 000; the category adds only "blurred-only".
-        XCTAssertEqual(workspace.reclaimableEstimate, ReclaimableEstimate(clusterBytes: 1_500_000, categoryBytes: 100_000))
-        XCTAssertEqual(workspace.reclaimableEstimate, workspace.content?.reclaimableEstimate())
-        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [600_000])
+        #expect(workspace.reclaimableEstimate == ReclaimableEstimate(clusterBytes: 1_500_000, categoryBytes: 100_000))
+        #expect(workspace.reclaimableEstimate == workspace.content?.reclaimableEstimate())
+        #expect(workspace.cleanupCategories.map(\.estimatedSavingsBytes) == [600_000])
     }
 
     /// The widget publisher reads `lastScanSummary` before the estimate, so a keeper
     /// change after a scan must reach the summary without a restart.
-    func testKeeperChangeAfterScanUpdatesTheScanSummarySavings() async throws {
+    @Test func testKeeperChangeAfterScanUpdatesTheScanSummarySavings() async throws {
         // 2 000 000 and 1 000 000 bytes.
         let large = FakePhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000)
         let small = FakePhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000)
@@ -100,10 +103,10 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         let workspace = makeWorkspace(analysisService: analysis, reviewRepository: reviewRepository)
 
         let scanned = try await workspace.scan(sensitivity: .medium)
-        let keeper = try XCTUnwrap(cluster.bestShotAsset()?.localIdentifier)
+        let keeper = try #require(cluster.bestShotAsset()?.localIdentifier)
         let newKeeper = keeper == "large" ? "small" : "large"
         let expectedBytes: Int64 = newKeeper == "large" ? 1_000_000 : 2_000_000
-        XCTAssertNotEqual(scanned.estimatedSavingsBytes, expectedBytes)
+        #expect(scanned.estimatedSavingsBytes != expectedBytes)
 
         await reviewRepository.setStoredStates([
             cluster.id: ClusterReviewState(
@@ -117,8 +120,8 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         ])
         await workspace.reloadReviewState()
 
-        XCTAssertEqual(workspace.reclaimableEstimate.totalBytes, expectedBytes)
-        XCTAssertEqual(workspace.lastScanSummary, ScanSummary(
+        #expect(workspace.reclaimableEstimate.totalBytes == expectedBytes)
+        #expect(workspace.lastScanSummary == ScanSummary(
             clusterCount: scanned.clusterCount,
             cleanupCategoryCandidateCount: scanned.cleanupCategoryCandidateCount,
             estimatedSavingsBytes: expectedBytes,
@@ -126,7 +129,7 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         ))
     }
 
-    func testCategoryRepositoryFailureLeavesTheClusterHalfOfTheEstimate() async {
+    @Test func testCategoryRepositoryFailureLeavesTheClusterHalfOfTheEstimate() async {
         let keep = FakePhotoAsset(localIdentifier: "keep", pixelWidth: 2_000, pixelHeight: 1_000)
         let other = FakePhotoAsset(localIdentifier: "other", pixelWidth: 2_000, pixelHeight: 1_000)
         let cluster = PhotoCluster(assets: [keep, other])
@@ -139,11 +142,11 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.reclaimableEstimate, ReclaimableEstimate(clusterBytes: 1_000_000, categoryBytes: 0))
-        XCTAssertEqual(workspace.content?.categorySnapshots, [])
+        #expect(workspace.reclaimableEstimate == ReclaimableEstimate(clusterBytes: 1_000_000, categoryBytes: 0))
+        #expect(workspace.content?.categorySnapshots == [])
     }
 
-    func testResetClearsTheEstimate() async {
+    @Test func testResetClearsTheEstimate() async {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "keep", pixelWidth: 2_000, pixelHeight: 1_000),
             FakePhotoAsset(localIdentifier: "other", pixelWidth: 2_000, pixelHeight: 1_000)
@@ -153,16 +156,16 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         await repository.setLoadClustersResult(.success([cluster]))
         let workspace = makeWorkspace(repository: repository)
         await workspace.loadCachedContent()
-        XCTAssertNotEqual(workspace.reclaimableEstimate, .zero)
+        #expect(workspace.reclaimableEstimate != .zero)
 
         await workspace.prepareForDataDeletion()
 
-        XCTAssertEqual(workspace.reclaimableEstimate, .zero)
+        #expect(workspace.reclaimableEstimate == .zero)
     }
 
     /// A category persisted with the pixel heuristic is re-measured on load and
     /// written back, so its overlap with a cluster is subtracted in one unit.
-    func testColdLoadRemeasuresAHeuristicCategoryAndPersistsIt() async throws {
+    @Test func testColdLoadRemeasuresAHeuristicCategoryAndPersistsIt() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([]))
@@ -186,18 +189,18 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [4_321])
-        XCTAssertEqual(workspace.reclaimableEstimate.categoryBytes, 4_321)
+        #expect(workspace.cleanupCategories.map(\.estimatedSavingsBytes) == [4_321])
+        #expect(workspace.reclaimableEstimate.categoryBytes == 4_321)
         let storedSnapshots = await categoryRepository.storedSnapshots
-        let persisted = try XCTUnwrap(storedSnapshots[.screenshots])
-        XCTAssertEqual(persisted.estimatedSavingsBytes, 4_321)
-        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+        let persisted = try #require(storedSnapshots[.screenshots])
+        #expect(persisted.estimatedSavingsBytes == 4_321)
+        #expect(persisted.byteSizeVersion == AssetByteSize.currentVersion)
     }
 
     /// A scan that lands while the launch load is still reading legacy categories
     /// has already stored fresh ones; the load must not write its re-measured
     /// legacy copies over them.
-    func testLegacyMigrationDoesNotOverwriteCategoriesStoredByAConcurrentScan() async throws {
+    @Test func testLegacyMigrationDoesNotOverwriteCategoriesStoredByAConcurrentScan() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([]))
@@ -244,14 +247,14 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         await load.value
 
         let storedSnapshots = await categoryRepository.storedSnapshots
-        XCTAssertEqual(storedSnapshots[.screenshots], fresh)
-        XCTAssertEqual(workspace.cleanupCategories.map(\.estimatedSavingsBytes), [7])
+        #expect(storedSnapshots[.screenshots] == fresh)
+        #expect(workspace.cleanupCategories.map(\.estimatedSavingsBytes) == [7])
     }
 
     /// The first launch on a library with categories but no clusters measures
     /// only during the legacy migration; those sizes still reach the store, so
     /// opening a category later does not ask PhotoKit again.
-    func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async throws {
+    @Test func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([]))
@@ -283,11 +286,11 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         let saveCount = await byteSizeRepository.replaceAllCallCount
         let storedRecords = await byteSizeRepository.storedRecords
-        XCTAssertEqual(saveCount, 1)
-        XCTAssertEqual(storedRecords, [measured])
+        #expect(saveCount == 1)
+        #expect(storedRecords == [measured])
     }
 
-    func testColdLoadRemeasuresAHeuristicReviewStateAndPersistsIt() async throws {
+    @Test func testColdLoadRemeasuresAHeuristicReviewStateAndPersistsIt() async throws {
         let keeper = FakePhotoAsset(localIdentifier: "keeper", pixelWidth: 4_000, pixelHeight: 1_000)
         let selected = FakePhotoAsset(localIdentifier: "selected", pixelWidth: 2_000, pixelHeight: 1_000)
         let cluster = PhotoCluster(assets: [keeper, selected])
@@ -310,17 +313,17 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         await workspace.loadCachedContent()
 
         // Fake assets have no PhotoKit resources, so the source falls back to 2 000 × 1 000 / 2.
-        XCTAssertEqual(workspace.reviewState(for: cluster.id)?.estimatedSavingsBytes, 1_000_000)
+        #expect(workspace.reviewState(for: cluster.id)?.estimatedSavingsBytes == 1_000_000)
         let storedStates = await reviewRepository.storedStates
-        let persisted = try XCTUnwrap(storedStates[cluster.id])
-        XCTAssertEqual(persisted.estimatedSavingsBytes, 1_000_000)
-        XCTAssertEqual(persisted.byteSizeVersion, AssetByteSize.currentVersion)
+        let persisted = try #require(storedStates[cluster.id])
+        #expect(persisted.estimatedSavingsBytes == 1_000_000)
+        #expect(persisted.byteSizeVersion == AssetByteSize.currentVersion)
     }
 
     /// A scan that lands while the launch load is still reading legacy review
     /// states has already replaced them with states for its own clusters; the
     /// load must not write its re-measured legacy copies back.
-    func testLegacyMigrationDoesNotOverwriteReviewStatesStoredByAConcurrentScan() async throws {
+    @Test func testLegacyMigrationDoesNotOverwriteReviewStatesStoredByAConcurrentScan() async throws {
         let oldCluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "old-keeper", pixelWidth: 4_000, pixelHeight: 1_000),
             FakePhotoAsset(localIdentifier: "old-selected", pixelWidth: 2_000, pixelHeight: 1_000)
@@ -360,20 +363,20 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
         // The scan finds none of the old clusters, so it stores no state for them.
         _ = try await workspace.scan(sensitivity: .medium)
         let storedByScan = await reviewRepository.storedStates
-        XCTAssertNil(storedByScan[oldCluster.id])
+        #expect(storedByScan[oldCluster.id] == nil)
 
         await reviewRepository.resumeLoadAllReviewStates()
         await load.value
 
         let storedStates = await reviewRepository.storedStates
-        XCTAssertEqual(storedStates, storedByScan)
-        XCTAssertNil(workspace.reviewState(for: oldCluster.id))
-        XCTAssertEqual(workspace.content?.clusters.map(\.id), [newCluster.id])
+        #expect(storedStates == storedByScan)
+        #expect(workspace.reviewState(for: oldCluster.id) == nil)
+        #expect(workspace.content?.clusters.map(\.id) == [newCluster.id])
     }
 
     /// The size store is read once per workspace — a scan after the launch load
     /// reuses it — and is not rewritten when nothing new was measured.
-    func testColdLoadSeedsByteSizesOnceAndSkipsAnUnchangedSave() async throws {
+    @Test func testColdLoadSeedsByteSizesOnceAndSkipsAnUnchangedSave() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([
@@ -387,8 +390,8 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
 
         let loadCount = await byteSizeRepository.loadAllCallCount
         let saveCount = await byteSizeRepository.replaceAllCallCount
-        XCTAssertEqual(loadCount, 1)
-        XCTAssertEqual(saveCount, 0)
+        #expect(loadCount == 1)
+        #expect(saveCount == 0)
     }
 
     private func makeWorkspace(
@@ -406,6 +409,9 @@ final class CleanupWorkspaceReclaimableEstimateTests: XCTestCase {
             cleanupCategoryRepository: categoryRepository,
             cleanupSessionRepository: MockCleanupSessionRepository(),
             cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
             assetByteSizeRepository: byteSizeRepository,
             assetBytesByIdentifier: assetBytesByIdentifier
         )

@@ -2,38 +2,39 @@ import CleanupWorkspace
 import Core
 import Observation
 import Photos
-import XCTest
+import Foundation
+import Testing
 
 private enum ScanPersistenceTestError: Error {
     case failed
 }
 
 @MainActor
-final class CleanupWorkspaceModelTests: XCTestCase {
-    func testCachedContentWithoutBaselineIsNeverScanned() async {
+@Suite struct CleanupWorkspaceModelTests {
+    @Test func testCachedContentWithoutBaselineIsNeverScanned() async {
         let workspace = makeWorkspace()
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.contentState, .neverScanned)
-        XCTAssertNil(workspace.content)
+        #expect(workspace.contentState == .neverScanned)
+        #expect(workspace.content == nil)
     }
 
-    func testSuccessfulScanPublishesSummaryAndCompletedEmptyContent() async throws {
+    @Test func testSuccessfulScanPublishesSummaryAndCompletedEmptyContent() async throws {
         let analysis = MockPhotoAnalysisService()
         let workspace = makeWorkspace(analysisService: analysis)
 
         let summary = try await workspace.scan(sensitivity: .medium)
 
-        XCTAssertEqual(summary.clusterCount, 0)
-        XCTAssertEqual(summary.cleanupCategoryCandidateCount, 0)
-        XCTAssertEqual(workspace.lastScanSummary, summary)
-        XCTAssertEqual(workspace.lastCompletedScanDate, summary.completedAt)
-        XCTAssertEqual(workspace.content?.clusters, [])
-        XCTAssertEqual(workspace.scanOperation, .idle)
+        #expect(summary.clusterCount == 0)
+        #expect(summary.cleanupCategoryCandidateCount == 0)
+        #expect(workspace.lastScanSummary == summary)
+        #expect(workspace.lastCompletedScanDate == summary.completedAt)
+        #expect(workspace.content?.clusters == [])
+        #expect(workspace.scanOperation == .idle)
     }
 
-    func testCompletedScanDoesNotImmediatelyAskForARescan() async throws {
+    @Test func testCompletedScanDoesNotImmediatelyAskForARescan() async throws {
         let repository = MockPhotoClusterRepository()
         let workspace = makeWorkspace(
             analysisService: MockPhotoAnalysisService(),
@@ -43,11 +44,11 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         _ = try await workspace.scan(sensitivity: .medium)
         let shouldPrompt = await workspace.checkForGalleryChanges()
 
-        XCTAssertFalse(shouldPrompt)
-        XCTAssertFalse(workspace.shouldShowRescanPrompt)
+        #expect(!shouldPrompt)
+        #expect(!workspace.shouldShowRescanPrompt)
     }
 
-    func testScanRecordsLibraryFingerprintOnceAfterClustersArePersisted() async throws {
+    @Test func testScanRecordsLibraryFingerprintOnceAfterClustersArePersisted() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setLibraryFingerprint(token: Data([0xCD]), imageAssetCount: 12)
         let workspace = makeWorkspace(
@@ -58,13 +59,13 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         let summary = try await workspace.scan(sensitivity: .medium)
 
         let log = await repository.persistenceLog
-        XCTAssertEqual(log, ["saveClusters", "updateScanMetadata"])
+        #expect(log == ["saveClusters", "updateScanMetadata"])
 
         let writes = await repository.scanMetadataWrites
-        XCTAssertEqual(writes.count, 1)
-        XCTAssertEqual(writes.first??.libraryChangeToken, Data([0xCD]))
-        XCTAssertEqual(writes.first??.imageAssetCount, 12)
-        XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
+        #expect(writes.count == 1)
+        #expect((writes.first??.libraryChangeToken) == Data([0xCD]))
+        #expect((writes.first??.imageAssetCount) == 12)
+        #expect((writes.first??.lastScanDate) == summary.completedAt)
     }
 
     /// Guards against a regression where the fingerprint was captured only
@@ -73,7 +74,7 @@ final class CleanupWorkspaceModelTests: XCTestCase {
     /// recorded baseline while remaining absent from the clusters that work
     /// actually produced, so the next change check would see no delta and
     /// never prompt for the rescan that photo requires.
-    func testScanCapturesFingerprintBeforeAnalysisSnapshotsAssetsNotAfter() async throws {
+    @Test func testScanCapturesFingerprintBeforeAnalysisSnapshotsAssetsNotAfter() async throws {
         let repository = MockPhotoClusterRepository()
         await repository.setLibraryFingerprint(token: Data([0x01]), imageAssetCount: 10)
         let analysis = MidScanFingerprintMutatingAnalysisService(
@@ -86,17 +87,13 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         let summary = try await workspace.scan(sensitivity: .medium)
 
         let writes = await repository.scanMetadataWrites
-        XCTAssertEqual(writes.count, 1)
-        XCTAssertEqual(
-            writes.first??.libraryChangeToken,
-            Data([0x01]),
-            "Must persist the fingerprint captured before analysis started, not a value mutated mid-scan"
-        )
-        XCTAssertEqual(writes.first??.imageAssetCount, 10)
-        XCTAssertEqual(writes.first??.lastScanDate, summary.completedAt)
+        #expect(writes.count == 1)
+        #expect((writes.first??.libraryChangeToken) == Data([0x01]), "Must persist the fingerprint captured before analysis started, not a value mutated mid-scan")
+        #expect((writes.first??.imageAssetCount) == 10)
+        #expect((writes.first??.lastScanDate) == summary.completedAt)
     }
 
-    func testFailedScanRestoresThePreviousLibraryFingerprint() async throws {
+    @Test func testFailedScanRestoresThePreviousLibraryFingerprint() async throws {
         let repository = MockPhotoClusterRepository()
         let baseline = ScanMetadataSnapshot(
             lastScanDate: Date(timeIntervalSince1970: 1_700_000_000),
@@ -112,16 +109,16 @@ final class CleanupWorkspaceModelTests: XCTestCase {
 
         do {
             _ = try await workspace.scan(sensitivity: .medium)
-            XCTFail("Scan should fail when clusters cannot be persisted")
+            Issue.record("Scan should fail when clusters cannot be persisted")
         } catch {
             // Expected
         }
 
         let restored = await repository.scanMetadata
-        XCTAssertEqual(restored, baseline, "A failed scan must not move the recorded baseline")
+        #expect(restored == baseline, "A failed scan must not move the recorded baseline")
     }
 
-    func testCachedContentLoadsPersistedCompletedScanDate() async {
+    @Test func testCachedContentLoadsPersistedCompletedScanDate() async {
         let repository = MockPhotoClusterRepository()
         let completedAt = Date(timeIntervalSince1970: 1_700_000_000)
         await repository.setGetLastScanDateResult(completedAt)
@@ -131,32 +128,40 @@ final class CleanupWorkspaceModelTests: XCTestCase {
             reviewRepository: MockClusterReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
 
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.lastCompletedScanDate, completedAt)
+        #expect(workspace.lastCompletedScanDate == completedAt)
     }
 
-    func testReviewStatePersistenceFailureDoesNotFailCommittedScan() async throws {
+    @Test func testReviewStatePersistenceFailureDoesNotFailCommittedScan() async throws {
         let workspace = CleanupWorkspaceModel(
             analysisService: MockPhotoAnalysisService(),
             repository: MockPhotoClusterRepository(),
             reviewRepository: FailingReviewStateRepository(),
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
 
         let summary = try await workspace.scan(sensitivity: .medium)
 
-        XCTAssertEqual(summary.clusterCount, 0)
-        XCTAssertEqual(workspace.scanOperation, .idle)
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
+        #expect(summary.clusterCount == 0)
+        #expect(workspace.scanOperation == .idle)
+        #expect(workspace.contentState == .content(workspace.content!))
     }
 
-    func testUnchangedReviewReloadDoesNotPublishWorkspaceContent() async {
+    @Test func testUnchangedReviewReloadDoesNotPublishWorkspaceContent() async {
         let cluster = PhotoCluster(id: UUID(), assets: [])
         let repository = MockPhotoClusterRepository()
         await repository.setLoadClustersResult(.success([cluster]))
@@ -177,10 +182,10 @@ final class CleanupWorkspaceModelTests: XCTestCase {
 
         await workspace.reloadReviewState()
 
-        XCTAssertFalse(observation.hasChanged)
+        #expect(!observation.hasChanged)
     }
 
-    func testChangedReviewReloadPublishesWorkspaceContent() async {
+    @Test func testChangedReviewReloadPublishesWorkspaceContent() async {
         let cluster = PhotoCluster(id: UUID(), assets: [])
         let repository = MockPhotoClusterRepository()
         await repository.setLoadClustersResult(.success([cluster]))
@@ -209,16 +214,16 @@ final class CleanupWorkspaceModelTests: XCTestCase {
 
         await workspace.reloadReviewState()
 
-        XCTAssertTrue(observation.hasChanged)
-        XCTAssertEqual(workspace.reviewStates[cluster.id], updatedState)
-        XCTAssertEqual(workspace.contentState, .content(workspace.content!))
+        #expect(observation.hasChanged)
+        #expect(workspace.reviewStates[cluster.id] == updatedState)
+        #expect(workspace.contentState == .content(workspace.content!))
     }
 
     /// `sessionProgress()` and `cleanupEntryCluster()` are computed when content
     /// is published rather than on every read, so a review change arriving after
     /// the first read has to be reflected — this is what would go stale if a
     /// publish site ever forgot to refresh the derived snapshots.
-    func testDerivedProgressFollowsReviewStateChangesAfterFirstRead() async {
+    @Test func testDerivedProgressFollowsReviewStateChangesAfterFirstRead() async {
         let cluster = PhotoCluster(id: UUID(), assets: [])
         let repository = MockPhotoClusterRepository()
         await repository.setLoadClustersResult(.success([cluster]))
@@ -230,9 +235,9 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         )
         await workspace.loadCachedContent()
 
-        XCTAssertEqual(workspace.sessionProgress().totalClusters, 1)
-        XCTAssertEqual(workspace.sessionProgress().reviewedCount, 0)
-        XCTAssertEqual(workspace.cleanupEntryCluster()?.id, cluster.id)
+        #expect(workspace.sessionProgress().totalClusters == 1)
+        #expect(workspace.sessionProgress().reviewedCount == 0)
+        #expect(workspace.cleanupEntryCluster()?.id == cluster.id)
 
         await reviewRepository.setStoredStates([
             cluster.id: ClusterReviewState(
@@ -246,9 +251,9 @@ final class CleanupWorkspaceModelTests: XCTestCase {
         ])
         await workspace.reloadReviewState()
 
-        XCTAssertEqual(workspace.sessionProgress().reviewedCount, 1)
-        XCTAssertEqual(workspace.sessionProgress().reviewedSavingsBytes, 128)
-        XCTAssertNil(workspace.cleanupEntryCluster())
+        #expect(workspace.sessionProgress().reviewedCount == 1)
+        #expect(workspace.sessionProgress().reviewedSavingsBytes == 128)
+        #expect(workspace.cleanupEntryCluster() == nil)
     }
 }
 
@@ -264,7 +269,11 @@ private extension CleanupWorkspaceModelTests {
             reviewRepository: reviewRepository,
             cleanupCategoryRepository: MockCleanupCategorySnapshotRepository(),
             cleanupSessionRepository: MockCleanupSessionRepository(),
-            cleanupHistoryRepository: MockCleanupHistoryRepository()
+            cleanupHistoryRepository: MockCleanupHistoryRepository(),
+            bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
+                repository: MockBestShotPersonalizationRepository()
+            ),
+            assetByteSizeRepository: MockAssetByteSizeRepository()
         )
     }
 }
