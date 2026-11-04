@@ -45,7 +45,8 @@ The step `no XCTest imports` in `tools/quick` and `tools/full` runs `tools/check
 It checks tracked, staged and new Swift files and skips ignored paths such as `.build`.
 Its message names the file; `run_step` writes it to the step log.
 
-The only exceptions need a matching path and matching content; a comment does not count as content.
+The step ignores Swift comments and string literals, so a code example in either one does not fail it.
+The only exceptions need a matching path and matching code; a comment or a string does not count.
 There are no such tests today.
 
 | Kind | Path | Content |
