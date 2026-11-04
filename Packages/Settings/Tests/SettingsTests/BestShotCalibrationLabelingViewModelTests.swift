@@ -1,10 +1,11 @@
 #if DEBUG
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Settings
 
 @MainActor
-final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
+@Suite struct BestShotCalibrationLabelingViewModelTests {
     private func makeViewModel(defaults: UserDefaults) -> BestShotCalibrationLabelingViewModel {
         BestShotCalibrationLabelingViewModel(
             clusterRepository: MockPhotoClusterRepository(),
@@ -37,7 +38,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
         )
     }
 
-    func testExportedCorpusDecodesAndHumanBestShotMatchesACandidate() throws {
+    @Test func testExportedCorpusDecodesAndHumanBestShotMatchesACandidate() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -53,21 +54,21 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             category: .people
         )
 
-        XCTAssertEqual(viewModel.labelledCount, 1)
+        #expect(viewModel.labelledCount == 1)
 
         let data = try viewModel.exportJSON()
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let corpus = try decoder.decode(BestShotCalibrationCorpus.self, from: data)
 
-        XCTAssertEqual(corpus.entries.count, 1)
-        let entry = try XCTUnwrap(corpus.entries.first)
-        XCTAssertEqual(entry.category, .people)
-        XCTAssertEqual(entry.candidates.count, 2)
-        XCTAssertTrue(entry.candidates.contains { $0.assetID == entry.humanBestShotID })
+        #expect(corpus.entries.count == 1)
+        let entry = try #require(corpus.entries.first)
+        #expect(entry.category == .people)
+        #expect(entry.candidates.count == 2)
+        #expect(entry.candidates.contains { $0.assetID == entry.humanBestShotID })
     }
 
-    func testDifferentSaltsProduceDifferentAssetIDsForSameLocalIdentifier() throws {
+    @Test func testDifferentSaltsProduceDifferentAssetIDsForSameLocalIdentifier() throws {
         let localIdentifier = "shared-local-identifier"
         let clusterID = UUID()
 
@@ -92,12 +93,12 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             from: viewModelB.exportJSON()
         )
 
-        let assetIDA = try XCTUnwrap(corpusA.entries.first?.humanBestShotID)
-        let assetIDB = try XCTUnwrap(corpusB.entries.first?.humanBestShotID)
-        XCTAssertNotEqual(assetIDA, assetIDB)
+        let assetIDA = try #require(corpusA.entries.first?.humanBestShotID)
+        let assetIDB = try #require(corpusB.entries.first?.humanBestShotID)
+        #expect(assetIDA != assetIDB)
     }
 
-    func testExportedBytesContainNoPhotoKitLocalIdentifier() throws {
+    @Test func testExportedBytesContainNoPhotoKitLocalIdentifier() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -116,11 +117,11 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
         let data = try viewModel.exportJSON()
         let text = String(decoding: data, as: UTF8.self)
 
-        XCTAssertFalse(text.contains(secretLocalIdentifier))
-        XCTAssertFalse(text.contains("another-local-id"))
+        #expect(!text.contains(secretLocalIdentifier))
+        #expect(!text.contains("another-local-id"))
     }
 
-    func testPersistedSessionRoundTripsLocalIdentifierMap() throws {
+    @Test func testPersistedSessionRoundTripsLocalIdentifierMap() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -134,20 +135,20 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
         let data = try viewModel.exportJSON()
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let entry = try XCTUnwrap(try decoder.decode(BestShotCalibrationCorpus.self, from: data).entries.first)
+        let entry = try #require(try decoder.decode(BestShotCalibrationCorpus.self, from: data).entries.first)
 
         // Reload a fresh view model from the same UserDefaults suite, as the
         // screen does across a relaunch, and confirm the localIdentifier map
         // survived the round trip through the persisted session.
         let resumedViewModel = makeViewModel(defaults: defaults)
         let resumedMap = resumedViewModel.candidateLocalIdentifiersForTesting(clusterID: entry.clusterID)
-        XCTAssertEqual(resumedMap, [
+        #expect(resumedMap == [
             entry.candidates[0].assetID: "real-local-id-1",
             entry.candidates[1].assetID: "real-local-id-2",
         ])
     }
 
-    func testExportedBytesContainNoLocalIdentifierWhenTheResumeMapIsPopulated() throws {
+    @Test func testExportedBytesContainNoLocalIdentifierWhenTheResumeMapIsPopulated() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -169,13 +170,13 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
         let data = try viewModel.exportJSON()
         let text = String(decoding: data, as: UTF8.self)
 
-        XCTAssertFalse(text.contains(secretLocalIdentifier))
-        XCTAssertFalse(text.contains("another-local-id"))
-        XCTAssertFalse(text.contains("candidateLocalIdentifiers"))
-        XCTAssertFalse(text.contains("localIdentifier"))
+        #expect(!text.contains(secretLocalIdentifier))
+        #expect(!text.contains("another-local-id"))
+        #expect(!text.contains("candidateLocalIdentifiers"))
+        #expect(!text.contains("localIdentifier"))
     }
 
-    func testRehashingAStoredLocalIdentifierReproducesTheSameAnonymizedAssetID() throws {
+    @Test func testRehashingAStoredLocalIdentifierReproducesTheSameAnonymizedAssetID() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -188,15 +189,15 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             BestShotCalibrationCorpus.self,
             from: viewModel.exportJSON()
         )
-        let recordedAssetID = try XCTUnwrap(corpus.entries.first?.humanBestShotID)
+        let recordedAssetID = try #require(corpus.entries.first?.humanBestShotID)
 
         // Re-hashing the same localIdentifier with the session's persisted
         // salt must reproduce the exact assetID recorded at label time —
         // the property remeasureCorpus() relies on to keep assetIDs stable.
-        XCTAssertEqual(viewModel.anonymizedAssetIDForTesting(localIdentifier), recordedAssetID)
+        #expect(viewModel.anonymizedAssetIDForTesting(localIdentifier) == recordedAssetID)
     }
 
-    func testResetClearsBufferAndProducesEmptyCorpus() throws {
+    @Test func testResetClearsBufferAndProducesEmptyCorpus() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -204,17 +205,17 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             makePreparedCluster(clusterID: clusterID, localIdentifiers: ["a", "b"])
         )
         viewModel.recordLabel(clusterID: clusterID, bestShotAssetID: "a", category: nil)
-        XCTAssertEqual(viewModel.labelledCount, 1)
+        #expect(viewModel.labelledCount == 1)
 
         viewModel.reset()
-        XCTAssertEqual(viewModel.labelledCount, 0)
-        XCTAssertNil(viewModel.candidateLocalIdentifiersForTesting(clusterID: clusterID.uuidString))
+        #expect(viewModel.labelledCount == 0)
+        #expect(viewModel.candidateLocalIdentifiersForTesting(clusterID: clusterID.uuidString) == nil)
 
         let corpus = try JSONDecoder.calibration.decode(
             BestShotCalibrationCorpus.self,
             from: viewModel.exportJSON()
         )
-        XCTAssertTrue(corpus.entries.isEmpty)
+        #expect(corpus.entries.isEmpty)
     }
 
     // MARK: - A2: exportJSON() rejects stale measurements
@@ -223,7 +224,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
     /// `thumbnailConfigVersion` than the one `exportJSON()` is about to stamp
     /// the whole corpus with must block the export, not silently get stamped
     /// with a version it was never actually measured under.
-    func testExportJSONThrowsWhenAClusterWasMeasuredUnderAnOlderThumbnailConfigVersion() throws {
+    @Test func testExportJSONThrowsWhenAClusterWasMeasuredUnderAnOlderThumbnailConfigVersion() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -231,7 +232,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             makePreparedCluster(clusterID: clusterID, localIdentifiers: ["a", "b"])
         )
         viewModel.recordLabel(clusterID: clusterID, bestShotAssetID: "a", category: nil)
-        XCTAssertEqual(viewModel.clustersNeedingRemeasureCount, 0, "freshly labelled, so nothing is stale yet")
+        #expect(viewModel.clustersNeedingRemeasureCount == 0, "freshly labelled, so nothing is stale yet")
 
         // Simulate a geometry change since labelling: the cluster's recorded
         // measurement version now lags the current one.
@@ -239,20 +240,16 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             clusterID: clusterID.uuidString,
             version: viewModel.currentThumbnailConfigVersion - 1
         )
-        XCTAssertEqual(viewModel.clustersNeedingRemeasureCount, 1)
+        #expect(viewModel.clustersNeedingRemeasureCount == 1)
 
-        XCTAssertThrowsError(try viewModel.exportJSON()) { error in
-            XCTAssertEqual(
-                error as? BestShotCalibrationExportError,
-                .staleMeasurements(count: 1)
-            )
-        }
+        let error = #expect(throws: (any Error).self) { try viewModel.exportJSON() }
+        #expect(error as? BestShotCalibrationExportError == .staleMeasurements(count: 1))
         // exportedCorpusFileURL() calls exportJSON() internally, so it must
         // inherit the same guard rather than writing a stale file to disk.
-        XCTAssertThrowsError(try viewModel.exportedCorpusFileURL())
+        #expect(throws: (any Error).self) { try viewModel.exportedCorpusFileURL() }
     }
 
-    func testExportJSONSucceedsAgainAfterRemeasuringClearsTheStaleFlag() throws {
+    @Test func testExportJSONSucceedsAgainAfterRemeasuringClearsTheStaleFlag() throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let clusterID = UUID()
@@ -264,7 +261,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             clusterID: clusterID.uuidString,
             version: viewModel.currentThumbnailConfigVersion - 1
         )
-        XCTAssertThrowsError(try viewModel.exportJSON())
+        #expect(throws: (any Error).self) { try viewModel.exportJSON() }
 
         // "Remeasuring" here just means the recorded version catches up to
         // current — the real remeasure path (PHAsset resolution +
@@ -274,8 +271,8 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             clusterID: clusterID.uuidString,
             version: viewModel.currentThumbnailConfigVersion
         )
-        XCTAssertEqual(viewModel.clustersNeedingRemeasureCount, 0)
-        XCTAssertNoThrow(try viewModel.exportJSON())
+        #expect(viewModel.clustersNeedingRemeasureCount == 0)
+        #expect(throws: Never.self) { try viewModel.exportJSON() }
     }
 
     // MARK: - A3: recordLabel()/reset() reject calls made mid-remeasure
@@ -292,7 +289,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
     /// `nil` before ever reaching `qualityAnalyzer` — there is no way to hold
     /// `remeasureCorpus()` open at a real suspension point using only the
     /// existing seams. The hook is `nil` (a no-op) in production.
-    func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async throws {
+    @Test func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async throws {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let firstClusterID = UUID()
@@ -300,7 +297,7 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
             makePreparedCluster(clusterID: firstClusterID, localIdentifiers: ["a", "b"])
         )
         viewModel.recordLabel(clusterID: firstClusterID, bestShotAssetID: "a", category: nil)
-        XCTAssertEqual(viewModel.labelledCount, 1)
+        #expect(viewModel.labelledCount == 1)
 
         let gate = SuspensionGate()
         viewModel.remeasureStepHookForTesting = { await gate.wait() }
@@ -320,18 +317,18 @@ final class BestShotCalibrationLabelingViewModelTests: XCTestCase {
 
         // Rejected immediately, not accepted-then-lost: the count must not
         // have moved while remeasureCorpus() is still in flight.
-        XCTAssertEqual(viewModel.labelledCount, 1, "recordLabel must be a no-op while isRemeasuring is true")
+        #expect(viewModel.labelledCount == 1, "recordLabel must be a no-op while isRemeasuring is true")
 
         viewModel.reset()
-        XCTAssertEqual(viewModel.labelledCount, 1, "reset() must also be a no-op while isRemeasuring is true")
+        #expect(viewModel.labelledCount == 1, "reset() must also be a no-op while isRemeasuring is true")
 
         await gate.release()
         _ = await remeasureTask.value
 
-        XCTAssertFalse(viewModel.isRemeasuring)
+        #expect(!viewModel.isRemeasuring)
         // The interleaved label was rejected outright, so it can never
         // reappear once remeasureCorpus() finishes and replaces the buffer.
-        XCTAssertNil(viewModel.candidateLocalIdentifiersForTesting(clusterID: secondClusterID.uuidString))
+        #expect(viewModel.candidateLocalIdentifiersForTesting(clusterID: secondClusterID.uuidString) == nil)
     }
 }
 

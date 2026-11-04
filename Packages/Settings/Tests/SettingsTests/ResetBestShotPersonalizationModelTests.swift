@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Settings
 
 @MainActor
-final class ResetBestShotPersonalizationModelTests: XCTestCase {
-    func testResetReturnsToIdleAfterSuccess() async {
+@Suite struct ResetBestShotPersonalizationModelTests {
+    @Test func testResetReturnsToIdleAfterSuccess() async {
         let callCount = ResetCallCounter()
         let model = ResetBestShotPersonalizationModel {
             await callCount.increment()
@@ -11,42 +12,42 @@ final class ResetBestShotPersonalizationModelTests: XCTestCase {
 
         await model.reset()
 
-        XCTAssertEqual(model.state, .idle)
-        XCTAssertFalse(model.isResetting)
-        XCTAssertNil(model.errorMessage)
+        #expect(model.state == .idle)
+        #expect(!model.isResetting)
+        #expect(model.errorMessage == nil)
         let calls = await callCount.value()
-        XCTAssertEqual(calls, 1)
+        #expect(calls == 1)
     }
 
     /// Mirrors the "cancel" side of the Settings confirmation dialog: as long
     /// as `reset()` is never called, the injected operation must never run —
     /// constructing the model (what happens as soon as the row appears) is
     /// not itself a trigger.
-    func testOperationIsNotInvokedUntilResetIsCalled() async {
+    @Test func testOperationIsNotInvokedUntilResetIsCalled() async {
         let callCount = ResetCallCounter()
         _ = ResetBestShotPersonalizationModel {
             await callCount.increment()
         }
 
         let calls = await callCount.value()
-        XCTAssertEqual(calls, 0)
+        #expect(calls == 0)
     }
 
-    func testResetExposesRetryableFailure() async {
+    @Test func testResetExposesRetryableFailure() async {
         let model = ResetBestShotPersonalizationModel {
             throw BestShotPersonalizationResetTestError.failure
         }
 
         await model.reset()
 
-        XCTAssertNotNil(model.errorMessage)
-        XCTAssertFalse(model.isResetting)
+        #expect(model.errorMessage != nil)
+        #expect(!model.isResetting)
 
         model.dismissError()
-        XCTAssertEqual(model.state, .idle)
+        #expect(model.state == .idle)
     }
 
-    func testResetIgnoresDuplicateRequestWhileResetting() async {
+    @Test func testResetIgnoresDuplicateRequestWhileResetting() async {
         let operation = SuspendedResetOperation()
         let model = ResetBestShotPersonalizationModel {
             try await operation.run()
@@ -59,12 +60,12 @@ final class ResetBestShotPersonalizationModelTests: XCTestCase {
         await model.reset()
 
         let callCount = await operation.callCount()
-        XCTAssertEqual(callCount, 1)
-        XCTAssertTrue(model.isResetting)
+        #expect(callCount == 1)
+        #expect(model.isResetting)
 
         await operation.succeed()
         await first.value
-        XCTAssertEqual(model.state, .idle)
+        #expect(model.state == .idle)
     }
 }
 
