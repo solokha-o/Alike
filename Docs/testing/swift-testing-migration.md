@@ -1,7 +1,10 @@
 # XCTest → Swift Testing migration
 
+**Status: finished.** Cards M1–M7 are in `develop`. No Swift file in the repository imports XCTest,
+and `tools/quick` and `tools/full` fail on a new import.
+
 Rules for moving Alike unit tests from XCTest to Swift Testing (`@Suite`, `@Test`,
-`#expect`, `#require`), the "before" numbers, and the order of the work.
+`#expect`, `#require`), the "before" and "after" numbers, and the order of the work.
 
 - Epic: [Міграція unit-тестів з XCTest на Swift Testing](https://app.notion.com/p/39504d81c9438052a335d40398a6959b)
 - Card M1 (rules, baseline, pilot): [М1](https://app.notion.com/p/40504d81c9438172bc99e7a86d4e3c73)
@@ -28,7 +31,7 @@ Rules for moving Alike unit tests from XCTest to Swift Testing (`@Suite`, `@Test
 | M6 | `Settings`, `Cleanup`, `CleanupWorkspace`, `Details`, `Alike/AlikeTests/WidgetDeepLinkRoutingTests.swift` | 51 | after refactor R1–R6 |
 | M7 | Close-out: CI blocks new `import XCTest` | — | after M6 |
 
-M1–M5 are in `develop`.
+M1–M7 are in `develop`.
 
 Refactor card R7 changes `CleanupWorkspace` and needs its tests unchanged. Owner decision
 2026-11-03: `CleanupWorkspace` migrates in M6 without waiting for R7, and the 2 cards do not run
@@ -36,9 +39,18 @@ at the same time.
 
 ## Rule: which framework a new test uses
 
-- A package moves to Swift Testing only under its own card.
-- In a package that is still on XCTest, write new tests in XCTest until that card.
-- In a package that has migrated, write new tests in Swift Testing.
+Write every new test in Swift Testing.
+
+The step `no XCTest imports` in `tools/quick` and `tools/full` runs `tools/check_no_xctest_imports.py`.
+It checks tracked, staged and new Swift files and skips ignored paths such as `.build`.
+Its message names the file; `run_step` writes it to the step log.
+
+The only exceptions need a matching path and matching content. There are no such tests today.
+
+| Kind | Path | Content |
+| --- | --- | --- |
+| UI test | a folder that ends in `UITests` | uses `XCUIApplication` |
+| Performance test | a file that ends in `PerformanceTests.swift` | calls `measure` |
 
 ## API replacement table
 
@@ -106,7 +118,8 @@ Notes from the pilot:
    `xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<simulator>' -parallel-testing-enabled NO test`.
 3. `tools/full` is green. Before it, run
    `~/.agent-skills/local/external-dev-storage/scripts/check_external_storage.sh`.
-4. `grep -rl "import XCTest" Packages/<Name>` returns nothing.
+4. `python3 tools/check_no_xctest_imports.py` passes. Do not use `grep -r` for this check: it also
+   reads `.build`, and `Packages/Settings/.build` holds a third-party file with `import XCTest`.
 
 ## Baseline ("before")
 
@@ -193,6 +206,63 @@ xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=<simula
 | **Total** | **410** | **410** | **0** |
 
 Time is not recorded: each run also includes its wait in the machine queue.
+
+## Result ("after")
+
+Run `20261104T070050Z-79717`, 2026-11-04, branch `test/m7-swift-testing-closeout` at `37a835bf`,
+Xcode 27.2 (27B48), simulator iPhone 17 on iOS 27.2. All 25 steps passed. The test code at this
+commit is the same as `develop` at `b49e2a3d`: the branch changes only `tools/` and `Skills/`.
+The counts and times come from the sources that "How the numbers were read" names.
+Time starts after the queue gives the slot, so it excludes the queue wait.
+
+| Package | Runner | M1 tests | M7 tests | M1 skipped | M7 skipped | M1 time | M7 time |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| BestShotCalibration | `swift test` | 39 | 39 | 0 | 0 | 0:57 | 0:09 |
+| Cleanup | `xcodebuild` | 151 | 105 | 0 | 0 | 4:50 | 3:10 |
+| CleanupWorkspace | `xcodebuild` | — | 65 | — | 0 | — | 3:06 |
+| Core | `swift test` | 211 | 211 | 5 | 5 | 2:57 | 0:12 |
+| DesignSystem | `xcodebuild` | 82 | 82 | 0 | 0 | 1:44 | 2:11 |
+| Details | `xcodebuild` | 163 | 191 | 0 | 0 | 4:22 | 1:44 |
+| Diagnostics | `xcodebuild` | 48 | 48 | 0 | 0 | 2:15 | 2:27 |
+| Launch | `xcodebuild` | 7 | 7 | 0 | 0 | 1:59 | 1:34 |
+| NavigationKit | `swift test` | 6 | 6 | 0 | 0 | 0:39 | 0:08 |
+| PhotoAnalysis | `swift test` | 117 | 117 | 0 | 0 | 0:43 | 0:06 |
+| Purchases | `xcodebuild` | 41 | 41 | 0 | 0 | 5:07 | 2:55 |
+| Scanner | `xcodebuild` | 33 | 33 | 0 | 0 | 4:19 | 2:14 |
+| Settings | `xcodebuild` | 46 | 46 | 0 | 0 | 4:15 | 2:24 |
+| Storage | `xcodebuild` | 116 | 116 | 5 | 5 | 1:26 | 1:15 |
+| UserGuide | `xcodebuild` | 15 | 15 | 0 | 0 | 3:43 | 1:46 |
+| Welcome | `xcodebuild` | 17 | 17 | 0 | 0 | 4:18 | 1:00 |
+| WidgetSupport | `xcodebuild` | 187 | 187 | 0 | 0 | 3:31 | 1:08 |
+| **Total** | | **1279** | **1326** | **10** | **10** | | |
+
+The total grew by 47 tests, and the migration did not add them:
+
+- `Cleanup` + `CleanupWorkspace`: 151 → 170 (+19). The other work between the 2 baselines added these
+  tests. Refactor R6 moved 65 tests from `Cleanup` into `CleanupWorkspace`.
+- `Details`: 163 → 191 (+28). The other work between the 2 baselines added these tests.
+- The other 14 packages keep the same count. All 5 skipped `Core` tests and all 5 skipped `Storage`
+  tests remain skipped.
+
+The M6 baseline also holds: `Settings` 46, `Cleanup` 105, `CleanupWorkspace` 65, `Details` 191, and
+`WidgetDeepLinkRoutingTests` 3 (`tools/full` does not run it, so it ran separately with the M6 command).
+All 410 tests passed, with 0 skipped.
+
+| Whole run | M1 | M7 |
+| --- | ---: | ---: |
+| Package steps | 47:06 | 27:36 |
+| App compile (`xcodebuild Alike build`) | 8:06 | 0:28 |
+| `tools/full` total | 55:20 | 29:09 |
+
+Do not read the time difference as an effect of the migration. The 2 runs had different conditions:
+
+- M1 used Xcode 27.1 and iOS 27.0 on iPhone 17e. M7 used Xcode 27.2 and iOS 27.2 on iPhone 17.
+- M7 used a DerivedData root and a SwiftPM cache that had earlier builds; the app compile of 0:28
+  shows this. M1 used a separate root for its worktree.
+- The load from other work on the machine was not controlled in either run.
+
+A time comparison needs a run from the first parent of the #141 merge commit on the same conditions.
+That run has not been done.
 
 ## CI check: `tools/full` and Swift Testing failures
 
