@@ -240,6 +240,11 @@ run_whitespace_validation() {
   run_step "git diff whitespace unstaged" git diff --check
 }
 
+run_no_xctest_validation() {
+  run_step "no XCTest imports script tests" python3 tools/check_no_xctest_imports_test.py
+  run_step "no XCTest imports" python3 tools/check_no_xctest_imports.py
+}
+
 write_report() {
   local status="$1"
   mkdir -p "$REPORT_ROOT"
@@ -729,11 +734,13 @@ main() {
   case "$MODE" in
     quick)
       run_whitespace_validation
+      run_no_xctest_validation
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
     full)
       run_whitespace_validation
+      run_no_xctest_validation
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
