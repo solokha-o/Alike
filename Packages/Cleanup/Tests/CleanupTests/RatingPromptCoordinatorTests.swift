@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Cleanup
 
 @MainActor
-final class RatingPromptCoordinatorTests: XCTestCase {
+@Suite struct RatingPromptCoordinatorTests {
     private let appVersion = "1.4.0"
     private let referenceDate = Date(timeIntervalSince1970: 1_800_000_000)
 
@@ -48,7 +49,7 @@ final class RatingPromptCoordinatorTests: XCTestCase {
         RatingPromptHistory(firstLaunchDate: referenceDate.addingTimeInterval(-30 * 86_400))
     }
 
-    func testFirstEligibleCleanupRequestsReviewAndRecordsHistory() async {
+    @Test func testFirstEligibleCleanupRequestsReviewAndRecordsHistory() async {
         let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
         let clock = TestClock(now: referenceDate)
         let coordinator = makeCoordinator(repository: repository, clock: clock)
@@ -58,14 +59,14 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { false }
         )
 
-        XCTAssertTrue(shouldRequest)
+        #expect(shouldRequest)
         let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 1)
-        XCTAssertEqual(history.lastPromptedDate, referenceDate)
-        XCTAssertEqual(history.lastPromptedAppVersion, appVersion)
+        #expect(history.promptCount == 1)
+        #expect(history.lastPromptedDate == referenceDate)
+        #expect(history.lastPromptedAppVersion == appVersion)
     }
 
-    func testSecondCleanupInSameSessionDoesNotRequestReview() async {
+    @Test func testSecondCleanupInSameSessionDoesNotRequestReview() async {
         let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
         let clock = TestClock(now: referenceDate)
         let coordinator = makeCoordinator(repository: repository, clock: clock)
@@ -79,12 +80,12 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { false }
         )
 
-        XCTAssertFalse(shouldRequestAgain)
+        #expect(!shouldRequestAgain)
         let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 1)
+        #expect(history.promptCount == 1)
     }
 
-    func testBusySurfaceDoesNotSpendAPrompt() async {
+    @Test func testBusySurfaceDoesNotSpendAPrompt() async {
         let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
         let clock = TestClock(now: referenceDate)
         let coordinator = makeCoordinator(repository: repository, clock: clock)
@@ -94,12 +95,12 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { true }
         )
 
-        XCTAssertFalse(shouldRequest)
+        #expect(!shouldRequest)
         let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 0)
+        #expect(history.promptCount == 0)
     }
 
-    func testManualRatingBlocksTheAutomaticPrompt() async {
+    @Test func testManualRatingBlocksTheAutomaticPrompt() async {
         let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
         let clock = TestClock(now: referenceDate)
         let coordinator = makeCoordinator(repository: repository, clock: clock)
@@ -112,10 +113,10 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { false }
         )
 
-        XCTAssertFalse(shouldRequest)
+        #expect(!shouldRequest)
     }
 
-    func testSurfaceBecomingBusyDuringTheRepositoryAwaitBlocksTheRequest() async {
+    @Test func testSurfaceBecomingBusyDuringTheRepositoryAwaitBlocksTheRequest() async {
         let repository = MockRatingPromptHistoryRepository(history: establishedHistory())
         let clock = TestClock(now: referenceDate)
         let coordinator = makeCoordinator(repository: repository, clock: clock)
@@ -132,12 +133,12 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { becameBusyDuringAwait.value }
         )
 
-        XCTAssertFalse(shouldRequest)
+        #expect(!shouldRequest)
         let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 0, "A prompt must not be recorded once the screen became busy mid-await")
+        #expect(history.promptCount == 0, "A prompt must not be recorded once the screen became busy mid-await")
     }
 
-    func testEligibleAgainAfterCooldownOnANewVersion() async {
+    @Test func testEligibleAgainAfterCooldownOnANewVersion() async {
         let repository = MockRatingPromptHistoryRepository(
             history: RatingPromptHistory(
                 firstLaunchDate: referenceDate.addingTimeInterval(-400 * 86_400),
@@ -154,6 +155,6 @@ final class RatingPromptCoordinatorTests: XCTestCase {
             isBusy: { false }
         )
 
-        XCTAssertTrue(shouldRequest)
+        #expect(shouldRequest)
     }
 }
