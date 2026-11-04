@@ -241,6 +241,7 @@ run_whitespace_validation() {
 }
 
 run_no_xctest_validation() {
+  run_step "no XCTest imports script tests" python3 tools/check_no_xctest_imports_test.py
   run_step "no XCTest imports" python3 tools/check_no_xctest_imports.py
 }
 
