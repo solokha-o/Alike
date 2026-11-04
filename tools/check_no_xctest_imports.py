@@ -22,19 +22,26 @@ import subprocess
 import sys
 
 XCTEST_IMPORT = re.compile(
-    r"^[ \t]*(?:@\w+(?:\([^)]*\))?[ \t]+)*import[ \t]+"
+    # An earlier statement on the same line, such as `import Foundation; import XCTest`.
+    r"^[ \t]*(?:[^\n/\"]*;[ \t]*)?"
+    r"(?:@\w+(?:\([^)]*\))?[ \t]+)*"
+    r"(?:(?:public|package|internal|fileprivate|private)[ \t]+)?"
+    r"import[ \t]+"
     r"(?:(?:class|struct|enum|protocol|typealias|func|let|var)[ \t]+)?XCTest\b",
     re.MULTILINE,
 )
+COMMENT = re.compile(r"/\*.*?\*/|//[^\n]*", re.DOTALL)
 UI_TEST_USE = re.compile(r"\bXCUIApplication\b")
 MEASURE_CALL = re.compile(r"\bmeasure(?:Metrics)?[ \t]*[({]")
 MIGRATION_DOC = "Docs/testing/swift-testing-migration.md"
+REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 def swift_files():
     output = subprocess.run(
         ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "*.swift"],
         check=True,
+        cwd=REPOSITORY_ROOT,
         stdout=subprocess.PIPE,
     ).stdout
     # A file can be listed twice during a merge, so remove the duplicates.
@@ -43,15 +50,17 @@ def swift_files():
 
 
 def is_allowed_exception(path, source):
-    if any(part.endswith("UITests") for part in path.parts[:-1]) and UI_TEST_USE.search(source):
+    # A comment must not qualify a file for an exception.
+    code = COMMENT.sub("", source)
+    if any(part.endswith("UITests") for part in path.parts[:-1]) and UI_TEST_USE.search(code):
         return True
-    return path.name.endswith("PerformanceTests.swift") and bool(MEASURE_CALL.search(source))
+    return path.name.endswith("PerformanceTests.swift") and bool(MEASURE_CALL.search(code))
 
 
 def find_violations():
     violations = []
     for path in swift_files():
-        file = pathlib.Path(path)
+        file = REPOSITORY_ROOT / path
         # A tracked file that was deleted and not yet staged is still listed.
         if not file.is_file():
             continue
