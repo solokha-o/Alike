@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Details
 
@@ -7,184 +8,164 @@ import Core
 /// through the existing button path and a twin through the swipe, then
 /// compares what the screen shows, what drives its haptics, and what was saved.
 @MainActor
-final class PhotoTileSwipeActionsTests: XCTestCase {
+@Suite struct PhotoTileSwipeActionsTests {
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000027")!
 
     // MARK: - Offered actions
 
-    func testUnselectedTileOffersSelectAndMakeBestShot() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileOffersSelectAndMakeBestShot() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
-        XCTAssertEqual(actions, [.select, .makeBestShot])
-        XCTAssertEqual(PhotoTileSwipeAction.select.edge, .trailing)
-        XCTAssertEqual(PhotoTileSwipeAction.makeBestShot.edge, .leading)
+        #expect(actions == [.select, .makeBestShot])
+        #expect(PhotoTileSwipeAction.select.edge == .trailing)
+        #expect(PhotoTileSwipeAction.makeBestShot.edge == .leading)
     }
 
-    func testSelectedTileOffersKeepInsteadOfSelect() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileOffersKeepInsteadOfSelect() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
-        XCTAssertEqual(actions, [.keep, .makeBestShot])
-        XCTAssertEqual(PhotoTileSwipeAction.keep.edge, .leading)
+        #expect(actions == [.keep, .makeBestShot])
+        #expect(PhotoTileSwipeAction.keep.edge == .leading)
     }
 
-    func testBestShotTileOffersNothing() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testBestShotTileOffersNothing() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: true, canSelect: true, canMakeBestShot: true
         )
-        XCTAssertEqual(actions, [])
+        #expect(actions == [])
     }
 
-    func testWithoutBestShotNothingIsSelectable() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testWithoutBestShotNothingIsSelectable() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
-        XCTAssertEqual(actions, [.makeBestShot])
+        #expect(actions == [.makeBestShot])
     }
 
-    func testScreenshotTileOffersOnlySelectionActions() throws {
-        try requireSwipeSupport()
-        XCTAssertEqual(
-            PhotoTileSwipeAction.available(
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testScreenshotTileOffersOnlySelectionActions() throws {
+        #expect(PhotoTileSwipeAction.available(
                 isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: false
-            ),
-            [.select]
-        )
-        XCTAssertEqual(
-            PhotoTileSwipeAction.available(
+            ) == [.select])
+        #expect(PhotoTileSwipeAction.available(
                 isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: false
-            ),
-            [.keep]
-        )
+            ) == [.keep])
     }
 
     // MARK: - Edges
 
     /// An edge with no action must not get `swipeActions`: an empty edge still
     /// opens, and the tile sticks off its place.
-    func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.makeBestShot])
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .leading) == [.makeBestShot])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [])
     }
 
-    func testUnselectedTileHasAnActionOnEachEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileHasAnActionOnEachEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.makeBestShot])
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [.select])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .leading) == [.makeBestShot])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [.select])
     }
 
-    func testSelectedTileHasNothingOnTheTrailingEdge() throws {
-        try requireSwipeSupport()
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileHasNothingOnTheTrailingEdge() throws {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .leading), [.keep, .makeBestShot])
-        XCTAssertEqual(PhotoTileSwipeAction.actions(actions, on: .trailing), [])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .leading) == [.keep, .makeBestShot])
+        #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [])
     }
 
     // MARK: - Cluster review: swipe = button
 
-    func testSwipeSelectMatchesTileTap() async {
+    @Test func testSwipeSelectMatchesTileTap() async {
         let (tapped, tappedRepository) = await loadedClusterViewModel()
         let (swiped, swipedRepository) = await loadedClusterViewModel()
 
         tapped.toggleSelection(for: "candidate")
         PhotoTileSwipeAction.select.perform(on: swiped, assetID: "candidate")
 
-        XCTAssertEqual(swiped.selectedAssetIDs, ["candidate"])
+        #expect(swiped.selectedAssetIDs == ["candidate"])
         await assertSameReviewState(tapped, tappedRepository, swiped, swipedRepository)
     }
 
-    func testSwipeKeepMatchesTileTapOnSelectedPhoto() async {
+    @Test func testSwipeKeepMatchesTileTapOnSelectedPhoto() async {
         let (tapped, tappedRepository) = await loadedClusterViewModel(selected: ["candidate"])
         let (swiped, swipedRepository) = await loadedClusterViewModel(selected: ["candidate"])
 
         tapped.toggleSelection(for: "candidate")
         PhotoTileSwipeAction.keep.perform(on: swiped, assetID: "candidate")
 
-        XCTAssertEqual(swiped.selectedAssetIDs, [])
+        #expect(swiped.selectedAssetIDs == [])
         await assertSameReviewState(tapped, tappedRepository, swiped, swipedRepository)
     }
 
-    func testSwipeMakeBestShotMatchesContextMenu() async {
+    @Test func testSwipeMakeBestShotMatchesContextMenu() async {
         let (tapped, tappedRepository) = await loadedClusterViewModel()
         let (swiped, swipedRepository) = await loadedClusterViewModel()
 
         tapped.setBestShot("candidate")
         PhotoTileSwipeAction.makeBestShot.perform(on: swiped, assetID: "candidate")
 
-        XCTAssertEqual(swiped.bestShotAssetID, "candidate")
-        XCTAssertEqual(swiped.successFeedbackTrigger, tapped.successFeedbackTrigger)
+        #expect(swiped.bestShotAssetID == "candidate")
+        #expect(swiped.successFeedbackTrigger == tapped.successFeedbackTrigger)
         await assertSameReviewState(tapped, tappedRepository, swiped, swipedRepository)
     }
 
     /// A swipe that lands after the photo already changed side must not flip it back.
-    func testSelectOnSelectedPhotoAndKeepOnKeptPhotoChangeNothing() async {
+    @Test func testSelectOnSelectedPhotoAndKeepOnKeptPhotoChangeNothing() async {
         let (viewModel, _) = await loadedClusterViewModel(selected: ["candidate"])
         let feedback = viewModel.selectionFeedbackTrigger
 
         PhotoTileSwipeAction.select.perform(on: viewModel, assetID: "candidate")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
+        #expect(viewModel.selectedAssetIDs == ["candidate"])
 
         PhotoTileSwipeAction.keep.perform(on: viewModel, assetID: "other")
-        XCTAssertEqual(viewModel.selectedAssetIDs, ["candidate"])
-        XCTAssertEqual(viewModel.selectionFeedbackTrigger, feedback)
+        #expect(viewModel.selectedAssetIDs == ["candidate"])
+        #expect(viewModel.selectionFeedbackTrigger == feedback)
     }
 
-    func testSwipeSelectCannotSelectTheBestShot() async {
+    @Test func testSwipeSelectCannotSelectTheBestShot() async {
         let (viewModel, _) = await loadedClusterViewModel()
 
         PhotoTileSwipeAction.select.perform(on: viewModel, assetID: "best")
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, [])
+        #expect(viewModel.selectedAssetIDs == [])
     }
 
     // MARK: - Screenshot cleanup: swipe = button
 
-    func testScreenshotSwipeSelectAndKeepMatchTileTap() {
+    @Test func testScreenshotSwipeSelectAndKeepMatchTileTap() {
         let tapped = makeScreenshotViewModel()
         let swiped = makeScreenshotViewModel()
 
         tapped.toggleSelection(for: "one")
         PhotoTileSwipeAction.select.perform(on: swiped, assetID: "one")
-        XCTAssertEqual(swiped.selectedAssetIDs, tapped.selectedAssetIDs)
-        XCTAssertEqual(swiped.estimatedSavingsBytes, tapped.estimatedSavingsBytes)
-        XCTAssertEqual(swiped.isDeleteActionVisible, tapped.isDeleteActionVisible)
+        #expect(swiped.selectedAssetIDs == tapped.selectedAssetIDs)
+        #expect(swiped.estimatedSavingsBytes == tapped.estimatedSavingsBytes)
+        #expect(swiped.isDeleteActionVisible == tapped.isDeleteActionVisible)
 
         tapped.toggleSelection(for: "one")
         PhotoTileSwipeAction.keep.perform(on: swiped, assetID: "one")
-        XCTAssertEqual(swiped.selectedAssetIDs, [])
-        XCTAssertEqual(swiped.selectedAssetIDs, tapped.selectedAssetIDs)
-        XCTAssertEqual(swiped.estimatedSavingsBytes, tapped.estimatedSavingsBytes)
+        #expect(swiped.selectedAssetIDs == [])
+        #expect(swiped.selectedAssetIDs == tapped.selectedAssetIDs)
+        #expect(swiped.estimatedSavingsBytes == tapped.estimatedSavingsBytes)
     }
 
-    func testScreenshotSwipeMakeBestShotDoesNothing() {
+    @Test func testScreenshotSwipeMakeBestShotDoesNothing() {
         let viewModel = makeScreenshotViewModel()
 
         PhotoTileSwipeAction.makeBestShot.perform(on: viewModel, assetID: "one")
 
-        XCTAssertEqual(viewModel.selectedAssetIDs, [])
+        #expect(viewModel.selectedAssetIDs == [])
     }
 
     // MARK: - Helpers
-
-    private func requireSwipeSupport() throws {
-        guard PhotoTileSwipeAction.isSupported else {
-            throw XCTSkip("Grid swipe actions need iOS 27.")
-        }
-    }
 
     private func loadedClusterViewModel(
         selected: Set<String> = []
@@ -212,8 +193,8 @@ final class PhotoTileSwipeActionsTests: XCTestCase {
             completionDelay: {}
         )
         await viewModel.load()
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.selectedAssetIDs, selected)
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.selectedAssetIDs == selected)
         return (viewModel, repository)
     }
 
@@ -222,32 +203,31 @@ final class PhotoTileSwipeActionsTests: XCTestCase {
         _ tappedRepository: MockClusterReviewStateRepository,
         _ swiped: ClusterDetailsViewModel,
         _ swipedRepository: MockClusterReviewStateRepository,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async {
-        XCTAssertEqual(swiped.selectedAssetIDs, tapped.selectedAssetIDs, file: file, line: line)
-        XCTAssertEqual(swiped.bestShotAssetID, tapped.bestShotAssetID, file: file, line: line)
-        XCTAssertEqual(swiped.reviewStatus, tapped.reviewStatus, file: file, line: line)
-        XCTAssertEqual(swiped.isReviewConfirmed, tapped.isReviewConfirmed, file: file, line: line)
-        XCTAssertEqual(swiped.estimatedSavingsText, tapped.estimatedSavingsText, file: file, line: line)
+        #expect(swiped.selectedAssetIDs == tapped.selectedAssetIDs, sourceLocation: sourceLocation)
+        #expect(swiped.bestShotAssetID == tapped.bestShotAssetID, sourceLocation: sourceLocation)
+        #expect(swiped.reviewStatus == tapped.reviewStatus, sourceLocation: sourceLocation)
+        #expect(swiped.isReviewConfirmed == tapped.isReviewConfirmed, sourceLocation: sourceLocation)
+        #expect(swiped.estimatedSavingsText == tapped.estimatedSavingsText, sourceLocation: sourceLocation)
         // The same triggers drive the screen's `sensoryFeedback`, so equal
         // counters mean equal haptics.
-        XCTAssertEqual(swiped.selectionFeedbackTrigger, tapped.selectionFeedbackTrigger, file: file, line: line)
-        XCTAssertEqual(swiped.successFeedbackTrigger, tapped.successFeedbackTrigger, file: file, line: line)
+        #expect(swiped.selectionFeedbackTrigger == tapped.selectionFeedbackTrigger, sourceLocation: sourceLocation)
+        #expect(swiped.successFeedbackTrigger == tapped.successFeedbackTrigger, sourceLocation: sourceLocation)
 
         await tapped.awaitPendingPersistence()
         await swiped.awaitPendingPersistence()
-        XCTAssertEqual(swiped.persistedRevision, tapped.persistedRevision, file: file, line: line)
+        #expect(swiped.persistedRevision == tapped.persistedRevision, sourceLocation: sourceLocation)
         let tappedState = await tappedRepository.storedStates[clusterID]
         let swipedState = await swipedRepository.storedStates[clusterID]
-        XCTAssertNotNil(swipedState, file: file, line: line)
-        XCTAssertEqual(swipedState?.bestShotLocalIdentifier, tappedState?.bestShotLocalIdentifier, file: file, line: line)
-        XCTAssertEqual(swipedState?.isBestShotUserSelected, tappedState?.isBestShotUserSelected, file: file, line: line)
-        XCTAssertEqual(swipedState?.selectedLocalIdentifiers, tappedState?.selectedLocalIdentifiers, file: file, line: line)
-        XCTAssertEqual(swipedState?.isReviewConfirmed, tappedState?.isReviewConfirmed, file: file, line: line)
-        XCTAssertEqual(swipedState?.mode, tappedState?.mode, file: file, line: line)
-        XCTAssertEqual(swipedState?.status, tappedState?.status, file: file, line: line)
-        XCTAssertEqual(swipedState?.estimatedSavingsBytes, tappedState?.estimatedSavingsBytes, file: file, line: line)
+        #expect(swipedState != nil, sourceLocation: sourceLocation)
+        #expect(swipedState?.bestShotLocalIdentifier == tappedState?.bestShotLocalIdentifier, sourceLocation: sourceLocation)
+        #expect(swipedState?.isBestShotUserSelected == tappedState?.isBestShotUserSelected, sourceLocation: sourceLocation)
+        #expect(swipedState?.selectedLocalIdentifiers == tappedState?.selectedLocalIdentifiers, sourceLocation: sourceLocation)
+        #expect(swipedState?.isReviewConfirmed == tappedState?.isReviewConfirmed, sourceLocation: sourceLocation)
+        #expect(swipedState?.mode == tappedState?.mode, sourceLocation: sourceLocation)
+        #expect(swipedState?.status == tappedState?.status, sourceLocation: sourceLocation)
+        #expect(swipedState?.estimatedSavingsBytes == tappedState?.estimatedSavingsBytes, sourceLocation: sourceLocation)
     }
 
     private func makeScreenshotViewModel() -> ScreenshotCleanupViewModel {
