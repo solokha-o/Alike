@@ -48,6 +48,34 @@ import CleanupWorkspace
         #expect(CleanupPresentation.terminalReconciliationState(.failed(record, message: "x")) == .failed(record, message: "x"))
     }
 
+    /// The banner showed the English message of `.failed` in every locale. Found on an
+    /// `ar` screenshot.
+    @Test func testFailedReconciliationSaysTheCatalogTextAndNotTheStateMessage() {
+        let message = CleanupPresentation.reconciliationMessage(for: .failed(record, message: "English payload"))
+
+        #expect(message == CleanupL10n.Main.photosWereDeletedButLibrary)
+        #expect(message != "English payload")
+    }
+
+    @Test func testSuccessfulReconciliationSaysResultsAreUpToDate() {
+        #expect(CleanupPresentation.reconciliationMessage(for: .success(record)) == CleanupL10n.Main.cleanupResultsUpDate)
+    }
+
+    /// Resolves through the compiled catalog, because `Bundle.module` answers with the key
+    /// under SwiftPM.
+    @Test(arguments: LocalizationCatalog.shippedLanguages)
+    func testReconciliationFailureTextIsTranslated(language: String) throws {
+        let key = "cleanup.main.photosWereDeletedButLibrary"
+        let english = try CompiledCatalogFixture.bundle(language: "en").localizedString(forKey: key, value: nil, table: nil)
+        let text = try CompiledCatalogFixture.bundle(language: language).localizedString(forKey: key, value: nil, table: nil)
+
+        #expect(text != key)
+        #expect(!text.isEmpty)
+        if language != "en" {
+            #expect(text != english)
+        }
+    }
+
     // MARK: - Rating prompt
 
     @Test func testRatingPromptIsBlockedByTheScreenByAScanAndByAnInactiveScene() {
