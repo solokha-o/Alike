@@ -556,14 +556,6 @@ Handle expected failures without noise:
 
 - **UI tests** (XCUIApplication)
 - **Performance tests** (XCTMetric)
-- **Objective-C tests**
-
-### Migration Tips
-
-1. Both frameworks can coexist in the same target
-2. Migrate incrementally, one test file at a time
-3. Consolidate similar XCTests into parameterized Swift tests
-4. Single-test XCTestCase → global `@Test` function
 
 ---
 
