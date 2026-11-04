@@ -46,10 +46,11 @@ It checks tracked, staged and new Swift files and skips ignored paths such as `.
 Its message names the file; `run_step` writes it to the step log.
 
 The step ignores Swift comments and string literals, so a code example in either one does not fail it.
+The limit: it does not track a string inside an interpolation; the script header gives examples.
 The only exceptions need a matching path and matching code; a comment or a string does not count.
 There are no such tests today.
 
-| Kind | Path | Content |
+| Kind | Path | Code |
 | --- | --- | --- |
 | UI test | a folder that ends in `UITests` | uses `XCUIApplication` |
 | Performance test | a file that ends in `PerformanceTests.swift` | calls `measure` |

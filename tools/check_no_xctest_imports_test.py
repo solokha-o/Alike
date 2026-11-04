@@ -7,6 +7,7 @@ Run:
 from __future__ import annotations
 
 import sys
+import time
 import unittest
 from pathlib import Path, PurePosixPath
 
@@ -59,6 +60,12 @@ class ImportFormTests(unittest.TestCase):
     def test_line_number_counts_lines_in_comments_and_strings(self) -> None:
         source = '/*\nnote\n*/\nlet s = """\ntext\n"""\nimport XCTest\n'
         self.assertEqual(check.violation_line(TEST_FILE, source), 7)
+
+    def test_long_line_in_a_string_stays_fast(self) -> None:
+        source = 'let a = """\n' + "A" * 1_000_000 + '\n"""\nimport XCTest\n'
+        started = time.monotonic()
+        self.assertEqual(check.violation_line(TEST_FILE, source), 4)
+        self.assertLess(time.monotonic() - started, 5)
 
     def test_code_after_a_stray_quote_on_an_earlier_line_is_still_read(self) -> None:
         self.assertEqual(check.violation_line(TEST_FILE, 'let s = "open\nimport XCTest\n'), 2)

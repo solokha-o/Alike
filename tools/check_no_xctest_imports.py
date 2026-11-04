@@ -9,11 +9,16 @@ That keeps out `.build` checkouts of third-party packages, such as
 `Packages/Settings/.build/checkouts/lottie-spm/Tests/LottieTests.swift`.
 A `.build` folder is also dropped by name, for a package with no `.gitignore`.
 
-The only exceptions need a matching path and matching content:
+The only exceptions need a matching path and matching code:
 - a UI test: a path folder that ends in `UITests`, and a use of `XCUIApplication`;
 - a performance test: a file name that ends in `PerformanceTests.swift`, and a
   call to `measure`.
 Swift Testing has no replacement for these 2 kinds of test.
+
+The check ignores Swift comments and string literals. It has no Swift parser, and
+this is its known limit: it does not track a string inside an interpolation. For
+example, `"\\(f("/*"))"` starts a comment for the check and hides the imports after
+it, and `"\\(f("x; import XCTest"))"` fails the step.
 """
 
 import pathlib
@@ -23,7 +28,7 @@ import sys
 
 XCTEST_IMPORT = re.compile(
     # An earlier statement on the same line, such as `import Foundation; import XCTest`.
-    r"^[ \t]*(?:[^\n]*;[ \t]*)?"
+    r"^(?:[^\n]*;)?[ \t]*"
     r"(?:@\w+(?:\([^)]*\))?[ \t]+)*"
     r"(?:(?:public|package|internal|fileprivate|private)[ \t]+)?"
     r"import[ \t]+"
