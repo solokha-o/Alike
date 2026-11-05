@@ -205,6 +205,8 @@ public struct ScanSummary: Equatable, Sendable {
 public enum CleanupReconciliationState: Equatable, Sendable {
     case refreshing(CleanupCompletionRecord)
     case success(CleanupCompletionRecord)
+    /// `message` is English and is not display text. This package has no string catalog,
+    /// so the screen that shows this state takes its text from its own catalog.
     case failed(CleanupCompletionRecord, message: String)
 
     public var record: CleanupCompletionRecord {

@@ -159,14 +159,14 @@ struct CleanupReconciliationBanner: View {
             CleanupStatusBanner(
                 icon: "checkmark.circle.fill",
                 title: CleanupL10n.Main.photosMovedToRecentlyDeleted(record.deletedCount),
-                message: CleanupL10n.Main.cleanupResultsUpDate,
+                message: CleanupPresentation.reconciliationMessage(for: state),
                 dismiss: { onDismiss(record.id) }
             )
-        case .failed(let record, let message):
+        case .failed(let record, _):
             CleanupStatusBanner(
                 icon: "exclamationmark.triangle.fill",
                 title: CleanupL10n.Main.refreshRequired,
-                message: message,
+                message: CleanupPresentation.reconciliationMessage(for: state),
                 actionTitle: CleanupL10n.Main.rescan,
                 action: onRequestScan,
                 dismiss: { onDismiss(record.id) }

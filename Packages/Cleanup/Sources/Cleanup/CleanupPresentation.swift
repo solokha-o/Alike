@@ -31,6 +31,19 @@ enum CleanupPresentation {
         return state
     }
 
+    /// What the reconciliation banner says. The text comes from this package's catalog:
+    /// the message that `.failed` carries is English and is never shown.
+    static func reconciliationMessage(for state: CleanupReconciliationState) -> String {
+        switch state {
+        case .refreshing:
+            ""
+        case .success:
+            CleanupL10n.Main.cleanupResultsUpDate
+        case .failed:
+            CleanupL10n.Main.photosWereDeletedButLibrary
+        }
+    }
+
     static func isRatingPromptBlocked(
         isScreenOwned: Bool,
         scanOperation: ScanOperationState,
