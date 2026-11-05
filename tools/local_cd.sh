@@ -39,7 +39,7 @@ Required App Store Connect environment:
 Required for metadata upload modes and upload-testflight, whose release-check is strict:
   ALIKE_PRIVACY_URL
   ALIKE_SUPPORT_URL
-  The per-locale values and App Review values in Docs/ci-cd.md
+  The per-locale URLs and App Review values in Docs/release-checklist.md step 0
 
 Safety:
   Uploads require ALIKE_CONFIRM_UPLOAD=metadata or ALIKE_CONFIRM_UPLOAD=testflight.

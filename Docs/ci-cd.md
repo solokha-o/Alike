@@ -25,7 +25,7 @@ Daily commands are the short wrappers in `tools/`:
 ## What The Shortcuts Do
 
 - `tools/quick` and `tools/full` automatically set a writable `CLANG_MODULE_CACHE_PATH` when one is not already provided.
-- `tools/release-check`, `tools/meta`, `tools/upload`, `tools/text`, `tools/upload-screenshots`, and `tools/upload-build` automatically load `.env` when it exists. Disable that with `ALIKE_NO_ENV=1`.
+- `tools/release-check`, `tools/meta`, `tools/upload`, `tools/text`, `tools/upload-screenshots`, `tools/upload-build`, and `tools/dsyms` automatically load `.env` when it exists. Disable that with `ALIKE_NO_ENV=1`.
 - Upload shortcuts ask for interactive confirmation. For non-interactive runs, set `ALIKE_ASSUME_YES=1`.
 - `tools/release-check` and `tools/upload-build` infer `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` from `Alike/Alike.xcodeproj/project.pbxproj` when you omit them.
 
