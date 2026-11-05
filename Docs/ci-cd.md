@@ -186,9 +186,11 @@ Use before TestFlight upload or release work.
 Runs:
 
 - version/build validation against `project.pbxproj` via `Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh --check`
-- App Store upload bundle validation
+- strict App Store upload bundle validation, with the real URLs and review values from `.env`
 - `Alike` Release archive
 - no-upload IPA export
+
+It always validates strictly, because it vouches for what an upload sends. Placeholder URLs make each description about 34 characters shorter, so they can hide one that is over the limit. `tools/quick` and `tools/full` still use placeholders when the URLs are unset. With `ALIKE_NO_ENV=1` or no `.env`, set the values yourself, or the check fails at the metadata step.
 
 Does not:
 

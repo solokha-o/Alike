@@ -136,6 +136,7 @@ run_full() {
 }
 
 run_release_check() {
+  load_env_if_present
   ensure_clang_cache
   resolve_version_build "${1:-}" "${2:-}"
   exec "$ROOT_DIR/tools/local_ci.sh" release-check --version "$RESOLVED_VERSION" --build "$RESOLVED_BUILD"

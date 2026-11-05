@@ -101,8 +101,9 @@ Environment:
                                  so Xcode Organizer can symbolicate released crashes.
   ALIKE_PRESERVE_ARCHIVE=0       Skip copying the release archive and IPA into Xcode's Archives folder. Default: 1.
   ALIKE_XCODE_ARCHIVES_ROOT      Override the Xcode Archives folder. Default: ~/Library/Developer/Xcode/Archives.
-  ALIKE_PRIVACY_URL              Enables strict metadata generation when set with ALIKE_SUPPORT_URL.
-  ALIKE_SUPPORT_URL              Enables strict metadata generation when set with ALIKE_PRIVACY_URL.
+  ALIKE_PRIVACY_URL              Enables strict metadata generation in quick and full when set with ALIKE_SUPPORT_URL.
+  ALIKE_SUPPORT_URL              Enables strict metadata generation in quick and full when set with ALIKE_PRIVACY_URL.
+                                  release-check always generates strictly and fails if the values are absent.
 
 Safety:
   This script never uploads metadata or binaries to Apple.
@@ -447,7 +448,9 @@ run_package_validation() {
 }
 
 run_metadata_validation() {
-  if [[ -n "${ALIKE_PRIVACY_URL:-}" && -n "${ALIKE_SUPPORT_URL:-}" ]]; then
+  # release-check vouches for what an upload sends, so it never takes placeholders:
+  # they shorten each description by about 34 characters and hide an over-limit one.
+  if [[ "$MODE" == "release-check" || ( -n "${ALIKE_PRIVACY_URL:-}" && -n "${ALIKE_SUPPORT_URL:-}" ) ]]; then
     run_step "metadata bundle generate strict URLs" python3 tools/prepare_app_store_upload_bundle.py
   else
     run_step "metadata bundle generate placeholders" python3 tools/prepare_app_store_upload_bundle.py --allow-placeholder-urls
