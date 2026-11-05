@@ -238,3 +238,28 @@ retyped or repurposed, and no schema change rides along with a feature change.
 
 Version stays 1.4.1 (build 11) here. The bump to 1.5.0 (12) belongs to stage 5,
 and doing it here would make this a release PR.
+
+## 8. 1.7.0 pass: extra-large portrait
+
+Release 1.7.0 adds `systemExtraLargePortrait` to `AlikeStatusWidget` on iOS 27. The
+owner ran this pass and reported the result on 5 November 2026. Every row is from
+that report, with no screenshot or log attached.
+
+| Check | Device | Result |
+|---|---|---|
+| The XL size is in the widget gallery | iPhone 13 mini | Pass |
+| A tap on a row works | iPhone 13 mini | Pass |
+| Dark | iPhone 13 mini | Pass |
+| Clear | iPhone 13 mini | Pass |
+| Tinted | iPhone 13 mini | Pass |
+
+Not recorded: the exact iOS version and the build under test.
+
+Earlier evidence from PR #110, on an iPhone 13 mini with iOS 27.0.1, a real library
+and a dev build installed over 1.6.2: right after the install the widget read the
+1.6.2 payload and rendered without group rows. After the app republished, the rows
+appeared.
+
+Not reported: which rows were tapped, which locale and account type were used, and
+so whether the 5 locales added in this release (`pt-PT`, `en-GB`, `en-CA`, `en-AU`,
+`fr-CA`) or a free account against the two Pro library rows were checked.
