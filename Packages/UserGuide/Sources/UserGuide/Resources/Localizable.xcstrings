@@ -19330,109 +19330,109 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا يتصل Alike بالشبكة إلا عبر Apple: App Store للاشتراكات، وصور iCloud عندما لا تكون الصورة على iPhone."
+            "value" : "لا يجري Alike أي طلبات شبكة خاصة به. يتولى iOS الاشتراكات والتنزيل من صور iCloud والروابط التي تنقر عليها."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike geht nur über Apple online: den App Store für Abos und iCloud-Fotos, wenn ein Foto nicht auf deinem iPhone liegt."
+            "value" : "Alike stellt von sich aus keine Netzwerkanfragen. iOS übernimmt Abos, Downloads aus iCloud-Fotos und Links, die du antippst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike solo se conecta a través de Apple: el App Store para las suscripciones y Fotos en iCloud cuando una foto no está en tu iPhone."
+            "value" : "Alike no hace solicitudes de red por su cuenta. iOS gestiona las suscripciones, las descargas de Fotos en iCloud y los enlaces que tocas."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike solo se conecta a través de Apple: el App Store para las suscripciones y Fotos en iCloud cuando una foto no está en tu iPhone."
+            "value" : "Alike no hace solicitudes de red por su cuenta. iOS gestiona las suscripciones, las descargas de Fotos en iCloud y los enlaces que tocas."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike ne se connecte que via Apple : l’App Store pour les abonnements, et Photos iCloud lorsqu’une photo n’est pas sur votre iPhone."
+            "value" : "Alike n’effectue aucune requête réseau de son propre fait. iOS gère les abonnements, les téléchargements depuis Photos iCloud et les liens que vous touchez."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike ne se connecte que via Apple : l’App Store pour les abonnements, et Photos iCloud lorsqu’une photo n’est pas sur votre iPhone."
+            "value" : "Alike n’effectue aucune requête réseau de son propre fait. iOS gère les abonnements, les téléchargements depuis Photos iCloud et les liens que vous touchez."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike si collega solo tramite Apple: l'App Store per gli abbonamenti e «Foto di iCloud» quando una foto non è sul tuo iPhone."
+            "value" : "Alike non effettua richieste di rete di propria iniziativa. iOS gestisce gli abbonamenti, i download da «Foto di iCloud» e i link che tocchi."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike gaat alleen via Apple online: de App Store voor abonnementen en iCloud-foto's als een foto niet op je iPhone staat."
+            "value" : "Alike doet uit zichzelf geen netwerkverzoeken. iOS regelt abonnementen, downloads uit iCloud-foto's en links waarop je tikt."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike łączy się z siecią tylko przez Apple: z App Store w sprawie subskrypcji i ze Zdjęciami iCloud, gdy zdjęcia nie ma na Twoim iPhonie."
+            "value" : "Alike sam z siebie nie wykonuje żądań sieciowych. iOS obsługuje subskrypcje, pobieranie ze Zdjęć iCloud i odnośniki, w które stukasz."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike só se conecta pela Apple: a App Store para as assinaturas e o Fotos do iCloud quando uma foto não está no seu iPhone."
+            "value" : "O Alike não faz requisições de rede por conta própria. O iOS cuida das assinaturas, dos downloads do Fotos do iCloud e dos links em que você toca."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Alike só se liga através da Apple: a App Store para as subscrições e Fotografias em iCloud quando uma fotografia não está no teu iPhone."
+            "value" : "O Alike não faz pedidos de rede por iniciativa própria. O iOS trata das subscrições, das transferências de Fotografias em iCloud e das ligações em que tocas."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike yalnızca Apple üzerinden internete bağlanır: abonelikler için App Store ve bir fotoğraf iPhone'unda değilse iCloud Fotoğrafları."
+            "value" : "Alike kendiliğinden ağ isteği yapmaz. Abonelikleri, iCloud Fotoğrafları'ndan indirmeyi ve dokunduğun bağlantıları iOS yürütür."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike виходить у мережу лише через Apple: до App Store для підписок і до Фото iCloud, коли фото немає на вашому iPhone."
+            "value" : "Alike не робить власних мережевих запитів. Підписки, завантаження з Фото iCloud і посилання, які ви відкриваєте, обробляє iOS."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike 只透過 Apple 連線：訂閱時連到 App Store，照片不在你的 iPhone 上時連到「iCloud 照片」。"
+            "value" : "Alike 不會自行發出網路請求。訂閱、從「iCloud 照片」下載，以及你點按的連結，都由 iOS 處理。"
           }
         }
       }
@@ -19539,7 +19539,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваші фото ніколи не завантажуються"
+            "value" : "Ваші фото ніколи не завантажуються в інтернет"
           }
         },
         "zh-Hant" : {
