@@ -1,7 +1,8 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class BestShotCalibrationCorpusTests: XCTestCase {
+@Suite struct BestShotCalibrationCorpusTests {
     private func makeCorpus() -> BestShotCalibrationCorpus {
         let withFaces = BestShotCalibrationCluster(
             clusterID: "cluster-faces",
@@ -73,20 +74,20 @@ final class BestShotCalibrationCorpusTests: XCTestCase {
         )
     }
 
-    func testCodableRoundTrip() throws {
+    @Test func testCodableRoundTrip() throws {
         let corpus = makeCorpus()
         let data = try JSONEncoder().encode(corpus)
         let decoded = try JSONDecoder().decode(BestShotCalibrationCorpus.self, from: data)
 
-        XCTAssertEqual(decoded, corpus)
-        XCTAssertEqual(decoded.entries.count, 2)
-        XCTAssertEqual(decoded.entries[0].category, .people)
-        XCTAssertNil(decoded.entries[1].category)
-        XCTAssertEqual(decoded.entries[0].candidates.first?.signals.faceSignals?.count, 1)
-        XCTAssertNil(decoded.entries[1].candidates.first?.signals.faceSignals)
+        #expect(decoded == corpus)
+        #expect(decoded.entries.count == 2)
+        #expect(decoded.entries[0].category == .people)
+        #expect(decoded.entries[1].category == nil)
+        #expect(decoded.entries[0].candidates.first?.signals.faceSignals?.count == 1)
+        #expect(decoded.entries[1].candidates.first?.signals.faceSignals == nil)
     }
 
-    func testDecodingAHigherUnknownSchemaVersionStillSucceeds() throws {
+    @Test func testDecodingAHigherUnknownSchemaVersionStillSucceeds() throws {
         // Additive fields are how the schema is meant to evolve: a future
         // exporter can add new optional keys without breaking today's reader,
         // as long as it keeps decoding the fields this version knows about.
@@ -125,20 +126,20 @@ final class BestShotCalibrationCorpusTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         let corpus = try decoder.decode(BestShotCalibrationCorpus.self, from: json)
 
-        XCTAssertEqual(corpus.schemaVersion, 99)
-        XCTAssertEqual(corpus.entries.first?.clusterID, "cluster-future")
+        #expect(corpus.schemaVersion == 99)
+        #expect(corpus.entries.first?.clusterID == "cluster-future")
     }
 
-    func testSnapshotsAndScoresAreKeyedByAssetID() {
+    @Test func testSnapshotsAndScoresAreKeyedByAssetID() {
         let cluster = makeCorpus().entries[0]
 
         let snapshots = cluster.snapshots
-        XCTAssertEqual(Set(snapshots.map(\.localIdentifier)), ["asset-1", "asset-2"])
+        #expect(Set(snapshots.map(\.localIdentifier)) == ["asset-1", "asset-2"])
 
         let scores = cluster.scores(scoringModelVersion: 1, thumbnailConfigVersion: 1)
-        XCTAssertEqual(Set(scores.keys), ["asset-1", "asset-2"])
-        XCTAssertEqual(scores["asset-1"]?.signals.globalSharpness, 60)
-        XCTAssertEqual(scores["asset-1"]?.scoringModelVersion, 1)
-        XCTAssertEqual(scores["asset-1"]?.isAlikeEnhanced, false)
+        #expect(Set(scores.keys) == ["asset-1", "asset-2"])
+        #expect(scores["asset-1"]?.signals.globalSharpness == 60)
+        #expect(scores["asset-1"]?.scoringModelVersion == 1)
+        #expect(scores["asset-1"]?.isAlikeEnhanced == false)
     }
 }

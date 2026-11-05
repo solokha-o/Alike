@@ -1,32 +1,36 @@
-import XCTest
+import Testing
 import Foundation
 @testable import Storage
 
-final class UserDefaultsPremiumPromptHistoryRepositoryTests: XCTestCase {
-    private var key: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsPremiumPromptHistoryRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let key = "premium.prompt.test.\(UUID().uuidString)"
 
-    override func setUp() {
-        key = "premium.prompt.test.\(UUID().uuidString)"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: key)
-        key = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
-    func testClaimSucceedsExactlyOnceAndSurvivesRepositoryRecreation() async {
+    @Test func testClaimSucceedsExactlyOnceAndSurvivesRepositoryRecreation() async {
         let firstRepository = makeRepository()
 
         let firstClaim = await firstRepository.claimPostFirstUsefulScanPrompt()
         let secondClaim = await firstRepository.claimPostFirstUsefulScanPrompt()
         let relaunchedClaim = await makeRepository().claimPostFirstUsefulScanPrompt()
 
-        XCTAssertTrue(firstClaim)
-        XCTAssertFalse(secondClaim)
-        XCTAssertFalse(relaunchedClaim)
+        #expect(firstClaim)
+        #expect(!secondClaim)
+        #expect(!relaunchedClaim)
     }
 
-    func testConcurrentClaimsProduceOneWinner() async {
+    @Test func testConcurrentClaimsProduceOneWinner() async {
         let repository = makeRepository()
 
         let claims = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
@@ -36,10 +40,10 @@ final class UserDefaultsPremiumPromptHistoryRepositoryTests: XCTestCase {
             return await group.reduce(into: []) { $0.append($1) }
         }
 
-        XCTAssertEqual(claims.filter { $0 }.count, 1)
+        #expect(claims.filter { $0 }.count == 1)
     }
 
-    func testConcurrentClaimsAcrossRepositoryInstancesProduceOneWinner() async {
+    @Test func testConcurrentClaimsAcrossRepositoryInstancesProduceOneWinner() async {
         let repositories = (0..<100).map { _ in makeRepository() }
 
         let claims = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
@@ -49,21 +53,21 @@ final class UserDefaultsPremiumPromptHistoryRepositoryTests: XCTestCase {
             return await group.reduce(into: []) { $0.append($1) }
         }
 
-        XCTAssertEqual(claims.filter { $0 }.count, 1)
+        #expect(claims.filter { $0 }.count == 1)
     }
 
-    func testReleasedClaimCanBeClaimedAgain() async {
+    @Test func testReleasedClaimCanBeClaimedAgain() async {
         let repository = makeRepository()
         let firstClaim = await repository.claimPostFirstUsefulScanPrompt()
 
-        XCTAssertTrue(firstClaim)
+        #expect(firstClaim)
         await repository.releasePostFirstUsefulScanPromptClaim()
 
         let reclaimed = await makeRepository().claimPostFirstUsefulScanPrompt()
-        XCTAssertTrue(reclaimed)
+        #expect(reclaimed)
     }
 
     private func makeRepository() -> UserDefaultsPremiumPromptHistoryRepository {
-        UserDefaultsPremiumPromptHistoryRepository(postFirstUsefulScanKey: key)
+        UserDefaultsPremiumPromptHistoryRepository(defaults: UserDefaults(suiteName: suiteName)!, postFirstUsefulScanKey: key)
     }
 }

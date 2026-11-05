@@ -4,7 +4,9 @@ set -Eeuo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_FILE="$ROOT_DIR/Alike/Alike.xcodeproj/project.pbxproj"
 DEFAULT_ENV_FILE="$ROOT_DIR/.env"
-DEFAULT_CLANG_CACHE="/private/tmp/alike-local-ci-clang-cache"
+# Build output lives on the external development disk, not the internal one.
+BUILD_ROOT="${ALIKE_BUILD_ROOT:-/Volumes/KINGSTON/DeveloperData}"
+DEFAULT_CLANG_CACHE="$BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-clang-cache"
 SHORTCUT="${1:-}"
 
 usage() {
@@ -22,9 +24,10 @@ Usage:
   tools/symbolicate <payload.json> [--dsym-root DIR]
 
 Behavior:
-  - Loads .env automatically when present. Disable with ALIKE_NO_ENV=1.
+  - Every shortcut except quick, full and symbolicate loads .env when present. Disable with ALIKE_NO_ENV=1.
   - Defaults LANG/LC_ALL to en_US.UTF-8 when neither is already UTF-8; fastlane requires it.
-  - Uses CLANG_MODULE_CACHE_PATH=/private/tmp/alike-local-ci-clang-cache by default.
+  - Uses CLANG_MODULE_CACHE_PATH=$ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-clang-cache by default.
+    ALIKE_BUILD_ROOT defaults to /Volumes/KINGSTON/DeveloperData; build shortcuts stop when it does not exist.
   - Upload shortcuts ask for interactive confirmation unless ALIKE_ASSUME_YES=1.
   - release-check, upload-build and dsyms infer version/build from project.pbxproj when omitted.
   - symbolicate turns a MetricKit crash payload into a readable stack; it needs the dSYM of that exact build.
@@ -60,6 +63,13 @@ ensure_utf8_locale() {
 }
 
 ensure_clang_cache() {
+  # A missing disk must stop the run: a cache path under an unmounted /Volumes
+  # path would create a phantom folder on the internal disk instead.
+  if [[ -z "${CLANG_MODULE_CACHE_PATH:-}" && ! -d "$BUILD_ROOT" ]]; then
+    printf "Build root %s does not exist. Connect the external disk, or set ALIKE_BUILD_ROOT or CLANG_MODULE_CACHE_PATH.\n" "$BUILD_ROOT" >&2
+    exit 1
+  fi
+
   export CLANG_MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-$DEFAULT_CLANG_CACHE}"
 }
 
@@ -126,6 +136,7 @@ run_full() {
 }
 
 run_release_check() {
+  load_env_if_present
   ensure_clang_cache
   resolve_version_build "${1:-}" "${2:-}"
   exec "$ROOT_DIR/tools/local_ci.sh" release-check --version "$RESOLVED_VERSION" --build "$RESOLVED_BUILD"

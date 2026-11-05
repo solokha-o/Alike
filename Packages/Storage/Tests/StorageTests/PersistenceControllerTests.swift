@@ -1,20 +1,25 @@
-import XCTest
+import Foundation
+import Testing
 import CoreData
 @testable import Storage
 
-final class PersistenceControllerTests: XCTestCase {
+/// `@MainActor`: the tests read and write `viewContext`, a main-queue context.
+/// Under XCTest they ran one at a time off the main thread; in parallel that broke
+/// Core Data's queue rule and one run fetched 0 rows right after a save.
+@MainActor
+@Suite struct PersistenceControllerTests {
     
     // MARK: - In-Memory Store Tests
     
-    func testInMemoryStoreInitialization() async throws {
+    @Test func testInMemoryStoreInitialization() async throws {
         // Given & When: Creating in-memory persistence controller
         let controller = PersistenceController.preview()
         
         // Then: Should be successfully initialized
-        XCTAssertNotNil(controller, "In-memory controller should be initialized")
+        #expect(controller != nil, "In-memory controller should be initialized")
     }
     
-    func testInMemoryStoreIsolation() async throws {
+    @Test func testInMemoryStoreIsolation() async throws {
         // Given: Two separate in-memory controllers
         let controller1 = PersistenceController.preview()
         let controller2 = PersistenceController.preview()
@@ -32,10 +37,10 @@ final class PersistenceControllerTests: XCTestCase {
         let fetchRequest = ClusterEntity.fetchRequest()
         let results = try context2.fetch(fetchRequest)
         
-        XCTAssertTrue(results.isEmpty, "In-memory stores should be isolated")
+        #expect(results.isEmpty, "In-memory stores should be isolated")
     }
     
-    func testInMemoryDataPersistence() async throws {
+    @Test func testInMemoryDataPersistence() async throws {
         // Given: In-memory controller with data
         let controller = PersistenceController.preview()
         let context = controller.viewContext
@@ -51,29 +56,29 @@ final class PersistenceControllerTests: XCTestCase {
         let results = try context.fetch(fetchRequest)
         
         // Then: Data should be available
-        XCTAssertEqual(results.count, 1, "Should fetch saved entity")
-        XCTAssertEqual(results.first?.averageSimilarity ?? 0.0, 0.90, accuracy: 0.01)
+        #expect(results.count == 1, "Should fetch saved entity")
+        let eps: Float = 0.01
+        #expect(abs((results.first?.averageSimilarity ?? 0.0) - 0.90) <= eps)
     }
     
     // MARK: - Background Task Tests
     
-    func testPerformBackgroundTask() async throws {
+    @Test func testPerformBackgroundTask() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         
         // When: Performing background task
-        let taskExecuted = expectation(description: "Background task executed")
-        try await controller.performBackgroundTask { context in
-            XCTAssertNotNil(context, "Context should be provided")
-            XCTAssertTrue(Thread.isMainThread == false || true, "Task context should work")
-            taskExecuted.fulfill()
-        }
-        
         // Then: Task should be executed
-        await fulfillment(of: [taskExecuted], timeout: 1.0)
+        try await confirmation("Background task executed") { taskExecuted in
+            try await controller.performBackgroundTask { context in
+                #expect(context != nil, "Context should be provided")
+                #expect(Thread.isMainThread == false || true, "Task context should work")
+                taskExecuted()
+            }
+        }
     }
     
-    func testBackgroundTaskSave() async throws {
+    @Test func testBackgroundTaskSave() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         let testID = UUID()
@@ -93,10 +98,10 @@ final class PersistenceControllerTests: XCTestCase {
         fetchRequest.predicate = NSPredicate(format: "id == %@", testID as CVarArg)
         
         let results = try context.fetch(fetchRequest)
-        XCTAssertEqual(results.count, 1, "Background save should be visible in view context")
+        #expect(results.count == 1, "Background save should be visible in view context")
     }
     
-    func testBackgroundTaskErrorHandling() async throws {
+    @Test func testBackgroundTaskErrorHandling() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         
@@ -105,25 +110,25 @@ final class PersistenceControllerTests: XCTestCase {
             try await controller.performBackgroundTask { _ in
                 throw NSError(domain: "TestError", code: 1, userInfo: nil)
             }
-            XCTFail("Should throw error")
+            Issue.record("Should throw error")
         } catch {
-            XCTAssertNotNil(error, "Error should be thrown")
+            #expect(error != nil, "Error should be thrown")
         }
     }
     
     // MARK: - Shared Instance Tests
     
-    func testSharedInstanceNotInMemory() {
+    @Test func testSharedInstanceNotInMemory() {
         // Given & When: Accessing shared instance
         let shared = PersistenceController.shared
         
         // Then: Should be initialized and not in-memory
-        XCTAssertNotNil(shared, "Shared instance should exist")
+        #expect(shared != nil, "Shared instance should exist")
     }
     
     // MARK: - View Context Tests
     
-    func testViewContextAutomaticallySaves() async throws {
+    @Test func testViewContextAutomaticallySaves() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         let context = controller.viewContext
@@ -141,12 +146,12 @@ final class PersistenceControllerTests: XCTestCase {
         let fetchRequest = ClusterEntity.fetchRequest()
         let results = try context.fetch(fetchRequest)
         
-        XCTAssertEqual(results.count, 1, "Changes should be persisted")
+        #expect(results.count == 1, "Changes should be persisted")
     }
     
     // MARK: - Concurrent Access Tests
     
-    func testConcurrentBackgroundTasks() async throws {
+    @Test func testConcurrentBackgroundTasks() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         
@@ -170,6 +175,6 @@ final class PersistenceControllerTests: XCTestCase {
         let fetchRequest = ClusterEntity.fetchRequest()
         let results = try context.fetch(fetchRequest)
         
-        XCTAssertEqual(results.count, 10, "All concurrent tasks should complete successfully")
+        #expect(results.count == 10, "All concurrent tasks should complete successfully")
     }
 }

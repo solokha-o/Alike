@@ -89,6 +89,44 @@ public struct WidgetSessionProgress: Codable, Equatable, Sendable {
     }
 }
 
+/// One similar-photo group as the extra-large widget lists it: what reviewing it could
+/// free, and how many photos it holds.
+///
+/// Deliberately anonymous. No `localIdentifier`, no thumbnail, no date — the same rule
+/// as the rest of `WidgetSnapshot`: the App Group container stays reducible to counts
+/// and byte totals, so the widget can rank groups but can never show or name a photo.
+public struct WidgetClusterSummary: Codable, Equatable, Sendable {
+    /// The group's non-keeper photos, from the same `estimatedCleanupBytes` the
+    /// reclaimable estimate sums. Counted per group: an asset that sits in two groups
+    /// appears in both rows, which is fine for ranking and is why the rows are never
+    /// added up into the headline figure.
+    public let reclaimableBytes: Int64
+    public let photoCount: Int
+
+    public init(reclaimableBytes: Int64, photoCount: Int) {
+        self.reclaimableBytes = reclaimableBytes
+        self.photoCount = photoCount
+    }
+    /// The rows the extra-large widget draws: largest first, groups that would free
+    /// nothing left out, at most `WidgetSnapshot.topClustersLimit`.
+    ///
+    /// Here rather than in the app so the ranking is covered by this package's tests;
+    /// ties keep their input order, so the same library always yields the same rows.
+    public static func top(_ summaries: [WidgetClusterSummary]) -> [WidgetClusterSummary] {
+        Array(
+            summaries.enumerated()
+                .filter { $0.element.reclaimableBytes > 0 }
+                .sorted { lhs, rhs in
+                    lhs.element.reclaimableBytes != rhs.element.reclaimableBytes
+                        ? lhs.element.reclaimableBytes > rhs.element.reclaimableBytes
+                        : lhs.offset < rhs.offset
+                }
+                .prefix(WidgetSnapshot.topClustersLimit)
+                .map(\.element)
+        )
+    }
+}
+
 /// The versioned payload the app writes into the shared App Group container and the
 /// widget extension reads back.
 ///
@@ -128,6 +166,15 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
     public let blurredPhotoAssetCount: Int?
     public let isPremium: Bool
     public let sessionProgress: WidgetSessionProgress?
+    /// The largest groups by `reclaimableBytes`, largest first, at most
+    /// `topClustersLimit` — only the extra-large family (iOS 27) draws them. Optional
+    /// and absent from every payload written before it existed: the synthesized
+    /// decoder reads a missing key as `nil`, `schemaVersion` stays 1, and a reader
+    /// without the list draws no rows rather than empty ones.
+    public let topClusters: [WidgetClusterSummary]?
+
+    /// How many groups the extra-large widget has room for.
+    public static let topClustersLimit = 4
 
     public init(
         schemaVersion: Int = WidgetSnapshot.currentSchemaVersion,
@@ -142,7 +189,8 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         screenshotAssetCount: Int? = nil,
         blurredPhotoAssetCount: Int? = nil,
         isPremium: Bool = false,
-        sessionProgress: WidgetSessionProgress? = nil
+        sessionProgress: WidgetSessionProgress? = nil,
+        topClusters: [WidgetClusterSummary]? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.generatedAt = generatedAt
@@ -157,6 +205,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         self.blurredPhotoAssetCount = blurredPhotoAssetCount
         self.isPremium = isPremium
         self.sessionProgress = sessionProgress
+        self.topClusters = topClusters
     }
 
     /// Whether two payloads say the same thing, ignoring when they were generated.
@@ -182,6 +231,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
             && blurredPhotoAssetCount == other.blurredPhotoAssetCount
             && isPremium == other.isPremium
             && sessionProgress == other.sessionProgress
+            && topClusters == other.topClusters
     }
 
     /// The placeholder WidgetKit renders before any real data exists, and the value
@@ -196,7 +246,13 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
             libraryTotalBytes: 27_917_287_424,
             clusterCount: 24,
             screenshotAssetCount: 86,
-            blurredPhotoAssetCount: 12
+            blurredPhotoAssetCount: 12,
+            topClusters: [
+                WidgetClusterSummary(reclaimableBytes: 412_090_368, photoCount: 14),
+                WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9),
+                WidgetClusterSummary(reclaimableBytes: 157_286_400, photoCount: 6),
+                WidgetClusterSummary(reclaimableBytes: 73_400_320, photoCount: 4)
+            ]
         )
     }
 }

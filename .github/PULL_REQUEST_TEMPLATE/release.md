@@ -56,16 +56,17 @@ for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/; do for p in "" 
 
 **Store metadata**
 
-- [ ] Release notes written for all thirteen listing localizations — `en-US`,
+- [ ] Release notes written for all thirteen source listing localizations — `en-US`,
       `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`,
-      `tr`, `zh-Hant`, `ar-SA`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
+      `tr`, `zh-Hant`, `ar-SA`. `en-GB`, `en-CA`, `en-AU` and `fr-CA` take theirs
+      from `en-US` and `fr-FR`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
       drift apart, but nothing checks that a release note was actually
       refreshed — that is this box. `it`, `pl` and `tr` are bare codes on
       purpose: Fastlane `deliver` rejects the region-qualified spelling.
-- [ ] `.env` carries the per-locale URL overrides for all twelve non-English
-      listings — `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_` suffixed `UK`, `DE_DE`,
-      `FR_FR`, `ES_ES`, `ES_MX`, `PT_BR`, `IT`, `NL_NL`, `PL`, `TR` and
-      `ZH_HANT` and `AR_SA`, thirty-six in all (the full list with values is in
+- [ ] `.env` carries the per-locale URL overrides for the seventeen listings
+      other than `en-US` — `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_` suffixed `UK`, `DE_DE`,
+      `FR_FR`, `ES_ES`, `ES_MX`, `PT_BR`, `PT_PT`, `IT`, `NL_NL`, `PL`, `TR`,
+      `ZH_HANT`, `AR_SA`, `EN_GB`, `EN_CA`, `EN_AU` and `FR_CA`, fifty-one in all (the full list with values is in
       `Docs/release-checklist.md` step 0). All of them are required: strict
       generation fails on an unset override, so this box is checked by the
       metadata step passing rather than by inspection. `ES_MX` points at the

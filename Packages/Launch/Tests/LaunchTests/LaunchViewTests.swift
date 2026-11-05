@@ -1,11 +1,11 @@
-import XCTest
+import Testing
 import SwiftUI
 @testable import Launch
 
 @MainActor
-final class LaunchViewTests: XCTestCase {
-    func testLaunchViewInitialization() {
+@Suite struct LaunchViewTests {
+    @Test func testLaunchViewInitialization() {
         let view = LaunchView(isCompleted: .constant(false))
-        XCTAssertNotNil(view)
+        #expect((view as LaunchView?) != nil)
     }
 }

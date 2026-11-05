@@ -22,16 +22,31 @@ struct WidgetHeroImage: View {
     let size: CGFloat
 
     var body: some View {
-        // The tinted and vibrant home screens render a widget as a single-colour
-        // stencil. A flat silhouette of an illustration is not the illustration, so the
-        // hero steps aside and the numbers get the space instead.
-        if renderingMode == .fullColor, let image {
-            Image(decorative: image, scale: displayScale > 0 ? displayScale : 1)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: size, height: size)
-                .accessibilityHidden(true)
+        if let image {
+            if renderingMode == .fullColor {
+                framed(heroImage(image))
+            } else if renderingMode == .accented, #available(iOS 18.0, *) {
+                // The tinted and clear Home Screens render `.accented`. From iOS 18 an
+                // image can opt out of the stencil, so the illustration keeps its own
+                // colours there while the text and glyphs around it still take the tint.
+                framed(heroImage(image).widgetAccentedRenderingMode(.fullColor))
+            }
+            // Otherwise — the vibrant Lock Screen, or `.accented` on iOS 17 — the widget
+            // is a single-colour stencil. A flat silhouette of an illustration is not
+            // the illustration, so the hero steps aside and the numbers get the space.
         }
+    }
+
+    private func heroImage(_ image: CGImage) -> Image {
+        Image(decorative: image, scale: displayScale > 0 ? displayScale : 1)
+            .resizable()
+    }
+
+    private func framed(_ content: some View) -> some View {
+        content
+            .aspectRatio(contentMode: .fit)
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
     }
 
     /// `nil` for a missing or unreadable file. A widget without its illustration is a

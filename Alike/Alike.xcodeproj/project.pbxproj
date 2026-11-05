@@ -20,6 +20,7 @@
 		7A1B00012F30000100DAB1E2 /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00022F30000100DAB1E2 /* Purchases */; };
 		7A1B00042F30000100DAB1E2 /* PurchasesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00052F30000100DAB1E2 /* PurchasesUI */; };
 		7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1B00072F30000100DAB1E2 /* Cleanup */; };
+		C6A70C0D2F90000100DAB1E2 /* CleanupWorkspace in Frameworks */ = {isa = PBXBuildFile; productRef = C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */; };
 		9F1D0A001000000000000020 /* WidgetSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9F1D0A001000000000000021 /* WidgetSupport */; };
 		9F1D0A001000000000000022 /* WidgetSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9F1D0A001000000000000023 /* WidgetSupport */; };
 		9F1D0A001000000000000024 /* AlikeWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F1D0A001000000000000002 /* AlikeWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -78,6 +79,7 @@
 				531BB6372F29299500DAB1E2 /* Settings in Frameworks */,
 				531BB63A2F2929E900DAB1E2 /* Scanner in Frameworks */,
 				7A1B00062F30000100DAB1E2 /* Cleanup in Frameworks */,
+				C6A70C0D2F90000100DAB1E2 /* CleanupWorkspace in Frameworks */,
 				53458A552F29455F00D1CCCC /* DesignSystem in Frameworks */,
 				53458A582F29457200D1CCCC /* PhotoAnalysis in Frameworks */,
 				531BB63D2F292A3B00DAB1E2 /* Welcome in Frameworks */,
@@ -137,6 +139,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4010CA7A100000000000000B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4010CA7A1000000000000001 /* AlikeTests */,
@@ -172,6 +175,7 @@
 				531BB6362F29299500DAB1E2 /* Settings */,
 				531BB6392F2929E900DAB1E2 /* Scanner */,
 				7A1B00072F30000100DAB1E2 /* Cleanup */,
+				C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */,
 				531BB63C2F292A3B00DAB1E2 /* Welcome */,
 				531BB63F2F292A8100DAB1E2 /* Launch */,
 				D1A60C0F2F90000100DAB1E2 /* Diagnostics */,
@@ -217,6 +221,11 @@
 			target = 9F1D0A001000000000000007 /* AlikeWidgets */;
 			targetProxy = 9F1D0A001000000000000009 /* PBXContainerItemProxy */;
 		};
+		4010CA7A100000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 531BB61C2F29132C00DAB1E2 /* Alike */;
+			targetProxy = 4010CA7A100000000000000A /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXContainerItemProxy section */
@@ -226,6 +235,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9F1D0A001000000000000007;
 			remoteInfo = AlikeWidgets;
+		};
+		4010CA7A100000000000000A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 531BB6152F29132C00DAB1E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 531BB61C2F29132C00DAB1E2;
+			remoteInfo = Alike;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -239,6 +255,7 @@
 				TargetAttributes = {
 					4010CA7A1000000000000006 = {
 						CreatedOnToolsVersion = 26.6;
+						TestTargetID = 531BB61C2F29132C00DAB1E2;
 					};
 					531BB61C2F29132C00DAB1E2 = {
 						CreatedOnToolsVersion = 26.2;
@@ -252,6 +269,11 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				"en-AU",
+				"en-CA",
+				"pt-PT",
+				"fr-CA",
+				"en-GB",
 				en,
 				Base,
 				uk,
@@ -275,6 +297,7 @@
 				531BB6352F29299500DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Settings" */,
 				531BB6382F2929E900DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Scanner" */,
 				7A1B00082F30000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Cleanup" */,
+				C6A70C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/CleanupWorkspace" */,
 				531BB63B2F292A3B00DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Welcome" */,
 				531BB63E2F292A8100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Launch" */,
 				D1A60C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/Diagnostics" */,
@@ -350,11 +373,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -363,6 +387,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alike.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Alike";
 			};
 			name = Debug;
 		};
@@ -370,11 +395,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.AlikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -383,6 +409,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alike.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Alike";
 			};
 			name = Release;
 		};
@@ -512,7 +539,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -526,7 +553,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -551,7 +578,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Alike.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -565,7 +592,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -588,7 +615,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -599,7 +626,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -623,7 +650,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlikeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = X8NNCQ3HW6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -634,7 +661,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alike.app.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -747,6 +774,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/Cleanup;
 		};
+		C6A70C0E2F90000100DAB1E2 /* XCLocalSwiftPackageReference "../Packages/CleanupWorkspace" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/CleanupWorkspace;
+		};
 		9F1D0A001000000000000010 /* XCLocalSwiftPackageReference "../Packages/WidgetSupport" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Packages/WidgetSupport;
@@ -805,6 +836,10 @@
 		7A1B00072F30000100DAB1E2 /* Cleanup */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Cleanup;
+		};
+		C6A70C0F2F90000100DAB1E2 /* CleanupWorkspace */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CleanupWorkspace;
 		};
 		9F1D0A001000000000000021 /* WidgetSupport */ = {
 			isa = XCSwiftPackageProductDependency;

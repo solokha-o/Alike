@@ -13,8 +13,11 @@ LATEST_REPORT="$REPORT_ROOT/latest.json"
 PROJECT_PATH="Alike/Alike.xcodeproj"
 APP_SCHEME="Alike"
 RELEASE_SCHEME="Alike"
-DERIVED_DATA_ROOT="${ALIKE_DERIVED_DATA_ROOT:-/private/tmp/alike-local-ci-derived-data}"
-CACHE_ROOT="${ALIKE_LOCAL_CI_CACHE_ROOT:-/private/tmp/alike-local-ci-swiftpm}"
+# Build output lives on the external development disk, not the internal one.
+BUILD_ROOT="${ALIKE_BUILD_ROOT:-/Volumes/KINGSTON/DeveloperData}"
+PROJECT_BUILDS_ROOT="$BUILD_ROOT/Xcode/ProjectBuilds/Alike"
+DERIVED_DATA_ROOT="${ALIKE_DERIVED_DATA_ROOT:-$PROJECT_BUILDS_ROOT/local-ci-derived-data}"
+CACHE_ROOT="${ALIKE_LOCAL_CI_CACHE_ROOT:-$PROJECT_BUILDS_ROOT/local-ci-swiftpm}"
 SWIFTPM_SHARED_CACHE="$CACHE_ROOT/shared-cache"
 SWIFTPM_SCRATCH_ROOT="$CACHE_ROOT/scratch"
 BUILD_DESTINATION="${ALIKE_BUILD_DESTINATION:-}"
@@ -25,6 +28,7 @@ XCODE_ARCHIVES_ROOT="${ALIKE_XCODE_ARCHIVES_ROOT:-$HOME/Library/Developer/Xcode/
 
 QUICK_PACKAGES=(
   "Packages/Cleanup"
+  "Packages/CleanupWorkspace"
   "Packages/Scanner"
   "Packages/Settings"
   "Packages/Storage"
@@ -42,10 +46,14 @@ QUICK_PACKAGES=(
 # that are in fact present — eleven issues that say nothing about the code.
 # Diagnostics: same `.xcstrings` reason as WidgetSupport, and its MetricKit and
 # MessageUI code only exists on iOS, so a macOS `swift test` would cover none of it.
+# CleanupWorkspace: it does not reach DesignSystem, so it would otherwise land on
+# plain `swift test`, but it depends on Storage and its model defaults to Core Data
+# repositories. Its tests also came from Cleanup, which runs them on an iOS simulator.
 SWIFTPM_UNSUPPORTED_PACKAGES=(
   "Storage"
   "WidgetSupport"
   "Diagnostics"
+  "CleanupWorkspace"
 )
 
 # Anything that reaches DesignSystem reaches its `lottie-spm` binary target, and
@@ -68,15 +76,19 @@ Usage:
 Modes:
   quick          Fast local checks for day-to-day agent or solo development.
   full           All package tests, App Store metadata bundle validation, and the full app compile gate.
-  release-check  Version/build check plus Release archive/export validation.
+  release-check  Version/build check, strict metadata validation, and Release archive/export validation.
 
 Environment:
-  ALIKE_DERIVED_DATA_ROOT        Override DerivedData root. Default: /private/tmp/alike-local-ci-derived-data
-  ALIKE_LOCAL_CI_CACHE_ROOT      Override SwiftPM scratch/cache root. Default: /private/tmp/alike-local-ci-swiftpm
+  ALIKE_BUILD_ROOT               External disk data root. Default: /Volumes/KINGSTON/DeveloperData
+                                  The run stops when it does not exist and a default below needs it.
+  ALIKE_DERIVED_DATA_ROOT        Override DerivedData root.
+                                  Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-derived-data
+  ALIKE_LOCAL_CI_CACHE_ROOT      Override SwiftPM scratch/cache root.
+                                  Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-swiftpm
   ALIKE_BUILD_DESTINATION        Override the xcodebuild destination for the full-mode app compile.
                                   By default, the newest available iPhone simulator is used.
   ALIKE_CI_BASE_REF              Override committed diff base. Default: origin/develop
-  CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable /private/tmp path.
+  CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable path.
   DEVELOPER_DIR                  Xcode toolchain to use. When unset and `xcode-select` points at the
                                   Command Line Tools, the newest installed Xcode is selected automatically.
   ALIKE_SKIP_APP_BUILD=1         Skip the full app compile in full mode.
@@ -89,8 +101,9 @@ Environment:
                                  so Xcode Organizer can symbolicate released crashes.
   ALIKE_PRESERVE_ARCHIVE=0       Skip copying the release archive and IPA into Xcode's Archives folder. Default: 1.
   ALIKE_XCODE_ARCHIVES_ROOT      Override the Xcode Archives folder. Default: ~/Library/Developer/Xcode/Archives.
-  ALIKE_PRIVACY_URL              Enables strict metadata generation when set with ALIKE_SUPPORT_URL.
-  ALIKE_SUPPORT_URL              Enables strict metadata generation when set with ALIKE_PRIVACY_URL.
+  ALIKE_PRIVACY_URL              Enables strict metadata generation in quick and full when set with ALIKE_SUPPORT_URL.
+  ALIKE_SUPPORT_URL              Enables strict metadata generation in quick and full when set with ALIKE_PRIVACY_URL.
+                                  release-check always generates strictly and fails if the values are absent.
 
 Safety:
   This script never uploads metadata or binaries to Apple.
@@ -226,6 +239,11 @@ run_whitespace_validation() {
   run_step "git diff whitespace committed ${base_ref}...HEAD" git diff --check "${base_ref}...HEAD"
   run_step "git diff whitespace staged" git diff --cached --check
   run_step "git diff whitespace unstaged" git diff --check
+}
+
+run_no_xctest_validation() {
+  run_step "no XCTest imports script tests" python3 tools/check_no_xctest_imports_test.py
+  run_step "no XCTest imports" python3 tools/check_no_xctest_imports.py
 }
 
 write_report() {
@@ -430,7 +448,9 @@ run_package_validation() {
 }
 
 run_metadata_validation() {
-  if [[ -n "${ALIKE_PRIVACY_URL:-}" && -n "${ALIKE_SUPPORT_URL:-}" ]]; then
+  # release-check vouches for what an upload sends, so it never takes placeholders:
+  # they shorten each description by about 34 characters and hide an over-limit one.
+  if [[ "$MODE" == "release-check" || ( -n "${ALIKE_PRIVACY_URL:-}" && -n "${ALIKE_SUPPORT_URL:-}" ) ]]; then
     run_step "metadata bundle generate strict URLs" python3 tools/prepare_app_store_upload_bundle.py
   else
     run_step "metadata bundle generate placeholders" python3 tools/prepare_app_store_upload_bundle.py --allow-placeholder-urls
@@ -686,8 +706,29 @@ parse_release_args() {
   fi
 }
 
+# A missing disk must stop the run: `mkdir -p` under an unmounted /Volumes path
+# would create a phantom folder on the internal disk instead.
+require_build_root() {
+  if [[ -n "${ALIKE_DERIVED_DATA_ROOT:-}" && -n "${ALIKE_LOCAL_CI_CACHE_ROOT:-}" ]]; then
+    return
+  fi
+
+  if [[ ! -d "$BUILD_ROOT" ]]; then
+    printf "Build root %s does not exist. Connect the external disk, or set ALIKE_BUILD_ROOT, or set both ALIKE_DERIVED_DATA_ROOT and ALIKE_LOCAL_CI_CACHE_ROOT.\n" "$BUILD_ROOT" >&2
+    exit 1
+  fi
+}
+
 main() {
   [[ -n "$MODE" ]] || fail_usage
+  # Help needs no build directories, so it answers before any are created.
+  case "$MODE" in
+    -h|--help|help)
+      usage
+      exit 0
+      ;;
+  esac
+  require_build_root
   mkdir -p "$REPORT_DIR"
   mkdir -p "$SWIFTPM_SHARED_CACHE" "$SWIFTPM_SCRATCH_ROOT"
   cd "$ROOT_DIR"
@@ -696,11 +737,13 @@ main() {
   case "$MODE" in
     quick)
       run_whitespace_validation
+      run_no_xctest_validation
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
     full)
       run_whitespace_validation
+      run_no_xctest_validation
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
@@ -721,10 +764,6 @@ main() {
       run_release_archive
       run_release_export
       preserve_release_artifacts
-      ;;
-    -h|--help|help)
-      usage
-      exit 0
       ;;
     *)
       printf "Unknown mode: %s\n" "$MODE" >&2

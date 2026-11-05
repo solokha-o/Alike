@@ -1,37 +1,38 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Purchases
 import Core
 
 @MainActor
-final class SubscriptionStoreTests: XCTestCase {
+@Suite struct SubscriptionStoreTests {
     private let catalog = SubscriptionCatalog(
         monthlyID: "test.alike.monthly",
         yearlyID: "test.alike.yearly"
     )
 
-    func testProductionCatalogUsesPermanentProductIdentifiers() {
+    @Test func testProductionCatalogUsesPermanentProductIdentifiers() {
         let catalog = SubscriptionCatalog.production
 
-        XCTAssertTrue(catalog.isConfigured)
-        XCTAssertEqual(catalog.productID(for: .monthly), "com.alike.app.pro.monthly")
-        XCTAssertEqual(catalog.productID(for: .yearly), "com.alike.app.pro.yearly")
-        XCTAssertEqual(catalog.plan(for: "com.alike.app.pro.monthly"), .monthly)
-        XCTAssertEqual(catalog.plan(for: "com.alike.app.pro.yearly"), .yearly)
-        XCTAssertEqual(catalog.allProductIDs.count, SubscriptionPlan.allCases.count)
-        XCTAssertTrue(catalog.allProductIDs.allSatisfy { $0.hasPrefix("com.alike.app.pro.") })
+        #expect(catalog.isConfigured)
+        #expect(catalog.productID(for: .monthly) == "com.alike.app.pro.monthly")
+        #expect(catalog.productID(for: .yearly) == "com.alike.app.pro.yearly")
+        #expect(catalog.plan(for: "com.alike.app.pro.monthly") == .monthly)
+        #expect(catalog.plan(for: "com.alike.app.pro.yearly") == .yearly)
+        #expect(catalog.allProductIDs.count == SubscriptionPlan.allCases.count)
+        #expect(catalog.allProductIDs.allSatisfy { $0.hasPrefix("com.alike.app.pro.") })
     }
 
-    func testPlanPresentationAndCommercialMetadata() {
-        XCTAssertEqual(SubscriptionPlan.presentationOrder, [.yearly, .monthly])
-        XCTAssertTrue(SubscriptionPlan.yearly.isPrimary)
-        XCTAssertFalse(SubscriptionPlan.monthly.isPrimary)
-        XCTAssertEqual(SubscriptionPlan.monthly.advertisedPriceUSD, Decimal(string: "6.99"))
-        XCTAssertEqual(SubscriptionPlan.yearly.advertisedPriceUSD, Decimal(string: "39.99"))
-        XCTAssertNil(SubscriptionPlan.monthly.configuredTrialDays)
-        XCTAssertEqual(SubscriptionPlan.yearly.configuredTrialDays, 7)
+    @Test func testPlanPresentationAndCommercialMetadata() {
+        #expect(SubscriptionPlan.presentationOrder == [.yearly, .monthly])
+        #expect(SubscriptionPlan.yearly.isPrimary)
+        #expect(!SubscriptionPlan.monthly.isPrimary)
+        #expect(SubscriptionPlan.monthly.advertisedPriceUSD == Decimal(string: "6.99"))
+        #expect(SubscriptionPlan.yearly.advertisedPriceUSD == Decimal(string: "39.99"))
+        #expect(SubscriptionPlan.monthly.configuredTrialDays == nil)
+        #expect(SubscriptionPlan.yearly.configuredTrialDays == 7)
     }
 
-    func testProductionCatalogLoadsBothProducts() async {
+    @Test func testProductionCatalogLoadsBothProducts() async {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(
@@ -55,11 +56,11 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.loadProducts()
 
-        XCTAssertEqual(store.productLoadState, .loaded)
-        XCTAssertEqual(store.products.count, SubscriptionPlan.allCases.count)
+        #expect(store.productLoadState == .loaded)
+        #expect(store.products.count == SubscriptionPlan.allCases.count)
     }
 
-    func testLoadProductsMapsEveryPlan() async {
+    @Test func testLoadProductsMapsEveryPlan() async {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(
@@ -80,14 +81,14 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.loadProducts()
 
-        XCTAssertEqual(store.productLoadState, .loaded)
-        XCTAssertEqual(store.products[.monthly]?.displayPrice, "$6.99")
-        XCTAssertEqual(store.products[.monthly]?.price, Decimal(string: "6.99"))
-        XCTAssertEqual(store.products[.yearly]?.plan, .yearly)
-        XCTAssertEqual(store.products[.yearly]?.price, Decimal(string: "39.99"))
+        #expect(store.productLoadState == .loaded)
+        #expect(store.products[.monthly]?.displayPrice == "$6.99")
+        #expect(store.products[.monthly]?.price == Decimal(string: "6.99"))
+        #expect(store.products[.yearly]?.plan == .yearly)
+        #expect(store.products[.yearly]?.price == Decimal(string: "39.99"))
     }
 
-    func testRefreshGrantsAccessForVerifiedActiveEntitlement() async {
+    @Test func testRefreshGrantsAccessForVerifiedActiveEntitlement() async {
         let client = MockStoreKitClient(entitlements: [
             entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture)
         ])
@@ -95,13 +96,13 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.refreshEntitlements()
 
-        XCTAssertTrue(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.source, .verified)
-        XCTAssertTrue(store.hasAccess(to: .screenshotCleanup))
-        XCTAssertTrue(store.hasAccess(to: .cleanupReminderCustomization))
+        #expect(store.entitlementState.isPremium)
+        #expect(store.entitlementState.source == .verified)
+        #expect(store.hasAccess(to: .screenshotCleanup))
+        #expect(store.hasAccess(to: .cleanupReminderCustomization))
     }
 
-    func testRefreshRejectsExpiredRevokedAndUnverifiedEntitlements() async {
+    @Test func testRefreshRejectsExpiredRevokedAndUnverifiedEntitlements() async {
         let client = MockStoreKitClient(entitlements: [
             entitlement(productID: "test.alike.monthly", expirationDate: .distantPast),
             entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture, revocationDate: Date()),
@@ -111,11 +112,11 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.refreshEntitlements()
 
-        XCTAssertFalse(store.entitlementState.isPremium)
-        XCTAssertFalse(store.hasAccess(to: .blurredPhotoCleanup))
+        #expect(!store.entitlementState.isPremium)
+        #expect(!(store.hasAccess(to: .blurredPhotoCleanup)))
     }
 
-    func testPurchaseUsesVerifiedPayloadWhenCurrentEntitlementsAreEmpty() async throws {
+    @Test func testPurchaseUsesVerifiedPayloadWhenCurrentEntitlementsAreEmpty() async throws {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(id: "test.alike.monthly", displayName: "Monthly", displayPrice: "$6.99"),
@@ -128,13 +129,13 @@ final class SubscriptionStoreTests: XCTestCase {
 
         let outcome = try await store.purchase(plan: .yearly)
 
-        XCTAssertEqual(outcome, .purchased)
-        XCTAssertTrue(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.productID, "test.alike.yearly")
-        XCTAssertEqual(client.purchasedProductID, "test.alike.yearly")
+        #expect(outcome == .purchased)
+        #expect(store.entitlementState.isPremium)
+        #expect(store.entitlementState.productID == "test.alike.yearly")
+        #expect(client.purchasedProductID == "test.alike.yearly")
     }
 
-    func testCachedAccessReconcilesBeforeSuspendedProductLoad() async throws {
+    @Test func testCachedAccessReconcilesBeforeSuspendedProductLoad() async throws {
         let productRequests = ControlledRequest<[StorefrontProduct]>()
         let client = MockStoreKitClient(productRequests: productRequests)
         let suiteName = "PurchasesTests.\(UUID().uuidString)"
@@ -152,29 +153,30 @@ final class SubscriptionStoreTests: XCTestCase {
         let startTask = Task { await store.start() }
         await productRequests.waitForRequestCount(1)
 
-        XCTAssertFalse(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.source, .verified)
+        #expect(!store.entitlementState.isPremium)
+        #expect(store.entitlementState.source == .verified)
 
         await productRequests.resumeRequest(at: 0, returning: storefrontProducts())
         await startTask.value
     }
 
-    func testFailedReloadClearsPreviouslyLoadedProducts() async {
+    @Test func testFailedReloadClearsPreviouslyLoadedProducts() async {
         let client = MockStoreKitClient(products: storefrontProducts())
         let store = makeStore(client: client)
         await store.loadProducts()
-        XCTAssertEqual(store.productLoadState, .loaded)
+        #expect(store.productLoadState == .loaded)
 
         client.products = [storefrontProducts()[0]]
         await store.loadProducts()
 
-        XCTAssertTrue(store.products.isEmpty)
+        #expect(store.products.isEmpty)
         guard case .failed = store.productLoadState else {
-            return XCTFail("Expected the reload to fail")
+            Issue.record("Expected the reload to fail")
+            return
         }
     }
 
-    func testOlderRefreshCannotOverwriteNewerResult() async {
+    @Test func testOlderRefreshCannotOverwriteNewerResult() async {
         let requests = ControlledRequest<[StoreKitEntitlement]>()
         let client = MockStoreKitClient(entitlementRequests: requests)
         let store = makeStore(client: client)
@@ -192,11 +194,11 @@ final class SubscriptionStoreTests: XCTestCase {
         await requests.resumeRequest(at: 0, returning: [])
         await olderRefresh.value
 
-        XCTAssertTrue(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.productID, "test.alike.yearly")
+        #expect(store.entitlementState.isPremium)
+        #expect(store.entitlementState.productID == "test.alike.yearly")
     }
 
-    func testCancelledRefreshDoesNotOverwriteEntitlementState() async {
+    @Test func testCancelledRefreshDoesNotOverwriteEntitlementState() async {
         let requests = ControlledRequest<[StoreKitEntitlement]>()
         let client = MockStoreKitClient(
             entitlements: [entitlement(productID: "test.alike.monthly", expirationDate: .distantFuture)]
@@ -211,11 +213,11 @@ final class SubscriptionStoreTests: XCTestCase {
         await requests.resumeRequest(at: 0, returning: [])
         await refresh.value
 
-        XCTAssertTrue(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.productID, "test.alike.monthly")
+        #expect(store.entitlementState.isPremium)
+        #expect(store.entitlementState.productID == "test.alike.monthly")
     }
 
-    func testPurchaseAndRestoreSuccessClearEarlierErrors() async throws {
+    @Test func testPurchaseAndRestoreSuccessClearEarlierErrors() async throws {
         let client = MockStoreKitClient(products: storefrontProducts())
         let store = makeStore(client: client)
         await store.loadProducts()
@@ -223,29 +225,29 @@ final class SubscriptionStoreTests: XCTestCase {
         client.purchaseError = TestFailure.expected
         do {
             _ = try await store.purchase(plan: .yearly)
-            XCTFail("Expected purchase to fail")
+            Issue.record("Expected purchase to fail")
         } catch {}
-        XCTAssertNotNil(store.lastError)
+        #expect(store.lastError != nil)
 
         client.purchaseError = nil
         client.purchaseOutcome = .cancelled
         let retryOutcome = try await store.purchase(plan: .yearly)
-        XCTAssertEqual(retryOutcome, .cancelled)
-        XCTAssertNil(store.lastError)
+        #expect(retryOutcome == .cancelled)
+        #expect(store.lastError == nil)
 
         client.syncError = TestFailure.expected
         do {
             try await store.restorePurchases()
-            XCTFail("Expected restore to fail")
+            Issue.record("Expected restore to fail")
         } catch {}
-        XCTAssertNotNil(store.lastError)
+        #expect(store.lastError != nil)
 
         client.syncError = nil
         try await store.restorePurchases()
-        XCTAssertNil(store.lastError)
+        #expect(store.lastError == nil)
     }
 
-    func testRestoreSyncsThenRefreshesEntitlement() async throws {
+    @Test func testRestoreSyncsThenRefreshesEntitlement() async throws {
         let client = MockStoreKitClient(entitlements: [
             entitlement(productID: "test.alike.monthly", expirationDate: .distantFuture)
         ])
@@ -253,11 +255,11 @@ final class SubscriptionStoreTests: XCTestCase {
 
         try await store.restorePurchases()
 
-        XCTAssertTrue(client.didSync)
-        XCTAssertTrue(store.entitlementState.isPremium)
+        #expect(client.didSync)
+        #expect(store.entitlementState.isPremium)
     }
 
-    func testExpiredCachedEntitlementDoesNotGrantAccessBeforeReconciliation() async throws {
+    @Test func testExpiredCachedEntitlementDoesNotGrantAccessBeforeReconciliation() async throws {
         let suiteName = "PurchasesTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         let cacheKey = UUID().uuidString
@@ -277,15 +279,15 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.start()
 
-        XCTAssertFalse(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.source, .cached)
-        XCTAssertNil(store.entitlementState.productID)
+        #expect(!store.entitlementState.isPremium)
+        #expect(store.entitlementState.source == .cached)
+        #expect(store.entitlementState.productID == nil)
     }
 
     /// An expired Premium cache for a subscription renewed since: until StoreKit answers
     /// the store reads as free, so it must also read as *not settled* — that is what
     /// lets a caller tell "free" from "free until the check finishes".
-    func testExpiredPremiumCacheIsNotSettledUntilDelayedVerificationGrantsAccess() async throws {
+    @Test func testExpiredPremiumCacheIsNotSettledUntilDelayedVerificationGrantsAccess() async throws {
         let defaults = UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!
         let cacheKey = UUID().uuidString
         let cached = PremiumEntitlementState(
@@ -306,9 +308,9 @@ final class SubscriptionStoreTests: XCTestCase {
         let start = Task { await store.start() }
         await entitlementRequests.waitForRequestCount(1)
 
-        XCTAssertFalse(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.source, .cached)
-        XCTAssertFalse(store.isEntitlementSettled)
+        #expect(!store.entitlementState.isPremium)
+        #expect(store.entitlementState.source == .cached)
+        #expect(!store.isEntitlementSettled)
 
         await entitlementRequests.resumeRequest(
             at: 0,
@@ -316,25 +318,25 @@ final class SubscriptionStoreTests: XCTestCase {
         )
         await start.value
 
-        XCTAssertTrue(store.entitlementState.isPremium)
-        XCTAssertEqual(store.entitlementState.source, .verified)
-        XCTAssertTrue(store.isEntitlementSettled)
+        #expect(store.entitlementState.isPremium)
+        #expect(store.entitlementState.source == .verified)
+        #expect(store.isEntitlementSettled)
     }
 
     /// The fallback: a check that fails (offline) still settles, on the cached state,
     /// so callers are not held forever.
-    func testAFailedEntitlementCheckSettlesOnTheCachedState() async {
+    @Test func testAFailedEntitlementCheckSettlesOnTheCachedState() async {
         let client = MockStoreKitClient()
         client.entitlementError = TestFailure.expected
         let store = makeStore(client: client)
 
         await store.start()
 
-        XCTAssertFalse(store.entitlementState.isPremium)
-        XCTAssertTrue(store.isEntitlementSettled)
+        #expect(!store.entitlementState.isPremium)
+        #expect(store.isEntitlementSettled)
     }
 
-    func testAnUnconfiguredCatalogSettlesImmediately() async {
+    @Test func testAnUnconfiguredCatalogSettlesImmediately() async {
         let store = SubscriptionStore(
             catalog: .unconfigured,
             client: MockStoreKitClient(),
@@ -344,7 +346,7 @@ final class SubscriptionStoreTests: XCTestCase {
 
         await store.start()
 
-        XCTAssertTrue(store.isEntitlementSettled)
+        #expect(store.isEntitlementSettled)
     }
 
     private func makeStore(client: MockStoreKitClient) -> SubscriptionStore {

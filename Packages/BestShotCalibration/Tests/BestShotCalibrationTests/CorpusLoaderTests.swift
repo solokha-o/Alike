@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-final class CorpusLoaderTests: XCTestCase {
+@Suite struct CorpusLoaderTests {
     private func makeCorpus(
         schemaVersion: Int = BestShotCalibrationCorpus.currentSchemaVersion,
         scoringModelVersion: Int = PhotoQualityScoringConfig.current.scoringModelVersion,
@@ -33,50 +34,46 @@ final class CorpusLoaderTests: XCTestCase {
         )
     }
 
-    func testRoundTripsThroughTheLoadersEncoderAndDecoder() throws {
+    @Test func testRoundTripsThroughTheLoadersEncoderAndDecoder() throws {
         let corpus = makeCorpus()
         let data = try CorpusLoader.makeEncoder().encode(corpus)
         let result = try CorpusLoader.load(data: data)
 
-        XCTAssertEqual(result.corpus, corpus)
-        XCTAssertTrue(result.warnings.isEmpty)
+        #expect(result.corpus == corpus)
+        #expect(result.warnings.isEmpty)
     }
 
-    func testTooNewSchemaVersionThrows() throws {
+    @Test func testTooNewSchemaVersionThrows() throws {
         let corpus = makeCorpus(schemaVersion: BestShotCalibrationCorpus.currentSchemaVersion + 1)
         let data = try CorpusLoader.makeEncoder().encode(corpus)
 
-        XCTAssertThrowsError(try CorpusLoader.load(data: data)) { error in
-            guard let loaderError = error as? CorpusLoader.LoaderError else {
-                return XCTFail("Expected a LoaderError, got \(error)")
-            }
-            XCTAssertEqual(
-                loaderError,
-                .schemaTooNew(
-                    found: BestShotCalibrationCorpus.currentSchemaVersion + 1,
-                    supported: BestShotCalibrationCorpus.currentSchemaVersion
-                )
+        #expect(
+            throws: CorpusLoader.LoaderError.schemaTooNew(
+                found: BestShotCalibrationCorpus.currentSchemaVersion + 1,
+                supported: BestShotCalibrationCorpus.currentSchemaVersion
             )
+        ) {
+            try CorpusLoader.load(data: data)
         }
     }
 
-    func testThumbnailConfigVersionMismatchProducesAWarning() throws {
+    @Test func testThumbnailConfigVersionMismatchProducesAWarning() throws {
         let mismatchedVersion = PhotoQualityScoringConfig.current.thumbnailConfigVersion + 1
         let corpus = makeCorpus(thumbnailConfigVersion: mismatchedVersion)
         let data = try CorpusLoader.makeEncoder().encode(corpus)
 
         let result = try CorpusLoader.load(data: data, currentConfig: .current)
 
-        XCTAssertEqual(result.warnings.count, 1)
-        XCTAssertTrue(result.warnings[0].contains("thumbnailConfigVersion"))
+        #expect(result.warnings.count == 1)
+        #expect(result.warnings[0].contains("thumbnailConfigVersion"))
     }
 
-    func testMatchingThumbnailConfigVersionProducesNoWarning() throws {
+    @Test func testMatchingThumbnailConfigVersionProducesNoWarning() throws {
         let corpus = makeCorpus()
         let data = try CorpusLoader.makeEncoder().encode(corpus)
 
         let result = try CorpusLoader.load(data: data, currentConfig: .current)
 
-        XCTAssertTrue(result.warnings.isEmpty)
+        #expect(result.warnings.isEmpty)
     }
 }

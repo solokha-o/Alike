@@ -1,3 +1,4 @@
+import CleanupWorkspace
 import Core
 import DesignSystem
 import Foundation
@@ -80,7 +81,7 @@ struct CleanupHistoryView: View {
                         state = .loading
                         Task { await loadHistory() }
                     }
-                    .cleanupGlassButton()
+                    .alikeGlassButton()
                 }
             }
         }
@@ -211,7 +212,7 @@ private struct CleanupHistorySummaryCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
-        .cleanupGlassSurface()
+        .alikeGlassSurface()
     }
 
     @ViewBuilder
@@ -279,7 +280,7 @@ private struct CleanupHistoryTimelineRow: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
-        .cleanupGlassSurface()
+        .alikeGlassSurface()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibilityLabel))
         .accessibilityValue(

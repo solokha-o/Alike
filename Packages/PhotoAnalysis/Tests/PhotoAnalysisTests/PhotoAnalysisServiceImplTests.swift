@@ -1,4 +1,4 @@
-import XCTest
+import Testing
 import Photos
 import Vision
 import os
@@ -6,8 +6,8 @@ import Core
 @testable import PhotoAnalysis
 
 @MainActor
-final class PhotoAnalysisServiceImplTests: XCTestCase {
-    func testAnalyzePhotoLibraryNoPhotosThrows() async {
+@Suite struct PhotoAnalysisServiceImplTests {
+    @Test func testAnalyzePhotoLibraryNoPhotosThrows() async {
         let didCallAssetsProvider = ThreadSafeFlag()
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -20,22 +20,23 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
 
         do {
             _ = try await service.analyzePhotoLibrary(sensitivity: 0.9) { _ in }
-            XCTFail("Expected noPhotosFound error")
+            Issue.record("Expected noPhotosFound error")
         } catch {
             guard let analysisError = error as? PhotoAnalysisError else {
-                return XCTFail("Expected PhotoAnalysisError")
+                Issue.record("Expected PhotoAnalysisError")
+                return
             }
             if case .noPhotosFound = analysisError {
-                XCTAssertTrue(true)
+                #expect(true)
             } else {
-                XCTFail("Expected noPhotosFound error")
+                Issue.record("Expected noPhotosFound error")
             }
         }
 
-        XCTAssertTrue(didCallAssetsProvider.value, "Assets provider should be invoked")
+        #expect(didCallAssetsProvider.value, "Assets provider should be invoked")
     }
 
-    func testSummarizeCleanupCategoriesLoadsCachedSnapshots() async throws {
+    @Test func testSummarizeCleanupCategoriesLoadsCachedSnapshots() async throws {
         let repository = MockCleanupCategorySnapshotRepository()
         await repository.setStoredSnapshots([
             .screenshots: CleanupCategorySnapshot(
@@ -60,10 +61,10 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
 
         let summaries = try await service.summarizeCleanupCategories()
 
-        XCTAssertEqual(summaries.map(\.kind), [.screenshots, .blurredPhotos])
+        #expect(summaries.map(\.kind) == [.screenshots, .blurredPhotos])
     }
 
-    func testRefreshCleanupCategoriesReplacesCachedSnapshotsOnce() async throws {
+    @Test func testRefreshCleanupCategoriesReplacesCachedSnapshotsOnce() async throws {
         let repository = MockCleanupCategorySnapshotRepository()
         await repository.setStoredSnapshots([
             .screenshots: CleanupCategorySnapshot(
@@ -86,14 +87,14 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
         let replaceCallCount = await repository.replaceAllSnapshotsCallCount
         let didCallDelete = await repository.didCallDeleteAllSnapshots
         let didCallSave = await repository.didCallSaveSnapshot
-        XCTAssertTrue(summaries.isEmpty)
-        XCTAssertTrue(storedSnapshots.isEmpty)
-        XCTAssertEqual(replaceCallCount, 1)
-        XCTAssertFalse(didCallDelete)
-        XCTAssertFalse(didCallSave)
+        #expect(summaries.isEmpty)
+        #expect(storedSnapshots.isEmpty)
+        #expect(replaceCallCount == 1)
+        #expect(!didCallDelete)
+        #expect(!didCallSave)
     }
 
-    func testRefreshCleanupCategoriesPreservesCachedSnapshotsWhenReplacementFails() async throws {
+    @Test func testRefreshCleanupCategoriesPreservesCachedSnapshotsWhenReplacementFails() async throws {
         let repository = MockCleanupCategorySnapshotRepository()
         let existingSnapshot = CleanupCategorySnapshot(
             kind: .screenshots,
@@ -112,18 +113,18 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
 
         do {
             _ = try await service.refreshCleanupCategories()
-            XCTFail("Expected replacement failure")
+            Issue.record("Expected replacement failure")
         } catch {
-            XCTAssertEqual(error as? TestError, .replacementFailed)
+            #expect(error as? TestError == .replacementFailed)
         }
 
         let storedSnapshots = await repository.storedSnapshots
         let replaceCallCount = await repository.replaceAllSnapshotsCallCount
-        XCTAssertEqual(storedSnapshots, [.screenshots: existingSnapshot])
-        XCTAssertEqual(replaceCallCount, 1)
+        #expect(storedSnapshots == [.screenshots: existingSnapshot])
+        #expect(replaceCallCount == 1)
     }
 
-    func testRefreshCleanupCategoriesReportsMonotonicProgressThroughCompletion() async throws {
+    @Test func testRefreshCleanupCategoriesReportsMonotonicProgressThroughCompletion() async throws {
         let progress = ProgressRecorder()
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -136,9 +137,9 @@ final class PhotoAnalysisServiceImplTests: XCTestCase {
         }
 
         let values = progress.values
-        XCTAssertEqual(values.first, 0)
-        XCTAssertEqual(values.last, 1)
-        XCTAssertTrue(zip(values, values.dropFirst()).allSatisfy { $0 <= $1 })
+        #expect(values.first == 0)
+        #expect(values.last == 1)
+        #expect(zip(values, values.dropFirst()).allSatisfy { $0 <= $1 })
     }
 }
 

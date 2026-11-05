@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Settings
 
 /// Integration-style coverage for the Delete Alike Data flow: the model's
@@ -6,8 +7,8 @@ import XCTest
 /// it in production — a multi-stage deletion followed by a data-deleted
 /// callback that routes the app to onboarding replay.
 @MainActor
-final class DeleteAllDataFlowIntegrationTests: XCTestCase {
-    func testSuccessfulDeletionInvokesDataDeletedCallbackAndRoutesToOnboardingReplay() async {
+@Suite struct DeleteAllDataFlowIntegrationTests {
+    @Test func testSuccessfulDeletionInvokesDataDeletedCallbackAndRoutesToOnboardingReplay() async {
         let coordinator = StagedDataDeletionCoordinator()
         let router = OnboardingReplayRouterDouble()
         let onDataDeleted = DataDeletedCallbackRecorder(router: router)
@@ -18,14 +19,14 @@ final class DeleteAllDataFlowIntegrationTests: XCTestCase {
 
         await model.deleteAllData()
 
-        XCTAssertEqual(model.state, .idle)
-        XCTAssertEqual(onDataDeleted.invocationCount, 1)
-        XCTAssertTrue(router.didRequestOnboardingReplay)
+        #expect(model.state == .idle)
+        #expect(onDataDeleted.invocationCount == 1)
+        #expect(router.didRequestOnboardingReplay)
         let stages = await coordinator.stages()
-        XCTAssertEqual(stages, [.filesystem, .preferences])
+        #expect(stages == [.filesystem, .preferences])
     }
 
-    func testLateFilesystemStageFailureSkipsCallbackAndLeavesNoStageComplete() async {
+    @Test func testLateFilesystemStageFailureSkipsCallbackAndLeavesNoStageComplete() async {
         let coordinator = StagedDataDeletionCoordinator(
             failureSpec: .stage(.filesystem, timesRemaining: 1)
         )
@@ -38,18 +39,15 @@ final class DeleteAllDataFlowIntegrationTests: XCTestCase {
 
         await model.deleteAllData()
 
-        XCTAssertNotNil(model.errorMessage)
-        XCTAssertFalse(model.isDeleting)
-        XCTAssertEqual(onDataDeleted.invocationCount, 0)
-        XCTAssertFalse(router.didRequestOnboardingReplay)
+        #expect(model.errorMessage != nil)
+        #expect(!model.isDeleting)
+        #expect(onDataDeleted.invocationCount == 0)
+        #expect(!router.didRequestOnboardingReplay)
         let stages = await coordinator.stages()
-        XCTAssertTrue(
-            stages.isEmpty,
-            "Neither stage should be marked complete when the late filesystem stage fails"
-        )
+        #expect(stages.isEmpty, "Neither stage should be marked complete when the late filesystem stage fails")
     }
 
-    func testPreferenceStageFailureLeavesFilesystemStageCompletedButSkipsCallback() async {
+    @Test func testPreferenceStageFailureLeavesFilesystemStageCompletedButSkipsCallback() async {
         let coordinator = StagedDataDeletionCoordinator(
             failureSpec: .stage(.preferences, timesRemaining: 1)
         )
@@ -62,19 +60,15 @@ final class DeleteAllDataFlowIntegrationTests: XCTestCase {
 
         await model.deleteAllData()
 
-        XCTAssertNotNil(model.errorMessage)
-        XCTAssertFalse(model.isDeleting)
-        XCTAssertEqual(onDataDeleted.invocationCount, 0)
-        XCTAssertFalse(router.didRequestOnboardingReplay)
+        #expect(model.errorMessage != nil)
+        #expect(!model.isDeleting)
+        #expect(onDataDeleted.invocationCount == 0)
+        #expect(!router.didRequestOnboardingReplay)
         let stages = await coordinator.stages()
-        XCTAssertEqual(
-            stages,
-            [.filesystem],
-            "The filesystem stage should have completed before the preference stage failed, documenting partial deletion"
-        )
+        #expect(stages == [.filesystem], "The filesystem stage should have completed before the preference stage failed, documenting partial deletion")
     }
 
-    func testRetryAfterPartialFailureCompletesDeletionAndInvokesCallbackExactlyOnce() async {
+    @Test func testRetryAfterPartialFailureCompletesDeletionAndInvokesCallbackExactlyOnce() async {
         let coordinator = StagedDataDeletionCoordinator(
             failureSpec: .stage(.preferences, timesRemaining: 1)
         )
@@ -86,21 +80,21 @@ final class DeleteAllDataFlowIntegrationTests: XCTestCase {
         }
 
         await model.deleteAllData()
-        XCTAssertNotNil(model.errorMessage)
-        XCTAssertEqual(onDataDeleted.invocationCount, 0)
-        XCTAssertFalse(router.didRequestOnboardingReplay)
+        #expect(model.errorMessage != nil)
+        #expect(onDataDeleted.invocationCount == 0)
+        #expect(!router.didRequestOnboardingReplay)
 
         model.dismissError()
         await model.deleteAllData()
 
-        XCTAssertEqual(model.state, .idle)
-        XCTAssertNil(model.errorMessage)
-        XCTAssertEqual(onDataDeleted.invocationCount, 1)
-        XCTAssertTrue(router.didRequestOnboardingReplay)
+        #expect(model.state == .idle)
+        #expect(model.errorMessage == nil)
+        #expect(onDataDeleted.invocationCount == 1)
+        #expect(router.didRequestOnboardingReplay)
         let attempts = await coordinator.attempts()
-        XCTAssertEqual(attempts, 2, "Retry should re-run the full deletion operation from the start")
+        #expect(attempts == 2, "Retry should re-run the full deletion operation from the start")
         let stages = await coordinator.stages()
-        XCTAssertEqual(stages, [.filesystem, .preferences])
+        #expect(stages == [.filesystem, .preferences])
     }
 }
 

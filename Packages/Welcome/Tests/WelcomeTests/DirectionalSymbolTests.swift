@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 /// RTL guard (task 45).
 ///
@@ -8,7 +9,7 @@ import XCTest
 /// `arrow.forward` — mirror by definition, which is why they are the only ones this
 /// package is allowed to ship. Bidirectional glyphs such as `arrow.left.arrow.right`
 /// read the same either way and are deliberately not covered.
-final class DirectionalSymbolTests: XCTestCase {
+@Suite struct DirectionalSymbolTests {
     private static let bannedSymbols = [
         "chevron.left",
         "chevron.right",
@@ -26,9 +27,9 @@ final class DirectionalSymbolTests: XCTestCase {
             .appendingPathComponent("Sources/Welcome")
     }
 
-    func testNoPhysicalDirectionSymbolsInSource() throws {
+    @Test func testNoPhysicalDirectionSymbolsInSource() throws {
         let root = Self.sourcesRoot
-        let enumerator = try XCTUnwrap(
+        let enumerator = try #require(
             FileManager.default.enumerator(at: root, includingPropertiesForKeys: nil)
         )
 
@@ -42,7 +43,7 @@ final class DirectionalSymbolTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(
+        #expect(
             offenders.isEmpty,
             """
             Physical-direction SF Symbols do not mirror in a right-to-left layout.

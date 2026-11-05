@@ -212,4 +212,17 @@ struct FullscreenPhotoLoadFailureView: View {
     }
 }
 
+extension View {
+    /// The photo grid and the black pager share the same picture, so on iOS 27
+    /// the pager fades in over the grid instead of sliding up from the bottom.
+    @ViewBuilder
+    func photoPagerTransition() -> some View {
+        if #available(iOS 27.0, *) {
+            navigationTransition(.crossFade)
+        } else {
+            self
+        }
+    }
+}
+
 #endif

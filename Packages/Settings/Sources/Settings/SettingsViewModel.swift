@@ -1,7 +1,5 @@
 import SwiftUI
 import Core
-import Cleanup
-import Storage
 
 @MainActor
 @Observable
@@ -23,16 +21,10 @@ public final class SettingsViewModel {
 
     public init(
         appVersion: String = SettingsViewModel.fullAppVersion(),
-        cleanupReminderManager: (any CleanupReminderManaging)? = nil,
-        // Kept so existing call sites still compile; the rate button no longer records a
-        // prompt, so the coordinator is not used here any more.
-        ratingPrompt: RatingPromptCoordinator? = nil
+        cleanupReminderManager: any CleanupReminderManaging
     ) {
         self.appVersion = appVersion
         self.cleanupReminderManager = cleanupReminderManager
-            ?? CleanupReminderManager(
-                preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
-            )
     }
 
     /// Opens the App Store page on its "write a review" composer.

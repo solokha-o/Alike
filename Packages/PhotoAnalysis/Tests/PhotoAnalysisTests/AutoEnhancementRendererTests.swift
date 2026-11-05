@@ -3,85 +3,91 @@ import CoreGraphics
 import CoreImage
 import ImageIO
 import Foundation
-import XCTest
+import Testing
 @testable import PhotoAnalysis
 
-final class AutoEnhancementRendererTests: XCTestCase {
+/// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
+///
+/// `.serialized`: `AutoEnhancementRenderer.render` runs Core Image auto-adjust,
+/// which runs Vision face detection and blocks its thread until Vision is done.
+/// With every test of this suite in parallel, all cooperative threads blocked in
+/// that wait and the test run hung. Vision owns that limit, so a test cannot
+/// isolate it; one render at a time in this suite avoids the hang.
+@Suite(.serialized) final class AutoEnhancementRendererTests {
     private let renderer = AutoEnhancementRenderer()
-    private var temporaryDirectory: URL!
+    private let temporaryDirectory: URL
 
-    override func setUpWithError() throws {
+    init() throws {
         temporaryDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("auto-enhancement-tests-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true)
     }
 
-    override func tearDownWithError() throws {
+    deinit {
         try? FileManager.default.removeItem(at: temporaryDirectory)
-        temporaryDirectory = nil
     }
 
     /// The regression this whole fix exists for: an image tagged with a wide
     /// colour space must still be writable as JPEG. Writing in the source's own
     /// space is what failed on a real iPhone photo.
-    func testWritesJPEGForAWideGamutTaggedImage() throws {
-        let displayP3 = try XCTUnwrap(CGColorSpace(name: CGColorSpace.displayP3))
+    @Test func testWritesJPEGForAWideGamutTaggedImage() throws {
+        let displayP3 = try #require(CGColorSpace(name: CGColorSpace.displayP3))
         let image = makeImage(colorSpace: displayP3)
         let url = temporaryDirectory.appendingPathComponent("wide-gamut.jpg")
 
         try renderer.writeJPEG(image, to: url)
 
         let size = try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int
-        XCTAssertGreaterThan(size ?? 0, 0)
+        #expect(size ?? 0 > 0)
     }
 
-    func testWritesJPEGForAnImageWhoseExtentMoved() throws {
+    @Test func testWritesJPEGForAnImageWhoseExtentMoved() throws {
         let image = makeImage()
             .transformed(by: CGAffineTransform(translationX: 120, y: 80))
         let url = temporaryDirectory.appendingPathComponent("translated.jpg")
 
-        XCTAssertNotEqual(image.extent.origin, .zero)
+        #expect(image.extent.origin != .zero)
         try renderer.writeJPEG(image, to: url)
 
         let size = try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int
-        XCTAssertGreaterThan(size ?? 0, 0)
+        #expect(size ?? 0 > 0)
     }
 
     /// Photos validates the rendered resource against the asset: JPEG bytes for
     /// a HEIC asset come back as `PHPhotosErrorInvalidResource`.
-    func testWritesHEIFWhenTheDestinationIsHEIC() throws {
+    @Test func testWritesHEIFWhenTheDestinationIsHEIC() throws {
         let url = temporaryDirectory.appendingPathComponent("rendered.heic")
 
         try renderer.write(makeImage(), to: url)
 
-        let source = try XCTUnwrap(CGImageSourceCreateWithURL(url as CFURL, nil))
-        let type = try XCTUnwrap(CGImageSourceGetType(source) as String?)
-        XCTAssertTrue(type.contains("heic") || type.contains("heif"), "Unexpected type: \(type)")
+        let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
+        let type = try #require(CGImageSourceGetType(source) as String?)
+        #expect(type.contains("heic") || type.contains("heif"), "Unexpected type: \(type)")
     }
 
-    func testWritesJPEGForEveryOtherDestination() throws {
+    @Test func testWritesJPEGForEveryOtherDestination() throws {
         let url = temporaryDirectory.appendingPathComponent("rendered.jpg")
 
         try renderer.write(makeImage(), to: url)
 
-        let source = try XCTUnwrap(CGImageSourceCreateWithURL(url as CFURL, nil))
-        let type = try XCTUnwrap(CGImageSourceGetType(source) as String?)
-        XCTAssertTrue(type.contains("jpeg"), "Unexpected type: \(type)")
+        let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
+        let type = try #require(CGImageSourceGetType(source) as String?)
+        #expect(type.contains("jpeg"), "Unexpected type: \(type)")
     }
 
-    func testNormalizingMovesTheExtentBackToTheOrigin() {
+    @Test func testNormalizingMovesTheExtentBackToTheOrigin() {
         let moved = makeImage().transformed(by: CGAffineTransform(translationX: 40, y: -25))
 
         let normalized = renderer.normalized(moved)
 
-        XCTAssertEqual(normalized.extent.origin, .zero)
-        XCTAssertEqual(normalized.extent.size, moved.extent.size)
+        #expect(normalized.extent.origin == .zero)
+        #expect(normalized.extent.size == moved.extent.size)
     }
 
     /// Live Photos replay the recipe on every video frame; if the replay did not
     /// reproduce the still exactly, the motion would be graded differently from
     /// the photo it belongs to.
-    func testReplayingTheRecipeReproducesTheRenderedStill() throws {
+    @Test func testReplayingTheRecipeReproducesTheRenderedStill() throws {
         let image = makeImage()
         let rendered = renderer.render(image, allowsSharpening: true)
 
@@ -91,35 +97,35 @@ final class AutoEnhancementRendererTests: XCTestCase {
         let replayedPixels = try pixels(of: replayed)
         // Core Image may fuse two equivalent graphs slightly differently, so
         // the bar is "visually identical", not bit-identical.
-        XCTAssertLessThanOrEqual(maximumDifference(renderedPixels, replayedPixels), 2)
+        #expect(maximumDifference(renderedPixels, replayedPixels) <= 2)
     }
 
-    func testReplayingAnEmptyRecipeLeavesTheImageAlone() throws {
+    @Test func testReplayingAnEmptyRecipeLeavesTheImageAlone() throws {
         let image = makeImage()
 
         let replayed = renderer.apply(.empty, to: image)
 
-        XCTAssertEqual(try pixels(of: replayed), try pixels(of: image))
+        #expect(try pixels(of: replayed) == pixels(of: image))
     }
 
     /// Guards the comparison above: an unapplied recipe must not pass as a
     /// replay of the rendered still.
-    func testTheUnenhancedImageIsNotMistakenForTheRenderedOne() throws {
+    @Test func testTheUnenhancedImageIsNotMistakenForTheRenderedOne() throws {
         let image = makeImage()
         let rendered = renderer.render(image, allowsSharpening: true)
 
         let difference = maximumDifference(try pixels(of: rendered.image), try pixels(of: image))
 
-        XCTAssertGreaterThan(difference, 2)
+        #expect(difference > 2)
     }
 
-    func testPreviewIsScaledToFitTheRequestedSize() throws {
-        let preview = try XCTUnwrap(
+    @Test func testPreviewIsScaledToFitTheRequestedSize() throws {
+        let preview = try #require(
             renderer.makePreview(of: makeImage(), targetSize: CGSize(width: 64, height: 64))
         )
 
-        XCTAssertLessThanOrEqual(preview.width, 64)
-        XCTAssertLessThanOrEqual(preview.height, 64)
+        #expect(preview.width <= 64)
+        #expect(preview.height <= 64)
     }
 
     // MARK: - Helpers
@@ -164,11 +170,11 @@ final class AutoEnhancementRendererTests: XCTestCase {
     private func pixels(of image: CIImage) throws -> Data {
         let context = CIContext(options: [.useSoftwareRenderer: true])
         let normalized = renderer.normalized(image)
-        let cgImage = try XCTUnwrap(context.createCGImage(normalized, from: normalized.extent))
+        let cgImage = try #require(context.createCGImage(normalized, from: normalized.extent))
         let width = cgImage.width
         let height = cgImage.height
         var bytes = [UInt8](repeating: 0, count: width * height * 4)
-        let bitmapContext = try XCTUnwrap(
+        let bitmapContext = try #require(
             CGContext(
                 data: &bytes,
                 width: width,

@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-final class MetricsReportTests: XCTestCase {
+@Suite struct MetricsReportTests {
     private let config = PhotoQualityScoringConfig.current
 
     /// A synthetic corpus of 4 clusters:
@@ -57,36 +58,36 @@ final class MetricsReportTests: XCTestCase {
         )
     }
 
-    func testOverallMetrics() {
+    @Test func testOverallMetrics() {
         let report = MetricsReport.compute(corpus: makeCorpus(), config: config)
         let overall = report.overall
 
-        XCTAssertEqual(overall.clusterCount, 4)
-        XCTAssertEqual(overall.unresolvedCount, 1, "the weak cluster never reaches the absolute sharpness floor")
-        XCTAssertEqual(overall.unresolvedRate, 0.25, accuracy: 1e-9)
+        #expect(overall.clusterCount == 4)
+        #expect(overall.unresolvedCount == 1, "the weak cluster never reaches the absolute sharpness floor")
+        #expect(abs(overall.unresolvedRate - 0.25) <= 1e-9)
 
         // Resolved clusters: obvious, disagreement, single = 3. Agreements: obvious + single = 2.
-        XCTAssertEqual(overall.resolvedClusterCount, 3)
-        XCTAssertEqual(overall.topOneAgreement ?? -1, 2.0 / 3.0, accuracy: 1e-9)
+        #expect(overall.resolvedClusterCount == 3)
+        #expect(abs((overall.topOneAgreement ?? -1) - (2.0 / 3.0)) <= 1e-9)
 
         // Over ALL 4 clusters, correct picks are still obvious + single = 2; the
         // unresolved "weak" cluster counts as a miss rather than being excluded.
-        XCTAssertEqual(overall.correctClusterCount, 2)
-        XCTAssertEqual(overall.topOneAgreementOverAllClusters ?? -1, 2.0 / 4.0, accuracy: 1e-9)
-        XCTAssertEqual(overall.coverageRate, 0.75, accuracy: 1e-9)
+        #expect(overall.correctClusterCount == 2)
+        #expect(abs((overall.topOneAgreementOverAllClusters ?? -1) - (2.0 / 4.0)) <= 1e-9)
+        #expect(abs(overall.coverageRate - 0.75) <= 1e-9)
 
         // No winner is clearly blurry by the ranker's own definition here.
-        XCTAssertEqual(overall.winnerClusterCount, 3)
-        XCTAssertEqual(overall.blurryWinnerRate ?? -1, 0, accuracy: 1e-9)
+        #expect(overall.winnerClusterCount == 3)
+        #expect(abs((overall.blurryWinnerRate ?? -1) - 0) <= 1e-9)
 
         // Override-eligible clusters are automatic/lowConfidence with a winner: obvious, disagreement,
         // and single all resolve to .automatic here, and disagreement is the one that disagrees with
         // the human label, so the offline proxy is 1/3.
-        XCTAssertEqual(overall.overrideEligibleClusterCount, 3)
-        XCTAssertEqual(overall.offlineOverrideProxy ?? -1, 1.0 / 3.0, accuracy: 1e-9)
+        #expect(overall.overrideEligibleClusterCount == 3)
+        #expect(abs((overall.offlineOverrideProxy ?? -1) - (1.0 / 3.0)) <= 1e-9)
     }
 
-    func testUnresolvedClusterHasNoWinner() {
+    @Test func testUnresolvedClusterHasNoWinner() {
         let report = MetricsReport.compute(corpus: makeCorpus(), config: config)
         // Sanity check on the underlying decision, so the metric above is not
         // trusted blindly.
@@ -99,32 +100,32 @@ final class MetricsReportTests: XCTestCase {
             ),
             config: config
         )
-        XCTAssertEqual(decision.confidence, .unresolved)
-        XCTAssertNil(decision.localIdentifier)
-        XCTAssertGreaterThanOrEqual(report.overall.unresolvedCount, 1)
+        #expect(decision.confidence == .unresolved)
+        #expect(decision.localIdentifier == nil)
+        #expect(report.overall.unresolvedCount >= 1)
     }
 
-    func testPerCategoryBreakdown() {
+    @Test func testPerCategoryBreakdown() {
         let report = MetricsReport.compute(corpus: makeCorpus(), config: config)
         let keys = report.byCategory.map(\.key)
 
-        XCTAssertTrue(keys.contains(.category(.people)))
-        XCTAssertTrue(keys.contains(.category(.landscape)))
-        XCTAssertTrue(keys.contains(.category(.night)))
-        XCTAssertTrue(keys.contains(.uncategorised))
+        #expect(keys.contains(.category(.people)))
+        #expect(keys.contains(.category(.landscape)))
+        #expect(keys.contains(.category(.night)))
+        #expect(keys.contains(.uncategorised))
 
         let people = report.byCategory.first { $0.key == .category(.people) }!.bucket
-        XCTAssertEqual(people.clusterCount, 1)
-        XCTAssertEqual(people.topOneAgreement ?? -1, 1, accuracy: 1e-9)
+        #expect(people.clusterCount == 1)
+        #expect(abs((people.topOneAgreement ?? -1) - 1) <= 1e-9)
 
         let uncategorised = report.byCategory.first { $0.key == .uncategorised }!.bucket
-        XCTAssertEqual(uncategorised.clusterCount, 1)
+        #expect(uncategorised.clusterCount == 1)
     }
 
-    func testCategoryOrderIsDeterministic() {
+    @Test func testCategoryOrderIsDeterministic() {
         let first = MetricsReport.compute(corpus: makeCorpus(), config: config)
         let second = MetricsReport.compute(corpus: makeCorpus(), config: config)
-        XCTAssertEqual(first.byCategory.map(\.key), second.byCategory.map(\.key))
+        #expect(first.byCategory.map(\.key) == second.byCategory.map(\.key))
     }
 
     // MARK: - Face coverage
@@ -132,7 +133,7 @@ final class MetricsReportTests: XCTestCase {
     /// The report has to be able to say "we found faces and rejected every one
     /// of them". Without that, a corpus where face scoring never engages reads
     /// exactly like a corpus of landscapes.
-    func testFaceCoverageSeparatesRejectedFacesFromPhotosWithNobodyInThem() {
+    @Test func testFaceCoverageSeparatesRejectedFacesFromPhotosWithNobodyInThem() {
         let corpus = BestShotCalibrationCorpus(
             exportedAt: Date(timeIntervalSince1970: 0),
             scoringModelVersion: config.scoringModelVersion,
@@ -158,31 +159,31 @@ final class MetricsReportTests: XCTestCase {
 
         let faces = MetricsReport.compute(corpus: corpus, config: config).overall.faces
 
-        XCTAssertEqual(faces.candidateCount, 3)
-        XCTAssertEqual(faces.withFacesCount, 1)
-        XCTAssertEqual(faces.rejectedOnlyCount, 1)
-        XCTAssertEqual(faces.unknownRejectionCount, 0)
-        XCTAssertEqual(faces.rejections.tooSmallInFrame, 2)
-        XCTAssertEqual(faces.rejections.insufficientResolution, 1)
-        XCTAssertEqual(faces.rejections.total, 3)
+        #expect(faces.candidateCount == 3)
+        #expect(faces.withFacesCount == 1)
+        #expect(faces.rejectedOnlyCount == 1)
+        #expect(faces.unknownRejectionCount == 0)
+        #expect(faces.rejections.tooSmallInFrame == 2)
+        #expect(faces.rejections.insufficientResolution == 1)
+        #expect(faces.rejections.total == 3)
     }
 
     /// A corpus exported before the counts existed cannot answer the question,
     /// and the report has to say so rather than reporting zero rejections.
-    func testCandidatesWithoutRejectionCountsAreReportedAsUnknown() {
+    @Test func testCandidatesWithoutRejectionCountsAreReportedAsUnknown() {
         let faces = MetricsReport.compute(corpus: makeCorpus(), config: config).overall.faces
 
-        XCTAssertGreaterThan(faces.candidateCount, 0)
-        XCTAssertEqual(faces.unknownRejectionCount, faces.candidateCount)
-        XCTAssertEqual(faces.rejectedOnlyCount, 0)
-        XCTAssertTrue(faces.rejections.isEmpty)
+        #expect(faces.candidateCount > 0)
+        #expect(faces.unknownRejectionCount == faces.candidateCount)
+        #expect(faces.rejectedOnlyCount == 0)
+        #expect(faces.rejections.isEmpty)
     }
 
     /// A failed analysis leaves `rejectedFaceCounts` nil for the same reason a
     /// legacy payload does. Reading the two as one told a current corpus it had
     /// been measured before the counts existed, and padded the denominator that
     /// every face rate is taken over.
-    func testCandidatesWhoseAnalysisFailedAreNotCountedAsUnknownOrAsMeasured() {
+    @Test func testCandidatesWhoseAnalysisFailedAreNotCountedAsUnknownOrAsMeasured() {
         let corpus = BestShotCalibrationCorpus(
             exportedAt: Date(timeIntervalSince1970: 0),
             scoringModelVersion: config.scoringModelVersion,
@@ -204,11 +205,11 @@ final class MetricsReportTests: XCTestCase {
 
         let faces = MetricsReport.compute(corpus: corpus, config: config).overall.faces
 
-        XCTAssertEqual(faces.failedCount, 3)
-        XCTAssertEqual(faces.candidateCount, 1, "failures must not pad the denominator")
-        XCTAssertEqual(faces.unknownRejectionCount, 0, "a failure is not a legacy payload")
-        XCTAssertEqual(faces.withFacesCount, 1)
-        XCTAssertEqual(faces.withFacesRate ?? 0, 1, accuracy: 1e-9)
+        #expect(faces.failedCount == 3)
+        #expect(faces.candidateCount == 1, "failures must not pad the denominator")
+        #expect(faces.unknownRejectionCount == 0, "a failure is not a legacy payload")
+        #expect(faces.withFacesCount == 1)
+        #expect(abs((faces.withFacesRate ?? 0) - 1) <= 1e-9)
     }
 
     private func makeFailedCandidate(

@@ -1,5 +1,5 @@
 import Foundation
-import XCTest
+import Testing
 import Core
 @testable import Settings
 
@@ -14,43 +14,37 @@ import Core
 /// actually calls — against a fixed locale, calendar, and schedule. Reverting the production
 /// formatting change, or wiring the wrong schedule into it, makes the exercised tests fail; the
 /// catalog-shape tests alone would not have caught either.
-final class ReminderScheduleCopyTests: XCTestCase {
+@Suite struct ReminderScheduleCopyTests {
     private static let footerKey = "settings.main.freeRemindersUseSundayAt"
 
     /// A digit followed by `:` or `.` and two more digits — `18:00`, `6:00`, `18.00`. Written this
     /// way rather than as a list of literals so a new locale cannot invent its own separator.
     private static let clockTime = try! NSRegularExpression(pattern: #"\d{1,2}[:.]\d{2}"#)
 
-    func testTheFooterTakesTheFormattedScheduleInEveryLanguage() throws {
+    @Test func testTheFooterTakesTheFormattedScheduleInEveryLanguage() throws {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
             let value = try self.value(Self.footerKey, language, catalog)
 
-            XCTAssertTrue(
-                value.contains("%@"),
-                "\(language) dropped the schedule argument: \(value)"
-            )
+            #expect(value.contains("%@"), "\(language) dropped the schedule argument: \(value)")
 
             let range = NSRange(value.startIndex..., in: value)
-            XCTAssertNil(
-                Self.clockTime.firstMatch(in: value, range: range),
-                "\(language) writes a clock time into the copy instead of using %@: \(value)"
-            )
+            #expect(Self.clockTime.firstMatch(in: value, range: range) == nil, "\(language) writes a clock time into the copy instead of using %@: \(value)")
         }
     }
 
     /// The weekday is part of the formatted argument too — spelling it out would be wrong the
     /// moment the default schedule moves off Sunday, and it is the kind of thing a translation
     /// pass reintroduces without noticing.
-    func testTheFooterCarriesExactlyOneArgument() throws {
+    @Test func testTheFooterCarriesExactlyOneArgument() throws {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
             let value = try self.value(Self.footerKey, language, catalog)
             let specifiers = value.components(separatedBy: "%@").count - 1
 
-            XCTAssertEqual(specifiers, 1, "\(language) has \(specifiers) arguments: \(value)")
+            #expect(specifiers == 1, "\(language) has \(specifiers) arguments: \(value)")
         }
     }
 
@@ -58,7 +52,7 @@ final class ReminderScheduleCopyTests: XCTestCase {
     /// actually bound — not a fixed default. A build that ignored its `schedule` argument (or
     /// hardcoded `.defaultWeekly`) would still pass the catalog-shape tests above; this one fails
     /// because the output is compared against a `DateFormatter` run over the *same* schedule.
-    func testScheduleDescriptionRendersTheGivenScheduleInA12HourLocale() throws {
+    @Test func testScheduleDescriptionRendersTheGivenScheduleInA12HourLocale() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let locale = Locale(identifier: "en_US")
         let calendar = fixedCalendar(locale: locale)
@@ -74,13 +68,13 @@ final class ReminderScheduleCopyTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertTrue(expectedTime.contains("AM") || expectedTime.contains("PM"), "en_US should be 12-hour: \(expectedTime)")
-        XCTAssertEqual(result, "\(expectedWeekday) at \(expectedTime)")
+        #expect(expectedTime.contains("AM") || expectedTime.contains("PM"), "en_US should be 12-hour: \(expectedTime)")
+        #expect(result == "\(expectedWeekday) at \(expectedTime)")
     }
 
     /// Same helper, a 24-hour locale, and a different schedule again — proving the row does not
     /// quietly depend on the 12-hour formatting the footer used to hardcode.
-    func testScheduleDescriptionRendersTheGivenScheduleInA24HourLocale() throws {
+    @Test func testScheduleDescriptionRendersTheGivenScheduleInA24HourLocale() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "de")
         let locale = Locale(identifier: "de_DE")
         let calendar = fixedCalendar(locale: locale)
@@ -88,11 +82,8 @@ final class ReminderScheduleCopyTests: XCTestCase {
 
         let expectedTime = expectedTimeString(hour: 18, minute: 0, calendar: calendar, locale: locale)
 
-        XCTAssertFalse(expectedTime.contains("PM"), "de_DE should be 24-hour: \(expectedTime)")
-        XCTAssertNotNil(
-            Self.clockTime.firstMatch(in: expectedTime, range: NSRange(expectedTime.startIndex..., in: expectedTime)),
-            "expected a 24-hour clock string, got: \(expectedTime)"
-        )
+        #expect(!expectedTime.contains("PM"), "de_DE should be 24-hour: \(expectedTime)")
+        #expect(Self.clockTime.firstMatch(in: expectedTime, range: NSRange(expectedTime.startIndex..., in: expectedTime)) != nil, "expected a 24-hour clock string, got: \(expectedTime)")
 
         let result = CleanupReminderCopy.scheduleDescription(
             schedule,
@@ -101,14 +92,14 @@ final class ReminderScheduleCopyTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertTrue(result.contains(expectedTime), "\(result) does not contain the formatted 24-hour time \(expectedTime)")
+        #expect(result.contains(expectedTime), "\(result) does not contain the formatted 24-hour time \(expectedTime)")
     }
 
     /// The regression itself: the free-tier footer embeds `scheduleDescription(.defaultWeekly)`
     /// rather than a literal, so it tracks whatever 12/24-hour convention the row above used.
     /// Reverting to a hardcoded "6:00 PM" would still pass the plain string comparison here only
     /// by accident in a 12-hour locale — the 24-hour case below is what actually pins it.
-    func testFooterEmbedsTheFormattedDefaultScheduleInA12HourLocale() throws {
+    @Test func testFooterEmbedsTheFormattedDefaultScheduleInA12HourLocale() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let locale = Locale(identifier: "en_US")
         let calendar = fixedCalendar(locale: locale)
@@ -127,10 +118,10 @@ final class ReminderScheduleCopyTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertTrue(footer.contains(expectedSchedule), "\(footer) does not contain \(expectedSchedule)")
+        #expect(footer.contains(expectedSchedule), "\(footer) does not contain \(expectedSchedule)")
     }
 
-    func testFooterEmbedsTheFormattedDefaultScheduleInA24HourLocale() throws {
+    @Test func testFooterEmbedsTheFormattedDefaultScheduleInA24HourLocale() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "de")
         let locale = Locale(identifier: "de_DE")
         let calendar = fixedCalendar(locale: locale)
@@ -149,14 +140,14 @@ final class ReminderScheduleCopyTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertFalse(footer.contains("PM"), "de_DE footer should not carry a 12-hour marker: \(footer)")
-        XCTAssertTrue(footer.contains(expectedSchedule), "\(footer) does not contain \(expectedSchedule)")
-        XCTAssertTrue(footer.contains("18:00"), "de_DE default schedule (18:00) missing from: \(footer)")
+        #expect(!footer.contains("PM"), "de_DE footer should not carry a 12-hour marker: \(footer)")
+        #expect(footer.contains(expectedSchedule), "\(footer) does not contain \(expectedSchedule)")
+        #expect(footer.contains("18:00"), "de_DE default schedule (18:00) missing from: \(footer)")
     }
 
     /// Premium copy is static — it never mentions a schedule, so it must not run the formatter at
     /// all.
-    func testFooterIgnoresTheScheduleWhenPremiumIsUnlocked() throws {
+    @Test func testFooterIgnoresTheScheduleWhenPremiumIsUnlocked() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let locale = Locale(identifier: "en_US")
         let calendar = fixedCalendar(locale: locale)
@@ -168,7 +159,7 @@ final class ReminderScheduleCopyTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertEqual(footer, "Premium lets you choose a custom weekly reminder schedule.")
+        #expect(footer == "Premium lets you choose a custom weekly reminder schedule.")
     }
 
     private func value(
@@ -176,12 +167,9 @@ final class ReminderScheduleCopyTests: XCTestCase {
         _ language: String,
         _ catalog: LocalizationCatalog
     ) throws -> String {
-        let localization = try XCTUnwrap(
-            catalog.localizations(of: key)[language],
-            "\(key) is missing \(language)"
-        )
-        let unit = try XCTUnwrap(localization["stringUnit"] as? [String: Any])
-        return try XCTUnwrap(unit["value"] as? String)
+        let localization = try #require(catalog.localizations(of: key)[language], "\(key) is missing \(language)")
+        let unit = try #require(localization["stringUnit"] as? [String: Any])
+        return try #require(unit["value"] as? String)
     }
 
     /// UTC keeps the formatted time independent of the day the date happens to fall on — no DST

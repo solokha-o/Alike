@@ -1,47 +1,48 @@
+import Foundation
 import Photos
-import XCTest
+import Testing
 @testable import Core
 
-final class AssetByteSizeTests: XCTestCase {
-    func testAssetWithoutPhotoKitResourcesFallsBackToThePixelHeuristic() {
+@Suite struct AssetByteSizeTests {
+    @Test func testAssetWithoutPhotoKitResourcesFallsBackToThePixelHeuristic() {
         let asset = SizedAsset(localIdentifier: "fake", pixelWidth: 400, pixelHeight: 300)
 
-        XCTAssertEqual(AssetByteSize.bytes(for: asset), 60_000)
-        XCTAssertEqual(asset.estimatedCleanupBytes, 60_000)
+        #expect(AssetByteSize.bytes(for: asset) == 60_000)
+        #expect(asset.estimatedCleanupBytes == 60_000)
     }
 
     /// A fallback is not cached, so a later read of the same identifier with other
     /// dimensions is not served a stale figure.
-    func testFallbackIsNotCachedAcrossReads() {
+    @Test func testFallbackIsNotCachedAcrossReads() {
         let first = SizedAsset(localIdentifier: "same", pixelWidth: 10, pixelHeight: 10)
         let second = SizedAsset(localIdentifier: "same", pixelWidth: 20, pixelHeight: 10)
 
-        XCTAssertEqual(AssetByteSize.bytes(for: first), 50)
-        XCTAssertEqual(AssetByteSize.bytes(for: second), 100)
+        #expect(AssetByteSize.bytes(for: first) == 50)
+        #expect(AssetByteSize.bytes(for: second) == 100)
     }
 
-    func testHeuristicNeverReturnsZero() {
-        XCTAssertEqual(AssetByteSize.heuristicBytes(pixelWidth: 0, pixelHeight: 0), 1)
+    @Test func testHeuristicNeverReturnsZero() {
+        #expect(AssetByteSize.heuristicBytes(pixelWidth: 0, pixelHeight: 0) == 1)
     }
 
-    func testNoIdentifiersResolveToNoBytes() {
-        XCTAssertEqual(AssetByteSize.bytes(forLocalIdentifiers: []), [:])
+    @Test func testNoIdentifiersResolveToNoBytes() {
+        #expect(AssetByteSize.bytes(forLocalIdentifiers: []) == [:])
     }
 }
 
-final class PersistedByteSizeVersionTests: XCTestCase {
-    func testCategorySnapshotWithoutMarkerDecodesAsHeuristic() throws {
+@Suite struct PersistedByteSizeVersionTests {
+    @Test func testCategorySnapshotWithoutMarkerDecodesAsHeuristic() throws {
         let json = """
         {"kind":"screenshots","localIdentifiers":["a","b"],"assetCount":2,"estimatedSavingsBytes":300,"refreshedAt":1000}
         """
         let snapshot = try JSONDecoder().decode(CleanupCategorySnapshot.self, from: Data(json.utf8))
 
-        XCTAssertNil(snapshot.byteSizeVersion)
-        XCTAssertFalse(snapshot.hasCurrentByteSizes)
-        XCTAssertEqual(snapshot.estimatedSavingsBytes, 300)
+        #expect(snapshot.byteSizeVersion == nil)
+        #expect(!snapshot.hasCurrentByteSizes)
+        #expect(snapshot.estimatedSavingsBytes == 300)
     }
 
-    func testNewCategorySnapshotRoundTripsTheCurrentMarker() throws {
+    @Test func testNewCategorySnapshotRoundTripsTheCurrentMarker() throws {
         let snapshot = CleanupCategorySnapshot(
             kind: .blurredPhotos,
             localIdentifiers: ["a"],
@@ -54,11 +55,11 @@ final class PersistedByteSizeVersionTests: XCTestCase {
             from: JSONEncoder().encode(snapshot)
         )
 
-        XCTAssertEqual(decoded, snapshot)
-        XCTAssertEqual(decoded.byteSizeVersion, AssetByteSize.currentVersion)
+        #expect(decoded == snapshot)
+        #expect(decoded.byteSizeVersion == AssetByteSize.currentVersion)
     }
 
-    func testRemeasuredCategorySumsKnownIdentifiersAndKeepsTheRest() {
+    @Test func testRemeasuredCategorySumsKnownIdentifiersAndKeepsTheRest() {
         let legacy = CleanupCategorySnapshot(
             kind: .screenshots,
             localIdentifiers: ["a", "gone"],
@@ -70,35 +71,34 @@ final class PersistedByteSizeVersionTests: XCTestCase {
 
         let remeasured = legacy.remeasured(bytesByIdentifier: ["a": 70])
 
-        XCTAssertEqual(remeasured.estimatedSavingsBytes, 70)
-        XCTAssertEqual(remeasured.localIdentifiers, legacy.localIdentifiers)
-        XCTAssertEqual(remeasured.assetCount, 2)
-        XCTAssertEqual(remeasured.refreshedAt, legacy.refreshedAt)
-        XCTAssertTrue(remeasured.hasCurrentByteSizes)
+        #expect(remeasured.estimatedSavingsBytes == 70)
+        #expect(remeasured.localIdentifiers == legacy.localIdentifiers)
+        #expect(remeasured.assetCount == 2)
+        #expect(remeasured.refreshedAt == legacy.refreshedAt)
+        #expect(remeasured.hasCurrentByteSizes)
     }
 
-    func testReviewStateWithoutMarkerDecodesAsHeuristic() throws {
+    @Test func testReviewStateWithoutMarkerDecodesAsHeuristic() throws {
         let json = """
         {"clusterID":"\(UUID().uuidString)","bestShotLocalIdentifier":"best","selectedLocalIdentifiers":["x"],
          "mode":"selection","status":"inReview","estimatedSavingsBytes":2048,"updatedAt":1000}
         """
         let state = try JSONDecoder().decode(ClusterReviewState.self, from: Data(json.utf8))
 
-        XCTAssertNil(state.byteSizeVersion)
-        XCTAssertEqual(state.estimatedSavingsBytes, 2048)
+        #expect(state.byteSizeVersion == nil)
+        #expect(state.estimatedSavingsBytes == 2048)
     }
 
-    func testRemappedKeepsTheMarkerOfKeptBytesAndStampsNewBytes() {
+    @Test func testRemappedKeepsTheMarkerOfKeptBytesAndStampsNewBytes() {
         let legacy = reviewState(clusterID: UUID(), selected: ["x"], bytes: 2048, version: nil)
 
-        XCTAssertNil(legacy.remapped(clusterID: UUID()).byteSizeVersion)
-        XCTAssertEqual(
-            legacy.remapped(clusterID: UUID(), estimatedSavingsBytes: 0).byteSizeVersion,
-            AssetByteSize.currentVersion
+        #expect(legacy.remapped(clusterID: UUID()).byteSizeVersion == nil)
+        #expect(
+            legacy.remapped(clusterID: UUID(), estimatedSavingsBytes: 0).byteSizeVersion == AssetByteSize.currentVersion
         )
     }
 
-    func testLegacyReviewStateIsRemeasuredFromItsClusterSelection() {
+    @Test func testLegacyReviewStateIsRemeasuredFromItsClusterSelection() {
         let cluster = PhotoCluster(assets: [
             SizedAsset(localIdentifier: "best", pixelWidth: 100, pixelHeight: 100),
             SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10)
@@ -107,19 +107,19 @@ final class PersistedByteSizeVersionTests: XCTestCase {
 
         let upgraded = legacy.upgradingByteSizes(in: cluster)
 
-        XCTAssertEqual(upgraded.estimatedSavingsBytes, 200)
-        XCTAssertEqual(upgraded.byteSizeVersion, AssetByteSize.currentVersion)
-        XCTAssertEqual(upgraded.selectedLocalIdentifiers, legacy.selectedLocalIdentifiers)
-        XCTAssertEqual(upgraded.updatedAt, legacy.updatedAt)
+        #expect(upgraded.estimatedSavingsBytes == 200)
+        #expect(upgraded.byteSizeVersion == AssetByteSize.currentVersion)
+        #expect(upgraded.selectedLocalIdentifiers == legacy.selectedLocalIdentifiers)
+        #expect(upgraded.updatedAt == legacy.updatedAt)
     }
 
-    func testCurrentOrForeignReviewStateIsLeftAlone() {
+    @Test func testCurrentOrForeignReviewStateIsLeftAlone() {
         let cluster = PhotoCluster(assets: [SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10)])
         let current = reviewState(clusterID: cluster.id, selected: ["x"], bytes: 5, version: AssetByteSize.currentVersion)
         let foreign = reviewState(clusterID: UUID(), selected: ["x"], bytes: 5, version: nil)
 
-        XCTAssertEqual(current.upgradingByteSizes(in: cluster), current)
-        XCTAssertEqual(foreign.upgradingByteSizes(in: cluster), foreign)
+        #expect(current.upgradingByteSizes(in: cluster) == current)
+        #expect(foreign.upgradingByteSizes(in: cluster) == foreign)
     }
 
     private func reviewState(
@@ -157,8 +157,8 @@ private final class SizedAsset: PHAsset, @unchecked Sendable {
     override var pixelHeight: Int { heightOverride }
 }
 
-final class AssetByteSizeSeedTests: XCTestCase {
-    func testSeededRecordsComeBackWithoutChangingTheGeneration() {
+@Suite struct AssetByteSizeSeedTests {
+    @Test func testSeededRecordsComeBackWithoutChangingTheGeneration() {
         let identifier = "seed-\(UUID().uuidString)"
         let record = AssetByteSizeRecord(
             localIdentifier: identifier,
@@ -169,11 +169,11 @@ final class AssetByteSizeSeedTests: XCTestCase {
 
         AssetByteSize.seed([record])
 
-        XCTAssertEqual(AssetByteSize.records(for: [identifier, "unknown-\(UUID().uuidString)"]), [record])
-        XCTAssertEqual(AssetByteSize.generation, generation)
+        #expect(AssetByteSize.records(for: [identifier, "unknown-\(UUID().uuidString)"]) == [record])
+        #expect(AssetByteSize.generation == generation)
     }
 
-    func testSeedDoesNotReplaceASizeAlreadyInTheCache() {
+    @Test func testSeedDoesNotReplaceASizeAlreadyInTheCache() {
         let identifier = "seed-\(UUID().uuidString)"
         let first = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 1)
         let second = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 2)
@@ -181,14 +181,14 @@ final class AssetByteSizeSeedTests: XCTestCase {
         AssetByteSize.seed([first])
         AssetByteSize.seed([second])
 
-        XCTAssertEqual(AssetByteSize.records(for: [identifier]), [first])
+        #expect(AssetByteSize.records(for: [identifier]) == [first])
     }
 
     /// A test double never reads a seeded size: only PhotoKit assets use the cache.
-    func testTestDoubleIgnoresASeededSize() {
+    @Test func testTestDoubleIgnoresASeededSize() {
         AssetByteSize.seed([AssetByteSizeRecord(localIdentifier: "double", modificationDate: nil, bytes: 9_999)])
 
-        XCTAssertEqual(AssetByteSize.bytes(for: SeedSizedAsset(localIdentifier: "double")), 50)
+        #expect(AssetByteSize.bytes(for: SeedSizedAsset(localIdentifier: "double")) == 50)
     }
 }
 

@@ -36,9 +36,10 @@ Required App Store Connect environment:
   APP_STORE_CONNECT_API_KEY_CONTENT
     or APP_STORE_CONNECT_API_KEY_PATH
 
-Required for metadata upload modes:
+Required for metadata upload modes and upload-testflight, whose release-check is strict:
   ALIKE_PRIVACY_URL
   ALIKE_SUPPORT_URL
+  The per-locale URLs and App Review values in Docs/release-checklist.md step 0
 
 Safety:
   Uploads require ALIKE_CONFIRM_UPLOAD=metadata or ALIKE_CONFIRM_UPLOAD=testflight.

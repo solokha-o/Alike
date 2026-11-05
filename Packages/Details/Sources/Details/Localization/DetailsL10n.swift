@@ -24,6 +24,8 @@ public enum DetailsL10n {
     }
 
     public enum ClusterDetails {
+        /// Choose a Best Shot before selecting photos for cleanup
+        public static var chooseBestShotBeforeSelecting: String { DetailsL10n.string("details.clusterDetails.chooseBestShotBeforeSelecting") }
         /// Move %1$lld Selected Photos to Recently Deleted? (plural)
         public static func deleteAlertTitle(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             DetailsL10n.plural("details.clusterDetails.deleteAlertTitle", count, bundle: bundle, locale: locale)
@@ -210,6 +212,8 @@ public enum DetailsL10n {
         public static var notReviewed: String { DetailsL10n.string("details.clusterReviewSummaryCard.notReviewed") }
         /// %d Similar Photos
         public static var similarPhotos: String { DetailsL10n.string("details.clusterReviewSummaryCard.similarPhotos") }
+        /// Touch and hold a photo, then choose Make Best Shot
+        public static var touchAndHoldToChooseBestShot: String { DetailsL10n.string("details.clusterReviewSummaryCard.touchAndHoldToChooseBestShot") }
         /// Tap photos to select them for cleanup
         public static var tapPhotosSelectThemCleanup: String { DetailsL10n.string("details.clusterReviewSummaryCard.tapPhotosSelectThemCleanup") }
     }
@@ -260,6 +264,13 @@ public enum DetailsL10n {
         public static var retry: String { DetailsL10n.string("details.fullscreenZoomablePhoto.retry") }
         /// Try loading the photo again
         public static var tryLoadingThePhotoAgain: String { DetailsL10n.string("details.fullscreenZoomablePhoto.tryLoadingThePhotoAgain") }
+    }
+
+    public enum PhotoTileSwipe {
+        /// Keep
+        public static var keep: String { DetailsL10n.string("details.photoTileSwipe.keep") }
+        /// Select
+        public static var select: String { DetailsL10n.string("details.photoTileSwipe.select") }
     }
 
     public enum ScreenshotCleanup {

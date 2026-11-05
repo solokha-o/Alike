@@ -1,82 +1,82 @@
-import XCTest
+import Testing
 import SwiftUI
 @testable import DesignSystem
 
-final class AnimationsTests: XCTestCase {
+@Suite struct AnimationsTests {
     
     // MARK: - Spring Animation Tests
     
-    func testSpringDefaultAnimation() {
+    @Test func testSpringDefaultAnimation() {
         // Given & When: Default spring animation
         let spring = Animations.spring
         
         // Then: Should exist and be a Spring animation
-        XCTAssertNotNil(spring, "Spring animation should exist")
+        #expect(spring != nil, "Spring animation should exist")
     }
     
-    func testSpringSoftAnimation() {
+    @Test func testSpringSoftAnimation() {
         // Given & When: Soft spring animation
         let springSoft = Animations.springSoft
         
         // Then: Should exist
-        XCTAssertNotNil(springSoft, "Soft spring animation should exist")
+        #expect(springSoft != nil, "Soft spring animation should exist")
     }
     
-    func testSpringBouncyAnimation() {
+    @Test func testSpringBouncyAnimation() {
         // Given & When: Bouncy spring animation
         let springBouncy = Animations.springBouncy
         
         // Then: Should exist
-        XCTAssertNotNil(springBouncy, "Bouncy spring animation should exist")
+        #expect(springBouncy != nil, "Bouncy spring animation should exist")
     }
     
     // MARK: - Timing Animation Tests
     
-    func testEaseInOutAnimation() {
+    @Test func testEaseInOutAnimation() {
         // Given & When: EaseInOut animation
         let easeInOut = Animations.easeInOut
         
         // Then: Should exist
-        XCTAssertNotNil(easeInOut, "EaseInOut animation should exist")
+        #expect(easeInOut != nil, "EaseInOut animation should exist")
     }
     
-    func testEaseInAnimation() {
+    @Test func testEaseInAnimation() {
         // Given & When: EaseIn animation
         let easeIn = Animations.easeIn
         
         // Then: Should exist
-        XCTAssertNotNil(easeIn, "EaseIn animation should exist")
+        #expect(easeIn != nil, "EaseIn animation should exist")
     }
     
-    func testEaseOutAnimation() {
+    @Test func testEaseOutAnimation() {
         // Given & When: EaseOut animation
         let easeOut = Animations.easeOut
         
         // Then: Should exist
-        XCTAssertNotNil(easeOut, "EaseOut animation should exist")
+        #expect(easeOut != nil, "EaseOut animation should exist")
     }
     
     // MARK: - Custom Animation Tests
     
-    func testQuickAnimation() {
+    @Test func testQuickAnimation() {
         // Given & When: Quick animation
         let quick = Animations.quick
         
         // Then: Should exist
-        XCTAssertNotNil(quick, "Quick animation should exist")
+        #expect(quick != nil, "Quick animation should exist")
     }
     
-    func testSmoothAnimation() {
+    @Test func testSmoothAnimation() {
         // Given & When: Smooth animation
         let smooth = Animations.smooth
         
         // Then: Should exist
-        XCTAssertNotNil(smooth, "Smooth animation should exist")
+        #expect(smooth != nil, "Smooth animation should exist")
     }
     
     // MARK: - Animation Consistency Tests
     
-    func testAnimationsAreNotIdentical() {
+    @Test func testAnimationsAreNotIdentical() {
         // Given: Different animations
         let spring = Animations.spring
         let easeInOut = Animations.easeInOut
@@ -84,7 +84,7 @@ final class AnimationsTests: XCTestCase {
         // Then: Should be different types
         // Note: Can't easily compare Animation values in Swift
         // This test verifies they're both defined
-        XCTAssertNotNil(spring)
-        XCTAssertNotNil(easeInOut)
+        #expect(spring != nil)
+        #expect(easeInOut != nil)
     }
 }

@@ -1,43 +1,44 @@
-import XCTest
+import Foundation
+import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-final class PersonalizationReportTests: XCTestCase {
+@Suite struct PersonalizationReportTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Prefix parsing
 
-    func testPrefixParsingAcceptsCommaSeparatedIntegers() throws {
+    @Test func testPrefixParsingAcceptsCommaSeparatedIntegers() throws {
         let sizes = try PersonalizationReport.parsePrefixes("10,30", corpusSize: 1000)
-        XCTAssertEqual(sizes, [10, 30])
+        #expect(sizes == [10, 30])
     }
 
-    func testPrefixParsingResolvesAllToCorpusSizeAndCollapsesDuplicates() throws {
+    @Test func testPrefixParsingResolvesAllToCorpusSizeAndCollapsesDuplicates() throws {
         let sizes = try PersonalizationReport.parsePrefixes("10,30,100,all", corpusSize: 30)
         // "all" clamps to 30, which collapses with the explicit "30".
-        XCTAssertEqual(sizes, [10, 30])
+        #expect(sizes == [10, 30])
     }
 
-    func testPrefixParsingClampsOversizedValuesToCorpusSize() throws {
+    @Test func testPrefixParsingClampsOversizedValuesToCorpusSize() throws {
         let sizes = try PersonalizationReport.parsePrefixes("5,1000", corpusSize: 12)
-        XCTAssertEqual(sizes, [5, 12])
+        #expect(sizes == [5, 12])
     }
 
-    func testPrefixParsingRejectsNonNumericToken() {
-        XCTAssertThrowsError(try PersonalizationReport.parsePrefixes("10,abc", corpusSize: 100)) { error in
-            XCTAssertEqual(error as? PersonalizationReport.PrefixParseError, .invalidToken("abc"))
+    @Test func testPrefixParsingRejectsNonNumericToken() {
+        #expect(throws: PersonalizationReport.PrefixParseError.invalidToken("abc")) {
+            try PersonalizationReport.parsePrefixes("10,abc", corpusSize: 100)
         }
     }
 
-    func testPrefixParsingRejectsNegativeNumber() {
-        XCTAssertThrowsError(try PersonalizationReport.parsePrefixes("10,-5", corpusSize: 100)) { error in
-            XCTAssertEqual(error as? PersonalizationReport.PrefixParseError, .invalidToken("-5"))
+    @Test func testPrefixParsingRejectsNegativeNumber() {
+        #expect(throws: PersonalizationReport.PrefixParseError.invalidToken("-5")) {
+            try PersonalizationReport.parsePrefixes("10,-5", corpusSize: 100)
         }
     }
 
     // MARK: - Fit/eval split
 
-    func testFitAndEvalSetsAreDisjointAndDeterministic() {
+    @Test func testFitAndEvalSetsAreDisjointAndDeterministic() {
         // Deliberately out of clusterID order, so the test would fail if
         // PersonalizationReport trusted array order instead of sorting.
         let corpus = makeCorpus(clusterIDs: ["c", "a", "e", "b", "d"])
@@ -45,45 +46,45 @@ final class PersonalizationReportTests: XCTestCase {
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: [2], global: config)
         let prefixResult = result.prefixResults[0]
 
-        XCTAssertEqual(prefixResult.fitClusterIDs, ["a", "b"])
-        XCTAssertEqual(prefixResult.evalClusterIDs, ["c", "d", "e"])
-        XCTAssertTrue(Set(prefixResult.fitClusterIDs).isDisjoint(with: Set(prefixResult.evalClusterIDs)))
+        #expect(prefixResult.fitClusterIDs == ["a", "b"])
+        #expect(prefixResult.evalClusterIDs == ["c", "d", "e"])
+        #expect(Set(prefixResult.fitClusterIDs).isDisjoint(with: Set(prefixResult.evalClusterIDs)))
 
         // Running it again from the same corpus produces the identical split.
         let second = PersonalizationReport.run(corpus: corpus, prefixSizes: [2], global: config)
-        XCTAssertEqual(prefixResult.fitClusterIDs, second.prefixResults[0].fitClusterIDs)
-        XCTAssertEqual(prefixResult.evalClusterIDs, second.prefixResults[0].evalClusterIDs)
+        #expect(prefixResult.fitClusterIDs == second.prefixResults[0].fitClusterIDs)
+        #expect(prefixResult.evalClusterIDs == second.prefixResults[0].evalClusterIDs)
     }
 
-    func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() {
+    @Test func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() {
         let corpus = makeCorpus(clusterIDs: ["a", "b", "c"])
         let sizes = try! PersonalizationReport.parsePrefixes("all", corpusSize: corpus.entries.count)
-        XCTAssertEqual(sizes, [3])
+        #expect(sizes == [3])
 
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: sizes, global: config)
         let prefixResult = result.prefixResults[0]
 
-        XCTAssertEqual(prefixResult.fitClusterIDs.count, 3)
-        XCTAssertTrue(prefixResult.evalClusterIDs.isEmpty)
-        XCTAssertNil(prefixResult.baseline)
-        XCTAssertNil(prefixResult.personalized)
+        #expect(prefixResult.fitClusterIDs.count == 3)
+        #expect(prefixResult.evalClusterIDs.isEmpty)
+        #expect(prefixResult.baseline == nil)
+        #expect(prefixResult.personalized == nil)
 
         // Rendering must not crash or divide by zero on the empty eval set.
         let kfold = PersonalizationReport.runKFold(corpus: corpus, folds: 3, global: config)
         let report = ReportWriter.render(personalization: result, kfold: kfold, corpusClusterCount: corpus.entries.count)
-        XCTAssertTrue(report.contains("no eval clusters"))
+        #expect(report.contains("no eval clusters"))
     }
 
-    func testPrefixSizeIsClampedToCorpusSizeWhenRunDirectly() {
+    @Test func testPrefixSizeIsClampedToCorpusSizeWhenRunDirectly() {
         let corpus = makeCorpus(clusterIDs: ["a", "b", "c"])
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: [999], global: config)
-        XCTAssertEqual(result.prefixResults[0].prefixSize, 3)
-        XCTAssertTrue(result.prefixResults[0].evalClusterIDs.isEmpty)
+        #expect(result.prefixResults[0].prefixSize == 3)
+        #expect(result.prefixResults[0].evalClusterIDs.isEmpty)
     }
 
     // MARK: - Synthesised examples match overrideExample directly
 
-    func testSynthesizedExampleMatchesDirectOverrideExampleCall() {
+    @Test func testSynthesizedExampleMatchesDirectOverrideExampleCall() {
         // A disagreement cluster: the ranker should pick "sharp" but the human
         // picked "soft".
         let cluster = BestShotCalibrationCluster(
@@ -101,7 +102,7 @@ final class PersonalizationReportTests: XCTestCase {
             thumbnailConfigVersion: config.thumbnailConfigVersion
         )
         let decision = BestShotRanker.decide(snapshots: cluster.snapshots, scores: scores, config: config)
-        XCTAssertEqual(decision.localIdentifier, "sharp", "ranker should disagree with the human pick here")
+        #expect(decision.localIdentifier == "sharp", "ranker should disagree with the human pick here")
 
         let expected = BestShotRanker.overrideExample(
             snapshots: cluster.snapshots,
@@ -111,17 +112,17 @@ final class PersonalizationReportTests: XCTestCase {
             now: PersonalizationReport.fixedRecordedAt,
             config: config
         )
-        XCTAssertNotNil(expected)
+        #expect(expected != nil)
 
         let build = PersonalizationReport.fitExamples(from: [cluster], config: config)
-        XCTAssertEqual(build.examples, [expected].compactMap { $0 })
-        XCTAssertEqual(build.outcome.exampleCount, 1)
-        XCTAssertEqual(build.outcome.agreementClusterCount, 0)
-        XCTAssertEqual(build.outcome.unresolvedClusterCount, 0)
-        XCTAssertEqual(build.outcome.refusedExampleCount, 0)
+        #expect(build.examples == [expected].compactMap { $0 })
+        #expect(build.outcome.exampleCount == 1)
+        #expect(build.outcome.agreementClusterCount == 0)
+        #expect(build.outcome.unresolvedClusterCount == 0)
+        #expect(build.outcome.refusedExampleCount == 0)
     }
 
-    func testAgreementClusterProducesNoExample() {
+    @Test func testAgreementClusterProducesNoExample() {
         let cluster = BestShotCalibrationCluster(
             clusterID: "agree",
             category: .landscape,
@@ -133,12 +134,12 @@ final class PersonalizationReportTests: XCTestCase {
         )
 
         let build = PersonalizationReport.fitExamples(from: [cluster], config: config)
-        XCTAssertTrue(build.examples.isEmpty)
-        XCTAssertEqual(build.outcome.agreementClusterCount, 1)
-        XCTAssertEqual(build.outcome.exampleCount, 0)
+        #expect(build.examples.isEmpty)
+        #expect(build.outcome.agreementClusterCount == 1)
+        #expect(build.outcome.exampleCount == 0)
     }
 
-    func testUnresolvedClusterProducesNoExampleAndIsCountedSeparately() {
+    @Test func testUnresolvedClusterProducesNoExampleAndIsCountedSeparately() {
         // Both candidates fall below the absolute sharpness floor, so the
         // ranker comes out `.unresolved` with no winner to disagree with.
         let cluster = BestShotCalibrationCluster(
@@ -152,15 +153,15 @@ final class PersonalizationReportTests: XCTestCase {
         )
 
         let build = PersonalizationReport.fitExamples(from: [cluster], config: config)
-        XCTAssertTrue(build.examples.isEmpty)
-        XCTAssertEqual(build.outcome.unresolvedClusterCount, 1)
-        XCTAssertEqual(build.outcome.agreementClusterCount, 0)
-        XCTAssertEqual(build.outcome.refusedExampleCount, 0)
+        #expect(build.examples.isEmpty)
+        #expect(build.outcome.unresolvedClusterCount == 1)
+        #expect(build.outcome.agreementClusterCount == 0)
+        #expect(build.outcome.refusedExampleCount == 0)
     }
 
     // MARK: - Below-minimum prefixes report as not engaged
 
-    func testSmallPrefixLeavesPersonalizationUnengaged() {
+    @Test func testSmallPrefixLeavesPersonalizationUnengaged() {
         // A handful of disagreement clusters — far below
         // PersonalWeightModel's minimum example count — must not move the
         // weights away from the global config.
@@ -196,98 +197,98 @@ final class PersonalizationReportTests: XCTestCase {
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: [3], global: config)
         let prefixResult = result.prefixResults[0]
 
-        XCTAssertFalse(prefixResult.personalizationEngaged)
-        XCTAssertEqual(prefixResult.personalizedConfig.weightsWithoutFaces, config.weightsWithoutFaces)
-        XCTAssertEqual(prefixResult.personalizedConfig.weightsWithFaces, config.weightsWithFaces)
+        #expect(!prefixResult.personalizationEngaged)
+        #expect(prefixResult.personalizedConfig.weightsWithoutFaces == config.weightsWithoutFaces)
+        #expect(prefixResult.personalizedConfig.weightsWithFaces == config.weightsWithFaces)
     }
 
     // MARK: - Folds parsing
 
-    func testFoldsParsingAcceptsValueInRange() throws {
-        XCTAssertEqual(try PersonalizationReport.parseFolds("5", corpusSize: 75), 5)
-        XCTAssertEqual(try PersonalizationReport.parseFolds("2", corpusSize: 2), 2)
+    @Test func testFoldsParsingAcceptsValueInRange() throws {
+        #expect(try PersonalizationReport.parseFolds("5", corpusSize: 75) == 5)
+        #expect(try PersonalizationReport.parseFolds("2", corpusSize: 2) == 2)
     }
 
-    func testFoldsParsingRejectsNonNumericToken() {
-        XCTAssertThrowsError(try PersonalizationReport.parseFolds("abc", corpusSize: 75)) { error in
-            XCTAssertEqual(error as? PersonalizationReport.FoldsParseError, .invalidValue("abc"))
+    @Test func testFoldsParsingRejectsNonNumericToken() {
+        #expect(throws: PersonalizationReport.FoldsParseError.invalidValue("abc")) {
+            try PersonalizationReport.parseFolds("abc", corpusSize: 75)
         }
     }
 
-    func testFoldsParsingRejectsZeroOneAndNegative() {
+    @Test func testFoldsParsingRejectsZeroOneAndNegative() {
         for token in ["0", "1", "-3"] {
-            XCTAssertThrowsError(try PersonalizationReport.parseFolds(token, corpusSize: 75), "token \(token)") { error in
-                guard case .outOfRange = error as? PersonalizationReport.FoldsParseError else {
-                    return XCTFail("expected .outOfRange for '\(token)', got \(error)")
-                }
+            let error = #expect(throws: PersonalizationReport.FoldsParseError.self, "token \(token)") {
+                try PersonalizationReport.parseFolds(token, corpusSize: 75)
+            }
+            guard let error else { continue }
+            guard case .outOfRange = error else {
+                Issue.record("expected .outOfRange for '\(token)', got \(error)")
+                continue
             }
         }
     }
 
-    func testFoldsParsingRejectsValueAboveCorpusSize() {
-        XCTAssertThrowsError(try PersonalizationReport.parseFolds("10", corpusSize: 5)) { error in
-            XCTAssertEqual(
-                error as? PersonalizationReport.FoldsParseError,
-                .outOfRange(10, corpusSize: 5)
-            )
+    @Test func testFoldsParsingRejectsValueAboveCorpusSize() {
+        #expect(throws: PersonalizationReport.FoldsParseError.outOfRange(10, corpusSize: 5)) {
+            try PersonalizationReport.parseFolds("10", corpusSize: 5)
         }
     }
 
     // MARK: - K-fold assignment
 
-    func testFoldAssignmentIsIndexModuloKOnClusterIDSortOrder() {
+    @Test func testFoldAssignmentIsIndexModuloKOnClusterIDSortOrder() {
         // Deliberately out of clusterID order, same as the prefix disjointness
         // test — the fold split must sort first, not trust array order.
         let corpus = makeCorpus(clusterIDs: ["e", "c", "a", "d", "b"])
         // Sorted: a(0) b(1) c(2) d(3) e(4); k=2 -> fold0={a,c,e} fold1={b,d}
         let result = PersonalizationReport.runKFold(corpus: corpus, folds: 2, global: config)
 
-        XCTAssertEqual(result.folds, 2)
-        XCTAssertEqual(result.foldResults.count, 2)
-        XCTAssertEqual(result.foldResults[0].evalClusterIDs, ["a", "c", "e"])
-        XCTAssertEqual(result.foldResults[1].evalClusterIDs, ["b", "d"])
+        #expect(result.folds == 2)
+        #expect(result.foldResults.count == 2)
+        #expect(result.foldResults[0].evalClusterIDs == ["a", "c", "e"])
+        #expect(result.foldResults[1].evalClusterIDs == ["b", "d"])
     }
 
-    func testFoldFitAndEvalSetsAreDisjointForEveryFold() {
+    @Test func testFoldFitAndEvalSetsAreDisjointForEveryFold() {
         let corpus = makeCorpus(clusterIDs: (0..<20).map { "c\($0)" })
         let result = PersonalizationReport.runKFold(corpus: corpus, folds: 5, global: config)
 
-        XCTAssertEqual(result.foldResults.count, 5)
+        #expect(result.foldResults.count == 5)
         for fold in result.foldResults {
-            XCTAssertTrue(Set(fold.fitClusterIDs).isDisjoint(with: Set(fold.evalClusterIDs)))
-            XCTAssertEqual(fold.fitClusterIDs.count + fold.evalClusterIDs.count, 20)
-            XCTAssertFalse(fold.evalClusterIDs.isEmpty)
+            #expect(Set(fold.fitClusterIDs).isDisjoint(with: Set(fold.evalClusterIDs)))
+            #expect(fold.fitClusterIDs.count + fold.evalClusterIDs.count == 20)
+            #expect(!fold.evalClusterIDs.isEmpty)
         }
 
         // Every cluster is evaluated in exactly one fold.
         let allEvalIDs = result.foldResults.flatMap(\.evalClusterIDs)
-        XCTAssertEqual(Set(allEvalIDs).count, 20)
-        XCTAssertEqual(allEvalIDs.count, 20)
+        #expect(Set(allEvalIDs).count == 20)
+        #expect(allEvalIDs.count == 20)
     }
 
-    func testKFoldAggregateSumsAcrossFolds() {
+    @Test func testKFoldAggregateSumsAcrossFolds() {
         let corpus = makeCorpus(clusterIDs: (0..<20).map { "c\($0)" })
         let result = PersonalizationReport.runKFold(corpus: corpus, folds: 5, global: config)
 
         let expectedClusterCount = result.foldResults.compactMap(\.baseline).reduce(0) { $0 + $1.clusterCount }
-        XCTAssertEqual(result.aggregateBaseline.clusterCount, expectedClusterCount)
-        XCTAssertEqual(result.aggregateBaseline.clusterCount, 20, "every cluster is held out exactly once")
+        #expect(result.aggregateBaseline.clusterCount == expectedClusterCount)
+        #expect(result.aggregateBaseline.clusterCount == 20, "every cluster is held out exactly once")
 
         let expectedCorrect = result.foldResults.compactMap(\.personalized).reduce(0) { $0 + $1.correctClusterCount }
-        XCTAssertEqual(result.aggregatePersonalized.correctClusterCount, expectedCorrect)
+        #expect(result.aggregatePersonalized.correctClusterCount == expectedCorrect)
     }
 
-    func testWithFacesBranchNeverEngagesWithoutFaceBearingClusters() {
+    @Test func testWithFacesBranchNeverEngagesWithoutFaceBearingClusters() {
         // No candidate in this corpus carries a face signal, so the
         // with-faces branch must never engage no matter how many folds run,
         // and the corpus-level face count must read zero.
         let corpus = makeCorpus(clusterIDs: (0..<20).map { "c\($0)" })
         let result = PersonalizationReport.runKFold(corpus: corpus, folds: 5, global: config)
 
-        XCTAssertFalse(result.withFacesEngagedAnyFold)
-        XCTAssertEqual(result.faceBearingClusterCount, 0)
+        #expect(!result.withFacesEngagedAnyFold)
+        #expect(result.faceBearingClusterCount == 0)
         for fold in result.foldResults {
-            XCTAssertFalse(fold.withFacesEngaged)
+            #expect(!fold.withFacesEngaged)
         }
     }
 

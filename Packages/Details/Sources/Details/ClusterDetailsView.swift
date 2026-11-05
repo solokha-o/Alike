@@ -118,12 +118,25 @@ public struct ClusterDetailsView: View {
             if !viewModel.isDeleting {
                 if viewModel.isActionBarVisible {
                     ToolbarItem(placement: .topBarTrailing) {
-                        reviewToggle
+                        ClusterReviewToggle(
+                            isConfirmed: viewModel.isReviewConfirmed,
+                            keepSummaryText: viewModel.keepSummaryText,
+                            hint: ClusterReviewToggle.hint(
+                                isConfirmed: viewModel.isReviewConfirmed,
+                                selectedCount: viewModel.selectedCount
+                            ),
+                            onToggle: { viewModel.toggleReviewConfirmation() }
+                        )
                     }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    overflowMenu
+                    ClusterDetailsOverflowMenu(
+                        showsSelectionActions: viewModel.isActionBarVisible && canSelectPhotos,
+                        hasSelection: viewModel.selectedCount > 0,
+                        onSelectAllExceptBest: { viewModel.selectAllExceptBest() },
+                        onClearSelection: { viewModel.clearSelection() }
+                    )
                 }
             }
         }
@@ -150,6 +163,7 @@ public struct ClusterDetailsView: View {
         }
         .fullScreenCover(item: $selectedAsset) { selection in
             FullscreenPhotoPagerView(assets: viewModel.assets, selectedIndex: selection.index)
+                .photoPagerTransition()
         }
         .sheet(item: $presentedPremiumFeature) { _ in
             SubscriptionPaywallView(
@@ -210,67 +224,10 @@ public struct ClusterDetailsView: View {
         .interactiveDismissDisabled(viewModel.isDeleting)
     }
 
-    /// Finishing the review is a state the user flips, not a step in a flow, so
-    /// it reads as a toggle next to the title instead of a third button
-    /// competing with the destructive action at the bottom.
-    private var reviewToggle: some View {
-        Button {
-            viewModel.toggleReviewConfirmation()
-        } label: {
-            Image(systemName: viewModel.isReviewConfirmed ? "checkmark.seal.fill" : "checkmark.seal")
-                .symbolEffect(.bounce, value: reduceMotion ? false : viewModel.isReviewConfirmed)
-        }
-        .tint(viewModel.isReviewConfirmed ? Color.statusReviewed : nil)
-        .accessibilityLabel(Text(
-            viewModel.isReviewConfirmed
-                ? DetailsL10n.Common.reviewed
-                : DetailsL10n.ClusterDetails.markReviewed
-        ))
-        .accessibilityValue(Text(viewModel.keepSummaryText))
-        .accessibilityHint(Text(reviewToggleHint))
-        .accessibilityAddTraits(viewModel.isReviewConfirmed ? [.isSelected] : [])
-    }
-
-    private var reviewToggleHint: String {
-        if viewModel.isReviewConfirmed {
-            return DetailsL10n.ClusterDetails.doubleTapReopenThisCluster
-        }
-        return viewModel.selectedCount == 0
-            ? DetailsL10n.ClusterDetails.finishesReviewKeepsEveryPhoto
-            : DetailsL10n.ClusterDetails.finishesReviewKeepsPhotosDid
-    }
-
-    /// Two labelled sections instead of one flat list: acting on the selection
-    /// and changing how the grid looks are different jobs, and the column
-    /// options stay folded into a submenu so they never outnumber the actions.
-    private var overflowMenu: some View {
-        Menu {
-            if viewModel.isActionBarVisible {
-                Section(DetailsL10n.ClusterDetails.selection) {
-                    Button {
-                        viewModel.selectAllExceptBest()
-                    } label: {
-                        Label(DetailsL10n.ClusterDetails.selectAllExceptBest, systemImage: "checkmark.circle")
-                    }
-
-                    if viewModel.selectedCount > 0 {
-                        Button {
-                            viewModel.clearSelection()
-                        } label: {
-                            Label(DetailsL10n.Common.clearSelection, systemImage: "xmark.circle")
-                        }
-                    }
-                }
-            }
-
-            Section(DetailsL10n.ClusterDetails.view) {
-                PhotoGridColumnsPicker()
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-        }
-        .accessibilityLabel(Text(DetailsL10n.ClusterDetails.moreOptions))
-        .accessibilityHint(Text(DetailsL10n.ClusterDetails.selectionShortcutsAndGridLayout))
+    /// One photo of a cluster is always kept, and that photo is the Best Shot,
+    /// so nothing can be selected until there is one.
+    private var canSelectPhotos: Bool {
+        !viewModel.bestShotAssetID.isEmpty
     }
 
     private var actionBarTransition: AnyTransition {
@@ -345,6 +302,7 @@ public struct ClusterDetailsView: View {
                                     && viewModel.isBestShot(asset.localIdentifier),
                                 bestShotConfidence: viewModel.bestShotConfidence,
                                 isSelected: viewModel.isSelected(asset.localIdentifier),
+                                canSelect: canSelectPhotos,
                                 onToggleSelection: {
                                     viewModel.toggleSelection(for: asset.localIdentifier)
                                 },
@@ -373,7 +331,16 @@ public struct ClusterDetailsView: View {
                                 onRevertEnhancement: viewModel.isBestShot(asset.localIdentifier)
                                     && viewModel.isEnhancementActionVisible
                                     ? { Task { await viewModel.revertEnhancement() } }
-                                    : nil
+                                    : nil,
+                                swipeActions: PhotoTileSwipeAction.available(
+                                    isSelected: viewModel.isSelected(asset.localIdentifier),
+                                    isBestShot: viewModel.isBestShot(asset.localIdentifier),
+                                    canSelect: canSelectPhotos,
+                                    canMakeBestShot: true
+                                ),
+                                onSwipeAction: { action in
+                                    action.perform(on: viewModel, assetID: asset.localIdentifier)
+                                }
                             )
                             .transition(
                                 .asymmetric(
@@ -383,6 +350,7 @@ public struct ClusterDetailsView: View {
                             )
                         }
                     }
+                    .photoTileSwipeActionsContainer()
                 }
             }
         }
@@ -420,517 +388,6 @@ private struct SelectedAsset: Identifiable {
     var id: String { asset.localIdentifier }
 }
 
-struct SelectablePhotoThumbnail: View {
-    let asset: PHAsset
-    let thumbnailAspectRatio: CGFloat
-    let isBestShot: Bool
-    var bestShotConfidence: BestShotConfidence = .automatic
-    let isSelected: Bool
-    let onToggleSelection: () -> Void
-    let onOpenOriginal: () -> Void
-    var onMakeBestShot: (() -> Void)?
-    var isEnhanced = false
-    var enhancementState: PhotoEnhancementState = .unavailable
-    var onEnhance: (() -> Void)?
-    var onRevertEnhancement: (() -> Void)?
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    @State private var image: UIImage?
-    @State private var imageLoadState = PhotoImageLoadState()
-    @State private var imageLoadAttempt = 0
-    @State private var showingMetadata = false
-
-    var body: some View {
-        ZStack {
-            Button(action: onToggleSelection) {
-                PhotoThumbnailAspectRatioLayout(aspectRatio: thumbnailAspectRatio) {
-                    ZStack {
-                        Color.secondary.opacity(ColorOpacity.placeholderFill)
-
-                        if let image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } else if imageLoadState.phase == .loading {
-                            ProgressView()
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .clipShape(thumbnailShape)
-                .overlay {
-                    if isSelected {
-                        thumbnailShape
-                            .fill(Color.accent.opacity(ColorOpacity.selectionOverlay))
-                            .transition(.opacity)
-                    }
-                }
-                .overlay {
-                    thumbnailShape
-                        .stroke(borderColor, lineWidth: borderLineWidth)
-                }
-                .overlay(alignment: .topLeading) {
-                    if isBestShot {
-                        Label {
-                            Text(bestShotConfidence.badgeTitle)
-                                .foregroundStyle(.primary)
-                                .lineLimit(2)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                        } icon: {
-                            Image(systemName: bestShotConfidence.badgeSymbolName)
-                                .foregroundStyle(Color.heroGold)
-                        }
-                            .font(.caption.bold())
-                            .padding(.horizontal, Spacing.xSmall)
-                            .padding(.vertical, Spacing.xxSmall)
-                            .background(.regularMaterial, in: Capsule())
-                            .overlay {
-                                Capsule()
-                                    .stroke(Color.heroGold.opacity(0.7), lineWidth: 1)
-                            }
-                            .padding(Spacing.xSmall)
-                            .transition(bestShotBadgeTransition)
-                    }
-                }
-                .overlay(alignment: .bottomLeading) {
-                    if isEnhanced {
-                        enhancedBadge
-                            .padding(Spacing.xSmall)
-                            .transition(.scale(scale: 0.92).combined(with: .opacity))
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if enhancementState.isBusy {
-                        ProgressView()
-                            .padding(Spacing.small)
-                            .background(.regularMaterial, in: Circle())
-                    }
-                }
-                .animation(.appInteractiveFast, value: isEnhanced)
-                .overlay(alignment: .topTrailing) {
-                    if isSelected {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.title3)
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white, Color.accent)
-                            .background(.white, in: Circle())
-                            .padding(Spacing.xSmall)
-                            .transition(.scale(scale: 0.7).combined(with: .opacity))
-                    }
-                }
-                .animation(.appInteractiveFast, value: isSelected)
-                .animation(.appInteractiveFast, value: isBestShot)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text(accessibilityLabel))
-            .accessibilityValue(Text(accessibilityValue))
-            .accessibilityHint(Text(accessibilityHint))
-            .accessibilityAddTraits(isSelected ? [.isSelected] : [])
-            .accessibilityActions {
-                if let onMakeBestShot, !isBestShot {
-                    Button(DetailsL10n.ClusterDetails.makeBestShot, action: onMakeBestShot)
-                }
-                if isEnhanced, let onRevertEnhancement {
-                    Button(DetailsL10n.ClusterDetails.revertToOriginal, action: onRevertEnhancement)
-                } else if let onEnhance {
-                    Button(DetailsL10n.ClusterDetails.enhance, action: onEnhance)
-                }
-            }
-
-            if imageLoadState.phase == .failed {
-                PhotoLoadFailureView {
-                    imageLoadAttempt += 1
-                }
-                .background(.regularMaterial, in: thumbnailShape)
-            }
-        }
-        .contentShape(.interaction, thumbnailShape)
-        .contentShape(.contextMenuPreview, thumbnailShape)
-        .contextMenu {
-            enhancementMenuItems
-
-            if let onMakeBestShot, !isBestShot {
-                Button {
-                    onMakeBestShot()
-                } label: {
-                    Label {
-                        Text(DetailsL10n.ClusterDetails.makeBestShot)
-                    } icon: {
-                        Image(systemName: "star")
-                    }
-                }
-            }
-
-            Button {
-                showingMetadata = true
-            } label: {
-                Label {
-                    Text(DetailsL10n.ClusterDetails.showInfo)
-                } icon: {
-                    Image(systemName: "info.circle")
-                }
-            }
-            
-            Button {
-                onOpenOriginal()
-            } label: {
-                Label {
-                    Text(DetailsL10n.ClusterDetails.openOriginal)
-                } icon: {
-                    Image(systemName: "arrow.up.forward.square")
-                }
-            }
-        } preview: {
-            contextMenuPreview
-        }
-        .sheet(isPresented: $showingMetadata) {
-            MetadataView(asset: asset)
-                .presentationDetents([.medium, .large])
-        }
-        .task(id: imageLoadTaskID) {
-            await loadThumbnail()
-        }
-    }
-
-    private var borderColor: Color {
-        if isBestShot {
-            return .heroGold.opacity(0.9)
-        }
-        if isSelected {
-            return .accent
-        }
-        return .clear
-    }
-
-    private var borderLineWidth: CGFloat {
-        (isBestShot || isSelected) ? 2 : 0
-    }
-
-    /// A settle-in fade rather than a pop when the measured ranking lands;
-    /// under reduce motion the scale drops and only the fade remains.
-    private var bestShotBadgeTransition: AnyTransition {
-        reduceMotion ? .opacity : .scale(scale: 0.92).combined(with: .opacity)
-    }
-
-    private var thumbnailShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: CornerRadius.small, style: .continuous)
-    }
-
-    private var thumbnailTargetSize: CGSize {
-        thumbnailAspectRatio == 1
-            ? CGSize(width: 1_000, height: 1_000)
-            : CGSize(width: 300, height: 300)
-    }
-
-    /// The modification date is part of the key because it is part of the
-    /// thumbnail cache key: after Apply or Revert the view model hands over a
-    /// re-read asset, and only a changed key re-runs the load instead of
-    /// leaving the pre-edit picture on the tile.
-    private var imageLoadTaskID: String {
-        "\(asset.localIdentifier)#\(asset.modificationDate?.timeIntervalSinceReferenceDate ?? 0)#\(imageLoadAttempt)"
-    }
-
-    @MainActor
-    private func loadThumbnail() async {
-        image = nil
-        let generation = imageLoadState.begin()
-        do {
-            guard let loadedImage = try await asset.loadImage(targetSize: thumbnailTargetSize) else {
-                imageLoadState.resolve(.failed, generation: generation)
-                return
-            }
-            guard imageLoadState.resolve(.loaded, generation: generation) else { return }
-            image = loadedImage
-        } catch is CancellationError {
-            imageLoadState.resolve(.cancelled, generation: generation)
-        } catch {
-            imageLoadState.resolve(.failed, generation: generation)
-        }
-    }
-
-    private var contextMenuPreview: some View {
-        ZStack {
-            Color.secondary.opacity(ColorOpacity.placeholderFill)
-
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } else if imageLoadState.phase == .loading {
-                ProgressView()
-            } else {
-                Image(systemName: "photo")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .frame(
-            width: contextMenuPreviewWidth,
-            height: contextMenuPreviewWidth / thumbnailAspectRatio
-        )
-        .clipShape(thumbnailShape)
-    }
-
-    private var contextMenuPreviewWidth: CGFloat { 240 }
-
-    /// One step in each direction: enhance, or put the original back.
-    @ViewBuilder
-    private var enhancementMenuItems: some View {
-        if isEnhanced, let onRevertEnhancement {
-            Button(action: onRevertEnhancement) {
-                Label {
-                    Text(DetailsL10n.ClusterDetails.revertToOriginal)
-                } icon: {
-                    Image(systemName: "arrow.uturn.backward")
-                }
-            }
-            .disabled(enhancementState.isBusy)
-        } else if let onEnhance {
-            Button(action: onEnhance) {
-                Label {
-                    Text(DetailsL10n.ClusterDetails.enhance)
-                } icon: {
-                    Image(systemName: "wand.and.stars")
-                }
-            }
-            .disabled(enhancementState.isBusy)
-        }
-    }
-
-    /// Permanent marker that this photo is showing Alike's enhanced version.
-    private var enhancedBadge: some View {
-        Label {
-            Text(DetailsL10n.ClusterDetails.enhanced)
-                .foregroundStyle(.primary)
-        } icon: {
-            Image(systemName: "wand.and.stars")
-                .foregroundStyle(Color.accent)
-        }
-        .font(.caption2.bold())
-        .padding(.horizontal, Spacing.xSmall)
-        .padding(.vertical, Spacing.xxSmall)
-        .background(.regularMaterial, in: Capsule())
-    }
-
-    private var accessibilityLabel: String {
-        if isBestShot {
-            return bestShotConfidence.badgeTitle
-        }
-        if isSelected {
-            return DetailsL10n.ClusterDetails.selectedForCleanupReview
-        }
-        return DetailsL10n.ClusterDetails.notSelected
-    }
-
-    private var accessibilityValue: String {
-        if isBestShot {
-            return bestShotConfidence.badgeTitle
-        }
-        return isSelected ? DetailsL10n.ClusterDetails.selected : DetailsL10n.ClusterDetails.notSelected
-    }
-
-    private var accessibilityHint: String {
-        if isBestShot {
-            return DetailsL10n.ClusterDetails.thisPhotoKeptAsBest
-        }
-        return isSelected
-            ? DetailsL10n.ClusterDetails.doubleTapRemoveThisPhoto
-            : DetailsL10n.ClusterDetails.doubleTapSelectThisPhoto
-    }
-}
-
-// MARK: - Metadata View
-struct MetadataView: View {
-    let asset: PHAsset
-    @Environment(\.dismiss) private var dismiss
-
-    private var metadata: AssetMetadata {
-        asset.displayMetadata
-    }
-    
-    var body: some View {
-        RoutedNavigationStack {
-            List {
-                PhotoInfoPreview(asset: asset)
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.clear)
-
-                Section {
-                    LabeledContent {
-                        Text(metadata.resolution)
-                    } label: {
-                        Text(DetailsL10n.ClusterDetails.resolution)
-                    }
-
-                    LabeledContent {
-                        Text(formattedMegapixels)
-                    } label: {
-                        Text(DetailsL10n.ClusterDetails.megapixels)
-                    }
-
-                    LabeledContent {
-                        Text(photoType)
-                    } label: {
-                        Text(DetailsL10n.ClusterDetails.type)
-                    }
-
-                    LabeledContent {
-                        Text(metadata.isFavorite ? DetailsL10n.ClusterDetails.yes : DetailsL10n.ClusterDetails.no)
-                    } label: {
-                        Text(DetailsL10n.ClusterDetails.favorite)
-                    }
-                } header: {
-                    Text(DetailsL10n.ClusterDetails.details)
-                }
-
-                if metadata.creationDate != nil || metadata.modificationDate != nil {
-                    Section {
-                        if metadata.creationDate != nil {
-                            LabeledContent {
-                                Text(metadata.formattedCreationDate)
-                            } label: {
-                                Text(DetailsL10n.ClusterDetails.created)
-                            }
-                        }
-
-                        if let modified = metadata.formattedModificationDate {
-                            LabeledContent {
-                                Text(modified)
-                            } label: {
-                                Text(DetailsL10n.ClusterDetails.modified)
-                            }
-                        }
-                    } header: {
-                        Text(DetailsL10n.ClusterDetails.dates)
-                    }
-                }
-
-                if let location = metadata.location {
-                    PhotoInfoLocationSection(location: location)
-                }
-            }
-            .navigationTitle(Text(DetailsL10n.ClusterDetails.photoInfo))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text(DetailsL10n.ClusterDetails.done)
-                    }
-                }
-            }
-        }
-    }
-
-    private var formattedMegapixels: String {
-        let value = metadata.megapixelCount.formatted(
-            FloatingPointFormatStyle<Double>.alikeDecimal.precision(.fractionLength(0...1))
-        )
-        return String(format: DetailsL10n.ClusterDetails.mp, value)
-    }
-
-    private var photoType: String {
-        guard !metadata.photoTraits.isEmpty else {
-            return DetailsL10n.ClusterDetails.photo
-        }
-
-        return metadata.photoTraits.map { trait in
-            switch trait {
-            case .screenshot:
-                DetailsL10n.ClusterDetails.screenshot
-            case .panorama:
-                DetailsL10n.ClusterDetails.panorama
-            case .livePhoto:
-                DetailsL10n.ClusterDetails.livePhoto
-            case .hdr:
-                DetailsL10n.ClusterDetails.hdr
-            case .depthEffect:
-                DetailsL10n.ClusterDetails.depthEffect
-            }
-        }
-        .joined(separator: ", ")
-    }
-}
-
-private struct PhotoInfoPreview: View {
-    let asset: PHAsset
-
-    @State private var image: UIImage?
-    @State private var isLoading = true
-
-    var body: some View {
-        ZStack {
-            Color.secondary.opacity(ColorOpacity.placeholderFill)
-
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .accessibilityLabel(Text(DetailsL10n.Common.photoPreview))
-            } else if isLoading {
-                ProgressView()
-                    .accessibilityLabel(Text(DetailsL10n.Common.loadingPhotoPreview))
-            } else {
-                Image(systemName: "photo")
-                    .font(.largeTitle)
-                    .foregroundStyle(.secondary)
-                    .accessibilityLabel(Text(DetailsL10n.Common.photoPreviewUnavailable))
-            }
-        }
-        .frame(height: 180)
-        .frame(maxWidth: .infinity)
-        .task(id: asset.localIdentifier) {
-            defer { isLoading = false }
-            image = try? await asset.loadImage(targetSize: CGSize(width: 800, height: 600))
-        }
-    }
-}
-
-private struct PhotoInfoLocationSection: View {
-    let location: AssetLocation
-
-    private var coordinate: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-    }
-
-    private var region: MKCoordinateRegion {
-        MKCoordinateRegion(
-            center: coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        )
-    }
-
-    var body: some View {
-        Section {
-            Map(initialPosition: .region(region), interactionModes: []) {
-                Marker(DetailsL10n.ClusterDetails.photoLocation, coordinate: coordinate)
-            }
-            .frame(height: 160)
-            .listRowInsets(EdgeInsets())
-            .accessibilityLabel(Text(DetailsL10n.ClusterDetails.mapShowingWherePhotoWas))
-
-            Button {
-                openInMaps()
-            } label: {
-                Label(DetailsL10n.ClusterDetails.openInMaps, systemImage: "map")
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .accessibilityHint(Text(DetailsL10n.ClusterDetails.opensPhotoLocationMaps))
-        } header: {
-            Text(DetailsL10n.ClusterDetails.location)
-        }
-    }
-
-    private func openInMaps() {
-        let placemark = MKPlacemark(coordinate: coordinate)
-        let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = DetailsL10n.ClusterDetails.photoLocation
-        mapItem.openInMaps()
-    }
-}
-
 /// Identifies one presentation of the enhancement preview sheet.
 private struct EnhancementRequest: Identifiable {
     let id = UUID()
@@ -962,12 +419,6 @@ public struct ClusterDetailsView: View {
         } description: {
             Text(DetailsL10n.ClusterDetails.clusterDetailsAvailableIOS)
         }
-    }
-}
-
-struct MetadataView: View {
-    var body: some View {
-        EmptyView()
     }
 }
 

@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 /// This package owns its own string catalog (localization foundation, task 39).
 ///
@@ -37,6 +38,19 @@ struct LocalizationCatalog {
 
     let strings: [String: [String: Any]]
 
+    /// A value the catalog was expected to carry and did not.
+    ///
+    /// The catalog helper stays free of any test framework: a missing value is a thrown
+    /// error, and the calling test records it as an issue with this description.
+    struct MissingValue: Error, CustomStringConvertible {
+        let description: String
+    }
+
+    static func unwrap<Value>(_ value: Value?, _ message: @autoclosure () -> String = "unexpected nil") throws -> Value {
+        guard let value else { throw MissingValue(description: message()) }
+        return value
+    }
+
     static func packageRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
             .deletingLastPathComponent()  // Tests/<target>Tests
@@ -49,7 +63,7 @@ struct LocalizationCatalog {
             .appendingPathComponent("Sources/\(targetName)/Resources/Localizable.xcstrings")
         let json = try JSONSerialization.jsonObject(with: Data(contentsOf: url))
         let strings = (json as? [String: Any])?["strings"] as? [String: [String: Any]]
-        return LocalizationCatalog(strings: try XCTUnwrap(strings))
+        return LocalizationCatalog(strings: try Self.unwrap(strings))
     }
 
     /// The keys the generated wrapper resolves, read back out of the wrapper source.
@@ -65,8 +79,8 @@ struct LocalizationCatalog {
     }
 
     func localizations(of key: String) throws -> [String: [String: Any]] {
-        let entry = try XCTUnwrap(strings[key], "missing key \(key)")
-        return try XCTUnwrap(
+        let entry = try Self.unwrap(strings[key], "missing key \(key)")
+        return try Self.unwrap(
             entry["localizations"] as? [String: [String: Any]],
             "no localizations for \(key)"
         )
@@ -77,9 +91,9 @@ struct LocalizationCatalog {
     }
 
     func plural(_ key: String, language: String, category: String) throws -> String {
-        let unit = try XCTUnwrap(plurals(key, language: language)[category] as? [String: Any])
-        let stringUnit = try XCTUnwrap(unit["stringUnit"] as? [String: Any])
-        return try XCTUnwrap(stringUnit["value"] as? String)
+        let unit = try Self.unwrap(plurals(key, language: language)[category] as? [String: Any])
+        let stringUnit = try Self.unwrap(unit["stringUnit"] as? [String: Any])
+        return try Self.unwrap(stringUnit["value"] as? String)
     }
 
     /// A single `stringUnit` value, or nil for a plural entry.
@@ -210,30 +224,30 @@ struct LocalizationCatalog {
     }
 
     private func plurals(_ key: String, language: String) throws -> [String: Any] {
-        let variations = try XCTUnwrap(
+        let variations = try Self.unwrap(
             localizations(of: key)[language]?["variations"] as? [String: Any],
             "\(key) has no variations in \(language)"
         )
-        return try XCTUnwrap(variations["plural"] as? [String: Any])
+        return try Self.unwrap(variations["plural"] as? [String: Any])
     }
 }
 
-final class LocalizationCatalogTests: XCTestCase {
-    func testEveryWrapperKeyExistsInTheCatalog() throws {
+@Suite struct LocalizationCatalogTests {
+    @Test func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)
 
-        XCTAssertTrue(
+        #expect(
             missing.isEmpty,
             "wrapper resolves keys the catalog does not define: \(missing.sorted())"
         )
     }
 
-    func testEveryKeyIsNamespacedToThisModule() throws {
+    @Test func testEveryKeyIsNamespacedToThisModule() throws {
         let catalog = try LocalizationCatalog.load()
         let foreign = catalog.strings.keys.filter { !$0.hasPrefix(LocalizationCatalog.modulePrefix) }
 
-        XCTAssertTrue(
+        #expect(
             foreign.isEmpty,
             "keys outside the \(LocalizationCatalog.modulePrefix) namespace: \(foreign.sorted())"
         )
@@ -241,7 +255,7 @@ final class LocalizationCatalogTests: XCTestCase {
 
     /// The check that catches a catalog which silently missed one of the shipped languages —
     /// the failure mode of a translation pass is a locale that is 99% there, not one that is absent.
-    func testEveryKeyCarriesEveryShippedLanguage() throws {
+    @Test func testEveryKeyCarriesEveryShippedLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         var incomplete: [String] = []
 
@@ -255,13 +269,13 @@ final class LocalizationCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(incomplete.isEmpty, "incomplete entries: \(incomplete)")
+        #expect(incomplete.isEmpty, "incomplete entries: \(incomplete)")
     }
 
     /// A plural key missing `many` in `fr` or `pt-BR` does not fail to build — it silently falls
     /// back to `other`, which is right for those two only by accident and wrong the moment a
     /// language with real distinctions is added.
-    func testEveryPluralKeyDeclaresEveryCategoryOfItsLanguage() throws {
+    @Test func testEveryPluralKeyDeclaresEveryCategoryOfItsLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         var wrong: [String] = []
 
@@ -277,12 +291,12 @@ final class LocalizationCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(wrong.isEmpty, "wrong plural categories: \(wrong)")
+        #expect(wrong.isEmpty, "wrong plural categories: \(wrong)")
     }
 
     /// The counterpart of the check above: a key that is plural in English has to be plural in
     /// every language, or that language quietly ships one grammatical form for every count.
-    func testPluralKeysArePluralInEveryLanguage() throws {
+    @Test func testPluralKeysArePluralInEveryLanguage() throws {
         let catalog = try LocalizationCatalog.load()
         var flat: [String] = []
 
@@ -295,12 +309,12 @@ final class LocalizationCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(flat.isEmpty, "plural in en but not in: \(flat)")
+        #expect(flat.isEmpty, "plural in en but not in: \(flat)")
     }
     /// Format specifiers have to survive translation, but their *order* does not.
     ///
     /// Turkish writes a percentage as `%50`, so `tr` legitimately carries
-    /// `Kitaplığın taranıyor… %%%d` where English carries `Scanning your library… %d%%`.
+    /// `Arşivin taranıyor… %%%d` where English carries `Scanning your library… %d%%`.
     /// Comparing the rendered shape position by position would call that a bug; comparing
     /// the multiset of conversion specifiers plus the number of literal `%%` calls it what
     /// it is — the same format, written the way the language writes it.
@@ -312,7 +326,7 @@ final class LocalizationCatalogTests: XCTestCase {
     /// Plural variations are checked category by category, not skipped: each category is a
     /// format string in its own right, and the keys carrying two arguments — a count and a
     /// formatted byte count — are exactly the ones that live in variations.
-    func testFormatSpecifiersSurviveEveryTranslation() throws {
+    @Test func testFormatSpecifiersSurviveEveryTranslation() throws {
         let catalog = try LocalizationCatalog.load()
         var mismatched: [String] = []
 
@@ -345,6 +359,6 @@ final class LocalizationCatalogTests: XCTestCase {
             }
         }
 
-        XCTAssertTrue(mismatched.isEmpty, "format specifiers changed in translation: \(mismatched)")
+        #expect(mismatched.isEmpty, "format specifiers changed in translation: \(mismatched)")
     }
 }

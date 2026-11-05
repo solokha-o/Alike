@@ -1,19 +1,20 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
+@Suite struct BestShotPersonalizedScoringConfigProviderTests {
     private let global = PhotoQualityScoringConfig.current
 
-    func testNoStoredWeightsReturnsGlobalConfigUnchanged() async {
+    @Test func testNoStoredWeightsReturnsGlobalConfigUnchanged() async {
         let repository = MockBestShotPersonalizationRepository()
         let provider = BestShotPersonalizedScoringConfigProvider(repository: repository, global: global)
 
         let config = await provider.config()
 
-        XCTAssertEqual(config, global)
+        #expect(config == global)
     }
 
-    func testStoredWeightsAreCarriedIntoTheConfig() async {
+    @Test func testStoredWeightsAreCarriedIntoTheConfig() async {
         let repository = MockBestShotPersonalizationRepository()
         let personal = BestShotPersonalWeights(
             withFaces: PhotoQualityScoringConfig.Weights(
@@ -39,14 +40,14 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
 
         let config = await provider.config()
 
-        XCTAssertEqual(config.weightsWithFaces, personal.withFaces)
-        XCTAssertEqual(config.weightsWithoutFaces, personal.withoutFaces)
+        #expect(config.weightsWithFaces == personal.withFaces)
+        #expect(config.weightsWithoutFaces == personal.withoutFaces)
         // Everything else about the config is untouched.
-        XCTAssertEqual(config.scoringModelVersion, global.scoringModelVersion)
-        XCTAssertEqual(config.favoriteBonus, global.favoriteBonus)
+        #expect(config.scoringModelVersion == global.scoringModelVersion)
+        #expect(config.favoriteBonus == global.favoriteBonus)
     }
 
-    func testResetMakesTheNextConfigCallGlobalAgain() async {
+    @Test func testResetMakesTheNextConfigCallGlobalAgain() async {
         let repository = MockBestShotPersonalizationRepository()
         let personal = BestShotPersonalWeights(
             withFaces: PhotoQualityScoringConfig.Weights(
@@ -70,17 +71,17 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await repository.setWeights(personal)
         let provider = BestShotPersonalizedScoringConfigProvider(repository: repository, global: global)
         let personalizedConfig = await provider.config()
-        XCTAssertNotEqual(personalizedConfig, global)
+        #expect(personalizedConfig != global)
 
         await provider.reset()
         let configAfterReset = await provider.config()
 
-        XCTAssertEqual(configAfterReset, global)
+        #expect(configAfterReset == global)
         let didReset = await repository.didReset
-        XCTAssertTrue(didReset)
+        #expect(didReset)
     }
 
-    func testRecordOverrideRefitsAndCachesTheResult() async {
+    @Test func testRecordOverrideRefitsAndCachesTheResult() async {
         let repository = MockBestShotPersonalizationRepository()
         let provider = BestShotPersonalizedScoringConfigProvider(repository: repository, global: global)
 
@@ -102,13 +103,13 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         }
 
         let storedWeights = await repository.weights
-        XCTAssertNotNil(storedWeights)
-        XCTAssertEqual(storedWeights?.withoutFacesExampleCount, 20)
+        #expect(storedWeights != nil)
+        #expect(storedWeights?.withoutFacesExampleCount == 20)
 
         // The cache reflects the fit without another repository round trip.
         let config = await provider.config()
-        XCTAssertEqual(config.weightsWithoutFaces, storedWeights?.withoutFaces)
-        XCTAssertNotEqual(config.weightsWithoutFaces, global.weightsWithoutFaces)
+        #expect(config.weightsWithoutFaces == storedWeights?.withoutFaces)
+        #expect(config.weightsWithoutFaces != global.weightsWithoutFaces)
     }
 
     // MARK: - Concurrency: reset and overlapping overrides
@@ -141,7 +142,7 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
     /// 11 examples are stored; under serialisation B cannot even record its
     /// example until A is done, which is what the mid-test count assertion
     /// pins.
-    func testAnOlderExampleSnapshotCannotOverwriteANewerFit() async {
+    @Test func testAnOlderExampleSnapshotCannotOverwriteANewerFit() async {
         let repository = GatedBestShotPersonalizationRepository()
         await repository.setExamples((0..<9).map(staleExample(index:)))
         await repository.recordGate.open() // Not the resumption point under test.
@@ -159,9 +160,8 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         _ = await provider.waitForCommitWaiters(1)
 
         let examplesWhileAIsOpen = await repository.storedExampleCount
-        XCTAssertEqual(
-            examplesWhileAIsOpen,
-            10,
+        #expect(
+            examplesWhileAIsOpen == 10,
             "a newer override must not take its own snapshot while an older transaction is still open"
         )
 
@@ -170,17 +170,15 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await taskB.value
 
         let storedExamples = await repository.storedExampleCount
-        XCTAssertEqual(storedExamples, 11)
+        #expect(storedExamples == 11)
         let storedWeights = await repository.weights
-        XCTAssertEqual(
-            storedWeights?.withoutFacesExampleCount,
-            11,
+        #expect(
+            storedWeights?.withoutFacesExampleCount == 11,
             "the persisted fit must be the newer one, over all 11 examples"
         )
         let config = await provider.config()
-        XCTAssertEqual(
-            config.weightsWithoutFaces,
-            storedWeights?.withoutFaces,
+        #expect(
+            config.weightsWithoutFaces == storedWeights?.withoutFaces,
             "the published cache and the repository must agree on the newer fit"
         )
     }
@@ -192,7 +190,7 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
     /// immediately, rather than only once the reset's own turn on the lock
     /// comes round (by which point the queued call would already have
     /// committed).
-    func testAnOverrideQueuedBehindAnOpenTransactionIsDroppedWhenAResetArrives() async {
+    @Test func testAnOverrideQueuedBehindAnOpenTransactionIsDroppedWhenAResetArrives() async {
         let repository = GatedBestShotPersonalizationRepository()
         await repository.loadExamplesGate.open() // Only `record()` is gated here.
         await repository.saveWeightsGate.open()
@@ -220,17 +218,16 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await resetTask.value
 
         let recordedExamples = await repository.recordCallCount
-        XCTAssertEqual(
-            recordedExamples,
-            1,
+        #expect(
+            recordedExamples == 1,
             "the queued override must be abandoned at the lock, without even recording its example"
         )
         let writes = await repository.saveWeightsCallCount
-        XCTAssertEqual(writes, 0, "the reset invalidates both in-flight overrides, so neither may persist a fit")
+        #expect(writes == 0, "the reset invalidates both in-flight overrides, so neither may persist a fit")
         let didReset = await repository.didReset
-        XCTAssertTrue(didReset)
+        #expect(didReset)
         let configAfterRace = await provider.config()
-        XCTAssertEqual(configAfterRace, global, "the reset must win: nothing personalised survives it")
+        #expect(configAfterRace == global, "the reset must win: nothing personalised survives it")
     }
 
     /// The same guard one step later: here the override already holds the
@@ -239,7 +236,7 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
     /// repository write at all — not write and then have something undo the
     /// write, which is indistinguishable from the outside if you only look
     /// at the stored weights.
-    func testAnOpenTransactionThatSeesAResetArriveCommitsNothing() async {
+    @Test func testAnOpenTransactionThatSeesAResetArriveCommitsNothing() async {
         let repository = GatedBestShotPersonalizationRepository()
         await repository.setExamples([staleExample(index: 0)])
         await repository.recordGate.open()
@@ -261,16 +258,16 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await resetTask.value
 
         let writes = await repository.saveWeightsCallCount
-        XCTAssertEqual(writes, 0, "the transaction must bail out at its recheck, before writing anything")
+        #expect(writes == 0, "the transaction must bail out at its recheck, before writing anything")
         let storedWeights = await repository.weights
-        XCTAssertNil(storedWeights, "a fit invalidated by a reset must not repopulate persisted weights")
+        #expect(storedWeights == nil, "a fit invalidated by a reset must not repopulate persisted weights")
         let survivingExamples = await repository.storedExampleCount
-        XCTAssertEqual(survivingExamples, 0, "the reset clears the example the stale call did manage to record")
+        #expect(survivingExamples == 0, "the reset clears the example the stale call did manage to record")
         let configAfterRace = await provider.config()
-        XCTAssertEqual(configAfterRace, global, "the published config must also stay un-personalised")
+        #expect(configAfterRace == global, "the published config must also stay un-personalised")
     }
 
-    func testResetStaysEffectiveAgainstAConfigLoadThatResumesAfterIt() async {
+    @Test func testResetStaysEffectiveAgainstAConfigLoadThatResumesAfterIt() async {
         let repository = GatedBestShotPersonalizationRepository()
         let stalePersonal = BestShotPersonalWeights(
             withFaces: PhotoQualityScoringConfig.Weights(
@@ -302,16 +299,16 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await repository.loadWeightsGate.open()
         let raceResult = await configTask.value
 
-        XCTAssertEqual(raceResult, global, "a config() started before reset must not surface stale weights once it resumes")
+        #expect(raceResult == global, "a config() started before reset must not surface stale weights once it resumes")
 
         let configAfterRace = await provider.config()
-        XCTAssertEqual(configAfterRace, global, "the cache must reflect the reset, not the stale load")
+        #expect(configAfterRace == global, "the cache must reflect the reset, not the stale load")
     }
 
     /// `reset()` waits for an in-flight transaction instead of interleaving
     /// with it — the cost the serialisation deliberately accepts, and the
     /// reason `cache` and the repository can never disagree.
-    func testAResetRequestedDuringAnOpenTransactionWaitsForItInsteadOfInterleaving() async {
+    @Test func testAResetRequestedDuringAnOpenTransactionWaitsForItInsteadOfInterleaving() async {
         let repository = GatedBestShotPersonalizationRepository()
         await repository.recordGate.open()
         await repository.loadExamplesGate.open() // Only `saveWeights` is gated in this test.
@@ -327,8 +324,8 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         // proves it is blocked rather than merely not scheduled yet.
         _ = await provider.waitForCommitWaiters(1)
         let resetLandedWhileCommitWasStillInFlight = await repository.didReset
-        XCTAssertFalse(
-            resetLandedWhileCommitWasStillInFlight,
+        #expect(
+            !resetLandedWhileCommitWasStillInFlight,
             "reset() must wait for the open transaction's lock, not interleave with it"
         )
 
@@ -337,16 +334,16 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await resetTask.value
 
         let storedWeights = await repository.weights
-        XCTAssertNil(storedWeights, "reset() must win once it finally runs, even though it started mid-commit")
+        #expect(storedWeights == nil, "reset() must win once it finally runs, even though it started mid-commit")
         let config = await provider.config()
-        XCTAssertEqual(config, global, "the cache and the repository must agree: both reflect the reset")
+        #expect(config == global, "the cache and the repository must agree: both reflect the reset")
     }
 
     /// A legitimate post-reset override still lands, and nothing the stale
     /// call did can take it away again. Covers the example half of the
     /// reviewer's earlier finding: at one point a stale call's recovery path
     /// could delete an example recorded after the user's reset.
-    func testAPostResetOverrideSurvivesAStaleOverrideThatWasStillInFlight() async {
+    @Test func testAPostResetOverrideSurvivesAStaleOverrideThatWasStillInFlight() async {
         let repository = GatedBestShotPersonalizationRepository()
         await repository.setExamples([staleExample(index: 0)])
         await repository.recordGate.open()
@@ -369,11 +366,11 @@ final class BestShotPersonalizedScoringConfigProviderTests: XCTestCase {
         await provider.recordOverride(exampleB)
 
         let survivingExamples = await repository.loadExamples()
-        XCTAssertEqual(survivingExamples.count, 1, "only B's post-reset example may remain")
-        XCTAssertEqual(survivingExamples.first?.recordedAt, exampleB.recordedAt)
+        #expect(survivingExamples.count == 1, "only B's post-reset example may remain")
+        #expect(survivingExamples.first?.recordedAt == exampleB.recordedAt)
         let storedWeights = await repository.weights
-        XCTAssertNotNil(storedWeights, "B's post-reset weights must be the ones left in the repository")
-        XCTAssertEqual(storedWeights?.withoutFacesExampleCount, 1)
+        #expect(storedWeights != nil, "B's post-reset weights must be the ones left in the repository")
+        #expect(storedWeights?.withoutFacesExampleCount == 1)
     }
 
     private func staleExample(index: Int) -> BestShotOverrideExample {

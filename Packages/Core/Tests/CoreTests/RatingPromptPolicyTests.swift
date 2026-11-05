@@ -1,7 +1,8 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class RatingPromptPolicyTests: XCTestCase {
+@Suite struct RatingPromptPolicyTests {
     private let policy = RatingPromptPolicy()
     private let appVersion = "1.4.0"
     private let now = Date(timeIntervalSince1970: 1_800_000_000)
@@ -33,39 +34,39 @@ final class RatingPromptPolicyTests: XCTestCase {
         )
     }
 
-    func testEligibleAfterMeaningfulCleanupOnEstablishedInstall() {
-        XCTAssertTrue(policy.shouldRequestReview(history: makeHistory(), context: makeContext()))
+    @Test func testEligibleAfterMeaningfulCleanupOnEstablishedInstall() {
+        #expect(policy.shouldRequestReview(history: makeHistory(), context: makeContext()))
     }
 
-    func testTooFewDeletedItemsIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testTooFewDeletedItemsIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(),
                 context: makeContext(deletedCount: 2)
-            )
+            ))
         )
     }
 
-    func testBusySurfaceIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testBusySurfaceIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(),
                 context: makeContext(isBusy: true)
-            )
+            ))
         )
     }
 
-    func testFreshInstallIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testFreshInstallIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(installedDaysAgo: 23.0 / 24),
                 context: makeContext()
-            )
+            ))
         )
     }
 
-    func testInstallOneDayOldIsEligible() {
-        XCTAssertTrue(
+    @Test func testInstallOneDayOldIsEligible() {
+        #expect(
             policy.shouldRequestReview(
                 history: makeHistory(installedDaysAgo: 1),
                 context: makeContext()
@@ -73,18 +74,18 @@ final class RatingPromptPolicyTests: XCTestCase {
         )
     }
 
-    func testMissingInstallDateIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testMissingInstallDateIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: RatingPromptHistory(),
                 context: makeContext()
-            )
+            ))
         )
     }
 
-    func testInsideCooldownIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testInsideCooldownIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(
                     installedDaysAgo: 400,
                     lastPromptedDaysAgo: 30,
@@ -92,12 +93,12 @@ final class RatingPromptPolicyTests: XCTestCase {
                     promptCount: 1
                 ),
                 context: makeContext()
-            )
+            ))
         )
     }
 
-    func testOutsideCooldownOnNewVersionIsEligible() {
-        XCTAssertTrue(
+    @Test func testOutsideCooldownOnNewVersionIsEligible() {
+        #expect(
             policy.shouldRequestReview(
                 history: makeHistory(
                     installedDaysAgo: 400,
@@ -110,9 +111,9 @@ final class RatingPromptPolicyTests: XCTestCase {
         )
     }
 
-    func testSameAppVersionIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testSameAppVersionIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(
                     installedDaysAgo: 400,
                     lastPromptedDaysAgo: 200,
@@ -120,13 +121,13 @@ final class RatingPromptPolicyTests: XCTestCase {
                     promptCount: 1
                 ),
                 context: makeContext()
-            )
+            ))
         )
     }
 
-    func testLifetimeBudgetExhaustedIsNotEligible() {
-        XCTAssertFalse(
-            policy.shouldRequestReview(
+    @Test func testLifetimeBudgetExhaustedIsNotEligible() {
+        #expect(
+            !(policy.shouldRequestReview(
                 history: makeHistory(
                     installedDaysAgo: 2_000,
                     lastPromptedDaysAgo: 500,
@@ -134,7 +135,7 @@ final class RatingPromptPolicyTests: XCTestCase {
                     promptCount: 3
                 ),
                 context: makeContext()
-            )
+            ))
         )
     }
 }

@@ -10,10 +10,16 @@ Use this skill when the user asks to add, fix, refactor, or review tests in Swif
 ## Trigger Conditions
 
 - Write new unit/integration tests
-- Migrate XCTest to Swift Testing
+- Convert an XCTest test from older or imported code
 - Fix flaky async/concurrency tests
 - Improve test speed and determinism
 - Review tests for isolation/parallel safety
+
+## Framework Rule
+
+Write every new test in Swift Testing. `tools/local_ci.sh` fails on `import XCTest`
+in `tools/quick` and `tools/full`. The only exceptions are UI tests and performance
+tests; `Docs/testing/swift-testing-migration.md` has the exact conditions.
 
 ## Workflow
 
@@ -31,8 +37,8 @@ Open `references/components.md`.
 2. Working with async flows, timers, callbacks, or race-prone tests?
 Open `references/async-and-concurrency.md`.
 
-3. Migrating from XCTest or comparing approaches?
-Open `references/migration-from-xctest.md`.
+3. Converting an XCTest test?
+Open the API replacement table in `Docs/testing/swift-testing-migration.md`.
 
 4. Need full legacy examples and extended notes?
 Open `references/full-guide.md`.

@@ -1,50 +1,52 @@
-import XCTest
+import Foundation
+import Testing
 import Core
-import Cleanup
 @testable import Settings
 
 @MainActor
-final class SettingsViewModelTests: XCTestCase {
-    func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() async {
-        let repository = MockRatingPromptHistoryRepository()
+@Suite struct SettingsViewModelTests {
+    @Test func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() {
+        // Opening the App Store page spends no review-sheet quota, so the automatic
+        // post-cleanup prompt must not inherit a cooldown from it. Settings holds no
+        // rating prompt coordinator, so it has no way to record a prompt at all.
         let viewModel = SettingsViewModel(
             appVersion: "1.2.3",
-            ratingPrompt: RatingPromptCoordinator(repository: repository, appVersion: "1.2.3")
+            cleanupReminderManager: MockCleanupReminderManager()
         )
         var openedURL: URL?
 
-        XCTAssertEqual(viewModel.reviewTrigger, 0)
+        #expect(viewModel.reviewTrigger == 0)
         viewModel.handleRateTapped(openURL: { openedURL = $0 })
 
-        XCTAssertEqual(openedURL, AppStoreLinks.writeReview)
-        XCTAssertEqual(viewModel.reviewTrigger, 1)
-
-        // Opening the App Store page spends no review-sheet quota, so the automatic
-        // post-cleanup prompt must not inherit a cooldown from it.
-        let history = await repository.currentHistory()
-        XCTAssertEqual(history.promptCount, 0)
-        XCTAssertNil(history.lastPromptedDate)
+        #expect(openedURL == AppStoreLinks.writeReview)
+        #expect(viewModel.reviewTrigger == 1)
     }
 
-    func testRescanRequiredAfterSensitivityChangeIsTrue() {
-        let viewModel = SettingsViewModel(appVersion: "1.2.3")
-        XCTAssertTrue(viewModel.rescanRequiredAfterSensitivityChange())
+    @Test func testRescanRequiredAfterSensitivityChangeIsTrue() {
+        let viewModel = SettingsViewModel(
+            appVersion: "1.2.3",
+            cleanupReminderManager: MockCleanupReminderManager()
+        )
+        #expect(viewModel.rescanRequiredAfterSensitivityChange())
     }
 
-    func testInitUsesProvidedValues() {
-        let viewModel = SettingsViewModel(appVersion: "9.9.9")
+    @Test func testInitUsesProvidedValues() {
+        let viewModel = SettingsViewModel(
+            appVersion: "9.9.9",
+            cleanupReminderManager: MockCleanupReminderManager()
+        )
 
-        XCTAssertEqual(viewModel.appVersion, "9.9.9")
+        #expect(viewModel.appVersion == "9.9.9")
     }
 
-    func testFullAppVersionIsNonEmptyAndIncludesBuild() {
+    @Test func testFullAppVersionIsNonEmptyAndIncludesBuild() {
         let version = SettingsViewModel.fullAppVersion()
-        XCTAssertFalse(version.isEmpty)
-        XCTAssertTrue(version.contains("("))
-        XCTAssertTrue(version.hasSuffix(")"))
+        #expect(!version.isEmpty)
+        #expect(version.contains("("))
+        #expect(version.hasSuffix(")"))
     }
 
-    func testLoadCleanupReminderStateReflectsDeniedStatus() async {
+    @Test func testLoadCleanupReminderStateReflectsDeniedStatus() async {
         let reminderManager = MockCleanupReminderManager(
             state: CleanupReminderState(
                 isEnabled: false,
@@ -60,18 +62,15 @@ final class SettingsViewModelTests: XCTestCase {
 
         await viewModel.loadCleanupReminderState(isPremiumUnlocked: true)
 
-        XCTAssertEqual(
-            viewModel.cleanupReminderState,
-            CleanupReminderState(
+        #expect(viewModel.cleanupReminderState == CleanupReminderState(
                 isEnabled: false,
                 authorizationStatus: .denied,
                 schedule: .defaultWeekly,
                 isScheduleCustomizationLocked: false
-            )
-        )
+            ))
     }
 
-    func testSetCleanupReminderEnabledTurnsReminderOn() async {
+    @Test func testSetCleanupReminderEnabledTurnsReminderOn() async {
         let reminderManager = MockCleanupReminderManager()
         await reminderManager.setState(
             CleanupReminderState(
@@ -97,11 +96,11 @@ final class SettingsViewModelTests: XCTestCase {
         viewModel.setCleanupReminderEnabled(true, isPremiumUnlocked: true)
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertTrue(viewModel.cleanupReminderState.isEnabled)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+        #expect(viewModel.cleanupReminderState.isEnabled)
+        #expect(!viewModel.isUpdatingCleanupReminder)
     }
 
-    func testSetCleanupReminderEnabledKeepsReminderOffWhenDenied() async {
+    @Test func testSetCleanupReminderEnabledKeepsReminderOffWhenDenied() async {
         let reminderManager = MockCleanupReminderManager(
             state: CleanupReminderState(
                 isEnabled: false,
@@ -126,11 +125,11 @@ final class SettingsViewModelTests: XCTestCase {
         viewModel.setCleanupReminderEnabled(true, isPremiumUnlocked: true)
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertFalse(viewModel.cleanupReminderState.isEnabled)
-        XCTAssertEqual(viewModel.cleanupReminderState.authorizationStatus, .denied)
+        #expect(!viewModel.cleanupReminderState.isEnabled)
+        #expect(viewModel.cleanupReminderState.authorizationStatus == .denied)
     }
 
-    func testSetCleanupReminderEnabledTurnsReminderOff() async {
+    @Test func testSetCleanupReminderEnabledTurnsReminderOff() async {
         let reminderManager = MockCleanupReminderManager(
             state: CleanupReminderState(
                 isEnabled: true,
@@ -155,11 +154,11 @@ final class SettingsViewModelTests: XCTestCase {
         viewModel.setCleanupReminderEnabled(false, isPremiumUnlocked: true)
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertFalse(viewModel.cleanupReminderState.isEnabled)
-        XCTAssertEqual(viewModel.cleanupReminderState.authorizationStatus, .authorized)
+        #expect(!viewModel.cleanupReminderState.isEnabled)
+        #expect(viewModel.cleanupReminderState.authorizationStatus == .authorized)
     }
 
-    func testSetCleanupReminderScheduleUpdatesState() async {
+    @Test func testSetCleanupReminderScheduleUpdatesState() async {
         let customSchedule = CleanupReminderSchedule(weekday: 4, hour: 7, minute: 20)
         let reminderManager = MockCleanupReminderManager(
             state: CleanupReminderState(
@@ -185,11 +184,11 @@ final class SettingsViewModelTests: XCTestCase {
         viewModel.setCleanupReminderSchedule(customSchedule, isPremiumUnlocked: true)
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertEqual(viewModel.cleanupReminderState.schedule, customSchedule)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+        #expect(viewModel.cleanupReminderState.schedule == customSchedule)
+        #expect(!viewModel.isUpdatingCleanupReminder)
     }
 
-    func testSetCleanupReminderEnabledFailureReloadsStateAndPresentsError() async {
+    @Test func testSetCleanupReminderEnabledFailureReloadsStateAndPresentsError() async {
         let authoritativeState = CleanupReminderState(
             isEnabled: false,
             authorizationStatus: .authorized,
@@ -207,16 +206,16 @@ final class SettingsViewModelTests: XCTestCase {
         await viewModel.waitForCleanupReminderMutation()
 
         let didCallLoadState = await reminderManager.didCallLoadState
-        XCTAssertEqual(viewModel.cleanupReminderState, authoritativeState)
-        XCTAssertNotNil(viewModel.cleanupReminderErrorMessage)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
-        XCTAssertTrue(didCallLoadState)
+        #expect(viewModel.cleanupReminderState == authoritativeState)
+        #expect(viewModel.cleanupReminderErrorMessage != nil)
+        #expect(!viewModel.isUpdatingCleanupReminder)
+        #expect(didCallLoadState)
 
         viewModel.dismissCleanupReminderError()
-        XCTAssertNil(viewModel.cleanupReminderErrorMessage)
+        #expect(viewModel.cleanupReminderErrorMessage == nil)
     }
 
-    func testSetCleanupReminderScheduleFailureReloadsAuthoritativeSchedule() async {
+    @Test func testSetCleanupReminderScheduleFailureReloadsAuthoritativeSchedule() async {
         let authoritativeState = CleanupReminderState(
             isEnabled: true,
             authorizationStatus: .authorized,
@@ -236,12 +235,12 @@ final class SettingsViewModelTests: XCTestCase {
         )
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertEqual(viewModel.cleanupReminderState, authoritativeState)
-        XCTAssertNotNil(viewModel.cleanupReminderErrorMessage)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+        #expect(viewModel.cleanupReminderState == authoritativeState)
+        #expect(viewModel.cleanupReminderErrorMessage != nil)
+        #expect(!viewModel.isUpdatingCleanupReminder)
     }
 
-    func testLatestScheduleMutationWinsWhenEarlierCompletionArrivesLast() async {
+    @Test func testLatestScheduleMutationWinsWhenEarlierCompletionArrivesLast() async {
         let firstSchedule = CleanupReminderSchedule(weekday: 2, hour: 8, minute: 15)
         let latestSchedule = CleanupReminderSchedule(weekday: 5, hour: 18, minute: 45)
         let reminderManager = SuspendedFirstScheduleReminderManager()
@@ -256,14 +255,14 @@ final class SettingsViewModelTests: XCTestCase {
         viewModel.setCleanupReminderSchedule(latestSchedule, isPremiumUnlocked: true)
         await viewModel.waitForCleanupReminderMutation()
 
-        XCTAssertEqual(viewModel.cleanupReminderState.schedule, latestSchedule)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+        #expect(viewModel.cleanupReminderState.schedule == latestSchedule)
+        #expect(!viewModel.isUpdatingCleanupReminder)
 
         await reminderManager.resumeFirstScheduleMutation()
         await Task.yield()
 
-        XCTAssertEqual(viewModel.cleanupReminderState.schedule, latestSchedule)
-        XCTAssertFalse(viewModel.isUpdatingCleanupReminder)
+        #expect(viewModel.cleanupReminderState.schedule == latestSchedule)
+        #expect(!viewModel.isUpdatingCleanupReminder)
     }
 }
 

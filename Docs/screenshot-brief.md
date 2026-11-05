@@ -189,12 +189,12 @@ de tu fototeca" against "nunca se va de tu fototeca".
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | CİHAZDA | Birbirine benzeyen / fotoğrafları bul | Alike, kitaplığını Apple Vision ile tamamen iPhone'unda tarar. |
+| 1 | CİHAZDA | Birbirine benzeyen / fotoğrafları bul | Alike, arşivini Apple Vision ile tamamen iPhone'unda tarar. |
 | 2 | TEK KUYRUK | Her grup / gözden geçirmeye hazır | Gruplar rozetleriyle gelir: ne kaldığını her zaman görürsün. |
 | 3 | EN İYİ KARE | Saklanacak kare / zaten seçili | Alike gruptaki en iyi kareyi öne çıkarır. Sen yalnızca onaylarsın. |
 | 4 | KARŞILAŞTIR | Silmeden önce / kontrol et | Tam boyutta incele. Onayın olmadan hiçbir şey silinmez. |
 | 5 | BOŞ ALAN | Gigabaytların / geri gelişini gör | Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir. |
-| 6 | GERİ ALINABİLİR | Kareyi iyileştir, / özgünü sakla | Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare kitaplığından hiç çıkmaz. |
+| 6 | GERİ ALINABİLİR | Kareyi iyileştir, / özgünü sakla | Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare arşivinden hiç çıkmaz. |
 
 ### zh-Hant
 

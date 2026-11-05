@@ -8,20 +8,23 @@ This file is the list of strings where a wrong word costs money or a review flag
 is what a reviewer should be handed. The key tables below apply to every shipped language;
 the per-language notes at the end say what to watch for in each.
 
-Terminology was matched against Apple's own platform vocabulary per language rather than
-a generic glossary — "Zuletzt gelöscht", "Supprimés récemment", "Eliminados
-recientemente", "Apagados recentemente", "Eliminati di recente", "Recent verwijderd",
-"Ostatnio usunięte", "Son Silinenler", "最近刪除", "المحذوفة مؤخرًا". A reviewer should check
-that choice as
-much as the grammar.
+Terminology follows the words Apple's iPhone User Guide uses in each language for the Photos
+app, checked on 2026-10-29 against "Delete or hide photos and videos on iPhone"
+(`support.apple.com/<locale>/guide/iphone/iphb4defbde9/ios`). The Recently Deleted album is
+"Zuletzt gelöscht" (`de`), "Supprimées récemment" (`fr`, `fr-CA`), "Eliminados" (`es`,
+`es-419`), "Apagados" (`pt-BR`), "Apagado" (`pt-PT`), "Eliminati di recente" (`it`), "Recent
+verwijderd" (`nl`), "Ostatnio usunięte" (`pl`), "Son Silinenler" (`tr`), "Недавно видалені"
+(`uk`), "最近刪除" (`zh-Hant`) and "المحذوفة مؤخرًا" (`ar`). Apple renames these between iOS
+releases, so check them again when a new iOS ships, and change every string that names the
+album at once — a partial rename shows the user two names for one album.
 
-Three tier 3 terminology calls are the least certain and should be confirmed first:
+Three tier 3 terminology calls were the least certain:
 
 | Term | Choice made | Why it is uncertain |
 |---|---|---|
-| Screenshot (`it`) | "screenshot" | Apple's Italian has used both "screenshot" and "istantanea schermo" across releases. Whichever the current iOS Photos album says is the one to use. |
-| Screenshot (`zh-Hant`) | 螢幕快照 | Apple's zh-TW term, but 螢幕截圖 is far more common in everyday Taiwanese usage. This is a house-style call, not a correctness one. |
-| Library (`tr`) | kitaplık | Apple's Turkish for a media library. "Kütüphane" reads more naturally to some, but would diverge from the Photos app. |
+| Screenshot (`it`) | "screenshot" | Confirmed 2026-10-29: Apple's Italian guide says "Scattare uno screenshot". |
+| Screenshot (`zh-Hant`) | 截圖 | Changed 2026-10-29 from 螢幕快照: Apple's zh-TW guide now says 拍攝截圖, and 截圖 is the everyday word. |
+| Library (`tr`) | arşiv | Changed 2026-10-29 from "kitaplık": Apple's Turkish guide says "Fotoğraf arşivi", and the app already used "arşiv" in 11 strings and the store text. |
 
 ## Tier 1 — a wrong word here costs a refund or a rejection
 
@@ -70,11 +73,10 @@ not touched**. A translation that blurs that line reads as "this app deletes you
 These make privacy claims: on-device analysis, nothing uploaded, nothing auto-deleted.
 They have to stay *exactly* as strong as the English — no stronger.
 
-The `NSPhotoLibraryUsageDescription` string in `Alike/Alike.xcodeproj` is **not** localized
-and is out of scope here: it lives in the build settings
-(`INFOPLIST_KEY_NSPhotoLibraryUsageDescription`), not in a catalog, so it shows in English
-in every locale. Worth fixing, but it is a separate change — see the note in
-`Docs/Localization/README.md`.
+The `NSPhotoLibraryUsageDescription` prompt makes the same claims and adds one more: the
+original is always kept, so an enhancement can be reverted. It lives in
+`Alike/Alike/InfoPlist.xcstrings`, not in a package catalog — see "The permission prompt"
+in `Docs/Localization/README.md`.
 
 ## Tier 2 — read it, but nothing breaks
 
@@ -150,6 +152,66 @@ translation exactly as strong as the English, and no stronger:
 entries state facts and have to agree with the app: the free allowance in `pricing.free`
 ("3 scans per month") and the language count in the last `features.items` entry.
 
+### Landing review pass 2 — 2026-10-30
+
+On the same date, Codex repeated the review using the local
+`localized-copy-review` workflow: semantic comparison, fluency, legal claim scope,
+and marketing clarity. Follow-up edits in site PR #15 clarify who learns from
+photo choices and who resets that learning, and improve permission descriptions,
+sensitivity instructions, layout wording and privacy headlines across the 9
+locales. The Italian privacy list now retains the source's explicit exclusion of
+renting personal data. In `it`, `nl`, `pl`, `tr` and `zh-Hant`, the privacy
+governing-law sentence now preserves consumer data-protection rights specifically,
+matching English rather than adding a separate general consumer-rights clause.
+The Terms' mandatory consumer protections remain unchanged. Both subscription
+disclosures remain untouched. No additional Terms edits were needed in this pass.
+No tests, builds, site checks or legal parity checks ran during the repeat review.
+
+Codex completed an AI copy review of `<locale>/privacy.md`, `<locale>/terms.md`
+and `_data/<locale>.yml` for `de`, `fr`, `es`, `pt-BR`, `it`, `nl`, `pl`, `tr`
+and `zh-Hant`. The proposed edits are in
+[site PR #15](https://github.com/alikeapp/alikeapp.github.io/pull/15), on
+`docs/native-review-pass-2`, with one commit per locale. This records an AI review,
+not a native-speaker or legal sign-off.
+
+The pass corrected album names in French, Spanish and Brazilian Portuguese;
+Turkish `arşiv` terminology and informal commands; Traditional Chinese `截圖`;
+Italian sign-in wording; intellectual-property scope; and literal marketing
+phrases. It retained the EULA priority, plan durations, trial eligibility,
+24-hour billing windows, Apple refund limits, mandatory consumer rights and
+Apple's third-party-beneficiary rights. Landing copy now limits Delete Alike Data
+to local Alike data and qualifies the yearly trial for eligible new subscribers.
+The free allowance remains 3 scans per month.
+
+The requested localization skill lists 12 locales, but the current InfoPlist,
+PurchasesUI and Core catalogs contain 18, matching `knownRegions` without `Base`.
+The translated feature entry therefore says **18 language variants**, including
+regional English, French and Portuguese variants, and lists them. No site locale
+or page was added. After the review, the owner chose the 18-variant count for the
+whole site, so `en`, `uk` and `ar` now say the same; before that change they still
+said thirteen and the site stated two numbers. The older 12-locale skill
+list and 17-locale review-log count need a separate correction.
+
+The current English privacy policy describes optional MetricKit crash reports
+sent by the user. The pass preserved that scope and its exclusion of third-party
+crash-reporting services; it did not add an absolute claim of no crash reports.
+
+Checks after the review, on 2026-10-30:
+
+- `tools/check_site_legal_parity.py --require` failed on `main` and on the PR
+  branch: the last sentence of `pricing.disclosure_trial` in `pl` and `ar` had
+  drifted from `Docs/legal/subscription-disclosure.md`. The site is the copy, so
+  site PR #15 now restores both values from the document; the document and the
+  catalog did not change. All 24 disclosure strings now match.
+- `scripts/test-check-site.sh` passed 51 of 51 regression tests, and
+  `scripts/check-site.sh` passed on the rendered site, before and after that fix.
+
+Still open:
+
+- Native-speaker and legal sign-off remain open for all 18 reviewed legal pages,
+  especially liability and mandatory consumer-rights clauses. The PRs are not
+  merged. The Notion card status remains unchanged.
+
 ## Per-language notes for the reviewer
 
 - **`es-419` vs `es`** — these are separate texts on purpose. `es-419` uses "Configuración",
@@ -184,20 +246,51 @@ entries state facts and have to agree with the app: the free allowance in `prici
   string reads awkwardly around the embedded Latin run. Glyphs also sit taller than Latin
   ones, so fixed-height labels are where clipping shows first.
 
+## Review log
+
+| Date | Locales | Who | What | Pull requests |
+|---|---|---|---|---|
+| 2026-10-27 | `ar`, `pl`, `tr`, `en-GB`, `fr-CA`, `pt-PT` | Codex (AI text review) | Tier 1 keys, tier 2 facts, App Store copy; `en-GB`, `fr-CA`, `pt-PT` added as full locales | #120, #138, #142, #143, #144, #145, #146 |
+| 2026-10-27 | `en-CA`, `en-AU`, `de`, `fr`, `it`, `nl`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Codex (AI text review) | Same scope; `en-CA`, `en-AU` added as full locales | #148–#158 |
+| 2026-10-29 | `fr`, `fr-CA`, `es`, `es-419`, `pt-BR`, `uk`, `zh-Hant` | Independent AI reviewer, then Claude | Album and screenshot names made consistent in every string and matched to Apple's iPhone User Guide | #151, #154–#158 |
+| 2026-10-29 | All 17 locales | Oleksandr Solokha (product owner) | Accepted the AI review pass for release in place of a native-speaker sign-off, and confirmed the `ar`/`pl`/`tr` device check | — |
+| 2026-10-30 | All 18 listing locales: `en-US`, `en-GB`, `en-CA`, `en-AU`, `uk`, `de-DE`, `fr-FR`, `fr-CA`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`, `pl`, `tr`, `zh-Hant`, `ar-SA` | AI text review (listing) | Card 49: trial eligibility in English promotional text, Ukrainian catalog terms, French learning-reset wording, Canadian French grammar, Portuguese register, monthly IAP descriptions and screenshot captions; keywords unchanged | [#164](https://github.com/solokha-o/Alike/pull/164) |
+| 2026-10-30 | All 18 listing locales; `uk` widget strings | Claude (follow-up to the review's open questions) | Descriptions count 18 language variants, as the site does; the trial sentence carries the 24-hour cancellation deadline from disclosure paragraph 2; "always reversible" became "original always one tap away"; the `uk` widget and enhancement-error strings use фототека; `tr` and `uk` widget captures retaken and the changed captions re-rendered | [#164](https://github.com/solokha-o/Alike/pull/164) |
+
+Placeholders, plural categories and the disclosure text were checked mechanically for every
+locale, and `tools/full` passed on `develop` after the last merge. These checks
+predate the card 49 listing review. The initial card 49 text review ran no validation.
+Its follow-up passed the upload-bundle tests, bundle generation and validation (with the
+placeholder-URL flags), and a Release simulator build of the app on 2026-10-30; the
+`WidgetSupport` and `Details` package tests were not run.
+
 ## Not yet reviewed by a native speaker
 
-Task 44 added the same five languages to the App Store listing — subtitle, keywords,
-description, promotional text, release notes, the in-app-purchase display names, and the
-five marketing screenshot captions — and to the landing site. That copy was written the
-same way and carries the same caveat, with two places worth a reviewer's attention beyond
-the app strings: **keywords**, which are market research rather than translation and are
-the one field where a plausible-sounding word simply fails to be what people search for,
-and the **zh-Hant screenshot captions**, which are the only copy in the project set in
-Heiti TC rather than SF Pro and should be read at thumbnail size, not at full size.
+**Every locale has had an AI review pass, and the product owner accepted it for release on
+2026-10-29. No locale has been signed off by a native speaker.** The product owner
+confirmed the `ar`, `pl` and `tr` device checks (layout, mirroring, plural forms at 1, 2, 5,
+22, 25) on 2026-10-29. The AI pass
+fixed wording and consistency; it cannot replace a person who reads the language every day.
 
-No language in the app has had a native pass. `ar` is the newest and carries the most
-novel risk, because it is the only language where a translation error and a *layout* error
-look the same to a non-reader; spend review budget there first, on the paywall and the
-deletion confirmations. After that, `pl` and `tr` — Polish because wrong plural forms are
-visible to every user on every count, Turkish because the paywall and deletion copy are the
-longest strings in the app in that language.
+Card 49 reviewed all 18 App Store listing locales on 2026-10-30. This was an
+AI text review, accepted by the product owner in place of a native-speaker review.
+No native speaker has signed off the listing. The pass covered subtitles,
+descriptions, promotional text, release notes, keywords, IAP names and descriptions,
+and all 7 screenshot captions per source deck. Existing rendered images were
+inspected at about 230 pixels wide, starting with `zh-Hant`, `de`, `it` and `tr`.
+The follow-up re-rendered the changed captions and retook the `tr` and `uk` widget
+captures on an iPhone 18 Pro Max simulator (iOS 27.2) with a staged widget snapshot.
+
+**Keywords and rendered captions still need a person.** Search demand needs market
+knowledge, including for the unchanged Apple Ads keywords in `it`, `nl-NL` and `pl`.
+A person must review caption density and legibility, especially `zh-Hant` in Heiti TC.
+The `zh-Hant` keywords 大師, 神器 and 快照 stay: the first two are common in Taiwanese
+cleaner-app names, and 快照 catches searches that still use Apple's older term for
+screenshots. No popularity data backs them yet. The disclosure document and the
+PurchasesUI catalog did not change; the listing now quotes them more closely.
+
+When a native speaker is available, spend the budget in this order: `ar` first, because it
+is the only language where a translation error and a *layout* error look the same to a
+non-reader — the paywall and the deletion confirmations first; then `pl` and `tr` — Polish
+because wrong plural forms are visible to every user on every count, Turkish because the
+paywall and deletion copy are the longest strings in the app in that language.

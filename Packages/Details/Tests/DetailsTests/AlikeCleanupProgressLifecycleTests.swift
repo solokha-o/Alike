@@ -1,46 +1,47 @@
 import Core
 import SwiftUI
-import XCTest
+import Foundation
+import Testing
 import DesignSystem
 @testable import Details
 
-final class AlikeCleanupProgressLifecycleTests: XCTestCase {
-    func testActiveVisibleExecutionLoopsSortingOverlayWithoutAmbientMotion() {
+@Suite struct AlikeCleanupProgressLifecycleTests {
+    @Test func testActiveVisibleExecutionLoopsSortingOverlayWithoutAmbientMotion() {
         let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: true,
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.animationURL, AlikeAssets.cleanupProgressOverlayURL)
-        XCTAssertEqual(presentation.playback, .loop)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == AlikeAssets.cleanupProgressOverlayURL)
+        #expect(presentation.playback == .loop)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testMotionStopsWhenExecutionEnds() {
+    @Test func testMotionStopsWhenExecutionEnds() {
         let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: false,
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.playback, .loop)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.playback == .loop)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testMotionStopsWhenProgressSurfaceDisappears() {
+    @Test func testMotionStopsWhenProgressSurfaceDisappears() {
         let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: true,
             isVisible: false,
             scenePhase: .active
         )
 
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testMotionStopsWhileSceneIsInactiveOrBackgrounded() {
+    @Test func testMotionStopsWhileSceneIsInactiveOrBackgrounded() {
         for scenePhase in [ScenePhase.inactive, .background] {
             let presentation = AlikeCleanupProgressPresentation.resolve(
                 isExecuting: true,
@@ -48,32 +49,20 @@ final class AlikeCleanupProgressLifecycleTests: XCTestCase {
                 scenePhase: scenePhase
             )
 
-            XCTAssertNil(presentation.animationURL)
-            XCTAssertEqual(presentation.ambientMotion, .none)
+            #expect(presentation.animationURL == nil)
+            #expect(presentation.ambientMotion == .none)
         }
     }
 
-    func testDisplayScaleSelectsMatchingCleanupExport() {
-        XCTAssertEqual(
-            AlikeCleanupProgressPresentation.imageURL(for: 1.49),
-            AlikeAssets.cleanupProgressURL(for: .oneX)
-        )
-        XCTAssertEqual(
-            AlikeCleanupProgressPresentation.imageURL(for: 1.5),
-            AlikeAssets.cleanupProgressURL(for: .twoX)
-        )
-        XCTAssertEqual(
-            AlikeCleanupProgressPresentation.imageURL(for: 2.49),
-            AlikeAssets.cleanupProgressURL(for: .twoX)
-        )
-        XCTAssertEqual(
-            AlikeCleanupProgressPresentation.imageURL(for: 2.5),
-            AlikeAssets.cleanupProgressURL(for: .threeX)
-        )
+    @Test func testDisplayScaleSelectsMatchingCleanupExport() {
+        #expect(AlikeCleanupProgressPresentation.imageURL(for: 1.49) == AlikeAssets.cleanupProgressURL(for: .oneX))
+        #expect(AlikeCleanupProgressPresentation.imageURL(for: 1.5) == AlikeAssets.cleanupProgressURL(for: .twoX))
+        #expect(AlikeCleanupProgressPresentation.imageURL(for: 2.49) == AlikeAssets.cleanupProgressURL(for: .twoX))
+        #expect(AlikeCleanupProgressPresentation.imageURL(for: 2.5) == AlikeAssets.cleanupProgressURL(for: .threeX))
     }
 
     @MainActor
-    func testCleanupReadyUsesAnimatedProgressArtworkDuringReview() {
+    @Test func testCleanupReadyUsesAnimatedProgressArtworkDuringReview() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .cleanupSelection(UUID()), kind: .cleanupReady),
             state: .cleanupReady(.init(itemCount: 1, estimatedSavingsBytes: 512)),
@@ -86,6 +75,6 @@ final class AlikeCleanupProgressLifecycleTests: XCTestCase {
             bestShotCelebrationCue: nil
         )
 
-        XCTAssertEqual(identity, .cleanupProgress(cue.id))
+        #expect(identity == .cleanupProgress(cue.id))
     }
 }

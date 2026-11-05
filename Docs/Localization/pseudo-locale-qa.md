@@ -489,17 +489,6 @@ Foundation's own spelling of zero for `ar_SA` — English renders the same field
 `Zero kB`, German as `0 kB`. Changing it would be a product decision affecting all
 thirteen locales, not an Arabic fix. **Decided: left as Foundation renders it.**
 
-### Not Arabic's problem, but found here: the permission prompt is English in every locale
-
-The photo-library prompt renders `"Alike" would like full access to your Photo Library.` /
-`Alike analyzes your photo library to find visually similar images.` under `ar` — and
-under all twelve other locales too. The purpose strings are set as
-`INFOPLIST_KEY_NSPhotoLibraryUsageDescription` build settings in
-`Alike/Alike.xcodeproj/project.pbxproj:419` and `:457`, and there is no
-`InfoPlist.xcstrings` anywhere in the project, so they cannot localize. It is the first
-sentence a new user reads. **Pre-existing and outside task 45's scope; recorded here so it
-is not found a third time.**
-
 ## Still owed
 
 Nothing. Every screen in the acceptance lists of tasks 39, 40 and 43 has been walked, in the

@@ -1,55 +1,56 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Core
 
-final class PhotoQualitySignalsTests: XCTestCase {
+@Suite struct PhotoQualitySignalsTests {
     // MARK: - Rejected faces
 
-    func testEmptyFacesWithoutRejectionsMeansNobodyWasInThePhoto() {
+    @Test func testEmptyFacesWithoutRejectionsMeansNobodyWasInThePhoto() {
         let signals = PhotoQualitySignals(faceSignals: [], rejectedFaceCounts: .empty)
 
-        XCTAssertFalse(signals.hasFaces)
-        XCTAssertFalse(signals.hasOnlyRejectedFaces)
+        #expect(!signals.hasFaces)
+        #expect(!signals.hasOnlyRejectedFaces)
     }
 
     /// The whole point of the counts: this state and the one above used to be
     /// the same empty array, which is why a gate that rejected every real face
     /// stayed invisible in the exported signals.
-    func testEmptyFacesWithRejectionsIsDistinguishableFromNobodyBeingThere() {
+    @Test func testEmptyFacesWithRejectionsIsDistinguishableFromNobodyBeingThere() {
         let signals = PhotoQualitySignals(
             faceSignals: [],
             rejectedFaceCounts: FaceRejectionCounts(tooSmallInFrame: 3)
         )
 
-        XCTAssertFalse(signals.hasFaces)
-        XCTAssertTrue(signals.hasOnlyRejectedFaces)
-        XCTAssertEqual(signals.rejectedFaceCounts?.total, 3)
+        #expect(!signals.hasFaces)
+        #expect(signals.hasOnlyRejectedFaces)
+        #expect(signals.rejectedFaceCounts?.total == 3)
     }
 
-    func testAPhotoWithAMeasuredFaceIsNotReportedAsRejectedOnly() {
+    @Test func testAPhotoWithAMeasuredFaceIsNotReportedAsRejectedOnly() {
         let signals = PhotoQualitySignals(
             faceSignals: [Self.face()],
             rejectedFaceCounts: FaceRejectionCounts(tooSmallInFrame: 1)
         )
 
-        XCTAssertTrue(signals.hasFaces)
-        XCTAssertFalse(signals.hasOnlyRejectedFaces)
+        #expect(signals.hasFaces)
+        #expect(!signals.hasOnlyRejectedFaces)
     }
 
-    func testRejectionCountsAddPerReason() {
+    @Test func testRejectionCountsAddPerReason() {
         let combined = FaceRejectionCounts(lowConfidence: 1, tooSmallInFrame: 2)
             + FaceRejectionCounts(insufficientResolution: 3, cropFailed: 4)
 
-        XCTAssertEqual(combined.lowConfidence, 1)
-        XCTAssertEqual(combined.tooSmallInFrame, 2)
-        XCTAssertEqual(combined.insufficientResolution, 3)
-        XCTAssertEqual(combined.cropFailed, 4)
-        XCTAssertEqual(combined.total, 10)
-        XCTAssertTrue(FaceRejectionCounts.empty.isEmpty)
+        #expect(combined.lowConfidence == 1)
+        #expect(combined.tooSmallInFrame == 2)
+        #expect(combined.insufficientResolution == 3)
+        #expect(combined.cropFailed == 4)
+        #expect(combined.total == 10)
+        #expect(FaceRejectionCounts.empty.isEmpty)
     }
 
     // MARK: - Coding
 
-    func testSignalsRoundTripThroughCoding() throws {
+    @Test func testSignalsRoundTripThroughCoding() throws {
         let signals = PhotoQualitySignals(
             globalSharpness: 42,
             subjectSharpness: 37,
@@ -63,7 +64,7 @@ final class PhotoQualitySignalsTests: XCTestCase {
             from: JSONEncoder().encode(signals)
         )
 
-        XCTAssertEqual(decoded, signals)
+        #expect(decoded == signals)
     }
 
     /// `qualitySignalsData` is a `Codable` blob on disk with no migration
@@ -71,7 +72,7 @@ final class PhotoQualitySignalsTests: XCTestCase {
     /// face-source size existed must still decode, or a user updating the app
     /// loses every cached measurement to a decode failure instead of a version
     /// miss.
-    func testPayloadWrittenBeforeTheRejectCountsStillDecodes() throws {
+    @Test func testPayloadWrittenBeforeTheRejectCountsStillDecodes() throws {
         let legacy = """
         {
           "globalSharpness": 21.5,
@@ -96,13 +97,13 @@ final class PhotoQualitySignalsTests: XCTestCase {
             from: Data(legacy.utf8)
         )
 
-        XCTAssertEqual(decoded.globalSharpness, 21.5)
-        XCTAssertNil(decoded.rejectedFaceCounts)
-        XCTAssertFalse(decoded.hasOnlyRejectedFaces)
-        XCTAssertEqual(decoded.usableFaceSignals.count, 1)
+        #expect(decoded.globalSharpness == 21.5)
+        #expect(decoded.rejectedFaceCounts == nil)
+        #expect(!decoded.hasOnlyRejectedFaces)
+        #expect(decoded.usableFaceSignals.count == 1)
         // Unknown, not zero: a pre-fix measurement cannot claim its face came
         // from any particular number of real pixels.
-        XCTAssertNil(decoded.usableFaceSignals.first?.sourcePixelSize)
+        #expect(decoded.usableFaceSignals.first?.sourcePixelSize == nil)
     }
 
     private static func face(sourcePixelSize: Double? = 96) -> FaceQualitySignal {

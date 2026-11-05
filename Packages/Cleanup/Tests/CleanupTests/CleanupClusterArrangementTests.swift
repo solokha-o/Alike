@@ -1,82 +1,71 @@
-import XCTest
+import Foundation
+import Testing
 import Photos
 import Core
 @testable import Cleanup
 
-final class CleanupClusterArrangementTests: XCTestCase {
+@Suite struct CleanupClusterArrangementTests {
 
     // MARK: - Content identity
 
     /// Regression guard for the scroll reset after deleting photos: reconciliation
     /// rebuilds every `PhotoCluster` with a fresh `id`, so view identity has to come
     /// from the cluster's contents instead.
-    func testContentKeyIsStableAcrossRegeneratedUUIDs() {
+    @Test func testContentKeyIsStableAcrossRegeneratedUUIDs() {
         let assets = [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")]
         let before = PhotoCluster(assets: assets)
         let after = PhotoCluster(assets: assets)
 
-        XCTAssertNotEqual(before.id, after.id)
-        XCTAssertEqual(before.contentKey, after.contentKey)
+        #expect(before.id != after.id)
+        #expect(before.contentKey == after.contentKey)
     }
 
     /// Review-state migration matches on a `Set` of identifiers, so view identity
     /// must ignore ordering too or the two disagree after a rescan.
-    func testContentKeyIgnoresAssetOrder() {
+    @Test func testContentKeyIgnoresAssetOrder() {
         let first = FakePhotoAsset(localIdentifier: "a")
         let second = FakePhotoAsset(localIdentifier: "b")
 
-        XCTAssertEqual(
-            PhotoCluster(assets: [first, second]).contentKey,
-            PhotoCluster(assets: [second, first]).contentKey
-        )
+        #expect(PhotoCluster(assets: [first, second]).contentKey == PhotoCluster(assets: [second, first]).contentKey)
     }
 
     /// `ForEach` silently drops duplicate ids, which would make a cluster vanish.
-    func testDuplicateContentKeysGetDistinctIdentifiedClusterIDs() {
+    @Test func testDuplicateContentKeysGetDistinctIdentifiedClusterIDs() {
         let assets = [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")]
         let arrangement = makeArrangement(
             clusters: [PhotoCluster(assets: assets), PhotoCluster(assets: assets)]
         )
 
-        XCTAssertEqual(arrangement.remaining.count, 2)
-        XCTAssertNotEqual(arrangement.remaining[0].id, arrangement.remaining[1].id)
+        #expect(arrangement.remaining.count == 2)
+        #expect(arrangement.remaining[0].id != arrangement.remaining[1].id)
     }
 
     // MARK: - Sorting
 
-    func testNewestSortOrdersByCreatedAtDescending() {
+    @Test func testNewestSortOrdersByCreatedAtDescending() {
         let older = cluster(createdAt: Date(timeIntervalSince1970: 100))
         let newer = cluster(createdAt: Date(timeIntervalSince1970: 200))
 
-        XCTAssertEqual(
-            ids(makeArrangement(clusters: [older, newer], sort: .newest).remaining),
-            [newer.id, older.id]
-        )
+        #expect(ids(makeArrangement(clusters: [older, newer], sort: .newest).remaining) == [newer.id, older.id])
     }
 
-    func testLargestClusterSortOrdersByAssetCountDescending() {
+    @Test func testLargestClusterSortOrdersByAssetCountDescending() {
         let small = cluster(assetCount: 2)
         let large = cluster(assetCount: 5)
 
-        XCTAssertEqual(
-            ids(makeArrangement(clusters: [small, large], sort: .largestCluster).remaining),
-            [large.id, small.id]
-        )
+        #expect(ids(makeArrangement(clusters: [small, large], sort: .largestCluster).remaining) == [large.id, small.id])
     }
 
-    func testSimilaritySortOrdersByAverageSimilarityDescending() {
+    @Test func testSimilaritySortOrdersByAverageSimilarityDescending() {
         let loose = cluster(similarity: 0.70)
         let tight = cluster(similarity: 0.95)
 
-        XCTAssertEqual(
-            ids(makeArrangement(clusters: [loose, tight], sort: .similarity).remaining),
-            [tight.id, loose.id]
-        )
+        #expect(ids(makeArrangement(clusters: [loose, tight], sort: .similarity).remaining) == [tight.id, loose.id])
     }
 
     /// `ClusterReviewStatus` is a `String` enum, so this sorts by the raw string
     /// ascending. Pinned verbatim to preserve the pre-refactor ordering.
-    func testReviewStatusSortOrdersByRawValueAscending() {
+    @Test func testReviewStatusSortOrdersByRawValueAscending() {
         let reviewed = cluster()
         let inReview = cluster()
         let statuses: [UUID: ClusterReviewStatus] = [
@@ -90,10 +79,10 @@ final class CleanupClusterArrangementTests: XCTestCase {
             statuses: statuses
         )
 
-        XCTAssertEqual(ids(arrangement.remaining), [inReview.id, reviewed.id])
+        #expect(ids(arrangement.remaining) == [inReview.id, reviewed.id])
     }
 
-    func testLargestCleanupOpportunitySortTreatsMissingSavingsAsZero() {
+    @Test func testLargestCleanupOpportunitySortTreatsMissingSavingsAsZero() {
         let withSavings = cluster()
         let withoutSavings = cluster()
 
@@ -103,12 +92,12 @@ final class CleanupClusterArrangementTests: XCTestCase {
             savings: [withSavings.id: 5_000]
         )
 
-        XCTAssertEqual(ids(arrangement.remaining), [withSavings.id, withoutSavings.id])
+        #expect(ids(arrangement.remaining) == [withSavings.id, withoutSavings.id])
     }
 
     // MARK: - Filtering
 
-    func testAdvancedFilterIsSkippedWithoutPremiumAccess() {
+    @Test func testAdvancedFilterIsSkippedWithoutPremiumAccess() {
         var controls = CleanupClusterControls()
         controls.minimumClusterSize = .five
         let small = cluster(assetCount: 2)
@@ -124,15 +113,15 @@ final class CleanupClusterArrangementTests: XCTestCase {
             appliesAdvancedFilters: true
         )
 
-        XCTAssertEqual(ids(locked.remaining), [small.id])
-        XCTAssertTrue(unlocked.remaining.isEmpty)
-        XCTAssertTrue(unlocked.isEmptyAfterFiltering)
+        #expect(ids(locked.remaining) == [small.id])
+        #expect(unlocked.remaining.isEmpty)
+        #expect(unlocked.isEmptyAfterFiltering)
     }
 
     /// Documents the behaviour the arrangement freeze defers rather than changes:
     /// a reviewed cluster still leaves the `.needsReview` filter, just not while
     /// the details screen is open.
-    func testReviewedClusterIsDroppedUnderNeedsReviewFilter() {
+    @Test func testReviewedClusterIsDroppedUnderNeedsReviewFilter() {
         var controls = CleanupClusterControls()
         controls.reviewFilter = .needsReview
         let reviewed = cluster()
@@ -144,14 +133,14 @@ final class CleanupClusterArrangementTests: XCTestCase {
             statuses: [reviewed.id: .reviewed]
         )
 
-        XCTAssertTrue(arrangement.remaining.isEmpty)
-        XCTAssertTrue(arrangement.hasAnyCluster)
-        XCTAssertTrue(arrangement.isEmptyAfterFiltering)
+        #expect(arrangement.remaining.isEmpty)
+        #expect(arrangement.hasAnyCluster)
+        #expect(arrangement.isEmptyAfterFiltering)
     }
 
     // MARK: - Sectioning
 
-    func testNeedsReReviewClustersArePartitionedIntoNeedsReviewSection() {
+    @Test func testNeedsReReviewClustersArePartitionedIntoNeedsReviewSection() {
         let resurfaced = cluster()
         let untouched = cluster()
 
@@ -160,15 +149,15 @@ final class CleanupClusterArrangementTests: XCTestCase {
             statuses: [resurfaced.id: .needsReReview, untouched.id: .inReview]
         )
 
-        XCTAssertEqual(ids(arrangement.needsReview), [resurfaced.id])
-        XCTAssertEqual(ids(arrangement.remaining), [untouched.id])
+        #expect(ids(arrangement.needsReview) == [resurfaced.id])
+        #expect(ids(arrangement.remaining) == [untouched.id])
     }
 
-    func testEmptyClusterListIsNotReportedAsFilteredEmpty() {
+    @Test func testEmptyClusterListIsNotReportedAsFilteredEmpty() {
         let arrangement = makeArrangement(clusters: [])
 
-        XCTAssertFalse(arrangement.hasAnyCluster)
-        XCTAssertFalse(arrangement.isEmptyAfterFiltering)
+        #expect(!arrangement.hasAnyCluster)
+        #expect(!arrangement.isEmptyAfterFiltering)
     }
 
     // MARK: - Freeze behaviour
@@ -176,7 +165,7 @@ final class CleanupClusterArrangementTests: XCTestCase {
     /// Proves the freeze is load-bearing: if the arrangement were re-derived on
     /// every review-state change, the grid would reorder underneath the user
     /// while `ClusterDetailsView` is still pushed.
-    func testReviewStatusChangeWouldReorderArrangement() {
+    @Test func testReviewStatusChangeWouldReorderArrangement() {
         let first = cluster()
         let second = cluster()
 
@@ -191,14 +180,14 @@ final class CleanupClusterArrangementTests: XCTestCase {
             statuses: [first.id: .reviewed, second.id: .inReview]
         )
 
-        XCTAssertEqual(ids(before.remaining), [first.id, second.id])
-        XCTAssertEqual(ids(after.remaining), [second.id, first.id])
-        XCTAssertNotEqual(before, after)
+        #expect(ids(before.remaining) == [first.id, second.id])
+        #expect(ids(after.remaining) == [second.id, first.id])
+        #expect(before != after)
     }
 
     /// Re-deriving on regenerated cluster ids keeps view identity stable while
     /// refreshing the `PhotoCluster` values the cards use for status lookups.
-    func testArrangementIsRederivedWhenClusterIDsChange() {
+    @Test func testArrangementIsRederivedWhenClusterIDsChange() {
         let assets = [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")]
         let before = PhotoCluster(assets: assets)
         let after = PhotoCluster(assets: assets)
@@ -206,29 +195,26 @@ final class CleanupClusterArrangementTests: XCTestCase {
         let beforeArrangement = makeArrangement(clusters: [before])
         let afterArrangement = makeArrangement(clusters: [after])
 
-        XCTAssertEqual(
-            beforeArrangement.remaining.map(\.id),
-            afterArrangement.remaining.map(\.id)
-        )
-        XCTAssertEqual(ids(afterArrangement.remaining), [after.id])
+        #expect(beforeArrangement.remaining.map(\.id) == afterArrangement.remaining.map(\.id))
+        #expect(ids(afterArrangement.remaining) == [after.id])
     }
 
     // MARK: - Scroll anchor survival
 
-    func testAnchorIsKeptWhenItSurvivesTheRefresh() {
+    @Test func testAnchorIsKeptWhenItSurvivesTheRefresh() {
         let first = cluster()
         let second = cluster()
         let before = makeArrangement(clusters: [first, second])
         let after = makeArrangement(clusters: [first, second])
         let anchor = before.orderedIDs[1]
 
-        XCTAssertEqual(after.preservedAnchor(anchor, replacing: before), anchor)
+        #expect(after.preservedAnchor(anchor, replacing: before) == anchor)
     }
 
     /// Reconciliation changes the contents of the cluster the user deleted from,
     /// so its row id changes. Without a fallback the anchor is lost and the grid
     /// slides once the rescan lands.
-    func testAnchorFallsBackToTheRowBelowWhenItDisappears() {
+    @Test func testAnchorFallsBackToTheRowBelowWhenItDisappears() {
         let survivingAbove = cluster()
         let deleted = cluster()
         let survivingBelow = cluster()
@@ -237,13 +223,10 @@ final class CleanupClusterArrangementTests: XCTestCase {
         let after = makeArrangement(clusters: [survivingAbove, survivingBelow])
         let anchor = before.orderedIDs[1]
 
-        XCTAssertEqual(
-            after.preservedAnchor(anchor, replacing: before),
-            after.orderedIDs[1]
-        )
+        #expect(after.preservedAnchor(anchor, replacing: before) == after.orderedIDs[1])
     }
 
-    func testAnchorFallsBackUpwardWhenNothingSurvivesBelow() {
+    @Test func testAnchorFallsBackUpwardWhenNothingSurvivesBelow() {
         let survivingAbove = cluster()
         let deleted = cluster()
 
@@ -251,15 +234,12 @@ final class CleanupClusterArrangementTests: XCTestCase {
         let after = makeArrangement(clusters: [survivingAbove])
         let anchor = before.orderedIDs[1]
 
-        XCTAssertEqual(
-            after.preservedAnchor(anchor, replacing: before),
-            after.orderedIDs[0]
-        )
+        #expect(after.preservedAnchor(anchor, replacing: before) == after.orderedIDs[0])
     }
 
     /// A cluster promoted to "Needs review" by reconciliation moves to the top
     /// section. The anchor has to follow the row, not its position.
-    func testAnchorFollowsAClusterAcrossSectionMigration() {
+    @Test func testAnchorFollowsAClusterAcrossSectionMigration() {
         let promoted = cluster()
         let untouched = cluster()
 
@@ -270,23 +250,23 @@ final class CleanupClusterArrangementTests: XCTestCase {
         )
         let anchor = before.remaining[0].id
 
-        XCTAssertEqual(after.needsReview.map(\.id), [anchor])
-        XCTAssertEqual(after.preservedAnchor(anchor, replacing: before), anchor)
+        #expect(after.needsReview.map(\.id) == [anchor])
+        #expect(after.preservedAnchor(anchor, replacing: before) == anchor)
     }
 
-    func testAnchorIsClearedWhenEveryRowDisappears() {
+    @Test func testAnchorIsClearedWhenEveryRowDisappears() {
         let only = cluster()
         let before = makeArrangement(clusters: [only])
         let after = makeArrangement(clusters: [])
 
-        XCTAssertNil(after.preservedAnchor(before.orderedIDs[0], replacing: before))
+        #expect(after.preservedAnchor(before.orderedIDs[0], replacing: before) == nil)
     }
 
-    func testNilAnchorStaysNil() {
+    @Test func testNilAnchorStaysNil() {
         let before = makeArrangement(clusters: [cluster()])
         let after = makeArrangement(clusters: [cluster()])
 
-        XCTAssertNil(after.preservedAnchor(nil, replacing: before))
+        #expect(after.preservedAnchor(nil, replacing: before) == nil)
     }
 
     // MARK: - Helpers

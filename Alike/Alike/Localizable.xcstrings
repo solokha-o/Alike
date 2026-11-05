@@ -1,587 +1,797 @@
 {
-  "sourceLanguage": "en",
-  "version": "1.1",
-  "strings": {
-    "alike.rescan.later": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Later"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "alike.rescan.later" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لاحقًا"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Пізніше"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Später"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Después"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Más tarde"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Depois"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Später"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plus tard"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más tarde"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Più tardi"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Después"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Later"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Później"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daha Sonra"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Più tardi"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "稍後"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لاحقًا"
-          }
-        }
-      }
-    },
-    "alike.rescan.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changing sensitivity requires a new scan to take effect"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Później"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Щоб застосувати зміну чутливості, потрібне нове сканування"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depois"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cambiar la sensibilidad requiere un nuevo análisis para que surta efecto"
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais tarde"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cambiar la sensibilidad requiere un nuevo análisis para que surta efecto"
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha Sonra"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alterar a sensibilidade exige uma nova análise para ter efeito"
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пізніше"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eine geänderte Empfindlichkeit wird erst nach einem neuen Scan wirksam"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La modification de la sensibilité ne prend effet qu’après une nouvelle analyse"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per applicare la nuova sensibilità serve una nuova scansione"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Een gewijzigde gevoeligheid werkt pas na een nieuwe scan"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zmiana czułości zacznie działać dopiero po nowym skanowaniu"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duyarlılık değişikliğinin geçerli olması için yeni bir tarama gerekiyor"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "更改敏感度後須重新掃描才會生效"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يتطلب تغيير الحساسية إجراء فحص جديد لكي يسري المفعول"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "稍後"
           }
         }
       }
     },
-    "alike.rescan.now": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rescan Now"
+    "alike.rescan.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يتطلب تغيير الحساسية إجراء فحص جديد لكي يسري المفعول"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Пересканувати зараз"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine geänderte Empfindlichkeit wird erst nach einem neuen Scan wirksam"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar ahora"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity requires a new scan to take effect"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analizar ahora"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity requires a new scan to take effect"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analisar agora"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity requires a new scan to take effect"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jetzt scannen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing sensitivity requires a new scan to take effect"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyser"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar la sensibilidad requiere un nuevo análisis para que surta efecto"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scansiona ora"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar la sensibilidad requiere un nuevo análisis para que surta efecto"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nu opnieuw scannen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La modification de la sensibilité ne prend effet qu’après une nouvelle analyse"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skanuj teraz"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La modification de la sensibilité ne prend effet qu’après une nouvelle analyse"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Şimdi Tara"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per applicare la nuova sensibilità serve una nuova scansione"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "立即重新掃描"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een gewijzigde gevoeligheid werkt pas na een nieuwe scan"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إعادة الفحص الآن"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmiana czułości zacznie działać dopiero po nowym skanowaniu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar a sensibilidade exige uma nova análise para ter efeito"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar a sensibilidade exige uma nova análise para ter efeito"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duyarlılık değişikliğinin geçerli olması için yeni bir tarama gerekiyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Щоб застосувати зміну чутливості, потрібне нове сканування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改敏感度後須重新掃描才會生效"
           }
         }
       }
     },
-    "alike.rescan.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rescan Required"
+    "alike.rescan.now" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة الفحص الآن"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Потрібне пересканування"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jetzt scannen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se requiere un nuevo análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Now"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se requiere un nuevo análisis"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Now"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nova análise necessária"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Now"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neuer Scan erforderlich"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Now"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nouvelle analyse requise"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar ahora"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuova scansione necessaria"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizar ahora"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opnieuw scannen vereist"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wymagane nowe skanowanie"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyser"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden Tarama Gerekiyor"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scansiona ora"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "須重新掃描"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu opnieuw scannen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يلزم إعادة الفحص"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skanuj teraz"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar agora"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar agora"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Tara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пересканувати зараз"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即重新掃描"
           }
         }
       }
     },
-    "alike.tab.cleanup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cleanup"
+    "alike.rescan.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يلزم إعادة الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Очищення"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuer Scan erforderlich"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpieza"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Required"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpieza"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Required"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpeza"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Required"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aufräumen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Required"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nettoyage"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un nuevo análisis"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pulizia"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un nuevo análisis"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opruimen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle analyse requise"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Porządki"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle analyse requise"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temizlik"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova scansione necessaria"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "清理"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw scannen vereist"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "التنظيف"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymagane nowe skanowanie"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova análise necessária"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova análise necessária"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Tarama Gerekiyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Потрібне пересканування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "須重新掃描"
           }
         }
       }
     },
-    "alike.tab.scanner": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+    "alike.tab.cleanup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التنظيف"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканер"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufräumen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análisis"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análisis"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Análise"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analyse"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpieza"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpieza"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanner"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skaner"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tarayıcı"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulizia"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "掃描"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opruimen"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الفحص"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porządki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlik"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищення"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理"
           }
         }
       }
     },
-    "alike.tab.settings": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "alike.tab.scanner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الفحص"
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Налаштування"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configuración"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajustes"
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajustes"
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einstellungen"
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réglages"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impostazioni"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Instellingen"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse"
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ustawienia"
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ayarlar"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "設定"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الإعدادات"
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaner"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análise"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análise"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarayıcı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканер"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描"
+          }
+        }
+      }
+    },
+    "alike.tab.settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإعدادات"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "en-AU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "en-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instellingen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustawienia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definições"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarlar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
           }
         }
       }
     }
-  }
+  },
+  "version" : "1.1"
 }

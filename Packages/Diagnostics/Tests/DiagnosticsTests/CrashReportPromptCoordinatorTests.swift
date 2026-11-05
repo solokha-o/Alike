@@ -1,28 +1,29 @@
-import XCTest
+import Foundation
+import Testing
 @testable import Diagnostics
 
+/// A `final class` suite: the temporary directory is removed in `deinit`. The old
+/// `tearDown` was `async` only in its signature — the removal is synchronous.
 @MainActor
-final class CrashReportPromptCoordinatorTests: XCTestCase {
-    private var directoryURL: URL!
-    private var store: CrashReportStore!
-    private var coordinator: CrashReportPromptCoordinator!
+@Suite final class CrashReportPromptCoordinatorTests {
+    private let directoryURL: URL
+    private let store: CrashReportStore
+    private let coordinator: CrashReportPromptCoordinator
 
-    override func setUp() async throws {
+    init() {
         directoryURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         store = CrashReportStore(directoryURL: directoryURL)
         coordinator = CrashReportPromptCoordinator(store: store)
     }
 
-    override func tearDown() async throws {
-        coordinator = nil
-        store = nil
+    deinit {
         try? FileManager.default.removeItem(at: directoryURL)
     }
 
     /// "Delete all data" tears down the tab that observes the store and onboarding puts
     /// a new one back in the same process. The second observer has to keep working.
-    func testObservingAgainAfterTheFirstObserverWasCancelledStillBumpsTheRevision() async throws {
+    @Test func testObservingAgainAfterTheFirstObserverWasCancelledStillBumpsTheRevision() async throws {
         let firstObserver = Task { await coordinator.observeStore() }
         try await Task.sleep(for: .milliseconds(50))
         firstObserver.cancel()
@@ -35,28 +36,28 @@ final class CrashReportPromptCoordinatorTests: XCTestCase {
         try await Task.sleep(for: .milliseconds(200))
         secondObserver.cancel()
 
-        XCTAssertGreaterThan(coordinator.revision, before)
+        #expect(coordinator.revision > before)
     }
 
-    func testPendingReportIsPresentedOnACalmScreen() async {
+    @Test func testPendingReportIsPresentedOnACalmScreen() async {
         await store.ingest([CrashPayloadFixture.data()])
 
         await coordinator.evaluate(isBusy: { false })
 
-        XCTAssertEqual(coordinator.presented?.reports.count, 1)
+        #expect(coordinator.presented?.reports.count == 1)
     }
 
-    func testBusyScreenPresentsNothingAndKeepsTheReportPending() async {
+    @Test func testBusyScreenPresentsNothingAndKeepsTheReportPending() async {
         await store.ingest([CrashPayloadFixture.data()])
 
         await coordinator.evaluate(isBusy: { true })
 
-        XCTAssertNil(coordinator.presented)
+        #expect(coordinator.presented == nil)
         let states = await store.reports().map(\.promptState)
-        XCTAssertEqual(states, [.pending])
+        #expect(states == [.pending])
     }
 
-    func testScreenClaimedWhileTheStoreWasReadPresentsNothing() async {
+    @Test func testScreenClaimedWhileTheStoreWasReadPresentsNothing() async {
         await store.ingest([CrashPayloadFixture.data()])
         var reads = 0
 
@@ -65,62 +66,62 @@ final class CrashReportPromptCoordinatorTests: XCTestCase {
             return reads > 1
         })
 
-        XCTAssertNil(coordinator.presented)
+        #expect(coordinator.presented == nil)
     }
 
-    func testDecidingToPresentDoesNotSpendTheAsk() async {
+    @Test func testDecidingToPresentDoesNotSpendTheAsk() async {
         await store.ingest([CrashPayloadFixture.data()])
 
         await coordinator.evaluate(isBusy: { false })
 
         let states = await store.reports().map(\.promptState)
-        XCTAssertEqual(states, [.pending])
+        #expect(states == [.pending])
     }
 
-    func testOnceTheSheetAppearedTheReportIsNeverAskedAboutAgain() async throws {
+    @Test func testOnceTheSheetAppearedTheReportIsNeverAskedAboutAgain() async throws {
         await store.ingest([CrashPayloadFixture.data()])
         await coordinator.evaluate(isBusy: { false })
-        let prompt = try XCTUnwrap(coordinator.presented)
+        let prompt = try #require(coordinator.presented)
 
         await coordinator.didPresent(prompt)
 
         let relaunched = CrashReportPromptCoordinator(store: CrashReportStore(directoryURL: directoryURL))
         await relaunched.evaluate(isBusy: { false })
-        XCTAssertNil(relaunched.presented)
+        #expect(relaunched.presented == nil)
     }
 
-    func testDeclineIsFinalAndDismisses() async throws {
+    @Test func testDeclineIsFinalAndDismisses() async throws {
         await store.ingest([CrashPayloadFixture.data(), CrashPayloadFixture.data()])
         await coordinator.evaluate(isBusy: { false })
-        let prompt = try XCTUnwrap(coordinator.presented)
+        let prompt = try #require(coordinator.presented)
 
         await coordinator.decline(prompt)
         await coordinator.evaluate(isBusy: { false })
 
-        XCTAssertNil(coordinator.presented)
+        #expect(coordinator.presented == nil)
         let states = await store.reports().map(\.promptState)
-        XCTAssertEqual(states, [.declined, .declined])
+        #expect(states == [.declined, .declined])
     }
 
-    func testSentIsRecordedAndDismisses() async throws {
+    @Test func testSentIsRecordedAndDismisses() async throws {
         await store.ingest([CrashPayloadFixture.data()])
         await coordinator.evaluate(isBusy: { false })
-        let prompt = try XCTUnwrap(coordinator.presented)
+        let prompt = try #require(coordinator.presented)
 
         await coordinator.markSent(prompt)
 
-        XCTAssertNil(coordinator.presented)
+        #expect(coordinator.presented == nil)
         let states = await store.reports().map(\.promptState)
-        XCTAssertEqual(states, [.sent])
+        #expect(states == [.sent])
     }
 
-    func testAttachmentsAreThePayloadFilesOfThePrompt() async throws {
+    @Test func testAttachmentsAreThePayloadFilesOfThePrompt() async throws {
         await store.ingest([CrashPayloadFixture.data()])
         await coordinator.evaluate(isBusy: { false })
-        let prompt = try XCTUnwrap(coordinator.presented)
+        let prompt = try #require(coordinator.presented)
 
         let urls = await coordinator.attachmentURLs(for: prompt)
 
-        XCTAssertEqual(urls.map(\.lastPathComponent), ["\(prompt.id.uuidString).json"])
+        #expect(urls.map(\.lastPathComponent) == ["\(prompt.id.uuidString).json"])
     }
 }

@@ -264,7 +264,12 @@ public struct SubscriptionPaywallView: View {
                 alignment: .topLeading
             )
             .padding(Spacing.medium)
-            .modifier(PaywallPlanCardSurface(usesGlass: usesGlass))
+            .alikeGlassSurface(
+                cornerRadius: CornerRadius.large,
+                isInteractive: true,
+                fallback: .secondaryBackground,
+                usesGlass: usesGlass
+            )
             .overlay {
                 RoundedRectangle(cornerRadius: CornerRadius.large)
                     .stroke(isSelected ? Color.accent : Color.secondary.opacity(ColorOpacity.cardBorder), lineWidth: isSelected ? 2 : 1)
@@ -340,7 +345,7 @@ public struct SubscriptionPaywallView: View {
                 .frame(maxWidth: .infinity)
                 .animation(stateAnimation, value: isPurchasing)
             }
-            .modifier(PaywallPurchaseButtonStyle(usesGlass: usesGlass, isProminent: true))
+            .alikeGlassButton(isProminent: true, usesGlass: usesGlass)
             .controlSize(.large)
             .disabled(!canPurchase || isPurchasing || isRestoring)
 
@@ -353,7 +358,7 @@ public struct SubscriptionPaywallView: View {
                         .transition(.opacity)
                 }
             }
-            .modifier(PaywallPurchaseButtonStyle(usesGlass: usesGlass, isProminent: false))
+            .alikeGlassButton(regularFallback: .borderless, usesGlass: usesGlass)
             .disabled(store == nil || isPurchasing || isRestoring)
             .animation(stateAnimation, value: isRestoring)
         }
@@ -593,46 +598,5 @@ private struct PurchaseFeedback: Equatable {
 
     static func failure(_ message: String) -> PurchaseFeedback {
         PurchaseFeedback(message: message, icon: "exclamationmark.triangle.fill", isError: true)
-    }
-}
-
-private struct PaywallPlanCardSurface: ViewModifier {
-    let usesGlass: Bool
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
-            content
-                .glassEffect(
-                    .regular.interactive(),
-                    in: .rect(cornerRadius: CornerRadius.large)
-                )
-        } else {
-            content
-                .background(
-                    Color.secondaryBackground,
-                    in: RoundedRectangle(cornerRadius: CornerRadius.large)
-                )
-        }
-    }
-}
-
-private struct PaywallPurchaseButtonStyle: ViewModifier {
-    let usesGlass: Bool
-    let isProminent: Bool
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
-            if isProminent {
-                content.buttonStyle(.glassProminent)
-            } else {
-                content.buttonStyle(.glass)
-            }
-        } else if isProminent {
-            content.buttonStyle(.borderedProminent)
-        } else {
-            content.buttonStyle(.borderless)
-        }
     }
 }

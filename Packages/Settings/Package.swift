@@ -18,7 +18,6 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../DesignSystem"),
         .package(path: "../NavigationKit"),
-        .package(path: "../Cleanup"),
         .package(path: "../Storage"),
         .package(path: "../Purchases"),
         .package(path: "../UserGuide"),
@@ -29,7 +28,7 @@ let package = Package(
         .target(
             name: "Settings",
             dependencies: [
-                "Core", "DesignSystem", "NavigationKit", "Cleanup", "Storage", "UserGuide", "PhotoAnalysis",
+                "Core", "DesignSystem", "NavigationKit", "Storage", "UserGuide", "PhotoAnalysis",
                 "Diagnostics",
                 .product(name: "Purchases", package: "Purchases"),
                 .product(name: "PurchasesUI", package: "Purchases")
@@ -43,7 +42,7 @@ let package = Package(
         ),
         .testTarget(
             name: "SettingsTests",
-            dependencies: ["Settings", "Core", "Cleanup"]
+            dependencies: ["Settings", "Core"]
         ),
     ]
 )

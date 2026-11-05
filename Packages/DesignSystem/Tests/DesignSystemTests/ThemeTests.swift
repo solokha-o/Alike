@@ -1,62 +1,62 @@
-import XCTest
+import Testing
 import SwiftUI
 @testable import DesignSystem
 
-final class ThemeTests: XCTestCase {
+@Suite struct ThemeTests {
     
     // MARK: - Color Tests
     
-    func testAccentColorExists() {
+    @Test func testAccentColorExists() {
         // Given & When: Accent color
         let accent = Color.accent
         
         // Then: Should exist in the design palette
-        XCTAssertNotNil(accent, "Accent color should exist")
+        #expect(accent != nil, "Accent color should exist")
     }
     
-    func testSecondaryAccentColorExists() {
+    @Test func testSecondaryAccentColorExists() {
         // Given & When: Secondary accent color
         let secondaryAccent = Color.secondaryAccent
         
         // Then: Should exist
-        XCTAssertNotNil(secondaryAccent, "Secondary accent color should exist")
+        #expect(secondaryAccent != nil, "Secondary accent color should exist")
     }
     
-    func testCardBackgroundColorExists() {
+    @Test func testCardBackgroundColorExists() {
         // Given & When: Card background color
         let cardBackground = Color.cardBackground
         
         // Then: Should exist
-        XCTAssertNotNil(cardBackground, "Card background should exist")
+        #expect(cardBackground != nil, "Card background should exist")
     }
     
-    func testSecondaryBackgroundColorExists() {
+    @Test func testSecondaryBackgroundColorExists() {
         // Given & When: Secondary background color
         let secondaryBackground = Color.secondaryBackground
         
         // Then: Should exist
-        XCTAssertNotNil(secondaryBackground, "Secondary background should exist")
+        #expect(secondaryBackground != nil, "Secondary background should exist")
     }
     
     // MARK: - Typography Tests
     
-    func testAppLargeTitleFontExists() {
+    @Test func testAppLargeTitleFontExists() {
         // Given & When: Large title font
         let font = Font.appLargeTitle
         
         // Then: Should exist
-        XCTAssertNotNil(font, "App large title font should exist")
+        #expect(font != nil, "App large title font should exist")
     }
     
-    func testAppTitleFontExists() {
+    @Test func testAppTitleFontExists() {
         // Given & When: Title font
         let font = Font.appTitle
         
         // Then: Should exist
-        XCTAssertNotNil(font, "App title font should exist")
+        #expect(font != nil, "App title font should exist")
     }
     
-    func testAllTypographyStylesExist() {
+    @Test func testAllTypographyStylesExist() {
         // Given & When: All typography styles
         let fonts = [
             Font.appLargeTitle,
@@ -72,12 +72,12 @@ final class ThemeTests: XCTestCase {
         ]
         
         // Then: All should exist
-        XCTAssertEqual(fonts.count, 10, "Should have 10 typography styles")
+        #expect(fonts.count == 10, "Should have 10 typography styles")
     }
     
     // MARK: - Spacing Tests
     
-    func testSpacingValues() {
+    @Test func testSpacingValues() {
         // Given & When: Spacing values
         let xxxSmall = Spacing.xxxSmall
         let xxSmall = Spacing.xxSmall
@@ -90,18 +90,18 @@ final class ThemeTests: XCTestCase {
         let xxxLarge = Spacing.xxxLarge
         
         // Then: Should have correct values
-        XCTAssertEqual(xxxSmall, 2)
-        XCTAssertEqual(xxSmall, 4)
-        XCTAssertEqual(xSmall, 8)
-        XCTAssertEqual(small, 12)
-        XCTAssertEqual(medium, 16)
-        XCTAssertEqual(large, 24)
-        XCTAssertEqual(xLarge, 32)
-        XCTAssertEqual(xxLarge, 48)
-        XCTAssertEqual(xxxLarge, 64)
+        #expect(xxxSmall == 2)
+        #expect(xxSmall == 4)
+        #expect(xSmall == 8)
+        #expect(small == 12)
+        #expect(medium == 16)
+        #expect(large == 24)
+        #expect(xLarge == 32)
+        #expect(xxLarge == 48)
+        #expect(xxxLarge == 64)
     }
     
-    func testSpacingIsProgressive() {
+    @Test func testSpacingIsProgressive() {
         // Given: All spacing values
         let spacings = [
             Spacing.xxxSmall,
@@ -117,13 +117,13 @@ final class ThemeTests: XCTestCase {
         
         // Then: Should be in ascending order
         for i in 0..<(spacings.count - 1) {
-            XCTAssertLessThan(spacings[i], spacings[i + 1], "Spacing should be progressive")
+            #expect(spacings[i] < spacings[i + 1], "Spacing should be progressive")
         }
     }
     
     // MARK: - Corner Radius Tests
     
-    func testCornerRadiusValues() {
+    @Test func testCornerRadiusValues() {
         // Given & When: Corner radius values
         let small = CornerRadius.small
         let medium = CornerRadius.medium
@@ -131,13 +131,13 @@ final class ThemeTests: XCTestCase {
         let xLarge = CornerRadius.xLarge
         
         // Then: Should have correct values
-        XCTAssertEqual(small, 8)
-        XCTAssertEqual(medium, 12)
-        XCTAssertEqual(large, 16)
-        XCTAssertEqual(xLarge, 24)
+        #expect(small == 8)
+        #expect(medium == 12)
+        #expect(large == 16)
+        #expect(xLarge == 24)
     }
     
-    func testCornerRadiusIsProgressive() {
+    @Test func testCornerRadiusIsProgressive() {
         // Given: All corner radius values
         let radii = [
             CornerRadius.small,
@@ -148,25 +148,25 @@ final class ThemeTests: XCTestCase {
         
         // Then: Should be in ascending order
         for i in 0..<(radii.count - 1) {
-            XCTAssertLessThan(radii[i], radii[i + 1], "Corner radius should be progressive")
+            #expect(radii[i] < radii[i + 1], "Corner radius should be progressive")
         }
     }
     
     // MARK: - Consistency Tests
     
-    func testSpacingConsistencyWithDesign() {
+    @Test func testSpacingConsistencyWithDesign() {
         // Given: Medium spacing
         let medium = Spacing.medium
         
         // Then: Should be 16 (standard iOS spacing)
-        XCTAssertEqual(medium, 16, "Medium spacing should align with iOS standards")
+        #expect(medium == 16, "Medium spacing should align with iOS standards")
     }
     
-    func testCornerRadiusConsistencyWithDesign() {
+    @Test func testCornerRadiusConsistencyWithDesign() {
         // Given: Medium corner radius
         let medium = CornerRadius.medium
         
         // Then: Should be 12 (standard iOS corner radius)
-        XCTAssertEqual(medium, 12, "Medium corner radius should align with iOS standards")
+        #expect(medium == 12, "Medium corner radius should align with iOS standards")
     }
 }

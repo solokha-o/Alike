@@ -1,34 +1,35 @@
 import SwiftUI
-import XCTest
+import Foundation
+import Testing
 import DesignSystem
 @testable import Details
 
-final class AlikeComparisonReviewLifecycleTests: XCTestCase {
-    func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
+@Suite struct AlikeComparisonReviewLifecycleTests {
+    @Test func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
         let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .active
         )
 
-        XCTAssertEqual(presentation.animationURL, AlikeAssets.comparisonReviewOverlayURL)
-        XCTAssertEqual(presentation.playback, .loop)
-        XCTAssertEqual(presentation.ambientMotion, .breathe)
+        #expect(presentation.animationURL == AlikeAssets.comparisonReviewOverlayURL)
+        #expect(presentation.playback == .loop)
+        #expect(presentation.ambientMotion == .breathe)
     }
 
-    func testInactiveAndBackgroundPresentationsDisableMotion() {
+    @Test func testInactiveAndBackgroundPresentationsDisableMotion() {
         for scenePhase in [ScenePhase.inactive, .background] {
             let presentation = AlikeComparisonReviewPresentation.resolve(
                 isVisible: true,
                 scenePhase: scenePhase
             )
 
-            XCTAssertNil(presentation.animationURL)
-            XCTAssertEqual(presentation.playback, .loop)
-            XCTAssertEqual(presentation.ambientMotion, .none)
+            #expect(presentation.animationURL == nil)
+            #expect(presentation.playback == .loop)
+            #expect(presentation.ambientMotion == .none)
         }
     }
 
-    func testForegroundingVisiblePresentationRestoresContinuousMotion() {
+    @Test func testForegroundingVisiblePresentationRestoresContinuousMotion() {
         let inactivePresentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,
             scenePhase: .inactive
@@ -38,44 +39,32 @@ final class AlikeComparisonReviewLifecycleTests: XCTestCase {
             scenePhase: .active
         )
 
-        XCTAssertNil(inactivePresentation.animationURL)
-        XCTAssertEqual(inactivePresentation.ambientMotion, .none)
-        XCTAssertEqual(activePresentation.animationURL, AlikeAssets.comparisonReviewOverlayURL)
-        XCTAssertEqual(activePresentation.ambientMotion, .breathe)
+        #expect(inactivePresentation.animationURL == nil)
+        #expect(inactivePresentation.ambientMotion == .none)
+        #expect(activePresentation.animationURL == AlikeAssets.comparisonReviewOverlayURL)
+        #expect(activePresentation.ambientMotion == .breathe)
     }
 
-    func testDisappearingPresentationDisablesMotion() {
+    @Test func testDisappearingPresentationDisablesMotion() {
         let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: false,
             scenePhase: .active
         )
 
-        XCTAssertNil(presentation.animationURL)
-        XCTAssertEqual(presentation.ambientMotion, .none)
+        #expect(presentation.animationURL == nil)
+        #expect(presentation.ambientMotion == .none)
     }
 
-    func testComparisonHelperRequiresAtLeastTwoPhotos() {
-        XCTAssertFalse(AlikeComparisonReviewPresentation.isEligible(assetCount: 0))
-        XCTAssertFalse(AlikeComparisonReviewPresentation.isEligible(assetCount: 1))
-        XCTAssertTrue(AlikeComparisonReviewPresentation.isEligible(assetCount: 2))
+    @Test func testComparisonHelperRequiresAtLeastTwoPhotos() {
+        #expect(!AlikeComparisonReviewPresentation.isEligible(assetCount: 0))
+        #expect(!AlikeComparisonReviewPresentation.isEligible(assetCount: 1))
+        #expect(AlikeComparisonReviewPresentation.isEligible(assetCount: 2))
     }
 
-    func testDisplayScaleSelectsMatchingComparisonExport() {
-        XCTAssertEqual(
-            AlikeComparisonReviewPresentation.imageURL(for: 1.49),
-            AlikeAssets.comparisonReviewURL(for: .oneX)
-        )
-        XCTAssertEqual(
-            AlikeComparisonReviewPresentation.imageURL(for: 1.5),
-            AlikeAssets.comparisonReviewURL(for: .twoX)
-        )
-        XCTAssertEqual(
-            AlikeComparisonReviewPresentation.imageURL(for: 2.49),
-            AlikeAssets.comparisonReviewURL(for: .twoX)
-        )
-        XCTAssertEqual(
-            AlikeComparisonReviewPresentation.imageURL(for: 2.5),
-            AlikeAssets.comparisonReviewURL(for: .threeX)
-        )
+    @Test func testDisplayScaleSelectsMatchingComparisonExport() {
+        #expect(AlikeComparisonReviewPresentation.imageURL(for: 1.49) == AlikeAssets.comparisonReviewURL(for: .oneX))
+        #expect(AlikeComparisonReviewPresentation.imageURL(for: 1.5) == AlikeAssets.comparisonReviewURL(for: .twoX))
+        #expect(AlikeComparisonReviewPresentation.imageURL(for: 2.49) == AlikeAssets.comparisonReviewURL(for: .twoX))
+        #expect(AlikeComparisonReviewPresentation.imageURL(for: 2.5) == AlikeAssets.comparisonReviewURL(for: .threeX))
     }
 }

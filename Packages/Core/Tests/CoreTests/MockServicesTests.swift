@@ -1,27 +1,28 @@
-import XCTest
+import Foundation
+import Testing
 import Photos
 @testable import Core
 
 @MainActor
-final class MockServicesTests: XCTestCase {
-    func testMockPhotoPermissionManagerAuthorizationFlow() async {
+@Suite struct MockServicesTests {
+    @Test func testMockPhotoPermissionManagerAuthorizationFlow() async {
         let manager = MockPhotoPermissionManager(authorizationStatus: .notDetermined)
 
-        XCTAssertFalse(manager.isAuthorized)
-        XCTAssertFalse(manager.didCallRequestAuthorization)
+        #expect(!manager.isAuthorized)
+        #expect(!manager.didCallRequestAuthorization)
 
         manager.requestAuthorizationResult = .authorized
         let status = await manager.requestAuthorization()
 
-        XCTAssertEqual(status, .authorized)
-        XCTAssertTrue(manager.isAuthorized)
-        XCTAssertTrue(manager.didCallRequestAuthorization)
+        #expect(status == .authorized)
+        #expect(manager.isAuthorized)
+        #expect(manager.didCallRequestAuthorization)
 
         manager.openSettings()
-        XCTAssertTrue(manager.didCallOpenSettings)
+        #expect(manager.didCallOpenSettings)
     }
 
-    func testMockPhotoClusterRepositoryStoresClusters() async throws {
+    @Test func testMockPhotoClusterRepositoryStoresClusters() async throws {
         let repository = MockPhotoClusterRepository()
         let cluster = PhotoCluster(assets: [])
 
@@ -30,54 +31,55 @@ final class MockServicesTests: XCTestCase {
 
         let saved = await repository.savedClusters
         let didCallSave = await repository.didCallSaveClusters
-        XCTAssertEqual(saved.count, 1)
-        XCTAssertTrue(didCallSave)
+        #expect(saved.count == 1)
+        #expect(didCallSave)
 
         await repository.setLoadClustersResult(.success([cluster]))
         let loaded = try await repository.loadClusters()
         let didCallLoad = await repository.didCallLoadClusters
-        XCTAssertEqual(loaded.count, 1)
-        XCTAssertTrue(didCallLoad)
+        #expect(loaded.count == 1)
+        #expect(didCallLoad)
     }
 
-    func testMockPhotoClusterRepositoryDeletesClusters() async throws {
+    @Test func testMockPhotoClusterRepositoryDeletesClusters() async throws {
         let repository = MockPhotoClusterRepository()
         let cluster = PhotoCluster(assets: [])
 
         try await repository.saveClusters([cluster])
         let initialCount = await repository.savedClusters.count
-        XCTAssertEqual(initialCount, 1)
+        #expect(initialCount == 1)
 
         try await repository.deleteAllClusters()
         let finalCount = await repository.savedClusters.count
         let didCallDelete = await repository.didCallDeleteAllClusters
-        XCTAssertEqual(finalCount, 0)
-        XCTAssertTrue(didCallDelete)
+        #expect(finalCount == 0)
+        #expect(didCallDelete)
     }
 
-    func testMockPhotoAnalysisServiceProgressAndSensitivity() async throws {
+    @Test func testMockPhotoAnalysisServiceProgressAndSensitivity() async throws {
         let service = MockPhotoAnalysisService()
         await service.setAnalyzePhotoLibraryResult(.success([]))
 
-        let progressHalf = expectation(description: "progress 0.5")
-        let progressFull = expectation(description: "progress 1.0")
-        let clusters = try await service.analyzePhotoLibrary(sensitivity: 0.9) { progress in
-            if progress == 0.5 {
-                progressHalf.fulfill()
-            } else if progress == 1.0 {
-                progressFull.fulfill()
+        try await confirmation("progress 0.5") { progressHalf in
+            try await confirmation("progress 1.0") { progressFull in
+                let clusters = try await service.analyzePhotoLibrary(sensitivity: 0.9) { progress in
+                    if progress == 0.5 {
+                        progressHalf()
+                    } else if progress == 1.0 {
+                        progressFull()
+                    }
+                }
+
+                let didCallAnalyze = await service.didCallAnalyzePhotoLibrary
+                let lastSensitivity = await service.lastSensitivity
+                #expect(didCallAnalyze)
+                #expect(lastSensitivity == 0.9)
+                #expect(clusters.count == 0)
             }
         }
-
-        let didCallAnalyze = await service.didCallAnalyzePhotoLibrary
-        let lastSensitivity = await service.lastSensitivity
-        XCTAssertTrue(didCallAnalyze)
-        XCTAssertEqual(lastSensitivity, 0.9)
-        XCTAssertEqual(clusters.count, 0)
-        await fulfillment(of: [progressHalf, progressFull], timeout: 1.0)
     }
 
-    func testMockClusterReviewStateRepositoryStoresAndDeletesState() async throws {
+    @Test func testMockClusterReviewStateRepositoryStoresAndDeletesState() async throws {
         let repository = MockClusterReviewStateRepository()
         let clusterID = UUID()
         let state = ClusterReviewState(
@@ -92,15 +94,15 @@ final class MockServicesTests: XCTestCase {
         let loaded = try await repository.loadReviewState(clusterID: clusterID)
         let allStates = try await repository.loadAllReviewStates()
 
-        XCTAssertEqual(loaded, state)
-        XCTAssertEqual(allStates[clusterID], state)
+        #expect(loaded == state)
+        #expect(allStates[clusterID] == state)
 
         try await repository.deleteReviewState(clusterID: clusterID)
         let deleted = try await repository.loadReviewState(clusterID: clusterID)
-        XCTAssertNil(deleted)
+        #expect(deleted == nil)
     }
 
-    func testMockCleanupSessionRepositoryStoresAndDeletesSession() async throws {
+    @Test func testMockCleanupSessionRepositoryStoresAndDeletesSession() async throws {
         let repository = MockCleanupSessionRepository()
         let session = CleanupSession(
             totalClusters: 8,
@@ -110,14 +112,14 @@ final class MockServicesTests: XCTestCase {
 
         try await repository.saveActiveSession(session)
         let loaded = try await repository.loadActiveSession()
-        XCTAssertEqual(loaded, session)
+        #expect(loaded == session)
 
         try await repository.deleteActiveSession()
         let deleted = try await repository.loadActiveSession()
-        XCTAssertNil(deleted)
+        #expect(deleted == nil)
     }
 
-    func testMockCleanupCategorySnapshotRepositoryReplacesAllSnapshots() async throws {
+    @Test func testMockCleanupCategorySnapshotRepositoryReplacesAllSnapshots() async throws {
         let repository = MockCleanupCategorySnapshotRepository()
         let staleSnapshot = CleanupCategorySnapshot(
             kind: .screenshots,
@@ -138,45 +140,45 @@ final class MockServicesTests: XCTestCase {
         let storedSnapshots = await repository.storedSnapshots
         let didCallReplaceAllSnapshots = await repository.didCallReplaceAllSnapshots
         let replaceAllSnapshotsCallCount = await repository.replaceAllSnapshotsCallCount
-        XCTAssertEqual(storedSnapshots, [.blurredPhotos: replacement])
-        XCTAssertTrue(didCallReplaceAllSnapshots)
-        XCTAssertEqual(replaceAllSnapshotsCallCount, 1)
+        #expect(storedSnapshots == [.blurredPhotos: replacement])
+        #expect(didCallReplaceAllSnapshots)
+        #expect(replaceAllSnapshotsCallCount == 1)
     }
 
-    func testMockCleanupReminderPreferenceRepositoryStoresValue() async {
+    @Test func testMockCleanupReminderPreferenceRepositoryStoresValue() async {
         let repository = MockCleanupReminderPreferenceRepository()
 
         let initialValue = await repository.loadReminderEnabled()
-        XCTAssertFalse(initialValue)
+        #expect(!initialValue)
 
         await repository.saveReminderEnabled(true)
 
         let updatedValue = await repository.loadReminderEnabled()
         let didCallLoad = await repository.didCallLoadReminderEnabled
         let didCallSave = await repository.didCallSaveReminderEnabled
-        XCTAssertTrue(updatedValue)
-        XCTAssertTrue(didCallLoad)
-        XCTAssertTrue(didCallSave)
+        #expect(updatedValue)
+        #expect(didCallLoad)
+        #expect(didCallSave)
     }
 
-    func testMockCleanupReminderPreferenceRepositoryStoresSchedule() async {
+    @Test func testMockCleanupReminderPreferenceRepositoryStoresSchedule() async {
         let repository = MockCleanupReminderPreferenceRepository()
         let customSchedule = CleanupReminderSchedule(weekday: 3, hour: 9, minute: 30)
 
         let initialSchedule = await repository.loadReminderSchedule()
-        XCTAssertEqual(initialSchedule, .defaultWeekly)
+        #expect(initialSchedule == .defaultWeekly)
 
         await repository.saveReminderSchedule(customSchedule)
 
         let updatedSchedule = await repository.loadReminderSchedule()
         let didCallLoad = await repository.didCallLoadReminderSchedule
         let didCallSave = await repository.didCallSaveReminderSchedule
-        XCTAssertEqual(updatedSchedule, customSchedule)
-        XCTAssertTrue(didCallLoad)
-        XCTAssertTrue(didCallSave)
+        #expect(updatedSchedule == customSchedule)
+        #expect(didCallLoad)
+        #expect(didCallSave)
     }
 
-    func testMockCleanupReminderManagerTracksCalls() async throws {
+    @Test func testMockCleanupReminderManagerTracksCalls() async throws {
         let manager = MockCleanupReminderManager()
         let customSchedule = CleanupReminderSchedule(weekday: 5, hour: 20, minute: 15)
 
@@ -193,12 +195,12 @@ final class MockServicesTests: XCTestCase {
         let lastSetScheduleValue = await manager.lastSetScheduleValue
         let lastResyncIsPremiumUnlocked = await manager.lastResyncIsPremiumUnlocked
 
-        XCTAssertTrue(didCallLoad)
-        XCTAssertTrue(didCallSetEnabled)
-        XCTAssertTrue(didCallSetSchedule)
-        XCTAssertTrue(didCallResync)
-        XCTAssertEqual(lastSetEnabledValue, true)
-        XCTAssertEqual(lastSetScheduleValue, customSchedule)
-        XCTAssertEqual(lastResyncIsPremiumUnlocked, false)
+        #expect(didCallLoad)
+        #expect(didCallSetEnabled)
+        #expect(didCallSetSchedule)
+        #expect(didCallResync)
+        #expect(lastSetEnabledValue == true)
+        #expect(lastSetScheduleValue == customSchedule)
+        #expect(lastResyncIsPremiumUnlocked == false)
     }
 }

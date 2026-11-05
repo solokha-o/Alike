@@ -1,45 +1,46 @@
 import Core
 import CoreGraphics
 import Photos
-import XCTest
+import Foundation
+import Testing
 @testable import Details
 
 @MainActor
-final class ClusterDetailsEnhancementTests: XCTestCase {
+@Suite struct ClusterDetailsEnhancementTests {
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000042")!
 
     // MARK: - Availability
 
-    func testActionIsHiddenWithoutAnEnhancementService() async {
+    @Test func testActionIsHiddenWithoutAnEnhancementService() async {
         let viewModel = makeViewModel(service: nil)
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.enhancementState, .unavailable)
-        XCTAssertFalse(viewModel.isEnhancementActionVisible)
+        #expect(viewModel.enhancementState == .unavailable)
+        #expect(!viewModel.isEnhancementActionVisible)
     }
 
-    func testActionIsHiddenWhenTheAssetCannotBeEdited() async {
+    @Test func testActionIsHiddenWhenTheAssetCannotBeEdited() async {
         let service = FakeEnhancementService(canEnhance: false)
         let viewModel = makeViewModel(service: service)
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.enhancementState, .unavailable)
-        XCTAssertFalse(viewModel.isEnhancementActionVisible)
+        #expect(viewModel.enhancementState == .unavailable)
+        #expect(!viewModel.isEnhancementActionVisible)
     }
 
-    func testAnAlreadyEnhancedBestShotLoadsAsApplied() async {
+    @Test func testAnAlreadyEnhancedBestShotLoadsAsApplied() async {
         let service = FakeEnhancementService(isEnhanced: true)
         let viewModel = makeViewModel(service: service)
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.enhancementState, .applied)
-        XCTAssertTrue(viewModel.isBestShotEnhanced)
+        #expect(viewModel.enhancementState == .applied)
+        #expect(viewModel.isBestShotEnhanced)
     }
 
-    func testAvailabilityIsAskedOnceWhenOpeningTheCluster() async {
+    @Test func testAvailabilityIsAskedOnceWhenOpeningTheCluster() async {
         let service = FakeEnhancementService()
         let viewModel = makeViewModel(service: service)
 
@@ -48,37 +49,37 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         // Each question to the library resolves the photo, which can download a
         // full-size original; opening a cluster asks once.
         let callCount = await service.availabilityCallCount
-        XCTAssertEqual(callCount, 1)
+        #expect(callCount == 1)
     }
 
     // MARK: - Happy path
 
-    func testPreviewThenApplyThenRevertWalksTheWholeStateMachine() async {
+    @Test func testPreviewThenApplyThenRevertWalksTheWholeStateMachine() async {
         let service = FakeEnhancementService()
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
-        XCTAssertEqual(viewModel.enhancementState, .idle)
+        #expect(viewModel.enhancementState == .idle)
 
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        XCTAssertEqual(viewModel.enhancementState, .previewing)
-        XCTAssertNotNil(viewModel.enhancementPreview)
+        #expect(viewModel.enhancementState == .previewing)
+        #expect(viewModel.enhancementPreview != nil)
 
         await viewModel.applyEnhancement(for: "best")
 
-        XCTAssertEqual(viewModel.enhancementState, .applied)
-        XCTAssertTrue(viewModel.isBestShotEnhanced)
-        XCTAssertNil(viewModel.enhancementPreview)
+        #expect(viewModel.enhancementState == .applied)
+        #expect(viewModel.isBestShotEnhanced)
+        #expect(viewModel.enhancementPreview == nil)
 
         await viewModel.revertEnhancement()
 
-        XCTAssertEqual(viewModel.enhancementState, .idle)
-        XCTAssertFalse(viewModel.isBestShotEnhanced)
+        #expect(viewModel.enhancementState == .idle)
+        #expect(!viewModel.isBestShotEnhanced)
         let didRevert = await service.didRevert
-        XCTAssertTrue(didRevert)
+        #expect(didRevert)
     }
 
-    func testCancellingThePreviewWritesNothing() async {
+    @Test func testCancellingThePreviewWritesNothing() async {
         let service = FakeEnhancementService()
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -86,17 +87,17 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         viewModel.dismissEnhancementPreview()
 
-        XCTAssertEqual(viewModel.enhancementState, .idle)
-        XCTAssertNil(viewModel.enhancementPreview)
+        #expect(viewModel.enhancementState == .idle)
+        #expect(viewModel.enhancementPreview == nil)
         let didApply = await service.didApply
-        XCTAssertFalse(didApply)
-        XCTAssertFalse(viewModel.isBestShotEnhanced)
+        #expect(!didApply)
+        #expect(!viewModel.isBestShotEnhanced)
     }
 
     /// Cancel is offered while the original is still coming down from iCloud.
     /// Leaving `.preparingPreview` behind there kept the action disabled for
     /// the rest of the screen's life.
-    func testCancellingWhileThePreviewIsStillPreparingReturnsToIdle() async {
+    @Test func testCancellingWhileThePreviewIsStillPreparingReturnsToIdle() async {
         let service = FakeEnhancementService(previewDelay: true)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -105,26 +106,26 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
             await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
         }
         await Task.yield()
-        XCTAssertEqual(viewModel.enhancementState, .preparingPreview)
+        #expect(viewModel.enhancementState == .preparingPreview)
 
         viewModel.dismissEnhancementPreview()
 
-        XCTAssertEqual(viewModel.enhancementState, .idle)
-        XCTAssertNil(viewModel.enhancementPreview)
+        #expect(viewModel.enhancementState == .idle)
+        #expect(viewModel.enhancementPreview == nil)
 
         // The render the user walked away from lands afterwards and must not
         // re-open the preview it belonged to.
         await service.releasePreview()
         await previewing.value
 
-        XCTAssertEqual(viewModel.enhancementState, .idle)
-        XCTAssertNil(viewModel.enhancementPreview)
+        #expect(viewModel.enhancementState == .idle)
+        #expect(viewModel.enhancementPreview == nil)
     }
 
     /// Thumbnails are cached under the asset's modification date, so a photo
     /// Alike just wrote to has to be re-read or the tile keeps showing the
     /// picture from before the edit.
-    func testApplyingRereadsTheEditedPhoto() async {
+    @Test func testApplyingRereadsTheEditedPhoto() async {
         let service = FakeEnhancementService()
         let refreshed = RefreshedAssetRecorder()
         let viewModel = makeViewModel(service: service, refreshedAssetIdentifiers: refreshed)
@@ -132,10 +133,10 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         await viewModel.applyEnhancement(for: "best")
 
-        XCTAssertEqual(refreshed.identifiers, ["best"])
+        #expect(refreshed.identifiers == ["best"])
     }
 
-    func testRevertingRereadsTheRestoredPhoto() async {
+    @Test func testRevertingRereadsTheRestoredPhoto() async {
         let service = FakeEnhancementService(isEnhanced: true)
         let refreshed = RefreshedAssetRecorder()
         let viewModel = makeViewModel(service: service, refreshedAssetIdentifiers: refreshed)
@@ -143,22 +144,22 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         await viewModel.revertEnhancement()
 
-        XCTAssertEqual(refreshed.identifiers, ["best"])
+        #expect(refreshed.identifiers == ["best"])
     }
 
-    func testAPhotoEditedElsewhereKeepsTheActionAndCarriesTheNote() async {
+    @Test func testAPhotoEditedElsewhereKeepsTheActionAndCarriesTheNote() async {
         let service = FakeEnhancementService(isEditedElsewhere: true)
         let viewModel = makeViewModel(service: service)
 
         await viewModel.load()
 
-        XCTAssertEqual(viewModel.enhancementState, .idle)
-        XCTAssertTrue(viewModel.isEnhancementActionVisible)
-        XCTAssertTrue(viewModel.isBestShotEditedElsewhere)
-        XCTAssertFalse(viewModel.isBestShotEnhanced)
+        #expect(viewModel.enhancementState == .idle)
+        #expect(viewModel.isEnhancementActionVisible)
+        #expect(viewModel.isBestShotEditedElsewhere)
+        #expect(!viewModel.isBestShotEnhanced)
     }
 
-    func testApplyingToAPhotoEditedElsewhereCarriesTheUsersAgreement() async {
+    @Test func testApplyingToAPhotoEditedElsewhereCarriesTheUsersAgreement() async {
         let service = FakeEnhancementService(isEditedElsewhere: true)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -166,12 +167,12 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await viewModel.applyEnhancement(for: "best")
 
         let didReplace = await service.didReplaceOtherEdits
-        XCTAssertTrue(didReplace)
-        XCTAssertEqual(viewModel.enhancementState, .applied)
-        XCTAssertFalse(viewModel.isBestShotEditedElsewhere)
+        #expect(didReplace)
+        #expect(viewModel.enhancementState == .applied)
+        #expect(!viewModel.isBestShotEditedElsewhere)
     }
 
-    func testApplyingToAnUntouchedPhotoDoesNotClaimToReplaceAnything() async {
+    @Test func testApplyingToAnUntouchedPhotoDoesNotClaimToReplaceAnything() async {
         let service = FakeEnhancementService()
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -179,12 +180,12 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await viewModel.applyEnhancement(for: "best")
 
         let didReplace = await service.didReplaceOtherEdits
-        XCTAssertFalse(didReplace)
+        #expect(!didReplace)
     }
 
     /// Apply dismisses the preview at once and the grid stays interactive, so
     /// the edit can finish after the user has moved the Best Shot elsewhere.
-    func testApplyingFinishesOnThePhotoItStartedOn() async {
+    @Test func testApplyingFinishesOnThePhotoItStartedOn() async {
         let service = FakeEnhancementService(applyDelay: true)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -196,18 +197,18 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await applying.value
 
         // The badge belongs to the photo that was edited …
-        XCTAssertTrue(viewModel.isEnhanced("best"))
+        #expect(viewModel.isEnhanced("best"))
         // … and the shared state describes the photo now on the tile, which
         // nobody has enhanced.
-        XCTAssertFalse(viewModel.isEnhanced("other"))
-        XCTAssertNotEqual(viewModel.enhancementState, PhotoEnhancementState.applied)
+        #expect(!viewModel.isEnhanced("other"))
+        #expect(viewModel.enhancementState != PhotoEnhancementState.applied)
     }
 
-    func testRevertingFinishesOnThePhotoItStartedOn() async {
+    @Test func testRevertingFinishesOnThePhotoItStartedOn() async {
         let service = FakeEnhancementService(isEnhanced: true, revertDelay: true)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
-        XCTAssertTrue(viewModel.isEnhanced("best"))
+        #expect(viewModel.isEnhanced("best"))
 
         let reverting = Task { await viewModel.revertEnhancement() }
         await Task.yield()
@@ -215,14 +216,14 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await service.releaseRevert()
         await reverting.value
 
-        XCTAssertFalse(viewModel.isEnhanced("best"))
-        XCTAssertNotEqual(viewModel.enhancementState, PhotoEnhancementState.reverting)
+        #expect(!viewModel.isEnhanced("best"))
+        #expect(viewModel.enhancementState != PhotoEnhancementState.reverting)
     }
 
     /// The screen is interactive before scoring finishes, so a refinement can
     /// land while the preview cover is open. It must not move the Best Shot
     /// under a preview the user is looking at.
-    func testOpeningThePreviewFreezesALateRanking() async throws {
+    @Test func testOpeningThePreviewFreezesALateRanking() async throws {
         let analyzer = StallingQualityAnalyzer()
         let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
 
@@ -230,14 +231,14 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         for _ in 0..<1_000 where !viewModel.hasLoadedReviewState {
             await Task.yield()
         }
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
+        #expect(viewModel.bestShotAssetID == "best")
 
         // The action is tapped: the photo is frozen here, before the cover's
         // task ever runs.
-        let requestedID = try XCTUnwrap(viewModel.beginEnhancementRequest())
-        XCTAssertEqual(requestedID, "best")
+        let requestedID = try #require(viewModel.beginEnhancementRequest())
+        #expect(requestedID == "best")
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
-        XCTAssertEqual(viewModel.enhancementState, .previewing)
+        #expect(viewModel.enhancementState == .previewing)
 
         // Scoring finishes now and would have crowned the other photo.
         let config = PhotoQualityScoringConfig.current
@@ -259,14 +260,14 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         ])
         await loading.value
 
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.enhancementState, .previewing)
-        XCTAssertNotNil(viewModel.enhancementPreview)
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.enhancementState == .previewing)
+        #expect(viewModel.enhancementPreview != nil)
     }
 
     /// The tap and the cover's task are two moments; the ranking must be frozen
     /// at the first of them, or the cover opens on a different photo.
-    func testTheAssetIsFrozenWhenTheActionIsTappedNotWhenThePreviewStarts() async throws {
+    @Test func testTheAssetIsFrozenWhenTheActionIsTappedNotWhenThePreviewStarts() async throws {
         let analyzer = StallingQualityAnalyzer()
         let viewModel = makeViewModel(service: FakeEnhancementService(), qualityAnalyzer: analyzer)
 
@@ -275,7 +276,7 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
             await Task.yield()
         }
 
-        let requestedID = try XCTUnwrap(viewModel.beginEnhancementRequest())
+        let requestedID = try #require(viewModel.beginEnhancementRequest())
 
         // Scoring lands in the gap between the tap and the preview task.
         let config = PhotoQualityScoringConfig.current
@@ -298,26 +299,26 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
         await loading.value
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
 
-        XCTAssertEqual(requestedID, "best")
-        XCTAssertEqual(viewModel.bestShotAssetID, "best")
-        XCTAssertEqual(viewModel.enhancementState, .previewing)
-        XCTAssertNotNil(viewModel.enhancementPreview)
+        #expect(requestedID == "best")
+        #expect(viewModel.bestShotAssetID == "best")
+        #expect(viewModel.enhancementState == .previewing)
+        #expect(viewModel.enhancementPreview != nil)
     }
 
     /// A preview for a photo that is no longer the Best Shot renders nothing.
-    func testAStalePreviewRequestIsIgnored() async {
+    @Test func testAStalePreviewRequestIsIgnored() async {
         let viewModel = makeViewModel(service: FakeEnhancementService())
         await viewModel.load()
 
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "other")
 
-        XCTAssertNil(viewModel.enhancementPreview)
-        XCTAssertEqual(viewModel.enhancementState, .idle)
+        #expect(viewModel.enhancementPreview == nil)
+        #expect(viewModel.enhancementState == .idle)
     }
 
     // MARK: - Failures
 
-    func testPreviewFailureLeavesTheReviewUntouched() async {
+    @Test func testPreviewFailureLeavesTheReviewUntouched() async {
         let service = FakeEnhancementService(previewError: .originalUnavailable)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -326,14 +327,14 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        XCTAssertEqual(viewModel.enhancementState, .failed(.originalUnavailable))
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementOriginalUnavailable)
-        XCTAssertEqual(viewModel.bestShotAssetID, bestShotBefore)
-        XCTAssertEqual(viewModel.reviewStatus, statusBefore)
-        XCTAssertFalse(viewModel.isBestShotEnhanced)
+        #expect(viewModel.enhancementState == .failed(.originalUnavailable))
+        #expect(viewModel.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementOriginalUnavailable)
+        #expect(viewModel.bestShotAssetID == bestShotBefore)
+        #expect(viewModel.reviewStatus == statusBefore)
+        #expect(!viewModel.isBestShotEnhanced)
     }
 
-    func testApplyFailureKeepsTheStateAndOffersRecovery() async {
+    @Test func testApplyFailureKeepsTheStateAndOffersRecovery() async {
         let service = FakeEnhancementService(applyError: .saveFailed)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
@@ -341,81 +342,77 @@ final class ClusterDetailsEnhancementTests: XCTestCase {
 
         await viewModel.applyEnhancement(for: "best")
 
-        XCTAssertEqual(viewModel.enhancementState, .failed(.saveFailed))
-        XCTAssertFalse(viewModel.isBestShotEnhanced)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementSaveFailed)
-        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
+        #expect(viewModel.enhancementState == .failed(.saveFailed))
+        #expect(!viewModel.isBestShotEnhanced)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementSaveFailed)
+        #expect(viewModel.actionErrorTitle == DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
 
         viewModel.clearActionError()
 
-        XCTAssertEqual(viewModel.enhancementState, .previewing)
-        XCTAssertNil(viewModel.actionErrorMessage)
+        #expect(viewModel.enhancementState == .previewing)
+        #expect(viewModel.actionErrorMessage == nil)
     }
 
-    func testRevertFailureKeepsThePhotoMarkedEnhanced() async {
+    @Test func testRevertFailureKeepsThePhotoMarkedEnhanced() async {
         let service = FakeEnhancementService(isEnhanced: true, revertError: .notEnhancedByAlike)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
         await viewModel.revertEnhancement()
 
-        XCTAssertEqual(viewModel.enhancementState, .failed(.notEnhancedByAlike))
-        XCTAssertTrue(viewModel.isBestShotEnhanced)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementNotOurs)
+        #expect(viewModel.enhancementState == .failed(.notEnhancedByAlike))
+        #expect(viewModel.isBestShotEnhanced)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementNotOurs)
 
         viewModel.clearActionError()
 
-        XCTAssertEqual(viewModel.enhancementState, .applied)
+        #expect(viewModel.enhancementState == .applied)
     }
 
-    func testRenderAndSaveFailuresHaveTheirOwnCopy() async {
+    @Test func testRenderAndSaveFailuresHaveTheirOwnCopy() async {
         let renderFailure = makeViewModel(service: FakeEnhancementService(previewError: .renderFailed))
         await renderFailure.load()
         await renderFailure.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        XCTAssertEqual(renderFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementRenderFailed)
+        #expect(renderFailure.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementRenderFailed)
 
         let saveFailure = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
         await saveFailure.load()
         await saveFailure.applyEnhancement(for: "best")
 
-        XCTAssertEqual(saveFailure.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementSaveFailed)
-        XCTAssertNotEqual(
-            renderFailure.actionErrorMessage,
-            saveFailure.actionErrorMessage,
-            "The two steps must be distinguishable from the alert alone"
-        )
+        #expect(saveFailure.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementSaveFailed)
+        #expect(renderFailure.actionErrorMessage != saveFailure.actionErrorMessage, "The two steps must be distinguishable from the alert alone")
     }
 
-    func testAnUnsupportedAssetExplainsItself() async {
+    @Test func testAnUnsupportedAssetExplainsItself() async {
         let viewModel = makeViewModel(service: FakeEnhancementService(previewError: .unsupportedAsset))
         await viewModel.load()
 
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.ClusterDetails.enhancementUnsupportedAsset)
-        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.ClusterDetails.enhancementUnsupportedAsset)
+        #expect(viewModel.actionErrorTitle == DetailsL10n.ClusterDetails.enhancementUnavailableTitle)
     }
 
-    func testDismissingAnEnhancementAlertRestoresTheCleanupTitle() async {
+    @Test func testDismissingAnEnhancementAlertRestoresTheCleanupTitle() async {
         let viewModel = makeViewModel(service: FakeEnhancementService(applyError: .saveFailed))
         await viewModel.load()
         await viewModel.applyEnhancement(for: "best")
 
         viewModel.clearActionError()
 
-        XCTAssertEqual(viewModel.actionErrorTitle, DetailsL10n.Common.cleanupUnavailable)
+        #expect(viewModel.actionErrorTitle == DetailsL10n.Common.cleanupUnavailable)
     }
 
-    func testNotAuthorizedFailureOffersSettings() async {
+    @Test func testNotAuthorizedFailureOffersSettings() async {
         let service = FakeEnhancementService(previewError: .notAuthorized)
         let viewModel = makeViewModel(service: service)
         await viewModel.load()
 
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: "best")
 
-        XCTAssertTrue(viewModel.shouldOfferOpenSettings)
-        XCTAssertEqual(viewModel.actionErrorMessage, DetailsL10n.Common.alikeNeedsPhotoLibraryAccess)
+        #expect(viewModel.shouldOfferOpenSettings)
+        #expect(viewModel.actionErrorMessage == DetailsL10n.Common.alikeNeedsPhotoLibraryAccess)
     }
 
     // MARK: - Helpers

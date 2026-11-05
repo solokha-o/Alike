@@ -1,29 +1,34 @@
-import XCTest
+import Foundation
+import Testing
 import Core
 @testable import Storage
 
-final class UserDefaultsRatingPromptHistoryRepositoryTests: XCTestCase {
-    private var key: String!
+/// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
+/// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
+/// each repository gets its own `UserDefaults` instance of that suite.
+@Suite final class UserDefaultsRatingPromptHistoryRepositoryTests {
+    private let suiteName = UUID().uuidString
+    private let defaults: UserDefaults
+    private let key = "rating.promptHistory.test.\(UUID().uuidString)"
     private let referenceDate = Date(timeIntervalSince1970: 1_800_000_000)
 
-    override func setUp() {
-        key = "rating.promptHistory.test.\(UUID().uuidString)"
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
     }
 
-    override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: key)
-        key = nil
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
 
-    func testFirstLoadOnAFreshInstallSeedsFirstLaunchDate() async {
+    @Test func testFirstLoadOnAFreshInstallSeedsFirstLaunchDate() async {
         let repository = makeRepository()
 
         let history = await repository.loadHistory(now: referenceDate)
 
-        XCTAssertEqual(history.firstLaunchDate, referenceDate)
+        #expect(history.firstLaunchDate == referenceDate)
     }
 
-    func testSubsequentLoadsDoNotOverwriteTheSeededFirstLaunchDate() async {
+    @Test func testSubsequentLoadsDoNotOverwriteTheSeededFirstLaunchDate() async {
         let repository = makeRepository()
         _ = await repository.loadHistory(now: referenceDate)
 
@@ -31,14 +36,14 @@ final class UserDefaultsRatingPromptHistoryRepositoryTests: XCTestCase {
             now: referenceDate.addingTimeInterval(30 * 86_400)
         )
 
-        XCTAssertEqual(laterHistory.firstLaunchDate, referenceDate)
+        #expect(laterHistory.firstLaunchDate == referenceDate)
     }
 
     /// Storage-path counterpart to the "established install" scenario in
     /// `RatingPromptPolicyTests`: an installation whose `firstLaunchDate` was already
     /// seeded (e.g. at app launch, well before any cleanup ran) must keep reporting that
     /// original date, not the moment of the first read that happens to matter to a caller.
-    func testLoadOnAnEstablishedInstallReportsTheOriginalInstallDateNotTheCurrentRead() async {
+    @Test func testLoadOnAnEstablishedInstallReportsTheOriginalInstallDateNotTheCurrentRead() async {
         let installDate = referenceDate.addingTimeInterval(-30 * 86_400)
         let seedingRepository = makeRepository()
         _ = await seedingRepository.loadHistory(now: installDate)
@@ -48,10 +53,9 @@ final class UserDefaultsRatingPromptHistoryRepositoryTests: XCTestCase {
         let laterRepository = makeRepository()
         let history = await laterRepository.loadHistory(now: referenceDate)
 
-        XCTAssertEqual(history.firstLaunchDate, installDate)
-        XCTAssertNotEqual(
-            history.firstLaunchDate,
-            referenceDate,
+        #expect(history.firstLaunchDate == installDate)
+        #expect(
+            history.firstLaunchDate != referenceDate,
             "An established install must not be re-stamped as brand new on a later read"
         )
     }
@@ -59,29 +63,29 @@ final class UserDefaultsRatingPromptHistoryRepositoryTests: XCTestCase {
     /// A payload written by a shipped build, including a prompt recorded from the old
     /// Settings rate button, must still decode field for field: the policy change only moves
     /// a default and never rewrites stored history.
-    func testShippedPayloadDecodesUnchanged() async throws {
+    @Test func testShippedPayloadDecodesUnchanged() async throws {
         // Foundation's default JSONEncoder stores dates as seconds since 2001-01-01.
         let shipped = #"{"firstLaunchDate":800000000,"lastPromptedDate":801000000,"lastPromptedAppVersion":"1.6.1","promptCount":1}"#
-        UserDefaults.standard.set(try XCTUnwrap(shipped.data(using: .utf8)), forKey: key)
+        defaults.set(try #require(shipped.data(using: .utf8)), forKey: key)
 
         let history = await makeRepository().loadHistory(now: referenceDate)
 
-        XCTAssertEqual(history.firstLaunchDate, Date(timeIntervalSinceReferenceDate: 800_000_000))
-        XCTAssertEqual(history.lastPromptedDate, Date(timeIntervalSinceReferenceDate: 801_000_000))
-        XCTAssertEqual(history.lastPromptedAppVersion, "1.6.1")
-        XCTAssertEqual(history.promptCount, 1)
+        #expect(history.firstLaunchDate == Date(timeIntervalSinceReferenceDate: 800_000_000))
+        #expect(history.lastPromptedDate == Date(timeIntervalSinceReferenceDate: 801_000_000))
+        #expect(history.lastPromptedAppVersion == "1.6.1")
+        #expect(history.promptCount == 1)
     }
 
-    func testRecordPromptShownSeedsFirstLaunchDateWhenNoPriorReadHappened() async {
+    @Test func testRecordPromptShownSeedsFirstLaunchDateWhenNoPriorReadHappened() async {
         let repository = makeRepository()
 
         await repository.recordPromptShown(at: referenceDate, appVersion: "1.4.0")
 
         let history = await repository.loadHistory(now: referenceDate.addingTimeInterval(86_400))
-        XCTAssertEqual(history.firstLaunchDate, referenceDate)
+        #expect(history.firstLaunchDate == referenceDate)
     }
 
     private func makeRepository() -> UserDefaultsRatingPromptHistoryRepository {
-        UserDefaultsRatingPromptHistoryRepository(defaults: .standard, historyKey: key)
+        UserDefaultsRatingPromptHistoryRepository(defaults: UserDefaults(suiteName: suiteName)!, historyKey: key)
     }
 }

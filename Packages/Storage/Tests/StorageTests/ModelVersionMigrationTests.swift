@@ -1,5 +1,6 @@
 import CoreData
-import XCTest
+import Foundation
+import Testing
 @testable import Storage
 
 /// Baseline for every future schema change.
@@ -13,28 +14,30 @@ import XCTest
 /// model, holding one cluster and one photo. When a version 2 model lands, this
 /// test starts exercising a genuine version 1 -> version 2 migration without any
 /// change; add a new fixture per shipped version that is still in the field.
-final class ModelVersionMigrationTests: XCTestCase {
+///
+/// A `final class` suite: each test copies the fixture into its own `UUID`
+/// directory, and `deinit` removes it.
+///
+/// `@MainActor`: the baseline test fetches through `viewContext`, a main-queue
+/// context, and Swift Testing would otherwise run it on a worker thread.
+@MainActor
+@Suite final class ModelVersionMigrationTests {
 
-    private var storeDirectory: URL!
+    private let storeDirectory: URL
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    init() throws {
         storeDirectory = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("ModelVersionMigrationTests-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: storeDirectory, withIntermediateDirectories: true)
     }
 
-    override func tearDownWithError() throws {
-        if let storeDirectory {
-            try? FileManager.default.removeItem(at: storeDirectory)
-        }
-        storeDirectory = nil
-        try super.tearDownWithError()
+    deinit {
+        try? FileManager.default.removeItem(at: storeDirectory)
     }
 
     // MARK: - Baseline
 
-    func testStoreWrittenByModelVersion1StillOpensWithTheShippedModel() throws {
+    @Test func testStoreWrittenByModelVersion1StillOpensWithTheShippedModel() throws {
         // Given: a copy of the version 1 fixture store, because loading migrates
         // the file in place and a resource must never be mutated
         let storeURL = try copyFixtureStore()
@@ -46,16 +49,15 @@ final class ModelVersionMigrationTests: XCTestCase {
 
         // Then: the rows written by version 1 are still there
         let clusters = try context.fetch(NSFetchRequest<NSManagedObject>(entityName: "ClusterEntity"))
-        XCTAssertEqual(clusters.count, 1, "The version 1 cluster did not survive the migration")
-        XCTAssertEqual(
-            clusters.first?.value(forKey: "id") as? UUID,
-            UUID(uuidString: "11111111-2222-3333-4444-555555555555")
+        #expect(clusters.count == 1, "The version 1 cluster did not survive the migration")
+        #expect(
+            clusters.first?.value(forKey: "id") as? UUID == UUID(uuidString: "11111111-2222-3333-4444-555555555555")
         )
 
         let photos = try context.fetch(NSFetchRequest<NSManagedObject>(entityName: "PhotoEntity"))
-        XCTAssertEqual(photos.count, 1, "The version 1 photo did not survive the migration")
-        XCTAssertEqual(photos.first?.value(forKey: "localIdentifier") as? String, "fixture/version-1")
-        XCTAssertNotNil(photos.first?.value(forKey: "cluster"), "The photo lost its cluster relationship")
+        #expect(photos.count == 1, "The version 1 photo did not survive the migration")
+        #expect(photos.first?.value(forKey: "localIdentifier") as? String == "fixture/version-1")
+        #expect(photos.first?.value(forKey: "cluster") != nil, "The photo lost its cluster relationship")
 
         try tearDown(container)
     }
@@ -63,12 +65,12 @@ final class ModelVersionMigrationTests: XCTestCase {
     /// Guards the versioning itself: dropping `.xccurrentversion` or the version
     /// identifier would put the model back to being unversioned, which is the
     /// state this baseline exists to prevent.
-    func testShippedModelDeclaresItsVersionIdentifier() throws {
+    @Test func testShippedModelDeclaresItsVersionIdentifier() throws {
         let identifiers = PersistenceController.shippedModel
             .versionIdentifiers
             .compactMap { $0 as? String }
-        XCTAssertFalse(
-            identifiers.isEmpty,
+        #expect(
+            !identifiers.isEmpty,
             "The shipped model declares no version identifier; every model version must set one"
         )
     }
@@ -76,7 +78,7 @@ final class ModelVersionMigrationTests: XCTestCase {
     // MARK: - Helpers
 
     private func copyFixtureStore() throws -> URL {
-        let fixture = try XCTUnwrap(
+        let fixture = try #require(
             Bundle.module.url(forResource: "AlikeModelV1", withExtension: "sqlite"),
             "Version 1 fixture store is missing from the test bundle"
         )
@@ -102,7 +104,7 @@ final class ModelVersionMigrationTests: XCTestCase {
             loadError = error
         }
         if let loadError {
-            XCTFail("The store failed to load, which is a launch crash in production: \(loadError)")
+            Issue.record("The store failed to load, which is a launch crash in production: \(loadError)")
             throw loadError
         }
         return container
