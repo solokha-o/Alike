@@ -25,7 +25,7 @@ Daily commands are the short wrappers in `tools/`:
 ## What The Shortcuts Do
 
 - `tools/quick` and `tools/full` automatically set a writable `CLANG_MODULE_CACHE_PATH` when one is not already provided.
-- `tools/meta`, `tools/upload`, `tools/text`, `tools/upload-screenshots`, and `tools/upload-build` automatically load `.env` when it exists. Disable that with `ALIKE_NO_ENV=1`.
+- `tools/release-check`, `tools/meta`, `tools/upload`, `tools/text`, `tools/upload-screenshots`, and `tools/upload-build` automatically load `.env` when it exists. Disable that with `ALIKE_NO_ENV=1`.
 - Upload shortcuts ask for interactive confirmation. For non-interactive runs, set `ALIKE_ASSUME_YES=1`.
 - `tools/release-check` and `tools/upload-build` infer `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` from `Alike/Alike.xcodeproj/project.pbxproj` when you omit them.
 
@@ -93,8 +93,8 @@ For metadata validation and uploads:
   - `ALIKE_TERMS_URL` — the footer appended to every description.
   - `ALIKE_MARKETING_URL` — optional. Set, it writes `marketing_url.txt`;
     unset, the App Store Connect value is left untouched.
-  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT,AR_SA}` —
-    thirty-six per-locale overrides, one per non-English listing, and all of
+  - `ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,PT_PT,IT,NL_NL,PL,TR,ZH_HANT,AR_SA,EN_GB,EN_CA,EN_AU,FR_CA}` —
+    fifty-one per-locale overrides, three for each listing except `en-US`, and all of
     them are required. Strict generation fails on an unset override rather than
     quietly reusing the three URLs above, which point at the English pages even
     though the site publishes all twelve locales. `--allow-shared-urls` takes

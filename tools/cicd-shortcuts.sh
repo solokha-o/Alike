@@ -24,7 +24,7 @@ Usage:
   tools/symbolicate <payload.json> [--dsym-root DIR]
 
 Behavior:
-  - Loads .env automatically when present. Disable with ALIKE_NO_ENV=1.
+  - Every shortcut except quick, full and symbolicate loads .env when present. Disable with ALIKE_NO_ENV=1.
   - Defaults LANG/LC_ALL to en_US.UTF-8 when neither is already UTF-8; fastlane requires it.
   - Uses CLANG_MODULE_CACHE_PATH=$ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-clang-cache by default.
     ALIKE_BUILD_ROOT defaults to /Volumes/KINGSTON/DeveloperData; build shortcuts stop when it does not exist.

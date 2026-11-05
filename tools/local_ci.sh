@@ -76,7 +76,7 @@ Usage:
 Modes:
   quick          Fast local checks for day-to-day agent or solo development.
   full           All package tests, App Store metadata bundle validation, and the full app compile gate.
-  release-check  Version/build check plus Release archive/export validation.
+  release-check  Version/build check, strict metadata validation, and Release archive/export validation.
 
 Environment:
   ALIKE_BUILD_ROOT               External disk data root. Default: /Volumes/KINGSTON/DeveloperData
