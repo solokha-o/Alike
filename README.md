@@ -203,7 +203,7 @@ swift test --package-path Packages/Settings
 swift test --package-path Packages/UserGuide
 ```
 
-`tools/full` runs every package that has tests, plus the app compile gate.
+`tools/full` runs every package that has tests, the app compile gate, and `AlikeTests`.
 `Packages/Storage` is the one exception — SwiftPM does not compile its
 `.xcdatamodeld`, so its suite runs in Xcode and its code is covered by the compile
 gate instead. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
@@ -224,8 +224,8 @@ tools/full
 ```
 
 `tools/quick` runs whitespace checks, the four package suites above, and App Store
-metadata bundle validation. `tools/full` adds every remaining package and the app
-compile gate. Release preflight, metadata upload, and TestFlight upload live behind
+metadata bundle validation. `tools/full` adds every remaining package, the app
+compile gate, and `AlikeTests`. Release preflight, metadata upload, and TestFlight upload live behind
 `tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`
 turns a crash report a user emailed into a readable stack.
 
