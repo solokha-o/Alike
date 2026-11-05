@@ -35,9 +35,13 @@ When no failure analysis or repo mutation is needed, the user can directly run:
 
 ## Code Exploration
 
-Follow the global `code-graph` skill before code exploration and review. It
-compares the graph with `HEAD`, lists the tools, and says when to use Grep, Glob,
-or Read instead.
+Follow the global `code-graph` skill before code exploration and review. This is
+an exception to the local skill order above. The skill compares the graph with
+`HEAD`, lists the tools, and says when to use Grep, Glob, or Read instead.
+
+- Call `get_impact_radius_tool` before edits that may cross package boundaries.
+- If the skill or the graph is not available, or the graph cannot answer the
+  question precisely, use Grep, Glob, and Read.
 
 ## Build-Completion Gate
 
