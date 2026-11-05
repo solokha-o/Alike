@@ -50,7 +50,7 @@ struct CleanupCategoriesCard: View {
             }
         }
         .padding(Spacing.medium)
-        .cleanupGlassSurface()
+        .alikeGlassSurface()
     }
 }
 

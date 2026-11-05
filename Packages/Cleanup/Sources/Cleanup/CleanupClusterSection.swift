@@ -22,7 +22,7 @@ struct CleanupClusterSection: View {
                     .font(.caption.bold())
                     .padding(.horizontal, 7)
                     .padding(.vertical, 2)
-                    .cleanupGlassBadge()
+                    .alikeGlassBadge()
                 Spacer()
             }
 
@@ -85,7 +85,7 @@ private struct CleanupClusterCard: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                         .frame(width: 28, height: 28)
-                        .cleanupGlassBadge(.circle)
+                        .alikeGlassBadge(.circle)
                         .padding(6)
                 }
                 .overlay(alignment: .topLeading) {
@@ -96,14 +96,14 @@ private struct CleanupClusterCard: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(5)
-                        .cleanupGlassBadge()
+                        .alikeGlassBadge()
                         .padding(5)
                 }
                 .overlay(alignment: .bottomLeading) {
                     if let resurfacing, resurfacing != .unchanged {
                         Image(systemName: resurfacing == .new ? "sparkles" : "arrow.triangle.2.circlepath")
                             .padding(6)
-                            .cleanupGlassBadge(.circle)
+                            .alikeGlassBadge(.circle)
                             .padding(5)
                     }
                 }

@@ -3,25 +3,6 @@ import Core
 import DesignSystem
 import SwiftUI
 
-private struct ScannerHomeSurfaceModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *) {
-            content.glassEffect(.regular, in: .rect(cornerRadius: CornerRadius.large))
-        } else {
-            content.background(
-                .regularMaterial,
-                in: RoundedRectangle(cornerRadius: CornerRadius.large, style: .continuous)
-            )
-        }
-    }
-}
-
-private extension View {
-    func scannerHomeSurface() -> some View {
-        modifier(ScannerHomeSurfaceModifier())
-    }
-}
-
 struct ScannerHomeHero: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -59,7 +40,7 @@ struct ScannerHomeHero: View {
         }
         .frame(maxWidth: .infinity)
         .padding(Spacing.large)
-        .scannerHomeSurface()
+        .alikeGlassSurface(cornerRadius: CornerRadius.large)
         .animation(
             reduceMotion ? nil : .appQuick,
             value: presentation.visualPhase
@@ -173,7 +154,7 @@ struct ScannerLibraryStatusCard: View {
             }
         }
         .padding(Spacing.medium)
-        .scannerHomeSurface()
+        .alikeGlassSurface(cornerRadius: CornerRadius.large)
     }
 
     private func metricLayout<Content: View>(
@@ -238,7 +219,7 @@ struct ScannerScanScopeCard: View {
             }
         }
         .padding(Spacing.medium)
-        .scannerHomeSurface()
+        .alikeGlassSurface(cornerRadius: CornerRadius.large)
     }
 
     private func scopeRow(icon: String, title: String, message: String) -> some View {
@@ -288,7 +269,7 @@ struct ScannerPremiumOfferCard: View {
             .padding(Spacing.medium)
         }
         .buttonStyle(.plain)
-        .scannerHomeSurface()
+        .alikeGlassSurface(cornerRadius: CornerRadius.large)
         .accessibilityHint(Text(ScannerL10n.ScannerHomeComponents.opensTheUpgradeOptions))
     }
 }

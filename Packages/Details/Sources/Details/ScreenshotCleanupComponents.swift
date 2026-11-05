@@ -29,7 +29,7 @@ struct ScreenshotCleanupSummaryCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
-        .modifier(ScreenshotCleanupGlassSurfaceModifier())
+        .alikeGlassSurface()
     }
 
     private var summaryText: String {
@@ -188,7 +188,7 @@ struct ScreenshotCleanupActionBar: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .modifier(ScreenshotCleanupButtonStyle(usesGlass: usesGlass))
+        .alikeGlassButton(usesGlass: usesGlass)
         .accessibilityHint(Text(DetailsL10n.ScreenshotCleanupComponents.chooseWhichPhotosSelectedCleanup))
     }
 
@@ -236,7 +236,7 @@ struct ScreenshotCleanupActionBar: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .modifier(ScreenshotCleanupButtonStyle(usesGlass: usesGlass))
+        .alikeGlassButton(usesGlass: usesGlass)
         .disabled(isDeleting)
         .accessibilityHint(Text(DetailsL10n.Common.moveCurrentlySelectedPhotosRecently))
     }
@@ -258,32 +258,6 @@ struct ScreenshotCleanupActionBar: View {
 
     private var actionBarShape: Capsule {
         Capsule(style: .continuous)
-    }
-}
-
-private struct ScreenshotCleanupGlassSurfaceModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *) {
-            content.glassEffect(.regular, in: .rect(cornerRadius: CornerRadius.medium))
-        } else {
-            content.background(.regularMaterial, in: surfaceShape)
-        }
-    }
-
-    private var surfaceShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: CornerRadius.medium, style: .continuous)
-    }
-}
-
-private struct ScreenshotCleanupButtonStyle: ViewModifier {
-    let usesGlass: Bool
-
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
-            content.buttonStyle(.glass)
-        } else {
-            content.buttonStyle(.bordered)
-        }
     }
 }
 
