@@ -113,6 +113,7 @@ public extension View {
     }
 
     /// Liquid Glass badge background on iOS 26 and macOS 26, regular material elsewhere.
+    /// Pass `usesGlass: false` to draw the material on any OS version.
     func alikeGlassBadge(
         _ shape: AlikeGlassBadgeShape = .capsule,
         usesGlass: Bool = true
@@ -120,7 +121,9 @@ public extension View {
         modifier(AlikeGlassBadgeModifier(shape: shape, usesGlass: usesGlass))
     }
 
-    /// Liquid Glass button style on iOS 26 and macOS 26, bordered styles elsewhere.
+    /// Liquid Glass button style on iOS 26 and macOS 26. Elsewhere, a prominent button uses
+    /// `.borderedProminent` and a regular button uses `regularFallback`.
+    /// Pass `usesGlass: false` to draw the fallback on any OS version.
     func alikeGlassButton(
         isProminent: Bool = false,
         regularFallback: AlikeGlassButtonFallback = .bordered,

@@ -345,7 +345,7 @@ public struct SubscriptionPaywallView: View {
                 .frame(maxWidth: .infinity)
                 .animation(stateAnimation, value: isPurchasing)
             }
-            .alikeGlassButton(isProminent: true, regularFallback: .borderless, usesGlass: usesGlass)
+            .alikeGlassButton(isProminent: true, usesGlass: usesGlass)
             .controlSize(.large)
             .disabled(!canPurchase || isPurchasing || isRestoring)
 
