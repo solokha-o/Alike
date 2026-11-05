@@ -248,7 +248,7 @@ that report, with no screenshot or log attached.
 | Check | Device | Result |
 |---|---|---|
 | The XL size is in the widget gallery | iPhone 13 mini | Pass |
-| A tap on each category row opens its list | iPhone 13 mini | Pass |
+| A tap on a row works | iPhone 13 mini | Pass |
 | Dark | iPhone 13 mini | Pass |
 | Clear | iPhone 13 mini | Pass |
 | Tinted | iPhone 13 mini | Pass |
@@ -260,5 +260,6 @@ and a dev build installed over 1.6.2: right after the install the widget read th
 1.6.2 payload and rendered without group rows. After the app republished, the rows
 appeared.
 
-Not covered by this pass: the 5 locales added in this release (`pt-PT`, `en-GB`,
-`en-CA`, `en-AU`, `fr-CA`), and a free account against the two Pro library rows.
+Not reported: which rows were tapped, which locale and account type were used, and
+so whether the 5 locales added in this release (`pt-PT`, `en-GB`, `en-CA`, `en-AU`,
+`fr-CA`) or a free account against the two Pro library rows were checked.
