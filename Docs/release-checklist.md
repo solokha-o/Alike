@@ -24,8 +24,8 @@ validate whenever you like; upload when nothing is in review.
       `ALIKE_TERMS_URL` is what the Privacy/Terms footer appended to every
       description points at — a stale value there ships a wrong link in the
       listing without failing anything.
-- [ ] The per-locale URL overrides set for every non-English listing. All
-      forty-eight are **required**: strict generation fails on an unset
+- [ ] The per-locale URL overrides set for every listing except `en-US`. All
+      fifty-one are **required**: strict generation fails on an unset
       override, naming the variable, rather than falling back to the shared
       English URL and sending readers to legal text they were not reading a
       moment ago. `--allow-shared-urls` opts out, and only the generator accepts

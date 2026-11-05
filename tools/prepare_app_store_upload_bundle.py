@@ -2523,12 +2523,12 @@ def localized_url(base_url: str, kind: str, apple_locale: str) -> str:
     because this function has no way to tell which run it is in; on every other
     run `validate_localized_urls` fails before the bundle is used, naming the
     unset variable. An unconfigured `.env` therefore does not quietly produce
-    English URLs for sixteen listings any more — it produces a hard failure.
+    English URLs for seventeen listings any more — it produces a hard failure.
 
     The site publishes each locale's own pages — /uk/, /de/, /fr/, /es/,
-    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all sixteen listings
+    /pt-br/, /it/, /nl/, /pl/, /tr/, /zh-hant/, /ar/ — and all seventeen listings
     other than en-US must point at them through their own
-    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, forty-eight in all.
+    ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_<LOCALE> overrides, fifty-one in all.
     _ES_MX points at the same /es/ pages as _ES_ES on purpose: one Spanish page
     serves both listings, said explicitly rather than by falling through to
     English. The regional listings do the same: _EN_GB, _EN_CA and _EN_AU name

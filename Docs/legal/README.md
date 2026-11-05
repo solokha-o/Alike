@@ -162,8 +162,8 @@ its `check_terms` row.
    language.
 7. Set the same privacy URL in App Store Connect and in `ALIKE_PRIVACY_URL` for
    the metadata bundle, and set the per-locale overrides
-   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,IT,NL_NL,PL,TR,ZH_HANT,AR_SA}`)
-   so each listing points at its own pages. All thirty-six are required —
+   (`ALIKE_{PRIVACY,TERMS,SUPPORT}_URL_{UK,DE_DE,FR_FR,ES_ES,ES_MX,PT_BR,PT_PT,IT,NL_NL,PL,TR,ZH_HANT,AR_SA,EN_GB,EN_CA,EN_AU,FR_CA}`)
+   so each listing points at its own pages. All fifty-one are required —
    strict generation fails on an unset override instead of falling back to
    English. The full list with values is in `Docs/release-checklist.md` step
    0.
