@@ -7,8 +7,9 @@ import WidgetSupport
 @testable import Alike
 
 /// Pins the extra-large widget's rows to the headline figure above them. Both must use
-/// one keeper per group and one byte source: a row that counts the keeper promises
-/// bytes the app will never delete.
+/// one keeper per group: a row that counts the keeper promises bytes the app will never
+/// delete. The byte source is held by the type `WidgetSnapshotPublisher` builds a row from,
+/// because every source gives a fake asset the same bytes.
 ///
 /// `WidgetClusterSummary.top` has its own ranking tests in `WidgetSupport`. These cover
 /// the half that lives in the app target, where the rows are built from clusters.
@@ -129,8 +130,8 @@ import WidgetSupport
     }
 }
 
-/// `PHAsset` has no public initializer. A fake has no PhotoKit resources, so
-/// `estimatedCleanupBytes` falls back to the pixel heuristic, `width * height / 2`.
+/// `PHAsset` has no public initializer. `AssetByteSize` gives a subclass from outside
+/// Photos the pixel heuristic, `width * height / 2`, and never touches its cache.
 private final class WidgetFakeAsset: PHAsset, @unchecked Sendable {
     private let identifier: String
     private let bytes: Int

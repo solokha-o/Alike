@@ -120,16 +120,21 @@ final class WidgetSnapshotPublisher {
         reviewStates: [UUID: ClusterReviewState]
     ) -> [WidgetClusterSummary] {
         WidgetClusterSummary.top(clusters.map { cluster in
-            let reclaimable = cluster.reclaimableCluster(
+            row(for: cluster.reclaimableCluster(
                 keeping: reviewStates[cluster.id]?.bestShotLocalIdentifier
-            )
-            return WidgetClusterSummary(
-                reclaimableBytes: reclaimable.assets
-                    .filter { $0.localIdentifier != reclaimable.keeperLocalIdentifier }
-                    .reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes },
-                photoCount: cluster.count
-            )
+            ))
         })
+    }
+
+    /// Takes the estimate's own type, so a row can read no other byte source. Tests
+    /// cannot check this: a fake `PHAsset` gets the same heuristic from every source.
+    private static func row(for reclaimable: ReclaimableCluster) -> WidgetClusterSummary {
+        WidgetClusterSummary(
+            reclaimableBytes: reclaimable.assets
+                .filter { $0.localIdentifier != reclaimable.keeperLocalIdentifier }
+                .reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes },
+            photoCount: reclaimable.assets.count
+        )
     }
 
     /// Called after the user deletes their local data. Removing the payload is not

@@ -510,8 +510,9 @@ run_app_build() {
 }
 
 # Tests in the app target: no package suite reaches them, and a compile gate does
-# not run them. Same DerivedData as the build above, so only the test bundle is new.
-# Serial, because parallel testing clones the simulator.
+# not run them. The build above uses the scheme's Release run configuration and the
+# test action uses Debug, so this step compiles the app again. Parallel testing is
+# off, because it clones the simulator.
 run_app_tests() {
   if [[ "${ALIKE_SKIP_APP_BUILD:-0}" == "1" ]]; then
     skip_step "xcodebuild ${APP_SCHEME} test AlikeTests" "ALIKE_SKIP_APP_BUILD=1"

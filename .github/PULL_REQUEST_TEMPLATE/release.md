@@ -29,8 +29,8 @@ receives an unversioned release.
 
 **Validation — run on `<commit>`**
 
-- [ ] `tools/full` — whitespace, every package's tests, and the app compile
-      gate. `Packages/Storage` is a standing skip, not a gap.
+- [ ] `tools/full` — whitespace, every package's tests, the app compile
+      gate, and `AlikeTests`. `Packages/Storage` is a standing skip, not a gap.
 - [ ] `tools/release-check X.Y.Z N` — version check, strict bundle validation,
       Release archive, no-upload IPA export.
 - [ ] Strict metadata generation exits 0 with zero `TODO:` markers.

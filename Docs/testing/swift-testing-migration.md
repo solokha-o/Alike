@@ -191,7 +191,7 @@ xcodebuild -workspace Packages/<Name> -scheme <Name> -destination 'id=<simulator
   -jobs 6 -parallel-testing-enabled NO test
 ```
 
-`tools/full` does not run `AlikeTests`. The app test file uses:
+At that time, `tools/full` did not run `AlikeTests`. The app test file uses:
 
 ```bash
 xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=<simulator>' \
