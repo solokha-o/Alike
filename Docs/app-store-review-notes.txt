@@ -1,8 +1,8 @@
 Thank you for reviewing Alike.
 
 NO ACCOUNT IS NEEDED
-Alike has no account, no sign-in and no server, so there is nothing to log
-in to; the demo credential fields are intentionally empty. The app opens on
+Alike has no account, no sign-in and no server; the demo credential fields
+are intentionally empty. The app opens on
 an introduction that hands off to the iOS photo permission alert.
 
 PHOTO LIBRARY ACCESS
@@ -21,7 +21,8 @@ WIDGETS, HOME SCREEN AND LOCK SCREEN
 Two free widgets. One shows reclaimable space and review progress; the other
 lists similar groups, screenshots and blurred photos. The first also comes in
 three Lock Screen sizes, added from the Lock Screen's own Customize, and
-StandBy shows them. They read a JSON snapshot in a shared App Group — counts,
+StandBy shows them. On iOS 27 it adds an extra-large portrait size with
+library rows. They read a JSON snapshot in a shared App Group — counts,
 byte totals and a date, never image data — and make no network requests. Taps
 open `alike://` links; two library rows are Pro, so on a free account they
 reach that category's paywall, which is intended.
@@ -34,7 +35,7 @@ HOW TO EXERCISE THE APP
    compare, Apply, then Revert to original.
 4. Tap the delete action and confirm. iOS shows its own confirmation.
 
-CRASH REPORTS, NEW IN 1.6.0
+CRASH REPORTS
 Alike keeps MetricKit crash payloads on the device. Only after a real crash,
 the next calm launch shows one sheet, "Alike closed unexpectedly": Send
 Report or Not Now. Send Report opens an addressed mail with the payload
@@ -43,7 +44,8 @@ it. It asks once per crash, so a normal review will not see it.
 
 ON-DEVICE, NOTHING COLLECTED
 Analysis runs on device with Vision. No photo, feature print or result
-leaves the device, and the only network requests are StoreKit's. Overriding a
+leaves the device. The app's own network requests are StoreKit's, and iOS
+downloads a photo from iCloud Photos when the device has no copy. Overriding a
 best shot stores derived numbers in UserDefaults to tune the ranking. App
 Privacy stays "Data Not Collected": all that can leave is a crash report the
 user chooses to email from their own mail account.
@@ -67,8 +69,8 @@ Policy and Terms of Use links are on the paywall and under Settings → Legal;
 the Terms name Apple's Standard EULA.
 
 LANGUAGES AND DATA DELETION
-The app, its legal and support pages and the permission alert are in twelve
-languages; the listing, thirteen. Settings → Data & Privacy → Delete Alike
+The app, the permission alert and the listing are in 18 language variants; the
+legal and support pages are in twelve languages. Settings → Data & Privacy → Delete Alike
 Data erases scan results, cleanup history, Best Shot learning, stored crash
 reports and preferences, and touches neither the photo library, the
 permission, nor the subscription.
