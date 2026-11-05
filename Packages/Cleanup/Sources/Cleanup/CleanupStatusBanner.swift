@@ -27,7 +27,7 @@ struct CleanupStatusBanner: View {
             }
         }
         .padding(Spacing.medium)
-        .cleanupGlassSurface()
+        .alikeGlassSurface()
     }
 
     private var horizontalLayout: some View {
@@ -80,7 +80,7 @@ struct CleanupStatusBanner: View {
         if let actionTitle, let action {
             Button(actionTitle, action: action)
                 .fixedSize(horizontal: true, vertical: false)
-                .cleanupGlassButton()
+                .alikeGlassButton()
         }
     }
 
@@ -91,7 +91,7 @@ struct CleanupStatusBanner: View {
                 Text(actionTitle)
                     .frame(maxWidth: .infinity)
             }
-            .cleanupGlassButton()
+            .alikeGlassButton()
         }
     }
 
@@ -101,7 +101,7 @@ struct CleanupStatusBanner: View {
             Button(action: dismiss) {
                 Image(systemName: "xmark")
             }
-            .cleanupGlassButton()
+            .alikeGlassButton()
             .foregroundStyle(.secondary)
             .accessibilityLabel(Text(CleanupL10n.Main.dismissCleanupStatus))
             .accessibilityHint(Text(CleanupL10n.Main.hideThisStatusMessage))

@@ -316,7 +316,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
             Text(CleanupL10n.Main.startScanFindSimilarPhotos)
         } actions: {
             Button(CleanupL10n.Main.goToScanner, action: onOpenScanner)
-                .cleanupGlassButton(isProminent: true)
+                .alikeGlassButton(isProminent: true)
         }
         .frame(minHeight: 360)
     }
@@ -326,7 +326,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
             Label(CleanupL10n.Main.cleanupUnavailable, systemImage: "exclamationmark.triangle")
         } description: { Text(message) } actions: {
             Button(CleanupL10n.Main.goToScanner, action: onOpenScanner)
-                .cleanupGlassButton()
+                .alikeGlassButton()
         }
         .frame(minHeight: 360)
     }
@@ -357,7 +357,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
                 Label(CleanupL10n.Main.noClustersMatchTheseControls, systemImage: "line.3.horizontal.decrease.circle")
             } description: { Text(CleanupL10n.Main.tryChangingFiltersResettingControls) } actions: {
                 Button(CleanupL10n.Main.resetControls) { controls = CleanupClusterControls() }
-                    .cleanupGlassButton()
+                    .alikeGlassButton()
             }
         } else {
             if !arrangement.needsReview.isEmpty {

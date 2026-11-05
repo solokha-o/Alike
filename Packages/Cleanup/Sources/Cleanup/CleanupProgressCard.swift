@@ -18,7 +18,7 @@ struct CleanupProgressCard: View {
                     Image(systemName: "clock.arrow.circlepath")
                         .frame(width: 22, height: 22)
                 }
-                .cleanupGlassButton()
+                .alikeGlassButton()
                 .controlSize(.small)
                 .accessibilityLabel(Text(CleanupL10n.Main.cleanupHistory))
             }
@@ -32,7 +32,7 @@ struct CleanupProgressCard: View {
             }
         }
         .padding(Spacing.medium)
-        .cleanupGlassSurface()
+        .alikeGlassSurface()
     }
 
     @ViewBuilder
