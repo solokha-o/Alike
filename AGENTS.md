@@ -35,17 +35,9 @@ When no failure analysis or repo mutation is needed, the user can directly run:
 
 ## Code Exploration
 
-Before using Grep, Glob, or Read for code exploration:
-
-1. Call `get_minimal_context_tool` first.
-2. Use `semantic_search_nodes_tool` to locate functions, types, and tests by
-   intent.
-3. Use `query_graph_tool` for callers, callees, imports, inheritance, and test
-   relationships.
-4. Call `get_impact_radius_tool` before edits that may cross package boundaries.
-5. For reviews, call `detect_changes_tool`, then `get_review_context_tool`.
-6. Fall back to Grep, Glob, or Read only when the graph is unavailable, stale,
-   or cannot answer the question precisely.
+Follow the global `code-graph` skill before code exploration and review. It
+compares the graph with `HEAD`, lists the tools, and says when to use Grep, Glob,
+or Read instead.
 
 ## Build-Completion Gate
 
