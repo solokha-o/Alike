@@ -314,7 +314,7 @@ UK_DESCRIPTION = """\
 - Прогрес, «Обрано» й «Орієнтовна економія» просто під час роботи.
 - Історія прибирання за місяцями — видно, скільки місця вже повернуто.
 - Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір запам’ятовується.
-- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».
+- Довідка з пошуком просто в застосунку.
 - Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.
 - Віджети на домашньому й замкненому екрані: вільне місце й огляд медіатеки.
 - 18 мовних варіантів і повна темна тема.
@@ -421,7 +421,7 @@ LA CONFIDENTIALITÉ EST TOUT L'INTÉRÊT
 - Aucune photo, aucune miniature, aucune empreinte n'est jamais envoyée en ligne.
 - Aucun compte, aucune connexion, aucun serveur Alike.
 - Aucune mesure d'audience, aucun suivi, aucun identifiant publicitaire.
-- Aucune publicité, nulle part dans l'app.
+- Aucune publicité dans l'app.
 - L'analyse et le nettoyage ne demandent aucune connexion — Alike fonctionne en mode Avion.
 - Rien n'est supprimé sans votre confirmation explicite.
 
@@ -667,7 +667,7 @@ FEITO PARA FOTOTECAS A SÉRIO
 - Progresso, Selecionadas e Economia estimada enquanto trabalha.
 - Histórico de limpeza agrupado por mês, para ver quanto espaço já recuperou.
 - Um layout espaçoso de uma coluna ou uma grelha mais densa, alternáveis a qualquer momento e memorizados.
-- Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.
+- Instruções de utilização com pesquisa dentro da app.
 - Lembretes de limpeza opcionais, como notificações locais, no seu próprio horário.
 - Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.
 - 18 variantes de idioma, com a app em português do Brasil, e modo escuro completo.
@@ -842,7 +842,7 @@ ZROBIONE DLA PRAWDZIWYCH BIBLIOTEK
 - Postęp, Wybrane i Szacowana oszczędność w trakcie pracy.
 - Historia porządków pogrupowana według miesięcy.
 - Przestronny układ jednokolumnowy albo gęstsza siatka, przełączane w każdej chwili.
-- Przeszukiwalna instrukcja w aplikacji, jedno dotknięcie od Skanera.
+- Przeszukiwalna instrukcja w aplikacji.
 - Opcjonalne przypomnienia o porządkach jako powiadomienia lokalne, według Twojego harmonogramu.
 - Widżety na ekranie początkowym i na ekranie blokady: odzyskiwalne miejsce i biblioteka.
 - 18 wariantów językowych i pełny tryb ciemny.
@@ -1366,7 +1366,7 @@ METADATA['uk'].update(
                 '- Історія прибирання за місяцями — видно, скільки місця вже повернуто.\n'
                 '- Просторий один стовпець або щільніша сітка — перемикайте будь-коли, вибір '
                 'запам’ятовується.\n'
-                '- Довідка з пошуком просто в застосунку, за один дотик зі «Сканера».\n'
+                '- Довідка з пошуком просто в застосунку.\n'
                 '- Необовʼязкові нагадування про прибирання — локальні сповіщення за вашим розкладом.\n'
                 '- Віджети на головному екрані й екрані блокування: місце, яке можна звільнити, й огляд '
                 'фототеки.\n'
@@ -1900,7 +1900,7 @@ METADATA['fr-FR'].update(
                 "- Aucune photo, aucune miniature, aucune empreinte n'est jamais envoyée en ligne.\n"
                 '- Aucun compte, aucune connexion, aucun serveur Alike.\n'
                 "- Aucune mesure d'audience, aucun suivi, aucun identifiant publicitaire.\n"
-                "- Aucune publicité, nulle part dans l'app.\n"
+                "- Aucune publicité dans l'app.\n"
                 "- L'analyse et le nettoyage ne demandent aucune connexion — Alike fonctionne en mode "
                 'Avion.\n'
                 "- Rien n'est supprimé sans votre confirmation explicite.\n"
@@ -2140,8 +2140,8 @@ METADATA['pt-PT'].update(
                 '- Histórico de limpeza agrupado por mês, para ver quanto espaço já recuperaste.\n'
                 '- Um layout espaçoso de uma coluna ou uma grelha mais densa, alternáveis a qualquer momento '
                 'e memorizados.\n'
-                '- Instruções de utilização com pesquisa dentro da app, a um toque do Analisador.\n'
-                '- Lembretes de limpeza opcionais, como notificações locais, no teu próprio horário.\n'
+                '- Instruções de utilização com pesquisa dentro da app.\n'
+                '- Lembretes de limpeza opcionais, como notificações locais, no teu horário.\n'
                 '- Widgets no ecrã principal e no ecrã bloqueado: o espaço recuperável e a fototeca.\n'
                 '- 18 variantes de idioma e modo escuro completo.\n'
                 '\n'
@@ -2220,7 +2220,7 @@ METADATA['fr-CA'].update(
                 "- Aucune photo, aucune miniature, aucune empreinte n'est jamais envoyée en ligne.\n"
                 '- Aucun compte, aucune connexion, aucun serveur Alike.\n'
                 "- Aucune mesure d'audience, aucun suivi, aucun identifiant publicitaire.\n"
-                "- Aucune publicité, nulle part dans l'app.\n"
+                "- Aucune publicité dans l'app.\n"
                 "- L'analyse et le nettoyage ne demandent aucune connexion — Alike fonctionne en mode "
                 'Avion.\n'
                 "- Rien n'est supprimé sans votre confirmation explicite.\n"
@@ -2237,7 +2237,7 @@ METADATA['fr-CA'].update(
                 '- Ajoutez ou supprimez des photos : Alike ne remet en avant que les groupes modifiés.\n'
                 '- Progression, Sélectionnées et Économie estimée pendant le travail.\n'
                 '- Historique de nettoyage par mois.\n'
-                '- Une mise en page sur une colonne ou une grille plus dense, permutable en tout temps.\n'
+                '- Une colonne ou une grille plus dense, permutable en tout temps.\n'
                 "- Un mode d'emploi consultable dans l'app.\n"
                 '- Rappels de nettoyage facultatifs, en notifications locales.\n'
                 "- Widgets sur l'écran d'accueil et l'écran verrouillé : l'espace récupérable et la "
