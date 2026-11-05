@@ -44,8 +44,8 @@ it. It asks once per crash, so a normal review will not see it.
 
 ON-DEVICE, NOTHING COLLECTED
 Analysis runs on device with Vision. No photo, feature print or result
-leaves the device. The app's own network requests are StoreKit's, and iOS
-downloads a photo from iCloud Photos when the device has no copy. Overriding a
+leaves the device. All network activity is Apple's: StoreKit, and iOS
+downloading a photo from iCloud Photos when the device has no copy. Overriding a
 best shot stores derived numbers in UserDefaults to tune the ranking. App
 Privacy stays "Data Not Collected": all that can leave is a crash report the
 user chooses to email from their own mail account.
