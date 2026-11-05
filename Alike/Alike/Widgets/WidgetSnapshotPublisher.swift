@@ -101,20 +101,9 @@ final class WidgetSnapshotPublisher {
                     updatedAt: $0.updatedAt
                 )
             },
-            // Same keeper and byte source as `reclaimableEstimate`, so a row never claims
-            // a photo the headline figure keeps. Unknown before a scan baseline.
+            // Unknown before a scan baseline.
             topClusters: hasCompletedScan
-                ? WidgetClusterSummary.top(clusters.map { cluster in
-                    let reclaimable = cluster.reclaimableCluster(
-                        keeping: workspace.reviewStates[cluster.id]?.bestShotLocalIdentifier
-                    )
-                    return WidgetClusterSummary(
-                        reclaimableBytes: reclaimable.assets
-                            .filter { $0.localIdentifier != reclaimable.keeperLocalIdentifier }
-                            .reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes },
-                        photoCount: cluster.count
-                    )
-                })
+                ? Self.topClusters(clusters, reviewStates: workspace.reviewStates)
                 : nil
         )
 
@@ -122,6 +111,25 @@ final class WidgetSnapshotPublisher {
         // foreground and background transition — see `hasSameContent(as:)` for why an
         // unchanged payload is not republished.
         write { try $0.write(snapshot) == .written }
+    }
+
+    /// The extra-large widget's rows. Same keeper and byte source as
+    /// `reclaimableEstimate`, so a row never claims a photo the headline figure keeps.
+    static func topClusters(
+        _ clusters: [PhotoCluster],
+        reviewStates: [UUID: ClusterReviewState]
+    ) -> [WidgetClusterSummary] {
+        WidgetClusterSummary.top(clusters.map { cluster in
+            let reclaimable = cluster.reclaimableCluster(
+                keeping: reviewStates[cluster.id]?.bestShotLocalIdentifier
+            )
+            return WidgetClusterSummary(
+                reclaimableBytes: reclaimable.assets
+                    .filter { $0.localIdentifier != reclaimable.keeperLocalIdentifier }
+                    .reduce(into: Int64(0)) { $0 += $1.estimatedCleanupBytes },
+                photoCount: cluster.count
+            )
+        })
     }
 
     /// Called after the user deletes their local data. Removing the payload is not
