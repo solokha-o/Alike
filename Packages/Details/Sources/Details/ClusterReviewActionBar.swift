@@ -44,7 +44,7 @@ struct ClusterReviewActionBar: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .modifier(ClusterReviewButtonStyle(usesGlass: usesGlass))
+        .alikeGlassButton(isProminent: true, usesGlass: usesGlass)
         .disabled(isDeleting)
         .accessibilityHint(Text(DetailsL10n.Common.moveCurrentlySelectedPhotosRecently))
     }
@@ -60,19 +60,5 @@ struct ClusterReviewActionBar: View {
 
     private var actionBarShape: Capsule {
         Capsule(style: .continuous)
-    }
-}
-
-private struct ClusterReviewButtonStyle: ViewModifier {
-    let usesGlass: Bool
-
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
-            content
-                .buttonStyle(.glassProminent)
-        } else {
-            content
-                .buttonStyle(.borderedProminent)
-        }
     }
 }
