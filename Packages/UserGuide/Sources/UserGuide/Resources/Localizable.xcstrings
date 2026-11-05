@@ -19330,109 +19330,109 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "طلبات الشبكة الوحيدة التي يجريها Alike هي إلى App Store، من أجل الاشتراكات."
+            "value" : "لا يتصل Alike بالشبكة إلا عبر Apple: App Store للاشتراكات، وصور iCloud عندما لا تكون الصورة على iPhone."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die einzigen Netzwerkanfragen von Alike gehen an den App Store – für Abos."
+            "value" : "Alike geht nur über Apple online: den App Store für Abos und iCloud-Fotos, wenn ein Foto nicht auf deinem iPhone liegt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
           }
         },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
           }
         },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike goes online only through Apple: the App Store for subscriptions, and iCloud Photos when a photo isn't on your iPhone."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las únicas solicitudes de red que hace Alike son al App Store, para las suscripciones."
+            "value" : "Alike solo se conecta a través de Apple: el App Store para las suscripciones y Fotos en iCloud cuando una foto no está en tu iPhone."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las únicas solicitudes de red que hace Alike son al App Store, para las suscripciones."
+            "value" : "Alike solo se conecta a través de Apple: el App Store para las suscripciones y Fotos en iCloud cuando una foto no está en tu iPhone."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les seules requêtes réseau d’Alike vont vers l’App Store, pour les abonnements."
+            "value" : "Alike ne se connecte que via Apple : l’App Store pour les abonnements, et Photos iCloud lorsqu’une photo n’est pas sur votre iPhone."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les seules requêtes réseau d’Alike vont vers l’App Store, pour les abonnements."
+            "value" : "Alike ne se connecte que via Apple : l’App Store pour les abonnements, et Photos iCloud lorsqu’une photo n’est pas sur votre iPhone."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le uniche richieste di rete di Alike sono verso l'App Store, per gli abbonamenti."
+            "value" : "Alike si collega solo tramite Apple: l'App Store per gli abbonamenti e «Foto di iCloud» quando una foto non è sul tuo iPhone."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De enige netwerkverzoeken die Alike doet, gaan naar de App Store, voor abonnementen."
+            "value" : "Alike gaat alleen via Apple online: de App Store voor abonnementen en iCloud-foto's als een foto niet op je iPhone staat."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jedyne żądania sieciowe Alike kieruje do App Store, w sprawie subskrypcji."
+            "value" : "Alike łączy się z siecią tylko przez Apple: z App Store w sprawie subskrypcji i ze Zdjęciami iCloud, gdy zdjęcia nie ma na Twoim iPhonie."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As únicas requisições de rede que o Alike faz são para a App Store, por causa das assinaturas."
+            "value" : "O Alike só se conecta pela Apple: a App Store para as assinaturas e o Fotos do iCloud quando uma foto não está no seu iPhone."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os únicos pedidos de rede do Alike destinam-se à App Store, para as subscrições."
+            "value" : "O Alike só se liga através da Apple: a App Store para as subscrições e Fotografias em iCloud quando uma fotografia não está no teu iPhone."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike'ın yaptığı tek ağ isteği, abonelikler için App Store'adır."
+            "value" : "Alike yalnızca Apple üzerinden internete bağlanır: abonelikler için App Store ve bir fotoğraf iPhone'unda değilse iCloud Fotoğrafları."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Єдині мережеві запити Alike — до App Store, для підписок."
+            "value" : "Alike виходить у мережу лише через Apple: до App Store для підписок і до Фото iCloud, коли фото немає на вашому iPhone."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike 唯一的網路要求是為了訂閱而連線到 App Store。"
+            "value" : "Alike 只透過 Apple 連線：訂閱時連到 App Store，照片不在你的 iPhone 上時連到「iCloud 照片」。"
           }
         }
       }

@@ -50,7 +50,7 @@ Before that, 1.6.1 fixed the group summary card crash on iOS 26 and made Delete 
 
 ## 🔒 Privacy
 
-Alike makes no network requests. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
+Alike makes no network requests of its own; iOS can download a photo from iCloud Photos when one is not on the device. Photos, feature prints, scan results and cleanup history stay in the app's own storage on the device; deletion goes through PhotoKit into **Recently Deleted**, so nothing is removed without the system's own confirmation. There is no account, no analytics SDK, and no advertising SDK in the binary.
 
 The one thing Alike writes back is an enhancement you asked for: a non-destructive PhotoKit adjustment on a single photo, applied only after you confirm the preview, with the original kept by iOS and restorable from either Alike or Apple Photos. The weights Best Shot learns from your own picks are derived numbers in `UserDefaults` — never photos, never uploaded — resettable from Settings and erased along with everything else by Delete Alike Data.
 
