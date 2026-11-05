@@ -19330,109 +19330,109 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "طلبات الشبكة الوحيدة التي يجريها Alike هي إلى App Store، من أجل الاشتراكات."
+            "value" : "لا يجري Alike أي طلبات شبكة خاصة به. يتولى iOS الاشتراكات والتنزيل من صور iCloud والروابط التي تنقر عليها."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die einzigen Netzwerkanfragen von Alike gehen an den App Store – für Abos."
+            "value" : "Alike stellt von sich aus keine Netzwerkanfragen. iOS übernimmt Abos, Downloads aus iCloud-Fotos und Links, die du antippst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The only network requests Alike makes are to the App Store, for subscriptions."
+            "value" : "Alike makes no network requests of its own. iOS handles subscriptions, iCloud Photos downloads, and links you tap."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las únicas solicitudes de red que hace Alike son al App Store, para las suscripciones."
+            "value" : "Alike no hace solicitudes de red por su cuenta. iOS gestiona las suscripciones, las descargas de Fotos en iCloud y los enlaces que tocas."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las únicas solicitudes de red que hace Alike son al App Store, para las suscripciones."
+            "value" : "Alike no hace solicitudes de red por su cuenta. iOS gestiona las suscripciones, las descargas de Fotos en iCloud y los enlaces que tocas."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les seules requêtes réseau d’Alike vont vers l’App Store, pour les abonnements."
+            "value" : "Alike n’effectue aucune requête réseau de son propre fait. iOS gère les abonnements, les téléchargements depuis Photos iCloud et les liens que vous touchez."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les seules requêtes réseau d’Alike vont vers l’App Store, pour les abonnements."
+            "value" : "Alike n’effectue aucune requête réseau de son propre fait. iOS gère les abonnements, les téléchargements depuis Photos iCloud et les liens que vous touchez."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le uniche richieste di rete di Alike sono verso l'App Store, per gli abbonamenti."
+            "value" : "Alike non effettua richieste di rete di propria iniziativa. iOS gestisce gli abbonamenti, i download da «Foto di iCloud» e i link che tocchi."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De enige netwerkverzoeken die Alike doet, gaan naar de App Store, voor abonnementen."
+            "value" : "Alike doet uit zichzelf geen netwerkverzoeken. iOS regelt abonnementen, downloads uit iCloud-foto's en links waarop je tikt."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jedyne żądania sieciowe Alike kieruje do App Store, w sprawie subskrypcji."
+            "value" : "Alike sam z siebie nie wykonuje żądań sieciowych. iOS obsługuje subskrypcje, pobieranie ze Zdjęć iCloud i odnośniki, w które stukasz."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As únicas requisições de rede que o Alike faz são para a App Store, por causa das assinaturas."
+            "value" : "O Alike não faz requisições de rede por conta própria. O iOS cuida das assinaturas, dos downloads do Fotos do iCloud e dos links em que você toca."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os únicos pedidos de rede do Alike destinam-se à App Store, para as subscrições."
+            "value" : "O Alike não faz pedidos de rede por iniciativa própria. O iOS trata das subscrições, das transferências de Fotografias em iCloud e das ligações em que tocas."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike'ın yaptığı tek ağ isteği, abonelikler için App Store'adır."
+            "value" : "Alike kendiliğinden ağ isteği yapmaz. Abonelikleri, iCloud Fotoğrafları'ndan indirmeyi ve dokunduğun bağlantıları iOS yürütür."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Єдині мережеві запити Alike — до App Store, для підписок."
+            "value" : "Alike не робить власних мережевих запитів. Підписки, завантаження з Фото iCloud і посилання, які ви відкриваєте, обробляє iOS."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alike 唯一的網路要求是為了訂閱而連線到 App Store。"
+            "value" : "Alike 不會自行發出網路請求。訂閱、從「iCloud 照片」下載，以及你點按的連結，都由 iOS 處理。"
           }
         }
       }
@@ -19539,7 +19539,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваші фото ніколи не завантажуються"
+            "value" : "Ваші фото ніколи не завантажуються в інтернет"
           }
         },
         "zh-Hant" : {
