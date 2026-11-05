@@ -320,11 +320,13 @@ still shows the `ERROR` line with a note that the lane ignored it.
 Run the check. It uploads nothing, because a shell script replaces altool:
 
 ```sh
-GEM_PATH=vendor/bundle/ruby/2.6.0 /usr/bin/ruby fastlane/lib/altool_upload_false_failure_test.rb
+LC_ALL=en_US.UTF-8 GEM_PATH="$PWD/vendor/bundle/ruby/2.6.0" /usr/bin/ruby fastlane/lib/altool_upload_false_failure_test.rb
 ```
 
 Do not use `bundle exec` for this check. It hides `minitest`, which is not in the
-`Gemfile`. `tools/local_ci.sh` runs the same file with plain `ruby`. That form does not
+`Gemfile`. Do not remove `LC_ALL`. Without a UTF-8 locale, fastlane cannot read
+altool's error line, and the false failure stays. `tools/upload-build` sets this
+locale for you. `tools/local_cd.sh` does not. `tools/local_ci.sh` runs the same file with plain `ruby`. That form does not
 load fastlane, so it tests only the decision and the Fastfile wiring.
 
 If `tools/upload-build` still fails, read the end of

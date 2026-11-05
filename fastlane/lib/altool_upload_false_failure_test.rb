@@ -3,7 +3,7 @@
 # 2026-11-05 upload of 1.7.0 (16).
 #
 #   ruby fastlane/lib/altool_upload_false_failure_test.rb
-#   GEM_PATH=vendor/bundle/ruby/2.6.0 /usr/bin/ruby fastlane/lib/altool_upload_false_failure_test.rb
+#   LC_ALL=en_US.UTF-8 GEM_PATH="$PWD/vendor/bundle/ruby/2.6.0" /usr/bin/ruby fastlane/lib/altool_upload_false_failure_test.rb
 #
 # The first form needs no gems and tests the decision against a stub. The second
 # also runs the replay through the real fastlane executor and a real PTY. It does
@@ -114,7 +114,7 @@ end
 
 class FastfileWiringTest < Minitest::Test
   def test_testflight_lane_installs_the_patch_before_it_uploads
-    fastfile = File.read(File.expand_path("../Fastfile", __dir__))
+    fastfile = File.read(File.expand_path("../Fastfile", __dir__), encoding: "UTF-8")
     lane = fastfile[/lane :testflight_upload do.*?^  end$/m]
     refute_nil lane
     install = lane.index("AltoolUploadFalseFailure.install(FastlaneCore::AltoolTransporterExecutor)")
