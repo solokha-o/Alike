@@ -67,6 +67,9 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     /// Reads the stored clusters, resolves their identifiers through `fetch`
     /// in batches on a detached task, and builds one `Output` per cluster that
     /// still has assets. `fetch` and `build` never run on the caller's actor.
+    ///
+    /// Batches never split a cluster (see `clusterBatches`), so each cluster's
+    /// assets come from one fetch, as with the former one-fetch-per-cluster code.
     func loadResolvedClusters<Asset, Output: Sendable>(
         batchSize: Int = Constants.maxInPredicateBatchSize,
         fetch: @escaping @Sendable ([String]) -> [(localIdentifier: String, asset: Asset)],
@@ -79,7 +82,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         let task = Task.detached(priority: .userInitiated) { () throws -> [Output] in
             let start = ContinuousClock().now
             var resolved: [String: (order: Int, asset: Asset)] = [:]
-            for chunk in Self.uniqueLocalIdentifiers(in: clusterData).chunked(into: batchSize) {
+            for chunk in Self.clusterBatches(clusterData, batchSize: batchSize) {
                 try Task.checkCancellation()
                 for entry in fetch(chunk) where resolved[entry.localIdentifier] == nil {
                     resolved[entry.localIdentifier] = (resolved.count, entry.asset)
@@ -98,23 +101,35 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         }
     }
 
-    static func uniqueLocalIdentifiers(in clusterData: [ClusterData]) -> [String] {
+    /// Packs whole clusters into batches of at most `batchSize` identifiers.
+    /// A cluster larger than `batchSize` gets a batch of its own, so it is
+    /// still resolved by a single fetch.
+    static func clusterBatches(_ clusterData: [ClusterData], batchSize: Int) -> [[String]] {
         var seen = Set<String>()
-        var identifiers: [String] = []
+        var batches: [[String]] = []
+        var current: [String] = []
         for cluster in clusterData {
-            for asset in cluster.assets where seen.insert(asset.localIdentifier).inserted {
-                identifiers.append(asset.localIdentifier)
+            let identifiers = cluster.assets
+                .map(\.localIdentifier)
+                .filter { seen.insert($0).inserted }
+            guard !identifiers.isEmpty else { continue }
+            if !current.isEmpty, current.count + identifiers.count > batchSize {
+                batches.append(current)
+                current = []
             }
+            current.append(contentsOf: identifiers)
         }
-        return identifiers
+        if !current.isEmpty { batches.append(current) }
+        return batches
     }
 
     /// Pairs each stored cluster with the assets PhotoKit still knows.
     ///
     /// Keeps the cluster order, drops identifiers missing from `resolved`, and
-    /// skips clusters left empty. Assets inside a cluster keep the order the
-    /// fetch returned them in, as the former one-fetch-per-cluster code did,
-    /// so a cluster's thumbnail (`assets.first`) does not change.
+    /// skips clusters left empty. Assets inside a cluster keep the order their
+    /// fetch returned them in. With `clusterBatches` that is one fetch per
+    /// cluster, the same as the former code, so a cluster's thumbnail
+    /// (`assets.first`) does not change.
     static func assembleClusters<Asset>(
         _ clusterData: [ClusterData],
         resolved: [String: (order: Int, asset: Asset)]
