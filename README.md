@@ -34,7 +34,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 
 A patch release with one user-visible fix:
 
-- **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched in batches of 500 on a background task. Cluster order and the assets inside each cluster are unchanged.
+- **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched on a background task in batches of up to 500 identifiers that never split a cluster. Each cluster is still resolved by a single fetch, so cluster order and the order of photos inside a cluster are unchanged.
 
 Earlier: 1.7.0 was a minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 
