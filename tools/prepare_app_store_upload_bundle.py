@@ -1069,7 +1069,7 @@ METADATA = {
         # hence the four English words at the end.
         "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
         "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
-        "release_notes": "Це оновлення виправляє зависання: з великою фототекою Alike міг не відповідати кілька секунд одразу після відкриття, і тоді iOS закривала його. Тепер групи схожих фото завантажуються у фоні, тому застосунок відповідає, поки вони з’являються.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Це оновлення виправляє зависання: з великою фототекою Alike міг не відповідати кілька секунд одразу після відкриття, і тоді iOS могла закрити його. Тепер групи схожих фото завантажуються у фоні, тому застосунок залишається чутливим до ваших дій, поки вони з’являються.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Subtitle and keyword words below come from each storefront's own search
     # suggestions and Search Popularity (September 2026), not from a translation
@@ -1081,35 +1081,35 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
         "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
-        "release_notes": "Dieses Update behebt ein Einfrieren: Bei einer großen Fotomediathek konnte Alike direkt nach dem Öffnen mehrere Sekunden nicht reagieren, und iOS hat die App dann geschlossen. Deine Gruppen ähnlicher Fotos laden jetzt im Hintergrund, sodass die App reagiert, während sie erscheinen.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "release_notes": "Dieses Update behebt ein Einfrieren: Bei einer großen Fotomediathek konnte Alike direkt nach dem Öffnen mehrere Sekunden nicht reagieren, und iOS konnte die App dann schließen. Deine Gruppen ähnlicher Fotos laden jetzt im Hintergrund, sodass die App reagiert, während sie erscheinen.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
         "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
         "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
-        "release_notes": "Cette mise à jour corrige un blocage : avec une grande photothèque, Alike pouvait ne plus répondre pendant plusieurs secondes juste après son ouverture, puis iOS le fermait. Vos groupes de photos similaires se chargent désormais en arrière-plan, et l’app reste réactive pendant qu’ils apparaissent.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "release_notes": "Cette mise à jour corrige un blocage : avec une grande photothèque, Alike pouvait ne plus répondre pendant plusieurs secondes juste après son ouverture, puis iOS pouvait le fermer. Vos groupes de photos similaires se chargent désormais en arrière-plan, et l’app reste réactive pendant qu’ils apparaissent.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
     },
     "es-ES": {
         "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
         "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS lo cerraba. Ahora tus grupos de fotos similares se cargan en segundo plano, así que la app sigue respondiendo mientras aparecen.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS podía cerrarlo. Ahora tus grupos de fotos similares se cargan en segundo plano, así que la app sigue respondiendo mientras aparecen.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
         "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS lo cerraba. Ahora tus grupos de fotos similares se cargan en segundo plano, así que la app sigue respondiendo mientras aparecen.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS podía cerrarlo. Ahora tus grupos de fotos similares se cargan en segundo plano, así que la app sigue respondiendo mientras aparecen.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
-        "release_notes": "Esta atualização corrige um travamento: com uma fototeca grande, o Alike podia parar de responder por alguns segundos logo depois de abrir, e então o iOS fechava o app. Agora seus grupos de fotos semelhantes carregam em segundo plano, e o app continua respondendo enquanto eles aparecem.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "release_notes": "Esta atualização corrige um travamento: com uma fototeca grande, o Alike podia parar de responder por alguns segundos logo depois de abrir, e então o iOS podia fechar o app. Agora seus grupos de fotos semelhantes carregam em segundo plano, e o app continua respondendo enquanto eles aparecem.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
     # pt-PT: Portugal indexes en-GB next to pt-PT, so none of these repeats an
     # en-GB keyword (cross_indexed_keyword_errors() enforces it). The words
@@ -1120,7 +1120,7 @@ METADATA = {
         "description": PT_PT_DESCRIPTION,
         "keywords": "limpar,limpeza,repetidas,iguais,apagar,libertar,espaço,armazenamento,galeria,organizar,telemóvel",
         "promotional_text": "Recupere espaço: veja quanto vai libertar antes de eliminar o que quer que seja, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios.",
-        "release_notes": "Esta atualização corrige um bloqueio: com uma fototeca grande, o Alike podia deixar de responder durante alguns segundos logo depois de abrir, e o iOS fechava-o. Agora os seus grupos de fotos semelhantes carregam em segundo plano, e a app continua a responder enquanto aparecem.\n\nTudo continua a correr no seu dispositivo: sem conta, sem envios, e o que limpa vai para «Apagados recentemente», onde o iOS o guarda durante cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da App Store chega diretamente a mim.",
+        "release_notes": "Esta atualização corrige um bloqueio: com uma fototeca grande, o Alike podia deixar de responder durante alguns segundos logo depois de abrir, e o iOS podia fechá-lo. Agora os seus grupos de fotos semelhantes carregam em segundo plano, e a app continua a responder enquanto aparecem.\n\nTudo continua a correr no seu dispositivo: sem conta, sem envios, e o que limpa vai para «Apagados recentemente», onde o iOS o guarda durante cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da App Store chega diretamente a mim.",
     },
     # The same rules hold for the six locales below. tr keeps English words
     # because that is what that storefront measurably searches for, and the
@@ -1151,21 +1151,21 @@ METADATA = {
         "description": IT_DESCRIPTION,
         "keywords": "libera,spazio,iphone,telefono,pulisci,pulire,cancella,eliminare,galleria,sfocate,swipe,doppioni",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
-        "release_notes": "Questo aggiornamento corregge un blocco: con una libreria di foto grande, Alike poteva non rispondere per alcuni secondi subito dopo l’apertura, e iOS poi lo chiudeva. Ora i tuoi gruppi di foto simili si caricano in background, quindi l’app risponde mentre compaiono.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "release_notes": "Questo aggiornamento corregge un blocco: con una libreria di foto grande, Alike poteva non rispondere per alcuni secondi subito dopo l’apertura, e iOS poi poteva chiuderlo. Ora i tuoi gruppi di foto simili si caricano in background, quindi l’app risponde mentre compaiono.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
         "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,fotos,swipe,clean",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
-        "release_notes": "Deze update lost een vastloper op: met een grote fotobibliotheek kon Alike direct na het openen enkele seconden niet reageren, waarna iOS de app sloot. Je groepen vergelijkbare foto’s laden nu op de achtergrond, zodat de app blijft reageren terwijl ze verschijnen.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "release_notes": "Deze update lost een vastloper op: met een grote fotobibliotheek kon Alike direct na het openen enkele seconden niet reageren, waarna iOS de app kon sluiten. Je groepen vergelijkbare foto’s laden nu op de achtergrond, zodat de app blijft reageren terwijl ze verschijnen.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
         "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
         "promotional_text": "Zobacz szacowane miejsce do odzyskania. Zdjęcia zostają na iPhonie. Plan roczny: 7 dni Pro gratis dla uprawnionych nowych subskrybentów. Bez reklam i konta.",
-        "release_notes": "Ta aktualizacja naprawia zawieszanie: przy dużej bibliotece zdjęć Alike mógł przez kilka sekund nie reagować zaraz po otwarciu, a wtedy iOS go zamykał. Grupy podobnych zdjęć ładują się teraz w tle, więc aplikacja reaguje, gdy się pojawiają.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "release_notes": "Ta aktualizacja naprawia zawieszanie się aplikacji: przy dużej bibliotece zdjęć Alike mógł przez kilka sekund nie reagować zaraz po otwarciu, a wtedy iOS mógł go zamknąć. Grupy podobnych zdjęć ładują się teraz w tle, więc aplikacja nadal reaguje podczas ich pojawiania się.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
@@ -1179,7 +1179,7 @@ METADATA = {
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
         "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
-        "release_notes": "此更新修正了一個凍結問題：照片圖庫很大時，Alike 在開啟後可能有數秒沒有回應，接著 iOS 會將它關閉。現在相似照片群組會在背景載入，因此在群組出現的過程中，App 仍會保持回應。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "release_notes": "此更新修正了一個無回應問題：照片圖庫很大時，Alike 在開啟後可能立即有數秒沒有回應，接著 iOS 可能會將它關閉。現在相似照片群組會在背景載入，因此在群組出現的過程中，App 仍會保持回應。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
     },
     "ar-SA": {
         "subtitle": "حذف الصور المكررة من الجوال",
@@ -1188,7 +1188,7 @@ METADATA = {
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
         "promotional_text": "اعرف المساحة التي يمكنك استرجاعها قبل الحذف. صورك تبقى على iPhone. تجربة Pro مجانية لمدة 7 أيام بالخطة السنوية للمشتركين الجدد المؤهلين. بلا إعلانات أو حساب.",
-        "release_notes": "يصلح هذا التحديث مشكلة تجمّد: مع مكتبة صور كبيرة، كان Alike قد يتوقف عن الاستجابة لعدة ثوانٍ بعد فتحه مباشرة، ثم يغلقه iOS. الآن تُحمَّل مجموعات الصور المتشابهة في الخلفية، فيبقى التطبيق مستجيبًا أثناء ظهورها.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتك وبلاغاتك مرحَّب بها — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "release_notes": "يصلح هذا التحديث مشكلة تجمّد: مع مكتبة صور كبيرة، كان من الممكن أن يتوقف Alike عن الاستجابة لعدة ثوانٍ بعد فتحه مباشرة، ثم يغلقه iOS. الآن تُحمَّل مجموعات الصور المتشابهة في الخلفية، فيبقى التطبيق مستجيبًا أثناء ظهورها.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتك وبلاغاتك مرحَّب بها — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
