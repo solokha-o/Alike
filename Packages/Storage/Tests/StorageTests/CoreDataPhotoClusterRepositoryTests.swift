@@ -412,3 +412,213 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
 }
+
+/// `loadClusters()` resolves every stored identifier in batches off the main
+/// thread and then regroups the assets. These cases pin that without a photo
+/// library: `String` stands in for `PHAsset`.
+@MainActor
+@Suite struct ClusterAssemblyTests {
+    private typealias Repository = CoreDataPhotoClusterRepository
+
+    private func clusterData(
+        _ identifiers: [String],
+        createdAt: Date = Date(timeIntervalSince1970: 0)
+    ) -> Repository.ClusterData {
+        Repository.ClusterData(
+            id: UUID(),
+            createdAt: createdAt,
+            averageSimilarity: 0.9,
+            assets: identifiers.map { identifier in
+                Repository.AssetData(
+                    localIdentifier: identifier,
+                    creationDate: nil,
+                    modificationDate: nil,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    isFavorite: false
+                )
+            }
+        )
+    }
+
+    /// Resolution in fetch order, as PhotoKit would return it.
+    private func resolved(_ identifiers: [String]) -> [String: (order: Int, asset: String)] {
+        Dictionary(uniqueKeysWithValues: identifiers.enumerated().map { ($1, ($0, $1.uppercased())) })
+    }
+
+    // MARK: - assembleClusters
+
+    @Test func keepsClusterOrder() {
+        let first = clusterData(["a"])
+        let second = clusterData(["b"])
+        let third = clusterData(["c"])
+
+        let result = Repository.assembleClusters([first, second, third], resolved: resolved(["c", "a", "b"]))
+
+        #expect(result.map(\.cluster.id) == [first.id, second.id, third.id])
+    }
+
+    @Test func skipsClusterWithNoResolvedAssets() {
+        let kept = clusterData(["a"])
+        let gone = clusterData(["x", "y"])
+
+        let result = Repository.assembleClusters([gone, kept], resolved: resolved(["a"]))
+
+        #expect(result.map(\.cluster.id) == [kept.id])
+    }
+
+    @Test func dropsMissingIdentifiersAndKeepsFetchOrder() {
+        let cluster = clusterData(["a", "b", "c", "d"])
+
+        let result = Repository.assembleClusters([cluster], resolved: resolved(["d", "a", "c"]))
+
+        #expect(result.first?.assets == ["D", "A", "C"])
+    }
+
+    // MARK: - clusterBatches
+
+    @Test func batchesPackWholeClusters() {
+        let batches = Repository.clusterBatches(
+            [clusterData(["a", "b"]), clusterData(["c", "d"]), clusterData(["e"])],
+            batchSize: 3
+        )
+
+        #expect(batches == [["a", "b"], ["c", "d", "e"]])
+    }
+
+    @Test func clusterLargerThanBatchGetsOneBatchOfItsOwn() {
+        let batches = Repository.clusterBatches(
+            [clusterData(["a"]), clusterData(["b", "c", "d", "e"]), clusterData(["f"])],
+            batchSize: 2
+        )
+
+        #expect(batches == [["a"], ["b", "c", "d", "e"], ["f"]])
+    }
+
+    @Test func batchesSkipEmptyClusters() {
+        let batches = Repository.clusterBatches([clusterData([]), clusterData(["a"])], batchSize: 2)
+
+        #expect(batches == [["a"]])
+    }
+
+    // MARK: - loadResolvedClusters
+
+    @Test func resolvesInBatchesOffTheMainThread() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        let older = clusterData(["a", "b"], createdAt: Date(timeIntervalSince1970: 100))
+        let newer = clusterData(["c", "d", "e"], createdAt: Date(timeIntervalSince1970: 200))
+        try await repository.saveClusterData([older, newer])
+        let recorder = FetchRecorder()
+
+        let result = try await repository.loadResolvedClusters(
+            batchSize: 2,
+            fetch: { identifiers in
+                recorder.record(identifiers, onMainThread: Thread.isMainThread)
+                return identifiers.map { ($0, $0.uppercased()) }
+            },
+            build: { cluster, assets in "\(cluster.id):\(assets.joined())" }
+        )
+
+        #expect(result == ["\(newer.id):CDE", "\(older.id):AB"])
+        #expect(recorder.batchSizes == [3, 2])
+        #expect(recorder.anyOnMainThread == false)
+    }
+
+    /// PhotoKit may return a fetch in its own order. Each cluster must take the
+    /// order of one fetch, never a mix of two batches.
+    @Test func eachClusterKeepsTheOrderOfItsOwnFetch() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        let newer = clusterData(["a", "b"], createdAt: Date(timeIntervalSince1970: 200))
+        let older = clusterData(["c", "d"], createdAt: Date(timeIntervalSince1970: 100))
+        try await repository.saveClusterData([older, newer])
+
+        let result = try await repository.loadResolvedClusters(
+            batchSize: 3,
+            fetch: { identifiers in identifiers.reversed().map { ($0, $0.uppercased()) } },
+            build: { _, assets in assets.joined() }
+        )
+
+        #expect(result == ["BA", "DC"])
+    }
+
+    @Test func cancellationDuringAFetchStopsBeforeTheNextBatch() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        try await repository.saveClusterData([
+            clusterData(["a"], createdAt: Date(timeIntervalSince1970: 200)),
+            clusterData(["b"], createdAt: Date(timeIntervalSince1970: 100))
+        ])
+        let recorder = FetchRecorder()
+        let handle = TaskHandle()
+
+        let task = Task {
+            try await repository.loadResolvedClusters(
+                batchSize: 1,
+                fetch: { identifiers in
+                    recorder.record(identifiers, onMainThread: Thread.isMainThread)
+                    handle.cancel()
+                    return identifiers.map { ($0, $0) }
+                },
+                build: { _, assets in assets }
+            )
+        }
+        handle.set(task)
+
+        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(recorder.batchSizes == [1])
+    }
+
+    @Test func cancelledLoadThrowsAndDoesNotFetch() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        try await repository.saveClusterData([clusterData(["a"])])
+        let recorder = FetchRecorder()
+
+        // The task inherits the main actor, so it cannot start before cancel().
+        let task = Task {
+            try await repository.loadResolvedClusters(
+                fetch: { identifiers in
+                    recorder.record(identifiers, onMainThread: Thread.isMainThread)
+                    return identifiers.map { ($0, $0) }
+                },
+                build: { _, assets in assets }
+            )
+        }
+        task.cancel()
+
+        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(recorder.batchSizes.isEmpty)
+    }
+
+    @Test func loadClustersOfEmptyStoreReturnsEmpty() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+
+        let clusters = try await repository.loadClusters()
+
+        #expect(clusters.isEmpty)
+    }
+}
+
+/// Lets a fetch closure cancel the outer task, which reaches the detached
+/// work only through `withTaskCancellationHandler`.
+private final class TaskHandle: @unchecked Sendable {
+    private let lock = NSLock()
+    private var task: Task<[[String]], any Error>?
+
+    func set(_ task: Task<[[String]], any Error>) { lock.withLock { self.task = task } }
+    func cancel() { lock.withLock { task }?.cancel() }
+}
+
+private final class FetchRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var sizes: [Int] = []
+    private var mainThreadSeen = false
+
+    func record(_ identifiers: [String], onMainThread: Bool) {
+        lock.withLock {
+            sizes.append(identifiers.count)
+            mainThreadSeen = mainThreadSeen || onMainThread
+        }
+    }
+
+    var batchSizes: [Int] { lock.withLock { sizes } }
+    var anyOnMainThread: Bool { lock.withLock { mainThreadSeen } }
+}

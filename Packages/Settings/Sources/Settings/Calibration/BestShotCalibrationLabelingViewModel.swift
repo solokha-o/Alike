@@ -199,6 +199,9 @@ public final class BestShotCalibrationLabelingViewModel {
             isFinished = false
             currentCluster = next
             await scoreIfNeeded(for: next)
+        } catch is CancellationError {
+            // The view went away mid-load; there is no failure to show.
+            return
         } catch {
             AppLog.ui.error(
                 "\(AppLog.tag(.error, "Failed to load clusters for calibration labelling: \(error.localizedDescription)"))"

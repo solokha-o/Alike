@@ -156,8 +156,8 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 
 ## 2. Code validation
 
-- [ ] `tools/full` green — whitespace, every package's tests, and the full app
-      compile gate with `xcodebuild -scheme Alike`.
+- [ ] `tools/full` green — whitespace, every package's tests, the full app
+      compile gate with `xcodebuild -scheme Alike`, and `AlikeTests`.
 - [ ] `tools/release-check X.Y.Z N` green — version check, bundle validation,
       Release archive, no-upload IPA export.
 - [ ] No leftover debug flags, premium overrides or test endpoints.

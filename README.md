@@ -30,9 +30,13 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.7.0
+## 🆕 What ships in 1.7.1
 
-A minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
+A patch release with one user-visible fix:
+
+- **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched on a background task in batches of up to 500 identifiers that never split a cluster. Each cluster is still resolved by a single fetch, so cluster order and the order of photos inside a cluster are unchanged.
+
+Earlier: 1.7.0 was a minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 
 - **Extra-large portrait widget.** On iOS 27, `AlikeStatusWidget` also offers `systemExtraLargePortrait`: the reclaimable figure, its share of the library, the group count, up to four largest groups and links to Similar Photos, Screenshots and Blurred Photos, with the Pro lock on the paid categories. The snapshot gains an optional `topClusters` field (bytes and photo count, no identifiers); a 1.6.2 snapshot without it still decodes.
 - **The widget hero keeps its colours.** On tinted and clear Home Screens (iOS 18+), the hero illustration renders in full colour; iOS 17 and the Lock Screen are unchanged.
@@ -40,7 +44,7 @@ A minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 - **A Cleanup toolbar that fits.** On iOS 27, Rescan is pinned, and grid columns and filter/sort fold into the overflow menu, so the toolbar does not clip at 375 pt.
 - **Cross-fade into the photo pager.** On iOS 27, opening a photo full screen cross-fades.
 
-Earlier: 1.6.2 was a patch release around ratings and the store listing:
+Before 1.7.0, 1.6.2 was a patch release around ratings and the store listing:
 
 - **Rate Alike opens the review page.** The Settings button used to call the system `requestReview`, which iOS may silently skip, and every tap counted as a prompt that blocked the post-cleanup ask for 120 days. It now opens the App Store write-review page and records nothing.
 - **The rating ask comes from day two.** `RatingPromptPolicy.Defaults.minimumInstallAge` drops from 3 days to 1, so a cleanup finished on a return visit from the second day on can trigger the system rating sheet. The stored prompt history keeps its format.
@@ -203,7 +207,7 @@ swift test --package-path Packages/Settings
 swift test --package-path Packages/UserGuide
 ```
 
-`tools/full` runs every package that has tests, plus the app compile gate.
+`tools/full` runs every package that has tests, the app compile gate, and `AlikeTests`.
 `Packages/Storage` is the one exception — SwiftPM does not compile its
 `.xcdatamodeld`, so its suite runs in Xcode and its code is covered by the compile
 gate instead. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
@@ -224,8 +228,8 @@ tools/full
 ```
 
 `tools/quick` runs whitespace checks, the four package suites above, and App Store
-metadata bundle validation. `tools/full` adds every remaining package and the app
-compile gate. Release preflight, metadata upload, and TestFlight upload live behind
+metadata bundle validation. `tools/full` adds every remaining package, the app
+compile gate, and `AlikeTests`. Release preflight, metadata upload, and TestFlight upload live behind
 `tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`
 turns a crash report a user emailed into a readable stack.
 
