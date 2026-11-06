@@ -36,36 +36,74 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         self.changeDetector = changeDetector
     }
     
+    /// Resolves stored clusters to `PHAsset`s off the main thread.
+    ///
+    /// `PHAsset.fetchAssets` is a synchronous round trip to the photo library
+    /// service. One call per cluster on the main queue added up past the
+    /// 10-second scene-update watchdog on large libraries (0x8BADF00D), so all
+    /// identifiers are fetched in a few batches on a detached task instead.
     public func loadClusters() async throws -> [PhotoCluster] {
-        let context = persistence.viewContext
-        
-        return try await context.perform {
+        let clusterData = try await loadClusterData()
+        guard !clusterData.isEmpty else { return [] }
+
+        let task = Task.detached(priority: .userInitiated) { () throws -> [PhotoCluster] in
             let start = ContinuousClock().now
-            let request = ClusterEntity.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
-            
-            let entities = try context.fetch(request)
-            AppLog.storage.debug("\(AppLog.tag(.storage, "Load clusters count=\(entities.count) duration=\(start.duration(to: ContinuousClock().now))"))")
-            
-            return entities.compactMap { entity -> PhotoCluster? in
-                let localIdentifiers = entity.photosArray.map { $0.localIdentifier }
-                
-                // Fetch PHAssets from local identifiers
-                let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
-                var assets: [PHAsset] = []
-                fetchResult.enumerateObjects { asset, _, _ in
-                    assets.append(asset)
-                }
-                
-                guard !assets.isEmpty else { return nil }
-                
-                return PhotoCluster(
-                    id: entity.id,
-                    assets: assets,
-                    createdAt: entity.createdAt,
-                    averageSimilarity: entity.averageSimilarity
+            let assetsByID = try Self.fetchAssets(
+                forLocalIdentifiers: Self.uniqueLocalIdentifiers(in: clusterData)
+            )
+            let clusters = Self.assembleClusters(clusterData, assetsByID: assetsByID).map { entry in
+                PhotoCluster(
+                    id: entry.cluster.id,
+                    assets: entry.assets,
+                    createdAt: entry.cluster.createdAt,
+                    averageSimilarity: entry.cluster.averageSimilarity
                 )
             }
+            AppLog.storage.debug("\(AppLog.tag(.storage, "Load clusters count=\(clusters.count) assets=\(assetsByID.count) duration=\(start.duration(to: ContinuousClock().now))"))")
+            return clusters
+        }
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
+        }
+    }
+
+    static func uniqueLocalIdentifiers(in clusterData: [ClusterData]) -> [String] {
+        var seen = Set<String>()
+        var identifiers: [String] = []
+        for cluster in clusterData {
+            for asset in cluster.assets where seen.insert(asset.localIdentifier).inserted {
+                identifiers.append(asset.localIdentifier)
+            }
+        }
+        return identifiers
+    }
+
+    private static func fetchAssets(forLocalIdentifiers identifiers: [String]) throws -> [String: PHAsset] {
+        var assetsByID: [String: PHAsset] = [:]
+        assetsByID.reserveCapacity(identifiers.count)
+        for chunk in identifiers.chunked(into: Constants.maxInPredicateBatchSize) {
+            try Task.checkCancellation()
+            PHAsset.fetchAssets(withLocalIdentifiers: chunk, options: nil)
+                .enumerateObjects { asset, _, _ in
+                    assetsByID[asset.localIdentifier] = asset
+                }
+        }
+        return assetsByID
+    }
+
+    /// Pairs each stored cluster with the assets PhotoKit still knows.
+    ///
+    /// Keeps the cluster order and each cluster's stored photo order, drops
+    /// identifiers missing from `assetsByID`, and skips clusters left empty.
+    static func assembleClusters<Asset>(
+        _ clusterData: [ClusterData],
+        assetsByID: [String: Asset]
+    ) -> [(cluster: ClusterData, assets: [Asset])] {
+        clusterData.compactMap { cluster in
+            let assets = cluster.assets.compactMap { assetsByID[$0.localIdentifier] }
+            return assets.isEmpty ? nil : (cluster, assets)
         }
     }
 
@@ -277,9 +315,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     }
 
     func loadClusterData() async throws -> [ClusterData] {
-        let context = persistence.viewContext
-
-        return try await context.perform {
+        try await persistence.performBackgroundTask { context in
             let request = ClusterEntity.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
 

@@ -412,3 +412,104 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
 }
+
+/// `loadClusters()` resolves every stored identifier in batches and then
+/// regroups the assets. These cases pin that regrouping without a photo library.
+@Suite struct ClusterAssemblyTests {
+    private typealias Repository = CoreDataPhotoClusterRepository
+
+    private func clusterData(
+        _ identifiers: [String],
+        createdAt: Date = Date(timeIntervalSince1970: 0)
+    ) -> Repository.ClusterData {
+        Repository.ClusterData(
+            id: UUID(),
+            createdAt: createdAt,
+            averageSimilarity: 0.9,
+            assets: identifiers.map { identifier in
+                Repository.AssetData(
+                    localIdentifier: identifier,
+                    creationDate: nil,
+                    modificationDate: nil,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    isFavorite: false
+                )
+            }
+        )
+    }
+
+    @Test func keepsClusterOrder() {
+        let first = clusterData(["a"])
+        let second = clusterData(["b"])
+        let third = clusterData(["c"])
+
+        let result = Repository.assembleClusters(
+            [first, second, third],
+            assetsByID: ["a": "A", "b": "B", "c": "C"]
+        )
+
+        #expect(result.map(\.cluster.id) == [first.id, second.id, third.id])
+    }
+
+    @Test func skipsClusterWithNoResolvedAssets() {
+        let kept = clusterData(["a"])
+        let gone = clusterData(["x", "y"])
+
+        let result = Repository.assembleClusters([gone, kept], assetsByID: ["a": "A"])
+
+        #expect(result.map(\.cluster.id) == [kept.id])
+    }
+
+    @Test func dropsMissingIdentifiersAndKeepsStoredOrder() {
+        let cluster = clusterData(["a", "b", "c", "d"])
+
+        let result = Repository.assembleClusters(
+            [cluster],
+            assetsByID: ["d": "D", "a": "A", "c": "C"]
+        )
+
+        #expect(result.first?.assets == ["A", "C", "D"])
+    }
+
+    @Test func sharedIdentifierResolvesInEveryCluster() {
+        let first = clusterData(["a", "s"])
+        let second = clusterData(["s", "z"])
+
+        let result = Repository.assembleClusters(
+            [first, second],
+            assetsByID: ["a": "A", "s": "S", "z": "Z"]
+        )
+
+        #expect(result.map(\.assets) == [["A", "S"], ["S", "Z"]])
+    }
+
+    @Test func uniqueIdentifiersAreDeduplicatedInFirstSeenOrder() {
+        let identifiers = Repository.uniqueLocalIdentifiers(in: [
+            clusterData(["a", "s"]),
+            clusterData(["s", "z"])
+        ])
+
+        #expect(identifiers == ["a", "s", "z"])
+    }
+
+    @Test func loadClusterDataReadsNewestFirstFromBackgroundContext() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        let older = clusterData(["a"], createdAt: Date(timeIntervalSince1970: 100))
+        let newer = clusterData(["b", "c"], createdAt: Date(timeIntervalSince1970: 200))
+        try await repository.saveClusterData([older, newer])
+
+        let loaded = try await repository.loadClusterData()
+
+        #expect(loaded.map(\.id) == [newer.id, older.id])
+        #expect(loaded.first?.assets.map(\.localIdentifier) == ["b", "c"])
+    }
+
+    @Test func loadClustersOfEmptyStoreSkipsPhotoKit() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+
+        let clusters = try await repository.loadClusters()
+
+        #expect(clusters.isEmpty)
+    }
+}
