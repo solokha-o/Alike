@@ -2,6 +2,7 @@ default_platform(:ios)
 
 require "fileutils"
 require "shellwords"
+require_relative "lib/altool_upload_false_failure"
 require_relative "lib/app_store_api_credentials"
 require_relative "lib/app_store_version_guard"
 
@@ -325,6 +326,9 @@ platform :ios do
     else
       UI.message("Using release-check IPA for TestFlight upload: #{ipa_path}")
     end
+
+    # See fastlane/lib/altool_upload_false_failure.rb.
+    AltoolUploadFalseFailure.install(FastlaneCore::AltoolTransporterExecutor)
 
     upload_to_testflight(
       api_key: api_key,

@@ -305,6 +305,48 @@ It does not:
 - create or push tags
 - publish a release
 
+#### The altool resume-state error
+
+On Xcode 27.2 altool can print
+`ERROR: ... Failed to create URL for 'CDUploaderStateInfoResumeFilePath'` and then
+finish the upload. fastlane 2.230.0 fails on any `ERROR` line, so the upload looked
+failed although App Store Connect had the build.
+
+`fastlane/lib/altool_upload_false_failure.rb` treats a run as successful only if this
+is the only error, altool exits with 0, and the output has
+`UPLOAD SUCCEEDED with no errors`. Every other failure stays a failure, and the log
+still shows the `ERROR` line with a note that the lane ignored it.
+
+Run the check. It uploads nothing, because a shell script replaces altool:
+
+```sh
+LC_ALL=en_US.UTF-8 GEM_PATH="$PWD/vendor/bundle/ruby/2.6.0" /usr/bin/ruby fastlane/lib/altool_upload_false_failure_test.rb
+```
+
+Do not use `bundle exec` for this check. It hides `minitest`, which is not in the
+`Gemfile`. Do not remove `LC_ALL`. Without a UTF-8 locale, fastlane cannot read
+altool's error line, and the false failure stays. `tools/upload-build` sets this
+locale for you. `tools/local_cd.sh` does not. `tools/local_ci.sh` runs the same file with plain `ruby`. That form does not
+load fastlane, so it tests only the decision and the Fastfile wiring.
+
+If `tools/upload-build` still fails, read the end of
+`build/reports/local-cd/<run>/testflight_upload.log`. Do not retry before you look
+for `UPLOAD SUCCEEDED` there and for the build in App Store Connect. Apple does not
+accept a build number twice.
+
+fastlane 2.240.0 has its own fix (fastlane#30196), but it needs Ruby 3.1 or later, and
+2.241.0 needs Ruby 3.2 or later. Uploads run on the system Ruby 2.6 with
+`vendor/bundle/ruby/2.6.0`, and `Gemfile.lock` is not in Git. An upgrade therefore
+moves the whole upload toolchain to another Ruby. If you upgrade:
+
+1. Compare `wait_for_screenshot_checksums_before_verifying` in `fastlane/Fastfile` with
+   the new `deliver/lib/deliver/upload_screenshots.rb`. As of 2.241.2 it has its own
+   wait for missing checksums, and it deletes `COMPLETE` screenshots that have no
+   checksum before a retry.
+2. Remove `altool_upload_false_failure.rb`, its test, and the `tools/local_ci.sh` step.
+   The upstream fix forgives every error once the success line appears, so the test
+   for a second error fails on the new version.
+
 ## Crash Reports
 
 Alike collects crashes itself, through MetricKit, because Apple's pipeline does not

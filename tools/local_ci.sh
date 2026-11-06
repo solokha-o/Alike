@@ -457,6 +457,7 @@ run_metadata_validation() {
   fi
   run_step "symbolicate script tests" python3 tools/symbolicate_crash_payload_test.py
   run_step "metadata bundle script tests" python3 tools/prepare_app_store_upload_bundle_test.py
+  run_step "altool false failure tests" ruby fastlane/lib/altool_upload_false_failure_test.rb
 }
 
 resolve_build_destination() {
