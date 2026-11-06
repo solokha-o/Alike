@@ -157,6 +157,7 @@ Runs:
 - `swift build` for packages without tests
 - App Store upload bundle validation
 - the full app compile gate with `xcodebuild -scheme Alike`
+- the `AlikeTests` target of the app, with parallel testing off
 
 `Packages/Storage` is explicitly skipped. SwiftPM does not compile the package's
 `.xcdatamodeld`, so `PersistenceController` traps with "Failed to load Core Data

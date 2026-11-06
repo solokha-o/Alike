@@ -75,7 +75,7 @@ Usage:
 
 Modes:
   quick          Fast local checks for day-to-day agent or solo development.
-  full           All package tests, App Store metadata bundle validation, and the full app compile gate.
+  full           All package tests, App Store metadata bundle validation, the full app compile gate, and AlikeTests.
   release-check  Version/build check, strict metadata validation, and Release archive/export validation.
 
 Environment:
@@ -85,13 +85,13 @@ Environment:
                                   Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-derived-data
   ALIKE_LOCAL_CI_CACHE_ROOT      Override SwiftPM scratch/cache root.
                                   Default: $ALIKE_BUILD_ROOT/Xcode/ProjectBuilds/Alike/local-ci-swiftpm
-  ALIKE_BUILD_DESTINATION        Override the xcodebuild destination for the full-mode app compile.
+  ALIKE_BUILD_DESTINATION        Override the xcodebuild destination for the full-mode app compile and AlikeTests.
                                   By default, the newest available iPhone simulator is used.
   ALIKE_CI_BASE_REF              Override committed diff base. Default: origin/develop
   CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable path.
   DEVELOPER_DIR                  Xcode toolchain to use. When unset and `xcode-select` points at the
                                   Command Line Tools, the newest installed Xcode is selected automatically.
-  ALIKE_SKIP_APP_BUILD=1         Skip the full app compile in full mode.
+  ALIKE_SKIP_APP_BUILD=1         Skip the full app compile and AlikeTests in full mode.
   ALIKE_SKIP_ARCHIVE=1           Records archive as skipped; release-check fails because archive validation is required.
   ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1
                                   Pass -allowProvisioningUpdates to release archive/export.
@@ -510,6 +510,31 @@ run_app_build() {
       build
 }
 
+# Tests in the app target: no package suite reaches them, and a compile gate does
+# not run them. The build above uses the scheme's Release run configuration and the
+# test action uses Debug, so this step compiles the app again. Parallel testing is
+# off, because it clones the simulator.
+run_app_tests() {
+  if [[ "${ALIKE_SKIP_APP_BUILD:-0}" == "1" ]]; then
+    skip_step "xcodebuild ${APP_SCHEME} test AlikeTests" "ALIKE_SKIP_APP_BUILD=1"
+    return
+  fi
+
+  local test_destination
+  test_destination="$(resolve_build_destination)"
+
+  run_step "xcodebuild ${APP_SCHEME} test AlikeTests" \
+    xcodebuild \
+      -project "$PROJECT_PATH" \
+      -scheme "$APP_SCHEME" \
+      -destination "$test_destination" \
+      -derivedDataPath "$DERIVED_DATA_ROOT/app" \
+      -jobs 6 \
+      -parallel-testing-enabled NO \
+      -only-testing:AlikeTests \
+      test
+}
+
 run_release_archive() {
   if [[ "${ALIKE_SKIP_ARCHIVE:-0}" == "1" ]]; then
     skip_step "xcodebuild ${RELEASE_SCHEME} archive" "ALIKE_SKIP_ARCHIVE=1 is not valid for release-check"
@@ -752,6 +777,7 @@ main() {
       run_package_validation "${packages[@]}"
       run_metadata_validation
       run_app_build
+      run_app_tests
       ;;
     release-check)
       parse_release_args "$@"
