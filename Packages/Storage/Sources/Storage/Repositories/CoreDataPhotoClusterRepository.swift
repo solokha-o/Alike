@@ -5,7 +5,7 @@ import Photos
 
 /// CoreData implementation of PhotoClusterRepository
 public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
-    private enum Constants {
+    enum Constants {
         static let maxInPredicateBatchSize = 500
     }
 
@@ -36,36 +36,94 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         self.changeDetector = changeDetector
     }
     
+    /// Resolves stored clusters to `PHAsset`s off the main thread.
+    ///
+    /// `PHAsset.fetchAssets` is a synchronous round trip to the photo library
+    /// service. One call per cluster on the main queue added up past the
+    /// 10-second scene-update watchdog on large libraries (0x8BADF00D), so all
+    /// identifiers are fetched in a few batches on a detached task instead.
     public func loadClusters() async throws -> [PhotoCluster] {
-        let context = persistence.viewContext
-        
-        return try await context.perform {
-            let start = ContinuousClock().now
-            let request = ClusterEntity.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
-            
-            let entities = try context.fetch(request)
-            AppLog.storage.debug("\(AppLog.tag(.storage, "Load clusters count=\(entities.count) duration=\(start.duration(to: ContinuousClock().now))"))")
-            
-            return entities.compactMap { entity -> PhotoCluster? in
-                let localIdentifiers = entity.photosArray.map { $0.localIdentifier }
-                
-                // Fetch PHAssets from local identifiers
-                let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
-                var assets: [PHAsset] = []
-                fetchResult.enumerateObjects { asset, _, _ in
-                    assets.append(asset)
-                }
-                
-                guard !assets.isEmpty else { return nil }
-                
-                return PhotoCluster(
-                    id: entity.id,
+        try await loadResolvedClusters(
+            fetch: { identifiers in
+                var assets: [(localIdentifier: String, asset: PHAsset)] = []
+                assets.reserveCapacity(identifiers.count)
+                PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+                    .enumerateObjects { asset, _, _ in
+                        assets.append((asset.localIdentifier, asset))
+                    }
+                return assets
+            },
+            build: { cluster, assets in
+                PhotoCluster(
+                    id: cluster.id,
                     assets: assets,
-                    createdAt: entity.createdAt,
-                    averageSimilarity: entity.averageSimilarity
+                    createdAt: cluster.createdAt,
+                    averageSimilarity: cluster.averageSimilarity
                 )
             }
+        )
+    }
+
+    /// Reads the stored clusters, resolves their identifiers through `fetch`
+    /// in batches on a detached task, and builds one `Output` per cluster that
+    /// still has assets. `fetch` and `build` never run on the caller's actor.
+    func loadResolvedClusters<Asset, Output: Sendable>(
+        batchSize: Int = Constants.maxInPredicateBatchSize,
+        fetch: @escaping @Sendable ([String]) -> [(localIdentifier: String, asset: Asset)],
+        build: @escaping @Sendable (ClusterData, [Asset]) -> Output
+    ) async throws -> [Output] {
+        try Task.checkCancellation()
+        let clusterData = try await loadClusterData()
+        guard !clusterData.isEmpty else { return [] }
+
+        let task = Task.detached(priority: .userInitiated) { () throws -> [Output] in
+            let start = ContinuousClock().now
+            var resolved: [String: (order: Int, asset: Asset)] = [:]
+            for chunk in Self.uniqueLocalIdentifiers(in: clusterData).chunked(into: batchSize) {
+                try Task.checkCancellation()
+                for entry in fetch(chunk) where resolved[entry.localIdentifier] == nil {
+                    resolved[entry.localIdentifier] = (resolved.count, entry.asset)
+                }
+            }
+            try Task.checkCancellation()
+            let outputs = Self.assembleClusters(clusterData, resolved: resolved)
+                .map { build($0.cluster, $0.assets) }
+            AppLog.storage.debug("\(AppLog.tag(.storage, "Load clusters count=\(outputs.count) assets=\(resolved.count) duration=\(start.duration(to: ContinuousClock().now))"))")
+            return outputs
+        }
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
+        }
+    }
+
+    static func uniqueLocalIdentifiers(in clusterData: [ClusterData]) -> [String] {
+        var seen = Set<String>()
+        var identifiers: [String] = []
+        for cluster in clusterData {
+            for asset in cluster.assets where seen.insert(asset.localIdentifier).inserted {
+                identifiers.append(asset.localIdentifier)
+            }
+        }
+        return identifiers
+    }
+
+    /// Pairs each stored cluster with the assets PhotoKit still knows.
+    ///
+    /// Keeps the cluster order, drops identifiers missing from `resolved`, and
+    /// skips clusters left empty. Assets inside a cluster keep the order the
+    /// fetch returned them in, as the former one-fetch-per-cluster code did,
+    /// so a cluster's thumbnail (`assets.first`) does not change.
+    static func assembleClusters<Asset>(
+        _ clusterData: [ClusterData],
+        resolved: [String: (order: Int, asset: Asset)]
+    ) -> [(cluster: ClusterData, assets: [Asset])] {
+        clusterData.compactMap { cluster in
+            let entries = cluster.assets
+                .compactMap { resolved[$0.localIdentifier] }
+                .sorted { $0.order < $1.order }
+            return entries.isEmpty ? nil : (cluster, entries.map(\.asset))
         }
     }
 
@@ -277,9 +335,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     }
 
     func loadClusterData() async throws -> [ClusterData] {
-        let context = persistence.viewContext
-
-        return try await context.perform {
+        try await persistence.performBackgroundTask { context in
             let request = ClusterEntity.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(keyPath: \ClusterEntity.createdAt, ascending: false)]
 

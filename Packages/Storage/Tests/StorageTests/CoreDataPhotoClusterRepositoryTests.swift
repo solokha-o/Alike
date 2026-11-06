@@ -412,3 +412,143 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
 }
+
+/// `loadClusters()` resolves every stored identifier in batches off the main
+/// thread and then regroups the assets. These cases pin that without a photo
+/// library: `String` stands in for `PHAsset`.
+@MainActor
+@Suite struct ClusterAssemblyTests {
+    private typealias Repository = CoreDataPhotoClusterRepository
+
+    private func clusterData(
+        _ identifiers: [String],
+        createdAt: Date = Date(timeIntervalSince1970: 0)
+    ) -> Repository.ClusterData {
+        Repository.ClusterData(
+            id: UUID(),
+            createdAt: createdAt,
+            averageSimilarity: 0.9,
+            assets: identifiers.map { identifier in
+                Repository.AssetData(
+                    localIdentifier: identifier,
+                    creationDate: nil,
+                    modificationDate: nil,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    isFavorite: false
+                )
+            }
+        )
+    }
+
+    /// Resolution in fetch order, as PhotoKit would return it.
+    private func resolved(_ identifiers: [String]) -> [String: (order: Int, asset: String)] {
+        Dictionary(uniqueKeysWithValues: identifiers.enumerated().map { ($1, ($0, $1.uppercased())) })
+    }
+
+    // MARK: - assembleClusters
+
+    @Test func keepsClusterOrder() {
+        let first = clusterData(["a"])
+        let second = clusterData(["b"])
+        let third = clusterData(["c"])
+
+        let result = Repository.assembleClusters([first, second, third], resolved: resolved(["c", "a", "b"]))
+
+        #expect(result.map(\.cluster.id) == [first.id, second.id, third.id])
+    }
+
+    @Test func skipsClusterWithNoResolvedAssets() {
+        let kept = clusterData(["a"])
+        let gone = clusterData(["x", "y"])
+
+        let result = Repository.assembleClusters([gone, kept], resolved: resolved(["a"]))
+
+        #expect(result.map(\.cluster.id) == [kept.id])
+    }
+
+    @Test func dropsMissingIdentifiersAndKeepsFetchOrder() {
+        let cluster = clusterData(["a", "b", "c", "d"])
+
+        let result = Repository.assembleClusters([cluster], resolved: resolved(["d", "a", "c"]))
+
+        #expect(result.first?.assets == ["D", "A", "C"])
+    }
+
+    @Test func uniqueIdentifiersAreDeduplicatedInFirstSeenOrder() {
+        let identifiers = Repository.uniqueLocalIdentifiers(in: [
+            clusterData(["a", "s"]),
+            clusterData(["s", "z"])
+        ])
+
+        #expect(identifiers == ["a", "s", "z"])
+    }
+
+    // MARK: - loadResolvedClusters
+
+    @Test func resolvesInBatchesOffTheMainThread() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        let older = clusterData(["a", "b"], createdAt: Date(timeIntervalSince1970: 100))
+        let newer = clusterData(["c", "d", "e"], createdAt: Date(timeIntervalSince1970: 200))
+        try await repository.saveClusterData([older, newer])
+        let recorder = FetchRecorder()
+
+        let result = try await repository.loadResolvedClusters(
+            batchSize: 2,
+            fetch: { identifiers in
+                recorder.record(identifiers, onMainThread: Thread.isMainThread)
+                return identifiers.map { ($0, $0.uppercased()) }
+            },
+            build: { cluster, assets in "\(cluster.id):\(assets.joined())" }
+        )
+
+        #expect(result == ["\(newer.id):CDE", "\(older.id):AB"])
+        #expect(recorder.batchSizes == [2, 2, 1])
+        #expect(recorder.anyOnMainThread == false)
+    }
+
+    @Test func cancelledLoadThrowsAndDoesNotFetch() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+        try await repository.saveClusterData([clusterData(["a"])])
+        let recorder = FetchRecorder()
+
+        // The task inherits the main actor, so it cannot start before cancel().
+        let task = Task {
+            try await repository.loadResolvedClusters(
+                fetch: { identifiers in
+                    recorder.record(identifiers, onMainThread: Thread.isMainThread)
+                    return identifiers.map { ($0, $0) }
+                },
+                build: { _, assets in assets }
+            )
+        }
+        task.cancel()
+
+        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(recorder.batchSizes.isEmpty)
+    }
+
+    @Test func loadClustersOfEmptyStoreReturnsEmpty() async throws {
+        let repository = CoreDataPhotoClusterRepository(persistence: .preview())
+
+        let clusters = try await repository.loadClusters()
+
+        #expect(clusters.isEmpty)
+    }
+}
+
+private final class FetchRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var sizes: [Int] = []
+    private var mainThreadSeen = false
+
+    func record(_ identifiers: [String], onMainThread: Bool) {
+        lock.withLock {
+            sizes.append(identifiers.count)
+            mainThreadSeen = mainThreadSeen || onMainThread
+        }
+    }
+
+    var batchSizes: [Int] { lock.withLock { sizes } }
+    var anyOnMainThread: Bool { lock.withLock { mainThreadSeen } }
+}
