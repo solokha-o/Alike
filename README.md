@@ -30,9 +30,13 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.7.0
+## 🆕 What ships in 1.7.1
 
-A minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
+A patch release with one user-visible fix:
+
+- **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched in batches of 500 on a background task. Cluster order and the assets inside each cluster are unchanged.
+
+Earlier: 1.7.0 was a minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 
 - **Extra-large portrait widget.** On iOS 27, `AlikeStatusWidget` also offers `systemExtraLargePortrait`: the reclaimable figure, its share of the library, the group count, up to four largest groups and links to Similar Photos, Screenshots and Blurred Photos, with the Pro lock on the paid categories. The snapshot gains an optional `topClusters` field (bytes and photo count, no identifiers); a 1.6.2 snapshot without it still decodes.
 - **The widget hero keeps its colours.** On tinted and clear Home Screens (iOS 18+), the hero illustration renders in full colour; iOS 17 and the Lock Screen are unchanged.
@@ -40,7 +44,7 @@ A minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 - **A Cleanup toolbar that fits.** On iOS 27, Rescan is pinned, and grid columns and filter/sort fold into the overflow menu, so the toolbar does not clip at 375 pt.
 - **Cross-fade into the photo pager.** On iOS 27, opening a photo full screen cross-fades.
 
-Earlier: 1.6.2 was a patch release around ratings and the store listing:
+Before 1.7.0, 1.6.2 was a patch release around ratings and the store listing:
 
 - **Rate Alike opens the review page.** The Settings button used to call the system `requestReview`, which iOS may silently skip, and every tap counted as a prompt that blocked the post-cleanup ask for 120 days. It now opens the App Store write-review page and records nothing.
 - **The rating ask comes from day two.** `RatingPromptPolicy.Defaults.minimumInstallAge` drops from 3 days to 1, so a cleanup finished on a return visit from the second day on can trigger the system rating sheet. The stored prompt history keeps its format.
