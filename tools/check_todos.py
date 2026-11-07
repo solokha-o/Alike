@@ -41,7 +41,10 @@ LINKED_MARKER = re.compile(r"\b(TODO|FIXME|HACK)\b(?!" + LINK + ")")
 ANY_XXX = re.compile(r"\bXXX\b")
 SCRIPT_SUFFIXES = {".sh": "#", ".bash": "#", ".py": "#", ".rb": "#"}
 RUBY_FILE_NAMES = {"Fastfile", "Appfile", "Deliverfile", "Gemfile", "Matchfile", "Pluginfile"}
-SHEBANG = re.compile(rb"^#!.*\b(?:bash|sh|zsh|python3?|ruby)\b")
+# A `#` that starts a comment: not Ruby interpolation `#{`, and not shell `$#`
+# or `${#name}`.
+HASH_COMMENT = re.compile(r"(?<![${])#(?!\{)")
+SHEBANG =re.compile(rb"^#!.*\b(?:bash|sh|zsh|python3?|ruby)\b")
 EXCLUDED_PARTS = {".build", "build", "DerivedData", "vendor", "node_modules"}
 EXCLUDED_PREFIXES = ("Skills/External/",)
 
@@ -67,11 +70,11 @@ def is_candidate_path(path: pathlib.PurePosixPath) -> bool:
 def comment_text(line: str, style: str, in_block: bool) -> tuple[str, bool]:
     """Return the comment part of a line, and whether a Swift block comment is still open."""
     if style == "hash":
-        index = line.find("#")
+        match = HASH_COMMENT.search(line)
         # A shebang is not a comment that can hold a marker.
-        if index < 0 or line.startswith("#!"):
+        if match is None or line.startswith("#!"):
             return "", False
-        return line[index:], False
+        return line[match.start() :], False
     parts = []
     index = 0
     while index < len(line):

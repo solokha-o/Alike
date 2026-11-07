@@ -127,12 +127,12 @@ def dynamic_patterns(source: str) -> list[re.Pattern]:
     return patterns
 
 
-def build_corpus(paths: list[pathlib.PurePosixPath]) -> Corpus:
+def build_corpus(paths: list[pathlib.PurePosixPath], root: pathlib.Path = REPOSITORY_ROOT) -> Corpus:
     production, tests, patterns = [], [], []
     for path in paths:
         if not path.name.endswith(REFERENCE_SUFFIXES):
             continue
-        file = REPOSITORY_ROOT / path
+        file = root / path
         if not file.is_file():
             continue
         text = file.read_text(encoding="utf-8", errors="replace")
@@ -286,16 +286,33 @@ def asset_findings(paths: list[pathlib.PurePosixPath], corpus: Corpus) -> list[d
 # --- Report ------------------------------------------------------------------
 
 
-def build_report(paths: list[pathlib.PurePosixPath]) -> dict:
-    corpus = build_corpus(paths)
-    catalogs = []
+def load_catalog(file: pathlib.Path) -> tuple[dict | None, str]:
+    """Return (catalog, "") or (None, reason). A broken catalog must not stop the report."""
+    try:
+        data = json.loads(file.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError) as error:
+        return None, f"{type(error).__name__}: {error}"
+    if not isinstance(data, dict) or not isinstance(data.get("strings", {}), dict):
+        return None, "not a string catalog: no `strings` object"
+    if not all(isinstance(entry, dict) for entry in data.get("strings", {}).values()):
+        return None, "not a string catalog: a key entry is not an object"
+    return data, ""
+
+
+def build_report(paths: list[pathlib.PurePosixPath], root: pathlib.Path = REPOSITORY_ROOT) -> dict:
+    corpus = build_corpus(paths, root)
+    catalogs, unparsed = [], []
     for path in paths:
-        if path.suffix == ".xcstrings" and (REPOSITORY_ROOT / path).is_file():
-            data = json.loads((REPOSITORY_ROOT / path).read_text(encoding="utf-8"))
-            catalogs.append(catalog_findings(path, data, corpus))
+        if path.suffix == ".xcstrings" and (root / path).is_file():
+            data, reason = load_catalog(root / path)
+            if data is None:
+                unparsed.append({"catalog": str(path), "reason": reason})
+            else:
+                catalogs.append(catalog_findings(path, data, corpus))
     assets = asset_findings(paths, corpus)
     summary = {
         "catalogs": len(catalogs),
+        "unparsedCatalogs": len(unparsed),
         "keys": sum(catalog["keys"] for catalog in catalogs),
         "staleKeys": sum(len(catalog["stale"]) for catalog in catalogs),
         "unusedKeys": sum(len(catalog["unused"]) for catalog in catalogs),
@@ -304,7 +321,7 @@ def build_report(paths: list[pathlib.PurePosixPath]) -> dict:
         "needsManualCheck": sum(len(catalog["manual"]) for catalog in catalogs)
         + sum(1 for asset in assets if asset["category"] == "manual"),
     }
-    return {"summary": summary, "catalogs": catalogs, "assets": assets}
+    return {"summary": summary, "catalogs": catalogs, "unparsedCatalogs": unparsed, "assets": assets}
 
 
 def markdown(report: dict) -> str:
@@ -320,7 +337,12 @@ def markdown(report: dict) -> str:
         f"- Keys with missing translations: {summary['keysWithMissingTranslations']}",
         f"- Unused assets: {summary['unusedAssets']}",
         f"- Needs manual check: {summary['needsManualCheck']}",
+        f"- Catalogs that could not be parsed: {summary['unparsedCatalogs']}",
     ]
+    if report["unparsedCatalogs"]:
+        lines += ["", "## Could not parse", ""]
+        for item in report["unparsedCatalogs"]:
+            lines.append(f"- `{item['catalog']}` ({item['reason']})")
     for catalog in report["catalogs"]:
         if not any(catalog[category] for category in ("stale", "unused", "manual", "missingTranslations")):
             continue
@@ -342,13 +364,20 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--output-dir", type=pathlib.Path, help="write resource-hygiene.md and .json here")
     args = parser.parse_args(argv)
+    try:
+        return write_report(args.output_dir)
+    except Exception as error:  # noqa: BLE001 - a report-only step must never fail the gate.
+        print(f"Resource hygiene (report only): the report failed and was skipped: {type(error).__name__}: {error}")
+        return 0
 
+
+def write_report(output_dir: pathlib.Path | None) -> int:
     report = build_report(tracked_files())
     text = markdown(report)
-    if args.output_dir:
-        args.output_dir.mkdir(parents=True, exist_ok=True)
-        (args.output_dir / f"{REPORT_NAME}.md").write_text(text, encoding="utf-8")
-        (args.output_dir / f"{REPORT_NAME}.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / f"{REPORT_NAME}.md").write_text(text, encoding="utf-8")
+        (output_dir / f"{REPORT_NAME}.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     else:
         print(text)
     summary = report["summary"]
@@ -356,10 +385,11 @@ def main(argv=None) -> int:
         "Resource hygiene (report only): "
         f"{summary['staleKeys']} stale key(s), {summary['unusedKeys']} unused key(s), "
         f"{summary['keysWithMissingTranslations']} key(s) with missing translations, "
-        f"{summary['unusedAssets']} unused asset(s), {summary['needsManualCheck']} need a manual check."
+        f"{summary['unusedAssets']} unused asset(s), {summary['needsManualCheck']} need a manual check, "
+        f"{summary['unparsedCatalogs']} catalog(s) could not be parsed."
     )
-    if args.output_dir:
-        print(f"Report: {args.output_dir / (REPORT_NAME + '.md')}")
+    if output_dir:
+        print(f"Report: {output_dir / (REPORT_NAME + '.md')}")
     return 0
 
 

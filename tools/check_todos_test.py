@@ -49,6 +49,15 @@ class ScriptCommentTests(unittest.TestCase):
     def test_marker_outside_a_comment_is_ignored(self) -> None:
         self.assertEqual(findings("tools/a.py", f'NAME = "{todo}"\nprint("{xxx}")\n'), [])
 
+    def test_ruby_interpolation_is_not_a_comment(self) -> None:
+        self.assertEqual(findings("fastlane/Fastfile", f'puts "#{{name}} {todo} list"\n'), [])
+
+    def test_comment_after_ruby_interpolation_is_checked(self) -> None:
+        self.assertEqual(len(findings("tools/a.rb", f'puts "#{{name}}" # {todo}: x\n')), 1)
+
+    def test_shell_length_and_argument_count_are_not_comments(self) -> None:
+        self.assertEqual(findings("tools/a.sh", f'echo "${{#files[@]}} $# {todo}"\n'), [])
+
     def test_lowercase_and_longer_words_are_ignored(self) -> None:
         self.assertEqual(findings("tools/a.py", f"# todo-management, {todo}s, {todo}_LIST\n"), [])
 

@@ -262,8 +262,17 @@ each deletion is a separate pull request.
 - The link format is the one in ADR-0001 written rule 13: `TODO(#123): …` or
   `TODO(https://…): …`. SwiftLint (`todo_without_link`) checks `TODO`, `FIXME`,
   and `HACK` in Swift, so this check does not repeat it.
-- Markdown is not checked: skills and docs show markers as examples.
-- `Skills/External/`, `.build/`, and `build/` are skipped.
+- It reads only comments: `#` comments in shell, Python, and Ruby files, and
+  `//` and `/* */` comments in Swift (for `XXX` only). A `#` in Ruby `#{…}`
+  interpolation or in shell `$#` and `${#…}` does not start a comment.
+- It does not read:
+  - Markdown: skills and docs show markers as examples;
+  - YAML, including `.swiftlint.yml` and GitHub workflows;
+  - Python docstrings and other string literals;
+  - `TODO`, `FIXME`, and `HACK` in Swift: SwiftLint covers them;
+  - `Skills/External/`, `.build/`, and `build/`.
+- The check reads lines, not code: a `#` or `//` inside a string literal starts a
+  comment for the check.
 - Tests: `python3 tools/check_todos_test.py`.
 
 `tools/report_resource_hygiene.py` (report only, in `tools/full`):

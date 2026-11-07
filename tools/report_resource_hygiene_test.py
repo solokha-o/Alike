@@ -6,7 +6,10 @@ Run:
 """
 from __future__ import annotations
 
+import contextlib
+import io
 import sys
+import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
 
@@ -120,6 +123,52 @@ class AssetTests(unittest.TestCase):
         ]
         findings = report.asset_findings(paths, corpus())
         self.assertEqual([finding["asset"] for finding in findings], ["Alike/Alike/Assets.xcassets/Old.imageset"])
+
+
+class BrokenInputTests(unittest.TestCase):
+    def report_for(self, catalog_bytes: bytes) -> dict:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            good = PurePosixPath("Packages/A/Sources/A/Resources/Localizable.xcstrings")
+            broken = PurePosixPath("Packages/B/Sources/B/Resources/Localizable.xcstrings")
+            source = PurePosixPath("Packages/A/Sources/A/A.swift")
+            for path, data in (
+                (good, b'{"sourceLanguage":"en","strings":{"a.key":{}}}'),
+                (broken, catalog_bytes),
+                (source, b'let a = "a.key"\n'),
+            ):
+                (root / path).parent.mkdir(parents=True, exist_ok=True)
+                (root / path).write_bytes(data)
+            return report.build_report([good, broken, source], root)
+
+    def assert_unparsed(self, result: dict) -> None:
+        self.assertEqual(result["summary"]["catalogs"], 1, "the good catalog must still be read")
+        self.assertEqual(result["summary"]["unparsedCatalogs"], 1)
+        self.assertEqual(result["unparsedCatalogs"][0]["catalog"], "Packages/B/Sources/B/Resources/Localizable.xcstrings")
+        self.assertIn("Could not parse", report.markdown(result))
+
+    def test_truncated_catalog_is_listed_not_raised(self) -> None:
+        self.assert_unparsed(self.report_for(b'{"sourceLanguage":"en","strings":{"a":'))
+
+    def test_non_utf8_catalog_is_listed_not_raised(self) -> None:
+        self.assert_unparsed(self.report_for(b'{"strings":{"\xff\xfe":{}}}'))
+
+    def test_json_that_is_not_a_catalog_is_listed_not_raised(self) -> None:
+        self.assert_unparsed(self.report_for(b'["a", "b"]'))
+
+    def test_unexpected_error_exits_zero(self) -> None:
+        original = report.write_report
+
+        def fail(_output_dir):
+            raise RuntimeError("boom")
+
+        report.write_report = fail
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(report.main([]), 0)
+        finally:
+            report.write_report = original
+        self.assertIn("RuntimeError: boom", output.getvalue())
 
 
 class PathTests(unittest.TestCase):
