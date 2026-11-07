@@ -18,6 +18,8 @@ SWIFTLINT_BIN="${ALIKE_SWIFTLINT:-swiftlint}"
 
 MODE_ALL=0
 MODE_FIX=0
+MODE_STAGED=0
+STAGE_ROOT=""
 FILES=()
 TOOL_PROBLEMS=0
 MISMATCHED_TOOLS=""
@@ -33,6 +35,8 @@ Usage:
   tools/lint --all    Lint all Swift files in Alike/ and Packages/.
   tools/lint --fix    Format the changed Swift files with SwiftFormat, then lint them.
                       Refused when the installed SwiftFormat is not the pinned version.
+  tools/lint --staged Lint the staged version (the index) of the staged Swift files.
+                      The pre-commit hook (tools/hooks/pre-commit) uses this mode.
 
 Report mode (default): print the violations and exit 0.
 
@@ -50,6 +54,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --all) MODE_ALL=1 ;;
     --fix) MODE_FIX=1 ;;
+    --staged) MODE_STAGED=1 ;;
     -h|--help) usage; exit 0 ;;
     *) usage >&2; exit 64 ;;
   esac
@@ -58,6 +63,11 @@ done
 
 if [[ "$MODE_ALL" == 1 && "$MODE_FIX" == 1 ]]; then
   echo "error: --fix works only on changed files. A whole-project format is a format change (ADR-0003)." >&2
+  exit 64
+fi
+
+if [[ "$MODE_STAGED" == 1 && ( "$MODE_ALL" == 1 || "$MODE_FIX" == 1 ) ]]; then
+  echo "error: --staged cannot be used with --all or --fix. Run tools/lint --fix, then git add the files." >&2
   exit 64
 fi
 
@@ -102,7 +112,8 @@ check_tool() {
   return 0
 }
 
-is_lint_path() {
+# A Swift file in Alike/ or Packages/, outside the excluded directories.
+is_lint_candidate() {
   case "$1" in
     *.swift) ;;
     *) return 1 ;;
@@ -114,7 +125,11 @@ is_lint_path() {
   case "/$1" in
     */.build/*|*/build/*|*/vendor/*|*/Skills/*) return 1 ;;
   esac
-  [[ -f "$1" ]]
+  return 0
+}
+
+is_lint_path() {
+  is_lint_candidate "$1" && [[ -f "$1" ]]
 }
 
 add_file() {
@@ -149,6 +164,62 @@ collect_changed_files() {
   done < <(git ls-files --others --exclude-standard -z -- Alike Packages)
 }
 
+# --staged: the staged files are written from the index to a temporary tree under
+# build/, with the same relative paths and the staged lint configs. The tools run
+# in that tree, so a partly staged file is linted as it will be committed.
+# The tree is under the checkout, not the system temp directory: SwiftLint 0.65.1
+# ignores the baseline when the path starts with /private.
+remove_stage_root() {
+  if [[ -n "$STAGE_ROOT" ]]; then
+    rm -rf "$STAGE_ROOT"
+  fi
+}
+
+collect_staged_files() {
+  local path partial=()
+  echo "Staged Swift files (the index version is linted)."
+  while IFS= read -r -d '' path; do
+    is_lint_candidate "$path" || continue
+    FILES+=("$path")
+  done < <(git diff --cached --name-only -z --diff-filter=ACMR -- Alike Packages)
+  [[ ${#FILES[@]} -gt 0 ]] || return 0
+  while IFS= read -r -d '' path; do
+    partial+=("$path")
+  done < <(git diff --name-only -z -- "${FILES[@]}")
+  if [[ ${#partial[@]} -gt 0 ]]; then
+    echo "note: these files have unstaged changes. Only the staged version is linted:"
+    printf '  %s\n' "${partial[@]}"
+  fi
+}
+
+prepare_stage_root() {
+  local config
+  mkdir -p "$ROOT_DIR/build/lint-staged"
+  STAGE_ROOT="$(mktemp -d "$ROOT_DIR/build/lint-staged/run.XXXXXX")"
+  trap remove_stage_root EXIT
+  printf '%s\0' "${FILES[@]}" | git checkout-index --prefix="$STAGE_ROOT/" -z --stdin
+  # The staged configs and baseline apply, so a staged config change is linted too.
+  for config in "$SWIFTFORMAT_CONFIG" "$SWIFTLINT_CONFIG" "$SWIFTLINT_TESTS_CONFIG" "$SWIFTLINT_BASELINE"; do
+    if git ls-files --error-unmatch -- "$config" >/dev/null 2>&1; then
+      git checkout-index --prefix="$STAGE_ROOT/" -- "$config"
+    elif [[ -f "$config" ]]; then
+      cp "$config" "$STAGE_ROOT/$config"
+    fi
+  done
+}
+
+# Print a tool output file. In --staged mode, temporary-tree paths become repository paths.
+show_output() {
+  local line prefix="$STAGE_ROOT/"
+  if [[ -z "$STAGE_ROOT" ]]; then
+    cat "$1"
+    return
+  fi
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    printf '%s\n' "${line//"$prefix"/}"
+  done <"$1"
+}
+
 # Count lines of tool output that match a pattern.
 count_matches() {
   local pattern="$1" file="$2" count
@@ -164,12 +235,12 @@ run_swiftformat() {
   else
     "$SWIFTFORMAT_BIN" --lint --config "$SWIFTFORMAT_CONFIG" "${FILES[@]}" >"$output" 2>&1 || status=$?
   fi
-  grep -E ': (error|warning): \(' "$output" || true
+  show_output "$output" | grep -E ': (error|warning): \(' || true
   FORMAT_ISSUES="$(count_matches ': (error|warning): \(' "$output")"
   # SwiftFormat exits 1 when lint finds unformatted code, other non-zero codes are tool errors.
   if [[ "$status" != 0 && "$status" != 1 ]]; then
     echo "error: swiftformat failed with exit code $status:"
-    cat "$output"
+    show_output "$output"
     TOOL_PROBLEMS=$((TOOL_PROBLEMS + 1))
   fi
   rm -f "$output"
@@ -227,7 +298,7 @@ run_swiftlint() {
       "${tests[@]}" >>"$output" 2>&1 || status=$?
     check_swiftlint_status "$status"
   fi
-  cat "$output"
+  show_output "$output"
   LINT_ERRORS="$(count_matches ':[0-9]+(:[0-9]+)?: error: ' "$output")"
   LINT_WARNINGS="$(count_matches ':[0-9]+(:[0-9]+)?: warning: ' "$output")"
   rm -f "$output"
@@ -244,6 +315,9 @@ finish() {
   if [[ "$STRICT" == 1 ]]; then
     if [[ "$violations" -gt 0 || "$TOOL_PROBLEMS" -gt 0 ]]; then
       echo "Result: FAILED (strict mode)."
+      if [[ "$MODE_STAGED" == 1 && "$violations" -gt 0 ]]; then
+        echo "Fix: run tools/lint --fix for the format issues, fix the SwiftLint findings, then git add the files."
+      fi
       exit 1
     fi
     echo "Result: passed (strict mode)."
@@ -261,6 +335,16 @@ check_tool swiftlint "$SWIFTLINT_BIN" "version" || SWIFTLINT_OK=0
 if [[ "$MODE_ALL" == 1 ]]; then
   echo "Linting all Swift files in Alike/ and Packages/."
   FILE_LABEL="all"
+elif [[ "$MODE_STAGED" == 1 ]]; then
+  collect_staged_files
+  if [[ ${#FILES[@]} -eq 0 ]]; then
+    echo "No staged Swift files."
+    finish 0
+  fi
+  printf '  %s\n' "${FILES[@]}"
+  FILE_LABEL="${#FILES[@]}"
+  prepare_stage_root
+  cd "$STAGE_ROOT"
 else
   collect_changed_files
   if [[ ${#FILES[@]} -eq 0 ]]; then

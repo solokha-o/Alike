@@ -34,7 +34,15 @@ tools/lint --all    # whole project, report only
 ```
 
 `tools/lint` exits 0 in report mode. `ALIKE_LINT_STRICT=1 tools/lint` exits 1
-on findings. Details: [Docs/ci-cd.md](Docs/ci-cd.md#lint-report-mode).
+on findings. `tools/quick` and `tools/full` run the strict lint on the changed
+Swift files. Details: [Docs/ci-cd.md](Docs/ci-cd.md#lint).
+
+Install the pre-commit hook once in each clone. It stops a commit with lint
+findings in the staged Swift files:
+
+```sh
+tools/install-hooks
+```
 
 Format-only commits are listed in `.git-blame-ignore-revs`. Run this command
 once, so that `git blame` skips them:

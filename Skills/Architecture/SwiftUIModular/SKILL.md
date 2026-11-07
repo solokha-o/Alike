@@ -135,3 +135,8 @@ Do not create a new package when:
 | `///` and `//` comments, markers. Comments are in English; translate a non-English comment in a file that you change. | `references/code-documentation.md` |
 | README of a new package (category from ADR-0004) | `references/package-readme-template.md` |
 | Schemes, build configurations, `#if DEBUG`, feature flags | `references/xcode-schemes-configurations.md` |
+
+`tools/quick` and `tools/full` run `ALIKE_LINT_STRICT=1 tools/lint` on the
+changed Swift files before the package tests. Install the pre-commit hook once
+with `tools/install-hooks`. If a commit stops, run `tools/lint --fix`, then
+`git add` the files.
