@@ -16,3 +16,6 @@ ee0451e7e5eccaab610396100be1f695f8e5a372
 
 # LATER rule 1 (ADR-0001): noForceTryInTests, format only.
 c92ba716970998a8c9446976f8a9e6128ecd8e02
+
+# LATER rule 2 (ADR-0001): acronyms, format only.
+86d4786ee502dfec7ca4efced2e2f3042a009209
