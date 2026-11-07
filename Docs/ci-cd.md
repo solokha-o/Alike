@@ -222,9 +222,12 @@ SwiftLint findings, and only changed or staged files are linted.
 - `tools/lint --staged` writes the staged files from the index to a temporary tree
   under `build/lint-staged/`, with the staged lint configs and baseline, and lints
   that tree. A partly staged file is linted as it will be committed.
-- `tools/install-hooks` makes `<git common dir>/hooks/pre-commit` a symbolic link to
-  `tools/hooks/pre-commit`. All linked worktrees share it. `--force` replaces a
-  different hook, `--uninstall` removes it. It never sets `core.hooksPath`: with a
+- `tools/install-hooks` writes a small shim script to `<git common dir>/hooks/pre-commit`.
+  All linked worktrees share it. In each commit, the shim runs `tools/hooks/pre-commit`
+  of the worktree that commits, so a removed worktree does not turn the hook off.
+  A branch without that file commits with a one-line note. A second run is safe and
+  upgrades an old Alike hook, also a broken symbolic link. `--force` replaces a
+  different hook, `--uninstall` removes the Alike hook. It never sets `core.hooksPath`: with a
   global `core.hooksPath` (the git-workflow dispatch), the dispatch runs its checks
   and then runs this hook. A local `core.hooksPath` turns the hook off.
 
