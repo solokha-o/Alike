@@ -13,6 +13,23 @@ Thank you for helping improve Alike.
 
 Alike uses `main` for production and `develop` for integration. Release and hotfix branches follow the conventions in `Skills/GitFlow/ios-git-flow`.
 
+## Code style
+
+Alike uses its own standard, "Alike Swift Style". The decisions are in
+[`Docs/adr/`](Docs/adr/README.md):
+
+- [ADR-0001](Docs/adr/0001-alike-swift-style.md): SwiftFormat rules and the 15 written rules.
+- [ADR-0002](Docs/adr/0002-selective-swiftlint.md): SwiftLint for safety and size only.
+- [ADR-0003](Docs/adr/0003-format-change-process.md): how to change the format.
+- [ADR-0004](Docs/adr/0004-package-dependencies.md): package categories and permitted dependencies.
+
+Format-only commits are listed in `.git-blame-ignore-revs`. Run this command
+once, so that `git blame` skips them:
+
+```sh
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ## Commit messages
 
 Start with an emoji and use a precise scope:
