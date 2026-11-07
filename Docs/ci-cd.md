@@ -133,12 +133,21 @@ Use after narrow code, docs, or script changes.
 Runs:
 
 - whitespace validation
-- `swift test` for:
+- a check that no test imports XCTest
+- `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
+  - `Packages/CleanupWorkspace`
   - `Packages/Scanner`
   - `Packages/Settings`
+  - `Packages/Storage`
   - `Packages/UserGuide`
+  - `Packages/WidgetSupport`
 - App Store upload bundle validation
+
+`tools/local_ci.sh` routes each package. A package that reaches DesignSystem (Lottie),
+or a package in `SWIFTPM_UNSUPPORTED_PACKAGES` (Storage, WidgetSupport, Diagnostics,
+CleanupWorkspace), uses `xcodebuild`. Only `BestShotCalibration`, `Core`,
+`NavigationKit`, and `PhotoAnalysis` use `swift test`.
 
 Does not:
 

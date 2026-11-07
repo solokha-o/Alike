@@ -68,7 +68,7 @@ place without restaging.
 | VoiceOver reads figure, unit, action, date | **Test** `everyStateSpeaks`, `rectangularLabel` pin the strings; the spoken order: **device** |
 | Extension memory, all widgets placed | **Device** |
 | Scan cost after stage 3 | **Device**, on a real large library |
-| Ring after scan / cold launch / delete local data | `Packages/Cleanup/.../CleanupWorkspaceLibraryTotalBytesTests` covers the workspace's half; the last link is **device** |
+| Ring after scan / cold launch / delete local data | `Packages/CleanupWorkspace/Tests/CleanupWorkspaceTests/CleanupWorkspaceLibraryTotalBytesTests.swift` covers the workspace's half; the last link is **device** |
 | Upgrade from 1.4.1 with data kept | **Device**, step 1 of §5 — and it is destroyed by the first clean reinstall |
 | `tools/full`, release-compatibility gate | §7 |
 
