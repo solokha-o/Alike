@@ -43,3 +43,6 @@ b4f2a262309443c7e7df79415d9d22ae5d458aed
 
 # LATER rule 11 (ADR-0001): docComments, format only.
 5c124e9e890e7436bd16ef3b0943193d0fdfc9c7
+
+# LATER rule 12 (ADR-0001): wrapMultilineConditionalAssignment, format only.
+3e095b4d09d0a7265d2b0ef161257a7344838705
