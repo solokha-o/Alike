@@ -16,73 +16,38 @@ Use this skill when the user wants a modular SwiftUI iOS architecture with Swift
 - Prefer clear dependency boundaries so features can be developed, tested, and replaced independently.
 - Treat "different responsibility" as the main signal for a new package, not file size alone.
 
-## Project layout (recommended)
+## Alike packages and categories
 
-- Main app target: app entry point + wiring
-- `Packages/` (feature modules), examples:
-  - `Status`
-  - `Timeline`
-  - `Explore`
-  - `Conversations`
-  - `Account`
-  - `Notifications`
-- `Packages/` (shared/core), examples:
-  - `Core` (models, utilities)
-  - `Networking`
-  - `Storage`
-  - `DesignSystem`
+The source of truth is `Docs/adr/0004-package-dependencies.md` (ADR-0004) and
+`tools/package-categories`. Summary:
 
-## Example module structure (with protocols)
+| Category | Members |
+|---|---|
+| App | `Alike` (composition root, with `AlikeTests`), `AlikeWidgets` |
+| Feature | `Cleanup`, `Details`, `Launch`, `Scanner`, `Settings`, `Welcome` |
+| Foundation | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `WidgetSupport` |
+| Foundation with UI | `Diagnostics`, `UserGuide`, `PurchasesUI` (product of `Purchases`) |
+| Utility | none today (helper libraries any package can use) |
+| Tool | `BestShotCalibration` (macOS calibration tool, not shipped; nothing depends on it) |
 
-Example layout for a `Places` feature:
+Permitted edges (row depends on column):
 
-```
-Packages/
-  Core/
-    Sources/Core/
-      Models/Place.swift
-      Protocols/PlaceRepository.swift
-  Networking/
-    Sources/Networking/
-      HTTPClient.swift
-  Storage/
-    Sources/Storage/
-      PlaceCache.swift
-      SQLiteStore.swift
-  Places/
-    Sources/Places/
-      PlacesView.swift
-      PlacesViewModel.swift
-      PlacesService.swift
-      PlacesRepositoryImpl.swift
-      PlaceRow.swift
-```
+| From \ To | Feature | Foundation | SDK | Utility | Tool |
+|---|---|---|---|---|---|
+| App | ✓ | ✓ | ✓ | ✓ | ✗ |
+| Feature | ✗ | ✓ | ✗ | ✓ | ✗ |
+| Foundation | ✗ | ✓ | Named in ADR-0004 only | ✓ | ✗ |
+| Utility | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Tool | ✗ | ✓ | ✗ | ✓ | ✗ |
 
-Protocol examples (simplified):
+- No package depends on an App target.
+- The only SDK is `lottie-spm`, and only `DesignSystem` uses it.
+- A Tool (`BestShotCalibration`) can depend on Foundation; nothing depends on a Tool.
+- The graph is a DAG. Levels are computed by `tools/check-package-graph` (stage 5), not written.
+- A new edge, a new SDK, a new package, or a category change needs a new ADR.
 
-```swift
-// Core/Protocols/PlaceRepository.swift
-public protocol PlaceRepository {
-    func list() async throws -> [Place]
-    func refresh() async throws -> [Place]
-}
-
-// Storage/PlaceCache.swift
-public protocol PlaceCache {
-    func load() async throws -> [Place]
-    func save(_ places: [Place]) async throws
-    func invalidate() async
-}
-```
-
-Composition root (app target or AppWiring package):
-
-```swift
-let http = HTTPClient()
-let cache = SQLitePlaceCache()
-let repo = PlacesRepositoryImpl(http: http, cache: cache)
-let viewModel = PlacesViewModel(repository: repo)
-```
+Composition root: the `Alike` app target creates the concrete services and
+passes them to the view models of the Feature packages.
 
 ## View model pattern (team convention)
 
@@ -94,7 +59,7 @@ let viewModel = PlacesViewModel(repository: repo)
 ## Data layer & dependencies
 
 - Use a `Repository` or `Client` protocol per domain to isolate data access.
-- Keep networking in a shared `Networking` package; prefer `URLSession` + `async/await`.
+- Alike has no networking package. Persistence lives in `Storage`; photo analysis lives in `PhotoAnalysis`.
 - Cache policies (memory/disk) live behind repositories; keep UI unaware of cache details.
 - Use DTOs at the network boundary and map to domain models in the data layer.
 - Prefer immutable domain models; store mutability in caches/repositories.
@@ -111,7 +76,7 @@ let viewModel = PlacesViewModel(repository: repo)
 
 ## Dependency injection
 
-- Depend on protocols in features; provide concrete implementations in a `CompositionRoot` (app target or a dedicated `AppWiring` package).
+- Depend on protocols in features; provide concrete implementations in the `Alike` app target (the composition root).
 - Use constructor injection for view models and services; avoid global singletons.
 - Provide test doubles in each package’s test target.
 
@@ -132,10 +97,11 @@ Do not create a new package when:
 
 ## How to add a new feature
 
-1) Create a new Swift Package under `Packages/<Feature>`.
-2) Add feature views + view models + service protocols.
-3) Wire it in the app target (routing/navigation).
-4) Add tests inside the package.
+1) Write an ADR for the new package and its edges (ADR-0004), and add it to `tools/package-categories`.
+2) Create a new Swift Package under `Packages/<Feature>`.
+3) Add feature views + view models + service protocols.
+4) Wire it in the app target (routing/navigation).
+5) Add tests inside the package.
 
 ## Guardrails
 
@@ -151,8 +117,9 @@ Do not create a new package when:
 
 ## Dependency rules
 
-- `Feature` → `Core/Networking/Storage/DesignSystem`
-- `Core` should not depend on `Feature` packages
+- Follow the matrix above and ADR-0004.
+- A screen that more than one feature shows goes into a Foundation package
+  (example: `UserGuide`, `Diagnostics`), never into a Feature package.
 
 ## Navigation
 
@@ -182,13 +149,10 @@ Do not create a new package when:
 
 ### Style guide
 
-Follow Google Swift Style Guide conventions for formatting, naming, and code organization. See `references/swift-code-style.md` for:
-- File organization and imports
-- Formatting rules (100 char limit, braces, whitespace)
-- Line wrapping strategies
-- Naming conventions (types, properties, functions)
-- Programming practices (optionals, guards, error handling)
-- Code organization with `// MARK:`
+Follow Alike Swift Style. See `references/swift-code-style.md` for:
+- What SwiftFormat and SwiftLint enforce (ADR-0001, ADR-0002)
+- How to change a format rule (ADR-0003)
+- The 15 written rules that reviewers check
 
 ### Documentation
 

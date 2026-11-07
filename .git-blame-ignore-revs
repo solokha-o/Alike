@@ -1,0 +1,12 @@
+# Commits that `git blame` skips.
+#
+# Each entry is the full hash of a format-only commit: a SwiftFormat or
+# SwiftLint configuration change and the reformatted code, with no behaviour
+# change. Add an entry in a separate commit after the format commit, with a
+# comment that names the rule. The process is in
+# Docs/adr/0003-format-change-process.md.
+#
+# Enable it locally once:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# GitHub reads this file automatically.
