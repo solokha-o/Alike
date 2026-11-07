@@ -31,7 +31,7 @@ The UI terms are the English values in the package string catalogs
 | Calibration | `BestShotCalibration*`, package `BestShotCalibration` | no UI term (debug tool only) | Offline measurement of the Best Shot ranker on a labelled corpus. |
 | Reclaimable estimate | `ReclaimableEstimate`, `ReclaimableEstimateCalculator` | "Estimated Savings", "Available to clean up" | The estimated storage that the user gets back after cleanup. |
 | Free scan limit | `PremiumAccessPolicy.monthlyFreeScanLimit`, `MonthlyScanUsage`, `ScanUsageRepository` | "free scans remaining", "Monthly free-scan allowance" | The number of free scans each month (3). Premium removes the limit. |
-| Premium | `PremiumAccessController`, `PremiumFeature`, `PremiumEntitlementState` | "Alike Pro", "Pro", sometimes "premium" | The subscription that unlocks unlimited scans, smart categories, batch cleanup, and a custom reminder. |
+| Premium | `PremiumAccessController`, `PremiumFeature`, `PremiumEntitlementState` | "Alike Pro", "Pro", sometimes "premium" | The subscription that unlocks unlimited scans, bulk cleanup of a smart category, batch cleanup, advanced filters, and a custom reminder. |
 | Paywall | `SubscriptionPaywallView`, `PaywallPresentationState` | "Unlock …" titles, "premium paywall" (VoiceOver) | The screen that offers the subscription. |
 | Cleanup reminder | `CleanupReminderManager`, `CleanupReminderSchedule` | "Weekly cleanup reminder", "Cleanup Reminder" | A weekly local notification that asks the user to continue cleanup. |
 | Library change | `PhotoKitChangeDetector`, `PhotoLibraryChangeSummary` | "Library changed", "Scan New Photos" | Photos were added or removed after the last scan, so the results can be old. |

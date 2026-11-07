@@ -4,7 +4,7 @@ An offline tool that measures the Best Shot ranker against a labelled corpus.
 It loads a corpus that the Settings labelling tool exports, sweeps the scoring weights, and writes metric reports.
 The `bestshot-calibrate` executable runs it on the Mac. The app does not link this package.
 
-- **Category:** Utility/tool (see `Docs/adr/0004-package-dependencies.md`)
+- **Category:** Tool (see `Docs/adr/0004-package-dependencies.md`)
 - **Responsibility:** Measure Best Shot accuracy and personal-weight results on exported corpora.
 - **Main public types:** `CorpusLoader`, `WeightSweep`, `MetricsReport`, `PersonalizationReport`, `ReportWriter`
 - **Depends on:** Core

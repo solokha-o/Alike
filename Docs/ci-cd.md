@@ -162,18 +162,18 @@ Use before PR handoff or after broader app changes.
 Runs:
 
 - whitespace validation
-- `swift test` for every package under `Packages/` that has tests
-- `swift build` for packages without tests
+- a check that no test imports XCTest
+- the tests of every package under `Packages/`, on the routes that `tools/quick`
+  uses: `xcodebuild test` for the DesignSystem closure and for
+  `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
+- `xcodebuild build` or `swift build` for a package without tests
 - App Store upload bundle validation
 - the full app compile gate with `xcodebuild -scheme Alike`
 - the `AlikeTests` target of the app, with parallel testing off
 
-`Packages/Storage` is explicitly skipped. SwiftPM does not compile the package's
-`.xcdatamodeld`, so `PersistenceController` traps with "Failed to load Core Data
-model" before any test runs. Its code is still compiled by the app compile gate,
-and its tests run normally in Xcode. The skip is recorded in the run report, and
-the exclusion list lives in `SWIFTPM_UNSUPPORTED_PACKAGES` in
-`tools/local_ci.sh`.
+`Packages/Storage` is in `SWIFTPM_UNSUPPORTED_PACKAGES`: SwiftPM does not compile
+its `.xcdatamodeld`, so its tests run through `xcodebuild test` on an iOS
+Simulator, not through `swift test`.
 
 Does not:
 

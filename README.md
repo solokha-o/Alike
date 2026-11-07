@@ -211,10 +211,8 @@ xcodebuild -workspace Packages/Cleanup -scheme Cleanup \
 Only BestShotCalibration, Core, NavigationKit, and PhotoAnalysis run with
 `swift test --package-path Packages/<Name>`. `tools/local_ci.sh` picks the route.
 
-`tools/full` runs every package that has tests, the app compile gate, and `AlikeTests`.
-`Packages/Storage` is the one exception — SwiftPM does not compile its
-`.xcdatamodeld`, so its suite runs in Xcode and its code is covered by the compile
-gate instead. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
+`tools/full` runs the tests of every package on the same routes, the app compile
+gate, and `AlikeTests`. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
 
 SwiftUI `#Preview` blocks accompany the screens in each feature package; use one of
 the verbose Debug schemes for previews and the debug menu.
