@@ -12,7 +12,7 @@ import Photos
         #expect(cluster.thumbnail == nil)
     }
 
-    @Test func testEqualityUsesId() {
+    @Test func testEqualityUsesID() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
@@ -22,7 +22,7 @@ import Photos
         #expect(clusterA != clusterC)
     }
 
-    @Test func testHashableUsesId() {
+    @Test func testHashableUsesID() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
