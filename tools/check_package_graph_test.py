@@ -67,6 +67,7 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(notes, [])
         # The precondition: the App edges were read from the project file.
         self.assertIn("Alike", levels)
+        self.assertIn("AlikeTests", levels)
         self.assertEqual(levels["Core"], 0)
         self.assertGreater(levels["Alike"], levels["Scanner"])
 
@@ -146,38 +147,206 @@ class FixtureTests(unittest.TestCase):
         self.assert_one_error(f"Details -> {LOTTIE}")
 
 
-class AppProductTests(unittest.TestCase):
-    PROJECT = (
-        "/* Begin PBXNativeTarget section */\n"
-        "\t\tA1 /* Alike */ = {\n"
-        "\t\t\tisa = PBXNativeTarget;\n"
-        "\t\t\tpackageProductDependencies = (\n"
-        "\t\t\t\tB1 /* Core */,\n"
-        "\t\t\t\tB2 /* Cleanup */,\n"
-        "\t\t\t);\n"
-        "\t\t\tproductName = Alike;\n"
-        "\t\t};\n"
-        "/* End PBXNativeTarget section */\n"
-        "\t\tB1 /* Core */ = {\n"
-        "\t\t\tisa = XCSwiftPackageProductDependency;\n"
-        "\t\t\tproductName = Core;\n"
-        "\t\t};\n"
-        "\t\tB2 /* Cleanup */ = {\n"
-        "\t\t\tisa = XCSwiftPackageProductDependency;\n"
-        "\t\t\tproductName = Cleanup;\n"
-        "\t\t};\n"
-    )
+def project(targets):
+    """Return a project.pbxproj text with {target: [product]} native targets."""
+    identifiers = {}
+    lines = ["/* Begin PBXNativeTarget section */"]
+    for index, (target, products) in enumerate(targets.items()):
+        lines += [f"\t\tT{index} /* {target} */ = {{", "\t\t\tisa = PBXNativeTarget;", "\t\t\tpackageProductDependencies = ("]
+        for product in products:
+            identifiers.setdefault(product, f"P{len(identifiers)}")
+            lines.append(f"\t\t\t\t{identifiers[product]} /* {product} */,")
+        lines += ["\t\t\t);", f"\t\t\tproductName = {target};", "\t\t};"]
+    lines.append("/* End PBXNativeTarget section */")
+    for product, identifier in identifiers.items():
+        lines += [
+            f"\t\t{identifier} /* {product} */ = {{",
+            "\t\t\tisa = XCSwiftPackageProductDependency;",
+            f"\t\t\tproductName = {product};",
+            "\t\t};",
+        ]
+    return "\n".join(lines) + "\n"
 
-    def test_app_edges_come_from_the_project_file(self) -> None:
+
+# The forbidden cells of the ADR-0004 matrix between package categories, written
+# out here and not read from check.MATRIX, so that a wrong MATRIX fails a test.
+FORBIDDEN = [
+    ("Feature", "Feature"),
+    ("Feature", "Tool"),
+    ("Foundation", "Feature"),
+    ("Foundation", "Tool"),
+    ("Utility", "Feature"),
+    ("Utility", "Foundation"),
+    ("Utility", "Tool"),
+    ("Tool", "Feature"),
+    ("Tool", "Tool"),
+]
+PERMITTED = [
+    ("Feature", "Foundation"),
+    ("Feature", "Utility"),
+    ("Foundation", "Foundation"),
+    ("Foundation", "Utility"),
+    ("Utility", "Utility"),
+    ("Tool", "Foundation"),
+    ("Tool", "Utility"),
+]
+
+
+class MatrixTests(unittest.TestCase):
+    def run_edge(self, source_category, target_category):
         with tempfile.TemporaryDirectory() as directory:
             fixture = Fixture(directory)
-            fixture.categories["Alike"] = "App"
-            project = fixture.root / check.PBXPROJ_FILE
-            project.parent.mkdir(parents=True)
-            project.write_text(self.PROJECT, encoding="utf-8")
-            errors, levels, notes = fixture.run()
+            fixture.categories.update({"Source": source_category, "Target": target_category})
+            fixture.package("Target")
+            fixture.package("Source", local=["Target"])
+            errors, _, _ = fixture.run()
+        return errors
+
+    def test_each_forbidden_cell_fails(self) -> None:
+        for source_category, target_category in FORBIDDEN:
+            with self.subTest(source=source_category, target=target_category):
+                errors = self.run_edge(source_category, target_category)
+                expected = f"Source ({source_category}) -> Target ({target_category})"
+                self.assertEqual(len(errors), 1, errors)
+                self.assertIn(expected, errors[0])
+
+    def test_each_permitted_cell_passes(self) -> None:
+        for source_category, target_category in PERMITTED:
+            with self.subTest(source=source_category, target=target_category):
+                self.assertEqual(self.run_edge(source_category, target_category), [])
+
+
+class AppProductTests(unittest.TestCase):
+    def setUp(self) -> None:
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.fixture = Fixture(directory.name)
+        self.fixture.categories["Alike"] = "App"
+
+    def run_project(self, targets):
+        path = self.fixture.root / check.PBXPROJ_FILE
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(project(targets), encoding="utf-8")
+        return self.fixture.run()
+
+    def test_app_edges_come_from_the_project_file(self) -> None:
+        errors, levels, notes = self.run_project({"Alike": ["Core", "Cleanup"]})
         self.assertEqual((errors, notes), ([], []))
         self.assertEqual(levels["Alike"], 3)
+
+    def test_app_to_tool_fails(self) -> None:
+        self.fixture.categories["Calibration"] = "Tool"
+        self.fixture.package("Calibration", local=["Core"])
+        errors, _, _ = self.run_project({"Alike": ["Core", "Calibration"]})
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("Alike (App) -> Calibration (Tool)", errors[0])
+
+    def test_target_with_products_and_no_category_fails(self) -> None:
+        errors, _, _ = self.run_project({"Alike": ["Core"], "AlikeShare": ["Core"]})
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("target AlikeShare links package products and has no line", errors[0])
+
+    def test_target_without_products_needs_no_category(self) -> None:
+        errors, _, _ = self.run_project({"Alike": ["Core"], "AlikeUITests": []})
+        self.assertEqual(errors, [])
+
+    def test_second_app_target_is_checked_too(self) -> None:
+        self.fixture.categories["AlikeTests"] = "App"
+        self.fixture.categories["Calibration"] = "Tool"
+        self.fixture.package("Calibration", local=["Core"])
+        errors, _, _ = self.run_project({"Alike": ["Core"], "AlikeTests": ["Calibration"]})
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("AlikeTests (App) -> Calibration (Tool)", errors[0])
+
+    def test_app_category_without_target_fails(self) -> None:
+        self.fixture.categories["AlikeWidgets"] = "App"
+        errors, _, _ = self.run_project({"Alike": ["Core"]})
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("App AlikeWidgets is not a target", errors[0])
+
+    def test_unknown_product_fails(self) -> None:
+        errors, _, _ = self.run_project({"Alike": ["Core", "Missing"]})
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("Alike uses product Missing, which no local package declares", errors[0])
+
+
+class ParsingTests(unittest.TestCase):
+    def setUp(self) -> None:
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.fixture = Fixture(directory.name)
+
+    def write(self, relative, text) -> None:
+        path = self.fixture.root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+    def errors(self):
+        errors, _, _ = self.fixture.run()
+        return errors
+
+    def test_commented_edge_in_package_swift_is_ignored(self) -> None:
+        manifest_path = self.fixture.root / "Packages/Details/Package.swift"
+        text = manifest_path.read_text(encoding="utf-8").replace(
+            '.package(path: "../Core")',
+            '.package(path: "../Core"), // .package(path: "../Cleanup"),\n/* .package(path: "../Cleanup") */',
+        )
+        manifest_path.write_text(text, encoding="utf-8")
+        self.assertEqual(self.errors(), [])
+
+    def test_unsupported_dependency_forms_fail(self) -> None:
+        for form in ('.package(path: "../../Packages/Cleanup")', '.package(id: "airbnb.lottie", from: "4.6.1")'):
+            with self.subTest(form=form):
+                self.fixture.package("Details", local=["Core"])
+                manifest_path = self.fixture.root / "Packages/Details/Package.swift"
+                text = manifest_path.read_text(encoding="utf-8").replace(
+                    '.package(path: "../Core")', f'.package(path: "../Core"), {form}'
+                )
+                manifest_path.write_text(text, encoding="utf-8")
+                errors = self.errors()
+                self.assertEqual(len(errors), 1, errors)
+                self.assertIn(f"Packages/Details/Package.swift: cannot check `{form}", errors[0])
+
+    def test_undeclared_import_in_tests_folder_fails(self) -> None:
+        self.write("Packages/Details/Tests/DetailsTests/ATests.swift", "@testable import Cleanup\n")
+        errors = self.errors()
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("Packages/Details/Tests/DetailsTests/ATests.swift:1: imports Cleanup", errors[0])
+
+    def test_test_target_name_is_not_a_local_module(self) -> None:
+        # DetailsTests is the test target of Details, not a module that Cleanup can import.
+        self.write("Packages/Cleanup/Tests/CleanupTests/ATests.swift", "import DetailsTests\n")
+        self.assertEqual(self.errors(), [])
+
+    def test_build_folder_is_skipped(self) -> None:
+        self.write("Packages/Details/Tests/.build/checkouts/x/Sources/X.swift", "import Cleanup\n")
+        self.assertEqual(self.errors(), [])
+
+    def test_duplicate_category_line_fails(self) -> None:
+        tools = self.fixture.root / "tools"
+        self.fixture.run()
+        text = (tools / "package-categories").read_text(encoding="utf-8") + "Core Feature\n"
+        (tools / "package-categories").write_text(text, encoding="utf-8")
+        errors, _, _ = check.check(self.fixture.root)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("Core has a second category line", errors[0])
+
+    def test_duplicate_allowlist_line_fails(self) -> None:
+        self.fixture.allowlist.append(f"sdk DesignSystem {LOTTIE}  # again.")
+        errors = self.errors()
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("duplicate of line 1", errors[0])
+
+    def test_import_debt_line_covers_only_its_file(self) -> None:
+        self.fixture.package("Details", local=["Core"], source="@_exported import Cleanup\n")
+        self.fixture.allowlist.append(
+            "import Packages/Details/Sources/Details/Details.swift Cleanup  # debt card."
+        )
+        self.assertEqual(self.errors(), [])
+        self.write("Packages/Details/Sources/Details/New.swift", "import Cleanup\n")
+        errors = self.errors()
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("Packages/Details/Sources/Details/New.swift:1: imports Cleanup", errors[0])
 
 
 if __name__ == "__main__":
