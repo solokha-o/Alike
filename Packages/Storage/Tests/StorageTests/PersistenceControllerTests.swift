@@ -11,7 +11,7 @@ import CoreData
     
     // MARK: - In-Memory Store Tests
     
-    @Test func testInMemoryStoreInitialization() async throws {
+    @Test func testInMemoryStoreInitialization() throws {
         // Given & When: Creating in-memory persistence controller
         let controller = PersistenceController.preview()
         
@@ -19,7 +19,7 @@ import CoreData
         #expect(controller.viewContext.persistentStoreCoordinator != nil, "In-memory controller should be initialized")
     }
     
-    @Test func testInMemoryStoreIsolation() async throws {
+    @Test func testInMemoryStoreIsolation() throws {
         // Given: Two separate in-memory controllers
         let controller1 = PersistenceController.preview()
         let controller2 = PersistenceController.preview()
@@ -40,7 +40,7 @@ import CoreData
         #expect(results.isEmpty, "In-memory stores should be isolated")
     }
     
-    @Test func testInMemoryDataPersistence() async throws {
+    @Test func testInMemoryDataPersistence() throws {
         // Given: In-memory controller with data
         let controller = PersistenceController.preview()
         let context = controller.viewContext
@@ -127,7 +127,7 @@ import CoreData
     
     // MARK: - View Context Tests
     
-    @Test func testViewContextAutomaticallySaves() async throws {
+    @Test func testViewContextAutomaticallySaves() throws {
         // Given: Controller
         let controller = PersistenceController.preview()
         let context = controller.viewContext
