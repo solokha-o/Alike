@@ -163,7 +163,7 @@ func runSweep(_ args: [String]) {
     let result = WeightSweep.run(corpus: corpus, baseline: .current, blurPenalty: options.blurPenalty)
     var report = ReportWriter.render(sweep: result)
     if !loadResult.warnings.isEmpty {
-        let warningBlock = loadResult.warnings.map { "> \($0.replacingOccurrences(of: "\n", with: " "))" }
+        let warningBlock = loadResult.warnings.map { "> \($0.replacing("\n", with: " "))" }
             .joined(separator: "\n")
         report = "## Warnings\n\n\(warningBlock)\n\n" + report
     }
@@ -216,7 +216,7 @@ func runPersonalize(_ args: [String]) {
         corpusClusterCount: corpus.entries.count
     )
     if !loadResult.warnings.isEmpty {
-        let warningBlock = loadResult.warnings.map { "> \($0.replacingOccurrences(of: "\n", with: " "))" }
+        let warningBlock = loadResult.warnings.map { "> \($0.replacing("\n", with: " "))" }
             .joined(separator: "\n")
         report = "## Warnings\n\n\(warningBlock)\n\n" + report
     }

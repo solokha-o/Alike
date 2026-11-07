@@ -40,8 +40,8 @@ struct InfoPlistCatalog {
                     guard let key = Range(match.range(at: 1), in: configuration),
                           let value = Range(match.range(at: 2), in: configuration) else { continue }
                     settings[String(configuration[key])] = String(configuration[value])
-                        .replacingOccurrences(of: #"\""#, with: #"""#)
-                        .replacingOccurrences(of: #"\\"#, with: #"\"#)
+                        .replacing(#"\""#, with: #"""#)
+                        .replacing(#"\\"#, with: #"\"#)
                 }
                 return settings
             }
