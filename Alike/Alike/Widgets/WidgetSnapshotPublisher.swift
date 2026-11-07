@@ -176,7 +176,8 @@ extension WidgetPhotoAuthorization {
     /// needs different wording from a full one, and a denied library needs a different
     /// call to action from one that was never asked.
     init(_ status: PHAuthorizationStatus) {
-        self = switch status {
+        self =
+ switch status {
         case .authorized: .authorized
         case .limited: .limited
         case .denied: .denied

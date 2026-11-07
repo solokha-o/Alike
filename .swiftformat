@@ -118,3 +118,4 @@
 --rules opaqueGenericParameters
 --rules preferCountWhere
 --rules docComments
+--rules wrapMultilineConditionalAssignment
