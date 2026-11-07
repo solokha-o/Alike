@@ -1,0 +1,35 @@
+# Package categories for the Alike dependency rules.
+#
+# Decision record: Docs/adr/0004-package-dependencies.md
+# Stage 5 of the clean-code epic adds tools/check-package-graph. It reads this
+# file and checks each edge against the matrix in ADR-0004.
+#
+# Format: one line `<Package> <Category>`. Lines that start with `#` are comments.
+# Categories: App, Feature, Foundation, Utility.
+# "Foundation with UI" (CleanupWorkspace, UserGuide, Diagnostics, and the
+# PurchasesUI product of Purchases) uses the Foundation rules, so it is
+# written as Foundation here.
+# A change to this file needs a new ADR (see ADR-0004).
+
+Alike App
+AlikeWidgets App
+
+Cleanup Feature
+Details Feature
+Launch Feature
+Scanner Feature
+Settings Feature
+Welcome Feature
+
+CleanupWorkspace Foundation
+Core Foundation
+DesignSystem Foundation
+Diagnostics Foundation
+NavigationKit Foundation
+PhotoAnalysis Foundation
+Purchases Foundation
+Storage Foundation
+UserGuide Foundation
+WidgetSupport Foundation
+
+BestShotCalibration Utility
