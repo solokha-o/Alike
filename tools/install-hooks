@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# Installs the Alike Git hooks as symbolic links in the repository hooks directory.
+# Compatible with the macOS system bash 3.2.
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  tools/install-hooks              Install the pre-commit hook.
+  tools/install-hooks --force      Replace a different existing pre-commit hook.
+  tools/install-hooks --uninstall  Remove the pre-commit hook if this script installed it.
+
+The hook is a symbolic link: <git common dir>/hooks/pre-commit -> tools/hooks/pre-commit.
+All linked worktrees of the repository share it.
+
+This script never sets core.hooksPath. If a global core.hooksPath is set (for example
+the git-workflow dispatch), that dispatch runs its checks and then runs this hook.
+USAGE
+}
+
+FORCE=0
+UNINSTALL=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1 ;;
+    --uninstall) UNINSTALL=1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) usage >&2; exit 64 ;;
+  esac
+  shift
+done
+
+TOP_DIR="$(git rev-parse --show-toplevel)"
+# Not `git rev-parse --git-path hooks`: that path follows core.hooksPath, and a
+# global core.hooksPath would put the link in the shared global hooks directory.
+HOOKS_DIR="$(git rev-parse --path-format=absolute --git-common-dir)/hooks"
+TARGET="$TOP_DIR/tools/hooks/pre-commit"
+LINK="$HOOKS_DIR/pre-commit"
+
+points_to_alike_hook() {
+  [[ -L "$LINK" ]] || return 1
+  case "$(readlink "$LINK")" in
+    */tools/hooks/pre-commit) return 0 ;;
+  esac
+  return 1
+}
+
+if [[ "$UNINSTALL" == 1 ]]; then
+  if points_to_alike_hook; then
+    rm "$LINK"
+    echo "Removed $LINK."
+  elif [[ -e "$LINK" || -L "$LINK" ]]; then
+    echo "error: $LINK is not the Alike hook. Nothing was removed." >&2
+    exit 1
+  else
+    echo "No pre-commit hook is installed."
+  fi
+  exit 0
+fi
+
+if [[ ! -x "$TARGET" ]]; then
+  echo "error: $TARGET does not exist or is not executable." >&2
+  exit 1
+fi
+
+if [[ -L "$LINK" && "$(readlink "$LINK")" == "$TARGET" ]]; then
+  echo "The pre-commit hook is already installed: $LINK -> $TARGET"
+elif [[ -e "$LINK" || -L "$LINK" ]] && [[ "$FORCE" != 1 ]]; then
+  echo "error: $LINK already exists and is a different hook. Nothing was changed." >&2
+  echo "  Run tools/install-hooks --force to replace it." >&2
+  exit 1
+else
+  mkdir -p "$HOOKS_DIR"
+  ln -sfn "$TARGET" "$LINK"
+  echo "Installed the pre-commit hook: $LINK -> $TARGET"
+fi
+
+GLOBAL_HOOKS_PATH="$(git config --global --get core.hooksPath || true)"
+LOCAL_HOOKS_PATH="$(git config --local --get core.hooksPath || true)"
+if [[ -n "$LOCAL_HOOKS_PATH" ]]; then
+  echo "warning: this repository sets core.hooksPath=$LOCAL_HOOKS_PATH. Git does not run $LINK."
+elif [[ -n "$GLOBAL_HOOKS_PATH" ]]; then
+  echo "A global core.hooksPath is set ($GLOBAL_HOOKS_PATH)."
+  echo "Its dispatch (git-workflow) runs its checks, then runs $LINK."
+fi
+echo "The hook lints the staged Swift files with ALIKE_LINT_STRICT=1 tools/lint --staged."
