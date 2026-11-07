@@ -1,0 +1,5 @@
+# Test target: force_unwrapping and force_try do not apply (ADR-0002 "Test targets").
+# SwiftFormat LATER rules noForceUnwrapInTests and noForceTryInTests remove them.
+disabled_rules:
+  - force_unwrapping
+  - force_try

@@ -1,0 +1,104 @@
+# SwiftLint configuration for Alike: safety and size only, never style.
+# Spec: Docs/adr/0002-selective-swiftlint.md.
+# Change process: Docs/adr/0003-format-change-process.md.
+# Pinned version: tools/lint-versions. Run: tools/lint.
+#
+# Test targets have a nested .swiftlint.yml that disables force_unwrapping and
+# force_try. SwiftLint reads nested files only when no --config is given, so
+# run SwiftLint from the repository root without --config (tools/lint does).
+
+included:
+  - Alike
+  - Packages
+
+excluded:
+  - "**/.build"
+  - build
+  - vendor
+  - Skills
+
+only_rules:
+  # Safety
+  - force_unwrapping
+  - force_try
+  - force_cast
+  - implicitly_unwrapped_optional
+  - fatal_error_message
+  - unowned_variable_capture
+  - weak_delegate
+  - unused_optional_binding
+  - custom_rules
+  # Size
+  - file_length
+  - type_body_length
+  - function_body_length
+  - cyclomatic_complexity
+  - function_parameter_count
+
+force_unwrapping: error
+force_try: error
+force_cast: error
+implicitly_unwrapped_optional: error
+fatal_error_message: error
+unowned_variable_capture: error
+weak_delegate: warning
+unused_optional_binding: warning
+
+file_length:
+  warning: 500
+  error: 1000
+  ignore_comment_only_lines: true
+
+type_body_length:
+  warning: 300
+  error: 500
+
+function_body_length:
+  warning: 60
+  error: 100
+
+cyclomatic_complexity:
+  warning: 12
+  error: 20
+  ignores_case_statements: true
+
+function_parameter_count:
+  warning: 6
+  error: 8
+
+custom_rules:
+  # Written rule 13. A linked marker is TODO(#123) or TODO(https://…).
+  todo_without_link:
+    name: "TODO without issue link"
+    regex: '\b(?:TODO|FIXME|HACK)\b(?!\((?:#\d+|https?://[^\s)]+)\))'
+    match_kinds:
+      - comment
+      - doccomment
+    message: "Add an issue link: TODO(#123): … (ADR-0001 written rule 13)."
+    severity: warning
+
+  # Written rule 9. Sources only: test targets are excluded.
+  no_print:
+    name: "No print"
+    regex: '(?<![.\w])(?:print|debugPrint)\s*\('
+    match_kinds:
+      - identifier
+    excluded:
+      - "/Tests/"
+      - "/AlikeTests/"
+    message: "Use Logger (os), not print (ADR-0001 written rule 9)."
+    severity: error
+
+  # Written rule 10. Sources only: test targets are excluded.
+  no_unchecked_sendable:
+    name: "No unchecked Sendable"
+    regex: '@unchecked\s+Sendable'
+    excluded_match_kinds:
+      - comment
+      - doccomment
+      - string
+    excluded:
+      - "/Tests/"
+      - "/AlikeTests/"
+    message: "@unchecked Sendable needs a comment that names the lock or queue (ADR-0001 written rule 10)."
+    severity: warning
