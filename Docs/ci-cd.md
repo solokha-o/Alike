@@ -206,7 +206,8 @@ tools/lint --fix    # format the changed files with SwiftFormat, then lint them
 - `ALIKE_LINT_BASE=<ref>` changes the base branch.
 - `tools/lint-versions` pins the tool versions. On a mismatch, `tools/lint` prints the install command.
 - `--all --fix` is refused: a whole-project format is a format change ([ADR-0003](adr/0003-format-change-process.md)).
-- Run SwiftLint from the repository root without `--config`. Otherwise it skips the nested test-target `.swiftlint.yml` files, and the baseline paths (repository-relative) do not match.
+- Test files (`Packages/*/Tests/`, `Alike/AlikeTests/`) get `--config .swiftlint.yml --config .swiftlint-tests.yml`, which disables `force_unwrapping` and `force_try`. Other files get `--config .swiftlint.yml`.
+- Run SwiftLint from the repository root. The baseline stores repository-relative paths.
 - SwiftLint 0.65.1 ignores the baseline when the checkout path starts with `/private`. Keep checkouts under `/Users`.
 - Test: `python3 tools/lint_test.py`.
 

@@ -68,9 +68,12 @@ the gate.
 
 ### Test targets
 
-Test targets have a nested `.swiftlint.yml` that disables `force_unwrapping`
-and `force_try`. SwiftLint 0.65.1 has no per-rule path exclusion for built-in
-rules, and it reads nested files only when it runs without `--config`. SwiftFormat LATER rules `noForceUnwrapInTests` (#18) and
+`.swiftlint-tests.yml` at the root disables `force_unwrapping` and `force_try`.
+`tools/lint` lints files in `Packages/*/Tests/` and `Alike/AlikeTests/` with
+`--config .swiftlint.yml --config .swiftlint-tests.yml`, and all other files with
+`--config .swiftlint.yml`. SwiftLint 0.65.1 has no per-rule path exclusion for
+built-in rules. A nested `.swiftlint.yml` in a test folder is not used: Xcode
+copies it into the `AlikeTests` bundle. SwiftFormat LATER rules `noForceUnwrapInTests` (#18) and
 `noForceTryInTests` (#1) remove these patterns from tests. All other rules
 apply to tests.
 

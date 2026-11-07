@@ -53,8 +53,9 @@ values are the same.
 
 ### CORE rules (87)
 
-72 rules have no diff today. They prevent drift in new code. 15 rules change
-74 lines in total; the CORE pull request fixes these lines with the config.
+71 rules have no diff today. They prevent drift in new code. 16 rules report
+104 lines in 36 files (`swiftformat --lint` with `.swiftformat`, at `82d8ec91`);
+the CORE pull request fixes these lines with the config.
 
 `andOperator`, `anyObjectProtocol`, `applicationMain`, `assertionFailures`,
 `blankLineAfterImports`, `blankLinesBetweenChainedFunctions`,
@@ -89,6 +90,13 @@ The 15 rules with a diff today (changed lines): `singlePropertyPerLine` 1,
 `consecutiveBlankLines` 5, `redundantViewBuilder` 6, `isEmpty` 6,
 `wrapArguments` 6, `redundantNilInit` 8, `redundantType` 8,
 `redundantMemberwiseInit` 8, `redundantParens` 12.
+
+Measured with the CORE set alone (`.swiftformat`, lint lines): `wrapArguments`
+48 and `braces` 1 (`UserDefaultsScanUsageRepository.swift:27`). The stage 1
+research ran all rules together and counted these lines under `indent` and
+`wrapMultilineStatementBraces`: with `indent` off, `wrapArguments` re-indents
+wrapped arguments in 6 test files. Lint counts also differ from the diff counts
+above for `andOperator` 2, `redundantType` 2, and `redundantParens` 6.
 
 ### LATER rules (37), in order
 
