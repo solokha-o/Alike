@@ -59,9 +59,10 @@ passes them to the view models of the Feature packages.
 ## View model pattern (team convention)
 
 - One main view + one view model per screen/flow.
-- The main view owns the view model via `@StateObject` (or `@State` for `@Observable` types).
-- Pass the view model to subviews via `@ObservedObject`/`@Bindable` or plain `let`.
+- The view model is a `@MainActor @Observable final class`. The main view owns it via `@State`, made in `init`.
+- Give subviews narrow inputs (values and closures). Use `@Bindable` only when a subview needs bindings to the view model.
 - Compose the UI from small, targeted subviews.
+- View rules, the state wrapper table, and a 6-item review checklist: `references/swiftui-view-rules.md`, `references/view-review-checklist.md`.
 
 ## Data layer & dependencies
 
