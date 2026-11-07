@@ -66,7 +66,7 @@ import Core
     @Test func testShippedPayloadDecodesUnchanged() async throws {
         // Foundation's default JSONEncoder stores dates as seconds since 2001-01-01.
         let shipped = #"{"firstLaunchDate":800000000,"lastPromptedDate":801000000,"lastPromptedAppVersion":"1.6.1","promptCount":1}"#
-        defaults.set(try #require(shipped.data(using: .utf8)), forKey: key)
+        defaults.set(Data(shipped.utf8), forKey: key)
 
         let history = await makeRepository().loadHistory(now: referenceDate)
 

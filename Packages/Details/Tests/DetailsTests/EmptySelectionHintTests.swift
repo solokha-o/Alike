@@ -4,6 +4,7 @@ import Testing
 @testable import Details
 
 /// The card must not say "tap photos" while a tap cannot select anything.
+@MainActor
 @Suite struct EmptySelectionHintTests {
     @Test func testUnresolvedClusterNamesTheStepThatUnlocksSelection() {
         #expect(ClusterReviewSummaryCard.emptySelectionHint(bestShotConfidence: .unresolved) == DetailsL10n.ClusterReviewSummaryCard.touchAndHoldToChooseBestShot)
