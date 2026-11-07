@@ -20,14 +20,25 @@ reporting `TODO`, `FIXME`, `WARNING`, `HACK`, or `XXX` comments.
 ## Comment Format
 
 Write an actionable description that explains what remains and why it is
-deferred. Committed actionable debt must include a ticket reference.
+deferred. Committed actionable debt must include a card link right after the
+marker, in the format of ADR-0001 written rule 13: `MARKER(#123):` for a GitHub
+issue, or `MARKER(https://...):` for another tracker.
 
 ```swift
-// TODO: Add paginated loading after the repository API supports cursors (PROJ-789)
-// FIXME: Prevent duplicate saves during concurrent imports (PROJ-890)
-// HACK: Keep the compatibility branch until the iOS 18 workaround is removed (PROJ-901)
+// TODO(#789): Add paginated loading after the repository API supports cursors.
+// FIXME(#890): Prevent duplicate saves during concurrent imports.
+// HACK(https://github.com/solokha-o/Alike/issues/901): Keep the compatibility branch until the iOS 18 workaround is removed.
 // WARNING: Call only from the main actor; the dependency is not thread-safe.
 ```
+
+The gates enforce the format on changed files:
+
+- SwiftLint `todo_without_link` (`tools/lint`) checks `TODO`, `FIXME`, and
+  `HACK` in Swift comments.
+- `tools/check-todos` (blocking in `tools/quick` and `tools/full`) checks shell,
+  Python, and Ruby comments, and `XXX` in every checked file, Swift included.
+  `tools/check-todos --all` audits the whole repository. Markdown is not
+  checked, because skills and docs hold instructional examples.
 
 An unreferenced actionable marker is allowed only during an active local change.
 Before handoff, implement it, remove it, or attach a ticket. A factual `WARNING`

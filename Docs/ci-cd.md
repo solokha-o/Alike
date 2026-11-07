@@ -136,6 +136,7 @@ Runs:
 - a check that no test imports XCTest
 - `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - the lint step (see [Lint](#lint)): the lint script tests, then `ALIKE_LINT_STRICT=1 tools/lint` on the Swift files changed against `origin/develop`
+- the TODO check (see [Hygiene checks](#hygiene-checks)): its script tests, then `tools/check-todos` on the changed files
 - `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
   - `Packages/CleanupWorkspace`
@@ -167,6 +168,8 @@ Runs:
 - a check that no test imports XCTest
 - `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - the lint step, as in `tools/quick`
+- the TODO check, as in `tools/quick`
+- the resource hygiene report (report only, see [Hygiene checks](#hygiene-checks))
 - the tests of every package under `Packages/`, on the routes that `tools/quick`
   uses: `xcodebuild test` for the DesignSystem closure and for
   `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
@@ -241,6 +244,46 @@ SwiftLint findings, and only changed or staged files are linted.
 - Run SwiftLint from the repository root. The baseline stores repository-relative paths.
 - SwiftLint 0.65.1 ignores the baseline when the checkout path starts with `/private`. Keep checkouts under `/Users`.
 - Tests: `python3 tools/lint_test.py` and `python3 tools/install_hooks_test.py`.
+
+### Hygiene checks
+
+These checks keep unused or untracked material out of the project. Only the TODO
+check blocks. The other checks report and exit 0. Nothing deletes a finding:
+each deletion is a separate pull request.
+
+`tools/check-todos` (blocking, in `tools/quick` and `tools/full`):
+
+- Checks the files changed against the merge-base with `origin/develop`, plus
+  staged, unstaged, and untracked files (the same set as `tools/lint`).
+  `ALIKE_CI_BASE_REF` changes the base. `tools/check-todos --all` checks every file.
+- Fails on `TODO`, `FIXME`, or `HACK` without a card link in a shell, Python, or
+  Ruby comment (`.sh`, `.py`, `.rb`, the Fastlane files, and extensionless
+  scripts with a shebang), and on `XXX` in those comments and in Swift comments.
+- The link format is the one in ADR-0001 written rule 13: `TODO(#123): …` or
+  `TODO(https://…): …`. SwiftLint (`todo_without_link`) checks `TODO`, `FIXME`,
+  and `HACK` in Swift, so this check does not repeat it.
+- Markdown is not checked: skills and docs show markers as examples.
+- `Skills/External/`, `.build/`, and `build/` are skipped.
+- Tests: `python3 tools/check_todos_test.py`.
+
+`tools/report_resource_hygiene.py` (report only, in `tools/full`):
+
+- Writes `resource-hygiene.md` and `resource-hygiene.json` into the run's report
+  folder and prints a one-line summary.
+- Reports `.xcstrings` keys that are `stale`, keys that no production source
+  names as a string literal, keys without a translated value for a locale of the
+  same catalog, and `.xcassets` entries that no code, project setting, or plist names.
+- Puts a finding under "needs manual check", not "unused", when the name can be
+  in use without a literal: an `InfoPlist.xcstrings` key, a format key (`%@`,
+  `%lld`), a name that an interpolated or concatenated literal can build, a key
+  in a widget or App Intents catalog, or a name that only a test uses.
+- Run it by hand: `python3 tools/report_resource_hygiene.py` (prints the report).
+- Tests: `python3 tools/report_resource_hygiene_test.py`.
+
+Dead code: `.periphery.yml` configures [Periphery](https://github.com/peripheryapp/periphery)
+for the `Alike` scheme. It is not part of `tools/full` and Periphery is not
+installed by the project. The release checklist (step 2) runs `periphery scan`
+by hand and files a card for each finding.
 
 ### `tools/release-check [version] [build]`
 
