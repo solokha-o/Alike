@@ -4,6 +4,10 @@
 Each test copies tools/lint and the lint configs into a temporary Git
 repository and runs the real SwiftFormat and SwiftLint on a fixture.
 
+The fixture lives under build/ (ignored by Git), not in the system temp
+directory: SwiftLint 0.65.1 does not match baseline entries when the checkout
+path starts with /private (for example /private/var/folders or /private/tmp).
+
 Run:
   python3 tools/lint_test.py
 """
@@ -38,7 +42,9 @@ def git(repo: Path, *args: str) -> None:
 )
 class LintScriptTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.tmp = tempfile.TemporaryDirectory()
+        scratch_root = ROOT / "build" / "lint-test"
+        scratch_root.mkdir(parents=True, exist_ok=True)
+        self.tmp = tempfile.TemporaryDirectory(dir=scratch_root)
         self.repo = Path(self.tmp.name)
         (self.repo / "tools").mkdir()
         for name in ("tools/lint", "tools/lint-versions", ".swiftformat", ".swiftlint.yml"):

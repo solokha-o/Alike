@@ -59,6 +59,14 @@ fi
 
 cd "$ROOT_DIR"
 
+case "$ROOT_DIR" in
+  /private/*)
+    # SwiftLint 0.65.1 strips /private from one side of its path compare, so no
+    # baseline entry matches and every existing violation reports again.
+    echo "warning: the checkout is under /private. SwiftLint ignores the baseline there. Move the checkout."
+    ;;
+esac
+
 pinned_version() {
   sed -n "s/^$1=//p" "$VERSIONS_FILE" | head -n 1
 }
