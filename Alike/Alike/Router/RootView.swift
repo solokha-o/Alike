@@ -79,8 +79,12 @@ struct MainTabView: View {
     private var debugUnlockAdvancedFilters = false
     @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBatchCleanup = false
+    // Read by no code: this @AppStorage redraws the view when the debug toggle changes,
+    // so cleanupReminderTaskID picks up the override.
+    // swiftformat:disable unusedPrivateDeclarations
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
+    // swiftformat:enable unusedPrivateDeclarations
 #endif
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()

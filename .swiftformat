@@ -114,3 +114,4 @@
 --rules redundantAsync
 --rules wrapEnumCases
 --rules preferSwiftStringAPI
+--lint-only unusedPrivateDeclarations
