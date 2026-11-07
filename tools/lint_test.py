@@ -210,6 +210,103 @@ class LintScriptTests(unittest.TestCase):
     def test_all_with_fix_is_a_usage_error(self) -> None:
         self.assertEqual(self.run_lint("--all", "--fix").returncode, 64)
 
+    def stage(self, relative: str, text: str) -> None:
+        self.write(relative, text)
+        git(self.repo, "add", relative)
+
+    def assert_stage_root_removed(self) -> None:
+        stage_dir = self.repo / "build" / "lint-staged"
+        leftovers = list(stage_dir.iterdir()) if stage_dir.exists() else []
+        self.assertEqual(leftovers, [])
+
+    def test_staged_mode_with_no_staged_swift_files_exits_zero(self) -> None:
+        self.write(SPACED_FILE, FORCE_UNWRAP)
+        result = self.run_lint("--staged", strict=True)
+        self.assertIn("No staged Swift files.", result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_staged_bad_file_fails_strict_mode(self) -> None:
+        self.stage(SPACED_FILE, FORCE_UNWRAP + "\n\n\nlet other = 2\n")
+        result = self.run_lint("--staged", strict=True)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn("(force_unwrapping)", result.stdout)
+        self.assertIn("(consecutiveBlankLines)", result.stdout)
+        # Findings name the repository path, not the temporary tree.
+        self.assertIn(f"{SPACED_FILE}:2", result.stdout)
+        self.assertNotIn("lint-staged", result.stdout)
+        self.assertIn("tools/lint --fix", result.stdout)
+        self.assert_stage_root_removed()
+
+    def test_staged_fixed_file_passes_strict_mode(self) -> None:
+        self.stage(SPACED_FILE, "let x = 1\n\n\nlet y = 2\n")
+        self.assertEqual(self.run_lint("--staged", strict=True).returncode, 1)
+        self.run_lint("--fix")
+        git(self.repo, "add", SPACED_FILE)
+        result = self.run_lint("--staged", strict=True)
+        self.assertIn(SPACED_FILE, result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assert_stage_root_removed()
+
+    def test_staged_mode_lints_the_index_not_the_working_tree(self) -> None:
+        # Clean index, bad working tree: the commit content is clean.
+        self.stage(SPACED_FILE, "let value = 2\n")
+        self.write(SPACED_FILE, FORCE_UNWRAP)
+        clean_index = self.run_lint("--staged", strict=True)
+        self.assertIn("unstaged changes", clean_index.stdout)
+        self.assertNotIn("(force_unwrapping)", clean_index.stdout)
+        self.assertEqual(clean_index.returncode, 0, clean_index.stdout + clean_index.stderr)
+        # Bad index, clean working tree: the commit content is bad.
+        self.stage(SPACED_FILE, FORCE_UNWRAP)
+        self.write(SPACED_FILE, "let value = 2\n")
+        bad_index = self.run_lint("--staged", strict=True)
+        self.assertIn("(force_unwrapping)", bad_index.stdout)
+        self.assertEqual(bad_index.returncode, 1, bad_index.stdout + bad_index.stderr)
+        self.assertEqual((self.repo / SPACED_FILE).read_text(), "let value = 2\n")
+
+    def test_staged_mode_applies_the_baseline_and_test_config(self) -> None:
+        self.stage(SPACED_FILE, FORCE_UNWRAP)
+        subprocess.run(
+            ["swiftlint", "lint", "--quiet", "--write-baseline", ".swiftlint-baseline.json"],
+            cwd=self.repo,
+            capture_output=True,
+        )
+        git(self.repo, "add", ".swiftlint-baseline.json")
+        self.stage(TEST_FILE, TEST_TARGET_SOURCE)
+        result = self.run_lint("--staged")
+        self.assertIn(SPACED_FILE, result.stdout)
+        self.assertEqual(result.stdout.count("(force_unwrapping)"), 0, result.stdout)
+        self.assertIn(f"{TEST_FILE}:3", result.stdout)
+        self.assertIn("(force_cast)", result.stdout)
+        self.assertNotIn("(force_try)", result.stdout)
+
+    def test_staged_with_fix_or_all_is_a_usage_error(self) -> None:
+        self.assertEqual(self.run_lint("--staged", "--fix").returncode, 64)
+        self.assertEqual(self.run_lint("--staged", "--all").returncode, 64)
+
+    def test_installed_hook_stops_a_bad_commit(self) -> None:
+        (self.repo / "tools/hooks").mkdir()
+        shutil.copy2(ROOT / "tools/hooks/pre-commit", self.repo / "tools/hooks/pre-commit")
+        hook = self.repo / ".git/hooks/pre-commit"
+        hook.parent.mkdir(exist_ok=True)
+        hook.symlink_to(self.repo / "tools/hooks/pre-commit")
+        # No global config, so no global core.hooksPath: Git runs .git/hooks directly.
+        env = dict(os.environ, GIT_CONFIG_GLOBAL=os.devnull)
+        env.pop("ALIKE_LINT_STRICT", None)
+        commit = [
+            "git", "-c", "user.name=Test", "-c", "user.email=test@example.com",
+            "commit", "-q", "-m", "change",
+        ]
+        self.stage(SPACED_FILE, FORCE_UNWRAP)
+        stopped = subprocess.run(commit, cwd=self.repo, env=env, capture_output=True, text=True)
+        self.assertEqual(stopped.returncode, 1, stopped.stdout + stopped.stderr)
+        # Git sends the hook's standard output to standard error.
+        self.assertIn("(force_unwrapping)", stopped.stderr)
+        self.assertIn("the commit is stopped", stopped.stderr)
+        self.assertEqual((self.repo / SPACED_FILE).read_text(), FORCE_UNWRAP)
+        self.stage(SPACED_FILE, "let value = 2\n")
+        passed = subprocess.run(commit, cwd=self.repo, env=env, capture_output=True, text=True)
+        self.assertEqual(passed.returncode, 0, passed.stdout + passed.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

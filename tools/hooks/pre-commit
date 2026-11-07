@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# Alike pre-commit hook: lints the staged Swift files in strict mode.
+# Install: tools/install-hooks. The hook never changes a file.
+# Git runs hooks from the top of the working tree, so tools/lint is the one of the
+# branch that is checked out, also in a linked worktree.
+
+TOP_DIR="$(git rev-parse --show-toplevel)"
+LINT="$TOP_DIR/tools/lint"
+
+if [[ ! -x "$LINT" ]] || ! grep -q -- '--staged' "$LINT"; then
+  echo "pre-commit: this branch has no tools/lint --staged. The lint check is skipped." >&2
+  exit 0
+fi
+
+if ! ALIKE_LINT_STRICT=1 "$LINT" --staged; then
+  echo >&2
+  echo "pre-commit: the commit is stopped. The staged Swift files have lint findings." >&2
+  echo "  1. Run: tools/lint --fix" >&2
+  echo "  2. Fix the SwiftLint findings that remain." >&2
+  echo "  3. Run: git add <files>, then commit again." >&2
+  exit 1
+fi
