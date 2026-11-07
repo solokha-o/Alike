@@ -43,8 +43,15 @@ Permitted edges (row depends on column):
 - No package depends on an App target.
 - The only SDK is `lottie-spm`, and only `DesignSystem` uses it.
 - A Tool (`BestShotCalibration`) can depend on Foundation; nothing depends on a Tool.
-- The graph is a DAG. Levels are computed by `tools/check-package-graph` (stage 5), not written.
+- The graph is a DAG. Levels are computed by `tools/check-package-graph`, not written.
 - A new edge, a new SDK, a new package, or a category change needs a new ADR.
+
+Run `tools/check-package-graph` after each change to a `Package.swift`, a
+category, or a local `import`. It checks the matrix, the SDK rule, cycles, and
+that each package imports only the local modules it declares. It also prints
+the level of each module. `tools/quick` and `tools/full` run it. If it reports
+a new edge, write an ADR first. Then update `tools/package-categories` or add
+the exception with its reason to `tools/package-graph.allowlist`.
 
 Composition root: the `Alike` app target creates the concrete services and
 passes them to the view models of the Feature packages.

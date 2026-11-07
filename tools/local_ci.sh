@@ -246,6 +246,11 @@ run_no_xctest_validation() {
   run_step "no XCTest imports" python3 tools/check_no_xctest_imports.py
 }
 
+run_package_graph_validation() {
+  run_step "package graph script tests" python3 tools/check_package_graph_test.py
+  run_step "package graph" python3 tools/check_package_graph.py
+}
+
 write_report() {
   local status="$1"
   mkdir -p "$REPORT_ROOT"
@@ -764,12 +769,14 @@ main() {
     quick)
       run_whitespace_validation
       run_no_xctest_validation
+      run_package_graph_validation
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
     full)
       run_whitespace_validation
       run_no_xctest_validation
+      run_package_graph_validation
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
