@@ -1,0 +1,5 @@
+# Pinned lint tool versions. tools/lint reads this file.
+# Format: one "<tool>=<version>" line for each tool. Lines that start with # are comments.
+# A version change is a format change: follow Docs/adr/0003-format-change-process.md.
+swiftformat=0.63.1
+swiftlint=0.65.1

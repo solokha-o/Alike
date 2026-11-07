@@ -38,7 +38,9 @@ as SwiftFormat.
 
 `no_print` enforces written rule 9. `no_unchecked_sendable` enforces written
 rule 10. `todo_without_link` enforces written rule 13: it flags `TODO`, `FIXME`, and `HACK`
-without an issue link such as `TODO(#123):`. The built-in `todo` rule flags every
+without an issue link. A link is `(#<number>)` or `(<https URL>)` right after the
+marker: `TODO(#123):` or `FIXME(https://github.com/solokha-o/Alike/issues/123):`.
+The built-in `todo` rule flags every
 TODO, also the linked form that rule 13 permits, so it is not used.
 
 ### Scope
@@ -51,7 +53,7 @@ and they must never enter the baseline.
 
 | Rule | Warning | Error | Option | Measured today (sources) |
 |---|---|---|---|---|
-| `file_length` | 500 | 1000 | `ignore_comment_lines: true` | 15 source files over 500 (without `**/.build`) |
+| `file_length` | 500 | 1000 | `ignore_comment_only_lines: true` | 15 source files over 500 (without `**/.build`) |
 | `type_body_length` | 300 | 500 | | 14 types over 300, 2 over 500 |
 | `function_body_length` | 60 | 100 | | 14 functions over 60, 0 over 100 |
 | `cyclomatic_complexity` | 12 | 20 | `ignores_case_statements: true` | 3 over 12, 0 over 20 |
@@ -66,8 +68,12 @@ the gate.
 
 ### Test targets
 
-Test targets have a nested `.swiftlint.yml` that disables `force_unwrapping`
-and `force_try`. SwiftFormat LATER rules `noForceUnwrapInTests` (#18) and
+`.swiftlint-tests.yml` at the root disables `force_unwrapping` and `force_try`.
+`tools/lint` lints files in `Packages/*/Tests/` and `Alike/AlikeTests/` with
+`--config .swiftlint.yml --config .swiftlint-tests.yml`, and all other files with
+`--config .swiftlint.yml`. SwiftLint 0.65.1 has no per-rule path exclusion for
+built-in rules. A nested `.swiftlint.yml` in a test folder is not used: Xcode
+copies it into the `AlikeTests` bundle. SwiftFormat LATER rules `noForceUnwrapInTests` (#18) and
 `noForceTryInTests` (#1) remove these patterns from tests. All other rules
 apply to tests.
 
