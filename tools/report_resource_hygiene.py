@@ -101,6 +101,14 @@ def interpolation_parts(literal: str) -> list[str] | None:
     return parts if found else None
 
 
+MIN_PATTERN_LETTERS = 3
+
+
+def is_specific(parts: list[str]) -> bool:
+    """A pattern like `"\\(a).\\(b)"` would match every dotted key and hide real findings."""
+    return sum(len(re.sub(r"\W", "", part)) for part in parts) >= MIN_PATTERN_LETTERS
+
+
 def dynamic_patterns(source: str) -> list[re.Pattern]:
     """Return patterns for names that a literal builds at run time."""
     patterns = []
@@ -109,12 +117,12 @@ def dynamic_patterns(source: str) -> list[re.Pattern]:
         start = line.find('"')
         if start >= 0 and "\\(" in line:
             parts = interpolation_parts(line[start + 1 : line.rfind('"')] if line.rfind('"') > start else "")
-            if parts and any(part.strip() for part in parts):
+            if parts and is_specific(parts):
                 patterns.append(re.compile("^" + ".+".join(re.escape(part) for part in parts) + "$"))
         for match in STRING_LITERAL.finditer(line):
             rest = line[match.end() :].lstrip()
             # A literal prefix that code completes: "prefix." + value.
-            if rest.startswith("+") and match.group(1):
+            if rest.startswith("+") and is_specific([match.group(1)]):
                 patterns.append(re.compile("^" + re.escape(match.group(1)) + ".+$"))
     return patterns
 

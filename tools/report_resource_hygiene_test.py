@@ -43,6 +43,10 @@ class KeyClassificationTests(unittest.TestCase):
         source = 'let a = String(localized: "row.\\(f(x, "y")).title")\n'
         self.assertEqual(report.classify_key(CATALOG, "row.3.title", {}, corpus(source))[0], "manual")
 
+    def test_literal_without_constant_text_does_not_hide_keys(self) -> None:
+        source = 'let a = "\\(section).\\(row)"\nlet b = "." + name\n'
+        self.assertEqual(report.classify_key(CATALOG, "scanner.main.gone", {}, corpus(source))[0], "unused")
+
     def test_concatenated_prefix_needs_manual_check(self) -> None:
         source = 'let key = "settings.section." + name\n'
         self.assertEqual(report.classify_key(CATALOG, "settings.section.about", {}, corpus(source))[0], "manual")
