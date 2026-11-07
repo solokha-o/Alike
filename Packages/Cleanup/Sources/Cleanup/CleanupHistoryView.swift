@@ -143,8 +143,8 @@ struct CleanupHistoryView: View {
             .listRowBackground(Color.clear)
     }
 
-    private func unavailableRow<Content: View>(
-        @ViewBuilder content: () -> Content
+    private func unavailableRow(
+        @ViewBuilder content: () -> some View
     ) -> some View {
         content()
             .frame(maxWidth: .infinity, minHeight: 360)

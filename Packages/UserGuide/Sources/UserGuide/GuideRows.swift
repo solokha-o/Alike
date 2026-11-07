@@ -187,9 +187,9 @@ private struct GuideItemAccessibility: ViewModifier {
 /// Glyph sits beside the text normally and moves above it at accessibility text sizes, matching
 /// `ScannerLibraryStatusCard`.
 @ViewBuilder
-func guideRowLayout<Content: View>(
+func guideRowLayout(
     isAccessibilitySize: Bool,
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: () -> some View
 ) -> some View {
     let layout = isAccessibilitySize
         ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.xSmall))

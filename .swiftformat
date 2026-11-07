@@ -115,3 +115,4 @@
 --rules wrapEnumCases
 --rules preferSwiftStringAPI
 --lint-only unusedPrivateDeclarations
+--rules opaqueGenericParameters
