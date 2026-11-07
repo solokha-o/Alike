@@ -17,7 +17,7 @@ public final class StackRouter<Route: Hashable> {
         path.append(route)
     }
 
-    public func push<S: Sequence>(contentsOf routes: S) where S.Element == Route {
+    public func push(contentsOf routes: some Sequence<Route>) {
         path.append(contentsOf: routes)
     }
 

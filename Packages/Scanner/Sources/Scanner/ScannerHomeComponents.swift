@@ -157,8 +157,8 @@ struct ScannerLibraryStatusCard: View {
         .alikeGlassSurface(cornerRadius: CornerRadius.large)
     }
 
-    private func metricLayout<Content: View>(
-        @ViewBuilder content: () -> Content
+    private func metricLayout(
+        @ViewBuilder content: () -> some View
     ) -> some View {
         let layout = dynamicTypeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.small))
