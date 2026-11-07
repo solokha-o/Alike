@@ -7,17 +7,19 @@ The check reads:
 - `tools/package-categories`: the category of each package and App target;
 - `tools/package-graph.allowlist`: the remote dependencies that ADR-0004 names,
   edges outside the matrix that an ADR accepts, and known imports of an
-  undeclared local module (debt), each with a reason;
+  undeclared local module in one file (debt), each with a reason;
 - `Packages/*/Package.swift`: `.package(path: "../X")` edges, `.package(url:)`
   dependencies, and the product and target names (the module names);
 - `Packages/*/Sources` and `Packages/*/Tests`: `import X` of a local module;
 - `Alike/Alike.xcodeproj/project.pbxproj`: the package products of each App
   target (`packageProductDependencies` -> `XCSwiftPackageProductDependency`).
 
-It fails on a package without a category, a category line for a missing
-package, an edge outside the matrix, a remote dependency that is not in the
-allowlist, an import of a local module that the package does not declare, a
-cycle, and an allowlist line that no edge uses. It prints the level of each
+It fails on a package without a category, an Xcode target that links a
+package product and has no category, a category line for a missing package,
+a dependency form that it cannot read, an edge outside the matrix, a remote
+dependency that is not in the allowlist, an import of a local module that the
+package does not declare, a cycle, and an allowlist line that is a duplicate
+or that no dependency uses. It prints the level of each
 module: 0 when it has no local dependency, otherwise 1 more than its highest
 dependency (ADR-0004, "Levels are computed").
 
@@ -27,6 +29,7 @@ and so on) is not checked. The check is about local modules only.
 The Swift parsing is a set of regular expressions, not a Swift parser. It reads
 the literal forms that the Package.swift files use: `.package(path: "...")`,
 `.package(url: "...")`, `.library(name: "...")` and `.target(name: "...")`.
+Any other `.package(` form fails, so that no dependency passes unchecked.
 """
 
 from __future__ import annotations
@@ -57,6 +60,7 @@ MATRIX = {
 
 LOCAL_EDGE = re.compile(r'\.package\(\s*(?:name:\s*"[^"]*"\s*,\s*)?path:\s*"\.\./([^"/]+)/?"')
 REMOTE_EDGE = re.compile(r'\.package\(\s*(?:name:\s*"[^"]*"\s*,\s*)?url:\s*"([^"]+)"')
+ANY_EDGE = re.compile(r"\.package\(")
 MODULE_DECLARATION = re.compile(r'\.(library|target|executableTarget|testTarget)\(\s*name:\s*"([^"]+)"')
 IMPORT_STATEMENT = re.compile(
     r"^[ \t]*(?:@\w+(?:\([^)]*\))?[ \t]+)*"
@@ -80,6 +84,8 @@ class Package:
     local: list[str] = field(default_factory=list)
     remote: list[str] = field(default_factory=list)
     modules: set[str] = field(default_factory=set)
+    # Text of each `.package(` form that is neither a local `../X` path nor a URL.
+    unsupported: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -149,15 +155,21 @@ def read_categories(root, errors):
 
 
 def read_allowlist(root, errors):
-    """Return {(kind, package, other): line number}; kind is sdk, edge, or import."""
+    """Return {(kind, first, second): line number}.
+
+    The keys are ("sdk", package, URL), ("edge", from, to), and
+    ("import", file, module), where file is relative to the repository root.
+    """
     entries = {}
     for number, fields, reason in read_name_lines(root / ALLOWLIST_FILE, errors):
         where = f"{ALLOWLIST_FILE}:{number}"
         if len(fields) != 3 or fields[0] not in ("sdk", "edge", "import"):
             errors.append(
-                f"{where}: write `sdk <Package> <URL>`, `edge <From> <To>`, or `import <Package> <Module>`,"
+                f"{where}: write `sdk <Package> <URL>`, `edge <From> <To>`, or `import <File> <Module>`,"
                 " then `# reason`."
             )
+        elif tuple(fields) in entries:
+            errors.append(f"{where}: duplicate of line {entries[tuple(fields)]}.")
         elif not reason:
             errors.append(f"{where}: give the reason in a `#` comment on the same line.")
         else:
@@ -170,6 +182,11 @@ def read_package(directory):
     package = Package(directory.name)
     package.local = sorted(set(LOCAL_EDGE.findall(source)))
     package.remote = sorted(set(REMOTE_EDGE.findall(source)))
+    for match in ANY_EDGE.finditer(source):
+        if not (LOCAL_EDGE.match(source, match.start()) or REMOTE_EDGE.match(source, match.start())):
+            closing = source.find(")", match.start())
+            end = len(source) if closing < 0 else closing + 1
+            package.unsupported.append(" ".join(source[match.start():end].split()))
     package.modules = {name for kind, name in MODULE_DECLARATION.findall(source) if kind != "testTarget"}
     package.modules.add(directory.name)
     return package
@@ -187,7 +204,7 @@ def read_packages(root):
 
 
 def read_app_products(root):
-    """Return {App target: [product name]}, or None when there is no project file."""
+    """Return {native target: [product name]}, or None when there is no project file."""
     path = root / PBXPROJ_FILE
     if not path.is_file():
         return None
@@ -223,7 +240,13 @@ def load_graph(root):
     if app_products is not None:
         apps = {}
         for target, products in app_products.items():
-            if categories.get(target) != "App":
+            if target not in categories:
+                if products:
+                    errors.append(
+                        f"{PBXPROJ_FILE}: target {target} links package products and has no line in {CATEGORIES_FILE}."
+                    )
+                continue
+            if categories[target] != "App":
                 continue
             dependencies = set()
             for product in products:
@@ -269,6 +292,11 @@ def check_edges(graph, allowlist, used):
             f"{source} ({source_category}) -> {target} ({target_category}): the ADR-0004 matrix does not permit it."
         )
     for package in graph.packages.values():
+        for text in package.unsupported:
+            errors.append(
+                f"Packages/{package.name}/Package.swift: cannot check `{text}`. "
+                'Write `.package(path: "../<Package>")` or `.package(url: ...)`.'
+            )
         for url in package.remote:
             key = ("sdk", package.name, url)
             if key in allowlist:
@@ -309,11 +337,11 @@ def check_imports(root, graph, allowlist, used):
                 owner = owners.get(module)
                 if owner is None or owner in permitted:
                     continue
-                key = ("import", package.name, module)
+                where = path.relative_to(root).as_posix()
+                key = ("import", where, module)
                 if key in allowlist:
                     used.add(key)
                 else:
-                    where = path.relative_to(root).as_posix()
                     errors.append(f"{where}:{number}: imports {module} from {owner}, which Package.swift does not declare.")
     return errors
 

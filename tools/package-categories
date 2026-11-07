@@ -11,7 +11,10 @@
 # written as Foundation here.
 # A change to this file needs a new ADR (see ADR-0004).
 
+# App: the Xcode targets. AlikeTests belongs to Alike (ADR-0004), so it is App too.
+# Each Xcode target that links a package product needs a line.
 Alike App
+AlikeTests App
 AlikeWidgets App
 
 Cleanup Feature
