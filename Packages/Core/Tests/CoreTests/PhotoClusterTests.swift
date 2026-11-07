@@ -7,6 +7,7 @@ import Photos
     @Test func testCountAndThumbnailWhenEmpty() {
         let cluster = PhotoCluster(assets: [])
 
+        // swiftformat:disable:next isEmpty - PhotoCluster has no isEmpty
         #expect(cluster.count == 0)
         #expect(cluster.thumbnail == nil)
     }
@@ -33,6 +34,7 @@ import Photos
     #if DEBUG
     @Test func testMockValues() {
         let mock = PhotoCluster.mock
+        // swiftformat:disable:next isEmpty - PhotoCluster has no isEmpty
         #expect(mock.count == 0)
         let eps: Float = 0.001
         #expect(abs(mock.averageSimilarity - 0.85) <= eps)
