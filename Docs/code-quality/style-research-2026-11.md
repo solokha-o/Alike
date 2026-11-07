@@ -257,7 +257,7 @@ Measured with SwiftLint 0.65.1 on `Alike/` and `Packages/` (439 files) with a sc
 | `weak_delegate` | 0 | warning | none (`strongOutlets` is the opposite case, IBOutlets only) |
 | `unused_optional_binding` | 0 | warning (Airbnb) | partial: `redundantOptionalBinding` is a different pattern; keep both |
 | `todo` | 0 | warning; written rule 13 | `todos` only fixes the format; no overlap |
-| `file_length` | src p50 88, p90 391, max 1721; >500: 20, >1000: 1 | warning 500, error 1000, `ignore_comment_lines: true`, with a baseline | none |
+| `file_length` | src p50 88, p90 391, max 1721; >500: 20, >1000: 1 (these counts include generated files in `**/.build`; without them: max 976, >500: 15, >1000: 0) | warning 500, error 1000, `ignore_comment_lines: true`, with a baseline | none |
 | `type_body_length` | src p90 94, max 808; >300: 14, >500: 2 | warning 300, error 500, with a baseline | none |
 | `function_body_length` | src p90 25, p99 72, max 97; >60: 14, >100: 0 | warning 60, error 100 | none |
 | `cyclomatic_complexity` | src p90 6, max 20; >12: 3, >20: 0 | warning 12, error 20, `ignores_case_statements: true` | none |

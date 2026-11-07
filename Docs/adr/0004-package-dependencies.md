@@ -24,9 +24,10 @@ source of truth for the category of each package. Stage 5 adds
 |---|---|---|
 | App | `Alike`, `AlikeWidgets` | Xcode targets. Composition root and wiring. `AlikeTests` belongs to `Alike`. |
 | Feature | `Cleanup`, `Details`, `Scanner`, `Settings`, `Welcome`, `Launch` | One user flow each, with its screens and view models. |
-| Foundation | `Core`, `Storage`, `PhotoAnalysis`, `NavigationKit`, `DesignSystem`, `WidgetSupport`, `Purchases` | Shared models, services, persistence, navigation, and design tokens. |
+| Foundation | `Core`, `Storage`, `PhotoAnalysis`, `NavigationKit`, `DesignSystem`, `WidgetSupport`, `Purchases`, `CleanupWorkspace` | Shared models, services, persistence, navigation, and design tokens. |
 | Foundation with UI | `UserGuide`, `Diagnostics`, `PurchasesUI` (a product of `Purchases`) | Shared screens that more than one feature or the app shows. Same rules as Foundation. |
-| Utility | `BestShotCalibration` | Developer tools. Not part of the shipped app. |
+| Utility | none today | Small helper libraries with no Alike dependency. Any package can use them. |
+| Tool | `BestShotCalibration` | Developer tools. Not part of the shipped app. Nothing depends on a Tool. |
 
 "Foundation with UI" is a subgroup of Foundation, not a separate category.
 Its packages must not depend on a Feature package.
@@ -35,12 +36,13 @@ Its packages must not depend on a Feature package.
 
 Rows are the package that depends. Columns are the dependency.
 
-| From \ To | App | Feature | Foundation | SDK | Utility |
-|---|---|---|---|---|---|
-| App | ✗ | ✓ | ✓ | ✓ | ✓ |
-| Feature | ✗ | ✗ | ✓ | ✗ | ✓ |
-| Foundation | ✗ | ✗ | ✓ | Named in this ADR only | ✓ |
-| Utility | ✗ | ✗ | Named exception only | ✗ | ✓ |
+| From \ To | App | Feature | Foundation | SDK | Utility | Tool |
+|---|---|---|---|---|---|---|
+| App | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ |
+| Feature | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ |
+| Foundation | ✗ | ✗ | ✓ | Named in this ADR only | ✓ | ✗ |
+| Utility | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Tool | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ |
 
 ### SDK rule
 
@@ -61,18 +63,15 @@ photo corpus. It has 3 commands: `report` (agreement and blur metrics),
 personal weights do not make the ranking worse). No package or target imports
 it.
 
-Decision: `BestShotCalibration` is Utility, and its edge to `Core` is a named
-exception. Reasons:
+Decision: `BestShotCalibration` is a Tool. A Tool can depend on Foundation
+packages, and no package can depend on a Tool. Reasons:
 
 - The tool must run the same scoring code that ships. A copy of the code would
   measure a different thing.
-- `Core` is not a Utility. It ships in the app, and it holds the domain models
-  and logic that all Foundation packages use. Utility means "not shipped".
-  A wrong category would make the matrix describe the graph incorrectly.
-- The exception is safe: `BestShotCalibration` cannot reach the app, because
-  it supports macOS only and nothing depends on it.
-
-Any other Utility → Foundation edge needs a new ADR.
+- Utility means a helper library that any package can use. A calibration
+  tool is not that, so it gets its own category.
+- The edge is safe: `BestShotCalibration` cannot reach the app, because it
+  supports macOS only and nothing depends on it.
 
 ### The graph is a DAG
 
@@ -118,7 +117,7 @@ package products of each target in `Alike/Alike.xcodeproj` on 2026-11-07
 | `Storage` | Foundation | `Core` |
 | `UserGuide` | Foundation (UI) | `Core`, `DesignSystem`, `NavigationKit`, `Purchases` |
 | `WidgetSupport` | Foundation | none |
-| `BestShotCalibration` | Utility | `Core` (named exception) |
+| `BestShotCalibration` | Tool | `Core` |
 
 ## Alternatives
 

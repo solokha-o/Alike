@@ -32,18 +32,20 @@ as SwiftFormat.
 | `unowned_variable_capture` | error | All | 0 |
 | `weak_delegate` | warning | All | 0 |
 | `unused_optional_binding` | warning | All | 0 |
-| `todo` | warning | All | 0 |
+| custom `todo_without_link` | warning | All | 0 |
 | custom `no_print` | error | Sources | 4 `print(` calls |
 | custom `no_unchecked_sendable` | warning | Sources | about 18 |
 
 `no_print` enforces written rule 9. `no_unchecked_sendable` enforces written
-rule 10. `todo` enforces written rule 13.
+rule 10. `todo_without_link` enforces written rule 13: it flags `TODO`, `FIXME`, and `HACK`
+without an issue link such as `TODO(#123):`. The built-in `todo` rule flags every
+TODO, also the linked form that rule 13 permits, so it is not used.
 
 ### Size rules
 
 | Rule | Warning | Error | Option | Measured today (sources) |
 |---|---|---|---|---|
-| `file_length` | 500 | 1000 | `ignore_comment_lines: true` | 20 files over 500 |
+| `file_length` | 500 | 1000 | `ignore_comment_lines: true` | 15 source files over 500 (without `**/.build`) |
 | `type_body_length` | 300 | 500 | | 14 types over 300, 2 over 500 |
 | `function_body_length` | 60 | 100 | | 14 functions over 60, 0 over 100 |
 | `cyclomatic_complexity` | 12 | 20 | `ignores_case_statements: true` | 3 over 12, 0 over 20 |

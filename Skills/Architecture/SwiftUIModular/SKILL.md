@@ -26,21 +26,23 @@ The source of truth is `Docs/adr/0004-package-dependencies.md` (ADR-0004) and
 | App | `Alike` (composition root, with `AlikeTests`), `AlikeWidgets` |
 | Feature | `Cleanup`, `Details`, `Launch`, `Scanner`, `Settings`, `Welcome` |
 | Foundation | `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `WidgetSupport` |
-| Foundation with UI | `CleanupWorkspace`, `Diagnostics`, `UserGuide`, `PurchasesUI` (product of `Purchases`) |
-| Utility | `BestShotCalibration` (macOS calibration tool, not shipped) |
+| Foundation with UI | `Diagnostics`, `UserGuide`, `PurchasesUI` (product of `Purchases`) |
+| Utility | none today (helper libraries any package can use) |
+| Tool | `BestShotCalibration` (macOS calibration tool, not shipped; nothing depends on it) |
 
 Permitted edges (row depends on column):
 
-| From \ To | Feature | Foundation | SDK | Utility |
-|---|---|---|---|---|
-| App | ✓ | ✓ | ✓ | ✓ |
-| Feature | ✗ | ✓ | ✗ | ✓ |
-| Foundation | ✗ | ✓ | Named in ADR-0004 only | ✓ |
-| Utility | ✗ | Named exception only | ✗ | ✓ |
+| From \ To | Feature | Foundation | SDK | Utility | Tool |
+|---|---|---|---|---|---|
+| App | ✓ | ✓ | ✓ | ✓ | ✗ |
+| Feature | ✗ | ✓ | ✗ | ✓ | ✗ |
+| Foundation | ✗ | ✓ | Named in ADR-0004 only | ✓ | ✗ |
+| Utility | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Tool | ✗ | ✓ | ✗ | ✓ | ✗ |
 
 - No package depends on an App target.
 - The only SDK is `lottie-spm`, and only `DesignSystem` uses it.
-- `BestShotCalibration` → `Core` is the only named Utility exception.
+- A Tool (`BestShotCalibration`) can depend on Foundation; nothing depends on a Tool.
 - The graph is a DAG. Levels are computed by `tools/check-package-graph` (stage 5), not written.
 - A new edge, a new SDK, a new package, or a category change needs a new ADR.
 
@@ -117,7 +119,7 @@ Do not create a new package when:
 
 - Follow the matrix above and ADR-0004.
 - A screen that more than one feature shows goes into a Foundation package
-  (example: `UserGuide`, `CleanupWorkspace`), never into a Feature package.
+  (example: `UserGuide`, `Diagnostics`), never into a Feature package.
 
 ## Navigation
 

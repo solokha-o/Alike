@@ -20,8 +20,10 @@ ADR-0001 is one format change.
 
 Do a format change in these steps:
 
-1. Write a new ADR or update the related ADR. Merge it, or put it in the same
-   pull request.
+1. If the rule is not already in the LATER list of ADR-0001, write a new ADR
+   that supersedes the related one. Merge it, or put it in the same pull request.
+   A LATER rule of ADR-0001 needs no new ADR: ADR-0001 already accepted it and
+   its order.
 2. Make one commit that contains only the configuration change and the
    reformatted code. Do not put a behaviour change in this commit.
 3. Build the app and run the package tests. The commit must not change

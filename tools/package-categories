@@ -5,7 +5,7 @@
 # file and checks each edge against the matrix in ADR-0004.
 #
 # Format: one line `<Package> <Category>`. Lines that start with `#` are comments.
-# Categories: App, Feature, Foundation, Utility.
+# Categories: App, Feature, Foundation, Utility, Tool.
 # "Foundation with UI" (UserGuide, Diagnostics, and the
 # PurchasesUI product of Purchases) uses the Foundation rules, so it is
 # written as Foundation here.
@@ -32,4 +32,4 @@ Storage Foundation
 UserGuide Foundation
 WidgetSupport Foundation
 
-BestShotCalibration Utility
+BestShotCalibration Tool
