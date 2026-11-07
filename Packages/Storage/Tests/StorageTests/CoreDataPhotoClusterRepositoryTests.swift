@@ -202,7 +202,7 @@ import Core
         let detector = FakeChangeDetector(
             token: Data([0xAA]),
             imageAssetCount: 120,
-            summary: .none
+            summary: PhotoLibraryChangeSummary.none
         )
         let repository = CoreDataPhotoClusterRepository(
             persistence: inMemoryController,
@@ -286,7 +286,7 @@ import Core
         let detector = FakeChangeDetector(
             token: Data([0xBB]),
             imageAssetCount: 30,
-            summary: .none
+            summary: PhotoLibraryChangeSummary.none
         )
         let repository = CoreDataPhotoClusterRepository(
             persistence: inMemoryController,
