@@ -7,7 +7,7 @@ import Core
 
 @MainActor
 @Suite struct PhotoAnalysisServiceImplTests {
-    @Test func testAnalyzePhotoLibraryNoPhotosThrows() async {
+    @Test func testAnalyzePhotoLibraryNoPhotosThrows() async throws {
         let didCallAssetsProvider = ThreadSafeFlag()
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -22,10 +22,7 @@ import Core
             _ = try await service.analyzePhotoLibrary(sensitivity: 0.9) { _ in }
             Issue.record("Expected noPhotosFound error")
         } catch {
-            guard let analysisError = error as? PhotoAnalysisError else {
-                Issue.record("Expected PhotoAnalysisError")
-                return
-            }
+            let analysisError = try #require(error as? PhotoAnalysisError, "Expected PhotoAnalysisError")
             if case .noPhotosFound = analysisError {
                 #expect(true)
             } else {
