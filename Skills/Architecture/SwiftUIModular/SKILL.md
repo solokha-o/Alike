@@ -161,6 +161,14 @@ Follow Alike Swift Style. See `references/swift-code-style.md` for:
 - How to change a format rule (ADR-0003)
 - The 15 written rules that reviewers check
 
+### File structure and templates
+
+Read `references/file-structure.md` before you add a file or split one:
+- Order inside a type, `// MARK: -` sections, conformance extensions, `Type+Feature.swift` names
+- When to split (`file_length` 500, ADR-0002) and how (move only first)
+- One way per task: DI, errors, logging, navigation, strings, tests. A new way needs an ADR.
+- Templates in `references/templates/`: `View.swift`, `ViewModel.swift`, `Service.swift`, `FeatureTests.swift`, `Package.swift`
+
 ### Documentation
 
 Follow structured documentation standards for public APIs and inline comments. See `references/code-documentation.md` for:
