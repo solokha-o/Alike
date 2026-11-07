@@ -176,15 +176,16 @@ extension WidgetPhotoAuthorization {
     /// needs different wording from a full one, and a denied library needs a different
     /// call to action from one that was never asked.
     init(_ status: PHAuthorizationStatus) {
-        self = switch status {
-        case .authorized: .authorized
-        case .limited: .limited
-        case .denied: .denied
-        case .restricted: .restricted
-        case .notDetermined: .notDetermined
-        // `PHAuthorizationStatus` is an Objective-C enum and can gain cases; treating an
-        // unknown one as "not asked yet" keeps the widget in a safe, honest state.
-        @unknown default: .notDetermined
-        }
+        self =
+            switch status {
+            case .authorized: .authorized
+            case .limited: .limited
+            case .denied: .denied
+            case .restricted: .restricted
+            case .notDetermined: .notDetermined
+            // `PHAuthorizationStatus` is an Objective-C enum and can gain cases; treating an
+            // unknown one as "not asked yet" keeps the widget in a safe, honest state.
+            @unknown default: .notDetermined
+            }
     }
 }
