@@ -197,20 +197,22 @@ Cleanup tab without automatically changing the selected tab.
 
 ## 🧪 Testing
 
-Tests live in the package that owns the code and run with Swift Testing. The four
-fastest suites, the ones `tools/quick` runs:
+Tests live in the package that owns the code and run with Swift Testing.
+`tools/quick` runs the suites of Cleanup, CleanupWorkspace, Scanner, Settings, Storage,
+UserGuide, and WidgetSupport. All of them run with `xcodebuild test` on an iOS Simulator:
 
 ```bash
-swift test --package-path Packages/Cleanup
-swift test --package-path Packages/Scanner
-swift test --package-path Packages/Settings
-swift test --package-path Packages/UserGuide
+tools/quick
+# or one package (use the <Name>-Package scheme for a package with several products):
+xcodebuild -workspace Packages/Cleanup -scheme Cleanup \
+  -destination 'platform=iOS Simulator,name=<available iPhone>' test
 ```
 
-`tools/full` runs every package that has tests, the app compile gate, and `AlikeTests`.
-`Packages/Storage` is the one exception — SwiftPM does not compile its
-`.xcdatamodeld`, so its suite runs in Xcode and its code is covered by the compile
-gate instead. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
+Only BestShotCalibration, Core, NavigationKit, and PhotoAnalysis run with
+`swift test --package-path Packages/<Name>`. `tools/local_ci.sh` picks the route.
+
+`tools/full` runs the tests of every package on the same routes, the app compile
+gate, and `AlikeTests`. See [`Docs/ci-cd.md`](Docs/ci-cd.md).
 
 SwiftUI `#Preview` blocks accompany the screens in each feature package; use one of
 the verbose Debug schemes for previews and the debug menu.
