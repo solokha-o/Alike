@@ -134,6 +134,7 @@ Runs:
 
 - whitespace validation
 - a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
   - `Packages/CleanupWorkspace`
@@ -163,6 +164,7 @@ Runs:
 
 - whitespace validation
 - a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - the tests of every package under `Packages/`, on the routes that `tools/quick`
   uses: `xcodebuild test` for the DesignSystem closure and for
   `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
@@ -188,6 +190,29 @@ xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/pl
 ```
 
 Tests need a concrete device; `tools/local_ci.sh` picks one, and `ALIKE_BUILD_DESTINATION='id=<udid>'` overrides it.
+
+### Lint (report mode)
+
+`tools/lint` runs SwiftFormat (`--lint`, `.swiftformat`) and SwiftLint
+(`.swiftlint.yml` with `.swiftlint-baseline.json`). It does not build and does
+not use the heavy-job queue. `tools/quick` and `tools/full` do not call it yet.
+
+```sh
+tools/lint          # Swift files changed against origin/develop, plus local changes
+tools/lint --all    # all Swift files in Alike/ and Packages/
+tools/lint --fix    # format the changed files with SwiftFormat, then lint them
+```
+
+- Report mode prints the violations and a summary, and exits 0.
+- `ALIKE_LINT_STRICT=1` exits 1 on a violation, a tool problem, a version mismatch, or a missing merge-base with the base branch (missing ref or shallow clone). Stage 3 of the clean-code epic uses it as the gate. A CI checkout needs the base branch and enough history for `git merge-base`.
+- `ALIKE_LINT_BASE=<ref>` changes the base branch.
+- `tools/lint-versions` pins the tool versions. On a mismatch, `tools/lint` prints the install command.
+- `--all --fix` is refused: a whole-project format is a format change ([ADR-0003](adr/0003-format-change-process.md)).
+- `--fix` writes nothing when the installed SwiftFormat is not the version in `tools/lint-versions`. Another version can format differently, and a version change is a format change.
+- Test files (`Packages/*/Tests/`, `Alike/AlikeTests/`) get `--config .swiftlint.yml --config .swiftlint-tests.yml`, which disables `force_unwrapping` and `force_try`. Other files get `--config .swiftlint.yml`.
+- Run SwiftLint from the repository root. The baseline stores repository-relative paths.
+- SwiftLint 0.65.1 ignores the baseline when the checkout path starts with `/private`. Keep checkouts under `/Users`.
+- Test: `python3 tools/lint_test.py`.
 
 ### `tools/release-check [version] [build]`
 
