@@ -1,0 +1,7 @@
+# Extra SwiftLint configuration for test targets (ADR-0002 "Test targets").
+# tools/lint adds it after .swiftlint.yml for files in Packages/*/Tests/ and
+# Alike/AlikeTests/. SwiftFormat LATER rules noForceUnwrapInTests and
+# noForceTryInTests remove these patterns from tests.
+disabled_rules:
+  - force_unwrapping
+  - force_try

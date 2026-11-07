@@ -3,9 +3,10 @@
 # Change process: Docs/adr/0003-format-change-process.md.
 # Pinned version: tools/lint-versions. Run: tools/lint.
 #
-# Test targets have a nested .swiftlint.yml that disables force_unwrapping and
-# force_try. SwiftLint reads nested files only when no --config is given, so
-# run SwiftLint from the repository root without --config (tools/lint does).
+# Test files (Packages/*/Tests/, Alike/AlikeTests/) are linted with
+# --config .swiftlint.yml --config .swiftlint-tests.yml, which disables
+# force_unwrapping and force_try. Run from the repository root: the baseline
+# stores repository-relative paths. tools/lint does both.
 
 included:
   - Alike

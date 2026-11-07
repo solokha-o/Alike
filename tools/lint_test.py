@@ -47,12 +47,15 @@ class LintScriptTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(dir=scratch_root)
         self.repo = Path(self.tmp.name)
         (self.repo / "tools").mkdir()
-        for name in ("tools/lint", "tools/lint-versions", ".swiftformat", ".swiftlint.yml"):
+        for name in (
+            "tools/lint",
+            "tools/lint-versions",
+            ".swiftformat",
+            ".swiftlint.yml",
+            ".swiftlint-tests.yml",
+        ):
             shutil.copy2(ROOT / name, self.repo / name)
         (self.repo / ".swiftlint-baseline.json").write_text("[]\n")
-        tests_dir = self.repo / "Packages/Fixture/Tests"
-        tests_dir.mkdir(parents=True)
-        shutil.copy2(ROOT / "Packages/Core/Tests/.swiftlint.yml", tests_dir / ".swiftlint.yml")
         self.write(SPACED_FILE, CLEAN)
         git(self.repo, "init", "-q", "-b", "develop")
         git(self.repo, "add", "-A")
@@ -119,6 +122,14 @@ class LintScriptTests(unittest.TestCase):
         result = self.run_lint()
         self.assertIn("FixtureTests.swift", result.stdout)
         self.assertNotIn("(force_unwrapping)", result.stdout)
+
+    def test_all_mode_splits_test_and_source_files(self) -> None:
+        self.write(TEST_FILE, FORCE_UNWRAP)
+        self.write(SPACED_FILE, FORCE_UNWRAP)
+        result = self.run_lint("--all")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(result.stdout.count("(force_unwrapping)"), 1, result.stdout)
+        self.assertIn("With Space.swift:2", result.stdout)
 
     def test_baseline_hides_existing_violation(self) -> None:
         self.write(SPACED_FILE, FORCE_UNWRAP)
