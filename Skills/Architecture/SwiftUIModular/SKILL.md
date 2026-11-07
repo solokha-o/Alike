@@ -59,27 +59,9 @@ passes them to the view models of the Feature packages.
 ## View model pattern (team convention)
 
 - One main view + one view model per screen/flow.
-- The main view owns the view model via `@StateObject` (or `@State` for `@Observable` types).
-- Pass the view model to subviews via `@ObservedObject`/`@Bindable` or plain `let`.
+- The view model is a `@MainActor @Observable final class`. The main view owns it via `@State`, made in `init`.
+- Give subviews narrow inputs (values and closures). Use `@Bindable` only when a subview needs bindings to the view model.
 - Compose the UI from small, targeted subviews.
-
-## Data layer & dependencies
-
-- Use a `Repository` or `Client` protocol per domain to isolate data access.
-- Alike has no networking package. Persistence lives in `Storage`; photo analysis lives in `PhotoAnalysis`.
-- Cache policies (memory/disk) live behind repositories; keep UI unaware of cache details.
-- Use DTOs at the network boundary and map to domain models in the data layer.
-- Prefer immutable domain models; store mutability in caches/repositories.
-
-## Offline-first & caching guidelines
-
-- Treat cache as the primary read source; network is for refresh.
-- Flow: `load cache → show UI → refresh in background → update cache → UI updates`.
-- Expose cache age or freshness so UI can show "last updated".
-- Use write-through: on successful network fetch, update cache immediately.
-- Support a manual refresh path even when cache is available.
-- Choose cache policy per feature (stale-while-revalidate, time-based expiry, or size-based eviction).
-- If offline, return cached data with an explicit "stale" marker; avoid empty screens.
 
 ## Dependency injection
 
@@ -105,7 +87,7 @@ Do not create a new package when:
 ## How to add a new feature
 
 1) Write an ADR for the new package and its edges (ADR-0004), and add it to `tools/package-categories`.
-2) Create a new Swift Package under `Packages/<Feature>`.
+2) Create `Packages/<Feature>` from `references/templates/Package.swift` (its header lists the README and Xcode project steps).
 3) Add feature views + view models + service protocols.
 4) Wire it in the app target (routing/navigation).
 5) Add tests inside the package.
@@ -141,54 +123,20 @@ Do not create a new package when:
 - Prefer testable view models and repositories with protocol-based dependencies.
 - Add integration tests for data flows that span multiple packages where practical.
 
-## Error handling & resiliency
+## References
 
-- Model domain errors explicitly; avoid pinpointing UI to raw network errors.
-- Handle transient failures with retry/backoff at the data layer.
-- Provide user-friendly error states at the view level (empty, loading, error).
-
-## Observability (non-CI)
-
-- Add lightweight logging in data/repository layers for request/response failures.
-- Use analytics/telemetry behind a protocol so it can be mocked in tests.
-
-## Code style and documentation
-
-### Style guide
-
-Follow Alike Swift Style. See `references/swift-code-style.md` for:
-- What SwiftFormat and SwiftLint enforce (ADR-0001, ADR-0002)
-- How to change a format rule (ADR-0003)
-- The 15 written rules that reviewers check
+| Need | Reference |
+|---|---|
+| Style: what SwiftFormat and SwiftLint enforce, the 15 written rules (ADR-0001 to ADR-0003) | `references/swift-code-style.md` |
+| File layout, when and how to split, one way per task (DI, errors, logging, navigation), known debt. A new way needs an ADR. | `references/file-structure.md` |
+| Templates: `View`, `ViewModel`, `Service`, `FeatureTests`, `Package` | `references/templates/` |
+| SwiftUI view rules, state wrapper table, 6-item review checklist | `references/swiftui-view-rules.md`, `references/view-review-checklist.md` |
+| Data layer, caching, error resiliency, observability | `references/data-layer.md` |
+| `///` and `//` comments, markers. Comments are in English; translate a non-English comment in a file that you change. | `references/code-documentation.md` |
+| README of a new package (category from ADR-0004) | `references/package-readme-template.md` |
+| Schemes, build configurations, `#if DEBUG`, feature flags | `references/xcode-schemes-configurations.md` |
 
 `tools/quick` and `tools/full` run `ALIKE_LINT_STRICT=1 tools/lint` on the
 changed Swift files before the package tests. Install the pre-commit hook once
 with `tools/install-hooks`. If a commit stops, run `tools/lint --fix`, then
 `git add` the files.
-
-### Documentation
-
-Follow structured documentation standards for public APIs and inline comments. See `references/code-documentation.md` for:
-- When and how to use `///` doc comments with markup
-- Inline comment (`//`) best practices
-- Special markers (`TODO`, `FIXME`, `WARNING`)
-- Complete examples for classes, protocols, and functions
-- Use English only for code documentation and comments (`///`, `//`, `// MARK:`).
-- If existing comments are non-English, convert them to English when touching the file.
-
-### Package README
-
-Every package has a `README.md`. A new package copies
-`references/package-readme-template.md` and fills in its category from
-ADR-0004.
-
-### Build configurations and schemes
-
-Organize Xcode schemes and build configurations for multiple deployment targets. See `references/xcode-schemes-configurations.md` for:
-- Setting up Debug/Staging/Release configurations
-- Creating schemes per environment (Production, Staging, Testing)
-- Conditional compilation (`#if DEBUG`, `#if STAGING`)
-- Testing with test data (launch arguments, environment variables, mock injection)
-- Bundle identifier strategies for side-by-side installs
-- CI/CD integration (GitHub Actions, Fastlane)
-- Debug menu and feature flags patterns
