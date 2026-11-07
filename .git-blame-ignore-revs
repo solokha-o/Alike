@@ -19,3 +19,6 @@ c92ba716970998a8c9446976f8a9e6128ecd8e02
 
 # LATER rule 2 (ADR-0001): acronyms, format only.
 86d4786ee502dfec7ca4efced2e2f3042a009209
+
+# LATER rule 3 (ADR-0001): noGuardInTests, format only.
+071c574970d68ff4cd190297569010589cd37068
