@@ -179,5 +179,3 @@ private struct BlurAnalysisWorkItem: @unchecked Sendable {
     let pixelWidth: Int
     let pixelHeight: Int
 }
-
-

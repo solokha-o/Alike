@@ -187,9 +187,9 @@ import Testing
         #expect(workspace.clusters == [cluster])
         #expect(workspace.contentState == .content(workspace.content!))
         #expect(workspace.reconciliationState == .failed(
-                record,
-                message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
-            ))
+            record,
+            message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
+        ))
     }
 
     @Test func testStaleCachedLoadCannotReplaceCompletedScan() async throws {

@@ -136,9 +136,9 @@ private extension PhotoKitCleanupService {
 
     static func performDeletion(of assets: [PHAsset]) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            PHPhotoLibrary.shared().performChanges({
+            PHPhotoLibrary.shared().performChanges {
                 PHAssetChangeRequest.deleteAssets(assets as NSArray)
-            }, completionHandler: { success, error in
+            } completionHandler: { success, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if success {
@@ -146,7 +146,7 @@ private extension PhotoKitCleanupService {
                 } else {
                     continuation.resume(throwing: PhotoCleanupError.deleteFailed)
                 }
-            })
+            }
         }
     }
 }

@@ -59,7 +59,7 @@ struct EnhancementPreviewView: View {
         }
         .safeAreaInset(edge: .bottom) { actions }
         .overlay {
-            if state.isBusy && enhancedImage == nil {
+            if state.isBusy, enhancedImage == nil {
                 ProgressView()
                     .tint(.white)
                     .accessibilityLabel(Text(DetailsL10n.ClusterDetails.enhancementPreviewTitle))

@@ -74,7 +74,7 @@ import Photos
                 let lastSensitivity = await service.lastSensitivity
                 #expect(didCallAnalyze)
                 #expect(lastSensitivity == 0.9)
-                #expect(clusters.count == 0)
+                #expect(clusters.isEmpty)
             }
         }
     }

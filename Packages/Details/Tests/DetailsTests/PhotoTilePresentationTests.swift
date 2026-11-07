@@ -83,10 +83,10 @@ import Testing
 
     @Test func testImageLoadTaskIDFormat() {
         #expect(PhotoTilePresentation.imageLoadTaskID(
-                localIdentifier: "a",
-                modificationDate: Date(timeIntervalSinceReferenceDate: 5),
-                attempt: 2
-            ) == "a#5.0#2")
+            localIdentifier: "a",
+            modificationDate: Date(timeIntervalSinceReferenceDate: 5),
+            attempt: 2
+        ) == "a#5.0#2")
         #expect(PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: nil, attempt: 0) == "a#0.0#0")
     }
 
@@ -96,10 +96,10 @@ import Testing
         let base = PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: date, attempt: 0)
 
         #expect(base != PhotoTilePresentation.imageLoadTaskID(
-                localIdentifier: "a",
-                modificationDate: date.addingTimeInterval(1),
-                attempt: 0
-            ))
+            localIdentifier: "a",
+            modificationDate: date.addingTimeInterval(1),
+            attempt: 0
+        ))
         #expect(base != PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: date, attempt: 1))
     }
 }

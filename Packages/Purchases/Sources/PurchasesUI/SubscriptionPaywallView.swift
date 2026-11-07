@@ -211,7 +211,6 @@ public struct SubscriptionPaywallView: View {
         }
     }
 
-    @ViewBuilder
     private func planCards(usesGlass: Bool) -> some View {
         ForEach(SubscriptionPlan.presentationOrder) { plan in
             if let product = store?.products[plan] {
@@ -328,7 +327,6 @@ public struct SubscriptionPaywallView: View {
         .background(.regularMaterial)
     }
 
-    @ViewBuilder
     private func purchaseControls(usesGlass: Bool) -> some View {
         VStack(spacing: Spacing.xSmall) {
             Button(action: purchaseSelectedPlan) {

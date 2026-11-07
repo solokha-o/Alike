@@ -34,7 +34,7 @@ import Testing
 
         let rendered = date.formatted(style)
         #expect(rendered.contains("2026"), "expected a Gregorian year in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
     }
 
     /// The scanner progress readout (`ScannerHomeComponents`, label and accessibility value).
@@ -43,7 +43,7 @@ import Testing
             .percent.precision(.fractionLength(0)).locale(pinnedArabic)
         )
         #expect(rendered.contains("36"), "expected Latin 36 in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
     }
 
     /// Cluster badges (`CleanupView`), the grid column picker (`PhotoGridColumnPreference`)
@@ -60,7 +60,7 @@ import Testing
                 .locale(pinnedArabic)
         )
         #expect(rendered.contains("51"), "expected Latin 51 in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
         #expect(!(rendered.contains("٫")), "Arabic decimal separator in \(rendered)")
     }
 
