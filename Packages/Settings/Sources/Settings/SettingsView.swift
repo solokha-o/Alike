@@ -173,7 +173,6 @@ public struct SettingsView: View {
         }
     }
 
-    @ViewBuilder
     private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
         SubscriptionPaywallView(
             context: .feature(feature),
@@ -772,9 +771,9 @@ private struct DeleteAllDataView: View {
                                 .controlSize(.small)
                         }
                         Text(
-                            (model.isDeleting
+                            model.isDeleting
                                     ? SettingsL10n.Main.deleting
-                                    : SettingsL10n.Main.deleteAlikeData)
+                                    : SettingsL10n.Main.deleteAlikeData
                         )
                         .frame(maxWidth: .infinity)
                     }

@@ -119,7 +119,6 @@ public struct WelcomeView: View {
         #endif
     }
 
-    @ViewBuilder
     private func welcomePage(_ page: WelcomePage) -> some View {
         ScrollView {
             Group {
@@ -366,7 +365,7 @@ public struct WelcomeView: View {
     /// Neutral wording on purpose: App Review 5.1.1(iv) reads a "Grant Access" button in front
     /// of the system prompt as steering the answer.
     private var finalActionTitle: String {
-        WelcomeL10n.Main.`continue`
+        WelcomeL10n.Main.continue
     }
 
     private func performFinalAction() {

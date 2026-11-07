@@ -90,7 +90,7 @@ public struct ClusterDetailsView: View {
         // replaced by a wall of content the instant loading finishes.
         .animation(.appSmooth, value: viewModel.hasLoadedReviewState)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
+            if viewModel.isDeleteActionVisible, !viewModel.isDeleting {
                 ClusterReviewActionBar(
                     selectedCount: viewModel.selectedCount,
                     onDeleteSelected: requestDeleteConfirmation,

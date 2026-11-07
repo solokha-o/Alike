@@ -55,8 +55,8 @@ struct AlikeStatusWidgetView: View {
     @Environment(\.widgetFamily) private var widgetFamily
 
     let state: WidgetDisplayState
-    var libraryTotalBytes: Int64? = nil
-    var snapshot: WidgetSnapshot? = nil
+    var libraryTotalBytes: Int64?
+    var snapshot: WidgetSnapshot?
 
     var body: some View {
         if isExtraLargePortrait {

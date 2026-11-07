@@ -151,7 +151,6 @@ public struct BestShotCalibrationLabelingView: View {
             + "whose photos could no longer be found in the library."
     }
 
-    @ViewBuilder
     private var content: some View {
         VStack(spacing: 0) {
             progressHeader
