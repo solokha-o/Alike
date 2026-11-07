@@ -119,3 +119,5 @@
 --rules preferCountWhere
 --rules docComments
 --rules wrapMultilineConditionalAssignment
+# environmentEntry (ADR row 10) added after row 12 by owner decision
+--rules environmentEntry
