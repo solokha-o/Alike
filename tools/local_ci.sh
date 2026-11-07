@@ -91,6 +91,8 @@ Environment:
   CLANG_MODULE_CACHE_PATH        In a sandbox, set this at command launch to a writable path.
   DEVELOPER_DIR                  Xcode toolchain to use. When unset and `xcode-select` points at the
                                   Command Line Tools, the newest installed Xcode is selected automatically.
+  ALIKE_LINT_BASE                Base branch for the lint step. Default: ALIKE_CI_BASE_REF, then origin/develop.
+  ALIKE_SKIP_LINT=1              Emergency hotfix only: record the lint steps as skipped in quick and full.
   ALIKE_SKIP_APP_BUILD=1         Skip the full app compile and AlikeTests in full mode.
   ALIKE_SKIP_ARCHIVE=1           Records archive as skipped; release-check fails because archive validation is required.
   ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1
@@ -249,6 +251,23 @@ run_no_xctest_validation() {
 run_package_graph_validation() {
   run_step "package graph script tests" python3 tools/check_package_graph_test.py
   run_step "package graph" python3 tools/check_package_graph.py
+}
+
+# Strict lint of the Swift files changed against the base branch (stage 3 of the
+# clean-code epic). It runs before the package tests and builds, so it fails fast.
+run_lint_validation() {
+  local base_ref="${ALIKE_LINT_BASE:-${ALIKE_CI_BASE_REF:-origin/develop}}"
+
+  if [[ "${ALIKE_SKIP_LINT:-0}" == "1" ]]; then
+    skip_step "lint script tests" "ALIKE_SKIP_LINT=1 (emergency hotfix only)"
+    skip_step "install-hooks script tests" "ALIKE_SKIP_LINT=1 (emergency hotfix only)"
+    skip_step "lint changed Swift files (strict)" "ALIKE_SKIP_LINT=1 (emergency hotfix only)"
+    return
+  fi
+  run_step "lint script tests" python3 tools/lint_test.py
+  run_step "install-hooks script tests" python3 tools/install_hooks_test.py
+  run_step "lint changed Swift files (strict)" \
+    env ALIKE_LINT_STRICT=1 ALIKE_LINT_BASE="$base_ref" tools/lint
 }
 
 write_report() {
@@ -770,6 +789,7 @@ main() {
       run_whitespace_validation
       run_no_xctest_validation
       run_package_graph_validation
+      run_lint_validation
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
@@ -777,6 +797,7 @@ main() {
       run_whitespace_validation
       run_no_xctest_validation
       run_package_graph_validation
+      run_lint_validation
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
