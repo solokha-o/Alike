@@ -45,6 +45,10 @@ excluding `**/.build`, `build`, `vendor`, `Skills`. Nothing was written.
 - 76 rules have 0 violations: the code already follows them.
 - 74 rules have violations. The table lists them from the smallest diff to
   the largest. "Files" and "Lines" are what the rule would change.
+- The numbers come from one pass with all rules enabled. Rules interact, so a
+  pass with one rule can differ by 1–2 lines (for example `andOperator` 2/2,
+  `trailingSpace` 37/447). Treat small counts as approximate; stage 7 measures
+  each rule alone before it enables it.
 
 | Rule | Files | Lines |
 |---|---:|---:|
@@ -208,7 +212,8 @@ Local edges from `Packages/*/Package.swift`:
 
 - Feature → feature edges: `Settings → Diagnostics, UserGuide` and
   `Scanner → UserGuide`. `Cleanup` and `Details` have no importer among the
-  feature packages (refactor R1–R6).
+  feature packages (`Cleanup`, `Details`, `Launch`, `Scanner`, `Settings`,
+  `Welcome`) after the preparatory refactor cards R1–R6 on the Notion board.
 - The only third-party package is `lottie-spm`, used only by `DesignSystem`.
 - `Packages/AppIntentsKit` does not exist any more.
 
@@ -220,6 +225,7 @@ lines. All 24 are examples in skill documents. Swift code in `Alike/` and
 
 ## 7. Branches and pull requests
 
+- Snapshot at 2026-11-07, before the stage PRs of this epic opened.
 - Local and remote branches: `develop`, `main` only.
 - Open pull requests: none.
 - Consequence: a reformat commit does not conflict with any open branch now.
