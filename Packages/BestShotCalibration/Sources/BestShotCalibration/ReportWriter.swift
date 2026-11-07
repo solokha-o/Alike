@@ -24,7 +24,7 @@ public enum ReportWriter {
             lines.append("## Warnings")
             lines.append("")
             for warning in warnings {
-                lines.append("> \(warning.replacingOccurrences(of: "\n", with: " "))")
+                lines.append("> \(warning.replacing("\n", with: " "))")
             }
             lines.append("")
         }

@@ -113,3 +113,4 @@
 --rules noGuardInTests
 --rules redundantAsync
 --rules wrapEnumCases
+--rules preferSwiftStringAPI
