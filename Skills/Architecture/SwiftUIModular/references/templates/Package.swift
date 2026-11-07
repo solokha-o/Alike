@@ -1,9 +1,9 @@
 // swift-tools-version: 6.0
 // Template: the manifest of a new Feature package.
 // Based on: Packages/Welcome/Package.swift.
-// Replace `FeatureName`. Declare only the local packages that the sources
-// import; `tools/check-package-graph` rejects an edge that ADR-0004 does not
-// permit. Keep `defaultLocalization` and `resources` when the package has a
+// Replace `FeatureName`. Declare only the local packages that the source
+// files use. `tools/check-package-graph` rejects an edge that ADR-0004 does
+// not permit. Keep `defaultLocalization` and `resources` when the package has a
 // `Resources/Localizable.xcstrings` (see Skills/Localization/spm-localization).
 import PackageDescription
 
