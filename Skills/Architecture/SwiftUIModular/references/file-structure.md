@@ -7,34 +7,19 @@ adds the order inside a type, the split procedure, and the current ways.
 
 ## Rules for one file
 
-1. **One primary type in each file.** The file name is the type name (written
-   rule 1). A small `private` helper type that only this file uses can stay,
-   for example the section in [templates/View.swift](templates/View.swift).
-2. **Order inside the type:**
-   1. Nested types (`enum State`, `enum Route`).
-   2. Stored properties: `@Environment`, `@State`, `let`, `var`.
-   3. Computed properties that are not views.
-   4. `init`.
-   5. `body`, then the public and internal methods.
-   6. Private methods.
+Written rules 1 and 2 in [swift-code-style.md](swift-code-style.md) set one
+primary type for each file, `Type+Purpose.swift` for extensions, and each
+conformance in its own extension. This file adds 2 details:
 
-   For the detailed order of a SwiftUI view, use section 1 of
-   `Skills/SwiftUI/swiftui-view-refactor/SKILL.md`.
-3. **Put `// MARK: -` between sections** when the file has more than one
-   section: `// MARK: - Properties`, `// MARK: - Init`, `// MARK: - Body`,
-   `// MARK: - Private Methods`. A file with one section has no MARK.
-4. **Put each conformance in its own extension** after the type, with a MARK
-   that names the protocol:
-
-   ```swift
-   // MARK: - Equatable
-   extension ClusterRow: Equatable { … }
-   ```
-
-5. **Name an extension file `Type+Feature.swift`.** Example:
-   `Packages/Details/Sources/Details/ClusterDetailsViewModel+Selection.swift`.
-   The feature word says what the extension does, not where it came from
-   (`+Selection`, not `+Part2`).
+1. **Order inside a type.** For a SwiftUI view, use section 1 of
+   `Skills/SwiftUI/swiftui-view-refactor/SKILL.md` (Environment, `let`,
+   `@State`, computed values, `init`, `body`, view helpers, other methods).
+   Other types use the same order: nested types, stored properties, computed
+   properties, `init`, public and internal methods, private methods.
+2. **MARK names.** When the file has more than one section, use
+   `// MARK: - Properties`, `// MARK: - Init`, `// MARK: - Body`,
+   `// MARK: - Private Methods`, and `// MARK: - <Protocol>` before a
+   conformance extension.
 
 ## When to split a file
 
@@ -59,7 +44,7 @@ lines. Split it first, in its own pull request or commit.
    by type (commit `0d5505bf`).
 2. **Subviews go to their own files.** Name the file after the view:
    `ClusterReviewActionBar.swift`, `CleanupCategoriesCard.swift`.
-3. **Extensions of a large type go to `Type+Feature.swift`.** Example: the
+3. **Extensions of a large type go to `Type+Purpose.swift`.** Example: the
    `ClusterDetailsViewModel+…` files in `Packages/Details/Sources/Details/`.
    An extension in another file cannot read `private` members. Change only the
    members that the extension needs from `private` to `internal`, and keep
@@ -77,11 +62,11 @@ needs a new ADR (`Docs/adr/0000-template.md`) before the first commit.
 
 | Task | Current way | Example |
 |---|---|---|
-| Dependency injection | `init` injection of a Core protocol (`any FeatureNameRepository`). The app target makes the concrete type; no default argument outside the composition root (written rule 6). | `SettingsViewModel.init(appVersion:cleanupReminderManager:)`; composition root `Alike/Alike/Router/RootView.swift` |
+| Dependency injection | Current: `init` injection of a Core protocol (`any FeatureNameRepository`), but most Feature types give the parameter a default concrete value (see the debt list). New code: no default value outside the composition root (written rule 6). | Target: `SettingsViewModel.init(appVersion:cleanupReminderManager:)`; composition root `Alike/Alike/Router/RootView.swift` |
 | Protocols and test doubles | Protocol in `Packages/Core/Sources/Core/Protocols/Repositories.swift`, `Sendable`, with `///` on each requirement. Test double `public actor Mock…` in `Packages/Core/Sources/Core/Mocks/` inside `#if DEBUG`. | `CleanupHistoryRepository`, `MockCleanupHistoryRepository` |
 | Implementation | `public actor` (or `final class …: Sendable` around an actor) in the Foundation package that owns the data, usually `Storage`. | `UserDefaultsCleanupReminderPreferenceRepository`, `FileAssetByteSizeRepository` |
 | View model | `@MainActor @Observable final class`, owned by the main view through `@State`, made in the view `init`. | `ScreenshotCleanupView`, `ClusterDetailsView` |
-| Error handling | Domain `enum` error in `Packages/Core/Sources/Core/Models/` (`PhotoCleanupError`). The view model catches once, logs, and sets `state = .failed(message:)` with a localized string. `CancellationError` is not a failure. | `DeleteAllDataModel.deleteAllData()` |
+| Error handling | Domain `enum` error in `Packages/Core/Sources/Core/Models/` (`PhotoCleanupError`). The view model catches once and logs. 2 patterns exist: a `State` enum with `case failed(message:)`, and separate optionals such as `errorMessage: String?`. New code: the `State` enum, with a localized message. `CancellationError` is not a failure. | `DeleteAllDataModel.deleteAllData()` |
 | Logging | `AppLog.<category>` (`os.Logger`) from `Packages/Core/Sources/Core/Logging/AppLog.swift`, message wrapped in `AppLog.tag(_:_:)`. No `print` (SwiftLint `no_print`). No personal data at `.public` privacy. | `AppLog.storage.error("\(AppLog.tag(.error, "Failed to …: \(error.localizedDescription)"))")` |
 | Navigation in a feature | `RoutedNavigationStack` and `StackRouter` from `NavigationKit`, with one `Hashable` route `enum` for each feature. | `SettingsRoute`, `CleanupRoute`, `GuideRoute` |
 | Navigation of the app | `AppRouter` in the app target. | `Alike/Alike/Router/AppRouter.swift` |
@@ -93,17 +78,39 @@ needs a new ADR (`Docs/adr/0000-template.md`) before the first commit.
 
 ## Code that does not follow the current way
 
-Some shipped code uses an older way. Do not copy it into new code. Fix it in
+Much shipped code uses an older way. Do not copy it into new code. Fix it in
 the lines that you touch (see "When a rule and the code disagree" in
-[swift-code-style.md](swift-code-style.md)).
+[swift-code-style.md](swift-code-style.md)). Counts are from `origin/develop`
+on 2026-11-07.
 
-- Default service arguments in a Feature `init`: `WelcomeViewModel.init`,
-  `ScreenshotCleanupView.init`.
-- A singleton inside an implementation: `CleanupFileStoreRegistry.shared` in
-  `FileCleanupHistoryRepository`.
-- `Skills/SwiftUI/swiftui-view-refactor/SKILL.md` section 2 prefers MV and
-  `@Environment` services. In Alike, the table above wins: MVVM with `init`
-  injection.
+- **Default service arguments** (written rule 6): 30 in 10 files.
+  `CleanupWorkspaceModel.swift` 8, `ClusterDetailsView.swift` 4,
+  `ClusterDetailsViewModel.swift` 4, `ScreenshotCleanupView.swift` 4,
+  `ScreenshotCleanupViewModel.swift` 3, `ScannerViewModel.swift` 3, and 1 each
+  in `CleanupView.swift`, `RatingPromptCoordinator.swift`, `SettingsView.swift`,
+  `WelcomeViewModel.swift`. Recount:
+  `grep -rcE ":[^=]*(Repository|Service|Manager|Controller|Controlling|Store|Analyzer)\)?\?? = [A-Z][A-Za-z]*\(" Packages/*/Sources`.
+- **Error optionals instead of a `State` enum:**
+  `ClusterDetailsViewModel` (`actionErrorMessage`, `actionErrorTitle`),
+  `ScreenshotCleanupViewModel` (`deleteErrorMessage`), `CleanupView`
+  (`@State categoryError` in the view). Only `DeleteAllDataModel`,
+  `ResetBestShotPersonalizationModel`, and `CleanupWorkspaceTypes.swift` use
+  `case failed(message:)`.
+- **A singleton inside an implementation:** `CleanupFileStoreRegistry.shared`
+  in `FileCleanupHistoryRepository`.
+
+## Conflicts with swiftui-view-refactor
+
+`Skills/SwiftUI/swiftui-view-refactor/SKILL.md` is generic. For Alike, these
+rules win:
+
+- Its section 2 prefers MV and services from `@Environment`. Alike uses MVVM
+  with `init` injection, as in the table above.
+- Its section 3 permits subviews as computed view properties. Alike permits
+  them only for small sections without own state, expensive work, or a
+  `ForEach`. View rule 1 in [swiftui-view-rules.md](swiftui-view-rules.md)
+  refines section 3.
+- Its section 1 (member order) applies without change.
 
 ## Templates
 

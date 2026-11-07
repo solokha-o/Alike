@@ -8,7 +8,7 @@ This file says how. The examples come from the R4 refactor
 
 Related skills, not repeated here:
 
-- Member order in a view: `Skills/SwiftUI/swiftui-view-refactor/SKILL.md`.
+- Member order in a view: `Skills/SwiftUI/swiftui-view-refactor/SKILL.md`. Where it disagrees with Alike, see "Conflicts with swiftui-view-refactor" in [file-structure.md](file-structure.md).
 - Full review checklist for lifecycle and updates:
   `Skills/SwiftUI/swiftui-code-review/SKILL.md`.
 - Proof of a performance problem: `Skills/SwiftUI/swiftui-performance-audit/SKILL.md`.
