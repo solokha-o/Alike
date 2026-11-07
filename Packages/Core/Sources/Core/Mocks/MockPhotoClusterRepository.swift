@@ -32,7 +32,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     
     public init() {}
     
-    // Setters for test configuration
+    /// Setters for test configuration
     public func setLoadClustersResult(_ result: Result<[PhotoCluster], Error>) {
         loadClustersResult = result
     }

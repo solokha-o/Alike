@@ -19,14 +19,14 @@ extension Color {
     public static let statusSavings = Color(red: 0.16, green: 0.72, blue: 0.64)
     public static let statusNew = Color(red: 0.19, green: 0.73, blue: 0.66)
     
-    /// Card background
+    // Card background
     #if os(iOS)
     public static let cardBackground = Color(.systemBackground)
     #else
     public static let cardBackground = Color(white: 1.0)
     #endif
     
-    /// Secondary background
+    // Secondary background
     #if os(iOS)
     public static let secondaryBackground = Color(.secondarySystemBackground)
     #else

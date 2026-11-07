@@ -7,8 +7,8 @@ import Testing
 /// `ScanSummary.estimatedSavingsBytes`, the cold-launch estimate and the
 /// content's own estimate are one figure, computed once: every asset counted
 /// once across clusters and categories, and the keeper never counted.
-// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
-// A test here advances it, and another test asserts that nothing was measured during its scan.
+/// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
+/// A test here advances it, and another test asserts that nothing was measured during its scan.
 @MainActor
 @Suite(.serialized) struct CleanupWorkspaceReclaimableEstimateTests {
     @Test func testScanSummaryCountsAScreenshotInsideAClusterOnce() async throws {

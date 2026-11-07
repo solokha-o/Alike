@@ -22,8 +22,8 @@ public actor FileAssetByteSizeRepository: AssetByteSizeRepository {
         try write(records: records, libraryTotalBytes: loadPayload()?.libraryTotalBytes)
     }
 
-    // `async` like the requirement: a synchronous witness would lose overload
-    // resolution to the protocol's default when called on the concrete type.
+    /// `async` like the requirement: a synchronous witness would lose overload
+    /// resolution to the protocol's default when called on the concrete type.
     public func loadLibraryTotalBytes() async -> Int64? {
         loadPayload()?.libraryTotalBytes
     }
