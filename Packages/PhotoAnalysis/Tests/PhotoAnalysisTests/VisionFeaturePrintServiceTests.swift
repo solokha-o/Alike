@@ -21,7 +21,6 @@ import UIKit
         let featurePrint = try await requireFeaturePrint(from: cgImage)
         
         // Then: Feature print should be generated
-        #expect(featurePrint != nil, "Feature print should not be nil")
         #expect(featurePrint.data.count > 0, "Feature print should have data")
     }
     
