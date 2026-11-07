@@ -150,7 +150,7 @@ import Testing
             } else {
                 buffer += " " + trimmed
             }
-            depth += trimmed.filter { $0 == "(" }.count - trimmed.filter { $0 == ")" }.count
+            depth += trimmed.count(where: { $0 == "(" }) - trimmed.count(where: { $0 == ")" })
             if depth <= 0 {
                 statements.append((line: startLine, text: buffer))
                 buffer = ""

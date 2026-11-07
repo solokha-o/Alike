@@ -40,7 +40,7 @@ import Foundation
             return await group.reduce(into: []) { $0.append($1) }
         }
 
-        #expect(claims.filter { $0 }.count == 1)
+        #expect(claims.count(where: { $0 }) == 1)
     }
 
     @Test func testConcurrentClaimsAcrossRepositoryInstancesProduceOneWinner() async {
@@ -53,7 +53,7 @@ import Foundation
             return await group.reduce(into: []) { $0.append($1) }
         }
 
-        #expect(claims.filter { $0 }.count == 1)
+        #expect(claims.count(where: { $0 }) == 1)
     }
 
     @Test func testReleasedClaimCanBeClaimedAgain() async {

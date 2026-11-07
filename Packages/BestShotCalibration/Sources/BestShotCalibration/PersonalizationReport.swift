@@ -286,9 +286,9 @@ public enum PersonalizationReport {
             ))
         }
 
-        let faceBearingClusterCount = ordered.filter { cluster in
+        let faceBearingClusterCount = ordered.count(where: { cluster in
             cluster.candidates.contains { $0.signals.hasFaces }
-        }.count
+        })
 
         return KFoldResult(
             folds: folds,

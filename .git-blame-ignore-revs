@@ -37,3 +37,6 @@ e227c7519da17c4ac58de42a1724fdd5a74df560
 
 # LATER rule 8 (ADR-0001): opaqueGenericParameters, format only.
 f181d44c602777704b690523cb26674169b96058
+
+# LATER rule 9 (ADR-0001): preferCountWhere, format only.
+b4f2a262309443c7e7df79415d9d22ae5d458aed

@@ -157,7 +157,7 @@ public final class BestShotCalibrationLabelingViewModel {
     /// pass is not needed.
     public var clustersNeedingRemeasureCount: Int {
         let current = currentThumbnailConfigVersion
-        return labelledClusters.filter { measuredThumbnailConfigVersions[$0.clusterID] != current }.count
+        return labelledClusters.count(where: { measuredThumbnailConfigVersions[$0.clusterID] != current })
     }
 
     /// Candidate local identifiers of the cluster on screen, in cluster order,
