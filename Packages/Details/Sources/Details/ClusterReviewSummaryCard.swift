@@ -145,7 +145,6 @@ struct ClusterReviewSummaryCard: View {
 
     /// Three states in one place: a confident pick, a hedged one, and the
     /// honest "nothing stands out here, you choose".
-    @ViewBuilder
     private var bestShotSummaryContent: some View {
         Group {
             if isChoosingBestShot {

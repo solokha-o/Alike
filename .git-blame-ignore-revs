@@ -10,3 +10,6 @@
 #   git config blame.ignoreRevsFile .git-blame-ignore-revs
 #
 # GitHub reads this file automatically.
+
+# CORE rules (ADR-0001): 16 CORE SwiftFormat rules applied, format only.
+ee0451e7e5eccaab610396100be1f695f8e5a372

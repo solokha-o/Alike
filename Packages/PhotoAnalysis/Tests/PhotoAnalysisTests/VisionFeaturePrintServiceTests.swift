@@ -22,7 +22,7 @@ import UIKit
         
         // Then: Feature print should be generated
         #expect(featurePrint != nil, "Feature print should not be nil")
-        #expect(featurePrint.data.count > 0, "Feature print should have data")
+        #expect(!featurePrint.data.isEmpty, "Feature print should have data")
     }
     
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })

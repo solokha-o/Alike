@@ -25,4 +25,3 @@ public protocol PhotoFeaturePrintRepository: Sendable {
     /// Inserts or updates cached feature prints.
     func upsertFeaturePrints(_ entries: [PhotoFeaturePrintCacheEntry]) async throws
 }
-

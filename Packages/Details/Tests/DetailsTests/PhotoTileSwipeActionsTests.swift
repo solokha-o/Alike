@@ -46,11 +46,11 @@ import Core
 
     @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testScreenshotTileOffersOnlySelectionActions() throws {
         #expect(PhotoTileSwipeAction.available(
-                isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: false
-            ) == [.select])
+            isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: false
+        ) == [.select])
         #expect(PhotoTileSwipeAction.available(
-                isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: false
-            ) == [.keep])
+            isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: false
+        ) == [.keep])
     }
 
     // MARK: - Edges

@@ -396,7 +396,7 @@ import Testing
             )
         }
         let withNonFinite = (0..<50).map { index -> BestShotOverrideExample in
-            var sharpnessDelta: Double = 0.2
+            var sharpnessDelta = 0.2
             if index == 5 { sharpnessDelta = .infinity }
             var exposureDelta: Double = 0
             if index == 12 { exposureDelta = .nan }

@@ -11,7 +11,10 @@ import Testing
 @Suite("Widget accent palette")
 struct WidgetPaletteTests {
     private struct Components: Equatable, CustomStringConvertible {
-        let red: Double, green: Double, blue: Double, alpha: Double
+        let red: Double
+        let green: Double
+        let blue: Double
+        let alpha: Double
         var description: String { "(\(red), \(green), \(blue), \(alpha))" }
     }
 

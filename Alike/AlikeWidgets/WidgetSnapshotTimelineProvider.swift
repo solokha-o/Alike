@@ -11,10 +11,10 @@ struct WidgetSnapshotEntry: TimelineEntry {
     let state: WidgetDisplayState
     /// What the circular ring measures the reclaimable estimate against. `nil` for a
     /// 1.4.x payload, which draws the figure without a ring.
-    var libraryTotalBytes: Int64? = nil
+    var libraryTotalBytes: Int64?
     /// What the extra-large family reads beyond the state: category counts, the premium
     /// flag, the library size and the largest groups. `nil` when there is no snapshot.
-    var snapshot: WidgetSnapshot? = nil
+    var snapshot: WidgetSnapshot?
 }
 
 /// Reads the shared snapshot and hands WidgetKit a single entry.

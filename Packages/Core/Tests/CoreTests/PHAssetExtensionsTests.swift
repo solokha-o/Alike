@@ -73,6 +73,7 @@ import Photos
         fetchOptions.fetchLimit = 5
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         
+        // swiftformat:disable:next isEmpty - PHFetchResult has no isEmpty
         try #require(fetchResult.count > 0)
         
         // Measure time to load 5 images

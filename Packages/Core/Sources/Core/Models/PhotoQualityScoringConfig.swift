@@ -268,7 +268,6 @@ public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
         self.reasonCodeMinimumDelta = reasonCodeMinimumDelta
     }
 
-
     /// Tolerant decoding, because this type is a wire format.
     ///
     /// `bestshot-calibrate sweep` writes candidate configs as JSON and `report
