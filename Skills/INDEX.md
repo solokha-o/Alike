@@ -56,6 +56,10 @@ process) before you change formatting or lint configuration. Read ADR-0004
 (package dependencies, `tools/package-categories`) before you add a package,
 an edge between packages, or an SDK.
 
+Domain terms (code name, UI name, definition) are in `Docs/glossary.md`. Each
+package has a `README.md`; new packages copy
+`Skills/Architecture/SwiftUIModular/references/package-readme-template.md`.
+
 ## Routine Commands
 
 The user can run these directly when no interpretation is needed:

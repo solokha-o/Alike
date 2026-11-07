@@ -164,6 +164,12 @@ Follow structured documentation standards for public APIs and inline comments. S
 - Use English only for code documentation and comments (`///`, `//`, `// MARK:`).
 - If existing comments are non-English, convert them to English when touching the file.
 
+### Package README
+
+Every package has a `README.md`. A new package copies
+`references/package-readme-template.md` and fills in its category from
+ADR-0004.
+
 ### Build configurations and schemes
 
 Organize Xcode schemes and build configurations for multiple deployment targets. See `references/xcode-schemes-configurations.md` for:
