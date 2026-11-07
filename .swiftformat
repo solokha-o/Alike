@@ -112,3 +112,4 @@
 --rules acronyms
 --rules noGuardInTests
 --rules redundantAsync
+--rules wrapEnumCases

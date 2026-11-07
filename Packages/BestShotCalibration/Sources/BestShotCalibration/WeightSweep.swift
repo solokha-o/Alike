@@ -189,7 +189,11 @@ public enum WeightSweep {
     // MARK: - Weight coordinate descent
 
     private enum WeightComponent: CaseIterable {
-        case sharpness, faceQuality, exposure, noiseArtifacts, resolution
+        case sharpness
+        case faceQuality
+        case exposure
+        case noiseArtifacts
+        case resolution
 
         var name: String {
             switch self {
@@ -213,7 +217,8 @@ public enum WeightSweep {
     }
 
     private enum WeightGroup: CaseIterable {
-        case withFaces, withoutFaces
+        case withFaces
+        case withoutFaces
 
         var name: String {
             switch self {
