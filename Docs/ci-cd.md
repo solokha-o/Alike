@@ -196,6 +196,25 @@ xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/pl
 
 Tests need a concrete device; `tools/local_ci.sh` picks one, and `ALIKE_BUILD_DESTINATION='id=<udid>'` overrides it.
 
+### Warnings as errors
+
+A Swift warning fails `tools/quick` and `tools/full`.
+
+- The package steps, the app build, and `AlikeTests` set
+  `SWIFT_TREAT_WARNINGS_AS_ERRORS` on the `xcodebuild` command line.
+- A command-line setting reaches every target, also remote packages. Xcode
+  builds a remote package with `SWIFT_SUPPRESS_WARNINGS=YES`, and `swiftc`
+  stops on `-suppress-warnings` together with `-warnings-as-errors`. So the
+  value is `YES` only in targets that do not suppress warnings: the Alike
+  targets. A warning in `lottie-spm` (DesignSystem) cannot fail the gate.
+- The `swift test` and `swift build` steps pass `-Xswiftc -warnings-as-errors`.
+  These packages have no remote dependency, so the flag reaches only Alike code.
+- The setting is not in `project.pbxproj` or `Package.swift`. A build in Xcode
+  and the release archive and export in `tools/release-check` do not change.
+- `ALIKE_ALLOW_WARNINGS=1` drops the setting and records the step
+  `Swift warnings as errors` as `skipped` in the report. Use it for an emergency
+  hotfix only, and fix the warning in the next change.
+
 ### Lint
 
 `tools/lint` runs SwiftFormat (`--lint`, `.swiftformat`) and SwiftLint

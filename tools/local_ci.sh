@@ -93,6 +93,8 @@ Environment:
                                   Command Line Tools, the newest installed Xcode is selected automatically.
   ALIKE_LINT_BASE                Base branch for the lint step. Default: ALIKE_CI_BASE_REF, then origin/develop.
   ALIKE_SKIP_LINT=1              Emergency hotfix only: record the lint steps as skipped in quick and full.
+  ALIKE_ALLOW_WARNINGS=1         Emergency hotfix only: build without warnings-as-errors in quick and full,
+                                  and record the gate as skipped in the report.
   ALIKE_SKIP_APP_BUILD=1         Skip the full app compile and AlikeTests in full mode.
   ALIKE_SKIP_ARCHIVE=1           Records archive as skipped; release-check fails because archive validation is required.
   ALIKE_XCODE_ALLOW_PROVISIONING_UPDATES=1
@@ -287,6 +289,34 @@ run_lint_validation() {
     env ALIKE_LINT_STRICT=1 ALIKE_LINT_BASE="$base_ref" tools/lint
 }
 
+# Stage 8B of the clean-code epic: a Swift warning fails quick and full. The
+# setting goes on the command line, not into the project or the manifests, so a
+# plain Xcode build and the Release archive keep their own behavior.
+# A command-line setting reaches every target, also remote packages. Xcode builds
+# those with SWIFT_SUPPRESS_WARNINGS=YES, and swiftc rejects "-suppress-warnings"
+# together with "-warnings-as-errors" (seen on lottie-spm's _LottieStub). So the
+# value is picked per target from SWIFT_SUPPRESS_WARNINGS: YES only where
+# warnings are not suppressed, that is, in Alike's own targets.
+# The SwiftPM flag is safe because no package that runs under plain `swift`
+# depends on a remote package; those that reach DesignSystem go to xcodebuild.
+WARNINGS_AS_ERRORS_XCODEBUILD_ARGS=()
+WARNINGS_AS_ERRORS_SWIFTPM_ARGS=()
+
+configure_warnings_as_errors() {
+  if [[ "${ALIKE_ALLOW_WARNINGS:-0}" == "1" ]]; then
+    skip_step "Swift warnings as errors" "ALIKE_ALLOW_WARNINGS=1 (emergency hotfix only)"
+    return
+  fi
+  # Single quotes: xcodebuild, not the shell, expands the $(...) references.
+  # shellcheck disable=SC2016
+  WARNINGS_AS_ERRORS_XCODEBUILD_ARGS=(
+    'SWIFT_TREAT_WARNINGS_AS_ERRORS=$(ALIKE_WARNINGS_AS_ERRORS_WHEN_SUPPRESSED_$(SWIFT_SUPPRESS_WARNINGS:default=NO))'
+    ALIKE_WARNINGS_AS_ERRORS_WHEN_SUPPRESSED_NO=YES
+    ALIKE_WARNINGS_AS_ERRORS_WHEN_SUPPRESSED_YES=NO
+  )
+  WARNINGS_AS_ERRORS_SWIFTPM_ARGS=(-Xswiftc -warnings-as-errors)
+}
+
 write_report() {
   local status="$1"
   mkdir -p "$REPORT_ROOT"
@@ -433,6 +463,7 @@ run_xcodebuild_package_step() {
       -scheme "$scheme" \
       -destination "$destination" \
       -derivedDataPath "$DERIVED_DATA_ROOT/packages/$slug" \
+      ${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]+"${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]}"} \
       "$action"
 }
 
@@ -444,7 +475,7 @@ run_package_tests() {
       continue
     fi
     set_swiftpm_common_args "$package_path"
-    run_step "swift test ${package_path#$ROOT_DIR/}" swift test "${SWIFTPM_COMMON_ARGS[@]}"
+    run_step "swift test ${package_path#$ROOT_DIR/}" swift test "${SWIFTPM_COMMON_ARGS[@]}" ${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]+"${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]}"}
   done
 }
 
@@ -481,9 +512,9 @@ run_package_validation() {
     fi
     set_swiftpm_common_args "$package_path"
     if [[ -d "$package_path/Tests" ]]; then
-      run_step "swift test $relative_path" swift test "${SWIFTPM_COMMON_ARGS[@]}"
+      run_step "swift test $relative_path" swift test "${SWIFTPM_COMMON_ARGS[@]}" ${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]+"${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]}"}
     else
-      run_step "swift build $relative_path" swift build "${SWIFTPM_COMMON_ARGS[@]}"
+      run_step "swift build $relative_path" swift build "${SWIFTPM_COMMON_ARGS[@]}" ${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]+"${WARNINGS_AS_ERRORS_SWIFTPM_ARGS[@]}"}
     fi
   done
 }
@@ -548,6 +579,7 @@ run_app_build() {
       -scheme "$APP_SCHEME" \
       -destination "$build_destination" \
       -derivedDataPath "$DERIVED_DATA_ROOT/app" \
+      ${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]+"${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]}"} \
       build
 }
 
@@ -573,6 +605,7 @@ run_app_tests() {
       -jobs 6 \
       -parallel-testing-enabled NO \
       -only-testing:AlikeTests \
+      ${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]+"${WARNINGS_AS_ERRORS_XCODEBUILD_ARGS[@]}"} \
       test
 }
 
@@ -808,6 +841,7 @@ main() {
       run_package_graph_validation
       run_lint_validation
       run_todo_validation
+      configure_warnings_as_errors
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
@@ -818,6 +852,7 @@ main() {
       run_lint_validation
       run_todo_validation
       run_resource_hygiene_report
+      configure_warnings_as_errors
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
