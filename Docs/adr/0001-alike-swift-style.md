@@ -185,7 +185,7 @@ examples is in
 10. Concurrency is explicit. `@unchecked Sendable` and `nonisolated(unsafe)` need a comment that names the lock or queue.
 11. Extract a SwiftUI view when `body` is longer than about 40 lines, nests more than 3 stacks, or repeats a block.
 12. Comments say why, not what. `///` on each `public` declaration of a package. No commented-out code.
-13. No `TODO` or `FIXME` without an issue link: `// TODO(#123): …`.
+13. No `TODO`, `FIXME`, or `HACK` without an issue link: `// TODO(#123): …`.
 14. No dead code. Delete what a pull request makes unused in the same pull request.
 15. No speculative generality. No protocol with one conformer unless it is a test seam or a package boundary.
 

@@ -41,6 +41,12 @@ rule 10. `todo_without_link` enforces written rule 13: it flags `TODO`, `FIXME`,
 without an issue link such as `TODO(#123):`. The built-in `todo` rule flags every
 TODO, also the linked form that rule 13 permits, so it is not used.
 
+### Scope
+
+`.swiftlint.yml` lints `Alike/` and `Packages/`. It excludes `**/.build`,
+`build`, `vendor`, and `Skills`: generated and vendored files are not our code,
+and they must never enter the baseline.
+
 ### Size rules
 
 | Rule | Warning | Error | Option | Measured today (sources) |

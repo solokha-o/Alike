@@ -25,7 +25,7 @@ The source of truth is `Docs/adr/0004-package-dependencies.md` (ADR-0004) and
 |---|---|
 | App | `Alike` (composition root, with `AlikeTests`), `AlikeWidgets` |
 | Feature | `Cleanup`, `Details`, `Launch`, `Scanner`, `Settings`, `Welcome` |
-| Foundation | `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `WidgetSupport` |
+| Foundation | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `WidgetSupport` |
 | Foundation with UI | `Diagnostics`, `UserGuide`, `PurchasesUI` (product of `Purchases`) |
 | Utility | none today (helper libraries any package can use) |
 | Tool | `BestShotCalibration` (macOS calibration tool, not shipped; nothing depends on it) |

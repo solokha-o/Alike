@@ -104,7 +104,7 @@ Tools cannot check these 15 rules. Reviewers check them.
     a package. Write `//` elsewhere. No commented-out code. Comments are in
     English. Details: [code-documentation.md](code-documentation.md).
 
-13. **No `TODO` or `FIXME` without an issue link.**
+13. **No `TODO`, `FIXME`, or `HACK` without an issue link.**
 
     ```swift
     // TODO(#123): Remove after the 1.8 migration ships.
