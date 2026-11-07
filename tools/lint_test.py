@@ -279,6 +279,29 @@ class LintScriptTests(unittest.TestCase):
         self.assertIn("(force_cast)", result.stdout)
         self.assertNotIn("(force_try)", result.stdout)
 
+    def test_staged_mode_uses_the_staged_baseline_not_the_working_tree(self) -> None:
+        self.stage(SPACED_FILE, FORCE_UNWRAP)
+        baseline = self.repo / ".swiftlint-baseline.json"
+        subprocess.run(
+            ["swiftlint", "lint", "--quiet", "--write-baseline", ".swiftlint-baseline.json"],
+            cwd=self.repo,
+            capture_output=True,
+        )
+        written = baseline.read_text()
+        self.assertIn("force_unwrapping", written)
+        # Staged baseline hides the finding; the working-tree baseline is empty.
+        git(self.repo, "add", ".swiftlint-baseline.json")
+        baseline.write_text("[]\n")
+        hidden = self.run_lint("--staged", strict=True)
+        self.assertNotIn("(force_unwrapping)", hidden.stdout)
+        self.assertEqual(hidden.returncode, 0, hidden.stdout + hidden.stderr)
+        # Staged baseline is empty; the working-tree baseline hides the finding.
+        git(self.repo, "add", ".swiftlint-baseline.json")
+        baseline.write_text(written)
+        shown = self.run_lint("--staged", strict=True)
+        self.assertIn("(force_unwrapping)", shown.stdout)
+        self.assertEqual(shown.returncode, 1, shown.stdout + shown.stderr)
+
     def test_staged_with_fix_or_all_is_a_usage_error(self) -> None:
         self.assertEqual(self.run_lint("--staged", "--fix").returncode, 64)
         self.assertEqual(self.run_lint("--staged", "--all").returncode, 64)
