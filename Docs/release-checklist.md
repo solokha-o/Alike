@@ -161,6 +161,13 @@ Skills/GitFlow/ios-git-flow/scripts/bump-ios-version.sh \
 - [ ] `tools/release-check X.Y.Z N` green — version check, bundle validation,
       Release archive, no-upload IPA export.
 - [ ] No leftover debug flags, premium overrides or test endpoints.
+- [ ] Dead code: run `periphery scan` from the repository root (config:
+      `.periphery.yml`). File a card for each finding. Do not delete code in
+      the release branch: each deletion is a separate pull request. Read the
+      resource hygiene report of the `tools/full` run
+      (`build/reports/local-ci/<run>/resource-hygiene.md`) the same way.
+      Periphery is not installed by the project; install it only if the owner
+      decides to.
 - [ ] The `.xcarchive` of the build being shipped is preserved under
       `~/Library/Developer/Xcode/Archives` (`tools/release-check` does this unless
       `ALIKE_PRESERVE_ARCHIVE=0`). Crash reports arrive as MetricKit payloads, and
