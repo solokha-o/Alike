@@ -218,7 +218,7 @@ import Testing
         // terms vanish). Under the fix, an all-unresolved config is charged
         // the full blur penalty on every cluster: 0 agreement -
         // blurPenalty * (0 blurry winners + 4 unresolved) / 4 clusters == -blurPenalty.
-        #expect(abs(refusingScore.objective - (-5.0)) <= 1e-9, "refusing every cluster is charged the full blur penalty")
+        #expect(abs(refusingScore.objective - -5.0) <= 1e-9, "refusing every cluster is charged the full blur penalty")
         #expect(
             answeringScore.objective > refusingScore.objective,
             "a config that answers correctly and unblurred must strictly beat one that refuses everything"

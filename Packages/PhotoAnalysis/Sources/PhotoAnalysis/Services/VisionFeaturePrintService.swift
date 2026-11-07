@@ -21,7 +21,7 @@ public struct VisionFeaturePrintService: Sendable {
     public init() {}
     
     /// Generate feature print for a single asset
-    nonisolated public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
+    public nonisolated func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
         try Task.checkCancellation()
 
         #if canImport(UIKit)
@@ -58,7 +58,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Calculate distance between two feature prints (lower = more similar)
-    nonisolated public func computeDistance(
+    public nonisolated func computeDistance(
         between observation1: VNFeaturePrintObservation,
         and observation2: VNFeaturePrintObservation
     ) throws -> Float {
@@ -68,7 +68,7 @@ public struct VisionFeaturePrintService: Sendable {
     }
     
     /// Batch process multiple assets
-    nonisolated public func generateFeaturePrints(
+    public nonisolated func generateFeaturePrints(
         for assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] {

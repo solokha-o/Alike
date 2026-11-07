@@ -63,11 +63,11 @@ import Core
         await viewModel.loadCleanupReminderState(isPremiumUnlocked: true)
 
         #expect(viewModel.cleanupReminderState == CleanupReminderState(
-                isEnabled: false,
-                authorizationStatus: .denied,
-                schedule: .defaultWeekly,
-                isScheduleCustomizationLocked: false
-            ))
+            isEnabled: false,
+            authorizationStatus: .denied,
+            schedule: .defaultWeekly,
+            isScheduleCustomizationLocked: false
+        ))
     }
 
     @Test func testSetCleanupReminderEnabledTurnsReminderOn() async {
@@ -82,10 +82,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: true,
-            authorizationStatus: .authorized,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: true,
+                authorizationStatus: .authorized,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -111,10 +111,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: false,
-            authorizationStatus: .denied,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: false,
+                authorizationStatus: .denied,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -140,10 +140,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: false,
-            authorizationStatus: .authorized,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: false,
+                authorizationStatus: .authorized,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(

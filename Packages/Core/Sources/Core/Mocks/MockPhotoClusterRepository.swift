@@ -143,7 +143,6 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
         )
     }
 
-
     public func hasGalleryChanged() async -> Bool {
         didCallHasGalleryChanged = true
         return hasGalleryChangedResult

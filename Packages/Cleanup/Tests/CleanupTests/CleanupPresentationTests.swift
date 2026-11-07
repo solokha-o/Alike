@@ -135,10 +135,10 @@ import CleanupWorkspace
         let category = CleanupCategorySummary(kind: .screenshots, assetCount: 4, estimatedSavingsBytes: 5_000)
 
         #expect(CleanupPresentation.paywallContext(for: .screenshotCleanup, categories: [category]) == .smartCategory(
-                feature: .screenshotCleanup,
-                title: CleanupCategoryKind.screenshots.presentation.title,
-                estimatedSavings: String.alikeByteCount(5_000)
-            ))
+            feature: .screenshotCleanup,
+            title: CleanupCategoryKind.screenshots.presentation.title,
+            estimatedSavings: String.alikeByteCount(5_000)
+        ))
     }
 
     @Test func testPaywallFallsBackToTheFeatureWithoutAMatchingCategory() {
@@ -162,13 +162,13 @@ import CleanupWorkspace
         )
 
         #expect(CleanupPresentation.continueAccessibilityLabel(progress) == String(
-                format: CleanupL10n.Main.continueReviewClustersReviewedRemaining,
-                4, 10, 6, 7, String.alikeByteCount(2_000)
-            ))
+            format: CleanupL10n.Main.continueReviewClustersReviewedRemaining,
+            4, 10, 6, 7, String.alikeByteCount(2_000)
+        ))
         #expect(CleanupPresentation.completedAccessibilityLabel(progress) == String(
-                format: CleanupL10n.Main.allClustersReviewedSelectedEstimated,
-                4, 10, 7, String.alikeByteCount(2_000)
-            ))
+            format: CleanupL10n.Main.allClustersReviewedSelectedEstimated,
+            4, 10, 7, String.alikeByteCount(2_000)
+        ))
     }
 
     // MARK: - Categories card
