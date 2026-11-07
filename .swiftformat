@@ -116,3 +116,4 @@
 --rules preferSwiftStringAPI
 --lint-only unusedPrivateDeclarations
 --rules opaqueGenericParameters
+--rules preferCountWhere
