@@ -56,9 +56,9 @@ import Testing
         #expect(prefixResult.evalClusterIDs == second.prefixResults[0].evalClusterIDs)
     }
 
-    @Test func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() {
+    @Test func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() throws {
         let corpus = makeCorpus(clusterIDs: ["a", "b", "c"])
-        let sizes = try! PersonalizationReport.parsePrefixes("all", corpusSize: corpus.entries.count)
+        let sizes = try PersonalizationReport.parsePrefixes("all", corpusSize: corpus.entries.count)
         #expect(sizes == [3])
 
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: sizes, global: config)
