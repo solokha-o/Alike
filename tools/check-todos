@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Check the changed files for work markers without a card link.
+# Rule: Docs/adr/0001-alike-swift-style.md written rule 13. The implementation is tools/check_todos.py.
+set -Eeuo pipefail
+
+exec python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/check_todos.py" "$@"

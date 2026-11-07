@@ -1,0 +1,37 @@
+# Periphery dead-code scan (clean-code epic, stage 9). ADR-0001 written rule 14.
+# Run by hand before a release: `periphery scan` from the repository root
+# (Docs/release-checklist.md, step 2). It is not part of tools/full.
+# Periphery is not installed on this machine. This file was not validated
+# against a real scan: check the option names against `periphery scan --help`
+# of the installed version on the first run.
+#
+# Scope: the Alike scheme builds the app, the AlikeWidgets extension, and every
+# local package that the app links, so one index covers all of them.
+project: Alike/Alike.xcodeproj
+schemes:
+  - Alike
+
+# Packages are separate modules. Their public API is the package boundary, so
+# keep it: a public symbol that no other module uses is a design question for
+# the package README, not a deletion.
+retain_public: true
+
+# Entry points that the system calls, not Swift code:
+# - `@main` (AlikeApp, AlikeWidgetBundle) is retained by Periphery itself.
+# - The system reads widget and App Intents types from metadata. If a scan
+#   reports one that the system uses, mark it with `// periphery:ignore - <reason>`
+#   instead of deleting it. Alike has no App Intents today.
+# - Core Data entities and Codable payloads are read by name at run time.
+retain_codable_properties: true
+retain_objc_accessible: true
+retain_swift_ui_previews: true
+
+# Tests do not keep production code alive: a symbol that only a test uses is
+# reported.
+exclude_tests: true
+
+# Third-party and generated code is not ours to clean.
+report_exclude:
+  - "**/.build/**"
+  - "**/DerivedData/**"
+  - "Skills/**"

@@ -253,6 +253,23 @@ run_package_graph_validation() {
   run_step "package graph" python3 tools/check_package_graph.py
 }
 
+# Blocking: a changed file has a work marker without a card link (ADR-0001
+# written rule 13). SwiftLint checks the Swift markers; see Docs/ci-cd.md.
+run_todo_validation() {
+  local base_ref="${ALIKE_CI_BASE_REF:-origin/develop}"
+
+  run_step "TODO check script tests" python3 tools/check_todos_test.py
+  run_step "TODO card links in changed files" env ALIKE_CI_BASE_REF="$base_ref" tools/check-todos
+}
+
+# Report only (exit 0): stale, unused, or untranslated localization keys and
+# unused asset catalog entries. The report goes into the run's report folder.
+run_resource_hygiene_report() {
+  run_step "resource hygiene script tests" python3 tools/report_resource_hygiene_test.py
+  run_step "resource hygiene report" python3 tools/report_resource_hygiene.py --output-dir "$REPORT_DIR"
+  tail -n 2 "$REPORT_DIR/resource-hygiene-report.log"
+}
+
 # Strict lint of the Swift files changed against the base branch (stage 3 of the
 # clean-code epic). It runs before the package tests and builds, so it fails fast.
 run_lint_validation() {
@@ -790,6 +807,7 @@ main() {
       run_no_xctest_validation
       run_package_graph_validation
       run_lint_validation
+      run_todo_validation
       run_package_tests "${QUICK_PACKAGES[@]}"
       run_metadata_validation
       ;;
@@ -798,6 +816,8 @@ main() {
       run_no_xctest_validation
       run_package_graph_validation
       run_lint_validation
+      run_todo_validation
+      run_resource_hygiene_report
       packages=()
       while IFS= read -r package_path; do
         packages+=("$package_path")
