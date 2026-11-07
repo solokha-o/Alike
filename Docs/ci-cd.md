@@ -135,6 +135,7 @@ Runs:
 - whitespace validation
 - a check that no test imports XCTest
 - `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
+- the lint step (see [Lint](#lint)): the lint script tests, then `ALIKE_LINT_STRICT=1 tools/lint` on the Swift files changed against `origin/develop`
 - `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
   - `Packages/CleanupWorkspace`
@@ -165,6 +166,7 @@ Runs:
 - whitespace validation
 - a check that no test imports XCTest
 - `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
+- the lint step, as in `tools/quick`
 - the tests of every package under `Packages/`, on the routes that `tools/quick`
   uses: `xcodebuild test` for the DesignSystem closure and for
   `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
@@ -191,17 +193,40 @@ xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/pl
 
 Tests need a concrete device; `tools/local_ci.sh` picks one, and `ALIKE_BUILD_DESTINATION='id=<udid>'` overrides it.
 
-### Lint (report mode)
+### Lint
 
 `tools/lint` runs SwiftFormat (`--lint`, `.swiftformat`) and SwiftLint
 (`.swiftlint.yml` with `.swiftlint-baseline.json`). It does not build and does
-not use the heavy-job queue. `tools/quick` and `tools/full` do not call it yet.
+not use the heavy-job queue.
 
 ```sh
 tools/lint          # Swift files changed against origin/develop, plus local changes
 tools/lint --all    # all Swift files in Alike/ and Packages/
 tools/lint --fix    # format the changed files with SwiftFormat, then lint them
+tools/lint --staged # the staged version of the staged Swift files (the pre-commit hook)
 ```
+
+The lint is mandatory for new changes only. The baseline hides the existing
+SwiftLint findings, and only changed or staged files are linted.
+
+- `tools/quick` and `tools/full` run the lint step after the package graph check
+  and before the package tests and builds: `python3 tools/lint_test.py`,
+  `python3 tools/install_hooks_test.py`, then `ALIKE_LINT_STRICT=1 tools/lint`.
+  The base branch is `ALIKE_LINT_BASE`, then `ALIKE_CI_BASE_REF`, then `origin/develop`.
+- `ALIKE_SKIP_LINT=1` records the three lint steps as `skipped` in the report.
+  Use it for an emergency hotfix only, and run the lint step in the next change.
+- The pre-commit hook stops a commit when a staged Swift file has a finding. Install it once in each clone with `tools/install-hooks`.
+  The hook runs `ALIKE_LINT_STRICT=1 tools/lint --staged` and never changes a file.
+  To fix a finding, run `tools/lint --fix`, fix the SwiftLint findings that remain,
+  then `git add` the files.
+- `tools/lint --staged` writes the staged files from the index to a temporary tree
+  under `build/lint-staged/`, with the staged lint configs and baseline, and lints
+  that tree. A partly staged file is linted as it will be committed.
+- `tools/install-hooks` makes `<git common dir>/hooks/pre-commit` a symbolic link to
+  `tools/hooks/pre-commit`. All linked worktrees share it. `--force` replaces a
+  different hook, `--uninstall` removes it. It never sets `core.hooksPath`: with a
+  global `core.hooksPath` (the git-workflow dispatch), the dispatch runs its checks
+  and then runs this hook. A local `core.hooksPath` turns the hook off.
 
 - Report mode prints the violations and a summary, and exits 0.
 - `ALIKE_LINT_STRICT=1` exits 1 on a violation, a tool problem, a version mismatch, or a missing merge-base with the base branch (missing ref or shallow clone). Stage 3 of the clean-code epic uses it as the gate. A CI checkout needs the base branch and enough history for `git merge-base`.
@@ -212,7 +237,7 @@ tools/lint --fix    # format the changed files with SwiftFormat, then lint them
 - Test files (`Packages/*/Tests/`, `Alike/AlikeTests/`) get `--config .swiftlint.yml --config .swiftlint-tests.yml`, which disables `force_unwrapping` and `force_try`. Other files get `--config .swiftlint.yml`.
 - Run SwiftLint from the repository root. The baseline stores repository-relative paths.
 - SwiftLint 0.65.1 ignores the baseline when the checkout path starts with `/private`. Keep checkouts under `/Users`.
-- Test: `python3 tools/lint_test.py`.
+- Tests: `python3 tools/lint_test.py` and `python3 tools/install_hooks_test.py`.
 
 ### `tools/release-check [version] [build]`
 

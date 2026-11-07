@@ -161,6 +161,11 @@ Follow Alike Swift Style. See `references/swift-code-style.md` for:
 - How to change a format rule (ADR-0003)
 - The 15 written rules that reviewers check
 
+`tools/quick` and `tools/full` run `ALIKE_LINT_STRICT=1 tools/lint` on the
+changed Swift files before the package tests. Install the pre-commit hook once
+with `tools/install-hooks`. If a commit stops, run `tools/lint --fix`, then
+`git add` the files.
+
 ### Documentation
 
 Follow structured documentation standards for public APIs and inline comments. See `references/code-documentation.md` for:
