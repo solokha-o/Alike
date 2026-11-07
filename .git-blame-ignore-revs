@@ -13,3 +13,6 @@
 
 # CORE rules (ADR-0001): 16 CORE SwiftFormat rules applied, format only.
 ee0451e7e5eccaab610396100be1f695f8e5a372
+
+# LATER rule 1 (ADR-0001): noForceTryInTests, format only.
+c92ba716970998a8c9446976f8a9e6128ecd8e02
