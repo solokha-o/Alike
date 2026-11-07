@@ -6,7 +6,7 @@ import Testing
 @MainActor
 @Suite struct AnimatedImageOverlayTests {
     @Test func testCreatesStaticFallbackWithoutAnimation() {
-        let view = AnimatedImageOverlay(
+        _ = AnimatedImageOverlay(
             animationURL: nil,
             aspectRatio: 1,
             maximumWidth: 320
@@ -14,11 +14,10 @@ import Testing
             Color.clear
         }
 
-        #expect(view != nil)
     }
 
     @Test func testSupportsLoopingPlayback() {
-        let view = AnimatedImageOverlay(
+        _ = AnimatedImageOverlay(
             animationURL: URL(fileURLWithPath: "/tmp/overlay.json"),
             aspectRatio: 4.0 / 3.0,
             playback: .loop,
@@ -27,7 +26,6 @@ import Testing
             Image(systemName: "photo")
         }
 
-        #expect(view != nil)
     }
 
     @Test func testReduceMotionPreventsOverlayAnimationRendering() {
