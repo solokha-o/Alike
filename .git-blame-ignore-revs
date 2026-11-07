@@ -28,3 +28,6 @@ c92ba716970998a8c9446976f8a9e6128ecd8e02
 
 # LATER rule 5 (ADR-0001): wrapEnumCases, format only.
 007b13acf6ac490eebe4b6fc6d803432dd5ec13a
+
+# LATER rule 6 (ADR-0001): preferSwiftStringAPI, format only.
+e227c7519da17c4ac58de42a1724fdd5a74df560
