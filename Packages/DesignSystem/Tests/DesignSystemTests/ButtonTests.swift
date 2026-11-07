@@ -2,6 +2,7 @@ import Testing
 import SwiftUI
 @testable import DesignSystem
 
+// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 @MainActor
 @Suite struct ButtonTests {
     
@@ -9,70 +10,43 @@ import SwiftUI
     
     @Test func testPrimaryButtonCreation() {
         // Given & When: Creating primary button
-        var actionCalled = false
-        let button = PrimaryButton("Test") {
-            actionCalled = true
-        }
-        
-        // Then: Should be created
-        #expect(button != nil, "Primary button should be created")
+        _ = PrimaryButton("Test") {}
     }
     
     @Test func testPrimaryButtonWithIcon() {
         // Given & When: Creating button with icon
-        let button = PrimaryButton("Test", icon: "star.fill") {}
-        
-        // Then: Should be created with icon
-        #expect(button != nil, "Button with icon should be created")
+        _ = PrimaryButton("Test", icon: "star.fill") {}
     }
     
     @Test func testPrimaryButtonWithoutIcon() {
         // Given & When: Creating button without icon
-        let button = PrimaryButton("Test") {}
-        
-        // Then: Should be created without icon
-        #expect(button != nil, "Button without icon should be created")
+        _ = PrimaryButton("Test") {}
     }
     
     @Test func testPrimaryButtonActionTriggered() {
         // Given: Button with action
-        var actionCalled = false
-        let button = PrimaryButton("Test") {
-            actionCalled = true
-        }
+        _ = PrimaryButton("Test") {}
         
         // When: Simulating button press
         // Note: In real tests, you'd use ViewInspector or similar
         // Here we're testing the structure
-        
-        // Then: Button should exist
-        #expect(button != nil)
     }
     
     // MARK: - SecondaryButton Tests
     
     @Test func testSecondaryButtonCreation() {
         // Given & When: Creating secondary button
-        let button = SecondaryButton("Test") {}
-        
-        // Then: Should be created
-        #expect(button != nil, "Secondary button should be created")
+        _ = SecondaryButton("Test") {}
     }
     
     @Test func testSecondaryButtonWithIcon() {
         // Given & When: Creating button with icon
-        let button = SecondaryButton("Test", icon: "gear") {}
-        
-        // Then: Should be created with icon
-        #expect(button != nil, "Button with icon should be created")
+        _ = SecondaryButton("Test", icon: "gear") {}
     }
     
     @Test func testSecondaryButtonWithoutIcon() {
         // Given & When: Creating button without icon
-        let button = SecondaryButton("Test") {}
-        
-        // Then: Should be created without icon
-        #expect(button != nil, "Button without icon should be created")
+        _ = SecondaryButton("Test") {}
     }
     
     // MARK: - Button State Tests
@@ -80,24 +54,22 @@ import SwiftUI
     @Test func testPrimaryButtonFeedbackTrigger() {
         // Given: Primary button
         var triggerCount = 0
-        let button = PrimaryButton("Test") {
+        _ = PrimaryButton("Test") {
             triggerCount += 1
         }
         
         // Then: Button should be ready to trigger
-        #expect(button != nil)
         #expect(triggerCount == 0, "Action should not be called on creation")
     }
     
     @Test func testSecondaryButtonNoFeedback() {
         // Given: Secondary button (no sensory feedback)
         var triggerCount = 0
-        let button = SecondaryButton("Test") {
+        _ = SecondaryButton("Test") {
             triggerCount += 1
         }
         
         // Then: Button should exist
-        #expect(button != nil)
         #expect(triggerCount == 0, "Action should not be called on creation")
     }
     
@@ -108,75 +80,47 @@ import SwiftUI
         let localizedKey: LocalizedStringKey = "Settings"
         
         // When: Creating buttons with localized string
-        let primaryButton = PrimaryButton(localizedKey) {}
-        let secondaryButton = SecondaryButton(localizedKey) {}
-        
-        // Then: Should accept LocalizedStringKey
-        #expect(primaryButton != nil, "Primary button should support localization")
-        #expect(secondaryButton != nil, "Secondary button should support localization")
+        _ = PrimaryButton(localizedKey) {}
+        _ = SecondaryButton(localizedKey) {}
     }
     
     // MARK: - Icon Tests
     
     @Test func testButtonIconIsOptional() {
         // Given: Buttons with and without icons
-        let withIcon = PrimaryButton("Test", icon: "star") {}
-        let withoutIcon = PrimaryButton("Test", icon: nil) {}
-        let explicitlyNil = PrimaryButton("Test") {}
-        
-        // Then: All should be valid
-        #expect(withIcon != nil, "Button with icon should be valid")
-        #expect(withoutIcon != nil, "Button with nil icon should be valid")
-        #expect(explicitlyNil != nil, "Button without icon parameter should be valid")
+        _ = PrimaryButton("Test", icon: "star") {}
+        _ = PrimaryButton("Test", icon: nil) {}
+        _ = PrimaryButton("Test") {}
     }
     
     // MARK: - Multiple Buttons Tests
     
     @Test func testMultiplePrimaryButtons() {
         // Given: Multiple primary buttons
-        let button1 = PrimaryButton("Button 1") {}
-        let button2 = PrimaryButton("Button 2", icon: "star") {}
-        let button3 = PrimaryButton("Button 3") {}
-        
-        // Then: All should coexist
-        #expect(button1 != nil)
-        #expect(button2 != nil)
-        #expect(button3 != nil)
+        _ = PrimaryButton("Button 1") {}
+        _ = PrimaryButton("Button 2", icon: "star") {}
+        _ = PrimaryButton("Button 3") {}
     }
     
     @Test func testMultipleSecondaryButtons() {
         // Given: Multiple secondary buttons
-        let button1 = SecondaryButton("Button 1") {}
-        let button2 = SecondaryButton("Button 2", icon: "gear") {}
-        let button3 = SecondaryButton("Button 3") {}
-        
-        // Then: All should coexist
-        #expect(button1 != nil)
-        #expect(button2 != nil)
-        #expect(button3 != nil)
+        _ = SecondaryButton("Button 1") {}
+        _ = SecondaryButton("Button 2", icon: "gear") {}
+        _ = SecondaryButton("Button 3") {}
     }
     
     // MARK: - Integration Tests
     
     @Test func testPrimaryAndSecondaryButtonsTogether() {
         // Given: Both button types
-        let primary = PrimaryButton("Primary") {}
-        let secondary = SecondaryButton("Secondary") {}
-        
-        // Then: Should work together
-        #expect(primary != nil, "Primary button should exist")
-        #expect(secondary != nil, "Secondary button should exist")
+        _ = PrimaryButton("Primary") {}
+        _ = SecondaryButton("Secondary") {}
     }
     
     @Test func testButtonsWithDifferentLocalizations() {
         // Given: Buttons with different localized keys
-        let saveButton = PrimaryButton("Save") {}
-        let cancelButton = SecondaryButton("Cancel") {}
-        let deleteButton = PrimaryButton("Delete") {}
-        
-        // Then: All should be valid
-        #expect(saveButton != nil)
-        #expect(cancelButton != nil)
-        #expect(deleteButton != nil)
+        _ = PrimaryButton("Save") {}
+        _ = SecondaryButton("Cancel") {}
+        _ = PrimaryButton("Delete") {}
     }
 }

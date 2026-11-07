@@ -16,7 +16,7 @@ import CoreData
         let controller = PersistenceController.preview()
         
         // Then: Should be successfully initialized
-        #expect(controller != nil, "In-memory controller should be initialized")
+        #expect(controller.viewContext.persistentStoreCoordinator != nil, "In-memory controller should be initialized")
     }
     
     @Test func testInMemoryStoreIsolation() async throws {
@@ -70,8 +70,7 @@ import CoreData
         // When: Performing background task
         // Then: Task should be executed
         try await confirmation("Background task executed") { taskExecuted in
-            try await controller.performBackgroundTask { context in
-                #expect(context != nil, "Context should be provided")
+            try await controller.performBackgroundTask { _ in
                 #expect(Thread.isMainThread == false || true, "Task context should work")
                 taskExecuted()
             }
@@ -112,7 +111,7 @@ import CoreData
             }
             Issue.record("Should throw error")
         } catch {
-            #expect(error != nil, "Error should be thrown")
+            #expect((error as NSError).domain == "TestError", "The error thrown inside the task should propagate")
         }
     }
     
@@ -123,7 +122,7 @@ import CoreData
         let shared = PersistenceController.shared
         
         // Then: Should be initialized and not in-memory
-        #expect(shared != nil, "Shared instance should exist")
+        #expect(shared.viewContext.persistentStoreCoordinator != nil, "Shared instance should exist")
     }
     
     // MARK: - View Context Tests

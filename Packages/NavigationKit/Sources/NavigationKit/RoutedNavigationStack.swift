@@ -43,10 +43,13 @@ public extension RoutedNavigationStack where Route == Never, Destination == Empt
             initialPath: initialPath,
             onPathChange: onPathChange,
             root: { _ in root() },
-            destination: { _, _ in
-                assertionFailure("RoutedNavigationStack with Route == Never cannot produce a destination")
-                return EmptyView()
-            }
+            destination: Self.noDestination
         )
+    }
+
+    /// A `Never` route has no value, so this cannot be called; returning the
+    /// uninhabited route satisfies the result type without dead code.
+    private static func noDestination(_ route: Never, _: StackRouter<Never>) -> EmptyView {
+        route
     }
 }

@@ -167,7 +167,7 @@ struct LocalizationCatalog {
     static func formatShape(_ value: String) -> (specifiers: [String], literalPercents: Int) {
         var specifiers: [String] = []
         var literalPercents = 0
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {
@@ -200,7 +200,7 @@ struct LocalizationCatalog {
     /// A `%` that never resolves into a specifier or a literal — `String(format:)` reads
     /// whatever follows it as a conversion and prints garbage or drops the tail.
     static func hasDanglingPercent(_ value: String) -> Bool {
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {

@@ -2,58 +2,41 @@ import Testing
 import SwiftUI
 @testable import DesignSystem
 
+// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 @Suite struct ThemeTests {
     
     // MARK: - Color Tests
     
     @Test func testAccentColorExists() {
         // Given & When: Accent color
-        let accent = Color.accent
-        
-        // Then: Should exist in the design palette
-        #expect(accent != nil, "Accent color should exist")
+        _ = Color.accent
     }
     
     @Test func testSecondaryAccentColorExists() {
         // Given & When: Secondary accent color
-        let secondaryAccent = Color.secondaryAccent
-        
-        // Then: Should exist
-        #expect(secondaryAccent != nil, "Secondary accent color should exist")
+        _ = Color.secondaryAccent
     }
     
     @Test func testCardBackgroundColorExists() {
         // Given & When: Card background color
-        let cardBackground = Color.cardBackground
-        
-        // Then: Should exist
-        #expect(cardBackground != nil, "Card background should exist")
+        _ = Color.cardBackground
     }
     
     @Test func testSecondaryBackgroundColorExists() {
         // Given & When: Secondary background color
-        let secondaryBackground = Color.secondaryBackground
-        
-        // Then: Should exist
-        #expect(secondaryBackground != nil, "Secondary background should exist")
+        _ = Color.secondaryBackground
     }
     
     // MARK: - Typography Tests
     
     @Test func testAppLargeTitleFontExists() {
         // Given & When: Large title font
-        let font = Font.appLargeTitle
-        
-        // Then: Should exist
-        #expect(font != nil, "App large title font should exist")
+        _ = Font.appLargeTitle
     }
     
     @Test func testAppTitleFontExists() {
         // Given & When: Title font
-        let font = Font.appTitle
-        
-        // Then: Should exist
-        #expect(font != nil, "App title font should exist")
+        _ = Font.appTitle
     }
     
     @Test func testAllTypographyStylesExist() {

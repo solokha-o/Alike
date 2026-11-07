@@ -31,7 +31,7 @@ import Lottie
     }
 
     @Test func testWelcomeHeroOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.welcomeHeroOverlayURL)
+        let overlayURL = AlikeAssets.welcomeHeroOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
@@ -44,7 +44,7 @@ import Lottie
     }
 
     @Test func testScannerSearchingOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.scannerSearchingOverlayURL)
+        let overlayURL = AlikeAssets.scannerSearchingOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
@@ -65,7 +65,7 @@ import Lottie
     }
 
     @Test func testComparisonReviewOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.comparisonReviewOverlayURL)
+        let overlayURL = AlikeAssets.comparisonReviewOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
@@ -78,7 +78,7 @@ import Lottie
     }
 
     @Test func testBestShotOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.bestShotOverlayURL)
+        let overlayURL = AlikeAssets.bestShotOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
@@ -93,7 +93,7 @@ import Lottie
     }
 
     @Test func testCleanupProgressOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.cleanupProgressOverlayURL)
+        let overlayURL = AlikeAssets.cleanupProgressOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
@@ -108,7 +108,7 @@ import Lottie
     }
 
     @Test func testCleanupSuccessOverlayIsAvailable() {
-        let overlayURL = try? #require(AlikeAssets.cleanupSuccessOverlayURL)
+        let overlayURL = AlikeAssets.cleanupSuccessOverlayURL
         #expect(overlayURL != nil)
         #expect(overlayURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
         #expect(overlayURL.flatMap { LottieAnimation.filepath($0.path) } != nil)
