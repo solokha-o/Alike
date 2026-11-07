@@ -211,7 +211,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     // MARK: - Private Helpers
     
     /// `nil` for an empty library: a zero total would draw a ring around nothing.
-    nonisolated private static func totalBytes(of assets: [PHAsset]) -> Int64? {
+    private nonisolated static func totalBytes(of assets: [PHAsset]) -> Int64? {
         guard !assets.isEmpty else { return nil }
         let startTime = ContinuousClock().now
         let total = assets.reduce(into: Int64(0)) { $0 += AssetByteSize.bytes(for: $1) }
@@ -220,7 +220,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         return total
     }
 
-    nonisolated private static func fetchAllPhotoAssets() -> [PHAsset] {
+    private nonisolated static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)

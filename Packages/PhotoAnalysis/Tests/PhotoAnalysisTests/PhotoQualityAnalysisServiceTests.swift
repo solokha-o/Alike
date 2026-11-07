@@ -253,6 +253,7 @@ import Testing
 
         #expect(scores.first?.signals.analysisFailure == .tooSmallToAnalyze)
         #expect(sides.count == 1)
+        // swiftformat:disable:next isEmpty - CallCounter has no isEmpty
         #expect(detectorCalls.count == 0)
     }
 

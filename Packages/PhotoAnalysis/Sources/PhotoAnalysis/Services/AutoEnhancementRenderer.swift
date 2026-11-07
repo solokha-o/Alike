@@ -183,7 +183,7 @@ struct AutoEnhancementRenderer: Sendable {
 
     static let heifExtensions: Set<String> = ["heic", "heif"]
 
-    static let outputColorSpace: CGColorSpace = CGColorSpace(name: CGColorSpace.displayP3)
+    static let outputColorSpace: CGColorSpace = .init(name: CGColorSpace.displayP3)
         ?? CGColorSpaceCreateDeviceRGB()
 
     /// Moves the image back to the origin when a filter or an orientation fix

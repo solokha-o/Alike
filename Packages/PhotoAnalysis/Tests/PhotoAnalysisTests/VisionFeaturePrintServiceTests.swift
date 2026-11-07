@@ -21,7 +21,7 @@ import UIKit
         let featurePrint = try await requireFeaturePrint(from: cgImage)
         
         // Then: Feature print should be generated
-        #expect(featurePrint.data.count > 0, "Feature print should have data")
+        #expect(!featurePrint.data.isEmpty, "Feature print should have data")
     }
     
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })

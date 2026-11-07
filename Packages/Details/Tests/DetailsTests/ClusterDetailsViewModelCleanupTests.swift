@@ -236,17 +236,17 @@ import Photos
 
         #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(1))
         #expect(viewModel.deleteConfirmationMessage == String(
-                format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
-                viewModel.estimatedSavingsText
-            ))
+            format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
+            viewModel.estimatedSavingsText
+        ))
 
         viewModel.toggleSelection(for: "two")
 
         #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(2))
         #expect(viewModel.deleteConfirmationMessage == String(
-                format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
-                viewModel.estimatedSavingsText
-            ))
+            format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
+            viewModel.estimatedSavingsText
+        ))
     }
 
     @Test func testFreeUserCanRequestSinglePhotoCleanup() async {

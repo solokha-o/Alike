@@ -8,7 +8,7 @@ request needs that extra depth.
 |---|---|---|---|
 | `Architecture/adaptive-ui-layout` | Responsive SwiftUI layout, iPhone/iPad adaptation, size classes, Dynamic Type | Rarely; use SwiftUI external only for platform API uncertainty | No |
 | `Architecture/change-safety` | Changing shipped code: public package APIs, persisted values, enum cases, user-visible flows; extension-vs-modification decisions, breaking-change gating | Rarely; pair with `Storage/persisted-data-evolution` when the change touches stored data | No |
-| `Architecture/SwiftUIModular` | New package/module, package boundaries and categories, modular SwiftUI architecture, Alike Swift Style and the 15 written rules | Rarely; use SwiftUI external only for broad platform API guidance | No |
+| `Architecture/SwiftUIModular` | New package/module, package boundaries and categories, modular SwiftUI architecture, Alike Swift Style and the 15 written rules, file structure and splitting, one way per task (DI, errors, logging, navigation), file templates, SwiftUI view rules and state wrappers | Rarely; use SwiftUI external only for broad platform API guidance | No |
 | `DesignConcept` | Native SwiftUI design concepts, colors, typography, SF Symbols | Rarely; use SwiftUI external only for API-specific design implementation | No |
 | `DesignConcept/app-store-screenshots` | App Store screenshots, product/marketing screenshots, screenshot copy, phone mockups, screenshot generator | No | No |
 | `External/core-data-expert` | Core Data, migrations, persistent history, fetch/context issues | This is already external depth; use directly only for Core Data tasks | No |
