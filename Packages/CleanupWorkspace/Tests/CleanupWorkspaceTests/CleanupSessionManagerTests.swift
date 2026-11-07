@@ -35,7 +35,7 @@ import Core
             )
         ]
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.totalClusters == 3)
         #expect(progress.reviewedCount == 1)
@@ -78,7 +78,7 @@ import Core
             )
         ]
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.reviewedCount == 1)
         #expect(progress.needsReReviewCount == 1)
@@ -129,22 +129,22 @@ import Core
             )
         ]
 
-        let first = await manager.nextClusterToReview(
+        let first = manager.nextClusterToReview(
             from: [reviewed, inReview, notReviewed, needsReview],
             reviewStates: states
         )
         #expect(first?.id == needsReviewID)
 
-        let second = await manager.nextClusterToReview(
+        let second = manager.nextClusterToReview(
             from: [reviewed, inReview, notReviewed],
             reviewStates: states
         )
         #expect(second?.id == notReviewedID)
 
-        let third = await manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
+        let third = manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
         #expect(third?.id == inReviewID)
 
-        let completed = await manager.nextClusterToReview(from: [reviewed], reviewStates: states)
+        let completed = manager.nextClusterToReview(from: [reviewed], reviewStates: states)
         #expect(completed == nil)
     }
 
@@ -178,10 +178,10 @@ import Core
             )
         ]
 
-        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        let next = manager.nextClusterToReview(from: clusters, reviewStates: states)
         #expect(next == nil)
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.totalClusters == 2)
         #expect(progress.reviewedCount == 2)
@@ -223,10 +223,10 @@ import Core
             )
         ]
 
-        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        let next = manager.nextClusterToReview(from: clusters, reviewStates: states)
         #expect(next == nil)
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
         #expect(progress.reviewedCount == 2)
         #expect(progress.remainingClusters == 0)
     }

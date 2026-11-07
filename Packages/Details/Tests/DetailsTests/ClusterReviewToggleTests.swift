@@ -4,6 +4,7 @@ import Testing
 
 /// The hint has to say what a double tap does to the photos: reopening, keeping
 /// every photo, or keeping the photos the user did not select.
+@MainActor
 @Suite struct ClusterReviewToggleTests {
     @Test func testConfirmedReviewOffersToReopen() {
         for selectedCount in [0, 2] {

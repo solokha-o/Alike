@@ -513,7 +513,7 @@ private actor FakePhotoLibrary {
             existingAdjustmentFormatIdentifier: isReadable ? existingAdjustmentFormatIdentifier : nil,
             isAdjustmentDataReadable: isReadable,
             loadOriginal: { [self] in
-                if let originalError = await self.originalError { throw originalError }
+                if let originalError = self.originalError { throw originalError }
                 return (
                     CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 256, height: 256)),
                     // A rotated source: the saved rendering must keep the
@@ -522,7 +522,7 @@ private actor FakePhotoLibrary {
                 )
             },
             saveEnhanced: { [self] _, recipe, adjustmentData in
-                if let saveError = await self.saveError { throw saveError }
+                if let saveError = self.saveError { throw saveError }
                 await self.recordSave(adjustmentData, recipeStepCount: recipe.steps.count)
             },
             revertToOriginal: { [self] in

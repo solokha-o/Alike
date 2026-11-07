@@ -105,10 +105,6 @@ struct AlikeStatusWidgetView: View {
                 WidgetRectangularLayout(composition: composition)
             case .accessoryInline:
                 WidgetInlineLayout(composition: composition)
-            // The small layout is the safe reading of any family this switch has not
-            // been taught.
-            default:
-                WidgetSmallLayout(composition: composition)
             }
         }
         // Mandatory on iOS 17: without it the widget does not render on the
