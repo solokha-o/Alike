@@ -25,3 +25,6 @@ c92ba716970998a8c9446976f8a9e6128ecd8e02
 
 # LATER rule 4 (ADR-0001): redundantAsync, format only.
 0b60cf5435f882f34ce3decc147c5a587a00adfa
+
+# LATER rule 5 (ADR-0001): wrapEnumCases, format only.
+007b13acf6ac490eebe4b6fc6d803432dd5ec13a
