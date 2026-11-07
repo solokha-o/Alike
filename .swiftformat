@@ -110,3 +110,4 @@
 # LATER rules (ADR-0001), one per pull request, in table order.
 --rules noForceTryInTests
 --rules acronyms
+--rules noGuardInTests
