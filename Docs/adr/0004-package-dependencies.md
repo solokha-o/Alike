@@ -25,7 +25,7 @@ source of truth for the category of each package. Stage 5 adds
 | App | `Alike`, `AlikeWidgets` | Xcode targets. Composition root and wiring. `AlikeTests` belongs to `Alike`. |
 | Feature | `Cleanup`, `Details`, `Scanner`, `Settings`, `Welcome`, `Launch` | One user flow each, with its screens and view models. |
 | Foundation | `Core`, `Storage`, `PhotoAnalysis`, `NavigationKit`, `DesignSystem`, `WidgetSupport`, `Purchases` | Shared models, services, persistence, navigation, and design tokens. |
-| Foundation with UI | `CleanupWorkspace`, `UserGuide`, `Diagnostics`, `PurchasesUI` (a product of `Purchases`) | Shared screens that more than one feature or the app shows. Same rules as Foundation. |
+| Foundation with UI | `UserGuide`, `Diagnostics`, `PurchasesUI` (a product of `Purchases`) | Shared screens that more than one feature or the app shows. Same rules as Foundation. |
 | Utility | `BestShotCalibration` | Developer tools. Not part of the shipped app. |
 
 "Foundation with UI" is a subgroup of Foundation, not a separate category.
@@ -108,7 +108,7 @@ package products of each target in `Alike/Alike.xcodeproj` on 2026-11-07
 | `Scanner` | Feature | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `Purchases`, `UserGuide` |
 | `Settings` | Feature | `Core`, `DesignSystem`, `Diagnostics`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `UserGuide` |
 | `Welcome` | Feature | `Core`, `DesignSystem`, `PhotoAnalysis` |
-| `CleanupWorkspace` | Foundation (UI) | `Core`, `PhotoAnalysis`, `Storage` |
+| `CleanupWorkspace` | Foundation | `Core`, `PhotoAnalysis`, `Storage` |
 | `Core` | Foundation | none |
 | `DesignSystem` | Foundation | `Core`, `lottie-spm` (SDK) |
 | `Diagnostics` | Foundation (UI) | `Core` |
@@ -126,7 +126,7 @@ package products of each target in `Alike/Alike.xcodeproj` on 2026-11-07
 - Write a level for each package: levels change with each edge, so a written
   list becomes wrong. A tool computes them.
 - Make the shared screens Feature packages: then `Scanner` → `UserGuide` and
-  `Cleanup` → `CleanupWorkspace` would be Feature → Feature edges.
+  `Settings` → `Diagnostics` would be Feature → Feature edges.
 
 ## Consequences
 

@@ -13,7 +13,7 @@ did not match the code (Google uses a 2-space indent; Alike uses 4 spaces).
 The stage 1 research measured all 150 non-deprecated SwiftFormat 0.63.1 rules
 against 439 Swift files. For each rule it recorded the diff size, the behaviour
 risk, and the position of four guides. The research and the raw numbers are in
-`build/clean-code/` of the main checkout (not in Git).
+[`Docs/code-quality/style-research-2026-11.md`](../code-quality/style-research-2026-11.md) and in the baseline report.
 
 ## Decision
 

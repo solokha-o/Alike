@@ -6,7 +6,7 @@
 #
 # Format: one line `<Package> <Category>`. Lines that start with `#` are comments.
 # Categories: App, Feature, Foundation, Utility.
-# "Foundation with UI" (CleanupWorkspace, UserGuide, Diagnostics, and the
+# "Foundation with UI" (UserGuide, Diagnostics, and the
 # PurchasesUI product of Purchases) uses the Foundation rules, so it is
 # written as Foundation here.
 # A change to this file needs a new ADR (see ADR-0004).
