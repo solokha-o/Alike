@@ -134,6 +134,7 @@ Runs:
 
 - whitespace validation
 - a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
   - `Packages/CleanupWorkspace`
@@ -163,6 +164,7 @@ Runs:
 
 - whitespace validation
 - a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
 - the tests of every package under `Packages/`, on the routes that `tools/quick`
   uses: `xcodebuild test` for the DesignSystem closure and for
   `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
