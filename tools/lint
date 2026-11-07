@@ -20,6 +20,7 @@ MODE_ALL=0
 MODE_FIX=0
 FILES=()
 TOOL_PROBLEMS=0
+MISMATCHED_TOOLS=""
 FORMAT_ISSUES=0
 LINT_ERRORS=0
 LINT_WARNINGS=0
@@ -31,12 +32,13 @@ Usage:
                       plus staged, unstaged, and untracked Swift files.
   tools/lint --all    Lint all Swift files in Alike/ and Packages/.
   tools/lint --fix    Format the changed Swift files with SwiftFormat, then lint them.
+                      Refused when the installed SwiftFormat is not the pinned version.
 
 Report mode (default): print the violations and exit 0.
 
 Environment:
   ALIKE_LINT_BASE=<ref>   Base branch for the changed-file set. Default: origin/develop.
-  ALIKE_LINT_STRICT=1     Exit 1 when a violation, a tool problem, or a version mismatch occurs.
+  ALIKE_LINT_STRICT=1     Exit 1 on a violation, a tool problem, a version mismatch, or a missing merge-base.
   ALIKE_SWIFTFORMAT=<bin> SwiftFormat executable. Default: swiftformat.
   ALIKE_SWIFTLINT=<bin>   SwiftLint executable. Default: swiftlint.
 
@@ -95,6 +97,7 @@ check_tool() {
     echo "  Install: brew install $name   (or: brew upgrade $name)"
     echo "  If Homebrew has a different version, install $pinned from the $name GitHub release."
     TOOL_PROBLEMS=$((TOOL_PROBLEMS + 1))
+    MISMATCHED_TOOLS="$MISMATCHED_TOOLS $name"
   fi
   return 0
 }
@@ -130,8 +133,10 @@ collect_changed_files() {
   if merge_base="$(git merge-base "$BASE_REF" HEAD 2>/dev/null)"; then
     echo "Changed files against $BASE_REF (merge-base ${merge_base:0:8}), with staged, unstaged, and untracked files."
   else
-    echo "warning: base ref '$BASE_REF' is not available. Only staged, unstaged, and untracked files are linted."
-    echo "  Fetch it (git fetch origin) or set ALIKE_LINT_BASE."
+    # A missing base ref or a shallow clone must not pass the strict gate with no lint.
+    echo "warning: no merge-base with '$BASE_REF' (missing ref or shallow clone). Only staged, unstaged, and untracked files are linted."
+    echo "  Fetch it (git fetch origin, or a full-depth clone) or set ALIKE_LINT_BASE."
+    TOOL_PROBLEMS=$((TOOL_PROBLEMS + 1))
     merge_base="HEAD"
   fi
   # `git diff <commit>` compares the working tree with the commit: committed,
@@ -267,7 +272,10 @@ else
 fi
 
 if [[ "$MODE_FIX" == 1 ]]; then
-  if [[ "$SWIFTFORMAT_OK" == 1 ]]; then
+  if [[ "$MISMATCHED_TOOLS" == *" swiftformat"* ]]; then
+    # ADR-0003: a SwiftFormat version change is a format change, so never write with another version.
+    echo "error: --fix refused: the installed swiftformat is not the version in tools/lint-versions. Nothing was written."
+  elif [[ "$SWIFTFORMAT_OK" == 1 ]]; then
     echo
     echo "== SwiftFormat (fix) =="
     "$SWIFTFORMAT_BIN" --config "$SWIFTFORMAT_CONFIG" "${FILES[@]}" 2>&1 || TOOL_PROBLEMS=$((TOOL_PROBLEMS + 1))

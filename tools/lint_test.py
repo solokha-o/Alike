@@ -25,6 +25,13 @@ SPACED_FILE = "Packages/Fixture/Sources/Fixture/With Space.swift"
 TEST_FILE = "Packages/Fixture/Tests/FixtureTests/FixtureTests.swift"
 FORCE_UNWRAP = "let optionalValue: Int? = 1\nlet value = optionalValue!\n"
 CLEAN = "let value = 1\n"
+TEST_TARGET_SOURCE = (
+    "let optionalValue: Int? = 1\n"
+    "let value = optionalValue!\n"
+    "let cast = value as Any as! Int\n"
+    "func load() throws -> Int { 1 }\n"
+    "let loaded = try! load()\n"
+)
 
 
 def git(repo: Path, *args: str) -> None:
@@ -70,11 +77,14 @@ class LintScriptTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
 
-    def run_lint(self, *args: str, strict: bool = False) -> subprocess.CompletedProcess[str]:
+    def run_lint(
+        self, *args: str, strict: bool = False, **extra_env: str
+    ) -> subprocess.CompletedProcess[str]:
         env = dict(os.environ, ALIKE_LINT_BASE="develop")
         env.pop("ALIKE_LINT_STRICT", None)
         if strict:
             env["ALIKE_LINT_STRICT"] = "1"
+        env.update(extra_env)
         return subprocess.run(
             [str(self.repo / "tools/lint"), *args],
             cwd=self.repo,
@@ -117,19 +127,53 @@ class LintScriptTests(unittest.TestCase):
         self.assertIn("(consecutiveBlankLines)", result.stdout)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
-    def test_force_unwrapping_does_not_apply_to_test_targets(self) -> None:
-        self.write(TEST_FILE, FORCE_UNWRAP)
+    def test_tests_config_drops_only_force_unwrapping_and_force_try(self) -> None:
+        self.write(TEST_FILE, TEST_TARGET_SOURCE)
         result = self.run_lint()
-        self.assertIn("FixtureTests.swift", result.stdout)
+        # Positive control: force_cast still applies, so the test file was really linted.
+        self.assertIn("FixtureTests.swift:3", result.stdout)
+        self.assertIn("(force_cast)", result.stdout)
         self.assertNotIn("(force_unwrapping)", result.stdout)
+        self.assertNotIn("(force_try)", result.stdout)
+
+    def test_missing_base_ref_fails_strict_mode_only(self) -> None:
+        report = self.run_lint(ALIKE_LINT_BASE="nosuch")
+        self.assertEqual(report.returncode, 0, report.stdout + report.stderr)
+        self.assertIn("no merge-base with 'nosuch'", report.stdout)
+        strict = self.run_lint(strict=True, ALIKE_LINT_BASE="nosuch")
+        self.assertIn("No changed Swift files.", strict.stdout)
+        self.assertEqual(strict.returncode, 1, strict.stdout + strict.stderr)
+
+    def test_unexpected_swiftlint_exit_code_fails_strict_mode(self) -> None:
+        stub = self.repo / "stub-swiftlint"
+        stub.write_text('#!/bin/sh\n[ "$1" = version ] && { echo 0.65.1; exit 0; }\nexit 3\n')
+        stub.chmod(0o755)
+        self.write(SPACED_FILE, "let value = 2\n")
+        report = self.run_lint(ALIKE_SWIFTLINT=str(stub))
+        self.assertIn("swiftlint failed with exit code 3", report.stdout)
+        self.assertEqual(report.returncode, 0, report.stdout + report.stderr)
+        strict = self.run_lint(strict=True, ALIKE_SWIFTLINT=str(stub))
+        self.assertIn("Tool problems: 1", strict.stdout)
+        self.assertEqual(strict.returncode, 1, strict.stdout + strict.stderr)
+
+    def test_fix_is_refused_with_another_swiftformat_version(self) -> None:
+        (self.repo / "tools/lint-versions").write_text("swiftformat=0.0.1\nswiftlint=0.65.1\n")
+        unformatted = "let x = 1\n\n\nlet y = 2\n"
+        self.write(SPACED_FILE, unformatted)
+        result = self.run_lint("--fix")
+        self.assertIn("--fix refused", result.stdout)
+        self.assertEqual((self.repo / SPACED_FILE).read_text(), unformatted)
 
     def test_all_mode_splits_test_and_source_files(self) -> None:
-        self.write(TEST_FILE, FORCE_UNWRAP)
+        self.write(TEST_FILE, TEST_TARGET_SOURCE)
         self.write(SPACED_FILE, FORCE_UNWRAP)
         result = self.run_lint("--all")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(result.stdout.count("(force_unwrapping)"), 1, result.stdout)
         self.assertIn("With Space.swift:2", result.stdout)
+        self.assertIn("FixtureTests.swift:3", result.stdout)
+        self.assertIn("(force_cast)", result.stdout)
+        self.assertNotIn("(force_try)", result.stdout)
 
     def test_baseline_hides_existing_violation(self) -> None:
         self.write(SPACED_FILE, FORCE_UNWRAP)

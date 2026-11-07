@@ -71,7 +71,7 @@ custom_rules:
   # Written rule 13. A linked marker is TODO(#123) or TODO(https://…).
   todo_without_link:
     name: "TODO without issue link"
-    regex: '\b(?:TODO|FIXME|HACK)\b(?!\((?:#\d+|https?://[^\s)]+)\))'
+    regex: '\b(?:TODO|FIXME|HACK)\b(?!\((?:#\d+|https://[^\s)]+)\))'
     match_kinds:
       - comment
       - doccomment
