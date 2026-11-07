@@ -31,3 +31,6 @@ c92ba716970998a8c9446976f8a9e6128ecd8e02
 
 # LATER rule 6 (ADR-0001): preferSwiftStringAPI, format only.
 e227c7519da17c4ac58de42a1724fdd5a74df560
+
+# LATER rule 7 (ADR-0001): unusedPrivateDeclarations, lint only, format only.
+0c8fe4925b60eaf4eb4b80eb296615765e4549bf
