@@ -5,7 +5,7 @@ import Testing
 @Suite("Widget deep links")
 struct WidgetDestinationTests {
     @Test("Every destination round-trips through its URL", arguments: WidgetDestination.allCases)
-    func roundTrip(destination: WidgetDestination) throws {
+    func roundTrip(destination: WidgetDestination) {
         #expect(WidgetDestination(url: destination.url) == destination)
     }
 

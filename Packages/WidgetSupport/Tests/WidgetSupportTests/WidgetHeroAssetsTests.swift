@@ -18,7 +18,7 @@ struct WidgetHeroAssetsTests {
     }
 
     @Test("each scale resolves its own file")
-    func scalesAreDistinct() throws {
+    func scalesAreDistinct() {
         for scene in WidgetHeroScene.allCases {
             let urls = WidgetHeroScale.allCases.compactMap { WidgetHeroAssets.url(for: scene, scale: $0) }
             #expect(Set(urls).count == WidgetHeroScale.allCases.count, "\(scene) collapses two scales onto one file")

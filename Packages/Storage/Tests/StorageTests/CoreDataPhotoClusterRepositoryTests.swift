@@ -103,7 +103,7 @@ import Core
         )
     }
     
-    @Test func testGetLastScanDateWhenNoneExists() async throws {
+    @Test func testGetLastScanDateWhenNoneExists() async {
         // Given: No scan metadata
         
         // When: Getting last scan date
@@ -186,7 +186,7 @@ import Core
 
     // MARK: - Gallery Change Detection Tests
 
-    @Test func testHasGalleryChangedWhenNoScanExists() async throws {
+    @Test func testHasGalleryChangedWhenNoScanExists() async {
         // Given: No previous scan
 
         // When: Checking for changes

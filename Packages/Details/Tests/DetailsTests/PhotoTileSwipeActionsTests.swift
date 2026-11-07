@@ -13,7 +13,7 @@ import Core
 
     // MARK: - Offered actions
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileOffersSelectAndMakeBestShot() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileOffersSelectAndMakeBestShot() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -22,7 +22,7 @@ import Core
         #expect(PhotoTileSwipeAction.makeBestShot.edge == .leading)
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileOffersKeepInsteadOfSelect() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileOffersKeepInsteadOfSelect() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -30,21 +30,21 @@ import Core
         #expect(PhotoTileSwipeAction.keep.edge == .leading)
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testBestShotTileOffersNothing() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testBestShotTileOffersNothing() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: true, canSelect: true, canMakeBestShot: true
         )
         #expect(actions == [])
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testWithoutBestShotNothingIsSelectable() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testWithoutBestShotNothingIsSelectable() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
         #expect(actions == [.makeBestShot])
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testScreenshotTileOffersOnlySelectionActions() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testScreenshotTileOffersOnlySelectionActions() {
         #expect(PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: false
         ) == [.select])
@@ -57,7 +57,7 @@ import Core
 
     /// An edge with no action must not get `swipeActions`: an empty edge still
     /// opens, and the tile sticks off its place.
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testTileWithoutBestShotInTheClusterHasNothingOnTheTrailingEdge() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: false, canMakeBestShot: true
         )
@@ -65,7 +65,7 @@ import Core
         #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [])
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileHasAnActionOnEachEdge() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testUnselectedTileHasAnActionOnEachEdge() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: false, isBestShot: false, canSelect: true, canMakeBestShot: true
         )
@@ -73,7 +73,7 @@ import Core
         #expect(PhotoTileSwipeAction.actions(actions, on: .trailing) == [.select])
     }
 
-    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileHasNothingOnTheTrailingEdge() throws {
+    @Test(.enabled(if: PhotoTileSwipeAction.isSupported)) func testSelectedTileHasNothingOnTheTrailingEdge() {
         let actions = PhotoTileSwipeAction.available(
             isSelected: true, isBestShot: false, canSelect: true, canMakeBestShot: true
         )

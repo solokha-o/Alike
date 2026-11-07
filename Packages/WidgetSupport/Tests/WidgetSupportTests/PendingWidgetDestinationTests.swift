@@ -11,7 +11,7 @@ struct PendingWidgetDestinationTests {
     }
 
     @Test("A link is held rather than acted on, so a cold launch does not lose it")
-    func holdsUntilConsumed() throws {
+    func holdsUntilConsumed() {
         let pending = PendingWidgetDestination()
 
         pending.handle(WidgetDestination.screenshots.url)

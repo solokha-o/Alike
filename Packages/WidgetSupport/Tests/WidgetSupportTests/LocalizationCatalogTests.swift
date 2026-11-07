@@ -326,7 +326,7 @@ struct LocalizationCatalog {
     /// can actually show. Four of the seven states fall through to `Status.openApp`,
     /// `Action.scan` or the two review actions, so a state added without a short key of its
     /// own would ship an untested line. This walks the compositions and fails here first.
-    @Test func testEveryInlineAccessoryCaptionIsSampledByTheBudget() throws {
+    @Test func testEveryInlineAccessoryCaptionIsSampledByTheBudget() {
         let sampled = Set(Self.inlineRenderings.values)
         var unsampled: [String] = []
 

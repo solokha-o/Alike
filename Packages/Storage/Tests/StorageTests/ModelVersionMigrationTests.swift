@@ -65,7 +65,7 @@ import Testing
     /// Guards the versioning itself: dropping `.xccurrentversion` or the version
     /// identifier would put the model back to being unversioned, which is the
     /// state this baseline exists to prevent.
-    @Test func testShippedModelDeclaresItsVersionIdentifier() throws {
+    @Test func testShippedModelDeclaresItsVersionIdentifier() {
         let identifiers = PersistenceController.shippedModel
             .versionIdentifiers
             .compactMap { $0 as? String }

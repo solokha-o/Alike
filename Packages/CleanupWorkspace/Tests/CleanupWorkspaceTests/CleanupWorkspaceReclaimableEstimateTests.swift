@@ -254,7 +254,7 @@ import Testing
     /// The first launch on a library with categories but no clusters measures
     /// only during the legacy migration; those sizes still reach the store, so
     /// opening a category later does not ask PhotoKit again.
-    @Test func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async throws {
+    @Test func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([]))

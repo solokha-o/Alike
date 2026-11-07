@@ -206,7 +206,7 @@ struct WidgetCompositionTests {
     /// repeats the action; small names what the figure counts, because its total is
     /// already in the headline.
     @Test("medium captions the groups left to review; small keeps the bar and the way in")
-    func remainingGroups() throws {
+    func remainingGroups() {
         let progress = WidgetSessionProgress(reviewedClusters: 18, totalClusters: 30, updatedAt: Self.scannedAt)
         let state = WidgetDisplayState.resumeReview(progress: progress, isStale: false)
 
