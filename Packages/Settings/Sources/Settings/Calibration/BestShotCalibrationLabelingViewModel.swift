@@ -458,7 +458,10 @@ private extension BestShotCalibrationLabelingViewModel {
         var measuredThumbnailConfigVersions: [String: Int]
 
         private enum CodingKeys: String, CodingKey {
-            case salt, labelledClusters, candidateLocalIdentifiers, measuredThumbnailConfigVersions
+            case salt
+            case labelledClusters
+            case candidateLocalIdentifiers
+            case measuredThumbnailConfigVersions
         }
 
         init(
