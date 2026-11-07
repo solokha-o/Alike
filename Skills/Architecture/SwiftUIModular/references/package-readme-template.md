@@ -7,7 +7,7 @@ Rules:
 
 - Write the description in at most 5 lines.
 - Use one category from `Docs/adr/0004-package-dependencies.md`: Feature, Foundation,
-  Foundation with UI, or Utility | Tool.
+  Foundation with UI, Utility, or Tool.
 - List only real `public` types from `Sources/`. Write at most 6. Confirm each with
   `grep -rn "public .* <Type>" Packages/<Name>/Sources`.
 - Read "Depends on" from `Package.swift`: each `path: "../<Package>"` plus each remote
