@@ -4,7 +4,7 @@ import Core
 @testable import CleanupWorkspace
 
 @Suite struct CleanupSessionManagerTests {
-    @Test func testProgressIncludesSelectedItemsAndRemainingClusters() async {
+    @Test func testProgressIncludesSelectedItemsAndRemainingClusters() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -47,7 +47,7 @@ import Core
         #expect(progress.remainingClusters == 2)
     }
 
-    @Test func testProgressExcludesNeedsReReviewFromSavedSelections() async {
+    @Test func testProgressExcludesNeedsReReviewFromSavedSelections() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -87,7 +87,7 @@ import Core
         #expect(progress.remainingClusters == 1)
     }
 
-    @Test func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() async {
+    @Test func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -148,7 +148,7 @@ import Core
         #expect(completed == nil)
     }
 
-    @Test func testProgressStaysAvailableWhenEveryClusterIsReviewed() async {
+    @Test func testProgressStaysAvailableWhenEveryClusterIsReviewed() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -193,7 +193,7 @@ import Core
 
     /// A cluster the user finished while keeping several photos — or all of
     /// them — is done, so it must not come back around in the review queue.
-    @Test func testConfirmedMultiKeepClustersLeaveTheReviewQueue() async {
+    @Test func testConfirmedMultiKeepClustersLeaveTheReviewQueue() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 

@@ -111,3 +111,4 @@
 --rules noForceTryInTests
 --rules acronyms
 --rules noGuardInTests
+--rules redundantAsync
