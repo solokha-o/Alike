@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Check the local package graph against Docs/adr/0004-package-dependencies.md.
+# The implementation is tools/check_package_graph.py.
+set -Eeuo pipefail
+
+exec python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/check_package_graph.py" "$@"

@@ -1,0 +1,19 @@
+# Exceptions for tools/check-package-graph.
+#
+# Decision record: Docs/adr/0004-package-dependencies.md
+#
+# Format, one entry for each line, with the reason in a `#` comment:
+#   sdk <Package> <URL>   # a remote dependency that an ADR names for the package
+#   edge <From> <To>      # a local edge outside the matrix that an ADR accepts
+#   import <Package> <Module>  # known debt: an import of a local module that
+#                              # Package.swift does not declare
+# The check fails on a line without a reason and on a line that no current
+# dependency uses. A new line needs a new ADR.
+
+sdk DesignSystem https://github.com/airbnb/lottie-spm.git  # ADR-0004 SDK rule: only DesignSystem plays Lottie animations.
+
+# Debt: Scanner.swift re-exports Storage and PhotoAnalysis, which reach Scanner only
+# through CleanupWorkspace. Declare them in Scanner/Package.swift (Feature -> Foundation
+# is in the matrix, but ADR-0004 lists no such edge) or remove the re-exports.
+import Scanner Storage  # transitive re-export through CleanupWorkspace; fix in a later clean-code stage.
+import Scanner PhotoAnalysis  # transitive re-export through CleanupWorkspace; fix in a later clean-code stage.
