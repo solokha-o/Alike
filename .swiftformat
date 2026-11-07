@@ -117,3 +117,4 @@
 --lint-only unusedPrivateDeclarations
 --rules opaqueGenericParameters
 --rules preferCountWhere
+--rules docComments

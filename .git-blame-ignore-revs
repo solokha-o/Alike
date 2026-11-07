@@ -40,3 +40,6 @@ f181d44c602777704b690523cb26674169b96058
 
 # LATER rule 9 (ADR-0001): preferCountWhere, format only.
 b4f2a262309443c7e7df79415d9d22ae5d458aed
+
+# LATER rule 11 (ADR-0001): docComments, format only.
+5c124e9e890e7436bd16ef3b0943193d0fdfc9c7

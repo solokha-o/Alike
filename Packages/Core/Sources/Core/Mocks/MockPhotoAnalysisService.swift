@@ -23,7 +23,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     
     public init() {}
     
-    // Setters for test configuration
+    /// Setters for test configuration
     public func setAnalyzePhotoLibraryResult(_ result: Result<[PhotoCluster], Error>) {
         analyzePhotoLibraryResult = result
     }
