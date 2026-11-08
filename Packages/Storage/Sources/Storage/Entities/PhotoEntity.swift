@@ -24,6 +24,6 @@ public final class PhotoEntity: NSManagedObject {
     @NSManaged public var isAlikeEnhanced: Bool
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PhotoEntity> {
-        return NSFetchRequest<PhotoEntity>(entityName: "PhotoEntity")
+        NSFetchRequest<PhotoEntity>(entityName: "PhotoEntity")
     }
 }

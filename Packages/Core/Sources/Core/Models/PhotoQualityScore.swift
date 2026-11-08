@@ -66,12 +66,12 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
     private static func isSameDate(_ lhs: Date?, _ rhs: Date?) -> Bool {
         switch (lhs, rhs) {
         case (nil, nil):
-            return true
+            true
         case let (lhs?, rhs?):
             // Core Data rounds dates to sub-millisecond precision on the way back.
-            return abs(lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate) < 0.001
+            abs(lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate) < 0.001
         default:
-            return false
+            false
         }
     }
 }

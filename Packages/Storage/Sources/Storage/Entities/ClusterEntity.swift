@@ -9,7 +9,7 @@ public final class ClusterEntity: NSManagedObject {
     @NSManaged public var photos: NSSet?
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ClusterEntity> {
-        return NSFetchRequest<ClusterEntity>(entityName: "ClusterEntity")
+        NSFetchRequest<ClusterEntity>(entityName: "ClusterEntity")
     }
 }
 

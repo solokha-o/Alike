@@ -325,11 +325,11 @@ private extension PhotoAnalysisServiceImpl {
     ) -> Bool {
         switch (cachedModificationDate, assetModificationDate) {
         case (nil, nil):
-            return true
+            true
         case (let cached?, let asset?):
-            return abs(cached.timeIntervalSince1970 - asset.timeIntervalSince1970) < 1
+            abs(cached.timeIntervalSince1970 - asset.timeIntervalSince1970) < 1
         default:
-            return false
+            false
         }
     }
 
