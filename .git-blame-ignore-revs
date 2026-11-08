@@ -67,3 +67,6 @@ a8c28d9e9d80cb10bcacbc248fe2efd95f88eadd
 
 # LATER rule 19 (ADR-0001): elseOnSameLine, config only (no code change).
 c51486d93a8143c704f5719e4093f0cb1bfd3dfd
+
+# LATER rule 21 (ADR-0001): consecutiveSpaces, format only.
+7ca7c667e121f316a9c0eb844a211016e10135ef
