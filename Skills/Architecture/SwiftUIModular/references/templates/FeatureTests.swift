@@ -1,7 +1,8 @@
 // Template: the tests of one view model, in Swift Testing.
 // File: Packages/FeatureName/Tests/FeatureNameTests/FeatureNameViewModelTests.swift.
 // Based on: Packages/Settings/Tests/SettingsTests/DeleteAllDataModelTests.swift
-// (`@MainActor @Suite struct`, one behaviour in each test, private test error)
+// (`@MainActor struct` without a bare `@Suite`, one behaviour in each test,
+// private test error)
 // and Packages/Settings/Tests/SettingsTests/SettingsViewModelTests.swift (the
 // Core mock injected through `init`).
 // No `import XCTest`: tools/check_no_xctest_imports.py fails the build.
@@ -13,7 +14,7 @@ import Testing
 @testable import FeatureName
 
 @MainActor
-@Suite struct FeatureNameViewModelTests {
+struct FeatureNameViewModelTests {
     @Test func testLoadShowsStoredEntries() async throws {
         let entry = FeatureNameEntry(title: "First")
         let repository = MockFeatureNameRepository(entries: [entry])
