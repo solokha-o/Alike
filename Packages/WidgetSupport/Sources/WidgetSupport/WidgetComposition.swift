@@ -184,7 +184,7 @@ public extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .noAccess(status):
+        case .noAccess(let status):
             return composition(
                 hero: nil,
                 symbol: "lock.fill",
@@ -209,7 +209,7 @@ public extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .allCaughtUp(scannedAt):
+        case .allCaughtUp(let scannedAt):
             return composition(
                 hero: .allCaughtUp,
                 symbol: "checkmark.circle.fill",
@@ -220,7 +220,7 @@ public extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .hasSuggestions(bytes, clusterCount, scannedAt, isStale):
+        case .hasSuggestions(let bytes, let clusterCount, let scannedAt, let isStale):
             return composition(
                 hero: .hasReviews,
                 symbol: "photo.stack",
@@ -237,7 +237,7 @@ public extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .libraryChanged(bytes, scannedAt):
+        case .libraryChanged(let bytes, let scannedAt):
             return composition(
                 hero: .hasReviews,
                 symbol: "arrow.triangle.2.circlepath",
@@ -250,7 +250,7 @@ public extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .resumeReview(progress, isStale):
+        case .resumeReview(let progress, let isStale):
             return resumeComposition(
                 progress: progress,
                 isStale: isStale,
@@ -393,7 +393,7 @@ private extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .allCaughtUp(scannedAt):
+        case .allCaughtUp(let scannedAt):
             return accessory(
                 family: family,
                 // The ring's centre becomes the tick; the brand glyph stays above it.
@@ -406,7 +406,7 @@ private extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .hasSuggestions(bytes, _, scannedAt, isStale):
+        case .hasSuggestions(let bytes, _, let scannedAt, let isStale):
             return accessory(
                 family: family,
                 symbol: brand,
@@ -419,7 +419,7 @@ private extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .libraryChanged(bytes, scannedAt):
+        case .libraryChanged(let bytes, let scannedAt):
             return accessory(
                 family: family,
                 symbol: brand,
@@ -437,7 +437,7 @@ private extension WidgetPresentation {
                 destination: destination
             )
 
-        case let .resumeReview(progress, _):
+        case .resumeReview(let progress, _):
             let sized = progress.totalClusters > 0
             let reviewed = WidgetFormatting.number(progress.reviewedClusters)
             let figure: WidgetHeadlineParts? = sized

@@ -59,7 +59,7 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
             guard let first = orderedClusterIDs.first else { return .stayOnRoot }
             return .scrollTo(first)
 
-        case let .category(kind):
+        case .category(let kind):
             guard let summary = categories.first(where: { $0.kind == kind }) else { return .stayOnRoot }
             return .openCategory(summary)
 
@@ -87,7 +87,7 @@ public enum CleanupWidgetEntry: Equatable, Sendable {
         hasAccess: (CleanupCategoryKind) -> Bool
     ) -> Bool {
         if isScreenOwned { return true }
-        guard case let .openCategory(summary) = resolution else { return false }
+        guard case .openCategory(let summary) = resolution else { return false }
         return !isEntitlementSettled && !hasAccess(summary.kind)
     }
 }

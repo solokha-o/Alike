@@ -93,7 +93,7 @@ public extension WidgetPresentation {
         let showsFigures: Bool
         let scanned: Bool
         switch state {
-        case let .hasSuggestions(bytes, _, _, _), let .libraryChanged(bytes, _):
+        case .hasSuggestions(let bytes, _, _, _), .libraryChanged(let bytes, _):
             (figureBytes, showsFigures, scanned) = (bytes, true, true)
         case .resumeReview:
             // The headline is the review's progress, but the estimate behind it is

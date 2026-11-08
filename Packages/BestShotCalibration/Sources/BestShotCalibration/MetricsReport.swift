@@ -17,14 +17,14 @@ public struct MetricsReport: Equatable {
 
         private var sortKey: String {
             switch self {
-            case let .category(category): category.rawValue
+            case .category(let category): category.rawValue
             case .uncategorised: "zzz_uncategorised"
             }
         }
 
         public var displayName: String {
             switch self {
-            case let .category(category): category.rawValue
+            case .category(let category): category.rawValue
             case .uncategorised: "uncategorised"
             }
         }

@@ -12,7 +12,7 @@ public enum CorpusLoader {
 
         public var description: String {
             switch self {
-            case let .schemaTooNew(found, supported):
+            case .schemaTooNew(let found, let supported):
                 """
                 Corpus schemaVersion \(found) is newer than this tool understands \
                 (supports up to \(supported)). Update BestShotCalibration before \
