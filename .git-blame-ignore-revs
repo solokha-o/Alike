@@ -106,3 +106,6 @@ a4141ad52c1fbd0df098bc174e298dcc1df5167e
 
 # LATER rule 32 (ADR-0001): trailingCommas, format only.
 cae7cdbdec6e88734b55abdf71c8d401f1307f1e
+
+# LATER rule 33 (ADR-0001): trailingSpace, format only.
+5f65aa9d64c5849a73c7b157fa4aad4648b07b50
