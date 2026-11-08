@@ -99,13 +99,13 @@ struct CleanupHistorySnapshotTests {
         let firstOfMarch = date(year: 2_026, month: 3, day: 1, calendar: groupingCalendar)
         let hijriMonthOfFirst = hijri.component(.month, from: firstOfMarch)
         let secondDay = try #require((2...31).first { day in
-                guard let candidate = groupingCalendar.date(
-                    from: DateComponents(year: 2_026, month: 3, day: day)
-                ) else {
-                    return false
-                }
-                return hijri.component(.month, from: candidate) != hijriMonthOfFirst
-            }, "March 2026 does not straddle an Umm al-Qura month boundary")
+            guard let candidate = groupingCalendar.date(
+                from: DateComponents(year: 2_026, month: 3, day: day)
+            ) else {
+                return false
+            }
+            return hijri.component(.month, from: candidate) != hijriMonthOfFirst
+        }, "March 2026 does not straddle an Umm al-Qura month boundary")
 
         let earlier = makeRecord(
             id: "00000000-0000-0000-0000-000000000005",

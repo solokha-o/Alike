@@ -227,10 +227,10 @@ public final class SubscriptionStore: PremiumAccessControlling {
         return entitlements
             .filter {
                 $0.isVerified &&
-                $0.revocationDate == nil &&
-                !$0.isUpgraded &&
-                ($0.expirationDate == nil || $0.expirationDate! > now) &&
-                catalog.plan(for: $0.productID) != nil
+                    $0.revocationDate == nil &&
+                    !$0.isUpgraded &&
+                    ($0.expirationDate == nil || $0.expirationDate! > now) &&
+                    catalog.plan(for: $0.productID) != nil
             }
             .max { ($0.expirationDate ?? .distantFuture) < ($1.expirationDate ?? .distantFuture) }
     }

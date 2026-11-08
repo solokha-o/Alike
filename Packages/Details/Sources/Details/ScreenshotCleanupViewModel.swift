@@ -115,8 +115,8 @@ final class ScreenshotCleanupViewModel {
     func continueWithSingleFreeSelection() {
         guard
             let retainedID = assetSnapshots
-                .map(\.localIdentifier)
-                .first(where: selectedAssetIDs.contains)
+            .map(\.localIdentifier)
+            .first(where: selectedAssetIDs.contains)
         else { return }
 
         withAnimation(.appInteractive) {

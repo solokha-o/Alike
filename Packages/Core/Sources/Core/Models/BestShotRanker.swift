@@ -244,7 +244,8 @@ public enum BestShotRanker {
         var excluded = Set<String>()
         if hasSharpReference {
             for snapshot in usable
-            where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio {
+                where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio
+            {
                 excluded.insert(snapshot.localIdentifier)
             }
         }

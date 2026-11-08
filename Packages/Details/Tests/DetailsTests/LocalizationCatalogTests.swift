@@ -292,7 +292,8 @@ struct LocalizationCatalogTests {
             let localizations = try catalog.localizations(of: key)
             guard localizations["en"]?["variations"] != nil else { continue }
             for language in LocalizationCatalog.shippedLanguages
-            where localizations[language]?["variations"] == nil {
+                where localizations[language]?["variations"] == nil
+            {
                 flat.append("\(key) [\(language)]")
             }
         }

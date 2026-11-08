@@ -461,10 +461,10 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                     for x in blockX..<(blockX + blockSide) {
                         let laplacian = abs(
                             4 * Double(pixels[x, y])
-                            - Double(pixels[x - 1, y])
-                            - Double(pixels[x + 1, y])
-                            - Double(pixels[x, y - 1])
-                            - Double(pixels[x, y + 1])
+                                - Double(pixels[x - 1, y])
+                                - Double(pixels[x + 1, y])
+                                - Double(pixels[x, y - 1])
+                                - Double(pixels[x, y + 1])
                         )
                         total += laplacian
                         count += 1

@@ -82,10 +82,10 @@ struct BlurSharpnessScorer {
                 let center = Double(pixels[x, y])
                 let laplacian = abs(
                     4 * center
-                    - Double(pixels[x - 1, y])
-                    - Double(pixels[x + 1, y])
-                    - Double(pixels[x, y - 1])
-                    - Double(pixels[x, y + 1])
+                        - Double(pixels[x - 1, y])
+                        - Double(pixels[x + 1, y])
+                        - Double(pixels[x, y - 1])
+                        - Double(pixels[x, y + 1])
                 )
                 total += laplacian
                 sampleCount += 1

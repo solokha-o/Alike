@@ -107,7 +107,8 @@ struct InfoPlistCatalogTests {
 
         for key in catalog.usageDescriptionKeys {
             for language in LocalizationCatalog.shippedLanguages
-            where catalog.value(of: key, in: language) == nil {
+                where catalog.value(of: key, in: language) == nil
+            {
                 incomplete.append("\(key) [\(language)]")
             }
         }
