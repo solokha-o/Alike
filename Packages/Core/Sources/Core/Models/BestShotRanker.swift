@@ -91,31 +91,31 @@ public enum BestShotRanker {
             (signals[snapshot.localIdentifier]?.globalSharpness ?? 0) >= config.absoluteSharpnessFloor
         }
         let confidence: BestShotConfidence =
- if !reachesAbsoluteFloor {
-            .unresolved
-        } else if topScore >= config.automaticSelectionMinimumScore, margin >= config.automaticSelectionMinimumMargin {
-            hasCompleteCoverage ? .automatic : .lowConfidence
-        } else if margin >= config.lowConfidenceMinimumMargin {
-            .lowConfidence
-        } else {
-            .unresolved
-        }
+            if !reachesAbsoluteFloor {
+                .unresolved
+            } else if topScore >= config.automaticSelectionMinimumScore, margin >= config.automaticSelectionMinimumMargin {
+                hasCompleteCoverage ? .automatic : .lowConfidence
+            } else if margin >= config.lowConfidenceMinimumMargin {
+                .lowConfidence
+            } else {
+                .unresolved
+            }
 
         let reasonCodes: [BestShotReasonCode] =
- if confidence == .unresolved {
-            []
-        } else if order.count == 1, !excluded.isEmpty {
-            // The only rivals were dropped for critical blur, which is exactly
-            // what the badge should say.
-            [.sharper]
-        } else {
-            self.reasonCodes(
-                winner: components[winner.localIdentifier],
-                runnerUp: order.dropFirst().first.flatMap { components[$0.localIdentifier] },
-                weights: weights,
-                config: config
-            )
-        }
+            if confidence == .unresolved {
+                []
+            } else if order.count == 1, !excluded.isEmpty {
+                // The only rivals were dropped for critical blur, which is exactly
+                // what the badge should say.
+                [.sharper]
+            } else {
+                self.reasonCodes(
+                    winner: components[winner.localIdentifier],
+                    runnerUp: order.dropFirst().first.flatMap { components[$0.localIdentifier] },
+                    weights: weights,
+                    config: config
+                )
+            }
 
         return BestShotDecision(
             localIdentifier: confidence == .unresolved ? nil : winner.localIdentifier,

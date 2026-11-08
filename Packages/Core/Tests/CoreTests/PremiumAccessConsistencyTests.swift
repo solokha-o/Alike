@@ -37,17 +37,17 @@ import Testing
         for feature in PremiumFeature.allCases {
             for context in contexts {
                 let isMatchingScan =
- if case .scan = context, feature == .unlimitedScans {
-                    true
-                } else {
-                    false
-                }
+                    if case .scan = context, feature == .unlimitedScans {
+                        true
+                    } else {
+                        false
+                    }
                 let isMatchingSelection =
- if case .cleanupSelection = context, feature == .batchCleanup {
-                    true
-                } else {
-                    false
-                }
+                    if case .cleanupSelection = context, feature == .batchCleanup {
+                        true
+                    } else {
+                        false
+                    }
                 guard !isMatchingScan, !isMatchingSelection else { continue }
 
                 #expect(

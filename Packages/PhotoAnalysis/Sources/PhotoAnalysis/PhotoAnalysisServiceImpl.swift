@@ -182,12 +182,12 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         }
 
         let fallback: [PHAsset] =
- switch category {
-        case .screenshots:
-            assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
-        case .blurredPhotos:
-            []
-        }
+            switch category {
+            case .screenshots:
+                assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+            case .blurredPhotos:
+                []
+            }
         AssetByteSize.prewarm(fallback)
         return fallback
     }

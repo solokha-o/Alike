@@ -158,14 +158,14 @@ enum CleanupPresentation {
         resurfacing: ClusterResurfacingState?
     ) -> String {
         let resurfacingTitle: String =
- switch resurfacing {
-        case .new:
-            CleanupL10n.Main.new
-        case .changed:
-            CleanupL10n.Main.changed
-        case .none, .unchanged:
-            ""
-        }
+            switch resurfacing {
+            case .new:
+                CleanupL10n.Main.new
+            case .changed:
+                CleanupL10n.Main.changed
+            case .none, .unchanged:
+                ""
+            }
 
         return [
             CleanupL10n.Common.photos(photoCount),
