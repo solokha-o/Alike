@@ -45,12 +45,12 @@ import Testing
         #expect(cue?.persistence == .oneShot)
     }
 
-    @Test func testRepeatedOneShotIsRejectedAfterConsumption() {
+    @Test func testRepeatedOneShotIsRejectedAfterConsumption() throws {
         let operationID = UUID()
         var resolver = AlikeReactionResolver()
         let first = resolver.apply(.scanCompleted(id: operationID, candidateCount: 2))
         #expect(first != nil)
-        _ = resolver.apply(.reactionConsumed(id: first!.id))
+        _ = resolver.apply(.reactionConsumed(id: try #require(first?.id)))
 
         #expect(resolver.apply(.scanCompleted(id: operationID, candidateCount: 2)) == nil)
         #expect(resolver.currentCue == nil)
@@ -80,7 +80,7 @@ import Testing
         #expect(permissionResolver.currentCue?.state == .permissionIssue(.init(operation: .cleanup)))
     }
 
-    @Test func testCleanupRetryUpgradesFailureToOneSuccessWithoutReplay() {
+    @Test func testCleanupRetryUpgradesFailureToOneSuccessWithoutReplay() throws {
         let recordID = UUID()
         let summary = AlikeCleanupSummary(itemCount: 3, estimatedSavingsBytes: 1_024)
         var resolver = AlikeReactionResolver()
@@ -88,14 +88,14 @@ import Testing
 
         let success = resolver.apply(.cleanupCompleted(id: recordID, summary: summary))
         #expect(success?.state == .cleanupSuccess(summary))
-        _ = resolver.apply(.reactionConsumed(id: success!.id))
+        _ = resolver.apply(.reactionConsumed(id: try #require(success?.id)))
         #expect(resolver.apply(.cleanupCompleted(id: recordID, summary: summary)) == nil)
     }
 
-    @Test func testConsumptionDoesNotClearNewerCue() {
+    @Test func testConsumptionDoesNotClearNewerCue() throws {
         var resolver = AlikeReactionResolver()
-        let older = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1))!
-        let newer = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2))!
+        let older = try #require(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
+        let newer = try #require(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2)))
 
         _ = resolver.apply(.reactionConsumed(id: older.id))
 

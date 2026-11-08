@@ -125,3 +125,4 @@
 --rules consistentSwitchCaseSpacing
 --rules conditionalAssignment
 --rules blankLinesAroundMark
+--rules noForceUnwrapInTests

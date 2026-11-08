@@ -86,11 +86,11 @@ import Testing
         #expect(metrics.overrideRate == 0)
     }
 
-    @Test func testCountersSurviveANewRepositoryInstance() async {
+    @Test func testCountersSurviveANewRepositoryInstance() async throws {
         await repository.recordRecommendation(confidence: .automatic, clusterID: UUID())
 
         let reopened = UserDefaultsBestShotOverrideMetricsRepository(
-            defaults: UserDefaults(suiteName: suiteName)!,
+            defaults: try #require(UserDefaults(suiteName: suiteName)),
             key: key,
             countedClustersKey: countedClustersKey
         )

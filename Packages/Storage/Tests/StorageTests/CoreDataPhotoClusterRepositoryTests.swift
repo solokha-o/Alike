@@ -98,7 +98,7 @@ import Core
         #expect(retrievedDate != nil, "Scan date should not be nil")
         let eps = 1.0
         #expect(
-            abs(scanDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
+            abs(scanDate.timeIntervalSince1970 - (try #require(retrievedDate?.timeIntervalSince1970))) <= eps,
             "Retrieved date should match saved date"
         )
     }
@@ -127,7 +127,7 @@ import Core
         
         let eps = 1.0
         #expect(
-            abs(secondDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
+            abs(secondDate.timeIntervalSince1970 - (try #require(retrievedDate?.timeIntervalSince1970))) <= eps,
             "Should return most recent scan date"
         )
     }

@@ -32,7 +32,7 @@ import Core
         #expect(SubscriptionPlan.yearly.configuredTrialDays == 7)
     }
 
-    @Test func testProductionCatalogLoadsBothProducts() async {
+    @Test func testProductionCatalogLoadsBothProducts() async throws {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(
@@ -50,7 +50,7 @@ import Core
         let store = SubscriptionStore(
             catalog: .production,
             client: client,
-            defaults: UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!,
+            defaults: try #require(UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")),
             cacheKey: UUID().uuidString
         )
 
@@ -60,20 +60,20 @@ import Core
         #expect(store.products.count == SubscriptionPlan.allCases.count)
     }
 
-    @Test func testLoadProductsMapsEveryPlan() async {
+    @Test func testLoadProductsMapsEveryPlan() async throws {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(
                     id: "test.alike.monthly",
                     displayName: "Monthly",
                     displayPrice: "$6.99",
-                    price: Decimal(string: "6.99")!
+                    price: try #require(Decimal(string: "6.99"))
                 ),
                 StorefrontProduct(
                     id: "test.alike.yearly",
                     displayName: "Yearly",
                     displayPrice: "$39.99",
-                    price: Decimal(string: "39.99")!
+                    price: try #require(Decimal(string: "39.99"))
                 )
             ]
         )
@@ -139,7 +139,7 @@ import Core
         let productRequests = ControlledRequest<[StorefrontProduct]>()
         let client = MockStoreKitClient(productRequests: productRequests)
         let suiteName = "PurchasesTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: suiteName)!
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
         let cacheKey = UUID().uuidString
         let cached = PremiumEntitlementState(
             isPremium: true,
@@ -261,7 +261,7 @@ import Core
 
     @Test func testExpiredCachedEntitlementDoesNotGrantAccessBeforeReconciliation() async throws {
         let suiteName = "PurchasesTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: suiteName)!
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
         let cacheKey = UUID().uuidString
         let cached = PremiumEntitlementState(
             isPremium: true,
@@ -288,7 +288,7 @@ import Core
     /// the store reads as free, so it must also read as *not settled* — that is what
     /// lets a caller tell "free" from "free until the check finishes".
     @Test func testExpiredPremiumCacheIsNotSettledUntilDelayedVerificationGrantsAccess() async throws {
-        let defaults = UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!
+        let defaults = try #require(UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)"))
         let cacheKey = UUID().uuidString
         let cached = PremiumEntitlementState(
             isPremium: true,
@@ -336,11 +336,11 @@ import Core
         #expect(store.isEntitlementSettled)
     }
 
-    @Test func testAnUnconfiguredCatalogSettlesImmediately() async {
+    @Test func testAnUnconfiguredCatalogSettlesImmediately() async throws {
         let store = SubscriptionStore(
             catalog: .unconfigured,
             client: MockStoreKitClient(),
-            defaults: UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")!,
+            defaults: try #require(UserDefaults(suiteName: "PurchasesTests.\(UUID().uuidString)")),
             cacheKey: UUID().uuidString
         )
 

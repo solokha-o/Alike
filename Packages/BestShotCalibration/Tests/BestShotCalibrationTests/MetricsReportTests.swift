@@ -87,11 +87,11 @@ import Testing
         #expect(abs((overall.offlineOverrideProxy ?? -1) - (1.0 / 3.0)) <= 1e-9)
     }
 
-    @Test func testUnresolvedClusterHasNoWinner() {
+    @Test func testUnresolvedClusterHasNoWinner() throws {
         let report = MetricsReport.compute(corpus: makeCorpus(), config: config)
         // Sanity check on the underlying decision, so the metric above is not
         // trusted blindly.
-        let weakCluster = makeCorpus().entries.first { $0.clusterID == "weak" }!
+        let weakCluster = try #require(makeCorpus().entries.first { $0.clusterID == "weak" })
         let decision = BestShotRanker.decide(
             snapshots: weakCluster.snapshots,
             scores: weakCluster.scores(
@@ -105,7 +105,7 @@ import Testing
         #expect(report.overall.unresolvedCount >= 1)
     }
 
-    @Test func testPerCategoryBreakdown() {
+    @Test func testPerCategoryBreakdown() throws {
         let report = MetricsReport.compute(corpus: makeCorpus(), config: config)
         let keys = report.byCategory.map(\.key)
 
@@ -114,11 +114,11 @@ import Testing
         #expect(keys.contains(.category(.night)))
         #expect(keys.contains(.uncategorised))
 
-        let people = report.byCategory.first { $0.key == .category(.people) }!.bucket
+        let people = try #require(report.byCategory.first { $0.key == .category(.people) }?.bucket)
         #expect(people.clusterCount == 1)
         #expect(abs((people.topOneAgreement ?? -1) - 1) <= 1e-9)
 
-        let uncategorised = report.byCategory.first { $0.key == .uncategorised }!.bucket
+        let uncategorised = try #require(report.byCategory.first { $0.key == .uncategorised }?.bucket)
         #expect(uncategorised.clusterCount == 1)
     }
 

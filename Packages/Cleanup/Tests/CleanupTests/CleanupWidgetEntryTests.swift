@@ -27,13 +27,13 @@ import Testing
         #expect(resolution == .openCategory(screenshots))
     }
 
-    @Test func testEachCategoryResolvesToItsOwnSummary() {
+    @Test func testEachCategoryResolvesToItsOwnSummary() throws {
         let categories = [summary(.screenshots, assetCount: 86), summary(.blurredPhotos, assetCount: 12)]
 
         for kind in CleanupCategoryKind.allCases {
             let resolution = CleanupWidgetEntry.category(kind)
                 .resolution(categories: categories, orderedClusterIDs: [])
-            #expect(resolution == .openCategory(categories.first { $0.kind == kind }!))
+            #expect(resolution == .openCategory(try #require(categories.first { $0.kind == kind })))
         }
     }
 
