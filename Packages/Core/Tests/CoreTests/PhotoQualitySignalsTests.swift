@@ -3,6 +3,7 @@ import Testing
 @testable import Core
 
 @Suite struct PhotoQualitySignalsTests {
+
     // MARK: - Rejected faces
 
     @Test func testEmptyFacesWithoutRejectionsMeansNobodyWasInThePhoto() {

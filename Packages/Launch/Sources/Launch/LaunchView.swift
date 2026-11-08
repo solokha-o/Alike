@@ -59,6 +59,7 @@ public struct LaunchView: View {
 }
 
 // MARK: - Preview
+
 #Preview("Launch") {
     LaunchView(isCompleted: .constant(false))
 }

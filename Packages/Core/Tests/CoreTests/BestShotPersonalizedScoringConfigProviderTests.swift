@@ -113,6 +113,7 @@ import Testing
     }
 
     // MARK: - Concurrency: reset and overlapping overrides
+
     //
     // `recordOverride` runs its whole transaction — record, snapshot, fit,
     // write, cache publication — inside `commitLock`, and `reset()` bumps

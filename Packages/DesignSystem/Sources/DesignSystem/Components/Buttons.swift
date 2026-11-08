@@ -99,6 +99,7 @@ public struct SecondaryButton: View {
 }
 
 // MARK: - Preview
+
 #Preview {
     VStack(spacing: Spacing.medium) {
         PrimaryButton("Primary Button", icon: "star.fill") {}

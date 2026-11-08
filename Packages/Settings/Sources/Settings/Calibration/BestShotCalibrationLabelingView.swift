@@ -465,6 +465,7 @@ private struct CalibrationFilmstripTile: View {
 }
 
 // MARK: - Preview
+
 #Preview {
     NavigationStack {
         BestShotCalibrationLabelingView()

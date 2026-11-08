@@ -14,7 +14,9 @@ import WidgetSupport
 @MainActor
 @Observable
 final class TabManager {
+
     // MARK: - Tab Definition
+
     enum Tab: String, CaseIterable, Hashable {
         case scanner
         case cleanup
@@ -38,6 +40,7 @@ final class TabManager {
     }
     
     // MARK: - State
+
     var selectedTab: Tab = .scanner
     var shouldStartScan = false
     var needsRescan = false
@@ -50,6 +53,7 @@ final class TabManager {
     var pendingCleanupEntry: CleanupWidgetEntry?
     
     // MARK: - Actions
+
     func navigateToScanner(andStartScan: Bool = false) {
         selectedTab = .scanner
         if andStartScan {

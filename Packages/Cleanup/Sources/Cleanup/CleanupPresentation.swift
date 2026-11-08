@@ -9,6 +9,7 @@ import PurchasesUI
 /// branches: folding two branches into one would make SwiftUI update a banner in place
 /// where it now removes one and inserts another, which changes the transition.
 enum CleanupPresentation {
+
     // MARK: - Screen state
 
     /// The scan the banner reports. A reconciliation refreshes behind the cleanup toast,

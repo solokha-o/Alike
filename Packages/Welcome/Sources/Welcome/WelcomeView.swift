@@ -73,6 +73,7 @@ public struct WelcomeView: View {
     }
     
     // MARK: - Initial State
+
     private var initialState: some View {
         VStack(spacing: Spacing.small) {
             if mode.replaysOnboarding {
@@ -379,6 +380,7 @@ public struct WelcomeView: View {
     }
     
     // MARK: - Denied State
+
     private var deniedState: some View {
         ScrollView {
             VStack(spacing: Spacing.large) {
@@ -509,6 +511,7 @@ public struct WelcomeView: View {
     }
     
     // MARK: - Authorized State
+
     private var authorizedState: some View {
         VStack(spacing: Spacing.medium) {
             Image(systemName: "checkmark.seal.fill")
@@ -610,6 +613,7 @@ private struct PermissionRationaleCard: View {
 }
 
 // MARK: - Preview
+
 #Preview("Initial") {
     WelcomeView(isCompleted: .constant(false))
 }

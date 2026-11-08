@@ -9,6 +9,7 @@ import Foundation
 /// search only ever produces a candidate `PhotoQualityScoringConfig` value for
 /// a human to review and, later, hand-apply.
 public enum WeightSweep {
+
     // MARK: - Scoring
 
     public struct Score: Equatable {
