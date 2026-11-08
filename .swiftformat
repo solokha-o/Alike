@@ -135,3 +135,5 @@
 --rules hoistPatternLet
 --rules spaceAroundOperators
 --rules redundantSwiftTestingSuite
+# extensionAccessControl (ADR row 20) added after row 27 by owner decision
+--rules extensionAccessControl

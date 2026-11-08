@@ -21,8 +21,8 @@ extension ClusterDetailsViewModel {
     }
 }
 
-private extension ClusterDetailsViewModel {
-    static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
+extension ClusterDetailsViewModel {
+    fileprivate static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
         PhotoClusterBestShot.bestShotLocalIdentifier(from: snapshots.map(\.photoClusterAssetSnapshot))
     }
 }

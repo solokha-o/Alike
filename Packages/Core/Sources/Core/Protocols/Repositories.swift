@@ -38,17 +38,17 @@ public protocol PhotoClusterRepository: Sendable {
 
 /// Date-only defaults so repositories and test doubles that predate library
 /// fingerprinting keep working unchanged.
-public extension PhotoClusterRepository {
-    func loadScanMetadata() async -> ScanMetadataSnapshot? {
+extension PhotoClusterRepository {
+    public func loadScanMetadata() async -> ScanMetadataSnapshot? {
         await getLastScanDate().map { ScanMetadataSnapshot(lastScanDate: $0) }
     }
 
-    func updateScanMetadata(_ metadata: ScanMetadataSnapshot?) async throws {
+    public func updateScanMetadata(_ metadata: ScanMetadataSnapshot?) async throws {
         guard let metadata else { return }
         try await updateLastScanDate(metadata.lastScanDate)
     }
 
-    func captureScanMetadata(completedAt: Date) async -> ScanMetadataSnapshot {
+    public func captureScanMetadata(completedAt: Date) async -> ScanMetadataSnapshot {
         ScanMetadataSnapshot(lastScanDate: completedAt)
     }
 }
@@ -155,9 +155,9 @@ public protocol AssetByteSizeRepository: Sendable {
     func saveLibraryTotalBytes(_ bytes: Int64?) async throws
 }
 
-public extension AssetByteSizeRepository {
-    func loadLibraryTotalBytes() async -> Int64? { nil }
-    func saveLibraryTotalBytes(_: Int64?) async throws {}
+extension AssetByteSizeRepository {
+    public func loadLibraryTotalBytes() async -> Int64? { nil }
+    public func saveLibraryTotalBytes(_: Int64?) async throws {}
 }
 
 /// Repository for the active cleanup session aggregate state.
@@ -337,11 +337,11 @@ public protocol PhotoAnalysisService: Sendable {
     func libraryTotalBytes() async -> Int64?
 }
 
-public extension PhotoAnalysisService {
-    func libraryTotalBytes() async -> Int64? { nil }
+extension PhotoAnalysisService {
+    public func libraryTotalBytes() async -> Int64? { nil }
 
     /// Recompute cleanup categories without observing intermediate progress.
-    func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
+    public func refreshCleanupCategories() async throws -> [CleanupCategorySummary] {
         try await refreshCleanupCategories(progress: { _ in })
     }
 }

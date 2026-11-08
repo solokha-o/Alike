@@ -227,8 +227,8 @@ struct PhotoClusteringServiceTests {
     }
 }
 
-private extension UUID {
-    static func uuid(for value: Int) -> UUID {
+extension UUID {
+    fileprivate static func uuid(for value: Int) -> UUID {
         let clamped = max(0, min(value, 999_999_999_999))
         let uuidString = String(format: "00000000-0000-0000-0000-%012d", clamped)
         return UUID(uuidString: uuidString) ?? UUID()

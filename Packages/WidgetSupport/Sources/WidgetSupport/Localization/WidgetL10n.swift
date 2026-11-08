@@ -167,8 +167,8 @@ public enum WidgetL10n {
     }
 }
 
-private extension WidgetL10n {
-    static func string(_ key: String.LocalizationValue, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
+extension WidgetL10n {
+    fileprivate static func string(_ key: String.LocalizationValue, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
         String(localized: key, bundle: bundle ?? .module, locale: locale ?? WidgetFormatting.locale)
     }
 
@@ -176,7 +176,7 @@ private extension WidgetL10n {
     ///
     /// The count has to be the first argument and has to appear in every variation:
     /// `xcstringstool` rejects a plural variation that never references the number.
-    static func plural(
+    fileprivate static func plural(
         _ key: String,
         _ arguments: any CVarArg...,
         bundle: Bundle? = nil,

@@ -95,8 +95,8 @@ enum ClusterReviewStateResurfacer {
     }
 }
 
-private extension ClusterReviewStateResurfacer {
-    static func needsReviewState(
+extension ClusterReviewStateResurfacer {
+    fileprivate static func needsReviewState(
         for snapshot: PhotoClusterSnapshot,
         resurfacingState: ClusterResurfacingState,
         updatedAt: Date

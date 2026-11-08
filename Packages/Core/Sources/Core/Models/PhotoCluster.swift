@@ -51,14 +51,14 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
 
 // MARK: - Content Identity
 
-public extension PhotoCluster {
+extension PhotoCluster {
     /// Identity derived from the cluster's contents rather than its per-scan
     /// ``id``, which is regenerated every time the library is reanalyzed.
     ///
     /// Matches the key ``PhotoClusterSnapshot/assetIdentifiers`` is compared on
     /// when review state is migrated across a rescan, so view identity and
     /// review-state identity stay in agreement.
-    var contentKey: String {
+    public var contentKey: String {
         assets.map(\.localIdentifier).sorted().joined(separator: "\u{1F}")
     }
 }
@@ -66,14 +66,14 @@ public extension PhotoCluster {
 // MARK: - Manual Equatable & Hashable
 
 /// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
-public extension PhotoCluster {
-    static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
+extension PhotoCluster {
+    public static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
         lhs.id == rhs.id
     }
 }
 
-public extension PhotoCluster {
-    func hash(into hasher: inout Hasher) {
+extension PhotoCluster {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }

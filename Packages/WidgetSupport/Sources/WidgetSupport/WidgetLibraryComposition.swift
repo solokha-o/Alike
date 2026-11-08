@@ -108,7 +108,7 @@ public struct WidgetLibraryTimelineStep: Equatable, Sendable {
     }
 }
 
-public extension WidgetPresentation {
+extension WidgetPresentation {
     /// Resolves a snapshot into the three-row library overview.
     ///
     /// Takes the snapshot rather than a ``WidgetDisplayState`` because the counts this
@@ -116,7 +116,7 @@ public extension WidgetPresentation {
     /// in that state, and widening a shipped enum to carry them would change a type the
     /// installed widgets already switch over. The degenerate cases still go through
     /// `displayState(for:now:)`, so there is one precedence ladder, not two.
-    static func libraryComposition(
+    public static func libraryComposition(
         for snapshot: WidgetSnapshot?,
         now: Date = Date()
     ) -> WidgetLibraryComposition {
@@ -153,7 +153,7 @@ public extension WidgetPresentation {
     /// Mirrors ``timeline(for:now:)`` deliberately — the two widgets go stale on the same
     /// threshold, and duplicating the date arithmetic in the extension would put it
     /// somewhere no test can reach.
-    static func libraryTimeline(
+    public static func libraryTimeline(
         for snapshot: WidgetSnapshot?,
         now: Date = Date()
     ) -> [WidgetLibraryTimelineStep] {
@@ -207,9 +207,9 @@ extension WidgetPresentation {
     }
 }
 
-private extension WidgetPresentation {
+extension WidgetPresentation {
     /// A state with nothing measured to list: one sentence, no rows, no invented counts.
-    static func placeholder(caption: String, hero: WidgetHeroScene?) -> WidgetLibraryComposition {
+    fileprivate static func placeholder(caption: String, hero: WidgetHeroScene?) -> WidgetLibraryComposition {
         WidgetLibraryComposition(
             hero: hero,
             rows: [],
@@ -221,7 +221,7 @@ private extension WidgetPresentation {
         )
     }
 
-    static func overview(for snapshot: WidgetSnapshot) -> WidgetLibraryComposition {
+    fileprivate static func overview(for snapshot: WidgetSnapshot) -> WidgetLibraryComposition {
         let rows = libraryRows(for: snapshot)
 
         let footnote = snapshot.lastScanDate.map {
@@ -248,7 +248,7 @@ private extension WidgetPresentation {
     ///
     /// Unknown counts do not make it "all caught up": a snapshot that knows nothing has
     /// not established that there is nothing.
-    static func hero(for snapshot: WidgetSnapshot) -> WidgetHeroScene {
+    fileprivate static func hero(for snapshot: WidgetSnapshot) -> WidgetHeroScene {
         let known = [
             snapshot.clusterCount,
             snapshot.screenshotAssetCount,
@@ -258,7 +258,7 @@ private extension WidgetPresentation {
         return known.isEmpty || known.contains(where: { $0 > 0 }) ? .hasReviews : .allCaughtUp
     }
 
-    static func row(
+    fileprivate static func row(
         category: WidgetLibraryRow.Category,
         symbol: String,
         title: String,

@@ -20,8 +20,8 @@ public final class FileCleanupHistoryRepository: CleanupHistoryRepository, Senda
     }
 }
 
-private extension FileCleanupHistoryRepository {
-    static func defaultFileURL(fileManager: FileManager) -> URL {
+extension FileCleanupHistoryRepository {
+    fileprivate static func defaultFileURL(fileManager: FileManager) -> URL {
         let baseDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.temporaryDirectory
         return baseDirectory

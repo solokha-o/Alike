@@ -213,8 +213,8 @@ public struct PhotoClusteringService: Sendable {
     }
 }
 
-private extension PhotoClusteringService {
-    func makeAllHaveCreationDateFromIndex(_ candidates: [Candidate]) -> [Bool] {
+extension PhotoClusteringService {
+    private func makeAllHaveCreationDateFromIndex(_ candidates: [Candidate]) -> [Bool] {
         guard !candidates.isEmpty else { return [true] }
 
         var result = Array(repeating: false, count: candidates.count + 1)
@@ -227,7 +227,7 @@ private extension PhotoClusteringService {
         return result
     }
 
-    func isSortedDescendingByCreationDate(_ candidates: [Candidate]) -> Bool {
+    private func isSortedDescendingByCreationDate(_ candidates: [Candidate]) -> Bool {
         var previous: Date?
 
         for candidate in candidates {

@@ -387,12 +387,12 @@ struct BestShotPersonalizedScoringConfigProviderTests {
     }
 }
 
-private extension BestShotPersonalizedScoringConfigProvider {
+extension BestShotPersonalizedScoringConfigProvider {
     /// Yields until at least `count` callers are parked waiting for
     /// `commitLock`, giving up after a bounded number of turns so a test
     /// that no longer produces the expected contention fails on its own
     /// assertions instead of hanging. Returns whether the count was reached.
-    func waitForCommitWaiters(_ count: Int, maximumYields: Int = 10_000) async -> Bool {
+    fileprivate func waitForCommitWaiters(_ count: Int, maximumYields: Int = 10_000) async -> Bool {
         for _ in 0..<maximumYields {
             if commitWaiterCount >= count { return true }
             await Task.yield()

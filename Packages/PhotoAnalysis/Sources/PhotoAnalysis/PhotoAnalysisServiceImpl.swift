@@ -241,8 +241,8 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     
 }
 
-private extension PhotoAnalysisServiceImpl {
-    func buildCleanupCategorySnapshots(
+extension PhotoAnalysisServiceImpl {
+    private func buildCleanupCategorySnapshots(
         from assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [CleanupCategorySnapshot] {
@@ -276,7 +276,7 @@ private extension PhotoAnalysisServiceImpl {
         return snapshots
     }
 
-    func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
+    private func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
         guard let featurePrintRepository else { return [:] }
 
         let identifiers = assets.map(\.localIdentifier)
@@ -301,7 +301,7 @@ private extension PhotoAnalysisServiceImpl {
         return cachedFeaturePrints
     }
 
-    func saveFeaturePrintCache(for results: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)]) async {
+    private func saveFeaturePrintCache(for results: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)]) async {
         guard let featurePrintRepository else { return }
 
         let entries: [PhotoFeaturePrintCacheEntry] = results.compactMap { item in
@@ -322,7 +322,7 @@ private extension PhotoAnalysisServiceImpl {
         try? await featurePrintRepository.upsertFeaturePrints(entries)
     }
 
-    nonisolated static func isCacheValid(
+    fileprivate nonisolated static func isCacheValid(
         cachedModificationDate: Date?,
         assetModificationDate: Date?
     ) -> Bool {
@@ -336,7 +336,7 @@ private extension PhotoAnalysisServiceImpl {
         }
     }
 
-    func decodeFeaturePrint(from data: Data) -> VNFeaturePrintObservation? {
+    private func decodeFeaturePrint(from data: Data) -> VNFeaturePrintObservation? {
         do {
             return try NSKeyedUnarchiver.unarchivedObject(
                 ofClass: VNFeaturePrintObservation.self,
@@ -347,7 +347,7 @@ private extension PhotoAnalysisServiceImpl {
         }
     }
 
-    func encodeFeaturePrint(_ observation: VNFeaturePrintObservation) -> Data? {
+    private func encodeFeaturePrint(_ observation: VNFeaturePrintObservation) -> Data? {
         do {
             return try NSKeyedArchiver.archivedData(
                 withRootObject: observation,

@@ -351,8 +351,8 @@ private actor SuspensionGate {
     }
 }
 
-private extension JSONDecoder {
-    static var calibration: JSONDecoder {
+extension JSONDecoder {
+    fileprivate static var calibration: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return decoder

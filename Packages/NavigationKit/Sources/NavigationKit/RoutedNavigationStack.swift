@@ -33,8 +33,8 @@ public struct RoutedNavigationStack<Route: Hashable, Root: View, Destination: Vi
     }
 }
 
-public extension RoutedNavigationStack where Route == Never, Destination == EmptyView {
-    init(
+extension RoutedNavigationStack where Route == Never, Destination == EmptyView {
+    public init(
         initialPath: [Never] = [],
         onPathChange: @escaping ([Never]) -> Void = { _ in },
         @ViewBuilder root: @escaping () -> Root

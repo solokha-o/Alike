@@ -98,12 +98,12 @@ public enum ReclaimableEstimateCalculator {
     }
 }
 
-public extension PhotoCluster {
+extension PhotoCluster {
     /// The cluster as the reclaimable estimate sees it.
     ///
     /// - Parameter preferredKeeperLocalIdentifier: The user's reviewed best shot, when
     ///   one is known. It wins over the computed pick, exactly as it does on screen.
-    func reclaimableCluster(keeping preferredKeeperLocalIdentifier: String? = nil) -> ReclaimableCluster {
+    public func reclaimableCluster(keeping preferredKeeperLocalIdentifier: String? = nil) -> ReclaimableCluster {
         ReclaimableCluster(
             assets: assets.map {
                 ReclaimableAsset(
@@ -116,9 +116,9 @@ public extension PhotoCluster {
     }
 }
 
-public extension CleanupCategorySnapshot {
+extension CleanupCategorySnapshot {
     /// The category as the reclaimable estimate sees it.
-    var reclaimableCategory: ReclaimableCategory {
+    public var reclaimableCategory: ReclaimableCategory {
         ReclaimableCategory(
             localIdentifiers: localIdentifiers,
             estimatedSavingsBytes: estimatedSavingsBytes

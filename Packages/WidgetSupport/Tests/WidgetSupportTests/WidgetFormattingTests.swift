@@ -42,10 +42,10 @@ struct WidgetFormattingTests {
     }
 }
 
-private extension Character {
-    var isASCIIDigit: Bool { isASCII && isNumber }
+extension Character {
+    fileprivate var isASCIIDigit: Bool { isASCII && isNumber }
     /// U+0660–U+0669 and the Extended Arabic-Indic block U+06F0–U+06F9.
-    var isArabicIndicDigit: Bool {
+    fileprivate var isArabicIndicDigit: Bool {
         guard let scalar = unicodeScalars.first, unicodeScalars.count == 1 else { return false }
         return (0x0660...0x0669).contains(Int(scalar.value))
             || (0x06F0...0x06F9).contains(Int(scalar.value))
