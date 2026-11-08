@@ -35,7 +35,7 @@ import Core
         #expect(viewModel.estimatedSavingsBytes == 0)
     }
 
-    @Test func testFreeUserCanDeleteSinglePhoto() async throws {
+    @Test func testFreeUserCanDeleteSinglePhoto() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 1,
@@ -80,7 +80,7 @@ import Core
         #expect(viewModel.isDeleteConfirmationPresented)
     }
 
-    @Test func testPremiumUserCanDeleteMultiplePhotos() async throws {
+    @Test func testPremiumUserCanDeleteMultiplePhotos() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 2,

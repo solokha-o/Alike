@@ -49,3 +49,6 @@ b4f2a262309443c7e7df79415d9d22ae5d458aed
 
 # LATER rule 10 (ADR-0001): environmentEntry, format only.
 f19b35ebdba7bad4b00dda02dc8386dada5ff754
+
+# LATER rule 13 (ADR-0001): redundantThrows (tests-only), format only.
+edfeb3dd6eab37ff55ef342fca4fd168eaa88866

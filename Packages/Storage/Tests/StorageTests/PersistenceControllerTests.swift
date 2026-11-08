@@ -11,7 +11,7 @@ import CoreData
     
     // MARK: - In-Memory Store Tests
     
-    @Test func testInMemoryStoreInitialization() throws {
+    @Test func testInMemoryStoreInitialization() {
         // Given & When: Creating in-memory persistence controller
         let controller = PersistenceController.preview()
         

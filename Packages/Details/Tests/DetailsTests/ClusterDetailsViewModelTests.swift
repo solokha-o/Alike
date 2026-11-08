@@ -100,7 +100,7 @@ import Photos
         #expect(viewModel.bestShotAssetID.isEmpty)
     }
 
-    @Test func testLoadRestoresPersistedSelection() async throws {
+    @Test func testLoadRestoresPersistedSelection() async {
         let state = ClusterReviewState(
             clusterID: clusterID,
             bestShotLocalIdentifier: "best",

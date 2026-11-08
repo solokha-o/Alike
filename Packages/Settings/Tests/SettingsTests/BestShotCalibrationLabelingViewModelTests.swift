@@ -289,7 +289,7 @@ import Core
     /// `nil` before ever reaching `qualityAnalyzer` — there is no way to hold
     /// `remeasureCorpus()` open at a real suspension point using only the
     /// existing seams. The hook is `nil` (a no-op) in production.
-    @Test func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async throws {
+    @Test func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let firstClusterID = UUID()
