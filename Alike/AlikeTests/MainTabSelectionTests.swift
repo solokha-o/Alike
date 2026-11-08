@@ -1,8 +1,8 @@
 import Cleanup
 import Core
 import Foundation
-import WidgetSupport
 import Testing
+import WidgetSupport
 @testable import Alike
 
 /// `MainTabView` binds `TabManager.selectedTab` and tags each tab with its `TabManager.Tab`

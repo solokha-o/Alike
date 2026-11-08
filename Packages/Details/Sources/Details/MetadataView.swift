@@ -1,9 +1,9 @@
-import SwiftUI
-import Photos
-import MapKit
 import Core
 import DesignSystem
+import MapKit
 import NavigationKit
+import Photos
+import SwiftUI
 
 #if os(iOS)
 

@@ -1,6 +1,6 @@
-import SwiftUI
 import Core
 import DesignSystem
+import SwiftUI
 
 struct ClusterReviewSummaryCard: View {
     static let summaryContentMinimumHeight: CGFloat = 88

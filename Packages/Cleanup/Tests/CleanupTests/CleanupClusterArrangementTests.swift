@@ -1,7 +1,7 @@
-import Foundation
-import Testing
-import Photos
 import Core
+import Foundation
+import Photos
+import Testing
 @testable import Cleanup
 
 struct CleanupClusterArrangementTests {

@@ -1,7 +1,7 @@
-import SwiftUI
 import CleanupWorkspace
 import Core
 import DesignSystem
+import SwiftUI
 
 struct CleanupProgressCard: View {
     let progress: CleanupSessionProgress

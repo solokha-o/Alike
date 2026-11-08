@@ -1,6 +1,6 @@
-import SwiftUI
 import DesignSystem
 import NavigationKit
+import SwiftUI
 
 public struct UserGuideTopicView: View {
     private let topic: GuideTopic

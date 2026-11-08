@@ -1,5 +1,5 @@
-import Testing
 import SwiftUI
+import Testing
 @testable import Launch
 
 @MainActor

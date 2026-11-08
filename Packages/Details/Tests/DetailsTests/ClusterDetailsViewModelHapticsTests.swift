@@ -1,7 +1,7 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Photos
+import Testing
 @testable import Details
 
 @MainActor

@@ -1,7 +1,7 @@
+import Core
 import Foundation
 import Testing
 @testable import Purchases
-import Core
 
 /// `DebugPremiumAccessController` is scaffolding, but a leaky one would make
 /// manual QA lie: a tester comparing "free" behaviour would silently be looking

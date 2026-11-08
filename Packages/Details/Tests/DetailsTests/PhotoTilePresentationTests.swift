@@ -1,7 +1,7 @@
 import Core
 import DesignSystem
-import SwiftUI
 import Foundation
+import SwiftUI
 import Testing
 @testable import Details
 

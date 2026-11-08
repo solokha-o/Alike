@@ -1,5 +1,5 @@
-import CoreData
 import Core
+import CoreData
 import Foundation
 import Testing
 @testable import Storage

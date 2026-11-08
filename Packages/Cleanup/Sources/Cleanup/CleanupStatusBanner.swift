@@ -1,7 +1,7 @@
-import SwiftUI
 import CleanupWorkspace
 import Core
 import DesignSystem
+import SwiftUI
 
 struct CleanupStatusBanner: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize

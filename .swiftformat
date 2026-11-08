@@ -18,6 +18,7 @@
 --self remove
 --decimal-grouping 3,4
 --trailing-commas collections-only
+--import-grouping testable-last,alpha
 
 # Generated, vendored, and non-app code.
 --exclude **/.build,build,vendor,Skills,site,fastlane
@@ -148,3 +149,4 @@
 # trailingCommas (ADR row 32) added after row 31 by owner decision
 --rules trailingCommas
 --rules trailingSpace
+--rules sortImports

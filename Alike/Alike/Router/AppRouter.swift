@@ -5,9 +5,9 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
-import SwiftUI
 import PhotoAnalysis
 import Photos
+import SwiftUI
 import Welcome
 
 /// Manages app-wide navigation state

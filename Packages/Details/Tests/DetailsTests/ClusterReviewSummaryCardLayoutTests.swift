@@ -1,8 +1,8 @@
 import Core
-import SwiftUI
-import UIKit
 import Foundation
+import SwiftUI
 import Testing
+import UIKit
 @testable import Details
 
 struct ClusterReviewSummaryCardLayoutTests {

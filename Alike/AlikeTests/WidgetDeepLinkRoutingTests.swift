@@ -1,7 +1,7 @@
 import Cleanup
 import Foundation
-import WidgetSupport
 import Testing
+import WidgetSupport
 @testable import Alike
 
 /// Pins the full path from the URL a widget hands the app to the entry `CleanupView`

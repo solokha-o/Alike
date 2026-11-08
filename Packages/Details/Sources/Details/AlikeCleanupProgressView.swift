@@ -1,6 +1,6 @@
-import SwiftUI
 import Core
 import DesignSystem
+import SwiftUI
 
 struct AlikeCleanupProgressPresentation: Equatable {
     let animationURL: URL?

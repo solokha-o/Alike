@@ -1,7 +1,7 @@
 import Core
 import CoreGraphics
-import Photos
 import Foundation
+import Photos
 import Testing
 @testable import Details
 

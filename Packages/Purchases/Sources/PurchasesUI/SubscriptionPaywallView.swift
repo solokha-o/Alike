@@ -1,8 +1,8 @@
-import SwiftUI
 import Core
-import Purchases
 import DesignSystem
 import NavigationKit
+import Purchases
+import SwiftUI
 
 private enum HeroIconAnimationPhase: CaseIterable, Equatable {
     case idle

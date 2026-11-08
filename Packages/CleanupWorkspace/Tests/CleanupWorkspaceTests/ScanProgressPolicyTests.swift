@@ -1,6 +1,6 @@
-@testable import CleanupWorkspace
 import Foundation
 import Testing
+@testable import CleanupWorkspace
 
 struct ScanProgressPolicyTests {
     @Test func testStageRangesReservePersistenceAndCompletion() {

@@ -1,7 +1,7 @@
-@preconcurrency import Vision
-import Photos
 import Core
 import CoreLocation
+import Photos
+@preconcurrency import Vision
 
 /// Service that performs clustering of photos based on similarity
 public struct PhotoClusteringService: Sendable {

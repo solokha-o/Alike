@@ -1,6 +1,6 @@
-import SwiftUI
 import DesignSystem
 import NavigationKit
+import SwiftUI
 
 /// Route type for the guide's own navigation stack, used when the guide is presented modally.
 enum GuideRoute: Hashable {

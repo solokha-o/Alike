@@ -1,7 +1,7 @@
+import Core
 import Foundation
 @preconcurrency import Photos
 @preconcurrency import Vision
-import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
 public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {

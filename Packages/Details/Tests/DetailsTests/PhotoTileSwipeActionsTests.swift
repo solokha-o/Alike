@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Details
 
 /// A swipe on a photo tile must be the tile's own tap or context-menu action,

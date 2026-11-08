@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 /// Formatting for the cleanup reminder schedule and its free-tier footer, pulled out of
 /// `SettingsView` so it can be exercised with a fixed locale/calendar instead of only through

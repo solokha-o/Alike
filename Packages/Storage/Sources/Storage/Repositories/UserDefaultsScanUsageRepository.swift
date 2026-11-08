@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 /// UserDefaults-backed installation-local scan usage counter.
 public actor UserDefaultsScanUsageRepository: ScanUsageRepository {
