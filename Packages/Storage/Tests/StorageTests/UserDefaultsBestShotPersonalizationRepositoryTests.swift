@@ -173,14 +173,14 @@ import Testing
         #expect(weights == nil)
     }
 
-    @Test func testDataSurvivesANewRepositoryInstance() async {
+    @Test func testDataSurvivesANewRepositoryInstance() async throws {
         let example = makeExample()
         let weights = makeWeights()
         await repository.record(example)
         await repository.saveWeights(weights)
 
         let reopened = UserDefaultsBestShotPersonalizationRepository(
-            defaults: UserDefaults(suiteName: suiteName)!,
+            defaults: try #require(UserDefaults(suiteName: suiteName)),
             examplesKey: examplesKey,
             weightsKey: weightsKey
         )

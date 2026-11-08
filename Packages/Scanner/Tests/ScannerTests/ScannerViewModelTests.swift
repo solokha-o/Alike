@@ -157,7 +157,7 @@ import Testing
         #expect(recordCallCount == 0)
     }
 
-    @Test func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async {
+    @Test func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async throws {
         let analysis = MockPhotoAnalysisService()
         let cluster = makeCluster()
         let category = CleanupCategorySummary(
@@ -180,7 +180,7 @@ import Testing
             clusterCount: 1,
             cleanupCategoryCandidateCount: 2,
             estimatedSavingsBytes: 1_024,
-            completedAt: viewModel.workspace.lastScanSummary!.completedAt
+            completedAt: try #require(viewModel.workspace.lastScanSummary?.completedAt)
         )))
     }
 
@@ -351,7 +351,7 @@ import Testing
     /// reconciliation's must not silently join it: it should wait for the
     /// reconciliation to finish and then run its own scan at the requested
     /// sensitivity, and that fresh work should be charged normally.
-    @Test func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async {
+    @Test func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async throws {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
         let workspace = makeWorkspace(analysis: analysis)
@@ -391,7 +391,7 @@ import Testing
             clusterCount: 1,
             cleanupCategoryCandidateCount: 0,
             estimatedSavingsBytes: 0,
-            completedAt: viewModel.workspace.lastScanSummary!.completedAt
+            completedAt: try #require(viewModel.workspace.lastScanSummary?.completedAt)
         )))
     }
 

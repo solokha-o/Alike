@@ -61,3 +61,6 @@ edfeb3dd6eab37ff55ef342fca4fd168eaa88866
 
 # LATER rule 17 (ADR-0001): blankLinesAroundMark, format only.
 f0bda420d70d298bf48b4af2bfb6261ad8193032
+
+# LATER rule 18 (ADR-0001): noForceUnwrapInTests, format only.
+a8c28d9e9d80cb10bcacbc248fe2efd95f88eadd

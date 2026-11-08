@@ -6,7 +6,7 @@ import Testing
 
 @MainActor
 @Suite struct CleanupWorkspaceBehaviorTests {
-    @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async {
+    @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async throws {
         let neverScannedRepository = MockPhotoClusterRepository()
         let neverScanned = makeWorkspace(repository: neverScannedRepository)
 
@@ -22,7 +22,7 @@ import Testing
         await completed.loadCachedContent()
 
         #expect(completed.content?.clusters == [])
-        #expect(completed.contentState == .content(completed.content!))
+        #expect(completed.contentState == .content(try #require(completed.content)))
     }
 
     @Test func testPrepareForDataDeletionCancelsScanBeforeItCanPersist() async {
@@ -86,7 +86,7 @@ import Testing
         }
 
         #expect(workspace.clusters == [initialCluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
         #expect(workspace.scanOperation == .failed(message: TestError.failedRefresh.localizedDescription, purpose: .userInitiated))
     }
 
@@ -185,7 +185,7 @@ import Testing
         await reconciliation.value
 
         #expect(workspace.clusters == [cluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
         #expect(workspace.reconciliationState == .failed(
             record,
             message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
@@ -215,7 +215,7 @@ import Testing
         await cacheLoad.value
 
         #expect(workspace.clusters == [freshCluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testRepeatedCachedLoadsJoinOneRepositoryRead() async {

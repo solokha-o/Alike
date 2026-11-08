@@ -49,7 +49,7 @@ import Testing
         #expect(workspace.cleanupCategories.map(\.kind) == [.screenshots])
     }
 
-    @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async {
+    @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async throws {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
@@ -63,7 +63,7 @@ import Testing
         // The rest of the workspace still has to arrive: a category read is one
         // section of the Cleanup tab, not a precondition for it.
         #expect(workspace.content != nil)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testHistoryRepositoryFailureYieldsEmptyInsightsWithoutFailingTheLoad() async {

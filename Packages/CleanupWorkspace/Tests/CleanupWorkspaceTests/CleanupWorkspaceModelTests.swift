@@ -158,7 +158,7 @@ private enum ScanPersistenceTestError: Error {
 
         #expect(summary.clusterCount == 0)
         #expect(workspace.scanOperation == .idle)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testUnchangedReviewReloadDoesNotPublishWorkspaceContent() async {
@@ -185,7 +185,7 @@ private enum ScanPersistenceTestError: Error {
         #expect(!observation.hasChanged)
     }
 
-    @Test func testChangedReviewReloadPublishesWorkspaceContent() async {
+    @Test func testChangedReviewReloadPublishesWorkspaceContent() async throws {
         let cluster = PhotoCluster(id: UUID(), assets: [])
         let repository = MockPhotoClusterRepository()
         await repository.setLoadClustersResult(.success([cluster]))
@@ -216,7 +216,7 @@ private enum ScanPersistenceTestError: Error {
 
         #expect(observation.hasChanged)
         #expect(workspace.reviewStates[cluster.id] == updatedState)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     /// `sessionProgress()` and `cleanupEntryCluster()` are computed when content

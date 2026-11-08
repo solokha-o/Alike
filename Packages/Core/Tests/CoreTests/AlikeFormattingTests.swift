@@ -24,13 +24,13 @@ import Testing
 
     /// The paywall's scan-reset date (`PremiumPresentation`) and the cleanup history month
     /// header (`CleanupHistoryView`) both build their own field list and pin it.
-    @Test func testSpelledOutDatesUseLatinDigitsAndTheGregorianCalendar() {
+    @Test func testSpelledOutDatesUseLatinDigitsAndTheGregorianCalendar() throws {
         // 2026-03-04 12:00 UTC. Under Umm al-Qura this month is Ramadan 1447.
         let date = Date(timeIntervalSince1970: 1_772_625_600)
         var style = Date.FormatStyle(date: .abbreviated, time: .omitted)
             .locale(pinnedArabic)
         style.calendar = .alikeFormattingCalendar(basedOn: arabic)
-        style.timeZone = TimeZone(identifier: "UTC")!
+        style.timeZone = try #require(TimeZone(identifier: "UTC"))
 
         let rendered = date.formatted(style)
         #expect(rendered.contains("2026"), "expected a Gregorian year in \(rendered)")
