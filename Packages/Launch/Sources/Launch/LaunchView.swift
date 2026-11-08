@@ -9,7 +9,7 @@ public struct LaunchView: View {
     @State private var isSymbolAnimating = false
     
     public init(isCompleted: Binding<Bool>) {
-        self._isCompleted = isCompleted
+        _isCompleted = isCompleted
     }
     
     public var body: some View {

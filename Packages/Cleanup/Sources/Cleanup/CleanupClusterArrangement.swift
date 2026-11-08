@@ -129,7 +129,7 @@ struct CleanupClusterArrangement: Equatable {
 
 extension IdentifiedCluster {
     fileprivate init(cluster: PhotoCluster, contentKey: String, occurrence: Int) {
-        self.id = occurrence == 0 ? contentKey : "\(contentKey)#\(occurrence)"
+        id = occurrence == 0 ? contentKey : "\(contentKey)#\(occurrence)"
         self.cluster = cluster
     }
 }

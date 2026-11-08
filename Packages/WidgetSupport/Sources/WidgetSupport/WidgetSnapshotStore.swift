@@ -29,7 +29,7 @@ public struct WidgetSnapshotStore: WidgetSnapshotReading, WidgetSnapshotWriting 
     /// Container-relative init, used by the tests and by anything that wants to
     /// point the store at a directory it controls.
     public init(containerURL: URL) {
-        self.fileURL = containerURL.appendingPathComponent(Self.fileName, isDirectory: false)
+        fileURL = containerURL.appendingPathComponent(Self.fileName, isDirectory: false)
     }
 
     /// Resolves the shared App Group container.

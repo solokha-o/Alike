@@ -60,8 +60,8 @@ struct GuideItem: Identifiable, Sendable {
         self.id = id
         self.kind = kind
         self.symbol = symbol
-        self.titleKey = title
-        self.bodyKey = body
+        titleKey = title
+        bodyKey = body
     }
 }
 
@@ -79,8 +79,8 @@ struct GuideSection: Identifiable, Sendable {
         items: [GuideItem]
     ) {
         self.id = id
-        self.headerKey = header
-        self.footerKey = footer
+        headerKey = header
+        footerKey = footer
         self.items = items
     }
 }
@@ -104,8 +104,8 @@ struct GuideTopic: Identifiable, Sendable {
     ) {
         self.id = id
         self.symbol = symbol
-        self.titleKey = title
-        self.summaryKey = summary
+        titleKey = title
+        summaryKey = summary
         self.sections = sections
     }
 }

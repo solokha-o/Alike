@@ -528,7 +528,7 @@ private actor TestScanUsageRepository: ScanUsageRepository {
         guard let currentUsage = usage else { return nil }
         guard calendar.isDate(currentUsage.periodStart, equalTo: date, toGranularity: .month) else {
             let reset = makeUsage(count: 0, date: date)
-            self.usage = reset
+            usage = reset
             return reset
         }
         return currentUsage

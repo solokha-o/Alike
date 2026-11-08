@@ -14,7 +14,7 @@ public struct RoutedNavigationStack<Route: Hashable, Root: View, Destination: Vi
         @ViewBuilder root: @escaping (StackRouter<Route>) -> Root,
         @ViewBuilder destination: @escaping (Route, StackRouter<Route>) -> Destination
     ) {
-        self._router = State(wrappedValue: StackRouter(path: initialPath))
+        _router = State(wrappedValue: StackRouter(path: initialPath))
         self.onPathChange = onPathChange
         self.root = root
         self.destination = destination

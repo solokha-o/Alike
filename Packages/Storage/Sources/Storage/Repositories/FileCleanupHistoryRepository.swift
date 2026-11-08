@@ -6,7 +6,7 @@ public final class FileCleanupHistoryRepository: CleanupHistoryRepository, Senda
     private let store: CleanupHistoryStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupFileStoreRegistry.shared.historyStore(
+        store = CleanupFileStoreRegistry.shared.historyStore(
             for: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }

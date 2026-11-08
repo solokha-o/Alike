@@ -15,7 +15,7 @@ public final class WelcomeViewModel {
     
     public init(permissionManager: PhotoPermissionManager = PhotoPermissionManagerImpl()) {
         self.permissionManager = permissionManager
-        self.authorizationStatus = permissionManager.authorizationStatus
+        authorizationStatus = permissionManager.authorizationStatus
     }
     
     public func requestPermission() async {

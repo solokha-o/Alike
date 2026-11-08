@@ -128,15 +128,15 @@ public final class BestShotCalibrationLabelingViewModel {
         self.defaults = defaults
 
         if let session = Self.loadPersistedSession(defaults: defaults) {
-            self.salt = session.salt
-            self.labelledClusters = session.labelledClusters
-            self.candidateLocalIdentifiers = session.candidateLocalIdentifiers
-            self.measuredThumbnailConfigVersions = session.measuredThumbnailConfigVersions
+            salt = session.salt
+            labelledClusters = session.labelledClusters
+            candidateLocalIdentifiers = session.candidateLocalIdentifiers
+            measuredThumbnailConfigVersions = session.measuredThumbnailConfigVersions
         } else {
-            self.salt = UUID().uuidString
-            self.labelledClusters = []
-            self.candidateLocalIdentifiers = [:]
-            self.measuredThumbnailConfigVersions = [:]
+            salt = UUID().uuidString
+            labelledClusters = []
+            candidateLocalIdentifiers = [:]
+            measuredThumbnailConfigVersions = [:]
         }
     }
 

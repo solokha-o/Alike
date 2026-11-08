@@ -24,9 +24,9 @@ public final class SubscriptionStore: PremiumAccessControlling {
 
     public init(catalog: SubscriptionCatalog = .production) {
         self.catalog = catalog
-        self.client = AppStoreKitClient()
-        self.defaults = .standard
-        self.cacheKey = AppPreferenceKey.Premium.subscriptionEntitlement
+        client = AppStoreKitClient()
+        defaults = .standard
+        cacheKey = AppPreferenceKey.Premium.subscriptionEntitlement
     }
 
     init(
@@ -166,7 +166,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
         updatesTask = Task { [weak self, client] in
             for await update in client.transactionUpdates() {
                 guard let self else { return }
-                await self.reconcileEntitlements(supplementing: update.entitlement)
+                await reconcileEntitlements(supplementing: update.entitlement)
             }
         }
     }

@@ -13,7 +13,7 @@ public actor CleanupReminderManager: CleanupReminderManaging {
 
     public init(preferenceRepository: CleanupReminderPreferenceRepository) {
         self.preferenceRepository = preferenceRepository
-        self.notificationCenter = LiveUserNotificationCenter()
+        notificationCenter = LiveUserNotificationCenter()
     }
 
     init(

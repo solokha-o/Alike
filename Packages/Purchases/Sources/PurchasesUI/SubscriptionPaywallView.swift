@@ -42,8 +42,8 @@ public struct SubscriptionPaywallView: View {
     ) {
         self.context = context
         self.store = store
-        self.legalLinksOverride = legalLinks
-        self._selectedPlan = State(initialValue: .yearly)
+        legalLinksOverride = legalLinks
+        _selectedPlan = State(initialValue: .yearly)
     }
 
     private var legalLinks: SubscriptionLegalLinks {

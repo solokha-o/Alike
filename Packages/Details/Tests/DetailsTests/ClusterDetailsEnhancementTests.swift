@@ -524,10 +524,10 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         revertDelay: Bool = false,
         previewDelay: Bool = false
     ) {
-        self.canEnhanceAsset = canEnhance
+        canEnhanceAsset = canEnhance
         self.isEditedElsewhere = isEditedElsewhere
         // Enhancement belongs to a photo, so the double tracks it per photo.
-        self.enhancedIdentifiers = isEnhanced ? ["best"] : []
+        enhancedIdentifiers = isEnhanced ? ["best"] : []
         self.applyDelay = applyDelay
         self.revertDelay = revertDelay
         self.previewDelay = previewDelay

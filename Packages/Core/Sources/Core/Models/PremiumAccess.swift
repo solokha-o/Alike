@@ -139,7 +139,7 @@ public struct PremiumAccessController: PremiumAccessControlling {
 
     public init(unlockedFeatures: Set<PremiumFeature> = []) {
         self.unlockedFeatures = unlockedFeatures
-        self.entitlementState = PremiumEntitlementState(
+        entitlementState = PremiumEntitlementState(
             isPremium: !unlockedFeatures.isEmpty,
             source: .unknown
         )

@@ -40,7 +40,7 @@ public struct BestShotCalibrationLabelingView: View {
     @State private var remeasureResultMessage: String?
 
     public init(viewModel: BestShotCalibrationLabelingViewModel = BestShotCalibrationLabelingViewModel()) {
-        self._viewModel = State(initialValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     public var body: some View {

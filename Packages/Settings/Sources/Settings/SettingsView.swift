@@ -89,15 +89,15 @@ public struct SettingsView: View {
         onResetBestShotPersonalization: @escaping @MainActor @Sendable () async throws -> Void = {},
         viewModel: SettingsViewModel
     ) {
-        self._sensitivity = sensitivity
-        self._needsRescan = needsRescan
+        _sensitivity = sensitivity
+        _needsRescan = needsRescan
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: viewModel)
-        self._deleteAllDataModel = State(
+        _viewModel = State(initialValue: viewModel)
+        _deleteAllDataModel = State(
             initialValue: DeleteAllDataModel(operation: onDeleteAllData)
         )
-        self._resetBestShotPersonalizationModel = State(
+        _resetBestShotPersonalizationModel = State(
             initialValue: ResetBestShotPersonalizationModel(operation: onResetBestShotPersonalization)
         )
     }

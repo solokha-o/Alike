@@ -6,7 +6,7 @@ public final class FileCleanupSessionRepository: CleanupSessionRepository, Senda
     private let store: CleanupSessionStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupSessionStore(
+        store = CleanupSessionStore(
             fileURL: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }

@@ -36,7 +36,7 @@ public struct SubscriptionCatalog: Equatable, Sendable {
     public init(monthlyID: String, yearlyID: String) {
         precondition(!monthlyID.isEmpty && !yearlyID.isEmpty, "Subscription product IDs must not be empty.")
         precondition(monthlyID != yearlyID, "Subscription product IDs must be unique.")
-        self.productIDs = [.monthly: monthlyID, .yearly: yearlyID]
+        productIDs = [.monthly: monthlyID, .yearly: yearlyID]
     }
 
     private init(productIDs: [SubscriptionPlan: String]) {

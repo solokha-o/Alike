@@ -502,7 +502,7 @@ private actor SuspendedClusterReviewStateRepository: ClusterReviewStateRepositor
     private var deleteStarted = false
 
     init(state: ClusterReviewState) {
-        self.states = [state.clusterID: state]
+        states = [state.clusterID: state]
     }
 
     func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? {

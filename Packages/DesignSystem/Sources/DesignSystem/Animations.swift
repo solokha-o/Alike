@@ -64,6 +64,6 @@ public struct ScaleButtonStyle: ButtonStyle {
 extension View {
     /// Apply scale effect on button press
     public func scaleOnPress() -> some View {
-        self.buttonStyle(ScaleButtonStyle())
+        buttonStyle(ScaleButtonStyle())
     }
 }

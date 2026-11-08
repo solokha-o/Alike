@@ -6,7 +6,7 @@ public final class FileCleanupCategorySnapshotRepository: CleanupCategorySnapsho
     private let store: CleanupCategorySnapshotStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupFileStoreRegistry.shared.categorySnapshotStore(
+        store = CleanupFileStoreRegistry.shared.categorySnapshotStore(
             for: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }

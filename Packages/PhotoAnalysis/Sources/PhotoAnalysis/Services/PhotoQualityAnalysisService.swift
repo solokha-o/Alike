@@ -42,9 +42,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         }
         guard !workItems.isEmpty else { return [] }
 
-        let config = self.config
-        let imageProvider = self.imageProvider
-        let faceDetector = self.faceDetector
+        let config = config
+        let imageProvider = imageProvider
+        let faceDetector = faceDetector
         let analyze = makeAnalyzer()
 
         return try await ImageAnalysisTaskPool.compactMap(
@@ -116,9 +116,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
     }
 
     private func makeAnalyzer() -> @Sendable (CGImage, CGImage?, FaceProbe, Int64) -> PhotoQualitySignals {
-        let config = self.config
-        let scorer = self.scorer
-        let faceDetector = self.faceDetector
+        let config = config
+        let scorer = scorer
+        let faceDetector = faceDetector
 
         return { image, faceSource, probe, pixelArea in
             guard Self.isLargeEnoughToAnalyze(image, config: config) else {

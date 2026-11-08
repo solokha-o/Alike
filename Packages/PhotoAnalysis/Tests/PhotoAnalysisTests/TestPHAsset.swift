@@ -22,9 +22,9 @@ final class TestPHAsset: PHAsset, @unchecked Sendable {
         pixelHeight: Int = 3_000
     ) {
         self.identifier = identifier
-        self.modified = modificationDate
-        self.width = pixelWidth
-        self.height = pixelHeight
+        modified = modificationDate
+        width = pixelWidth
+        height = pixelHeight
         super.init()
     }
 

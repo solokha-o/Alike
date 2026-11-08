@@ -33,12 +33,12 @@ public struct WelcomeView: View {
         mode: WelcomeMode = .permissionRequest,
         viewModel: WelcomeViewModel? = nil
     ) {
-        self._isCompleted = isCompleted
+        _isCompleted = isCompleted
         self.mode = mode
         if let viewModel {
-            self._viewModel = State(initialValue: viewModel)
+            _viewModel = State(initialValue: viewModel)
         } else {
-            self._viewModel = State(initialValue: WelcomeViewModel())
+            _viewModel = State(initialValue: WelcomeViewModel())
         }
     }
     

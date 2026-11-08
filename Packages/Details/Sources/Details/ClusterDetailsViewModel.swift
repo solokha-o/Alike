@@ -161,12 +161,12 @@ final class ClusterDetailsViewModel {
                 try await Self.prepareAssetSnapshots(for: cluster)
             }
         }
-        self.bestShotAssetID = ""
-        self.bestShotLabel = DetailsL10n.Common.bestShot
-        self.selectedAssetIDs = []
-        self.reviewMode = .selection
-        self.reviewStatus = .notReviewed
-        self.estimatedSavingsBytes = 0
+        bestShotAssetID = ""
+        bestShotLabel = DetailsL10n.Common.bestShot
+        selectedAssetIDs = []
+        reviewMode = .selection
+        reviewStatus = .notReviewed
+        estimatedSavingsBytes = 0
     }
 
     var selectedCount: Int {

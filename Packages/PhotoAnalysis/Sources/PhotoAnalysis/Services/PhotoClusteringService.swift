@@ -10,13 +10,13 @@ public struct PhotoClusteringService: Sendable {
         let observation: VNFeaturePrintObservation?
 
         init(observation: VNFeaturePrintObservation) {
-            self.id = UUID()
+            id = UUID()
             self.observation = observation
         }
 
         init(id: UUID = UUID()) {
             self.id = id
-            self.observation = nil
+            observation = nil
         }
     }
 
@@ -38,7 +38,7 @@ public struct PhotoClusteringService: Sendable {
     
     public init(enablePreFilter: Bool = true) {
         let visionService = VisionFeaturePrintService()
-        self.distanceProvider = { featurePrint1, featurePrint2 in
+        distanceProvider = { featurePrint1, featurePrint2 in
             guard let observation1 = featurePrint1.observation,
                   let observation2 = featurePrint2.observation
             else {
@@ -46,9 +46,9 @@ public struct PhotoClusteringService: Sendable {
             }
             return try visionService.computeDistance(between: observation1, and: observation2)
         }
-        self.maxTimeInterval = 24 * 60 * 60
-        self.maxLocationDistance = 1_000
-        self.isPreFilterEnabled = enablePreFilter
+        maxTimeInterval = 24 * 60 * 60
+        maxLocationDistance = 1_000
+        isPreFilterEnabled = enablePreFilter
     }
 
     init(
@@ -60,7 +60,7 @@ public struct PhotoClusteringService: Sendable {
         self.distanceProvider = distanceProvider
         self.maxTimeInterval = maxTimeInterval
         self.maxLocationDistance = maxLocationDistance
-        self.isPreFilterEnabled = enablePreFilter
+        isPreFilterEnabled = enablePreFilter
     }
     
     /// Cluster photos based on similarity threshold

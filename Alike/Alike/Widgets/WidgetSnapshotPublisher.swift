@@ -36,7 +36,7 @@ final class WidgetSnapshotPublisher {
         },
         now: @escaping () -> Date = Date.init
     ) {
-        self.writer = store.map(DeduplicatingWidgetSnapshotWriter.init(store:))
+        writer = store.map(DeduplicatingWidgetSnapshotWriter.init(store:))
         self.reloadTimelines = reloadTimelines
         self.now = now
     }
