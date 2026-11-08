@@ -55,3 +55,6 @@ edfeb3dd6eab37ff55ef342fca4fd168eaa88866
 
 # LATER rule 14 (ADR-0001): consistentSwitchCaseSpacing, config only (no code change).
 4b4f3b25148e3a49b1d2a6582f015bd8d7e57273
+
+# LATER rule 16 (ADR-0001): conditionalAssignment, format only.
+462754e7f5d5bca129f6239748ff5fe24a8e4f1a
