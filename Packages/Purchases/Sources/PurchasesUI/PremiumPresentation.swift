@@ -134,15 +134,8 @@ public struct SubscriptionLegalLinks: Equatable, Sendable {
     public static let unconfigured = SubscriptionLegalLinks()
 }
 
-private struct SubscriptionLegalLinksEnvironmentKey: EnvironmentKey {
-    static let defaultValue = SubscriptionLegalLinks.unconfigured
-}
-
 public extension EnvironmentValues {
-    var subscriptionLegalLinks: SubscriptionLegalLinks {
-        get { self[SubscriptionLegalLinksEnvironmentKey.self] }
-        set { self[SubscriptionLegalLinksEnvironmentKey.self] = newValue }
-    }
+    @Entry var subscriptionLegalLinks: SubscriptionLegalLinks = .unconfigured
 }
 
 public extension View {
