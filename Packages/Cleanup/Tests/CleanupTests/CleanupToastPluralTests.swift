@@ -91,7 +91,7 @@ struct CleanupToastPluralTests {
             ("fr", "Déplacées"),
             ("es", "Movidas"),
             ("es-419", "Movidas"),
-            ("pt-BR", "Movidas")
+            ("pt-BR", "Movidas"),
         ] {
             let localization = try #require(catalog.localizations(of: key)[language])
             let unit = try #require(localization["stringUnit"] as? [String: Any])

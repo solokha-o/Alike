@@ -32,7 +32,7 @@ struct DirectionalSymbolTests {
         "arrow.up.left.circle", "arrow.up.right.circle",
         "arrow.up.left.circle.fill", "arrow.up.right.circle.fill",
         "arrow.uturn.left", "arrow.uturn.right",
-        "arrow.turn.up.left", "arrow.turn.up.right"
+        "arrow.turn.up.left", "arrow.turn.up.right",
     ]
 
     private static let symbolLiteral = try! NSRegularExpression(pattern: "\"([a-z0-9.]+)\"")

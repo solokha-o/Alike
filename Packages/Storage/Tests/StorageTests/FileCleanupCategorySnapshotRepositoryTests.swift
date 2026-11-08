@@ -169,7 +169,7 @@ final class FileCleanupCategorySnapshotRepositoryTests {
 
         do {
             try await repository.replaceAllSnapshots([
-                makeSnapshot(kind: .screenshots, generation: "replacement")
+                makeSnapshot(kind: .screenshots, generation: "replacement"),
             ])
             Issue.record("Expected replacement to fail")
         } catch {

@@ -171,7 +171,7 @@ enum CleanupPresentation {
         return [
             CleanupL10n.Common.photos(photoCount),
             clusterStatusTitle(status),
-            resurfacingTitle
+            resurfacingTitle,
         ]
         .filter { !$0.isEmpty }
         .joined(separator: ". ")

@@ -96,7 +96,7 @@ struct PhotoQualityAnalysisServiceTests {
             [
                 // Vision boxes are normalized with a bottom-left origin.
                 VNFaceObservation(boundingBox: CGRect(x: 0.05, y: 0.2, width: 0.4, height: 0.6)),
-                VNFaceObservation(boundingBox: CGRect(x: 0.6, y: 0.4, width: 0.3, height: 0.3))
+                VNFaceObservation(boundingBox: CGRect(x: 0.6, y: 0.4, width: 0.3, height: 0.3)),
             ]
         })
 
@@ -303,7 +303,7 @@ struct PhotoQualityAnalysisServiceTests {
             image.width == config.analysisImageLongSide
                 ? [
                     VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.05)),
-                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.60))
+                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.60)),
                 ]
                 : []
         })
@@ -510,7 +510,7 @@ struct PhotoQualityAnalysisServiceTests {
         let assets = [
             TestPHAsset(identifier: "good"),
             TestPHAsset(identifier: "broken"),
-            TestPHAsset(identifier: "also-good")
+            TestPHAsset(identifier: "also-good"),
         ]
 
         let scores = try await service.scores(for: assets)

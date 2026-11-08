@@ -17,7 +17,7 @@ struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
-                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10))
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
             ],
             qualityScores: [("blurred-favorite", 12), ("sharp", 60)]
         )
@@ -41,7 +41,7 @@ struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "chosen", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("chosen", 12), ("sharper", 70)]
         )
@@ -66,7 +66,7 @@ struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "old-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("old-pick", 12), ("sharper", 70)]
         )
@@ -90,7 +90,7 @@ struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "reviewed-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("reviewed-pick", 12), ("sharper", 70)]
         )
@@ -138,7 +138,7 @@ struct ClusterDetailsViewModelScoringTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ]
         )
 

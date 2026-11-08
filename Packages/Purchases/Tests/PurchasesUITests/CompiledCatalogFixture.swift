@@ -70,7 +70,7 @@ enum CompiledCatalogFixture {
     private static func pluralEntry(_ plural: [String: Any]) -> [String: Any] {
         var substitution: [String: Any] = [
             specTypeKey: "NSStringPluralRuleType",
-            valueTypeKey: "lld"
+            valueTypeKey: "lld",
         ]
         for (category, unit) in plural {
             if let value = (unit as? [String: Any])?["stringUnit"] as? [String: Any],
@@ -98,7 +98,7 @@ enum CompiledCatalogFixture {
                 "CFBundleIdentifier": "com.alike.tests.purchasesui.localization",
                 "CFBundleDevelopmentRegion": "en",
                 "CFBundleInfoDictionaryVersion": "6.0",
-                "CFBundlePackageType": "BNDL"
+                "CFBundlePackageType": "BNDL",
             ],
             format: .xml,
             options: 0

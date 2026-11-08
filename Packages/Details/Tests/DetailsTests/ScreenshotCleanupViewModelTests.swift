@@ -177,7 +177,7 @@ struct ScreenshotCleanupViewModelTests {
             premiumAccess: premiumAccess,
             assetSnapshots: [
                 snapshot(id: "one", area: 200),
-                snapshot(id: "two", area: 100)
+                snapshot(id: "two", area: 100),
             ],
             completionDelay: completionDelay
         )

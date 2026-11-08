@@ -251,7 +251,7 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
                 WidgetClusterSummary(reclaimableBytes: 412_090_368, photoCount: 14),
                 WidgetClusterSummary(reclaimableBytes: 268_435_456, photoCount: 9),
                 WidgetClusterSummary(reclaimableBytes: 157_286_400, photoCount: 6),
-                WidgetClusterSummary(reclaimableBytes: 73_400_320, photoCount: 4)
+                WidgetClusterSummary(reclaimableBytes: 73_400_320, photoCount: 4),
             ]
         )
     }

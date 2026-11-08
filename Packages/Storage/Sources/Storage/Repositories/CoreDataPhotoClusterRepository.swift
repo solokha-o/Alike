@@ -213,7 +213,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         try await persistence.performBackgroundTask { context in
             let request = ScanMetadataEntity.fetchRequest()
             request.sortDescriptors = [
-                NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+                NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false),
             ]
             let existing = try context.fetch(request)
 
@@ -284,7 +284,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     private static func newestMetadata(in context: NSManagedObjectContext) -> ScanMetadataEntity? {
         let request = ScanMetadataEntity.fetchRequest()
         request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+            NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false),
         ]
         request.fetchLimit = 1
         return try? context.fetch(request).first

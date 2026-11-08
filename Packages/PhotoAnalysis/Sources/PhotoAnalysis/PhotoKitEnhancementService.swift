@@ -404,7 +404,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
                     scoringModelVersion: config.scoringModelVersion,
                     thumbnailConfigVersion: config.thumbnailConfigVersion,
                     signals: signals
-                )
+                ),
             ])
         } catch {
             AppLog.storage.error(
@@ -437,7 +437,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
                     signals: score.signals,
                     scoredAt: score.scoredAt,
                     isAlikeEnhanced: isEnhanced
-                )
+                ),
             ])
         } catch {
             AppLog.storage.error(

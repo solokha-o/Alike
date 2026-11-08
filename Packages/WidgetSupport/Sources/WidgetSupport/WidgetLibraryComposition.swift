@@ -202,7 +202,7 @@ extension WidgetPresentation {
                 value: snapshot.blurredPhotoAssetCount.map { WidgetL10n.Library.photos($0) },
                 isLocked: !snapshot.isPremium,
                 destination: .blurredPhotos
-            )
+            ),
         ]
     }
 }
@@ -252,7 +252,7 @@ extension WidgetPresentation {
         let known = [
             snapshot.clusterCount,
             snapshot.screenshotAssetCount,
-            snapshot.blurredPhotoAssetCount
+            snapshot.blurredPhotoAssetCount,
         ].compactMap { $0 }
 
         return known.isEmpty || known.contains(where: { $0 > 0 }) ? .hasReviews : .allCaughtUp

@@ -143,7 +143,7 @@ struct CoreDataPhotoQualityScoreRepositoryTests {
                         sharpness: 30,
                         hasClosedEyes: false,
                         isCroppedByFrame: false
-                    )
+                    ),
                 ],
                 pixelArea: 12_000_000
             ),

@@ -69,7 +69,7 @@ struct CleanupClusterArrangementTests {
         let inReview = cluster()
         let statuses: [UUID: ClusterReviewStatus] = [
             reviewed.id: .reviewed,
-            inReview.id: .inReview
+            inReview.id: .inReview,
         ]
 
         let arrangement = makeArrangement(

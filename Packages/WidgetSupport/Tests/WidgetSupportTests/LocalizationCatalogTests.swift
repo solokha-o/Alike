@@ -19,7 +19,7 @@ struct LocalizationCatalog {
     /// catalog carries it — which is the point.
     static let shippedLanguages = [
         "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
-        "ar"
+        "ar",
     ]
 
     /// The CLDR plural categories each shipped language actually uses. `ar` needs all six —
@@ -249,7 +249,7 @@ struct LocalizationCatalogTests {
             "widgetsupport.status.openApp": [],
             "widgetsupport.action.scan": [],
             "widgetsupport.action.review": [],
-            "widgetsupport.action.continueReview": []
+            "widgetsupport.action.continueReview": [],
         ]
     }
 
@@ -264,7 +264,7 @@ struct LocalizationCatalogTests {
             "widgetsupport.status.openApp": WidgetL10n.Status.openApp,
             "widgetsupport.action.scan": WidgetL10n.Action.scan,
             "widgetsupport.action.review": WidgetL10n.Action.review,
-            "widgetsupport.action.continueReview": WidgetL10n.Action.continueReview
+            "widgetsupport.action.continueReview": WidgetL10n.Action.continueReview,
         ]
     }
 
@@ -297,7 +297,7 @@ struct LocalizationCatalogTests {
         .libraryChanged(bytes: nil, scannedAt: nil),
         .resumeReview(progress: sampleProgress, isStale: false),
         .resumeReview(progress: sampleProgress, isStale: true),
-        .resumeReview(progress: unsizedProgress, isStale: false)
+        .resumeReview(progress: unsizedProgress, isStale: false),
     ]
 
     /// The inline Lock Screen slot is one short line above the clock, and the system

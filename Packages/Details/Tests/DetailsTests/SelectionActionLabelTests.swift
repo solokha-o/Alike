@@ -29,7 +29,7 @@ struct SelectionActionLabelTests {
         "pl": ("Wyczyść wybór", "Przenieś wybrane"),
         "tr": ("Seçimi Temizle", "Seçilenleri Taşı"),
         "zh-Hant": ("清除選取", "移動已選取項目"),
-        "ar": ("مسح التحديد", "نقل المحدد")
+        "ar": ("مسح التحديد", "نقل المحدد"),
     ]
 
     @Test func testTheClearAndMoveButtonsStayDistinguishable() throws {
@@ -49,7 +49,7 @@ struct SelectionActionLabelTests {
         let catalog = try LocalizationCatalog.load()
         let forbidden = [
             "delete", "видал", "elimin", "apagar", "löschen", "supprim",
-            "usuń", "usun", "verwijder", "sil", "刪除"
+            "usuń", "usun", "verwijder", "sil", "刪除",
         ]
 
         for key in [Self.moveKey, "details.screenshotCleanupComponents.moving"] {

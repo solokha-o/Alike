@@ -49,7 +49,7 @@ struct WidgetCompositionTests {
         for state in [
             WidgetDisplayState.hasSuggestions(bytes: 1_000, clusterCount: 24, scannedAt: nil, isStale: false),
             .libraryChanged(bytes: 1_000, scannedAt: nil),
-            .resumeReview(progress: progress, isStale: false)
+            .resumeReview(progress: progress, isStale: false),
         ] {
             let resolved = composition(state, family)
             let parts = try #require(resolved.headlineParts)
@@ -65,13 +65,13 @@ struct WidgetCompositionTests {
         for state in [
             WidgetDisplayState.hasSuggestions(bytes: 1_000, clusterCount: 24, scannedAt: nil, isStale: false),
             .libraryChanged(bytes: 1_000, scannedAt: nil),
-            .resumeReview(progress: progress, isStale: false)
+            .resumeReview(progress: progress, isStale: false),
         ] {
             #expect(composition(state, family).headerSymbolName == nil, "\(state) kept a glyph beside the figure")
         }
         for state in [
             WidgetDisplayState.unavailable, .noAccess(.denied), .neverScanned, .allCaughtUp(scannedAt: nil),
-            .hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false)
+            .hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false),
         ] {
             #expect(composition(state, family).headerSymbolName == composition(state, family).symbolName, "\(state) lost its glyph")
         }
@@ -96,7 +96,7 @@ struct WidgetCompositionTests {
             WidgetDisplayState.unavailable,
             .noAccess(.denied),
             .neverScanned,
-            .allCaughtUp(scannedAt: Self.scannedAt)
+            .allCaughtUp(scannedAt: Self.scannedAt),
         ] {
             #expect(composition(state, family).headline == nil, "\(state) invented a headline")
             #expect(composition(state, family).progress == nil, "\(state) invented progress")
@@ -292,7 +292,7 @@ struct WidgetCompositionTests {
             .allCaughtUp(scannedAt: Self.scannedAt),
             .hasSuggestions(bytes: 1, clusterCount: 1, scannedAt: Self.scannedAt, isStale: false),
             .libraryChanged(bytes: 1, scannedAt: Self.scannedAt),
-            .resumeReview(progress: progress, isStale: false)
+            .resumeReview(progress: progress, isStale: false),
         ]
 
         for state in states {
@@ -313,7 +313,7 @@ struct WidgetCompositionTests {
             .allCaughtUp(scannedAt: nil),
             .hasSuggestions(bytes: 1, clusterCount: 1, scannedAt: nil, isStale: false),
             .libraryChanged(bytes: 1, scannedAt: nil),
-            .resumeReview(progress: progress, isStale: false)
+            .resumeReview(progress: progress, isStale: false),
         ]
 
         for state in states {
@@ -354,7 +354,7 @@ struct WidgetCompositionTests {
             .neverScanned, .allCaughtUp(scannedAt: nil),
             .hasSuggestions(bytes: nil, clusterCount: nil, scannedAt: nil, isStale: false),
             .libraryChanged(bytes: nil, scannedAt: nil),
-            .resumeReview(progress: progress, isStale: false)
+            .resumeReview(progress: progress, isStale: false),
         ]
 
         for state in states {

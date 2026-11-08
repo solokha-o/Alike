@@ -455,7 +455,7 @@ struct ClusterReviewSummaryCard: View {
         .notReviewed,
         .needsReReview,
         .inReview,
-        .reviewed
+        .reviewed,
     ]
 
     private func reservedStatusSlot(_ status: ClusterReviewStatus) -> some View {

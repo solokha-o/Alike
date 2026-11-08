@@ -14,7 +14,7 @@ struct CleanupWorkspaceCategoryTests {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .blurredPhotos: snapshot(kind: .blurredPhotos, assetCount: 4, bytes: 400),
-            .screenshots: snapshot(kind: .screenshots, assetCount: 7, bytes: 700)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 7, bytes: 700),
         ])
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
 
@@ -40,7 +40,7 @@ struct CleanupWorkspaceCategoryTests {
     @Test func testCategoryMissingFromRepositoryIsDroppedRatherThanShownEmpty() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
-            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200),
         ])
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
 
@@ -52,7 +52,7 @@ struct CleanupWorkspaceCategoryTests {
     @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async throws {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
-            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200),
         ])
         await categoryRepository.setLoadAllSnapshotsError(CategoryReadFailure())
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
@@ -73,7 +73,7 @@ struct CleanupWorkspaceCategoryTests {
                 deletedCount: 3,
                 estimatedSavingsBytes: 3_072,
                 completedAt: Date(timeIntervalSince1970: 1_000)
-            )
+            ),
         ])
         await historyRepository.setLoadEntriesError(HistoryReadFailure())
         let workspace = await makeScannedWorkspace(historyRepository: historyRepository)

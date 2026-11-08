@@ -54,7 +54,7 @@ struct CrashReportMailDraftTests {
         let urls = [URL(fileURLWithPath: "/tmp/a.json"), URL(fileURLWithPath: "/tmp/b.json")]
         let reports = [
             CrashReport(receivedAt: Date(timeIntervalSince1970: 20)),
-            CrashReport(receivedAt: Date(timeIntervalSince1970: 10))
+            CrashReport(receivedAt: Date(timeIntervalSince1970: 10)),
         ]
 
         let draft = draft(reports, urls: urls)

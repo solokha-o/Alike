@@ -220,7 +220,7 @@ struct PremiumPresentationTests {
         for key in [
             "purchases.paywall.postFirstScan",
             "purchases.paywall.postFirstScan.withSavings",
-            "purchases.paywall.batchCleanup"
+            "purchases.paywall.batchCleanup",
         ] {
             #expect(try catalog.pluralCategories(of: key, language: "en") == ["one", "other"], Comment(rawValue: key))
             #expect(

@@ -51,7 +51,7 @@ struct MainTabSelectionTests {
             .resumeReview: .resumeReview,
             .similarPhotos: .similarPhotos,
             .screenshots: .category(.screenshots),
-            .blurredPhotos: .category(.blurredPhotos)
+            .blurredPhotos: .category(.blurredPhotos),
         ]
         #expect(Set(expected.keys) == Set(WidgetDestination.allCases))
 

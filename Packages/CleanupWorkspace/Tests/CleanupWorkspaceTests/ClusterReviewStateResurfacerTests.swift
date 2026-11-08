@@ -89,7 +89,7 @@ struct ClusterReviewStateResurfacerTests {
             averageSimilarity: 0.9,
             assets: [
                 asset(id: "a", isFavorite: favoriteIdentifier == "a"),
-                asset(id: "b", isFavorite: favoriteIdentifier == "b")
+                asset(id: "b", isFavorite: favoriteIdentifier == "b"),
             ]
         )
     }

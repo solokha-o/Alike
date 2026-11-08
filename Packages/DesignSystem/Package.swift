@@ -6,7 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -16,26 +16,26 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.6.1")
+        .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.6.1"),
     ],
     targets: [
         .target(
             name: "DesignSystem",
             dependencies: [
                 "Core",
-                .product(name: "Lottie", package: "lottie-spm")
+                .product(name: "Lottie", package: "lottie-spm"),
             ],
             exclude: [
                 // Asset-licensing notice, not a build input. Excluding it keeps
                 // the file next to the assets it covers without adding it to
                 // the processed resource bundle.
-                "Resources/LICENSE"
+                "Resources/LICENSE",
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

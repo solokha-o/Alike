@@ -21,7 +21,7 @@ struct WidgetTopClustersTests {
         let cluster = PhotoCluster(assets: [
             WidgetFakeAsset("chosen-first", bytes: 1_000_000),
             WidgetFakeAsset("chosen-keeper", bytes: 500_000),
-            WidgetFakeAsset("chosen-third", bytes: 2_000_000)
+            WidgetFakeAsset("chosen-third", bytes: 2_000_000),
         ])
         #expect(cluster.bestShotAsset()?.localIdentifier != "chosen-keeper")
 
@@ -38,7 +38,7 @@ struct WidgetTopClustersTests {
     @Test func testRowLeavesOutTheComputedKeeperWithoutAReviewState() throws {
         let cluster = PhotoCluster(assets: [
             WidgetFakeAsset("computed-first", bytes: 1_000_000),
-            WidgetFakeAsset("computed-second", bytes: 2_000_000)
+            WidgetFakeAsset("computed-second", bytes: 2_000_000),
         ])
         let keeper = try #require(cluster.bestShotAsset())
 
@@ -60,17 +60,17 @@ struct WidgetTopClustersTests {
     @Test func testRowsAddUpToTheHeadlineWhenNothingOverlaps() {
         let chosen = PhotoCluster(assets: [
             WidgetFakeAsset("sum-a1", bytes: 1_000_000),
-            WidgetFakeAsset("sum-a2", bytes: 2_000_000)
+            WidgetFakeAsset("sum-a2", bytes: 2_000_000),
         ])
         let stale = PhotoCluster(assets: [
             WidgetFakeAsset("sum-b1", bytes: 700_000),
             WidgetFakeAsset("sum-b2", bytes: 300_000),
-            WidgetFakeAsset("sum-b3", bytes: 500_000)
+            WidgetFakeAsset("sum-b3", bytes: 500_000),
         ])
         #expect(chosen.bestShotAsset()?.localIdentifier != "sum-a1")
         let reviewStates = [
             chosen.id: keeperState(chosen, keeper: "sum-a1"),
-            stale.id: keeperState(stale, keeper: "sum-gone")
+            stale.id: keeperState(stale, keeper: "sum-gone"),
         ]
 
         let rows = WidgetSnapshotPublisher.topClusters([chosen, stale], reviewStates: reviewStates)
@@ -91,7 +91,7 @@ struct WidgetTopClustersTests {
         #expect(second.bestShotAsset()?.localIdentifier != "keep-2")
         let reviewStates = [
             first.id: keeperState(first, keeper: "keep-1"),
-            second.id: keeperState(second, keeper: "keep-2")
+            second.id: keeperState(second, keeper: "keep-2"),
         ]
 
         let rows = WidgetSnapshotPublisher.topClusters([first, second], reviewStates: reviewStates)

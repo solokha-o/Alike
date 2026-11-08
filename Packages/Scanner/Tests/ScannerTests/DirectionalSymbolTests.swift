@@ -16,7 +16,7 @@ struct DirectionalSymbolTests {
         "arrow.left.circle",
         "arrow.right.circle",
         "arrow.left.square",
-        "arrow.right.square"
+        "arrow.right.square",
     ]
 
     private static var sourcesRoot: URL {

@@ -54,7 +54,7 @@ struct WidgetDestinationTests {
             "alike://unknown", // a destination this build does not have
             "alikey://cleanup", // near-miss scheme
             "mailto:someone@example.com",
-            "cleanup"
+            "cleanup",
         ]
     )
     func rejected(raw: String) throws {

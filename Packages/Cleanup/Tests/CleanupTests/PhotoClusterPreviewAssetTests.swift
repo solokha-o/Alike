@@ -9,7 +9,7 @@ struct PhotoClusterPreviewAssetTests {
     @Test func testPrefersReviewedBestShotOverClusteringOrder() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "chosen")
+            FakePhotoAsset(localIdentifier: "chosen"),
         ])
 
         #expect(cluster.bestShotAsset(preferring: "chosen")?.localIdentifier == "chosen")
@@ -18,7 +18,7 @@ struct PhotoClusterPreviewAssetTests {
     @Test func testFallsBackToComputedBestShotWithoutReviewState() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true)
+            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true),
         ])
 
         #expect(cluster.bestShotAsset()?.localIdentifier == "favorite")
@@ -27,7 +27,7 @@ struct PhotoClusterPreviewAssetTests {
     @Test func testFallsBackToComputedBestShotWhenPreferredAssetIsMissing() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true)
+            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true),
         ])
 
         #expect(cluster.bestShotAsset(preferring: "deleted")?.localIdentifier == "favorite")

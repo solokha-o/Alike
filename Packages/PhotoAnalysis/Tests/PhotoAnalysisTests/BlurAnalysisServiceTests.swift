@@ -84,7 +84,7 @@ struct BlurAnalysisServiceTests {
             BlurAnalysisCandidate(localIdentifier: "sharp-5", sharpnessScore: 65, estimatedCleanupBytes: 230),
             BlurAnalysisCandidate(localIdentifier: "sharp-6", sharpnessScore: 54, estimatedCleanupBytes: 220),
             BlurAnalysisCandidate(localIdentifier: "sharp-7", sharpnessScore: 51, estimatedCleanupBytes: 210),
-            BlurAnalysisCandidate(localIdentifier: "sharp-8", sharpnessScore: 49, estimatedCleanupBytes: 205)
+            BlurAnalysisCandidate(localIdentifier: "sharp-8", sharpnessScore: 49, estimatedCleanupBytes: 205),
         ])
 
         #expect(selected.map(\.localIdentifier) == ["blur-large"])
@@ -94,7 +94,7 @@ struct BlurAnalysisServiceTests {
         let selected = BlurCandidateSelector.selectCandidates(from: [
             BlurAnalysisCandidate(localIdentifier: "one", sharpnessScore: 4, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "two", sharpnessScore: 5, estimatedCleanupBytes: 100),
-            BlurAnalysisCandidate(localIdentifier: "three", sharpnessScore: 6, estimatedCleanupBytes: 100)
+            BlurAnalysisCandidate(localIdentifier: "three", sharpnessScore: 6, estimatedCleanupBytes: 100),
         ])
 
         #expect(selected.isEmpty)
@@ -113,7 +113,7 @@ struct BlurAnalysisServiceTests {
             BlurAnalysisCandidate(localIdentifier: "9", sharpnessScore: 29, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "10", sharpnessScore: 30, estimatedCleanupBytes: 100),
             BlurAnalysisCandidate(localIdentifier: "11", sharpnessScore: 31, estimatedCleanupBytes: 100),
-            BlurAnalysisCandidate(localIdentifier: "12", sharpnessScore: 32, estimatedCleanupBytes: 100)
+            BlurAnalysisCandidate(localIdentifier: "12", sharpnessScore: 32, estimatedCleanupBytes: 100),
         ])
 
         #expect(selected.isEmpty)

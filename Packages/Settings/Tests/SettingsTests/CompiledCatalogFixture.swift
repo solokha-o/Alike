@@ -69,7 +69,7 @@ enum CompiledCatalogFixture {
                 "CFBundleIdentifier": "com.alike.tests.settings.localization",
                 "CFBundleDevelopmentRegion": "en",
                 "CFBundleInfoDictionaryVersion": "6.0",
-                "CFBundlePackageType": "BNDL"
+                "CFBundlePackageType": "BNDL",
             ],
             format: .xml,
             options: 0

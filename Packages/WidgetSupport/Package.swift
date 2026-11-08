@@ -8,13 +8,13 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
             name: "WidgetSupport",
             targets: ["WidgetSupport"]
-        )
+        ),
     ],
     targets: [
         // Deliberately dependency-free. The widget extension links this target and
@@ -29,16 +29,16 @@ let package = Package(
                 // Asset-licensing notice for the copied hero artwork, not a build
                 // input. Excluded the same way `DesignSystem` excludes its own, so the
                 // notice sits beside the files it covers without shipping in the bundle.
-                "Resources/Heroes/LICENSE"
+                "Resources/Heroes/LICENSE",
             ],
             resources: [.process("Resources")],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(
             name: "WidgetSupportTests",
             dependencies: ["WidgetSupport"]
-        )
+        ),
     ]
 )

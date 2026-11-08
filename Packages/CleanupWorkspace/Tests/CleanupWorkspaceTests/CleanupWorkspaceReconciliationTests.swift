@@ -15,7 +15,7 @@ struct CleanupWorkspaceReconciliationTests {
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([survivingCluster]))
         await analysis.setRefreshCleanupCategoriesResult(.success([
-            CleanupCategorySummary(kind: .screenshots, assetCount: 2, estimatedSavingsBytes: 200)
+            CleanupCategorySummary(kind: .screenshots, assetCount: 2, estimatedSavingsBytes: 200),
         ]))
 
         // The deletion flow appends the record before asking for a refresh, so

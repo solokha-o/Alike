@@ -5,7 +5,7 @@ let package = Package(
     name: "PhotoAnalysis",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -14,14 +14,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../Core")
+        .package(path: "../Core"),
     ],
     targets: [
         .target(
             name: "PhotoAnalysis",
             dependencies: ["Core"],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

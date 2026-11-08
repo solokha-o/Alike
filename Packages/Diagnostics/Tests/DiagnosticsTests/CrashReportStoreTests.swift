@@ -260,7 +260,7 @@ final class CrashReportStoreTests {
                     osVersion: "iPhone OS 18.6 (22G86)",
                     deviceModel: "iPhone14,3",
                     promptState: .pending
-                )
+                ),
             ]
         )
     }
@@ -268,7 +268,7 @@ final class CrashReportStoreTests {
     @Test func testIndexRoundTripsThroughTheEncoder() throws {
         let index = CrashReportIndex(reports: [
             CrashReport(receivedAt: Date(timeIntervalSince1970: 10), appVersion: "1.5.0", promptState: .sent),
-            CrashReport(receivedAt: Date(timeIntervalSince1970: 20))
+            CrashReport(receivedAt: Date(timeIntervalSince1970: 20)),
         ])
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601

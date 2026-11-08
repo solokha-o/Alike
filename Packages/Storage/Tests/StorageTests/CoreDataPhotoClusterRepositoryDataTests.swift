@@ -25,7 +25,7 @@ struct CoreDataPhotoClusterRepositoryDataTests {
                     pixelWidth: 100,
                     pixelHeight: 200,
                     isFavorite: false
-                )
+                ),
             ]
         )
         let clusterB = CoreDataPhotoClusterRepository.ClusterData(
@@ -40,7 +40,7 @@ struct CoreDataPhotoClusterRepositoryDataTests {
                     pixelWidth: 300,
                     pixelHeight: 400,
                     isFavorite: true
-                )
+                ),
             ]
         )
 
@@ -99,7 +99,7 @@ struct CoreDataPhotoClusterRepositoryDataTests {
                     pixelWidth: 600,
                     pixelHeight: 400,
                     isFavorite: false
-                )
+                ),
             ]
         )
 

@@ -91,7 +91,7 @@ struct AlikeFormattingTests {
     /// asserting Western digits and a Gregorian calendar under `ar_SA`.
     static let pinDefiningFiles: Set<String> = [
         "Locale+AlikeFormatting.swift",
-        "WidgetFormatting.swift"
+        "WidgetFormatting.swift",
     ]
 
     @Test func testNoPackageSourceFormatsAValueOutsideThePinnedLocale() throws {

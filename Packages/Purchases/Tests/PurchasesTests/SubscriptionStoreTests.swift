@@ -44,7 +44,7 @@ struct SubscriptionStoreTests {
                     id: "com.alike.app.pro.yearly",
                     displayName: "Alike Pro Yearly",
                     displayPrice: "$39.99"
-                )
+                ),
             ]
         )
         let store = SubscriptionStore(
@@ -74,7 +74,7 @@ struct SubscriptionStoreTests {
                     displayName: "Yearly",
                     displayPrice: "$39.99",
                     price: try #require(Decimal(string: "39.99"))
-                )
+                ),
             ]
         )
         let store = makeStore(client: client)
@@ -90,7 +90,7 @@ struct SubscriptionStoreTests {
 
     @Test func testRefreshGrantsAccessForVerifiedActiveEntitlement() async {
         let client = MockStoreKitClient(entitlements: [
-            entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture)
+            entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture),
         ])
         let store = makeStore(client: client)
 
@@ -106,7 +106,7 @@ struct SubscriptionStoreTests {
         let client = MockStoreKitClient(entitlements: [
             entitlement(productID: "test.alike.monthly", expirationDate: .distantPast),
             entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture, revocationDate: Date()),
-            entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture, isVerified: false)
+            entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture, isVerified: false),
         ])
         let store = makeStore(client: client)
 
@@ -120,7 +120,7 @@ struct SubscriptionStoreTests {
         let client = MockStoreKitClient(
             products: [
                 StorefrontProduct(id: "test.alike.monthly", displayName: "Monthly", displayPrice: "$6.99"),
-                StorefrontProduct(id: "test.alike.yearly", displayName: "Yearly", displayPrice: "$39.99")
+                StorefrontProduct(id: "test.alike.yearly", displayName: "Yearly", displayPrice: "$39.99"),
             ],
             purchaseOutcome: .success(entitlement(productID: "test.alike.yearly", expirationDate: .distantFuture))
         )
@@ -249,7 +249,7 @@ struct SubscriptionStoreTests {
 
     @Test func testRestoreSyncsThenRefreshesEntitlement() async throws {
         let client = MockStoreKitClient(entitlements: [
-            entitlement(productID: "test.alike.monthly", expirationDate: .distantFuture)
+            entitlement(productID: "test.alike.monthly", expirationDate: .distantFuture),
         ])
         let store = makeStore(client: client)
 
@@ -357,7 +357,7 @@ struct SubscriptionStoreTests {
     private func storefrontProducts() -> [StorefrontProduct] {
         [
             StorefrontProduct(id: "test.alike.monthly", displayName: "Monthly", displayPrice: "$6.99"),
-            StorefrontProduct(id: "test.alike.yearly", displayName: "Yearly", displayPrice: "$39.99")
+            StorefrontProduct(id: "test.alike.yearly", displayName: "Yearly", displayPrice: "$39.99"),
         ]
     }
 

@@ -79,7 +79,7 @@ struct AutoEnhancementRenderer: Sendable {
         let filters = image.autoAdjustmentFilters(options: [
             .enhance: true,
             .redEye: false,
-            .level: false
+            .level: false,
         ])
         for filter in filters {
             let prototype = (filter.copy() as? CIFilter) ?? filter
@@ -146,7 +146,7 @@ struct AutoEnhancementRenderer: Sendable {
                     colorSpace: Self.outputColorSpace,
                     options: [
                         CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
-                            Constants.jpegQuality
+                            Constants.jpegQuality,
                     ]
                 )
                 return
@@ -163,7 +163,7 @@ struct AutoEnhancementRenderer: Sendable {
             colorSpace: Self.outputColorSpace,
             options: [
                 CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
-                    Constants.jpegQuality
+                    Constants.jpegQuality,
             ]
         )
     }
@@ -176,7 +176,7 @@ struct AutoEnhancementRenderer: Sendable {
             colorSpace: Self.outputColorSpace,
             options: [
                 CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String):
-                    Constants.jpegQuality
+                    Constants.jpegQuality,
             ]
         )
     }
@@ -228,7 +228,7 @@ struct AutoEnhancementRenderer: Sendable {
                 filterName: filter.name,
                 parameters: [
                     kCIInputRadiusKey: Constants.unsharpRadius,
-                    kCIInputIntensityKey: Constants.unsharpIntensity
+                    kCIInputIntensityKey: Constants.unsharpIntensity,
                 ]
             ),
             prototype

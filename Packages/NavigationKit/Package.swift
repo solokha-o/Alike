@@ -5,26 +5,26 @@ let package = Package(
     name: "NavigationKit",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
             name: "NavigationKit",
             targets: ["NavigationKit"]
-        )
+        ),
     ],
     targets: [
         .target(
             name: "NavigationKit",
             path: "Sources/NavigationKit",
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(
             name: "NavigationKitTests",
             dependencies: ["NavigationKit"],
             path: "Tests/NavigationKitTests"
-        )
+        ),
     ]
 )

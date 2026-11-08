@@ -18,7 +18,7 @@ struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixtu
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("sharp", 60), ("blurred", 20)],
             overrideMetrics: metrics
@@ -35,7 +35,7 @@ struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixtu
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "blurred", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("sharp", 60), ("blurred", 20)],
             overrideMetrics: metrics
@@ -58,7 +58,7 @@ struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixtu
             snapshots: [
                 snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
                 snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
-                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30)),
             ],
             qualityScores: [("a", 60), ("b", 20), ("c", 25)],
             overrideMetrics: metrics
@@ -110,7 +110,7 @@ struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixtu
             overrideMetrics: metrics,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )

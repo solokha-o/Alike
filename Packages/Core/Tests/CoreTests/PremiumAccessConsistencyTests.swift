@@ -19,7 +19,7 @@ struct PremiumAccessConsistencyTests {
         .scan(completedThisMonth: 0),
         .scan(completedThisMonth: 99),
         .cleanupSelection(count: 1),
-        .cleanupSelection(count: 50)
+        .cleanupSelection(count: 50),
     ]
 
     @Test func testPremiumUnlocksEveryFeatureInEveryContext() {

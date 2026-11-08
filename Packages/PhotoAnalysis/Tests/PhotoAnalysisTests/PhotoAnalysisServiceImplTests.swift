@@ -47,7 +47,7 @@ struct PhotoAnalysisServiceImplTests {
                 localIdentifiers: ["blur-1"],
                 assetCount: 1,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ])
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -69,7 +69,7 @@ struct PhotoAnalysisServiceImplTests {
                 localIdentifiers: ["stale"],
                 assetCount: 1,
                 estimatedSavingsBytes: 100
-            )
+            ),
         ])
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),

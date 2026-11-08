@@ -57,7 +57,7 @@ struct ScannerViewModelTests {
                 localIdentifiers: ["s1", "s2"],
                 assetCount: 2,
                 estimatedSavingsBytes: 700
-            )
+            ),
         ])
         let workspace = makeWorkspace(repository: repository, categoryRepository: categoryRepository)
         let viewModel = makeViewModel(workspace: workspace, now: { date })
@@ -79,7 +79,7 @@ struct ScannerViewModelTests {
         // 2 000 000 and 1 000 000 bytes.
         let cluster = PhotoCluster(assets: [
             SizedPhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000),
-            SizedPhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000)
+            SizedPhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000),
         ])
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([cluster]))
@@ -101,7 +101,7 @@ struct ScannerViewModelTests {
                 selectedLocalIdentifiers: [],
                 status: .inReview,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ])
         await workspace.reloadReviewState()
 
