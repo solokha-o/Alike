@@ -70,3 +70,6 @@ c51486d93a8143c704f5719e4093f0cb1bfd3dfd
 
 # LATER rule 21 (ADR-0001): consecutiveSpaces, format only.
 7ca7c667e121f316a9c0eb844a211016e10135ef
+
+# LATER rule 22 (ADR-0001): unusedArguments, format only.
+f78cc4928ad36793bd1eebaae6df80afe823cf31
