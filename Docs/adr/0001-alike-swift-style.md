@@ -126,7 +126,7 @@ are the measured diff with default options.
 | 17 | `blankLinesAroundMark` | 16 | 39 | |
 | 18 | `noForceUnwrapInTests` | 12 | 46 | `!` becomes `try #require`. |
 | 19 | `elseOnSameLine` | 26 | 48 | `} else {` |
-| 20 | `extensionAccessControl` | 5 | 51 | With `--extension-acl on-declarations`. Measure again. |
+| 20 | `extensionAccessControl` | 5 | 51 | With `--extension-acl on-declarations`. Measure again. The owner allowed 414 lines on 2026-11-08 (over the 400-line limit). Enabled after row 27. |
 | 21 | `consecutiveSpaces` | 20 | 63 | No alignment with spaces. |
 | 22 | `unusedArguments` | 24 | 71 | Unused parameters become `_`. |
 | 23 | `redundantReturn` | 18 | 91 | Implicit return. |
