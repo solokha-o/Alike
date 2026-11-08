@@ -63,7 +63,7 @@ struct CleanupWidgetEntryTests {
         let screenshots = summary(.screenshots)
 
         #expect(CleanupWidgetEntry.category(.screenshots)
-                .resolution(categories: [screenshots], orderedClusterIDs: []) == .openCategory(screenshots))
+            .resolution(categories: [screenshots], orderedClusterIDs: []) == .openCategory(screenshots))
     }
 
     // MARK: - Similar photos

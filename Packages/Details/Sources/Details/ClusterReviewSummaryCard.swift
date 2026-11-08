@@ -377,10 +377,10 @@ struct ClusterReviewSummaryCard: View {
                         onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                     }
                 )
-                    .frame(width: width)
-                    .onDisappear {
-                        onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
-                    }
+                .frame(width: width)
+                .onDisappear {
+                    onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
+                }
             }
         case .cleanupProgress:
             AlikeCleanupProgressHero(

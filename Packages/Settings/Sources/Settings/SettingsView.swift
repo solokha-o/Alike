@@ -778,8 +778,8 @@ private struct DeleteAllDataView: View {
                         }
                         Text(
                             model.isDeleting
-                                    ? SettingsL10n.Main.deleting
-                                    : SettingsL10n.Main.deleteAlikeData
+                                ? SettingsL10n.Main.deleting
+                                : SettingsL10n.Main.deleteAlikeData
                         )
                         .frame(maxWidth: .infinity)
                     }

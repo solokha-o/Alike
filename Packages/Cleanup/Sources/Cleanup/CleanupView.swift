@@ -351,7 +351,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
             ContentUnavailableView {
                 Label(CleanupL10n.Main.noCleanupOpportunities, systemImage: "checkmark.seal")
             } description: { Text(CleanupL10n.Main.latestScanDidNotFind) }
-            .padding(.top, Spacing.xxLarge)
+                .padding(.top, Spacing.xxLarge)
         } else if arrangement.isEmptyAfterFiltering {
             ContentUnavailableView {
                 Label(CleanupL10n.Main.noClustersMatchTheseControls, systemImage: "line.3.horizontal.decrease.circle")

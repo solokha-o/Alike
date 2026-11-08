@@ -19,6 +19,8 @@
 --decimal-grouping 3,4
 --trailing-commas collections-only
 --import-grouping testable-last,alpha
+--ifdef preserve
+--indent-case false
 
 # Generated, vendored, and non-app code.
 --exclude **/.build,build,vendor,Skills,site,fastlane
@@ -151,3 +153,4 @@
 --rules trailingSpace
 --rules sortImports
 --rules blankLinesBetweenScopes
+--rules indent

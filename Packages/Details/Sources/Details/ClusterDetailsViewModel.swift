@@ -450,8 +450,8 @@ final class ClusterDetailsViewModel {
     func continueWithSingleFreeSelection() async {
         guard
             let retainedID = assetSnapshots
-                .map(\.localIdentifier)
-                .first(where: selectedAssetIDs.contains)
+            .map(\.localIdentifier)
+            .first(where: selectedAssetIDs.contains)
         else { return }
 
         selectionFeedbackTrigger &+= 1

@@ -115,3 +115,6 @@ cae7cdbdec6e88734b55abdf71c8d401f1307f1e
 
 # LATER rule 35 (ADR-0001): blankLinesBetweenScopes, format only.
 ce6fdee2f4bb0ad34f357d51bd0d889855de436a
+
+# LATER rule 36 (ADR-0001): indent, format only.
+bd1b706a040eac6f5231ba4f7e753f227b621faa

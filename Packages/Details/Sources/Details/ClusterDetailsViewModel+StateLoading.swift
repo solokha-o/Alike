@@ -192,8 +192,8 @@ extension ClusterDetailsViewModel {
         let filteredSelection = persistedBestShotID.isEmpty
             ? []
             : savedState.selectedLocalIdentifiers
-                .intersection(validIDs)
-                .subtracting([persistedBestShotID])
+            .intersection(validIDs)
+            .subtracting([persistedBestShotID])
 
         applyState(
             bestShotAssetID: persistedBestShotID,
