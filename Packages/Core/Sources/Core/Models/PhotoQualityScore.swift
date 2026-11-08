@@ -68,7 +68,7 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
         switch (lhs, rhs) {
         case (nil, nil):
             true
-        case let (lhs?, rhs?):
+        case (let lhs?, let rhs?):
             // Core Data rounds dates to sub-millisecond precision on the way back.
             abs(lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate) < 0.001
         default:

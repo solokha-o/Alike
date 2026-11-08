@@ -495,13 +495,13 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
         pendingWidgetEntry = nil
 
         switch resolution {
-        case let .openCategory(summary):
+        case .openCategory(let summary):
             openCategory(summary)
-        case let .openCluster(cluster):
+        case .openCluster(let cluster):
             // The same push `CleanupProgressCard`'s Continue makes. The widget names the
             // intent; the destination is still the app's own answer to "where was I".
             router.push(.cluster(cluster))
-        case let .scrollTo(id):
+        case .scrollTo(let id):
             scrollAnchorID = id
         case .stayOnRoot:
             break

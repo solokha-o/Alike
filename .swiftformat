@@ -131,3 +131,4 @@
 --rules unusedArguments
 --rules redundantReturn
 --rules wrapMultilineStatementBraces
+--rules hoistPatternLet

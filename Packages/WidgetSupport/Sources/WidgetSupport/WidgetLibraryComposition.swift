@@ -124,7 +124,7 @@ public extension WidgetPresentation {
         case .unavailable:
             return placeholder(caption: WidgetL10n.Status.openApp, hero: nil)
 
-        case let .noAccess(status):
+        case .noAccess(let status):
             // `.limited` grants library access today, so this arm only ever sees denied,
             // restricted and not-determined. The limited wording is kept in step with
             // the status widget's rather than folded away: which authorizations count as

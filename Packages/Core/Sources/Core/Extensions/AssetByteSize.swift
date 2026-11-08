@@ -144,7 +144,7 @@ public enum AssetByteSize {
         switch (cached, current) {
         case (nil, nil):
             true
-        case let (cached?, current?):
+        case (let cached?, let current?):
             abs(cached.timeIntervalSince(current)) < 1
         default:
             false

@@ -78,7 +78,7 @@ struct WidgetPresentationTests {
         // Alike in two days is looking at two-day-old numbers.
         let age = WidgetPresentation.staleAfter + 1
         let state = WidgetPresentation.displayState(for: snapshot(age: age), now: now)
-        if case let .hasSuggestions(_, _, _, isStale) = state {
+        if case .hasSuggestions(_, _, _, let isStale) = state {
             #expect(isStale)
         } else {
             Issue.record("expected suggestions, got \(state)")
@@ -94,7 +94,7 @@ struct WidgetPresentationTests {
         #expect(staleDate == payload.generatedAt.addingTimeInterval(WidgetPresentation.staleAfter))
 
         let state = WidgetPresentation.displayState(for: payload, now: staleDate)
-        if case let .hasSuggestions(_, _, _, isStale) = state {
+        if case .hasSuggestions(_, _, _, let isStale) = state {
             #expect(isStale)
         } else {
             Issue.record("expected suggestions, got \(state)")
@@ -125,7 +125,7 @@ struct WidgetPresentationTests {
         )
 
         #expect(steps.count == 1)
-        if case let .hasSuggestions(_, _, _, isStale) = steps[0].state {
+        if case .hasSuggestions(_, _, _, let isStale) = steps[0].state {
             #expect(isStale)
         } else {
             Issue.record("expected suggestions, got \(steps[0].state)")

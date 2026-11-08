@@ -46,7 +46,7 @@ public enum BestShotCalibrationExportError: Error, Equatable {
 extension BestShotCalibrationExportError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case let .staleMeasurements(count):
+        case .staleMeasurements(let count):
             let clusterWord = count == 1 ? "cluster" : "clusters"
             return "\(count) labelled \(clusterWord) still hold signals measured under an older "
                 + "thumbnail geometry. Re-measure the corpus before exporting so every stamped "
