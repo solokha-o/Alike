@@ -49,6 +49,7 @@ Google guide as a whole.
 | `--ranges` | `preserve` | `spaceAroundOperators` keeps `0..<n` and `0 ..< n` as written (LATER row 26). |
 | `--self` | `remove` | `redundantSelf` removes `self.` where the compiler does not need it (LATER row 28). |
 | `--decimal-grouping` | `3,4` | `numberFormatting` groups integer literals of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
+| `--trailing-commas` | `collections-only` | `trailingCommas` adds the comma only in multi-line array and dictionary literals, not in argument lists (LATER row 32). |
 
 The owner decision names `--swiftversion 6.0` and `--some-any disabled`.
 SwiftFormat 0.63.1 spells these `--swift-version` and `--some-any false`. The
@@ -140,7 +141,7 @@ are the measured diff with default options.
 | 29 | `blankLinesAtStartOfScope` | 179 | 241 | |
 | 30 | `numberFormatting` | 67 | 260 | Group long literals. With `--decimal-grouping 3,4`: 134 Swift lines in 21 files (owner decision 2026-11-08). Enabled after row 31. |
 | 31 | `blankLinesAtEndOfScope` | 205 | 275 | |
-| 32 | `trailingCommas` | 111 | 410 | Start with `--trailing-commas collections-only`. |
+| 32 | `trailingCommas` | 111 | 410 | Start with `--trailing-commas collections-only`. With it: 820 Swift lines in 111 files. The owner allowed one pull request over the 400-line limit (2026-11-08). Enabled after row 31. |
 | 33 | `trailingSpace` | 39 | 451 | Whitespace only. |
 | 34 | `sortImports` | 188 | 540 | |
 | 35 | `blankLinesBetweenScopes` | 43 | 745 | One blank line between members. |
