@@ -127,3 +127,4 @@
 --rules blankLinesAroundMark
 --rules noForceUnwrapInTests
 --rules elseOnSameLine
+--rules consecutiveSpaces

@@ -49,10 +49,10 @@ struct WidgetDestinationTests {
     @Test(
         "Anything unrecognised is ignored rather than routed somewhere plausible",
         arguments: [
-            "https://alike.app/cleanup",     // right host, wrong scheme
-            "alike://",                      // no destination at all
-            "alike://unknown",               // a destination this build does not have
-            "alikey://cleanup",              // near-miss scheme
+            "https://alike.app/cleanup", // right host, wrong scheme
+            "alike://", // no destination at all
+            "alike://unknown", // a destination this build does not have
+            "alikey://cleanup", // near-miss scheme
             "mailto:someone@example.com",
             "cleanup"
         ]

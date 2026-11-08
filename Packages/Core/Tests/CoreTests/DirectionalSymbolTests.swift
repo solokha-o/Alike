@@ -76,10 +76,10 @@ import Testing
 
     private static func packageDirectories() throws -> [URL] {
         let packagesRoot = URL(fileURLWithPath: "\(#filePath)")
-            .deletingLastPathComponent()  // Tests/CoreTests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // Core
-            .deletingLastPathComponent()  // Packages
+            .deletingLastPathComponent() // Tests/CoreTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // Core
+            .deletingLastPathComponent() // Packages
         return try FileManager.default.contentsOfDirectory(
             at: packagesRoot,
             includingPropertiesForKeys: [.isDirectoryKey]

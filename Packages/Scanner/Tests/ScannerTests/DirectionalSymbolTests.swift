@@ -21,9 +21,9 @@ import Testing
 
     private static var sourcesRoot: URL {
         URL(fileURLWithPath: "\(#filePath)")
-            .deletingLastPathComponent()  // Tests/ScannerTests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // package root
+            .deletingLastPathComponent() // Tests/ScannerTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // package root
             .appendingPathComponent("Sources/Scanner")
     }
 
