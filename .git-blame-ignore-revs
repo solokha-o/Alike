@@ -94,3 +94,6 @@ f9c8a208934d104bcb106f85ef498d5791b3ffef
 
 # LATER rule 28 (ADR-0001): redundantSelf (--self remove), format only.
 2cc5480c2449bd64ecbc9a2434f0c2a7b67b831d
+
+# LATER rule 29 (ADR-0001): blankLinesAtStartOfScope, format only.
+6120fb38c57d1ea1d64a824ea3461fff03ebc52f
