@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct BestShotRankerTests {
+struct BestShotRankerTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Requirements from the task

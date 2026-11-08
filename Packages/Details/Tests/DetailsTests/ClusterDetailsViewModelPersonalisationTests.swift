@@ -5,7 +5,7 @@ import Photos
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsViewModelPersonalisationTests: ClusterDetailsViewModelFixture {
+struct ClusterDetailsViewModelPersonalisationTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()

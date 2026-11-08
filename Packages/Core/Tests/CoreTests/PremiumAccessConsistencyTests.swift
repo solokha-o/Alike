@@ -10,7 +10,7 @@ import Testing
 /// `PremiumAccessTests` covers the free-tier boundaries themselves; these cover
 /// that the boundaries do not move depending on who is asking.
 @MainActor
-@Suite struct PremiumAccessConsistencyTests {
+struct PremiumAccessConsistencyTests {
     /// Contexts a caller might pass, including the mismatched ones. A screen
     /// that reuses whatever context it already has must not accidentally unlock
     /// an unrelated feature.

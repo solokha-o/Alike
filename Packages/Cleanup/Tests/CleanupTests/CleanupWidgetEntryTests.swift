@@ -6,7 +6,7 @@ import Testing
 /// What a widget tap means once it reaches a workspace whose contents may have moved on
 /// since the snapshot the widget was drawn from. The view that acts on this has no test
 /// action worth the name, so the decision is made here.
-@Suite struct CleanupWidgetEntryTests {
+struct CleanupWidgetEntryTests {
     private func summary(_ kind: CleanupCategoryKind, assetCount: Int = 5) -> CleanupCategorySummary {
         CleanupCategorySummary(kind: kind, assetCount: assetCount, estimatedSavingsBytes: 1_000)
     }

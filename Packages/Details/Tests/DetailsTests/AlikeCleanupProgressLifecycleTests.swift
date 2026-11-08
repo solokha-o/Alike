@@ -5,7 +5,7 @@ import Testing
 import DesignSystem
 @testable import Details
 
-@Suite struct AlikeCleanupProgressLifecycleTests {
+struct AlikeCleanupProgressLifecycleTests {
     @Test func testActiveVisibleExecutionLoopsSortingOverlayWithoutAmbientMotion() {
         let presentation = AlikeCleanupProgressPresentation.resolve(
             isExecuting: true,

@@ -9,7 +9,7 @@ import Testing
 /// value, so navigation and widget deep links land through `TabManager` alone. These tests
 /// lock that routing; the views themselves are not rendered.
 @MainActor
-@Suite struct MainTabSelectionTests {
+struct MainTabSelectionTests {
     @Test func testTabValuesKeepTheirOrder() {
         #expect(TabManager.Tab.allCases == [.scanner, .cleanup, .settings])
         #expect(TabManager().selectedTab == .scanner)

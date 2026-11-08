@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct BestShotCalibrationCorpusTests {
+struct BestShotCalibrationCorpusTests {
     private func makeCorpus() -> BestShotCalibrationCorpus {
         let withFaces = BestShotCalibrationCluster(
             clusterID: "cluster-faces",

@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct PhotoQualityScoringConfigTests {
+struct PhotoQualityScoringConfigTests {
     @Test func testShippedConfigRoundTripsThroughCoding() throws {
         let data = try JSONEncoder().encode(PhotoQualityScoringConfig.current)
         let decoded = try JSONDecoder().decode(PhotoQualityScoringConfig.self, from: data)

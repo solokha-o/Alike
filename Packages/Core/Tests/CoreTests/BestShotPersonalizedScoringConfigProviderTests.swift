@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct BestShotPersonalizedScoringConfigProviderTests {
+struct BestShotPersonalizedScoringConfigProviderTests {
     private let global = PhotoQualityScoringConfig.current
 
     @Test func testNoStoredWeightsReturnsGlobalConfigUnchanged() async {

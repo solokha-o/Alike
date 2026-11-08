@@ -4,7 +4,7 @@ import Photos
 import Core
 @testable import Cleanup
 
-@Suite struct CleanupClusterControlsTests {
+struct CleanupClusterControlsTests {
     private let allStatuses: [ClusterReviewStatus] = [.notReviewed, .needsReReview, .inReview, .reviewed]
 
     // MARK: - CleanupReviewFilter

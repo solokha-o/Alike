@@ -8,7 +8,7 @@ import Testing
 /// else's: Ukrainian and Polish inflect across four categories, so 2, 5 and 22 all differ, and
 /// the cluster accessibility label went through the same key with an arbitrary cluster count.
 /// The key now carries CLDR variations and the switch is gone.
-@Suite struct CleanupPhotoCountPluralTests {
+struct CleanupPhotoCountPluralTests {
     @Test func testEnglishSelectsSingularAndPlural() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let english = Locale(identifier: "en")
@@ -70,7 +70,7 @@ import Testing
 /// switch. VoiceOver therefore read the genitive plural at 2 in Ukrainian and a fixed noun in
 /// Polish. The pair is now one plural key, with the count bound to `%1$lld` so the rule can
 /// select on it while each locale keeps its own word order.
-@Suite struct CleanupHistoryAccessibilityPluralTests {
+struct CleanupHistoryAccessibilityPluralTests {
     @Test func testEnglishReadsSingularAndPlural() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let english = Locale(identifier: "en")
@@ -106,7 +106,7 @@ import Testing
 /// A category summary can hold a single asset, and the fixed string rendered "1 items" there —
 /// plus a fixed noun in every language that inflects. The key is now plural on the asset count,
 /// with the formatted byte count as the second argument.
-@Suite struct CleanupCategoryDetailPluralTests {
+struct CleanupCategoryDetailPluralTests {
     @Test func testEnglishSummarySwitchesNounAtOne() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let english = Locale(identifier: "en")

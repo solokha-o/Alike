@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import DesignSystem
 
-@Suite struct AdaptivePhotoGridLayoutTests {
+struct AdaptivePhotoGridLayoutTests {
     @Test func testCompactPolicyOffersOneOrTwoColumnsAndDefaultsToTwo() {
         #expect(AdaptivePhotoGridLayoutPolicy.compact.columnCounts == 1...2)
         #expect(AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount == 2)

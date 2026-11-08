@@ -4,7 +4,7 @@ import Core
 @testable import Storage
 
 /// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
-@Suite final class FileAssetByteSizeRepositoryTests {
+final class FileAssetByteSizeRepositoryTests {
     private let directoryURL: URL
     private let fileURL: URL
 

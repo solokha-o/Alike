@@ -4,7 +4,7 @@ import Photos
 import Core
 @testable import Cleanup
 
-@Suite struct CleanupClusterArrangementTests {
+struct CleanupClusterArrangementTests {
 
     // MARK: - Content identity
 

@@ -14,7 +14,7 @@ import Core
 /// actually calls — against a fixed locale, calendar, and schedule. Reverting the production
 /// formatting change, or wiring the wrong schedule into it, makes the exercised tests fail; the
 /// catalog-shape tests alone would not have caught either.
-@Suite struct ReminderScheduleCopyTests {
+struct ReminderScheduleCopyTests {
     private static let footerKey = "settings.main.freeRemindersUseSundayAt"
 
     /// A digit followed by `:` or `.` and two more digits — `18:00`, `6:00`, `18.00`. Written this

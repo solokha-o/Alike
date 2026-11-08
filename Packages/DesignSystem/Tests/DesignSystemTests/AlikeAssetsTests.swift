@@ -4,7 +4,7 @@ import Testing
 import Lottie
 @testable import DesignSystem
 
-@Suite struct AlikeAssetsTests {
+struct AlikeAssetsTests {
     @Test func testScannerIdleExportsAreAvailableForEveryStateAndScale() {
         let scales: [AlikeAssets.ScannerIdleScale] = [.oneX, .twoX, .threeX]
 

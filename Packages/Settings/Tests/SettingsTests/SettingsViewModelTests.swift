@@ -4,7 +4,7 @@ import Core
 @testable import Settings
 
 @MainActor
-@Suite struct SettingsViewModelTests {
+struct SettingsViewModelTests {
     @Test func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() {
         // Opening the App Store page spends no review-sheet quota, so the automatic
         // post-cleanup prompt must not inherit a cooldown from it. Settings holds no

@@ -6,7 +6,7 @@ import Testing
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsEnhancementTests {
+struct ClusterDetailsEnhancementTests {
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000042")!
 
     // MARK: - Availability

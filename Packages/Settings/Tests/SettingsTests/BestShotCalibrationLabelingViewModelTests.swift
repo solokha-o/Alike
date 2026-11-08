@@ -5,7 +5,7 @@ import Core
 @testable import Settings
 
 @MainActor
-@Suite struct BestShotCalibrationLabelingViewModelTests {
+struct BestShotCalibrationLabelingViewModelTests {
     private func makeViewModel(defaults: UserDefaults) -> BestShotCalibrationLabelingViewModel {
         BestShotCalibrationLabelingViewModel(
             clusterRepository: MockPhotoClusterRepository(),

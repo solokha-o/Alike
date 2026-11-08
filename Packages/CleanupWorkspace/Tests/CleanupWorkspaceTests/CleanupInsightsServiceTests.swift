@@ -3,7 +3,7 @@ import Testing
 import Core
 @testable import CleanupWorkspace
 
-@Suite struct CleanupInsightsServiceTests {
+struct CleanupInsightsServiceTests {
     @Test func testLoadInsightsReturnsEmptySnapshotForEmptyHistory() async throws {
         let repository = MockCleanupHistoryRepository(entries: [])
         let service = CleanupInsightsService(repository: repository)

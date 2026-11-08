@@ -4,7 +4,7 @@ import Photos
 @testable import Core
 
 @MainActor
-@Suite struct MockServicesTests {
+struct MockServicesTests {
     @Test func testMockPhotoPermissionManagerAuthorizationFlow() async {
         let manager = MockPhotoPermissionManager(authorizationStatus: .notDetermined)
 

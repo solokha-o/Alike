@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct AlikeReactionTests {
+struct AlikeReactionTests {
     @Test func testAllEightStatesConstructAndNormalizeAssociatedValues() {
         let cleanup = AlikeCleanupSummary(itemCount: -2, estimatedSavingsBytes: -10)
         #expect(cleanup == AlikeCleanupSummary(itemCount: 0, estimatedSavingsBytes: 0))

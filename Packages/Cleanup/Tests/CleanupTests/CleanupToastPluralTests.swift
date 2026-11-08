@@ -6,7 +6,7 @@ import Testing
 /// variations. It did not have them: `%d photos moved to Recently Deleted.` rendered
 /// "1 photos moved to Recently Deleted." in English and "1 Fotos …" in German. Found by
 /// walking a real cleanup on device.
-@Suite struct CleanupToastPluralTests {
+struct CleanupToastPluralTests {
     @Test func testEnglishToastSelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let en = Locale(identifier: "en")

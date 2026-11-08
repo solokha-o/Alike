@@ -8,7 +8,7 @@ import Core
 /// through the existing button path and a twin through the swipe, then
 /// compares what the screen shows, what drives its haptics, and what was saved.
 @MainActor
-@Suite struct PhotoTileSwipeActionsTests {
+struct PhotoTileSwipeActionsTests {
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000027")!
 
     // MARK: - Offered actions

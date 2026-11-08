@@ -3,7 +3,7 @@ import Testing
 import Core
 @testable import Storage
 
-@Suite struct CoreDataPhotoQualityScoreRepositoryTests {
+struct CoreDataPhotoQualityScoreRepositoryTests {
     private let repository: CoreDataPhotoQualityScoreRepository
     private let inMemoryController: PersistenceController
     private let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)

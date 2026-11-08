@@ -5,7 +5,7 @@ import Core
 
 /// The cleanup grid card previews `bestShotAsset(preferring:)`, so clustering
 /// order no longer decides which photo represents a cluster.
-@Suite struct PhotoClusterPreviewAssetTests {
+struct PhotoClusterPreviewAssetTests {
     @Test func testPrefersReviewedBestShotOverClusteringOrder() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),

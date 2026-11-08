@@ -9,7 +9,7 @@ import Testing
 /// "Auswahl löschen", and "Effacer la sélection" above "Supprimer la sélection". Neither
 /// pair is catchable by a rule, so the labels are pinned here. If a future translation pass
 /// changes one, this test fails and the pair gets looked at again — which is the point.
-@Suite struct SelectionActionLabelTests {
+struct SelectionActionLabelTests {
     private static let clearKey = "details.common.clearSelection"
     private static let moveKey = "details.screenshotCleanupComponents.moveSelected"
     private static let selectAllKey = "details.screenshotCleanupComponents.selectAll"

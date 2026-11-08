@@ -4,7 +4,7 @@ import Core
 @testable import Details
 
 @MainActor
-@Suite struct ScreenshotCleanupViewModelTests {
+struct ScreenshotCleanupViewModelTests {
     private let cleanupService = MockPhotoCleanupService()
     private let cleanupHistoryRepository = MockCleanupHistoryRepository()
 

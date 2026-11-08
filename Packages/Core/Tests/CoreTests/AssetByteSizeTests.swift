@@ -3,7 +3,7 @@ import Photos
 import Testing
 @testable import Core
 
-@Suite struct AssetByteSizeTests {
+struct AssetByteSizeTests {
     @Test func testAssetWithoutPhotoKitResourcesFallsBackToThePixelHeuristic() {
         let asset = SizedAsset(localIdentifier: "fake", pixelWidth: 400, pixelHeight: 300)
 
@@ -30,7 +30,7 @@ import Testing
     }
 }
 
-@Suite struct PersistedByteSizeVersionTests {
+struct PersistedByteSizeVersionTests {
     @Test func testCategorySnapshotWithoutMarkerDecodesAsHeuristic() throws {
         let json = """
         {"kind":"screenshots","localIdentifiers":["a","b"],"assetCount":2,"estimatedSavingsBytes":300,"refreshedAt":1000}
@@ -157,7 +157,7 @@ private final class SizedAsset: PHAsset, @unchecked Sendable {
     override var pixelHeight: Int { heightOverride }
 }
 
-@Suite struct AssetByteSizeSeedTests {
+struct AssetByteSizeSeedTests {
     @Test func testSeededRecordsComeBackWithoutChangingTheGeneration() {
         let identifier = "seed-\(UUID().uuidString)"
         let record = AssetByteSizeRecord(

@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct PersonalizationReportTests {
+struct PersonalizationReportTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Prefix parsing

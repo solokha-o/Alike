@@ -3,7 +3,7 @@ import Testing
 @testable import Diagnostics
 
 /// A `final class` suite: the temporary directory is removed in `deinit`.
-@Suite final class CrashReportStoreTests {
+final class CrashReportStoreTests {
     private let directoryURL: URL
     private let store: CrashReportStore
 

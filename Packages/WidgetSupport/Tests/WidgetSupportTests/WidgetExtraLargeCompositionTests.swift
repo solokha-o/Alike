@@ -3,7 +3,7 @@ import Testing
 @testable import WidgetSupport
 
 /// The extra-large portrait widget (iOS 27) and the `topClusters` payload it reads.
-@Suite struct WidgetExtraLargeCompositionTests {
+struct WidgetExtraLargeCompositionTests {
     private static let scannedAt = Date(timeIntervalSince1970: 1_770_000_000)
 
     private static func clusters(_ count: Int) -> [WidgetClusterSummary] {

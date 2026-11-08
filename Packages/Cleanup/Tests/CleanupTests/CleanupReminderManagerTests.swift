@@ -4,7 +4,7 @@ import Foundation
 import Testing
 @testable import Cleanup
 
-@Suite struct CleanupReminderManagerTests {
+struct CleanupReminderManagerTests {
     @Test func testAuthorizedEnableSchedulesWeeklyReminder() async throws {
         let repository = MockCleanupReminderPreferenceRepository()
         let notificationCenter = MockUserNotificationCenter(

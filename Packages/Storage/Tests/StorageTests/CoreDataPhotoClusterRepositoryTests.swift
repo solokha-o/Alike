@@ -6,7 +6,7 @@ import Core
 @testable import Storage
 
 @MainActor
-@Suite struct CoreDataPhotoClusterRepositoryTests {
+struct CoreDataPhotoClusterRepositoryTests {
     let repository: CoreDataPhotoClusterRepository
     let inMemoryController: PersistenceController
     
@@ -417,7 +417,7 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 /// thread and then regroups the assets. These cases pin that without a photo
 /// library: `String` stands in for `PHAsset`.
 @MainActor
-@Suite struct ClusterAssemblyTests {
+struct ClusterAssemblyTests {
     private typealias Repository = CoreDataPhotoClusterRepository
 
     private func clusterData(

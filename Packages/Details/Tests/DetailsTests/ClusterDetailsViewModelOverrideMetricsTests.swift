@@ -5,7 +5,7 @@ import Photos
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixture {
+struct ClusterDetailsViewModelOverrideMetricsTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()

@@ -59,7 +59,7 @@ struct InfoPlistCatalog {
     }
 }
 
-@Suite struct InfoPlistCatalogTests {
+struct InfoPlistCatalogTests {
     @Test func testTheAppTargetIsFoundInTheProject() throws {
         let configurations = try InfoPlistCatalog.appConfigurations()
 

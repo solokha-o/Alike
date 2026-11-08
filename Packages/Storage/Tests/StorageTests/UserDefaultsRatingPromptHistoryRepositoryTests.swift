@@ -6,7 +6,7 @@ import Core
 /// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
 /// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
 /// each repository gets its own `UserDefaults` instance of that suite.
-@Suite final class UserDefaultsRatingPromptHistoryRepositoryTests {
+final class UserDefaultsRatingPromptHistoryRepositoryTests {
     private let suiteName = UUID().uuidString
     private let defaults: UserDefaults
     private let key = "rating.promptHistory.test.\(UUID().uuidString)"

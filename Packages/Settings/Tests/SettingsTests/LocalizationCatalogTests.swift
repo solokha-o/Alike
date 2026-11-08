@@ -228,7 +228,7 @@ struct LocalizationCatalog {
     }
 }
 
-@Suite struct LocalizationCatalogTests {
+struct LocalizationCatalogTests {
     @Test func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)

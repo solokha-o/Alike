@@ -3,7 +3,7 @@ import Foundation
 import Testing
 @testable import CleanupWorkspace
 
-@Suite struct CleanupHistorySnapshotTests {
+struct CleanupHistorySnapshotTests {
     private let calendar: Calendar
 
     init() {

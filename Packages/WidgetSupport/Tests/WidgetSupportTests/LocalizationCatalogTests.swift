@@ -233,7 +233,7 @@ struct LocalizationCatalog {
     }
 }
 
-@Suite struct LocalizationCatalogTests {
+struct LocalizationCatalogTests {
     /// What the narrowest phone shows beside the glyph in the inline slot. The system
     /// truncates silently and per locale, so the longest translation has to stay under this
     /// with the longest figure the estimate can print.

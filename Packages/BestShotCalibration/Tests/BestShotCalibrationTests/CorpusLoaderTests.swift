@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct CorpusLoaderTests {
+struct CorpusLoaderTests {
     private func makeCorpus(
         schemaVersion: Int = BestShotCalibrationCorpus.currentSchemaVersion,
         scoringModelVersion: Int = PhotoQualityScoringConfig.current.scoringModelVersion,

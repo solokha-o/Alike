@@ -2,7 +2,7 @@
 import Foundation
 import Testing
 
-@Suite struct ScanProgressPolicyTests {
+struct ScanProgressPolicyTests {
     @Test func testStageRangesReservePersistenceAndCompletion() {
         #expect(ScanProgressStages.analysis(0) == 0)
         #expect(ScanProgressStages.analysis(1) == 0.8)

@@ -6,7 +6,7 @@ import Testing
 /// The contexts are the whole contract between `CleanupView` and the screens its host
 /// builds: the host must receive Cleanup's own callbacks, not copies that do something
 /// else, or the review badges and the post-cleanup reconcile stop following a cleanup.
-@Suite struct CleanupDestinationContextTests {
+struct CleanupDestinationContextTests {
     private func record() -> CleanupCompletionRecord {
         CleanupCompletionRecord(sourceClusterID: UUID(), deletedCount: 3, estimatedSavingsBytes: 4_096)
     }

@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct PersonalWeightModelTests {
+struct PersonalWeightModelTests {
     private let global = PhotoQualityScoringConfig.current
 
     // MARK: - Floor

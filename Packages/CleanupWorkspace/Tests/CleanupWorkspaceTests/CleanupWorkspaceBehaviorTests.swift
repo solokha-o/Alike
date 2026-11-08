@@ -5,7 +5,7 @@ import Foundation
 import Testing
 
 @MainActor
-@Suite struct CleanupWorkspaceBehaviorTests {
+struct CleanupWorkspaceBehaviorTests {
     @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async throws {
         let neverScannedRepository = MockPhotoClusterRepository()
         let neverScanned = makeWorkspace(repository: neverScannedRepository)

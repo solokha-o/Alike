@@ -3,7 +3,7 @@ import Testing
 import Core
 @testable import CleanupWorkspace
 
-@Suite struct ClusterReviewStateResurfacerTests {
+struct ClusterReviewStateResurfacerTests {
     private let previousClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A1")!
     private let newClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A2")!
 

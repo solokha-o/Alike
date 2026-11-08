@@ -4,7 +4,7 @@ import CoreLocation
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoClusteringServiceTests {
+struct PhotoClusteringServiceTests {
 
     // MARK: - Clustering Algorithm Tests
 

@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct MetricsReportTests {
+struct MetricsReportTests {
     private let config = PhotoQualityScoringConfig.current
 
     /// A synthetic corpus of 4 clusters:
