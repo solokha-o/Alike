@@ -27,7 +27,7 @@ final class UserDefaultsScanUsageRepositoryTests {
 
     @Test func testMissingUsageLoadsAsNilAndCanBeInitialized() async {
         let repository = makeRepository()
-        let date = makeDate(year: 2026, month: 7, day: 12)
+        let date = makeDate(year: 2_026, month: 7, day: 12)
 
         let missing = await repository.loadMonthlyUsage(at: date)
         #expect(missing == nil)
@@ -40,7 +40,7 @@ final class UserDefaultsScanUsageRepositoryTests {
 
     @Test func testRecordingSuccessfulScanIncrementsCurrentMonth() async {
         let repository = makeRepository()
-        let date = makeDate(year: 2026, month: 7, day: 12)
+        let date = makeDate(year: 2_026, month: 7, day: 12)
         await repository.initializeMonthlyUsage(usage(for: date, count: 1))
 
         let updated = await repository.recordCompletedScan(at: date)
@@ -51,21 +51,21 @@ final class UserDefaultsScanUsageRepositoryTests {
 
     @Test func testLoadingAfterCalendarMonthBoundaryResetsAllowance() async {
         let repository = makeRepository()
-        let july = makeDate(year: 2026, month: 7, day: 31)
-        let august = makeDate(year: 2026, month: 8, day: 1)
+        let july = makeDate(year: 2_026, month: 7, day: 31)
+        let august = makeDate(year: 2_026, month: 8, day: 1)
         await repository.initializeMonthlyUsage(usage(for: july, count: 3))
 
         let reset = await repository.loadMonthlyUsage(at: august)
 
         #expect(reset?.completedScanCount == 0)
         #expect(reset?.remainingFreeScans == 3)
-        #expect(reset?.periodStart == makeDate(year: 2026, month: 8, day: 1))
-        #expect(reset?.nextResetDate == makeDate(year: 2026, month: 9, day: 1))
+        #expect(reset?.periodStart == makeDate(year: 2_026, month: 8, day: 1))
+        #expect(reset?.nextResetDate == makeDate(year: 2_026, month: 9, day: 1))
     }
 
     @Test func testFreshRepositoryObservesPersistedMonthReset() async {
-        let july = makeDate(year: 2026, month: 7, day: 12)
-        let august = makeDate(year: 2026, month: 8, day: 5)
+        let july = makeDate(year: 2_026, month: 7, day: 12)
+        let august = makeDate(year: 2_026, month: 8, day: 5)
         let firstRepository = makeRepository()
         await firstRepository.initializeMonthlyUsage(usage(for: july, count: 3))
 

@@ -77,7 +77,7 @@ struct VisionFeaturePrintServiceTests {
     }
 
     @Test func testShouldSkipImageDataRequestForPhotosError() {
-        let error = NSError(domain: PHPhotosErrorDomain, code: 3164)
+        let error = NSError(domain: PHPhotosErrorDomain, code: 3_164)
 
         #expect(VisionFeaturePrintService.shouldSkipImageDataRequest(for: error))
     }
@@ -95,7 +95,7 @@ struct VisionFeaturePrintServiceTests {
     }
 
     @Test func testShouldSkipUnderlyingPhotosError() {
-        let underlying = NSError(domain: PHPhotosErrorDomain, code: 3164)
+        let underlying = NSError(domain: PHPhotosErrorDomain, code: 3_164)
         let wrapped = NSError(
             domain: NSCocoaErrorDomain,
             code: 0,

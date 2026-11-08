@@ -16,6 +16,7 @@
 --redundant-async tests-only
 --ranges preserve
 --self remove
+--decimal-grouping 3,4
 
 # Generated, vendored, and non-app code.
 --exclude **/.build,build,vendor,Skills,site,fastlane
@@ -141,3 +142,5 @@
 --rules redundantSelf
 --rules blankLinesAtStartOfScope
 --rules blankLinesAtEndOfScope
+# numberFormatting (ADR row 30) added after row 31 by owner decision
+--rules numberFormatting

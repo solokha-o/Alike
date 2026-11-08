@@ -9,7 +9,7 @@ struct PersonalizationReportTests {
     // MARK: - Prefix parsing
 
     @Test func testPrefixParsingAcceptsCommaSeparatedIntegers() throws {
-        let sizes = try PersonalizationReport.parsePrefixes("10,30", corpusSize: 1000)
+        let sizes = try PersonalizationReport.parsePrefixes("10,30", corpusSize: 1_000)
         #expect(sizes == [10, 30])
     }
 
@@ -317,8 +317,8 @@ struct PersonalizationReportTests {
     private func makeCandidate(
         _ assetID: String,
         globalSharpness: Double,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000
     ) -> BestShotCalibrationCandidate {
         BestShotCalibrationCandidate(
             assetID: assetID,

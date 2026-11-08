@@ -88,7 +88,7 @@ struct CoreDataPhotoClusterRepositoryDataTests {
                     localIdentifier: "asset-a",
                     creationDate: createdAt,
                     modificationDate: modifiedAt,
-                    pixelWidth: 1200,
+                    pixelWidth: 1_200,
                     pixelHeight: 800,
                     isFavorite: true
                 ),

@@ -77,7 +77,7 @@ final class FileCleanupCategorySnapshotRepositoryTests {
         let loaded = try await repository.loadSnapshot(for: .screenshots)
 
         #expect(loaded?.localIdentifiers == ["one", "two"])
-        #expect(loaded?.estimatedSavingsBytes == 2048)
+        #expect(loaded?.estimatedSavingsBytes == 2_048)
         #expect(loaded?.byteSizeVersion == nil)
     }
 

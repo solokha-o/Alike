@@ -183,7 +183,7 @@ struct ReminderScheduleCopyTests {
 
     private func expectedTimeString(hour: Int, minute: Int, calendar: Calendar, locale: Locale) -> String {
         var components = DateComponents()
-        components.year = 2024
+        components.year = 2_024
         components.month = 1
         components.day = 1
         components.hour = hour

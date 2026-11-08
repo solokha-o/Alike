@@ -41,8 +41,8 @@ struct BestShotRankerTests {
     }
 
     @Test func testSmallerSharpFrameBeatsHighResolutionMotionBlur() {
-        let bigBlurred = makeSnapshot("big", pixelWidth: 8000, pixelHeight: 6000)
-        let smallSharp = makeSnapshot("small", pixelWidth: 2000, pixelHeight: 1500)
+        let bigBlurred = makeSnapshot("big", pixelWidth: 8_000, pixelHeight: 6_000)
+        let smallSharp = makeSnapshot("small", pixelWidth: 2_000, pixelHeight: 1_500)
 
         let decision = BestShotRanker.decide(
             snapshots: [bigBlurred, smallSharp],
@@ -601,8 +601,8 @@ struct BestShotRankerTests {
     private func makeSnapshot(
         _ localIdentifier: String,
         isFavorite: Bool = false,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000,
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000,
         creationDate: Date = Date(timeIntervalSince1970: 1_000)
     ) -> PhotoClusterAssetSnapshot {
         PhotoClusterAssetSnapshot(

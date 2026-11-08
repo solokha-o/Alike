@@ -87,7 +87,7 @@ struct MockServicesTests {
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: ["other"],
             status: .inReview,
-            estimatedSavingsBytes: 1024
+            estimatedSavingsBytes: 1_024
         )
 
         try await repository.saveReviewState(state)

@@ -24,7 +24,7 @@ struct ScannerViewModelTests {
     }
 
     @Test func testLoadMigratesCurrentMonthWorkspaceBaselineIntoUsage() async {
-        let date = makeDate(year: 2026, month: 7, day: 15)
+        let date = makeDate(year: 2_026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
         let workspace = makeWorkspace(repository: repository)
@@ -47,7 +47,7 @@ struct ScannerViewModelTests {
     /// model synthesizes one; its figure must be the workspace's own estimate,
     /// not a second formula.
     @Test func testColdLaunchSummaryReadsTheWorkspaceReclaimableEstimate() async {
-        let date = makeDate(year: 2026, month: 7, day: 15)
+        let date = makeDate(year: 2_026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
         let categoryRepository = MockCleanupCategorySnapshotRepository()
@@ -109,8 +109,8 @@ struct ScannerViewModelTests {
     }
 
     @Test func testLoadResetsStaleMonthlyUsage() async {
-        let july = makeDate(year: 2026, month: 7, day: 31)
-        let august = makeDate(year: 2026, month: 8, day: 1)
+        let july = makeDate(year: 2_026, month: 7, day: 31)
+        let august = makeDate(year: 2_026, month: 8, day: 1)
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: july))
         let viewModel = makeViewModel(usage: usage, now: { august })
 
@@ -121,8 +121,8 @@ struct ScannerViewModelTests {
     }
 
     @Test func testStartScanningResetsMonthlyAllowanceWithoutRecreatingViewModel() async {
-        let july = makeDate(year: 2026, month: 7, day: 31)
-        let august = makeDate(year: 2026, month: 8, day: 1)
+        let july = makeDate(year: 2_026, month: 7, day: 31)
+        let august = makeDate(year: 2_026, month: 8, day: 1)
         let clock = TestClock(july)
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: july))
         let analysis = MockPhotoAnalysisService()
@@ -227,7 +227,7 @@ struct ScannerViewModelTests {
         let analysis = MockPhotoAnalysisService()
         let firstCluster = makeCluster()
         await analysis.setAnalyzePhotoLibraryResult(.success([firstCluster]))
-        let clock = TestClock(makeDate(year: 2026, month: 7, day: 1))
+        let clock = TestClock(makeDate(year: 2_026, month: 7, day: 1))
         let workspace = makeWorkspace(analysis: analysis, now: { clock.now })
         let viewModel = makeViewModel(workspace: workspace)
 

@@ -379,7 +379,7 @@ private struct CalibrationPreviewTile: View {
         /// not "large"), so the preview needs a real target size. Large
         /// enough that scaling up to near-full width on any device stays
         /// sharp, but still a fraction of most originals.
-        static let targetSide: CGFloat = 1200
+        static let targetSide: CGFloat = 1_200
     }
 
     let asset: PHAsset
