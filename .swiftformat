@@ -126,3 +126,4 @@
 --rules conditionalAssignment
 --rules blankLinesAroundMark
 --rules noForceUnwrapInTests
+--rules elseOnSameLine
