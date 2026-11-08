@@ -120,7 +120,7 @@ are the measured diff with default options.
 | 12 | `wrapMultilineConditionalAssignment` | 7 | 10 | Pairs with `conditionalAssignment`. |
 | 13 | `redundantThrows` | 14 | 24 | `tests-only` mode. Never `always`. |
 | 14 | `consistentSwitchCaseSpacing` | 12 | 25 | |
-| 15 | `testSuiteAccessControl` | 9 | 29 | Test helpers become `private`. |
+| 15 | `testSuiteAccessControl` | 9 | 29 | Skipped by owner decision (2026-11-08). It makes stored properties of test suites `private`, but 6 `ClusterDetailsViewModel*Tests` suites satisfy `ClusterDetailsViewModelFixture` with them. The tests would not compile. |
 | 16 | `conditionalAssignment` | 6 | 31 | `if` and `switch` expressions. |
 | 17 | `blankLinesAroundMark` | 16 | 39 | |
 | 18 | `noForceUnwrapInTests` | 12 | 46 | `!` becomes `try #require`. |
