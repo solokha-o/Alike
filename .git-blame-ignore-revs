@@ -100,3 +100,6 @@ f9c8a208934d104bcb106f85ef498d5791b3ffef
 
 # LATER rule 31 (ADR-0001): blankLinesAtEndOfScope, format only.
 a4141ad52c1fbd0df098bc174e298dcc1df5167e
+
+# LATER rule 30 (ADR-0001): numberFormatting, format only.
+80f317c9e76ec17ef88c29393d308fd3b2eb4d74
