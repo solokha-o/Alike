@@ -453,6 +453,7 @@ import Testing
     }
 
     // MARK: - Projection regression coverage (Euclidean box projection)
+
     //
     // The old two-pass clamp+renormalize could push a component back outside
     // its box on the renormalize step (the sharpness/resolution fixtures

@@ -1,6 +1,7 @@
 import SwiftUI
 
 // MARK: - Colors
+
 extension Color {
     /// Primary accent for cleanup actions and primary CTAs.
     public static let accent = Color(red: 0.12, green: 0.62, blue: 0.72)
@@ -35,6 +36,7 @@ extension Color {
 }
 
 // MARK: - Opacity Tokens
+
 public enum ColorOpacity {
     public static let progressTrack: Double = 0.2
     public static let placeholderFill: Double = 0.2
@@ -49,6 +51,7 @@ public enum ColorOpacity {
 }
 
 // MARK: - Typography
+
 extension Font {
     public static let appLargeTitle = Font.system(size: 34, weight: .bold, design: .rounded)
     public static let appTitle = Font.system(size: 28, weight: .bold, design: .rounded)
@@ -63,6 +66,7 @@ extension Font {
 }
 
 // MARK: - Spacing
+
 public enum Spacing {
     public static let xxxSmall: CGFloat = 2
     public static let xxSmall: CGFloat = 4
@@ -76,6 +80,7 @@ public enum Spacing {
 }
 
 // MARK: - Corner Radius
+
 public enum CornerRadius {
     public static let small: CGFloat = 8
     public static let medium: CGFloat = 12
@@ -84,6 +89,7 @@ public enum CornerRadius {
 }
 
 // MARK: - Shadows
+
 extension View {
     public func cardShadow() -> some View {
         self.shadow(color: Color.black.opacity(ColorOpacity.elevatedShadow), radius: 10, x: 0, y: 4)

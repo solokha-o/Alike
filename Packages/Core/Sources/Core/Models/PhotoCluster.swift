@@ -63,7 +63,8 @@ public extension PhotoCluster {
 }
 
 // MARK: - Manual Equatable & Hashable
-// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
+
+/// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
 public extension PhotoCluster {
     static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
         lhs.id == rhs.id
@@ -77,6 +78,7 @@ public extension PhotoCluster {
 }
 
 // MARK: - Preview Helpers
+
 #if DEBUG
 extension PhotoCluster {
     public static var mock: PhotoCluster {

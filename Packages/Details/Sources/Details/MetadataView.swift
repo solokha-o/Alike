@@ -8,6 +8,7 @@ import NavigationKit
 #if os(iOS)
 
 // MARK: - Metadata View
+
 struct MetadataView: View {
     let asset: PHAsset
     @Environment(\.dismiss) private var dismiss

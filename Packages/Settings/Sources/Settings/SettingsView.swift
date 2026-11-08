@@ -363,6 +363,7 @@ public struct SettingsView: View {
     }
     
     // MARK: - Analysis Section
+
     private var analysisSection: some View {
         Section {
             Picker(selection: $sensitivity) {
@@ -516,6 +517,7 @@ public struct SettingsView: View {
 #endif
     
     // MARK: - Support Section
+
     private func supportSection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
             Button {
@@ -568,6 +570,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Data & Privacy Section
+
     private func dataPrivacySection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
             Button {
@@ -591,6 +594,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Legal Section
+
     private var legalSection: some View {
         Section {
             if let privacyPolicy = legalLinks.privacyPolicy {
@@ -620,6 +624,7 @@ public struct SettingsView: View {
     }
     
     // MARK: - About Section
+
     private var aboutSection: some View {
         Section {
             HStack {
@@ -632,6 +637,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Language Section
+
     private var languageSection: some View {
         Section {
             Button {
@@ -841,6 +847,7 @@ private struct DeleteAllDataView: View {
 }
 
 // MARK: - Preview
+
 #if DEBUG
 #Preview {
     SettingsView(

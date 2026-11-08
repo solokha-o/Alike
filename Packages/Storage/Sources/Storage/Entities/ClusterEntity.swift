@@ -14,6 +14,7 @@ public final class ClusterEntity: NSManagedObject {
 }
 
 // MARK: - Generated accessors
+
 extension ClusterEntity {
     @objc(addPhotosObject:)
     @NSManaged public func addToPhotos(_ value: PhotoEntity)

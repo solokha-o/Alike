@@ -425,6 +425,7 @@ public struct ClusterDetailsView: View {
 #endif
 
 // MARK: - Preview
+
 // PhotoCluster.mock only exists in DEBUG, and #Preview is expanded in every
 // configuration, so this preview has to be gated or the Release build fails
 // to compile.

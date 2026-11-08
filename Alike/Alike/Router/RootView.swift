@@ -55,6 +55,7 @@ struct RootView: View {
 }
 
 // MARK: - Main Tab View
+
 struct MainTabView: View {
     @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases

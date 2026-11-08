@@ -14,7 +14,9 @@ import Welcome
 @MainActor
 @Observable
 final class AppRouter {
+
     // MARK: - Route Definition
+
     enum Route: Equatable {
         case launch
         case welcome(WelcomeMode)
@@ -22,15 +24,18 @@ final class AppRouter {
     }
     
     // MARK: - State
+
     private(set) var currentRoute: Route = .launch
     private let permissionManager: PhotoPermissionManager
     
     // MARK: - Initialization
+
     init(permissionManager: PhotoPermissionManager) {
         self.permissionManager = permissionManager
     }
     
     // MARK: - Navigation
+
     func completeLaunch() async {
         if permissionManager.isAuthorized {
             currentRoute = .main
