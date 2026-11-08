@@ -123,3 +123,4 @@
 --rules environmentEntry
 --rules redundantThrows
 --rules consistentSwitchCaseSpacing
+--rules conditionalAssignment

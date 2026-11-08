@@ -90,26 +90,26 @@ public enum BestShotRanker {
         let reachesAbsoluteFloor = ranked.contains { snapshot in
             (signals[snapshot.localIdentifier]?.globalSharpness ?? 0) >= config.absoluteSharpnessFloor
         }
-        let confidence: BestShotConfidence
-        if !reachesAbsoluteFloor {
-            confidence = .unresolved
+        let confidence: BestShotConfidence =
+ if !reachesAbsoluteFloor {
+            .unresolved
         } else if topScore >= config.automaticSelectionMinimumScore, margin >= config.automaticSelectionMinimumMargin {
-            confidence = hasCompleteCoverage ? .automatic : .lowConfidence
+            hasCompleteCoverage ? .automatic : .lowConfidence
         } else if margin >= config.lowConfidenceMinimumMargin {
-            confidence = .lowConfidence
+            .lowConfidence
         } else {
-            confidence = .unresolved
+            .unresolved
         }
 
-        let reasonCodes: [BestShotReasonCode]
-        if confidence == .unresolved {
-            reasonCodes = []
+        let reasonCodes: [BestShotReasonCode] =
+ if confidence == .unresolved {
+            []
         } else if order.count == 1, !excluded.isEmpty {
             // The only rivals were dropped for critical blur, which is exactly
             // what the badge should say.
-            reasonCodes = [.sharper]
+            [.sharper]
         } else {
-            reasonCodes = self.reasonCodes(
+            self.reasonCodes(
                 winner: components[winner.localIdentifier],
                 runnerUp: order.dropFirst().first.flatMap { components[$0.localIdentifier] },
                 weights: weights,

@@ -36,17 +36,17 @@ import Testing
     @Test func testFreeTierIgnoresContextsThatDoNotBelongToTheFeature() {
         for feature in PremiumFeature.allCases {
             for context in contexts {
-                let isMatchingScan: Bool
-                if case .scan = context, feature == .unlimitedScans {
-                    isMatchingScan = true
+                let isMatchingScan =
+ if case .scan = context, feature == .unlimitedScans {
+                    true
                 } else {
-                    isMatchingScan = false
+                    false
                 }
-                let isMatchingSelection: Bool
-                if case .cleanupSelection = context, feature == .batchCleanup {
-                    isMatchingSelection = true
+                let isMatchingSelection =
+ if case .cleanupSelection = context, feature == .batchCleanup {
+                    true
                 } else {
-                    isMatchingSelection = false
+                    false
                 }
                 guard !isMatchingScan, !isMatchingSelection else { continue }
 

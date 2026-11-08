@@ -157,14 +157,14 @@ enum CleanupPresentation {
         status: ClusterReviewStatus,
         resurfacing: ClusterResurfacingState?
     ) -> String {
-        let resurfacingTitle: String
-        switch resurfacing {
+        let resurfacingTitle: String =
+ switch resurfacing {
         case .new:
-            resurfacingTitle = CleanupL10n.Main.new
+            CleanupL10n.Main.new
         case .changed:
-            resurfacingTitle = CleanupL10n.Main.changed
+            CleanupL10n.Main.changed
         case .none, .unchanged:
-            resurfacingTitle = ""
+            ""
         }
 
         return [
