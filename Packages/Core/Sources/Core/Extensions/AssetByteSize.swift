@@ -42,7 +42,8 @@ public enum AssetByteSize {
         let identifier = asset.localIdentifier
         let modificationDate = asset.modificationDate
         if let cached = cache.withLock({ $0.entries[identifier] }),
-           isSameModificationDate(cached.modificationDate, modificationDate) {
+           isSameModificationDate(cached.modificationDate, modificationDate)
+        {
             return cached.bytes
         }
 

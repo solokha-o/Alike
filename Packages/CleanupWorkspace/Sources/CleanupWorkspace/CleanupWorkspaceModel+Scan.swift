@@ -239,7 +239,8 @@ extension CleanupWorkspaceModel {
 
     private func publishScanProgress(_ progress: Double, scanID: UUID) {
         guard activeScan?.id == scanID,
-              case .scanning(let current, let purpose) = scanOperation else {
+              case .scanning(let current, let purpose) = scanOperation
+        else {
             return
         }
         let next = max(current, min(max(progress, 0), 1))

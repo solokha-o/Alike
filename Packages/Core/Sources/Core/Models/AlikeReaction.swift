@@ -186,7 +186,8 @@ public struct AlikeReactionResolver: Sendable {
 
         case .cleanupStarted(let id):
             if currentCue?.id.eventID == .cleanupSelection(id)
-                || currentCue?.id.eventID == .cleanup(id) {
+                || currentCue?.id.eventID == .cleanup(id)
+            {
                 currentCue = nil
             }
             return nil

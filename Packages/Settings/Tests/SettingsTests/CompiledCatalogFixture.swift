@@ -40,7 +40,8 @@ enum CompiledCatalogFixture {
             for (key, entry) in catalog.strings {
                 guard let localization = (entry["localizations"] as? [String: Any])?[language] as? [String: Any],
                       let unit = localization["stringUnit"] as? [String: Any],
-                      let value = unit["value"] as? String else {
+                      let value = unit["value"] as? String
+                else {
                     continue
                 }
                 plain[key] = value

@@ -172,7 +172,8 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let byIdentifier = Dictionary(uniqueKeysWithValues: assets.map { ($0.localIdentifier, $0) })
 
         if let cleanupCategoryRepository,
-           let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category) {
+           let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category)
+        {
             let resolved = snapshot.localIdentifiers.compactMap { byIdentifier[$0] }
             if !resolved.isEmpty {
                 // The review screen reads bytes on the main actor; measure them here.
@@ -195,7 +196,8 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     /// Calculate similarity between two specific assets
     public func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
         guard let featurePrint1 = try await visionService.generateFeaturePrint(for: asset1),
-              let featurePrint2 = try await visionService.generateFeaturePrint(for: asset2) else {
+              let featurePrint2 = try await visionService.generateFeaturePrint(for: asset2)
+        else {
             return 0.0
         }
         
@@ -304,7 +306,8 @@ private extension PhotoAnalysisServiceImpl {
 
         let entries: [PhotoFeaturePrintCacheEntry] = results.compactMap { item in
             guard let featurePrint = item.featurePrint,
-                  let data = encodeFeaturePrint(featurePrint) else {
+                  let data = encodeFeaturePrint(featurePrint)
+            else {
                 return nil
             }
 

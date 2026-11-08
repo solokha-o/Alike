@@ -57,7 +57,8 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
         // caller re-checks it: see `CachingPhotoQualityAnalyzer`.
         if isAlikeEnhanced { return true }
         guard self.scoringModelVersion == scoringModelVersion,
-              self.thumbnailConfigVersion == thumbnailConfigVersion else {
+              self.thumbnailConfigVersion == thumbnailConfigVersion
+        else {
             return false
         }
         return Self.isSameDate(sourceModificationDate, modificationDate)

@@ -50,10 +50,12 @@ enum CompiledCatalogFixture {
                     continue
                 }
                 if let unit = localization["stringUnit"] as? [String: Any],
-                   let value = unit["value"] as? String {
+                   let value = unit["value"] as? String
+                {
                     plain[key] = value
                 } else if let variations = localization["variations"] as? [String: Any],
-                          let plural = variations["plural"] as? [String: Any] {
+                          let plural = variations["plural"] as? [String: Any]
+                {
                     plurals[key] = pluralEntry(plural)
                 }
             }
@@ -72,7 +74,8 @@ enum CompiledCatalogFixture {
         ]
         for (category, unit) in plural {
             if let value = (unit as? [String: Any])?["stringUnit"] as? [String: Any],
-               let string = value["value"] as? String {
+               let string = value["value"] as? String
+            {
                 substitution[category] = string
             }
         }

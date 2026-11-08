@@ -554,7 +554,8 @@ final class ClusterDetailsViewModel {
         actionErrorTitle = DetailsL10n.Common.cleanupUnavailable
         shouldOfferOpenSettings = false
         if let currentAlikeReaction,
-           currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
+           currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID)
+        {
             publishAlikeEvent(.reactionConsumed(id: currentAlikeReaction.id))
         }
         publishCleanupSelectionReaction()
