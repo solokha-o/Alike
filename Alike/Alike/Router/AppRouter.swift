@@ -14,7 +14,6 @@ import Welcome
 @MainActor
 @Observable
 final class AppRouter {
-
     // MARK: - Route Definition
 
     enum Route: Equatable {

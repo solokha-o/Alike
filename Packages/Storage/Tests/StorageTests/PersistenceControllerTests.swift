@@ -8,7 +8,6 @@ import CoreData
 /// Core Data's queue rule and one run fetched 0 rows right after a save.
 @MainActor
 struct PersistenceControllerTests {
-    
     // MARK: - In-Memory Store Tests
     
     @Test func testInMemoryStoreInitialization() {

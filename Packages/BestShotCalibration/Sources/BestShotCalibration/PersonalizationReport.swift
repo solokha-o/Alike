@@ -9,7 +9,6 @@ import Foundation
 /// "how much does it help". A clean pass here is a floor, not a demonstration
 /// of gain.
 public enum PersonalizationReport {
-
     // MARK: - Prefix parsing
 
     public enum PrefixParseError: Error, CustomStringConvertible, Equatable {

@@ -5,7 +5,6 @@ import Core
 @testable import Cleanup
 
 struct CleanupClusterArrangementTests {
-
     // MARK: - Content identity
 
     /// Regression guard for the scroll reset after deleting photos: reconciliation

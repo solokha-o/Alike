@@ -6,7 +6,6 @@ import Photos
 
 @MainActor
 struct PHAssetExtensionsTests {
-    
     // MARK: - Image Data Loading Tests
     
     @Test(.enabled(if: PhotoLibrary.hasImage(), "No photos available in library for testing"))

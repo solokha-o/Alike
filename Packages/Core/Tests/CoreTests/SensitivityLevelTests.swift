@@ -3,7 +3,6 @@ import Testing
 @testable import Core
 
 struct SensitivityLevelTests {
-    
     // MARK: - Enum Cases Tests
     
     @Test func testAllCasesCount() {

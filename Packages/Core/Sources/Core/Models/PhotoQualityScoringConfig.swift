@@ -5,7 +5,6 @@ import Foundation
 /// belongs here — the values are a starting point meant to be recalibrated on
 /// real Alike clusters.
 public struct PhotoQualityScoringConfig: Codable, Sendable, Equatable {
-
     // MARK: - Versions
 
     /// Bumped whenever the formula or the weights change; cached scores with a
