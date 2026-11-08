@@ -76,3 +76,6 @@ f78cc4928ad36793bd1eebaae6df80afe823cf31
 
 # LATER rule 23 (ADR-0001): redundantReturn, format only.
 106ca244949da2b60084f38794b73c79179dd51d
+
+# LATER rule 24 (ADR-0001): wrapMultilineStatementBraces, format only.
+036682252a5033b045cc38ce4caf0c8c825b922a
