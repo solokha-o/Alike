@@ -8,7 +8,7 @@ import Core
 @MainActor
 public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
     public init() {}
-    
+
     public var authorizationStatus: PHAuthorizationStatus {
         if #available(iOS 14, *) {
             PHPhotoLibrary.authorizationStatus(for: .readWrite)
@@ -16,7 +16,7 @@ public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
             PHPhotoLibrary.authorizationStatus()
         }
     }
-    
+
     public func requestAuthorization() async -> PHAuthorizationStatus {
         if #available(iOS 14, *) {
             await PHPhotoLibrary.requestAuthorization(for: .readWrite)
@@ -28,7 +28,7 @@ public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
             }
         }
     }
-    
+
     public var isAuthorized: Bool {
         switch authorizationStatus {
         case .authorized, .limited:
@@ -37,13 +37,13 @@ public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
             false
         }
     }
-    
+
     public func openSettings() {
         #if os(iOS)
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
-        
+
         if UIApplication.shared.canOpenURL(settingsURL) {
             UIApplication.shared.open(settingsURL)
         }

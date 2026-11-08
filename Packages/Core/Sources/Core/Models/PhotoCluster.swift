@@ -7,7 +7,7 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
     public let assets: [PHAsset]
     public let createdAt: Date
     public let averageSimilarity: Float
-    
+
     public init(
         id: UUID = UUID(),
         assets: [PHAsset],
@@ -19,12 +19,12 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
         self.createdAt = createdAt
         self.averageSimilarity = averageSimilarity
     }
-    
+
     /// Returns the count of photos in this cluster
     public var count: Int {
         assets.count
     }
-    
+
     /// Returns the first asset to use as a thumbnail
     public var thumbnail: PHAsset? {
         assets.first
@@ -88,7 +88,7 @@ extension PhotoCluster {
             averageSimilarity: 0.85
         )
     }
-    
+
     public static var mockMultiple: [PhotoCluster] {
         (0..<5).map { _ in
             PhotoCluster(

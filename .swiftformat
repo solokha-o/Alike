@@ -147,3 +147,4 @@
 --rules numberFormatting
 # trailingCommas (ADR row 32) added after row 31 by owner decision
 --rules trailingCommas
+--rules trailingSpace

@@ -333,7 +333,7 @@ public struct AssetMetadata: Sendable {
         photoTraits = Self.photoTraits(from: mediaSubtypes)
         self.location = location
     }
-    
+
     public var resolution: String {
         "\(pixelWidth) × \(pixelHeight)"
     }

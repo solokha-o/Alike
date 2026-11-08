@@ -7,7 +7,7 @@ public final class ClusterEntity: NSManagedObject {
     @NSManaged public var createdAt: Date
     @NSManaged public var averageSimilarity: Float
     @NSManaged public var photos: NSSet?
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ClusterEntity> {
         NSFetchRequest<ClusterEntity>(entityName: "ClusterEntity")
     }
@@ -18,16 +18,16 @@ public final class ClusterEntity: NSManagedObject {
 extension ClusterEntity {
     @objc(addPhotosObject:)
     @NSManaged public func addToPhotos(_ value: PhotoEntity)
-    
+
     @objc(removePhotosObject:)
     @NSManaged public func removeFromPhotos(_ value: PhotoEntity)
-    
+
     @objc(addPhotos:)
     @NSManaged public func addToPhotos(_ values: NSSet)
-    
+
     @objc(removePhotos:)
     @NSManaged public func removeFromPhotos(_ values: NSSet)
-    
+
     public var photosArray: [PhotoEntity] {
         let set = photos as? Set<PhotoEntity> ?? []
         return Array(set).sorted { $0.localIdentifier < $1.localIdentifier }

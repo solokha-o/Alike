@@ -26,7 +26,7 @@ import Details
 /// Root view that manages app navigation flow
 struct RootView: View {
     @State private var router = AppRouter(permissionManager: PhotoPermissionManagerImpl())
-    
+
     var body: some View {
         ZStack {
             switch router.currentRoute {
@@ -98,7 +98,7 @@ struct MainTabView: View {
     init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
         self.onDataDeleted = onDataDeleted
     }
-    
+
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
             get: { SensitivityLevel(rawValue: sensitivityRaw) ?? .medium },
@@ -124,7 +124,7 @@ struct MainTabView: View {
             isPremiumUnlocked: hasCleanupReminderCustomizationAccess
         )
     }
-    
+
     var body: some View {
         // Reading the observable state keeps all injected feature views in sync
         // when StoreKit confirms, restores, or revokes an entitlement.
@@ -241,7 +241,7 @@ struct MainTabView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func tabView(for tab: TabManager.Tab) -> some View {
         switch tab {

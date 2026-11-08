@@ -5,9 +5,9 @@ public struct PrimaryButton: View {
     private let title: Text
     let icon: String?
     let action: () -> Void
-    
+
     @State private var feedbackTrigger = 0
-    
+
     public init(
         _ title: LocalizedStringKey,
         icon: String? = nil,
@@ -17,7 +17,7 @@ public struct PrimaryButton: View {
         self.icon = icon
         self.action = action
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -27,7 +27,7 @@ public struct PrimaryButton: View {
         self.icon = icon
         self.action = action
     }
-    
+
     public var body: some View {
         Button {
             feedbackTrigger += 1
@@ -57,7 +57,7 @@ public struct SecondaryButton: View {
     private let title: Text
     let icon: String?
     let action: () -> Void
-    
+
     public init(
         _ title: LocalizedStringKey,
         icon: String? = nil,
@@ -67,7 +67,7 @@ public struct SecondaryButton: View {
         self.icon = icon
         self.action = action
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -77,7 +77,7 @@ public struct SecondaryButton: View {
         self.icon = icon
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: Spacing.small) {

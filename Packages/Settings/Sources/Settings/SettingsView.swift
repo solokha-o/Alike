@@ -79,7 +79,7 @@ public struct SettingsView: View {
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
-    
+
     public init(
         sensitivity: Binding<SensitivityLevel>,
         needsRescan: Binding<Bool>,
@@ -101,7 +101,7 @@ public struct SettingsView: View {
             initialValue: ResetBestShotPersonalizationModel(operation: onResetBestShotPersonalization)
         )
     }
-    
+
     public var body: some View {
         RoutedNavigationStack { router in
             formContent(router: router)
@@ -361,7 +361,7 @@ public struct SettingsView: View {
             Text(cleanupReminderFooterText)
         }
     }
-    
+
     // MARK: - Analysis Section
 
     private var analysisSection: some View {
@@ -515,7 +515,7 @@ public struct SettingsView: View {
         }
     }
 #endif
-    
+
     // MARK: - Support Section
 
     private func supportSection(router: StackRouter<SettingsRoute>) -> some View {
@@ -530,7 +530,7 @@ public struct SettingsView: View {
                 }
             }
             .accessibilityHint(Text(SettingsL10n.Main.openUsageInstructionsCleanupWorkflow))
-            
+
             ShareLink(item: AppStoreLinks.product) {
                 Label {
                     Text(SettingsL10n.Main.shareApp)
@@ -539,7 +539,7 @@ public struct SettingsView: View {
                 }
             }
             .accessibilityHint(Text(SettingsL10n.Main.shareAppUsingAvailableSharing))
-            
+
             Button {
                 viewModel.handleRateTapped(openURL: openURL)
             } label: {
@@ -551,7 +551,7 @@ public struct SettingsView: View {
             }
             .accessibilityHint(Text(SettingsL10n.Main.openAppStoreReviewPage))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
-            
+
             // The subject is percent-encoded in the literal rather than left to
             // URL(string:), which only accepts the raw space because it defaults to
             // encodingInvalidCharacters: true. Encoding it here keeps the force
@@ -622,7 +622,7 @@ public struct SettingsView: View {
             Text(SettingsL10n.Main.legal)
         }
     }
-    
+
     // MARK: - About Section
 
     private var aboutSection: some View {

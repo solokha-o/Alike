@@ -21,18 +21,18 @@ final class AppRouter {
         case welcome(WelcomeMode)
         case main
     }
-    
+
     // MARK: - State
 
     private(set) var currentRoute: Route = .launch
     private let permissionManager: PhotoPermissionManager
-    
+
     // MARK: - Initialization
 
     init(permissionManager: PhotoPermissionManager) {
         self.permissionManager = permissionManager
     }
-    
+
     // MARK: - Navigation
 
     func completeLaunch() async {
@@ -42,7 +42,7 @@ final class AppRouter {
             currentRoute = .welcome(.permissionRequest)
         }
     }
-    
+
     func completeWelcome() {
         currentRoute = .main
     }
