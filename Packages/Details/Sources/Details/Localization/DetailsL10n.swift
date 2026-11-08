@@ -30,6 +30,7 @@ public enum DetailsL10n {
         public static func deleteAlertTitle(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             DetailsL10n.plural("details.clusterDetails.deleteAlertTitle", count, bundle: bundle, locale: locale)
         }
+
         /// Cluster details are available on iOS.
         public static var clusterDetailsAvailableIOS: String { DetailsL10n.string("details.clusterDetails.clusterDetailsAvailableIOS") }
         /// Choosing the best shot…
@@ -189,6 +190,7 @@ public enum DetailsL10n {
         public static func moveSelectedPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             DetailsL10n.plural("details.clusterReviewActionBar.moveSelectedPhotos", count, bundle: bundle, locale: locale)
         }
+
         /// Moving...
         public static var moving: String { DetailsL10n.string("details.clusterReviewActionBar.moving") }
     }
@@ -198,6 +200,7 @@ public enum DetailsL10n {
         public static func selectionSummary(_ count: Int, _ estimatedSize: String, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             DetailsL10n.plural("details.clusterReviewSummaryCard.selectionSummary", count, estimatedSize, bundle: bundle, locale: locale)
         }
+
         /// Current cleanup review status
         public static var currentCleanupReviewStatus: String { DetailsL10n.string("details.clusterReviewSummaryCard.currentCleanupReviewStatus") }
         /// In review

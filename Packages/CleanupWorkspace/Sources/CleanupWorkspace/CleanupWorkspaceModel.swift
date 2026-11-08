@@ -51,6 +51,7 @@ public final class CleanupWorkspaceModel {
     public var resurfacingStates: [UUID: ClusterResurfacingState] {
         lastGoodContent.resurfacingStates
     }
+
     public var activeCleanupSession: CleanupSession? { lastGoodContent.activeSession }
     public var cleanupInsights: CleanupInsights { lastGoodContent.insights }
     public var hasCompletedScanBaseline: Bool { lastGoodContent.hasCompletedScanBaseline }

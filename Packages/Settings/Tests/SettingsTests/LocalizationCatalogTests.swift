@@ -301,6 +301,7 @@ struct LocalizationCatalogTests {
 
         #expect(flat.isEmpty, "plural in en but not in: \(flat)")
     }
+
     /// Format specifiers have to survive translation, but their *order* does not.
     ///
     /// Turkish writes a percentage as `%50`, so `tr` legitimately carries

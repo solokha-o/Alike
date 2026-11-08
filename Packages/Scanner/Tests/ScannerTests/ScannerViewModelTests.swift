@@ -623,6 +623,7 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
         progress(1)
         return []
     }
+
     func loadAssets(for _: CleanupCategoryKind) async throws -> [PHAsset] { [] }
     func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float { 0 }
 

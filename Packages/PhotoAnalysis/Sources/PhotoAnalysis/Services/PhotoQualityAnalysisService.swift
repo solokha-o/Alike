@@ -544,6 +544,7 @@ struct FaceProbe: @unchecked Sendable {
     /// Distinct from "it ran and saw nothing", which reports no decisions.
     var hasDetections: Bool { !accepted.isEmpty || !rejections.isEmpty }
 }
+
 // `VNFaceObservation` is an immutable Vision result object that is never
 // mutated after detection, which is why the probe crosses the concurrency
 // boundary unchecked — the same reason `QualityWorkItem` carries a `PHAsset`.

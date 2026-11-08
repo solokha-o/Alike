@@ -34,6 +34,7 @@ public enum DesignSystemL10n {
         public static func columns(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             DesignSystemL10n.plural("designSystem.photoGridColumnPreference.columns", count, bundle: bundle, locale: locale)
         }
+
         /// Columns
         public static var columns2: String { DesignSystemL10n.string("designSystem.photoGridColumnPreference.columns2") }
         /// Grid Columns

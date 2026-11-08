@@ -107,6 +107,7 @@ public struct WidgetClusterSummary: Codable, Equatable, Sendable {
         self.reclaimableBytes = reclaimableBytes
         self.photoCount = photoCount
     }
+
     /// The rows the extra-large widget draws: largest first, groups that would free
     /// nothing left out, at most `WidgetSnapshot.topClustersLimit`.
     ///

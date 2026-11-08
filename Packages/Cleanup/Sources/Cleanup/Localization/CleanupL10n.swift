@@ -26,6 +26,7 @@ public enum CleanupL10n {
                 bundle: bundle, locale: locale
             )
         }
+
         /// History
         public static var history: String { CleanupL10n.string("cleanup.cleanupHistory.history") }
         /// History Unavailable
@@ -124,6 +125,7 @@ public enum CleanupL10n {
                 bundle: bundle, locale: locale
             )
         }
+
         /// Largest cluster
         public static var largestCluster: String { CleanupL10n.string("cleanup.main.largestCluster") }
         /// Your latest scan did not find similar photos or smart categories to review.
@@ -166,6 +168,7 @@ public enum CleanupL10n {
         public static func photosMovedToRecentlyDeleted(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CleanupL10n.plural("cleanup.main.photosMovedToRecentlyDeleted", count, bundle: bundle, locale: locale)
         }
+
         /// The photos were deleted, but the library refresh failed. Run a new scan to refresh your results.
         public static var photosWereDeletedButLibrary: String { CleanupL10n.string("cleanup.main.photosWereDeletedButLibrary") }
         /// Pick up where you left off
