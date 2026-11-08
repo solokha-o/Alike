@@ -48,6 +48,7 @@ Google guide as a whole.
 | `--redundant-async` | `tests-only` | Never change a function signature in package sources. |
 | `--ranges` | `preserve` | `spaceAroundOperators` keeps `0..<n` and `0 ..< n` as written (LATER row 26). |
 | `--self` | `remove` | `redundantSelf` removes `self.` where the compiler does not need it (LATER row 28). |
+| `--decimal-grouping` | `3,4` | `numberFormatting` groups integer literals of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
 
 The owner decision names `--swiftversion 6.0` and `--some-any disabled`.
 SwiftFormat 0.63.1 spells these `--swift-version` and `--some-any false`. The
@@ -137,7 +138,7 @@ are the measured diff with default options.
 | 27 | `redundantSwiftTestingSuite` | 140 | 145 | A bare `@Suite` is dead code. |
 | 28 | `redundantSelf` | 56 | 183 | `--self remove`. Read each closure. |
 | 29 | `blankLinesAtStartOfScope` | 179 | 241 | |
-| 30 | `numberFormatting` | 67 | 260 | Group long literals. |
+| 30 | `numberFormatting` | 67 | 260 | Group long literals. With `--decimal-grouping 3,4`: 134 Swift lines in 21 files (owner decision 2026-11-08). Enabled after row 31. |
 | 31 | `blankLinesAtEndOfScope` | 205 | 275 | |
 | 32 | `trailingCommas` | 111 | 410 | Start with `--trailing-commas collections-only`. |
 | 33 | `trailingSpace` | 39 | 451 | Whitespace only. |
