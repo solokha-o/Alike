@@ -4,7 +4,7 @@ import SwiftUI
 
 /// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 @MainActor
-struct ButtonTests {    
+struct ButtonTests {
     // MARK: - PrimaryButton Tests
     
     @Test func testPrimaryButtonCreation() {

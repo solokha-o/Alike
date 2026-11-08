@@ -6,7 +6,7 @@ import Core
 
 /// Permission manager for photo library access
 @MainActor
-public final class PhotoPermissionManagerImpl: PhotoPermissionManager {    
+public final class PhotoPermissionManagerImpl: PhotoPermissionManager {
     public init() {}
     
     public var authorizationStatus: PHAuthorizationStatus {

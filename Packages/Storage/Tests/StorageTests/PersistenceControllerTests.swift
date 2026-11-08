@@ -7,7 +7,7 @@ import CoreData
 /// Under XCTest they ran one at a time off the main thread; in parallel that broke
 /// Core Data's queue rule and one run fetched 0 rows right after a save.
 @MainActor
-struct PersistenceControllerTests {    
+struct PersistenceControllerTests {
     // MARK: - In-Memory Store Tests
     
     @Test func testInMemoryStoreInitialization() {

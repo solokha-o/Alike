@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-struct SensitivityLevelTests {    
+struct SensitivityLevelTests {
     // MARK: - Enum Cases Tests
     
     @Test func testAllCasesCount() {
