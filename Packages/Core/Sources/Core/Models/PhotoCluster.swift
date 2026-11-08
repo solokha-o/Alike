@@ -37,7 +37,8 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
     ///   It wins over the computed pick so a user's own choice is what shows.
     public func bestShotAsset(preferring localIdentifier: String? = nil) -> PHAsset? {
         if let localIdentifier,
-           let preferred = assets.first(where: { $0.localIdentifier == localIdentifier }) {
+           let preferred = assets.first(where: { $0.localIdentifier == localIdentifier })
+        {
             return preferred
         }
 

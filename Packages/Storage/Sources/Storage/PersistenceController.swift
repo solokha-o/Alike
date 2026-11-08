@@ -24,7 +24,8 @@ public actor PersistenceController: Sendable {
     /// Data itself expects one model to back many coordinators.
     nonisolated(unsafe) static let shippedModel: NSManagedObjectModel = {
         guard let modelURL = Bundle.module.url(forResource: "AlikeModel", withExtension: "momd"),
-              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+              let model = NSManagedObjectModel(contentsOf: modelURL)
+        else {
             fatalError("Failed to load Core Data model")
         }
         return model

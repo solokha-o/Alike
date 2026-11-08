@@ -418,7 +418,8 @@ struct ClusterReviewSummaryCard: View {
         }
         if let alikeReactionCue {
             if AlikeComparisonReviewPresentation.isEligible(assetCount: assetCount),
-               case .cleanupReady = alikeReactionCue.state {
+               case .cleanupReady = alikeReactionCue.state
+            {
                 return .cleanupProgress(alikeReactionCue.id)
             }
             return .reaction(alikeReactionCue.id)

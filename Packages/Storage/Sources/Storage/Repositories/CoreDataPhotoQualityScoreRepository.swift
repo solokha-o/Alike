@@ -31,7 +31,8 @@ public final class CoreDataPhotoQualityScoreRepository: PhotoQualityScoreReposit
                 request.predicate = NSPredicate(format: "localIdentifier IN %@", batch)
                 for photo in try context.fetch(request) {
                     guard let data = photo.qualitySignalsData,
-                          let signals = try? decoder.decode(PhotoQualitySignals.self, from: data) else {
+                          let signals = try? decoder.decode(PhotoQualitySignals.self, from: data)
+                    else {
                         continue
                     }
                     scores[photo.localIdentifier] = PhotoQualityScore(

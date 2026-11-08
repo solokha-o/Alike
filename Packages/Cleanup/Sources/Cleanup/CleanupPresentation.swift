@@ -64,7 +64,8 @@ enum CleanupPresentation {
         categories: [CleanupCategorySummary]
     ) -> PremiumSurfaceContext {
         if let kind = feature.categoryKind,
-           let category = categories.first(where: { $0.kind == kind }) {
+           let category = categories.first(where: { $0.kind == kind })
+        {
             return .smartCategory(
                 feature: feature,
                 title: kind.presentation.title,

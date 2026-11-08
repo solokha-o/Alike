@@ -361,7 +361,8 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     private func allowsSharpening(localIdentifier: String) async -> Bool {
         guard let qualityScoreRepository else { return false }
         guard let score = try? await qualityScoreRepository
-            .loadScores(localIdentifiers: [localIdentifier])[localIdentifier] else {
+            .loadScores(localIdentifiers: [localIdentifier])[localIdentifier]
+        else {
             return false
         }
         guard score.signals.isUsable else { return false }
@@ -543,7 +544,8 @@ private extension PhotoKitEnhancementService {
             loadOriginal: {
                 let input = editingInput.value
                 guard let url = input.fullSizeImageURL,
-                      let image = CIImage(contentsOf: url) else {
+                      let image = CIImage(contentsOf: url)
+                else {
                     throw PhotoEnhancementError.originalUnavailable
                 }
                 // Returned unrotated on purpose. Photos stores the rendered

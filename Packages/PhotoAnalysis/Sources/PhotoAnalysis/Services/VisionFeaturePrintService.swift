@@ -119,7 +119,8 @@ public struct VisionFeaturePrintService: Sendable {
                 let elapsed = lastReportedTime.duration(to: now)
                 if currentProgress - lastReportedProgress >= Self.progressEpsilon
                     || elapsed >= Self.progressReportInterval
-                    || currentProgress == 1.0 {
+                    || currentProgress == 1.0
+                {
                     lastReportedProgress = currentProgress
                     lastReportedTime = now
                     progress(currentProgress)
@@ -216,7 +217,8 @@ private extension VisionFeaturePrintService {
                         }
 
                         if (info?[PHImageCancelledKey] as? Bool) == true
-                            || (info?[PHImageResultIsInCloudKey] as? Bool) == true {
+                            || (info?[PHImageResultIsInCloudKey] as? Bool) == true
+                        {
                             requestState.finish(.success(nil))
                             return
                         }

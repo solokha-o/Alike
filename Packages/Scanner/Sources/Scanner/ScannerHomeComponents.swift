@@ -74,7 +74,8 @@ struct ScannerHomeHero: View {
     @ViewBuilder
     private var actions: some View {
         if let action = presentation.primaryAction,
-           let title = presentation.primaryActionTitle {
+           let title = presentation.primaryActionTitle
+        {
             Button {
                 onAction(action)
             } label: {
@@ -87,7 +88,8 @@ struct ScannerHomeHero: View {
         }
 
         if let action = presentation.secondaryAction,
-           let title = presentation.secondaryActionTitle {
+           let title = presentation.secondaryActionTitle
+        {
             Button(title) { onAction(action) }
                 .buttonStyle(.bordered)
                 .controlSize(.large)

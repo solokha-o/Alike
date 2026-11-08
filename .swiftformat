@@ -130,3 +130,4 @@
 --rules consecutiveSpaces
 --rules unusedArguments
 --rules redundantReturn
+--rules wrapMultilineStatementBraces

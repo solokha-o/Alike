@@ -24,7 +24,8 @@ public actor UserDefaultsScanUsageRepository: ScanUsageRepository {
         let currentPeriod = makeUsage(at: date, completedScanCount: 0)
         if
             let data = defaults.data(forKey: monthlyUsageKey),
-            let stored = try? JSONDecoder().decode(MonthlyScanUsage.self, from: data) {
+            let stored = try? JSONDecoder().decode(MonthlyScanUsage.self, from: data)
+        {
             guard calendar.isDate(stored.periodStart, equalTo: currentPeriod.periodStart, toGranularity: .month) else {
                 save(currentPeriod)
                 return currentPeriod

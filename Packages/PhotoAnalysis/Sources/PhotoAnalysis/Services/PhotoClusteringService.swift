@@ -40,7 +40,8 @@ public struct PhotoClusteringService: Sendable {
         let visionService = VisionFeaturePrintService()
         self.distanceProvider = { featurePrint1, featurePrint2 in
             guard let observation1 = featurePrint1.observation,
-                  let observation2 = featurePrint2.observation else {
+                  let observation2 = featurePrint2.observation
+            else {
                 throw PhotoAnalysisError.visionProcessingFailed
             }
             return try visionService.computeDistance(between: observation1, and: observation2)
@@ -133,7 +134,8 @@ public struct PhotoClusteringService: Sendable {
                    allHaveCreationDateFromIndex[j],
                    let date1 = clusterStartCreationDate,
                    let date2 = candidates[j].creationDate,
-                   date1.timeIntervalSince(date2) > maxTimeInterval {
+                   date1.timeIntervalSince(date2) > maxTimeInterval
+                {
                     break
                 }
                 

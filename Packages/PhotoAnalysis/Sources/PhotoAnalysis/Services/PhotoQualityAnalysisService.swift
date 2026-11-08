@@ -358,7 +358,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                 continue
             }
             guard let crop = image.cropping(to: rect),
-                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide) else {
+                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide)
+            else {
                 cropFailed += 1
                 continue
             }
@@ -416,7 +417,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         guard Double(observation.confidence) >= config.blinkConfidenceFloor,
               let landmarks = observation.landmarks,
               let leftEye = landmarks.leftEye,
-              let rightEye = landmarks.rightEye else {
+              let rightEye = landmarks.rightEye
+        else {
             return nil
         }
         guard let left = eyeAspectRatio(leftEye), let right = eyeAspectRatio(rightEye) else {
@@ -431,7 +433,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         let xs = points.map { Double($0.x) }
         let ys = points.map { Double($0.y) }
         guard let minX = xs.min(), let maxX = xs.max(),
-              let minY = ys.min(), let maxY = ys.max() else {
+              let minY = ys.min(), let maxY = ys.max()
+        else {
             return nil
         }
         let width = maxX - minX
