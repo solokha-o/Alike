@@ -140,3 +140,4 @@
 --rules extensionAccessControl
 --rules redundantSelf
 --rules blankLinesAtStartOfScope
+--rules blankLinesAtEndOfScope

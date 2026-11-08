@@ -244,7 +244,6 @@ extension VisionFeaturePrintService {
             requestState.cancel()
         }
     }
-
 }
 
 final class FeaturePrintThumbnailRequestState: @unchecked Sendable {

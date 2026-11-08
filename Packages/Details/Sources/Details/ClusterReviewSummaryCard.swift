@@ -523,5 +523,4 @@ struct ClusterReviewSummaryCard: View {
             .statusReviewed
         }
     }
-
 }

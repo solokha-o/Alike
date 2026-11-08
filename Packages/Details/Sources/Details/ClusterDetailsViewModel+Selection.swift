@@ -19,5 +19,4 @@ extension ClusterDetailsViewModel {
     func isSelected(_ localIdentifier: String) -> Bool {
         selectedAssetIDs.contains(localIdentifier)
     }
-
 }
