@@ -166,8 +166,8 @@ struct ThumbnailCGImage {
     let orientation: CGImagePropertyOrientation
 }
 
-private extension VisionFeaturePrintService {
-    static let thumbnailRequestQueue: OperationQueue = {
+extension VisionFeaturePrintService {
+    fileprivate static let thumbnailRequestQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "com.alike.photo-analysis.thumbnail-requests"
         queue.qualityOfService = .userInitiated
@@ -175,7 +175,7 @@ private extension VisionFeaturePrintService {
         return queue
     }()
 
-    nonisolated func loadThumbnailCGImage(
+    fileprivate nonisolated func loadThumbnailCGImage(
         for asset: PHAsset,
         targetSize: CGSize
     ) async throws -> ThumbnailCGImage? {
@@ -356,8 +356,8 @@ final class FeaturePrintThumbnailRequestState: @unchecked Sendable {
     }
 }
 
-private extension CGImagePropertyOrientation {
-    init(_ orientation: UIImage.Orientation) {
+extension CGImagePropertyOrientation {
+    fileprivate init(_ orientation: UIImage.Orientation) {
         switch orientation {
         case .up: self = .up
         case .down: self = .down

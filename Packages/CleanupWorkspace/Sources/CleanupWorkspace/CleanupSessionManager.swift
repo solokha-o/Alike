@@ -184,15 +184,15 @@ public actor CleanupSessionManager: CleanupSessionManaging {
     }
 }
 
-private extension CleanupSessionManager {
-    nonisolated static func status(
+extension CleanupSessionManager {
+    fileprivate nonisolated static func status(
         for clusterID: UUID,
         reviewStates: [UUID: ClusterReviewState]
     ) -> ClusterReviewStatus {
         reviewStates[clusterID]?.status ?? .notReviewed
     }
 
-    nonisolated static func computedProgress(
+    fileprivate nonisolated static func computedProgress(
         for clusters: [PhotoCluster],
         reviewStates: [UUID: ClusterReviewState]
     ) -> CleanupSessionProgress {
@@ -234,14 +234,14 @@ private extension CleanupSessionManager {
         )
     }
 
-    nonisolated func status(
+    private nonisolated func status(
         for clusterID: UUID,
         reviewStates: [UUID: ClusterReviewState]
     ) -> ClusterReviewStatus {
         Self.status(for: clusterID, reviewStates: reviewStates)
     }
 
-    nonisolated func computedProgress(
+    private nonisolated func computedProgress(
         for clusters: [PhotoCluster],
         reviewStates: [UUID: ClusterReviewState]
     ) -> CleanupSessionProgress {

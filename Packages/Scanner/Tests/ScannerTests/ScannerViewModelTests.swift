@@ -443,8 +443,8 @@ struct ScannerViewModelTests {
     }
 }
 
-private extension ScannerViewModelTests {
-    func makeViewModel(
+extension ScannerViewModelTests {
+    private func makeViewModel(
         workspace: CleanupWorkspaceModel? = nil,
         usage: TestScanUsageRepository = TestScanUsageRepository(),
         premiumAccess: any PremiumAccessControlling = TestPremiumAccess(),
@@ -461,7 +461,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeWorkspace(
+    private func makeWorkspace(
         analysis: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
@@ -479,7 +479,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeCluster() -> PhotoCluster {
+    private func makeCluster() -> PhotoCluster {
         PhotoCluster(
             id: UUID(),
             assets: [],
@@ -488,11 +488,11 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeDate(year: Int, month: Int, day: Int) -> Date {
+    private func makeDate(year: Int, month: Int, day: Int) -> Date {
         utcCalendar.date(from: DateComponents(year: year, month: month, day: day))!
     }
 
-    func makeUsage(count: Int, date: Date) -> MonthlyScanUsage {
+    fileprivate func makeUsage(count: Int, date: Date) -> MonthlyScanUsage {
         let start = utcCalendar.date(from: utcCalendar.dateComponents([.year, .month], from: date))!
         return MonthlyScanUsage(
             periodStart: start,
@@ -501,7 +501,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    var utcCalendar: Calendar {
+    private var utcCalendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         return calendar

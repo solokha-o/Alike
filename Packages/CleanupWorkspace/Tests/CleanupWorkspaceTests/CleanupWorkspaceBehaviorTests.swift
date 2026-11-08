@@ -306,8 +306,8 @@ struct CleanupWorkspaceBehaviorTests {
     }
 }
 
-private extension CleanupWorkspaceBehaviorTests {
-    func makeWorkspace(
+extension CleanupWorkspaceBehaviorTests {
+    private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository()
     ) -> CleanupWorkspaceModel {
@@ -325,7 +325,7 @@ private extension CleanupWorkspaceBehaviorTests {
         )
     }
 
-    func waitForProgress(in workspace: CleanupWorkspaceModel, toReach expected: Double) async {
+    private func waitForProgress(in workspace: CleanupWorkspaceModel, toReach expected: Double) async {
         for _ in 0..<20 {
             if workspace.scanOperation.progress == expected { return }
             await Task.yield()

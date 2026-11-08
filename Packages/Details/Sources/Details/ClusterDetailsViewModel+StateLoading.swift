@@ -41,11 +41,11 @@ extension ClusterDetailsViewModel {
     }
 }
 
-private extension ClusterDetailsViewModel {
+extension ClusterDetailsViewModel {
     /// Counts one recommendation per cluster — the repository dedupes revisits —
     /// and only when the ranking recommended something the user had not already
     /// chosen for themselves.
-    func recordBestShotRecommendation() async {
+    private func recordBestShotRecommendation() async {
         guard let overrideMetrics, !isBestShotUserSelected, !bestShotAssetID.isEmpty else { return }
         await overrideMetrics.recordRecommendation(
             confidence: bestShotConfidence,
@@ -53,7 +53,7 @@ private extension ClusterDetailsViewModel {
         )
     }
 
-    func loadQualityScores() async -> [String: PhotoQualityScore] {
+    private func loadQualityScores() async -> [String: PhotoQualityScore] {
         do {
             let scores = try await qualityAnalyzer.scores(for: cluster.assets)
             return Dictionary(scores.map { ($0.localIdentifier, $0) }, uniquingKeysWith: { _, latest in latest })

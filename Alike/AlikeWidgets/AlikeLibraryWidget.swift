@@ -57,9 +57,9 @@ struct AlikeLibraryWidgetView: View {
 
 // MARK: - Previews
 
-private extension WidgetSnapshot {
+extension WidgetSnapshot {
     /// The three counts from the concept, on a subscribed account.
-    static func library(now: Date = .now, isPremium: Bool = true) -> WidgetSnapshot {
+    fileprivate static func library(now: Date = .now, isPremium: Bool = true) -> WidgetSnapshot {
         WidgetSnapshot(
             generatedAt: now,
             photoAuthorization: .authorized,
@@ -75,7 +75,7 @@ private extension WidgetSnapshot {
 
     /// A scan that ran before the categories were counted: the rows are there, the
     /// figures are not, and neither is a fabricated zero.
-    static func libraryWithUnknownCounts(now: Date = .now) -> WidgetSnapshot {
+    fileprivate static func libraryWithUnknownCounts(now: Date = .now) -> WidgetSnapshot {
         WidgetSnapshot(
             generatedAt: now,
             photoAuthorization: .authorized,

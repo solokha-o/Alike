@@ -449,15 +449,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
 
 // MARK: - PhotoKit wiring
 
-private extension PhotoKitEnhancementService {
-    static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
+extension PhotoKitEnhancementService {
+    fileprivate static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
         PHPhotoLibrary.authorizationStatus(for: .readWrite)
     }
 
     /// Resolves one asset into the closures the service works with. Requesting
     /// the content editing input is also how the existing adjustment data — and
     /// therefore "who edited this photo" — becomes known.
-    static func defaultRequestBuilder(
+    fileprivate static func defaultRequestBuilder(
         localIdentifier: String,
         purpose: PhotoEnhancementRequestPurpose
     ) async -> ResolvedPhotoEnhancementRequest? {
@@ -600,7 +600,7 @@ private extension PhotoKitEnhancementService {
     /// Applies the recipe to the still and to every video frame, then writes
     /// the pair into `output` — the only way to keep a Live Photo alive through
     /// an edit, and still revertible.
-    static func saveLivePhoto(
+    fileprivate static func saveLivePhoto(
         input: PHContentEditingInput,
         output: PHContentEditingOutput,
         recipe: AutoEnhancementRenderer.AppliedRecipe,
@@ -631,7 +631,7 @@ private extension PhotoKitEnhancementService {
         }
     }
 
-    static func requestContentEditingInput(
+    fileprivate static func requestContentEditingInput(
         for asset: PHAsset,
         options: PHContentEditingInputRequestOptions
     ) async -> (input: UncheckedSendableBox<PHContentEditingInput>?, isInCloud: Bool) {
@@ -645,7 +645,7 @@ private extension PhotoKitEnhancementService {
         }
     }
 
-    static func performChanges(_ changes: @escaping @Sendable () -> Void) async throws {
+    fileprivate static func performChanges(_ changes: @escaping @Sendable () -> Void) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges(changes) { success, error in
                 if let error {

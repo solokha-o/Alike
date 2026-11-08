@@ -257,8 +257,8 @@ struct CleanupWorkspaceModelTests {
     }
 }
 
-private extension CleanupWorkspaceModelTests {
-    func makeWorkspace(
+extension CleanupWorkspaceModelTests {
+    private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository()

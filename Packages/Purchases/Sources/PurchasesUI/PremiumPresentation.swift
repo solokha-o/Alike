@@ -134,12 +134,12 @@ public struct SubscriptionLegalLinks: Equatable, Sendable {
     public static let unconfigured = SubscriptionLegalLinks()
 }
 
-public extension EnvironmentValues {
-    @Entry var subscriptionLegalLinks: SubscriptionLegalLinks = .unconfigured
+extension EnvironmentValues {
+    @Entry public var subscriptionLegalLinks: SubscriptionLegalLinks = .unconfigured
 }
 
-public extension View {
-    func subscriptionLegalLinks(_ links: SubscriptionLegalLinks) -> some View {
+extension View {
+    public func subscriptionLegalLinks(_ links: SubscriptionLegalLinks) -> some View {
         environment(\.subscriptionLegalLinks, links)
     }
 }

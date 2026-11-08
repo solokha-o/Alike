@@ -59,8 +59,8 @@ public actor UserDefaultsCleanupReminderPreferenceRepository: CleanupReminderPre
     }
 }
 
-private extension UserDefaultsCleanupReminderPreferenceRepository {
-    func validatedValue(
+extension UserDefaultsCleanupReminderPreferenceRepository {
+    private func validatedValue(
         forKey key: String,
         validRange: ClosedRange<Int>,
         fallback: Int

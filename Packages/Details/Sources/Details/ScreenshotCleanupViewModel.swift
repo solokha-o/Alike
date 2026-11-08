@@ -198,8 +198,8 @@ final class ScreenshotCleanupViewModel {
     }
 }
 
-private extension ScreenshotCleanupViewModel {
-    func refreshDerivedState() {
+extension ScreenshotCleanupViewModel {
+    private func refreshDerivedState() {
         estimatedSavingsBytes = assetSnapshots
             .filter { selectedAssetIDs.contains($0.localIdentifier) }
             .reduce(into: Int64(0)) { partialResult, snapshot in
@@ -207,7 +207,7 @@ private extension ScreenshotCleanupViewModel {
             }
     }
 
-    func handleDeleteError(_ error: PhotoCleanupError) {
+    private func handleDeleteError(_ error: PhotoCleanupError) {
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
@@ -232,7 +232,7 @@ private extension ScreenshotCleanupViewModel {
         }
     }
 
-    func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
+    private func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
         deleteErrorMessage = message
         shouldOfferOpenSettings = offersOpenSettings
         pendingCompletionRecord = nil

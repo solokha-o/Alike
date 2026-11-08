@@ -360,8 +360,8 @@ public struct ClusterDetailsView: View {
     }
 }
 
-private extension ClusterDetailsView {
-    func requestDeleteConfirmation() {
+extension ClusterDetailsView {
+    fileprivate func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
@@ -371,7 +371,7 @@ private extension ClusterDetailsView {
     /// the cleanup screen behind it is already up to date when it is revealed.
     /// The debounce is cancelled and restarted by every further persisted edit,
     /// so a burst of selection taps refreshes the host once.
-    func notifyHostOfPersistedReviewState() async {
+    fileprivate func notifyHostOfPersistedReviewState() async {
         guard viewModel.persistedRevision > 0 else { return }
         do {
             try await Task.sleep(for: Constants.hostReviewStateRefreshDebounce)

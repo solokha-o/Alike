@@ -146,7 +146,7 @@ public struct WidgetComposition: Equatable, Sendable {
     }
 }
 
-public extension WidgetPresentation {
+extension WidgetPresentation {
     /// Resolves one display state and one size into the content of a widget.
     ///
     /// The medium layout is not a bigger small layout: it has the room to name what the
@@ -159,7 +159,7 @@ public extension WidgetPresentation {
     /// to draw the reclaimable estimate as a share of the library. It defaults to `nil`
     /// so every 1.4.0 call site and every 1.4.0 payload keep working — without it the
     /// ring is simply not drawn.
-    static func composition(
+    public static func composition(
         for state: WidgetDisplayState,
         family: WidgetLayoutFamily,
         libraryTotalBytes: Int64? = nil
@@ -271,8 +271,8 @@ extension WidgetPresentation {
     }
 }
 
-private extension WidgetPresentation {
-    static func scannedFootnote(_ date: Date) -> String {
+extension WidgetPresentation {
+    fileprivate static func scannedFootnote(_ date: Date) -> String {
         WidgetL10n.Status.lastScanned(WidgetFormatting.timestamp(date, timeStyle: .omitted))
     }
 
@@ -282,7 +282,7 @@ private extension WidgetPresentation {
     /// scan it belongs to can be days older — `WidgetSnapshot.lastScanDate` carries
     /// that separately. Labelling `updatedAt` "Scanned" would date the scan wrong and
     /// the session right, in one line, to VoiceOver as well as on screen.
-    static func reviewedFootnote(_ date: Date) -> String {
+    fileprivate static func reviewedFootnote(_ date: Date) -> String {
         WidgetL10n.Status.lastReviewed(WidgetFormatting.timestamp(date, timeStyle: .omitted))
     }
 
@@ -290,12 +290,12 @@ private extension WidgetPresentation {
     ///
     /// The small composition is the figure, what it is, and where a tap goes; a second
     /// number competing with the first is what makes a small widget unreadable.
-    static func detail(clusterCount: Int?, family: WidgetLayoutFamily) -> WidgetDetailLine? {
+    fileprivate static func detail(clusterCount: Int?, family: WidgetLayoutFamily) -> WidgetDetailLine? {
         guard family == .medium, let clusterCount else { return nil }
         return WidgetDetailLine(symbolName: "photo.stack", text: WidgetL10n.Status.similarGroups(clusterCount))
     }
 
-    static func resumeComposition(
+    fileprivate static func resumeComposition(
         progress: WidgetSessionProgress,
         isStale: Bool,
         family: WidgetLayoutFamily,
@@ -362,7 +362,7 @@ private extension WidgetPresentation {
     ///
     /// No hero anywhere: `.accessory` rendering is monochrome, and `WidgetHeroImage`
     /// already steps aside outside `.fullColor`.
-    static func accessoryComposition(
+    fileprivate static func accessoryComposition(
         for state: WidgetDisplayState,
         family: WidgetLayoutFamily,
         libraryTotalBytes: Int64?,
@@ -466,7 +466,7 @@ private extension WidgetPresentation {
 
     /// «≈1,8 ГБ» on the rectangular slot, «1,8 ГБ» inside the ring, where the sign
     /// would cost the digits their size.
-    static func byteFigure(_ bytes: Int64, family: WidgetLayoutFamily) -> WidgetHeadlineParts {
+    fileprivate static func byteFigure(_ bytes: Int64, family: WidgetLayoutFamily) -> WidgetHeadlineParts {
         WidgetHeadlineParts(
             accent: family == .accessoryCircular
                 ? WidgetFormatting.byteCount(bytes)
@@ -475,7 +475,7 @@ private extension WidgetPresentation {
     }
 
     /// Distributes one fact across the three accessory shapes.
-    static func accessory(
+    fileprivate static func accessory(
         family: WidgetLayoutFamily,
         symbol: String,
         figure: WidgetHeadlineParts?,
@@ -552,7 +552,7 @@ private extension WidgetPresentation {
         }
     }
 
-    static func composition(
+    fileprivate static func composition(
         hero: WidgetHeroScene?,
         symbol: String,
         headline: WidgetHeadlineParts?,
@@ -594,7 +594,7 @@ private extension WidgetPresentation {
     /// how VoiceOver ended up reading a day-old figure as the current one, which
     /// `46f405b` fixed for the one layout that existed then; building the label here
     /// keeps four layouts from each having to remember.
-    static func accessibilityLabel(headline: String?, caption: String, detail: String?, footnote: String?) -> String {
+    fileprivate static func accessibilityLabel(headline: String?, caption: String, detail: String?, footnote: String?) -> String {
         [headline, caption, detail, footnote].compactMap { $0 }.joined(separator: ", ")
     }
 }

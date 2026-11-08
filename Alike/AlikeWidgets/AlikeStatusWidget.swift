@@ -140,14 +140,14 @@ struct AlikeStatusWidgetView: View {
 
 // MARK: - Previews
 
-private extension WidgetSnapshot {
+extension WidgetSnapshot {
     /// Suggestions waiting: concept №1, "Available to clean up".
-    static func suggestions(now: Date = .now) -> WidgetSnapshot {
+    fileprivate static func suggestions(now: Date = .now) -> WidgetSnapshot {
         .placeholder(now: now)
     }
 
     /// A review part-way through: concept №2, "Continue review".
-    static func partialReview(now: Date = .now) -> WidgetSnapshot {
+    fileprivate static func partialReview(now: Date = .now) -> WidgetSnapshot {
         WidgetSnapshot(
             generatedAt: now,
             photoAuthorization: .authorized,

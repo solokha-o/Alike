@@ -88,3 +88,6 @@ abdc8566b869dd59a8de65d6a421ccfe4e069f27
 
 # LATER rule 27 (ADR-0001): redundantSwiftTestingSuite, format only.
 f4b7a529cc5062c66e2d6bea7247e2de941f4282
+
+# LATER rule 20 (ADR-0001): extensionAccessControl (--extension-acl on-declarations), format only.
+f9c8a208934d104bcb106f85ef498d5791b3ffef

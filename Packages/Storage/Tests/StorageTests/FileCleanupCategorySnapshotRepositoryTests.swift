@@ -181,8 +181,8 @@ final class FileCleanupCategorySnapshotRepositoryTests {
     }
 }
 
-private extension FileCleanupCategorySnapshotRepositoryTests {
-    func makeSnapshot(
+extension FileCleanupCategorySnapshotRepositoryTests {
+    private func makeSnapshot(
         kind: CleanupCategoryKind,
         generation: String
     ) -> CleanupCategorySnapshot {

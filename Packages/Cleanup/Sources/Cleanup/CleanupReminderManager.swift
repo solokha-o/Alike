@@ -82,8 +82,8 @@ public actor CleanupReminderManager: CleanupReminderManaging {
     }
 }
 
-private extension CleanupReminderManager {
-    func loadStateWithinTransaction(isPremiumUnlocked: Bool) async -> CleanupReminderState {
+extension CleanupReminderManager {
+    private func loadStateWithinTransaction(isPremiumUnlocked: Bool) async -> CleanupReminderState {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
         let storedSchedule = await preferenceRepository.loadReminderSchedule()
         let authorizationStatus = await authorizationStatus()
@@ -102,7 +102,7 @@ private extension CleanupReminderManager {
         )
     }
 
-    func setEnabledWithinTransaction(
+    private func setEnabledWithinTransaction(
         _ isEnabled: Bool,
         isPremiumUnlocked: Bool
     ) async throws -> CleanupReminderState {
@@ -135,7 +135,7 @@ private extension CleanupReminderManager {
         }
     }
 
-    func setScheduleWithinTransaction(
+    private func setScheduleWithinTransaction(
         _ schedule: CleanupReminderSchedule,
         isPremiumUnlocked: Bool
     ) async throws -> CleanupReminderState {
@@ -152,7 +152,7 @@ private extension CleanupReminderManager {
         return await loadStateWithinTransaction(isPremiumUnlocked: true)
     }
 
-    func resyncWithinTransaction(isPremiumUnlocked: Bool) async throws {
+    private func resyncWithinTransaction(isPremiumUnlocked: Bool) async throws {
         let isReminderEnabled = await preferenceRepository.loadReminderEnabled()
 
         let authorizationStatus = await authorizationStatus()
@@ -165,7 +165,7 @@ private extension CleanupReminderManager {
         try await scheduleReminder(schedule: schedule)
     }
 
-    func authorizationStatus() async -> CleanupReminderAuthorizationStatus {
+    fileprivate func authorizationStatus() async -> CleanupReminderAuthorizationStatus {
         switch await notificationCenter.authorizationStatus() {
         case .authorized, .provisional, .ephemeral:
             return .authorized
@@ -178,21 +178,21 @@ private extension CleanupReminderManager {
         }
     }
 
-    func effectiveEnabled(
+    private func effectiveEnabled(
         storedPreference: Bool,
         authorizationStatus: CleanupReminderAuthorizationStatus
     ) -> Bool {
         storedPreference && authorizationStatus == .authorized
     }
 
-    func effectiveSchedule(
+    private func effectiveSchedule(
         storedSchedule: CleanupReminderSchedule,
         isPremiumUnlocked: Bool
     ) -> CleanupReminderSchedule {
         isPremiumUnlocked ? storedSchedule : .defaultWeekly
     }
 
-    func resolvedSchedule(isPremiumUnlocked: Bool) async -> CleanupReminderSchedule {
+    private func resolvedSchedule(isPremiumUnlocked: Bool) async -> CleanupReminderSchedule {
         let storedSchedule = await preferenceRepository.loadReminderSchedule()
         return effectiveSchedule(
             storedSchedule: storedSchedule,
@@ -200,7 +200,7 @@ private extension CleanupReminderManager {
         )
     }
 
-    func scheduleReminder(schedule: CleanupReminderSchedule) async throws {
+    private func scheduleReminder(schedule: CleanupReminderSchedule) async throws {
         let request = CleanupReminderNotificationRequest(
             identifier: ReminderSchedule.identifier,
             title: CleanupL10n.CleanupReminderManager.readyForAnotherCleanup,
@@ -211,7 +211,7 @@ private extension CleanupReminderManager {
         try await notificationCenter.add(request)
     }
 
-    func removeScheduledReminder() async {
+    private func removeScheduledReminder() async {
         await notificationCenter.removePendingNotificationRequests(
             withIdentifiers: [ReminderSchedule.identifier]
         )

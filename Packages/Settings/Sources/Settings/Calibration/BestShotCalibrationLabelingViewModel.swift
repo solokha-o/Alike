@@ -443,7 +443,7 @@ extension BestShotCalibrationLabelingViewModel {
     }
 }
 
-private extension BestShotCalibrationLabelingViewModel {
+extension BestShotCalibrationLabelingViewModel {
     /// The DEBUG resume buffer, persisted in `UserDefaults`. Everything past
     /// `labelledClusters` here is strictly on-device bookkeeping —
     /// `candidateLocalIdentifiers` in particular must never appear in
@@ -451,7 +451,7 @@ private extension BestShotCalibrationLabelingViewModel {
     /// `candidateLocalIdentifiers` and `measuredThumbnailConfigVersions`
     /// default to empty on decode so a session persisted before this field
     /// existed still loads.
-    struct PersistedSession: Codable {
+    fileprivate struct PersistedSession: Codable {
         var salt: String
         var labelledClusters: [BestShotCalibrationCluster]
         var candidateLocalIdentifiers: [String: [String: String]]
@@ -491,7 +491,7 @@ private extension BestShotCalibrationLabelingViewModel {
         }
     }
 
-    func anonymizedAssetID(for localIdentifier: String) -> String {
+    fileprivate func anonymizedAssetID(for localIdentifier: String) -> String {
         let digest = SHA256.hash(data: Data((localIdentifier + salt).utf8))
         let hex = digest.map { String(format: "%02x", $0) }.joined()
         return String(hex.prefix(16))
@@ -501,7 +501,7 @@ private extension BestShotCalibrationLabelingViewModel {
     /// to `PHAsset`s, re-scores them, and rebuilds the cluster with fresh
     /// signals — or returns `nil` if any candidate can no longer be
     /// resolved or re-scored, signalling the caller to drop it.
-    func remeasuredCluster(_ cluster: BestShotCalibrationCluster) async -> BestShotCalibrationCluster? {
+    fileprivate func remeasuredCluster(_ cluster: BestShotCalibrationCluster) async -> BestShotCalibrationCluster? {
         guard let localIdentifiersByAssetID = candidateLocalIdentifiers[cluster.clusterID] else { return nil }
         let orderedLocalIdentifiers = cluster.candidates.map(\.assetID).compactMap {
             localIdentifiersByAssetID[$0]
@@ -557,7 +557,7 @@ private extension BestShotCalibrationLabelingViewModel {
         }
     }
 
-    func persistSession() {
+    fileprivate func persistSession() {
         let session = PersistedSession(
             salt: salt,
             labelledClusters: labelledClusters,
@@ -570,7 +570,7 @@ private extension BestShotCalibrationLabelingViewModel {
         defaults.set(data, forKey: PreferenceKey.session)
     }
 
-    static func loadPersistedSession(defaults: UserDefaults) -> PersistedSession? {
+    fileprivate static func loadPersistedSession(defaults: UserDefaults) -> PersistedSession? {
         guard let data = defaults.data(forKey: PreferenceKey.session) else { return nil }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

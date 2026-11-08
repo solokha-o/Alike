@@ -144,8 +144,8 @@ public struct ScreenshotCleanupView: View {
     }
 }
 
-private extension ScreenshotCleanupView {
-    var emptyState: some View {
+extension ScreenshotCleanupView {
+    fileprivate var emptyState: some View {
         ContentUnavailableView {
             Label(
                 viewModel.presentation.emptyTitle,
@@ -157,7 +157,7 @@ private extension ScreenshotCleanupView {
         .padding(.top, 80)
     }
 
-    var screenshotGrid: some View {
+    fileprivate var screenshotGrid: some View {
         LazyVGrid(
             columns: Array(
                 repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
@@ -195,7 +195,7 @@ private extension ScreenshotCleanupView {
         .padding(.bottom, Spacing.medium)
     }
 
-    var header: some View {
+    fileprivate var header: some View {
         VStack(spacing: Spacing.small) {
             ScreenshotCleanupSummaryCard(
                 category: viewModel.sourceCategory,
@@ -229,28 +229,28 @@ private extension ScreenshotCleanupView {
         .background(.regularMaterial)
     }
 
-    var columnsMenu: some View {
+    fileprivate var columnsMenu: some View {
         PhotoGridColumnsMenu()
     }
 
-    func requestDeleteConfirmation() {
+    fileprivate func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
     }
 
-    var deleteConfirmationTitle: String {
+    fileprivate var deleteConfirmationTitle: String {
         viewModel.sourceCategory.deleteAlertTitle(count: viewModel.selectedCount)
     }
 
-    var deleteConfirmationMessage: String {
+    fileprivate var deleteConfirmationMessage: String {
         viewModel.sourceCategory.deleteAlertMessage(
             count: viewModel.selectedCount,
             estimatedSize: viewModel.estimatedSavingsText
         )
     }
 
-    func openOriginal(for asset: PHAsset) {
+    fileprivate func openOriginal(for asset: PHAsset) {
         guard let index = assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) else {
             return
         }

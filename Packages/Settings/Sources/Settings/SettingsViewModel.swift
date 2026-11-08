@@ -103,8 +103,8 @@ public final class SettingsViewModel {
     }
 }
 
-private extension SettingsViewModel {
-    func startCleanupReminderMutation(
+extension SettingsViewModel {
+    private func startCleanupReminderMutation(
         isPremiumUnlocked: Bool,
         operation: @escaping @Sendable (any CleanupReminderManaging) async throws -> CleanupReminderState
     ) {
