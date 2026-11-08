@@ -48,7 +48,7 @@ Google guide as a whole.
 | `--redundant-async` | `tests-only` | Never change a function signature in package sources. |
 | `--ranges` | `preserve` | `spaceAroundOperators` keeps `0..<n` and `0 ..< n` as written (LATER row 26). |
 | `--self` | `remove` | `redundantSelf` removes `self.` where the compiler does not need it (LATER row 28). |
-| `--decimal-grouping` | `3,4` | `numberFormatting` groups integer literals of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
+| `--decimal-grouping` | `3,4` | `numberFormatting` groups the integer part of decimal literals (also of floats such as `1_080.0`) of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
 | `--trailing-commas` | `collections-only` | `trailingCommas` adds the comma only in multi-line array and dictionary literals, not in argument lists (LATER row 32). |
 | `--import-grouping` | `testable-last,alpha` | `sortImports` sorts imports by name and keeps `@testable` imports last, as the code does (LATER row 34). |
 | `--ifdef` | `preserve` | `indent` keeps the indentation of `#if` blocks as written. Smallest diff of 8 measured combinations (LATER row 36). |
@@ -149,7 +149,7 @@ are the measured diff with default options.
 | 34 | `sortImports` | 188 | 540 | With `--import-grouping testable-last,alpha`: 396 Swift lines in 135 files (default `access-control,alpha`: 622 in 188; `testable-first,alpha`: 668 in 204). |
 | 35 | `blankLinesBetweenScopes` | 43 | 745 | One blank line between members. |
 | 36 | `indent` | 105 | 5571 | Tune `--ifdef` and `--indent-case` first. Most of the diff is an option mismatch. With `--ifdef preserve` and `--indent-case false`: 241 Swift lines in 28 files. Other measured pairs (`--ifdef` / `--indent-case`): `indent`/`false` 10247, `indent`/`true` 13941, `no-indent`/`false` 463, `no-indent`/`true` 4391, `preserve`/`true` 3933, `outdent`/`false` 507, `outdent`/`true` 4435. |
-| 37 | `wrap` | 0 | 0 | Needs `--max-width`. Measure at 130 before you enable it. |
+| 37 | `wrap` | 0 | 0 | Skipped by owner decision (2026-11-08). Measured with the full config: `--max-width` 120 gives 2901 Swift lines in 77 files, 130 gives 1698 in 51, 150 gives 419 in 24. About half of the diff is in the generated `*L10n.swift` accessors, and the rule wraps parameters after the first one, unlike the rest of the code. Line length stays a review matter. |
 
 ### SKIP rules (26)
 
