@@ -14,7 +14,6 @@ import WidgetSupport
 @MainActor
 @Observable
 final class TabManager {
-
     // MARK: - Tab Definition
 
     enum Tab: String, CaseIterable, Hashable {

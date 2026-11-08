@@ -4,7 +4,6 @@ import Foundation
 /// Renders `MetricsReport`/`WeightSweep.Result` as Markdown, and encodes a
 /// candidate `PhotoQualityScoringConfig` as pretty-printed, key-sorted JSON.
 public enum ReportWriter {
-
     // MARK: - Metrics report
 
     public static func render(

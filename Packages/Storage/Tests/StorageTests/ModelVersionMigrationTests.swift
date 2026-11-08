@@ -22,7 +22,6 @@ import Testing
 /// context, and Swift Testing would otherwise run it on a worker thread.
 @MainActor
 final class ModelVersionMigrationTests {
-
     private let storeDirectory: URL
 
     init() throws {

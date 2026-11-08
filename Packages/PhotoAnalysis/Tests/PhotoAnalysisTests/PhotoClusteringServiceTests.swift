@@ -5,7 +5,6 @@ import CoreLocation
 
 @MainActor
 struct PhotoClusteringServiceTests {
-
     // MARK: - Clustering Algorithm Tests
 
     @Test func testClusterEmptyArray() throws {
