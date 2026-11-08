@@ -410,7 +410,7 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     func imageAssetCount() -> Int { currentImageAssetCount }
 
-    func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
+    func changes(since _: Data) -> PhotoLibraryChangeSummary? { summary }
 }
 
 /// `loadClusters()` resolves every stored identifier in batches off the main

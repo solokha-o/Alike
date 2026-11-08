@@ -403,7 +403,7 @@ private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
         self.productRequests = productRequests
     }
 
-    func loadProducts(ids: Set<String>) async throws -> [StorefrontProduct] {
+    func loadProducts(ids _: Set<String>) async throws -> [StorefrontProduct] {
         if let productRequests { return await productRequests.request() }
         return products
     }

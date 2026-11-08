@@ -565,7 +565,7 @@ private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonali
 
     func loadExamples() async -> [BestShotOverrideExample] { [] }
 
-    func record(_ example: BestShotOverrideExample) async {}
+    func record(_: BestShotOverrideExample) async {}
 
     func loadWeights() async -> BestShotPersonalWeights? {
         loadStarted = true
@@ -574,7 +574,7 @@ private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonali
         }
     }
 
-    func saveWeights(_ weights: BestShotPersonalWeights) async {}
+    func saveWeights(_: BestShotPersonalWeights) async {}
 
     func reset() async {}
 
@@ -613,7 +613,7 @@ private actor SecondCallSuspendingConfigProvider: BestShotConfigProviding {
         return .current
     }
 
-    func recordOverride(_ example: BestShotOverrideExample) async {}
+    func recordOverride(_: BestShotOverrideExample) async {}
 
     func waitUntilSecondCallStarted() async {
         while !secondCallStarted {

@@ -262,14 +262,14 @@ private extension ScreenshotCleanupView {
 
 public struct ScreenshotCleanupView: View {
     public init(
-        assets: [PHAsset],
-        sourceCategory: CleanupCategoryKind = .screenshots,
-        cleanupService: (any PhotoCleanupService)? = nil,
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        subscriptionStore: SubscriptionStore? = nil,
-        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+        assets _: [PHAsset],
+        sourceCategory _: CleanupCategoryKind = .screenshots,
+        cleanupService _: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository _: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess _: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore _: SubscriptionStore? = nil,
+        openSettingsAction _: (@MainActor @Sendable () -> Void)? = nil,
+        onCleanupCompleted _: ((CleanupCompletionRecord) -> Void)? = nil
     ) {}
 
     public var body: some View {

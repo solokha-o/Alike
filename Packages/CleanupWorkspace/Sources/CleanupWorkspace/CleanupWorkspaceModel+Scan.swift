@@ -128,8 +128,8 @@ extension CleanupWorkspaceModel {
 
     func performScan(
         sensitivity: SensitivityLevel,
-        purpose: ScanOperationPurpose,
-        scanID: UUID
+        purpose _: ScanOperationPurpose,
+        scanID _: UUID
     ) async throws -> ScanSummary {
         let clustersBeforeScan = try await repository.loadClusters()
         let categorySnapshotsBeforeScan = try? await cleanupCategoryRepository.loadAllSnapshots()

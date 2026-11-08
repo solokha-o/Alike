@@ -183,7 +183,7 @@ private actor FailingSaveClusterRepository: PhotoClusterRepository {
         try await delegate.loadClusters()
     }
 
-    func saveClusters(_ clusters: [PhotoCluster]) async throws {
+    func saveClusters(_: [PhotoCluster]) async throws {
         throw ClusterSaveFailure()
     }
 
@@ -240,14 +240,14 @@ private actor CategoryWritingAnalysisService: PhotoAnalysisService {
     }
 
     func analyzePhotoLibrary(
-        sensitivity: Float,
-        progress: @escaping @Sendable (Double) -> Void
+        sensitivity _: Float,
+        progress _: @escaping @Sendable (Double) -> Void
     ) async throws -> [PhotoCluster] {
         [PhotoCluster(id: UUID(), assets: [])]
     }
 
     func refreshCleanupCategories(
-        progress: @escaping @Sendable (Double) -> Void
+        progress _: @escaping @Sendable (Double) -> Void
     ) async throws -> [CleanupCategorySummary] {
         try await repository.replaceAllSnapshots([refreshed])
         return [refreshed.summary]

@@ -63,7 +63,7 @@ public struct ClusterDetailsView: View {
     }
 
     init(
-        cluster: PhotoCluster,
+        cluster _: PhotoCluster,
         viewModel: ClusterDetailsViewModel,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
@@ -402,13 +402,13 @@ public struct ClusterDetailsView: View {
 
     public init(
         cluster: PhotoCluster,
-        cleanupService: (any PhotoCleanupService)? = nil,
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        subscriptionStore: SubscriptionStore? = nil,
-        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        onReviewStateChanged: (() -> Void)? = nil,
-        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+        cleanupService _: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository _: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess _: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore _: SubscriptionStore? = nil,
+        openSettingsAction _: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged _: (() -> Void)? = nil,
+        onCleanupCompleted _: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.cluster = cluster
     }

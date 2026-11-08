@@ -128,3 +128,4 @@
 --rules noForceUnwrapInTests
 --rules elseOnSameLine
 --rules consecutiveSpaces
+--rules unusedArguments

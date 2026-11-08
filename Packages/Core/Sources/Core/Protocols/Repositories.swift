@@ -157,7 +157,7 @@ public protocol AssetByteSizeRepository: Sendable {
 
 public extension AssetByteSizeRepository {
     func loadLibraryTotalBytes() async -> Int64? { nil }
-    func saveLibraryTotalBytes(_ bytes: Int64?) async throws {}
+    func saveLibraryTotalBytes(_: Int64?) async throws {}
 }
 
 /// Repository for the active cleanup session aggregate state.

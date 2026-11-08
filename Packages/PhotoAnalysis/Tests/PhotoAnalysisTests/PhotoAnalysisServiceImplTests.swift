@@ -169,20 +169,20 @@ private final class ProgressRecorder: @unchecked Sendable {
 }
 
 private struct MockVisionService: VisionFeaturePrintServicing {
-    func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
+    func generateFeaturePrint(for _: PHAsset) async throws -> VNFeaturePrintObservation? {
         nil
     }
 
     func generateFeaturePrints(
-        for assets: [PHAsset],
-        progress: @Sendable @escaping (Double) -> Void
+        for _: [PHAsset],
+        progress _: @Sendable @escaping (Double) -> Void
     ) async throws -> [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] {
         []
     }
 
     func computeDistance(
-        between observation1: VNFeaturePrintObservation,
-        and observation2: VNFeaturePrintObservation
+        between _: VNFeaturePrintObservation,
+        and _: VNFeaturePrintObservation
     ) throws -> Float {
         0
     }
@@ -190,8 +190,8 @@ private struct MockVisionService: VisionFeaturePrintServicing {
 
 private struct MockClusteringService: PhotoClusteringServicing {
     func clusterPhotos(
-        _ photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)],
-        threshold: Float
+        _: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)],
+        threshold _: Float
     ) throws -> [PhotoCluster] {
         []
     }
