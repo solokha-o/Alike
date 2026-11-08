@@ -51,6 +51,8 @@ Google guide as a whole.
 | `--decimal-grouping` | `3,4` | `numberFormatting` groups integer literals of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
 | `--trailing-commas` | `collections-only` | `trailingCommas` adds the comma only in multi-line array and dictionary literals, not in argument lists (LATER row 32). |
 | `--import-grouping` | `testable-last,alpha` | `sortImports` sorts imports by name and keeps `@testable` imports last, as the code does (LATER row 34). |
+| `--ifdef` | `preserve` | `indent` keeps the indentation of `#if` blocks as written. Smallest diff of 8 measured combinations (LATER row 36). |
+| `--indent-case` | `false` | `case` at the same indent as `switch`, as the code does (LATER row 36). |
 
 The owner decision names `--swiftversion 6.0` and `--some-any disabled`.
 SwiftFormat 0.63.1 spells these `--swift-version` and `--some-any false`. The
@@ -146,7 +148,7 @@ are the measured diff with default options.
 | 33 | `trailingSpace` | 39 | 451 | Whitespace only. Measured again: 822 Swift lines in 37 files, no string literal content. The owner allowed one pull request over the 400-line limit (2026-11-08). |
 | 34 | `sortImports` | 188 | 540 | With `--import-grouping testable-last,alpha`: 396 Swift lines in 135 files (default `access-control,alpha`: 622 in 188; `testable-first,alpha`: 668 in 204). |
 | 35 | `blankLinesBetweenScopes` | 43 | 745 | One blank line between members. |
-| 36 | `indent` | 105 | 5571 | Tune `--ifdef` and `--indent-case` first. Most of the diff is an option mismatch. |
+| 36 | `indent` | 105 | 5571 | Tune `--ifdef` and `--indent-case` first. Most of the diff is an option mismatch. With `--ifdef preserve` and `--indent-case false`: 241 Swift lines in 28 files. Other measured pairs (`--ifdef` / `--indent-case`): `indent`/`false` 10247, `indent`/`true` 13941, `no-indent`/`false` 463, `no-indent`/`true` 4391, `preserve`/`true` 3933, `outdent`/`false` 507, `outdent`/`true` 4435. |
 | 37 | `wrap` | 0 | 0 | Needs `--max-width`. Measure at 130 before you enable it. |
 
 ### SKIP rules (26)
