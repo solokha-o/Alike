@@ -50,6 +50,7 @@ Google guide as a whole.
 | `--self` | `remove` | `redundantSelf` removes `self.` where the compiler does not need it (LATER row 28). |
 | `--decimal-grouping` | `3,4` | `numberFormatting` groups integer literals of 4 or more digits by 3, the existing `1_000` style (LATER row 30, owner decision 2026-11-08). |
 | `--trailing-commas` | `collections-only` | `trailingCommas` adds the comma only in multi-line array and dictionary literals, not in argument lists (LATER row 32). |
+| `--import-grouping` | `testable-last,alpha` | `sortImports` sorts imports by name and keeps `@testable` imports last, as the code does (LATER row 34). |
 
 The owner decision names `--swiftversion 6.0` and `--some-any disabled`.
 SwiftFormat 0.63.1 spells these `--swift-version` and `--some-any false`. The
@@ -143,7 +144,7 @@ are the measured diff with default options.
 | 31 | `blankLinesAtEndOfScope` | 205 | 275 | |
 | 32 | `trailingCommas` | 111 | 410 | Start with `--trailing-commas collections-only`. With it: 820 Swift lines in 111 files. The owner allowed one pull request over the 400-line limit (2026-11-08). Enabled after row 31. |
 | 33 | `trailingSpace` | 39 | 451 | Whitespace only. Measured again: 822 Swift lines in 37 files, no string literal content. The owner allowed one pull request over the 400-line limit (2026-11-08). |
-| 34 | `sortImports` | 188 | 540 | |
+| 34 | `sortImports` | 188 | 540 | With `--import-grouping testable-last,alpha`: 396 Swift lines in 135 files (default `access-control,alpha`: 622 in 188; `testable-first,alpha`: 668 in 204). |
 | 35 | `blankLinesBetweenScopes` | 43 | 745 | One blank line between members. |
 | 36 | `indent` | 105 | 5571 | Tune `--ifdef` and `--indent-case` first. Most of the diff is an option mismatch. |
 | 37 | `wrap` | 0 | 0 | Needs `--max-width`. Measure at 130 before you enable it. |
