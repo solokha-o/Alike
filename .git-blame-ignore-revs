@@ -64,3 +64,6 @@ f0bda420d70d298bf48b4af2bfb6261ad8193032
 
 # LATER rule 18 (ADR-0001): noForceUnwrapInTests, format only.
 a8c28d9e9d80cb10bcacbc248fe2efd95f88eadd
+
+# LATER rule 19 (ADR-0001): elseOnSameLine, config only (no code change).
+c51486d93a8143c704f5719e4093f0cb1bfd3dfd
