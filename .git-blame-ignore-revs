@@ -58,3 +58,6 @@ edfeb3dd6eab37ff55ef342fca4fd168eaa88866
 
 # LATER rule 16 (ADR-0001): conditionalAssignment, format only.
 462754e7f5d5bca129f6239748ff5fe24a8e4f1a
+
+# LATER rule 17 (ADR-0001): blankLinesAroundMark, format only.
+f0bda420d70d298bf48b4af2bfb6261ad8193032
