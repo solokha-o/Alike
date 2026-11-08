@@ -73,3 +73,6 @@ c51486d93a8143c704f5719e4093f0cb1bfd3dfd
 
 # LATER rule 22 (ADR-0001): unusedArguments, format only.
 f78cc4928ad36793bd1eebaae6df80afe823cf31
+
+# LATER rule 23 (ADR-0001): redundantReturn, format only.
+106ca244949da2b60084f38794b73c79179dd51d
