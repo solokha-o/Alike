@@ -32,7 +32,7 @@ struct CrashReportMailComposer: UIViewControllerRepresentable {
         return controller
     }
 
-    func updateUIViewController(_ controller: MFMailComposeViewController, context: Context) {}
+    func updateUIViewController(_: MFMailComposeViewController, context _: Context) {}
 
     @MainActor
     final class Coordinator: NSObject, @preconcurrency MFMailComposeViewControllerDelegate {
@@ -43,9 +43,9 @@ struct CrashReportMailComposer: UIViewControllerRepresentable {
         }
 
         func mailComposeController(
-            _ controller: MFMailComposeViewController,
+            _: MFMailComposeViewController,
             didFinishWith result: MFMailComposeResult,
-            error: Error?
+            error _: Error?
         ) {
             onFinish(result == .sent)
         }

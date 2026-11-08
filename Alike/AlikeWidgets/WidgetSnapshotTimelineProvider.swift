@@ -36,7 +36,7 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
         self.store = store
     }
 
-    func placeholder(in context: Context) -> WidgetSnapshotEntry {
+    func placeholder(in _: Context) -> WidgetSnapshotEntry {
         let snapshot = WidgetSnapshot.placeholder()
         return WidgetSnapshotEntry(
             date: Date(),
@@ -58,7 +58,7 @@ struct WidgetSnapshotTimelineProvider: TimelineProvider {
         ))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSnapshotEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<WidgetSnapshotEntry>) -> Void) {
         let snapshot = store?.read()
         let entries = WidgetPresentation.timeline(for: snapshot).map {
             WidgetSnapshotEntry(

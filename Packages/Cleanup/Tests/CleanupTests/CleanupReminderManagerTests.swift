@@ -421,7 +421,7 @@ private actor MockUserNotificationCenter: UserNotificationCenterControlling {
         authorizationStatus
     }
 
-    func requestAuthorization(options: UNAuthorizationOptions) async -> Bool {
+    func requestAuthorization(options _: UNAuthorizationOptions) async -> Bool {
         didCallRequestAuthorization = true
         authorizationStatus = postRequestAuthorizationStatus
         return requestAuthorizationResult

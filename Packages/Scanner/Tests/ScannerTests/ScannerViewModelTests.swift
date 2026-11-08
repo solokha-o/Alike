@@ -623,8 +623,8 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
         progress(1)
         return []
     }
-    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
-    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 0 }
+    func loadAssets(for _: CleanupCategoryKind) async throws -> [PHAsset] { [] }
+    func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float { 0 }
 
     func waitUntilAnalyzeCallCount(_ expectedCount: Int) async {
         while analyzeCalls < expectedCount { await Task.yield() }

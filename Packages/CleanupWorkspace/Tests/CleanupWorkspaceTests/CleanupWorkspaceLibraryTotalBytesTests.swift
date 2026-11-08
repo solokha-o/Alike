@@ -148,7 +148,7 @@ private actor GatedLibraryTotalRepository: AssetByteSizeRepository {
     private var release: CheckedContinuation<Void, Never>?
 
     func loadAll() async -> [AssetByteSizeRecord] { [] }
-    func replaceAll(_ records: [AssetByteSizeRecord]) async throws {}
+    func replaceAll(_: [AssetByteSizeRecord]) async throws {}
 
     func gateNextLoad() { isGated = true }
 
@@ -185,7 +185,7 @@ private actor FailOnceLibraryTotalRepository: AssetByteSizeRepository {
     private var hasFailed = false
 
     func loadAll() async -> [AssetByteSizeRecord] { [] }
-    func replaceAll(_ records: [AssetByteSizeRecord]) async throws {}
+    func replaceAll(_: [AssetByteSizeRecord]) async throws {}
 
     func loadLibraryTotalBytes() async -> Int64? { storedLibraryTotalBytes }
 

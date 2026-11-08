@@ -39,7 +39,7 @@ public actor PersistenceController: Sendable {
         container.persistentStoreDescriptions.first?.shouldMigrateStoreAutomatically = true
         container.persistentStoreDescriptions.first?.shouldInferMappingModelAutomatically = true
         
-        container.loadPersistentStores { description, error in
+        container.loadPersistentStores { _, error in
             if let error {
                 fatalError("Core Data store failed to load: \(error.localizedDescription)")
             }

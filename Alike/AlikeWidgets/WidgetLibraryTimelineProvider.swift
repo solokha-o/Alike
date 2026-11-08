@@ -30,7 +30,7 @@ struct WidgetLibraryTimelineProvider: TimelineProvider {
         self.store = store
     }
 
-    func placeholder(in context: Context) -> WidgetLibraryEntry {
+    func placeholder(in _: Context) -> WidgetLibraryEntry {
         WidgetLibraryEntry(
             date: Date(),
             composition: WidgetPresentation.libraryComposition(for: .placeholder())
@@ -47,7 +47,7 @@ struct WidgetLibraryTimelineProvider: TimelineProvider {
         ))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetLibraryEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<WidgetLibraryEntry>) -> Void) {
         let entries = WidgetPresentation.libraryTimeline(for: store?.read())
             .map { WidgetLibraryEntry(date: $0.date, composition: $0.composition) }
         completion(Timeline(entries: entries, policy: .never))

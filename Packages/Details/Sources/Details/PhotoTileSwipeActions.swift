@@ -159,7 +159,7 @@ final class PhotoTileTapGuard {
 private struct PhotoTileSwipeTracker: UIGestureRecognizerRepresentable {
     let tapGuard: PhotoTileTapGuard
 
-    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator {
+    func makeCoordinator(converter _: CoordinateSpaceConverter) -> Coordinator {
         Coordinator()
     }
 
@@ -170,7 +170,7 @@ private struct PhotoTileSwipeTracker: UIGestureRecognizerRepresentable {
         return recognizer
     }
 
-    func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context: Context) {
+    func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context _: Context) {
         switch recognizer.state {
         case .began, .changed:
             if PhotoTileTapGuard.isHorizontal(recognizer.translation(in: recognizer.view)) {
@@ -185,8 +185,8 @@ private struct PhotoTileSwipeTracker: UIGestureRecognizerRepresentable {
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         func gestureRecognizer(
-            _ gestureRecognizer: UIGestureRecognizer,
-            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+            _: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer
         ) -> Bool {
             true
         }

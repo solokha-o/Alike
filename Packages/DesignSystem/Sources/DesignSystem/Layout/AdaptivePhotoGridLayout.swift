@@ -36,7 +36,7 @@ public struct PhotoThumbnailAspectRatioLayout: Layout {
     public func sizeThatFits(
         proposal: ProposedViewSize,
         subviews: Subviews,
-        cache: inout ()
+        cache _: inout ()
     ) -> CGSize {
         let fallback = subviews.first?.sizeThatFits(.unspecified) ?? .zero
         return PhotoThumbnailAspectRatioSizePolicy.size(
@@ -49,9 +49,9 @@ public struct PhotoThumbnailAspectRatioLayout: Layout {
 
     public func placeSubviews(
         in bounds: CGRect,
-        proposal: ProposedViewSize,
+        proposal _: ProposedViewSize,
         subviews: Subviews,
-        cache: inout ()
+        cache _: inout ()
     ) {
         guard PhotoThumbnailAspectRatioSizePolicy.isRenderable(bounds.size) else { return }
 

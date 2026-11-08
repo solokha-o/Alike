@@ -76,7 +76,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         }
     }
     
-    public func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
+    public func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float {
         didCallCalculateSimilarity = true
         
         switch calculateSimilarityResult {

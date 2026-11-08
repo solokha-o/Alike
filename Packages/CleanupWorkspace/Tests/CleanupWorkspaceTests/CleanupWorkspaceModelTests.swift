@@ -279,13 +279,13 @@ private extension CleanupWorkspaceModelTests {
 }
 
 private actor FailingReviewStateRepository: ClusterReviewStateRepository {
-    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? { nil }
+    func loadReviewState(clusterID _: UUID) async throws -> ClusterReviewState? { nil }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] { [:] }
 
-    func saveReviewState(_ state: ClusterReviewState) async throws {}
+    func saveReviewState(_: ClusterReviewState) async throws {}
 
-    func deleteReviewState(clusterID: UUID) async throws {}
+    func deleteReviewState(clusterID _: UUID) async throws {}
 
     func deleteAllReviewStates() async throws {
         throw ReviewPersistenceError()

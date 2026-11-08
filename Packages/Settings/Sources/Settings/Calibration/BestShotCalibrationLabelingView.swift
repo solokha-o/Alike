@@ -235,7 +235,7 @@ public struct BestShotCalibrationLabelingView: View {
 
     // MARK: - Large preview
 
-    private func largePreview(cluster: PhotoCluster, containerHeight: CGFloat) -> some View {
+    private func largePreview(cluster _: PhotoCluster, containerHeight: CGFloat) -> some View {
         let assets = viewModel.currentCandidateAssets
         return TabView(selection: focusedAssetIDBinding(assets: assets)) {
             ForEach(assets, id: \.localIdentifier) { asset in

@@ -349,7 +349,7 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
     private var progress: (@Sendable (Double) -> Void)?
 
     func analyzePhotoLibrary(
-        sensitivity: Float,
+        sensitivity _: Float,
         progress: @escaping @Sendable (Double) -> Void
     ) async throws -> [PhotoCluster] {
         analyzeCallCountStorage += 1
@@ -377,9 +377,9 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
         return []
     }
 
-    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
+    func loadAssets(for _: CleanupCategoryKind) async throws -> [PHAsset] { [] }
 
-    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 1 }
+    func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float { 1 }
 
     func waitUntilAnalyzeStarts(expectedCallCount: Int = 1) async {
         guard analyzeCallCountStorage < expectedCallCount else { return }
