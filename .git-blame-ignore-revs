@@ -52,3 +52,6 @@ f19b35ebdba7bad4b00dda02dc8386dada5ff754
 
 # LATER rule 13 (ADR-0001): redundantThrows (tests-only), format only.
 edfeb3dd6eab37ff55ef342fca4fd168eaa88866
+
+# LATER rule 14 (ADR-0001): consistentSwitchCaseSpacing, config only (no code change).
+4b4f3b25148e3a49b1d2a6582f015bd8d7e57273
