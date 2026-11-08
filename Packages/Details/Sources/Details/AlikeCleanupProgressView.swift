@@ -116,7 +116,6 @@ struct AlikeCleanupProgressView: View {
         .frame(maxWidth: .infinity, alignment: .top)
         .accessibilityElement(children: .combine)
     }
-
 }
 
 struct AlikeCleanupProgressHero: View {

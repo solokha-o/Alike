@@ -14,7 +14,6 @@ struct AnimatedImageOverlayTests {
         ) {
             Color.clear
         }
-
     }
 
     @Test func testSupportsLoopingPlayback() {
@@ -26,7 +25,6 @@ struct AnimatedImageOverlayTests {
         ) {
             Image(systemName: "photo")
         }
-
     }
 
     @Test func testReduceMotionPreventsOverlayAnimationRendering() {

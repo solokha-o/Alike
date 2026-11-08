@@ -238,7 +238,6 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         
         return assets
     }
-    
 }
 
 extension PhotoAnalysisServiceImpl {
