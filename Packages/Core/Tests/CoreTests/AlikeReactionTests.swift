@@ -94,8 +94,11 @@ import Testing
 
     @Test func testConsumptionDoesNotClearNewerCue() throws {
         var resolver = AlikeReactionResolver()
-        let older = try #require(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1)))
-        let newer = try #require(resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2)))
+        // `apply` is mutating, so it cannot run inside the `#require` macro closure.
+        let olderCue = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 1))
+        let newerCue = resolver.apply(.scanCompleted(id: UUID(), candidateCount: 2))
+        let older = try #require(olderCue)
+        let newer = try #require(newerCue)
 
         _ = resolver.apply(.reactionConsumed(id: older.id))
 
