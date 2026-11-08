@@ -70,6 +70,7 @@ public enum CleanupMinimumClusterSize: Int, CaseIterable, Sendable {
             : String(format: CleanupL10n.Main.orMorePhotos, rawValue)
     }
 }
+
 public struct CleanupClusterControls: Equatable, Sendable {
     public var sort: CleanupClusterSort = .newest
     public var reviewFilter: CleanupReviewFilter = .all

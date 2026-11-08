@@ -75,6 +75,7 @@ public enum SettingsL10n {
         public static func freeRemindersUseSundayAt(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             SettingsL10n.string("settings.main.freeRemindersUseSundayAt", bundle: bundle, locale: locale)
         }
+
         /// Grid, sensitivity, and reminder preferences
         public static var gridSensitivityAndReminderPreferences: String { SettingsL10n.string("settings.main.gridSensitivityAndReminderPreferences") }
         /// Higher sensitivity finds more similar photos but may include less alike images
@@ -135,6 +136,7 @@ public enum SettingsL10n {
         public static func reminderScheduleWeekdayTime(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             SettingsL10n.string("settings.main.reminderScheduleWeekdayTime", bundle: bundle, locale: locale)
         }
+
         /// Reminder time
         public static var reminderTime: String { SettingsL10n.string("settings.main.reminderTime") }
         /// Reset Best Shot Learning

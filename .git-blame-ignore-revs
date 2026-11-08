@@ -112,3 +112,6 @@ cae7cdbdec6e88734b55abdf71c8d401f1307f1e
 
 # LATER rule 34 (ADR-0001): sortImports, format only.
 94808184cc06188588e7a090f5f35ac29b5a6324
+
+# LATER rule 35 (ADR-0001): blankLinesBetweenScopes, format only.
+ce6fdee2f4bb0ad34f357d51bd0d889855de436a
