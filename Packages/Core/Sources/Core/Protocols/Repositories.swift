@@ -9,16 +9,16 @@ public protocol PhotoClusterRepository: Sendable {
 
     /// Load persisted cluster snapshots without resolving live PHAssets.
     func loadClusterSnapshots() async throws -> [PhotoClusterSnapshot]
-    
+
     /// Save clusters to persistent storage
     func saveClusters(_ clusters: [PhotoCluster]) async throws
-    
+
     /// Delete all clusters
     func deleteAllClusters() async throws
-    
+
     /// Get the timestamp of the last scan
     func getLastScanDate() async -> Date?
-    
+
     /// Update the last scan timestamp
     func updateLastScanDate(_ date: Date) async throws
 
@@ -328,7 +328,7 @@ public protocol PhotoAnalysisService: Sendable {
 
     /// Load live assets for the requested cleanup category.
     func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset]
-    
+
     /// Calculate similarity between two assets
     func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float
 
@@ -351,13 +351,13 @@ extension PhotoAnalysisService {
 public protocol PhotoPermissionManager: Sendable {
     /// Current authorization status
     var authorizationStatus: PHAuthorizationStatus { get }
-    
+
     /// Request photo library access
     func requestAuthorization() async -> PHAuthorizationStatus
-    
+
     /// Check if authorization is granted
     var isAuthorized: Bool { get }
-    
+
     /// Open iOS Settings app
     func openSettings()
 }

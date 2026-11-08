@@ -5,7 +5,7 @@ public enum PhotoAnalysisError: LocalizedError {
     case noPhotosFound
     case visionProcessingFailed
     case insufficientPhotos
-    
+
     public var errorDescription: String? {
         switch self {
         case .noPhotosFound:
@@ -16,7 +16,7 @@ public enum PhotoAnalysisError: LocalizedError {
             "Not enough photos to perform analysis"
         }
     }
-    
+
     public var recoverySuggestion: String? {
         switch self {
         case .noPhotosFound:

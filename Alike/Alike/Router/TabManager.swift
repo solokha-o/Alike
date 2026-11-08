@@ -20,7 +20,7 @@ final class TabManager {
         case scanner
         case cleanup
         case settings
-        
+
         var title: String {
             switch self {
             case .scanner: AlikeL10n.Tab.scanner
@@ -28,7 +28,7 @@ final class TabManager {
             case .settings: AlikeL10n.Tab.settings
             }
         }
-        
+
         var icon: String {
             switch self {
             case .scanner: "viewfinder"
@@ -37,7 +37,7 @@ final class TabManager {
             }
         }
     }
-    
+
     // MARK: - State
 
     var selectedTab: Tab = .scanner
@@ -50,7 +50,7 @@ final class TabManager {
     /// carried intent as `shouldStartScan`, which `ScannerView` already consumes as a
     /// binding. `CleanupView` clears it once it has acted on it.
     var pendingCleanupEntry: CleanupWidgetEntry?
-    
+
     // MARK: - Actions
 
     func navigateToScanner(andStartScan: Bool = false) {
@@ -68,7 +68,7 @@ final class TabManager {
             pendingCleanupEntry = entry
         }
     }
-    
+
     /// Where a widget tap lands. Every destination is the cleanup tab; the category ones
     /// also carry the entry `CleanupView` resolves (and gates) once its content loads.
     func follow(_ destination: WidgetDestination) {
@@ -89,12 +89,12 @@ final class TabManager {
     func requestRescan() {
         needsRescan = true
     }
-    
+
     func triggerRescan() {
         needsRescan = false
         navigateToScanner(andStartScan: true)
     }
-    
+
     func dismissRescan() {
         needsRescan = false
     }

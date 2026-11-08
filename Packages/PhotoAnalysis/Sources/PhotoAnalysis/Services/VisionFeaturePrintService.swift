@@ -17,9 +17,9 @@ public struct VisionFeaturePrintService: Sendable {
         4,
         max(2, ProcessInfo.processInfo.activeProcessorCount)
     )
-    
+
     public init() {}
-    
+
     /// Generate feature print for a single asset
     public nonisolated func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
         try Task.checkCancellation()
@@ -37,7 +37,7 @@ public struct VisionFeaturePrintService: Sendable {
         return nil
         #endif
     }
-    
+
     /// Generate feature print from CGImage
     nonisolated func generateFeaturePrint(
         from cgImage: CGImage,
@@ -50,13 +50,13 @@ public struct VisionFeaturePrintService: Sendable {
                 options: [:]
             )
             let request = VNGenerateImageFeaturePrintRequest()
-            
+
             try requestHandler.perform([request])
-            
+
             return request.results?.first
         }
     }
-    
+
     /// Calculate distance between two feature prints (lower = more similar)
     public nonisolated func computeDistance(
         between observation1: VNFeaturePrintObservation,
@@ -66,7 +66,7 @@ public struct VisionFeaturePrintService: Sendable {
         try observation1.computeDistance(&distance, to: observation2)
         return distance
     }
-    
+
     /// Batch process multiple assets
     public nonisolated func generateFeaturePrints(
         for assets: [PHAsset],

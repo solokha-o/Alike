@@ -142,7 +142,7 @@ are the measured diff with default options.
 | 30 | `numberFormatting` | 67 | 260 | Group long literals. With `--decimal-grouping 3,4`: 134 Swift lines in 21 files (owner decision 2026-11-08). Enabled after row 31. |
 | 31 | `blankLinesAtEndOfScope` | 205 | 275 | |
 | 32 | `trailingCommas` | 111 | 410 | Start with `--trailing-commas collections-only`. With it: 820 Swift lines in 111 files. The owner allowed one pull request over the 400-line limit (2026-11-08). Enabled after row 31. |
-| 33 | `trailingSpace` | 39 | 451 | Whitespace only. |
+| 33 | `trailingSpace` | 39 | 451 | Whitespace only. Measured again: 822 Swift lines in 37 files, no string literal content. The owner allowed one pull request over the 400-line limit (2026-11-08). |
 | 34 | `sortImports` | 188 | 540 | |
 | 35 | `blankLinesBetweenScopes` | 43 | 745 | One blank line between members. |
 | 36 | `indent` | 105 | 5571 | Tune `--ifdef` and `--indent-case` first. Most of the diff is an option mismatch. |

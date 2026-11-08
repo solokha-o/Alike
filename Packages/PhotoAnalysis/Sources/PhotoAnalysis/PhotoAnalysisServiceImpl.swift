@@ -12,7 +12,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private let blurAnalysisService: BlurAnalysisService
     private let assetsProvider: @Sendable () -> [PHAsset]
     private var measuredLibraryTotalBytes: Int64?
-    
+
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
         clusteringService: PhotoClusteringService = PhotoClusteringService(),
@@ -44,7 +44,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         self.blurAnalysisService = blurAnalysisService
         self.assetsProvider = assetsProvider
     }
-    
+
     /// Analyze entire photo library and return clusters
     public func analyzePhotoLibrary(
         sensitivity: Float,
@@ -55,7 +55,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 
         // Fetch all photo assets
         let assets = assetsProvider()
-        
+
         guard !assets.isEmpty else {
             throw PhotoAnalysisError.noPhotosFound
         }
@@ -127,9 +127,9 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         AssetByteSize.prewarm(clusters.lazy.flatMap(\.assets))
         let duration = startTime.duration(to: ContinuousClock().now)
         AppLog.scan.info("\(AppLog.tag(.finish, "Clustering done. clusters=\(clusters.count) duration=\(duration)"))")
-        
+
         progress(1.0)
-        
+
         return clusters
     }
 
@@ -192,7 +192,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         AssetByteSize.prewarm(fallback)
         return fallback
     }
-    
+
     /// Calculate similarity between two specific assets
     public func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
         guard let featurePrint1 = try await visionService.generateFeaturePrint(for: asset1),
@@ -200,18 +200,18 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         else {
             return 0.0
         }
-        
+
         let distance = try visionService.computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )
-        
+
         // Convert distance to similarity (0-1, where 1 is most similar)
         return max(0.0, min(1.0, 1.0 - (distance / 100.0)))
     }
-    
+
     // MARK: - Private Helpers
-    
+
     /// `nil` for an empty library: a zero total would draw a ring around nothing.
     private nonisolated static func totalBytes(of assets: [PHAsset]) -> Int64? {
         guard !assets.isEmpty else { return nil }
@@ -230,12 +230,12 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 
         // Only fetch images (not videos)
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        
+
         var assets: [PHAsset] = []
         fetchResult.enumerateObjects { asset, _, _ in
             assets.append(asset)
         }
-        
+
         return assets
     }
 }

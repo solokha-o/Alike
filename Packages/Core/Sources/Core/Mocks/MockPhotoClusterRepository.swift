@@ -12,7 +12,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public var getLastScanDateResult: Date?
     public var updateLastScanDateResult: Result<Void, Error> = .success(())
     public var hasGalleryChangedResult = false
-    
+
     public var didCallSaveClusters = false
     public var didCallLoadClusters = false
     public var didCallLoadClusterSnapshots = false
@@ -29,14 +29,14 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     /// Ordered record of the persistence calls a scan makes, so tests can
     /// assert the scan baseline is written only after clusters are saved.
     public private(set) var persistenceLog: [String] = []
-    
+
     public init() {}
-    
+
     /// Setters for test configuration
     public func setLoadClustersResult(_ result: Result<[PhotoCluster], Error>) {
         loadClustersResult = result
     }
-    
+
     public func setSaveClustersResult(_ result: Result<Void, Error>) {
         saveClustersResult = result
     }
@@ -48,7 +48,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public func setDeleteAllClustersResult(_ result: Result<Void, Error>) {
         deleteAllClustersResult = result
     }
-    
+
     public func setGetLastScanDateResult(_ date: Date?) {
         getLastScanDateResult = date
     }
@@ -56,7 +56,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public func setUpdateLastScanDateResult(_ result: Result<Void, Error>) {
         updateLastScanDateResult = result
     }
-    
+
     public func setLibraryFingerprint(token: Data?, imageAssetCount: Int) {
         libraryChangeToken = token
         self.imageAssetCount = imageAssetCount
@@ -65,7 +65,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
     public func setHasGalleryChangedResult(_ changed: Bool) {
         hasGalleryChangedResult = changed
     }
-    
+
     public func loadClusters() async throws -> [PhotoCluster] {
         didCallLoadClusters = true
         switch loadClustersResult {
@@ -85,7 +85,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
             throw error
         }
     }
-    
+
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {
         didCallSaveClusters = true
         persistenceLog.append("saveClusters")
@@ -96,7 +96,7 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
             throw error
         }
     }
-    
+
     public func deleteAllClusters() async throws {
         didCallDeleteAllClusters = true
         switch deleteAllClustersResult {
@@ -106,12 +106,12 @@ public actor MockPhotoClusterRepository: PhotoClusterRepository {
             throw error
         }
     }
-    
+
     public func getLastScanDate() async -> Date? {
         didCallGetLastScanDate = true
         return getLastScanDateResult
     }
-    
+
     public func updateLastScanDate(_ date: Date) async throws {
         try await updateScanMetadata(ScanMetadataSnapshot(lastScanDate: date))
     }

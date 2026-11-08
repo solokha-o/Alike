@@ -27,7 +27,7 @@ public struct WelcomeView: View {
     @State private var selectedWelcomePage = WelcomePage.welcome
     @State private var glassFinalActionFeedbackTrigger = 0
     private let mode: WelcomeMode
-    
+
     public init(
         isCompleted: Binding<Bool>,
         mode: WelcomeMode = .permissionRequest,
@@ -41,7 +41,7 @@ public struct WelcomeView: View {
             _viewModel = State(initialValue: WelcomeViewModel())
         }
     }
-    
+
     public var body: some View {
         Group {
             if mode.replaysOnboarding {
@@ -71,7 +71,7 @@ public struct WelcomeView: View {
             isSymbolAnimating = true
         }
     }
-    
+
     // MARK: - Initial State
 
     private var initialState: some View {
@@ -378,7 +378,7 @@ public struct WelcomeView: View {
             }
         }
     }
-    
+
     // MARK: - Denied State
 
     private var deniedState: some View {
@@ -509,7 +509,7 @@ public struct WelcomeView: View {
             .threeX
         }
     }
-    
+
     // MARK: - Authorized State
 
     private var authorizedState: some View {
@@ -519,7 +519,7 @@ public struct WelcomeView: View {
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(Color.statusReviewed, Color.statusSavings, .foreground)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
-            
+
             Text(WelcomeL10n.Main.accessGranted)
                 .font(.appTitle)
                 .foregroundColor(.accent)

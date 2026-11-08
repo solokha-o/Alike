@@ -4,7 +4,7 @@ import SwiftUI
 public struct LoadingView: View {
     let message: LocalizedStringKey
     let progress: Double?
-    
+
     public init(
         message: LocalizedStringKey,
         progress: Double? = nil
@@ -12,7 +12,7 @@ public struct LoadingView: View {
         self.message = message
         self.progress = progress
     }
-    
+
     public var body: some View {
         VStack(spacing: Spacing.large) {
             if let progress {
@@ -27,7 +27,7 @@ public struct LoadingView: View {
                 ProgressView()
                     .scaleEffect(1.5)
                     .tint(.accent)
-                
+
                 Text(message)
                     .font(.appHeadline)
                     .foregroundColor(.secondary)

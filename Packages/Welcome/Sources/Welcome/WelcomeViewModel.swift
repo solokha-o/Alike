@@ -7,25 +7,25 @@ import DesignSystem
 @Observable
 public final class WelcomeViewModel {
     private let permissionManager: PhotoPermissionManager
-    
+
     public var authorizationStatus: PHAuthorizationStatus
     public var isAuthorized: Bool {
         authorizationStatus == .authorized || authorizationStatus == .limited
     }
-    
+
     public init(permissionManager: PhotoPermissionManager = PhotoPermissionManagerImpl()) {
         self.permissionManager = permissionManager
         authorizationStatus = permissionManager.authorizationStatus
     }
-    
+
     public func requestPermission() async {
         authorizationStatus = await permissionManager.requestAuthorization()
     }
-    
+
     public func openSettings() {
         permissionManager.openSettings()
     }
-    
+
     public func checkStatus() {
         authorizationStatus = permissionManager.authorizationStatus
     }

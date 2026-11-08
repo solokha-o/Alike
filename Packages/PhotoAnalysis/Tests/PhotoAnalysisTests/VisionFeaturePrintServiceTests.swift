@@ -10,47 +10,47 @@ import UIKit
 @MainActor
 struct VisionFeaturePrintServiceTests {
     let service = VisionFeaturePrintService()
-    
+
     // MARK: - Feature Print Generation Tests
-    
+
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })
     func testGenerateFeaturePrintFromCGImage() async throws {
         let cgImage = try #require(makeSolidImage(red: 255, green: 0, blue: 0))
-        
+
         // When: Generating feature print
         let featurePrint = try await requireFeaturePrint(from: cgImage)
-        
+
         // Then: Feature print should be generated
         #expect(!featurePrint.data.isEmpty, "Feature print should have data")
     }
-    
+
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })
     func testComputeDistanceBetweenIdenticalImages() async throws {
         let cgImage = try #require(makeSolidImage(red: 0, green: 0, blue: 255))
-        
+
         let print1 = try await requireFeaturePrint(from: cgImage)
         let print2 = try await requireFeaturePrint(from: cgImage)
-        
+
         // When: Computing distance
         let distance = try service.computeDistance(between: print1, and: print2)
-        
+
         // Then: Distance should be non-negative
         #expect(distance >= 0.0, "Distance should be non-negative")
     }
-    
+
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })
     func testComputeDistanceBetweenDifferentImages() async throws {
         let redCGImage = try #require(makeSolidImage(red: 255, green: 0, blue: 0))
         let blueCGImage = try #require(makeSolidImage(red: 0, green: 0, blue: 255))
-        
+
         let print1 = try await requireFeaturePrint(from: redCGImage)
         let print2 = try await requireFeaturePrint(from: blueCGImage)
         let printSame = try await requireFeaturePrint(from: redCGImage)
-        
+
         // When: Computing distance
         let distance = try service.computeDistance(between: print1, and: print2)
         let distanceSame = try service.computeDistance(between: print1, and: printSame)
-        
+
         // Then: Distance should be non-negative
         #expect(distance >= 0.0, "Distance should be non-negative")
         #expect(
@@ -58,19 +58,19 @@ struct VisionFeaturePrintServiceTests {
             "Different images should not be closer than identical ones"
         )
     }
-    
+
     @Test(.enabled("Vision feature print unavailable") { await visionFeaturePrintIsAvailable() })
     func testDistanceIsSymmetric() async throws {
         let cgImage1 = try #require(makeSolidImage(red: 255, green: 0, blue: 0))
         let cgImage2 = try #require(makeSolidImage(red: 0, green: 255, blue: 0))
-        
+
         let print1 = try await requireFeaturePrint(from: cgImage1)
         let print2 = try await requireFeaturePrint(from: cgImage2)
-        
+
         // When: Computing distance both ways
         let distance1to2 = try service.computeDistance(between: print1, and: print2)
         let distance2to1 = try service.computeDistance(between: print2, and: print1)
-        
+
         // Then: Distance should be the same in both directions
         let eps: Float = 0.001
         #expect(abs(distance1to2 - distance2to1) <= eps, "Distance should be symmetric")
