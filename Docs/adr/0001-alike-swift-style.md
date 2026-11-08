@@ -46,6 +46,7 @@ Google guide as a whole.
 | `--some-any` | `false` | Keep `any P` and generic parameters as written. |
 | `--redundant-throws` | `tests-only` | Never change a function signature in package sources. |
 | `--redundant-async` | `tests-only` | Never change a function signature in package sources. |
+| `--ranges` | `preserve` | `spaceAroundOperators` keeps `0..<n` and `0 ..< n` as written (LATER row 26). |
 
 The owner decision names `--swiftversion 6.0` and `--some-any disabled`.
 SwiftFormat 0.63.1 spells these `--swift-version` and `--some-any false`. The
