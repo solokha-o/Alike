@@ -53,9 +53,9 @@ struct LocalizationCatalog {
 
     static func packageRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
-            .deletingLastPathComponent()  // Tests/<target>Tests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // package root
+            .deletingLastPathComponent() // Tests/<target>Tests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // package root
     }
 
     static func load(file: StaticString = #filePath) throws -> LocalizationCatalog {

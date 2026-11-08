@@ -34,8 +34,8 @@ struct LocalizationCatalog {
 
     static func appRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
-            .deletingLastPathComponent()  // AlikeTests
-            .deletingLastPathComponent()  // Alike (project folder)
+            .deletingLastPathComponent() // AlikeTests
+            .deletingLastPathComponent() // Alike (project folder)
     }
 
     static func load(file: StaticString = #filePath) throws -> LocalizationCatalog {

@@ -133,8 +133,8 @@ import Testing
 
     private func legalDocument(file: StaticString = #filePath) throws -> String {
         let url = LocalizationCatalog.packageRoot(file: file)
-            .deletingLastPathComponent()  // Packages
-            .deletingLastPathComponent()  // repository root
+            .deletingLastPathComponent() // Packages
+            .deletingLastPathComponent() // repository root
             .appendingPathComponent("Docs/legal/subscription-disclosure.md")
         return try String(contentsOf: url, encoding: .utf8)
     }

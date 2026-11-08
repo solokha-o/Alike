@@ -22,11 +22,11 @@ struct WidgetPaletteTests {
     /// live outside the package, which is the whole point of the comparison.
     private static var repositoryRoot: URL {
         URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()   // WidgetSupportTests
-            .deletingLastPathComponent()   // Tests
-            .deletingLastPathComponent()   // WidgetSupport
-            .deletingLastPathComponent()   // Packages
-            .deletingLastPathComponent()   // repository root
+            .deletingLastPathComponent() // WidgetSupportTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // WidgetSupport
+            .deletingLastPathComponent() // Packages
+            .deletingLastPathComponent() // repository root
     }
 
     private func components(
