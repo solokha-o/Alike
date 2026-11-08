@@ -97,3 +97,6 @@ f9c8a208934d104bcb106f85ef498d5791b3ffef
 
 # LATER rule 29 (ADR-0001): blankLinesAtStartOfScope, format only.
 6120fb38c57d1ea1d64a824ea3461fff03ebc52f
+
+# LATER rule 31 (ADR-0001): blankLinesAtEndOfScope, format only.
+a4141ad52c1fbd0df098bc174e298dcc1df5167e
