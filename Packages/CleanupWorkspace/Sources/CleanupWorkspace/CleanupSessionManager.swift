@@ -118,25 +118,25 @@ public actor CleanupSessionManager: CleanupSessionManaging {
 
         do {
             let loaded = try await repository.loadActiveSession()
-            let sessionToSave: CleanupSession
-            if let loaded, loaded.totalClusters == clusters.count {
-                sessionToSave = CleanupSession(
-                    id: loaded.id,
-                    createdAt: loaded.createdAt,
-                    updatedAt: now,
-                    totalClusters: clusters.count,
-                    reviewedClusters: progress.reviewedCount,
-                    estimatedSavingsBytes: progress.reviewedSavingsBytes
-                )
-            } else {
-                sessionToSave = CleanupSession(
-                    createdAt: now,
-                    updatedAt: now,
-                    totalClusters: clusters.count,
-                    reviewedClusters: progress.reviewedCount,
-                    estimatedSavingsBytes: progress.reviewedSavingsBytes
-                )
-            }
+            let sessionToSave =
+                if let loaded, loaded.totalClusters == clusters.count {
+                    CleanupSession(
+                        id: loaded.id,
+                        createdAt: loaded.createdAt,
+                        updatedAt: now,
+                        totalClusters: clusters.count,
+                        reviewedClusters: progress.reviewedCount,
+                        estimatedSavingsBytes: progress.reviewedSavingsBytes
+                    )
+                } else {
+                    CleanupSession(
+                        createdAt: now,
+                        updatedAt: now,
+                        totalClusters: clusters.count,
+                        reviewedClusters: progress.reviewedCount,
+                        estimatedSavingsBytes: progress.reviewedSavingsBytes
+                    )
+                }
 
             try await repository.saveActiveSession(sessionToSave)
             return sessionToSave

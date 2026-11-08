@@ -314,21 +314,21 @@ public enum ReportWriter {
             let fit = result.fit
             let examplesLabel = "\(fit.withFacesExampleCount)/\(fit.withoutFacesExampleCount)"
             let engagedLabel = "\(result.withFacesEngaged ? "yes" : "no")/\(result.withoutFacesEngaged ? "yes" : "no")"
-            let row: String
-            if let baseline = result.baseline, let personalized = result.personalized {
-                row = "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
-                    + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
-                    + "| \(result.evalClusterCount) | \(engagedLabel) "
-                    + "| \(rateWithCorrectCount(baseline.topOneAgreementOverAllClusters, correct: baseline.correctClusterCount, of: baseline.clusterCount)) "
-                    + "| \(rateWithCorrectCount(personalized.topOneAgreementOverAllClusters, correct: personalized.correctClusterCount, of: personalized.clusterCount)) "
-                    + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
-                    + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
-                    + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
-            } else {
-                row = "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
-                    + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
-                    + "| 0 | \(engagedLabel) | _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
-            }
+            let row =
+                if let baseline = result.baseline, let personalized = result.personalized {
+                    "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
+                        + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
+                        + "| \(result.evalClusterCount) | \(engagedLabel) "
+                        + "| \(rateWithCorrectCount(baseline.topOneAgreementOverAllClusters, correct: baseline.correctClusterCount, of: baseline.clusterCount)) "
+                        + "| \(rateWithCorrectCount(personalized.topOneAgreementOverAllClusters, correct: personalized.correctClusterCount, of: personalized.clusterCount)) "
+                        + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
+                        + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
+                        + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
+                } else {
+                    "| \(result.prefixSize) | \(fit.fitClusterCount) | \(examplesLabel) "
+                        + "| \(fit.agreementClusterCount) | \(fit.unresolvedClusterCount) | \(fit.refusedExampleCount) "
+                        + "| 0 | \(engagedLabel) | _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
+                }
             lines.append(row)
         }
         lines.append("")
@@ -361,19 +361,19 @@ public enum ReportWriter {
         for fold in kfold.foldResults {
             let examplesLabel = "\(fold.fit.withFacesExampleCount)/\(fold.fit.withoutFacesExampleCount)"
             let engagedLabel = "\(fold.withFacesEngaged ? "yes" : "no")/\(fold.withoutFacesEngaged ? "yes" : "no")"
-            let row: String
-            if let baseline = fold.baseline, let personalized = fold.personalized {
-                row = "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) "
-                    + "| \(fold.evalClusterCount) | \(engagedLabel) "
-                    + "| \(baseline.correctClusterCount)/\(baseline.clusterCount) "
-                    + "| \(personalized.correctClusterCount)/\(personalized.clusterCount) "
-                    + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
-                    + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
-                    + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
-            } else {
-                row = "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) | 0 | \(engagedLabel) "
-                    + "| _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
-            }
+            let row =
+                if let baseline = fold.baseline, let personalized = fold.personalized {
+                    "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) "
+                        + "| \(fold.evalClusterCount) | \(engagedLabel) "
+                        + "| \(baseline.correctClusterCount)/\(baseline.clusterCount) "
+                        + "| \(personalized.correctClusterCount)/\(personalized.clusterCount) "
+                        + "| \(percent(baseline.coverageRate)) | \(percent(personalized.coverageRate)) "
+                        + "| \(percentOrDash(baseline.blurryWinnerRate, of: baseline.winnerClusterCount)) "
+                        + "| \(percentOrDash(personalized.blurryWinnerRate, of: personalized.winnerClusterCount)) |"
+                } else {
+                    "| \(fold.foldIndex) | \(fold.fit.fitClusterCount) | \(examplesLabel) | 0 | \(engagedLabel) "
+                        + "| _no eval clusters_ | _no eval clusters_ | — | — | — | — |"
+                }
             lines.append(row)
         }
         lines.append("")
