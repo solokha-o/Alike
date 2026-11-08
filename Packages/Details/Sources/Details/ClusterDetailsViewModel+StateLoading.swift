@@ -141,7 +141,7 @@ extension ClusterDetailsViewModel {
         enhancedAssetIDs = Set(
             qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
         )
-        self.rankedConfig = config
+        rankedConfig = config
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
             scores: qualityScores,

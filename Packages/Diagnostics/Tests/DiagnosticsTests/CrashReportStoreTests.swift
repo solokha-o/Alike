@@ -77,7 +77,7 @@ final class CrashReportStoreTests {
     /// One observer going away must not silence the store: the screen that watches it
     /// is torn down and rebuilt inside a single process.
     @Test func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
-        let store = self.store
+        let store = store
         let first = Task { for await _ in await store.changes() {} }
         try await Task.sleep(for: .milliseconds(50))
         first.cancel()

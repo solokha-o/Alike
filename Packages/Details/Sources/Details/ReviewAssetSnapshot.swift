@@ -15,13 +15,13 @@ struct ReviewAssetSnapshot: Equatable, Sendable {
     let estimatedCleanupBytes: Int64
 
     init(asset: PHAsset) {
-        self.localIdentifier = asset.localIdentifier
-        self.isFavorite = asset.isFavorite
-        self.pixelWidth = asset.pixelWidth
-        self.pixelHeight = asset.pixelHeight
-        self.creationDate = asset.creationDate
-        self.modificationDate = asset.modificationDate
-        self.estimatedCleanupBytes = asset.estimatedCleanupBytes
+        localIdentifier = asset.localIdentifier
+        isFavorite = asset.isFavorite
+        pixelWidth = asset.pixelWidth
+        pixelHeight = asset.pixelHeight
+        creationDate = asset.creationDate
+        modificationDate = asset.modificationDate
+        estimatedCleanupBytes = asset.estimatedCleanupBytes
     }
 
     init(

@@ -93,7 +93,7 @@ public struct VisionFeaturePrintService: Sendable {
                 let asset = UncheckedSendableBox(assets[index])
                 group.addTask {
                     try Task.checkCancellation()
-                    let featurePrint = try await self.generateFeaturePrint(for: asset.value)
+                    let featurePrint = try await generateFeaturePrint(for: asset.value)
                     return FeaturePrintTaskResult(
                         index: index,
                         asset: asset.value,

@@ -128,8 +128,8 @@ struct BlurAnalysisService: Sendable {
             )
         }
 
-        let imageProvider = self.imageProvider
-        let scorer = self.scorer
+        let imageProvider = imageProvider
+        let scorer = scorer
         let candidates: [BlurAnalysisCandidate] = try await ImageAnalysisTaskPool.compactMap(
             workItems,
             maxConcurrentTasks: Self.maxConcurrentTasks,

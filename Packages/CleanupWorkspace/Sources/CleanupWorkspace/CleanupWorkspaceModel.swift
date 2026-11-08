@@ -131,7 +131,7 @@ public final class CleanupWorkspaceModel {
         self.bestShotOverrideMetrics = bestShotOverrideMetrics
         self.bestShotPersonalizedConfigProvider = bestShotPersonalizedConfigProvider
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
-        self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
+        cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.assetBytesByIdentifier = assetBytesByIdentifier
         self.assetByteSizeRepository = assetByteSizeRepository
         self.now = now
@@ -167,7 +167,7 @@ public final class CleanupWorkspaceModel {
 
         let task = Task { @MainActor [weak self] in
             guard let self else { return }
-            await self.performCachedContentLoad()
+            await performCachedContentLoad()
         }
         cachedContentLoadTask = task
         await task.value
@@ -272,7 +272,7 @@ public final class CleanupWorkspaceModel {
 
         let task = Task { @MainActor [weak self] in
             guard let self else { return }
-            await self.runReconciliationQueue(initial: (record, sensitivity))
+            await runReconciliationQueue(initial: (record, sensitivity))
         }
         reconciliationTask = task
         await task.value

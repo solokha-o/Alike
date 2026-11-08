@@ -239,7 +239,7 @@ public enum BestShotRanker {
                 config: config
             )
         }
-        let sharpnessRatios = self.sharpnessRatios(snapshots: usable, scores: scores, config: config)
+        let sharpnessRatios = sharpnessRatios(snapshots: usable, scores: scores, config: config)
         let hasSharpReference = sharpnessRatios.values.contains { $0 >= config.referenceSharpnessRatio }
         var excluded = Set<String>()
         if hasSharpReference {

@@ -33,7 +33,7 @@ public struct ScreenshotCleanupView: View {
         self.assets = assets
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: ScreenshotCleanupViewModel(
+        _viewModel = State(initialValue: ScreenshotCleanupViewModel(
             assets: assets,
             sourceCategory: sourceCategory,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),

@@ -115,7 +115,7 @@ public final class ScannerViewModel {
 
         let task = Task { @MainActor [weak self] in
             guard let self else { return PremiumAccessDecision.requiresPremium }
-            return await self.performUserInitiatedScan()
+            return await performUserInitiatedScan()
         }
         scanOperation = task
         let decision = await task.value

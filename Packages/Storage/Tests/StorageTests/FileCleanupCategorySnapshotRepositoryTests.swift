@@ -125,7 +125,7 @@ final class FileCleanupCategorySnapshotRepositoryTests {
     }
 
     @Test func testConcurrentReadersOnlyObserveCompleteReplacements() async throws {
-        let repository = self.repository
+        let repository = repository
         let firstGeneration = CleanupCategoryKind.allCases.map {
             makeSnapshot(kind: $0, generation: "first")
         }

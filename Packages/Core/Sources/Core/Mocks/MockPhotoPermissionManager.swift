@@ -12,7 +12,7 @@ public final class MockPhotoPermissionManager: PhotoPermissionManager {
     
     public init(authorizationStatus: PHAuthorizationStatus = .authorized) {
         self.authorizationStatus = authorizationStatus
-        self.requestAuthorizationResult = authorizationStatus
+        requestAuthorizationResult = authorizationStatus
     }
     
     public var isAuthorized: Bool {

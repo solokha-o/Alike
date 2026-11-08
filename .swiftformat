@@ -15,6 +15,7 @@
 --redundant-throws tests-only
 --redundant-async tests-only
 --ranges preserve
+--self remove
 
 # Generated, vendored, and non-app code.
 --exclude **/.build,build,vendor,Skills,site,fastlane
@@ -137,3 +138,4 @@
 --rules redundantSwiftTestingSuite
 # extensionAccessControl (ADR row 20) added after row 27 by owner decision
 --rules extensionAccessControl
+--rules redundantSelf

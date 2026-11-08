@@ -43,8 +43,8 @@ final class ScreenshotCleanupViewModel {
         self.completionDelay = completionDelay
         self.assetSnapshots = assetSnapshots ?? assets.map(ReviewAssetSnapshot.init)
         self.sourceCategory = sourceCategory
-        self.selectedAssetIDs = []
-        self.estimatedSavingsBytes = 0
+        selectedAssetIDs = []
+        estimatedSavingsBytes = 0
     }
 
     var assetCount: Int {

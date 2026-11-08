@@ -13,7 +13,7 @@ struct FullscreenPhotoPagerView: View {
 
     init(assets: [PHAsset], selectedIndex: Int) {
         self.assets = assets
-        self._currentIndex = State(initialValue: selectedIndex)
+        _currentIndex = State(initialValue: selectedIndex)
     }
 
     var body: some View {

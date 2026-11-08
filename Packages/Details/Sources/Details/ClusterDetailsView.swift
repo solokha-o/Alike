@@ -49,7 +49,7 @@ public struct ClusterDetailsView: View {
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: ClusterDetailsViewModel(
+        _viewModel = State(initialValue: ClusterDetailsViewModel(
             cluster: cluster,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
@@ -70,8 +70,8 @@ public struct ClusterDetailsView: View {
     ) {
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
-        self.subscriptionStore = nil
-        self._viewModel = State(initialValue: viewModel)
+        subscriptionStore = nil
+        _viewModel = State(initialValue: viewModel)
     }
 
     public var body: some View {

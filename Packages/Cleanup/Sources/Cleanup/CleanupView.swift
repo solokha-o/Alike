@@ -75,13 +75,13 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
         @ViewBuilder screenshotDestination: @escaping (CleanupCategoryDestinationContext) -> ScreenshotDestination
     ) {
         self.workspace = workspace
-        self._sensitivity = sensitivity
+        _sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
         self.ratingPrompt = ratingPrompt
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
-        self._pendingWidgetEntry = pendingWidgetEntry
+        _pendingWidgetEntry = pendingWidgetEntry
         self.clusterDestination = clusterDestination
         self.screenshotDestination = screenshotDestination
     }

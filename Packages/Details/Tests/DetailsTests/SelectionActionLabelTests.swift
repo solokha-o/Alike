@@ -54,7 +54,7 @@ struct SelectionActionLabelTests {
 
         for key in [Self.moveKey, "details.screenshotCleanupComponents.moving"] {
             for language in LocalizationCatalog.shippedLanguages {
-                let value = try self.value(key, language, catalog).lowercased()
+                let value = try value(key, language, catalog).lowercased()
                 for word in forbidden where value.contains(word) {
                     Issue.record("\(key) [\(language)] promises deletion: \(value)")
                 }

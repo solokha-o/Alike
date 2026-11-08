@@ -25,7 +25,7 @@ struct ReminderScheduleCopyTests {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = try self.value(Self.footerKey, language, catalog)
+            let value = try value(Self.footerKey, language, catalog)
 
             #expect(value.contains("%@"), "\(language) dropped the schedule argument: \(value)")
 
@@ -41,7 +41,7 @@ struct ReminderScheduleCopyTests {
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = try self.value(Self.footerKey, language, catalog)
+            let value = try value(Self.footerKey, language, catalog)
             let specifiers = value.components(separatedBy: "%@").count - 1
 
             #expect(specifiers == 1, "\(language) has \(specifiers) arguments: \(value)")

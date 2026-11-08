@@ -27,12 +27,12 @@ public struct ScannerView: View {
         onOpenCleanup: @escaping () -> Void = {},
         viewModel: ScannerViewModel? = nil
     ) {
-        self._sensitivity = sensitivity
-        self._shouldStartScan = shouldStartScan
-        self._isModalPresented = isModalPresented
+        _sensitivity = sensitivity
+        _shouldStartScan = shouldStartScan
+        _isModalPresented = isModalPresented
         self.subscriptionStore = subscriptionStore
         self.onOpenCleanup = onOpenCleanup
-        self._viewModel = State(initialValue: viewModel ?? ScannerViewModel(
+        _viewModel = State(initialValue: viewModel ?? ScannerViewModel(
             workspace: workspace,
             sensitivity: sensitivity.wrappedValue
         ))

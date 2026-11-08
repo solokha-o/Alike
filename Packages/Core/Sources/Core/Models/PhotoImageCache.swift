@@ -8,11 +8,11 @@ struct PhotoImageCacheKey: Hashable, Sendable {
 
     init(assetIdentifier: String, modificationDate: Date?, targetSize: CGSize) {
         self.assetIdentifier = assetIdentifier
-        self.modificationTimestamp = modificationDate.map {
+        modificationTimestamp = modificationDate.map {
             $0.timeIntervalSinceReferenceDate.bitPattern
         }
-        self.targetWidth = Double(targetSize.width).bitPattern
-        self.targetHeight = Double(targetSize.height).bitPattern
+        targetWidth = Double(targetSize.width).bitPattern
+        targetHeight = Double(targetSize.height).bitPattern
     }
 }
 

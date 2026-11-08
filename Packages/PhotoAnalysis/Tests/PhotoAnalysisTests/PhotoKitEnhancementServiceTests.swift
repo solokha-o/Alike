@@ -58,7 +58,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.originalUnavailable) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
     }
 
@@ -68,7 +68,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.saveFailed) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
     }
 
@@ -76,7 +76,7 @@ import Testing
         let service = makeService(library: FakePhotoLibrary(), authorization: .limited)
 
         await assertThrows(.limitedAccessNotEditable) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
     }
 
@@ -84,7 +84,7 @@ import Testing
         let service = makeService(library: FakePhotoLibrary(), authorization: .denied)
 
         await assertThrows(.notAuthorized) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
     }
 
@@ -92,7 +92,7 @@ import Testing
         let service = makeService(library: FakePhotoLibrary(isEditable: false))
 
         await assertThrows(.limitedAccessNotEditable) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
     }
 
@@ -119,7 +119,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.notEnhancedByAlike) {
-            try await service.revertToOriginal(localIdentifier: self.identifier)
+            try await service.revertToOriginal(localIdentifier: identifier)
         }
 
         let didRevert = await library.didRevert
@@ -130,7 +130,7 @@ import Testing
         let service = makeService(library: FakePhotoLibrary())
 
         await assertThrows(.notEnhancedByAlike) {
-            try await service.revertToOriginal(localIdentifier: self.identifier)
+            try await service.revertToOriginal(localIdentifier: identifier)
         }
     }
 
@@ -151,7 +151,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.unsupportedAsset) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
 
         let saved = await library.savedAdjustmentData
@@ -274,7 +274,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.editedInAnotherApp) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
 
         let saved = await library.savedAdjustmentData
@@ -293,7 +293,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.editedInAnotherApp) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
 
         let saved = await library.savedAdjustmentData
@@ -312,7 +312,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.editedInAnotherApp) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
 
         let purposes = await library.requestedPurposes
@@ -327,7 +327,7 @@ import Testing
         let service = makeService(library: library)
 
         await assertThrows(.limitedAccessNotEditable) {
-            _ = try await service.applyEnhancement(localIdentifier: self.identifier)
+            _ = try await service.applyEnhancement(localIdentifier: identifier)
         }
 
         let purposes = await library.requestedPurposes
@@ -513,7 +513,7 @@ private actor FakePhotoLibrary {
             existingAdjustmentFormatIdentifier: isReadable ? existingAdjustmentFormatIdentifier : nil,
             isAdjustmentDataReadable: isReadable,
             loadOriginal: { [self] in
-                if let originalError = self.originalError { throw originalError }
+                if let originalError { throw originalError }
                 return (
                     CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 256, height: 256)),
                     // A rotated source: the saved rendering must keep the
@@ -522,11 +522,11 @@ private actor FakePhotoLibrary {
                 )
             },
             saveEnhanced: { [self] _, recipe, adjustmentData in
-                if let saveError = self.saveError { throw saveError }
-                await self.recordSave(adjustmentData, recipeStepCount: recipe.steps.count)
+                if let saveError { throw saveError }
+                await recordSave(adjustmentData, recipeStepCount: recipe.steps.count)
             },
             revertToOriginal: { [self] in
-                await self.recordRevert()
+                await recordRevert()
             }
         )
     }

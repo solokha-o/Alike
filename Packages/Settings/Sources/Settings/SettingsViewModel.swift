@@ -129,14 +129,14 @@ extension SettingsViewModel {
                 guard
                     !Task.isCancelled,
                     let self,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
-                self.cleanupReminderState = state
+                cleanupReminderState = state
             } catch {
                 guard
                     !Task.isCancelled,
                     let self,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
 
                 AppLog.storage.error(
@@ -146,10 +146,10 @@ extension SettingsViewModel {
 
                 guard
                     !Task.isCancelled,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
-                self.cleanupReminderState = state
-                self.cleanupReminderErrorMessage = SettingsL10n.Main.cleanupReminderCouldntBeUpdated
+                cleanupReminderState = state
+                cleanupReminderErrorMessage = SettingsL10n.Main.cleanupReminderCouldntBeUpdated
             }
         }
     }

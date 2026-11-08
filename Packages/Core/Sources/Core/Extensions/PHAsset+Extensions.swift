@@ -175,7 +175,7 @@ final class PhotoKitRequestCoordinator<Value: Sendable & ExpressibleByNilLiteral
         let requestID = requestID
         let continuation = continuation
         self.continuation = nil
-        self.timeoutTask = nil
+        timeoutTask = nil
         lock.unlock()
 
         if let requestID {
@@ -330,7 +330,7 @@ public struct AssetMetadata: Sendable {
         self.pixelHeight = pixelHeight
         self.isFavorite = isFavorite
         self.mediaType = mediaType
-        self.photoTraits = Self.photoTraits(from: mediaSubtypes)
+        photoTraits = Self.photoTraits(from: mediaSubtypes)
         self.location = location
     }
     

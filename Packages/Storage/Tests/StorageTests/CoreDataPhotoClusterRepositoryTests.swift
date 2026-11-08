@@ -402,7 +402,7 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     init(token: Data?, imageAssetCount: Int, summary: PhotoLibraryChangeSummary?) {
         self.token = token
-        self.currentImageAssetCount = imageAssetCount
+        currentImageAssetCount = imageAssetCount
         self.summary = summary
     }
 

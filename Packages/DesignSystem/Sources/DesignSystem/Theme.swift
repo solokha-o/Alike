@@ -92,10 +92,10 @@ public enum CornerRadius {
 
 extension View {
     public func cardShadow() -> some View {
-        self.shadow(color: Color.black.opacity(ColorOpacity.elevatedShadow), radius: 10, x: 0, y: 4)
+        shadow(color: Color.black.opacity(ColorOpacity.elevatedShadow), radius: 10, x: 0, y: 4)
     }
     
     public func subtleShadow() -> some View {
-        self.shadow(color: Color.black.opacity(ColorOpacity.subtleShadow), radius: 5, x: 0, y: 2)
+        shadow(color: Color.black.opacity(ColorOpacity.subtleShadow), radius: 5, x: 0, y: 2)
     }
 }
