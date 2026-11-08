@@ -458,7 +458,7 @@ public struct WelcomeView: View {
     private var alikeWelcomeHero: some View {
         AnimatedImageOverlay(
             animationURL: playsAlikeWelcomeOverlay ? AlikeAssets.welcomeHeroOverlayURL : nil,
-            aspectRatio: 1080.0 / 912.0,
+            aspectRatio: 1_080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
             ambientMotion: playsAlikeWelcomeOverlay ? .breathe : .none

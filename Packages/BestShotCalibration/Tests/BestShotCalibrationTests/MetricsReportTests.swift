@@ -221,8 +221,8 @@ struct MetricsReportTests {
             signals: .failed(failure, pixelArea: 12_000_000),
             creationDate: Date(timeIntervalSince1970: 1_000),
             modificationDate: Date(timeIntervalSince1970: 1_000),
-            pixelWidth: 4000,
-            pixelHeight: 3000
+            pixelWidth: 4_000,
+            pixelHeight: 3_000
         )
     }
 
@@ -242,8 +242,8 @@ struct MetricsReportTests {
     private func makeCandidate(
         _ assetID: String,
         globalSharpness: Double,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000,
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000,
         faces: [FaceQualitySignal]? = nil,
         rejections: FaceRejectionCounts? = nil
     ) -> BestShotCalibrationCandidate {

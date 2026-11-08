@@ -324,16 +324,16 @@ struct WeightSweepTests {
                     globalSharpness: 11,
                     darkClippedFraction: 0.20,
                     noiseEstimate: 0.9,
-                    pixelWidth: 2000,
-                    pixelHeight: 1500
+                    pixelWidth: 2_000,
+                    pixelHeight: 1_500
                 ),
                 makeCandidate(
                     winnerID,
                     globalSharpness: 9,
                     darkClippedFraction: 0,
                     noiseEstimate: 0.01,
-                    pixelWidth: 8000,
-                    pixelHeight: 6000
+                    pixelWidth: 8_000,
+                    pixelHeight: 6_000
                 ),
                 makeCandidate(
                     fillerID,
@@ -378,8 +378,8 @@ struct WeightSweepTests {
         faceSharpness: Double? = nil,
         darkClippedFraction: Double = 0,
         noiseEstimate: Double = 0.1,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000
     ) -> BestShotCalibrationCandidate {
         let faces: [FaceQualitySignal]? = faceSharpness.map {
             [FaceQualitySignal(

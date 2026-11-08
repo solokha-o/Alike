@@ -26,7 +26,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000001",
             count: 2,
             bytes: 1_024,
-            year: 2025,
+            year: 2_025,
             month: 1,
             day: 31
         )
@@ -34,7 +34,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000002",
             count: 3,
             bytes: 2_048,
-            year: 2025,
+            year: 2_025,
             month: 2,
             day: 1
         )
@@ -42,7 +42,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000003",
             count: 4,
             bytes: 4_096,
-            year: 2025,
+            year: 2_025,
             month: 2,
             day: 15
         )
@@ -57,9 +57,9 @@ struct CleanupHistorySnapshotTests {
         #expect(snapshot.insights.cleanupSessionCount == 3)
         #expect(snapshot.insights.latestCleanup == latestRecord)
         #expect(snapshot.sections.count == 2)
-        #expect(snapshot.sections[0].month == date(year: 2025, month: 2, day: 1))
+        #expect(snapshot.sections[0].month == date(year: 2_025, month: 2, day: 1))
         #expect(snapshot.sections[0].entries == [latestRecord, earlyFebruaryRecord])
-        #expect(snapshot.sections[1].month == date(year: 2025, month: 1, day: 1))
+        #expect(snapshot.sections[1].month == date(year: 2_025, month: 1, day: 1))
         #expect(snapshot.sections[1].entries == [januaryRecord])
         #expect(!snapshot.isEmpty)
     }
@@ -69,7 +69,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000004",
             count: 1,
             bytes: 0,
-            year: 2025,
+            year: 2_025,
             month: 3,
             day: 1
         )
@@ -96,11 +96,11 @@ struct CleanupHistorySnapshotTests {
         // Two days inside one Gregorian month that Umm al-Qura puts in different months. A
         // Gregorian month is long enough to always straddle such a boundary; finding it rather
         // than hard-coding it keeps the test honest if the Hijri tables are ever revised.
-        let firstOfMarch = date(year: 2026, month: 3, day: 1, calendar: groupingCalendar)
+        let firstOfMarch = date(year: 2_026, month: 3, day: 1, calendar: groupingCalendar)
         let hijriMonthOfFirst = hijri.component(.month, from: firstOfMarch)
         let secondDay = try #require((2...31).first { day in
                 guard let candidate = groupingCalendar.date(
-                    from: DateComponents(year: 2026, month: 3, day: day)
+                    from: DateComponents(year: 2_026, month: 3, day: day)
                 ) else {
                     return false
                 }
@@ -111,7 +111,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000005",
             count: 1,
             bytes: 512,
-            year: 2026,
+            year: 2_026,
             month: 3,
             day: 1,
             calendar: groupingCalendar
@@ -120,7 +120,7 @@ struct CleanupHistorySnapshotTests {
             id: "00000000-0000-0000-0000-000000000006",
             count: 1,
             bytes: 512,
-            year: 2026,
+            year: 2_026,
             month: 3,
             day: secondDay,
             calendar: groupingCalendar

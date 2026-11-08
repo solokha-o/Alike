@@ -56,7 +56,7 @@ struct WidgetSnapshotCodecTests {
     @Test("Two payloads differing only in when they were generated say the same thing")
     func contentComparisonIgnoresGeneratedAt() {
         let later = WidgetSnapshot(
-            generatedAt: Self.reference.generatedAt.addingTimeInterval(3600),
+            generatedAt: Self.reference.generatedAt.addingTimeInterval(3_600),
             photoAuthorization: Self.reference.photoAuthorization,
             hasCompletedScan: Self.reference.hasCompletedScan,
             lastScanDate: Self.reference.lastScanDate,

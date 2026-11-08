@@ -30,8 +30,8 @@ struct BestShotCalibrationCorpusTests {
                     ),
                     creationDate: Date(timeIntervalSince1970: 1_000),
                     modificationDate: Date(timeIntervalSince1970: 1_000),
-                    pixelWidth: 4000,
-                    pixelHeight: 3000,
+                    pixelWidth: 4_000,
+                    pixelHeight: 3_000,
                     isFavorite: true
                 ),
                 BestShotCalibrationCandidate(
@@ -39,8 +39,8 @@ struct BestShotCalibrationCorpusTests {
                     signals: PhotoQualitySignals(globalSharpness: 20, pixelArea: 12_000_000),
                     creationDate: Date(timeIntervalSince1970: 1_001),
                     modificationDate: nil,
-                    pixelWidth: 4000,
-                    pixelHeight: 3000,
+                    pixelWidth: 4_000,
+                    pixelHeight: 3_000,
                     isFavorite: false
                 )
             ],
@@ -53,14 +53,14 @@ struct BestShotCalibrationCorpusTests {
                 BestShotCalibrationCandidate(
                     assetID: "asset-3",
                     signals: PhotoQualitySignals(globalSharpness: 40, pixelArea: 8_000_000),
-                    pixelWidth: 3000,
-                    pixelHeight: 2000
+                    pixelWidth: 3_000,
+                    pixelHeight: 2_000
                 ),
                 BestShotCalibrationCandidate(
                     assetID: "asset-4",
                     signals: PhotoQualitySignals(globalSharpness: 45, pixelArea: 8_000_000),
-                    pixelWidth: 3000,
-                    pixelHeight: 2000
+                    pixelWidth: 3_000,
+                    pixelHeight: 2_000
                 )
             ],
             humanBestShotID: "asset-4"

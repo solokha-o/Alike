@@ -30,8 +30,8 @@ struct BestShotCalibrationLabelingViewModelTests {
                     signals: PhotoQualitySignals(globalSharpness: 42),
                     creationDate: Date(timeIntervalSince1970: 1_700_000_000),
                     modificationDate: Date(timeIntervalSince1970: 1_700_000_100),
-                    pixelWidth: 3024,
-                    pixelHeight: 4032,
+                    pixelWidth: 3_024,
+                    pixelHeight: 4_032,
                     isFavorite: false
                 )
             }

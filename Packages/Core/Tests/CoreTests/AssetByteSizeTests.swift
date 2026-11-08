@@ -86,11 +86,11 @@ struct PersistedByteSizeVersionTests {
         let state = try JSONDecoder().decode(ClusterReviewState.self, from: Data(json.utf8))
 
         #expect(state.byteSizeVersion == nil)
-        #expect(state.estimatedSavingsBytes == 2048)
+        #expect(state.estimatedSavingsBytes == 2_048)
     }
 
     @Test func testRemappedKeepsTheMarkerOfKeptBytesAndStampsNewBytes() {
-        let legacy = reviewState(clusterID: UUID(), selected: ["x"], bytes: 2048, version: nil)
+        let legacy = reviewState(clusterID: UUID(), selected: ["x"], bytes: 2_048, version: nil)
 
         #expect(legacy.remapped(clusterID: UUID()).byteSizeVersion == nil)
         #expect(

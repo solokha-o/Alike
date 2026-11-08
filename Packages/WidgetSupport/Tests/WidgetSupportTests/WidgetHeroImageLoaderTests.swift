@@ -24,7 +24,7 @@ struct WidgetHeroImageLoaderTests {
     @Test("decodes far smaller than the source")
     func downsamplesTheSource() throws {
         let image = try #require(WidgetHeroImageLoader.cgImage(at: try heroURL(), maxPixelSize: 270))
-        #expect(max(image.width, image.height) < 1254)
+        #expect(max(image.width, image.height) < 1_254)
     }
 
     @Test("nil for a missing file")

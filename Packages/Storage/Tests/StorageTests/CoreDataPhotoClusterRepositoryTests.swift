@@ -119,7 +119,7 @@ struct CoreDataPhotoClusterRepositoryTests {
         try await repository.updateLastScanDate(firstDate)
         
         // When: Updating with new date
-        let secondDate = Date().addingTimeInterval(3600) // 1 hour later
+        let secondDate = Date().addingTimeInterval(3_600) // 1 hour later
         try await repository.updateLastScanDate(secondDate)
         
         // Then: Should return latest date
