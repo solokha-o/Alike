@@ -198,21 +198,21 @@ public enum WeightSweep {
 
         var name: String {
             switch self {
-            case .sharpness: return "sharpness"
-            case .faceQuality: return "faceQuality"
-            case .exposure: return "exposure"
-            case .noiseArtifacts: return "noiseArtifacts"
-            case .resolution: return "resolution"
+            case .sharpness: "sharpness"
+            case .faceQuality: "faceQuality"
+            case .exposure: "exposure"
+            case .noiseArtifacts: "noiseArtifacts"
+            case .resolution: "resolution"
             }
         }
 
         func value(in weights: PhotoQualityScoringConfig.Weights) -> Double {
             switch self {
-            case .sharpness: return weights.sharpness
-            case .faceQuality: return weights.faceQuality
-            case .exposure: return weights.exposure
-            case .noiseArtifacts: return weights.noiseArtifacts
-            case .resolution: return weights.resolution
+            case .sharpness: weights.sharpness
+            case .faceQuality: weights.faceQuality
+            case .exposure: weights.exposure
+            case .noiseArtifacts: weights.noiseArtifacts
+            case .resolution: weights.resolution
             }
         }
     }
@@ -223,15 +223,15 @@ public enum WeightSweep {
 
         var name: String {
             switch self {
-            case .withFaces: return "weightsWithFaces"
-            case .withoutFaces: return "weightsWithoutFaces"
+            case .withFaces: "weightsWithFaces"
+            case .withoutFaces: "weightsWithoutFaces"
             }
         }
 
         func weights(in config: PhotoQualityScoringConfig) -> PhotoQualityScoringConfig.Weights {
             switch self {
-            case .withFaces: return config.weightsWithFaces
-            case .withoutFaces: return config.weightsWithoutFaces
+            case .withFaces: config.weightsWithFaces
+            case .withoutFaces: config.weightsWithoutFaces
             }
         }
 

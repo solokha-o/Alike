@@ -24,17 +24,17 @@ final class TabManager {
         
         var title: String {
             switch self {
-            case .scanner: return AlikeL10n.Tab.scanner
-            case .cleanup: return AlikeL10n.Tab.cleanup
-            case .settings: return AlikeL10n.Tab.settings
+            case .scanner: AlikeL10n.Tab.scanner
+            case .cleanup: AlikeL10n.Tab.cleanup
+            case .settings: AlikeL10n.Tab.settings
             }
         }
         
         var icon: String {
             switch self {
-            case .scanner: return "viewfinder"
-            case .cleanup: return "photo.stack"
-            case .settings: return "gear"
+            case .scanner: "viewfinder"
+            case .cleanup: "photo.stack"
+            case .settings: "gear"
             }
         }
     }

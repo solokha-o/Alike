@@ -17,9 +17,9 @@ public enum PhotoEnhancementState: Equatable, Sendable {
     public var isBusy: Bool {
         switch self {
         case .preparingPreview, .applying, .reverting:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 

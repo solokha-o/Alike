@@ -18,7 +18,7 @@ public enum PersonalizationReport {
         public var description: String {
             switch self {
             case let .invalidToken(token):
-                return "Invalid --prefix value '\(token)': expected a non-negative integer or 'all'."
+                "Invalid --prefix value '\(token)': expected a non-negative integer or 'all'."
             }
         }
     }
@@ -57,9 +57,9 @@ public enum PersonalizationReport {
         public var description: String {
             switch self {
             case let .invalidValue(token):
-                return "Invalid --folds value '\(token)': expected an integer >= 2."
+                "Invalid --folds value '\(token)': expected an integer >= 2."
             case let .outOfRange(value, corpusSize):
-                return "Invalid --folds value \(value): must be between 2 and the corpus size "
+                "Invalid --folds value \(value): must be between 2 and the corpus size "
                     + "(\(corpusSize) cluster(s))."
             }
         }

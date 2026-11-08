@@ -9,9 +9,9 @@ public enum SensitivityLevel: String, CaseIterable, Sendable {
     /// Vision distance threshold (lower = stricter matching)
     public var threshold: Float {
         switch self {
-        case .low: return 0.8
-        case .medium: return 0.9
-        case .high: return 0.95
+        case .low: 0.8
+        case .medium: 0.9
+        case .high: 0.95
         }
     }
     
@@ -26,9 +26,9 @@ public enum SensitivityLevel: String, CaseIterable, Sendable {
     /// exercise this switch against a compiled catalog fixture instead of duplicating it.
     public func displayName(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
         switch self {
-        case .low: return CoreL10n.SensitivityLevel.low(bundle: bundle, locale: locale)
-        case .medium: return CoreL10n.SensitivityLevel.medium(bundle: bundle, locale: locale)
-        case .high: return CoreL10n.SensitivityLevel.high(bundle: bundle, locale: locale)
+        case .low: CoreL10n.SensitivityLevel.low(bundle: bundle, locale: locale)
+        case .medium: CoreL10n.SensitivityLevel.medium(bundle: bundle, locale: locale)
+        case .high: CoreL10n.SensitivityLevel.high(bundle: bundle, locale: locale)
         }
     }
 }

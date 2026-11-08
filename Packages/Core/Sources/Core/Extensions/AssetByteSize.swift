@@ -142,11 +142,11 @@ public enum AssetByteSize {
     private static func isSameModificationDate(_ cached: Date?, _ current: Date?) -> Bool {
         switch (cached, current) {
         case (nil, nil):
-            return true
+            true
         case let (cached?, current?):
-            return abs(cached.timeIntervalSince(current)) < 1
+            abs(cached.timeIntervalSince(current)) < 1
         default:
-            return false
+            false
         }
     }
 

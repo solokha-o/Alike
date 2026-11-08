@@ -8,19 +8,19 @@ extension BestShotReasonCode {
     var localizedLabel: String {
         switch self {
         case .sharper:
-            return DetailsL10n.ClusterDetails.reasonSharper
+            DetailsL10n.ClusterDetails.reasonSharper
         case .betterExposure:
-            return DetailsL10n.ClusterDetails.reasonBetterExposure
+            DetailsL10n.ClusterDetails.reasonBetterExposure
         case .faceInFocus:
-            return DetailsL10n.ClusterDetails.reasonFaceInFocus
+            DetailsL10n.ClusterDetails.reasonFaceInFocus
         case .openEyes:
-            return DetailsL10n.ClusterDetails.reasonOpenEyes
+            DetailsL10n.ClusterDetails.reasonOpenEyes
         case .lessNoise:
-            return DetailsL10n.ClusterDetails.reasonLessNoise
+            DetailsL10n.ClusterDetails.reasonLessNoise
         case .favorite:
-            return DetailsL10n.ClusterDetails.favorite
+            DetailsL10n.ClusterDetails.favorite
         case .higherResolution:
-            return DetailsL10n.ClusterDetails.reasonHigherResolution
+            DetailsL10n.ClusterDetails.reasonHigherResolution
         }
     }
 }
@@ -31,22 +31,22 @@ extension BestShotConfidence {
     var badgeTitle: String {
         switch self {
         case .automatic:
-            return DetailsL10n.Common.bestShot
+            DetailsL10n.Common.bestShot
         case .lowConfidence:
-            return DetailsL10n.ClusterDetails.probablyBestShot
+            DetailsL10n.ClusterDetails.probablyBestShot
         case .unresolved:
-            return DetailsL10n.Common.bestShot
+            DetailsL10n.Common.bestShot
         }
     }
 
     var badgeSymbolName: String {
         switch self {
         case .automatic:
-            return "star.fill"
+            "star.fill"
         case .lowConfidence:
-            return "star.leadinghalf.filled"
+            "star.leadinghalf.filled"
         case .unresolved:
-            return "questionmark.circle"
+            "questionmark.circle"
         }
     }
 }

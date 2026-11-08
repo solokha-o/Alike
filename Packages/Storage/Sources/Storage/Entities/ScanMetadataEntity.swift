@@ -8,6 +8,6 @@ public final class ScanMetadataEntity: NSManagedObject {
     @NSManaged public var photoLibraryChangeToken: String?
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ScanMetadataEntity> {
-        return NSFetchRequest<ScanMetadataEntity>(entityName: "ScanMetadataEntity")
+        NSFetchRequest<ScanMetadataEntity>(entityName: "ScanMetadataEntity")
     }
 }

@@ -129,3 +129,4 @@
 --rules elseOnSameLine
 --rules consecutiveSpaces
 --rules unusedArguments
+--rules redundantReturn
