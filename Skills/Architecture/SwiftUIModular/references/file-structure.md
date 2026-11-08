@@ -74,7 +74,7 @@ needs a new ADR (`Docs/adr/0000-template.md`) before the first commit.
 | Async work from a view | `.task { await viewModel.load() }`; `Task { … }` only in an action closure. | `templates/View.swift` |
 | User-visible strings | The typed wrapper `<Package>L10n` over the package `Localizable.xcstrings`. | `SettingsL10n.DeleteAllDataModel.someDataMayAlreadyHave` |
 | Preference keys | Constants in `AppPreferenceKey` (`Packages/Core/Sources/Core/Models/AppPreferenceKey.swift`). A new key follows `Skills/Storage/persisted-data-evolution`. | `AppPreferenceKey.CleanupReminder.isEnabled` |
-| Tests | Swift Testing: `@MainActor @Suite struct`, `@Test func test…`, `#expect`, `#require`. No `import XCTest`. | `Packages/Settings/Tests/SettingsTests/DeleteAllDataModelTests.swift` |
+| Tests | Swift Testing: `@MainActor struct` (no bare `@Suite`: SwiftFormat `redundantSwiftTestingSuite` removes it; write `@Suite(…)` only with a name or traits), `@Test func test…`, `#expect`, `#require`. No `import XCTest`. | `Packages/Settings/Tests/SettingsTests/DeleteAllDataModelTests.swift` |
 
 ## Code that does not follow the current way
 
