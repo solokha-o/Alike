@@ -2,8 +2,8 @@
 import Core
 import CryptoKit
 import Foundation
-import Photos
 import PhotoAnalysis
+import Photos
 import Storage
 
 /// One candidate as measured for the cluster currently on screen. Keeps the

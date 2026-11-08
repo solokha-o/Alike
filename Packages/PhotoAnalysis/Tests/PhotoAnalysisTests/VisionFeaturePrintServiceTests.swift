@@ -1,7 +1,7 @@
 import Foundation
+import Photos
 import Testing
 import Vision
-import Photos
 #if canImport(UIKit)
 import UIKit
 #endif

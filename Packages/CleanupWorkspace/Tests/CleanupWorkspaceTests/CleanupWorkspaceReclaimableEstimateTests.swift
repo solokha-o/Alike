@@ -1,7 +1,7 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 /// `ScanSummary.estimatedSavingsBytes`, the cold-launch estimate and the

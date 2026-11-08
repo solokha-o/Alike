@@ -1,7 +1,7 @@
 import Core
-import UserNotifications
 import Foundation
 import Testing
+import UserNotifications
 @testable import Cleanup
 
 struct CleanupReminderManagerTests {

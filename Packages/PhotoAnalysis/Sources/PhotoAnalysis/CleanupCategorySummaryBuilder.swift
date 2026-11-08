@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Photos
-import Core
 
 struct CleanupCategoryAssetSnapshot: Equatable, Sendable {
     let localIdentifier: String

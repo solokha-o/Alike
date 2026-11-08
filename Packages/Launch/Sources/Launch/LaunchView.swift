@@ -1,5 +1,5 @@
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 /// Launch screen with 3-second animation
 public struct LaunchView: View {

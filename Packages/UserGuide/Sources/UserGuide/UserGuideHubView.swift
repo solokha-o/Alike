@@ -1,6 +1,6 @@
-import SwiftUI
 import DesignSystem
 import NavigationKit
+import SwiftUI
 
 /// The guide hub. It owns no navigation of its own: the enclosing stack supplies the route type,
 /// so the same hub can be pushed inside Settings and presented as a sheet from Scanner.

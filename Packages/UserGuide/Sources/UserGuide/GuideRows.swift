@@ -1,7 +1,7 @@
-import SwiftUI
 import Core
 import DesignSystem
 import PurchasesUI
+import SwiftUI
 
 // MARK: - Tints
 

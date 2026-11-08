@@ -1,10 +1,10 @@
-import SwiftUI
 import Core
 import DesignSystem
 import Diagnostics
 import NavigationKit
 import Purchases
 import PurchasesUI
+import SwiftUI
 import UserGuide
 #if canImport(UIKit)
 import UIKit

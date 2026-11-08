@@ -1,5 +1,5 @@
-import CoreData
 import Core
+import CoreData
 import Foundation
 
 /// Core Data cache of Best Shot quality signals, stored on the photo rows the

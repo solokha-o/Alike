@@ -1,7 +1,7 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Purchases
+import Testing
 @testable import PurchasesUI
 
 struct PremiumPresentationTests {

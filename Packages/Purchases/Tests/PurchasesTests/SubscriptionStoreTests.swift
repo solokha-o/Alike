@@ -1,7 +1,7 @@
+import Core
 import Foundation
 import Testing
 @testable import Purchases
-import Core
 
 @MainActor
 struct SubscriptionStoreTests {

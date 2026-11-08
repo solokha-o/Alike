@@ -1,5 +1,5 @@
-import Testing
 import DesignSystem
+import Testing
 @testable import UserGuide
 
 @Suite("Guide content")

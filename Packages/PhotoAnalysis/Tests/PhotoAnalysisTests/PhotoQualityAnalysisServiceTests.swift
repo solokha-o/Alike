@@ -2,8 +2,8 @@ import Core
 import CoreGraphics
 import Foundation
 import Photos
-import Vision
 import Testing
+import Vision
 @testable import PhotoAnalysis
 
 struct PhotoQualityAnalysisServiceTests {

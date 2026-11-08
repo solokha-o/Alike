@@ -1,5 +1,5 @@
-import SwiftUI
 import Core
+import SwiftUI
 
 @MainActor
 @Observable

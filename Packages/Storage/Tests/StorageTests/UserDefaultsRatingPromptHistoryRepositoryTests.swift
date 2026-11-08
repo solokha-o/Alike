@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Storage
 
 /// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`

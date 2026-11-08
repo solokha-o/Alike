@@ -109,3 +109,6 @@ cae7cdbdec6e88734b55abdf71c8d401f1307f1e
 
 # LATER rule 33 (ADR-0001): trailingSpace, format only.
 5f65aa9d64c5849a73c7b157fa4aad4648b07b50
+
+# LATER rule 34 (ADR-0001): sortImports, format only.
+94808184cc06188588e7a090f5f35ac29b5a6324

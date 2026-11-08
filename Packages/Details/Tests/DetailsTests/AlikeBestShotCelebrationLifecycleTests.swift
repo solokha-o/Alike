@@ -1,6 +1,6 @@
+import DesignSystem
 import Foundation
 import Testing
-import DesignSystem
 @testable import Details
 
 struct AlikeBestShotCelebrationLifecycleTests {

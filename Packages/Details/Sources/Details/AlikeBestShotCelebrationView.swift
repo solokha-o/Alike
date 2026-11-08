@@ -1,6 +1,6 @@
-import SwiftUI
 import Core
 import DesignSystem
+import SwiftUI
 
 struct AlikeBestShotCelebrationPresentation: Equatable {
     let animationURL: URL?

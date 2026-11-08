@@ -1,7 +1,7 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 /// Covers what the workspace does with smart-category and history data around a

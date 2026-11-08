@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Settings
 
 /// The reminder section shows the same schedule twice: the `Reminder schedule` row renders it

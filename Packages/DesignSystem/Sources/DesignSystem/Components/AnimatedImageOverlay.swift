@@ -1,5 +1,5 @@
-import SwiftUI
 import Lottie
+import SwiftUI
 
 public enum OverlayAnimationPlayback: Sendable, Equatable {
     case once

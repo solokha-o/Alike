@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 import os
 
 /// Persists installation-lifetime premium prompt claims independently of monthly scan usage.

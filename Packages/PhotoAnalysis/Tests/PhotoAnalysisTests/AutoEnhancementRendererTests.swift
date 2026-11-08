@@ -1,8 +1,8 @@
 import Core
 import CoreGraphics
 import CoreImage
-import ImageIO
 import Foundation
+import ImageIO
 import Testing
 @testable import PhotoAnalysis
 

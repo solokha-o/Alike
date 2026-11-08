@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Cleanup
 
 /// The cleanup grid card previews `bestShotAsset(preferring:)`, so clustering

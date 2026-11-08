@@ -1,7 +1,7 @@
-import SwiftUI
-import Foundation
-import Testing
 import DesignSystem
+import Foundation
+import SwiftUI
+import Testing
 @testable import Details
 
 struct AlikeComparisonReviewLifecycleTests {

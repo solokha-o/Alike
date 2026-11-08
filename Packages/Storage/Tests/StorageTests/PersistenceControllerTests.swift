@@ -1,6 +1,6 @@
+import CoreData
 import Foundation
 import Testing
-import CoreData
 @testable import Storage
 
 /// `@MainActor`: the tests read and write `viewContext`, a main-queue context.

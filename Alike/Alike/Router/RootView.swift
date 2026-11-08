@@ -5,23 +5,23 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
-import os
-import SwiftUI
-import Launch
-import Welcome
-import Scanner
-import Settings
-import Core
 import Cleanup
 import CleanupWorkspace
-import Storage
-import Photos
+import Core
+import Details
+import Diagnostics
+import Launch
+import os
 import PhotoAnalysis
+import Photos
 import Purchases
 import PurchasesUI
+import Scanner
+import Settings
+import Storage
+import SwiftUI
+import Welcome
 import WidgetSupport
-import Diagnostics
-import Details
 
 /// Root view that manages app navigation flow
 struct RootView: View {

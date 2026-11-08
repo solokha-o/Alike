@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 public protocol LocalAppDataDeleting: Sendable {
     func deleteAllData() async throws

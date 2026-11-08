@@ -1,5 +1,5 @@
-import Testing
 import Foundation
+import Testing
 @testable import Storage
 
 /// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`

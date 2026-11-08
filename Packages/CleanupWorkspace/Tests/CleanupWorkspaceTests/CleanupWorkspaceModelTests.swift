@@ -1,8 +1,8 @@
 import CleanupWorkspace
 import Core
+import Foundation
 import Observation
 import Photos
-import Foundation
 import Testing
 
 private enum ScanPersistenceTestError: Error {

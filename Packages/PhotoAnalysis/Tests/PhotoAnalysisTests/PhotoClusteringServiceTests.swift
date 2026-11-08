@@ -1,6 +1,6 @@
+import CoreLocation
 import Foundation
 import Testing
-import CoreLocation
 @testable import PhotoAnalysis
 
 @MainActor

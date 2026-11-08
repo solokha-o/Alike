@@ -1,7 +1,7 @@
 import Foundation
 import ImageIO
-import Testing
 import Lottie
+import Testing
 @testable import DesignSystem
 
 struct AlikeAssetsTests {

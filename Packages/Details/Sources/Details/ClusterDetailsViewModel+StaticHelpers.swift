@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 extension ClusterDetailsViewModel {
     /// A cluster is reviewed once the user says so, not once only one photo is

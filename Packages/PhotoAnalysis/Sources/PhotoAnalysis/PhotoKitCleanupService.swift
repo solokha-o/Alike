@@ -1,6 +1,6 @@
+import Core
 import Foundation
 @preconcurrency import Photos
-import Core
 
 /// PhotoKit-backed cleanup service that deletes selected assets from the photo library.
 public actor PhotoKitCleanupService: PhotoCleanupService {

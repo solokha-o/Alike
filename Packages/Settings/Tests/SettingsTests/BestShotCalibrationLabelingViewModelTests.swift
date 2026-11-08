@@ -1,7 +1,7 @@
 #if DEBUG
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Settings
 
 @MainActor

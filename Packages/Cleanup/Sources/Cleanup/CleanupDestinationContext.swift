@@ -1,5 +1,5 @@
-import Photos
 import Core
+import Photos
 
 /// What `CleanupView` hands its host when the user opens a group.
 ///
